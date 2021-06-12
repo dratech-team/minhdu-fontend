@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "hr",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "hr": {
+      "projectType": "application",
+      "root": "apps/hr",
+      "sourceRoot": "apps/hr/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/hr",
+            "index": "apps/hr/src/index.html",
+            "main": "apps/hr/src/main.ts",
+            "polyfills": "apps/hr/src/polyfills.ts",
+            "tsConfig": "apps/hr/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/hr/src/favicon.ico", "apps/hr/src/assets"],
+            "styles": ["apps/hr/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/hr/src/environments/environment.ts",
+                  "with": "apps/hr/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "hr:build:production"
+            },
+            "development": {
+              "browserTarget": "hr:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hr:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/hr/src/**/*.ts", "apps/hr/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/hr"],
+          "options": {
+            "jestConfig": "apps/hr/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "hr-e2e": {
+      "root": "apps/hr-e2e",
+      "sourceRoot": "apps/hr-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/hr-e2e/cypress.json",
+            "tsConfig": "apps/hr-e2e/tsconfig.e2e.json",
+            "devServerTarget": "hr:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hr:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/hr-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
