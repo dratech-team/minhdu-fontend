@@ -12,9 +12,12 @@
   "npmScope": "minhdu-fontend",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "MzUwZTMwMGEtZmI3ZC00MWJiLTg2OWUtNTJjMTE1MmRjY2U2fHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
       }
     }
   },
@@ -22,9 +25,8 @@
     "hr": {
       "tags": []
     },
-    "hr-e2e": {
-      "tags": [],
-      "implicitDependencies": ["hr"]
+    "components": {
+      "tags": []
     }
   }
 }

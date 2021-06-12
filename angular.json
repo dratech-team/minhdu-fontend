@@ -119,28 +119,27 @@
         }
       }
     },
-    "hr-e2e": {
-      "root": "apps/hr-e2e",
-      "sourceRoot": "apps/hr-e2e/src",
-      "projectType": "application",
+    "components": {
+      "projectType": "library",
+      "root": "libs/components",
+      "sourceRoot": "libs/components/src",
+      "prefix": "minhdu-fontend",
       "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/components"],
           "options": {
-            "cypressConfig": "apps/hr-e2e/cypress.json",
-            "tsConfig": "apps/hr-e2e/tsconfig.e2e.json",
-            "devServerTarget": "hr:serve:development"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "hr:serve:production"
-            }
+            "jestConfig": "libs/components/jest.config.js",
+            "passWithNoTests": true
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/hr-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "libs/components/src/**/*.ts",
+              "libs/components/src/**/*.html"
+            ]
           }
         }
       }

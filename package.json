@@ -29,6 +29,12 @@
   },
   "private": true,
   "dependencies": {
+    "@coreui/angular": "^2.11.2",
+    "@coreui/coreui-pro": "^3.4.2",
+    "@coreui/icons": "^2.0.1",
+    "@datorama/akita": "^6.2.0",
+    "@datorama/akita-ng-effects": "^1.0.1",
+    "@datorama/akita-ngdevtools": "^6.0.0",
     "@angular/animations": "^12.0.0",
     "@angular/common": "^12.0.0",
     "@angular/compiler": "^12.0.0",
