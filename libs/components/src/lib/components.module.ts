@@ -8,9 +8,20 @@ import {
   AppHeaderModule,
   AppSidebarModule,
 } from '@coreui/angular';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { AppRoutingModule } from './component-routing.module';
 
 @NgModule({
-  imports: [CommonModule, AppSidebarModule, AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule],
+  imports: [
+    CommonModule,
+    AppSidebarModule,
+    AppAsideModule,
+    AppBreadcrumbModule,
+    AppFooterModule,
+    AppHeaderModule,
+    PerfectScrollbarModule,
+    AppRoutingModule,
+  ],
   declarations: [
     DefaultLayoutComponent
   ],

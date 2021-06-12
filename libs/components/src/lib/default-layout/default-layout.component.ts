@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { navItems } from './_nav';
 
 @Component({
   selector: 'minhdu-fontend-default-layout',
   templateUrl: './default-layout.component.html',
-  styleUrls: ['./default-layout.component.scss']
+  styleUrls: ['./default-layout.component.scss'],
 })
-export class DefaultLayoutComponent implements OnInit {
+export class DefaultLayoutComponent {
+  public sidebarMinimized = false;
+  public navItems = navItems;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  toggleMinimize(e: any): void {
+    this.sidebarMinimized = e;
   }
-
 }
