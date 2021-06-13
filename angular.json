@@ -49,7 +49,7 @@
             "tsConfig": "apps/hr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/hr/src/favicon.ico", "apps/hr/src/assets"],
-            "styles": ["apps/hr/src/styles.scss"],
+            "styles": ["apps/hr/src/scss/style.scss"],
             "scripts": []
           },
           "configurations": {

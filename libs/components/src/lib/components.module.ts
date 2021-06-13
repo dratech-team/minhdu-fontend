@@ -10,6 +10,7 @@ import {
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AppRoutingModule } from './component-routing.module';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   imports: [
@@ -22,11 +23,7 @@ import { AppRoutingModule } from './component-routing.module';
     PerfectScrollbarModule,
     AppRoutingModule,
   ],
-  declarations: [
-    DefaultLayoutComponent
-  ],
-  exports: [
-    DefaultLayoutComponent
-  ],
+  declarations: [DefaultLayoutComponent],
+  exports: [DefaultLayoutComponent],
 })
 export class ComponentsModule {}

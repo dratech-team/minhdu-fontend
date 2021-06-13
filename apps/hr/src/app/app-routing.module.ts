@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   // {
@@ -9,7 +10,7 @@ const routes: Routes = [
   // },
   {
     path: '',
-    loadChildren: () => import('@minhdu-fontend/components').then(m => m.ComponentsModule),
+    component: AppComponent,
     data: {
       title: 'Home',
     },
