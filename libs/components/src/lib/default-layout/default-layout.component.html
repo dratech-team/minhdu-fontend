@@ -1,4 +1,4 @@
-<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true"
+<app-header class='custom-header' [navbarBrandRouterLink]="['/dashboard']" [fixed]="true"
     [navbarBrandFull]="{src: 'assets/img/logo.png', width: 89, height: 25, alt: 'CoreUI Logo'}"
     [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
     [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
@@ -33,7 +33,7 @@
         </li>
     </ul>
 </app-header>
-<div class="app-body">
+<div class="app-body ">
     <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized"
         (minimizedChange)="toggleMinimize($event)">
         <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
@@ -47,7 +47,7 @@
             </li>
         </cui-breadcrumb>
         <div class="container-fluid">
-            <!-- <router-outlet></router-outlet> -->
+<!--             <router-outlet></router-outlet>-->
         </div>
     </main>
 </div>

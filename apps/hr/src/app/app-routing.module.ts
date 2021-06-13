@@ -14,15 +14,16 @@ const routes: Routes = [
     data: {
       title: 'Home',
     },
-    //   canActivate: [AuthGuard],
-    //   children: [
-    //     {
-    //       path: 'employee',
-    //       component: EmployeeComponent,
-    //       data: {
-    //         title: 'Danh sách nhân viên',
-    //       },
-    //     },
+      // children: [
+      //   {
+      //     path: 'profile',
+      //     loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+      //     data: {
+      //       title: 'Hồ sơ nhân viên',
+      //     },
+      //   },
+      //   // { path: '**', redirectTo: '' },
+      //   ]
     //     {
     //       path: 'detail-employee/:id',
     //       component: EmployeeDetailComponent,
@@ -46,13 +47,13 @@ const routes: Routes = [
     //         ),
     //     },
     //     // otherwise redirect to home
-    //     { path: '**', redirectTo: '' },
+
     //   ],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes, { useHash: true, initialNavigation: 'enabled' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

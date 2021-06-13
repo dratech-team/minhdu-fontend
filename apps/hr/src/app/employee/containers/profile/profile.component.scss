@@ -1,0 +1,27 @@
+.outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.title-header{
+  display: flex;
+  flex-direction: column;
+  background:#C4C4C4;
+  border-top: solid 1px #9aaec1;
+  border-right: solid 1px #9aaec1;
+  border-bottom: solid 1px #9aaec1;
+
+}
+.border-start{
+  border-left:solid 1px #9aaec1;
+}
+.title-profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 400;
+  color: #3C3B54;
+}

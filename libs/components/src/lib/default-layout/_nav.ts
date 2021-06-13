@@ -15,8 +15,8 @@ export const navItems: INavData[] = [
       name: 'Nhân sự',
     },
     {
-      name: 'Nhân viên',
-      url: '/employee',
+      name: 'Hồ sơ',
+      url: '/profile',
       icon: 'cil-lock-locked',
     },
     {

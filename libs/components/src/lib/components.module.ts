@@ -6,11 +6,11 @@ import {
   AppBreadcrumbModule,
   AppFooterModule,
   AppHeaderModule,
-  AppSidebarModule,
+  AppSidebarModule
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { AppRoutingModule } from './component-routing.module';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   imports: [
@@ -21,9 +21,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
-    AppRoutingModule,
+    RouterModule
   ],
   declarations: [DefaultLayoutComponent],
-  exports: [DefaultLayoutComponent],
+  exports: [DefaultLayoutComponent]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}
