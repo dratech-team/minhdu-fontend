@@ -1,29 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DefaultLayoutComponent } from './default-layout/default-layout.component';
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppFooterModule,
-  AppHeaderModule,
-  AppSidebarModule,
-} from '@coreui/angular';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { AppRoutingModule } from './component-routing.module';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NgModule } from '@angular/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    AppSidebarModule,
-    AppAsideModule,
-    AppBreadcrumbModule,
-    AppFooterModule,
-    AppHeaderModule,
-    PerfectScrollbarModule,
-    AppRoutingModule,
-  ],
-  declarations: [DefaultLayoutComponent],
-  exports: [DefaultLayoutComponent],
+  imports: [CommonModule],
 })
 export class ComponentsModule {}

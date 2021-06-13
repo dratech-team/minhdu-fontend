@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { DefaultLayoutComponent } from './container/default-layout/default-layout.component';
 
 const routes: Routes = [
   // {
@@ -10,7 +11,7 @@ const routes: Routes = [
   // },
   {
     path: '',
-    component: AppComponent,
+    component: DefaultLayoutComponent,
     data: {
       title: 'Home',
     },
