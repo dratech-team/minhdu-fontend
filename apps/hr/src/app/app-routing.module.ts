@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { DefaultLayoutComponent } from './container/default-layout/default-layout.component';
+import { RouterModule, Routes } from '@angular/router';
+import { DefaultLayoutComponent } from './container/default-layout.component';
 
 const routes: Routes = [
   // {

@@ -11,7 +11,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { ComponentsModule } from './../../../../libs/components/src/lib/components.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DefaultLayoutComponent } from './container/default-layout/default-layout.component';
+import { DefaultLayoutComponent } from './container/default-layout.component';
 
 @NgModule({
   declarations: [AppComponent, DefaultLayoutComponent],
