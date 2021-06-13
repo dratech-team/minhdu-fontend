@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { DefaultLayoutComponent } from './containers/default-layout.component';
 
 const routes: Routes = [
   // {
@@ -10,20 +11,20 @@ const routes: Routes = [
   // },
   {
     path: '',
-    component: AppComponent,
+    component: DefaultLayoutComponent,
     data: {
       title: 'Home',
     },
-      // children: [
-      //   {
-      //     path: 'profile',
-      //     loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
-      //     data: {
-      //       title: 'Hồ sơ nhân viên',
-      //     },
-      //   },
-      //   // { path: '**', redirectTo: '' },
-      //   ]
+      children: [
+        {
+          path: 'profile',
+          loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+          data: {
+            title: 'Hồ sơ nhân viên',
+          },
+        },
+        // { path: '**', redirectTo: '' },
+        ]
     //     {
     //       path: 'detail-employee/:id',
     //       component: EmployeeDetailComponent,

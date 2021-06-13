@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { NxModule } from '@nrwl/angular';
+import { DefaultLayoutComponent } from './containers/default-layout.component';
+import { AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   imports: [
@@ -14,9 +16,16 @@ import { NxModule } from '@nrwl/angular';
     BrowserAnimationsModule,
     FormsModule,
     ComponentsModule,
+    AppSidebarModule,
+    AppAsideModule,
+    AppBreadcrumbModule,
+    AppFooterModule,
+    AppHeaderModule,
+    PerfectScrollbarModule,
   ],
   declarations: [
     AppComponent,
+    DefaultLayoutComponent
   ],
   providers: [],
   bootstrap: [AppComponent],
