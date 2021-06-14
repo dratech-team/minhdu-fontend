@@ -8,9 +8,13 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { DefaultLayoutComponent } from './containers/default-layout.component';
 import { AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -22,6 +26,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
+    StoreModule.forRoot({},{}),
+    EffectsModule.forRoot([])
   ],
   declarations: [
     AppComponent,

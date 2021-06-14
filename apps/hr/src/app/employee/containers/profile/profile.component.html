@@ -1,68 +1,113 @@
-<div class='header-profile'>
-  <div class='border-start title-header'>
-    <div class='title-profile-'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
+<div class='main-profile'>
+  <button class='btn btn-primary' >Thêm nhân viên</button>
+  <div class='header-profile mt-3 animated fadeIn' >
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Mã nhân Viên</div>
+      <input class='form-control input-profile ' type='search' placeholder='PN10001'>
+    </div>
+    <div class='border-start title-header name'>
+      <div class='title-profile'>Tên nhân viên</div>
+      <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Ngày sinh</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header gender'>
+      <div class='title-profile'>Giới tính</div>
+        <select class='select-gender' matNativeControl required>
+          <option value="MALE">Nam</option>
+          <option value="FEMALE">Nữ</option>
+          <option value="OTHER">Khác</option>
+        </select>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Ngày vào làm</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Loại lương</div>
+      <select class='select-gender' matNativeControl required>
+        <option value="MALE">Lương cố định</option>
+        <option value="FEMALE">Lương không cố định</option>
+      </select>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Số điện thoại</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Đơn vị</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Bộ phận</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Chức vụ</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>CMND / CCCD</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header id'>
+      <div class='title-profile'>Bằng cấp</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header address'>
+      <div class='title-profile'>Địa chỉ</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header note'>
+      <div class='title-profile'>Chú thích</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+
   </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
-  </div>
-  <div class=' title-profile'>
-    <div class='row title-table'>Mã nhân viên</div>
-    <input class='form-control row' type='search'>
+  <div class='outer  animated fadeIn' >
+    <mat-accordion class='row-content' *ngIf='(employees$| async) as employees'>
+      <mat-expansion-panel   *ngFor='let employee of employees' (contextmenu)="onContextMenu($event,employee)" hideToggle>
+        <mat-expansion-panel-header  class='row-content'>
+          <mat-panel-title>
+            <div class='content-profile id '> {{employee.id}} </div>
+            <div class='content-profile id '> {{employee.name}}</div>
+            <div class='content-profile id '> {{employee.birthday|date:'dd/MM/yyyy'}}</div>
+            <div class='content-profile id '> {{
+              employee.gender === 'MALE'? 'Nam':
+                employee.gender === 'FEMALE'? 'Nữ':
+                  'Khác'
+              }}</div>
+            <div class='content-profile id '>{{employee.workedAt|date: 'dd/MM/yyyy'}}</div>
+            <div class='content-profile id '>{{employee.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
+            <div class='content-profile id '>{{employee.phone}}</div>
+            <div class='content-profile id '>{{employee.branch}}</div>
+            <div class='content-profile id '> {{employee.department}}</div>
+            <div class='content-profile id '> {{employee.position}}</div>
+            <div class='content-profile id '> {{employee.identify}} </div>
+            <div class='content-profile id '>
+              {{employee.certificate !== null ? employee.certificate : 'Chưa có thông tin'}}
+            </div>
+            <div class='content-profile address '> {{employee.address}}</div>
+            <div class='content-profile note '> {{employee.note}}</div>
+          </mat-panel-title>
+        </mat-expansion-panel-header >
+        <p>This is the primary content of the panel.</p>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>
-<div class='outer col-12'>
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header class='row'>
-        <mat-panel-title>
-          <div class='content-profile'> Mã nhân viên</div>
-          <div class='content-profile'> Tên nhân viên</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-          <div class='content-profile'> This is the expansion title</div>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div>avt</div>
-    </mat-expansion-panel>
-  </div>
+<div style="visibility: hidden; position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button mat-menu-item (click)='addEmployee()' >Thêm</button>
+    <button mat-menu-item >Xóa</button>
+    <button mat-menu-item (click)='addEmployee(item , true)' >sửa</button>
+  </ng-template>
+</mat-menu>
 
