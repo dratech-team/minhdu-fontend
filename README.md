@@ -1,5 +1,8 @@
 # MinhduFontend
 
+Clone từ: https://thidiem.amis.vn/V2/HRM2/
+Thông tin đăng nhập: admin  |   12345678@Abc
+
 Xoá một folder bất kỳ: nx generate @nrwl/workspace:remove <tên folder>
 
 Run trong workspace: yarn dev:<app-name>  
