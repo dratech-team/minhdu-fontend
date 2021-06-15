@@ -13,11 +13,19 @@ import { AppComponent } from './app.component';
 import { DefaultLayoutComponent } from './container/default-layout.component';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { RouterModule } from '@angular/router';
+import { NxModule } from '@nrwl/angular';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     ComponentsModule,
     AppSidebarModule,
     AppAsideModule,
@@ -25,10 +33,25 @@ import { RouterModule } from '@angular/router';
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
+    NxModule.forRoot(),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
   ],
-  providers: [],
   declarations: [AppComponent, DefaultLayoutComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: JwtInterceptor,
+    //   multi: true,
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: ErrorInterceptor,
+    //   multi: true,
+    // },
+    HashLocationStrategy,
+  ],
 })
 export class AppModule {
 }

@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './container/default-layout.component';
 
 const routes: Routes = [
-  // {
-  //   path: 'auth/signin',
-  //   component: AuthComponent,
-  // },
+  {
+    path: 'auth/signin',
+    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+  },
   {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home',
-    },
+      title: 'Home'
+    }
     //   canActivate: [AuthGuard],
     //   children: [
     //     {
@@ -47,11 +47,12 @@ const routes: Routes = [
     //     // otherwise redirect to home
     //     { path: '**', redirectTo: '' },
     //   ],
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
