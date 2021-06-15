@@ -1,0 +1,127 @@
+.main-profile{
+  width: max-content;
+  padding: 20px;
+}
+.header-profile{
+  display: flex;
+}
+.outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 70vh;
+  width: fit-content;
+  overflow: auto;
+}
+.id{
+  width: 150px;
+  text-align: center;
+  font-size: 13px;
+}
+.id >div {
+  height: 35px;
+  overflow: hidden;
+  width: 150px;
+}
+.id >input{
+  width:150px;
+}
+
+.name{
+  width: 250px;
+  text-align: center;
+}
+.name >div {
+  height: 35px;
+  overflow: hidden;
+  width: 250px;
+}
+.name >input{
+  width:250px;
+}
+
+.gender{
+  width: 100px;
+  text-align: center;
+}
+.gender >div {
+  height: 35px;
+  overflow: hidden;
+  width: 100px;
+}
+.gender >input{
+  width:100px;
+}
+
+.address{
+  width: 450px;
+  text-align: center;
+}
+.address >div {
+  height: 35px;
+  overflow: hidden;
+  width: 450px;
+}
+.address >input{
+  width:450px;
+}
+
+.note{
+  width: 350px;
+  text-align: center;
+}
+.note >div {
+  height: 35px;
+  overflow: hidden;
+  width: 350px;
+}
+.note >input{
+  width:350px;
+}
+.title-header{
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  border-top: solid 1px #9aaec1;
+  border-right: solid 1px #9aaec1;
+  border-bottom: solid 1px #9aaec1;
+
+}
+.border-start{
+  border-left:solid 1px #9aaec1;
+}
+.title-profile{
+  background:#f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3C3B54;
+
+}
+.input-profile{
+  border-radius: 0;
+  text-align: center;
+  height: 35px;
+}
+.select-gender{
+  font-size: 13px;
+  border: none;
+  text-align: center;
+  height: 35px;
+}
+.input-profile:hover{
+
+}
+.content-profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  color: #3C3B54;
+}
+.row-content{
+  padding: 0!important;
+}
+
