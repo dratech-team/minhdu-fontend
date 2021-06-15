@@ -8,13 +8,13 @@ import {
   AppSidebarModule
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { ComponentsModule } from './../../../../libs/components/src/lib/components.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DefaultLayoutComponent } from './container/default-layout.component';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [AppComponent, DefaultLayoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +27,8 @@ import { DefaultLayoutComponent } from './container/default-layout.component';
     PerfectScrollbarModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  declarations: [AppComponent, DefaultLayoutComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

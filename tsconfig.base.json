@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@minhdu-fontend/components": ["libs/components/src/index.ts"]
+      "@minhdu-fontend/components": ["libs/components/src/index.ts"],
+      "@minhdu-fontend/auth": ["libs/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
