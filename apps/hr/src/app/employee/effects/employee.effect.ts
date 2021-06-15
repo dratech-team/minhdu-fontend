@@ -4,7 +4,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EmployeeAction } from '../actions';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import {  throwError } from 'rxjs';
-import { LoadEmployeesSuccess, UpdateEmployeeSuccess } from '../actions/employee.action';
 
 @Injectable()
 export class EmployeeEffect {
@@ -28,10 +27,16 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateEmployee),
       switchMap((props)=> this.employeeService.update( props.id , props.employee)),
-      map( (employee)=> EmployeeAction.UpdateEmployeeSuccess({ employee})),
+      map( (employee)=> EmployeeAction.updateEmployeeSuccess({ employee})),
       catchError((err)=> throwError(err))
     ))
-
+  deleteEmployee$ = createEffect(()=>
+  this.action$.pipe(
+    ofType(EmployeeAction.deleteEmployee),
+    switchMap((props) => this.employeeService.delete(props.id)),
+    map((_) => EmployeeAction.deleteEmployeeSuccess()),
+    catchError((err) => throwError(err))
+  ))
   constructor(
     private readonly action$: Actions,
     private readonly  employeeService: EmployeeService

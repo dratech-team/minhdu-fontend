@@ -24,7 +24,7 @@ export  const updateEmployee = createAction(
   '[UPDATE_EMPLOYEE] Update Employee Employee',
   props<{ id:number, employee: Employee}>()
 )
-export const UpdateEmployeeSuccess = createAction(
+export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
   props<{ employee: Employee}>()
 )
@@ -32,4 +32,7 @@ export const UpdateEmployeeSuccess = createAction(
 export const  deleteEmployee = createAction(
   '[DELETE_EMPLOYEE] Delete Employee',
   props<{ id : number}>()
+)
+export const  deleteEmployeeSuccess = createAction(
+  '[DELETE_EMPLOYEE] Delete Employee Success',
 )
