@@ -4,7 +4,7 @@ import { Position } from '../position/model/position.model';
 import { Gender } from '../../../../../../libs/shared/enums/gender.enum';
 
 export interface Employee {
-  id: number;
+  id?: number;
   name?: string;
   avt?: string;
   address?: string;
@@ -28,4 +28,7 @@ export interface Employee {
   position?: Position;
   qrcode?: string;
   note?: string;
+  birthplace?:string;
+  createdAt?: Date|null;
+  zalo?:string;
 }

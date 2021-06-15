@@ -2,6 +2,7 @@ import { FullDepartment } from '../../department/model/department.model';
 
 export interface Branch {
   id?: string;
+  code?:string,
   name?: string;
   departmentIds?: number[];
 }

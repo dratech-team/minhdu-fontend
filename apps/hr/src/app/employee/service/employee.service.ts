@@ -5,6 +5,7 @@ import { Employee } from '../models/employee.model';
 import { map } from 'rxjs/operators';
 import { BaseService } from '../../service/base.service';
 import { Api } from '../../../../../../libs/shared/constants/api.contain';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 
 @Injectable({providedIn:'root'})
@@ -21,8 +22,8 @@ export class EmployeeService extends BaseService<Employee>{
   addOne(employee: Employee|undefined): Observable<Employee> {
     return super.addOne(employee);
   }
-  getAllEmployee(params: any): Observable<any> {
-    return this.http.get<Employee[]>(Api.EMPLOYEE, {params}).pipe(map((res)=> res));
+  getAllEmployee(params: any): Observable<ResponsePaginate<Employee>> {
+    return this.http.get<ResponsePaginate<Employee>>(Api.EMPLOYEE, {params}).pipe(map((res)=> res));
   }
   delete(id:number): Observable<void> {
     return super.delete(id)

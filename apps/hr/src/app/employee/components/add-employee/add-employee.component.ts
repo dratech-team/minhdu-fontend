@@ -15,11 +15,11 @@ import { Employee } from '../../models/employee.model';
 @Component({
   templateUrl: 'add-employee.component.html'
 })
-export class AddEmployeeComponent implements OnInit{
+export class AddEmployeeComponent implements OnInit {
   formGroup!: FormGroup;
   branches$!: Observable<FullBranch[]>;
   departments: FullDepartment[] | undefined;
-  positions: Position[]| undefined;
+  positions: Position[] | undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -28,6 +28,7 @@ export class AddEmployeeComponent implements OnInit{
     private readonly store: Store<AppState>
   ) {
   }
+
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       typeSalary: ['', Validators.required],
@@ -45,14 +46,14 @@ export class AddEmployeeComponent implements OnInit{
         this.data?.isFlatSalary
           ? FlatSalary.FLAT_SALARY
           : FlatSalary.NOT_FLAT_SALARY,
-        Validators.required,
+        Validators.required
       ],
       stayedAt: [this.data?.employee?.stayedAt, Validators.required],
       contractAt: [this.data?.employee?.contractAt, Validators.required],
       workedAt: [this.data?.employee?.workedAt, Validators.required],
       price: [3300000, Validators.required],
       note: this.data?.employee?.note,
-      certificate: [this.data?.employee?.certificate, Validators.required],
+      certificate: [this.data?.employee?.certificate, Validators.required]
     });
   }
 
@@ -63,10 +64,11 @@ export class AddEmployeeComponent implements OnInit{
   onDepartment(department: FullDepartment): void {
     this.positions = department.positions;
   }
+
   onSubmit(): any {
     const value = this.formGroup.value;
-    const employee: Employee = {
-      id: this.data.employee.id,
+    const employee:Employee = {
+      id:this.data.employee.id,
       name: value.name,
       address: value.address,
       identify: value.identify.toString(),
@@ -86,9 +88,9 @@ export class AddEmployeeComponent implements OnInit{
       certificate: value.certificate,
     };
     if (this.data?.isUpdate) {
-      this.store.dispatch(addEmployee({employee:employee}))
+      this.store.dispatch(addEmployee({ employee: employee }));
     } else {
-      this.store.dispatch(updateEmployee({id: this.data.employee.id ,employee:employee}))
+      this.store.dispatch(updateEmployee({ id: this.data.employee.id, employee: employee }));
     }
   }
 }

@@ -4,8 +4,8 @@ export interface Department {
   id?: number;
   name?: string;
   color?: string;
-  positionIds?: number[];
   branchId?: string;
+  positionIds?: number[];
 }
 
 export interface FullDepartment {

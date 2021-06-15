@@ -13,17 +13,17 @@
   width: fit-content;
   overflow: auto;
 }
-.id{
+.default{
   width: 150px;
   text-align: center;
   font-size: 13px;
 }
-.id >div {
+.default >div {
   height: 35px;
   overflow: hidden;
   width: 150px;
 }
-.id >input{
+.default >input{
   width:150px;
 }
 

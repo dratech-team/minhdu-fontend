@@ -18,14 +18,14 @@ export class ProfileComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
-constructor(
-  private readonly dialog: MatDialog,
-  private readonly store: Store<AppState>
-) {
-}
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly store: Store<AppState>
+  ) {
+  }
 
   ngOnInit(): void {
-  this.store.dispatch(loadEmployees())
+    this.store.dispatch(loadEmployees({take:30, skip:0}))
   }
   onContextMenu(event: MouseEvent, item: Employee) {
     event.preventDefault();
@@ -42,7 +42,7 @@ constructor(
     })
   }
 
-  delete(item: Employee): void {
-    this.store.dispatch(deleteEmployee({ id: item.id}))
+  delete(id: number): void {
+    this.store.dispatch(deleteEmployee({ id: id}))
   }
 }

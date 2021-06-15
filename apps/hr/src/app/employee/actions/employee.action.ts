@@ -37,3 +37,13 @@ export const deleteEmployee = createAction(
 export const deleteEmployeeSuccess = createAction(
   '[DELETE_EMPLOYEE] Delete Employee Success'
 );
+export const EmployeeAction = {
+  loadEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+  LoadEmployeesSuccess,
+  addEmployeeSuccess,
+  updateEmployeeSuccess,
+  deleteEmployeeSuccess
+};

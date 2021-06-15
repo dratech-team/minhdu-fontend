@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { EmployeeService } from '../service/employee.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EmployeeAction } from '../actions';
+
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import {  throwError } from 'rxjs';
+import { LoadMore } from '@minhdu-fontend/data-models';
+import { EmployeeAction } from '../actions/employee.action';
 
 @Injectable()
 export class EmployeeEffect {
@@ -11,8 +13,8 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(()=>
     this.action$.pipe(
       ofType(EmployeeAction.loadEmployees),
-      concatMap((_) => this.employeeService.getAllEmployee({take:30, skip:0 })),
-      map((employees) => EmployeeAction.LoadEmployeesSuccess({employees})),
+      concatMap((LoadMore) => this.employeeService.getAllEmployee(LoadMore)),
+      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({employee: ResponsePaginate.data})),
       catchError((err) => throwError( err))
     )
   );

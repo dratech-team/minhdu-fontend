@@ -1,7 +1,8 @@
 import { Employee } from '../models/employee.model';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { EmployeeAction } from '../actions';
+import { EmployeeAction } from '../actions/employee.action';
+
 
 
 export interface EmployeeState extends EntityState <Employee> {
@@ -13,7 +14,7 @@ export const initialEmployee = adapter.getInitialState({ loaded: false });
 export const employeeReducer = createReducer(
   initialEmployee,
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.setAll(action.employees, { ...state, loaded: true })),
+    adapter.setAll(action.employee, { ...state, loaded: true })),
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
     adapter.addOne(action.employee ,{...state, action})),
   on(EmployeeAction.updateEmployee, (state, action)=>
