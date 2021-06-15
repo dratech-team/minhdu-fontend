@@ -10,7 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
 import { employeeReducer } from './reducers/employee.reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { LoadEmployeeEffect } from './effects/load-employee.effect';
+import { EmployeeEffect } from './effects/employee.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
@@ -25,7 +25,7 @@ import { AddEmployeeComponent } from './components/add-employee/add-employee.com
     MatSelectModule,
     MatRadioModule,
     StoreModule.forFeature('employee', employeeReducer),
-    EffectsModule.forFeature([LoadEmployeeEffect]),
+    EffectsModule.forFeature([EmployeeEffect]),
     CommonModule,
     MatInputModule
   ],

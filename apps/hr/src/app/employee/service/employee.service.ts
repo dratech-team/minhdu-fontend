@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EmployeeStore } from '../state/employee.store';
 import { Observable } from 'rxjs';
 import { Employee } from '../models/employee.model';
 import { map } from 'rxjs/operators';
@@ -12,18 +11,20 @@ import { Api } from '../../../../../../libs/shared/constants/api.contain';
 export class EmployeeService extends BaseService<Employee>{
   constructor(
     public readonly http: HttpClient,
-    private readonly employeeStore: EmployeeStore,
   ) {
-    super(Api.EMPLOYEE, http, employeeStore)
+    super(Api.EMPLOYEE, http)
   }
 
-  update(id: string , props: any): Observable<Employee> {
+  update(id: number , props: Employee|undefined): Observable<Employee> {
     return super.update(id, props)
   }
-  addOne(props: any): Observable<Employee> {
-    return super.addOne(props);
+  addOne(employee: Employee|undefined): Observable<Employee> {
+    return super.addOne(employee);
   }
   getAllEmployee(params: any): Observable<Employee[]> {
-    return this.http.get<Employee[]  >('/employee', {params}).pipe(map((res)=> res));
+    return this.http.get<Employee[]  >(Api.EMPLOYEE, {params}).pipe(map((res)=> res));
+  }
+  delete(id:number): Observable<void> {
+    return super.delete(id)
   }
 }

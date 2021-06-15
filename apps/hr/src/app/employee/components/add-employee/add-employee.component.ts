@@ -7,6 +7,10 @@ import { FullDepartment } from '../../department/model/department.model';
 import { Position } from '../../position/model/position.model';
 import { EmployeeService } from '../../service/employee.service';
 import { FlatSalary } from '../../../../../../../libs/shared/enums/flat-salary.enum';
+import { addEmployee, updateEmployee } from '../../actions/employee.action';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers';
+import { Employee } from '../../models/employee.model';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -21,6 +25,7 @@ export class AddEmployeeComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly employeeService: EmployeeService,
     private readonly formBuilder: FormBuilder,
+    private readonly store: Store<AppState>
   ) {
   }
   ngOnInit(): void {
@@ -60,7 +65,8 @@ export class AddEmployeeComponent implements OnInit{
   }
   onSubmit(): any {
     const value = this.formGroup.value;
-    const employee = {
+    const employee: Employee = {
+      id: this.data.employee.id,
       name: value.name,
       address: value.address,
       identify: value.identify.toString(),
@@ -80,9 +86,9 @@ export class AddEmployeeComponent implements OnInit{
       certificate: value.certificate,
     };
     if (this.data?.isUpdate) {
-      this.employeeService.update(this.data.employee.id, employee).subscribe();
+      this.store.dispatch(addEmployee({employee:employee}))
     } else {
-      this.employeeService.addOne(employee).subscribe();
+      this.store.dispatch(updateEmployee({id: this.data.employee.id ,employee:employee}))
     }
   }
 }

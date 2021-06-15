@@ -14,3 +14,7 @@ export const selectedLoaded = createSelector(
   selectorEmployeeState,
   (state) => state.loaded
 )
+export const selectedAdded = createSelector(
+  selectorEmployeeState,
+  (state) => state.loaded
+)

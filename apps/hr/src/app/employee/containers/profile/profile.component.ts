@@ -3,9 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../reducers';
 import { selectorAllEmployee } from '../../selectors/employee.selector';
-import { loadEmployee } from '../../actions/load-employee.action';
+import { loadEmployees } from '../../actions/employee.action';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Employee } from '../../models/employee.model';
+import { deleteEmployee } from '../../actions/employee.action';
 import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
 
 @Component({
@@ -24,8 +25,7 @@ constructor(
 }
 
   ngOnInit(): void {
-  this.store.dispatch(loadEmployee())
-    console.log(this.employees$);
+  this.store.dispatch(loadEmployees())
   }
   onContextMenu(event: MouseEvent, item: Employee) {
     event.preventDefault();
@@ -36,9 +36,13 @@ constructor(
     this.contextMenu.openMenu();
   }
 
-  addEmployee(item?: Employee ,isUpdate?: boolean): void {
-    this.dialog.open(AddEmployeeComponent, {
-      data: {employee: item , isUpdate: isUpdate}
+  addAndUpdate(item?: Employee, isUpdate?: boolean): void {
+    this.dialog.open(AddEmployeeComponent,{
+      data:{employee: item, isUpdate: isUpdate}
     })
+  }
+
+  delete(item: Employee): void {
+    this.store.dispatch(deleteEmployee({ id: item.id}))
   }
 }

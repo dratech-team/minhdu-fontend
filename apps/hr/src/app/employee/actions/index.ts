@@ -1,2 +1,3 @@
-import * as EmployeeActions from './load-employee.action'
-export { EmployeeActions};
+import * as EmployeeAction from './employee.action'
+export { EmployeeAction};
+
