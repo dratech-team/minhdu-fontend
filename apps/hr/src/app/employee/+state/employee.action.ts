@@ -45,5 +45,5 @@ export const EmployeeAction = {
   LoadEmployeesSuccess,
   addEmployeeSuccess,
   updateEmployeeSuccess,
-  deleteEmployeeSuccess
+  deleteEmployeeSuccess,
 };

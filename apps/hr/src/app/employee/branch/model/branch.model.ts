@@ -4,7 +4,6 @@ export interface Branch {
   id?: string;
   code?:string,
   name?: string;
-  departmentIds?: number[];
 }
 
 export interface FullBranch {

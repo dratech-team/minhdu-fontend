@@ -10,7 +10,7 @@ export interface Employee {
   address?: string;
   identify?: string;
   idCardAt?: Date;
-  branchId?: string;
+  branchId?: number;
   departmentId?: number;
   positionId?: number;
   phone?: string;

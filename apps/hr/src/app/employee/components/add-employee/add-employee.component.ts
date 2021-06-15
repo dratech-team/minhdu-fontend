@@ -7,7 +7,7 @@ import { FullDepartment } from '../../department/model/department.model';
 import { Position } from '../../position/model/position.model';
 import { EmployeeService } from '../../service/employee.service';
 import { FlatSalary } from '../../../../../../../libs/shared/enums/flat-salary.enum';
-import { addEmployee, updateEmployee } from '../../actions/employee.action';
+import { addEmployee, updateEmployee } from '../../+state/employee.action';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../reducers';
 import { Employee } from '../../models/employee.model';
@@ -49,11 +49,9 @@ export class AddEmployeeComponent implements OnInit {
         Validators.required
       ],
       stayedAt: [this.data?.employee?.stayedAt, Validators.required],
-      contractAt: [this.data?.employee?.contractAt, Validators.required],
       workedAt: [this.data?.employee?.workedAt, Validators.required],
-      price: [3300000, Validators.required],
       note: this.data?.employee?.note,
-      certificate: [this.data?.employee?.certificate, Validators.required]
+      createdAt: [this.data?.employee?.createdAt, Validators.required]
     });
   }
 
@@ -67,30 +65,29 @@ export class AddEmployeeComponent implements OnInit {
 
   onSubmit(): any {
     const value = this.formGroup.value;
-    const employee:Employee = {
-      id:this.data.employee.id,
+    console.log(value.createdAt);
+    const employee: Employee = {
       name: value.name,
       address: value.address,
       identify: value.identify.toString(),
       idCardAt: new Date(value.idCardAt),
-      branchId: value.branch.id,
-      departmentId: value.department.id,
-      positionId: value.position.id,
+      branchId: 1,
+      departmentId: 1,
+      positionId: 1,
       phone: value.phone,
       birthday: new Date(value.birthday),
       gender: value.gender,
       isFlatSalary: value.salaryType === 'flat',
-      price: value.price,
       workedAt: new Date(value.workedAt),
       note: value.note,
       stayedAt: value.stayedAt ? new Date(value.stayedAt) : null,
-      contractAt: value.contractAt ? new Date(value.contractAt) : null,
-      certificate: value.certificate,
+      birthplace: 'sadasds',
+      createdAt: new Date(value.createdAt),
     };
-    if (this.data?.isUpdate) {
-      this.store.dispatch(addEmployee({ employee: employee }));
-    } else {
+    if (this.data.isUpdate) {
       this.store.dispatch(updateEmployee({ id: this.data.employee.id, employee: employee }));
+    } else {
+      this.store.dispatch(addEmployee({ employee: employee }));
     }
   }
 }

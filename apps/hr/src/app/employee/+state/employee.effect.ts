@@ -4,8 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import {  throwError } from 'rxjs';
-import { LoadMore } from '@minhdu-fontend/data-models';
-import { EmployeeAction } from '../actions/employee.action';
+import { EmployeeAction } from './employee.action';
 
 @Injectable()
 export class EmployeeEffect {

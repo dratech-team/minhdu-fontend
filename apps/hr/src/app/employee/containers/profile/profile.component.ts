@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../reducers';
-import { selectorAllEmployee } from '../../selectors/employee.selector';
-import { loadEmployees } from '../../actions/employee.action';
+import { selectorAllEmployee } from '../../+state/employee.selector';
+import { loadEmployees } from '../../+state/employee.action';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Employee } from '../../models/employee.model';
-import { deleteEmployee } from '../../actions/employee.action';
+import { deleteEmployee } from '../../+state/employee.action';
 import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
 
 @Component({
@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   }
 
   addAndUpdate(item?: Employee, isUpdate?: boolean): void {
+    console.log(isUpdate);
     this.dialog.open(AddEmployeeComponent,{
       data:{employee: item, isUpdate: isUpdate}
     })
