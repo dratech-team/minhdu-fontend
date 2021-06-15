@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../../../apps/hr/src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -8,6 +9,12 @@ export class AuthService {
   }
 
   signIn(username: string, password: string): Observable<any> {
-    return this.http.post<any>('auth/signin', { username, password });
+    console.log('service', username, password);
+    return this.http.post<any>(
+      'auth/signin',
+      {
+        username,
+        password
+      });
   }
 }

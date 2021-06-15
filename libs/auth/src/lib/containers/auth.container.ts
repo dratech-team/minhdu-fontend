@@ -35,7 +35,6 @@ export class AuthComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-  console.log(this.f.username.value, this.f.password.value)
     this.store.dispatch(
       AuthActions.login({
         username: this.f.username.value,

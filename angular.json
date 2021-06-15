@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": "488afbe4-1bad-4fe4-91d0-b58f564af609",
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "hr",
@@ -49,7 +50,7 @@
             "tsConfig": "apps/hr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/hr/src/favicon.ico", "apps/hr/src/assets"],
-            "styles": ["apps/hr/src/scss/style.scss"],
+            "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "apps/hr/src/scss/style.scss"],
             "scripts": []
           },
           "configurations": {
