@@ -17,12 +17,12 @@ export class EmployeeEffect {
     )
   );
   addEmployee$ = createEffect(()=>
-  this.action$.pipe(
-    ofType(EmployeeAction.addEmployee),
-    switchMap((props)=> this.employeeService.addOne(props.employee)),
-    map( (employee)=> EmployeeAction.addEmployeeSuccess({employee})),
-    catchError((err)=> throwError(err))
-  ))
+    this.action$.pipe(
+      ofType(EmployeeAction.addEmployee),
+      switchMap((props)=> this.employeeService.addOne(props.employee)),
+      map( (employee)=> EmployeeAction.addEmployeeSuccess({employee})),
+      catchError((err)=> throwError(err))
+    ))
   updateEmployee$ = createEffect(()=>
     this.action$.pipe(
       ofType(EmployeeAction.updateEmployee),
@@ -31,12 +31,12 @@ export class EmployeeEffect {
       catchError((err)=> throwError(err))
     ))
   deleteEmployee$ = createEffect(()=>
-  this.action$.pipe(
-    ofType(EmployeeAction.deleteEmployee),
-    switchMap((props) => this.employeeService.delete(props.id)),
-    map((_) => EmployeeAction.deleteEmployeeSuccess()),
-    catchError((err) => throwError(err))
-  ))
+    this.action$.pipe(
+      ofType(EmployeeAction.deleteEmployee),
+      switchMap((props) => this.employeeService.delete(props.id)),
+      map((_) => EmployeeAction.deleteEmployeeSuccess()),
+      catchError((err) => throwError(err))
+    ))
   constructor(
     private readonly action$: Actions,
     private readonly  employeeService: EmployeeService

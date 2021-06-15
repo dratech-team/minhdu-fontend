@@ -20,5 +20,5 @@ export const employeeReducer = createReducer(
     adapter.upsertOne(action.employee, {...state, action})),
   on(EmployeeAction.deleteEmployee, (state, action)=>
     adapter.removeOne( action.id ,{...state, action})),
-  )
+)
 export const { selectAll } = adapter.getSelectors();

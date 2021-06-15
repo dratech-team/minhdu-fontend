@@ -14,4 +14,3 @@ export const selectedLoaded = createSelector(
   selectorEmployeeState,
   (state) => state.loaded
 )
-
