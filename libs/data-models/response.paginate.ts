@@ -1,4 +1,4 @@
-export interface ResponsePaginate {
+export interface ResponsePaginate<T> {
   total: number,
-  data: any[],
+  data: T[],
 }
