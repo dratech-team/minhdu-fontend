@@ -14,7 +14,7 @@ export const initialEmployee = adapter.getInitialState({ loaded: false });
 export const employeeReducer = createReducer(
   initialEmployee,
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.setAll(action.employee, { ...state, loaded: true })),
+    adapter.addMany(action.employee, { ...state, loaded: true })),
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
     adapter.addOne(action.employee ,{...state, action})),
   on(EmployeeAction.updateEmployee, (state, action)=>

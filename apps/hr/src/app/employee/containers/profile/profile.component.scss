@@ -6,10 +6,8 @@
   display: flex;
 }
 .outer {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  max-height: 70vh;
+  max-height: 68vh;
   width: fit-content;
   overflow: auto;
 }
@@ -122,6 +120,10 @@
   color: #3C3B54;
 }
 .row-content{
-  padding: 0!important;
+  margin-top: 2px;
+  display: flex;
+  padding: 2px;
+  min-height: 35px;
+  border-bottom: solid 1px #9aaec1;
 }
 

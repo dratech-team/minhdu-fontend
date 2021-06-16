@@ -66,11 +66,14 @@
     </div>
 
   </div>
-  <div class='outer  animated fadeIn' >
-    <mat-accordion class='row-content' *ngIf='(employees$| async) as employees'>
-      <mat-expansion-panel   *ngFor='let employee of employees' (contextmenu)="onContextMenu($event,employee)" hideToggle>
-        <mat-expansion-panel-header  class='row-content'>
-          <mat-panel-title>
+  <div class='outer  animated fadeIn'
+       infiniteScroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollThrottle]="100"
+       [scrollWindow]="false"
+       (scrolled)="onScroll()"
+       *ngIf='(employees$| async) as employees' >
+      <div class='row-content' *ngFor='let employee of employees' (contextmenu)="onContextMenu($event,employee)" >
             <div class='content-profile default '> {{employee.id}} </div>
             <div class='content-profile name '> {{employee.name}}</div>
             <div class='content-profile default '> {{employee.birthday|date:'dd/MM/yyyy'}}</div>
@@ -91,13 +94,11 @@
             </div>
             <div class='content-profile address '> {{employee.address}}</div>
             <div class='content-profile note '> {{employee.note}}</div>
-          </mat-panel-title>
-        </mat-expansion-panel-header >
-        <p>This is the primary content of the panel.</p>
-      </mat-expansion-panel>
-    </mat-accordion>
+        </div >
+      </div>
+
   </div>
-</div>
+
 <div style="visibility: hidden; position: fixed"
      [style.left]="contextMenuPosition.x"
      [style.top]="contextMenuPosition.y"

@@ -5,7 +5,13 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
+import {
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppFooterModule,
+  AppHeaderModule,
+  AppSidebarModule
+} from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -15,7 +21,9 @@ import { HashLocationStrategy } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NxModule } from '@nrwl/angular';
 import { DefaultLayoutComponent } from './container/default-layout.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -31,10 +39,15 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AppFooterModule,
     AppHeaderModule,
     PerfectScrollbarModule,
-    StoreModule.forRoot({},{}),
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true // Pauses recording actions and state changes when the extension window is not open
+    }),
     EffectsModule.forRoot([]),
     NxModule.forRoot(),
-    MatSnackBarModule,
+    MatSnackBarModule
   ],
   declarations: [
     AppComponent,

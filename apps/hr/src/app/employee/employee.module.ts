@@ -14,6 +14,7 @@ import { EmployeeEffect } from './+state/employee.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { AddEmployeeComponent } from './components/add-employee/add-employee.com
     StoreModule.forFeature('employee', employeeReducer),
     EffectsModule.forFeature([EmployeeEffect]),
     CommonModule,
-    MatInputModule
+    MatInputModule,
+    InfiniteScrollModule
   ],
   declarations: [
     ProfileComponent,

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Employee } from '../models/employee.model';
-import { map } from 'rxjs/operators';
 import { BaseService } from '../../service/base.service';
 import { Api } from '../../../../../../libs/shared/constants/api.contain';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
@@ -23,7 +22,7 @@ export class EmployeeService extends BaseService<Employee>{
     return super.addOne(employee);
   }
   getAllEmployee(params: any): Observable<ResponsePaginate<Employee>> {
-    return this.http.get<ResponsePaginate<Employee>>(Api.EMPLOYEE, {params}).pipe(map((res)=> res));
+      return this.http.get<ResponsePaginate<Employee>>(Api.EMPLOYEE, {params});
   }
   delete(id:number): Observable<void> {
     return super.delete(id)
