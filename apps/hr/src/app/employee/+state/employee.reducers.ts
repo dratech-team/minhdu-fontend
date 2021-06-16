@@ -14,12 +14,12 @@ export const initialEmployee = adapter.getInitialState({ loaded: false });
 export const employeeReducer = createReducer(
   initialEmployee,
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.addMany(action.employee, { ...state, loaded: true })),
+    adapter.addMany(action.employees, { ...state, loaded: true })),
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
     adapter.addOne(action.employee, { ...state, action })),
-  on(EmployeeAction.updateEmployee, (state, action) =>
+  on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
     adapter.upsertOne(action.employee, { ...state, action })),
-  on(EmployeeAction.deleteEmployee, (state, action) =>
-    adapter.removeOne(action.id, { ...state, action }))
+  on(EmployeeAction.deleteEmployeeSuccess,(state, action) =>
+    adapter.removeOne(action.id, {...state , action})),
 );
 export const { selectAll } = adapter.getSelectors();

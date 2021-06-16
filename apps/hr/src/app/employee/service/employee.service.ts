@@ -22,7 +22,7 @@ export class EmployeeService extends BaseService<Employee>{
     return super.addOne(employee);
   }
   getAllEmployee(params: any): Observable<ResponsePaginate<Employee>> {
-      return this.http.get<ResponsePaginate<Employee>>(Api.EMPLOYEE, {params});
+      return super.pagination(params)
   }
   delete(id:number): Observable<void> {
     return super.delete(id)

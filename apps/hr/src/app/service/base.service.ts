@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Employee } from '../employee/models/employee.model';
+import { Api } from '../../../../../libs/shared/constants/api.contain';
 
 export class BaseService<T> {
   constructor(
@@ -8,7 +11,9 @@ export class BaseService<T> {
     public readonly http: HttpClient
   ) {
   }
-
+  pagination(params: any): Observable<ResponsePaginate<T>> {
+    return this.http.get<ResponsePaginate<T>>(this.url, {params});
+  }
 
   getAll(): Observable<T[] | undefined> {
     return this.http.get<T[]>(this.url);

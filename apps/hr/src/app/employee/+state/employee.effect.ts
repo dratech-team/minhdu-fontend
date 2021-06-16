@@ -5,6 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeAction } from './employee.action';
+import { RequestPaginate } from '@minhdu-fontend/data-models';
 
 @Injectable()
 export class EmployeeEffect {
@@ -12,8 +13,8 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadEmployees),
-      concatMap((LoadMore) => this.employeeService.getAllEmployee(LoadMore)),
-      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employee: ResponsePaginate.data })),
+      concatMap((requestPaginate) => this.employeeService.getAllEmployee(requestPaginate)),
+      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employees: ResponsePaginate.data })),
       catchError((err) => throwError(err))
     )
   );
@@ -34,9 +35,10 @@ export class EmployeeEffect {
   deleteEmployee$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.deleteEmployee),
-      switchMap((props) => this.employeeService.delete(props.id)),
-      map((_) => EmployeeAction.deleteEmployeeSuccess()),
-      catchError((err) => throwError(err))
+      switchMap((props) => this.employeeService.delete(props.id).pipe(
+        map(()=>EmployeeAction.deleteEmployeeSuccess({ id : props.id})),
+        catchError((err) => throwError(err))
+      )),
     ));
 
   constructor(

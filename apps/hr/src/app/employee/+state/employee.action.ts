@@ -1,15 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { Employee } from '../models/employee.model';
-import { LoadMore } from '@minhdu-fontend/data-models';
+import { RequestPaginate } from '@minhdu-fontend/data-models';
+
 
 
 export const loadEmployees = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<LoadMore>()
+  props<RequestPaginate>()
 );
 export const LoadEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] Load Employee Success',
-  props<{ employee: Employee[] }>()
+  props<{ employees: Employee[] }>()
 );
 
 export const addEmployee = createAction(
@@ -35,7 +36,8 @@ export const deleteEmployee = createAction(
   props<{ id: number }>()
 );
 export const deleteEmployeeSuccess = createAction(
-  '[DELETE_EMPLOYEE] Delete Employee Success'
+  '[DELETE_EMPLOYEE] Delete Employee Success',
+  props<{id: number}>()
 );
 export const EmployeeAction = {
   loadEmployees,

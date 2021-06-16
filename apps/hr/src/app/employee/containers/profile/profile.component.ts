@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../reducers';
 import { selectorAllEmployee } from '../../+state/employee.selector';
-import { loadEmployees } from '../../+state/employee.action';
+
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Employee } from '../../models/employee.model';
-import { deleteEmployee } from '../../+state/employee.action';
+import { deleteEmployee, EmployeeAction } from '../../+state/employee.action';
 import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
   pageIndex: number = 1;
-  pagSize: number = 30;
+  pageSize: number = 30;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadEmployees({ skip: 0, take: 30 }));
+    this.store.dispatch(EmployeeAction.loadEmployees({ skip: 0, take: 30 }));
   }
 
   onContextMenu(event: MouseEvent, item: Employee) {
@@ -54,6 +54,6 @@ export class ProfileComponent implements OnInit {
   onScroll() {
 
     console.log(this.pageIndex);
-    this.store.dispatch(loadEmployees({ skip: this.pagSize * this.pageIndex++, take: this.pagSize }));
+    this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 }
