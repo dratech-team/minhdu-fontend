@@ -1,7 +1,7 @@
-import { Employee } from '../models/employee.model';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { EmployeeAction } from './employee.action';
+import { Employee } from './employee.interface';
 
 
 export interface EmployeeState extends EntityState <Employee> {

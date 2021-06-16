@@ -10,15 +10,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@minhdu-fontend/components": ["libs/components/src/index.ts"],
-      "@minhdu-fontend/auth": ["libs/auth/src/index.ts"],
-      "@minhdu-fontend/data-models": ["libs/data-models/index.ts"]
+      "@minhdu-fontend/components": [
+        "libs/components/src/index.ts"
+      ],
+      "@minhdu-fontend/auth": [
+        "libs/auth/src/index.ts"
+      ],
+      "@minhdu-fontend/data-models": [
+        "libs/data-models/index.ts"
+      ],
+      "@minhdu-fontend/constants": [
+        "libs/constants/index.ts"
+      ],
+      "@minhdu-fontend/enums": [
+        "libs/enums/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

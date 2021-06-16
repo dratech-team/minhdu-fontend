@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../reducers';
+import { AppState } from '../../../../reducers';
 import { selectorAllEmployee } from '../../+state/employee.selector';
 
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Employee } from '../../models/employee.model';
 import { deleteEmployee, EmployeeAction } from '../../+state/employee.action';
 import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
+import { Employee } from '../../+state/employee.interface';
 
 @Component({
   templateUrl: 'profile.component.html',

@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
 import * as fromEmployee from './employee.reducers';
-import { Feature } from '../../../../../../libs/shared/constants/feature.constant';
+import { Feature } from '../../../../../../../libs/constants/feature.constant';
 
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
   Feature.EMPLOYEE

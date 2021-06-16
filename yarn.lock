@@ -1670,14 +1670,7 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
-"@ngrx/component-store@^12.0.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/component-store/-/component-store-12.1.0.tgz#cc5514b3fd006b5c5e82e8011bda63a8bfc68987"
-  integrity sha512-KhFaEqW1Jgj2Aw/SVFbjGH1JTcdnH0OUbi3+xwKYZRHtidKoey9vswH111jV/YiROM68SJCMigWdSbsRi5cp3Q==
-  dependencies:
-    tslib "^2.0.0"
-
-"@ngrx/effects@^12.0.0":
+"@ngrx/effects@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-12.1.0.tgz#316e60950a5e2c8ca2ecb3119397281affe3a286"
   integrity sha512-DcVovaJB9hZ8qo5UNjRS0KqLaMX8YreuR3EtRPUysB0aePBuoWQiN8HUic8DgmI2cN3KcZxOsRKj/1VaVArLJw==
@@ -1691,7 +1684,7 @@
   dependencies:
     tslib "^2.0.0"
 
-"@ngrx/router-store@^12.0.0":
+"@ngrx/router-store@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-12.1.0.tgz#926707e39dd8007d277af187e34b45e906c94a7c"
   integrity sha512-VjuDJDU2w2TlJUp82snjvgIPEHZO4q4BfOLLVEzWEME1q71VNSxx6eArW6Wk1PGWRqQ48YAI11pXC9PUi8ZI8A==
@@ -1941,6 +1934,11 @@
     tslib "^2.0.0"
     yargs "15.4.1"
     yargs-parser "20.0.0"
+
+"@scarf/scarf@^1.1.0":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
+  integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
 
 "@schematics/angular@12.0.4", "@schematics/angular@^12.0.0":
   version "12.0.4"
@@ -7975,6 +7973,14 @@ ngx-bootstrap@^5.6.1:
   resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-5.6.2.tgz#e648f826d303c29255c16772676efd30695740d1"
   integrity sha512-6YHXtdXkGH3w0NQoaUgNYAcrj064Lv5RTO284ha/hvpNTrh55yQz2cVh0VvwBk3MjyY2tdmLH4SuCJDszYdYiw==
 
+ngx-infinite-scroll@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-10.0.1.tgz#6f51f2f8775a7c50d1dd8bad125d4e748abbe880"
+  integrity sha512-7is0eJZ9kJPsaHohRmMhJ/QFHAW9jp9twO5HcHRvFM/Yl/R8QCiokgjwmH0/CR3MuxUanxfHZMfO3PbYTwlBEg==
+  dependencies:
+    "@scarf/scarf" "^1.1.0"
+    opencollective-postinstall "^2.0.2"
+
 ngx-perfect-scrollbar@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/ngx-perfect-scrollbar/-/ngx-perfect-scrollbar-9.0.0.tgz#361c75010d2a560dd8aaadb799bdf04db5a1824b"
@@ -8374,6 +8380,11 @@ open@^7.4.2:
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
+
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
 openurl@1.1.1:
   version "1.1.1"

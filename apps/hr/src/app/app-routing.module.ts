@@ -17,7 +17,7 @@ const routes: Routes = [
       children: [
         {
           path: 'profile',
-          loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+          loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
           data: {
             title: 'Hồ sơ nhân viên',
           },

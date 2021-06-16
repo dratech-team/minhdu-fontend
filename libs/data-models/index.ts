@@ -1,1 +1,1 @@
-export * from './response.paginate';
+export * from './paginate';

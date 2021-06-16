@@ -13,7 +13,7 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadEmployees),
-      concatMap((requestPaginate) => this.employeeService.getAllEmployee(requestPaginate)),
+      concatMap((requestPaginate) => this.employeeService.pagination(requestPaginate)),
       map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employees: ResponsePaginate.data })),
       catchError((err) => throwError(err))
     )

@@ -1,25 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { FullBranch } from '../../branch/model/branch.model';
-import { FullDepartment } from '../../department/model/department.model';
-import { Position } from '../../position/model/position.model';
 import { EmployeeService } from '../../service/employee.service';
-import { FlatSalary } from '../../../../../../../libs/shared/enums/flat-salary.enum';
 import { addEmployee, updateEmployee } from '../../+state/employee.action';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../reducers';
-import { Employee } from '../../models/employee.model';
+import { AppState } from '../../../../reducers';
+import { FlatSalary } from '@minhdu-fontend/enums';
+import { Employee } from '../../+state/employee.interface';
 
 @Component({
   templateUrl: 'add-employee.component.html'
 })
 export class AddEmployeeComponent implements OnInit {
   formGroup!: FormGroup;
-  branches$!: Observable<FullBranch[]>;
-  departments: FullDepartment[] | undefined;
-  positions: Position[] | undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -55,14 +48,6 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  onBranch(branch: FullBranch): void {
-    this.departments = branch.departments;
-  }
-
-  onDepartment(department: FullDepartment): void {
-    this.positions = department.positions;
-  }
-
   onSubmit(): any {
     const value = this.formGroup.value;
     const employee: Employee = {
@@ -70,7 +55,6 @@ export class AddEmployeeComponent implements OnInit {
       address: value.address,
       identify: value.identify.toString(),
       idCardAt: new Date(value.idCardAt),
-      branchId: 1,
       departmentId: 1,
       positionId: 1,
       phone: value.phone,
