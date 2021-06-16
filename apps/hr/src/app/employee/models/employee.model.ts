@@ -10,9 +10,6 @@ export interface Employee {
   address?: string;
   identify?: string;
   idCardAt?: Date;
-  branchId?: number;
-  departmentId?: number;
-  positionId?: number;
   phone?: string;
   birthday?: Date;
   gender?: Gender;
@@ -23,6 +20,9 @@ export interface Employee {
   certificate?: string;
   stayedAt?: Date|null;
   contractAt?: Date|null;
+  branchId?: number;
+  departmentId?: number;
+  positionId?: number;
   branch?: Branch;
   department?: Department;
   position?: Position;

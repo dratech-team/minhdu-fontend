@@ -5,6 +5,7 @@ import { Employee } from '../models/employee.model';
 import { BaseService } from '../../service/base.service';
 import { Api } from '../../../../../../libs/shared/constants/api.contain';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Update } from '@ngrx/entity/src/models';
 
 
 @Injectable({providedIn:'root'})
@@ -15,7 +16,7 @@ export class EmployeeService extends BaseService<Employee>{
     super(Api.EMPLOYEE, http)
   }
 
-  update(id: number , props: Employee|undefined): Observable<Employee> {
+  update(id: number , props: Employee|undefined): Observable<Update<Employee>> {
     return super.update(id, props)
   }
   addOne(employee: Employee|undefined): Observable<Employee> {

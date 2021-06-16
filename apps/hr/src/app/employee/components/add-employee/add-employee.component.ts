@@ -65,7 +65,6 @@ export class AddEmployeeComponent implements OnInit {
 
   onSubmit(): any {
     const value = this.formGroup.value;
-    console.log(value.createdAt);
     const employee: Employee = {
       name: value.name,
       address: value.address,

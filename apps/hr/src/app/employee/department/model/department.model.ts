@@ -4,7 +4,7 @@ export interface Department {
   id?: number;
   name?: string;
   color?: string;
-  branchId?: string;
+  branchId?: number;
   positionIds?: number[];
 }
 

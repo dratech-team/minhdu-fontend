@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Employee } from '../models/employee.model';
 import { RequestPaginate } from '@minhdu-fontend/data-models';
+import { Update } from '@ngrx/entity/src/models';
 
 
 
@@ -28,7 +29,7 @@ export const updateEmployee = createAction(
 );
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: Employee }>()
+  props<{ employee: Update<Employee>}>()
 );
 
 export const deleteEmployee = createAction(

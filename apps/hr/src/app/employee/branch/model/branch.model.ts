@@ -1,7 +1,7 @@
 import { FullDepartment } from '../../department/model/department.model';
 
 export interface Branch {
-  id?: string;
+  id?: number;
   code?:string,
   name?: string;
 }

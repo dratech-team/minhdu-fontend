@@ -4,6 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Employee } from '../employee/models/employee.model';
 import { Api } from '../../../../../libs/shared/constants/api.contain';
+import { Update } from '@ngrx/entity/src/models';
 
 export class BaseService<T> {
   constructor(
@@ -27,8 +28,8 @@ export class BaseService<T> {
     return this.http.post<T>(this.url, props);
   }
 
-  update(id: any, body: any): Observable<T> {
-    return this.http.patch<T>(this.url + `/${id}`, body);
+  update(id: any, body: any): Observable<Update<T>> {
+    return this.http.patch<Update<T>>(this.url + `/${id}`, body);
   }
 
   delete(id: number): Observable<void> {

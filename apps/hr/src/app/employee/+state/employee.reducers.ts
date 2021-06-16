@@ -18,7 +18,7 @@ export const employeeReducer = createReducer(
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
     adapter.addOne(action.employee, { ...state, action })),
   on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
-    adapter.upsertOne(action.employee, { ...state, action })),
+    adapter.updateOne(action.employee, { ...state, action })),
   on(EmployeeAction.deleteEmployeeSuccess,(state, action) =>
     adapter.removeOne(action.id, {...state , action})),
 );
