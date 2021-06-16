@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {  Employee } from '../models/employee.model';
+import { Employee } from '../models/employee.model';
 import { LoadMore } from '@minhdu-fontend/data-models';
 
 
@@ -45,5 +45,5 @@ export const EmployeeAction = {
   LoadEmployeesSuccess,
   addEmployeeSuccess,
   updateEmployeeSuccess,
-  deleteEmployeeSuccess,
+  deleteEmployeeSuccess
 };

@@ -11,7 +11,7 @@ import { AddEmployeeComponent } from '../../components/add-employee/add-employee
 
 @Component({
   templateUrl: 'profile.component.html',
-  styleUrls:['profile.component.scss']
+  styleUrls: ['profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadEmployees({  skip: 0,take: 30}))
+    this.store.dispatch(loadEmployees({ skip: 0, take: 30 }));
   }
 
   onContextMenu(event: MouseEvent, item: Employee) {
@@ -44,16 +44,16 @@ export class ProfileComponent implements OnInit {
     console.log(isUpdate);
     this.dialog.open(AddEmployeeComponent, {
       data: { employee: item, isUpdate: isUpdate }
-    })
+    });
   }
 
   delete(id: number): void {
-    this.store.dispatch(deleteEmployee({ id: id }))
+    this.store.dispatch(deleteEmployee({ id: id }));
   }
 
   onScroll() {
 
     console.log(this.pageIndex);
-    this.store.dispatch(loadEmployees({ skip: this.pagSize* this.pageIndex++ ,take: this.pagSize, }))
+    this.store.dispatch(loadEmployees({ skip: this.pagSize * this.pageIndex++, take: this.pagSize }));
   }
 }

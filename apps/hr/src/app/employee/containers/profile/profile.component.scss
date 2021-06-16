@@ -1,82 +1,96 @@
-.main-profile{
+.main-profile {
   width: max-content;
   padding: 20px;
 }
-.header-profile{
+
+.header-profile {
   display: flex;
 }
+
 .outer {
   flex-direction: column;
   max-height: 68vh;
   width: fit-content;
   overflow: auto;
 }
-.default{
+
+.default {
   width: 150px;
   text-align: center;
   font-size: 13px;
 }
-.default >div {
+
+.default > div {
   height: 35px;
   overflow: hidden;
   width: 150px;
 }
-.default >input{
-  width:150px;
+
+.default > input {
+  width: 150px;
 }
 
-.name{
+.name {
   width: 250px;
   text-align: center;
 }
-.name >div {
+
+.name > div {
   height: 35px;
   overflow: hidden;
   width: 250px;
 }
-.name >input{
-  width:250px;
+
+.name > input {
+  width: 250px;
 }
 
-.gender{
+.gender {
   width: 100px;
   text-align: center;
 }
-.gender >div {
+
+.gender > div {
   height: 35px;
   overflow: hidden;
   width: 100px;
 }
-.gender >input{
-  width:100px;
+
+.gender > input {
+  width: 100px;
 }
 
-.address{
+.address {
   width: 450px;
   text-align: center;
 }
-.address >div {
+
+.address > div {
   height: 35px;
   overflow: hidden;
   width: 450px;
 }
-.address >input{
-  width:450px;
+
+.address > input {
+  width: 450px;
 }
 
-.note{
+.note {
   width: 350px;
   text-align: center;
 }
-.note >div {
+
+.note > div {
   height: 35px;
   overflow: hidden;
   width: 350px;
 }
-.note >input{
-  width:350px;
+
+.note > input {
+  width: 350px;
 }
-.title-header{
+
+.title-header {
   padding: 0 !important;
   display: flex;
   flex-direction: column;
@@ -85,11 +99,13 @@
   border-bottom: solid 1px #9aaec1;
 
 }
-.border-start{
-  border-left:solid 1px #9aaec1;
+
+.border-start {
+  border-left: solid 1px #9aaec1;
 }
-.title-profile{
-  background:#f0f0f0;
+
+.title-profile {
+  background: #f0f0f0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,28 +114,33 @@
   color: #3C3B54;
 
 }
-.input-profile{
+
+.input-profile {
   border-radius: 0;
   text-align: center;
   height: 35px;
 }
-.select-gender{
+
+.select-gender {
   font-size: 13px;
   border: none;
   text-align: center;
   height: 35px;
 }
-.input-profile:hover{
+
+.input-profile:hover {
 
 }
-.content-profile{
+
+.content-profile {
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 400;
   color: #3C3B54;
 }
-.row-content{
+
+.row-content {
   margin-top: 2px;
   display: flex;
   padding: 2px;

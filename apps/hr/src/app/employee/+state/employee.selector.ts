@@ -5,12 +5,12 @@ import { Feature } from '../../../../../../libs/shared/constants/feature.constan
 
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
   Feature.EMPLOYEE
-)
+);
 export const selectorAllEmployee = createSelector(
   selectorEmployeeState,
   fromEmployee.selectAll
-)
+);
 export const selectedLoaded = createSelector(
   selectorEmployeeState,
   (state) => state.loaded
-)
+);

@@ -82,7 +82,7 @@ export class AddEmployeeComponent implements OnInit {
       note: value.note,
       stayedAt: value.stayedAt ? new Date(value.stayedAt) : null,
       birthplace: 'sadasds',
-      createdAt: new Date(value.createdAt),
+      createdAt: new Date(value.createdAt)
     };
     if (this.data.isUpdate) {
       this.store.dispatch(updateEmployee({ id: this.data.employee.id, employee: employee }));
