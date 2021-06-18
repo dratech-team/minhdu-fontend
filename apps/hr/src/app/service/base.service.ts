@@ -22,7 +22,7 @@ export class BaseService<T> {
     return this.http.get<T>(this.url + `/${id}`);
   }
 
-  addOne(props: T | undefined): Observable<T> {
+  addOne(props: T ): Observable<T> {
     return this.http.post<T>(this.url, props);
   }
 

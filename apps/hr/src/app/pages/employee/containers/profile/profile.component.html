@@ -1,5 +1,5 @@
 <div class='main-profile'>
-  <button (click)='addAndUpdate()' class='btn btn-primary'>Thêm nhân viên</button>
+  <button (click)='add()' class='btn btn-primary'>Thêm nhân viên</button>
   <div class='header-profile mt-3 animated fadeIn'>
     <div class='border-start title-header default'>
       <div class='title-profile'>Mã nhân Viên</div>
@@ -106,9 +106,9 @@
 </div>
 <mat-menu #contextMenu='matMenu'>
   <ng-template matMenuContent let-item='item'>
-    <button mat-menu-item (click)='addAndUpdate()'>Thêm</button>
+    <button mat-menu-item (click)='add()'>Thêm</button>
     <button mat-menu-item (click)='delete(item.id)'>Xóa</button>
-    <button mat-menu-item (click)='addAndUpdate(item , true)'>sửa</button>
+    <button mat-menu-item (click)='readAndUpdate(item.id)'>Xem và sửa</button>
   </ng-template>
 </mat-menu>
 

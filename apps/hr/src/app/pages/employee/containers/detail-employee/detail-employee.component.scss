@@ -1,0 +1,24 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.title-detail{
+  font-size: 18px;
+}
+.title-detail >span{
+  line-height: 25px;
+}
+.contain-detail{
+  font-size: 15px;
+}

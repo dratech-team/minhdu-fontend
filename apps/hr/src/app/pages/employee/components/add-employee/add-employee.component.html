@@ -1,10 +1,10 @@
-<h2 mat-dialog-title>{{data.isUpdate ? 'Sửa nhân viên' : 'Thêm nhân viên'}} </h2>
+<h2 mat-dialog-title>Thêm nhân viên</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>
       <div class='row'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>{{data.isUpdate ? 'Sửa nhân viên' : 'Thêm nhân viên'}} <span>*</span>
+          <label for='name'>Thêm nhân viên <span>*</span>
           </label>
           <input type='text' class='form-control' id='name' placeholder='Trần Hữu Long' formControlName='name'>
         </div>
@@ -98,15 +98,6 @@
           </mat-option>
         </mat-select>
       </div>
-    </div>
-    <div *ngIf='data.isUpdate' class='mt-4' [formGroup]='formGroup'>
-      <label for='stayedAt'>Ngày khai báo tạm trú tạm vắng</label>
-      <input
-        id='stayedAt'
-        type='date'
-        class='form-control'
-        formControlName='stayedAt'
-      >
     </div>
     <div class='mt-4' [formGroup]='formGroup'>
       <label for='workedAt'>Ngày vào làm chính thức</label>

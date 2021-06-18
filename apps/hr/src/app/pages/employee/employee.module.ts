@@ -8,13 +8,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
-import { employeeReducer } from './+state/employee.reducers';
+import { employeeReducer } from './+state/employee/employee.reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { EmployeeEffect } from './+state/employee.effect';
+import { EmployeeEffect } from './+state/employee/employee.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { DetailEmployeeComponent } from './containers/detail-employee/detail-employee.component';
+import { UpdateEmployeeComponent } from './components/update-employee/update-employee.component';
+import { AddRelativeComponent } from './components/add-relative/add-relative.component';
+
 
 
 @NgModule({
@@ -35,6 +39,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
   declarations: [
     ProfileComponent,
     AddEmployeeComponent,
+    DetailEmployeeComponent,
+    UpdateEmployeeComponent,
+    AddRelativeComponent,
   ]
 })
 export class EmployeeModule {

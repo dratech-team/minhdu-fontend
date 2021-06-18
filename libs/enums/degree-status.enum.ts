@@ -1,0 +1,4 @@
+export enum StatusEnum{
+  GRADUATED = 'GRADUATED',
+  NOT_GRADUATED = 'NOT_GRADUATED'
+}

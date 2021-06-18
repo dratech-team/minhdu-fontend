@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './container/default-layout.component';
+import { DetailEmployeeComponent } from './pages/employee/containers/detail-employee/detail-employee.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
             title: 'Hồ sơ nhân viên',
           },
         },
+
         // { path: '**', redirectTo: '' },
         ]
     //     {

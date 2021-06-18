@@ -1,0 +1,8 @@
+export enum LevelEnum{
+  BELOW_AVERAGE = 'BELOW_AVERAGE',
+  AVERAGE = 'AVERAGE',
+  GOOD = 'GOOD',
+  EXCELLENT = 'EXCELLENT',
+}
+
+

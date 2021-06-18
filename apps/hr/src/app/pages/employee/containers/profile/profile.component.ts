@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { selectorAllEmployee } from '../../+state/employee.selector';
-
+import { selectorAllEmployee } from '../../+state/employee/employee.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { deleteEmployee, EmployeeAction } from '../../+state/employee.action';
+import {  EmployeeAction } from '../../+state/employee/employee.action';
 import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
-import { Employee } from '../../+state/employee.interface';
+import { Employee } from '../../+state/employee/employee.interface';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: 'profile.component.html',
@@ -23,7 +23,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+    private readonly router:Router
   ) {
   }
 
@@ -40,20 +41,22 @@ export class ProfileComponent implements OnInit {
     this.contextMenu.openMenu();
   }
 
-  addAndUpdate(item?: Employee, isUpdate?: boolean): void {
-    console.log(isUpdate);
-    this.dialog.open(AddEmployeeComponent, {
-      data: { employee: item, isUpdate: isUpdate }
-    });
+  add(): void {
+    this.dialog.open(AddEmployeeComponent );
   }
 
   delete(id: number): void {
-    this.store.dispatch(deleteEmployee({ id: id }));
+    this.store.dispatch(EmployeeAction.deleteEmployee({ id: id }));
   }
 
   onScroll() {
 
     console.log(this.pageIndex);
     this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+  }
+
+  readAndUpdate(id: number): void {
+    console.log(id)
+    this.router.navigate(['profile/detail-employee', id]).then();
   }
 }

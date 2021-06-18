@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import {
   AppAsideModule,
@@ -24,9 +24,14 @@ import { DefaultLayoutComponent } from './container/default-layout.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+
 
 @NgModule({
   imports: [
+    MatDialogModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
@@ -47,11 +52,14 @@ import { environment } from '../environments/environment';
     }),
     EffectsModule.forRoot([]),
     NxModule.forRoot(),
-    MatSnackBarModule
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule
   ],
   declarations: [
     AppComponent,
-    DefaultLayoutComponent
+    DefaultLayoutComponent,
   ],
   bootstrap: [AppComponent],
   providers: [

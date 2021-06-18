@@ -1,0 +1,692 @@
+<div class="animated fadeIn container mb-3 ">
+    <div class="row" *ngIf="(employee$ | async)  as employee">
+      <div class='row mt-5'>
+        <div class=" main-title  mr-5">
+          Thông tin nhân viên
+        </div>
+
+        <div class=" justify-content-center">
+          <img
+            class="rounded-circle row"
+            alt="50x50"
+            src="{{employee.avt}}"
+            data-holder-rendered="true"
+            height="160px"
+          />
+          <button (click)="onDevelopment()"
+                  class="row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded">
+            <img src="../../../../../assets/img/share/person-circle.svg" alt="avatar">
+            <span class="ml-2" style="color: #80828B;">
+                  Đổi avatar
+            </span>
+          </button>
+          <button class="row btn shadow-none p-2 mb-3 bg-light rounded">
+              <span style="text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;">
+                Xóa nhân viên
+              </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" style="color:#80828B" *ngIf="(employee$ | async)  as employee">
+      <div class='col-12'>
+        <div class='row d-flex align-items-center'>
+          <div class='col-2 align-items-center main-title'>Thông tin chung</div>
+          <button (click)="update(employee , updateType.GENERAL_INFO)" class='btn btn-edit'>
+            <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+          </button>
+        </div>
+
+        <div class='row mt-3'>
+          <div class="col-6  form-group" >
+            <div class=" ml-1 row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Mã số :</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail' style="font-weight: 600 ;color: #3C3B54">
+              {{employee.id}}
+            </span>
+              </div>
+            </div>
+            <div class="row ml-1 align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Tên :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail' style=" color: #3C3B54">
+             {{employee.name}}
+            </span>
+              </div>
+              <!--          <app-btn-edit class="ml-2" [type]="updateType.NAME"></app-btn-edit>-->
+            </div>
+            <div class="row ml-1 align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Giới tính :</span>
+              </div>
+              <div class="col-md-8 d-flex flex-row">
+                <label class="col-md-2 py-2"
+                       style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
+                  <input disabled type="radio" name="group1[]" class="mr-1 ml-1" [checked]="employee.gender === 'FEMALE'">
+                  Nữ
+                </label>
+                <label class="col-md-2 py-2"
+                       style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
+                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.gender ==='MALE'">Nam
+                </label>
+                <label class="col-md-2 py-2"
+                       style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
+                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.gender === 'OTHER'">Khác
+                </label>
+              </div>
+            </div>
+            <div class="row ml-1 align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Ngày sinh :</span>
+              </div>
+              <div class="col-md-8 py-2">
+                 <span class='contain-detail' *ngIf='employee.birthday === null'>
+                    Chưa cập nhật
+                 </span>
+                <span style=" font-size: 20px" *ngIf='employee.birthday'>
+                  {{employee.birthday|date:'dd/MM/yyyy'}}
+                </span>
+              </div>
+            </div>
+            <div class="row ml-1 align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Địa chỉ :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail'>
+             {{employee.address === null ? 'Chưa cập nhật': employee.address }}
+            </span>
+              </div>
+            </div>
+          </div>
+          <div class='col-6  form-group' >
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Đơn vị :</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail' style="color: #3C3B54">
+              {{employee.branch.name}}
+            </span>
+              </div>
+
+            </div>
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Bộ phận :</span>
+              </div>
+              <div class="col py-2">
+                <div class="font-weight-bold p-1"
+                [ngStyle]="{width: 'fit-content', 'font-size': '16px', 'border-radius': '13px', 'background': '#'+employee.department.color}"
+                >
+                  <div style="margin: 0 20px; ">{{employee.department.name}}</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Chức vụ :</span>
+              </div>
+              <div class="col py-2 ">
+                <div class="p-1 px-3 "
+                     [ngStyle]="{border: 'solid 1px #'+employee.department.color, color:  '#'+employee.department.color}"
+                     style="font-weight: 600; font-size: 16px; border: solid 1px #63c2de;width: fit-content">
+                  {{employee.position.name}}
+                </div>
+              </div>
+
+            </div>
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Tôn giáo :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail' style="color: #3C3B54">
+             Không
+            </span>
+              </div>
+            </div>
+            <div class="row  align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Dân tộc :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail' style="color: #3C3B54">
+             Kinh
+            </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class='row mt-5'>
+          <div class="col-6  form-group" >
+            <div class='row d-flex align-items-center'>
+              <div class='col-6 align-items-center main-title'>Số CMND/Thẻ căn cước</div>
+              <button (click)="update(employee , updateType.IDENTITY)" class='btn btn-edit'>
+                <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+              </button>
+            </div>
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Số:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+               {{employee.identify}}
+            </span>
+              </div>
+              <!--          <app-btn-edit class="ml-2" [type]="updateType.PHONE"></app-btn-edit>-->
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Ngày cấp:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' *ngIf='employee.idCardAt === null '>
+                Đang cập nhật
+                </span>
+                <span class='contain-detail' *ngIf='employee.idCardAt !== null '>
+                {{ employee.idCardAt|date:'dd/MM/yyy'}}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Nơi cấp:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+              Bình định
+            </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6  form-group" >
+            <div class='row d-flex align-items-center'>
+              <div class='col-5 align-items-center main-title'>Thành phần gia đình</div>
+              <button (click)="addRelative(employee.id)" class='btn btn-edit'>
+                <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+              </button>
+            </div>
+
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Tình trạng hôn nhân:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                độc thân
+            </span>
+              </div>
+            </div>
+
+            <div *ngFor="let relative of employee.family">
+              <div class=" row align-items-center">
+                <div class="col-md-4 py-2 title-employee title-detail">
+                  <span *ngIf="relative.relationship === relationship.HUSBAND"> Chồng:</span>
+                  <span *ngIf="relative.relationship === relationship.WIFE"> Vợ:</span>
+                  <span *ngIf="relative.relationship === relationship.FATHER"> Cha:</span>
+                  <span *ngIf="relative.relationship === relationship.MOTHER"> Mẹ:</span>
+                  <span *ngIf="relative.relationship === relationship.DAUGHTER"> Con gái:</span>
+                  <span *ngIf="relative.relationship === relationship.SON"> Con trai:</span>
+                </div>
+                <div class="col-md-8 py-2">
+                  <span class='contain-detail'>
+                      {{relative.name}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class='row mt-5'>
+          <div class="col-6  form-group" >
+            <div class='row d-flex align-items-center'>
+              <div class='col-5 align-items-center main-title'>Trình độ/Bằng cấp</div>
+              <button (click)="update(employee , updateType.ACADEMIC_LEVEL)" class='btn btn-edit'>
+                <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+              </button>
+            </div>
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Trình độ đào tạo:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.certificate === null ? 'Chưa có thông tin' : employee.certificate }}
+                </span>
+
+              </div>
+
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Nơi đào tạo:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.trainingBy === null ? 'Chưa có thông tin' : employee.trainingBy }}
+                </span>
+
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Bắt đầu:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' *ngIf='employee.startedAt === null'>
+                 Chưa có thông tin
+                </span>
+                <span class='contain-detail' *ngIf='employee.startedAt !== null'>
+                 {{employee.startedAt|date:'dd/MM/yyyy'}}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Ngày tốt nghiệp:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' *ngIf='employee.endedAt === null'>
+                 Chưa có thông tin
+                </span>
+                <span class='contain-detail' *ngIf='employee.endedAt !== null'>
+                 {{employee.endedAt|date:'dd/MM/yyyy'}}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Chuyên nghành:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.major === null ? 'Chưa có thông tin' : employee.major }}
+                </span>
+
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>hình thức đào tạo:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' *ngIf='employee.formality === null'>
+                  Chưa cập nhật
+                </span>
+                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.FORMAL'>
+                  Chính qui
+                </span>
+                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.INFORMAL'>
+                  Không chính qui
+                </span>
+                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.TRAINING'>
+                  Đang đào tạo
+                </span>
+                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.REMOTE'>
+                  Đào tạo từ xa
+                </span>
+
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Xếp loại:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail'  *ngIf='employee.level=== null'>
+                  chưa cập nhật
+                </span>
+                <span class='contain-detail'  *ngIf='employee.level=== level.BELOW_AVERAGE '>
+                  Dưới trung bình
+                </span>
+                <span class='contain-detail'  *ngIf='employee.level=== level.AVERAGE'>
+                  Trung bình
+                </span>
+                <span class='contain-detail'  *ngIf='employee.level=== level.GOOD'>
+                  Khá
+                </span>
+                <span class='contain-detail'  *ngIf='employee.level=== level.EXCELLENT'>
+                  Giỏi
+                </span>
+
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Tốt nghiệp:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' *ngIf='employee.status === null'>
+                  Chưa cập nhật
+                </span>
+                <span class='contain-detail' *ngIf='employee.status === status.GRADUATED'>
+                  Đã tốt nghiệp
+                </span>
+                <span class='contain-detail' *ngIf='employee.status === status.NOT_GRADUATED'>
+                  Chưa tốt nghiệp
+                </span>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-6  form-group" >
+            <div class='row d-flex align-items-center'>
+              <div class='col-4 align-items-center main-title'>Thông tin liên hệ</div>
+              <button (click)="update(employee , updateType.CONTACT_INFO)" class='btn btn-edit'>
+                <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+              </button>
+            </div>
+
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>ĐT di động:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail' style="color: #7749F8  ">
+                {{employee.phone === null? 'Chưa cập nhật': employee.phone}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Email cá nhân:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.email === null? 'Chưa cập nhật': employee.email}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Facebook:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.facebook === null? 'Chưa cập nhật': employee.facebook}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>zalo:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.zalo === null? 'Chưa cập nhật': employee.zalo}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Nguyên quán:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.birthplace === null? 'Chưa cập nhật': employee.birthplace}}
+            </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class=' mt-5 row align-items-center main-title'>Thông tin bảo hiểm</div>
+        <div class='row '>
+          <div class="col-6  form-group" >
+
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Ngày tham gia BH:</span>
+              </div>
+              <div class="col-md-8 py-2">
+              <span class='contain-detail' *ngIf='employee.birthday === null'>
+                 Chưa cập nhật
+              </span>
+                <span class='contain-detail' *ngIf='employee.birthday !==null' >
+               {{employee.birthday| date: 'dd/MM/yyyy'}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Tỉ lệ đóng bảo hiểm:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail'>
+                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                </span>
+
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>số sổ BHXH:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail'>
+                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Mã số BHXH:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail'>
+                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Mã tỉnh cấp:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6  form-group" >
+            <div class="mt-3 row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Số thẻ BHYT:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.phone === null? 'Chưa cập nhật': employee.phone}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Ngày hết hạn:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span *ngIf='employee.phone === null'>
+                  Chưa cập nhật
+                </span>
+                <span class='contain-detail'>
+                    {{employee.birthday|date:'dd/MM/yyyy'}}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Nơi đăng kí KCB:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.name === null? 'Chưa cập nhật': employee.name}}
+            </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Mã số nơi KCB:</span>
+              </div>
+              <div class="col-md-8 py-2">
+            <span class='contain-detail'>
+                {{employee.name === null? 'Chưa cập nhật': employee.name}}
+            </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class='row mt-5 d-flex align-items-center' >
+          <div class='col-2 align-items-center main-title'>Liên hệ khẩn cấp</div>
+          <button (click)="update(employee , updateType.CONTACT_SOS)" class='btn btn-edit'>
+            <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+          </button>
+        </div>
+        <div class='row mt-3 '>
+          <div class="col-6  form-group" >
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>họ và tên:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.nameSOS === null ? 'Chưa cập nhật' : employee.nameSOS }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Số điện thoại:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.phoneSOS === null ? 'Chưa cập nhật' : employee.phoneSOS }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Email:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail'>
+                {{employee.emailSOS === null ? 'Chưa cập nhật' : employee.emailSOS }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Địa chỉ:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.addressSOS === null ? 'Chưa cập nhật' : employee.addressSOS }}
+                </span>
+              </div>
+            </div>
+            <div class=" row align-items-center">
+              <div class="col-md-4 py-2 title-employee title-detail">
+                <span>Quan hệ:</span>
+              </div>
+              <div class="col-md-8 py-2">
+                <span class='contain-detail' >
+                {{employee.relationshipSOS === null ? 'Chưa cập nhật' : employee.relationshipSOS }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class=' mt-5 row align-items-center main-title'>Lương</div>
+        <div class='mt-3 '>
+          <span class='row title-table'>Lịch sử lương</span>
+          <table class='mt-3'>
+            <tr>
+              <th>Kì lương</th>
+              <th>Tổng thu nhập</th>
+              <th>Lương cơ bản</th>
+              <th>Phụ cấp ở lại</th>
+              <th>Tăng ca</th>
+              <th>Phụ cấp</th>
+              <th>khấu trừ</th>
+              <th>Thực nhận</th>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+          </table>
+        </div>
+        <div class='mt-3'>
+          <span class='row title-table'>Lương cơ bản</span>
+          <div class="row ml-1 align-items-center mt-3">
+            <div class="col-md-3 py-2 title-employee title-detail">
+              <span>Mức lương :</span>
+            </div>
+            <div class="col-md-8 py-2">
+
+              <span class='contain-detail' *ngIf='employee.birthday'>
+                  {{employee.birthday|date:'dd/MM/yyyy'}}
+                </span>
+            </div>
+          </div>
+
+        </div>
+        <div class='mt-3'>
+          <span class='row title-table'>Phụ cấp ở lại</span>
+          <div class="row ml-1 align-items-center mt-3">
+            <div class="col-md-3 py-2 title-employee title-detail">
+              <span>Mức phụ cấp :</span>
+            </div>
+            <div class="col-md-8 py-2">
+              <span class='contain-detail' *ngIf='employee.birthday'>
+                  {{employee.birthday|date:'dd/MM/yyyy'}}
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
