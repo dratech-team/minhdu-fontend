@@ -30,8 +30,7 @@ export class BaseService<T> {
     return this.http.patch<Update<T>>(this.url + `/${id}`, body);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: number ): Observable<void> {
     return this.http.delete<void>(this.url + `/${id}`);
-
   }
 }

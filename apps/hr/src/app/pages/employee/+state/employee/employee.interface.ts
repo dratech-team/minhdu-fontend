@@ -1,70 +1,23 @@
-import { Gender } from '../../../../../../../../libs/enums/gender.enum';
-import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
-import { EntityState } from '@ngrx/entity';
+ import { Social } from '../../../../../../../../libs/data-models/Social.interface';
+ import { Degree } from '../../../../../../../../libs/data-models/degree.interface';
+ import { WorkHistory } from '../../../../../../../../libs/data-models/work-history.interface';
+ import { Relative } from '../../../../../../../../libs/data-models/relative.interface';
+ import { Position } from '../../../../../../../../libs/data-models/orgChart.interface/position.interface';
+ import { Profile } from '../../../../../../../../libs/data-models/human/profile.interface';
 
-export interface Employee {
-  id: number;
-  name?: string;
-  avt?: string;
-  address?: string;
-  identify?: string;
-  idCardAt?: Date;
-  birthday?: Date;
-  gender?: Gender;
-  isFlatSalary?: boolean;
-  price?: number;
-  workedAt?: Date;
-  leftAt?: Date;
-  stayedAt?: Date | null;
-  contractAt?: Date | null;
-  branchId?: number;
-  branch?: any;
-  departmentId?: number;
-  department?: any;
-  positionId?: number;
-  position?: any;
-  qrcode?: string;
-  note?: string;
-  createdAt?: Date | null;
-  religion?: string,
-  ethnic?: string,
+export interface Employee{
+  id: number,
+  workedAt: Date;
+  code: string,
   issuedBy?: string,
-
-  //Degree
-  certificate?: string;
-  startedAt?: Date,
-  endedAt?: Date,
-  major?: string,
-  formality?: string,
-  level?: string,
-  status?: string,
-  trainingBy?: Date,
-
-  //contact info
-  zalo?: string;
-  phone?: string;
-  email?:string,
-  birthplace?: string;
-  facebook?:string;
-  family: Relative[],
-
-  //contact sos
-  nameSOS?:string,
-  phoneSOS?: number,
-  emailSOS?:null,
-  addressSOS?:string,
-  relationshipSOS?: string,
+  isFlatSalary: boolean,
+  position: Position,
+  note?: string;
+  social?: Social,
+  degrees?: Degree[],
+  WorkHistories?: WorkHistory,
+  relatives : Relative[],
+  profile: Profile,
+  bhyt?: string,
 }
-export interface Relative{
-  id:number,
-  relationship?: RelationshipEnum,
-  name?: string,
-  birthday?: Date,
-  gender?:Gender,
-  identify?:string,
-  address?: string,
-  phone?:string,
-  email?:string,
-  career?: string,
-  employeeId: number,
-}
+

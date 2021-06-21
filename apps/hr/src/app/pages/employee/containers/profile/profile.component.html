@@ -52,10 +52,6 @@
       <div class='title-profile'>CMND / CCCD</div>
       <input class='form-control input-profile ' type='search'>
     </div>
-    <div class='border-start title-header default'>
-      <div class='title-profile'>Bằng cấp</div>
-      <input class='form-control input-profile ' type='search'>
-    </div>
     <div class='border-start title-header address'>
       <div class='title-profile'>Địa chỉ</div>
       <input class='form-control input-profile ' type='search'>
@@ -74,25 +70,22 @@
        (scrolled)='onScroll()'
        *ngIf='(employees$| async) as employees'>
     <div class='row-content' *ngFor='let employee of employees' (contextmenu)='onContextMenu($event,employee)'>
-      <div class='content-profile default '> {{employee.id}} </div>
-      <div class='content-profile name '> {{employee.name}}</div>
-      <div class='content-profile default '> {{employee.birthday|date:'dd/MM/yyyy'}}</div>
+      <div class='content-profile default '> {{employee.code}} </div>
+      <div class='content-profile name '>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
+      <div class='content-profile default '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>
       <div class='content-profile gender '> {{
-        employee.gender === 'MALE' ? 'Nam' :
-          employee.gender === 'FEMALE' ? 'Nữ' :
+        employee.profile.gender === 'MALE' ? 'Nam' :
+          employee.profile.gender === 'FEMALE' ? 'Nữ' :
             'Khác'
         }}</div>
       <div class='content-profile default '>{{employee.workedAt|date: 'dd/MM/yyyy'}}</div>
       <div class='content-profile default '>{{employee.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
-      <div class='content-profile default '>{{employee.phone}}</div>
-      <div class='content-profile default '>{{employee.branch}}</div>
-      <div class='content-profile default '> {{employee.department}}</div>
-      <div class='content-profile default '> {{employee.position}}</div>
-      <div class='content-profile default '> {{employee.identify}} </div>
-      <div class='content-profile default '>
-        {{employee.certificate !== null ? employee.certificate : 'Chưa có thông tin'}}
-      </div>
-      <div class='content-profile address '> {{employee.address}}</div>
+      <div class='content-profile default '>{{employee.profile.phone}}</div>
+      <div class='content-profile default '>{{employee.position.department.branch.name}}</div>
+      <div class='content-profile default '> {{employee.position.department.name}}</div>
+      <div class='content-profile default '> {{employee.position.name}}</div>
+      <div class='content-profile default '> {{employee.profile.identify}} </div>
+      <div class='content-profile address '> {{employee.profile.address}}</div>
       <div class='content-profile note '> {{employee.note}}</div>
     </div>
   </div>

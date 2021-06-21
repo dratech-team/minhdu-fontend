@@ -42,7 +42,9 @@ export class ProfileComponent implements OnInit {
   }
 
   add(): void {
-    this.dialog.open(AddEmployeeComponent );
+    this.dialog.open(AddEmployeeComponent,{
+      width: '50%',
+    } );
   }
 
   delete(id: number): void {

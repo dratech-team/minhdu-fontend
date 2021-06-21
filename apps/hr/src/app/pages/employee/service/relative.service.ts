@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../../../service/base.service';
-import {  Relative } from '../+state/employee/employee.interface';
 import { HttpClient } from '@angular/common/http';
-import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
+import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
+import { Employee } from '../+state/employee/employee.interface';
+import { Api } from '@minhdu-fontend/constants';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
-@Injectable({providedIn:'root'})
-export class RelativeService extends BaseService<Relative>{
-  constructor( public readonly http: HttpClient) {
+@Injectable({ providedIn: 'root' })
+export class RelativeService extends BaseService<Employee> {
+  constructor(
+    public readonly http: HttpClient
+  ) {
     super(Api.RELATIVE, http);
   }
 
-  addOne(Relative: Relative): Observable<Relative> {
-    return super.addOne(Relative);
+
+  addOne(relative: any): Observable<Employee> {
+    return super.addOne(relative)
   }
-  update(id: number, props: Relative ): Observable<Update<Relative>> {
-    return super.update(id, props);
+  update(EmployeeId: number, props: any ): Observable<Update<Employee>> {
+    return super.update(EmployeeId, props);
   }
+
+
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
+
+
+
 }

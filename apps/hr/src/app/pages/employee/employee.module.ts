@@ -17,7 +17,10 @@ import { AddEmployeeComponent } from './components/add-employee/add-employee.com
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DetailEmployeeComponent } from './containers/detail-employee/detail-employee.component';
 import { UpdateEmployeeComponent } from './components/update-employee/update-employee.component';
-import { AddRelativeComponent } from './components/add-relative/add-relative.component';
+import { AddProfileComponent } from './components/profile/add-profile.component';
+import { AddRelativeComponent } from './components/relative/add-relative.component';
+
+
 
 
 
@@ -42,6 +45,7 @@ import { AddRelativeComponent } from './components/add-relative/add-relative.com
     DetailEmployeeComponent,
     UpdateEmployeeComponent,
     AddRelativeComponent,
+    AddProfileComponent,
   ]
 })
 export class EmployeeModule {

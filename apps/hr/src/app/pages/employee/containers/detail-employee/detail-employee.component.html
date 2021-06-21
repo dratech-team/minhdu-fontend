@@ -9,7 +9,7 @@
           <img
             class="rounded-circle row"
             alt="50x50"
-            src="{{employee.avt}}"
+            src="{{employee.profile.avt}}"
             data-holder-rendered="true"
             height="160px"
           />
@@ -45,7 +45,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail' style="font-weight: 600 ;color: #3C3B54">
-              {{employee.id}}
+              {{employee.code}}
             </span>
               </div>
             </div>
@@ -55,10 +55,9 @@
               </div>
               <div class="col-md-8 py-2 ">
             <span class='contain-detail' style=" color: #3C3B54">
-             {{employee.name}}
+             {{employee.profile.firstName}} {{employee.profile.lastName}}
             </span>
               </div>
-              <!--          <app-btn-edit class="ml-2" [type]="updateType.NAME"></app-btn-edit>-->
             </div>
             <div class="row ml-1 align-items-center">
               <div class="col-md-3 py-2 title-employee title-detail">
@@ -67,16 +66,16 @@
               <div class="col-md-8 d-flex flex-row">
                 <label class="col-md-2 py-2"
                        style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
-                  <input disabled type="radio" name="group1[]" class="mr-1 ml-1" [checked]="employee.gender === 'FEMALE'">
+                  <input disabled type="radio" name="group1[]" class="mr-1 ml-1" [checked]="employee.profile.gender === 'FEMALE'">
                   Nữ
                 </label>
                 <label class="col-md-2 py-2"
                        style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
-                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.gender ==='MALE'">Nam
+                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.profile.gender ==='MALE'">Nam
                 </label>
                 <label class="col-md-2 py-2"
                        style="display: flex;justify-content: flex-start;align-items: center;color: #3C3B54">
-                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.gender === 'OTHER'">Khác
+                  <input disabled type="radio" name="group1[]" class="mr-1" [checked]="employee.profile.gender === 'OTHER'">Khác
                 </label>
               </div>
             </div>
@@ -85,11 +84,11 @@
                 <span>Ngày sinh :</span>
               </div>
               <div class="col-md-8 py-2">
-                 <span class='contain-detail' *ngIf='employee.birthday === null'>
+                 <span class='contain-detail' *ngIf='employee.profile.birthday === null'>
                     Chưa cập nhật
                  </span>
-                <span style=" font-size: 20px" *ngIf='employee.birthday'>
-                  {{employee.birthday|date:'dd/MM/yyyy'}}
+                <span style=" font-size: 20px" *ngIf='employee.profile.birthday'>
+                  {{employee.profile.birthday|date:'dd/MM/yyyy'}}
                 </span>
               </div>
             </div>
@@ -99,7 +98,27 @@
               </div>
               <div class="col-md-8 py-2 ">
             <span class='contain-detail'>
-             {{employee.address === null ? 'Chưa cập nhật': employee.address }}
+             {{employee.profile.address === null ? 'Chưa cập nhật': employee.profile.address}}
+            </span>
+              </div>
+            </div>
+            <div class="row ml-1 align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Tôn giáo :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail' style="color: #3C3B54">
+               {{employee.profile.religion === null ?'Chưa cập nhật' : employee.profile.religion }}
+            </span>
+              </div>
+            </div>
+            <div class="row ml-1  align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span> Dân tộc :</span>
+              </div>
+              <div class="col-md-8 py-2 ">
+            <span class='contain-detail' style="color: #3C3B54">
+              {{employee.profile.religion === null ?'Chưa cập nhật' : employee.profile.religion }}
             </span>
               </div>
             </div>
@@ -111,7 +130,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail' style="color: #3C3B54">
-              {{employee.branch.name}}
+              {{employee.position.department.branch.name}}
             </span>
               </div>
 
@@ -122,9 +141,8 @@
               </div>
               <div class="col py-2">
                 <div class="font-weight-bold p-1"
-                [ngStyle]="{width: 'fit-content', 'font-size': '16px', 'border-radius': '13px', 'background': '#'+employee.department.color}"
                 >
-                  <div style="margin: 0 20px; ">{{employee.department.name}}</div>
+                  <div style="margin: 0 20px; ">{{employee.position.department.name}}</div>
                 </div>
               </div>
 
@@ -135,31 +153,49 @@
               </div>
               <div class="col py-2 ">
                 <div class="p-1 px-3 "
-                     [ngStyle]="{border: 'solid 1px #'+employee.department.color, color:  '#'+employee.department.color}"
                      style="font-weight: 600; font-size: 16px; border: solid 1px #63c2de;width: fit-content">
                   {{employee.position.name}}
                 </div>
               </div>
-
             </div>
             <div class="row align-items-center">
               <div class="col-md-3 py-2 title-employee title-detail">
-                <span>Tôn giáo :</span>
+                <span>Địa chỉ :</span>
               </div>
-              <div class="col-md-8 py-2 ">
+              <div class="col-md-8 py-2">
             <span class='contain-detail' style="color: #3C3B54">
-             Không
+              {{employee.profile.address}}
             </span>
               </div>
             </div>
-            <div class="row  align-items-center">
+            <div class="row align-items-center">
               <div class="col-md-3 py-2 title-employee title-detail">
-                <span>Dân tộc :</span>
+                <span>Phường xã :</span>
               </div>
-              <div class="col-md-8 py-2 ">
-            <span class='contain-detail' style="color: #3C3B54">
-             Kinh
-            </span>
+              <div  class="col py-2 " >
+                <div class='contain-detail'>
+                  <div>{{employee?.profile?.ward?.name}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Quận huyện :</span>
+              </div>
+              <div class="col py-2 ">
+                <div class='contain-detail'>
+                    {{employee?.profile?.ward?.district?.name}}
+                </div>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-md-3 py-2 title-employee title-detail">
+                <span>Tỉnh thành:</span>
+              </div>
+              <div class=" col py-2 ">
+                <div class='contain-detail' >
+                  {{employee?.profile?.ward?.district?.province?.name}}
+                </div>
               </div>
             </div>
           </div>
@@ -180,21 +216,20 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-               {{employee.identify}}
+               {{employee.profile.identify}}
             </span>
               </div>
-              <!--          <app-btn-edit class="ml-2" [type]="updateType.PHONE"></app-btn-edit>-->
             </div>
             <div class=" row align-items-center">
               <div class="col-md-3 py-2 title-employee title-detail">
                 <span>Ngày cấp:</span>
               </div>
               <div class="col-md-8 py-2">
-                <span class='contain-detail' *ngIf='employee.idCardAt === null '>
+                <span class='contain-detail' *ngIf='employee.profile.idCardAt === null '>
                 Đang cập nhật
                 </span>
-                <span class='contain-detail' *ngIf='employee.idCardAt !== null '>
-                {{ employee.idCardAt|date:'dd/MM/yyy'}}
+                <span class='contain-detail' *ngIf='employee.profile.idCardAt !== null '>
+                {{ employee.profile.idCardAt|date:'dd/MM/yyy'}}
                 </span>
               </div>
             </div>
@@ -212,7 +247,7 @@
           <div class="col-6  form-group" >
             <div class='row d-flex align-items-center'>
               <div class='col-5 align-items-center main-title'>Thành phần gia đình</div>
-              <button (click)="addRelative(employee.id)" class='btn btn-edit'>
+              <button (click)="addAndUpdateRelative(employee.id)" class='btn btn-edit'>
                 <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
               </button>
             </div>
@@ -222,13 +257,16 @@
                 <span>Tình trạng hôn nhân:</span>
               </div>
               <div class="col-md-8 py-2">
-            <span class='contain-detail'>
-                độc thân
-            </span>
+                <div *ngFor='let relative of employee.relatives'>
+                  <span class='contain-detail' *ngIf='relative.relationship === relationship.HUSBAND ||relative.relationship === relationship.WIFE'>
+                    Đã lập gia đình
+                  </span>
+                </div>
+
               </div>
             </div>
 
-            <div *ngFor="let relative of employee.family">
+            <div *ngFor="let relative of employee.relatives">
               <div class=" row align-items-center">
                 <div class="col-md-4 py-2 title-employee title-detail">
                   <span *ngIf="relative.relationship === relationship.HUSBAND"> Chồng:</span>
@@ -240,7 +278,7 @@
                 </div>
                 <div class="col-md-8 py-2">
                   <span class='contain-detail'>
-                      {{relative.name}}
+                      {{relative.profile.firstName}} {{relative.profile.lastName}}
                   </span>
                 </div>
               </div>
@@ -252,132 +290,56 @@
       <div class='col-12'>
         <div class='row mt-5'>
           <div class="col-6  form-group" >
-            <div class='row d-flex align-items-center'>
-              <div class='col-5 align-items-center main-title'>Trình độ/Bằng cấp</div>
-              <button (click)="update(employee , updateType.ACADEMIC_LEVEL)" class='btn btn-edit'>
+            <div class='row mt-5 d-flex align-items-center' >
+              <div class='col-4 align-items-center main-title'>Liên hệ khẩn cấp</div>
+              <button (click)="update(employee , updateType.RELATIVE)" class='btn btn-edit'>
                 <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
               </button>
             </div>
-            <div class="mt-3 row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Trình độ đào tạo:</span>
-              </div>
-              <div class="col-md-8 py-2">
+            <div class='row mt-3 '>
+              <div class="col-6  form-group" *ngFor='let relative of employee.relatives' >
+                <div *ngIf='relative.sos'>
+                  <div class=" row align-items-center">
+                    <div class="col-md-4 py-2 title-employee title-detail">
+                      <span>họ và tên:</span>
+                    </div>
+                    <div class="col-md-8 py-2">
+                  <span class='contain-detail'  >
+                  {{relative.profile.firstName}} {{relative.profile.lastName}}
+                  </span>
+                    </div>
+                  </div>
+                  <div class=" row align-items-center">
+                    <div class="col-md-4 py-2 title-employee title-detail">
+                      <span>Số điện thoại:</span>
+                    </div>
+                    <div class="col-md-8 py-2">
                 <span class='contain-detail' >
-                {{employee.certificate === null ? 'Chưa có thông tin' : employee.certificate }}
+                {{relative.profile.phone}}
                 </span>
-
-              </div>
-
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Nơi đào tạo:</span>
-              </div>
-              <div class="col-md-8 py-2">
+                    </div>
+                  </div>
+                  <div class=" row align-items-center">
+                    <div class="col-md-4 py-2 title-employee title-detail">
+                      <span>Email:</span>
+                    </div>
+                    <div class="col-md-8 py-2">
+                <span class='contain-detail'>
+                {{relative.profile.email}}
+                </span>
+                    </div>
+                  </div>
+                  <div class=" row align-items-center">
+                    <div class="col-md-4 py-2 title-employee title-detail">
+                      <span>Quan hệ:</span>
+                    </div>
+                    <div class="col-md-8 py-2">
                 <span class='contain-detail' >
-                {{employee.trainingBy === null ? 'Chưa có thông tin' : employee.trainingBy }}
+                {{relative.relationship}}
                 </span>
-
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Bắt đầu:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' *ngIf='employee.startedAt === null'>
-                 Chưa có thông tin
-                </span>
-                <span class='contain-detail' *ngIf='employee.startedAt !== null'>
-                 {{employee.startedAt|date:'dd/MM/yyyy'}}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Ngày tốt nghiệp:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' *ngIf='employee.endedAt === null'>
-                 Chưa có thông tin
-                </span>
-                <span class='contain-detail' *ngIf='employee.endedAt !== null'>
-                 {{employee.endedAt|date:'dd/MM/yyyy'}}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Chuyên nghành:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' >
-                {{employee.major === null ? 'Chưa có thông tin' : employee.major }}
-                </span>
-
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>hình thức đào tạo:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' *ngIf='employee.formality === null'>
-                  Chưa cập nhật
-                </span>
-                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.FORMAL'>
-                  Chính qui
-                </span>
-                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.INFORMAL'>
-                  Không chính qui
-                </span>
-                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.TRAINING'>
-                  Đang đào tạo
-                </span>
-                <span class='contain-detail' *ngIf='employee.formality === formalityEnum.REMOTE'>
-                  Đào tạo từ xa
-                </span>
-
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Xếp loại:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail'  *ngIf='employee.level=== null'>
-                  chưa cập nhật
-                </span>
-                <span class='contain-detail'  *ngIf='employee.level=== level.BELOW_AVERAGE '>
-                  Dưới trung bình
-                </span>
-                <span class='contain-detail'  *ngIf='employee.level=== level.AVERAGE'>
-                  Trung bình
-                </span>
-                <span class='contain-detail'  *ngIf='employee.level=== level.GOOD'>
-                  Khá
-                </span>
-                <span class='contain-detail'  *ngIf='employee.level=== level.EXCELLENT'>
-                  Giỏi
-                </span>
-
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Tốt nghiệp:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' *ngIf='employee.status === null'>
-                  Chưa cập nhật
-                </span>
-                <span class='contain-detail' *ngIf='employee.status === status.GRADUATED'>
-                  Đã tốt nghiệp
-                </span>
-                <span class='contain-detail' *ngIf='employee.status === status.NOT_GRADUATED'>
-                  Chưa tốt nghiệp
-                </span>
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </div>
@@ -396,7 +358,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail' style="color: #7749F8  ">
-                {{employee.phone === null? 'Chưa cập nhật': employee.phone}}
+                {{employee.profile.phone === null? 'Chưa cập nhật': employee.profile.phone}}
             </span>
               </div>
             </div>
@@ -406,7 +368,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.email === null? 'Chưa cập nhật': employee.email}}
+                {{employee.profile.email === null? 'Chưa cập nhật': employee.profile?.email}}
             </span>
               </div>
             </div>
@@ -416,7 +378,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.facebook === null? 'Chưa cập nhật': employee.facebook}}
+                {{employee.social  === null? 'Chưa cập nhật': employee.social?.facebook}}
             </span>
               </div>
             </div>
@@ -426,7 +388,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.zalo === null? 'Chưa cập nhật': employee.zalo}}
+                {{employee.social === null? 'Chưa cập nhật': employee.social?.zalo}}
             </span>
               </div>
             </div>
@@ -436,7 +398,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.birthplace === null? 'Chưa cập nhật': employee.birthplace}}
+                {{employee.profile.birthplace === null? 'Chưa cập nhật': employee.profile.birthplace}}
             </span>
               </div>
             </div>
@@ -444,20 +406,20 @@
         </div>
       </div>
       <div class='col-12'>
+
         <div class=' mt-5 row align-items-center main-title'>Thông tin bảo hiểm</div>
         <div class='row '>
           <div class="col-6  form-group" >
-
             <div class="mt-3 row align-items-center">
               <div class="col-md-4 py-2 title-employee title-detail">
                 <span>Ngày tham gia BH:</span>
               </div>
               <div class="col-md-8 py-2">
-              <span class='contain-detail' *ngIf='employee.birthday === null'>
+              <span class='contain-detail' *ngIf='employee?.bhyt === null'>
                  Chưa cập nhật
               </span>
-                <span class='contain-detail' *ngIf='employee.birthday !==null' >
-               {{employee.birthday| date: 'dd/MM/yyyy'}}
+                <span class='contain-detail' *ngIf='employee?.bhyt !==null' >
+               {{employee.profile.birthday| date: 'dd/MM/yyyy'}}
             </span>
               </div>
             </div>
@@ -467,7 +429,7 @@
               </div>
               <div class="col-md-8 py-2">
                 <span class='contain-detail'>
-                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                {{employee?.bhyt === null ? 'Chưa có thông tin' : employee?.bhyt }}
                 </span>
 
               </div>
@@ -478,7 +440,7 @@
               </div>
               <div class="col-md-8 py-2">
                 <span class='contain-detail'>
-                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                {{employee?.bhyt === null ? 'Chưa có thông tin' : employee?.bhyt }}
                 </span>
               </div>
             </div>
@@ -488,7 +450,8 @@
               </div>
               <div class="col-md-8 py-2">
                 <span class='contain-detail'>
-                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                {{employee?.bhyt === null ? 'Chưa có thông tin' : employee?.bhyt
+                  }}
                 </span>
               </div>
             </div>
@@ -498,7 +461,7 @@
               </div>
               <div class="col-md-8 py-2">
                 <span class='contain-detail' >
-                {{employee.name === null ? 'Chưa có thông tin' : employee.name }}
+                {{employee?.bhyt === null ? 'Chưa có thông tin' : employee?.bhyt }}
                 </span>
               </div>
             </div>
@@ -510,7 +473,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.phone === null? 'Chưa cập nhật': employee.phone}}
+                {{employee?.bhyt === null? 'Chưa cập nhật': employee?.bhyt}}
             </span>
               </div>
             </div>
@@ -519,11 +482,11 @@
                 <span>Ngày hết hạn:</span>
               </div>
               <div class="col-md-8 py-2">
-                <span *ngIf='employee.phone === null'>
+                <span *ngIf='employee?.bhyt === null'>
                   Chưa cập nhật
                 </span>
                 <span class='contain-detail'>
-                    {{employee.birthday|date:'dd/MM/yyyy'}}
+                    {{employee.profile.birthday|date:'dd/MM/yyyy'}}
                 </span>
               </div>
             </div>
@@ -533,7 +496,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.name === null? 'Chưa cập nhật': employee.name}}
+                {{employee?.bhyt === null? 'Chưa cập nhật': employee?.bhyt}}
             </span>
               </div>
             </div>
@@ -543,7 +506,7 @@
               </div>
               <div class="col-md-8 py-2">
             <span class='contain-detail'>
-                {{employee.name === null? 'Chưa cập nhật': employee.name}}
+                {{employee?.bhyt === null? 'Chưa cập nhật': employee?.bhyt }}
             </span>
               </div>
             </div>
@@ -551,65 +514,85 @@
         </div>
       </div>
       <div class='col-12'>
-        <div class='row mt-5 d-flex align-items-center' >
-          <div class='col-2 align-items-center main-title'>Liên hệ khẩn cấp</div>
-          <button (click)="update(employee , updateType.CONTACT_SOS)" class='btn btn-edit'>
+        <div class='row d-flex align-items-center'>
+          <div class='col-2 align-items-center main-title'>Thành phần gia đình</div>
+          <button (click)="addAndUpdateRelative(employee.id )" class='btn btn-edit'>
             <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
           </button>
         </div>
-        <div class='row mt-3 '>
-          <div class="col-6  form-group" >
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>họ và tên:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' >
-                {{employee.nameSOS === null ? 'Chưa cập nhật' : employee.nameSOS }}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Số điện thoại:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' >
-                {{employee.phoneSOS === null ? 'Chưa cập nhật' : employee.phoneSOS }}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Email:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail'>
-                {{employee.emailSOS === null ? 'Chưa cập nhật' : employee.emailSOS }}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Địa chỉ:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' >
-                {{employee.addressSOS === null ? 'Chưa cập nhật' : employee.addressSOS }}
-                </span>
-              </div>
-            </div>
-            <div class=" row align-items-center">
-              <div class="col-md-4 py-2 title-employee title-detail">
-                <span>Quan hệ:</span>
-              </div>
-              <div class="col-md-8 py-2">
-                <span class='contain-detail' >
-                {{employee.relationshipSOS === null ? 'Chưa cập nhật' : employee.relationshipSOS }}
-                </span>
-              </div>
-            </div>
-          </div>
+        <div class='mt-3 '>
+          <span class='row title-table'>Thành viên</span>
+          <table class='mt-3'>
+            <tr>
+              <th class='text-center'>Họ và tên</th>
+              <th class='text-center'>Quan hệ</th>
+              <th class='text-center'>Ngày sinh</th>
+              <th class='text-center'>Số điện thoại</th>
+              <th class='text-center'>Email</th>
+              <th class='text-center' >Liên hệ khẩn cấp</th>
+            </tr>
+            <tr *ngFor='let relative of employee.relatives'>
+              <td class='text-center'>{{relative.profile.firstName}} {{relative.profile.lastName}}</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.FATHER'>Cha</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.MOTHER'>Mẹ</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.DAUGHTER'>Con gái</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.SON'>Con trai</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.HUSBAND'>Chồng</td>
+              <td class='text-center' *ngIf='relative.relationship=== relationship.WIFE'>VỢ</td>
+              <td class='text-center'>{{relative.profile.birthday |date:'dd/MM/yyyy'}}</td>
+              <td class='text-center'>{{relative.profile.phone}}</td>
+              <td class='text-center'>{{relative.profile.email}}</td>
+              <td class='d-flex justify-content-center'><input style='width: 20px; height: 20px' class='form-control' type='checkbox' [value]='relative.sos'></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class='col-12'>
+        <div class=' mt-5 row align-items-center main-title'>Trình độ bằng cấp</div>
+        <div class='mt-3 '>
+          <span class='row title-table'>Bằng cấp</span>
+          <table class='mt-3'>
+            <tr>
+              <th>Bằng cấp</th>
+              <th>Bắt đầu </th>
+              <th>Kết thúc</th>
+              <th>Chuyên ngành</th>
+              <th>hình thức đào tạo</th>
+              <th>Nơi đào tạo</th>
+              <th>Mức tốt nghiệp</th>
+              <th>Hoàn thành</th>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+            </tr>
+          </table>
         </div>
       </div>
       <div class='col-12'>
@@ -667,8 +650,8 @@
             </div>
             <div class="col-md-8 py-2">
 
-              <span class='contain-detail' *ngIf='employee.birthday'>
-                  {{employee.birthday|date:'dd/MM/yyyy'}}
+              <span class='contain-detail' *ngIf='employee.bhyt'>
+                  {{employee?.bhyt}}
                 </span>
             </div>
           </div>
@@ -681,12 +664,13 @@
               <span>Mức phụ cấp :</span>
             </div>
             <div class="col-md-8 py-2">
-              <span class='contain-detail' *ngIf='employee.birthday'>
-                  {{employee.birthday|date:'dd/MM/yyyy'}}
+              <span class='contain-detail' *ngIf='employee.bhyt'>
+                  {{employee?.bhyt ? 'Chưa cập nhật' : employee?.bhyt}}
                 </span>
             </div>
           </div>
         </div>
       </div>
+
     </div>
 </div>

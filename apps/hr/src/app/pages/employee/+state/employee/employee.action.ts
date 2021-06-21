@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { RequestPaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
-import { Employee, Relative } from './employee.interface';
+import { Employee } from './employee.interface';
 
 export const loadEmployees = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
@@ -18,7 +18,7 @@ export const addEmployee = createAction(
 );
 export const addEmployeeSuccess = createAction(
   '[ADD_EMPLOYEE] Add Employee Success',
-  props<{ employee: Employee }>()
+  props<{ employee: Employee,}>()
 );
 
 export const addRelative = createAction(
@@ -26,18 +26,14 @@ export const addRelative = createAction(
   props<{ relative: any }>()
 );
 
-export const addRelativeSuccess = createAction(
-  '[ADD_RELATIVE] Add Relative Success',
-  props<{ relative: Relative }>()
-);
 
 export const getEmployee = createAction(
   '[GET EMPLOYEE] Get Employee',
-  props<{id: number}>()
+  props<{ id: number}>()
 );
 export const getEmployeeSuccess = createAction(
   '[GET EMPLOYEE] Get Employee Success',
-  props<{employee:Employee}>()
+  props<{employee: Employee}>()
 );
 
 export const updateEmployee = createAction(
@@ -51,13 +47,9 @@ export const updateEmployeeSuccess = createAction(
 
 export const updateRelative = createAction(
   '[UPDATE_RELATIVE] Update Relative Employee',
-  props<{ id: number, relative: any }>()
+  props<{employeeId: number, relative: any }>()
 );
 
-export const updateRelativeSuccess = createAction(
-  '[UPDATE_EMPLOYEE] Update Success',
-  props<{ relative: Update<Relative>}>()
-);
 export const deleteEmployee = createAction(
   '[DELETE_EMPLOYEE] Delete Employee',
   props<{ id: number }>()
@@ -68,12 +60,9 @@ export const deleteEmployeeSuccess = createAction(
 );
 export const deleteRelative = createAction(
   '[DELETE_RELATIVE] Delete Relative',
-  props<{ id: number }>()
+  props<{ id: number,employeeId: number }>()
 );
-export const deleteRelativeSuccess = createAction(
-  '[DELETE_EMPLOYEE] Delete Relative Success',
-  props<{id: number}>()
-);
+
 
 
 export const EmployeeAction = {
@@ -82,15 +71,13 @@ export const EmployeeAction = {
   addEmployee,
   addEmployeeSuccess,
   addRelative,
-  addRelativeSuccess,
   getEmployee,
   getEmployeeSuccess,
   updateEmployee,
   updateEmployeeSuccess,
   updateRelative,
-  updateRelativeSuccess,
   deleteEmployee,
   deleteEmployeeSuccess,
   deleteRelative,
-  deleteRelativeSuccess,
+
 };

@@ -4,17 +4,24 @@
     <div class='general-info' *ngIf="this.data.type === updateType.GENERAL_INFO">
       <div class='row'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Tên nhân viên<span>*</span>
+          <label for='firstName'>Họ<span>*</span>
           </label>
-          <input type='text' class='form-control' id='name' placeholder='Trần Hữu Long' formControlName='name'>
+          <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'>
         </div>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='lastName'>Họ<span>*</span>
+          </label>
+          <input type='text' class='form-control' id='lastName' placeholder='Hiệu' formControlName='lastName'>
+        </div>
+      </div>
+      <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='address'>Địa chỉ</label>
           <input
             class='form-control'
             formControlName='address'
             id='address'
-            placeholder='Tạp hoá Xuân Phước Hiệp'
+            placeholder='Số nhà/Thôn xóm'
             type='text'
           >
         </div>
@@ -65,37 +72,69 @@
           </mat-select>
         </div>
       </div>
-      <div class ='row mt-3'>
+      <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Tôn giáo<span>*</span>
-          </label>
-          <input type='text' class='form-control' id='religion' placeholder='Trần Hữu Long' formControlName='religion'>
+          <label for='province'>Tỉnh thành <span>*</span></label>
+          <mat-select
+            id='province'
+            class='form-control'
+            formControlName='province'
+          >
+            <!--            <mat-option *ngFor='let branch of branches$ | async' [value]='branch' (click)='onBranch(branch)'>-->
+            <!--              {{branch.name}}-->
+            <!--            </mat-option>-->
+          </mat-select>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Dân tộc<span>*</span>
+          <label for='district'>Quận/Huyện <span>*</span></label>
+          <mat-select  id='district' class='form-control' formControlName='district'>
+            <!--            <mat-option *ngFor='let department of departments' [value]='department' (click)='onDepartment(department)'>-->
+            <!--              {{department.name}}-->
+            <!--            </mat-option>-->
+          </mat-select>
+        </div>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='ward'>Phường/Xã <span>*</span></label>
+          <mat-select id='ward' class='form-control' formControlName='ward'>
+            <!--            <mat-option *ngFor='let position of positions' [value]='position'>-->
+            <!--              {{position.name}}-->
+            <!--            </mat-option>-->
+          </mat-select>
+        </div>
+      </div>
+      <div class ='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='religion'>Tôn giáo<span>*</span>
           </label>
-          <input type='text' class='form-control' id='ethnic' placeholder='Trần Hữu Long' formControlName='ethnic'>
+          <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
+        </div>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='ethnicity'>Dân tộc<span>*</span>
+          </label>
+          <input type='text' class='form-control' id='ethnicity' placeholder='Kinh' formControlName='ethnicity'>
         </div>
       </div>
     </div>
+
+
     <div class='identity' *ngIf="this.data.type === updateType.IDENTITY">
       <div class='row'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Ngày cấp<span>*</span>
+          <label for='idCardAt'>Ngày cấp<span>*</span>
           </label>
           <input type='date' class='form-control' id='idCardAt' placeholder='123456789' formControlName='idCardAt'>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Nơi cấp<span>*</span>
+          <label for='issuedBy'>Nơi cấp<span>*</span>
           </label>
           <input type='text' class='form-control' id='issuedBy' placeholder='Bình định' formControlName='issuedBy'>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='name'>Số CMND/CCCD<span>*</span>
+          <label for='issuedBy'>Số CMND/CCCD<span>*</span>
           </label>
           <input type='number' class='form-control' id='identify' placeholder='123456789' formControlName='identify'>
         </div>
@@ -222,24 +261,30 @@
         <input type='text' class='form-control' id='birthplace' placeholder='Kế toán' formControlName='birthplace'>
       </div>
     </div>
-    <div class='contract-info' *ngIf="this.data.type === updateType.CONTACT_SOS">
+
+    <div class='contract-info' *ngIf="this.data.type === updateType.RELATIVE">
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='nameSOS'>họ và tên<span>*</span>
         </label>
         <input type='number' class='form-control' id='nameSOS' placeholder='Trần Gia Hiệu' formControlName='nameSOS'>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='emailSOS'>Email khẩn cấp<span>*</span>
+        <label for='emailSOS'>Email<span>*</span>
         </label>
-        <input type='text' class='form-control' id='emailSOS' placeholder='abc@gmail.com' formControlName='emailSOS'>
+        <input type='text' class='form-control' id='emailSOS' placeholder='abc@gmail.com' formControlName='emailRelative'>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='phoneSOS'>Số điện thoại khẩn cấp<span>*</span></label>
-        <input type='text' id='phoneSOS' class='form-control' placeholder='090000333' formControlName='phoneSOS'>
+        <input type='text' id='phoneSOS' class='form-control' placeholder='090000333' formControlName='phoneRelative'>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='addressSOS'>Địa chỉ<span>*</span></label>
-        <input type='text' id='addressSOS' class='form-control' placeholder='Bình định' formControlName='addressSOS'>
+        <label for='SOS'>Liên hệ khẩn cấp<span>*</span></label>
+        <input type='checkbox' id='SOS' class='form-control' placeholder='Bình định' formControlName='SOS'>
+      </div>
+      <div class='col-12 mt-3' [formGroup]='formGroup'>
+        <label for='career'>Nghề nghiệp<span>*</span>
+        </label>
+        <input type='text' class='form-control' id='career' placeholder='vợ, chồng' formControlName='career'>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='relationship'>Quan hệ<span>*</span>

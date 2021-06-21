@@ -2,22 +2,22 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../../service/employee.service';
-import { addEmployee } from '../../+state/employee/employee.action';
+import { addEmployee, addRelative } from '../../+state/employee/employee.action';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { Employee } from '../../+state/employee/employee.interface';
 import { UpdateEmployeeEnum } from './update-employee.enum';
 import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
-import { StatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
-import { LevelEnum } from '../../../../../../../../libs/enums/level.enum';
+import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
+import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level.enum';
+import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
 
 @Component({
   templateUrl: 'update-employee.component.html'
 })
 export class UpdateEmployeeComponent implements OnInit {
   formalityEnum = FormalityEnum;
-  status = StatusEnum;
-  level = LevelEnum;
+  status = DegreeStatusEnum;
+  level = DegreeLevelEnum;
   formGroup!: FormGroup;
   updateType =UpdateEmployeeEnum;
   constructor(
@@ -31,20 +31,24 @@ export class UpdateEmployeeComponent implements OnInit {
   ngOnInit(): void {
     //General info
     this.formGroup = this.formBuilder.group({
-      typeSalary: ['', Validators.required],
-      name: [this.data?.employee?.name, Validators.required],
-      gender: [ this.data?.employee?.gender, Validators.required],
-      birthday: [ this.data?.employee?.birthday,Validators.required],
-      address: [this.data?.employee?.address, Validators.required],
-      branchId: [this.data?.employee?.branchId, Validators.required],
-      departmentId:[this.data?.employee?.departmentId, Validators.required],
-      positionId: [this.data?.employee?.positionId,Validators.required],
-      ethnic:[this.data?.employee?.religion, Validators.required],
-      nation:[this.data?.employee?.nation, Validators.required],
+      isFlatSalary: [this.data.employee.isFlatSalary, Validators.required],
+      firstName: [this.data.employee.profile.firstName, Validators.required],
+      lastName: [this.data.employee.profile.lastName, Validators.required],
+      address: [this.data.employee.profile.address, Validators.required],
+      gender: [ this.data?.employee.profile.gender, Validators.required],
+      birthday: [ this.data.employee.profile.birthday,Validators.required],
+      branch: [this.data.employee.position.department.branch.id, Validators.required],
+      department:[this.data.employee.position.department.id, Validators.required],
+      position: [this.data.employee.position.id,Validators.required],
+      ward: [this.data.employee.profile.ward.id, Validators.required],
+      district: [this.data.employee.profile.ward.district.id,Validators.required],
+      province: [ this.data.employee.profile.ward.district.province.id,Validators.required],
+      religion:[this.data.employee.profile?.religion, Validators.required],
+      ethnicity:[this.data.employee.profile?.ethnicity,Validators.required],
       //CMND
-      identify: [this.data.employee.identify,Validators.required],
-      idCardAt: [this.data.employee.idCardAt, Validators.required],
-      issuedBy:[this.data?.employee?.issuedBy, Validators.required],
+      identify: [this.data.employee.profile.identify ,Validators.required],
+      idCardAt: [this.data.employee.profile.idCardAt, Validators.required],
+      issuedBy:[this.data.employee.profile.issuedBy, Validators.required],
       //FAMILY MEMBER
       marital: [this.data?.employee?.marital, Validators.required],
       familyMember:[this.data?.employee?.familyMember, Validators.required],
@@ -57,17 +61,20 @@ export class UpdateEmployeeComponent implements OnInit {
       formality:[this.data?.employee?.formality, Validators.required],
       level:[this.data?.employee?.level, Validators.required],
       //Contact Info
-      phone:[this.data?.employee?.level, Validators.required],
-      facebook:[this.data?.employee?.level, Validators.required],
-      zalo:[this.data?.employee?.zalo, Validators.required],
-      email:[this.data?.employee?.email, Validators.required],
-      birthplace:[this.data?.employee?.birthplace, Validators.required],
-      //contact sos
-      nameSOS:[this.data?.employee?.nameSOS, Validators.required],
-      phoneSOS:[this.data?.employee?.phoneSOS, Validators.required],
-      emailSOS:[this.data?.employee?.emailSOS, Validators.required],
-      addressSOS:[this.data?.employee?.emailSOS, Validators.required],
-      relationship:[this.data?.employee?.relationship, Validators.required],
+      phone:[this.data.employee.profile.phone, Validators.required],
+      facebook:[this.data.employee?.social?.facebook, Validators.required],
+      zalo:[this.data?.employee?.social?.zalo, Validators.required],
+      email:[this.data.employee?.profile?.email, Validators.required],
+      birthplace:[this.data?.employee.profile.birthplace, Validators.required],
+
+      //Relative
+      nameSOS:[this.data?.relative?.nameRelative, Validators.required],
+      phoneSOS:[this.data?.relative?.phoneRelative, Validators.required],
+      emailSOS:[this.data?.relative?.emailRelative, Validators.required],
+      SOS:[this.data?.relative?.SOS, Validators.required],
+      relationship:[this.data?.relative?.relationship, Validators.required],
+      career:[this.data?.relative?.career, Validators.required],
+
 
       salaryType: ['',Validators.required],
       stayedAt: [this.data?.employee?.stayedAt, Validators.required],
@@ -79,27 +86,52 @@ export class UpdateEmployeeComponent implements OnInit {
 
   onSubmit(): any {
     const value = this.formGroup.value;
+    const relative = {
+        sos: value.SOS,
+        relationship: value.relationship,
+        career: value.career,
+
+        profile:{
+          id: this.data.relative.id,
+          name: value?.name,
+          address: value.address,
+          identify: value.identify.toString(),
+          idCardAt: new Date(value.idCardAt),
+          issuedBy: value.issuedBy,
+          birthday: new Date(value.birthday),
+          birthplace: value.birthplace,
+          gender: value.gender,
+          phone: value.phone,
+          wardId: value.ward,
+          ethnic: value?.ethnic,
+          religion: value?.religion,
+        }
+    }
     const employee = {
-      name: value?.name,
-      address: value.address,
-      birthday: new Date(value.birthday),
-      gender: value.gender,
-      branchId: 1,
-      departmentId: 1,
-      positionId: 1,
-      ethnic: value?.ethnic,
-      religion: value?.religion,
-
-
-      identify: value.identify.toString(),
-      idCardAt: new Date(value.idCardAt),
-      phone: value.phone,
       isFlatSalary: value.salaryType === 'flat',
+      positionId: value.position === null? 1: value.position,
+      createdAt: new Date(value.createdAt),
+      social:{
+        facebook: value.facebook,
+        zalo: value.zalo,
+      },
+      profile:{
+        name: value?.name,
+        address: value.address,
+        identify: value.identify.toString(),
+        idCardAt: new Date(value.idCardAt),
+        issuedBy: value.issuedBy,
+        birthday: new Date(value.birthday),
+        birthplace: value.birthplace,
+        gender: value.gender,
+        phone: value.phone,
+        wardId: value.ward,
+        ethnic: value?.ethnic,
+        religion: value?.religion,
+      },
       workedAt: new Date(value.workedAt),
       note: value.note,
-      stayedAt: value.stayedAt ? new Date(value.stayedAt) : null,
-      birthplace: 'sadasds',
-      createdAt: new Date(value.createdAt)
+      // stayedAt: value.stayedAt ? new Date(value.stayedAt) : null,
     };
       this.store.dispatch(addEmployee({ employee: employee }));
   }
