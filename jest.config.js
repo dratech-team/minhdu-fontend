@@ -3,5 +3,6 @@ module.exports = {
     '<rootDir>/apps/hr',
     '<rootDir>/libs/components',
     '<rootDir>/libs/auth',
+    '<rootDir>/libs/orgchart',
   ],
 };

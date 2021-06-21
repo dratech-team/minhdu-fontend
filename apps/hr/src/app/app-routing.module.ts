@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './container/default-layout.component';
+import { OrgchartContainer } from './pages/orgchart/containers/orgchart.container';
 
 
 const routes: Routes = [
@@ -14,41 +15,23 @@ const routes: Routes = [
     data: {
       title: 'Home'
     },
-      children: [
-        {
-          path: 'profile',
-          loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
-          data: {
-            title: 'Hồ sơ nhân viên',
-          },
+    children: [
+      {
+        path: 'profile',
+        loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
+        data: {
+          title: 'Hồ sơ nhân viên'
+        }
+      },
+      {
+        path: 'org-chart',
+        data: {
+          title: 'Hệ thống nhân sự'
         },
-        // { path: '**', redirectTo: '' },
-        ]
-    //     {
-    //       path: 'detail-employee/:id',
-    //       component: EmployeeDetailComponent,
-    //       data: {
-    //         title: 'Chi tiết nhân viên',
-    //       },
-    //     },
-    //     {
-    //       path: 'payroll',
-    //       loadChildren: () =>
-    //         import('./pages/payroll/payroll.module').then((m) => m.PayrollModule),
-    //     },
-    //     {
-    //       path: 'org-chart',
-    //       data: {
-    //         title: 'Hệ thống nhân sự',
-    //       },
-    //       loadChildren: () =>
-    //         import('./pages/org-chart/org-chart.module').then(
-    //           (m) => m.OrgChartModule
-    //         ),
-    //     },
-    //     // otherwise redirect to home
-
-    //   ],
+        component: OrgchartContainer
+      },
+      { path: '**', redirectTo: '' }
+    ]
   }
 ];
 

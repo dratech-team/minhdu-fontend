@@ -24,6 +24,7 @@ import { DefaultLayoutComponent } from './container/default-layout.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { OrgchartModule } from '@minhdu-fontend/orgchart';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { environment } from '../environments/environment';
     }),
     EffectsModule.forRoot([]),
     NxModule.forRoot(),
-    MatSnackBarModule
+    MatSnackBarModule,
+    OrgchartModule
   ],
   declarations: [
     AppComponent,

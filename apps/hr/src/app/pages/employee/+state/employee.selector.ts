@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
 import * as fromEmployee from './employee.reducers';
-import { Feature } from '../../../../../../../libs/constants/feature.constant';
+import { FeatureName } from '@minhdu-fontend/constants';
 
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
-  Feature.EMPLOYEE
+  FeatureName.EMPLOYEE
 );
 export const selectorAllEmployee = createSelector(
   selectorEmployeeState,
