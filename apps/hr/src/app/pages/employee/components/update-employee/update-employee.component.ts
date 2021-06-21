@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../../service/employee.service';
-import { addEmployee, addRelative } from '../../+state/employee/employee.action';
+import { addEmployee, addRelative } from '../../+state/employee.action';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { UpdateEmployeeEnum } from './update-employee.enum';

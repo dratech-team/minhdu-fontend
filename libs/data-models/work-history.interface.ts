@@ -1,5 +1,6 @@
+import { Employee } from 'apps/hr/src/app/pages/employee/+state/employee.interface';
 import { Position } from './orgChart.interface/position.interface';
-import { Employee } from '../../apps/hr/src/app/pages/employee/+state/employee/employee.interface';
+
 
 
 export interface WorkHistory {

@@ -27,6 +27,7 @@ import { environment } from '../environments/environment';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { OrgchartModule } from '@minhdu-fontend/orgchart';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSnackBarModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    OrgchartModule
   ],
   declarations: [
     AppComponent,

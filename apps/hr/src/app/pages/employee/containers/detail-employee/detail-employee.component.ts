@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
-import { Employee } from '../../+state/employee/employee.interface';
+import { Employee } from '../../+state/employee.interface';
 import { EmployeeService } from '../../service/employee.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateEmployeeComponent } from '../../components/update-employee/update-employee.component';
@@ -13,8 +13,8 @@ import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-stat
 import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
 import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
 import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
-import { selectCurrentEmployee, } from '../../+state/employee/employee.selector';
-import { EmployeeAction } from '../../+state/employee/employee.action';
+import { selectCurrentEmployee, } from '../../+state/employee.selector';
+import { EmployeeAction } from '../../+state/employee.action';
 import { Relative } from '../../../../../../../../libs/data-models/relative.interface';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 

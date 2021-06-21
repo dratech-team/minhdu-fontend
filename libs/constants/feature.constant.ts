@@ -1,5 +1,6 @@
-export const Feature = {
+export const FeatureName = {
   AUTH: 'auth',
-  ORG_CHART: 'org-chart',
+  BRANCH: 'branch',
+  ORG_CHART: 'orgchart',
   EMPLOYEE: 'employee'
 };

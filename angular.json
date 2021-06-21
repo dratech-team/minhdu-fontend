@@ -50,7 +50,10 @@
             "tsConfig": "apps/hr/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/hr/src/favicon.ico", "apps/hr/src/assets"],
-            "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "apps/hr/src/scss/style.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/hr/src/scss/style.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -165,6 +168,31 @@
             "lintFilePatterns": [
               "libs/auth/src/**/*.ts",
               "libs/auth/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "orgchart": {
+      "projectType": "library",
+      "root": "libs/orgchart",
+      "sourceRoot": "libs/orgchart/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/orgchart"],
+          "options": {
+            "jestConfig": "libs/orgchart/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/orgchart/src/**/*.ts",
+              "libs/orgchart/src/**/*.html"
             ]
           }
         }

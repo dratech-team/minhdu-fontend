@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector,ActionReducerMap } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
-import { Feature } from '../../../../../../../../libs/constants/feature.constant' ;
+import { FeatureName } from '../../../../../../../libs/constants/feature.constant' ;
 import { Employee } from './employee.interface';
 import * as fromEmployee from './employee.reducers';
 
@@ -11,7 +11,7 @@ export interface State {
 
 export const getSelectedEmployeeId = (state: Employee) => state.id
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
- Feature.EMPLOYEE
+  FeatureName.EMPLOYEE
 );
 export const selectorEmployeeEntities = createSelector(
   selectorEmployeeState,
