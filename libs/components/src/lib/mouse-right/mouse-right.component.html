@@ -1,12 +1,11 @@
-<div style='visibility: hidden; position: fixed'
-     [style.left]='contextMenuPosition.x'
-     [style.top]='contextMenuPosition.y'
-     [matMenuTriggerFor]='contextMenu'>
-</div>
-<mat-menu #contextMenu='matMenu'>
-  <ng-template matMenuContent>
-    <button mat-menu-item (click)='add()'>Thêm</button>
-    <button mat-menu-item (click)='delete()'>Xóa</button>
-    <button mat-menu-item (click)='readAndUpdate()'>Xem và sửa</button>
+<context-menu>
+  <ng-template  contextMenuItem (execute)="add()">
+    Thêm
   </ng-template>
-</mat-menu>
+  <ng-template contextMenuItem let-item (execute)="delete()">
+    Xóa
+  </ng-template>
+  <ng-template contextMenuItem let-item (execute)="readAndUpdate()">
+    Xem và sửa
+  </ng-template>
+</context-menu>

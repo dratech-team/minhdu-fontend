@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, ViewChild,EventEmitter } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { Employee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.interface';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ContextMenuService } from 'ngx-contextmenu';
+
 
 
 @Component({
@@ -12,19 +12,19 @@ export class MouseRightComponent implements OnInit {
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
-  contextMenuPosition = { x: '0px', y: '0px' };
-  @ViewChild(MatMenuTrigger)
-  contextMenu!: MatMenuTrigger;
-  constructor() { }
+  constructor(
+    private contextMenuService: ContextMenuService
+  ) { }
 
   ngOnInit(): void {
   }
-  onContextMenu(event: MouseEvent) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
+  public onContextMenu($event: MouseEvent, item?: any): void {
+    this.contextMenuService.show.next({
+      event: $event,
+      item: item,
+    });
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 
   add(): void {

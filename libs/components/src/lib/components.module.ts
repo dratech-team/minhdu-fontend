@@ -3,9 +3,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MatMenuModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatMenuModule,
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true ,})
+  ],
   declarations: [
     MouseRightComponent
   ],

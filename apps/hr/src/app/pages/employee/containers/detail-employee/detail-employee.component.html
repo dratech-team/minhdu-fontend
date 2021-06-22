@@ -467,6 +467,9 @@
             <td class='text-center'>{{degree.startedAt |date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{degree.endedAt |date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{degree.major}}</td>
+            <td class='text-center' *ngIf='degree.formality === null '>
+              Chưa cập nhật
+            </td>
             <td class='text-center' *ngIf='degree.formality === formalityEnum.REMOTE '>
               Đào tạo từ xa
             </td>
@@ -481,8 +484,10 @@
             </td>
             <td class='text-center'>{{degree.school}}</td>
             <td class='text-center' *ngIf='degree.level === level.EXCELLENT '>Giỏi</td>
+            <td class='text-center' *ngIf='degree.level === null'>Chưa cập nhật</td>
             <td class='text-center' *ngIf='degree.level === level.GOOD '>Khá</td>
             <td class='text-center' *ngIf='degree.level === level.AVERAGE '>Trung bình</td>
+            <td class='text-center' *ngIf='degree.level === level.BELOW_AVERAGE '>Dưới trung bình</td>
             <td class='text-center' *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp</td>
             <td class='text-center' *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp</td>
             <app-mouse-right #child (addEvent)='addAndUpdateDegree(employee.id)'
