@@ -33,6 +33,13 @@
     },
     "orgchart": {
       "tags": []
+    },
+    "sell": {
+      "tags": []
+    },
+    "sell-e2e": {
+      "tags": [],
+      "implicitDependencies": ["sell"]
     }
   }
 }

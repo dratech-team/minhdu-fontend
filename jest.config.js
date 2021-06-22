@@ -4,5 +4,6 @@ module.exports = {
     '<rootDir>/libs/components',
     '<rootDir>/libs/auth',
     '<rootDir>/libs/orgchart',
+    '<rootDir>/apps/sell',
   ],
 };
