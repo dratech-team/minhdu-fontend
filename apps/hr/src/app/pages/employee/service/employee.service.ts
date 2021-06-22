@@ -19,7 +19,6 @@ export class EmployeeService extends BaseService<Employee> {
     return super.addOne(employee);
   }
 
-
   getOne(id: number): Observable<Employee> {
     return super.getOne(id);
   }

@@ -5,7 +5,6 @@ import { AppState } from '../../../../reducers';
 import { selectorAllEmployee } from '../../+state/employee.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { EmployeeAction } from '../../+state/employee.action';
-
 import { Router } from '@angular/router';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 

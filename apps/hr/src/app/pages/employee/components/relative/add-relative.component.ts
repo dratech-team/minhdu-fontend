@@ -4,13 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { EmployeeAction } from '../../+state/employee.action';
 
-
 @Component({
   templateUrl: 'add-relative.component.html'
 })
 export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -21,7 +19,6 @@ export class AddRelativeComponent implements OnInit {
   ngOnInit() {
     console.log(this.data?.relative?.profile?.firstName);
     this.formGroup = this.formBuilder.group({
-      //relative
       firstName: [this.data?.relative?.profile?.firstName, Validators.required],
       lastName: [this.data?.relative?.profile?.lastName, Validators.required],
       issuedBy: [this.data?.relative?.profile?.issuedBy, Validators.required],
@@ -41,13 +38,11 @@ export class AddRelativeComponent implements OnInit {
       relationship: [this.data?.relative?.relationship, Validators.required],
       career: [this.data?.relative?.career, Validators.required],
       sos: [this.data?.relative?.sos, Validators.required]
-
     });
   }
 
   onSubmit() {
     const value = this.formGroup.value;
-
     const relative = {
       sos: value.sos,
       relationship: value.relationship,
@@ -75,6 +70,5 @@ export class AddRelativeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
-
   }
 }

@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FlatSalary } from '@minhdu-fontend/enums';
+import {
+  DegreeLevelEnum,
+  DegreeStatusEnum,
+  DegreeTypeEnum,
+  FlatSalary,
+  FormalityEnum,
+  RelationshipEnum
+} from '@minhdu-fontend/enums';
 import { Employee } from '../../+state/employee.interface';
 import { EmployeeService } from '../../service/employee.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level.enum';
-import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
-import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
-import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
 import { selectCurrentEmployee } from '../../+state/employee.selector';
 import { EmployeeAction } from '../../+state/employee.action';
-import { Relative } from '../../../../../../../../libs/data-models/relative';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
-import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { Degree } from '../../../../../../../../libs/data-models/degree';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
-
+import { Degree, Relative } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -33,7 +33,6 @@ export class DetailEmployeeComponent implements OnInit {
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
-
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,

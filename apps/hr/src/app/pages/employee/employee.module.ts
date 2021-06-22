@@ -20,7 +20,7 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { ProfileComponent } from './containers/profile/profile.component';
 import { AddEmployeeComponent } from './components/employee/add-employee.component';
 import { AddDegreeComponent } from './components/degree/add-degree.component';
-
+import { FeatureName } from '@minhdu-fontend/constants';
 
 @NgModule({
   imports: [
@@ -32,7 +32,7 @@ import { AddDegreeComponent } from './components/degree/add-degree.component';
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
-    StoreModule.forFeature('employee', employeeReducer),
+    StoreModule.forFeature(FeatureName.EMPLOYEE, employeeReducer),
     EffectsModule.forFeature([EmployeeEffect]),
     CommonModule,
     MatInputModule,

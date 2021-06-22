@@ -3,14 +3,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { EmployeeAction } from '../../+state/employee.action';
-import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level.enum';
-import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
-import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
+import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl:'add-degree.component.html',
-
 })
+
 export class AddDegreeComponent implements OnInit{
   degreeLevelEnum= DegreeLevelEnum;
   degreeTypeEnum = DegreeTypeEnum;
@@ -22,6 +20,7 @@ export class AddDegreeComponent implements OnInit{
   private readonly store: Store,
   ) {
   }
+
   ngOnInit() {
     console.log(this?.data?.id);
     this.formGroup = this.formBuilder.group({

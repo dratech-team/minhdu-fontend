@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { EmployeeService } from '../service/employee.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeAction } from './employee.action';
 import { RelativeService } from '../service/relative.service';
 import { DegreeService } from '../service/degree.service';
-
 
 @Injectable()
 export class EmployeeEffect {
@@ -100,6 +98,7 @@ export class EmployeeEffect {
         catchError((err) => throwError(err))
         )),
     ));
+
   deleteDegree$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.deleteDegree),

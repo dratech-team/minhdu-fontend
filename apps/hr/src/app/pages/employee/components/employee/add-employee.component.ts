@@ -6,13 +6,12 @@ import { addEmployee, EmployeeAction } from '../../+state/employee.action';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 
-
 @Component({
   templateUrl: 'add-employee.component.html'
 })
+
 export class AddEmployeeComponent implements OnInit {
   formGroup!: FormGroup;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly employeeService: EmployeeService,
@@ -23,7 +22,6 @@ export class AddEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      //gen
       identify: [this?.data?.employee?.profile?.identify, Validators.required],
       issuedBy: [this?.data?.employee?.profile?.issuedBy, Validators.required],
       birthplace: [this?.data?.employee?.profile?.birthplace, Validators.required],
@@ -49,7 +47,6 @@ export class AddEmployeeComponent implements OnInit {
       religion: [this?.data?.employee?.profile?.religion, Validators.required],
       facebook: [this?.data?.employee?.social?.facebook, Validators.required],
       zalo: [this?.data?.employee?.social?.zalo, Validators.required]
-
     });
   }
 
@@ -88,6 +85,5 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       this.store.dispatch(addEmployee({ employee: employee }));
     }
-
   }
 }

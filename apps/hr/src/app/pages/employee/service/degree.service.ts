@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
-import { Degree } from '../../../../../../../libs/data-models/degree';
-
+import { Degree } from '@minhdu-fontend/data-models';
 
 @Injectable({ providedIn: 'root' })
 export class DegreeService extends BaseService<Degree> {
@@ -26,6 +25,4 @@ export class DegreeService extends BaseService<Degree> {
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
-
-
 }

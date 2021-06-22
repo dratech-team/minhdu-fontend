@@ -3,7 +3,6 @@ import { createReducer, on } from '@ngrx/store';
 import { EmployeeAction } from './employee.action';
 import { Employee } from './employee.interface';
 
-
 export interface EmployeeState extends EntityState <Employee> {
   loaded: boolean,
   selectedEmployeeId: number
@@ -30,6 +29,7 @@ export const employeeReducer = createReducer(
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })),
   );
+
 export const {
   selectEntities,
   selectAll
