@@ -1,8 +1,8 @@
-import { createFeatureSelector, createSelector,ActionReducerMap } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
-import { FeatureName } from '../../../../../../../libs/constants/feature.constant' ;
 import { Employee } from './employee.interface';
 import * as fromEmployee from './employee.reducers';
+import { FeatureName } from '@minhdu-fontend/constants';
 
 export interface State {
   employees: fromEmployee.EmployeeState;

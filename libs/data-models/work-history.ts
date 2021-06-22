@@ -1,5 +1,5 @@
 import { Employee } from 'apps/hr/src/app/pages/employee/+state/employee.interface';
-import { Position } from './orgChart.interface/position.interface';
+import { Position } from './orgChart/position';
 
 
 

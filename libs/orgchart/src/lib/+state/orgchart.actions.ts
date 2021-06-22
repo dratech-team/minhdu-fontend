@@ -1,11 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { BranchEntity } from './orgchart.models';
+import { Branch } from '@minhdu-fontend/data-models';
+
 
 export const init = createAction('[Orgchart Page] Init');
 
 export const loadOrgchartSuccess = createAction(
   '[Orgchart/API] Load Orgchart Success',
-  props<{ branches: BranchEntity[] }>()
+  props<{ branches: Branch[] }>()
 );
 
 export const addBranch = createAction(

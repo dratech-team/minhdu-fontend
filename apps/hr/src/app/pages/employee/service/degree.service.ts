@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
-import { Degree } from '../../../../../../../libs/data-models/degree.interface';
+import { Degree } from '../../../../../../../libs/data-models/degree';
 
 
 @Injectable({ providedIn: 'root' })

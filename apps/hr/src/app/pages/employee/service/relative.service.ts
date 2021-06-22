@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
-import { Relative } from '../../../../../../../libs/data-models/relative.interface';
+import { Relative } from '../../../../../../../libs/data-models/relative';
 
 
 @Injectable({ providedIn: 'root' })

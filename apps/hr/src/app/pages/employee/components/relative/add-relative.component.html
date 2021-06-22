@@ -5,7 +5,8 @@
       <app-add-profile [formGroup]='formGroup'></app-add-profile>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
-          <label for='career'>Nghề nghiệp</label>
+          <label for='career'>Nghề nghiệp<span class='star'>*</span>
+          </label>
           <input
             class='form-control'
             formControlName='career'
@@ -18,7 +19,8 @@
       </div>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
-          <label for='relationship'>Quan hệ</label>
+          <label for='relationship'>Quan hệ<span class='star'>*</span>
+          </label>
           <mat-select id='relationship' class='form-control' formControlName='relationship'>
             <mat-option value='FATHER'>
               Cha

@@ -1,5 +1,4 @@
-import { Human } from './human.interface';
-import { Ward } from '../address/ward.interface';
+import { Ward } from '../address/ward';
 import { Gender } from '../../enums';
 
 export interface Profile{

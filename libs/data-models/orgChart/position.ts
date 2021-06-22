@@ -1,5 +1,5 @@
-import { BaseOrgChart } from './base-org-chart.interface';
-import { Department } from './department.interface';
+import { BaseOrgChart } from './base-org-chart';
+import { Department } from './department';
 
 export interface Position extends BaseOrgChart{
   workday: number,

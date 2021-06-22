@@ -12,11 +12,11 @@ import { RelationshipEnum } from '../../../../../../../../libs/enums/relationshi
 import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
 import { selectCurrentEmployee } from '../../+state/employee.selector';
 import { EmployeeAction } from '../../+state/employee.action';
-import { Relative } from '../../../../../../../../libs/data-models/relative.interface';
+import { Relative } from '../../../../../../../../libs/data-models/relative';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { Degree } from '../../../../../../../../libs/data-models/degree.interface';
+import { Degree } from '../../../../../../../../libs/data-models/degree';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 
 
