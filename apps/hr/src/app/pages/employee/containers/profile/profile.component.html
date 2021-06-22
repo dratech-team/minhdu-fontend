@@ -67,27 +67,27 @@
        [infiniteScrollThrottle]='100'
        [scrollWindow]='false'
        (scrolled)='onScroll()'
-       *ngIf='(employees$| async) as employees'>
-    <div class='row-content' *ngFor='let employee of employees' (contextmenu)='child.onContextMenu($event)'>
+       *ngIf='(employees$| async) as employees' >
+    <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee.id)' (contextmenu)='child.onContextMenu($event)'>
       <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(employee.id)'
                        (readAndUpdateEvent)='readAndUpdate(employee.id)'></app-mouse-right>
-      <div class='content-profile default '> {{employee.code}}</div>
-      <div class='content-profile name '>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
-      <div class='content-profile default '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>
-      <div class='content-profile gender '> {{
+      <div class='content-profile default pointer '> {{employee.code}}</div>
+      <div class='content-profile name  pointer'>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
+      <div class='content-profile default pointer '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>
+      <div class='content-profile gender pointer '> {{
         employee.profile.gender === 'MALE' ? 'Nam' :
           employee.profile.gender === 'FEMALE' ? 'Nữ' :
             'Khác'
         }}</div>
-      <div class='content-profile default '>{{employee.workedAt|date: 'dd/MM/yyyy'}}</div>
-      <div class='content-profile default '>{{employee.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
-      <div class='content-profile default '>{{employee.profile.phone}}</div>
-      <div class='content-profile default '>{{employee.position.department.branch.name}}</div>
-      <div class='content-profile default '> {{employee.position.department.name}}</div>
-      <div class='content-profile default '> {{employee.position.name}}</div>
-      <div class='content-profile default '> {{employee.profile.identify}} </div>
-      <div class='content-profile address '> {{employee.profile.address}}</div>
-      <div class='content-profile note '> {{employee.note}}</div>
+      <div class='content-profile default pointer '>{{employee.workedAt|date: 'dd/MM/yyyy'}}</div>
+      <div class='content-profile default pointer '>{{employee.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
+      <div class='content-profile default pointer '>{{employee.profile.phone}}</div>
+      <div class='content-profile default pointer '>{{employee.position.department.branch.name}}</div>
+      <div class='content-profile default pointer '> {{employee.position.department.name}}</div>
+      <div class='content-profile default pointer '> {{employee.position.name}}</div>
+      <div class='content-profile default pointer '> {{employee.profile.identify}} </div>
+      <div class='content-profile address pointer '> {{employee.profile.address}}</div>
+      <div class='content-profile note pointer '> {{employee.note}}</div>
     </div>
   </div>
 </div>
