@@ -19,8 +19,9 @@ import { DepartmentService } from './services/department.service';
     StoreModule.forFeature(
       fromOrgchart.ORGCHART_FEATURE_KEY,
       fromOrgchart.reducer
-    ),
+    )
   ],
   providers: [BranchService, PositionService, DepartmentService],
 })
-export class OrgchartModule {}
+export class OrgchartModule {
+}
