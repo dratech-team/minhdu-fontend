@@ -1,6 +1,6 @@
 export enum RelationshipEnum {
   HUSBAND = 'HUSBAND',
-  WIFE = 'WIFI',
+  WIFE = 'WIFE',
   FATHER = 'FATHER',
   MOTHER = 'MOTHER',
   DAUGHTER = 'DAUGHTER',

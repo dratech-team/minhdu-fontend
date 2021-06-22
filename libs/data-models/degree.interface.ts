@@ -4,12 +4,13 @@ import { DegreeStatusEnum } from '../enums/degree-status.enum';
 import { DegreeTypeEnum } from '../enums/degree-type.enum';
 
 export interface Degree{
+  employeeId: number,
   name: string,
   school: string,
   type: DegreeTypeEnum,
   id: number,
   startedAt: Date,
-  endAt: Date,
+  endedAt: Date,
   major: string,
   formality: FormalityEnum,
   level: DegreeLevelEnum,

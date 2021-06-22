@@ -5,13 +5,14 @@ import { AppState } from '../../../../reducers';
 import { selectorAllEmployee } from '../../+state/employee.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import {  EmployeeAction } from '../../+state/employee.action';
-import { AddEmployeeComponent } from '../../components/add-employee/add-employee.component';
-import { Employee } from '../../+state/employee.interface';
+
 import { Router } from '@angular/router';
+import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 
 @Component({
   templateUrl: 'profile.component.html',
-  styleUrls: ['profile.component.scss']
+  styleUrls: ['profile.component.scss'],
+
 })
 export class ProfileComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -32,15 +33,6 @@ export class ProfileComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadEmployees({ skip: 0, take: 30 }));
   }
 
-  onContextMenu(event: MouseEvent, item: Employee) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'item': item };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
   add(): void {
     this.dialog.open(AddEmployeeComponent,{
       width: '50%',
@@ -58,7 +50,6 @@ export class ProfileComponent implements OnInit {
   }
 
   readAndUpdate(id: number): void {
-    console.log(id)
     this.router.navigate(['profile/detail-employee', id]).then();
   }
 }

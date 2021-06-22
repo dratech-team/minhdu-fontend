@@ -1,121 +1,6 @@
 <h2 mat-dialog-title>Cập nhật thông tin nhân viên</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <div class='general-info' *ngIf="this.data.type === updateType.GENERAL_INFO">
-      <div class='row'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='firstName'>Họ<span>*</span>
-          </label>
-          <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='lastName'>Họ<span>*</span>
-          </label>
-          <input type='text' class='form-control' id='lastName' placeholder='Hiệu' formControlName='lastName'>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='address'>Địa chỉ</label>
-          <input
-            class='form-control'
-            formControlName='address'
-            id='address'
-            placeholder='Số nhà/Thôn xóm'
-            type='text'
-          >
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='birthday'>Ngày sinh <span>*</span></label>
-          <input type='date' id='birthday' class='form-control' formControlName='birthday'>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='gender'>Giới tính<span>*</span></label>
-          <div id='gender'>
-            <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
-              <mat-radio-button value='MALE'>Nam</mat-radio-button>
-              <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
-              <mat-radio-button value='OTHER'>Khác</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='branch'>Đơn vị công tác <span>*</span></label>
-          <mat-select
-            id='branch'
-            class='form-control'
-            formControlName='branch'
-          >
-<!--            <mat-option *ngFor='let branch of branches$ | async' [value]='branch' (click)='onBranch(branch)'>-->
-<!--              {{branch.name}}-->
-<!--            </mat-option>-->
-          </mat-select>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='department'>Bộ phận công tác <span>*</span></label>
-          <mat-select name='department' id='department' class='form-control' formControlName='department'>
-<!--            <mat-option *ngFor='let department of departments' [value]='department' (click)='onDepartment(department)'>-->
-<!--              {{department.name}}-->
-<!--            </mat-option>-->
-          </mat-select>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='position'>Chức vụ <span>*</span></label>
-          <mat-select id='position' class='form-control' formControlName='position'>
-<!--            <mat-option *ngFor='let position of positions' [value]='position'>-->
-<!--              {{position.name}}-->
-<!--            </mat-option>-->
-          </mat-select>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='province'>Tỉnh thành <span>*</span></label>
-          <mat-select
-            id='province'
-            class='form-control'
-            formControlName='province'
-          >
-            <!--            <mat-option *ngFor='let branch of branches$ | async' [value]='branch' (click)='onBranch(branch)'>-->
-            <!--              {{branch.name}}-->
-            <!--            </mat-option>-->
-          </mat-select>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='district'>Quận/Huyện <span>*</span></label>
-          <mat-select  id='district' class='form-control' formControlName='district'>
-            <!--            <mat-option *ngFor='let department of departments' [value]='department' (click)='onDepartment(department)'>-->
-            <!--              {{department.name}}-->
-            <!--            </mat-option>-->
-          </mat-select>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='ward'>Phường/Xã <span>*</span></label>
-          <mat-select id='ward' class='form-control' formControlName='ward'>
-            <!--            <mat-option *ngFor='let position of positions' [value]='position'>-->
-            <!--              {{position.name}}-->
-            <!--            </mat-option>-->
-          </mat-select>
-        </div>
-      </div>
-      <div class ='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='religion'>Tôn giáo<span>*</span>
-          </label>
-          <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='ethnicity'>Dân tộc<span>*</span>
-          </label>
-          <input type='text' class='form-control' id='ethnicity' placeholder='Kinh' formControlName='ethnicity'>
-        </div>
-      </div>
-    </div>
-
 
     <div class='identity' *ngIf="this.data.type === updateType.IDENTITY">
       <div class='row'>
@@ -140,6 +25,7 @@
         </div>
       </div>
     </div>
+
     <div class='family-member' *ngIf="this.data.type === updateType.FAMILY_MEMBER">
       <div class='col-12'>
           <div  [formGroup]='formGroup'>
@@ -160,82 +46,8 @@
           <input type='text' class='form-control' id='familyMember' placeholder='vợ, chồng' formControlName='familyMember'>
       </div>
     </div>
-    <div class='academic-level' *ngIf="this.data.type === updateType.ACADEMIC_LEVEL">
-      <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='certificate'>Trình độ đào tạo<span>*</span>
-        </label>
-        <input type='text' class='form-control' id='certificate' placeholder='Đại học' formControlName='certificate'>
-      </div>
-      <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='trainingBy'>Nơi đào tạo<span>*</span>
-        </label>
-        <input type='text' class='form-control' id='trainingBy' placeholder='Đại học Quy Nhơn' formControlName='trainingBy'>
-      </div>
-      <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='birthday'>Bắt đầu<span>*</span></label>
-        <input type='date' id='startedAt' class='form-control' formControlName='startedAt'>
-      </div>
-      <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='endedAt'>Hoàn thành<span>*</span></label>
-        <input type='date' id='endedAt' class='form-control' formControlName='endedAt'>
-      </div>
-      <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='major'>Chuyên nghành<span>*</span>
-        </label>
-        <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'>
-      </div>
-      <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
-          <label for='formality'>Hình thức đào tạo<span>*</span></label>
-          <mat-select name='formality' id='formality' class='form-control' formControlName='formality'>
-            <mat-option value='REMOTE'>
-              Đao tạo từ xa
-            </mat-option>
-            <mat-option value='FORMAL'>
-              Chính qui
-            </mat-option>
-            <mat-option value='INFORMAL'>
-              Không chính qui
-            </mat-option>
-            <mat-option value='TRAINING'>
-              Đang đào tạo
-            </mat-option>
-          </mat-select>
-        </div>
-      </div>
-      <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
-          <label for='level'>Xếp loại<span>*</span></label>
-          <mat-select name='level' id='level' class='form-control' formControlName='level'>
-            <mat-option value='Below_Average'>
-              Dưới trung bình
-            </mat-option>
-            <mat-option value='Average'>
-             Trung bình
-            </mat-option>
-            <mat-option value='Good'>
-              Khá
-            </mat-option>
-            <mat-option value='Excellent'>
-              Giỏi
-            </mat-option>
-          </mat-select>
-        </div>
-      </div>
-      <div class='col-12'>
-        <div  [formGroup]='formGroup'>
-          <label for='status'>Xếp loại<span>*</span></label>
-          <mat-select name='status' id='status' class='form-control' formControlName='status'>
-            <mat-option value='GRADUATED'>
-              Đã tốt nghiệp
-            </mat-option>
-            <mat-option value='NOT_GRADUATED'>
-             Chưa tốt nghiệp
-            </mat-option>
-          </mat-select>
-        </div>
-      </div>
-    </div>
+
+
     <div class='contract-info' *ngIf="this.data.type === updateType.CONTACT_INFO">
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='phone'>Điện thoại<span>*</span>
@@ -292,8 +104,6 @@
         <input type='text' class='form-control' id='relationship' placeholder='vợ, chồng' formControlName='relationship'>
       </div>
     </div>
-
-
     <div class='row d-flex mt-3 justify-content-center'>
       <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
       <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>

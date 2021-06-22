@@ -69,8 +69,9 @@
        [scrollWindow]='false'
        (scrolled)='onScroll()'
        *ngIf='(employees$| async) as employees'>
-    <div class='row-content' *ngFor='let employee of employees' (contextmenu)='onContextMenu($event,employee)'>
-      <div class='content-profile default '> {{employee.code}} </div>
+    <div class='row-content' *ngFor='let employee of employees' (contextmenu)='child.onContextMenu($event)'>
+      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(employee.id)' (readAndUpdateEvent)='readAndUpdate(employee.id)'></app-mouse-right>
+      <div class='content-profile default '> {{employee.code}}</div>
       <div class='content-profile name '>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
       <div class='content-profile default '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>
       <div class='content-profile gender '> {{
@@ -89,19 +90,6 @@
       <div class='content-profile note '> {{employee.note}}</div>
     </div>
   </div>
-
 </div>
 
-<div style='visibility: hidden; position: fixed'
-     [style.left]='contextMenuPosition.x'
-     [style.top]='contextMenuPosition.y'
-     [matMenuTriggerFor]='contextMenu'>
-</div>
-<mat-menu #contextMenu='matMenu'>
-  <ng-template matMenuContent let-item='item'>
-    <button mat-menu-item (click)='add()'>Thêm</button>
-    <button mat-menu-item (click)='delete(item.id)'>Xóa</button>
-    <button mat-menu-item (click)='readAndUpdate(item.id)'>Xem và sửa</button>
-  </ng-template>
-</mat-menu>
 

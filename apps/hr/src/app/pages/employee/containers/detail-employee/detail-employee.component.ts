@@ -10,13 +10,17 @@ import { UpdateEmployeeComponent } from '../../components/update-employee/update
 import { UpdateEmployeeEnum } from '../../components/update-employee/update-employee.enum';
 import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level.enum';
 import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
-import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
 import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
 import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
 import { selectCurrentEmployee, } from '../../+state/employee.selector';
 import { EmployeeAction } from '../../+state/employee.action';
 import { Relative } from '../../../../../../../../libs/data-models/relative.interface';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
+import { FormalityEnum } from '../../../../../../../../libs/enums/formality.enum';
+import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { Degree } from '../../../../../../../../libs/data-models/degree.interface';
+import { AddDegreeComponent } from '../../components/degree/add-degree.component';
+
 
 
 
@@ -26,9 +30,9 @@ import { AddRelativeComponent } from '../../components/relative/add-relative.com
   styleUrls: ['detail-employee.component.scss'],
 })
 export class DetailEmployeeComponent implements OnInit{
+  formalityEnum = FormalityEnum;
   degreeType = DegreeTypeEnum;
   relationship = RelationshipEnum;
-  formalityEnum = FormalityEnum;
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   updateType = UpdateEmployeeEnum;
@@ -44,7 +48,6 @@ export class DetailEmployeeComponent implements OnInit{
   ) {
   }
   ngOnInit() : void{
-
     this.store.dispatch(EmployeeAction.getEmployee({id:this.employeeId}))
   }
 
@@ -61,10 +64,30 @@ export class DetailEmployeeComponent implements OnInit{
     })
   }
 
-  addAndUpdateRelative( id: number, relative?:Relative):void{
+  updateEmployee( employee: Employee ):void{
+    this.dialog.open(AddEmployeeComponent,{
+      width: '40%',
+      data: {employee:employee}
+    })
+  }
+
+  addAndUpdateRelative(employeeId: number,  id?: number , relative?:Relative):void{
     this.dialog.open(AddRelativeComponent, {
       width: '40%',
-      data:{id: id , relative: relative}
+      data:{employeeId: employeeId, id: id , relative: relative}
     });
+  }
+  deleteRelative( id: number,employeeId: number){
+    this.store.dispatch(EmployeeAction.deleteRelative({ id: id , employeeId:employeeId}));
+  }
+
+  addAndUpdateDegree(employeeId: number,  id?: number , degree?: Degree) {
+    this.dialog.open(AddDegreeComponent, {
+      width: '40%',
+      data:{employeeId: employeeId, id: id , degree: degree}
+    });
+  }
+  deleteDegree( employeeId: number,id: number ){
+    this.store.dispatch(EmployeeAction.deleteDegree({ id: id , employeeId:employeeId}));
   }
 }

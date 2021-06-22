@@ -39,9 +39,4 @@ export class EmployeeService extends BaseService<Employee> {
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
-
-  deleteRelative(id: number, employeeId: number): Observable<void> {
-    return super.delete(id)
-  }
-
 }

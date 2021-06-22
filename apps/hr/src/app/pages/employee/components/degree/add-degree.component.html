@@ -1,0 +1,102 @@
+<h2 mat-dialog-title>Bằng cấp</h2>
+<mat-dialog-content class='mat-typography'>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div >
+      <div class='col-12 mt-3'>
+        <div  [formGroup]='formGroup'>
+          <label for='type'>Bằng<span>*</span></label>
+          <mat-select  id='type' class='form-control' formControlName='type'>
+            <mat-option [value]='degreeTypeEnum.UNIVERSITY'>
+             Đại học
+            </mat-option>
+            <mat-option [value]='degreeTypeEnum.COLLEGE'>
+              Cao đẳng
+            </mat-option>
+            <mat-option [value]='degreeTypeEnum.INTERMEDIATE'>
+              Trung cấp
+            </mat-option>
+            <mat-option [value]='degreeTypeEnum.MASTER'>
+              Thạc sĩ
+            </mat-option>
+            <mat-option [value]='degreeTypeEnum.PHILOSOPHY'>
+              Tiến sĩ
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='col-12 mt-3' [formGroup]='formGroup'>
+        <label for='school'>Nơi đào tạo<span>*</span>
+        </label>
+        <input type='text' class='form-control' id='school' placeholder='Đại học Quy Nhơn' formControlName='school'>
+      </div>
+      <div class='col-12 mt-3' [formGroup]='formGroup'>
+        <label for='startedAt'>Bắt đầu<span>*</span></label>
+        <input type='date' id='startedAt' class='form-control' formControlName='startedAt'>
+      </div>
+      <div class='col-12 mt-3' [formGroup]='formGroup'>
+        <label for='endedAt'>Kết thúc<span>*</span></label>
+        <input type='date' id='endedAt' class='form-control' formControlName='endedAt'>
+      </div>
+      <div class='col-12 mt-3' [formGroup]='formGroup'>
+        <label for='major'>Chuyên nghành<span>*</span>
+        </label>
+        <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'>
+      </div>
+      <div class='col-12 mt-3'>
+        <div  [formGroup]='formGroup'>
+          <label for='formality'>Hình thức đào tạo<span>*</span></label>
+          <mat-select name='formality' id='formality' class='form-control' formControlName='formality'>
+            <mat-option value='REMOTE'>
+              Đao tạo từ xa
+            </mat-option>
+            <mat-option value='FORMAL'>
+              Chính qui
+            </mat-option>
+            <mat-option value='INFORMAL'>
+              Không chính qui
+            </mat-option>
+            <mat-option value='TRAINING'>
+              Đang đào tạo
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='col-12 mt-3'>
+        <div  [formGroup]='formGroup'>
+          <label for='level'>Xếp loại<span>*</span></label>
+          <mat-select id='level' class='form-control' formControlName='level'>
+            <mat-option [value]='degreeLevelEnum.BELOW_AVERAGE' >
+              Dưới trung bình
+            </mat-option>
+            <mat-option [value]='degreeLevelEnum.AVERAGE'>
+              Trung bình
+            </mat-option>
+            <mat-option [value]='degreeLevelEnum.GOOD'>
+              Khá
+            </mat-option>
+            <mat-option [value]='degreeLevelEnum.EXCELLENT'>
+              Giỏi
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='col-12 mt-3'>
+        <div  [formGroup]='formGroup'>
+          <label for='status'>Hoàn thành<span>*</span></label>
+          <mat-select id='status' class='form-control' formControlName='status'>
+            <mat-option [value]='degreeStatusEnum.NOT_GRADUATED' >
+              Chưa hoàn thành
+            </mat-option>
+            <mat-option [value]='degreeStatusEnum.GRADUATED'>
+              Hoàn thành
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='row d-flex mt-3 justify-content-center'>
+        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+      </div>
+  </div>
+  </form>
+</mat-dialog-content>

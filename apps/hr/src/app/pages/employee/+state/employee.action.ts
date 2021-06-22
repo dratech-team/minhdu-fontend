@@ -25,7 +25,10 @@ export const addRelative = createAction(
   '[ADD_RELATIVE] Add Relative',
   props<{ relative: any }>()
 );
-
+export const addDegree = createAction(
+  '[ADD_DEGREE] Add addDegree',
+  props<{ degree: any }>()
+);
 
 export const getEmployee = createAction(
   '[GET EMPLOYEE] Get Employee',
@@ -46,8 +49,13 @@ export const updateEmployeeSuccess = createAction(
 );
 
 export const updateRelative = createAction(
-  '[UPDATE_RELATIVE] Update Relative Employee',
-  props<{employeeId: number, relative: any }>()
+  '[UPDATE_RELATIVE] Update Relative',
+  props<{employeeId:number, id: number,relative: any }>()
+);
+
+export const updateDegree = createAction(
+  '[UPDATE_RELATIVE] Update Degree',
+  props<{id: number, employeeId:number, degree: any }>()
 );
 
 export const deleteEmployee = createAction(
@@ -60,6 +68,11 @@ export const deleteEmployeeSuccess = createAction(
 );
 export const deleteRelative = createAction(
   '[DELETE_RELATIVE] Delete Relative',
+  props<{ id: number, employeeId: number }>()
+);
+
+export const deleteDegree = createAction(
+  '[DELETE_DEGREE] Delete Degree ',
   props<{ id: number,employeeId: number }>()
 );
 
@@ -71,13 +84,15 @@ export const EmployeeAction = {
   addEmployee,
   addEmployeeSuccess,
   addRelative,
+  addDegree,
   getEmployee,
   getEmployeeSuccess,
   updateEmployee,
   updateEmployeeSuccess,
   updateRelative,
+  updateDegree,
   deleteEmployee,
   deleteEmployeeSuccess,
   deleteRelative,
-
+  deleteDegree,
 };

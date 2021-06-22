@@ -4,25 +4,24 @@ import { Observable } from 'rxjs';
 import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
-import { Relative } from '../../../../../../../libs/data-models/relative.interface';
+import { Employee } from '../+state/employee.interface';
+import { Degree } from '../../../../../../../libs/data-models/degree.interface';
 
 
 @Injectable({ providedIn: 'root' })
-export class RelativeService extends BaseService<Relative> {
+export class DegreeService extends BaseService<Degree> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.RELATIVE, http);
+    super(Api.DEGREE, http);
   }
 
-
-  addOne(relative: any): Observable<Relative> {
+  addOne(relative: any): Observable<Degree> {
     return super.addOne(relative)
   }
-  update(id: number, props: any ): Observable<Update<Relative>> {
+  update(id: number, props: any ): Observable<Update<Degree>> {
     return super.update(id, props);
   }
-
 
   delete(id: number): Observable<void> {
     return super.delete(id);
