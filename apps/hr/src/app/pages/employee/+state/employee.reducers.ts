@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { createReducer, MetaReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { EmployeeAction } from './employee.action';
 import { Employee } from './employee.interface';
 

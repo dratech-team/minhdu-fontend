@@ -18,9 +18,8 @@ export class EmployeeService extends BaseService<Employee> {
   addOne(employee: any): Observable<Employee> {
     return super.addOne(employee);
   }
-  addRelative(Relative: any): Observable<Employee> {
-    return this.http.post<Employee>(Api.EMPLOYEE ,  Relative);
-  }
+
+
   getOne(id: number): Observable<Employee> {
     return super.getOne(id);
   }
@@ -29,10 +28,11 @@ export class EmployeeService extends BaseService<Employee> {
     return super.pagination(params);
   }
 
-  update(id: number, props: any ): Observable<Update<Employee>> {
+  update(id: number, props: any): Observable<Update<Employee>> {
     return super.update(id, props);
   }
-  updateRelative(employeeId: number, props: any ): Observable<Update<Employee>> {
+
+  updateRelative(employeeId: number, props: any): Observable<Update<Employee>> {
     return super.update(employeeId, props);
   }
 

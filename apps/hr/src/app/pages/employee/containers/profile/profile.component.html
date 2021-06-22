@@ -70,7 +70,8 @@
        (scrolled)='onScroll()'
        *ngIf='(employees$| async) as employees'>
     <div class='row-content' *ngFor='let employee of employees' (contextmenu)='child.onContextMenu($event)'>
-      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(employee.id)' (readAndUpdateEvent)='readAndUpdate(employee.id)'></app-mouse-right>
+      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(employee.id)'
+                       (readAndUpdateEvent)='readAndUpdate(employee.id)'></app-mouse-right>
       <div class='content-profile default '> {{employee.code}}</div>
       <div class='content-profile name '>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
       <div class='content-profile default '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>

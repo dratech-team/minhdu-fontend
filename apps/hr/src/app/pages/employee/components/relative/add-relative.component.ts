@@ -5,19 +5,19 @@ import { Store } from '@ngrx/store';
 import { EmployeeAction } from '../../+state/employee.action';
 
 
-
 @Component({
-  templateUrl:'add-relative.component.html'
+  templateUrl: 'add-relative.component.html'
 })
-export class AddRelativeComponent implements OnInit{
+export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
-  constructor(
-  @Inject(MAT_DIALOG_DATA) public data:any,
-  private readonly formBuilder: FormBuilder,
-  private readonly store: Store,
 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private readonly formBuilder: FormBuilder,
+    private readonly store: Store
   ) {
   }
+
   ngOnInit() {
     console.log(this.data?.relative?.profile?.firstName);
     this.formGroup = this.formBuilder.group({
@@ -29,24 +29,24 @@ export class AddRelativeComponent implements OnInit{
       ethnicity: [this.data?.relative?.profile?.ethnicity, Validators.required],
       birthplace: [this.data?.relative?.profile?.birthplace, Validators.required],
       ward: [this.data?.relative?.profile?.ward?.id, Validators.required],
-      province: [ this.data?.relative?.profile?.ward?.district?.province?.id,Validators.required],
-      district: [  this.data?.relative?.profile?.ward?.district?.id,Validators.required],
+      province: [this.data?.relative?.profile?.ward?.district?.province?.id, Validators.required],
+      district: [this.data?.relative?.profile?.ward?.district?.id, Validators.required],
       address: [this.data?.relative?.profile?.address, Validators.required],
-      identify: [this.data?.relative?.profile?.identify,Validators.required],
-      idCardAt: [ this.data?.relative?.profile?.idCardAt,Validators.required],
-      phone: [  this.data?.relative?.profile?.phone,Validators.required],
-      birthday: [ this.data?.relative?.profile?.birthday,Validators.required],
-      gender: [ this.data?.relative?.profile?.gender, Validators.required],
+      identify: [this.data?.relative?.profile?.identify, Validators.required],
+      idCardAt: [this.data?.relative?.profile?.idCardAt, Validators.required],
+      phone: [this.data?.relative?.profile?.phone, Validators.required],
+      birthday: [this.data?.relative?.profile?.birthday, Validators.required],
+      gender: [this.data?.relative?.profile?.gender, Validators.required],
       note: [this.data?.relative?.profile?.note, Validators.required],
-      relationship:[this.data?.relative?.relationship,Validators.required],
-      career:[this.data?.relative?.career,Validators.required],
-      sos:[this.data?.relative?.sos ,Validators.required],
+      relationship: [this.data?.relative?.relationship, Validators.required],
+      career: [this.data?.relative?.career, Validators.required],
+      sos: [this.data?.relative?.sos, Validators.required]
 
     });
   }
 
   onSubmit() {
-    const value = this.formGroup.value
+    const value = this.formGroup.value;
 
     const relative = {
       sos: value.sos,
@@ -62,18 +62,18 @@ export class AddRelativeComponent implements OnInit{
         identify: value.identify.toString(),
         idCardAt: new Date(value.idCardAt),
         issuedBy: value.issuedBy,
-        wardId: value.ward === null? 1: value.ward,
+        wardId: value.ward === null ? 1 : value.ward,
         religion: value.religion,
         ethnicity: value.ethnicity,
-        address: value.address,
+        address: value.address
       },
-      employeeId: this?.data?.employeeId,
-    }
-    if (this.data.relative){
+      employeeId: this?.data?.employeeId
+    };
+    if (this.data.relative) {
       this.store.dispatch(EmployeeAction.updateRelative(
-        { relative : relative, id:this.data.id, employeeId:this.data.employeeId }))
-    }else{
-      this.store.dispatch(EmployeeAction.addRelative( { relative : relative }))
+        { relative: relative, id: this.data.id, employeeId: this.data.employeeId }));
+    } else {
+      this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
 
   }

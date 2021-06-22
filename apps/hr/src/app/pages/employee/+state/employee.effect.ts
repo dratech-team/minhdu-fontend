@@ -28,6 +28,7 @@ export class EmployeeEffect {
       map((employee) => EmployeeAction.addEmployeeSuccess({ employee })),
       catchError((err) => throwError(err))
     ));
+
   addRelative$ = createEffect(()=>
   this.action$.pipe(
     ofType(EmployeeAction.addRelative),
@@ -36,6 +37,7 @@ export class EmployeeEffect {
       catchError((err)=> throwError(err))
       )),
   ));
+
   addDegree$ = createEffect(()=>
     this.action$.pipe(
       ofType(EmployeeAction.addDegree),
@@ -80,7 +82,6 @@ export class EmployeeEffect {
         catchError((err) => throwError(err))
       )),
     ));
-
 
   deleteEmployee$ = createEffect(() =>
     this.action$.pipe(

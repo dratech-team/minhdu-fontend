@@ -4,14 +4,14 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorAllEmployee } from '../../+state/employee.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
-import {  EmployeeAction } from '../../+state/employee.action';
+import { EmployeeAction } from '../../+state/employee.action';
 
 import { Router } from '@angular/router';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 
 @Component({
   templateUrl: 'profile.component.html',
-  styleUrls: ['profile.component.scss'],
+  styleUrls: ['profile.component.scss']
 
 })
 export class ProfileComponent implements OnInit {
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly router:Router
+    private readonly router: Router
   ) {
   }
 
@@ -34,9 +34,9 @@ export class ProfileComponent implements OnInit {
   }
 
   add(): void {
-    this.dialog.open(AddEmployeeComponent,{
-      width: '50%',
-    } );
+    this.dialog.open(AddEmployeeComponent, {
+      width: '50%'
+    });
   }
 
   delete(id: number): void {

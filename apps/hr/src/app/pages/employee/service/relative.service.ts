@@ -17,9 +17,10 @@ export class RelativeService extends BaseService<Relative> {
 
 
   addOne(relative: any): Observable<Relative> {
-    return super.addOne(relative)
+    return super.addOne(relative);
   }
-  update(id: number, props: any ): Observable<Update<Relative>> {
+
+  update(id: number, props: any): Observable<Update<Relative>> {
     return super.update(id, props);
   }
 
@@ -27,7 +28,6 @@ export class RelativeService extends BaseService<Relative> {
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
-
 
 
 }

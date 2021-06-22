@@ -8,11 +8,11 @@ export interface State {
   employees: fromEmployee.EmployeeState;
 }
 
-
 export const getSelectedEmployeeId = (state: Employee) => state.id
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
   FeatureName.EMPLOYEE
 );
+
 export const selectorEmployeeEntities = createSelector(
   selectorEmployeeState,
   fromEmployee.selectEntities,
@@ -27,7 +27,6 @@ export const selectCurrentEmployee = (id: number) =>  createSelector(
   selectorEmployeeEntities,
   (employeeEntities) => employeeEntities[id]
 );
-
 
 export const selectedLoaded = createSelector(
   selectorEmployeeState,

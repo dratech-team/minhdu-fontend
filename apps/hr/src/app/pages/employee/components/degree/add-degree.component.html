@@ -1,13 +1,13 @@
 <h2 mat-dialog-title>Bằng cấp</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <div >
+    <div>
       <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
+        <div [formGroup]='formGroup'>
           <label for='type'>Bằng<span>*</span></label>
-          <mat-select  id='type' class='form-control' formControlName='type'>
+          <mat-select id='type' class='form-control' formControlName='type'>
             <mat-option [value]='degreeTypeEnum.UNIVERSITY'>
-             Đại học
+              Đại học
             </mat-option>
             <mat-option [value]='degreeTypeEnum.COLLEGE'>
               Cao đẳng
@@ -43,9 +43,9 @@
         <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'>
       </div>
       <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
+        <div [formGroup]='formGroup'>
           <label for='formality'>Hình thức đào tạo<span>*</span></label>
-          <mat-select name='formality' id='formality' class='form-control' formControlName='formality'>
+          <mat-select id='formality' class='form-control' formControlName='formality'>
             <mat-option value='REMOTE'>
               Đao tạo từ xa
             </mat-option>
@@ -62,10 +62,10 @@
         </div>
       </div>
       <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
+        <div [formGroup]='formGroup'>
           <label for='level'>Xếp loại<span>*</span></label>
           <mat-select id='level' class='form-control' formControlName='level'>
-            <mat-option [value]='degreeLevelEnum.BELOW_AVERAGE' >
+            <mat-option [value]='degreeLevelEnum.BELOW_AVERAGE'>
               Dưới trung bình
             </mat-option>
             <mat-option [value]='degreeLevelEnum.AVERAGE'>
@@ -81,10 +81,10 @@
         </div>
       </div>
       <div class='col-12 mt-3'>
-        <div  [formGroup]='formGroup'>
+        <div [formGroup]='formGroup'>
           <label for='status'>Hoàn thành<span>*</span></label>
           <mat-select id='status' class='form-control' formControlName='status'>
-            <mat-option [value]='degreeStatusEnum.NOT_GRADUATED' >
+            <mat-option [value]='degreeStatusEnum.NOT_GRADUATED'>
               Chưa hoàn thành
             </mat-option>
             <mat-option [value]='degreeStatusEnum.GRADUATED'>
@@ -97,6 +97,6 @@
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
         <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
-  </div>
+    </div>
   </form>
 </mat-dialog-content>

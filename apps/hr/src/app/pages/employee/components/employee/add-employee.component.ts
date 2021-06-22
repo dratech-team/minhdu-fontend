@@ -37,21 +37,22 @@ export class AddEmployeeComponent implements OnInit {
       firstName: [this?.data?.employee?.profile?.firstName, Validators.required],
       lastName: [this?.data?.employee?.profile?.lastName, Validators.required],
       address: [this?.data?.employee?.profile?.address, Validators.required],
-      gender: [ this.data?.employee?.profile?.gender, Validators.required],
-      birthday: [ this?.data?.employee?.profile?.birthday,Validators.required],
+      gender: [this.data?.employee?.profile?.gender, Validators.required],
+      birthday: [this?.data?.employee?.profile?.birthday, Validators.required],
       branch: [this?.data?.employee?.position?.department?.branch?.id, Validators.required],
-      department:[this?.data?.employee?.position?.department?.id, Validators.required],
-      position: [this?.data?.employee?.position?.id,Validators.required],
+      department: [this?.data?.employee?.position?.department?.id, Validators.required],
+      position: [this?.data?.employee?.position?.id, Validators.required],
       ward: [this?.data?.employee?.profile?.ward?.id, Validators.required],
-      district: [this?.data?.employee?.profile?.ward?.district?.id,Validators.required],
-      province: [ this?.data?.employee?.profile?.ward?.district?.province?.id,Validators.required],
-      ethnicity:[this?.data?.employee?.profile?.ethnicity,Validators.required],
-      religion:[this?.data?.employee?.profile?.religion,Validators.required],
-      facebook:[this?.data?.employee?.social?.facebook,Validators.required],
-      zalo:[this?.data?.employee?.social?.zalo,Validators.required],
+      district: [this?.data?.employee?.profile?.ward?.district?.id, Validators.required],
+      province: [this?.data?.employee?.profile?.ward?.district?.province?.id, Validators.required],
+      ethnicity: [this?.data?.employee?.profile?.ethnicity, Validators.required],
+      religion: [this?.data?.employee?.profile?.religion, Validators.required],
+      facebook: [this?.data?.employee?.social?.facebook, Validators.required],
+      zalo: [this?.data?.employee?.social?.zalo, Validators.required]
 
     });
   }
+
   onSubmit(): any {
     const value = this.formGroup.value;
     const employee = {
@@ -62,8 +63,8 @@ export class AddEmployeeComponent implements OnInit {
       note: value.note,
       createdAt: new Date(value.createdAt),
       social: {
-        facebook: value.facebook,
-        zalo: value.zalo.toString(),
+        facebook: value?.facebook,
+        zalo: value?.zalo?.toString()
       },
       profile: {
         firstName: value.firstName,
@@ -75,16 +76,16 @@ export class AddEmployeeComponent implements OnInit {
         identify: value.identify.toString(),
         idCardAt: new Date(value.idCardAt),
         issuedBy: value.issuedBy,
-        wardId: value.ward === null? 1: value.ward,
+        wardId: value.ward === null ? 1 : value.ward,
         religion: value.religion,
         ethnicity: value.ethnicity,
         address: value.address,
-        email: value.email,
+        email: value.email
       }
     };
-    if(this.data !== null){
-      this.store.dispatch(EmployeeAction.updateEmployee({ id:this.data.employee.id , employee: employee }));
-    }else{
+    if (this.data !== null) {
+      this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
+    } else {
       this.store.dispatch(addEmployee({ employee: employee }));
     }
 

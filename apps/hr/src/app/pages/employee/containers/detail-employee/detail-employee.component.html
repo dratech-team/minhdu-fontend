@@ -4,7 +4,6 @@
       <div class=' main-title  mr-5'>
         Thông tin nhân viên
       </div>
-
       <div class=' justify-content-center'>
         <img
           class='rounded-circle row'
@@ -13,7 +12,7 @@
           data-holder-rendered='true'
           height='160px'
         />
-        <button (click)='onDevelopment()'
+        <button
                 class='row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded'>
           <img src='../../../../../assets/img/share/person-circle.svg' alt='avatar'>
           <span class='ml-2' style='color: #80828B;'>
@@ -428,8 +427,8 @@
             <td class='text-center' *ngIf='relative.relationship === relationship.HUSBAND'>Chồng</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.WIFE'>Vợ</td>
             <td class='text-center'>{{relative.profile.birthday |date:'dd/MM/yyyy'}}</td>
-            <td class='text-center'>{{relative.profile.phone ?  relative.profile.phone :'Chưa cập nhật'}}</td>
-            <td class='text-center'>{{relative.profile.email? relative.profile.email: 'Chưa cập nhật'}}</td>
+            <td class='text-center'>{{relative.profile.phone ? relative.profile.phone : 'Chưa cập nhật'}}</td>
+            <td class='text-center'>{{relative.profile.email ? relative.profile.email : 'Chưa cập nhật'}}</td>
             <td class='d-flex justify-content-center'>
               <input disabled type='checkbox' [checked]='relative.sos'></td>
             <app-mouse-right #child (addEvent)='addAndUpdateRelative(employee.id)'
@@ -447,46 +446,45 @@
           <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
         </button>
       </div>
-
       <div class='mt-3 '>
         <table class='mt-3'>
           <tr>
-            <th>Bằng cấp</th>
-            <th>Bắt đầu</th>
-            <th>Kết thúc</th>
-            <th>Chuyên ngành</th>
-            <th>hình thức đào tạo</th>
-            <th>Nơi đào tạo</th>
-            <th>Mức tốt nghiệp</th>
-            <th>Tốt nghiệp</th>
+            <th class='text-center'>Bằng cấp</th>
+            <th class='text-center'>Bắt đầu</th>
+            <th class='text-center'>Kết thúc</th>
+            <th class='text-center'>Chuyên ngành</th>
+            <th class='text-center'>hình thức đào tạo</th>
+            <th class='text-center'>Nơi đào tạo</th>
+            <th class='text-center'>Mức tốt nghiệp</th>
+            <th class='text-center'>Tốt nghiệp</th>
           </tr>
-          <tr *ngFor='let degree of employee.degrees' (contextmenu)='child.onContextMenu($event)' >
+          <tr *ngFor='let degree of employee.degrees' (contextmenu)='child.onContextMenu($event)'>
             <td class='text-center' *ngIf='degree.type === degreeType.UNIVERSITY'> Đại học</td>
             <td class='text-center' *ngIf='degree.type === degreeType.COLLEGE'> Cao đẳng</td>
             <td class='text-center' *ngIf='degree.type === degreeType.PHILOSOPHY'> Tiến sĩ</td>
-            <td class='text-center'  *ngIf='degree.type === degreeType.MASTER'> Thạc sĩ</td>
+            <td class='text-center' *ngIf='degree.type === degreeType.MASTER'> Thạc sĩ</td>
             <td class='text-center' *ngIf='degree.type === degreeType.INTERMEDIATE'>Trung cấp</td>
-            <td class='text-center' >{{degree.startedAt |date:'dd/MM/yyyy'}}</td>
+            <td class='text-center'>{{degree.startedAt |date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{degree.endedAt |date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{degree.major}}</td>
-            <td class='text-center' *ngIf='degree.formality === formalityEnum.REMOTE ' >
+            <td class='text-center' *ngIf='degree.formality === formalityEnum.REMOTE '>
               Đào tạo từ xa
             </td>
-            <td class='text-center' *ngIf='degree.formality === formalityEnum.FORMAL ' >
+            <td class='text-center' *ngIf='degree.formality === formalityEnum.FORMAL '>
               Chính qui
             </td>
-            <td class='text-center' *ngIf='degree.formality === formalityEnum.TRAINING ' >
-                Nghề
+            <td class='text-center' *ngIf='degree.formality === formalityEnum.TRAINING '>
+              Trung cấp
             </td>
-            <td class='text-center' *ngIf='degree.formality === formalityEnum.INFORMAL ' >
+            <td class='text-center' *ngIf='degree.formality === formalityEnum.INFORMAL '>
               Không chính qui
             </td>
             <td class='text-center'>{{degree.school}}</td>
             <td class='text-center' *ngIf='degree.level === level.EXCELLENT '>Giỏi</td>
             <td class='text-center' *ngIf='degree.level === level.GOOD '>Khá</td>
             <td class='text-center' *ngIf='degree.level === level.AVERAGE '>Trung bình</td>
-            <td class='text-center' *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp </td>
-            <td class='text-center' *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp </td>
+            <td class='text-center' *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp</td>
+            <td class='text-center' *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp</td>
             <app-mouse-right #child (addEvent)='addAndUpdateDegree(employee.id)'
                              (readAndUpdateEvent)='addAndUpdateDegree(employee.id, degree.id , degree)'
                              (deleteEvent)='deleteDegree( employee.id, degree.id )'>

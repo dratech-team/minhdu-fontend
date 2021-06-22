@@ -6,13 +6,11 @@ import { FlatSalary } from '@minhdu-fontend/enums';
 import { Employee } from '../../+state/employee.interface';
 import { EmployeeService } from '../../service/employee.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateEmployeeComponent } from '../../components/update-employee/update-employee.component';
-import { UpdateEmployeeEnum } from '../../components/update-employee/update-employee.enum';
 import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level.enum';
 import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
 import { RelationshipEnum } from '../../../../../../../../libs/enums/relationship.enum';
 import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
-import { selectCurrentEmployee, } from '../../+state/employee.selector';
+import { selectCurrentEmployee } from '../../+state/employee.selector';
 import { EmployeeAction } from '../../+state/employee.action';
 import { Relative } from '../../../../../../../../libs/data-models/relative.interface';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
@@ -22,20 +20,16 @@ import { Degree } from '../../../../../../../../libs/data-models/degree.interfac
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 
 
-
-
-
 @Component({
   templateUrl: 'detail-employee.component.html',
-  styleUrls: ['detail-employee.component.scss'],
+  styleUrls: ['detail-employee.component.scss']
 })
-export class DetailEmployeeComponent implements OnInit{
+export class DetailEmployeeComponent implements OnInit {
   formalityEnum = FormalityEnum;
   degreeType = DegreeTypeEnum;
   relationship = RelationshipEnum;
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
-  updateType = UpdateEmployeeEnum;
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
@@ -44,50 +38,44 @@ export class DetailEmployeeComponent implements OnInit{
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly employeeService: EmployeeService,
-    private readonly dialog: MatDialog,
+    private readonly dialog: MatDialog
   ) {
   }
-  ngOnInit() : void{
-    this.store.dispatch(EmployeeAction.getEmployee({id:this.employeeId}))
+
+  ngOnInit(): void {
+    this.store.dispatch(EmployeeAction.getEmployee({ id: this.employeeId }));
   }
 
   get employeeId(): number {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  onDevelopment() {
-  }
-  update( employee?: Employee ,type?: string ,  relative?: Relative ):void{
-    this.dialog.open(UpdateEmployeeComponent,{
+  updateEmployee(employee: Employee): void {
+    this.dialog.open(AddEmployeeComponent, {
       width: '40%',
-      data: {employee,type, relative}
-    })
+      data: { employee: employee }
+    });
   }
 
-  updateEmployee( employee: Employee ):void{
-    this.dialog.open(AddEmployeeComponent,{
-      width: '40%',
-      data: {employee:employee}
-    })
-  }
-
-  addAndUpdateRelative(employeeId: number,  id?: number , relative?:Relative):void{
+  addAndUpdateRelative(employeeId: number, id?: number, relative?: Relative): void {
     this.dialog.open(AddRelativeComponent, {
       width: '40%',
-      data:{employeeId: employeeId, id: id , relative: relative}
+      data: { employeeId: employeeId, id: id, relative: relative }
     });
-  }
-  deleteRelative( id: number,employeeId: number){
-    this.store.dispatch(EmployeeAction.deleteRelative({ id: id , employeeId:employeeId}));
   }
 
-  addAndUpdateDegree(employeeId: number,  id?: number , degree?: Degree) {
+  deleteRelative(id: number, employeeId: number) {
+    this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
+  }
+
+  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
     this.dialog.open(AddDegreeComponent, {
       width: '40%',
-      data:{employeeId: employeeId, id: id , degree: degree}
+      data: { employeeId: employeeId, id: id, degree: degree }
     });
   }
-  deleteDegree( employeeId: number,id: number ){
-    this.store.dispatch(EmployeeAction.deleteDegree({ id: id , employeeId:employeeId}));
+
+  deleteDegree(employeeId: number, id: number) {
+    this.store.dispatch(EmployeeAction.deleteDegree({ id: id, employeeId: employeeId }));
   }
 }

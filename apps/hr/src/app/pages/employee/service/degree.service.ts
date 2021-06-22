@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { BaseService } from '../../../service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
-import { Employee } from '../+state/employee.interface';
 import { Degree } from '../../../../../../../libs/data-models/degree.interface';
 
 
@@ -17,16 +16,16 @@ export class DegreeService extends BaseService<Degree> {
   }
 
   addOne(relative: any): Observable<Degree> {
-    return super.addOne(relative)
+    return super.addOne(relative);
   }
-  update(id: number, props: any ): Observable<Update<Degree>> {
+
+  update(id: number, props: any): Observable<Update<Degree>> {
     return super.update(id, props);
   }
 
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
-
 
 
 }

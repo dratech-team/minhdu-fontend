@@ -7,8 +7,6 @@ import { DegreeLevelEnum } from '../../../../../../../../libs/enums/degree-level
 import { DegreeTypeEnum } from '../../../../../../../../libs/enums/degree-type.enum';
 import { DegreeStatusEnum } from '../../../../../../../../libs/enums/degree-status.enum';
 
-
-
 @Component({
   templateUrl:'add-degree.component.html',
 
@@ -22,7 +20,6 @@ export class AddDegreeComponent implements OnInit{
   @Inject(MAT_DIALOG_DATA) public data:any,
   private readonly formBuilder: FormBuilder,
   private readonly store: Store,
-
   ) {
   }
   ngOnInit() {
@@ -59,6 +56,5 @@ export class AddDegreeComponent implements OnInit{
     }else{
       this.store.dispatch(EmployeeAction.addDegree( { degree : degree }))
     }
-
   }
 }

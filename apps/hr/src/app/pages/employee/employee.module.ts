@@ -14,18 +14,12 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DetailEmployeeComponent } from './containers/detail-employee/detail-employee.component';
-import { UpdateEmployeeComponent } from './components/update-employee/update-employee.component';
 import { AddProfileComponent } from './components/profile/add-profile.component';
 import { AddRelativeComponent } from './components/relative/add-relative.component';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { ProfileComponent } from './containers/profile/profile.component';
 import { AddEmployeeComponent } from './components/employee/add-employee.component';
 import { AddDegreeComponent } from './components/degree/add-degree.component';
-
-
-
-
-
 
 
 @NgModule({
@@ -49,9 +43,8 @@ import { AddDegreeComponent } from './components/degree/add-degree.component';
     ProfileComponent,
     AddEmployeeComponent,
     DetailEmployeeComponent,
-    UpdateEmployeeComponent,
     AddRelativeComponent,
-    AddProfileComponent,
+    AddProfileComponent
   ]
 })
 export class EmployeeModule {

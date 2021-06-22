@@ -12,8 +12,8 @@ const routes: Routes = [
     path: 'detail-employee/:id',
     component: DetailEmployeeComponent,
     data: {
-      title: 'Chi tiết nhân viên',
-    },
+      title: 'Chi tiết nhân viên'
+    }
   }
 ];
 
