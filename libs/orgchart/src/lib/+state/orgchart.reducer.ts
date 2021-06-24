@@ -2,11 +2,12 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as OrgchartActions from './orgchart.actions';
-import { BranchEntity } from './orgchart.models';
+import { Branch } from '@minhdu-fontend/data-models';
+
 
 export const ORGCHART_FEATURE_KEY = 'orgchart';
 
-export interface State extends EntityState<BranchEntity> {
+export interface State extends EntityState<Branch> {
   selectedId?: string | number; // which Orgchart record has been selected
   loaded: boolean; // has the Orgchart list been loaded
   error?: string | null; // last known error (if any)
@@ -16,7 +17,7 @@ export interface OrgchartPartialState {
   readonly [ORGCHART_FEATURE_KEY]: State;
 }
 
-export const orgchartAdapter: EntityAdapter<BranchEntity> = createEntityAdapter<BranchEntity>();
+export const orgchartAdapter: EntityAdapter<Branch> = createEntityAdapter<Branch>();
 
 export const initialState: State = orgchartAdapter.getInitialState({
   // set initial required properties

@@ -130,3 +130,44 @@
 .pointer{
   cursor: pointer;
 }
+.btn-edit{
+  border: solid 1px #80828B;
+  border-radius: 20%;
+}
+input[type='checkbox']{
+  width: 14px !important;
+  height: 14px !important;
+  margin: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  outline: 1px solid gray;
+  box-shadow: none;
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 1em;
+  background: white;
+}
+input[type='checkbox']:checked:after {
+  content: '✔';
+  color: red;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.pointer{
+  cursor: pointer;
+}

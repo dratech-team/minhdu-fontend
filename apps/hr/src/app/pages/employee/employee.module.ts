@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ProfileComponent } from './containers/profile/profile.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatMenuModule } from '@angular/material/menu';
@@ -13,12 +12,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { EmployeeEffect } from './+state/employee.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+import { DetailEmployeeComponent } from './containers/detail-employee/detail-employee.component';
+import { AddProfileComponent } from './components/profile/add-profile.component';
+import { AddRelativeComponent } from './components/relative/add-relative.component';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { ProfileComponent } from './containers/profile/profile.component';
+import { AddEmployeeComponent } from './components/employee/add-employee.component';
+import { AddDegreeComponent } from './components/degree/add-degree.component';
+import { FeatureName } from '@minhdu-fontend/constants';
 
 @NgModule({
   imports: [
+    ComponentsModule,
     EmployeeRoutingModule,
     MatExpansionModule,
     MatMenuModule,
@@ -26,15 +32,19 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
-    StoreModule.forFeature('employee', employeeReducer),
+    StoreModule.forFeature(FeatureName.EMPLOYEE, employeeReducer),
     EffectsModule.forFeature([EmployeeEffect]),
     CommonModule,
     MatInputModule,
     InfiniteScrollModule
   ],
   declarations: [
+    AddDegreeComponent,
     ProfileComponent,
     AddEmployeeComponent,
+    DetailEmployeeComponent,
+    AddRelativeComponent,
+    AddProfileComponent
   ]
 })
 export class EmployeeModule {

@@ -1,6 +1,6 @@
 .main-profile {
   width: max-content;
-  padding: 20px;
+  padding: 1rem;
 }
 
 .header-profile {
@@ -9,7 +9,7 @@
 
 .outer {
   flex-direction: column;
-  max-height: 68vh;
+  max-height: 65vh;
   width: fit-content;
   overflow: auto;
 }
@@ -146,5 +146,9 @@
   padding: 2px;
   min-height: 35px;
   border-bottom: solid 1px #9aaec1;
+}
+
+.row-content:nth-child(even) {
+  background-color: #dddddd;
 }
 

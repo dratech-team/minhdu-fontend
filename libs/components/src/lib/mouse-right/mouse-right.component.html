@@ -1,0 +1,11 @@
+<context-menu>
+  <ng-template  contextMenuItem (execute)="add()">
+    Thêm
+  </ng-template>
+  <ng-template contextMenuItem let-item (execute)="delete()">
+    Xóa
+  </ng-template>
+  <ng-template contextMenuItem let-item (execute)="readAndUpdate()">
+    Xem và sửa
+  </ng-template>
+</context-menu>
