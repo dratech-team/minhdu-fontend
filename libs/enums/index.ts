@@ -5,3 +5,5 @@ export * from './degree-status.enum';
 export * from './degree-type.enum';
 export * from './formality.enum';
 export * from './relationship.enum';
+export * from './salary/datetime-unit.enum';
+export * from './salary/salaryType.enum';

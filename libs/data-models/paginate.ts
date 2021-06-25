@@ -4,7 +4,7 @@ export interface ResponsePaginate<T> {
 }
 
 export interface RequestPaginate {
-  take: number,
-  skip: number,
+  take?: number,
+  skip?: number,
   search?: string,
 }

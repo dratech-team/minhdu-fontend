@@ -12,4 +12,7 @@ export * from './degree'
 export * from './relative'
 export * from './Social'
 export * from './work-history'
+export * from './salary/salary'
+export * from './salary/salary-history'
+
 

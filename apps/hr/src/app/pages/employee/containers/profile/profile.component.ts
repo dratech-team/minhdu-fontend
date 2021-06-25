@@ -11,7 +11,6 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
 @Component({
   templateUrl: 'profile.component.html',
   styleUrls: ['profile.component.scss']
-
 })
 export class ProfileComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -43,8 +42,6 @@ export class ProfileComponent implements OnInit {
   }
 
   onScroll() {
-
-    console.log(this.pageIndex);
     this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 

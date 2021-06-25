@@ -27,13 +27,6 @@ export const navItems: INavData[] = [
       name: 'Phiếu lương',
       url: '/payroll',
       icon: 'cil-lock-locked',
-      children: [
-        {
-          name: 'Danh sách lương',
-          url: '/payroll/payrolls',
-          icon: 'cil-lock-locked',
-        },
-      ],
     },
     {
       title: true,

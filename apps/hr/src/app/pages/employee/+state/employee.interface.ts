@@ -8,6 +8,7 @@
 } from '@minhdu-fontend/data-models';
 
 export interface Employee{
+  contractAt: string,
   id: number,
   workedAt: Date;
   code: string,

@@ -39,8 +39,8 @@ import { FeatureName } from '@minhdu-fontend/constants';
     InfiniteScrollModule
   ],
   declarations: [
-    AddDegreeComponent,
     ProfileComponent,
+    AddDegreeComponent,
     AddEmployeeComponent,
     DetailEmployeeComponent,
     AddRelativeComponent,

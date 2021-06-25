@@ -1,0 +1,171 @@
+
+.info-employee{
+  display: flex;justify-content: center;align-items: center;
+}
+.title-header{
+  display:flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+}
+.content-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+}
+.position{
+  height: 22px;
+  display: flex;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: center;
+  border-radius: 17px;
+  border: solid 1px #EB5757;
+  background: #EB5757;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+.id-employee{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:#EB5757 ;
+  height: 22px;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.is-edit{
+  cursor: pointer;
+  height: 30px;
+  display:flex ;
+  align-items: center;
+  color:white;
+  background: #7749F8;
+  padding: 6px 10px;
+  border: solid 1px #7749F8;
+  border-radius: 4px;
+}
+.save-change{
+  cursor: pointer;
+  height: 30px;
+  display:flex ;
+  align-items: center;
+  color:white;
+  background: #29CC97;
+  padding: 6px 10px;
+  border: solid 1px #29CC97;
+  border-radius: 4px;
+}
+.create-salary{
+  cursor: pointer;
+  height: 30px;
+  display:flex ;
+  align-items: center;
+  color:white;
+  background: #7749F8;
+  padding: 6px 10px;
+  border: solid 1px #7749F8;
+  border-radius: 4px;
+}
+
+.main-content {
+  width: 100%;
+}
+
+.table {
+  margin-right: 60px;
+  border: solid 1px #EBEBEB;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+}
+.title{
+  font-size:14px;
+  line-height: 24px;
+  font-weight: 600
+}
+.title-table {
+  height: 50px;
+  display: flex;
+  align-items: center
+}
+
+.content-table {
+  width: 100%;
+  border-top: solid 1px #EBEBEB;
+  height: 50px;
+  display: flex;
+  align-items: center
+}
+
+.add {
+  display: flex;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 28px;
+  color: #7749F8
+}
+
+
+.salary {
+  display: flex;
+  justify-content: flex-end
+}
+
+.edit {
+  cursor: pointer;
+  display: flex;
+  margin-right: 10px;
+  background: #4B3880;
+  padding: 4px;
+  border: solid 1px #4B3880;
+  border-radius: 4px;
+}
+
+.trash {
+  cursor: pointer;
+  display: flex;
+  background: #EB5757;
+  padding: 4px;
+  border: solid 1px #EB5757;
+  border-radius: 4px;
+}
+
+.create-salary {
+  cursor: pointer;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: #7749F8;
+  padding: 4px 10px;
+  border: solid 1px #7749F8;
+  border-radius: 4px;
+}
+
+.over-time {
+  color: #29CC97;
+}
+
+.deduct {
+  color: #EB5757;
+}
+.employee{
+  box-shadow: 0 4px 12px rgb(0 0 0 / 6%);
+  border: solid 1px white;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+
+
+
+
+
+

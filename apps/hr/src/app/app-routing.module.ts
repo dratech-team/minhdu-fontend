@@ -24,12 +24,21 @@ const routes: Routes = [
         }
       },
       {
+        path: 'payroll',
+        loadChildren: () => import('./pages/payroll/payroll.module').then(m => m.PayrollModule),
+        data: {
+          title: 'Danh sách phiếu lương'
+        },
+
+      },
+      {
         path: 'org-chart',
         data: {
           title: 'Hệ thống nhân sự'
         },
         component: OrgchartContainer
       },
+
       { path: '**', redirectTo: '' }
     ]
   }
