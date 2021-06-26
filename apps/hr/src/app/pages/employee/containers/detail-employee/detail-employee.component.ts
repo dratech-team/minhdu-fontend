@@ -63,18 +63,18 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteRelative(id: number, employeeId: number) {
-    this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
+  deleteRelative($event:any, employeeId: number) {
+    this.store.dispatch(EmployeeAction.deleteRelative({ id: $event.id, employeeId: employeeId }));
   }
 
-  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
+  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree ) {
     this.dialog.open(AddDegreeComponent, {
       width: '40%',
-      data: { employeeId: employeeId, id: id, degree: degree }
+      data: { employeeId: employeeId, id:id, degree: degree }
     });
   }
 
-  deleteDegree(employeeId: number, id: number) {
-    this.store.dispatch(EmployeeAction.deleteDegree({ id: id, employeeId: employeeId }));
+  deleteDegree(employeeId: number, $event: any) {
+    this.store.dispatch(EmployeeAction.deleteDegree({ id: $event.id, employeeId: employeeId }));
   }
 }

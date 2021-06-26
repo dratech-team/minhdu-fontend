@@ -37,15 +37,15 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  delete(id: number): void {
-    this.store.dispatch(EmployeeAction.deleteEmployee({ id: id }));
+  delete($event: any): void {
+    this.store.dispatch(EmployeeAction.deleteEmployee({ id: $event.id }));
   }
 
   onScroll() {
     this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 
-  readAndUpdate(id: number): void {
-    this.router.navigate(['profile/detail-employee', id]).then();
+  readAndUpdate($event: any): void {
+    this.router.navigate(['profile/detail-employee', $event.id]).then();
   }
 }

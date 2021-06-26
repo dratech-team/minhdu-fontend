@@ -1,22 +1,15 @@
 import { Employee } from '../../employee/+state/employee.interface';
 import { Position, Salary } from '@minhdu-fontend/data-models';
+import { payslip } from '../../../../../../../libs/data-models/salary/payslip';
 
 export interface Payroll {
   id:number
   employee: Employee,
-  createAt: Date,
-  salary: Salary,
+  createdAt: Date,
+  payslip: payslip,
   salaries: Salary[],
   manConfirmedAt: Date,
   paidAt: Date,
-  accConfirmAt: Date,
-  basic: number,
-  allowance: number,
-  absent: number,
-  overtime: number,
-  stay: number,
-  total: number,
-  note: string,
-  actuallyDay: number,
+  accConfirmedAt: Date,
 }
 

@@ -17,6 +17,8 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { SalaryComponent } from './component/salary/salary.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -33,13 +35,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTabsModule
   ],
   declarations:[
     PayrollComponent,
     DetailPayrollComponent,
     FilterPipe,
     SalaryComponent,
+    AddPayrollComponent,
   ]
 })
 export class PayrollModule{

@@ -2,19 +2,10 @@ import { Employee } from '../../../apps/hr/src/app/pages/employee/+state/employe
 import { Payroll } from '../../../apps/hr/src/app/pages/payroll/+state/payroll.interface';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '../../enums';
 import { SalaryHistory } from './salary-history';
+import { payslip } from './payslip';
 
 
 export interface Salary {
-  overtime: number,
-  stay:number,
-  basic: number,
-  actualDay: number,
-  allowance: number,
-  deduction:number,
-  daySalary: number,
-  salaryActual: number,
-  tax: number,
-  total: number,
   id: number,
   title: string,
   type: SalaryTypeEnum,
@@ -25,10 +16,10 @@ export interface Salary {
   datetime: Date,
   forgot: boolean,
   note: string,
-  employee: Employee,
   employeeId: number,
   Payroll: Payroll,
   PayrollId: number,
   salaryHistory: SalaryHistory,
   salaryHistoryId: number,
+  payslip: payslip,
 }

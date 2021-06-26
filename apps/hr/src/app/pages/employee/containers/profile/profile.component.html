@@ -68,9 +68,9 @@
        [scrollWindow]='false'
        (scrolled)='onScroll()'
        *ngIf='(employees$| async) as employees' >
-    <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee.id)' (contextmenu)='child.onContextMenu($event)'>
-      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(employee.id)'
-                       (readAndUpdateEvent)='readAndUpdate(employee.id)'></app-mouse-right>
+    <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)' (contextmenu)='child.onContextMenu($event, employee)'>
+      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
+                       (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
       <div class='content-profile default pointer '> {{employee.code}}</div>
       <div class='content-profile name  pointer'>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
       <div class='content-profile default pointer '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>

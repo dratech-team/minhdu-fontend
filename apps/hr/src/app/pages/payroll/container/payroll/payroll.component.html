@@ -1,7 +1,5 @@
-
 <script src='../../payroll-routing.module.ts'></script>
 <div class='main-profile'>
-  <button (click)='add()' class='btn btn-primary'>Thêm nhân viên</button>
   <div class='header-profile mt-3 animated fadeIn'>
     <div class='border-start title-header default'>
       <div class='title-profile'>Mã nhân viên</div>
@@ -73,10 +71,6 @@
         <option value='FALSE'>chưa thanh toán</option>
       </select>
     </div>
-    <div class='border-start title-header note'>
-      <div class='title-profile'>Ghi chú</div>
-      <input class='form-control input-profile ' type='search'>
-    </div>
   </div>
   <div class='outer  animated fadeIn'
        infiniteScroll
@@ -84,29 +78,34 @@
        [infiniteScrollThrottle]='100'
        [scrollWindow]='false'
        (scrolled)='onScroll()'
-       *ngIf='(payroll$| async) as payrolls' >
-    <div class='row-content' *ngFor='let payroll of payrolls' (click)='readAndUpdate(payroll.id)' (contextmenu)='child.onContextMenu($event)'>
-      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete(payroll.id)'
-                       (readAndUpdateEvent)='readAndUpdate(payroll.id)'></app-mouse-right>
+       *ngIf='(payroll$| async) as payrolls'>
+    <div class='row-content' *ngFor='let payroll of payrolls' (click)='readAndUpdate(payroll)'
+         (contextmenu)='child.onContextMenu($event,payroll)' >
+      <app-mouse-right #child (addEvent)='add($event)' (deleteEvent)='delete($event)'
+                       (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
       <div class='content-profile default pointer '>{{payroll.employee.code}} </div>
-      <div class='content-profile name pointer '>{{payroll.employee.profile.firstName}} {{payroll.employee.profile.lastName}}  </div>
-      <div class='content-profile name pointer '>{{payroll.salary?.actualDay? payroll.salary.actualDay : 'Đang cập nhật' }} </div>
-      <div class='content-profile name pointer '>{{payroll.employee.position.workday?payroll.employee.position.workday : 'Đang cập nhật'}} </div>
+      <div
+        class='content-profile name pointer '>{{payroll.employee.profile.firstName}} {{payroll.employee.profile.lastName}}  </div>
+      <div
+        class='content-profile name pointer '>{{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }} </div>
+      <div
+        class='content-profile name pointer '>{{payroll.payslip?.workday ? payroll.payslip?.workday : 'Đang cập nhật'}} </div>
       <div class='content-profile default pointer '>{{payroll.employee.position.name}} </div>
       <div class='content-profile name pointer '>{{payroll.employee.position.department.branch.name}} </div>
-      <div class='content-profile default pointer '>{{payroll.createAt|date:'MM/yyyy'}} </div>
-      <div class='content-profile default pointer '>{{payroll.salary?.basic}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.stay}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.allowance}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.overtime? payroll.salary?.overtime: 'Đang cập nhật'}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.deduction}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.tax}}</div>
-      <div class='content-profile default pointer '>{{payroll.salary?.total}}</div>
-      <div class='content-profile default pointer '> <input type='checkbox' disabled [checked]='payroll.accConfirmAt !== null'></div>
-      <div class='content-profile default pointer '> <input type='checkbox' disabled [checked]='payroll.paidAt !== null'></div>
-      <div class='content-profile note pointer '>{{payroll.note}}</div>
+      <div class='content-profile default pointer '>{{payroll.createdAt|date:'MM/yyyy'}} </div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.basic}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.stay}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.allowance}}</div>
+      <div
+        class='content-profile default pointer '>{{payroll.payslip?.overtime ? payroll.payslip?.overtime : 'Đang cập nhật'}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.deduction}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.tax}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.total}}</div>
+      <div class='content-profile default pointer '><input type='checkbox' disabled
+                                                           [checked]='payroll.accConfirmedAt !== null'></div>
+      <div class='content-profile default pointer '><input type='checkbox' disabled [checked]='payroll.paidAt !== null'>
+      </div>
     </div>
   </div>
 </div>
-
 

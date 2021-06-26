@@ -1,5 +1,6 @@
 export enum SalaryTypeEnum {
   BASIC = 'BASIC',
+  BASIC_ISNURANCE = 'BASIC_ISNURANCE',
   STAY = 'STAY',
   ALLOWANCE = 'ALLOWANCE',
   OVERTIME = 'OVERTIME',

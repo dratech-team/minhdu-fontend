@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, switchMap, timeout } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../service/payroll.service';
+import { SalaryService } from '../service/salary.service';
 
 
 @Injectable()
@@ -21,9 +22,17 @@ export class PayrollEffect {
   addPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
-      switchMap((props) => this.payrollService.addOne(props.Payroll)),
+      switchMap((props) => this.payrollService.addOne(props.payroll)),
       map((payroll) => PayrollAction.addPayrollSuccess({ payroll })),
       catchError((err) => throwError(err))
+    ));
+
+  addSalary$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.addSalary),
+      switchMap((props) => this.salaryService.addOne(props.salary).pipe(
+        map(() => PayrollAction.getPayroll({ id: props.payrollId }))
+      ))
     ));
 
   getPayroll$ = createEffect(() =>
@@ -44,18 +53,38 @@ export class PayrollEffect {
       )
     ));
 
+  updateSalary$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.updateSalary),
+      switchMap((props) => this.salaryService.update(props.id, props.salary).pipe(
+        map(() => PayrollAction.getPayroll({ id: props.payrollId }))
+      ))
+    ));
   deletePayroll$ = createEffect(() =>
     this.action$.pipe(
-      ofType(PayrollAction.deletePayrollSuccess),
+      ofType(PayrollAction.deletePayroll),
       switchMap((props) => this.payrollService.delete(props.id).pipe(
-        map(() => PayrollAction.deletePayrollSuccess({ id: props.id })),
+        map(() => PayrollAction.getPayroll({ id: props.id })),
         catchError((err) => throwError(err))
       ))
     ));
 
+  deleteSalary$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.deleteSalary),
+      switchMap((props) => this.salaryService.delete(props.id).pipe(
+        delay(100),
+        map(()=> PayrollAction.getPayroll({id:props.PayrollId})),
+        catchError((err) => throwError(err))
+        )
+      ),
+    ));
+
+
   constructor(
     private readonly action$: Actions,
-    private readonly payrollService: PayrollService
+    private readonly payrollService: PayrollService,
+    private readonly salaryService: SalaryService
   ) {
   }
 }

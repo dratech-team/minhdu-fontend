@@ -17,7 +17,7 @@ export const loadPayrollsSuccess = createAction(
 
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ Payroll: any }>()
+  props<{payroll:any }>()
 );
 
 export const addPayrollSuccess = createAction(
@@ -27,7 +27,7 @@ export const addPayrollSuccess = createAction(
 
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
-  props<{ salary: any }>()
+  props<{ payrollId: number, salary: any }>()
 );
 
 export const getPayroll = createAction(
@@ -52,7 +52,7 @@ export const updatePayrollSuccess = createAction(
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{ id: number, salary: any }>()
+  props<{ id?: number,payrollId: number ,salary:any}>()
 );
 
 export const deletePayroll = createAction(
@@ -67,7 +67,7 @@ export const deletePayrollSuccess = createAction(
 
 export const deleteSalary = createAction(
   '[DELETE_SALARY] Delete Salary',
-  props<{ id: number }>()
+  props<{ id: number, PayrollId: number }>()
 );
 
 

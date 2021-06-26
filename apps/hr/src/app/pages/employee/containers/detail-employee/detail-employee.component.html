@@ -418,7 +418,7 @@
             <th class='text-center'>Email</th>
             <th class='text-center'>Liên hệ khẩn cấp</th>
           </tr>
-          <tr *ngFor='let relative of employee.relatives' (contextmenu)='child.onContextMenu($event)'>
+          <tr *ngFor='let relative of employee.relatives' (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
             <td class='text-center'>{{relative.profile.firstName}} {{relative.profile.lastName}}</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.FATHER'>Cha</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.MOTHER'>Mẹ</td>
@@ -431,10 +431,6 @@
             <td class='text-center'>{{relative.profile.email ? relative.profile.email : 'Chưa cập nhật'}}</td>
             <td class='d-flex justify-content-center'>
               <input disabled type='checkbox' [checked]='relative.sos'></td>
-            <app-mouse-right #child (addEvent)='addAndUpdateRelative(employee.id)'
-                             (readAndUpdateEvent)='addAndUpdateRelative(employee.id, relative.id, relative)'
-                             (deleteEvent)='deleteRelative(relative.id , employee.id)'>
-            </app-mouse-right>
           </tr>
         </table>
       </div>
@@ -458,7 +454,7 @@
             <th class='text-center'>Mức tốt nghiệp</th>
             <th class='text-center'>Tốt nghiệp</th>
           </tr>
-          <tr *ngFor='let degree of employee.degrees' (contextmenu)='child.onContextMenu($event)'>
+          <tr *ngFor='let degree of employee.degrees' (click)='addAndUpdateDegree(employee.id,degree.id , degree)'>
             <td class='text-center' *ngIf='degree.type === degreeType.UNIVERSITY'> Đại học</td>
             <td class='text-center' *ngIf='degree.type === degreeType.COLLEGE'> Cao đẳng</td>
             <td class='text-center' *ngIf='degree.type === degreeType.PHILOSOPHY'> Tiến sĩ</td>
@@ -490,10 +486,6 @@
             <td class='text-center' *ngIf='degree.level === level.BELOW_AVERAGE '>Dưới trung bình</td>
             <td class='text-center' *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp</td>
             <td class='text-center' *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp</td>
-            <app-mouse-right #child (addEvent)='addAndUpdateDegree(employee.id)'
-                             (readAndUpdateEvent)='addAndUpdateDegree(employee.id, degree.id , degree)'
-                             (deleteEvent)='deleteDegree( employee.id, degree.id )'>
-            </app-mouse-right>
           </tr>
 
         </table>

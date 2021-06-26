@@ -6,17 +6,18 @@ import { selectCurrentPayroll } from '../../+state/payroll.selector';
 import { PayrollAction } from '../../+state/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryComponent } from '../../component/salary/salary.component';
-import { switchMap } from 'rxjs/operators';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { of } from 'rxjs';
+import { Salary } from '@minhdu-fontend/data-models';
+import { Payroll } from '../../+state/payroll.interface';
 
 @Component({
-  templateUrl:'detail-payroll.component.html',
-  styleUrls:['detail-payroll.component.scss']
+  templateUrl: 'detail-payroll.component.html',
+  styleUrls: ['detail-payroll.component.scss']
 })
-export class DetailPayrollComponent implements OnInit{
+export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -24,9 +25,11 @@ export class DetailPayrollComponent implements OnInit{
     private readonly router: Router
   ) {
   }
+
   ngOnInit() {
-    this.store.dispatch(PayrollAction.getPayroll({id:this.getPayrollId}))
+    this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
   }
+
   get getPayrollId(): number {
     return this.activatedRoute.snapshot.params.id;
   }
@@ -35,22 +38,43 @@ export class DetailPayrollComponent implements OnInit{
     this.router.navigate(['profile/detail-employee', id]).then();
   }
 
-  addSalary(type: SalaryTypeEnum, id?: number): any {
-    this.dialog.open(SalaryComponent, {
-      width: '60%',
-      data: { type, id },
+  addAndUpdateSalary(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary): any {
+    const dialogRef = this.dialog.open(SalaryComponent, {
+      width: '50%',
+      data: { type, payroll, salary }
     });
+    dialogRef.afterClosed().subscribe(
+      (value) => {
+        if (value) {
+          console.log(value);
+          const add = {
+            title: value.title,
+            price: value.price,
+            type: value.type,
+            employeeId: payroll.employee.id,
+            payrollId: payroll.id,
+            unit: value.unit,
+            times: value.times,
+            datetime: new Date(value.datetime)
+          };
+          if (value.update) {
+            this.store.dispatch(PayrollAction.updateSalary({
+              id: salary?.id,
+              payrollId: payroll.id,
+              salary: add
+            }));
+          } else {
+            this.store.dispatch(PayrollAction.addSalary({
+              payrollId: payroll.id,
+              salary: add
+            }));
+          }
+        }
+      }
+    );
   }
 
-  onEditSalary(salary: any) {
-
-  }
-
-  onDelete() {
-
-  }
-
-  removeSalary(id: number) {
-
+  removeSalary(id: number , payrollId: number) {
+    this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
   }
 }

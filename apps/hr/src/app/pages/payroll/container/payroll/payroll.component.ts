@@ -7,6 +7,8 @@ import {selectorAllPayroll} from '../../+state/payroll.selector';
 import { PayrollAction } from '../../+state/payroll.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { EmployeeAction } from '../../../employee/+state/employee.action';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
 
 @Component({
   templateUrl:'payroll.component.html',
@@ -22,6 +24,7 @@ export class PayrollComponent implements OnInit{
   pageSize: number = 30;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
   constructor(
+    private readonly  dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router
   ) {
@@ -29,19 +32,29 @@ export class PayrollComponent implements OnInit{
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadPayrolls({ skip: 0, take: 30 }));
   }
-  add(): void {
-
+  add( $event: any): void {
+   const dialogRef =this.dialog.open(AddPayrollComponent , {
+      width: '30%',
+      data: $event.employee.id,
+    } )
+  dialogRef.afterClosed().subscribe((value) =>
+  {
+    if(value){
+      this.store.dispatch(PayrollAction.addPayroll({ payroll: value }))
+    }
+  }
+  )
   }
 
   onScroll() {
     this.store.dispatch(PayrollAction.loadPayrolls({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 
-  readAndUpdate(id: number) {
-    this.router.navigate(['payroll/detail-payroll', id]).then();
+  readAndUpdate($event: any) {
+    this.router.navigate(['payroll/detail-payroll', $event.id]).then();
   }
 
-  delete(id: number) {
+  delete($event: number) {
 
   }
 }

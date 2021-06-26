@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ContextMenuService } from 'ngx-contextmenu';
 
-
-
 @Component({
   selector: 'app-mouse-right',
   templateUrl: './mouse-right.component.html',
@@ -17,8 +15,10 @@ export class MouseRightComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
   }
-  public onContextMenu($event: MouseEvent, item?: any): void {
+  public onContextMenu($event: MouseEvent, item: any): void {
+    console.log(item);
     this.contextMenuService.show.next({
       event: $event,
       item: item,
@@ -27,14 +27,14 @@ export class MouseRightComponent implements OnInit {
     $event.stopPropagation();
   }
 
-  add(): void {
-    this.addEvent.emit();
+  add( item: any): void {
+    this.addEvent.emit(item);
   }
 
-  delete(): void {
-    this.deleteEvent.emit();
+  delete( item: any): void {
+    this.deleteEvent.emit(item);
   }
-  readAndUpdate(): void {
-    this.readAndUpdateEvent.emit();
+  readAndUpdate(item : any): void {
+    this.readAndUpdateEvent.emit(item);
   }
 }
