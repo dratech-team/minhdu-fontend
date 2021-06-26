@@ -1,4 +1,4 @@
-import { RelationshipEnum } from '../enums/relationship.enum';
+import { RelationshipEnum } from '../enums';
 import { Profile } from './profile/profile';
 export interface Relative{
   id:number;

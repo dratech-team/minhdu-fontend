@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../../../service/base.service';
 import { Payroll } from '../+state/payroll.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
+import { BaseService } from 'libs/service/base.service';
 
 @Injectable({providedIn:'root'})
 export class PayrollService extends BaseService<Payroll>{
