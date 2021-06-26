@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseService } from '../../../service/base.service';
+import { BaseService } from '../../../../../../../libs/service/base.service';
 import { Update } from '@ngrx/entity/src/models';
 import { Employee } from '../+state/employee.interface';
 import { Api } from '@minhdu-fontend/constants';

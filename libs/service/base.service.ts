@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity/src/models';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { ResponsePaginate } from '../data-models';
 
 export class BaseService<T> {
   constructor(

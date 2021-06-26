@@ -20,7 +20,8 @@
       "@minhdu-fontend/data-models": ["libs/data-models/index.ts"],
       "@minhdu-fontend/constants": ["libs/constants/index.ts"],
       "@minhdu-fontend/enums": ["libs/enums/index.ts"],
-      "@minhdu-fontend/orgchart": ["libs/orgchart/src/index.ts"]
+      "@minhdu-fontend/orgchart": ["libs/orgchart/src/index.ts"],
+      "@minhdu-fontend/service": ["libs/service/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
