@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DepartmentEntity } from '@minhdu-fontend/orgchart';
 import { Api } from '@minhdu-fontend/constants';
+import { Department } from '@minhdu-fontend/data-models';
 
 @Injectable()
 export class DepartmentService {
   constructor(private readonly http: HttpClient) {
   }
 
-  addOne(name: string, branchId: number): Observable<DepartmentEntity> {
+  addOne(name: string, branchId: number): Observable<Department> {
     return this.http.post<any>(Api.DEPARTMENT, { name, branchId });
   }
 
-  getAll(): Observable<DepartmentEntity[]> {
-    return this.http.get<DepartmentEntity[]>(Api.DEPARTMENT);
+  getAll(): Observable<Department[]> {
+    return this.http.get<Department[]>(Api.DEPARTMENT);
   }
 
-  update(id: number, name: string): Observable<DepartmentEntity> {
+  update(id: number, name: string): Observable<Department> {
     return this.http.patch<any>(Api.DEPARTMENT + `/${id}`, { name });
   }
 }

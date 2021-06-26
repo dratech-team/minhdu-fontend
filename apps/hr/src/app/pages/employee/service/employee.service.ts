@@ -15,16 +15,24 @@ export class EmployeeService extends BaseService<Employee> {
     super(Api.EMPLOYEE, http);
   }
 
-  addOne(employee: Employee | undefined): Observable<Employee> {
+  addOne(employee: any): Observable<Employee> {
     return super.addOne(employee);
+  }
+
+  getOne(id: number): Observable<Employee> {
+    return super.getOne(id);
   }
 
   pagination(params: any): Observable<ResponsePaginate<Employee>> {
     return super.pagination(params);
   }
 
-  update(id: number, props: Employee | undefined): Observable<Update<Employee>> {
+  update(id: number, props: any): Observable<Update<Employee>> {
     return super.update(id, props);
+  }
+
+  updateRelative(employeeId: number, props: any): Observable<Update<Employee>> {
+    return super.update(employeeId, props);
   }
 
   delete(id: number): Observable<void> {

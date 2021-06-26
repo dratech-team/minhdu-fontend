@@ -22,7 +22,7 @@ export class BaseService<T> {
     return this.http.get<T>(this.url + `/${id}`);
   }
 
-  addOne(props: T | undefined): Observable<T> {
+  addOne(props: T ): Observable<T> {
     return this.http.post<T>(this.url, props);
   }
 
@@ -30,8 +30,7 @@ export class BaseService<T> {
     return this.http.patch<Update<T>>(this.url + `/${id}`, body);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: number ): Observable<void> {
     return this.http.delete<void>(this.url + `/${id}`);
-
   }
 }

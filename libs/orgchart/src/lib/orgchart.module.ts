@@ -21,7 +21,7 @@ import { DepartmentService } from './services/department.service';
       fromOrgchart.reducer
     )
   ],
-  providers: [BranchService, DepartmentService, PositionService]
+  providers: [BranchService, PositionService, DepartmentService],
 })
 export class OrgchartModule {
 }

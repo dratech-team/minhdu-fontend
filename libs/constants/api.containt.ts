@@ -7,4 +7,6 @@ export const Api = {
   EMPLOYEE: 'employee',
   PAYROLL: 'payroll',
   SALARY: 'salary',
+  RELATIVE: 'relative',
+  DEGREE: 'degree',
 };
