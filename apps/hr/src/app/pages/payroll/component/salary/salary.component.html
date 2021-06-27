@@ -6,8 +6,8 @@
     </div>
   </div>
   <form [formGroup]="formGroup" (submit)="onSubmit()">
-    <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)" dynamicHeight >
-      <mat-tab class="col-12 " label='Một nhân viên'>
+    <mat-tab-group (selectedTabChange)="tabChanged($event)" dynamicHeight >
+      <mat-tab class="col-12 " label='Thông tin đơn'>
         <div [formGroup]="formGroup" class='tab'>
           <!--Basic - Lương cơ bản-->
           <div *ngIf="data.type === type.BASIC " class="form-group">
@@ -173,33 +173,35 @@
             <div class="row mb-5 title-popup">
               <span>Thêm lương ngoài giờ</span>
             </div>
-            <div class="row datepicker" >
-              <div class="date-or-time col ml-2">
-                <div class="row title-item mb-1">
-                  <span> tăng ca</span>
-                  <div class="star">*</div>
+            <div>
+              <div class="row datepicker" >
+                <div class="date-or-time col ">
+                  <div class="row title-item mb-1">
+                    <span> tăng ca</span>
+                    <div class="star">*</div>
+                  </div>
+                  <div class="row mb-3">
+                    <mat-select
+                      class="form-control col"
+                      formControlName="unit"
+                    >
+                      <mat-option value="DAY">Ngày</mat-option>
+                      <mat-option value="HOUR">Giờ</mat-option>
+                    </mat-select>
+                  </div>
                 </div>
-                <div class="row mb-3" [formGroup]="formGroup" *ngIf='(payroll$|async) as payroll'>
-                  <mat-select
-                    class="form-control col"
-                    formControlName="unit"
-                  >
-                    <mat-option value="DAY">Ngày</mat-option>
-                    <mat-option value="HOUR">Giờ</mat-option>
-                  </mat-select>
-                </div>
-              </div>
-              <div class="date-or-time col ml-2">
-                <div class="row title-item mb-1">
-                  <span>Ngày</span>
-                  <div class="star">*</div>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input
-                    type="date"
-                    class="form-control"
-                    formControlName="datetime"
-                  >
+                <div class="date-or-time col ml-2">
+                  <div class="row title-item mb-1">
+                    <span>Ngày</span>
+                    <div class="star">*</div>
+                  </div>
+                  <div class="row mb-3" [formGroup]="formGroup">
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="datetime"
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -328,156 +330,11 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab *ngIf='data.type === type.BASIC||data.type === type.STAY||data.type === type.OVERTIME ' class="col-12 " label="Nhiều nhân viên">
-          <div [formGroup]="formGroup"  class='tab'>
-            <!--Basic - Lương cơ bản-->
-            <div *ngIf="data.type === type.BASIC " class="form-group">
-              <div class="row mb-5 title-popup">
-                <span>Thêm lương cơ bản</span>
-              </div>
-              <div class="contract-salary">
-                <div class="row title-item mb-1">
-                  <span>Loại lương</span>
-                  <div class="star">*</div>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input class="form-control  px-1" placeholder="Thêm loại lương" formControlName="title">
-                </div>
-              </div>
-              <div class="basic-salary">
-                <div class="row title-item mb-1">
-                  <span>Mức lương</span>
-                  <div class="star">*</div>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input
-                    class="form-control"
-                    type="number"
-                    placeholder="Nhập mức lương"
-                    formControlName="price"
-                  >
-                </div>
-              </div>
-            </div>
-            <!--Allowance stayed - Phụ cáp ở lại ảnh hưởng tới lương + / - -->
-            <div *ngIf="data.type === type.STAY " class="form-group" [formGroup]="formGroup">
-              <div class="row mb-5 title-popup">
-                <span> Sửa tiền phụ cấp</span>
-              </div>
-              <div class="name-allowance">
-                <div class="row title-item mb-1">
-                  <span>Tên phụ cấp</span>
-                  <div class="star">*</div>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input class="form-control" placeholder="Nhập phụ cấp" formControlName="title">
-                </div>
-              </div>
-              <div class=level-allowance>
-                <div class="row title-item mb-1">
-                  <span>Mức phụ cấp</span>
-                  <div class="star">*</div>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input type="number" class="form-control" placeholder="Nhập mức phụ cấp" formControlName="price">
-                </div>
-              </div>
-            </div>
-            <div *ngIf="data.type === type.OVERTIME " class="form-group" >
-              <div class="row mb-5 title-popup">
-                <span>Thêm lương ngoài giờ</span>
-              </div>
-              <div class="row datepicker" >
-                <div class="date-or-time col">
-                  <div class="row title-item mb-1">
-                    <span> tăng ca</span>
-                    <div class="star">*</div>
-                  </div>
-                  <div class="row mb-3" [formGroup]="formGroup" *ngIf='(payroll$|async) as payroll'>
-                    <mat-select
-                      class="form-control col"
-                      formControlName="unit"
-                    >
-                      <mat-option value="DAY">Ngày</mat-option>
-                      <mat-option value="HOUR">Giờ</mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-                <div class="date-or-time col">
-                  <div class="row title-item mb-1">
-                    <span>Ngày</span>
-                    <div class="star">*</div>
-                  </div>
-                  <div class="row mb-3" [formGroup]="formGroup">
-                    <input
-                      type="date"
-                      class="form-control"
-                      formControlName="datetime"
-                    >
-                  </div>
-                </div>
-              </div>
-              <div *ngIf=" formGroup.value.unit =='DAY'">
-                <div class="row">
-                  <div class="col">
-                    <div class="row title-item mb-1">
-                      <span>Hệ số</span>
-                      <div style="color: red">*</div>
-                    </div>
-                    <div class="row mb-3" [formGroup]="formGroup">
-                      <input
-                        type="number"
-                        class="form-control"
-                        placeholder="Nhập hệ số"
-                        formControlName="rate"
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="formGroup.value.unit === 'HOUR'">
-                <div class="work-time">
-                  <div class="row">
-                    <div class="col mr-2">
-                      <div class="row title-item mb-1">
-                        <span>Giờ làm việc</span>
-                        <div class="star">*</div>
-                      </div>
-                      <div class="row mb-3" [formGroup]="formGroup">
-                        <input
-                          type="number"
-                          class="form-control px-1"
-                          placeholder="Nhập số giờ làm việc"
-                          formControlName="times"
-                          min="0"
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="unit-price">
-                  <div class="row title-item mb-1">
-                    <span>Đơn giá (1 giờ)</span>
-                    <div class="star">*</div>
-                  </div>
-                  <div class="row mb-3" [formGroup]="formGroup">
-                    <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price">
-                  </div>
-                </div>
-              </div>
-              <div class="note">
-                <div class="row title-item mb-1">
-                  <span>Chú thích</span>
-                </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input class="form-control" placeholder="Nhập chú thích " formControlName="note">
-                </div>
-              </div>
-            </div>
-          </div>
+      <mat-tab *ngIf='data.type === type.OVERTIME ' class="col-12 " label="Chọn nhân viên">
+      <app-pick-employee (checkEvent)='pickEmployees($event)'></app-pick-employee>
       </mat-tab>
     </mat-tab-group>
-    <div class="footer-popup row">
+    <div class="footer-popup row ml-4">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
       <button type="submit" [mat-dialog-close]="onSubmit()" class="btn btn-ok ">Lưu</button>
       <button type="button" class="btn  award"  data-toggle="tooltip"

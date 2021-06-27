@@ -1,6 +1,5 @@
+import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { createAction, props } from '@ngrx/store';
-import { Branch } from '@minhdu-fontend/data-models';
-
 
 export const init = createAction('[Orgchart Page] Init');
 
@@ -11,7 +10,7 @@ export const loadOrgchartSuccess = createAction(
 
 export const addBranch = createAction(
   '[Orgchart/API] Add Branch',
-  props<{ name: string }>()
+  props<{ branch: Branch }>()
 );
 
 export const updateBranch = createAction(
@@ -19,9 +18,14 @@ export const updateBranch = createAction(
   props<{ id: number, name: string }>()
 );
 
+export const deleteBranch = createAction(
+  '[Orgchart/API] Update Branch',
+  props<{ id: number }>()
+);
+
 export const addDepartment = createAction(
   '[Orgchart/API] Add Department',
-  props<{ name: string, branchId: number }>()
+  props<{ department: Department }>()
 );
 
 export const updateDepartment = createAction(
@@ -29,14 +33,24 @@ export const updateDepartment = createAction(
   props<{ id: number, name: string }>()
 );
 
+export const deleteDepartment = createAction(
+  '[Orgchart/API] Delete Department',
+  props<{ id: number }>()
+);
+
 export const addPosition = createAction(
   '[Orgchart/API] Add Position',
-  props<{ name: string, workday: number, departmentId: number }>()
+  props<{ position: Position }>()
 );
 
 export const updatePosition = createAction(
   '[Orgchart/API] Update Position',
-  props<{ id: number, name: string }>()
+  props<{ id: number, name: string, workday: number }>()
+);
+
+export const deletePosition = createAction(
+  '[Orgchart/API] Delete Position ',
+  props<{ id: number }>()
 );
 
 export const loadOrgchartFailure = createAction(
@@ -44,14 +58,18 @@ export const loadOrgchartFailure = createAction(
   props<{ error: any }>()
 );
 
+
 export const OrgchartActions = {
   init,
   loadOrgchartSuccess,
   addBranch,
   updateBranch,
+  deleteBranch,
   addDepartment,
   updateDepartment,
+  deleteDepartment,
   addPosition,
   updatePosition,
+  deletePosition,
   loadOrgchartFailure
 };

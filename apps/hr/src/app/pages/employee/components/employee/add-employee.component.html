@@ -37,10 +37,10 @@
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='isFlatSalary'>Loại lương <span class='star'>*</span></label>
           <mat-select  id='isFlatSalary' class='form-control' formControlName='isFlatSalary'>
-            <mat-option value='flat'>
+            <mat-option value='{{flatSalary.FLAT_SALARY}}'>
               Lương cố định
             </mat-option>
-            <mat-option value='notFlat'>
+            <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>
               Lương không cố định
             </mat-option>
           </mat-select>

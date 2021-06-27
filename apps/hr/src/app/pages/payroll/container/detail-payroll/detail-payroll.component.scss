@@ -104,28 +104,9 @@
   align-items: center
 }
 
-.add {
-  display: flex;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 28px;
-  color: #7749F8
-}
-
-
 .salary {
   display: flex;
   justify-content: flex-end
-}
-
-.edit {
-  cursor: pointer;
-  display: flex;
-  margin-right: 10px;
-  background: #4B3880;
-  padding: 4px;
-  border: solid 1px #4B3880;
-  border-radius: 4px;
 }
 
 .trash {

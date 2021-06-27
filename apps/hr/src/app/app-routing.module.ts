@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './container/default-layout.component';
-import { OrgchartContainer } from './pages/orgchart/containers/orgchart.container';
+import { OrgchartContainer } from './pages/orgchart/containers/orgchart/orgchart.container';
 
 
 const routes: Routes = [
@@ -33,10 +33,10 @@ const routes: Routes = [
       },
       {
         path: 'org-chart',
+        loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartPageModule),
         data: {
           title: 'Hệ thống nhân sự'
         },
-        component: OrgchartContainer
       },
 
       { path: '**', redirectTo: '' }

@@ -63,8 +63,8 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteRelative($event:any, employeeId: number) {
-    this.store.dispatch(EmployeeAction.deleteRelative({ id: $event.id, employeeId: employeeId }));
+  deleteRelative(id:number, employeeId: number) {
+    this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
   }
 
   addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree ) {

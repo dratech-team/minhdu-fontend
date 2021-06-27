@@ -9,6 +9,7 @@ import { SalaryComponent } from '../../component/salary/salary.component';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll.interface';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -41,40 +42,45 @@ export class DetailPayrollComponent implements OnInit {
   addAndUpdateSalary(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary): any {
     const dialogRef = this.dialog.open(SalaryComponent, {
       width: '50%',
-      data: { type, payroll, salary }
+      data: { type, salary }
     });
     dialogRef.afterClosed().subscribe(
+
       (value) => {
         if (value) {
-          console.log(value);
           const add = {
             title: value.title,
             price: value.price,
             type: value.type,
-            employeeId: payroll.employee.id,
             payrollId: payroll.id,
+            employeeIds: value.employeeIds.length > 0 ? value.employeeIds : undefined,
             unit: value.unit,
             times: value.times,
-            datetime: new Date(value.datetime)
+            datetime: new Date(value.datetime),
           };
           if (value.update) {
-            this.store.dispatch(PayrollAction.updateSalary({
-              id: salary?.id,
-              payrollId: payroll.id,
-              salary: add
-            }));
+              this.store.dispatch(PayrollAction.updateSalary({
+                id: salary?.id,
+                payrollId: payroll.id,
+                salary: add
+              }));
           } else {
-            this.store.dispatch(PayrollAction.addSalary({
-              payrollId: payroll.id,
-              salary: add
-            }));
+              this.store.dispatch(PayrollAction.addSalary({
+                payrollId: payroll.id,
+                salary: add
+              }));
           }
         }
       }
     );
   }
 
-  removeSalary(id: number , payrollId: number) {
-    this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
+  removeSalary(id: number, payrollId: number) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent);
+    dialogRef.afterClosed().subscribe((value) => {
+      if (value) {
+        this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
+      }
+    });
   }
 }

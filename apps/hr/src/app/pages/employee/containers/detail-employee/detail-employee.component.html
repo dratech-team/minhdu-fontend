@@ -8,7 +8,7 @@
         <img
           class='rounded-circle row'
           alt='50x50'
-          src='{{employee.profile.avt}}'
+          src='{{employee.avt}}'
           data-holder-rendered='true'
           height='160px'
         />
@@ -31,11 +31,15 @@
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center main-title'>Thông tin chung</div>
-        <button (click)='updateEmployee(employee)' class='btn btn-edit'>
-          <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
+        <button
+          data-toggle='tooltip'
+          data-placement='top'
+          title=' chỉnh sửa '
+          class='edit animated'
+          (click)='updateEmployee(employee)'>
+          <img style='height: 15px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
-
       <div class='row mt-3'>
         <div class='col-6  form-group'>
           <div class=' ml-1 row align-items-center'>
@@ -54,7 +58,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{employee.profile.firstName}} {{employee.profile.lastName}}
+             {{employee.firstName}} {{employee.lastName}}
             </span>
             </div>
           </div>
@@ -66,17 +70,17 @@
               <label class='col-md-2 py-2'
                      style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
                 <input disabled type='radio' name='group1[]' class='mr-1 ml-1'
-                       [checked]="employee.profile.gender === 'FEMALE'">
+                       [checked]="employee.gender === 'FEMALE'">
                 Nữ
               </label>
               <label class='col-md-2 py-2'
                      style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
-                <input disabled type='radio' name='group1[]' class='mr-1' [checked]="employee.profile.gender ==='MALE'">Nam
+                <input disabled type='radio' name='group1[]' class='mr-1' [checked]="employee.gender ==='MALE'">Nam
               </label>
               <label class='col-md-2 py-2'
                      style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54'>
                 <input disabled type='radio' name='group1[]' class='mr-1'
-                       [checked]="employee.profile.gender === 'OTHER'">Khác
+                       [checked]="employee.gender === 'OTHER'">Khác
               </label>
             </div>
           </div>
@@ -85,11 +89,11 @@
               <span>Ngày sinh :</span>
             </div>
             <div class='col-md-8 py-2'>
-                 <span class='contain-detail' *ngIf='employee.profile.birthday === null'>
+                 <span class='contain-detail' *ngIf='employee.birthday === null'>
                     Chưa cập nhật
                  </span>
-              <span style=' font-size: 20px' *ngIf='employee.profile.birthday'>
-                  {{employee.profile.birthday|date:'dd/MM/yyyy'}}
+              <span style=' font-size: 20px' *ngIf='employee.birthday'>
+                  {{employee.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
           </div>
@@ -99,7 +103,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style='color: #3C3B54'>
-              {{employee.profile.birthplace === null ? 'Chưa cập nhật' : employee.profile.birthplace }}
+              {{employee.birthplace === null ? 'Chưa cập nhật' : employee.birthplace }}
             </span>
             </div>
           </div>
@@ -109,7 +113,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-               {{employee.profile.identify}}
+               {{employee.identify}}
             </span>
             </div>
           </div>
@@ -118,11 +122,11 @@
               <span>Ngày cấp:</span>
             </div>
             <div class='col-md-8 py-2'>
-                <span class='contain-detail' *ngIf='employee.profile.idCardAt === null '>
+                <span class='contain-detail' *ngIf='employee.idCardAt === null '>
                 Đang cập nhật
                 </span>
-              <span class='contain-detail' *ngIf='employee.profile.idCardAt !== null '>
-                {{ employee.profile.idCardAt|date:'dd/MM/yyy'}}
+              <span class='contain-detail' *ngIf='employee.idCardAt !== null '>
+                {{ employee.idCardAt|date:'dd/MM/yyy'}}
                 </span>
             </div>
           </div>
@@ -132,7 +136,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-              {{employee.profile.issuedBy}}
+              {{employee.issuedBy}}
             </span>
             </div>
           </div>
@@ -142,7 +146,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style='color: #3C3B54'>
-              {{employee.profile.ethnicity === null ? 'Chưa cập nhật' : employee.profile.ethnicity }}
+              {{employee.ethnicity === null ? 'Chưa cập nhật' : employee.ethnicity }}
             </span>
             </div>
           </div>
@@ -154,7 +158,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #3C3B54'>
-              {{employee.position.department.branch.name}}
+              {{employee?.position?.department?.branch?.name}}
             </span>
             </div>
 
@@ -166,7 +170,7 @@
             <div class='col py-2'>
               <div class='font-weight-bold p-1'
               >
-                <div style='margin: 0 20px; '>{{employee.position.department.name}}</div>
+                <div style='margin: 0 20px; '>{{employee?.position?.department?.name}}</div>
               </div>
             </div>
 
@@ -188,7 +192,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #3C3B54'>
-              {{employee.profile.address}}
+              {{employee.address}}
             </span>
             </div>
           </div>
@@ -198,7 +202,7 @@
             </div>
             <div class='col py-2 '>
               <div class='contain-detail'>
-                <div>{{employee?.profile?.ward?.name}}</div>
+                <div>{{employee?.ward?.name}}</div>
               </div>
             </div>
           </div>
@@ -208,7 +212,7 @@
             </div>
             <div class='col py-2 '>
               <div class='contain-detail'>
-                {{employee?.profile?.ward?.district?.name}}
+                {{employee?.ward?.district?.name}}
               </div>
             </div>
           </div>
@@ -218,7 +222,7 @@
             </div>
             <div class=' col py-2 '>
               <div class='contain-detail'>
-                {{employee?.profile?.ward?.district?.province?.name}}
+                {{employee?.ward?.district?.province?.name}}
               </div>
             </div>
           </div>
@@ -228,7 +232,7 @@
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style='color: #3C3B54'>
-               {{employee.profile.religion === null ? 'Chưa cập nhật' : employee.profile.religion }}
+               {{employee.religion === null ? 'Chưa cập nhật' : employee.religion }}
             </span>
             </div>
           </div>
@@ -248,7 +252,7 @@
                  Chưa cập nhật
               </span>
               <span class='contain-detail' *ngIf='employee?.bhyt !==null'>
-               {{employee.profile.birthday| date: 'dd/MM/yyyy'}}
+               {{employee.birthday| date: 'dd/MM/yyyy'}}
             </span>
             </div>
           </div>
@@ -315,7 +319,7 @@
                   Chưa cập nhật
                 </span>
               <span class='contain-detail'>
-                    {{employee.profile.birthday|date:'dd/MM/yyyy'}}
+                    {{employee.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
           </div>
@@ -354,7 +358,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #7749F8  '>
-                {{employee.profile.phone === null ? 'Chưa cập nhật' : employee.profile.phone}}
+                {{employee.phone === null ? 'Chưa cập nhật' : employee.phone}}
             </span>
             </div>
           </div>
@@ -364,7 +368,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{employee.profile.email === null ? 'Chưa cập nhật' : employee.profile?.email}}
+                {{employee.email === null ? 'Chưa cập nhật' : employee?.email}}
             </span>
             </div>
           </div>
@@ -374,7 +378,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{employee.social === null ? 'Chưa cập nhật' : employee.social?.facebook}}
+                {{employee?.facebook === null ? 'Chưa cập nhật' : employee.facebook}}
             </span>
             </div>
           </div>
@@ -384,7 +388,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{employee.social === null ? 'Chưa cập nhật' : employee.social?.zalo}}
+                {{employee?.zalo === null ? 'Chưa cập nhật' : employee?.zalo}}
             </span>
             </div>
           </div>
@@ -394,7 +398,7 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{employee.profile.birthplace === null ? 'Chưa cập nhật' : employee.profile.birthplace}}
+                {{employee.birthplace === null ? 'Chưa cập nhật' : employee.birthplace}}
             </span>
             </div>
           </div>
@@ -404,9 +408,11 @@
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center main-title mr-4'>Thành phần gia đình</div>
-        <button (click)='addAndUpdateRelative(employee.id )' class='btn btn-edit'>
-          <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
-        </button>
+        <div class='col-md-4 add' (click)='addAndUpdateRelative(employee.id )'>
+          <span class='mr-1 font-weight-bold ' >Thêm mục</span>
+          <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+               alt='add icon'>
+        </div>
       </div>
       <div class='mt-3 '>
         <table class='mt-3'>
@@ -417,20 +423,33 @@
             <th class='text-center'>Số điện thoại</th>
             <th class='text-center'>Email</th>
             <th class='text-center'>Liên hệ khẩn cấp</th>
+            <th class='text-center'>Xóa</th>
           </tr>
           <tr *ngFor='let relative of employee.relatives' (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
-            <td class='text-center'>{{relative.profile.firstName}} {{relative.profile.lastName}}</td>
+            <td class='text-center'>{{relative.firstName}} {{relative.lastName}}</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.FATHER'>Cha</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.MOTHER'>Mẹ</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.DAUGHTER'>Con gái</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.SON'>Con trai</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.HUSBAND'>Chồng</td>
             <td class='text-center' *ngIf='relative.relationship === relationship.WIFE'>Vợ</td>
-            <td class='text-center'>{{relative.profile.birthday |date:'dd/MM/yyyy'}}</td>
-            <td class='text-center'>{{relative.profile.phone ? relative.profile.phone : 'Chưa cập nhật'}}</td>
-            <td class='text-center'>{{relative.profile.email ? relative.profile.email : 'Chưa cập nhật'}}</td>
+            <td class='text-center'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
+            <td class='text-center'>{{relative.phone ? relative.phone : 'Chưa cập nhật'}}</td>
+            <td class='text-center'>{{relative.email ? relative.email : 'Chưa cập nhật'}}</td>
             <td class='d-flex justify-content-center'>
-              <input disabled type='checkbox' [checked]='relative.sos'></td>
+              <input disabled type='checkbox' [checked]='relative.sos'>
+            </td>
+            <td>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title='xóa'
+                class='trash animated'
+                (click)='deleteRelative(relative.id , employee.id)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+              </button>
+            </td>
           </tr>
         </table>
       </div>
@@ -438,9 +457,11 @@
     <div class='col-12 mt-5'>
       <div class='row'>
         <div class=' align-items-center main-title mr-4'>Trình độ bằng cấp</div>
-        <button (click)='addAndUpdateDegree(employee.id)' class='btn btn-edit'>
-          <img style='width: 5px;' src='libs/img/share/pencil-fill.svg' alt='Edit' />
-        </button>
+        <div class='col-md-4 add' (click)='addAndUpdateDegree(employee.id)' >
+          <span class='mr-1 font-weight-bold'>Thêm mục</span>
+          <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+               alt='add icon'>
+        </div>
       </div>
       <div class='mt-3 '>
         <table class='mt-3'>

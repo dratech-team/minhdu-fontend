@@ -20,7 +20,7 @@ export const addEmployee = createAction(
 
 export const addEmployeeSuccess = createAction(
   '[ADD_EMPLOYEE] Add Employee Success',
-  props<{ employee: Employee,}>()
+  props<{ employee: Employee, }>()
 );
 
 export const addRelative = createAction(
@@ -35,12 +35,12 @@ export const addDegree = createAction(
 
 export const getEmployee = createAction(
   '[GET EMPLOYEE] Get Employee',
-  props<{ id: number}>()
+  props<{ id: number }>()
 );
 
 export const getEmployeeSuccess = createAction(
   '[GET EMPLOYEE] Get Employee Success',
-  props<{employee: Employee}>()
+  props<{ employee: Employee }>()
 );
 
 export const updateEmployee = createAction(
@@ -50,17 +50,17 @@ export const updateEmployee = createAction(
 
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: Update<Employee>}>()
+  props<{ employee: Update<Employee> }>()
 );
 
 export const updateRelative = createAction(
   '[UPDATE_RELATIVE] Update Relative',
-  props<{employeeId:number, id: number,relative: any }>()
+  props<{ employeeId: number, id: number, relative: any }>()
 );
 
 export const updateDegree = createAction(
   '[UPDATE_RELATIVE] Update Degree',
-  props<{id: number, employeeId:number, degree: any }>()
+  props<{ id: number, employeeId: number, degree: any }>()
 );
 
 export const deleteEmployee = createAction(
@@ -70,7 +70,7 @@ export const deleteEmployee = createAction(
 
 export const deleteEmployeeSuccess = createAction(
   '[DELETE_EMPLOYEE] Delete Employee Success',
-  props<{id: number}>()
+  props<{ id: number }>()
 );
 
 export const deleteRelative = createAction(
@@ -80,7 +80,7 @@ export const deleteRelative = createAction(
 
 export const deleteDegree = createAction(
   '[DELETE_DEGREE] Delete Degree ',
-  props<{ id: number,employeeId: number }>()
+  props<{ id: number, employeeId: number }>()
 );
 
 export const EmployeeAction = {
@@ -99,5 +99,5 @@ export const EmployeeAction = {
   deleteEmployee,
   deleteEmployeeSuccess,
   deleteRelative,
-  deleteDegree,
+  deleteDegree
 };

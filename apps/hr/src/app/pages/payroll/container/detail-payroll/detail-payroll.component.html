@@ -13,14 +13,14 @@
               <img
                 class='rounded-circle'
                 alt='50x50'
-                src='{{payroll.employee.profile?.avt}}'
+                src='{{payroll.employee?.avt}}'
                 data-holder-rendered='true'
                 height='64px'
               />
             </div>
             <div class='col-md-6'>
               <div class='row' style='width: 100%;'>
-                <span>{{payroll.employee.profile?.firstName}} {{payroll.employee.profile?.lastName}}</span>
+                <span>{{payroll.employee?.firstName}} {{payroll.employee?.lastName}}</span>
               </div>
               <div class='row mt-2'
                    style='border: solid 1px #EB5757;border-radius: 20px;height: 24px ;max-width: 250px;'>
@@ -85,15 +85,15 @@
             >
               {{salary.price}}
             </div>
-            <div style='display: flex'>
-              <button
-                data-toggle='tooltip'
-                data-placement='top'
-                title=' chỉnh sửa '
-                class='edit animated'
-                (click)='addAndUpdateSalary(type.BASIC, payroll,salary)'>
-                <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-              </button>
+            <div style='display: flex'> <button
+              data-toggle='tooltip'
+              data-placement='top'
+              title=' chỉnh sửa '
+              class='edit animated'
+              (click)='addAndUpdateSalary(type.BASIC, payroll,salary)'>
+              <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+            </button>
+
             </div>
           </div>
         </div>
@@ -181,8 +181,8 @@
         <div class=' row  table'>
           <div class='row col-md-12 title-table'>
             <div class='col-md-8 title'>Tăng ca</div>
-            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.OVERTIME, payroll ) '><span
-              class='mr-1'>Thêm mục</span>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.OVERTIME, payroll ) '>
+              <span class='mr-1'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                    alt='add icon'>
             </div>

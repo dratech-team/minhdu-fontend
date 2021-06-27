@@ -6,13 +6,14 @@ import { BranchService } from '../services/branch.service';
 import { throwError } from 'rxjs';
 import { DepartmentService } from '../services/department.service';
 import { PositionService } from '../services/position.service';
+import { OrgchartService } from '../services/orgchart.service';
 
 @Injectable()
 export class OrgchartEffects {
   init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.init),
-      mergeMap(() => this.branchService.getAll()),
+      mergeMap(() => this.orgchartService.getAll()),
       map(branches => OrgchartActions.loadOrgchartSuccess({ branches })),
       catchError(err => throwError(err))
     )
@@ -21,7 +22,7 @@ export class OrgchartEffects {
   addBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.addBranch),
-      switchMap(param => this.branchService.addOne(param.name).pipe(
+      switchMap(param => this.branchService.addOne(param.branch).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -31,17 +32,28 @@ export class OrgchartEffects {
   updateBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.updateBranch),
-      switchMap(param => this.branchService.update(param.id, param.name).pipe(
+      switchMap(param => this.branchService.update(param.id, { name: param.name }).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
     ), { dispatch: true }
   );
 
+  deleteBranch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrgchartActions.deleteBranch),
+      switchMap(param => this.branchService.delete(param.id).pipe(
+        map(_ => OrgchartActions.init()),
+        catchError(err => throwError(err))
+      ))
+    ), { dispatch: true }
+  );
+
+
   addDepartment$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.addDepartment),
-      switchMap(param => this.departmentService.addOne(param.name, param.branchId).pipe(
+      switchMap(param => this.departmentService.addOne(param.department).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -51,7 +63,17 @@ export class OrgchartEffects {
   updateDepartment$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.updateDepartment),
-      switchMap(param => this.departmentService.update(param.id, param.name).pipe(
+      switchMap(param => this.departmentService.update(param.id, { name: param.name }).pipe(
+        map(_ => OrgchartActions.init()),
+        catchError(err => throwError(err))
+      ))
+    )
+  );
+
+  deleteDepartment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrgchartActions.deleteDepartment),
+      switchMap(param => this.departmentService.delete(param.id).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -61,7 +83,7 @@ export class OrgchartEffects {
   addPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.addPosition),
-      switchMap(param => this.positionService.addOne(param.name, param.workday, param.departmentId).pipe(
+      switchMap(param => this.positionService.addOne(param.position).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -71,7 +93,17 @@ export class OrgchartEffects {
   updatePosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.updatePosition),
-      switchMap(param => this.positionService.update(param.id, param.name).pipe(
+      switchMap(param => this.positionService.update(param.id, { name: param.name }).pipe(
+        map(_ => OrgchartActions.init()),
+        catchError(err => throwError(err))
+      ))
+    )
+  );
+
+  deletePosition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrgchartActions.deletePosition),
+      switchMap(param => this.positionService.delete(param.id).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -81,6 +113,7 @@ export class OrgchartEffects {
   constructor(
     private actions$: Actions,
     private branchService: BranchService,
+    private orgchartService: OrgchartService,
     private departmentService: DepartmentService,
     private positionService: PositionService
   ) {

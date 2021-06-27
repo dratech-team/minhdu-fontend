@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, delay, map, switchMap, timeout } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../service/payroll.service';
 import { SalaryService } from '../service/salary.service';
-
 
 @Injectable()
 export class PayrollEffect {
@@ -31,7 +30,8 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => this.salaryService.addOne(props.salary).pipe(
-        map(() => PayrollAction.getPayroll({ id: props.payrollId }))
+        map(() => PayrollAction.getPayroll({ id: props.payrollId })),
+        catchError((err) => throwError(err))
       ))
     ));
 
@@ -57,9 +57,11 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.updateSalary),
       switchMap((props) => this.salaryService.update(props.id, props.salary).pipe(
-        map(() => PayrollAction.getPayroll({ id: props.payrollId }))
+        map(() => PayrollAction.getPayroll({ id: props.payrollId })),
+        catchError((err) => throwError(err))
       ))
     ));
+
   deletePayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.deletePayroll),
@@ -73,13 +75,11 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.deleteSalary),
       switchMap((props) => this.salaryService.delete(props.id).pipe(
-        delay(100),
-        map(()=> PayrollAction.getPayroll({id:props.PayrollId})),
+        map(() => PayrollAction.getPayroll({ id: props.PayrollId })),
         catchError((err) => throwError(err))
         )
-      ),
+      )
     ));
-
 
   constructor(
     private readonly action$: Actions,

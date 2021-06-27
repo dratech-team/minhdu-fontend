@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { PayrollModule } from './pages/payroll/payroll.module';
+import { EmployeeModule } from './pages/employee/employee.module';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     MatSelectModule,
     MatRadioModule,
     OrgchartModule,
+    EmployeeModule,
     PayrollModule,
   ],
   declarations: [

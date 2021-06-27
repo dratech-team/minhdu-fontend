@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EmployeeService } from '../service/employee.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeAction } from './employee.action';
 import { RelativeService } from '../service/relative.service';
@@ -31,6 +31,7 @@ export class EmployeeEffect {
   this.action$.pipe(
     ofType(EmployeeAction.addRelative),
     switchMap((props) => this.relativeService.addOne(props.relative).pipe(
+      delay(10),
       map(() => EmployeeAction.getEmployee({id : props.relative.employeeId})),
       catchError((err)=> throwError(err))
       )),
@@ -40,6 +41,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.addDegree),
       switchMap((props) => this.degreeService.addOne(props.degree).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id : props.degree.employeeId})),
         catchError((err)=> throwError(err))
       )),
@@ -57,6 +59,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateEmployee),
       switchMap((props) => this.employeeService.update(props.id, props.employee).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.id})),
         catchError((err) => throwError(err))
         )
@@ -67,6 +70,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateRelative),
       switchMap((props) => this.relativeService.update(props.id,  props.relative).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId })),
         catchError((err) => throwError(err))
         )),
@@ -76,6 +80,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateDegree),
       switchMap((props) => this.degreeService.update(props.id,  props.degree).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId })),
         catchError((err) => throwError(err))
       )),
@@ -85,6 +90,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.deleteEmployee),
       switchMap((props) => this.employeeService.delete(props.id).pipe(
+        delay(10),
         map(()=>EmployeeAction.deleteEmployeeSuccess({ id : props.id})),
         catchError((err) => throwError(err))
       )),
@@ -94,6 +100,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.deleteRelative),
       switchMap((props) => this.relativeService.delete(props.id ).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId})),
         catchError((err) => throwError(err))
         )),
@@ -103,6 +110,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.deleteDegree),
       switchMap((props) => this.degreeService.delete(props.id).pipe(
+        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId})),
         catchError((err) => throwError(err))
       )),

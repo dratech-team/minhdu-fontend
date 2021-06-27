@@ -71,23 +71,23 @@
     <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)' (contextmenu)='child.onContextMenu($event, employee)'>
       <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
                        (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-      <div class='content-profile default pointer '> {{employee.code}}</div>
-      <div class='content-profile name  pointer'>{{employee.profile.firstName}} {{employee.profile.lastName}}</div>
-      <div class='content-profile default pointer '> {{employee.profile.birthday|date:'dd/MM/yyyy'}}</div>
+      <div class='content-profile default pointer '> {{employee?.code}}</div>
+      <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
+      <div class='content-profile default pointer '> {{employee?.birthday|date:'dd/MM/yyyy'}}</div>
       <div class='content-profile gender pointer '> {{
-        employee.profile.gender === 'MALE' ? 'Nam' :
-          employee.profile.gender === 'FEMALE' ? 'Nữ' :
+        employee.gender === 'MALE' ? 'Nam' :
+          employee.gender === 'FEMALE' ? 'Nữ' :
             'Khác'
         }}</div>
-      <div class='content-profile default pointer '>{{employee.workedAt|date: 'dd/MM/yyyy'}}</div>
-      <div class='content-profile default pointer '>{{employee.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
-      <div class='content-profile default pointer '>{{employee.profile.phone}}</div>
-      <div class='content-profile default pointer '>{{employee.position.department.branch.name}}</div>
-      <div class='content-profile default pointer '> {{employee.position.department.name}}</div>
-      <div class='content-profile default pointer '> {{employee.position.name}}</div>
-      <div class='content-profile default pointer '> {{employee.profile.identify}} </div>
-      <div class='content-profile address pointer '> {{employee.profile.address}}</div>
-      <div class='content-profile note pointer '> {{employee.note}}</div>
+      <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
+      <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
+      <div class='content-profile default pointer '>{{employee?.phone}}</div>
+      <div class='content-profile default pointer '>{{employee?.position?.department?.branch?.name}}</div>
+      <div class='content-profile default pointer '> {{employee?.position?.department?.name}}</div>
+      <div class='content-profile default pointer '> {{employee?.position?.name}}</div>
+      <div class='content-profile default pointer '> {{employee?.identify}} </div>
+      <div class='content-profile address pointer '> {{employee?.address}}</div>
+      <div class='content-profile note pointer '> {{employee?.note}}</div>
     </div>
   </div>
 </div>

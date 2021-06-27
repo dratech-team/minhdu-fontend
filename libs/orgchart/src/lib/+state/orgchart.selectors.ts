@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   ORGCHART_FEATURE_KEY,
   State,
-  orgchartAdapter,
+  orgchartAdapter
 } from './orgchart.reducer';
 
 // Lookup the 'Orgchart' feature state managed by NgRx

@@ -1,0 +1,48 @@
+<div class='container'>
+  <div class='col-12 animated fadeIn'>
+    <div class='header-profile mt-3 '>
+      <div class='border-start title-header col-3'>
+        <div class='title-profile'>Mã nhân Viên</div>
+        <input class='form-control input-profile ' type='search' placeholder='PN10001'>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Tên nhân viên</div>
+        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Đơn vị</div>
+        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+      </div>
+      <div class='border-start title-header col-1  '>
+        <div class='title-profile'>all</div>
+        <mat-checkbox class='example-margin mt-2 ml-3'
+                      [checked]='allSelect'
+                      (change)='setAll($event.checked)'>
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class='outer'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(employees$| async) as employees'
+    >
+      <div class='row-content' *ngFor='let employee of employees'>
+        <div class='content-profile col-3 pointer '> {{employee.code}}</div>
+        <div class='content-profile col-4  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
+        <div class='content-profile col-4  pointer'>{{employee.position?.department?.branch?.name}}</div>
+        <div class='content-profile col-1  pointer'>
+          <mat-checkbox class='checkID'
+                        [checked]="allSelect"
+                        [(ngModel)]='employee.isSelect'
+                        (change)='updateAllSelect(employee.id)'>
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

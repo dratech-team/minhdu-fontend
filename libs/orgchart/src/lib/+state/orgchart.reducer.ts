@@ -21,7 +21,7 @@ export const orgchartAdapter: EntityAdapter<Branch> = createEntityAdapter<Branch
 
 export const initialState: State = orgchartAdapter.getInitialState({
   // set initial required properties
-  loaded: false,
+  loaded: false
 });
 
 const orgchartReducer = createReducer(
@@ -29,14 +29,14 @@ const orgchartReducer = createReducer(
   on(OrgchartActions.init, (state) => ({
     ...state,
     loaded: false,
-    error: null,
+    error: null
   })),
   on(OrgchartActions.loadOrgchartSuccess, (state, { branches }) =>
     orgchartAdapter.setAll(branches, { ...state, loaded: true })
   ),
   on(OrgchartActions.loadOrgchartFailure, (state, { error }) => ({
     ...state,
-    error,
+    error
   }))
 );
 

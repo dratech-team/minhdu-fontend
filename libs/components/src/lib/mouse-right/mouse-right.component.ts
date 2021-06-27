@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ContextMenuService } from 'ngx-contextmenu';
 
 @Component({
@@ -6,35 +6,34 @@ import { ContextMenuService } from 'ngx-contextmenu';
   templateUrl: './mouse-right.component.html',
   styleUrls: ['./mouse-right.component.scss']
 })
-export class MouseRightComponent implements OnInit {
+export class MouseRightComponent {
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
+
   constructor(
     private contextMenuService: ContextMenuService
-  ) { }
-
-  ngOnInit(): void {
-
+  ) {
   }
+
   public onContextMenu($event: MouseEvent, item: any): void {
-    console.log(item);
     this.contextMenuService.show.next({
       event: $event,
-      item: item,
+      item: item
     });
     $event.preventDefault();
     $event.stopPropagation();
   }
 
-  add( item: any): void {
+  add(item: any): void {
     this.addEvent.emit(item);
   }
 
-  delete( item: any): void {
+  delete(item: any): void {
     this.deleteEvent.emit(item);
   }
-  readAndUpdate(item : any): void {
+
+  readAndUpdate(item: any): void {
     this.readAndUpdateEvent.emit(item);
   }
 }

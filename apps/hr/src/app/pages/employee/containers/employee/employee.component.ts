@@ -7,13 +7,14 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { EmployeeAction } from '../../+state/employee.action';
 import { Router } from '@angular/router';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 
 @Component({
-  templateUrl: 'profile.component.html',
-  styleUrls: ['profile.component.scss']
+  templateUrl: 'employee.component.html',
+  styleUrls: ['employee.component.scss']
 
 })
-export class ProfileComponent implements OnInit {
+export class EmployeeComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -39,7 +40,14 @@ export class ProfileComponent implements OnInit {
   }
 
   delete($event: any): void {
-    this.store.dispatch(EmployeeAction.deleteEmployee({ id: $event.id }));
+    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
+      minWidth: '30%',
+    });
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.store.dispatch(EmployeeAction.deleteEmployee({ id: $event.id }));
+      }
+    });
   }
 
   onScroll() {

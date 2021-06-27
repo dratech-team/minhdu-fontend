@@ -9,6 +9,7 @@ import { BranchService } from './services/branch.service';
 import { PositionService } from './services/position.service';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { DepartmentService } from './services/department.service';
+import { OrgchartService } from './services/orgchart.service';
 
 @NgModule({
   imports: [
@@ -21,7 +22,13 @@ import { DepartmentService } from './services/department.service';
       fromOrgchart.reducer
     )
   ],
-  providers: [BranchService, PositionService, DepartmentService],
+  providers: [
+    BranchService,
+    PositionService,
+    DepartmentService,
+    OrgchartService
+  ]
+
 })
 export class OrgchartModule {
 }

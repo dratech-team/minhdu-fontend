@@ -3,12 +3,10 @@ import { RequestPaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
 
-
 export const loadPayrolls = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
   props<RequestPaginate>()
 );
-
 
 export const loadPayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
@@ -17,12 +15,12 @@ export const loadPayrollsSuccess = createAction(
 
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{payroll:any }>()
+  props<{ payroll: any }>()
 );
 
 export const addPayrollSuccess = createAction(
   '[ADD_PAYROLL] Add Payroll Success',
-  props<{ payroll: Payroll,}>()
+  props<{ payroll: Payroll, }>()
 );
 
 export const addSalary = createAction(
@@ -32,12 +30,12 @@ export const addSalary = createAction(
 
 export const getPayroll = createAction(
   '[GET_PAYROLL] Get Payroll',
-  props<{ id: number}>()
+  props<{ id: number }>()
 );
 
 export const getPayrollSuccess = createAction(
   '[GET_PAYROLL] Get Payroll Success',
-  props<{payroll: Payroll}>()
+  props<{ payroll: Payroll }>()
 );
 
 export const updatePayroll = createAction(
@@ -47,12 +45,12 @@ export const updatePayroll = createAction(
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll>}>()
+  props<{ payroll: Update<Payroll> }>()
 );
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{ id?: number,payrollId: number ,salary:any}>()
+  props<{ id?: number, payrollId: number, salary: any }>()
 );
 
 export const deletePayroll = createAction(
@@ -62,7 +60,7 @@ export const deletePayroll = createAction(
 
 export const deletePayrollSuccess = createAction(
   '[DELETE_PAYROLL] Delete Payroll Success',
-  props<{id: number}>()
+  props<{ id: number }>()
 );
 
 export const deleteSalary = createAction(
@@ -84,5 +82,5 @@ export const PayrollAction = {
   updateSalary,
   deletePayroll,
   deletePayrollSuccess,
-  deleteSalary,
+  deleteSalary
 };
