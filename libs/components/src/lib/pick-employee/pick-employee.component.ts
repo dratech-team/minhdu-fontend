@@ -3,6 +3,10 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllEmployee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.selector';
 import { EmployeeAction } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Employee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.interface';
 
 
 @Component({
@@ -10,7 +14,7 @@ import { SalaryTypeEnum } from '@minhdu-fontend/enums';
   templateUrl: './pick-employee.component.html',
   styleUrls: ['./pick-employee.component.scss']
 })
-export class PickEmployeeComponent implements OnInit {
+export class PickEmployeeComponent implements OnInit, OnDestroy {
   @Output() checkEvent = new EventEmitter();
   type = SalaryTypeEnum;
   pageIndex: number = 1;
@@ -18,7 +22,8 @@ export class PickEmployeeComponent implements OnInit {
   allSelect = false;
   employeeIds: number[] = [];
   search!: '';
-  employees$ = this.store.pipe(select(selectorAllEmployee));
+  employees$: Observable<Employee[]> | undefined
+  destroy$: Subject<void> = new Subject();
 
   constructor(
     private readonly store: Store
@@ -27,11 +32,11 @@ export class PickEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.loadEmployees({ skip: 0, take: 30 }));
+    this.employees$ = this.store.pipe(select(selectorAllEmployee)).pipe(takeUntil(this.destroy$));
   }
 
   onScroll() {
-    this.store.dispatch(EmployeeAction.loadEmployees(
-      { skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+    this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 
   updateAllSelect(id: number) {
@@ -41,25 +46,30 @@ export class PickEmployeeComponent implements OnInit {
     } else {
       this.employeeIds.push(id);
     }
-    this.employees$.subscribe(
-      employees => this.allSelect = employees.every(e => e.isSelect === true));
+    // this.employees$.subscribe(
+    //   employees => this.allSelect = employees.every(e => e.isSelect === true));
     this.checkEvent.emit(this.employeeIds);
   }
 
   setAll(checked: boolean) {
     this.allSelect = checked;
-    this.employees$.subscribe(
-      employees =>
-        employees.forEach(e => {
-            if (checked) {
-              this.employeeIds.push(e.id);
-            } else {
-              this.employeeIds = [];
-            }
-            e.isSelect = checked;
-          }
-        )
-    );
+    // this.employees$.subscribe(
+    //   employees =>
+    //     employees.forEach(e => {
+    //         if (checked) {
+    //           this.employeeIds.push(e.id);
+    //         } else {
+    //           this.employeeIds = [];
+    //         }
+    //         e.isSelect = checked;
+    //       }
+    //     )
+    // );
     this.checkEvent.emit(this.employeeIds);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
