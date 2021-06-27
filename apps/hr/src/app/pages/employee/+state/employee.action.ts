@@ -5,7 +5,7 @@ import { Employee } from './employee.interface';
 
 export const loadEmployees = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<RequestPaginate>()
+  props<{RequestPaginate: RequestPaginate, isSelect: boolean}>()
 );
 
 export const LoadEmployeesSuccess = createAction(

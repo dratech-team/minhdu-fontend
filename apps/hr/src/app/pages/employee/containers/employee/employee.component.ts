@@ -30,7 +30,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadEmployees({ skip: 0, take: 30 }));
+    this.store.dispatch(EmployeeAction.loadEmployees({RequestPaginate:{ skip: 0, take: 30 }, isSelect: false}));
   }
 
   add(): void {
@@ -51,7 +51,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   onScroll() {
-    this.store.dispatch(EmployeeAction.loadEmployees({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+    this.store.dispatch(EmployeeAction.loadEmployees({RequestPaginate: { skip: this.pageSize * this.pageIndex++, take: this.pageSize }, isSelect: false}));
   }
 
   readAndUpdate($event: any): void {

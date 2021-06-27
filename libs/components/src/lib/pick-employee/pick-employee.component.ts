@@ -26,12 +26,12 @@ export class PickEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadEmployees({ skip: 0, take: 30 }));
+    this.store.dispatch(EmployeeAction.loadEmployees({RequestPaginate:{ skip: 0, take: 30 }, isSelect: true}));
   }
 
   onScroll() {
     this.store.dispatch(EmployeeAction.loadEmployees(
-      { skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+      {RequestPaginate:{ skip: this.pageSize * this.pageIndex++, take: this.pageSize }, isSelect:false}));
   }
 
   updateAllSelect(id: number) {
