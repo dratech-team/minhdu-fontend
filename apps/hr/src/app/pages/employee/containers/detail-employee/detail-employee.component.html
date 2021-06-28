@@ -425,29 +425,30 @@
             <th class='text-center'>Liên hệ khẩn cấp</th>
             <th class='text-center'>Xóa</th>
           </tr>
-          <tr *ngFor='let relative of employee.relatives' (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
-            <td class='text-center'>{{relative.firstName}} {{relative.lastName}}</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.FATHER'>Cha</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.MOTHER'>Mẹ</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.DAUGHTER'>Con gái</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.SON'>Con trai</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.HUSBAND'>Chồng</td>
-            <td class='text-center' *ngIf='relative.relationship === relationship.WIFE'>Vợ</td>
-            <td class='text-center'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
-            <td class='text-center'>{{relative.phone ? relative.phone : 'Chưa cập nhật'}}</td>
-            <td class='text-center'>{{relative.email ? relative.email : 'Chưa cập nhật'}}</td>
-            <td class='d-flex justify-content-center'>
-              <input disabled type='checkbox' [checked]='relative.sos'>
+          <tr *ngFor='let relative of employee.relatives' >
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.firstName}} {{relative.lastName}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.FATHER'>Cha</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.MOTHER'>Mẹ</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.DAUGHTER'>Con gái</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.SON'>Con trai</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.HUSBAND'>Chồng</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.WIFE'>Vợ</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.phone ? relative.phone : 'Chưa cập nhật'}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.email ? relative.email : 'Chưa cập nhật'}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
+              <input style='margin-left: 50%' disabled type='checkbox' [checked]='relative.sos'>
             </td>
-            <td>
+            <td >
               <button
+                style='margin-left: 35%'
                 data-toggle='tooltip'
                 data-placement='top'
                 title='xóa'
-                class='trash animated'
+                class=' trash '
                 (click)='deleteRelative(relative.id , employee.id)'
               >
-                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                <img  style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
               </button>
             </td>
           </tr>

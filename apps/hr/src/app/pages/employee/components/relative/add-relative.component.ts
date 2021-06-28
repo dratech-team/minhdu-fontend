@@ -57,7 +57,7 @@ export class AddRelativeComponent implements OnInit {
       identify: value.identify.toString(),
       idCardAt: new Date(value.idCardAt),
       issuedBy: value.issuedBy,
-      wardId: value.ward === null ? 3 : value.ward,
+      wardId: value.ward === null ? 1 : value.ward,
       religion: value.religion,
       ethnicity: value.ethnicity,
       address: value.address,

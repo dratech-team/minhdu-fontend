@@ -7,7 +7,6 @@ import { Employee } from '@minhdu-fontend/data-models';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 
 
-
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html',
@@ -36,9 +35,9 @@ export class PickEmployeeComponent implements OnInit, OnDestroy {
       tap(e => console.log('em', e)),
       takeUntil(this.destroy$)
     );
-    this.employees$.subscribe( val =>
-    this.employees = val as Employee[]
-    )
+    this.employees$.subscribe(val =>
+      this.employees = val as Employee[]
+    );
   }
 
   onScroll() {
@@ -59,15 +58,15 @@ export class PickEmployeeComponent implements OnInit, OnDestroy {
 
   setAll(checked: boolean) {
     this.allSelect = checked;
-        this.employees.forEach(e => {
-            e.isSelect = checked;
-            if (checked) {
-              this.employeeIds.push(e.id);
-            } else {
-              this.employeeIds = [];
-            }
-          }
-        )
+    this.employees.forEach(e => {
+        e.isSelect = checked;
+        if (checked) {
+          this.employeeIds.push(e.id);
+        } else {
+          this.employeeIds = [];
+        }
+      }
+    );
     this.checkEvent.emit(this.employeeIds);
   }
 
