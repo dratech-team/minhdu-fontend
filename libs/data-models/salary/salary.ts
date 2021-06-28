@@ -1,4 +1,3 @@
-import { Employee } from '../../../apps/hr/src/app/pages/employee/+state/employee.interface';
 import { Payroll } from '../../../apps/hr/src/app/pages/payroll/+state/payroll.interface';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '../../enums';
 import { SalaryHistory } from './salary-history';

@@ -313,6 +313,31 @@
           }
         }
       }
+    },
+    "employee": {
+      "projectType": "library",
+      "root": "libs/employee",
+      "sourceRoot": "libs/employee/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/employee"],
+          "options": {
+            "jestConfig": "libs/employee/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/employee/src/**/*.ts",
+              "libs/employee/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

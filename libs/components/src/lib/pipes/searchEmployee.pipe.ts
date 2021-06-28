@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Employee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.interface';
+import { Employee } from '@minhdu-fontend/data-models';
+
 
 @Pipe({
   name: 'searchEmployee',

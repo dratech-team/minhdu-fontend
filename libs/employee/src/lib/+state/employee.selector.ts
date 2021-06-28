@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
-import { Employee } from './employee.interface';
+import { Employee } from '../../../../data-models/employee/employee';
 import * as fromEmployee from './employee.reducers';
 import { FeatureName } from '@minhdu-fontend/constants';
 

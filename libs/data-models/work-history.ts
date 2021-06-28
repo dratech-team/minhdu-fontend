@@ -1,4 +1,4 @@
-import { Employee } from 'apps/hr/src/app/pages/employee/+state/employee.interface';
+import { Employee } from '.';
 import { Position } from './orgChart/position';
 
 

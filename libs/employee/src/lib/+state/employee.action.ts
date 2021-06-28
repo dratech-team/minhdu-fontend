@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { RequestPaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
-import { Employee } from './employee.interface';
+import { Employee } from '../../../../data-models/employee/employee';
 
 export const loadEmployees = createAction(
   '[LOAD_EMPLOYEE] Load Employee',

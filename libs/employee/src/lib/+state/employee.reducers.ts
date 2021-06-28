@@ -1,7 +1,9 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { EmployeeAction } from './employee.action';
-import { Employee } from './employee.interface';
+import { Employee } from '../../../../data-models/employee/employee';
+
+export const EMPLOYEE_FEATURE_KEY = 'employee';
 
 export interface EmployeeState extends EntityState <Employee> {
   loaded: boolean,

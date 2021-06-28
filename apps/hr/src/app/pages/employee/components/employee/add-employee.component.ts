@@ -1,11 +1,11 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from '../../service/employee.service';
-import { addEmployee, EmployeeAction } from '../../+state/employee.action';
+import { EmployeeService } from '../../../../../../../../libs/employee/src/lib/service/employee.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
+import { EmployeeAction } from '@minhdu-fontend/employee';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -86,7 +86,7 @@ export class AddEmployeeComponent implements OnInit {
     if (this.data !== null) {
       this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
     } else {
-      this.store.dispatch(addEmployee({ employee: employee }));
+      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
   }
 }

@@ -7,9 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
-import { employeeReducer } from './+state/employee.reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { EmployeeEffect } from './+state/employee.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -19,12 +17,13 @@ import { AddRelativeComponent } from './components/relative/add-relative.compone
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { AddEmployeeComponent } from './components/employee/add-employee.component';
 import { AddDegreeComponent } from './components/degree/add-degree.component';
-import { FeatureName } from '@minhdu-fontend/constants';
 import { DeleteEmployeeComponent } from './components/dialog-delete-employee/delete-employee.component';
 import { EmployeeComponent } from './containers/employee/employee.component';
+import { EmployeeLibModule } from '@minhdu-fontend/employee';
 
 @NgModule({
   imports: [
+    EmployeeLibModule,
     ComponentsModule,
     EmployeeRoutingModule,
     MatExpansionModule,
@@ -35,8 +34,6 @@ import { EmployeeComponent } from './containers/employee/employee.component';
     MatRadioModule,
     StoreModule,
     EffectsModule,
-    StoreModule.forFeature(FeatureName.EMPLOYEE, employeeReducer),
-    EffectsModule.forFeature([EmployeeEffect]),
     CommonModule,
     MatInputModule,
     InfiniteScrollModule,

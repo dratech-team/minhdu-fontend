@@ -10,15 +10,12 @@ import {
   FormalityEnum,
   RelationshipEnum
 } from '@minhdu-fontend/enums';
-import { Employee } from '../../+state/employee.interface';
-import { EmployeeService } from '../../service/employee.service';
 import { MatDialog } from '@angular/material/dialog';
-import { selectCurrentEmployee } from '../../+state/employee.selector';
-import { EmployeeAction } from '../../+state/employee.action';
-import { AddRelativeComponent } from '../../components/relative/add-relative.component';
+import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
+import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
-import { Degree, Relative } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -33,10 +30,10 @@ export class DetailEmployeeComponent implements OnInit {
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly employeeService: EmployeeService,
     private readonly dialog: MatDialog
   ) {
   }
@@ -63,14 +60,14 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteRelative(id:number, employeeId: number) {
+  deleteRelative(id: number, employeeId: number) {
     this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
   }
 
-  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree ) {
+  addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
     this.dialog.open(AddDegreeComponent, {
       width: '40%',
-      data: { employeeId: employeeId, id:id, degree: degree }
+      data: { employeeId: employeeId, id: id, degree: degree }
     });
   }
 

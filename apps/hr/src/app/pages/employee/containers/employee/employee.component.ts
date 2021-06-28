@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { selectorAllEmployee } from '../../+state/employee.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { EmployeeAction } from '../../+state/employee.action';
 import { Router } from '@angular/router';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+
 
 @Component({
   templateUrl: 'employee.component.html',

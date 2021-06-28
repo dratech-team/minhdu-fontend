@@ -14,6 +14,7 @@ export * from './Social'
 export * from './work-history'
 export * from './salary/salary'
 export * from './salary/salary-history'
+export  * from './employee/employee'
 
 
 

@@ -1,5 +1,4 @@
-import { Employee } from '../../employee/+state/employee.interface';
-import {  Salary,  } from '@minhdu-fontend/data-models';
+import { Employee, Salary,  } from '@minhdu-fontend/data-models';
 import { payslip } from '../../../../../../../libs/data-models/salary/payslip';
 
 export interface Payroll {

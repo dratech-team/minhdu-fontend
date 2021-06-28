@@ -6,7 +6,8 @@
   WorkHistory
 } from '@minhdu-fontend/data-models';
  import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
- import { Payroll } from '../../payroll/+state/payroll.interface';
+ import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll.interface';
+
 
 export interface Employee{
   id: number,

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllEmployee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.selector';
-import { EmployeeAction } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { Employee } from '../../../../../apps/hr/src/app/pages/employee/+state/employee.interface';
+import { Employee } from '@minhdu-fontend/data-models';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+
 
 
 @Component({
