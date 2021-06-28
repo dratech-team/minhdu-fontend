@@ -5,7 +5,6 @@ import { EmployeeService } from '../../service/employee.service';
 import { addEmployee, EmployeeAction } from '../../+state/employee.action';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { formatDate } from '@angular/common';
 import { FlatSalary } from '@minhdu-fontend/enums';
 
 @Component({

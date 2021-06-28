@@ -13,8 +13,14 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadEmployees),
-      concatMap((props) => this.employeeService.pagination(props.RequestPaginate)),
-      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employees: ResponsePaginate.data })),
+      concatMap((props) => this.employeeService.pagination(props.RequestPaginate).pipe(
+        map( (value) =>
+          {
+            return value.data.map(e => Object.assign(e, { 'isSelect': true }))
+          }
+        )
+      )),
+      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employees: ResponsePaginate })),
       catchError((err) => throwError(err))
     )
   );
@@ -31,7 +37,6 @@ export class EmployeeEffect {
   this.action$.pipe(
     ofType(EmployeeAction.addRelative),
     switchMap((props) => this.relativeService.addOne(props.relative).pipe(
-      delay(10),
       map(() => EmployeeAction.getEmployee({id : props.relative.employeeId})),
       catchError((err)=> throwError(err))
       )),
@@ -41,7 +46,6 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.addDegree),
       switchMap((props) => this.degreeService.addOne(props.degree).pipe(
-        delay(10),
         map(() => EmployeeAction.getEmployee({id : props.degree.employeeId})),
         catchError((err)=> throwError(err))
       )),
@@ -59,7 +63,6 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateEmployee),
       switchMap((props) => this.employeeService.update(props.id, props.employee).pipe(
-        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.id})),
         catchError((err) => throwError(err))
         )
@@ -70,7 +73,6 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateRelative),
       switchMap((props) => this.relativeService.update(props.id,  props.relative).pipe(
-        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId })),
         catchError((err) => throwError(err))
         )),
@@ -80,7 +82,6 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.updateDegree),
       switchMap((props) => this.degreeService.update(props.id,  props.degree).pipe(
-        delay(10),
         map(() => EmployeeAction.getEmployee({id: props.employeeId })),
         catchError((err) => throwError(err))
       )),

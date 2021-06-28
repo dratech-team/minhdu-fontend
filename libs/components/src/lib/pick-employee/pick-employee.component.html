@@ -27,7 +27,6 @@
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-         *ngIf='(employees$| async) as employees'
     >
       <div class='row-content' *ngFor='let employee of employees'>
         <div class='content-profile col-3 pointer '> {{employee.code}}</div>
@@ -35,7 +34,7 @@
         <div class='content-profile col-4  pointer'>{{employee.position?.department?.branch?.name}}</div>
         <div class='content-profile col-1  pointer'>
           <mat-checkbox class='checkID'
-                        [checked]="allSelect"
+                        [checked]='allSelect'
                         [(ngModel)]='employee.isSelect'
                         (change)='updateAllSelect(employee.id)'>
           </mat-checkbox>
