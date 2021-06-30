@@ -1,9 +1,14 @@
-<div class='row h2'>Bảng lương</div>
-<div class='main-profile'>
+<div class='row h3 ml-3'>Bảng lương nhân viên</div>
+<div class='main-profile '>
   <div class='row ml-1'>
-    <button (click)='addSalary(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Tăng ca</button>
+    <div>
+      <button (click)='addSalary(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+    </div>
+    <div >
+      <button (click)='addPayroll()' class='btn btn-primary mr-2'>Thêm phiếu lương</button>
+    </div>
   </div>
-  <div class='header-profile mt-3 animated fadeIn'>
+  <div class=' header-profile mt-3 animated fadeIn'>
     <div class='border-start title-header default'>
       <div class='title-profile'>Mã nhân viên</div>
       <input class='form-control input-profile ' type='search'>
@@ -75,7 +80,7 @@
       </select>
     </div>
   </div>
-  <div class='outer  animated fadeIn'
+  <div class='outer   animated fadeIn'
        infiniteScroll
        [infiniteScrollDistance]='1'
        [infiniteScrollThrottle]='100'

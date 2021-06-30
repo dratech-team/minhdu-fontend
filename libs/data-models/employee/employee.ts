@@ -1,15 +1,15 @@
- import {
+import {
   Degree,
   Position,
   Relative,
-   Ward,
+  Ward,
   WorkHistory
 } from '@minhdu-fontend/data-models';
- import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
- import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll.interface';
+import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
+import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 
 
-export interface Employee{
+export interface Employee {
   id: number,
   code: string,
   firstName: string,
@@ -36,16 +36,16 @@ export interface Employee{
   leftAt: Date,
   isFlatSalary: boolean,
   position: Position,
-  positionId:number,
+  positionId: number,
   note?: string;
   facebook: string,
   zalo: string,
   degrees?: Degree[],
-  WorkHistories?: WorkHistory,
   bhyt?: string,
   payrolls: Payroll[],
   contracts: ContractsEnum;
-  relatives : Relative[],
+  relatives: Relative[],
   isSelect?: boolean;
+  workHistories?: WorkHistory[];
 }
 

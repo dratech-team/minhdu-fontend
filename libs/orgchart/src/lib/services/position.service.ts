@@ -14,7 +14,7 @@ export class PositionService extends BaseService<Position> {
     super(Api.POSITION, http);
   }
 
-  addOne(props: Position): Observable<Position> {
+  addOne(props: any): Observable<Position> {
     return super.addOne(props);
   }
 

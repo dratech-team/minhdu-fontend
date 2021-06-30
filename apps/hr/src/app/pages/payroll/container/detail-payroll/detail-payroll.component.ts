@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentPayroll } from '../../+state/payroll.selector';
-import { PayrollAction } from '../../+state/payroll.action';
+import { selectCurrentPayroll } from '../../+state/payroll/payroll.selector';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryComponent } from '../../component/salary/salary.component';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
-import { Payroll } from '../../+state/payroll.interface';
+import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
@@ -42,32 +42,21 @@ export class DetailPayrollComponent implements OnInit {
   addAndUpdateSalary(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary): any {
     const dialogRef = this.dialog.open(SalaryComponent, {
       width: '50%',
-      data: { type, salary }
+      data: { type, salary ,payroll}
     });
     dialogRef.afterClosed().subscribe(
-
       (value) => {
         if (value) {
-          const add = {
-            title: value.title,
-            price: value.price,
-            type: value.type,
-            payrollId: payroll.id,
-            employeeIds: value.employeeIds.length > 0 ? value.employeeIds : undefined,
-            unit: value.unit,
-            times: value.times,
-            datetime: new Date(value.datetime),
-          };
           if (value.update) {
               this.store.dispatch(PayrollAction.updateSalary({
                 id: salary?.id,
                 payrollId: payroll.id,
-                salary: add
+                salary: value.data
               }));
           } else {
               this.store.dispatch(PayrollAction.addSalary({
                 payrollId: payroll.id,
-                salary: add
+                salary: value.data
               }));
           }
         }

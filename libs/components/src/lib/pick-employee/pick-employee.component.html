@@ -17,6 +17,7 @@
         <div class='title-profile'>all</div>
         <mat-checkbox class='example-margin mt-2 ml-3'
                       [checked]='allSelect'
+                      [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
         </mat-checkbox>
       </div>
@@ -34,9 +35,9 @@
         <div class='content-profile col-4  pointer'>{{employee.position?.department?.branch?.name}}</div>
         <div class='content-profile col-1  pointer'>
           <mat-checkbox class='checkID'
-                        [checked]='allSelect'
+                        [checked]='employee.isSelect ? employee.isSelect: false'
                         [(ngModel)]='employee.isSelect'
-                        (change)='updateAllSelect(employee.id)'>
+                        (ngModelChange)='updateAllSelect(employee.id)'>
           </mat-checkbox>
         </div>
       </div>

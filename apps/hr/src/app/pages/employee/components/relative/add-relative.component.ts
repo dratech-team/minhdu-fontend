@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { EmployeeAction } from '@minhdu-fontend/employee';
+import { DatePipe } from '@angular/common';
 
 @Component({
   templateUrl: 'add-relative.component.html'
@@ -11,6 +12,7 @@ export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
 
   constructor(
+    public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store
@@ -25,15 +27,25 @@ export class AddRelativeComponent implements OnInit {
       issuedBy: [this.data?.relative?.issuedBy, Validators.required],
       religion: [this.data?.relative?.religion, Validators.required],
       ethnicity: [this.data?.relative?.ethnicity, Validators.required],
-      birthplace: [this.data?.relative?.birthplace, Validators.required],
+
+      birthplace: [
+        this.data?.relative?.birthplace, Validators.required],
       ward: [this.data?.relative?.ward?.id, Validators.required],
       province: [this.data?.relative?.ward?.district?.province?.id, Validators.required],
       district: [this.data?.relative?.ward?.district?.id, Validators.required],
       address: [this.data?.relative?.address, Validators.required],
       identify: [this.data?.relative?.identify, Validators.required],
-      idCardAt: [this.data?.relative?.idCardAt, Validators.required],
+      idCardAt: [
+        this.datePipe.transform(
+          this?.data?.relative?.idCardAt, 'yyyy-MM-dd'
+        )
+        , Validators.required],
       phone: [this.data?.relative?.phone, Validators.required],
-      birthday: [this.data?.relative?.birthday, Validators.required],
+      birthday: [
+        this.datePipe.transform(
+          this?.data?.relative?.birthday, 'yyyy-MM-dd'
+        )
+        , Validators.required],
       gender: [this.data?.relative?.gender, Validators.required],
       note: [this.data?.relative?.note, Validators.required],
       relationship: [this.data?.relative?.relationship, Validators.required],
@@ -52,10 +64,10 @@ export class AddRelativeComponent implements OnInit {
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone,
-      birthday: new Date(value.birthday),
+      birthday: value.birthday? new Date(value.birthday): undefined,
       birthplace: value.birthplace,
       identify: value.identify.toString(),
-      idCardAt: new Date(value.idCardAt),
+      idCardAt: value.idCardAt? new Date(value.idCardAt): undefined,
       issuedBy: value.issuedBy,
       wardId: value.ward === null ? 1 : value.ward,
       religion: value.religion,

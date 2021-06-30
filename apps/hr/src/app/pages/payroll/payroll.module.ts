@@ -6,8 +6,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { PayrollComponent } from './container/payroll/payroll.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { payrollReducer } from './+state/payroll.reducers';
-import { PayrollEffect } from './+state/payroll.effect';
+import { payrollReducer } from './+state/payroll/payroll.reducers';
+import { PayrollEffect } from './+state/payroll/payroll.effect';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { DetailPayrollComponent } from './container/detail-payroll/detail-payroll.component';
@@ -19,6 +19,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { TemplateOvertimeComponent, } from './component/template-overtime/template-overtime.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
+import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
+import { TemplateComponent } from './container/template/template.component';
 
 @NgModule({
   imports: [
@@ -30,13 +37,17 @@ import { MatTabsModule } from '@angular/material/tabs';
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-    EffectsModule.forFeature([PayrollEffect]),
+    StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
+    EffectsModule.forFeature([PayrollEffect,TemplateOvertimeEffect ]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatTabsModule
+    MatTabsModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule
   ],
   declarations:[
     PayrollComponent,
@@ -44,6 +55,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     FilterPipe,
     SalaryComponent,
     AddPayrollComponent,
+    TemplateOvertimeComponent,
+    TemplateComponent,
   ]
 })
 export class PayrollModule{

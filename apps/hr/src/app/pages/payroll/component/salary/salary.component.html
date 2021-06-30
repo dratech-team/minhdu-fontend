@@ -21,6 +21,7 @@
               </div>
               <div class="row mb-3" [formGroup]="formGroup">
                 <mat-select
+                  [disabled]='data.salary'
                   class="form-control col"
                   formControlName="type"
                 >
@@ -177,16 +178,19 @@
               <div class="row datepicker" >
                 <div class="date-or-time col ">
                   <div class="row title-item mb-1">
-                    <span> tăng ca</span>
+                    <span> Loại tăng ca</span>
                     <div class="star">*</div>
                   </div>
-                  <div class="row mb-3">
+                  <div class="row mb-3"  *ngIf='(templateOvertime$|async) as templateOvertime' >
                     <mat-select
                       class="form-control col"
                       formControlName="unit"
                     >
-                      <mat-option value="DAY">Ngày</mat-option>
-                      <mat-option value="HOUR">Giờ</mat-option>
+                      <mat-option  *ngFor='let overtime of templateOvertime' value="{{overtime.unit}}" (click)='getPrice(overtime)'>
+                        {{overtime.title}}
+                        <input [style.display]="'none'" value='{{overtime.title}}' formControlName='title'>
+                      </mat-option>
+
                     </mat-select>
                   </div>
                 </div>
@@ -222,6 +226,17 @@
                   </div>
                 </div>
               </div>
+              <div class="unit-price">
+                <div class="row title-item mb-1">
+                  <span>Giá tăng ca</span>
+                  <div class="star">*</div>
+                </div>
+                <div class="row mb-3" [formGroup]="formGroup" >
+                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price"
+                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                  >
+                </div>
+              </div>
             </div>
             <div *ngIf="formGroup.value.unit === 'HOUR'">
               <div class="work-time">
@@ -248,8 +263,10 @@
                   <span>Đơn giá (1 giờ)</span>
                   <div class="star">*</div>
                 </div>
-                <div class="row mb-3" [formGroup]="formGroup">
-                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price">
+                <div class="row mb-3" [formGroup]="formGroup" >
+                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price"
+                  [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                  >
                 </div>
               </div>
             </div>

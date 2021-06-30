@@ -6,6 +6,8 @@ import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOrgChartComponent } from '../../components/dialog/dialog-org-chart.component';
 import { DialogDeleteComponent } from '../../components/dialog-delete/dialog-delete.component';
+import { DepartmentActions } from '../../../../../../../../libs/orgchart/src/lib/+state/department';
+import { PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 
 @Component({
   templateUrl: 'orgchart.container.html',
@@ -34,13 +36,14 @@ export class OrgchartContainer implements OnInit {
         if (value.name !== undefined) {
           if (type === this.type.DEPARTMENT) {
             if (isEdit) {
-              this.store.dispatch(OrgchartActions.updateDepartment({ name: value.name, id: value.id }));
+              this.store.dispatch(DepartmentActions.updateDepartment({ name: value.name, id: value.id }));
             } else {
-              this.store.dispatch(OrgchartActions.addDepartment({ department:{name: value.name, branchId: value.branchId} }));
+              this.store.dispatch(DepartmentActions.addDepartment({ department:{name: value.name, branchId: value.branchId} }));
             }
           }
           if (type === this.type.BRANCH) {
             if (isEdit) {
+              console.log(value);
               this.store.dispatch(OrgchartActions.updateBranch({ id: value.id, name: value.name }));
             } else {
               this.store.dispatch(OrgchartActions.addBranch({ branch: {name: value.name} }));
@@ -48,11 +51,11 @@ export class OrgchartContainer implements OnInit {
           }
           if (type === this.type.POSITION) {
             if (isEdit) {
-              this.store.dispatch(OrgchartActions.updatePosition(
+              this.store.dispatch(PositionActions.updatePosition(
                 { id: value.id, name: value.name, workday: value.workday }));
             } else {
-              this.store.dispatch(OrgchartActions.addPosition(
-                {position:{name: value.name, departmentId: value.departmentId, workday: value.workday }}));
+              this.store.dispatch(PositionActions.addPosition(
+                {position: {name: value.name, departmentId: value.id, workday: value.workday}}));
             }
           }
         }
@@ -67,17 +70,15 @@ export class OrgchartContainer implements OnInit {
       data: {title},
     });
     dialogRef.afterClosed().subscribe((value) =>{
-
         if(value){
           if(type === this.type.BRANCH){
             this.store.dispatch(OrgchartActions.deleteBranch({id:id}))
           }
           if(type === this.type.DEPARTMENT){
-            console.log('vao xóa rồi nè')
-            this.store.dispatch(OrgchartActions.deleteDepartment({id:id}))
+            this.store.dispatch(DepartmentActions.deleteDepartment({id:id}))
           }
           if(type === this.type.POSITION){
-            this.store.dispatch(OrgchartActions.deletePosition({id:id}))
+            this.store.dispatch(PositionActions.deletePosition({id:id}))
           }
         }
     }

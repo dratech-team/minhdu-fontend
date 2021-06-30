@@ -1,8 +1,6 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
 import { Employee } from '@minhdu-fontend/data-models';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 
@@ -12,17 +10,16 @@ import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
   templateUrl: './pick-employee.component.html',
   styleUrls: ['./pick-employee.component.scss']
 })
-export class PickEmployeeComponent implements OnInit, OnDestroy {
+export class PickEmployeeComponent implements OnInit {
   @Output() checkEvent = new EventEmitter();
   type = SalaryTypeEnum;
   pageIndex: number = 1;
   pageSize: number = 30;
-  allSelect = false;
+  allSelect :boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
   search!: '';
-  employees$: Observable<Employee[]> | undefined;
-  destroy$: Subject<void> = new Subject();
+  employees$ = this.store.pipe(select(selectorAllEmployee));
 
   constructor(
     private readonly store: Store
@@ -31,18 +28,12 @@ export class PickEmployeeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.loadEmployees({ RequestPaginate: { skip: 0, take: 30 }, isSelect: true }));
-    this.employees$ = this.store.pipe(select(selectorAllEmployee)).pipe(
-      tap(e => console.log('em', e)),
-      takeUntil(this.destroy$)
-    );
-    this.employees$.subscribe(val =>
-      this.employees = val as Employee[]
-    );
+    this.employees$.subscribe(val => this.employees = JSON.parse(JSON.stringify(val)));
   }
 
   onScroll() {
     this.store.dispatch(EmployeeAction.loadEmployees(
-      { RequestPaginate: { skip: this.pageSize * this.pageIndex++, take: this.pageSize }, isSelect: false }));
+      { RequestPaginate: { skip: this.pageSize * this.pageIndex++, take: this.pageSize }, isSelect: true }));
   }
 
   updateAllSelect(id: number) {
@@ -52,25 +43,33 @@ export class PickEmployeeComponent implements OnInit, OnDestroy {
     } else {
       this.employeeIds.push(id);
     }
-    this.allSelect = this.employees.every(e => e.isSelect === true);
+    this.allSelect = this.employees !== null && this.employees.every(e => e.isSelect)
     this.checkEvent.emit(this.employeeIds);
   }
 
-  setAll(checked: boolean) {
-    this.allSelect = checked;
-    this.employees.forEach(e => {
-        e.isSelect = checked;
-        if (checked) {
-          this.employeeIds.push(e.id);
-        } else {
-          this.employeeIds = [];
+  someComplete(): boolean {
+    if(this.employees == null) {
+      return false
+    }
+    return (
+      this.employees.filter( e => e.isSelect).length > 0 && !this.allSelect
+    )
+  }
+
+  setAll(select: boolean) {
+    this.allSelect = select;
+    if(this.employees == null){
+      return;
+    }
+    this.employeeIds = [];
+    this.employees?.forEach(employee => {
+        employee.isSelect = select
+        if (select) {
+          this.employeeIds.push(employee.id);
         }
       }
     );
     this.checkEvent.emit(this.employeeIds);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.unsubscribe();
-  }
 }

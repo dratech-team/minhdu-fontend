@@ -16,6 +16,9 @@ import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee'
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
+import { HistoryPositionComponent } from '../../components/history-position/history-position.component';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -61,7 +64,16 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   deleteRelative(id: number, employeeId: number) {
-    this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+      width: '30%'
+    });
+    dialogRef.afterClosed().subscribe(val => {
+        if (val) {
+          this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
+        }
+      }
+    );
+
   }
 
   addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
@@ -71,7 +83,22 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteDegree(employeeId: number, $event: any) {
-    this.store.dispatch(EmployeeAction.deleteDegree({ id: $event.id, employeeId: employeeId }));
+  deleteDegree(id: number, employeeId: number) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+      width: '30%'
+    });
+    dialogRef.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(EmployeeAction.deleteDegree({ id: id, employeeId: employeeId }));
+      }
+    });
   }
+
+  editHistoryPosition(employeeId: number, id?: number, degree?: Degree) {
+    this.dialog.open(HistoryPositionComponent, {
+      width: '40%',
+      data: { employeeId: employeeId, id: id, degree: degree }
+    });
+  }
+
 }

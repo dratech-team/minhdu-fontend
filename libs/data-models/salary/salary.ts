@@ -1,4 +1,4 @@
-import { Payroll } from '../../../apps/hr/src/app/pages/payroll/+state/payroll.interface';
+import { Payroll } from '../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '../../enums';
 import { SalaryHistory } from './salary-history';
 import { payslip } from './payslip';

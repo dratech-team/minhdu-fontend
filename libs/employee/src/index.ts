@@ -1,4 +1,4 @@
-export * from './lib/employeeLib.module';
+export * from './lib/employee-lib.module';
 export * from './lib/+state/employee.reducers'
 export * from './lib/+state/employee.action'
 export * from './lib/+state/employee.effect'

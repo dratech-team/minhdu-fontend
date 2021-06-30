@@ -8,7 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DetailEmployeeComponent } from './containers/detail-employee/detail-employee.component';
@@ -20,6 +20,7 @@ import { AddDegreeComponent } from './components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from './components/dialog-delete-employee/delete-employee.component';
 import { EmployeeComponent } from './containers/employee/employee.component';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
+import { HistoryPositionComponent } from './components/history-position/history-position.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import { EmployeeLibModule } from '@minhdu-fontend/employee';
     CommonModule,
     MatInputModule,
     InfiniteScrollModule,
-    FormsModule
+    FormsModule,
   ],
   declarations: [
     AddDegreeComponent,
@@ -47,8 +48,13 @@ import { EmployeeLibModule } from '@minhdu-fontend/employee';
     DetailEmployeeComponent,
     AddRelativeComponent,
     AddProfileComponent,
-    DeleteEmployeeComponent
+    DeleteEmployeeComponent,
+    HistoryPositionComponent
+  ],
+  providers: [
+    DatePipe,
   ]
 })
+
 export class EmployeeModule {
 }

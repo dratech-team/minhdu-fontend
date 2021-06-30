@@ -15,12 +15,16 @@ export class DepartmentService extends BaseService<Department> {
   }
 
 
-  addOne(props: Department): Observable<Department> {
+  addOne(props: any): Observable<Department> {
     return super.addOne(props);
   }
 
   getAll(): Observable<Department[]> {
     return super.getAll();
+  }
+
+  getOne(id: any): Observable<Department> {
+    return super.getOne(id);
   }
 
   update(id: number, body: any): Observable<Update<Branch>> {

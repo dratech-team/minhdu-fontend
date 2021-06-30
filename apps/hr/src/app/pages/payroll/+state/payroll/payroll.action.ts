@@ -25,12 +25,12 @@ export const addPayrollSuccess = createAction(
 
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
-  props<{ payrollId: number, salary: any }>()
+  props<{  salary: any,payrollId?: number }>()
 );
 
 export const getPayroll = createAction(
   '[GET_PAYROLL] Get Payroll',
-  props<{ id: number }>()
+  props<{ id?: number }>()
 );
 
 export const getPayrollSuccess = createAction(

@@ -4,11 +4,15 @@ import {
   State,
   orgchartAdapter
 } from './orgchart.reducer';
+import { Branch } from '@minhdu-fontend/data-models';
+import { selectorEmployeeEntities } from '@minhdu-fontend/employee';
 
 // Lookup the 'Orgchart' feature state managed by NgRx
 export const getOrgchartState = createFeatureSelector<State>(
   ORGCHART_FEATURE_KEY
 );
+
+export const getSelectedBranchId = (state: Branch) => state.id;
 
 const { selectAll, selectEntities } = orgchartAdapter.getSelectors();
 
@@ -28,16 +32,11 @@ export const getAllOrgchart = createSelector(getOrgchartState, (state: State) =>
 
 export const getOrgchartEntities = createSelector(
   getOrgchartState,
-  (state: State) => selectEntities(state)
+  selectEntities
 );
 
-export const getSelectedId = createSelector(
-  getOrgchartState,
-  (state: State) => state.selectedId
-);
-
-export const getSelected = createSelector(
+export const getBranchById = (id: number) => createSelector(
   getOrgchartEntities,
-  getSelectedId,
-  (entities, selectedId) => (selectedId ? entities[selectedId] : undefined)
+  (branchEntities) => branchEntities[id]
 );
+

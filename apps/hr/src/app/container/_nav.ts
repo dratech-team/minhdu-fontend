@@ -29,6 +29,11 @@ export const navItems: INavData[] = [
       icon: 'cil-lock-locked',
     },
     {
+      name: 'bản mẫu',
+      url: '/payroll/template',
+      icon: 'cil-lock-locked',
+    },
+    {
       title: true,
       name: 'Sơ đồ',
     },

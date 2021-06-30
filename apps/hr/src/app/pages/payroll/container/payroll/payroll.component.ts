@@ -3,12 +3,14 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { Router } from '@angular/router';
-import { selectorAllPayroll } from '../../+state/payroll.selector';
-import { PayrollAction } from '../../+state/payroll.action';
+import { selectorAllPayroll } from '../../+state/payroll/payroll.selector';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
 import { SalaryComponent } from '../../component/salary/salary.component';
+import { TemplateOvertimeComponent } from '../../component/template-overtime/template-overtime.component';
+import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 
 @Component({
   templateUrl: 'payroll.component.html',
@@ -38,10 +40,10 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadPayrolls({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
   }
 
-  addPayroll($event: any): void {
+  addPayroll($event?: any): void {
     const dialogRef = this.dialog.open(AddPayrollComponent, {
       width: '50%',
-      data: $event.employee.id
+      data: {id: $event?.employee?.id}
     });
     dialogRef.afterClosed().subscribe((value) => {
         if (value) {
@@ -56,14 +58,24 @@ export class PayrollComponent implements OnInit {
   }
 
   addSalary(type: SalaryTypeEnum):any{
-    this.dialog.open(SalaryComponent, {
-      width: '50%',
-      data:{type: type}
-    })
-
+    const dialogRef =  this.dialog.open(SalaryComponent, {
+                        width: '50%',
+                        data:{type: type}
+                      })
+    dialogRef.afterClosed().subscribe(value =>
+      {
+        if(value){
+            this.store.dispatch(PayrollAction.addSalary({
+              salary: value.data
+            }));
+        }
+      }
+    )
   }
 
   readAndUpdate($event: any) {
     this.router.navigate(['payroll/detail-payroll', $event.id]).then();
   }
+
+
 }

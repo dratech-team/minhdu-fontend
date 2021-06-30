@@ -3,6 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as OrgchartActions from './orgchart.actions';
 import { Branch } from '@minhdu-fontend/data-models';
+import { adapter } from '@minhdu-fontend/employee';
 
 
 export const ORGCHART_FEATURE_KEY = 'orgchart';
@@ -12,6 +13,7 @@ export interface State extends EntityState<Branch> {
   loaded: boolean; // has the Orgchart list been loaded
   error?: string | null; // last known error (if any)
 }
+
 
 export interface OrgchartPartialState {
   readonly [ORGCHART_FEATURE_KEY]: State;
@@ -23,7 +25,6 @@ export const initialState: State = orgchartAdapter.getInitialState({
   // set initial required properties
   loaded: false
 });
-
 const orgchartReducer = createReducer(
   initialState,
   on(OrgchartActions.init, (state) => ({

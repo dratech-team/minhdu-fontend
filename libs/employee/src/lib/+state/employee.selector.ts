@@ -1,21 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmployeeState } from './employee.reducers';
-import { Employee } from '../../../../data-models/employee/employee';
 import * as fromEmployee from './employee.reducers';
 import { FeatureName } from '@minhdu-fontend/constants';
+import { Employee } from '@minhdu-fontend/data-models';
 
-export interface State {
-  employees: fromEmployee.EmployeeState;
-}
+export interface State {employees: fromEmployee.EmployeeState;}
 
-export const getSelectedEmployeeId = (state: Employee) => state.id
+
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
   FeatureName.EMPLOYEE
 );
+export const getSelectedEmployeeId = (state: Employee) => state.id;
 
 export const selectorEmployeeEntities = createSelector(
   selectorEmployeeState,
-  fromEmployee.selectEntities,
+  fromEmployee.selectEntities
 );
 
 export const selectorAllEmployee = createSelector(
@@ -23,7 +22,7 @@ export const selectorAllEmployee = createSelector(
   fromEmployee.selectAll
 );
 
-export const selectCurrentEmployee = (id: number) =>  createSelector(
+export const selectCurrentEmployee = (id: number) => createSelector(
   selectorEmployeeEntities,
   (employeeEntities) => employeeEntities[id]
 );

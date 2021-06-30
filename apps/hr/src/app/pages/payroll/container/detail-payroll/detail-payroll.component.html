@@ -189,9 +189,7 @@
           </div>
           <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['OVERTIME'] ">
             <div class='col-md-7 title-child'>
-              <span *ngIf="salary.unit === 'DAY'">Tăng ca ngày: {{ salary.datetime | date:'dd/MM/yyyy'}}.</span>
-              <span *ngIf="salary.unit === 'HOUR'">Tăng ca: {{salary.times}}
-                giờ, ngày {{salary.datetime|date: 'dd/MM/yyyy'}} </span>
+              <span>{{salary.title}}</span>
             </div>
             <div class='col-md-7 title-child'
                  *ngIf="salary.type === 'ALLOWANCE' && salary.datetime === null">

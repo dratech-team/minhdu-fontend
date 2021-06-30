@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Payroll } from '../+state/payroll.interface';
+import { Payroll } from '../+state/payroll/payroll.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';

@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
-import { PayrollService } from '../service/payroll.service';
-import { SalaryService } from '../service/salary.service';
+import { PayrollService } from '../../service/payroll.service';
+import { SalaryService } from '../../service/salary.service';
 
 @Injectable()
 export class PayrollEffect {
@@ -31,6 +31,7 @@ export class PayrollEffect {
       ofType(PayrollAction.addSalary),
       switchMap((props) => this.salaryService.addOne(props.salary).pipe(
         map(() => PayrollAction.getPayroll({ id: props.payrollId })),
+        map(()=> PayrollAction.loadPayrolls({skip:0, take:30})),
         catchError((err) => throwError(err))
       ))
     ));

@@ -7,6 +7,7 @@ import { navItems } from './_nav';
   styleUrls: ['./default-layout.component.scss']
 })
 export class DefaultLayoutComponent {
+  showFiller = false;
   public sidebarMinimized = false;
   public navItems = navItems;
 

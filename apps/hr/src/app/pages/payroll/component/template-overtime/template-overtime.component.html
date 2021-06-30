@@ -1,0 +1,71 @@
+<div class='animated'>
+  <div class='title-popup row ml-2 '>
+    Mẫu tăng ca
+  </div>
+  <form [formGroup]='formGroup'>
+    <div [formGroup]='formGroup' class='m-4 '>
+      <div class=' main-popup'>
+        <div><span class='main-title'>Tiêu đề tăng ca</span><span class='star'>*</span></div>
+        <input class='form-control mt-1' type='text' formControlName='title' placeholder='Nhập tiêu đề'>
+      </div>
+      <div class="main-popup mt-2 ">
+        <div class=" main-title mb-1">
+          <label class='main-title' for='branch'>Loại tăng ca <span class='star'>*</span></label>
+        </div>
+        <div class=" mt-1">
+          <mat-select
+            class="form-control col"
+            formControlName="unit"
+          >
+            <mat-option value="DAY">Ngày</mat-option>
+            <mat-option value="HOUR">Giờ</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='main-popup mt-2' [formGroup]='formGroup'>
+        <label class='main-title' for='branch'>Đơn vị <span class='star'>*</span></label>
+        <mat-select
+          id='branch'
+          class='form-control'
+          formControlName='branch'
+        >
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.id' (click)='onBranch(branch)'>
+            {{branch.name}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class='main-popup mt-2' [formGroup]='formGroup'>
+        <label class='main-title' for='department'>Bộ phận <span class='star'>*</span></label>
+        <mat-select  id='department' class='form-control' formControlName='department'>
+          <mat-option *ngFor='let department of departments' [value]='department.id' (click)='onDepartment(department)'>
+            {{department.name}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class='main-popup mt-2' [formGroup]='formGroup'>
+        <label class='main-title' for='position'>Chức vụ <span class='star'>*</span></label>
+        <mat-select id='position' class='form-control' formControlName='position'>
+          <mat-option *ngFor='let position of positions' [value]='position.id'>
+            {{position.name}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class=' main-popup mt-2' [formGroup]='formGroup'>
+        <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
+        <input class='form-control mt-1' type='number' formControlName='price' placeholder='200,000'>
+      </div>
+      <div class="main-popup mt-2">
+        <div class=" main-title mb-1">
+          <span>Chú thích</span>
+        </div>
+        <div class=" mb-3" [formGroup]="formGroup">
+          <input class="form-control" placeholder="Nhập chú thích " formControlName="note">
+        </div>
+      </div>
+    </div>
+    <div class='footer-popup row ml-2'>
+      <button mat-dialog-close class=' btn btn-cancel '>Hủy</button>
+      <button type="submit" [mat-dialog-close]="onSubmit()" class=' btn btn-ok ml-2'>Lưu</button>
+    </div>
+  </form>
+</div>

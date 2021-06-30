@@ -1,7 +1,7 @@
+import { Employee } from '@minhdu-fontend/data-models';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { EmployeeAction } from './employee.action';
-import { Employee } from '../../../../data-models/employee/employee';
 
 export const EMPLOYEE_FEATURE_KEY = 'employee';
 
@@ -23,14 +23,14 @@ export const employeeReducer = createReducer(
     adapter.addOne(action.employee, { ...state, loaded: true })),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
-    adapter.upsertOne(action.employee , { ...state, loaded: true })),
+    adapter.upsertOne(action.employee, { ...state, loaded: true })),
 
   on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
-    adapter.updateOne( action.employee, { ...state, loaded: true })),
+    adapter.updateOne(action.employee, { ...state, loaded: true })),
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true })),
-  );
+    adapter.removeOne(action.id, { ...state, loaded: true }))
+);
 
 export const {
   selectEntities,
