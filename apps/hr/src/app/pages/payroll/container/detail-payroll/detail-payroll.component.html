@@ -1,0 +1,291 @@
+<div class='row animated fadeIn '>
+  <div class='container'>
+    <div class='row'>
+      <div class='row col-md-12 main-title'>
+      <span>
+        Tính lương nhân viên
+      </span>
+      </div>
+      <div class='row col-md-12' *ngIf='(payroll$ | async) as payroll'>
+        <div class=' col col-md-6'>
+          <div class='employee row col-md-12 mt-3'>
+            <div class='row col-md-2 mr-1 info-employee'>
+              <img
+                class='rounded-circle'
+                alt='50x50'
+                src='{{payroll.employee?.avt}}'
+                data-holder-rendered='true'
+                height='64px'
+              />
+            </div>
+            <div class='col-md-6'>
+              <div class='row' style='width: 100%;'>
+                <span>{{payroll.employee?.firstName}} {{payroll.employee?.lastName}}</span>
+              </div>
+              <div class='row mt-2'
+                   style='border: solid 1px #EB5757;border-radius: 20px;height: 24px ;max-width: 250px;'>
+                <div class='col-md position'>{{payroll.employee.position.name}}</div>
+                <div class='col-md id-employee'>{{payroll.employee.id}}</div>
+              </div>
+            </div>
+            <div (click)='onDetailEmployee(payroll.employee.id)' class='col-md-4 mt-4' style='
+            font-size: 14px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;'>
+              <span class='mr-2'>Xem thông tin</span>
+              <img src='../../../../../assets/img/share/box-arrow-up-right.svg' alt='view info icon'>
+            </div>
+          </div>
+        </div>
+        <div class='employee row col mt-3' style='display: flex; align-items: flex-end;'>
+          <div class='col'>
+            <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
+            <div class='row content-title'>
+              {{payroll.employee.position.workday}}
+            </div>
+          </div>
+          <div class='col'>
+            <div class='row justify-content-center'> Ngày làm việc thực tế</div>
+            <div class='row content-title'>
+              {{payroll.payslip?.actualDay}}
+            </div>
+          </div>
+          <div class='col'>
+            <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
+            <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
+              <img
+                [src]=" payroll.employee.contractAt !== null ? '../../../../../assets/img/payroll/check.svg' : '../../../../../assets/img/share/x-lg.svg' "
+                [alt]="payroll.employee.contractAt !== null ? 'contract' : 'not contract' ">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='row' style='display: flex ; align-items: center'>
+      <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
+    </div>
+    <div class='row' *ngIf='(payroll$ | async) as payroll'>
+      <!--Lương cơ bản-->
+      <div class='col'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Lương cơ bản</div>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.BASIC,payroll)'>
+              <span class='mr-1'>Thêm mục</span>
+              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['BASIC_ISNURANCE','BASIC' ] ">
+            <div class='col-md-7 title-child'> {{salary.title}}</div>
+            <div
+              class='col-md-4 salary'
+              style='color: #4B3880'
+            >
+              {{salary.price}}
+            </div>
+            <div style='display: flex'> <button
+              data-toggle='tooltip'
+              data-placement='top'
+              title=' chỉnh sửa '
+              class='edit animated'
+              (click)='addAndUpdateSalary(type.BASIC, payroll,salary)'>
+              <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+            </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Phụ cấp ở lại-->
+      <div class='col'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Tiền phụ cấp ở lại</div>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.STAY, payroll)'><span
+              class='mr-1'>Thêm mục</span>
+              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['STAY'] ">
+            <div class='col-md-7 title-child'> {{salary.title}}</div>
+            <div
+              class='col-md-4 salary'
+              style='color: #4B3880'
+            >
+              {{salary.price}}
+            </div>
+            <div style='display: flex'>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title=' chỉnh sửa '
+                class='edit animated'
+                (click)='addAndUpdateSalary(type.STAY, payroll,salary)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='w-100'></div>
+      <!--Phụ cấp -->
+      <div class='col'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Phụ cấp</div>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.ALLOWANCE, payroll ) '><span class='mr-1'>Thêm mục</span>
+              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['ALLOWANCE'] ">
+            <div class='col-md-7 title-child'>
+            <span *ngIf="salary.unit === 'DAY' "> {{salary.title}}
+              theo ngày {{salary.datetime|date:'dd/MM/yyyy'}} </span>
+              <span *ngIf="salary.unit === 'MONTH' "> {{salary.title}}
+                theo tháng {{salary.datetime|date: 'MM/yyyy'}}</span>
+              <span *ngIf="salary.unit === 'HOUR' "> {{salary.title + ' ' + salary.times}}
+                giờ, ngày {{salary.datetime|date: 'MM/yyyy'}}</span>
+            </div>
+            <div
+              class='col-md-3 salary' style='color: #29CC97'>{{salary.price}}</div>
+            <div style='display: flex'>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title=' chỉnh sửa '
+                class='edit animated'
+                (click)='addAndUpdateSalary(type.ALLOWANCE, payroll ,salary)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+              </button>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title='xóa'
+                class='trash animated'
+                (click)='removeSalary(salary.id , payroll.id)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Tăng ca -->
+      <div class='col'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Tăng ca</div>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.OVERTIME, payroll ) '>
+              <span class='mr-1'>Thêm mục</span>
+              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['OVERTIME'] ">
+            <div class='col-md-7 title-child'>
+              <span>{{salary.title}}</span>
+            </div>
+            <div class='col-md-7 title-child'
+                 *ngIf="salary.type === 'ALLOWANCE' && salary.datetime === null">
+              {{salary.title}}
+            </div>
+            <div
+              class='col-md-3 salary' style='color: #29CC97'>{{salary.price}}</div>
+            <div style='display: flex'>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title=' chỉnh sửa '
+                class='edit animated'
+                (click)='addAndUpdateSalary(type.OVERTIME, payroll, salary)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+              </button>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title='xóa'
+                class='trash animated'
+                (click)='removeSalary(salary.id, payroll.id)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='w-100'></div>
+      <!--Khấu trừ-->
+      <div class='col-md-6'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Khấu trừ</div>
+            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.ABSENT,payroll) '><span
+              class='mr-1'>Thêm mục</span>
+              <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['ABSENT']  ">
+            <div class='col-md-7 title-child' *ngIf="salary.unit === 'DAY'">
+              {{salary.title + ' Ngày '}} {{salary.datetime | date:'dd/MM/yyyy'}} {{salary.forgot ? '(Quên giấy phép)' : ''}}
+            </div>
+            <div class='col-md-7 title-child' *ngIf="salary.unit === 'HOUR' ">
+              {{salary.title + ' ' + salary.times + ' Giờ, ngày'}} {{salary.datetime | date:'dd/MM/yyyy'}}
+            </div>
+            <div class='col-md-7 title-child' *ngIf="salary.unit === 'MINUTE' ">
+              {{salary.title + ' ' + salary.times + ' Phút, ngày'}} {{salary.datetime | date:'dd/MM/yyyy'}}
+            </div>
+            <div
+              class='col-md-3 salary'
+              style='color: #29CC97'
+            >
+              {{salary.price}}
+            </div>
+            <div style='display: flex'>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title=' chỉnh sửa '
+                class='edit animated'
+                (click)='addAndUpdateSalary(type.ABSENT, payroll, salary)'
+              >
+                <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+              </button>
+              <button
+                data-toggle='tooltip'
+                data-placement='top'
+                title='xóa'
+                class='trash animated'
+                (click)='removeSalary(salary.id, payroll.id)'
+              >
+                <img
+                  style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg'
+                  alt='delete icon'
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
+    </div>
+    <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
+      <button class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
+              style='border: solid 1px #4B3880'>
+        <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
+      </button>
+      <button class='mb-5 create-salary'>
+        <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+        Lập phiếu lương
+      </button>
+    </div>
+  </div>
+</div>

@@ -28,6 +28,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
+import { PayrollModule } from './pages/payroll/payroll.module';
+import { EmployeeModule } from './pages/employee/employee.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -57,7 +61,11 @@ import { OrgchartModule } from '@minhdu-fontend/orgchart';
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
-    OrgchartModule
+    OrgchartModule,
+    EmployeeModule,
+    PayrollModule,
+    MatSidenavModule,
+    MatButtonModule
   ],
   declarations: [
     AppComponent,

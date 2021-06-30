@@ -1,4 +1,4 @@
-import { Employee } from 'apps/hr/src/app/pages/employee/+state/employee.interface';
+import { Employee } from '.';
 import { Position } from './orgChart/position';
 
 
@@ -6,6 +6,6 @@ import { Position } from './orgChart/position';
 export interface WorkHistory {
   id: number,
   position:Position,
-  createAt: Date,
+  createdAt: Date,
   employees:Employee[]
 }

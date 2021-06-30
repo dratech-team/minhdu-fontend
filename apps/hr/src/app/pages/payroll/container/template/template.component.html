@@ -1,0 +1,47 @@
+<div class='container'>
+  <div class='row h3 ml-3'>Bản mẫu</div>
+  <div class=' col-12'>
+    <button (click)='templateOvertime()' class='btn btn-primary mr-2'>Tạo bản mẫu </button>
+  </div>
+  <div class='mt-4' >
+    <div class='col-12 animated fadeIn'>
+      <div class='header-profile mt-3 '>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Tên bản mẫu</div>
+          <input class='form-control input-profile ' type='search' placeholder='PN10001'>
+        </div>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Loại bản mẫu </div>
+          <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+        </div>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Giá</div>
+          <input class='form-control input-profile' type='search' placeholder='Trần Gia Hiệu'>
+        </div>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Chú ý</div>
+        </div>
+      </div>
+      <div class='outer'>
+        <div class='row-content' *ngFor='let template of templates$|async'
+        (contextmenu)='child.onContextMenu($event, template)'
+             (click)='templateOvertime()'
+        >
+          <app-mouse-right #child (addEvent)='templateOvertime()'
+                                  (readAndUpdateEvent)='templateOvertime($event)'
+                                  (deleteEvent)='deleteOvertime($event)'
+          ></app-mouse-right>
+          <div class='content-profile col-3 pointer '> {{template.title}}</div>
+          <div class='content-profile col-3  pointer' *ngIf='template.type === type.OVERTIME'>Tăng ca</div>
+          <div class='content-profile col-3  pointer' *ngIf='template.type === type.ABSENT'>Khấu trừ</div>
+          <div class='content-profile col-3  pointer' *ngIf='template.type === type.ALLOWANCE'>Phụ cấp</div>
+          <div class='content-profile col-3  pointer'>{{template.price}}</div>
+          <div class='content-profile col-3  pointer'>{{template.note}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

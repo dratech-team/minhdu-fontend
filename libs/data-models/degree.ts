@@ -1,6 +1,6 @@
-import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum, FormalityEnum } from '../enums';
+import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum, FormalityEnum } from "@minhdu-fontend/enums";
 
-export interface Degree {
+export interface Degree{
   employeeId: number,
   name: string,
   school: string,

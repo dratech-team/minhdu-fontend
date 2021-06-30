@@ -3,22 +3,30 @@ import { Injectable } from '@angular/core';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Position } from '@minhdu-fontend/data-models';
+import { BaseService } from '@minhdu-fontend/service';
+import { Update } from '@ngrx/entity';
 
 @Injectable()
-export class PositionService {
-  constructor(private readonly http: HttpClient) {
+export class PositionService extends BaseService<Position> {
+  constructor(
+    public readonly http: HttpClient
+  ) {
+    super(Api.POSITION, http);
   }
 
-  addOne(name: string, workday: number, departmentId: number): Observable<Position> {
-    console.log(name, workday, departmentId);
-    return this.http.post<any>(Api.POSITION, { name, workday, departmentId });
+  addOne(props: any): Observable<Position> {
+    return super.addOne(props);
   }
 
-  getAll(): Observable<Position[]> {
-    return this.http.get<Position[]>(Api.POSITION);
+  getAll(): Observable<any[]> {
+    return super.getAll();
   }
 
-  update(id: number, name: string): Observable<Position> {
-    return this.http.patch<Position>(Api.POSITION + `/${id}`, { name });
+  update(id: any, body: any): Observable<Update<Position>> {
+    return super.update(id, body);
+  }
+
+  delete(id: number): Observable<void> {
+    return super.delete(id);
   }
 }

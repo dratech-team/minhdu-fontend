@@ -1,0 +1,119 @@
+<div class='row h3 ml-3'>Bảng lương nhân viên</div>
+<div class='main-profile '>
+  <div class='row ml-1'>
+    <div>
+      <button (click)='addSalary(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+    </div>
+    <div >
+      <button (click)='addPayroll()' class='btn btn-primary mr-2'>Thêm phiếu lương</button>
+    </div>
+  </div>
+  <div class=' header-profile mt-3 animated fadeIn'>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Mã nhân viên</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header name'>
+      <div class='title-profile'>Tên nhân viên</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header name'>
+      <div class='title-profile'>Ngày đi làm thực tế</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header name'>
+      <div class='title-profile'>Ngày công chuẩn</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Chức vụ</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header name'>
+      <div class='title-profile'>Đơn vị</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Tháng</div>
+      <input class='form-control input-profile ' type='month'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Lương cơ bản</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Phụ cấp</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Phụ cấp ở lại</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Tăng ca</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Khấu trừ</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Thuế</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Tổng thu nhập</div>
+      <input class='form-control input-profile ' type='search'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Xác nhận</div>
+      <select class='select' matNativeControl required>
+        <option value='TRUE'>Đã xác nhận</option>
+        <option value='FALSE'>chưa xác nhận</option>
+      </select>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Thanh toán</div>
+      <select class='select' matNativeControl required>
+        <option value='TRUE'>Đã Thanh toán</option>
+        <option value='FALSE'>chưa thanh toán</option>
+      </select>
+    </div>
+  </div>
+  <div class='outer   animated fadeIn'
+       infiniteScroll
+       [infiniteScrollDistance]='1'
+       [infiniteScrollThrottle]='100'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'
+       *ngIf='(payroll$| async) as payrolls'>
+    <div class='row-content' *ngFor='let payroll of payrolls' (click)='readAndUpdate(payroll)'
+         (contextmenu)='child.onContextMenu($event,payroll)'>
+      <app-mouse-right #child (addEvent)='addPayroll($event)'
+                       (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
+      <div class='content-profile default pointer '>{{payroll.employee.code}} </div>
+      <div
+        class='content-profile name pointer '>{{payroll.employee.firstName}} {{payroll.employee.lastName}}  </div>
+      <div
+        class='content-profile name pointer '>{{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }} </div>
+      <div
+        class='content-profile name pointer '>{{payroll.payslip?.workday ? payroll.payslip?.workday : 'Đang cập nhật'}} </div>
+      <div class='content-profile default pointer '>{{payroll.employee.position.name}} </div>
+      <div class='content-profile name pointer '>{{payroll.employee?.position?.department?.branch?.name}} </div>
+      <div class='content-profile default pointer '>{{payroll.createdAt|date:'MM/yyyy'}} </div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.basic}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.stay}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.allowance}}</div>
+      <div
+        class='content-profile default pointer '>{{payroll.payslip?.overtime ? payroll.payslip?.overtime : 'Đang cập nhật'}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.deduction}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.tax}}</div>
+      <div class='content-profile default pointer '>{{payroll.payslip?.total}}</div>
+      <div class='content-profile default pointer '><input type='checkbox' disabled
+                                                           [checked]='payroll.accConfirmedAt !== null'></div>
+      <div class='content-profile default pointer '><input type='checkbox' disabled [checked]='payroll.paidAt !== null'>
+      </div>
+    </div>
+  </div>
+</div>
+

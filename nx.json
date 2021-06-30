@@ -40,6 +40,9 @@
     "sell-e2e": {
       "tags": [],
       "implicitDependencies": ["sell"]
+    },
+    "employee": {
+      "tags": []
     }
   }
 }

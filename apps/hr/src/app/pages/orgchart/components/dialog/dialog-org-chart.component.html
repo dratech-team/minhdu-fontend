@@ -1,0 +1,29 @@
+<div class='px-5 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class='title-popup row'>
+    <span>{{data.title}}</span>
+  </div>
+  <form class='mt-4 ' [formGroup]='formGroupOrgChart'>
+    <div class='main-popup'>
+      <div class='row mt-2' [formGroup]='formGroupOrgChart'>
+        <span class='ml-1 row title-item'>{{data.title}}</span>
+        <input class='form-control mt-1' formControlName='inputOrgChart'>
+      </div>
+      <div *ngIf="data.type === 'POSITION'" class='row mt-2' [formGroup]='formGroupOrgChart'>
+        <span class='ml-1 row title-item'>Ngày công chuẩn</span>
+        <input type='number' class='form-control mt-1' formControlName='workday'>
+      </div>
+    </div>
+    <div class='footer-popup row'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button type='submit' [mat-dialog-close]='onSubmit()' class='btn btn-ok '>Lưu</button>
+    </div>
+  </form>
+</div>
+
+

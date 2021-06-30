@@ -4,8 +4,8 @@
   font-family: Roboto, serif;
 }
 .main-title{
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 15px;
   line-height: 24px;
 }
 
@@ -25,7 +25,7 @@
 }
 .title-popup{
   font-weight: bold;
-  font-size: 28px;
+  font-size: 20px;
   line-height: 35px;
   letter-spacing: 0.2px;
 }
@@ -171,3 +171,31 @@ tr:nth-child(even) {
 .pointer{
   cursor: pointer;
 }
+.main-profile {
+  width: max-content;
+  padding: 1rem;
+}
+.tab{
+  position: relative;
+  margin-top: 10px;
+  left: 5%;
+  width: 80%;
+}
+.edit {
+  cursor: pointer;
+  display: flex;
+  margin-right: 10px;
+  background: #4B3880;
+  padding: 4px;
+  border: solid 1px #4B3880;
+  border-radius: 4px;
+}
+
+.add {
+  display: flex;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 28px;
+  color: #7749F8
+}
+

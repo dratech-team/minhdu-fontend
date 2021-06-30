@@ -1,4 +1,4 @@
-import { Branch } from './branch';
+import { Branch } from '..';
 import { BaseOrgChart } from './base-org-chart';
 import { Position } from './position';
 
