@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { TemplateOvertimeService } from '../../service/template-overtime.service';
 import { throwError } from 'rxjs';
-import { AddTemplateSuccess, TemplateOvertimeAction } from './template-overtime.action';
+import { TemplateOvertimeAction } from './template-overtime.action';
 
 @Injectable()
 export class TemplateOvertimeEffect {
@@ -21,28 +21,27 @@ export class TemplateOvertimeEffect {
     this.action$.pipe(
       ofType(TemplateOvertimeAction.AddTemplate),
       switchMap((pram) => this.templateOvertimeService.addOne(pram.templateOvertime).pipe(
-        map(_=> TemplateOvertimeAction.loadAllTempLate()),
+        map(_ => TemplateOvertimeAction.loadAllTempLate()),
         catchError((err) => throwError(err))
-      )),
-
+      ))
     ));
 
   updateTemplate = createEffect(() =>
-  this.action$.pipe(
-    ofType(TemplateOvertimeAction.updateTemplate),
-    switchMap((pram) => this.templateOvertimeService.update(pram.id,pram.templateOvertime).pipe(
-      map(_=> TemplateOvertimeAction.loadAllTempLate()),
-      catchError((err) => throwError(err))
-    ))
-  ));
+    this.action$.pipe(
+      ofType(TemplateOvertimeAction.updateTemplate),
+      switchMap((pram) => this.templateOvertimeService.update(pram.id, pram.templateOvertime).pipe(
+        map(_ => TemplateOvertimeAction.loadAllTempLate()),
+        catchError((err) => throwError(err))
+      ))
+    ));
 
-  deleteTemplate$ = createEffect(()=>
+  deleteTemplate$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.deleteTemplate),
       switchMap((pram) => this.templateOvertimeService.delete(pram.id).pipe(
-        map(_=> TemplateOvertimeAction.loadAllTempLate()),
-        ))
-    ))
+        map(_ => TemplateOvertimeAction.loadAllTempLate())
+      ))
+    ));
 
   constructor(
     private readonly action$: Actions,

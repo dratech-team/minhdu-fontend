@@ -2,7 +2,7 @@
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>
-      <app-add-profile [formGroup]='formGroup'  ></app-add-profile>
+      <app-add-profile [formGroup]='formGroup'></app-add-profile>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='branch'>Đơn vị công tác <span class='star'>*</span></label>
@@ -18,8 +18,9 @@
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='department'>Bộ phận công tác <span class='star'>*</span></label>
-          <mat-select  id='department' class='form-control' formControlName='department'>
-            <mat-option *ngFor='let department of departments' [value]='department.id' (click)='onDepartment(department)'>
+          <mat-select id='department' class='form-control' formControlName='department'>
+            <mat-option *ngFor='let department of departments' [value]='department.id'
+                        (click)='onDepartment(department)'>
               {{department.name}}
             </mat-option>
           </mat-select>
@@ -36,7 +37,7 @@
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='isFlatSalary'>Loại lương <span class='star'>*</span></label>
-          <mat-select  id='isFlatSalary' class='form-control' formControlName='isFlatSalary'>
+          <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'>
             <mat-option value='{{flatSalary.FLAT_SALARY}}'>
               Lương cố định
             </mat-option>
@@ -46,8 +47,8 @@
           </mat-select>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label >Email </label>
-          <input class='form-control' type='text' formControlName='email' >
+          <label>Email </label>
+          <input class='form-control' type='text' formControlName='email'>
         </div>
       </div>
       <div class='mt-3' [formGroup]='formGroup'>

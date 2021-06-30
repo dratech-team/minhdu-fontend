@@ -31,7 +31,7 @@ export class PayrollEffect {
       ofType(PayrollAction.addSalary),
       switchMap((props) => this.salaryService.addOne(props.salary).pipe(
         map(() => PayrollAction.getPayroll({ id: props.payrollId })),
-        map(()=> PayrollAction.loadPayrolls({skip:0, take:30})),
+        map(() => PayrollAction.loadPayrolls({ skip: 0, take: 30 })),
         catchError((err) => throwError(err))
       ))
     ));

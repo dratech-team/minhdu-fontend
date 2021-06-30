@@ -13,7 +13,7 @@
           height='160px'
         />
         <button
-                class='row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded'>
+          class='row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded'>
           <img src='../../../../../assets/img/share/person-circle.svg' alt='avatar'>
           <span class='ml-2' style='color: #80828B;'>
                   Đổi avatar
@@ -409,7 +409,7 @@
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center title-table mr-4'>Thành phần gia đình</div>
         <div class='col-md-4 add' (click)='addAndUpdateRelative(employee.id )'>
-          <span class='mr-1 font-weight-bold ' >Thêm mục</span>
+          <span class='mr-1 font-weight-bold '>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
         </div>
@@ -425,21 +425,37 @@
             <th class='text-center'>Liên hệ khẩn cấp</th>
             <th class='text-center'>Xóa</th>
           </tr>
-          <tr *ngFor='let relative of employee.relatives' >
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.firstName}} {{relative.lastName}}</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.FATHER'>Cha</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.MOTHER'>Mẹ</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.DAUGHTER'>Con gái</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.SON'>Con trai</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.HUSBAND'>Chồng</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center' *ngIf='relative.relationship === relationship.WIFE'>Vợ</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.phone ? relative.phone : 'Chưa cập nhật'}}</td>
-            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'>{{relative.email ? relative.email : 'Chưa cập nhật'}}</td>
+          <tr *ngFor='let relative of employee.relatives'>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
+                class='text-center'>{{relative.firstName}} {{relative.lastName}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.FATHER'>Cha
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.MOTHER'>Mẹ
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.DAUGHTER'>Con gái
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.SON'>Con trai
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.HUSBAND'>Chồng
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center'
+                *ngIf='relative.relationship === relationship.WIFE'>Vợ
+            </td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
+                class='text-center'>{{relative.birthday |date:'dd/MM/yyyy'}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
+                class='text-center'>{{relative.phone ? relative.phone : 'Chưa cập nhật'}}</td>
+            <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
+                class='text-center'>{{relative.email ? relative.email : 'Chưa cập nhật'}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'>
               <input style='margin-left: 50%' disabled type='checkbox' [checked]='relative.sos'>
             </td>
-            <td >
+            <td>
               <button
                 style='margin-left: 35%'
                 data-toggle='tooltip'
@@ -448,7 +464,7 @@
                 class=' trash '
                 (click)='deleteRelative(relative.id , employee.id)'
               >
-                <img  style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
               </button>
             </td>
           </tr>
@@ -458,7 +474,7 @@
     <div class='col-12 mt-5'>
       <div class='row'>
         <div class=' row align-items-center title-table mr-4'>Trình độ bằng cấp</div>
-        <div class='col-md-4 add' (click)='addAndUpdateDegree(employee.id)' >
+        <div class='col-md-4 add' (click)='addAndUpdateDegree(employee.id)'>
           <span class='mr-1 font-weight-bold'>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
@@ -481,19 +497,24 @@
           <tr *ngFor='let degree of employee.degrees'>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.type === degreeType.UNIVERSITY'> Đại học</td>
+                *ngIf='degree.type === degreeType.UNIVERSITY'> Đại học
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.type === degreeType.COLLEGE'> Cao đẳng</td>
+                *ngIf='degree.type === degreeType.COLLEGE'> Cao đẳng
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.type === degreeType.PHILOSOPHY'> Tiến sĩ</td>
+                *ngIf='degree.type === degreeType.PHILOSOPHY'> Tiến sĩ
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.type === degreeType.MASTER'> Thạc sĩ</td>
+                *ngIf='degree.type === degreeType.MASTER'> Thạc sĩ
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.type === degreeType.INTERMEDIATE'>Trung cấp</td>
+                *ngIf='degree.type === degreeType.INTERMEDIATE'>Trung cấp
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
             >{{degree.startedAt |date:'dd/MM/yyyy'}}</td>
@@ -533,26 +554,33 @@
             >{{degree.school}}</td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.level === level.EXCELLENT '>Giỏi</td>
+                *ngIf='degree.level === level.EXCELLENT '>Giỏi
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.level === null'>Chưa cập nhật</td>
+                *ngIf='degree.level === null'>Chưa cập nhật
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.level === level.GOOD '>Khá</td>
+                *ngIf='degree.level === level.GOOD '>Khá
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.level === level.AVERAGE '>Trung bình</td>
+                *ngIf='degree.level === level.AVERAGE '>Trung bình
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.level === level.BELOW_AVERAGE '>Dưới trung bình</td>
+                *ngIf='degree.level === level.BELOW_AVERAGE '>Dưới trung bình
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp</td>
+                *ngIf='degree.status === status.GRADUATED'> Đã tốt nghiệp
+            </td>
             <td class='text-center'
                 (click)='addAndUpdateDegree(employee.id,degree.id , degree)'
-                *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp</td>
-            <td >
+                *ngIf='degree.status === status.NOT_GRADUATED'> Chưa tốt nghiệp
+            </td>
+            <td>
               <button
                 style='margin-left: 35%'
                 data-toggle='tooltip'
@@ -561,7 +589,7 @@
                 class=' trash '
                 (click)='deleteDegree(degree.id , employee.id)'
               >
-                <img  style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
               </button>
             </td>
           </tr>
@@ -601,10 +629,10 @@
             <th class='text-center'>Đơn vị công tác</th>
           </tr>
           <tr *ngFor='let workHistory of employee.workHistories'>
-            <td  class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
-            <td  class='text-center'>{{workHistory?.position?.name}}</td>
-            <td  class='text-center'>{{workHistory?.position?.department?.name}}</td>
-            <td  class='text-center'>{{workHistory?.position?.department?.branch?.name}}</td>
+            <td class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
+            <td class='text-center'>{{workHistory?.position?.name}}</td>
+            <td class='text-center'>{{workHistory?.position?.department?.name}}</td>
+            <td class='text-center'>{{workHistory?.position?.department?.branch?.name}}</td>
           </tr>
         </table>
       </div>

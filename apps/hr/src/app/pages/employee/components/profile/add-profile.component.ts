@@ -8,6 +8,7 @@ import { ControlContainer, FormGroup } from '@angular/forms';
 
 export class AddProfileComponent implements OnInit {
   formGroup!: FormGroup;
+
   constructor(
     private controlContainer: ControlContainer
   ) {

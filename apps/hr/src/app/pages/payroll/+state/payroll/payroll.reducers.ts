@@ -21,14 +21,14 @@ export const payrollReducer = createReducer(
     adapter.addOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.getPayrollSuccess, (state, action) =>
-    adapter.upsertOne(action.payroll , { ...state, loaded: true })),
+    adapter.upsertOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.updatePayrollSuccess, (state, action) =>
-    adapter.updateOne( action.payroll, { ...state, loaded: true })),
+    adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true })),
-  );
+    adapter.removeOne(action.id, { ...state, loaded: true }))
+);
 
 export const {
   selectEntities,

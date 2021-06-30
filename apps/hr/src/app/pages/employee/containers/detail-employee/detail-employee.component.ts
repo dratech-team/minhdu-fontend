@@ -16,7 +16,6 @@ import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee'
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
-import { HistoryPositionComponent } from '../../components/history-position/history-position.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 
@@ -91,13 +90,6 @@ export class DetailEmployeeComponent implements OnInit {
       if (val) {
         this.store.dispatch(EmployeeAction.deleteDegree({ id: id, employeeId: employeeId }));
       }
-    });
-  }
-
-  editHistoryPosition(employeeId: number, id?: number, degree?: Degree) {
-    this.dialog.open(HistoryPositionComponent, {
-      width: '40%',
-      data: { employeeId: employeeId, id: id, degree: degree }
     });
   }
 

@@ -1,26 +1,27 @@
-
-<div class="animated fadeIn">
-  <div class="container" *ngIf="(orgchart$ | async) as orgchart">
-    <div class="level-1 rectangle title-lv0  " style="position: relative; background: #4B3880 ; color: white; ">
+<div class='animated fadeIn'>
+  <div class='container' *ngIf='(orgchart$ | async) as orgchart'>
+    <div class='level-1 rectangle title-lv0  ' style='position: relative; background: #4B3880 ; color: white; '>
       <div>
-        <button class="editOrgchart" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <button class='editOrgchart' mat-icon-button [matMenuTriggerFor]='menu'
+                aria-label='Example icon-button with a menu'>
           <mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
+        <mat-menu #menu='matMenu'>
           <button (click)="openDialog('Thêm Khu',type.BRANCH,false)" mat-menu-item>
             <span>Thêm</span>
           </button>
         </mat-menu>
       </div>
-      <span class="context-menu">Công ty Minh Dư</span></div>
-    <ol class="level-2-wrapper">
-      <li *ngFor="let branch of orgchart ">
-        <div class="level-2 rectangle title-lv1 ">
+      <span class='context-menu'>Công ty Minh Dư</span></div>
+    <ol class='level-2-wrapper'>
+      <li *ngFor='let branch of orgchart '>
+        <div class='level-2 rectangle title-lv1 '>
           <div>
-            <button class="editOrgchart" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <button class='editOrgchart' mat-icon-button [matMenuTriggerFor]='menu'
+                    aria-label='Example icon-button with a menu'>
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu #menu="matMenu">
+            <mat-menu #menu='matMenu'>
               <button (click)="openDialog('Thêm phòng ban',type.DEPARTMENT,false, branch)" mat-menu-item>
                 <span>Thêm</span>
               </button>
@@ -32,17 +33,17 @@
               </button>
             </mat-menu>
           </div>
-          <span class="context-menu">{{branch.name}}</span>
+          <span class='context-menu'>{{branch.name}}</span>
         </div>
-        <ol class="level-3-wrapper">
-          <li *ngFor="let department of branch.departments">
-            <div style="color: black" class="level-3 rectangle title-lv2">
+        <ol class='level-3-wrapper'>
+          <li *ngFor='let department of branch.departments'>
+            <div style='color: black' class='level-3 rectangle title-lv2'>
               <div>
-                <button class="editOrgchart" mat-icon-button [matMenuTriggerFor]="menu"
-                        aria-label="Example icon-button with a menu">
+                <button class='editOrgchart' mat-icon-button [matMenuTriggerFor]='menu'
+                        aria-label='Example icon-button with a menu'>
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu #menu="matMenu">
+                <mat-menu #menu='matMenu'>
                   <button (click)="openDialog('Thêm chức vụ', type.POSITION, false, department)" mat-menu-item>
                     <span>Thêm</span>
                   </button>
@@ -55,16 +56,17 @@
                 </mat-menu>
               </div>
 
-              <span class="context-menu" >{{department.name}} </span></div>
-            <ol class="level-4-wrapper">
-              <li *ngFor="let position of department.positions">
-                <div class="level-4 rectangle title-lv3" data-toggle="tooltip" data-placement="bottom" title="Ngày công chuẩn: {{position.workday}}">
+              <span class='context-menu'>{{department.name}} </span></div>
+            <ol class='level-4-wrapper'>
+              <li *ngFor='let position of department.positions'>
+                <div class='level-4 rectangle title-lv3' data-toggle='tooltip' data-placement='bottom'
+                     title='Ngày công chuẩn: {{position.workday}}'>
                   <div>
-                    <button class="editOrgchart" mat-icon-button [matMenuTriggerFor]="menu"
-                            aria-label="Example icon-button with a menu">
+                    <button class='editOrgchart' mat-icon-button [matMenuTriggerFor]='menu'
+                            aria-label='Example icon-button with a menu'>
                       <mat-icon>more_vert</mat-icon>
                     </button>
-                    <mat-menu #menu="matMenu">
+                    <mat-menu #menu='matMenu'>
                       <button (click)="openDialogDelete('chức vụ',type.POSITION,position.id )" mat-menu-item>
                         <span>Xóa</span>
                       </button>
@@ -73,7 +75,7 @@
                       </button>
                     </mat-menu>
                   </div>
-                  <span class="context-menu">{{position.name}}</span>
+                  <span class='context-menu'>{{position.name}}</span>
                 </div>
               </li>
             </ol>

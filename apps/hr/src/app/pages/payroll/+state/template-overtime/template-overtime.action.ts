@@ -37,5 +37,5 @@ export const TemplateOvertimeAction = {
   updateTemplate,
   loadAllTempLate,
   loadAllTempLateSuccess,
-  deleteTemplate,
+  deleteTemplate
 };

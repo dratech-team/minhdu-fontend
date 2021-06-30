@@ -6,14 +6,14 @@ import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import { EmployeeAction, EmployeeService } from '@minhdu-fontend/employee';
 import {
-  getAllOrgchart, getBranchById,
+  getAllOrgchart,
+  getBranchById,
   OrgchartActions
 } from '@minhdu-fontend/orgchart';
 import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
 import { DepartmentActions, getDepartmentById } from 'libs/orgchart/src/lib/+state/department';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-
 
 
 @Component({
@@ -29,8 +29,8 @@ export class AddEmployeeComponent implements OnInit {
   )));
   department$ = this.store.pipe(select(getDepartmentById(
     this?.data?.employee?.position?.department?.id)));
-  departments?: Department[] ;
-  positions?: Position[] ;
+  departments?: Department[];
+  positions?: Position[];
 
   constructor(
     public datePipe: DatePipe,
@@ -46,8 +46,8 @@ export class AddEmployeeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());
-    this.branch$.subscribe(val => this.departments = val?.departments )
-    this.department$.subscribe(val => this.positions = val?.positions )
+    this.branch$.subscribe(val => this.departments = val?.departments);
+    this.department$.subscribe(val => this.positions = val?.positions);
 
     this.formGroup = this.formBuilder.group({
       identify: [this?.data?.employee?.identify, Validators.required],

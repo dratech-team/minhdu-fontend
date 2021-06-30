@@ -20,7 +20,6 @@ import { AddDegreeComponent } from './components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from './components/dialog-delete-employee/delete-employee.component';
 import { EmployeeComponent } from './containers/employee/employee.component';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
-import { HistoryPositionComponent } from './components/history-position/history-position.component';
 
 @NgModule({
   imports: [
@@ -38,7 +37,7 @@ import { HistoryPositionComponent } from './components/history-position/history-
     CommonModule,
     MatInputModule,
     InfiniteScrollModule,
-    FormsModule,
+    FormsModule
   ],
   declarations: [
     AddDegreeComponent,
@@ -48,11 +47,10 @@ import { HistoryPositionComponent } from './components/history-position/history-
     DetailEmployeeComponent,
     AddRelativeComponent,
     AddProfileComponent,
-    DeleteEmployeeComponent,
-    HistoryPositionComponent
+    DeleteEmployeeComponent
   ],
   providers: [
-    DatePipe,
+    DatePipe
   ]
 })
 

@@ -7,12 +7,13 @@
 ol {
   list-style: none;
 }
-.title-lv0 >span{
+
+.title-lv0 > span {
   margin: 12px 0;
   width: 127px;
 }
 
-.title-lv2 >span{
+.title-lv2 > span {
   min-width: 110px;
   display: flex;
   overflow: hidden;
@@ -20,7 +21,8 @@ ol {
   align-items: center;
   min-height: 55px;
 }
-.title-lv3 >span{
+
+.title-lv3 > span {
   min-width: 105px;
   font-size: 12px;
   display: flex;
@@ -28,7 +30,8 @@ ol {
   justify-content: center;
   align-items: center;
 }
-.title-lv1 >span{
+
+.title-lv1 > span {
   min-width: 115px;
   display: flex;
   overflow: hidden;
@@ -36,6 +39,7 @@ ol {
   align-items: center;
   min-height: 55px;
 }
+
 body {
   margin: 50px 0 100px;
   text-align: center;
@@ -198,7 +202,6 @@ h4 {
 }
 
 
-
 .level-2-wrapper > li:last-child .level-3-wrapper {
   top: 0;
 }
@@ -266,7 +269,7 @@ h4 {
   background: black;
 }
 
-.editOrgchart{
+.editOrgchart {
   position: absolute;
   top: -13px;
   right: 6px;

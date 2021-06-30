@@ -9,7 +9,7 @@ export interface state {
 
 export const selectorTemplateState = createFeatureSelector<templateOvertimeState>(
   FeatureName.TEMPLATE_OVERTIME
-)
+);
 
 export const selectorAllTemplate = createSelector(
   selectorTemplateState,

@@ -15,9 +15,9 @@ export const templateOvertimeReducer = createReducer(
   initialTemplateOvertime,
   on(TemplateOvertimeAction.loadAllTempLateSuccess, (state, action) =>
     adapter.setAll(action.templateOvertime, { ...state, loaded: true })),
-  on(TemplateOvertimeAction.AddTemplateSuccess,(state, action) =>
-    adapter.setOne(action.templateOvertime,{...state, loaded:true})
+  on(TemplateOvertimeAction.AddTemplateSuccess, (state, action) =>
+    adapter.setOne(action.templateOvertime, { ...state, loaded: true })
   )
 );
 
-export const {selectAll} = adapter.getSelectors()
+export const { selectAll } = adapter.getSelectors();
