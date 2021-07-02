@@ -37,7 +37,6 @@ export class SalaryComponent implements OnInit {
   selected = 'ALLOWANCE';
 
   ngOnInit(): void {
-    console.log( this.data?.payroll?.employee?.id);
     if (this.data.type === this.type.OVERTIME) {
       this.store.dispatch(TemplateOvertimeAction.loadAllTempLate());
     }
@@ -55,8 +54,8 @@ export class SalaryComponent implements OnInit {
         this.datePipe.transform(
           this?.data?.salary?.datetime,'yyyy-MM-dd')
         ,Validators.required],
-      forgot: [false, Validators.required],
-      note: ['', Validators.required],
+      forgot: [this?.data?.salary?.forgot, Validators.required],
+      note: [this?.data?.salary?.note, Validators.required],
       createdAt: [this.data?.salary?.createdAt, Validators.required]
     });
   }
@@ -66,7 +65,9 @@ export class SalaryComponent implements OnInit {
   }
 
   onSubmit(): any {
+
     const value = this.formGroup.value;
+    console.log(value.datetime)
     return {
       update: !!this.data.salary,
       data:{

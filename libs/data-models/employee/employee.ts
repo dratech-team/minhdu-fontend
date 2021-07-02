@@ -2,6 +2,7 @@ import {
   Degree,
   Position,
   Relative,
+  SalaryHistory,
   Ward,
   WorkHistory
 } from '@minhdu-fontend/data-models';
@@ -47,5 +48,6 @@ export interface Employee {
   relatives: Relative[],
   isSelect?: boolean;
   workHistories?: WorkHistory[];
+  historySalaries:SalaryHistory[];
 }
 
