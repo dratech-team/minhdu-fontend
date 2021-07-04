@@ -1,4 +1,5 @@
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { Position } from '@minhdu-fontend/data-models';
 
 export interface TemplateOvertime {
   title: string,
@@ -7,4 +8,5 @@ export interface TemplateOvertime {
   note?: string,
   positionId: number,
   type?: SalaryTypeEnum,
+  position: Position,
 }

@@ -14,7 +14,6 @@ import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
 
 
-
 @Component({
   templateUrl: 'payroll.component.html',
   styleUrls: ['payroll.component.scss']
@@ -100,15 +99,30 @@ export class PayrollComponent implements OnInit {
       note: 'asasasasasdasasas'
     }
   ];
-  dataTimekeeping = [
-    {
-      stt: 1,
-      employeeID: 1,
-      name: 'ádasd',
-      dayOff: [ 1,2,3]
-    }
+  dataTimekeeping = {
+    createAt: new Date(2021, 2),
+    data: [
+      {
+        employeeID: 1,
+        name: 'ádasd',
+        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
+      },
+      {
+        employeeID: 1,
+        name: 'ádasd',
+        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
+      },
+      {
+        employeeID: 1,
+        name: 'ádasd',
+        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
+      },
 
-  ];
+
+
+    ]
+  };
+
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadPayrolls({ skip: 0, take: 30 }));
@@ -224,11 +238,12 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  exportTimekeeping() {
-    const monthCurrent = new Date().getMonth() + 1;
-    const yearCurrent = new Date().getFullYear();
-    const DaysInMonth = new Array(new Date(yearCurrent, monthCurrent,0).getDate()).fill('').map((value, index) =>
-   this.datePipe.transform(new Date(yearCurrent, monthCurrent - 1, index + 1,),'dd/MM/yyyy'));
+  exportTimekeeping( data : any) {
+
+    const monthCurrent = this.dataTimekeeping.createAt.getMonth() ;
+    const yearCurrent = this.dataTimekeeping.createAt.getFullYear();
+    const DaysInMonth = new Array(new Date(yearCurrent, monthCurrent, 0).getDate()).fill('').map((value, index) =>
+      this.datePipe.transform(new Date(yearCurrent, monthCurrent - 1, index + 1), 'dd/MM/yyyy'));
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Bảng chấm công');
     worksheet.getRow(1).font = { name: 'Comic Sans MS', family: 4, size: 16, underline: 'double', bold: true };
@@ -292,24 +307,30 @@ export class PayrollComponent implements OnInit {
       bold: true
     };
     worksheet.properties.defaultRowHeight = 20;
-    const temp: any[]= [];
-    let dataResult: any[] = [];
-    this.dataTimekeeping.map(val => {
-        const keys = Object.values(val);
-        keys.map( key =>{
-          if(!Array.isArray(key)){
-            temp.push(key)
-          }else{
-            const Timekeeping = Array(31).fill('+')
-            key.map(e => {
-              Timekeeping[e-1] = '-'
-            })
-            dataResult = temp.concat(Timekeeping)
-          }
-        })
+    for (let i = 0; i < this.dataTimekeeping.data.length; i++) {
+      let dataResult: any[] = [];
+      const value: any[] = [];
+      const temp: any[] = [];
+      value.push(i+1)
+      const x2 = Object.values(this.dataTimekeeping.data[i]);
+      x2.map(val => {
+        if (!Array.isArray(val)) {
+          value.push(val);
+        } else {
+          const Timekeeping = Array(31).fill('+');
+          val.map(e => {
+            Timekeeping[e.getDate() - 1] = '-';
+          });
+          dataResult = value.concat(Timekeeping);
         }
-        );
-      worksheet.addRow(dataResult).alignment = { vertical: 'middle', horizontal: 'center' };
+        for (const y of dataResult) {
+          temp.push(y);
+        }
+      });
+      worksheet.addRow(temp).alignment = { vertical: 'middle', horizontal: 'center' };
+    }
+
+
     const name = monthCurrent + '/' + yearCurrent;
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
