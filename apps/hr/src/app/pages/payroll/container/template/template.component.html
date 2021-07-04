@@ -25,7 +25,7 @@
       <div class='outer'>
         <div class='row-content' *ngFor='let template of templates$|async'
         (contextmenu)='child.onContextMenu($event, template)'
-             (click)='templateOvertime()'
+             (click)='templateOvertime(template)'
         >
           <app-mouse-right #child (addEvent)='templateOvertime()'
                                   (readAndUpdateEvent)='templateOvertime($event)'
@@ -35,13 +35,12 @@
           <div class='content-profile col-3  pointer' *ngIf='template.type === type.OVERTIME'>Tăng ca</div>
           <div class='content-profile col-3  pointer' *ngIf='template.type === type.ABSENT'>Khấu trừ</div>
           <div class='content-profile col-3  pointer' *ngIf='template.type === type.ALLOWANCE'>Phụ cấp</div>
-          <div class='content-profile col-3  pointer'>{{template.price}}</div>
+          <div class='content-profile col-3  pointer'>{{template.price|number:'1.0'|notEmpty:'0'}} đ</div>
           <div class='content-profile col-3  pointer'>{{template.note}}</div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 
 

@@ -38,9 +38,10 @@
               <div class="row mb-3" [formGroup]="formGroup">
                 <input
                   class="form-control"
-                  type="number"
+                  type="text"
                   placeholder="Nhập mức lương"
                   formControlName="price"
+                  inputCurrency
                 >
               </div>
             </div>
@@ -65,7 +66,7 @@
                 <div class="star">*</div>
               </div>
               <div class="row mb-3" [formGroup]="formGroup">
-                <input type="number" class="form-control" placeholder="Nhập mức phụ cấp" formControlName="price">
+                <input type="text" class="form-control" placeholder="Nhập mức phụ cấp" formControlName="price" inputCurrency>
               </div>
             </div>
           </div>
@@ -154,7 +155,9 @@
                   <div class="star">*</div>
                 </div>
                 <div class="row mb-3" [formGroup]="formGroup">
-                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price">
+                  <input type="text" class="form-control  px-1" placeholder="200,000" formControlName="price"
+                  inputCurrency
+                  >
                 </div>
               </div>
               <div class="note">
@@ -232,7 +235,7 @@
                   <div class="star">*</div>
                 </div>
                 <div class="row mb-3" [formGroup]="formGroup" >
-                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price"
+                  <input type="number" class="form-control  px-1"  formControlName="price"
                          [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
                   >
                 </div>
@@ -264,7 +267,8 @@
                   <div class="star">*</div>
                 </div>
                 <div class="row mb-3" [formGroup]="formGroup" >
-                  <input type="number" class="form-control  px-1" placeholder="200,000" formControlName="price"
+                  <input type="number" class="form-control  px-1" formControlName="price"
+                         placeholder='{{data?.salary?.price}}'
                   [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
                   >
                 </div>

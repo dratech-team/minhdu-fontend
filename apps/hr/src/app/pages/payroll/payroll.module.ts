@@ -29,6 +29,7 @@ import { TemplateComponent } from './container/template/template.component';
 
 @NgModule({
   imports: [
+    ComponentsModule,
     PayrollRoutingModule,
     ComponentsModule,
     MatDialogModule,
@@ -38,7 +39,7 @@ import { TemplateComponent } from './container/template/template.component';
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect,TemplateOvertimeEffect ]),
+    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -47,7 +48,7 @@ import { TemplateComponent } from './container/template/template.component';
     MatTabsModule,
     MatChipsModule,
     MatIconModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ],
   declarations:[
     PayrollComponent,

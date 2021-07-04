@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import "~@coreui/coreui-pro/scss/coreui";
+body{
+  margin: 0!important;
+  background: white!important;
+}
+$spinkit-spinner-color: $body-color;
+@import '~spinkit/scss/spinkit.scss';

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule,DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
@@ -11,6 +11,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
+import { NotEmptyPipe } from './pipes/notEmty.pipe';
+import { InputCurrencyDirective } from './directive/input-currency.directive';
 
 @NgModule({
   imports: [
@@ -28,11 +30,19 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
     PickEmployeeComponent,
     SearchEmployeePipe,
     DialogDeleteComponent,
+    NotEmptyPipe,
+    InputCurrencyDirective,
+  ],
+  providers:[
+    DecimalPipe
   ],
   exports: [
     MouseRightComponent,
     PickEmployeeComponent,
-    DialogDeleteComponent
+    DialogDeleteComponent,
+    NotEmptyPipe,
+    SearchEmployeePipe,
+    InputCurrencyDirective
   ],
 })
 export class ComponentsModule {}

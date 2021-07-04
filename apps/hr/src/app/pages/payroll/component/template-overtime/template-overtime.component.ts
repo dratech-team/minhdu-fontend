@@ -12,6 +12,7 @@ import { PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
+  numberChars = new RegExp('[^0-9]', 'g')
   typeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   departments?: Department[];
@@ -31,10 +32,9 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this?.data?.position?.id);
     this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
+    this.store.dispatch(OrgchartActions.init());
     this.branch$.subscribe(val => this.departments = val?.departments);
     this.department$.subscribe(val => this.positions = val?.positions);
     this.formGroup = this.formBuilder.group({
@@ -56,7 +56,7 @@ export class TemplateOvertimeComponent implements OnInit {
       data:{
         title: value.title,
         positionId: value.position,
-        price: value.price,
+        price: typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
         unit: value.unit,
         note: value.note
       }

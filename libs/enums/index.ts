@@ -9,3 +9,4 @@ export * from './relationship.enum';
 export * from './salary/datetime-unit.enum';
 export * from './salary/salaryType.enum';
 export * from './orgchart.enum';
+export * from './customer-type';
