@@ -5,7 +5,7 @@ import { Update } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseService } from 'libs/service/base.service';
-import { Employee } from '../../../../data-models/employee/employee';
+import { Employee } from '../../../../../../../libs/data-models/employee/employee';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService extends BaseService<Employee> {

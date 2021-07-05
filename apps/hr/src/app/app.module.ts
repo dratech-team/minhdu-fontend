@@ -31,6 +31,9 @@ import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { EmployeeModule } from './pages/employee/employee.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { PickEmployeeComponent } from './pages/employee/components/pick-employee/pick-employee.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PayrollModule } from './pages/payroll/payroll.module';
 
 
@@ -62,10 +65,12 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     MatSelectModule,
     MatRadioModule,
     OrgchartModule,
-    EmployeeModule,
     PayrollModule,
+    EmployeeModule,
     MatSidenavModule,
     MatButtonModule,
+    MatCheckboxModule,
+    InfiniteScrollModule
 
   ],
   declarations: [

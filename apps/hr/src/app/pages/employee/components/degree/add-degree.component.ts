@@ -3,7 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
-import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeAction } from '../..';
+
 
 @Component({
   templateUrl: 'add-degree.component.html'

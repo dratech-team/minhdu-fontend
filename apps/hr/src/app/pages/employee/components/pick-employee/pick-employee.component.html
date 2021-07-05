@@ -1,27 +1,39 @@
 <div class='container'>
   <div class='col-12 animated fadeIn'>
-    <div class='header-profile mt-3 '>
+    <form [formGroup]='formGroup' class='header-profile mt-3 '>
       <div class='border-start title-header col-3'>
         <div class='title-profile'>Mã nhân Viên</div>
-        <input class='form-control input-profile ' type='search' placeholder='PN10001'>
+        <input class='form-control input-profile'
+               type='text'
+               placeholder='PN10001'
+               formControlName='code'
+        >
       </div>
       <div class='border-start title-header col-4'>
         <div class='title-profile'>Tên nhân viên</div>
-        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+        <input class='form-control input-profile '
+               type='text'
+               placeholder='Trần Gia Hiệu'
+               formControlName='name'
+        >
       </div>
       <div class='border-start title-header col-4'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+        <input class='form-control input-profile '
+               type='text'
+               placeholder='Trần Gia Hiệu'
+               formControlName='branch'
+        >
       </div>
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>all</div>
         <mat-checkbox class='example-margin mt-2 ml-3'
-                      [checked]='allSelect'
+                      [checked]='selectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
         </mat-checkbox>
       </div>
-    </div>
+    </form>
     <div class='outer'
          infiniteScroll
          [infiniteScrollDistance]='1'

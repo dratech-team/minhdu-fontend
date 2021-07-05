@@ -12,6 +12,8 @@ import { SalaryComponent } from '../../component/salary/salary.component';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -21,6 +23,19 @@ import { DatePipe } from '@angular/common';
 
 
 export class PayrollComponent implements OnInit {
+  formGroup = new FormGroup(
+    {
+      code: new FormControl(''),
+      name: new FormControl(''),
+      position: new FormControl(''),
+      department: new FormControl(''),
+      branch: new FormControl(''),
+      paidAt: new FormControl(''),
+      accConfirmedAt: new FormControl(''),
+      createdAt: new FormControl(''),
+
+    }
+  );
   salaryType = SalaryTypeEnum;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
@@ -28,7 +43,7 @@ export class PayrollComponent implements OnInit {
   pageIndex: number = 1;
   pageSize: number = 30;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
-
+  code?: string;
   constructor(
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -118,18 +133,45 @@ export class PayrollComponent implements OnInit {
         dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
       },
 
-
-
     ]
   };
 
 
   ngOnInit() {
-    this.store.dispatch(PayrollAction.loadPayrolls({ skip: 0, take: 30 }));
+    this.store.dispatch(PayrollAction.loadInit({ skip: 0, take: 30, }));
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      tap((val) => {
+        this.store.dispatch(PayrollAction.loadInit({
+          skip: 0,
+          take: 30,
+          code: val.code,
+          name: val.name,
+          position: val.position,
+          department: val.department,
+          branch: val.branch,
+          // createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
+          paidAt: val.paidAt,
+          accConfirmedAt: val.accConfirmedAt,
+        }));
+      })
+    ).subscribe();
   }
 
   onScroll() {
-    this.store.dispatch(PayrollAction.loadPayrolls({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+    const val =this.formGroup.value
+    this.store.dispatch(PayrollAction.loadMorePayrolls({
+          skip: this.pageSize * this.pageIndex++,
+          take: this.pageSize,
+          code: val.code,
+          name: val.name,
+          position: val.position,
+          department: val.department,
+          branch: val.branch,
+          // createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
+          paidAt: val.paidAt,
+          accConfirmedAt: val.accConfirmedAt,
+        }));
   }
 
   addPayroll($event?: any): void {
@@ -138,12 +180,7 @@ export class PayrollComponent implements OnInit {
       data: { id: $event?.employee?.id }
     });
     dialogRef.afterClosed().subscribe((value) => {
-        if (value) {
-          if (value.employeesId) {
-            this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-          } else {
-            this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-          }
+        if (value) {this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
         }
       }
     );

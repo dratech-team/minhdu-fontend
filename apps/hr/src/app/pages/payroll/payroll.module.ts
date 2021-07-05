@@ -26,6 +26,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
 import { TemplateComponent } from './container/template/template.component';
+import { EmployeeModule } from '../employee/employee.module';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { TemplateComponent } from './container/template/template.component';
     MatChipsModule,
     MatIconModule,
     MatAutocompleteModule,
+    EmployeeModule
   ],
   declarations:[
     PayrollComponent,

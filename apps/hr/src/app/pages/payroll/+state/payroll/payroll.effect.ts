@@ -2,18 +2,27 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { loadPayrollsSuccess, PayrollAction } from './payroll.action';
+import {  PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 
 @Injectable()
 export class PayrollEffect {
 
-  loadPayroll$ = createEffect(() =>
+  loadInit$ = createEffect(() =>
     this.action$.pipe(
-      ofType(PayrollAction.loadPayrolls),
+      ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
-      map((ResponsePaginate) => PayrollAction.loadPayrollsSuccess({ payrolls: ResponsePaginate.data })),
+      map((ResponsePaginate) => PayrollAction.loadInitSuccess({ payrolls: ResponsePaginate.data })),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  loadMorePayroll$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.loadMorePayrolls),
+      concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
+      map((ResponsePaginate) => PayrollAction.loadMorePayrollsSuccess({ payrolls: ResponsePaginate.data })),
       catchError((err) => throwError(err))
     )
   );
@@ -22,7 +31,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
       switchMap((props) => this.payrollService.addOne(props.payroll)),
-      map((payroll) => PayrollAction.addPayrollSuccess({ payroll })),
+      map((_) => PayrollAction.loadInit({ take: 30, skip: 0 })),
       catchError((err) => throwError(err))
     ));
 
@@ -31,7 +40,7 @@ export class PayrollEffect {
       ofType(PayrollAction.addSalary),
       switchMap((props) => this.salaryService.addOne(props.salary).pipe(
         map(_ => props.payrollId?PayrollAction.getPayroll({id:props.payrollId}):
-          PayrollAction.loadPayrolls({take:30, skip: 0})
+          PayrollAction.loadInit({take:30, skip: 0})
         ),
         catchError((err) => throwError(err))
       ))

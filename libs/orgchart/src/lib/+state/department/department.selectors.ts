@@ -30,7 +30,6 @@ export const getDepartmentEntities = createSelector(
   selectEntities
 );
 
-
 export const getDepartmentById = (id: number) => createSelector(
   getDepartmentEntities,
   (departmentEntities) => departmentEntities[id]

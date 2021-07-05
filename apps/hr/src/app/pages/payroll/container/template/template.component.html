@@ -10,13 +10,16 @@
           <div class='title-profile'>Tên bản mẫu</div>
           <input class='form-control input-profile ' type='search' placeholder='PN10001'>
         </div>
-        <div class='border-start title-header col-3'>
+        <div class='border-start title-header col-2'>
           <div class='title-profile'>Loại bản mẫu </div>
           <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
         </div>
-        <div class='border-start title-header col-3'>
+        <div class='border-start title-header col-2'>
           <div class='title-profile'>Giá</div>
-          <input class='form-control input-profile' type='search' placeholder='Trần Gia Hiệu'>
+          <input class='form-control input-profile' type='search' placeholder='200,000'>
+        </div>
+        <div class='border-start title-header col-2'>
+          <div class='title-profile'>Đơn vị</div>
         </div>
         <div class='border-start title-header col-3'>
           <div class='title-profile'>Chú ý</div>
@@ -31,12 +34,13 @@
                                   (readAndUpdateEvent)='templateOvertime($event)'
                                   (deleteEvent)='deleteOvertime($event)'
           ></app-mouse-right>
-          <div class='content-profile col-3 pointer '> {{template.title}}</div>
-          <div class='content-profile col-3  pointer' *ngIf='template.type === type.OVERTIME'>Tăng ca</div>
-          <div class='content-profile col-3  pointer' *ngIf='template.type === type.ABSENT'>Khấu trừ</div>
-          <div class='content-profile col-3  pointer' *ngIf='template.type === type.ALLOWANCE'>Phụ cấp</div>
-          <div class='content-profile col-3  pointer'>{{template.price|number:'1.0'|notEmpty:'0'}} đ</div>
-          <div class='content-profile col-3  pointer'>{{template.note}}</div>
+          <div class='content-profile col-3 pointer '> {{template?.title}}</div>
+          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.OVERTIME'>Tăng ca</div>
+          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.ABSENT'>Khấu trừ</div>
+          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.ALLOWANCE'>Phụ cấp</div>
+          <div class='content-profile col-2  pointer'>{{template.price|number:'1.0'|notEmpty:'0'}} đ</div>
+          <div class='content-profile col-2  pointer'>{{template?.position?.name}}</div>
+          <div class='content-profile col-3  pointer'>{{template?.note}}</div>
         </div>
       </div>
     </div>

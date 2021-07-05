@@ -4,9 +4,9 @@
     <div>
       <button (click)='addSalary(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
     </div>
-    <div >
-      <button (click)='addPayroll()' class='btn btn-primary mr-2'>Thêm phiếu lương</button>
-    </div>
+<!--    <div >-->
+<!--      <button (click)='addPayroll()' class='btn btn-primary mr-2'>Thêm phiếu lương</button>-->
+<!--    </div>-->
     <div >
       <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
     </div>
@@ -14,14 +14,18 @@
       <button (click)='exportTimekeeping(1)' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
     </div>
   </div>
-  <div class=' header-profile mt-3 animated fadeIn'>
+  <form [formGroup]='formGroup' class=' header-profile mt-3 animated fadeIn' >
     <div class='border-start title-header default'>
       <div class='title-profile'>Mã nhân viên</div>
-      <input class='form-control input-profile ' type='search'>
+      <input
+        class='form-control input-profile'
+        type='text'
+        formControlName='code'
+      >
     </div>
     <div class='border-start title-header name'>
       <div class='title-profile'>Tên nhân viên</div>
-      <input class='form-control input-profile ' type='search'>
+      <input class='form-control input-profile ' type='search' formControlName='name'>
     </div>
     <div class='border-start title-header name'>
       <div class='title-profile'>Ngày đi làm thực tế</div>
@@ -33,15 +37,19 @@
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Chức vụ</div>
-      <input class='form-control input-profile ' type='search'>
+      <input class='form-control input-profile ' type='text' formControlName='position'>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Bộ phận</div>
+      <input class='form-control input-profile ' type='text' formControlName='department'>
     </div>
     <div class='border-start title-header name'>
       <div class='title-profile'>Đơn vị</div>
-      <input class='form-control input-profile ' type='search'>
+      <input class='form-control input-profile ' type='search' formControlName='branch'>
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Tháng</div>
-      <input class='form-control input-profile ' type='month'>
+      <input class='form-control input-profile ' type='month' formControlName='createdAt'>
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Lương cơ bản</div>
@@ -73,19 +81,19 @@
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Xác nhận</div>
-      <select class='select' matNativeControl required>
+      <select class='select' matNativeControl required formControlName='accConfirmedAt'>
         <option value='TRUE'>Đã xác nhận</option>
         <option value='FALSE'>chưa xác nhận</option>
       </select>
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Thanh toán</div>
-      <select class='select' matNativeControl required>
+      <select class='select' matNativeControl required formControlName='paidAt' >
         <option value='TRUE'>Đã Thanh toán</option>
         <option value='FALSE'>chưa thanh toán</option>
       </select>
     </div>
-  </div>
+  </form>
   <div class='outer   animated fadeIn'
        infiniteScroll
        [infiniteScrollDistance]='1'
@@ -104,7 +112,8 @@
         class='content-profile name pointer '>{{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }} </div>
       <div
         class='content-profile name pointer '>{{payroll.payslip?.workday ? payroll.payslip?.workday : 'Đang cập nhật'}} </div>
-      <div class='content-profile default pointer '>{{payroll.employee.position.name}} </div>
+      <div class='content-profile default pointer '>{{payroll?.employee?.position?.name}} </div>
+      <div class='content-profile default pointer '>{{payroll?.employee?.position?.department?.name}} </div>
       <div class='content-profile name pointer '>{{payroll.employee?.position?.department?.branch?.name}} </div>
       <div class='content-profile default pointer '>{{payroll.createdAt|date:'MM/yyyy'}} </div>
       <div class='content-profile default pointer '>{{payroll.payslip?.basic}}</div>

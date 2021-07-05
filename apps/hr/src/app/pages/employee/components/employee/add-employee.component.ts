@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
-import { EmployeeAction, EmployeeService } from '@minhdu-fontend/employee';
+
 import {
   getAllOrgchart,
   getBranchById,
@@ -14,6 +14,7 @@ import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
 import { DepartmentActions, getDepartmentById } from 'libs/orgchart/src/lib/+state/department';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
+import { EmployeeAction, EmployeeService } from '../..';
 
 
 @Component({

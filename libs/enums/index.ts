@@ -10,3 +10,4 @@ export * from './salary/datetime-unit.enum';
 export * from './salary/salaryType.enum';
 export * from './orgchart.enum';
 export * from './customer-type';
+export * from './search-employee';

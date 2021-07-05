@@ -5,7 +5,6 @@ import {
   orgchartAdapter
 } from './orgchart.reducer';
 import { Branch } from '@minhdu-fontend/data-models';
-import { selectorEmployeeEntities } from '@minhdu-fontend/employee';
 
 // Lookup the 'Orgchart' feature state managed by NgRx
 export const getOrgchartState = createFeatureSelector<State>(
