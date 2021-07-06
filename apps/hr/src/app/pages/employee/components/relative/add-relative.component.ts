@@ -64,16 +64,16 @@ export class AddRelativeComponent implements OnInit {
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone,
-      birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value.identify.toString(),
-      idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
       wardId: value.ward === null ? 1 : value.ward,
-      religion: value.religion,
-      ethnicity: value.ethnicity,
       address: value.address,
-      employeeId: this?.data?.employeeId
+      employeeId: this?.data?.employeeId,
+      birthday: value.birthday ? new Date(value.birthday) : undefined,
+      idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
+      religion: value.religion ? value.religion: undefined,
+      ethnicity: value.ethnicity ? value.ethnicity: undefined,
     };
     if (this.data.relative) {
       this.store.dispatch(EmployeeAction.updateRelative(

@@ -1,5 +1,5 @@
 <div class='main-customer'>
-  <div class='row h3 ml-3 mt-3'>Hồ sơ nhân viên</div>
+  <div class='row h3 ml-3 mt-3'>Hồ sơ Khách hàng</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Khách hàng</button>
     <div class='header-profile mt-3 animated fadeIn'>
@@ -34,7 +34,7 @@
       <div class='border-start title-header default'>
         <div class='title-profile'>Tìm năng</div>
         <div class='d-flex justify-content-center align-items-center'>
-          <mat-checkbox></mat-checkbox>
+          <input type='checkbox'>
         </div>
 
       </div>
@@ -69,6 +69,7 @@
       <div class='row-content' *ngFor='let customer of customers' (click)='readAndUpdate(customer)'
            (contextmenu)='child.onContextMenu($event,customer)'>
         <app-mouse-right #child (addEvent)='add()'
+                         (deleteEvent)='deleteCustomer($event)'
                          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
         <div class='content-profile name pointer '>{{customer?.firstName}} {{customer?.lastName}} </div>
         <div class='content-profile default pointer '>{{customer?.birthday| date:'dd/MM/yyyy'}}</div>

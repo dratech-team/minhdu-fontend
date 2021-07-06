@@ -23,6 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   imports: [
+    ComponentsModule,
     MatSnackBarModule,
     HttpClientModule,
     ComponentsModule,

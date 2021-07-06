@@ -215,7 +215,9 @@
             "tsConfig": "apps/sell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/sell/src/favicon.ico", "apps/sell/src/assets"],
-            "styles": ["apps/sell/src/styles.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/sell/src/styles.scss"],
             "scripts": []
           },
           "configurations": {

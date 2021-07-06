@@ -2,9 +2,9 @@
   <div class='row' *ngIf='(customer$ | async)  as customer'>
     <div class='row mt-5'>
       <div class=' main-title  mr-5'>
-        Thông tin nhân viên
+        Thông tin Khách hàng
       </div>
-      <div class=' justify-content-center'>
+      <div class=' col justify-content-center'>
         <img
           class='rounded-circle row'
           alt='50x50'
@@ -13,15 +13,15 @@
           height='160px'
         />
         <button
-          class='row btn d-flex justify-content-between align-items-center mt-2  shadow-sm p-1 mb-3 bg-white rounded'>
+          class='row btn d-flex ml-1 mt-2  shadow-sm p-1 mb-3  '>
           <img src='/assets/icon/share/person-circle.svg' alt='avatar'>
           <span class='ml-2' style='color: #80828B;'>
                   Đổi avatar
             </span>
         </button>
-        <button class='row btn shadow-none p-2 mb-3 bg-light rounded'>
+        <button (click)='deleteCustomer(customer.id)' class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
-                Xóa nhân viên
+                Xóa Khách hàng
               </span>
         </button>
       </div>
@@ -79,10 +79,10 @@
               <span>Ngày sinh :</span>
             </div>
             <div class='col-md-8 py-2'>
-                 <span class='contain-detail' *ngIf='customer.birthday === null'>
-                    Chưa cập nhật
-                 </span>
-              <span style=' font-size: 20px' *ngIf='customer.birthday'>
+              <span class='contain-detail' *ngIf='customer?.birthday === undefined'>
+                Chưa cập nhật
+              </span>
+              <span style=' font-size: 20px' *ngIf='customer?.birthday'>
                   {{customer.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
@@ -196,42 +196,87 @@
         </div>
       </div>
     </div>
-    <div class='col-12  mt-5'>
-      <div class='row d-flex align-items-center'>
-        <div class='align-items-center main-title mr-4'>Thông tin liên hệ</div>
-      </div>
+    <div class='col-12  mt-5 '>
       <div class='row'>
-        <div class='col-6  form-group'>
-          <div class='mt-3 row align-items-center'>
+        <div class='col-6'  >
+          <div class='row d-flex align-items-center'>
+            <div class='align-items-center main-title mr-4'>Thông tin Liên hệ</div>
+          </div>
+          <div class='mt-3 row  align-items-center'>
             <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>ĐT di động:</span>
+              <span>Địa chỉ:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' >
+                {{customer?.address ? customer.address  :'Chưa cập nhật'  }}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Số điện thoại:</span>
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #7749F8  '>
-                {{customer.phone === null ? 'Chưa cập nhật' : customer.phone}}
+                {{customer?.phone ? customer.phone :'Chưa cập nhật' }}
             </span>
             </div>
           </div>
           <div class=' row align-items-center'>
             <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Email cá nhân:</span>
+              <span>FaceBook:</span>
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{customer.email === null ? 'Chưa cập nhật' : customer?.email}}
+                {{customer?.facebook? customer.facebook :' Chưa cập nhật'}}
             </span>
             </div>
           </div>
           <div class=' row align-items-center'>
             <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Nguyên quán:</span>
+              <span>Zalo:</span>
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
-                {{customer.birthplace === null ? 'Chưa cập nhật' : customer.birthplace}}
+                {{customer?.zalo? customer.zalo :' Chưa cập nhật'}}
             </span>
             </div>
           </div>
+        </div>
+        <div class='col-6'  >
+          <div class='row d-flex align-items-center'>
+            <div class='align-items-center main-title mr-4'>Thông tin ngân hàng</div>
+          </div>
+              <div class='mt-3 row  align-items-center'>
+                <div class='col-md-3 py-2 title-employee title-detail'>
+                  <span>Tk ngân hàng:</span>
+                </div>
+                <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #7749F8  '>
+                {{customer?.bank?.stk === null ? 'Chưa cập nhật' : customer.bank.stk}}
+            </span>
+                </div>
+              </div>
+              <div class=' row align-items-center'>
+                <div class='col-md-3 py-2 title-employee title-detail'>
+                  <span>Chủ sở hữu:</span>
+                </div>
+                <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{customer?.bank?.owner ? customer.bank.owner :'Chưa cập nhật' }}
+            </span>
+                </div>
+              </div>
+              <div class=' row align-items-center'>
+                <div class='col-md-3 py-2 title-employee title-detail'>
+                  <span>Tên ngân hàng:</span>
+                </div>
+                <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{customer?.bank?.name === null ? 'Chưa cập nhật' : customer.bank.name}}
+            </span>
+                </div>
+              </div>
         </div>
       </div>
     </div>

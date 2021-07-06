@@ -1,10 +1,10 @@
-<h2 mat-dialog-title>Thông tin nhân viên</h2>
+<h2 mat-dialog-title>Thông tin Khách hàng</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>
       <div class='row'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='firstName'>họ<span class='star'>*</span>
+          <label for='firstName'>Họ<span class='star'>*</span>
           </label>
           <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'>
         </div>
@@ -141,7 +141,7 @@
           </div>
         </div>
       </div>
-      <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
+      <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
         <div class='col-sm'>
           <label for='facebook'>Facebook</label><span class='star'>*</span>
           <input
@@ -159,6 +159,43 @@
             class='form-control'
             formControlName='zalo'
           >
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='type'>Loại Khách hàng<span class='star'>*</span></label>
+          <mat-select id='type' class='form-control' formControlName='type'>
+            <mat-option value='{{customerType.RETAIL}}'>
+              Khách lẻ
+            </mat-option>
+            <mat-option value='{{customerType.AGENCY}}'>
+             Đại lí
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='resource'>resource<span class='star'>*</span></label>
+          <mat-select id='resource' class='form-control' formControlName='resource'>
+            <mat-option value='{{resourceType.SELF_FIND}}'>
+              SELF_FIND
+            </mat-option>
+            <mat-option value='{{resourceType.INTRODUCED}}'>
+              INTRODUCED
+            </mat-option>
+            <mat-option value='{{resourceType.RESEARCH}}'>
+              RESEARCH
+            </mat-option>
+            <mat-option value='{{resourceType.OTHER}}'>
+             Khác
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='religion'>Email
+          </label>
+          <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com' formControlName='email'>
         </div>
       </div>
       <div class='row d-flex mt-3 justify-content-center'>

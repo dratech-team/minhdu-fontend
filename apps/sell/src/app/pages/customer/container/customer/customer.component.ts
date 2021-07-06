@@ -7,6 +7,7 @@ import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCustomerComponent } from '../../component/customer/add-customer.component';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -33,10 +34,19 @@ export class CustomerComponent implements OnInit {
     })
   }
   onScroll() {
-
   }
 
   readAndUpdate($event?: any) {
     this.router.navigate(['customer/detail-customer', $event.id]).then();
+  }
+  deleteCustomer($event: any){
+    const dialogRef = this.dialog.open(DialogDeleteComponent)
+    dialogRef.afterClosed().subscribe(val =>
+      {
+        if(val){
+          this.store.dispatch(CustomerAction.deleteCustomer({id: $event.id}))
+        }
+      }
+    )
   }
 }

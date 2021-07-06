@@ -5,6 +5,9 @@ import { selectorCurrentCustomer } from '../../+state/customer.selector';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { AddCustomerComponent } from '../../component/customer/add-customer.component';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -15,7 +18,8 @@ export class DetailCustomerComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+    private readonly dialog: MatDialog,
   ) {
   }
 
@@ -24,10 +28,24 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   updateCustomer(customer: Customer) {
-
+    this.dialog.open(AddCustomerComponent , {
+      data:customer ,
+      width: '50%'
+    })
   }
-
   get getId(): number {
     return this.activatedRoute.snapshot.params.id;
+  }
+  deleteCustomer(id: any){
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+      width: '30%'
+    })
+    dialogRef.afterClosed().subscribe(val =>
+      {
+        if(val){
+          this.store.dispatch(CustomerAction.deleteCustomer({id:id}))
+        }
+      }
+    )
   }
 }

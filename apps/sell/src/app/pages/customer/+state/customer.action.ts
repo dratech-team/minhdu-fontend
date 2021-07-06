@@ -4,7 +4,7 @@ import { Customer } from './customer.interface';
 
 export const addCustomer = createAction(
   '[ADD_CUSTOMER] Add Customer',
-  props<{ customer: Customer }>()
+  props<{ customer: any }>()
 );
 
 export const loadInit = createAction(

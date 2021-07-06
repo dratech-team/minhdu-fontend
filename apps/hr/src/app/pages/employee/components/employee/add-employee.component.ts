@@ -104,10 +104,7 @@ export class AddEmployeeComponent implements OnInit {
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
       positionId: value.position,
       workedAt: new Date(value.workedAt),
-      note: value.note,
       createdAt: new Date(value.createdAt),
-      facebook: value?.facebook,
-      zalo: value?.zalo?.toString(),
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
@@ -118,10 +115,13 @@ export class AddEmployeeComponent implements OnInit {
       idCardAt: new Date(value.idCardAt),
       issuedBy: value.issuedBy,
       wardId: value.ward === null ? 1 : value.ward,
-      religion: value.religion,
-      ethnicity: value.ethnicity,
       address: value.address,
-      email: value.email
+      religion: value.religion ? value.religion: undefined,
+      ethnicity: value.ethnicity ? value.ethnicity: undefined,
+      email: value.email? value.email: undefined,
+      facebook: value?.facebook ? value.facebook : undefined,
+      zalo: value?.zalo ? value?.zalo?.toString(): undefined,
+      note: value.note ? value.note : undefined,
     };
     if (this.data !== null) {
       this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
