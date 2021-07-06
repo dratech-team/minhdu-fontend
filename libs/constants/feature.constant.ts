@@ -7,4 +7,5 @@ export const FeatureName = {
   DEPARTMENT: 'department',
   POSITION: 'position',
   TEMPLATE_OVERTIME :'template_overtime',
+  CUSTOMER: 'customer',
 };

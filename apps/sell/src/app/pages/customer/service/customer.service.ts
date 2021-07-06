@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class CustomerService extends BaseService<Customer> {
   constructor(
     public readonly http: HttpClient
@@ -19,8 +19,12 @@ export class CustomerService extends BaseService<Customer> {
     return super.addOne(props);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Customer>> {
-    return super.pagination(params);
+  paginationTest(params: any): Observable<Customer[]> {
+    return this.http.get<Customer[]>('customer', { params });
+  }
+
+  getOne(id: any): Observable<Customer> {
+    return super.getOne(id);
   }
 
   update(id: any, body: any): Observable<Update<Customer>> {

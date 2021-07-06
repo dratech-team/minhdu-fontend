@@ -1,5 +1,5 @@
 import { CurrencyUnit } from '@minhdu-fontend/enums';
-import { Customer } from '../../../apps/sell/src/app/pages/customer/container/+state/customer.interface';
+import { Customer } from '../../../apps/sell/src/app/pages/customer/+state/customer.interface';
 export interface Order{
   id: number,
   customer: Customer;

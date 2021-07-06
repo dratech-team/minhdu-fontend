@@ -25,4 +25,5 @@ export interface Customer {
   resource: CustomerResource,
   note: string,
   orders: Order[],
+  isPotential: boolean,
 }

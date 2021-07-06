@@ -1,11 +1,19 @@
 import { RouterModule, Routes } from '@angular/router';
-import { CustomerComponent } from './container/customer.component';
+import { CustomerComponent } from './container/customer/customer.component';
 import { NgModule } from '@angular/core';
+import { DetailCustomerComponent } from './container/detail-customer/detail-customer.component';
 
 const routes: Routes = [
   {
     path: '',
     component: CustomerComponent,
+  },
+  {
+    path: 'detail-customer/:id',
+    component: DetailCustomerComponent,
+    data: {
+      title: 'Chi tiết Khách hàng'
+    }
   }
 ]
 @NgModule({
