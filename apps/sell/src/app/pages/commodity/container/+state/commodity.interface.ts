@@ -1,5 +1,6 @@
+import { Order } from '@minhdu-fontend/data-models';
 import { CommodityUnit } from '@minhdu-fontend/enums';
-import { Order } from '../../../Bill/container/+state/order.interface';
+
 
 
 export interface Commodity{

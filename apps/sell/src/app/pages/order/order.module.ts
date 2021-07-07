@@ -11,6 +11,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { OrderComponent } from './container/order/order.component';
 import { DetailOrderComponent } from './container/detail-order/detail-order.component';
+import { OrderDialogComponent } from './component/order-dialog/order-dialog.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { DetailOrderComponent } from './container/detail-order/detail-order.comp
   declarations:[
     OrderComponent,
     DetailOrderComponent,
+    OrderDialogComponent,
   ],
   providers:[DatePipe]
 })

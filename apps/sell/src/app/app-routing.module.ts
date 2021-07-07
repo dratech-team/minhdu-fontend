@@ -26,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'order',
-        loadChildren: ()=> import('./pages/Bill/order.module').then(m => m.OrderModule),
+        loadChildren: ()=> import('./pages/order/order.module').then(m => m.OrderModule),
         data:{
           title: 'Đơn hàng'
         }
