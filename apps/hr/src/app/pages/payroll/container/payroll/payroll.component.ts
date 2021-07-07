@@ -18,7 +18,6 @@ import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'payroll.component.html',
-  styleUrls: ['payroll.component.scss']
 })
 
 

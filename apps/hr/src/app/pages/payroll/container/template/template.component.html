@@ -25,7 +25,7 @@
           <div class='title-profile'>Chú ý</div>
         </div>
       </div>
-      <div class='outer'>
+      <div class='outer' style='width: 100%;'>
         <div class='row-content' *ngFor='let template of templates$|async'
         (contextmenu)='child.onContextMenu($event, template)'
              (click)='templateOvertime(template)'

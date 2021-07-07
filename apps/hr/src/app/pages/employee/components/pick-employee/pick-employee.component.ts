@@ -11,7 +11,6 @@ import { EmployeeAction, selectorAllEmployee } from '../../index';
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html',
-  styleUrls: ['./pick-employee.component.scss']
 })
 export class PickEmployeeComponent implements OnInit {
 

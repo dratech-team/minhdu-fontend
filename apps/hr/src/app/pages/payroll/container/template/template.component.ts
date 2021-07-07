@@ -10,7 +10,6 @@ import { DialogDeleteComponent } from '../../../../../../../../libs/components/s
 
 @Component({
   templateUrl: 'template.component.html',
-  styleUrls: ['template.component.scss']
 })
 export class TemplateComponent implements OnInit {
   type = SalaryTypeEnum;

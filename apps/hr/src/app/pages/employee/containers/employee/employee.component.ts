@@ -14,8 +14,6 @@ import { EmployeeAction, selectorAllEmployee } from '../..';
 
 @Component({
   templateUrl: 'employee.component.html',
-  styleUrls: ['employee.component.scss']
-
 })
 export class EmployeeComponent implements OnInit {
   searchType = SearchEmployeeType;

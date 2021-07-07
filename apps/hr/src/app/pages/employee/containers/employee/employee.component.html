@@ -1,9 +1,7 @@
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
+<button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
 <div class='main-profile'>
-  <button (click)='add()' class='btn btn-primary'>Thêm nhân viên</button>
-
-
-  <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn' >
+  <form [formGroup]='formGroup' class='header-profile mt-2 animated fadeIn' >
       <div class='border-start title-header default' >
         <div class='title-profile'>Mã nhân Viên</div>
         <input
