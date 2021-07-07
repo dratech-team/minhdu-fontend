@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import {  PayrollAction } from './payroll.action';
+import { confirmPayroll, PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 
@@ -63,6 +63,18 @@ export class PayrollEffect {
         )
       )
     ));
+
+  confirmPayroll$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.confirmPayroll),
+      switchMap((props) =>  this.payrollService.update(props.id, props.Payroll).pipe(
+        map(() => PayrollAction.loadInit({ take:30, skip: 0 })),
+        catchError((err) => throwError(err))
+        )
+      )
+    ));
+
+
 
   updateSalary$ = createEffect(() =>
     this.action$.pipe(

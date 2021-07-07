@@ -73,6 +73,11 @@ export const updatePayroll = createAction(
   props<{ id: number, Payroll: any }>()
 );
 
+export const confirmPayroll = createAction(
+  '[CONFIRM_PAYROLL] Confirm Payroll',
+  props<{ id: number, Payroll: any }>()
+)
+
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
   props<{ payroll: Update<Payroll> }>()
@@ -111,6 +116,7 @@ export const PayrollAction = {
   getPayrollSuccess,
   updatePayroll,
   updatePayrollSuccess,
+  confirmPayroll,
   updateSalary,
   deletePayroll,
   deletePayrollSuccess,

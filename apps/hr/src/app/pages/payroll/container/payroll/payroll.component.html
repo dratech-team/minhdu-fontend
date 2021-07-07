@@ -37,13 +37,15 @@
       <select class='select' matNativeControl required formControlName='accConfirmedAt'>
         <option value='TRUE'>Đã xác nhận</option>
         <option value='FALSE'>chưa xác nhận</option>
+        <option value=''>Mặc định</option>
       </select>
     </div>
     <div class='border-start title-header default'>
       <div class='title-profile'>Thanh toán</div>
       <select class='select' matNativeControl required formControlName='paidAt'>
         <option value='TRUE'>Đã Thanh toán</option>
-        <option value='FALSE'>chưa thanh toán</option>
+        <option value='FALSE'>Chưa thanh toán</option>
+        <option value=''>Mặc định</option>
       </select>
     </div>
 
@@ -72,7 +74,7 @@
       <div class='title-profile'>Tháng</div>
       <input
         class='form-control input-profile '
-        type='month' formControlName='createdAt'>
+        type='date' formControlName='createdAt'>
     </div>
     <div class='border-start title-header name'>
       <div class='title-profile'>Ngày đi làm thực tế</div>
@@ -118,60 +120,69 @@
        [infiniteScrollThrottle]='100'
        [scrollWindow]='false'
        (scrolled)='onScroll()'
-       *ngIf='(payroll$| async) as payrolls'>
-    <div class='row-content' *ngFor='let payroll of payrolls' (click)='readAndUpdate(payroll)'
+        *ngIf='(payroll$|async) as payrolls'
+  >
+    <div class='row-content' *ngFor='let payroll of payrolls'
          (contextmenu)='child.onContextMenu($event,payroll)'>
       <app-mouse-right #child (addEvent)='addPayroll($event)'
-                       (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-      <div class='content-profile default pointer '>
+                       (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.employee.code}}
       </div>
-      <div class='content-profile name pointer '>
+      <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
         {{payroll.employee.firstName}} {{payroll.employee.lastName}}
       </div>
-      <div class='content-profile default pointer '>
-        <input type='checkbox' disabled [checked]='payroll.accConfirmedAt !== null'>
+      <div  class='content-profile default pointer '>
+        <input
+          [disabled]='payroll.accConfirmedAt'
+          (change)='updatePayroll(payroll.id,"accConfirmedAt")'
+          type='checkbox'
+          [checked]='payroll.accConfirmedAt !== null'>
       </div>
-      <div class='content-profile default pointer '>
-        <input type='checkbox' disabled [checked]='payroll.paidAt !== null'>
+      <div  class='content-profile default pointer '>
+        <input
+          [disabled]='payroll.paidAt'
+          type='checkbox'
+          (change)='updatePayroll(payroll.id,"paidAt")'
+          [checked]='payroll.paidAt !== null'>
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll?.employee?.position?.name}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll?.employee?.position?.department?.name}}
       </div>
-      <div class='content-profile name pointer '>
+      <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
         {{payroll.employee?.position?.department?.branch?.name}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.createdAt|date:'MM/yyyy'}}
       </div>
-      <div class='content-profile name pointer '>
+      <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
       </div>
-      <div class='content-profile name pointer '>
+      <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.workday ? payroll.payslip?.workday : 'Đang cập nhật'}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.basic}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.stay}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.allowance}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.overtime ? payroll.payslip?.overtime : 'Đang cập nhật'}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.deduction}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.tax}}
       </div>
-      <div class='content-profile default pointer '>
+      <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.total}}
       </div>
     </div>

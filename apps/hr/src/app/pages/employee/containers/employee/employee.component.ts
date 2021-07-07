@@ -8,12 +8,11 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { Gender, SearchEmployeeType } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
-import {  debounceTime , tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { EmployeeAction, selectorAllEmployee } from '../..';
 
-
 @Component({
-  templateUrl: 'employee.component.html',
+  templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
   searchType = SearchEmployeeType;
@@ -27,14 +26,14 @@ export class EmployeeComponent implements OnInit {
 
   formGroup = new FormGroup(
     {
-    code: new FormControl(''),
-    name: new FormControl(''),
-    gender: new FormControl(''),
-    position: new FormControl(''),
-    department: new FormControl(''),
-    branch: new FormControl(''),
-    workedAt: new FormControl('')
-  }
+      code: new FormControl(''),
+      name: new FormControl(''),
+      gender: new FormControl(''),
+      position: new FormControl(''),
+      department: new FormControl(''),
+      branch: new FormControl(''),
+      workedAt: new FormControl('')
+    }
   );
 
   constructor(
@@ -49,17 +48,7 @@ export class EmployeeComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(EmployeeAction.loadInit({
-          skip: 0,
-          take: 30,
-          code: val.code,
-          name: val.name,
-          gender: val.gender,
-          position: val.position,
-          department: val.department,
-          branch: val.branch,
-          workedAt: val.workedAt ? new Date(val.workedAt) : undefined
-        }));
+        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, 30, 0)));
       })
     ).subscribe();
 
@@ -82,19 +71,36 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
+  employee(val: any, pageSize: number, pageIndex: number) {
+    if (val.workedAt) {
+      return {
+        skip: pageSize * pageIndex++,
+        take: this.pageSize,
+        code: val.code,
+        name: val.name,
+        gender: val.gender,
+        position: val.position,
+        department: val.department,
+        branch: val.branch,
+        workedAt: val.workedAt.toString(),
+      };
+    } else {
+      return {
+        skip: pageSize * pageIndex++,
+        take: this.pageSize,
+        code: val.code,
+        name: val.name,
+        gender: val.gender,
+        position: val.position,
+        department: val.department,
+        branch: val.branch
+      };
+    }
+  }
+
   onScroll() {
-    const val = this.formGroup.value
-    this.store.dispatch(EmployeeAction.loadMoreEmployees({
-      skip: this.pageSize * this.pageIndex++,
-      take: this.pageSize,
-      code: val.code,
-      name: val.name,
-      gender: val.gender,
-      position: val.position,
-      department: val.department,
-      branch: val.branch,
-      workedAt: val.workedAt ? new Date(val.workedAt) : undefined
-    }));
+    const val = this.formGroup.value;
+    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val, this.pageSize, this.pageSize)));
   }
 
   readAndUpdate($event: any): void {
