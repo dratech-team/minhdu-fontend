@@ -16,6 +16,20 @@ const routes: Routes = [
         data:{
           title: 'Khách hàng'
         }
+      },
+      {
+        path: 'commodity',
+        loadChildren: ()=> import('./pages/commodity/commodity.module').then(m => m.CommodityModule),
+        data:{
+          title: 'Hàng hóa'
+        }
+      },
+      {
+        path: 'order',
+        loadChildren: ()=> import('./pages/Bill/order.module').then(m => m.OrderModule),
+        data:{
+          title: 'Đơn hàng'
+        }
       }
     ]
   }

@@ -11,7 +11,6 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 
 @Component({
   templateUrl:'customer.component.html',
-  styleUrls:['customer.component.scss']
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
@@ -40,7 +39,7 @@ export class CustomerComponent implements OnInit {
     this.router.navigate(['customer/detail-customer', $event.id]).then();
   }
   deleteCustomer($event: any){
-    const dialogRef = this.dialog.open(DialogDeleteComponent)
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%',})
     dialogRef.afterClosed().subscribe(val =>
       {
         if(val){

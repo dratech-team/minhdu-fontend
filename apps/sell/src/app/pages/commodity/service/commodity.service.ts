@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { Customer } from '../+state/customer.interface';
+import { Commodity } from '../container/+state/commodity.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { Update } from '@ngrx/entity';
 
-@Injectable({providedIn: 'root'})
-export class CustomerService extends BaseService<Customer> {
+@Injectable({
+  providedIn: 'root'
+})
+export class CommodityService extends BaseService<Commodity> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.CUSTOMER, http);
+    super(Api.COMMODITY, http);
   }
 
-  addOne(props: Customer): Observable<Customer> {
+  addOne(props: Commodity): Observable<Commodity> {
     return super.addOne(props);
   }
 
-  paginationTest(params: any): Observable<Customer[]> {
-    return this.http.get<Customer[]>('customer', { params });
+  pagination(params: any): Observable<ResponsePaginate<Commodity>> {
+    return super.pagination(params);
   }
 
-  getOne(id: any): Observable<Customer> {
+  getOne(id: any): Observable<Commodity> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Customer>> {
+  update(id: any, body: any): Observable<Update<Commodity>> {
     return super.update(id, body);
   }
 

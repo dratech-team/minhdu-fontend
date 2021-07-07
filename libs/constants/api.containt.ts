@@ -11,5 +11,7 @@ export const Api = {
   DEGREE: 'degree',
   Payroll:'payroll',
   template_OVERTIME: 'overtime-template',
-  customer:'customer'
+  CUSTOMER:'customer',
+  COMMODITY:'commodity',
+  ORDER: 'order'
 };

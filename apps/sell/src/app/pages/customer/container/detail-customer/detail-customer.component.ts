@@ -38,7 +38,7 @@ export class DetailCustomerComponent implements OnInit {
   }
   deleteCustomer(id: any){
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '30%'
+      width: '25%'
     })
     dialogRef.afterClosed().subscribe(val =>
       {

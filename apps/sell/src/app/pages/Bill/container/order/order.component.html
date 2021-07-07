@@ -1,0 +1,80 @@
+<div class='main-customer'>
+  <div class='row h3 ml-3 mt-3'>Danh sách hàng hóa</div>
+  <div class='main-profile'>
+    <button (click)='add()' class='btn btn-primary'>Thêm Hàng hóa</button>
+    <div class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tên Hàng hóa</div>
+        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Ngày sinh</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header gender'>
+        <div class='title-profile'>Giới tính</div>
+        <select class='select' matNativeControl required>
+          <option value='MALE'>Nam</option>
+          <option value='FEMALE'>Nữ</option>
+          <option value='OTHER'>Khác</option>
+        </select>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Số điện thoại</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header address'>
+        <div class='title-profile'>Email</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header address'>
+        <div class='title-profile'>Địa chỉ</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Tìm năng</div>
+        <div class='d-flex justify-content-center align-items-center'>
+          <input type='checkbox'>
+        </div>
+
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>resource</div>
+        <select class='select' matNativeControl required>
+          <option value='RESEARCH'>RESEARCH</option>
+          <option value='INTRODUCED'>INTRODUCED</option>
+          <option value='SELF_FIND'>SELF_FIND</option>
+          <option value='OTHER'>OTHER</option>
+        </select>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Phân loại</div>
+        <select class='select' matNativeControl required>
+          <option value='RETAIL'>Bán lẻ</option>
+          <option value='AGENCY'>Đại lý</option>
+        </select>
+      </div>
+      <div class='border-start title-header note'>
+        <div class='title-profile'>Chú thích</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+    </div>
+    <div class='outer   animated fadeIn'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(orders$| async) as orders'>
+      <div class='row-content' *ngFor='let order of orders'
+           (contextmenu)='child.onContextMenu($event,order)'>
+        <app-mouse-right #child (addEvent)='add()'
+                         (deleteEvent)='deleteOrder($event)'
+        ></app-mouse-right>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
