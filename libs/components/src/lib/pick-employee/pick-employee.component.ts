@@ -4,7 +4,8 @@ import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { EmployeeAction, selectorAllEmployee } from '../../index';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+
 
 
 
@@ -18,7 +19,7 @@ export class PickEmployeeComponent implements OnInit {
   type = SalaryTypeEnum;
   pageIndex: number = 1;
   pageSize: number = 30;
-  selectAll: boolean = true;
+  selectAll: boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -29,7 +30,7 @@ export class PickEmployeeComponent implements OnInit {
     {
       code: new FormControl(''),
       name: new FormControl(''),
-      position: new FormControl(''),
+      branch: new FormControl(''),
     })
   constructor(
     private readonly store: Store

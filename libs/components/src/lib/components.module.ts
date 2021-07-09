@@ -12,6 +12,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
+import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { InputCurrencyDirective } from './directive/input-currency.directive';
     DialogDeleteComponent,
     NotEmptyPipe,
     InputCurrencyDirective,
+    PickEmployeeComponent,
   ],
   providers:[
     DecimalPipe
@@ -41,7 +43,8 @@ import { InputCurrencyDirective } from './directive/input-currency.directive';
     DialogDeleteComponent,
     NotEmptyPipe,
     SearchEmployeePipe,
-    InputCurrencyDirective
+    InputCurrencyDirective,
+    PickEmployeeComponent,
   ],
 })
 export class ComponentsModule {}

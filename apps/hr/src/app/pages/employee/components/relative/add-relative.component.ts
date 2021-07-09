@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
-import { EmployeeAction } from '../..';
+import { EmployeeAction } from '@minhdu-fontend/employee';
 
 
 

@@ -16,8 +16,8 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { selectCurrentEmployee } from '../../+state/employee.selector';
-import { EmployeeAction } from '../..';
+import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
+
 
 
 

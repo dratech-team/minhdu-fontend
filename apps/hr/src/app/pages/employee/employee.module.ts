@@ -19,17 +19,13 @@ import { AddEmployeeComponent } from './components/employee/add-employee.compone
 import { AddDegreeComponent } from './components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from './components/dialog-delete-employee/delete-employee.component';
 import { EmployeeComponent } from './containers/employee/employee.component';
-import { FeatureName } from '@minhdu-fontend/constants';
-import { employeeReducer } from './+state/employee.reducers';
-import { EmployeeEffect } from './+state/employee.effect';
-import { PickEmployeeComponent } from './components/pick-employee/pick-employee.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { EmployeeLibModule } from '@minhdu-fontend/employee';
 
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(FeatureName.EMPLOYEE, employeeReducer),
-    EffectsModule.forFeature([EmployeeEffect]),
+    EmployeeLibModule,
     ComponentsModule,
     EmployeeRoutingModule,
     MatExpansionModule,
@@ -55,14 +51,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AddRelativeComponent,
     AddProfileComponent,
     DeleteEmployeeComponent,
-    PickEmployeeComponent
   ],
   providers: [
     DatePipe,
   ],
-  exports:[
-    PickEmployeeComponent
-  ]
 })
 
 export class EmployeeModule {

@@ -9,7 +9,7 @@ import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee
 import { Gender, SearchEmployeeType } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { EmployeeAction, selectorAllEmployee } from '../..';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 
 @Component({
   templateUrl: 'employee.component.html'
