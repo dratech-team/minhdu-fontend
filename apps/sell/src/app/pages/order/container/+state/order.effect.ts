@@ -10,9 +10,11 @@ export class OrderEffect {
   addOrder$ = createEffect(()=>
     this.action.pipe(
       ofType(OrderAction.addOrder),
-      switchMap((props) => this.billService.addOne(props.bill)),
-      map((bill) => OrderAction.addOrderSuccess({bill:bill})),
-      catchError((err) => throwError(err))
+      switchMap((props) => this.billService.addOne(props.bill).pipe(
+        map(_ => OrderAction.loadInit({take:30, skip:0})),
+        catchError((err) => throwError(err))
+      )),
+
     ));
   loadInit$ = createEffect(()=>
     this.action.pipe(

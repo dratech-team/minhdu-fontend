@@ -76,13 +76,15 @@
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.MALE'> Nam</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.FEMALE'> Nữ</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.OTHER'> Khác</div>
-        <div class='content-profile default pointer '>{{customer?.phone}}</div>
-        <div class='content-profile address pointer '>{{customer?.email}}</div>
+        <div class='content-profile default pointer '>{{customer?.phone ? customer.phone: 'Chưa cập nhật'}}</div>
+        <div class='content-profile address pointer '>{{customer?.email? customer.email: 'Chưa cập nhật'}}</div>
         <div class='content-profile address pointer '>{{customer?.address}}</div>
         <div class='content-profile default pointer '><input type='checkbox' disabled
                                                              [checked]='customer.isPotential !== null'></div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.RESEARCH'> RESEARCH</div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.INTRODUCED'> INTRODUCED</div>
+        <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.SELF_FIND'>SELF_FIND</div>
+        <div class='content-profile  default ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.OTHER'> OTHER</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>

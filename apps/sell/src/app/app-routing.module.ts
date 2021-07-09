@@ -30,6 +30,10 @@ const routes: Routes = [
         data:{
           title: 'Đơn hàng'
         }
+      },
+      {
+        path:'route',
+        loadChildren:() => import('./pages/route/route.module').then(m => m.RouteModule)
       }
     ]
   }

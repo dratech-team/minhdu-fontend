@@ -12,8 +12,8 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.loadInit),
       switchMap((props) =>
-        this.customerService.paginationTest(props)),
-      map((ResponsePaginate) => CustomerAction.loadInitSuccess({ customers: ResponsePaginate })),
+        this.customerService.pagination(props)),
+      map((ResponsePaginate) => CustomerAction.loadInitSuccess({ customers: ResponsePaginate.data })),
       catchError((err) => throwError(err))
     )
   );

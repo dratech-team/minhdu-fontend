@@ -4,7 +4,6 @@ import { Commodity } from './commodity.interface';
 import { CommodityState } from './commodity.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as formCommodity from './commodity.reducer'
-import { selectorCustomerState } from '../../../customer/+state/customer.selector';
 
 export interface state {
   commodity: CommodityState

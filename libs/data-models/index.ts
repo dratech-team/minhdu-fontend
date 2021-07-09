@@ -15,7 +15,6 @@ export * from './work-history'
 export * from './salary/salary'
 export * from './salary/salary-history'
 export  * from './employee/employee'
-export  * from './sell/order'
 
 
 

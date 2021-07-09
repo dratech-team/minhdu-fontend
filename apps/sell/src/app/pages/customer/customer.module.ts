@@ -4,7 +4,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { CommonModule,DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { customerReducer } from './+state/customer.reducer';
@@ -14,11 +14,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DetailCustomerComponent } from './container/detail-customer/detail-customer.component';
-import { AddCustomerComponent } from './component/customer/add-customer.component';
-import {  MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { CustomerDialogComponent } from './component/customer-dialog/customer-dialog.component';
 
 
 @NgModule({
@@ -37,15 +37,15 @@ import { MatRadioModule } from '@angular/material/radio';
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
-    MatDialogModule,
+    MatDialogModule
   ],
   declarations: [
     CustomerComponent,
     DetailCustomerComponent,
-    AddCustomerComponent,
+    CustomerDialogComponent
   ],
-  providers:[
-    DatePipe,
+  providers: [
+    DatePipe
   ]
 
 })

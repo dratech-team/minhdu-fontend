@@ -12,17 +12,23 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { OrderComponent } from './container/order/order.component';
 import { DetailOrderComponent } from './container/detail-order/detail-order.component';
 import { OrderDialogComponent } from './component/order-dialog/order-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
   imports: [
+    ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,
     StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
     EffectsModule.forFeature([OrderEffect]),
     MatInputModule,
     InfiniteScrollModule,
-    CommonModule
+    CommonModule,
+    MatDialogModule,
+    MatSelectModule
   ],
   declarations:[
     OrderComponent,

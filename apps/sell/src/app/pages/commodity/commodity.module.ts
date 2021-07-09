@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { DetailCommodityComponent } from './container/detail-commodity/detail-commodity.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { MatRadioModule } from '@angular/material/radio';
   ],
   declarations: [
     CommodityComponent,
-    CommodityDialogComponent
+    CommodityDialogComponent,
+    DetailCommodityComponent
   ],
    providers: [
      DatePipe

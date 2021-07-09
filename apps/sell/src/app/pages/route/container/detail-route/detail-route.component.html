@@ -3,7 +3,7 @@
   <div class='row'>
     <div class='row mt-5'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
-        Chi tiết Đơn hàng
+        Chi tiết tuyến đường
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
           data-placement='top'
           title=' chỉnh sửa '
           class='edit animated'
-          (click)='updateOrder(order)'>
+          (click)='updateRoute(route)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -25,51 +25,85 @@
         <div class='col-6  form-group'>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Khách hàng :</span>
+              <span>Tên Tuyến đường:</span>
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.customer?.firstName}}  {{order?.customer?.lastName}}
+             {{route?.name}}
             </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Ngày tạo đơn :</span>
+              <span>Ngày bắt đầu:</span>
             </div>
             <div class='col-md-8 py-2 '>
-            <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.createdAt}}
+            <span class='contain-detail' style=' color: #3C3B54' *ngIf='route?.startedAt'>
+             {{route?.startedAt|date:'dd/MM/yyyy'}}
+            </span>
+              <span class='contain-detail' style=' color: #3C3B54' *ngIf='route?.startedAt === null'>
+             Chưa cập nhật
             </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>explain :</span>
+              <span>Ngày Kết thúc:</span>
             </div>
             <div class='col-md-8 py-2 '>
-            <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.explain}}
+            <span class='contain-detail' style=' color: #3C3B54' *ngIf='route?.endedAt'>
+             {{route?.endedAt|date:'dd/MM/yyyy'}}
+            </span>
+              <span class='contain-detail' style=' color: #3C3B54' *ngIf='route?.endedAt === null'>
+             Chưa cập nhật
             </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>loại thanh toán:</span>
+              <span>Tên tài xế:</span>
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.payType === payType.CASH? 'Tiền mặt': 'Chuyển khoản'}}
+             {{route?.driver?.firstName}} {{route?.driver?.lastName}}
             </span>
             </div>
           </div>
-        </div>
-        <div class='col-6  form-group'>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Biển số xe:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{route?.bsx}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>longitude:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{route?.longitude}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>longitude:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{route?.longitude}}
+            </span>
+            </div>
+          </div>
         </div>
       </div>
       <div class='col-12 mt-5'>
         <div class='row d-flex align-items-center '>
-          <div class='row align-items-center title-table mr-4'>Hàng hóa</div>
+          <div class='row align-items-center title-table mr-4'>Hóa đơn</div>
         </div>
         <div class='mt-3 '>
           <table class='mt-3'>
@@ -85,24 +119,7 @@
           </table>
         </div>
       </div>
-      <div class='col-12 mt-5'>
-        <div class='row d-flex align-items-center '>
-          <div class='row align-items-center title-table mr-4'>Tuyến đường</div>
-        </div>
-        <div class='mt-3 '>
-          <table class='mt-3'>
-            <tr>
-              <th class='text-center'> Mã hóa đơn </th>
-              <th class='text-center'>Ngày thanh toán </th>
-              <th class='text-center'>Ngày xuất hóa đơn</th>
-              <th class='text-center'>Thanh toán</th>
-              <th class='text-center'>Hình thức thanh toán</th>
-              <th class='text-center'>Hàng hóa</th>
-            </tr>
 
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 </div>

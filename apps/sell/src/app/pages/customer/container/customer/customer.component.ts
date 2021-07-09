@@ -6,8 +6,8 @@ import { CustomerAction } from '../../+state/customer.action';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../../component/customer/add-customer.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -27,7 +27,7 @@ export class CustomerComponent implements OnInit {
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
   }
   add($event?: any){
-    this.dialog.open(AddCustomerComponent, {
+    this.dialog.open(CustomerDialogComponent, {
       width: '50%',
       data: $event
     })

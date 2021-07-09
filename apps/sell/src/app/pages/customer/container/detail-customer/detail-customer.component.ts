@@ -6,8 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../../component/customer/add-customer.component';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -28,7 +28,7 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   updateCustomer(customer: Customer) {
-    this.dialog.open(AddCustomerComponent , {
+    this.dialog.open(CustomerDialogComponent , {
       data:customer ,
       width: '50%'
     })
@@ -49,3 +49,5 @@ export class DetailCustomerComponent implements OnInit {
     )
   }
 }
+
+

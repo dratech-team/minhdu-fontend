@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Thông tin Tuyến đường</h2>
+<mat-dialog-content class='mat-typography'>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div class='form-group'>
+      <div class='row'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='name'>Tên tuyến đường<span class='star'>*</span>
+          </label>
+          <input type='text' class='form-control' id='name'  formControlName='name'>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='startedAt'>Ngày bắt đầu</label><span class='star'>*</span>
+          <input
+            class='form-control'
+            formControlName='startedAt'
+            id='startedAt'
+            type='date'
+          >
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='endedAt'>Ngày Kết thúc</label><span class='star'>*</span>
+          <input
+            class='form-control'
+            formControlName='endedAt'
+            id='endedAt'
+            type='date'
+          >
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
+          <input
+            class='form-control'
+            formControlName='bsx'
+            id='bsx'
+            type='text'
+          >
+        </div>
+      </div>
+      <div class='row d-flex mt-3 justify-content-center'>
+        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+
+

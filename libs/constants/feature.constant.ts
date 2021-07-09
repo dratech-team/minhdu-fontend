@@ -9,5 +9,6 @@ export const FeatureName = {
   TEMPLATE_OVERTIME :'template_overtime',
   CUSTOMER: 'customer',
   COMMODITY: 'commodity',
-  ORDER : 'order'
+  ORDER : 'order',
+  ROUTE : 'route',
 };

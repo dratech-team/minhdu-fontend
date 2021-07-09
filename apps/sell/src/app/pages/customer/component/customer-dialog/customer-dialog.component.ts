@@ -9,9 +9,9 @@ import { CustomerAction } from '../../+state/customer.action';
 
 
 @Component({
-  templateUrl: 'add-customer.component.html'
+  templateUrl: 'customer-dialog.component.html'
 })
-export class AddCustomerComponent implements OnInit {
+export class CustomerDialogComponent implements OnInit {
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
