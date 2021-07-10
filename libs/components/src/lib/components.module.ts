@@ -1,16 +1,19 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule,DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
+import { NotEmptyPipe } from './pipes/notEmty.pipe';
+import { InputCurrencyDirective } from './directive/input-currency.directive';
+import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
+
 
 @NgModule({
   imports: [
@@ -21,18 +24,27 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
     FormsModule,
     MatCheckboxModule,
     MatDialogModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ReactiveFormsModule
   ],
   declarations: [
     MouseRightComponent,
-    PickEmployeeComponent,
     SearchEmployeePipe,
     DialogDeleteComponent,
+    NotEmptyPipe,
+    InputCurrencyDirective,
+    PickEmployeeComponent,
+  ],
+  providers:[
+    DecimalPipe
   ],
   exports: [
     MouseRightComponent,
+    DialogDeleteComponent,
+    NotEmptyPipe,
+    SearchEmployeePipe,
+    InputCurrencyDirective,
     PickEmployeeComponent,
-    DialogDeleteComponent
   ],
 })
 export class ComponentsModule {}

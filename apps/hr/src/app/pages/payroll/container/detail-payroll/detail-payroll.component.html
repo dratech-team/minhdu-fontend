@@ -77,13 +77,13 @@
                    alt='add icon'>
             </div>
           </div>
-          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['BASIC_ISNURANCE','BASIC' ] ">
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['BASIC_ISNURANCE','BASIC' ] ">
             <div class='col-md-7 title-child'> {{salary.title}}</div>
             <div
               class='col-md-4 salary'
               style='color: #4B3880'
             >
-              {{salary.price}}
+              {{salary.price|number:'1.0'|notEmpty:'0'}} đ
             </div>
             <div style='display: flex'> <button
               data-toggle='tooltip'
@@ -109,13 +109,13 @@
                    alt='add icon'>
             </div>
           </div>
-          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['STAY'] ">
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['STAY'] ">
             <div class='col-md-7 title-child'> {{salary.title}}</div>
             <div
               class='col-md-4 salary'
               style='color: #4B3880'
             >
-              {{salary.price}}
+              {{salary.price|number:'1.0'|notEmpty:'0'}} đ
             </div>
             <div style='display: flex'>
               <button
@@ -142,7 +142,7 @@
                    alt='add icon'>
             </div>
           </div>
-          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['ALLOWANCE'] ">
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ALLOWANCE'] ">
             <div class='col-md-7 title-child'>
             <span *ngIf="salary.unit === 'DAY' "> {{salary.title}}
               theo ngày {{salary.datetime|date:'dd/MM/yyyy'}} </span>
@@ -152,7 +152,8 @@
                 giờ, ngày {{salary.datetime|date: 'MM/yyyy'}}</span>
             </div>
             <div
-              class='col-md-3 salary' style='color: #29CC97'>{{salary.price}}</div>
+              class='col-md-3 salary' style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
+            </div>
             <div style='display: flex'>
               <button
                 data-toggle='tooltip'
@@ -187,7 +188,7 @@
                    alt='add icon'>
             </div>
           </div>
-          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['OVERTIME'] ">
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['OVERTIME'] ">
             <div class='col-md-7 title-child'>
               <span>{{salary.title}}</span>
             </div>
@@ -196,7 +197,9 @@
               {{salary.title}}
             </div>
             <div
-              class='col-md-3 salary' style='color: #29CC97'>{{salary.price}}</div>
+              class='col-md-3 salary' style='color: #29CC97'>
+              {{salary.price|number:'1.0'|notEmpty:'0'}}đ
+            </div>
             <div style='display: flex'>
               <button
                 data-toggle='tooltip'
@@ -232,7 +235,7 @@
                    alt='add icon'>
             </div>
           </div>
-          <div class='content-table ' *ngFor="let salary of payroll.salaries | filter:['ABSENT']  ">
+          <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT']  ">
             <div class='col-md-7 title-child' *ngIf="salary.unit === 'DAY'">
               {{salary.title + ' Ngày '}} {{salary.datetime | date:'dd/MM/yyyy'}} {{salary.forgot ? '(Quên giấy phép)' : ''}}
             </div>
@@ -246,7 +249,6 @@
               class='col-md-3 salary'
               style='color: #29CC97'
             >
-              {{salary.price}}
             </div>
             <div style='display: flex'>
               <button
@@ -282,9 +284,9 @@
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
       </button>
-      <button class='mb-5 create-salary'>
+      <button (click)='confirmSalary(payroll.id)' class='mb-5 create-salary'>
         <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
-        Lập phiếu lương
+        Xác nhận phiếu lương
       </button>
     </div>
   </div>

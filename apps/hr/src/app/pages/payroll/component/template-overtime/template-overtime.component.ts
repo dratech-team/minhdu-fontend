@@ -1,17 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, getBranchById, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { DepartmentActions, getDepartmentById } from '../../../../../../../../libs/orgchart/src/lib/+state/department';
-import { PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
+
 
 @Component({
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
+  numberChars = new RegExp('[^0-9]', 'g')
   typeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   departments?: Department[];
@@ -31,10 +33,9 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this?.data?.position?.id);
     this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
+    this.store.dispatch(OrgchartActions.init());
     this.branch$.subscribe(val => this.departments = val?.departments);
     this.department$.subscribe(val => this.positions = val?.positions);
     this.formGroup = this.formBuilder.group({
@@ -56,7 +57,7 @@ export class TemplateOvertimeComponent implements OnInit {
       data:{
         title: value.title,
         positionId: value.position,
-        price: value.price,
+        price: typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
         unit: value.unit,
         note: value.note
       }

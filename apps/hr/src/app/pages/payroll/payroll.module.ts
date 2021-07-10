@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { DetailPayrollComponent } from './container/detail-payroll/detail-payroll.component';
 import { PayrollRoutingModule } from './payroll-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
 import { SalaryComponent } from './component/salary/salary.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -26,9 +26,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
 import { TemplateComponent } from './container/template/template.component';
+import { EmployeeModule } from '../employee/employee.module';
+import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
 
 @NgModule({
   imports: [
+    ComponentsModule,
     PayrollRoutingModule,
     ComponentsModule,
     MatDialogModule,
@@ -38,7 +41,7 @@ import { TemplateComponent } from './container/template/template.component';
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect,TemplateOvertimeEffect ]),
+    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -47,7 +50,9 @@ import { TemplateComponent } from './container/template/template.component';
     MatTabsModule,
     MatChipsModule,
     MatIconModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    EmployeeModule,
+    FormsModule
   ],
   declarations:[
     PayrollComponent,
@@ -57,6 +62,7 @@ import { TemplateComponent } from './container/template/template.component';
     AddPayrollComponent,
     TemplateOvertimeComponent,
     TemplateComponent,
+    UpdateConfirmComponent,
   ]
 })
 export class PayrollModule{

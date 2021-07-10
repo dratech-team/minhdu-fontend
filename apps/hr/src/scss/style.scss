@@ -6,12 +6,9 @@
 // If you are going to use dark layout please comment next liFe
 @import "~@coreui/coreui-pro/scss/coreui";
 
-// Import styles with dark layout
-// If you want to use dark layout uncomment next line
-//@import "~@coreui/coreui-pro/scss/themes/dark/coreui-dark";
-
 // If you want to add something do it here
 @import "custom";
+@import "custom-table";
 
 // Spinkit
 $spinkit-spinner-color: $body-color;

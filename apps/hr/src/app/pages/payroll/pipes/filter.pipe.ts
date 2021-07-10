@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Salary } from '@minhdu-fontend/data-models';
 
 @Pipe({
-  name: 'filter',
+  name: 'filterTypeSalary',
   pure: false,
 })
 export class FilterPipe implements PipeTransform {

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './container/default-layout.component';
-import { OrgchartContainer } from './pages/orgchart/containers/orgchart/orgchart.container';
 
 
 const routes: Routes = [

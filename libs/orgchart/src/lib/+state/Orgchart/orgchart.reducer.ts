@@ -3,7 +3,6 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as OrgchartActions from './orgchart.actions';
 import { Branch } from '@minhdu-fontend/data-models';
-import { adapter } from '@minhdu-fontend/employee';
 
 
 export const ORGCHART_FEATURE_KEY = 'orgchart';

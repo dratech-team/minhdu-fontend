@@ -2,8 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { EmployeeAction } from '@minhdu-fontend/employee';
 import { DatePipe } from '@angular/common';
+import { EmployeeAction } from '@minhdu-fontend/employee';
+
+
 
 @Component({
   templateUrl: 'add-relative.component.html'

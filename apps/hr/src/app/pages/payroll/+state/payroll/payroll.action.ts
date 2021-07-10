@@ -1,15 +1,45 @@
 import { createAction, props } from '@ngrx/store';
-import { RequestPaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
 
-export const loadPayrolls = createAction(
+export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
-  props<RequestPaginate>()
+  props<{
+    take: number,
+    skip: number,
+    name?: string,
+    code?: string,
+    position?: string,
+    department?: string,
+    branch?: string,
+    createdAt?: Date,
+    paidAt?: boolean,
+    accConfirmedAt?: boolean,
+  }>()
 );
 
-export const loadPayrollsSuccess = createAction(
+export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
+  props<{ payrolls: Payroll[] }>()
+);
+export const loadMorePayrolls = createAction(
+  '[LOAD_PAYROLL] Load More Payrolls',
+  props<{
+    take: number,
+    skip: number,
+    createdAt?: Date,
+    name?: string,
+    code?: string,
+    position?: string,
+    department?: string,
+    branch?: string,
+    paidAt?: boolean,
+    accConfirmedAt?: boolean,
+  }>()
+);
+
+export const loadMorePayrollsSuccess = createAction(
+  '[LOAD_PAYROLL] Load More Payrolls Success',
   props<{ payrolls: Payroll[] }>()
 );
 
@@ -43,6 +73,11 @@ export const updatePayroll = createAction(
   props<{ id: number, Payroll: any }>()
 );
 
+export const confirmPayroll = createAction(
+  '[CONFIRM_PAYROLL] Confirm Payroll',
+  props<{ id: number, Payroll: any }>()
+)
+
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
   props<{ payroll: Update<Payroll> }>()
@@ -70,8 +105,10 @@ export const deleteSalary = createAction(
 
 
 export const PayrollAction = {
-  loadPayrolls,
-  loadPayrollsSuccess,
+  loadInit,
+  loadInitSuccess,
+  loadMorePayrolls,
+  loadMorePayrollsSuccess,
   addPayroll,
   addPayrollSuccess,
   addSalary,
@@ -79,6 +116,7 @@ export const PayrollAction = {
   getPayrollSuccess,
   updatePayroll,
   updatePayrollSuccess,
+  confirmPayroll,
   updateSalary,
   deletePayroll,
   deletePayrollSuccess,
