@@ -15,13 +15,13 @@ export const initialBill = adapter.getInitialState({ loaded: false });
 export const OrderReducer = createReducer(
   initialBill,
   on(OrderAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.bills, { ...state, loaded: true })
+    adapter.setAll(action.orders, { ...state, loaded: true })
   ),
   on(OrderAction.loadMoreOrdersSuccess, (state, action) =>
-    adapter.addMany(action.bills, { ...state, loaded: true })
+    adapter.addMany(action.orders, { ...state, loaded: true })
   ),
   on(OrderAction.getOrderSuccess, (state, action) =>
-    adapter.upsertOne(action.bill, { ...state, loaded: true })
+    adapter.upsertOne(action.order, { ...state, loaded: true })
   )
 );
 export const {selectAll,selectEntities} = adapter.getSelectors()

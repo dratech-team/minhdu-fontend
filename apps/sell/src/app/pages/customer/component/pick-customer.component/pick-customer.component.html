@@ -1,0 +1,68 @@
+<div class='container'>
+  <div class='col-12 animated fadeIn'>
+    <form [formGroup]='formGroup' class='header-profile mt-3 '>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Tên Khách hàng</div>
+        <input class='form-control input-profile'
+               type='text'
+               placeholder='PN10001'
+               formControlName='name'
+        >
+      </div>
+      <div class='border-start title-header col-3'>
+        <div class='title-profile'>Loại khách hàng</div>
+        <select class='select' matNativeControl required formControlName='type'>
+          <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
+          <option value='{{customerType.AGENCY}}'>Đại lý</option>
+        </select>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>resource</div>
+        <select class='select' matNativeControl required formControlName='resource'>
+          <option value='{{resourceType.RESEARCH}}'>RESEARCH</option>
+          <option value='{{resourceType.INTRODUCED}}'>INTRODUCED</option>
+          <option value='{{resourceType.SELF_FIND}}'>SELF_FIND</option>
+          <option value='{{resourceType.OTHER}}'>OTHER</option>
+        </select>
+      </div>
+      <div class='border-start title-header col-1  '>
+        <div class='title-profile'>All</div>
+        <mat-checkbox *ngIf='!data.pickOne'  class='example-margin mt-2 ml-3'
+                      [checked]='selectAll'
+                      [indeterminate]="someComplete()"
+                      (change)='setAll($event.checked)'>
+        </mat-checkbox>
+      </div>
+    </form>
+    <div class='outer '
+         style='width: 101%; height: 50vh'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+    >
+      <div class='row-content' *ngFor='let customer of customers'>
+        <div class='content-profile col-4  pointer'>{{customer.firstName}} {{customer.lastName}}</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
+        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
+        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
+        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
+        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
+        <div class='content-profile  col-4 ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
+        <div class='content-profile col-1  pointer'  >
+          <mat-checkbox *ngIf='!data.pickOne' class='checkID'
+                        [checked]='customer.isSelect ? customer.isSelect: false'
+                        [(ngModel)]='customer.isSelect'
+                        (ngModelChange)='updateAllSelect(customer.id)'>
+          </mat-checkbox>
+          <input *ngIf='data.pickOne' type="radio"  name="pick-one" value="{{customer.id}}">
+        </div>
+      </div>
+    </div>
+    <button *ngIf='data.pickOne' class='btn btn-primary' (click)='close()'  mat-dialog-close > xác nhận</button>
+  </div>
+</div>
+
+

@@ -11,9 +11,6 @@ const routes: Routes = [
   {
     path: 'detail-customer/:id',
     component: DetailCustomerComponent,
-    data: {
-      title: 'Chi tiết Khách hàng'
-    }
   }
 ]
 @NgModule({

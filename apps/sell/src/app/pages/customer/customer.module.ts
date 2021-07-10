@@ -15,10 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DetailCustomerComponent } from './container/detail-customer/detail-customer.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { CustomerDialogComponent } from './component/customer-dialog/customer-dialog.component';
+import { PickCustomerComponent } from './component/pick-customer.component/pick-customer.component';
 
 
 @NgModule({
@@ -37,15 +38,20 @@ import { CustomerDialogComponent } from './component/customer-dialog/customer-di
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   declarations: [
     CustomerComponent,
     DetailCustomerComponent,
-    CustomerDialogComponent
+    CustomerDialogComponent,
+    PickCustomerComponent
+  ],
+  exports: [
+    PickCustomerComponent
   ],
   providers: [
-    DatePipe
+    DatePipe,
   ]
 
 })

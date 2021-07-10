@@ -11,6 +11,7 @@ export class BaseService<T> {
   }
 
   pagination(params: any): Observable<ResponsePaginate<T>> {
+    console.log(params)
     return this.http.get<ResponsePaginate<T>>(this.url, { params });
   }
 

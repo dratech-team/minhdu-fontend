@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
+import { EmployeeAction } from '@minhdu-fontend/employee';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -16,12 +18,24 @@ export class CustomerComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   genderType = Gender;
+  pageIndex: number = 1;
+  pageSize: number = 30;
+  formGroup = new FormGroup(
+    {
+      name: new FormControl(''),
+      gender: new FormControl(''),
+      resource: new FormControl(''),
+      isPotential: new FormControl(''),
+      type: new FormControl(''),
+    }
+  );
   constructor(
     private readonly store :Store<AppState>,
     private readonly router :Router,
     private readonly dialog : MatDialog,
   ) {
   }
+
   customers$ = this.store.pipe(select(selectorAllCustomer));
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
@@ -33,8 +47,16 @@ export class CustomerComponent implements OnInit {
     })
   }
   onScroll() {
+    const val = this.formGroup.value;
+    this.store.dispatch(CustomerAction.loadMoreCustomers(this.customer(val, this.pageSize, this.pageIndex)));
   }
-
+  customer(val: any, pageSize: number, pageIndex: number) {
+    console.log(pageSize,pageIndex )
+      return {
+        skip: pageSize * pageIndex++,
+        take: this.pageSize,
+      };
+  }
   readAndUpdate($event?: any) {
     this.router.navigate(['customer/detail-customer', $event.id]).then();
   }

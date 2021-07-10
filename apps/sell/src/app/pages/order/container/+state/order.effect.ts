@@ -10,7 +10,7 @@ export class OrderEffect {
   addOrder$ = createEffect(()=>
     this.action.pipe(
       ofType(OrderAction.addOrder),
-      switchMap((props) => this.billService.addOne(props.bill).pipe(
+      switchMap((props) => this.billService.addOne(props.order).pipe(
         map(_ => OrderAction.loadInit({take:30, skip:0})),
         catchError((err) => throwError(err))
       )),
@@ -20,7 +20,7 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadInit),
       switchMap((props) => this.billService.pagination(props)),
-      map((responsePagination) => OrderAction.loadInitSuccess({bills:responsePagination.data} )),
+      map((responsePagination) => OrderAction.loadInitSuccess({orders:responsePagination.data} )),
       catchError((err) => throwError(err))
     ));
 
@@ -28,7 +28,7 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
       switchMap((props) => this.billService.pagination(props)),
-      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({bills:responsePagination.data} )),
+      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({orders:responsePagination.data} )),
       catchError((err) => throwError(err))
     ));
 
@@ -36,14 +36,14 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.getOrder),
       switchMap((props) => this.billService.getOne(props)),
-      map((bill) => OrderAction.getOrderSuccess({bill: bill} )),
+      map((bill) => OrderAction.getOrderSuccess({order: bill} )),
       catchError((err) => throwError(err))
     ));
 
   updateBill$ = createEffect(()=>
     this.action.pipe(
       ofType(OrderAction.updateOrder),
-      switchMap((props) => this.billService.update(props.id, props.bill).pipe(
+      switchMap((props) => this.billService.update(props.id, props.order).pipe(
         map((_) => OrderAction.getOrder( {id:props.id} )),
         catchError((err) => throwError(err))
         )

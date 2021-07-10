@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { CustomerAction } from './customer.action';
+import { CustomerAction, loadMoreCustomers } from './customer.action';
 import { CustomerService } from '../service/customer.service';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class CustomerEffect {
   );
   loadMoreCustomers$ = createEffect(() =>
     this.action$.pipe(
-      ofType(CustomerAction.loadCustomers),
+      ofType(CustomerAction.loadMoreCustomers),
       switchMap((props) => this.customerService.pagination(props)),
       map((ResponsePaginate) => CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data })),
       catchError((err) => throwError(err))

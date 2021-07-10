@@ -29,7 +29,7 @@ export const loadMoreCommoditySuccess = createAction(
   props<{ commodity: Commodity[] }>()
 );
 export const getCommodity = createAction(
-  '[GET_COMMODITY] Get Commodity Success',
+  '[GET_COMMODITY] Get Commodity ',
   props<{ id: number }>()
 );
 export const getCommoditySuccess = createAction(

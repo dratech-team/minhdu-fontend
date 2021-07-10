@@ -30,4 +30,5 @@ export interface Customer {
   bank: Bank,
   facebook?: string,
   zalo?: string
+  isSelect?: boolean,
 }

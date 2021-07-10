@@ -12,4 +12,5 @@ export interface Commodity{
   price : number
   amount :number
   orders :Order[]
+  isSelect: boolean;
 }

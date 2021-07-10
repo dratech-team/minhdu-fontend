@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, getBranchById, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { DepartmentActions, getDepartmentById } from '../../../../../../../../libs/orgchart/src/lib/+state/department';
-import { PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
+
 
 @Component({
   templateUrl: 'template-overtime.component.html'

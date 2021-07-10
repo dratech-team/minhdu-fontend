@@ -1,14 +1,14 @@
 <div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
-<!--  *ngIf='(commodity$ | async)  as commodity'-->
-  <div class='row'>
+
+  <div class='row'   *ngIf='(commodity$ | async)  as commodity'>
     <div class='row mt-5'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
         Chi tiết sản phẩm
       </div>
     </div>
   </div>
-<!--  *ngIf='(customer$ | async)  as customer'-->
-  <div class='row mt-5' style='color:#80828B' >
+
+  <div class='row mt-5' style='color:#80828B'  *ngIf='(commodity$ | async)  as commodity'>
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
@@ -55,7 +55,7 @@
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>amount sản phẩm :</span>
+              <span>số lượng:</span>
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>

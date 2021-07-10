@@ -12,16 +12,18 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommodityDialogComponent } from './component/commodity-dialog/commodity-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { DetailCommodityComponent } from './container/detail-commodity/detail-commodity.component';
+import { PickCommodityComponent } from './component/pick-commodity.component/pick-commodity.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
     ComponentsModule,
     CommodityRoutingModule,
-    StoreModule.forFeature(FeatureName.CUSTOMER, CommodityReducer),
+    StoreModule.forFeature(FeatureName.COMMODITY, CommodityReducer),
     EffectsModule.forFeature([CommodityEffect]),
     MatInputModule,
     InfiniteScrollModule,
@@ -29,16 +31,22 @@ import { DetailCommodityComponent } from './container/detail-commodity/detail-co
     MatDialogModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,
-    DetailCommodityComponent
+    DetailCommodityComponent,
+    PickCommodityComponent
   ],
-   providers: [
-     DatePipe
-   ]
+  exports: [
+    PickCommodityComponent
+  ],
+  providers: [
+    DatePipe
+  ]
 })
 export class CommodityModule {
 

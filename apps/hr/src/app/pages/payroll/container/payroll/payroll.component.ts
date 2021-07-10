@@ -12,15 +12,29 @@ import { SalaryComponent } from '../../component/salary/salary.component';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
-
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, tap } from 'rxjs/operators';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
-  templateUrl: 'payroll.component.html',
-  styleUrls: ['payroll.component.scss']
+  templateUrl: 'payroll.component.html'
 })
 
 
 export class PayrollComponent implements OnInit {
+  formGroup = new FormGroup(
+    {
+      code: new FormControl(''),
+      name: new FormControl(''),
+      position: new FormControl(''),
+      department: new FormControl(''),
+      branch: new FormControl(''),
+      paidAt: new FormControl(''),
+      accConfirmedAt: new FormControl(''),
+      createdAt: new FormControl()
+    }
+  );
   salaryType = SalaryTypeEnum;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
@@ -28,12 +42,14 @@ export class PayrollComponent implements OnInit {
   pageIndex: number = 1;
   pageSize: number = 30;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
+  code?: string;
 
   constructor(
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly formBuilder: FormBuilder,
   ) {
   }
 
@@ -105,31 +121,65 @@ export class PayrollComponent implements OnInit {
       {
         employeeID: 1,
         name: 'ádasd',
-        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
+        dayOff: [new Date('7/7/2021'), new Date('7/5/2021'), new Date('1/3/2021')]
       },
       {
         employeeID: 1,
         name: 'ádasd',
-        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
+        dayOff: [new Date('7/7/2021'), new Date('7/5/2021'), new Date('1/3/2021')]
       },
       {
         employeeID: 1,
         name: 'ádasd',
-        dayOff: [new Date('7/7/2021'),new Date('7/5/2021'),new Date('1/3/2021')]
-      },
-
-
+        dayOff: [new Date('7/7/2021'), new Date('7/5/2021'), new Date('1/3/2021')]
+      }
 
     ]
   };
 
 
   ngOnInit() {
-    this.store.dispatch(PayrollAction.loadPayrolls({ skip: 0, take: 30 }));
+    this.store.dispatch(PayrollAction.loadInit({ skip: 0, take: 30 }));
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      tap((val) => {
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, 30, 0)));
+      })
+    ).subscribe();
+  }
+
+  Payroll(val: any, pageSize: number, pageIndex: number) {
+    if (val.createdAt) {
+      return {
+        skip: pageSize * pageIndex++,
+        take: this.pageSize,
+        code: val.code,
+        name: val.name,
+        position: val.position,
+        department: val.department,
+        branch: val.branch,
+        createdAt: val.createdAt.toString(),
+        paidAt: val.paidAt,
+        accConfirmedAt: val.accConfirmedAt
+      };
+    } else {
+      return {
+        skip: pageSize * pageIndex++,
+        take: this.pageSize,
+        code: val.code,
+        name: val.name,
+        position: val.position,
+        department: val.department,
+        branch: val.branch,
+        paidAt: val.paidAt,
+        accConfirmedAt: val.accConfirmedAt
+      };
+    }
   }
 
   onScroll() {
-    this.store.dispatch(PayrollAction.loadPayrolls({ skip: this.pageSize * this.pageIndex++, take: this.pageSize }));
+    const val = this.formGroup.value;
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
   }
 
   addPayroll($event?: any): void {
@@ -139,14 +189,17 @@ export class PayrollComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((value) => {
         if (value) {
-          if (value.employeesId) {
-            this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-          } else {
-            this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-          }
+          this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
         }
       }
     );
+  }
+
+  updatePayroll(id: number, type: string) {
+      this.dialog.open(UpdateConfirmComponent, {
+        width: '25%',
+        data:{id, type}
+      })
   }
 
   addSalary(type: SalaryTypeEnum): any {
@@ -164,7 +217,7 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  readAndUpdate($event: any) {
+  readPayroll($event: any) {
     this.router.navigate(['payroll/detail-payroll', $event.id]).then();
   }
 
@@ -238,9 +291,9 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  exportTimekeeping( data : any) {
+  exportTimekeeping(data: any) {
 
-    const monthCurrent = this.dataTimekeeping.createAt.getMonth() ;
+    const monthCurrent = this.dataTimekeeping.createAt.getMonth();
     const yearCurrent = this.dataTimekeeping.createAt.getFullYear();
     const DaysInMonth = new Array(new Date(yearCurrent, monthCurrent, 0).getDate()).fill('').map((value, index) =>
       this.datePipe.transform(new Date(yearCurrent, monthCurrent - 1, index + 1), 'dd/MM/yyyy'));
@@ -311,7 +364,7 @@ export class PayrollComponent implements OnInit {
       let dataResult: any[] = [];
       const value: any[] = [];
       const temp: any[] = [];
-      value.push(i+1)
+      value.push(i + 1);
       const x2 = Object.values(this.dataTimekeeping.data[i]);
       x2.map(val => {
         if (!Array.isArray(val)) {

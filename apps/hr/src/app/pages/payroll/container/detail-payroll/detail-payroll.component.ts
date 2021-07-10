@@ -10,6 +10,7 @@ import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -71,5 +72,11 @@ export class DetailPayrollComponent implements OnInit {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
       }
     });
+  }
+  confirmSalary(id: number){
+    this.dialog.open(UpdateConfirmComponent , {
+        width: "25%",
+        data: {id: id, type: 'accConfirmedAt', detail: true}
+    })
   }
 }

@@ -15,6 +15,13 @@ import { OrderDialogComponent } from './component/order-dialog/order-dialog.comp
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { customerModule } from '../customer/customer.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommodityModule } from '../commodity/commodity.module';
+import { AddOrderComponent } from './container/add-order.component/add-order.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -28,12 +35,19 @@ import { MatSelectModule } from '@angular/material/select';
     InfiniteScrollModule,
     CommonModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule,
+    customerModule,
+    MatCheckboxModule,
+    CommodityModule,
+    NgxMatSelectSearchModule,
+    MatAutocompleteModule
   ],
   declarations:[
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
+    AddOrderComponent
   ],
   providers:[DatePipe]
 })

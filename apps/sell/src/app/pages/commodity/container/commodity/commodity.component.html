@@ -3,19 +3,29 @@
   <div class='row h3 ml-3 mt-3'>Danh sách hàng hóa</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Hàng hóa</button>
-    <div class='header-profile mt-3 animated fadeIn'>
+    <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header default'>
         <div class='title-profile'>Mã hang hóa</div>
-        <input class='form-control input-profile ' type='search'>
+        <input
+          class='form-control input-profile '
+          type='search'
+          formControlName='code'
+        >
       </div>
-      <div class='border-start title-header address'>
+      <div class='border-start title-header note'>
         <div class='title-profile'>Tên Hàng hóa</div>
-        <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+        <input
+          class='form-control input-profile '
+          type='search'
+          placeholder='Gà giống'
+          formControlName='name'
+
+        >
       </div>
 
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <select  class='select d-flex justify-content-center' matNativeControl required>
+        <select  class='select d-flex justify-content-center' matNativeControl required formControlName='unit'>
           <option value='KG' class='d-flex justify-content-center'>kg</option>
           <option value='CON'>con</option>
           <option value=''>mặc định</option>
@@ -26,30 +36,33 @@
         <input class='form-control input-profile ' type='number'>
       </div>
       <div class='border-start title-header default'>
-        <div class='title-profile'>amount</div>
+        <div class='title-profile'>Số lượng</div>
         <input class='form-control input-profile ' type='search'>
       </div>
-    </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Xóa</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+    </form>
     <div class='outer   animated fadeIn'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'>
-<!--         *ngIf='(commodity$| async) as commodities'>-->
+         (scrolled)='onScroll()'
+         *ngIf='(commodity$| async) as commodities'
+    >
 
-      <div class='row-content' *ngFor='let commodity of commodities'
-           (contextmenu)='child.onContextMenu($event,commodity)' (click)='detailCommodity()'>
-        <app-mouse-right #child (addEvent)='add()'
-                         (deleteEvent)='deleteCommodity($event)'
-                         ></app-mouse-right>
+      <div class='row-content' *ngFor='let commodity of commodities'>
         <div class='content-profile default pointer '>{{commodity?.code}} </div>
-        <div class='content-profile address pointer '>{{commodity?.name}} </div>
+        <div class='content-profile note pointer '>{{commodity?.name}} </div>
         <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.KG '>Kilogam</div>
         <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.CON '>con</div>
         <div class='content-profile default pointer '>{{commodity?.price}} </div>
         <div class='content-profile default pointer '>{{commodity?.amount}} </div>
-
+        <div  class='content-profile  pointer default '>
+          <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>xóa</button>
+        </div>
       </div>
 
 

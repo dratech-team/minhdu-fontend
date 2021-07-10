@@ -1,7 +1,8 @@
 import { Employee } from '@minhdu-fontend/data-models';
+import { EmployeeAction } from '@minhdu-fontend/employee';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { EmployeeAction } from './employee.action';
+
 
 export const EMPLOYEE_FEATURE_KEY = 'employee';
 
@@ -14,9 +15,12 @@ export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
 export const initialEmployee = adapter.getInitialState({ loaded: false });
 
-export const employeeReducer = createReducer(
+export const EmployeeReducer = createReducer(
   initialEmployee,
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
+    adapter.setAll(action.employees, { ...state, loaded: true })),
+
+  on(EmployeeAction.LoadMoreEmployeesSuccess, (state, action) =>
     adapter.addMany(action.employees, { ...state, loaded: true })),
 
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>

@@ -141,26 +141,6 @@
             </div>
           </div>
         </div>
-        <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
-          <div class='col-sm'>
-            <label for='facebook'>Facebook</label><span class='star'>*</span>
-            <input
-              id='facebook'
-              type='text'
-              class='form-control'
-              formControlName='facebook'
-            >
-          </div>
-          <div class='col-sm'>
-            <label for='zalo'>Zalo</label><span class='star'>*</span>
-            <input
-              id='zalo'
-              type='number'
-              class='form-control'
-              formControlName='zalo'
-            >
-          </div>
-        </div>
         <div class='row mt-3'>
           <div class='col-sm' [formGroup]='formGroup'>
             <label for='type'>Loại Khách hàng<span class='star'>*</span></label>
@@ -174,16 +154,16 @@
             </mat-select>
           </div>
           <div class='col-sm' [formGroup]='formGroup'>
-            <label for='resource'>resource<span class='star'>*</span></label>
+            <label for='resource'>Nguồn khác hàng<span class='star'>*</span></label>
             <mat-select id='resource' class='form-control' formControlName='resource'>
               <mat-option value='{{resourceType.SELF_FIND}}'>
-                SELF_FIND
+                Tự tìm
               </mat-option>
               <mat-option value='{{resourceType.INTRODUCED}}'>
-                INTRODUCED
+                Giới thiệu
               </mat-option>
               <mat-option value='{{resourceType.RESEARCH}}'>
-                RESEARCH
+                Tra cứu
               </mat-option>
               <mat-option value='{{resourceType.OTHER}}'>
                 Khác
@@ -196,6 +176,17 @@
             <label for='religion'>Email
             </label>
             <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com' formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Tìm năng</label><span class='star'>*</span>
+            <input
+              id='facebook'
+              type='checkbox'
+              class='form-control'
+              formControlName='isPotential'
+            >
           </div>
         </div>
         <div class='row d-flex mt-3 justify-content-center'>

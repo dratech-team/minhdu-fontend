@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { DetailPayrollComponent } from './container/detail-payroll/detail-payroll.component';
 import { PayrollRoutingModule } from './payroll-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
 import { SalaryComponent } from './component/salary/salary.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -26,6 +26,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
 import { TemplateComponent } from './container/template/template.component';
+import { EmployeeModule } from '../employee/employee.module';
+import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
 
 @NgModule({
   imports: [
@@ -49,6 +51,8 @@ import { TemplateComponent } from './container/template/template.component';
     MatChipsModule,
     MatIconModule,
     MatAutocompleteModule,
+    EmployeeModule,
+    FormsModule
   ],
   declarations:[
     PayrollComponent,
@@ -58,6 +62,7 @@ import { TemplateComponent } from './container/template/template.component';
     AddPayrollComponent,
     TemplateOvertimeComponent,
     TemplateComponent,
+    UpdateConfirmComponent,
   ]
 })
 export class PayrollModule{

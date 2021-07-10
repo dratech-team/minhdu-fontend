@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
-import { EmployeeService } from '../service/employee.service';
+
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { EmployeeAction } from './employee.action';
-import { RelativeService } from '../service/relative.service';
-import { DegreeService } from '../service/degree.service';
+import { EmployeeService } from './service/employee.service';
+import { RelativeService } from './service/relative.service';
+import { DegreeService } from './service/degree.service';
+import { EmployeeAction } from '@minhdu-fontend/employee';
+
 
 @Injectable()
 export class EmployeeEffect {
 
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
-      ofType(EmployeeAction.loadEmployees),
-      concatMap((props) => this.employeeService.pagination(props.RequestPaginate).pipe(
+      ofType(EmployeeAction.loadInit),
+      concatMap((props) => this.employeeService.pagination(props).pipe(
         map((value) => {
             return value.data.map(e => Object.assign(e, { 'isSelect': false }));
           }
@@ -23,6 +25,22 @@ export class EmployeeEffect {
       catchError((err) => throwError(err))
     )
   );
+
+  loadMoreEmployees$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.loadMoreEmployees),
+      concatMap((props) => this.employeeService.pagination(props).pipe(
+        map((value) => {
+            return value.data.map(e => Object.assign(e, { 'isSelect': false }));
+          }
+        )
+      )),
+      map((ResponsePaginate) => EmployeeAction.LoadMoreEmployeesSuccess({ employees: ResponsePaginate })),
+      catchError((err) => throwError(err))
+    )
+  );
+
+
 
   addEmployee$ = createEffect(() =>
     this.action$.pipe(

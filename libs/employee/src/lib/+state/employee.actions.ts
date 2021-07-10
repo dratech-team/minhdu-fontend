@@ -1,16 +1,49 @@
 import { createAction, props } from '@ngrx/store';
-import { Employee, RequestPaginate } from '@minhdu-fontend/data-models';
+import { Employee } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
+import { Gender } from '@minhdu-fontend/enums';
 
-export const loadEmployees = createAction(
+export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{RequestPaginate: RequestPaginate, isSelect: boolean}>()
+  props<{
+    take?: number,
+    skip?: number,
+    name?: string,
+    workedAt?: Date,
+    code?: string,
+    position?: string,
+    department?: string,
+    branch?: string,
+    gender?: Gender,
+    isSelect?: boolean,
+  }>()
+);
+
+export const loadMoreEmployees = createAction(
+  '[LOAD_EMPLOYEE] LoadMore Employee',
+  props<{
+    take?: number,
+    skip?: number,
+    name?: string,
+    workedAt?: Date,
+    code?: string,
+    position?: string,
+    department?: string,
+    branch?: string,
+    gender?: Gender,
+    isSelect?: boolean,
+  }>()
 );
 
 export const LoadEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] Load Employee Success',
   props<{ employees: Employee[] }>()
 );
+export const LoadMoreEmployeesSuccess = createAction(
+  '[LOAD_EMPLOYEE] LoadMore Employee Success',
+  props<{ employees: Employee[] }>()
+);
+
 
 export const addEmployee = createAction(
   '[ADD_EMPLOYEE] Add Employee',
@@ -83,7 +116,9 @@ export const deleteDegree = createAction(
 );
 
 export const EmployeeAction = {
-  loadEmployees,
+  loadMoreEmployees,
+  LoadMoreEmployeesSuccess,
+  loadInit,
   LoadEmployeesSuccess,
   addEmployee,
   addEmployeeSuccess,

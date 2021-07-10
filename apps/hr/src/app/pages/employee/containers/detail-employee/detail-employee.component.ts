@@ -12,11 +12,14 @@ import {
 } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
-import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
+
+
+
 
 
 @Component({

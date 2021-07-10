@@ -3,12 +3,12 @@ import { Order } from './order.interface';
 
 export const addOrder = createAction(
   '[ADD_ORDER] Add Order',
-  props<{ bill: any }>()
+  props<{ order: any }>()
 );
 
 export const addOrderSuccess = createAction(
   '[ADD_ORDER] Add Order Success',
-  props<{ bill: Order }>()
+  props<{ order: Order }>()
 );
 
 export const loadInit = createAction(
@@ -18,7 +18,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ bills: Order[] }>()
+  props<{ orders: Order[] }>()
 );
 
 export const loadMoreOrders = createAction(
@@ -28,7 +28,7 @@ export const loadMoreOrders = createAction(
 
 export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ bills: Order[] }>()
+  props<{ orders: Order[] }>()
 );
 
 export const getOrder = createAction(
@@ -38,12 +38,12 @@ export const getOrder = createAction(
 
 export const getOrderSuccess = createAction(
   '[GET_ORDER] Get Order Success',
-  props<{ bill: Order }>()
+  props<{ order: Order }>()
 );
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ bill: any, id: number }>()
+  props<{ order: any, id: number }>()
 );
 
 export const deleteOrder = createAction(

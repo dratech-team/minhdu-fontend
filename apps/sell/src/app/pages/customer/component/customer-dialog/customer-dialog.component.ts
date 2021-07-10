@@ -53,8 +53,7 @@ export class CustomerDialogComponent implements OnInit {
       religion: [this?.data?.religion, Validators.required],
       type: [this?.data?.type, Validators.required],
       resource: [this?.data?.resource, Validators.required],
-      facebook: [this?.data?.facebook, Validators.required],
-      zalo: [this?.data?.zalo, Validators.required]
+      isPotential: [this?.data?.isPotential, Validators.required],
     });
   }
   onSubmit() {
@@ -77,8 +76,7 @@ export class CustomerDialogComponent implements OnInit {
         note: value.note? value.note : undefined,
         ethnicity:value.ethnicity? value.ethnicity : undefined ,
         religion:value.religion ? value.religion : undefined,
-        facebook: value.facebook ? value.facebook: undefined,
-        zalo: value.zalo? value.zalo: undefined,
+        isPotential: value.isPotential,
       }
       if(this.data){
         this.store.dispatch(CustomerAction.updateCustomer({customer: customer , id: this.data.id}))

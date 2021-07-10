@@ -43,20 +43,18 @@
         <input class='form-control input-profile ' type='number'>
       </div>
     </div>
-<!--    *ngIf='(orders$| async) as orders'-->
+
     <div class='outer   animated fadeIn'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
+        *ngIf='(orders$| async) as orders'
     >
       <div class='row-content' *ngFor='let order of orders'
-           (click)='detailOrder()'
-           (contextmenu)='child.onContextMenu($event,order)'>
-        <app-mouse-right #child (addEvent)='add()'
-                         (deleteEvent)='deleteOrder($event)'
-        ></app-mouse-right>
+           (click)='detailOrder()'>
+
         <div class='content-profile name pointer '>{{order?.customer?.firstName}} {{order?.customer?.lastName}}</div>
         <div class='content-profile default pointer '>
         <input type='checkbox' [checked]='order.paidAt !== null'>
