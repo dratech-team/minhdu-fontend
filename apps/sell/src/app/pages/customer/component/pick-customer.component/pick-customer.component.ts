@@ -6,9 +6,10 @@ import { selectorAllCustomer } from '../../+state/customer.selector';
 import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
+import { CustomerDialogComponent } from '../customer-dialog/customer-dialog.component';
 
 @Component({
   selector: 'app-pick-customer',
@@ -36,6 +37,7 @@ export class PickCustomerComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store,
+    private readonly dialog: MatDialog,
     private readonly service: PickCustomerService,
     private dialogRef: MatDialogRef<PickCustomerComponent>,
   ) {
@@ -120,5 +122,10 @@ export class PickCustomerComponent implements OnInit {
       }
     }
     this.dialogRef.close(this.customerId);
+  }
+  addCustomer(){
+    this.dialog.open(CustomerDialogComponent, {
+      width: '40%'
+    })
   }
 }

@@ -7,8 +7,9 @@ import { CommodityUnit, CustomerResource, CustomerType } from '@minhdu-fontend/e
 import { Commodity } from '../../container/+state/commodity.interface';
 import { selectAllCommodity } from '../../container/+state/commodity.selector';
 import { CommodityAction } from '../../container/+state/commodity.action';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PickCommodityService } from './pick-commodity.service';
+import { CommodityDialogComponent } from '../commodity-dialog/commodity-dialog.component';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -39,6 +40,7 @@ export class PickCommodityComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
+    private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PickCommodityComponent>,
     private readonly service: PickCommodityService
@@ -116,7 +118,10 @@ export class PickCommodityComponent implements OnInit {
     this.checkEvent.emit(this.commodityIds);
   }
 
-  close() {
+  closeDialog() {
     this.dialogRef.close(this.commodityIds);
+  }
+  addCommodity(){
+    this.dialog.open(CommodityDialogComponent,{width: '40%'})
   }
 }

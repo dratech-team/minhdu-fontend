@@ -1,4 +1,8 @@
 <div class='container'>
+  <button (click)='addCommodity()' class='btn border ml-3'>
+    <img src='assets/icon/share/plus-lg.svg' alt='add'>
+    <span class='h5' style='color:#20a8d8;'> Thêm hàng hóa</span>
+  </button>
   <div class='col-12 animated fadeIn'>
     <form [formGroup]='formGroup' class='header-profile mt-3 '>
       <div class='border-start title-header col-2'>
@@ -72,7 +76,7 @@
         </div>
       </div>
     </div>
-    <button *ngIf='data.type === "DIALOG"' (click)='close()' class='bt-3 btn btn-primary'>xác nhận</button>
+    <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>
   </div>
 </div>
 
