@@ -51,7 +51,6 @@ export class EmployeeComponent implements OnInit {
         this.store.dispatch(EmployeeAction.loadInit(this.employee(val, 30, 0)));
       })
     ).subscribe();
-
   }
 
   add(): void {
@@ -82,7 +81,7 @@ export class EmployeeComponent implements OnInit {
         position: val.position,
         department: val.department,
         branch: val.branch,
-        workedAt: val.workedAt.toString(),
+        workedAt: val.workedAt.toString()
       };
     } else {
       return {

@@ -13,6 +13,7 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
+import { PickEmployeeService } from './pick-employee/pick-employee.service';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
     PickEmployeeComponent,
   ],
   providers:[
-    DecimalPipe
+    DecimalPipe,
+    PickEmployeeService,
   ],
   exports: [
     MouseRightComponent,

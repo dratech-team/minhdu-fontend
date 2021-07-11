@@ -19,9 +19,6 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 
 
-
-
-
 @Component({
   templateUrl: 'detail-employee.component.html',
   styleUrls: ['detail-employee.component.scss']
