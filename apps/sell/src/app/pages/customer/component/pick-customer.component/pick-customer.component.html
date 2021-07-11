@@ -28,7 +28,7 @@
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>All</div>
         <mat-checkbox *ngIf='!data.pickOne'  class='example-margin mt-2 ml-3'
-                      [checked]='selectAll'
+                      [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
         </mat-checkbox>
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <button *ngIf='data.pickOne' class='btn btn-primary' (click)='close()'  mat-dialog-close > xác nhận</button>
+    <button *ngIf='data.pickOne' class='btn btn-primary' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
   </div>
 </div>
 

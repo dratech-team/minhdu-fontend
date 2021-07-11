@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime , tap } from 'rxjs/operators';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class PickEmployeeComponent implements OnInit {
   isSelectAll: boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
-
   code?: string;
   name?: string;
   position?: string;
@@ -33,16 +31,13 @@ export class PickEmployeeComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly service: PickEmployeeService,
+    private readonly service: PickEmployeeService
   ) {
   }
 
   ngOnInit(): void {
-    this.service.onInit()
-    this.service.Employees().subscribe(val=> {
-      this.employees = JSON.parse(JSON.stringify(val))
-      this.employees.forEach(e => e.isSelect = this.isSelectAll)
-    })
+    this.service.onInit();
+    this.assignIsSelect();
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
@@ -51,13 +46,10 @@ export class PickEmployeeComponent implements OnInit {
           take: 30,
           code: val.code,
           name: val.name,
-          position: val.position
-        }
-        this.service.searchEmployees(search)
-        this.service.Employees().subscribe(val=> {
-          this.employees = JSON.parse(JSON.stringify(val))
-          this.employees.forEach(e => e.isSelect = this.isSelectAll)
-        })
+          branch: val.branch
+        };
+        this.service.searchEmployees(search);
+        this.assignIsSelect();
       })
     ).subscribe();
   }
@@ -70,12 +62,16 @@ export class PickEmployeeComponent implements OnInit {
       code: value.code,
       name: value.name,
       position: value.position
-    }
-    this.service.scrollEmployee(val)
-    this.service.Employees().subscribe(val=> {
-      this.employees = JSON.parse(JSON.stringify(val))
-      this.employees.forEach(e => e.isSelect = this.isSelectAll)
-    })
+    };
+    this.service.scrollEmployee(val);
+    this.assignIsSelect();
+  }
+
+  assignIsSelect() {
+    this.service.Employees().subscribe(val => {
+      this.employees = JSON.parse(JSON.stringify(val));
+      this.employees.forEach(e => e.isSelect = this.isSelectAll);
+    });
   }
 
   updateSelect(id: number) {

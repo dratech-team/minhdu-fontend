@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { CustomerDialogComponent } from './component/customer-dialog/customer-dialog.component';
 import { PickCustomerComponent } from './component/pick-customer.component/pick-customer.component';
+import { PickCustomerService } from './component/pick-customer.component/pick-customer.service';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { PickCustomerComponent } from './component/pick-customer.component/pick-
   ],
   providers: [
     DatePipe,
+    PickCustomerService
   ]
 
 })
