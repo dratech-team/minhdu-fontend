@@ -1,24 +1,27 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
 export class PickEmployeeComponent implements OnInit {
-
-  @Output() checkEvent = new EventEmitter();
+  @Input() pickOne = false;
+  @Output() checkEvent = new EventEmitter<number[]>();
+  @Output() checkEventPickOne = new EventEmitter<number>();
   type = SalaryTypeEnum;
   pageIndex: number = 1;
   pageSize: number = 30;
   isSelectAll: boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
+  employeeId!: number;
   code?: string;
   name?: string;
   position?: string;
@@ -108,6 +111,15 @@ export class PickEmployeeComponent implements OnInit {
       }
     );
     this.checkEvent.emit(this.employeeIds);
+  }
+  pickOneEmployee(){
+    const pickEmployee = document.getElementsByName('pick-one');
+    for (let i = 0; i < pickEmployee.length; i++) {
+      if (pickEmployee[i].checked) {
+        this.employeeId = parseInt(pickEmployee[i].value) ;
+      }
+    }
+    this.checkEventPickOne.emit( this.employeeId)
   }
 }
 

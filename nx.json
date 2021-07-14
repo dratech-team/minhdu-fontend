@@ -43,6 +43,9 @@
     },
     "employee": {
       "tags": []
+    },
+    "location": {
+      "tags": []
     }
   }
 }

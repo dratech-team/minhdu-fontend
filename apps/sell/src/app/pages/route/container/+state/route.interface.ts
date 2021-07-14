@@ -1,6 +1,7 @@
 
 import { Employee,  } from '@minhdu-fontend/data-models';
-import { Order } from '../../../order/container/+state/order.interface';
+import { Order } from '../../../order/+state/order.interface';
+import { PaymentType } from '@minhdu-fontend/enums';
 
 export interface Route {
   id: number,
@@ -8,9 +9,11 @@ export interface Route {
   startedAt: Date,
   endedAt: Date,
   driver: Employee,
-  employeeId: number,
+  employee: Employee,
   orders: Order[],
+  garage: string,
   bsx: string,
-  latitude: number,
-  longitude: number,
+  latitude: string,
+  longitude: string,
+  isSelect?: boolean,
 }

@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
-import { EmployeeAction } from '@minhdu-fontend/employee';
 import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -22,11 +22,12 @@ export class CustomerComponent implements OnInit {
   pageSize: number = 30;
   formGroup = new FormGroup(
     {
-      name: new FormControl(''),
-      gender: new FormControl(''),
       resource: new FormControl(''),
       isPotential: new FormControl(''),
-      type: new FormControl(''),
+      customerType: new FormControl(''),
+      nationId: new FormControl(''),
+      phone: new FormControl(''),
+      name: new FormControl(''),
     }
   );
   constructor(
@@ -39,6 +40,12 @@ export class CustomerComponent implements OnInit {
   customers$ = this.store.pipe(select(selectorAllCustomer));
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      tap((val) => {
+        this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0 )));
+      })
+    ).subscribe()
   }
   add($event?: any){
     this.dialog.open(CustomerDialogComponent, {
@@ -51,10 +58,16 @@ export class CustomerComponent implements OnInit {
     this.store.dispatch(CustomerAction.loadMoreCustomers(this.customer(val, this.pageSize, this.pageIndex)));
   }
   customer(val: any, pageSize: number, pageIndex: number) {
-    console.log(pageSize,pageIndex )
+      console.log('âssds');
       return {
         skip: pageSize * pageIndex++,
         take: this.pageSize,
+        resource: val.resource ,
+        isPotential: val.isPotential ,
+        customerType: val.customerType ,
+        nationId: val.nationId ,
+        phone: val.phone ,
+        name: val.name ,
       };
   }
   readAndUpdate($event?: any) {

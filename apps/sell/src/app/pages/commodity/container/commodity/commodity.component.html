@@ -1,5 +1,5 @@
 
-<div class='main-customer container' style='overflow-x: hidden'>
+<div class='main-customer ' style='overflow-x: hidden; margin-left: 18%'>
   <div class='row h3 ml-3 mt-3'>Danh sách hàng hóa</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Hàng hóa</button>
@@ -40,6 +40,14 @@
         <input class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header default'>
+        <div class='title-profile'>Khuyễn mãi</div>
+        <input class='form-control input-profile ' type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mức khuyến mãi</div>
+        <input class='form-control input-profile ' type='number'>
+      </div>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Xóa</div>
         <input class='form-control input-profile ' type='search'>
       </div>
@@ -58,7 +66,11 @@
         <div class='content-profile note pointer '>{{commodity?.name}} </div>
         <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.KG '>Kilogam</div>
         <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.CON '>con</div>
-        <div class='content-profile default pointer '>{{commodity?.price}} </div>
+        <div class='content-profile default pointer ' style='color: #20c997'>
+          {{commodity.price|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile default pointer '>{{commodity?.gift}} </div>
+        <div class='content-profile default pointer '>{{commodity?.more}} </div>
         <div class='content-profile default pointer '>{{commodity?.amount}} </div>
         <div  class='content-profile  pointer default '>
           <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>xóa</button>

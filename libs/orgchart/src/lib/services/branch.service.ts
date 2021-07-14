@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Api } from '@minhdu-fontend/constants';
 import { Injectable } from '@angular/core';
-import { Branch, Department, ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Branch } from '@minhdu-fontend/data-models';
 import { BaseService } from '@minhdu-fontend/service';
-import { Payroll } from '../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { Update } from '@ngrx/entity';
 
 @Injectable()

@@ -6,19 +6,21 @@
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên khách hàng</div>
         <input
-            class='form-control input-profile '
-            type='text'
-            placeholder='Trần Gia Hiệu'
-            formControlName='name'
+               formControlName='name'
+              class='form-control input-profile '
+              type='text'
+              placeholder='Trần Gia Hiệu'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày sinh</div>
-        <input class='form-control input-profile ' type='search'>
+        <input  [disabled]='true'
+               class='form-control input-profile '
+               >
       </div>
       <div class='border-start title-header gender'>
         <div class='title-profile'>Giới tính</div>
-        <select class='select' matNativeControl required formControlName='gender'>
+        <select class='select' matNativeControl required [disabled]='true'>
           <option value='MALE'>Nam</option>
           <option value='FEMALE'>Nữ</option>
           <option value='OTHER'>Khác</option>
@@ -26,22 +28,23 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Số điện thoại</div>
-        <input class='form-control input-profile ' type='search'>
-      </div>
-      <div class='border-start title-header address'>
-        <div class='title-profile'>Email</div>
-        <input class='form-control input-profile ' type='search'>
-      </div>
-      <div class='border-start title-header address'>
-        <div class='title-profile'>Địa chỉ</div>
-        <input class='form-control input-profile ' type='search'>
+        <input  formControlName='phone'
+                class='form-control input-profile '
+                type='number'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tìm năng</div>
-        <div class='d-flex justify-content-center align-items-center'>
-          <input type='checkbox' formControlName='isPotential'>
-        </div>
-
+        <select class='select' matNativeControl required formControlName='isPotential'>
+          <option value='{{true}}'>Tìm năng</option>
+          <option value='{{false}}'>Không tìm năng</option>
+          <option value=''>Tất cả</option>
+        </select>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Quốc gia</div>
+        <input  formControlName='nationId'
+                class='form-control input-profile '
+                type='text'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Nguồn khách hàng</div>
@@ -50,18 +53,36 @@
           <option value='{{resourceType.INTRODUCED}}'>Giới thiệu</option>
           <option value='{{resourceType.SELF_FIND}}'>Tự tìm</option>
           <option value='{{resourceType.OTHER}}'>Khác</option>
+          <option value=''>Tất cả</option>
         </select>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Loại khách hàng</div>
-        <select class='select' matNativeControl required formControlName='type'>
+        <select class='select' matNativeControl required formControlName='customerType'>
           <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
           <option value='{{customerType.AGENCY}}'>Đại lý</option>
+          <option value=''>Tất cả</option>
         </select>
       </div>
+      <div class='border-start title-header address'>
+        <div class='title-profile'>Email</div>
+        <input [disabled]='true'
+               class='form-control input-profile '
+               type='text'>
+      </div>
+      <div class='border-start title-header address'>
+        <div class='title-profile'>Địa chỉ</div>
+        <input  disabled
+                class='form-control input-profile '
+                type='search'>
+      </div>
+
+
       <div class='border-start title-header note'>
         <div class='title-profile'>Chú thích</div>
-        <input class='form-control input-profile ' type='search'>
+        <input  disabled
+                class='form-control input-profile '
+                type='search'>
       </div>
     </form>
     <div class='outer animated fadeIn'
@@ -82,10 +103,11 @@
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.FEMALE'> Nữ</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.OTHER'> Khác</div>
         <div class='content-profile default pointer '>{{customer?.phone ? customer.phone: 'Chưa cập nhật'}}</div>
-        <div class='content-profile address pointer '>{{customer?.email? customer.email: 'Chưa cập nhật'}}</div>
-        <div class='content-profile address pointer '>{{customer?.address}}</div>
         <div class='content-profile default pointer '><input type='checkbox' disabled
                                                              [checked]='customer.isPotential !== null'></div>
+        <div class='content-profile name pointer '>
+          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
+        </div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
@@ -93,6 +115,8 @@
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
+        <div class='content-profile address pointer '>{{customer?.email? customer.email: 'Chưa cập nhật'}}</div>
+        <div class='content-profile address pointer '>{{customer?.address}}</div>
         <div class='content-profile  note '> {{customer.note}}</div>
       </div>
     </div>

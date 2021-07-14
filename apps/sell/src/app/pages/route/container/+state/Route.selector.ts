@@ -3,7 +3,7 @@ import { Route } from './route.interface';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as formRoute from './route.reducer'
-import { selectorCommodityState } from '../../../commodity/container/+state/commodity.selector';
+import { selectorCommodityState } from '../../../commodity/+state/commodity.selector';
 export interface state {
   route: RouteState
 }

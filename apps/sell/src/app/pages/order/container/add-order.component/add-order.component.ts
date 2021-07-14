@@ -2,20 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
 import {  Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../../customer/+state/customer.action';
 import { MatDialog } from '@angular/material/dialog';
+import { OrderAction } from '../../+state/order.action';
 import { PickCustomerComponent } from '../../../customer/component/pick-customer.component/pick-customer.component';
-import { PickCommodityComponent } from '../../../commodity/component/pick-commodity.component/pick-commodity.component';
-import { OrderAction } from '../+state/order.action';
+import { PickCommodityComponent } from '../../../commodity/component/pick-commodity/pick-commodity.component';
+import { PickRoutesComponent } from '../../../route/component/pick-routes/pick-routes.component';
 
 @Component({
   templateUrl: 'add-order.component.html',
 })
 export class AddOrderComponent implements OnInit {
+  numberChars = new RegExp('[^0-9]', 'g')
   customerId!: number;
   commodityIds: number[] = [];
+  routeIds: number[] = [];
   payType = PaymentType;
   CurrencyUnit = CurrencyUnit;
   isManyPeople = false;
@@ -29,37 +31,32 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }))
+
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
       currency: ['', Validators.required],
       explain: ['', Validators.required],
+      payType: ['', Validators.required],
+      paidTotal: ['', Validators.required],
+      paidAt: ['', Validators.required],
     })
   }
 
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
-    }
-  }
 
   pickCustomers() {
+    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }))
     const dialogRef = this.dialog.open(PickCustomerComponent, { width: '40%', data: { pickOne: true } })
-    dialogRef.afterClosed().subscribe(val => this.customerId = parseInt(val))
+    dialogRef.afterClosed().subscribe(val => this.customerId = val)
   }
 
   pickCommodities() {
-    const dialogRef = this.dialog.open(PickCommodityComponent, { width: '60%', data: {type:'DIALOG'} })
+    const dialogRef = this.dialog.open(PickCommodityComponent, { width: '70%', data: {type:'DIALOG'} })
     dialogRef.afterClosed().subscribe(val => this.commodityIds = val)
   }
 
   pickRoute(){
-    const dialogRef = this.dialog.open(PickCommodityComponent, { width: '60%', data:{pickOne: true} })
-    dialogRef.afterClosed().subscribe(val => this.commodityIds = val)
+    const dialogRef = this.dialog.open(PickRoutesComponent, { width: '60%', data:{type:'DIALOG'} })
+    dialogRef.afterClosed().subscribe(val => console.log(val))
   }
 
   onSubmit() {
@@ -68,10 +65,12 @@ export class AddOrderComponent implements OnInit {
       createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
       explain: val.explain,
       currency: val.currency,
-      payType: val.payType,
-      paidTotal: val.paidTotal,
+      payType:val.payType ? val.payType: undefined,
+      paidTotal: typeof(val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')): val.paidTotal,
+      paidAt:val.paidAt ? new Date(val.paidAt): undefined,
       customerId: this.customerId,
       commodityIds: this.commodityIds,
+      routeIds: this.routeIds,
     }
       this.store.dispatch(OrderAction.addOrder({order:order}))
   }

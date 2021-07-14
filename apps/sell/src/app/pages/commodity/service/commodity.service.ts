@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { Commodity } from '../container/+state/commodity.interface';
+import { Commodity } from '../+state/commodity.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';

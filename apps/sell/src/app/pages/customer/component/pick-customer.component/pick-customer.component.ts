@@ -3,7 +3,6 @@ import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { selectorAllCustomer } from '../../+state/customer.selector';
-import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,8 +15,9 @@ import { CustomerDialogComponent } from '../customer-dialog/customer-dialog.comp
   templateUrl: 'pick-customer.component.html'
 })
 export class PickCustomerComponent implements OnInit {
-  @Input() pickPOne: boolean | undefined;
-  @Output() checkEvent = new EventEmitter();
+  @Input() pickOne = false;
+  @Output() checkEvent = new EventEmitter<number[]>();
+  @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
   customerType = CustomerType;
@@ -44,7 +44,7 @@ export class PickCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log(this.pickOne)
     this.service.loadInit()
     this.assignIsSelect()
     this.formGroup.valueChanges.pipe(
@@ -114,11 +114,21 @@ export class PickCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
+  pickOneCustomer(){
+    const pickCustomer = document.getElementsByName('pick-one');
+    for (let i = 0; i < pickCustomer.length; i++) {
+      if (pickCustomer[i].checked) {
+        this.customerId = parseInt(pickCustomer[i].value);
+      }
+    }
+    this.checkEventPickOne.emit(this.customerId);
+  }
+
   closeDialog() {
     const pickCustomer = document.getElementsByName('pick-one');
     for (let i = 0; i < pickCustomer.length; i++) {
       if (pickCustomer[i].checked) {
-        this.customerId = pickCustomer[i].value;
+        this.customerId = parseInt(pickCustomer[i].value);
       }
     }
     this.dialogRef.close(this.customerId);

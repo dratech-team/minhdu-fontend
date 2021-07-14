@@ -9,7 +9,7 @@ import { DetailRouteComponent } from './container/detail-route/detail-route.comp
      component: RouteComponent,
    },
    {
-     path: 'detail-route',
+     path: 'detail-route/:id',
      component: DetailRouteComponent,
      data:{
        title: 'Chi tiết tuyền đường'

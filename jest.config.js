@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/orgchart',
     '<rootDir>/apps/sell',
     '<rootDir>/libs/employee',
+    '<rootDir>/libs/location',
   ],
 };

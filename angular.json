@@ -217,7 +217,8 @@
             "assets": ["apps/sell/src/favicon.ico", "apps/sell/src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "apps/sell/src/styles.scss"],
+              "apps/sell/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -336,6 +337,31 @@
             "lintFilePatterns": [
               "libs/employee/src/**/*.ts",
               "libs/employee/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "location": {
+      "projectType": "library",
+      "root": "libs/location",
+      "sourceRoot": "libs/location/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/location"],
+          "options": {
+            "jestConfig": "libs/location/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/location/src/**/*.ts",
+              "libs/location/src/**/*.html"
             ]
           }
         }

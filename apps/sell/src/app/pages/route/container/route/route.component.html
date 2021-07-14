@@ -1,4 +1,4 @@
-<div class='main-customer' style='width: 83%; margin-left: 10%; ' >
+<div class='main-customer' style='width: 85%; margin-left: 7%;'>
   <div class='row h3 ml-3 mt-3'>Danh sách Tuyến đường</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Tuyến đường</button>
@@ -24,24 +24,29 @@
         <input class='form-control input-profile ' type='text' placeholder='77G1-55555'>
       </div>
       <div class='border-start title-header name'>
+        <div class='title-profile'>Nhà xe</div>
+        <input class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
+      </div>
+      <div class='border-start title-header name'>
         <div class='title-profile'>latitude</div>
-        <input class='form-control input-profile ' type='number' >
+        <input class='form-control input-profile ' type='number'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>longitude</div>
-        <input class='form-control input-profile ' type='number' >
+        <input class='form-control input-profile ' type='number'>
       </div>
     </div>
-<!--    *ngIf='(routes$| async) as routes'-->
+
     <div class='outer   animated fadeIn'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-      >
+         *ngIf='(routes$| async) as routes'
+    >
       <div class='row-content' *ngFor='let route of routes'
-           (click)='detailRoute()'
+           (click)='detailRoute(route.id)'
            (contextmenu)='child.onContextMenu($event,route)'>
         <app-mouse-right
           #child (addEvent)='add()'
@@ -60,14 +65,16 @@
         <div class='content-profile default pointer ' *ngIf='route.endedAt === null'>
           Chưa cập nhật
         </div>
-        <div class='content-profile name pointer '>{{route?.driver?.firstName}} {{route?.driver?.lastName}}</div>
+        <div class='content-profile name pointer' *ngIf='route.driver'>{{route?.driver}}</div>
+        <div class='content-profile name pointer' *ngIf='!route.driver'>
+          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
         <div class='content-profile name pointer '>{{route?.bsx}}</div>
+        <div class='content-profile name pointer '>{{route?.garage}}</div>
         <div class='content-profile name pointer '>{{route?.latitude}}</div>
         <div class='content-profile name pointer '>{{route?.longitude}}</div>
       </div>
     </div>
   </div>
-
 </div>
 
 

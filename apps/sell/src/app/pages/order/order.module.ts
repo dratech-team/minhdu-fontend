@@ -3,9 +3,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import {  OrderRoutingModule } from './order-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { OrderReducer } from './container/+state/order.reducer';
+import { OrderReducer } from './+state/order.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { OrderEffect } from './container/+state/order.effect';
+import { OrderEffect } from './+state/order.effect';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ComponentsModule } from '@minhdu-fontend/components';
@@ -22,6 +22,11 @@ import { CommodityModule } from '../commodity/commodity.module';
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
+import { RouteReducer } from '../route/container/+state/route.reducer';
+import { RouteEffect } from '../route/container/+state/route.effect';
+import { PaymentDialogComponent } from './component/payment-dialog/payment-dialog.component';
+import { RouteModule } from '../route/route.module';
 
 
 @NgModule({
@@ -30,7 +35,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ComponentsModule,
     OrderRoutingModule,
     StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
-    EffectsModule.forFeature([OrderEffect]),
+    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
+    EffectsModule.forFeature([OrderEffect, RouteEffect]),
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
@@ -41,13 +47,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatCheckboxModule,
     CommodityModule,
     NgxMatSelectSearchModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    RouteModule
   ],
   declarations:[
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
-    AddOrderComponent
+    AddOrderComponent,
+    PaymentDialogComponent
   ],
   providers:[DatePipe]
 })

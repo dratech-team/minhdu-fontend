@@ -25,39 +25,63 @@
             <input type='text' class='form-control' id='explain' formControlName='explain'>
           </div>
         </div>
+<!--        <div class='row mt-3'>-->
+<!--          <div class='col-sm' [formGroup]='formGroup'>-->
+<!--            <label for='currency'>Đơn vị tiền tệ<span class='star'>*</span></label>-->
+<!--            <mat-select id='currency' class='form-control' formControlName='currency'>-->
+<!--              <mat-option value='{{CurrencyUnit.EUR}}'>-->
+<!--                Euro-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.CNY}}'>-->
+<!--                Nhân dân tệ-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.GBP}}'>-->
+<!--                Bảng anh-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.JPY}}'>-->
+<!--                Yên Nhật-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.MMK}}'>-->
+<!--                Kyat-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.MYR}}'>-->
+<!--                Ringgit-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.USD}}'>-->
+<!--                Đô la mỹ-->
+<!--              </mat-option>-->
+<!--              <mat-option value='{{CurrencyUnit.VND}}'>-->
+<!--                Việt Nam đồng-->
+<!--              </mat-option>-->
+<!--            </mat-select>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class='row mt-3'>
           <div class='col-sm' [formGroup]='formGroup'>
-            <label for='currency'>Đơn vị tiền tệ<span class='star'>*</span></label>
-            <mat-select id='currency' class='form-control' formControlName='currency'>
-              <mat-option value='{{CurrencyUnit.EUR}}'>
-                Euro
+            <label for='payType'>Loại thanh toán</label>
+            <mat-select id='payType' class='form-control' formControlName='payType'>
+              <mat-option value='{{payType.CASH}}'>
+                Tiền mặt
               </mat-option>
-              <mat-option value='{{CurrencyUnit.CNY}}'>
-                Nhân dân tệ
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.GBP}}'>
-                Bảng anh
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.JPY}}'>
-                Yên Nhật
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.MMK}}'>
-                Kyat
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.MYR}}'>
-                Ringgit
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.USD}}'>
-                Đô la mỹ
-              </mat-option>
-              <mat-option value='{{CurrencyUnit.VND}}'>
-                Việt Nam đồng
+              <mat-option value='{{payType.TRANSFER}}'>
+                Chuyển khoản
               </mat-option>
             </mat-select>
           </div>
         </div>
-
-
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='paidTotal'>Tổng thanh toán</label>
+            <input type="text" class="form-control" id='paidTotal' placeholder="Nhập mức giá" formControlName="paidTotal" inputCurrency>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='paidAt'>Ngày Thanh toán
+            </label>
+            <input type='date' class='form-control' id='paidAt'  formControlName='paidAt'>
+          </div>
+        </div>
         <div (click)='pickCustomers()' class=' mt-3 h5 d-flex align-items-center justify-content-center '
              style='
                    border: solid 1px #20a8d8;

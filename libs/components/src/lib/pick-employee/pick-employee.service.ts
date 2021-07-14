@@ -2,7 +2,6 @@ import { select, Store } from '@ngrx/store';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { Employee } from '@minhdu-fontend/data-models';
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PickEmployeeService {

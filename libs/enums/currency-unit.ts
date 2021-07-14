@@ -6,5 +6,5 @@ export enum CurrencyUnit {
   MYR = 'MYR',
   MMK = 'MMK',
   CNY = 'CNY',
-  JPY = 'YPY',
+  JPY = 'JPY',
 }

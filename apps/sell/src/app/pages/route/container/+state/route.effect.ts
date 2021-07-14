@@ -12,7 +12,7 @@ export class RouteEffect {
     this.action.pipe(
       ofType(RouteAction.addRoute),
       switchMap((props) => this.routeService.addOne(props.route)),
-      map((route) => RouteAction.addRouteSuccess({ route: route })),
+      map((route) => RouteAction.loadInit({take:30, skip:0})),
       catchError((err) => throwError(err))
     ));
   loadInit$ = createEffect(() =>

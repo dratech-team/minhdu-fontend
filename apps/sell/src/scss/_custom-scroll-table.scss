@@ -45,6 +45,22 @@
   width: 150px;
 }
 
+
+.payment {
+  width: 100px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.payment > div {
+  height: 35px;
+  overflow: hidden;
+  width: 100px;
+}
+
+.payment > input {
+  width: 100px;
+}
 .gender {
   width: 100px;
   text-align: center;
@@ -90,7 +106,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   color: #3C3B54;
 

@@ -10,9 +10,14 @@ export const addCustomer = createAction(
 export const loadInit = createAction(
   '[LOAD_CUSTOMER] Load Init',
   props<{
-    search?: string,
+    skip: number,
     take: number,
-    skip: number }>()
+    type?: string,
+    resource?: string,
+    isPotential?: boolean,
+    phone?:number,
+    nationId?:number,
+  }>()
 );
 
 export const loadInitSuccess = createAction(
@@ -22,7 +27,15 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreCustomers = createAction(
   '[LOAD_MORE_CUSTOMER] Load More Customer',
-  props<{take: number, skip: number }>()
+  props<{
+    skip: number,
+    take: number,
+    type?: string,
+    resource?: string,
+    isPotential?: boolean,
+    phone?:number,
+    nationId?:number,
+  }>()
 );
 
 export const loadCustomersSuccess = createAction(

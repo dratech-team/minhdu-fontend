@@ -92,6 +92,7 @@ export class AddEmployeeComponent implements OnInit {
       ward: [this?.data?.employee?.profile?.ward?.id, Validators.required],
       district: [this?.data?.employee?.ward?.district?.id, Validators.required],
       province: [this?.data?.employee?.ward?.district?.province?.id, Validators.required],
+      nation: [this?.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
       ethnicity: [this?.data?.employee?.ethnicity, Validators.required],
       religion: [this?.data?.employee?.religion, Validators.required],
       facebook: [this?.data?.employee?.facebook, Validators.required],

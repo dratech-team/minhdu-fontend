@@ -1,5 +1,5 @@
 <div class='container'>
-  <button (click)='addCustomer()' class='btn border ml-3'>
+  <button (click)='addCustomer()' class='btn border ml-3 mt-2'>
     <img src='assets/icon/share/plus-lg.svg' alt='add'>
     <span class='h5' style='color:#20a8d8;'> Thêm khách hàng</span>
   </button>
@@ -31,7 +31,8 @@
       </div>
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>All</div>
-        <mat-checkbox *ngIf='!data.pickOne'  class='example-margin mt-2 ml-3'
+        <mat-checkbox *ngIf='data.pickMore'
+                      class='example-margin mt-2 ml-3'
                       [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
@@ -50,18 +51,20 @@
         <div class='content-profile col-4  pointer'>{{customer.firstName}} {{customer.lastName}}</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.type === undefined'> Chưa cập nhật</div>
         <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
         <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
         <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
         <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
         <div class='content-profile  col-4 ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
-        <div class='content-profile col-1  pointer'  >
-          <mat-checkbox *ngIf='!data.pickOne' class='checkID'
+        <div class='content-profile col-1  pointer' >
+          <mat-checkbox  *ngIf='data.pickMore'
+                        class='checkID'
                         [checked]='customer.isSelect ? customer.isSelect: false'
                         [(ngModel)]='customer.isSelect'
                         (ngModelChange)='updateAllSelect(customer.id)'>
           </mat-checkbox>
-          <input *ngIf='data.pickOne' type="radio"  name="pick-one" value="{{customer.id}}">
+          <input (change)='pickOneCustomer()' *ngIf='data.pickOne||pickOne' type="radio"  name="pick-one" value="{{customer.id}}">
         </div>
       </div>
     </div>

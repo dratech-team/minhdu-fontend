@@ -15,4 +15,9 @@ export const Api = {
   COMMODITY:'commodity',
   ORDER: 'order',
   ROUTE: 'route',
+  BILL: 'bill',
+  NATION: 'nation',
+  PROVINCE: 'province',
+  DISTRICT: 'district',
+  WARD: 'ward'
 };

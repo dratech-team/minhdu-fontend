@@ -11,13 +11,13 @@ const routes: Routes = [
     component: OrderComponent,
   },
   {
-    path: 'detail-order',
-    component: DetailOrderComponent,
-  },
-  {
     path: 'detail-order/add',
     component: AddOrderComponent,
-  }
+  },
+  {
+    path: 'detail-order/:id',
+    component: DetailOrderComponent,
+  },
 ]
 @NgModule({
   imports:[RouterModule.forChild(routes)],

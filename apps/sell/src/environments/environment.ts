@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'http://192.168.6.111:3000/v2/',
+  apiKey: 'pWPfDJ72krAmNy4g',
 };
 
 /*

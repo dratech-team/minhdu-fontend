@@ -5,49 +5,51 @@ import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { OrderAction } from '../../+state/order.action';
+import { DatePipe } from '@angular/common';
 
 @Component({
   templateUrl: 'order-dialog.component.html',
 })
 export class OrderDialogComponent implements OnInit {
+  numberChars = new RegExp('[^0-9]', 'g')
   payType = PaymentType;
   CurrencyUnit = CurrencyUnit;
-  isManyPeople = false;
+  customerId: number|undefined;
   formGroup!: FormGroup;
-  customerIds: number[] = [];
-  commodityIds: number[] = [];
+  routes: number[] = [];
   constructor(
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
+    private readonly datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
   }
   ngOnInit() {
+
     this.formGroup = this.formBuilder.group({
-      createdAt: [this?.data?.order?.createdAt,Validators.required],
-      currency: [this?.data?.order?.currency,Validators.required],
+      createdAt: [this.datePipe.transform(
+        this?.data?.order?.createdAt,'yyyy-MM-dd')
+        ,Validators.required],
+      // currency: [this?.data?.order?.currency,Validators.required],
       explain: [this?.data?.order?.explain,Validators.required],
-      payType: [this?.data?.order?.payType,Validators.required],
-      paidAt: [this?.data?.order?.paidAt, Validators.required],
     })
   }
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
-    }
+  pickCustomer(customerId:number){
+    this.customerId = customerId
   }
-
+  pickRoutes(routes: number[]){
+    this.routes = routes
+  }
   onSubmit(){
-
-  }
-  pickCustomers(customerIds: number []): any {
-    this.customerIds = customerIds;
-  }
-  pickCommodities(commodities: number []): any {
-    this.commodityIds = commodities;
+    const val = this.formGroup.value
+    const order = {
+      customerId: this.customerId,
+      createdAt: new Date(val.createdAt),
+      routes:this.routes,
+      // currency: val.currency,
+      explain: val.explain,
+    }
+    this.store.dispatch(OrderAction.updateOrder({order:order, id: this.data.order.id}))
   }
 }

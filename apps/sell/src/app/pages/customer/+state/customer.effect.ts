@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { CustomerAction, loadMoreCustomers } from './customer.action';
+import { CustomerAction } from './customer.action';
 import { CustomerService } from '../service/customer.service';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.updateCustomer),
       switchMap((props) => this.customerService.update(props.id, props.customer).pipe(
-        map(() => CustomerAction.getCustomer({id: props.id})),
+        map(() => CustomerAction.getCustomer({ id: props.id })),
         catchError((err) => throwError(err))
       ))
     )

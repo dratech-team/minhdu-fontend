@@ -21,10 +21,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CustomerDialogComponent } from './component/customer-dialog/customer-dialog.component';
 import { PickCustomerComponent } from './component/pick-customer.component/pick-customer.component';
 import { PickCustomerService } from './component/pick-customer.component/pick-customer.service';
+import { LocationModule } from '@minhdu-fontend/location';
 
 
 @NgModule({
   imports: [
+    LocationModule,
     ComponentsModule,
     MatSnackBarModule,
     HttpClientModule,
