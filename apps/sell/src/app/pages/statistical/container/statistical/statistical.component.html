@@ -7,47 +7,109 @@
 
     </div>
     <div class='row col-12'>
-      <div class='col ml-2 p-3  rounded  bg-success'>
-        <div class='h4'>Số lượng đơn hàng</div>
-        <div class='d-flex'>
-          <div class='h3 mr-2'> 10</div>
-          <div class='d-flex align-items-center'>
-            <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
-            <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
-            <span class='ml-2'>50%</span>
+      <div class='col-4 p-1'>
+        <div class='col-12 p-2  rounded bg-success'>
+          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='d-flex'>
+            <div class='h3 mr-2'> 10</div>
+            <div class='d-flex align-items-center'>
+              <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
+              <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
+              <span class='ml-2'>50%</span>
+            </div>
           </div>
-        </div>
-        <div class='h5 d-flex'>
-          <div>tháng trước :</div> <span class='ml-2'>5</span>
+          <div class='h5 d-flex'>
+            <div>tháng trước :</div>
+            <span class='ml-2'>5</span>
+          </div>
         </div>
       </div>
-      <div class='col ml-2 p-3  rounded  bg-warning'>
-        <div class='h4'>Số lượng đơn hàng</div>
-        <div class='d-flex'>
-          <div class='h3 mr-2'> 10</div>
-          <div class='d-flex align-items-center'>
-            <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
-            <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
-            <span class='ml-2'>50%</span>
+      <div class='col-4 p-1  '>
+        <div class='col-12 p-2 rounded  bg-warning'>
+          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='d-flex'>
+            <div class='h3 mr-2'> 10</div>
+            <div class='d-flex align-items-center'>
+              <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
+              <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
+              <span class='ml-2'>50%</span>
+            </div>
           </div>
-        </div>
-        <div class='h5 d-flex'>
-          <div>tháng trước :</div> <span class='ml-2'>5</span>
+          <div class='h5 d-flex'>
+            <div>tháng trước :</div>
+            <span class='ml-2'>5</span>
+          </div>
         </div>
       </div>
-      <div class='col ml-2 p-3  rounded  bg-primary'>
-        <div class='h4'>Số lượng đơn hàng</div>
-        <div class='d-flex'>
-          <div class='h3 mr-2'> 10</div>
-          <div class='d-flex align-items-center'>
-            <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
-            <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
-            <span class='ml-2'>50%</span>
+      <div class='col-4 p-1 '>
+        <div class='col-12 p-2 rounded  bg-primary'>
+          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='d-flex'>
+            <div class='h3 mr-2'> 10</div>
+            <div class='d-flex align-items-center'>
+              <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
+              <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
+              <span class='ml-2'>50%</span>
+            </div>
+          </div>
+          <div class='h5 d-flex'>
+            <div>tháng trước :</div>
+            <span class='ml-2'>5</span>
           </div>
         </div>
-        <div class='h5 d-flex'>
-          <div>tháng trước :</div> <span class='ml-2'>5</span>
-        </div>
+      </div>
+    </div>
+    <div class='row col-12 mt-2  '>
+      <div class='d-flex flex-column col-4'>
+        <span class='h4'>THống kê Đơn hàng theo tỉnh</span>
+        <ngx-charts-bar-vertical
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]="single"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          >
+        </ngx-charts-bar-vertical>
+      </div>
+      <div class='d-flex flex-column col-4'>
+        <span class='h4'>THống kê theo dòng gà</span>
+        <ngx-charts-bar-vertical
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]="single"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+        >
+        </ngx-charts-bar-vertical>
+      </div>
+      <div class='d-flex flex-column col-4'>
+        <span class='h4'>THống kê Đơn hàng theo tỉnh</span>
+        <ngx-charts-bar-vertical
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]="single"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+        >
+        </ngx-charts-bar-vertical>
       </div>
     </div>
   </div>
