@@ -28,8 +28,7 @@ export class CommodityComponent implements OnInit {
 
   constructor(
     private readonly store: Store<AppState>,
-    private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly dialog: MatDialog
   ) {
   }
 

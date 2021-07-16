@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { RouteAction } from '../../container/+state/route.action';
+import { DatePipe } from '@angular/common';
 
 @Component({
   templateUrl: 'route-dialog.component.html'
@@ -14,15 +15,18 @@ export class RouteDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly datePipe: DatePipe,
   ) {
   }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       name: [this?.data?.route?.name, Validators.required],
-      endedAt: [this?.data?.route?.endedAt, Validators.required],
-      startedAt: [this?.data?.route?.startedAt, Validators.required],
+      startedAt: [this.datePipe.transform(
+        this?.data?.route?.startedAt,'yyyy-MM-dd'), Validators.required],
+      endedAt: [this.datePipe.transform(
+        this?.data?.route?.endedAt,'yyyy-MM-dd'), Validators.required],
       bsx: [this?.data?.route?.bsx, Validators.required],
       latitude: [this?.data?.route?.latitude, Validators.required],
       longitude: [this?.data?.route?.longitude, Validators.required],
@@ -32,7 +36,7 @@ export class RouteDialogComponent implements OnInit {
 
 
   pickEmployees(employeeId: number ) {
-    console.log(typeof employeeId)
+    console.log( employeeId)
     this.employeeId = employeeId;
   }
 
@@ -49,7 +53,7 @@ export class RouteDialogComponent implements OnInit {
       // employeeId: this.employeeId,
     };
     if (this.data) {
-      this.store.dispatch(RouteAction.updateRoute({ route: route, id: this.data.id }));
+      this.store.dispatch(RouteAction.updateRoute({ route: route, id: this.data.route.id }));
     } else {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }

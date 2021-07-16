@@ -44,17 +44,13 @@ export class PickCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.pickOne)
     this.service.loadInit()
     this.assignIsSelect()
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-          const val ={
-            take: 30,
-            skip: 0
-          }
-          this.service.searchCustomer(val)
+          const val = this.formGroup.value
+          this.service.searchCustomer(this.customer(val, 30, 0))
           this.assignIsSelect()
       })
     ).subscribe();
@@ -62,15 +58,20 @@ export class PickCustomerComponent implements OnInit {
   }
 
   onScroll() {
-    const value = this.formGroup.value;
-    const val ={
-      take:this.pageSize,
-      skip: this.pageSize * this.pageIndex++
-    }
-    this.service.scrollCustomer(val)
+
+    const val = this.formGroup.value
+    this.service.scrollCustomer(this.customer(val,this.pageSize, this.pageIndex))
     this.assignIsSelect()
   }
-
+  customer(val: any, pageSize: number, pageIndex: number){
+    return{
+      take: pageSize,
+      skip: pageSize * pageIndex++,
+      name: val.name,
+      customerType: val.type,
+      resource: val.resource
+    }
+  }
   assignIsSelect(){
     this.service.getCustomers().subscribe(val=> {
       this.customers = JSON.parse(JSON.stringify(val))

@@ -1,32 +1,37 @@
 <div class='p-4'>
-  <div class='p-3 row'>
+  <div class='p-3 row '>
     <div class='row col-12'>
       <div class='p-3'>
         <span class='h3'> Tổng quan</span>
       </div>
 
     </div>
-    <div class='row col-12'>
+    <div class='row col-12 mt-2'>
+      <div class='col-2'>
+        <mat-select value='{{dateTime.MONTH}}' (selectionChange)='onStatistical($event.value)' class='form-control ' >
+          <mat-option value="{{dateTime.DAY}}">Ngày</mat-option>
+          <mat-option value="{{dateTime.MONTH}}">Tháng</mat-option>
+          <mat-option value="{{dateTime.YEAR}}">Năm</mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class='row col-12 mt-2'>
       <div class='col-4 p-1'>
         <div class='col-12 p-2  rounded bg-success'>
-          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='h4'>Lô hàng</div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
-            <div class='d-flex align-items-center'>
-              <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
-              <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
-              <span class='ml-2'>50%</span>
-            </div>
           </div>
           <div class='h5 d-flex'>
-            <div>tháng trước :</div>
+            <div>Tổng số xe :</div>
             <span class='ml-2'>5</span>
           </div>
+
         </div>
       </div>
       <div class='col-4 p-1  '>
         <div class='col-12 p-2 rounded  bg-warning'>
-          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='h4'>Khách hàng </div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
             <div class='d-flex align-items-center'>
@@ -43,7 +48,7 @@
       </div>
       <div class='col-4 p-1 '>
         <div class='col-12 p-2 rounded  bg-primary'>
-          <div class='h4'>Số lượng đơn hàng</div>
+          <div class='h4'>Số lượng gà được bán</div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
             <div class='d-flex align-items-center'>
@@ -59,57 +64,29 @@
         </div>
       </div>
     </div>
-    <div class='row col-12 mt-2  '>
-      <div class='d-flex flex-column col-4'>
-        <span class='h4'>THống kê Đơn hàng theo tỉnh</span>
-        <ngx-charts-bar-vertical
-          [view]="view"
-          [scheme]="colorScheme"
-          [results]="single"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
+    <div class='row col-12 mt-5  '>
+      <div class='d-flex flex-column col-4' >
+        <span class='h4'>Thống kê doanh thu theo tỉnh</span>
+          <app-vertical-bar-chart
+            style='width: 100%; height: 400px'
+            [data]='Data'
+            [labelX]='"Tỉnh thành"'
+            [labelY]='"Doanh thu"'
           >
-        </ngx-charts-bar-vertical>
+          </app-vertical-bar-chart>
       </div>
       <div class='d-flex flex-column col-4'>
-        <span class='h4'>THống kê theo dòng gà</span>
-        <ngx-charts-bar-vertical
-          [view]="view"
-          [scheme]="colorScheme"
-          [results]="single"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
-        >
-        </ngx-charts-bar-vertical>
+        <span class='h4'>Thống kê doanh thu theo loại gà</span>
+        <app-pie-chart style='width: 100%; height: 400px' [data]='Data'></app-pie-chart>
       </div>
       <div class='d-flex flex-column col-4'>
-        <span class='h4'>THống kê Đơn hàng theo tỉnh</span>
-        <ngx-charts-bar-vertical
-          [view]="view"
-          [scheme]="colorScheme"
-          [results]="single"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
-        >
-        </ngx-charts-bar-vertical>
+        <span class='h4'>Thống kê Doanh thu từng đại lý</span>
+        <app-staked-vertical-chart
+          style='width: 100%; height: 400px'
+          [data]='stakedData'
+          [labelY]='"Doanh thu"'
+          [labelX]='"Đại lý"'>
+        </app-staked-vertical-chart>
       </div>
     </div>
   </div>

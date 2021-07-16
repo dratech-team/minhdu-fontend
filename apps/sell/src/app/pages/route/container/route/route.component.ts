@@ -7,11 +7,14 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Router } from '@angular/router';
+import { $e } from '@angular/compiler/src/chars';
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export  class RouteComponent implements OnInit{
+  pageIndex: number = 1;
+  pageSize: number = 30;
   formGroup!: FormGroup;
   routes$ = this.store.pipe(select(selectorAllRoute))
   constructor(
@@ -29,13 +32,24 @@ export  class RouteComponent implements OnInit{
     })
   }
   onScroll(){
-
+    const val = this.formGroup.value
+   this.store.dispatch(RouteAction.loadMoreRoutes(this.route(val,this.pageSize, this.pageIndex)))
   }
-  deleteRoute($event: any){
+  route(val: any, pageSize: number, pageIndex: number){
+    return {
+      skip: pageSize *pageIndex++,
+      take: pageSize
+    }
+  }
 
+  deleteRoute($event: any){
+    console.log($event.id)
+      this.store.dispatch(RouteAction.deleteRoute({idRoute: $event.id}))
   }
   detailRoute(id: number){
     this.router.navigate(['route/detail-route',id]).then()
   }
-
+  readDetailRoute($event: any){
+    this.router.navigate(['route/detail-route',$event.id]).then()
+  }
 }

@@ -34,7 +34,7 @@ export class AddOrderComponent implements OnInit {
 
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
-      currency: ['', Validators.required],
+      // currency: ['', Validators.required],
       explain: ['', Validators.required],
       payType: ['', Validators.required],
       paidTotal: ['', Validators.required],
@@ -56,7 +56,7 @@ export class AddOrderComponent implements OnInit {
 
   pickRoute(){
     const dialogRef = this.dialog.open(PickRoutesComponent, { width: '60%', data:{type:'DIALOG'} })
-    dialogRef.afterClosed().subscribe(val => console.log(val))
+    dialogRef.afterClosed().subscribe(val => this.routeIds =val)
   }
 
   onSubmit() {
@@ -64,7 +64,7 @@ export class AddOrderComponent implements OnInit {
     const order = {
       createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
       explain: val.explain,
-      currency: val.currency,
+      // currency: val.currency,
       payType:val.payType ? val.payType: undefined,
       paidTotal: typeof(val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')): val.paidTotal,
       paidAt:val.paidAt ? new Date(val.paidAt): undefined,

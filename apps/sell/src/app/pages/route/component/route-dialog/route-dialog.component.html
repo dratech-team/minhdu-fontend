@@ -7,7 +7,7 @@
   </div>
   <form [formGroup]="formGroup" (submit)="onSubmit()">
     <mat-tab-group  dynamicHeight >
-      <mat-tab class="col-12 " label='Thông tin đơn'>
+      <mat-tab class="col-12 " label='Thông tin tuyến đường'>
         <div [formGroup]='formGroup'>
           <div class='form-group'>
             <div class='row'>
@@ -53,7 +53,7 @@
                   class='form-control'
                   formControlName='latitude'
                   id='latitude'
-                  type='text'
+                  type='number'
                 >
               </div>
             </div>
@@ -64,7 +64,7 @@
                   class='form-control'
                   formControlName='longitude'
                   id='longitude'
-                  type='text'
+                  type='number'
                 >
               </div>
             </div>
@@ -82,9 +82,9 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab class="col-12 " label="Chọn nhân viên">
-        <app-pick-employee [pickOne]='true' (checkEventPickOne)='pickEmployees($event)'></app-pick-employee>
-      </mat-tab>
+<!--      <mat-tab class="col-12 " label="Chọn nhân viên">-->
+<!--        <app-pick-employee [pickOne]='true' (checkEventPickOne)='pickEmployees($event)'></app-pick-employee>-->
+<!--      </mat-tab>-->
     </mat-tab-group>
     <div class="footer-popup row ml-4 mt-3">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>

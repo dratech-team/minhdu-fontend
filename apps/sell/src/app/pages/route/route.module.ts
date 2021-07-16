@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
@@ -48,6 +48,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     PickRoutesComponent
   ],
   providers: [
+    DatePipe,
     PickRoutesService
   ],
   exports: [

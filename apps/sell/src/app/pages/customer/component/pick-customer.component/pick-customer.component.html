@@ -18,15 +18,17 @@
         <select class='select' matNativeControl required formControlName='type'>
           <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
           <option value='{{customerType.AGENCY}}'>Đại lý</option>
+          <option value=''>Tất cả</option>
         </select>
       </div>
       <div class='border-start title-header col-4'>
-        <div class='title-profile'>resource</div>
+        <div class='title-profile'>Nguồn khách hàng</div>
         <select class='select' matNativeControl required formControlName='resource'>
-          <option value='{{resourceType.RESEARCH}}'>RESEARCH</option>
-          <option value='{{resourceType.INTRODUCED}}'>INTRODUCED</option>
-          <option value='{{resourceType.SELF_FIND}}'>SELF_FIND</option>
-          <option value='{{resourceType.OTHER}}'>OTHER</option>
+          <option value='{{resourceType.RESEARCH}}'>Tra cứu</option>
+          <option value='{{resourceType.INTRODUCED}}'>Giới thiệu</option>
+          <option value='{{resourceType.SELF_FIND}}'>Tự tìm</option>
+          <option value='{{resourceType.OTHER}}'>Khác</option>
+          <option value=''>Tất cả</option>
         </select>
       </div>
       <div class='border-start title-header col-1  '>

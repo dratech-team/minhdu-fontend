@@ -50,7 +50,7 @@ export class RouteEffect {
   deleteRoute$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.deleteRoute),
-      switchMap((props) => this.routeService.delete(props.id).pipe(
+      switchMap((props) => this.routeService.delete(props.idRoute).pipe(
         map(_ => RouteAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))

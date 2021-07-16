@@ -48,7 +48,7 @@ export const updateRoute = createAction(
 
 export const deleteRoute = createAction(
   '[DELETE_ROUTE] Delete Route',
-  props<{ id: number }>()
+  props<{ idRoute: number }>()
 );
 
 export const RouteAction = {

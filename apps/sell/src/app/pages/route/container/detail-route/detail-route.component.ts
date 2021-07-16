@@ -29,7 +29,7 @@ export class DetailRouteComponent implements OnInit {
 
   updateRoute(route: Route) {
     this.dialog.open(RouteDialogComponent, {
-      width: '30%',
+      width: '40%',
       data: { route: route }
     });
   }

@@ -50,7 +50,9 @@
            (contextmenu)='child.onContextMenu($event,route)'>
         <app-mouse-right
           #child (addEvent)='add()'
-          (deleteEvent)='deleteRoute($event)'>
+          (deleteEvent)='deleteRoute($event)'
+          (readAndUpdateEvent)='readDetailRoute($event)'
+        >
         </app-mouse-right>
         <div class='content-profile name pointer '>{{route?.name}}</div>
         <div class='content-profile default pointer ' *ngIf='route.startedAt !== null'>
