@@ -51,12 +51,11 @@ export class EmployeeComponent implements OnInit {
         this.store.dispatch(EmployeeAction.loadInit(this.employee(val, 30, 0)));
       })
     ).subscribe();
-
   }
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '50%'
+      width: '60%'
     });
   }
 
@@ -82,7 +81,7 @@ export class EmployeeComponent implements OnInit {
         position: val.position,
         department: val.department,
         branch: val.branch,
-        workedAt: val.workedAt.toString(),
+        workedAt: val.workedAt.toString()
       };
     } else {
       return {
@@ -100,7 +99,7 @@ export class EmployeeComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val, this.pageSize, this.pageSize)));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val, this.pageSize, this.pageIndex)));
   }
 
   readAndUpdate($event: any): void {

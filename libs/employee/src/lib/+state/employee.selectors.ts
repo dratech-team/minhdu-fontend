@@ -3,7 +3,6 @@ import { EmployeeState } from './employee.reducer';
 import * as fromEmployee from './employee.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Employee } from '@minhdu-fontend/data-models';
-
 export interface State {employees: fromEmployee.EmployeeState;}
 
 

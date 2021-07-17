@@ -1,0 +1,136 @@
+<div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
+
+  <div class='row'*ngIf='(order$ | async)  as commodity'>
+    <div class='row mt-5'>
+      <div class=' main-title  mr-5' style='font-size: 20px'>
+        Chi tiết Đơn hàng
+      </div>
+    </div>
+  </div>
+
+  <div class='row mt-5' style='color:#80828B'  *ngIf='(order$ | async)  as order'>
+    <div class='col-12'>
+      <div class='row d-flex align-items-center'>
+        <div class='col-2 align-items-center title-table'>Thông tin chung</div>
+        <button
+          data-toggle='tooltip'
+          data-placement='top'
+          title=' chỉnh sửa '
+          class='edit animated'
+          (click)='updateOrder(order)'>
+          <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
+        </button>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-6  form-group'>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Khách hàng :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{order?.customer?.firstName}}  {{order?.customer?.lastName}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày tạo đơn :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{order?.createdAt |date: 'dd/MM/yyyy'}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>explain :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #3C3B54'>
+             {{order?.explain}}
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Công nợ :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #f86c6b;'>
+            {{order.debt|number:'1.0'|notEmpty:'0'}} đ
+            </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Tổng thanh toán :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' style=' color: #20c997'>
+              {{order.paidTotal|number:'1.0'|notEmpty:'0'}} đ
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class='col-6  form-group'>
+        </div>
+      </div>
+      <div class='col-12 mt-5'>
+        <div class='row d-flex align-items-center '>
+          <div class='row align-items-center title-table mr-4'>Hàng hóa</div>
+        </div>
+        <div class='mt-3 '>
+          <table class='mt-3'>
+            <tr>
+              <th class='text-center'> Mã hàng hóa </th>
+              <th class='text-center'> Tên hàng hóa </th>
+              <th class='text-center'>Đơn vị</th>
+              <th class='text-center'>Giá</th>
+              <th class='text-center'>Khuyến mãi</th>
+              <th class='text-center'>Số lượng</th>
+            </tr>
+            <tr *ngFor='let commodity of order.commodities'>
+              <th class='text-center'> {{commodity.code}} </th>
+              <th class='text-center'> {{commodity.name}} </th>
+              <th class='text-center' *ngIf='commodity.unit === commodityUnit.KG'> Kilogam </th>
+              <th class='text-center' *ngIf='commodity.unit === commodityUnit.CON'> Con </th>
+              <th class='text-center'>{{commodity.price|number:'1.0'|notEmpty:'0'}} đ</th>
+
+              <th class='text-center'> {{commodity.gift}} </th>
+              <th class='text-center'> {{commodity.amount}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class='col-12 mt-5'>
+        <div class='row d-flex align-items-center '>
+          <div class='row align-items-center title-table mr-4'>Tuyến đường</div>
+        </div>
+        <div class='mt-3 '>
+          <table class='mt-3'>
+            <tr>
+              <th class='text-center'>Tên tuyến đường </th>
+              <th class='text-center'>Ngày Bắt đầu</th>
+              <th class='text-center'>Ngày kết thúc</th>
+              <th class='text-center'>Tên tài xế</th>
+              <th class='text-center'>Biển số xe</th>
+              <th class='text-center'>vĩ độ</th>
+              <th class='text-center'>kinh độ</th>
+            </tr>
+            <tr *ngFor='let route of order.routes'>
+              <th class='text-center'>{{route.name}} </th>
+              <th class='text-center'>{{route.startedAt| date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center'>{{route.endedAt| date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center' *ngIf='route.employee'>{{route.employee.firstName}} {{route.employee.lastName}} </th>
+              <th class='text-center' *ngIf='route.driver'>{{route.driver.firstName}} {{route.driver.lastName}} </th>
+
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

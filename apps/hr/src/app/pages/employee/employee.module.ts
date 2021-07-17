@@ -21,10 +21,12 @@ import { DeleteEmployeeComponent } from './components/dialog-delete-employee/del
 import { EmployeeComponent } from './containers/employee/employee.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
+import { LocationModule } from '@minhdu-fontend/location';
 
 
 @NgModule({
   imports: [
+    LocationModule,
     EmployeeLibModule,
     ComponentsModule,
     EmployeeRoutingModule,

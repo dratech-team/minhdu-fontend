@@ -7,4 +7,13 @@ export const FeatureName = {
   DEPARTMENT: 'department',
   POSITION: 'position',
   TEMPLATE_OVERTIME :'template_overtime',
+  CUSTOMER: 'customer',
+  COMMODITY: 'commodity',
+  ORDER : 'order',
+  ROUTE : 'route',
+  BILL : 'bill',
+  NATION : 'nation',
+  PROVINCE : 'province',
+  DISTRICT : 'district',
+  WARD : 'ward',
 };

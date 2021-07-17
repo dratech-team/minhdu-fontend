@@ -2,7 +2,7 @@
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>
-      <app-add-profile [formGroup]='formGroup'></app-add-profile>
+      <app-add-profile [data]='data'  [formGroup]='formGroup'></app-add-profile>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='branch'>Đơn vị công tác <span class='star'>*</span></label>
@@ -51,23 +51,25 @@
           <input class='form-control' type='text' formControlName='email'>
         </div>
       </div>
-      <div class='mt-3' [formGroup]='formGroup'>
-        <label for='workedAt'>Ngày vào làm chính thức</label><span class='star'>*</span>
-        <input
-          id='workedAt'
-          type='date'
-          class='form-control'
-          formControlName='workedAt'
-        >
-      </div>
-      <div class='mt-3' [formGroup]='formGroup'>
-        <label for='createdAt'>Ngày vào làm </label><span class='star'>*</span>
-        <input
-          id='createdAt'
-          type='date'
-          class='form-control'
-          formControlName='createdAt'
-        >
+      <div class='row mt-3' [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='workedAt'>Ngày vào làm chính thức</label><span class='star'>*</span>
+          <input
+            id='workedAt'
+            type='date'
+            class='form-control'
+            formControlName='workedAt'
+          >
+        </div>
+         <div class='col-sm'>
+           <label for='createdAt'>Ngày vào làm </label><span class='star'>*</span>
+           <input
+             id='createdAt'
+             type='date'
+             class='form-control'
+             formControlName='createdAt'
+           >
+         </div>
       </div>
       <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
         <div class='col-sm'>

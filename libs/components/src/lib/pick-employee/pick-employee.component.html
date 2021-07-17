@@ -27,8 +27,8 @@
       </div>
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>all</div>
-        <mat-checkbox class='example-margin mt-2 ml-3'
-                      [checked]='selectAll'
+        <mat-checkbox *ngIf='!pickOne' class='example-margin mt-2 ml-3'
+                      [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
         </mat-checkbox>
@@ -47,11 +47,12 @@
         <div class='content-profile col-4  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
         <div class='content-profile col-4  pointer'>{{employee.position?.department?.branch?.name}}</div>
         <div class='content-profile col-1  pointer'>
-          <mat-checkbox class='checkID'
+          <mat-checkbox *ngIf='!pickOne' class='checkID'
                         [checked]='employee.isSelect ? employee.isSelect: false'
                         [(ngModel)]='employee.isSelect'
-                        (ngModelChange)='updateAllSelect(employee.id)'>
+                        (ngModelChange)='updateSelect(employee.id)'>
           </mat-checkbox>
+          <input (change)='pickOneEmployee()'  *ngIf='pickOne' type="radio"  name="pick-one" value="{{employee.id}}">
         </div>
       </div>
     </div>

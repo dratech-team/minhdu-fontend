@@ -19,9 +19,6 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 
 
-
-
-
 @Component({
   templateUrl: 'detail-employee.component.html',
   styleUrls: ['detail-employee.component.scss']
@@ -53,7 +50,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '40%',
+      width: '60%',
       data: { employee: employee }
     });
   }

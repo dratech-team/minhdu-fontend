@@ -1,0 +1,66 @@
+
+<h2 mat-dialog-title>Thông tin hàng hóa</h2>
+<mat-dialog-content class='mat-typography'>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div class='form-group'>
+      <div class='row'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='code'>Mã hàng hóa<span class='star'>*</span>
+          </label>
+          <input type='text' class='form-control' id='code'  formControlName='code'>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='name'>Tên hàng hóa<span class='star'>*</span></label>
+          <input type='text' class='form-control' id='name' placeholder='Gà loại 1' formControlName='name'>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='price'>Giá<span class='star'>*</span></label>
+          <input type="text" class="form-control" id='price' placeholder="Nhập mức giá" formControlName="price" inputCurrency>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='amount'>Số lượng<span class='star'>*</span></label>
+          <input type="text" class="form-control" id='amount' placeholder="Nhập số lượng" formControlName="amount" inputCurrency>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='gift'>Khuyến mãi<span class='star'>*</span></label>
+          <input type="text" class="form-control" id='gift' placeholder="Nhập số lượng" formControlName="gift" inputCurrency>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='more'>Mức khuyến mãi<span class='star'>*</span></label>
+          <input type="text" class="form-control" id='more' placeholder="Nhập số lượng" formControlName="more" inputCurrency>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-sm' [formGroup]='formGroup'>
+          <label for='unit'>Đơn vị<span class='star'>*</span></label>
+          <mat-select id='unit' class='form-control' formControlName='unit'>
+            <mat-option value='{{commodityUnit.KG}}'>
+              kilogam
+            </mat-option>
+            <mat-option value='{{commodityUnit.CON}}'>
+              con
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='row d-flex mt-3 justify-content-center'>
+        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+
+
+

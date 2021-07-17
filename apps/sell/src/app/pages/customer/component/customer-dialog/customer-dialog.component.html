@@ -1,0 +1,213 @@
+<h2 mat-dialog-title>Thông tin Khách hàng</h2>
+  <mat-dialog-content class='mat-typography'>
+    <form [formGroup]='formGroup' (submit)='onSubmit()'>
+      <div class='form-group'>
+        <div class='row'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='firstName'>Họ<span class='star'>*</span>
+            </label>
+            <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='lastName'>Tên<span class='star'>*</span>
+            </label>
+            <input
+              class='form-control'
+              formControlName='lastName'
+              id='lastname'
+              placeholder='Hiệu'
+              type='text'
+            >
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='religion'>Tôn giáo
+            </label>
+            <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='ethnicity'>Dân tộc
+            </label>
+            <input
+              class='form-control'
+              formControlName='ethnicity'
+              id='ethnicity'
+              placeholder='Kinh'
+              type='text'
+            >
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='birthplace'>Nguyên quán</label><span class='star'>*</span>
+            <input
+              class='form-control'
+              formControlName='birthplace'
+              id='birthplace'
+              placeholder='Phước Sơn - Tuy Phước - Bình Định '
+              type='text'
+            >
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='address'>Địa chỉ</label> <span class='star'>*</span>
+            <input
+              class='form-control'
+              formControlName='address'
+              id='address'
+              placeholder='Số nhà / thôn xóm'
+              type='text'
+            >
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='note'>Ghi chú</label>
+            <input
+              id='note'
+              type='text'
+              class='form-control'
+              formControlName='note'
+            >
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='nation'>Quốc gia<span class='star'>*</span></label>
+            <mat-select
+              id='nation'
+              class='form-control'
+              formControlName='nation'
+            >
+              <mat-option *ngFor='let nation of nations$ | async' [value]='nation' (click)='onNation(nation)'>
+                {{nation.name}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='province'>Tỉnh<span class='star'>*</span></label>
+            <mat-select
+              id='province'
+              class='form-control'
+              formControlName='province'
+            >
+            <mat-option *ngFor='let province of provinces ' [value]='province' (click)='onProvince(province)'>
+            {{province.name}}
+            </mat-option>
+            </mat-select>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='district'>QUận/Huyện <span class='star'>*</span></label>
+            <mat-select id='district' class='form-control' formControlName='district'>
+                          <mat-option *ngFor='let district of districts' [value]='district' (click)='onDistrict(district)'>
+                            {{district.name}}
+                          </mat-option>
+            </mat-select>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='ward'>Xã/Phường <span class='star'>*</span></label>
+            <mat-select id='ward' class='form-control' formControlName='ward'>
+                          <mat-option *ngFor='let ward of wards' [value]='ward.id'>
+                            {{ward.name}}
+                          </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='cmnd'>CMND/CCCD</label>
+            <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='idCardAt'>Ngày cấp<span class='star'>*</span></label>
+            <input
+              type='date'
+              placeholder='06/05/1997'
+              class='form-control'
+              id='idCardAt'
+              formControlName='idCardAt'
+            >
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='issuedBy'>Nơi cấp <span class='star'>*</span></label>
+            <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='phone'>Số điện thoại <span class='star'>*</span></label>
+            <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='birthday'>Ngày sinh <span class='star'>*</span></label>
+            <input type='date' id='birthday' class='form-control' formControlName='birthday'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='gender'>Giới tính<span class='star'>*</span></label>
+            <div id='gender'>
+              <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
+                <mat-radio-button value='MALE'>Nam</mat-radio-button>
+                <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
+                <mat-radio-button value='OTHER'>Khác</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='type'>Loại Khách hàng<span class='star'>*</span></label>
+            <mat-select id='type' class='form-control' formControlName='type'>
+              <mat-option value='{{customerType.RETAIL}}'>
+                Khách lẻ
+              </mat-option>
+              <mat-option value='{{customerType.AGENCY}}'>
+                Đại lí
+              </mat-option>
+            </mat-select>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='resource'>Nguồn khác hàng<span class='star'>*</span></label>
+            <mat-select id='resource' class='form-control' formControlName='resource'>
+              <mat-option value='{{resourceType.SELF_FIND}}'>
+                Tự tìm
+              </mat-option>
+              <mat-option value='{{resourceType.INTRODUCED}}'>
+                Giới thiệu
+              </mat-option>
+              <mat-option value='{{resourceType.RESEARCH}}'>
+                Tra cứu
+              </mat-option>
+              <mat-option value='{{resourceType.OTHER}}'>
+                Khác
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='religion'>Email
+            </label>
+            <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com' formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Tìm năng</label><span class='star'>*</span>
+            <input
+              id='facebook'
+              type='checkbox'
+              class='form-control'
+              formControlName='isPotential'
+            >
+          </div>
+        </div>
+        <div class='row d-flex mt-3 justify-content-center'>
+          <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+          <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+
+

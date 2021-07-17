@@ -1,0 +1,85 @@
+
+<div class='main-customer ' style='overflow-x: hidden; margin-left: 18%'>
+  <div class='row h3 ml-3 mt-3'>Danh sách hàng hóa</div>
+  <div class='main-profile'>
+    <button (click)='add()' class='btn btn-primary'>Thêm Hàng hóa</button>
+    <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã hang hóa</div>
+        <input
+          class='form-control input-profile '
+          type='search'
+          formControlName='code'
+        >
+      </div>
+      <div class='border-start title-header note'>
+        <div class='title-profile'>Tên Hàng hóa</div>
+        <input
+          class='form-control input-profile '
+          type='search'
+          placeholder='Gà giống'
+          formControlName='name'
+
+        >
+      </div>
+
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Đơn vị</div>
+        <select  class='select d-flex justify-content-center' matNativeControl required formControlName='unit'>
+          <option value='KG' class='d-flex justify-content-center'>kg</option>
+          <option value='CON'>con</option>
+          <option value=''>mặc định</option>
+        </select>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Giá</div>
+        <input class='form-control input-profile ' type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Số lượng</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Khuyễn mãi</div>
+        <input class='form-control input-profile ' type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mức khuyến mãi</div>
+        <input class='form-control input-profile ' type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Xóa</div>
+        <input class='form-control input-profile ' type='search'>
+      </div>
+    </form>
+    <div class='outer   animated fadeIn'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(commodity$| async) as commodities'
+    >
+
+      <div class='row-content' *ngFor='let commodity of commodities'>
+        <div class='content-profile default pointer '>{{commodity?.code}} </div>
+        <div class='content-profile note pointer '>{{commodity?.name}} </div>
+        <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.KG '>Kilogam</div>
+        <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.CON '>con</div>
+        <div class='content-profile default pointer ' style='color: #20c997'>
+          {{commodity.price|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile default pointer '>{{commodity?.gift}} </div>
+        <div class='content-profile default pointer '>{{commodity?.more}} </div>
+        <div class='content-profile default pointer '>{{commodity?.amount}} </div>
+        <div  class='content-profile  pointer default '>
+          <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>xóa</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+

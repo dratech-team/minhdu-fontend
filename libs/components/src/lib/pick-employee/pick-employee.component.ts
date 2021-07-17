@@ -1,28 +1,27 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-
-
-
+import { PickEmployeeService } from './pick-employee.service';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   selector: 'app-pick-employee',
-  templateUrl: './pick-employee.component.html',
+  templateUrl: './pick-employee.component.html'
 })
 export class PickEmployeeComponent implements OnInit {
-
-  @Output() checkEvent = new EventEmitter();
+  @Input() pickOne = false;
+  @Output() checkEvent = new EventEmitter<number[]>();
+  @Output() checkEventPickOne = new EventEmitter<number>();
   type = SalaryTypeEnum;
   pageIndex: number = 1;
   pageSize: number = 30;
-  selectAll: boolean = false;
+  isSelectAll: boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
-  employees$ = this.store.pipe(select(selectorAllEmployee));
+  employeeId!: number;
   code?: string;
   name?: string;
   position?: string;
@@ -30,53 +29,62 @@ export class PickEmployeeComponent implements OnInit {
     {
       code: new FormControl(''),
       name: new FormControl(''),
-      branch: new FormControl(''),
-    })
+      branch: new FormControl('')
+    });
+
   constructor(
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly service: PickEmployeeService
   ) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({ skip: 0, take: 30 }));
+    this.service.onInit();
+    this.assignIsSelect();
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(EmployeeAction.loadInit({
+        const search = {
           skip: 0,
           take: 30,
           code: val.code,
           name: val.name,
-          position: val.position,
-        }));
+          branch: val.branch
+        };
+        this.service.searchEmployees(search);
+        this.assignIsSelect();
       })
-    ).subscribe()
-    this.employees$.subscribe(val =>{
-      this.employees = JSON.parse(JSON.stringify(val))
-      this.employees.map(e => e.isSelect = this.selectAll)
-    });
+    ).subscribe();
   }
 
   onScroll() {
-    const val = this.formGroup.value
-    this.store.dispatch(EmployeeAction.loadMoreEmployees({
+    const value = this.formGroup.value;
+    const val = {
       skip: this.pageSize * this.pageIndex++,
       take: this.pageSize,
-      code: val.code,
-      name: val.name,
-      position: val.position,
-    }));
+      code: value.code,
+      name: value.name,
+      position: value.position
+    };
+    this.service.scrollEmployee(val);
+    this.assignIsSelect();
   }
 
+  assignIsSelect() {
+    this.service.Employees().subscribe(val => {
+      this.employees = JSON.parse(JSON.stringify(val));
+      this.employees.forEach(e => e.isSelect = this.isSelectAll);
+    });
+  }
 
-  updateAllSelect(id: number) {
+  updateSelect(id: number) {
     const index = this.employeeIds.indexOf(id);
     if (index > -1) {
       this.employeeIds.splice(index, 1);
     } else {
       this.employeeIds.push(id);
     }
-    this.selectAll = this.employees !== null && this.employees.every(e => e.isSelect);
+    this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
     this.checkEvent.emit(this.employeeIds);
   }
 
@@ -85,12 +93,12 @@ export class PickEmployeeComponent implements OnInit {
       return false;
     }
     return (
-      this.employees.filter(e => e.isSelect).length > 0 && !this.selectAll
+      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectAll
     );
   }
 
   setAll(select: boolean) {
-    this.selectAll = select;
+    this.isSelectAll = select;
     if (this.employees == null) {
       return;
     }
@@ -104,7 +112,15 @@ export class PickEmployeeComponent implements OnInit {
     );
     this.checkEvent.emit(this.employeeIds);
   }
-
+  pickOneEmployee(){
+    const pickEmployee = document.getElementsByName('pick-one');
+    for (let i = 0; i < pickEmployee.length; i++) {
+      if (pickEmployee[i].checked) {
+        this.employeeId = parseInt(pickEmployee[i].value) ;
+      }
+    }
+    this.checkEventPickOne.emit( this.employeeId)
+  }
 }
 
 

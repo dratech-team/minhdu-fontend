@@ -8,7 +8,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
-import { DatePipe } from '@angular/common';
+import { DatePipe, } from '@angular/common';
 
 
 @Component({

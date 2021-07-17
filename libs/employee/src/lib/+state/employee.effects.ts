@@ -6,7 +6,7 @@ import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
-import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeAction, LoadEmployeesSuccess } from '@minhdu-fontend/employee';
 
 
 @Injectable()
@@ -15,33 +15,19 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadInit),
-      concatMap((props) => this.employeeService.pagination(props).pipe(
-        map((value) => {
-            return value.data.map(e => Object.assign(e, { 'isSelect': false }));
-          }
-        )
-      )),
-      map((ResponsePaginate) => EmployeeAction.LoadEmployeesSuccess({ employees: ResponsePaginate })),
-      catchError((err) => throwError(err))
-    )
-  );
+      switchMap((props) => this.employeeService.pagination(props)),
+      map((responsePagination)=> EmployeeAction.LoadEmployeesSuccess({employees: responsePagination.data})),
+      catchError(err => throwError(err))
+    ));
 
   loadMoreEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadMoreEmployees),
-      concatMap((props) => this.employeeService.pagination(props).pipe(
-        map((value) => {
-            return value.data.map(e => Object.assign(e, { 'isSelect': false }));
-          }
-        )
-      )),
-      map((ResponsePaginate) => EmployeeAction.LoadMoreEmployeesSuccess({ employees: ResponsePaginate })),
-      catchError((err) => throwError(err))
-    )
-  );
-
-
-
+      switchMap((props) => this.employeeService.pagination(props)),
+      map((responsePagination)=> EmployeeAction.LoadMoreEmployeesSuccess({employees: responsePagination.data})),
+      catchError(err => throwError(err))
+    ));
+  
   addEmployee$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.addEmployee),
