@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
     StatisticalRoutingModule,
     CommonModule,
     BarChartModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule
   ],
   declarations: [
     StatisticalComponent,

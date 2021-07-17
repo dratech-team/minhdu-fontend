@@ -55,7 +55,7 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '50%'
+      width: '60%'
     });
   }
 

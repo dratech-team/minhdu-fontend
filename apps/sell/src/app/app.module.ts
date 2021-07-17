@@ -70,7 +70,6 @@ import { NxModule } from '@nrwl/angular';
     },
     HashLocationStrategy
   ],
-
   bootstrap: [AppComponent]
 })
 export class AppModule {

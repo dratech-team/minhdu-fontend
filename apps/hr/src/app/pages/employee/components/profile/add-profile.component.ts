@@ -1,27 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { selectAllNation, selectCurrentNation } from 'libs/location/src/lib/+state/nation/nation.selector';
-import { District, Employee, Nation, Province, Ward } from '@minhdu-fontend/data-models';
+import {
+  selectAllNation,
+  selectNationById
+} from 'libs/location/src/lib/+state/nation/nation.selector';
+import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
 import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
-import { selectCurrentDistrict, selectCurrentProvince, selectorCurrentWard } from '@minhdu-fontend/location';
+import {
+  selectDistrictById,
+  selectProvinceById
+} from '@minhdu-fontend/location';
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
-import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-profile',
   templateUrl: 'add-profile.component.html'
 })
 
-export class AddProfileComponent implements OnInit {
-  @Input() public data!: Employee;
+export class AddProfileComponent implements OnInit, OnDestroy {
+  @Input() public data!: any;
+  destroy$ = new Subject();
   formGroup!: FormGroup;
   nations$ = this.store.pipe(select(selectAllNation));
-  nation$ = this.store.pipe(select(selectCurrentNation(this.data?.ward?.district?.province?.nation?.id)));
-  province$ = this.store.pipe(select(selectCurrentProvince(this.data?.ward?.district?.province?.id)));
-  district$ = this.store.pipe(select(selectCurrentDistrict(this.data?.ward?.district?.id)));
   provinces?: Province[];
   districts?: District[];
   wards?: Ward[];
@@ -32,31 +36,41 @@ export class AddProfileComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit(): void {
-    console.log(this.data);
+
+
     this.store.dispatch(NationAction.loadAllNation());
     if (this.data) {
-      this.store.dispatch(NationAction.getNation({
-        idNation: this.data?.ward?.district?.province?.nation?.id
-      }));
-      this.store.dispatch(ProvinceAction.getProvince({
-        idProvince: this.data?.ward?.district?.province?.id
-      }));
-      this.store.dispatch(DistrictAction.getDistrict({
-        idDistrict: this.data?.ward?.district?.id
-      }));
-      this.store.dispatch(WardAction.getWard({
-        idWard: this.data?.ward?.id
-      }));
+      this.store.dispatch(ProvinceAction.loadAllProvinces());
+      this.store.dispatch(DistrictAction.loadAllDistricts());
     }
-    this.nation$.subscribe(val => this.provinces = val?.provinces);
-    this.province$.subscribe(val => this.districts = val?.districts);
-    this.district$.subscribe(val => this.wards = val?.wards);
+    this.store.pipe(
+      takeUntil(this.destroy$),
+      select(selectNationById(
+        this?.data?.employee?.ward?.district?.province?.nation?.id))).subscribe(
+      val => {
+        console.log(val)
+        this.provinces = val?.provinces
+      }
+
+    );
+    this.store.pipe(
+      takeUntil(this.destroy$),
+      select(selectProvinceById(
+      this.data?.employee?.ward?.district?.province?.id))).subscribe(
+      val => this.districts = val?.districts
+    );
+    this.store.pipe(
+      takeUntil(this.destroy$),
+      select(selectDistrictById(
+      this.data?.employee?.ward?.district?.id))).subscribe(
+      val => this.wards = val?.wards
+    );
     this.formGroup = <FormGroup>this.controlContainer.control;
   }
 
   onNation(nation: Nation) {
-    console.log(nation);
     this.provinces = nation.provinces;
   }
 
@@ -66,5 +80,10 @@ export class AddProfileComponent implements OnInit {
 
   onDistrict(district: District) {
     this.wards = district.wards;
+  }
+
+
+  ngOnDestroy(): void {
+    this.destroy$.unsubscribe();
   }
 }

@@ -16,9 +16,9 @@ export const selectorWardEntities = createSelector(
   SelectorWardState,
   fromWard.selectEntities
 )
-export const selectorCurrentWard = (id ?: number) => createSelector(
+export const selectorCurrentWard = (id : number) => createSelector(
   selectorWardEntities,
-  (wardEntities) => id? wardEntities[id]: undefined
+  (wardEntities) =>  wardEntities[id]
 )
 export const selectedWardLoaded = createSelector(
   SelectorWardState,

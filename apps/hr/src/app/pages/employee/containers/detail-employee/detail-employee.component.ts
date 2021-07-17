@@ -50,7 +50,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '40%',
+      width: '60%',
       data: { employee: employee }
     });
   }

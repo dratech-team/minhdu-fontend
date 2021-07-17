@@ -14,7 +14,6 @@ import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { Payroll } from '../../+state/payroll/payroll.interface';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({

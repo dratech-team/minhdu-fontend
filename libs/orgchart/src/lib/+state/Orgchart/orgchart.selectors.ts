@@ -15,18 +15,14 @@ export const getSelectedBranchId = (state: Branch) => state.id;
 
 const { selectAll, selectEntities } = orgchartAdapter.getSelectors();
 
-export const getOrgchartLoaded = createSelector(
-  getOrgchartState,
-  (state: State) => state.loaded
-);
-
 export const getOrgchartError = createSelector(
   getOrgchartState,
   (state: State) => state.error
 );
 
-export const getAllOrgchart = createSelector(getOrgchartState, (state: State) =>
-  selectAll(state)
+export const getAllOrgchart = createSelector(
+  getOrgchartState,
+  (state: State) => selectAll(state)
 );
 
 export const getOrgchartEntities = createSelector(
@@ -37,5 +33,9 @@ export const getOrgchartEntities = createSelector(
 export const getBranchById = (id: number) => createSelector(
   getOrgchartEntities,
   (branchEntities) => branchEntities[id]
+);
+export const getOrgchartLoaded = createSelector(
+  getOrgchartState,
+  (state: State) => state.loaded
 );
 

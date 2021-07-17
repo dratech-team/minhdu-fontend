@@ -89,7 +89,7 @@ export class AddEmployeeComponent implements OnInit {
       branch: [this?.data?.employee?.position.department?.branch?.id, Validators.required],
       department: [this?.data?.employee?.position?.department.id, Validators.required],
       position: [this?.data?.employee?.position.id, Validators.required],
-      ward: [this?.data?.employee?.profile?.ward?.id, Validators.required],
+      ward: [this?.data?.employee?.ward?.id, Validators.required],
       district: [this?.data?.employee?.ward?.district?.id, Validators.required],
       province: [this?.data?.employee?.ward?.district?.province?.id, Validators.required],
       nation: [this?.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],

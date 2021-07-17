@@ -16,9 +16,9 @@ export const selectorDistrictEntities = createSelector(
   SelectorDistrictState,
   fromDistrict.selectEntities
 )
-export const selectCurrentDistrict = (id ?: number) => createSelector(
+export const selectDistrictById = (id : number) => createSelector(
   selectorDistrictEntities,
-  (districtEntities) => id?  districtEntities[id]: undefined
+  (districtEntities) => districtEntities[id]
 )
 export const selectedDistrictLoaded = createSelector(
   SelectorDistrictState,

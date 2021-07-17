@@ -16,9 +16,9 @@ export const selectorProvinceEntities = createSelector(
   SelectorProvinceState,
   fromProvince.selectEntities
 )
-export const selectCurrentProvince = (id? : number) => createSelector(
+export const selectProvinceById = (id : number) => createSelector(
   selectorProvinceEntities,
-  (provinceEntities) => id? provinceEntities[id] : undefined
+  (provinceEntities) =>  provinceEntities[id]
 )
 export const selectedProvinceLoaded = createSelector(
   SelectorProvinceState,

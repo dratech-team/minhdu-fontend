@@ -77,7 +77,7 @@
           class='form-control'
           formControlName='nation'
         >
-          <mat-option *ngFor='let nation of nations$ | async' [value]='nation' (click)='onNation(nation)'>
+          <mat-option *ngFor='let nation of nations$ | async' [value]='nation.id' (click)='onNation(nation)'>
             {{nation.name}}
           </mat-option>
         </mat-select>
@@ -89,7 +89,7 @@
           class='form-control'
           formControlName='province'
         >
-          <mat-option *ngFor='let province of provinces' [value]='province' (click)='onProvince(province)'>
+          <mat-option *ngFor='let province of provinces' [value]='province.id' (click)='onProvince(province)'>
             {{province.name}}
           </mat-option>
         </mat-select>
@@ -97,7 +97,7 @@
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='district'>QUận/Huyện <span class='star'>*</span></label>
         <mat-select id='district' class='form-control' formControlName='district'>
-          <mat-option *ngFor='let district of districts' [value]='district' (click)='onDistrict(district)'>
+          <mat-option *ngFor='let district of districts' [value]='district.id' (click)='onDistrict(district)'>
             {{district.name}}
           </mat-option>
         </mat-select>

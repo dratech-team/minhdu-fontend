@@ -19,5 +19,7 @@ export const Api = {
   NATION: 'nation',
   PROVINCE: 'province',
   DISTRICT: 'district',
-  WARD: 'ward'
+  WARD: 'ward',
+  STATISTICAL_ORDERS: 'statistical/orders',
+  STATISTICAL_REVENUE: 'statistical/revenue',
 };

@@ -24,7 +24,7 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
+    this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
   }
 
   updateCustomer(customer: Customer) {
