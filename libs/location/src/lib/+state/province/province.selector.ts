@@ -16,10 +16,16 @@ export const selectorProvinceEntities = createSelector(
   SelectorProvinceState,
   fromProvince.selectEntities
 )
+export const selectProvincesByNationId = (nationId : number) => createSelector(
+  getAllProvince,
+  (provinceEntities) =>  provinceEntities.filter(province => province.nationId === nationId)
+)
 export const selectProvinceById = (id : number) => createSelector(
   selectorProvinceEntities,
   (provinceEntities) =>  provinceEntities[id]
 )
+
+
 export const selectedProvinceLoaded = createSelector(
   SelectorProvinceState,
   (state) => state.loaded

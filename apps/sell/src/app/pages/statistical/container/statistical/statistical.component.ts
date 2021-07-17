@@ -71,10 +71,9 @@ export class StatisticalComponent implements OnInit {
   constructor() {
   }
   ngOnInit() {
-     this.data.forEach( val => {
-      this.Data.push(
-        { name: val.province, value: val.amount}
-      )
+
+    this.data.forEach( val => {
+     this.changeData(val.province , val.amount)
     })
     this.multi.forEach(val =>
       {
@@ -98,5 +97,12 @@ export class StatisticalComponent implements OnInit {
 
   onStatistical(event: any) {
     console.log(event)
+  }
+
+
+  changeData(name: string, value: number ){
+    this.Data.push(
+      { name: name, value: value}
+    )
   }
 }

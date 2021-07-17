@@ -8,20 +8,21 @@ import {
 import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
 import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
 import {
-  selectDistrictById,
-  selectProvinceById
+  selectDistrictById, selectDistrictByProvinceId, selectorWardByDistrictId,
+  selectProvinceById, selectProvincesByNationId
 } from '@minhdu-fontend/location';
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { WardAction } from '../../../../../../../../libs/location/src/lib/+state/ward/ward.action';
 
 @Component({
   selector: 'app-add-profile',
   templateUrl: 'add-profile.component.html'
 })
 
-export class AddProfileComponent implements OnInit, OnDestroy {
+export class AddProfileComponent implements OnInit {
   @Input() public data!: any;
   destroy$ = new Subject();
   formGroup!: FormGroup;
@@ -38,35 +39,22 @@ export class AddProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
-
     this.store.dispatch(NationAction.loadAllNation());
     if (this.data) {
       this.store.dispatch(ProvinceAction.loadAllProvinces());
       this.store.dispatch(DistrictAction.loadAllDistricts());
+      this.store.dispatch(WardAction.loadAllWards());
+      this.store.pipe(select(selectProvincesByNationId(
+        this?.data?.employee?.ward?.district?.province?.nation?.id)))
+        .subscribe(val => this.provinces = val)
+      this.store.pipe(select(selectDistrictByProvinceId(
+        this?.data?.employee?.ward?.district?.province?.id)))
+        .subscribe(val => this.districts = val)
+      this.store.pipe(select(selectorWardByDistrictId(
+        this?.data?.employee?.ward?.district?.id)))
+        .subscribe(val => this.wards = val)
     }
-    this.store.pipe(
-      takeUntil(this.destroy$),
-      select(selectNationById(
-        this?.data?.employee?.ward?.district?.province?.nation?.id))).subscribe(
-      val => {
-        console.log(val)
-        this.provinces = val?.provinces
-      }
-
-    );
-    this.store.pipe(
-      takeUntil(this.destroy$),
-      select(selectProvinceById(
-      this.data?.employee?.ward?.district?.province?.id))).subscribe(
-      val => this.districts = val?.districts
-    );
-    this.store.pipe(
-      takeUntil(this.destroy$),
-      select(selectDistrictById(
-      this.data?.employee?.ward?.district?.id))).subscribe(
-      val => this.wards = val?.wards
-    );
+  console.log(this.wards)
     this.formGroup = <FormGroup>this.controlContainer.control;
   }
 
@@ -80,10 +68,5 @@ export class AddProfileComponent implements OnInit, OnDestroy {
 
   onDistrict(district: District) {
     this.wards = district.wards;
-  }
-
-
-  ngOnDestroy(): void {
-    this.destroy$.unsubscribe();
   }
 }

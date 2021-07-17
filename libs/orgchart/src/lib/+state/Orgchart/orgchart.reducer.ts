@@ -37,7 +37,7 @@ const orgchartReducer = createReducer(
   on(OrgchartActions.loadOrgchartFailure, (state, { error }) => ({
     ...state,
     error
-  }))
+  })),
 );
 
 export function reducer(state: State | undefined, action: Action) {

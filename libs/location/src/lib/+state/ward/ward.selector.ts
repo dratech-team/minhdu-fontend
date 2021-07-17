@@ -16,6 +16,13 @@ export const selectorWardEntities = createSelector(
   SelectorWardState,
   fromWard.selectEntities
 )
+
+export const selectorWardByDistrictId= (districtId : number) => createSelector(
+  getAllWard,
+  (wardEntities) =>  wardEntities.filter(ward => ward.districtId === districtId)
+)
+
+
 export const selectorCurrentWard = (id : number) => createSelector(
   selectorWardEntities,
   (wardEntities) =>  wardEntities[id]

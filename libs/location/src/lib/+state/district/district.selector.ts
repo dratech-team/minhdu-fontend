@@ -16,6 +16,11 @@ export const selectorDistrictEntities = createSelector(
   SelectorDistrictState,
   fromDistrict.selectEntities
 )
+export const selectDistrictByProvinceId = (provinceId : number) => createSelector(
+  getAllDistrict,
+  (districtEntities) => districtEntities.filter(district => district.provinceId === provinceId)
+)
+
 export const selectDistrictById = (id : number) => createSelector(
   selectorDistrictEntities,
   (districtEntities) => districtEntities[id]

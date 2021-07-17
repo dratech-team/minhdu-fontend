@@ -11,11 +11,10 @@ import {
 } from '@minhdu-fontend/orgchart';
 import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
-import { DepartmentActions, getDepartmentById } from 'libs/orgchart/src/lib/+state/department';
-import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
+import { DepartmentActions, getDepartmentByBranchId, getDepartmentById } from 'libs/orgchart/src/lib/+state/department';
+import { getPositionsByDepartmentId, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-
 
 
 @Component({
@@ -25,13 +24,15 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 export class AddEmployeeComponent implements OnInit {
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  branch$ = this.store.pipe(select(getBranchById(
+  positions$ = this.store.pipe(select(getPositionsByDepartmentId(
+    this?.data?.employee?.position?.department?.id
+  )));
+  departments$ = this.store.pipe(select(getDepartmentByBranchId(
     this?.data?.employee?.position?.department?.branch?.id
   )));
-  department$ = this.store.pipe(select(getDepartmentById(
-    this?.data?.employee?.position?.department?.id)));
+  branches$ = this.store.pipe(select(getAllOrgchart));
   departments?: Department[];
+  branches?: Branch[];
   positions?: Position[];
 
   constructor(
@@ -48,9 +49,8 @@ export class AddEmployeeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());
-    this.branch$.subscribe(val => this.departments = val?.departments);
-    this.department$.subscribe(val => this.positions = val?.positions);
-
+    this.departments$.subscribe(val => this.departments = val);
+    this.positions$.subscribe(val => this.positions = val);
     this.formGroup = this.formBuilder.group({
       identify: [this?.data?.employee?.identify, Validators.required],
       issuedBy: [this?.data?.employee?.issuedBy, Validators.required],
@@ -119,12 +119,12 @@ export class AddEmployeeComponent implements OnInit {
       issuedBy: value.issuedBy,
       wardId: value.ward === null ? 1 : value.ward,
       address: value.address,
-      religion: value.religion ? value.religion: undefined,
-      ethnicity: value.ethnicity ? value.ethnicity: undefined,
-      email: value.email? value.email: undefined,
+      religion: value.religion ? value.religion : undefined,
+      ethnicity: value.ethnicity ? value.ethnicity : undefined,
+      email: value.email ? value.email : undefined,
       facebook: value?.facebook ? value.facebook : undefined,
-      zalo: value?.zalo ? value?.zalo?.toString(): undefined,
-      note: value.note ? value.note : undefined,
+      zalo: value?.zalo ? value?.zalo?.toString() : undefined,
+      note: value.note ? value.note : undefined
     };
     if (this.data !== null) {
       this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
