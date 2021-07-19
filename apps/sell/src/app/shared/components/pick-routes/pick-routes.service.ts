@@ -1,7 +1,7 @@
 import { select, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { selectorAllRoute } from '../../container/+state/Route.selector';
-import { RouteAction } from '../../container/+state/route.action';
+import { selectorAllRoute } from '../../../pages/route/container/+state/Route.selector';
+import { RouteAction } from '../../../pages/route/container/+state/route.action';
 
 @Injectable({providedIn:'root'})
 export class PickRoutesService {

@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
 import {  Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import {  PaymentType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../../customer/+state/customer.action';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderAction } from '../../+state/order.action';
-import { PickCustomerComponent } from '../../../customer/component/pick-customer.component/pick-customer.component';
-import { PickCommodityComponent } from '../../../commodity/component/pick-commodity/pick-commodity.component';
-import { PickRoutesComponent } from '../../../route/component/pick-routes/pick-routes.component';
+import { PickCustomerComponent } from '../../../../shared/components/pick-customer.component/pick-customer.component';
+import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
+import { PickRoutesComponent } from '../../../../shared/components/pick-routes/pick-routes.component';
+import { District, Province, Ward } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'add-order.component.html',
@@ -19,8 +20,9 @@ export class AddOrderComponent implements OnInit {
   commodityIds: number[] = [];
   routeIds: number[] = [];
   payType = PaymentType;
-  CurrencyUnit = CurrencyUnit;
-  isManyPeople = false;
+  provinces: Province[] = [];
+  districts: District[] = [];
+  wards: Ward[] = [];
   formGroup!: FormGroup;
 
   constructor(
@@ -34,11 +36,14 @@ export class AddOrderComponent implements OnInit {
 
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
-      // currency: ['', Validators.required],
       explain: ['', Validators.required],
       payType: ['', Validators.required],
       paidTotal: ['', Validators.required],
       paidAt: ['', Validators.required],
+      ward: ['', Validators.required],
+      district: ['', Validators.required],
+      province: ['', Validators.required],
+      nation: ['', Validators.required],
     })
   }
 
@@ -64,7 +69,7 @@ export class AddOrderComponent implements OnInit {
     const order = {
       createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
       explain: val.explain,
-      // currency: val.currency,
+      destination: val.ward,
       payType:val.payType ? val.payType: undefined,
       paidTotal: typeof(val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')): val.paidTotal,
       paidAt:val.paidAt ? new Date(val.paidAt): undefined,

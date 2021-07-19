@@ -1,0 +1,62 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import {
+  selectAllNation,
+  selectDistrictByProvinceId,
+  selectorWardByDistrictId,
+  selectProvincesByNationId
+} from '@minhdu-fontend/location';
+import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
+import { AppState } from '../../../../../apps/sell/src/app/reducers';
+import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
+import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
+import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
+import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
+import { ControlContainer, FormGroup } from '@angular/forms';
+
+@Component({
+  selector: 'app-pick-location',
+  templateUrl:'pick-location.component.html'
+})
+export class PickLocationComponent implements OnInit {
+  @Input() data?: any;
+  nations$ = this.store.pipe(select(selectAllNation));
+  provinces?: Province [];
+  districts?: District [];
+  wards?: Ward [];
+  formGroup!: FormGroup;
+  constructor(
+    private controlContainer: ControlContainer,
+    readonly store: Store<AppState>
+  ) {
+  }
+  ngOnInit() {
+    this.store.dispatch(NationAction.loadAllNation());
+    this.store.dispatch(ProvinceAction.loadAllProvinces());
+    this.store.dispatch(DistrictAction.loadAllDistricts());
+    this.store.dispatch(WardAction.loadAllWards());
+    this.store.pipe(select(selectProvincesByNationId(
+      this?.data?.ward?.district?.province?.nation?.id
+    ))).subscribe(val => this.provinces = val);
+    this.store.pipe(select(selectDistrictByProvinceId(
+      this?.data?.ward?.district?.province?.id
+    ))).subscribe(val => this.districts = val);
+     this.store.pipe(select(selectorWardByDistrictId(
+      this?.data?.ward?.district?.id
+    ))).subscribe(val => this.wards = val);
+    this.formGroup = <FormGroup>this.controlContainer.control;
+    console.log(this.provinces)
+  }
+  onNation(nation: Nation) {
+    this.provinces = nation.provinces;
+  }
+
+  onProvince(province: Province) {
+    this.districts = province.districts;
+  }
+
+  onDistrict(district: District) {
+    this.wards = district.wards;
+  }
+
+}

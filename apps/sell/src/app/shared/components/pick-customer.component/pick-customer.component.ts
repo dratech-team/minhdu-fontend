@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { selectorAllCustomer } from '../../+state/customer.selector';
-import { Customer } from '../../+state/customer.interface';
+import { Customer } from '../../../pages/customer/+state/customer.interface';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
-import { CustomerDialogComponent } from '../customer-dialog/customer-dialog.component';
+import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 
 @Component({
   selector: 'app-pick-customer',
@@ -26,7 +25,6 @@ export class PickCustomerComponent implements OnInit {
   isSelectAll: boolean = false;
   customers: Customer[] = [];
   customerIds: number[] = [];
-  customers$ = this.store.pipe(select(selectorAllCustomer));
   formGroup = new FormGroup(
     {
       name: new FormControl(''),

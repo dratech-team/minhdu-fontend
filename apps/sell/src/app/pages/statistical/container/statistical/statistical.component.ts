@@ -1,108 +1,76 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart, stakedChart } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, StatisticalXType, StatisticalYType } from '@minhdu-fontend/enums';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
+import { Statistical } from '@minhdu-fontend/data-models';
+import { StatisticalAgencyService } from '../../service/statistical-Agency.service';
+import { StatisticalChickenService } from '../../service/statistical-chicken.service';
+import { StatisticalProvinceService } from '../../service/statistical-province.service';
 
 @Component({
   templateUrl: 'statistical.component.html'
 })
 export class StatisticalComponent implements OnInit {
+  statisticalProvince: Statistical[] = [];
+  statisticalAgency: Statistical[] = [];
+  statisticalChicken: Statistical[] = [];
+  statisticalYType = StatisticalYType;
+  statisticalXType = StatisticalXType;
+  formGroup!: FormGroup;
   dateTime = DatetimeUnitEnum;
-   data = [
-     {
-       province: "Sài Gòn",
-       amount: 90
-     },
-    {
-      province: "Bình Định",
-      amount: 90
-    },
-    {
-      province: "Phú Yên",
-      amount: 10
-    },
-    {
-      province: "Khánh Hòa",
-      amount: 300
-    },
-     {
-       province: "Quãng Ngãi",
-       amount: 150
-     },
-     {
-       province: "Đà Nãng",
-       amount: 110
-     },
+  labelY!: string;
 
-  ];
-   multi = [
-    {
-      name: "Hưng thịnh",
-      debt: 50,
-      paidTotal:300,
-    },
-     {
-       name: "Thinh Phát",
-       debt: 70,
-       paidTotal:400,
-     },
-     {
-       name: " Phát Đạt",
-       debt: 62,
-       paidTotal:189,
-     },
-     {
-       name: "Cao Tuấn",
-       debt: 45,
-       paidTotal:311,
-     },
-     {
-       name: "Hồng Phát",
-       debt: 22,
-       paidTotal:454,
-     },
-     {
-       name: "Gia Hiệu",
-       debt: 90,
-       paidTotal:700,
-     },
-  ];
-   Data:Chart [] = [];
-   stakedData: stakedChart[] =[];
-  constructor() {
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly dialog: MatDialog,
+    private readonly statisticalAgencyService: StatisticalAgencyService,
+    private readonly statisticalChickenService: StatisticalChickenService,
+    private readonly statisticalProvinceService: StatisticalProvinceService
+  ) {
   }
+
   ngOnInit() {
+    this.formGroup = this.formBuilder.group({
+      type: [Validators.required],
+      startedAt: [Validators.required],
+      endedAt: [Validators.required]
+    });
+  }
 
-    this.data.forEach( val => {
-     this.changeData(val.province , val.amount)
-    })
-    this.multi.forEach(val =>
-      {
-        this.stakedData.push(
-          {
-            name: val.name,
-            series:[
-              {
-                name: 'Doanh thu',
-                value: val.paidTotal
-              },
-              {
-                name: 'Công nợ',
-                value: val.debt
-              }
-              ]
+  onStatistical(type: StatisticalXType) {
+    const ref = this.dialog.open(PickStatisticalTypeComponent, { width: '30%' });
+    ref.afterClosed().subscribe(val => {
+      console.log(val)
+        if (val) {
+          switch (type) {
+            case this.statisticalXType.AGENCY:
+              this.statisticalAgencyService.getAll(val).subscribe(value => {
+                this.statisticalAgency = value;
+              });
+              break;
+            case this.statisticalXType.CHICKEN_TYPE:
+              this.statisticalChickenService.getAll(val).subscribe(value => {
+                this.statisticalChicken = value;
+              });
+              break;
+            default:
+              this.statisticalProvinceService.getAll(val).subscribe(value => {
+                this.statisticalProvince = value;
+              });
           }
-        )
-      })
-  }
-
-  onStatistical(event: any) {
-    console.log(event)
-  }
-
-
-  changeData(name: string, value: number ){
-    this.Data.push(
-      { name: name, value: value}
-    )
+          switch (val.type) {
+            case this.statisticalYType.CUSTOMER:
+              this.labelY = 'Khách hàng';
+              break;
+            case this.statisticalYType.REVENUE:
+              this.labelY = 'Doanh thu';
+              break;
+            default:
+              this.labelY = 'Đơn hàng';
+          }
+        }
+      }
+    );
   }
 }

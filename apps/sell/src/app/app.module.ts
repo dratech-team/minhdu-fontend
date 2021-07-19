@@ -25,9 +25,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { NxModule } from '@nrwl/angular';
+import { LocationModule } from '@minhdu-fontend/location';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
+    SharedModule,
     ComponentsModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -50,11 +53,12 @@ import { NxModule } from '@nrwl/angular';
     AppFooterModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    LocationModule
   ],
   declarations: [
     AppComponent,
-    SellLayoutComponent
+    SellLayoutComponent,
   ],
 
   providers: [

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer } from '../../+state/customer.selector';
+import { selectorAllCustomer, selectorCurrentCustomer } from '../../+state/customer.selector';
 import { AppState } from '../../../../reducers';
 import { CustomerAction } from '../../+state/customer.action';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
@@ -10,14 +10,19 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/page-type.enum';
+import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
+import { Order } from '../../../order/+state/order.interface';
 
 @Component({
   templateUrl:'customer.component.html',
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
+  pageType = PageTypeEnum;
   resourceType = CustomerResource;
   genderType = Gender;
+  orders?:Order;
   pageIndex: number = 1;
   pageSize: number = 30;
   formGroup = new FormGroup(
@@ -58,7 +63,6 @@ export class CustomerComponent implements OnInit {
     this.store.dispatch(CustomerAction.loadMoreCustomers(this.customer(val, this.pageSize, this.pageIndex)));
   }
   customer(val: any, pageSize: number, pageIndex: number) {
-      console.log('âssds');
       return {
         skip: pageSize * pageIndex++,
         take: this.pageSize,
@@ -82,5 +86,12 @@ export class CustomerComponent implements OnInit {
         }
       }
     )
+  }
+
+  payment($event: any) {
+    this.dialog.open(PaymentDialogComponent, {
+      width: '40%',
+      data: { id: $event.id }
+    });
   }
 }

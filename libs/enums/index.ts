@@ -15,3 +15,5 @@ export * from './customer-Resource';
 export * from './payment.enum';
 export * from './commodity-unit.enum';
 export * from './search-employee';
+export * from './statistical-type';
+export * from './customer-type';

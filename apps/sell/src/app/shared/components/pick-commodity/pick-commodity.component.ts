@@ -4,11 +4,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 
 import { CommodityUnit, CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { Commodity } from '../../+state/commodity.interface';
-import { selectAllCommodity } from '../../+state/commodity.selector';
+import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
+import { selectAllCommodity } from '../../../pages/commodity/+state/commodity.selector';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PickCommodityService } from './pick-commodity.service';
-import { CommodityDialogComponent } from '../commodity-dialog/commodity-dialog.component';
+import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 
 @Component({
   selector: 'app-pick-commodity',

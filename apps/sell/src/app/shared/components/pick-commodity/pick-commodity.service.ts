@@ -1,6 +1,6 @@
 import { select, Store } from '@ngrx/store';
-import { CommodityAction } from '../../+state/commodity.action';
-import { selectAllCommodity } from '../../+state/commodity.selector';
+import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { selectAllCommodity } from '../../../pages/commodity/+state/commodity.selector';
 import { Injectable } from '@angular/core';
 
 @Injectable({providedIn:'root'})

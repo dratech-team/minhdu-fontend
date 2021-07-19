@@ -12,7 +12,7 @@ const routes: Routes = [
     children:[
       {
         path: 'customer',
-        loadChildren: ()=> import('./pages/customer/customer.module').then(m => m.customerModule),
+        loadChildren: ()=> import('./pages/customer/customer.module').then(m => m.CustomerModule),
         data:{
           title: 'Khách hàng'
         }
@@ -42,7 +42,9 @@ const routes: Routes = [
       {
         path:'statistical',
         loadChildren:() => import('./pages/statistical/statistical.module').then(m => m.StatisticalModule)
-      }
+      },
+
+      { path: '**', redirectTo: '' }
     ]
   }
 ];

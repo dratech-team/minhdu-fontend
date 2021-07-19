@@ -30,6 +30,9 @@ export class CustomerService extends BaseService<Customer> {
   update(id: any, body: any): Observable<Update<Customer>> {
     return super.update(id, body);
   }
+  payment(id: any, body: any): Observable<Update<any>> {
+    return this.http.patch<Update<any>>(Api.CUSTOMER + `/${id}/payment`, body);
+  }
 
   delete(id: number): Observable<void> {
     return super.delete(id);

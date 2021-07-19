@@ -18,8 +18,8 @@ import { RouteDialogComponent } from './component/route-dialog/route-dialog.comp
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
-import { PickRoutesComponent } from './component/pick-routes/pick-routes.component';
-import { PickRoutesService } from './component/pick-routes/pick-routes.service';
+import { PickRoutesComponent } from '../../shared/components/pick-routes/pick-routes.component';
+import { PickRoutesService } from '../../shared/components/pick-routes/pick-routes.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
@@ -45,15 +45,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RouteComponent,
     DetailRouteComponent,
     RouteDialogComponent,
-    PickRoutesComponent
   ],
   providers: [
     DatePipe,
-    PickRoutesService
   ],
-  exports: [
-    PickRoutesComponent
-  ]
+
 })
 export class RouteModule {
 

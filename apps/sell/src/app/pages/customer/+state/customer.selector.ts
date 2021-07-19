@@ -7,28 +7,32 @@ import * as fromCustomer from './customer.reducer';
 export interface state {
   customer: CustomerState,
 }
+
 export const getSelectedCustomerId = (state: Customer) => state.id;
 export const selectorCustomerState = createFeatureSelector<CustomerState>(
   FeatureName.CUSTOMER
-)
+);
 export const selectorCustomerEntities = createSelector(
   selectorCustomerState,
-  fromCustomer.selectEntities,
+  fromCustomer.selectEntities
 );
 
 export const selectorAllCustomer = createSelector(
   selectorCustomerState,
-  fromCustomer.selectAll,
+  fromCustomer.selectAll
 );
 
-export const selectorCurrentCustomer = (id: number)  =>createSelector(
+export const selectorCurrentCustomer = (id: number) => createSelector(
   selectorCustomerEntities,
-  (CustomerEntities) => CustomerEntities[id]
-)
+  (CustomerEntities) => {
+    console.log(CustomerEntities[id])
+    return CustomerEntities[id]
+  }
+);
 
 export const selectedLoaded = createSelector(
   selectorCustomerState,
   (state) => state.loaded
-)
+);
 
 

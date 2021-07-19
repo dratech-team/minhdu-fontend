@@ -1,5 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ContextMenuService } from 'ngx-contextmenu';
+import { PageTypeEnum } from '../../../../enums/page-type.enum';
 
 @Component({
   selector: 'app-mouse-right',
@@ -7,9 +8,12 @@ import { ContextMenuService } from 'ngx-contextmenu';
   styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
+  @Input() type!: PageTypeEnum;
+   pageType =  PageTypeEnum;
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
+  @Output() payment = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -35,5 +39,8 @@ export class MouseRightComponent {
 
   readAndUpdate(item: any): void {
     this.readAndUpdateEvent.emit(item);
+  }
+  onPayment(item: any): void{
+    this.payment.emit(item);
   }
 }
