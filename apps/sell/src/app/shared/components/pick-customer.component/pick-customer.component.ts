@@ -37,44 +37,48 @@ export class PickCustomerComponent implements OnInit {
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly service: PickCustomerService,
-    private dialogRef: MatDialogRef<PickCustomerComponent>,
+    private dialogRef: MatDialogRef<PickCustomerComponent>
   ) {
   }
 
   ngOnInit(): void {
-    this.service.loadInit()
-    this.assignIsSelect()
+    if (this.data.customers$) {
+      this.data.customers$.subscribe(
+        (val: Customer[]) =>
+          this.customers = JSON.parse(JSON.stringify(val))
+      );
+    }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-          const val = this.formGroup.value
-          this.service.searchCustomer(this.customer(val, 30, 0))
-          this.assignIsSelect()
+        const val = this.formGroup.value;
+        this.service.searchCustomer(this.customer(val, 30, 0));
+        this.assignIsSelect();
       })
     ).subscribe();
-
   }
 
   onScroll() {
-
-    const val = this.formGroup.value
-    this.service.scrollCustomer(this.customer(val,this.pageSize, this.pageIndex))
-    this.assignIsSelect()
+    const val = this.formGroup.value;
+    this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
+    this.assignIsSelect();
   }
-  customer(val: any, pageSize: number, pageIndex: number){
-    return{
+
+  customer(val: any, pageSize: number, pageIndex: number) {
+    return {
       take: pageSize,
       skip: pageSize * pageIndex++,
       name: val.name,
       customerType: val.type,
       resource: val.resource
-    }
+    };
   }
-  assignIsSelect(){
-    this.service.getCustomers().subscribe(val=> {
-      this.customers = JSON.parse(JSON.stringify(val))
-      this.customers.forEach(e => e.isSelect = this.isSelectAll)
-    })
+
+  assignIsSelect() {
+    this.service.getCustomers().subscribe(val => {
+      this.customers = JSON.parse(JSON.stringify(val));
+      this.customers.forEach(e => e.isSelect = this.isSelectAll);
+    });
   }
 
   updateAllSelect(id: number) {
@@ -113,7 +117,7 @@ export class PickCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  pickOneCustomer(){
+  pickOneCustomer() {
     const pickCustomer = document.getElementsByName('pick-one');
     for (let i = 0; i < pickCustomer.length; i++) {
       if (pickCustomer[i].checked) {
@@ -132,9 +136,10 @@ export class PickCustomerComponent implements OnInit {
     }
     this.dialogRef.close(this.customerId);
   }
-  addCustomer(){
+
+  addCustomer() {
     this.dialog.open(CustomerDialogComponent, {
       width: '40%'
-    })
+    });
   }
 }

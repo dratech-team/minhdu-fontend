@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
+import {  FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Route } from '../../../pages/route/container/+state/route.interface';
@@ -14,17 +14,14 @@ import { RouteDialogComponent } from '../../../pages/route/component/route-dialo
 })
 export class PickRoutesComponent implements OnInit {
   @Input() pickPOne: boolean | undefined;
+  @Input() routes: Route[] = [];
   @Output() checkEvent = new EventEmitter();
   pageIndex: number = 1;
   pageSize: number = 30;
   isSelectAll: boolean = false;
-  routes: Route[] = [];
   routeIds: number[] = [];
-
-
   formGroup = new FormGroup(
-    {
-    }
+    {}
   );
 
   constructor(
@@ -37,8 +34,13 @@ export class PickRoutesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.loadInit();
-    this.assignIsSelect();
+    console.log(this.data.routes$)
+    if (this.data.routes$) {
+      this.data.routes$.subscribe(
+        (val: Route[]) => this.routes = JSON.parse(JSON.stringify(val))
+      );
+    }
+    console.log(this.routes )
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {

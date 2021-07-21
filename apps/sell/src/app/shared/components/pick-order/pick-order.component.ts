@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer } from '../../../pages/customer/+state/customer.selector';
+import { Store } from '@ngrx/store';
+
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -41,8 +41,11 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
-    this.assignIsSelect()
+    if(this.data.orders$){
+      this.data.orders$.subscribe(
+        (val: Order[]) => this.orders = val
+      )
+    }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {

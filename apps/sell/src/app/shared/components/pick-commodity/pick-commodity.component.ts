@@ -1,11 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import {  Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
-
 import { CommodityUnit, CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
-import { selectAllCommodity } from '../../../pages/commodity/+state/commodity.selector';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PickCommodityService } from './pick-commodity.service';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
@@ -15,6 +12,7 @@ import { CommodityDialogComponent } from '../../../pages/commodity/component/com
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
+  @Input() commodities: Commodity[] = []
   commodityUnit = CommodityUnit;
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter();
@@ -23,7 +21,7 @@ export class PickCommodityComponent implements OnInit {
   pageIndex: number = 1;
   pageSize: number = 30;
   isSelectAll: boolean = false;
-  commodities: Commodity[] = [];
+
   commodityIds: number[] = [];
 
   formGroup = new FormGroup(
@@ -46,23 +44,14 @@ export class PickCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.loadInit();
-    this.assignIsSelect()
-    this.formGroup.valueChanges.pipe(
-      debounceTime(1000),
-      tap((value) => {
-        const val = {
-          take: 30,
-          skip: 0
-        };
-        this.service.searchCommodities(val);
-        this.assignIsSelect()
-      })
-    ).subscribe();
+    if(this.data.commodities$){
+      this.data.commodities$.subscribe(
+        (val: any) => this.commodities = JSON.parse(JSON.stringify(val))
+      )
+    }
   }
 
   onScroll() {
-    const value = this.formGroup.value;
     const val = {
       take: this.pageSize,
       skip: this.pageIndex++
@@ -70,6 +59,7 @@ export class PickCommodityComponent implements OnInit {
     this.service.scrollCommodities(val);
     this.assignIsSelect()
   }
+
   assignIsSelect(){
     this.service.commodities().subscribe(val => {
       this.commodities = JSON.parse(JSON.stringify(val));
