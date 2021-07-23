@@ -27,6 +27,8 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { NxModule } from '@nrwl/angular';
 import { LocationModule } from '@minhdu-fontend/location';
 import { SharedModule } from './shared/shared.module';
+import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -54,9 +56,11 @@ import { SharedModule } from './shared/shared.module';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    LocationModule
+    LocationModule,
+    MatDialogModule
   ],
   declarations: [
+    PickMenuComponent,
     AppComponent,
     SellLayoutComponent,
   ],
