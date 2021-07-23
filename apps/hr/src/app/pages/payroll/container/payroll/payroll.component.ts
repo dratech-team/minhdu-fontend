@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -179,6 +180,10 @@ export class PayrollComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
+  }
+
+  addHoliday() {
+      this.dialog.open(AddHolidayComponent, {width: '30%'})
   }
 
   addPayroll($event?: any): void {
@@ -389,4 +394,6 @@ export class PayrollComponent implements OnInit {
       fs.saveAs(blob, name);
     });
   }
+
+
 }

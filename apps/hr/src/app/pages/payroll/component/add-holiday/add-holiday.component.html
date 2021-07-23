@@ -1,0 +1,44 @@
+<div class="px-3 py-3 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel">
+    </div>
+  </div>
+  <form [formGroup]="formGroup" (submit)="onSubmit()">
+    <mat-tab-group dynamicHeight >
+      <mat-tab class="col-12 " label='Thêm ngày lễ'>
+        <div [formGroup]="formGroup" class='tab'>
+          <div class='form-group '>
+            <div class='row mp-5 title-popup'>
+              <span>Thêm Ngày lễ</span>
+            </div>
+            <div class='mt-3'>
+              <div class='row title-item mb-2'>
+                <span>Tên ngày lễ</span>
+                <div class="star">*</div>
+              </div>
+              <div class="row mb-3" [formGroup]="formGroup">
+                <input type='text' class="form-control  px-1" formControlName="name">
+              </div>
+            </div>
+            <div class='mt-3'>
+              <div class='row title-item mb-2'>
+                <span>Chọn ngày</span>
+                <div class="star">*</div>
+              </div>
+              <div class="row mb-3" [formGroup]="formGroup">
+                <input type='date' class="form-control  px-1" formControlName="date">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </mat-tab>
+    </mat-tab-group>
+    <div class="footer-popup row mt-3 ml-2">
+      <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
+      <button type="submit" [mat-dialog-close]="onSubmit()" class="btn btn-ok ">Lưu</button>
+    </div>
+  </form>
+</div>
