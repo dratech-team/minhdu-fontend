@@ -6,7 +6,8 @@ import { selectorAllTemplate } from '../../+state/template-overtime/template-ove
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TemplateOvertimeComponent } from '../../component/template-overtime/template-overtime.component';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+
 
 @Component({
   templateUrl: 'template.component.html',
@@ -43,7 +44,6 @@ export class TemplateComponent implements OnInit {
   }
 
   deleteOvertime($event: any) {
-    console.log($event.id)
     const dialogRef = this.dialog.open(DialogDeleteComponent,{width:'30%'});
     dialogRef.afterClosed().subscribe(val => {
         if (val) {

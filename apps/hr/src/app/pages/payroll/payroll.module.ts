@@ -29,6 +29,9 @@ import { TemplateComponent } from './container/template/template.component';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
 import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
+import { HolidayComponent } from './container/holiday/holiday.component';
+import { HolidayReducer } from './+state/holiday/holiday.reducer';
+import { HolidayEffect } from './+state/holiday/holiday.effect';
 
 @NgModule({
   imports: [
@@ -41,8 +44,9 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+    StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect]),
+    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect, HolidayEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -64,7 +68,8 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
     TemplateOvertimeComponent,
     TemplateComponent,
     UpdateConfirmComponent,
-    AddHolidayComponent
+    AddHolidayComponent,
+    HolidayComponent,
   ]
 })
 export class PayrollModule {

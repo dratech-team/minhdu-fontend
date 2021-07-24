@@ -34,6 +34,11 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
+    name: 'Ngày lễ',
+    url: '/payroll/holiday',
+    icon: 'cil-lock-locked'
+  },
+  {
     title: true,
     name: 'Sơ đồ'
   },

@@ -182,9 +182,7 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
   }
 
-  addHoliday() {
-      this.dialog.open(AddHolidayComponent, {width: '30%'})
-  }
+
 
   addPayroll($event?: any): void {
     const dialogRef = this.dialog.open(AddPayrollComponent, {

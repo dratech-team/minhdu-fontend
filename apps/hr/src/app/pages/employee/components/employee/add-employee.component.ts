@@ -6,12 +6,11 @@ import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import {
   getAllOrgchart,
-  getBranchById,
   OrgchartActions
 } from '@minhdu-fontend/orgchart';
 import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
-import { DepartmentActions, getDepartmentByBranchId, getDepartmentById } from 'libs/orgchart/src/lib/+state/department';
+import { DepartmentActions, getDepartmentByBranchId } from 'libs/orgchart/src/lib/+state/department';
 import { getPositionsByDepartmentId, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 import { EmployeeAction } from '@minhdu-fontend/employee';
