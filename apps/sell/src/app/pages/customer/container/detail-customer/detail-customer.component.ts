@@ -15,7 +15,6 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 })
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
-
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
@@ -25,6 +24,7 @@ export class DetailCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
+    this.customer$.subscribe(val=> console.log(val))
   }
 
   updateCustomer(customer: Customer) {

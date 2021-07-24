@@ -25,9 +25,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { NxModule } from '@nrwl/angular';
+import { LocationModule } from '@minhdu-fontend/location';
+import { SharedModule } from './shared/shared.module';
+import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
+    SharedModule,
     ComponentsModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -50,11 +55,14 @@ import { NxModule } from '@nrwl/angular';
     AppFooterModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    LocationModule,
+    MatDialogModule
   ],
   declarations: [
+    PickMenuComponent,
     AppComponent,
-    SellLayoutComponent
+    SellLayoutComponent,
   ],
 
   providers: [

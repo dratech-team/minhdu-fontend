@@ -282,17 +282,45 @@
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>
-        <div class='row align-items-center title-table mr-4'>Hóa đơn</div>
+        <div class='row align-items-center title-table mr-4'>Đơn hàng</div>
       </div>
       <div class='mt-3 '>
         <table class='mt-3'>
           <tr>
-            <th class='text-center'> Mã hóa đơn </th>
-            <th class='text-center'>Ngày thanh toán </th>
-            <th class='text-center'>Ngày xuất hóa đơn</th>
-            <th class='text-center'>Thanh toán</th>
-            <th class='text-center'>Hình thức thanh toán</th>
-            <th class='text-center'>Hàng hóa</th>
+            <th class='text-center'>Ngày tạo đơn hàng </th>
+            <th class='text-center'>Diễn giải</th>
+            <th class='text-center'>Công nợ</th>
+            <th class='text-center'> Tổng thanh toán </th>
+          </tr>
+          <tr *ngFor='let order of customer.orders'>
+            <td class='text-center'> {{order?.createdAt | date: 'dd/MM/yyyy'}} </td>
+            <td  class='text-center'> {{order?.explain}} </td>
+            <td  class='text-center'>  {{order.debt|number:'1.0'|notEmpty:'0'}} đ</td>
+            <td  class='text-center'>  {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ</td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+    <div class='col-12 mt-5'>
+      <div class='row d-flex align-items-center '>
+        <div class='row align-items-center title-table mr-4'>Lịch sử thanh toán</div>
+      </div>
+      <div class='mt-3 '>
+        <table class='mt-3'>
+          <tr>
+            <th class='text-center'>Ngày thanh toán</th>
+            <th class='text-center'>Số thanh toán</th>
+            <th class='text-center'>Đơn vị</th>
+            <th class='text-center'> Loại thanh toán</th>
+            <th class='text-center'> Chú thích</th>
+          </tr>
+          <tr *ngFor='let paymentHistory of customer.paymentHistories'>
+            <td class='text-center'> {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}} </td>
+            <td  class='text-center'>  {{paymentHistory.total|number:'1.0'|notEmpty:'0'}} đ</td>
+            <td class='text-center' *ngIf='paymentHistory.currency === "VND"'> Việt Nam Đồng </td>
+            <td class='text-center' *ngIf='paymentHistory.payType === "CASH"'> Tiền mặt </td>
+            <td class='text-center'> {{paymentHistory.note}} </td>
           </tr>
 
         </table>

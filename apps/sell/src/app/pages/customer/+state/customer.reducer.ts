@@ -12,7 +12,7 @@ export const adapter: EntityAdapter<Customer> = createEntityAdapter<Customer>();
 
 export const initialCustomer = adapter.getInitialState({ loaded: false });
 
-export const customerReducer = createReducer(
+export const CustomerReducer = createReducer(
   initialCustomer,
   on(CustomerAction.loadInitSuccess, (state, action) =>
     adapter.setAll(action.customers, { ...state, loaded: true })
@@ -23,7 +23,7 @@ export const customerReducer = createReducer(
   ),
 
   on(CustomerAction.getCustomerSuccess, (state, action) =>
-    adapter.upsertOne(action.customers, { ...state, loaded: true})
+    adapter.upsertOne(action.customer, { ...state, loaded: true})
   ),
 );
 export const {

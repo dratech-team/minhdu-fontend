@@ -7,7 +7,7 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { customerReducer } from './+state/customer.reducer';
+import { CustomerReducer } from './+state/customer.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { CustomerEffect } from './+state/customer.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -19,9 +19,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { CustomerDialogComponent } from './component/customer-dialog/customer-dialog.component';
-import { PickCustomerComponent } from './component/pick-customer.component/pick-customer.component';
-import { PickCustomerService } from './component/pick-customer.component/pick-customer.service';
+import { PickCustomerService } from '../../shared/components/pick-customer.component/pick-customer.service';
 import { LocationModule } from '@minhdu-fontend/location';
+import { PaymentDialogComponent } from './component/payment-dialog/payment-dialog.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -35,23 +38,23 @@ import { LocationModule } from '@minhdu-fontend/location';
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
-    StoreModule.forFeature(FeatureName.CUSTOMER, customerReducer),
+    StoreModule.forFeature(FeatureName.CUSTOMER, CustomerReducer),
     EffectsModule.forFeature([CustomerEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,
     MatSelectModule,
     MatRadioModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    MatTabsModule,
+    MatStepperModule,
+    SharedModule
   ],
   declarations: [
     CustomerComponent,
     DetailCustomerComponent,
     CustomerDialogComponent,
-    PickCustomerComponent
-  ],
-  exports: [
-    PickCustomerComponent
+    PaymentDialogComponent
   ],
   providers: [
     DatePipe,
@@ -59,5 +62,5 @@ import { LocationModule } from '@minhdu-fontend/location';
   ]
 
 })
-export class customerModule {
+export class CustomerModule {
 }

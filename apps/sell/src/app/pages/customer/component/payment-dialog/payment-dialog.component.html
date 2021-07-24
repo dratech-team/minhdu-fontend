@@ -1,0 +1,68 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div class="px-5 py-3 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src='../../../../../assets/icon/share/x2-lg.svg' alt="cancel">
+    </div>
+  </div>
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="formGroup" [editable]="true">
+      <form [formGroup]="formGroup" >
+        <ng-template matStepLabel>Thông tin thanh toán</ng-template>
+        <div class='form-group'>
+          <div class='row mt-3'>
+            <div class='col-sm'>
+              <label >Loại thanh toán</label>
+              <mat-select class='form-control' formControlName='payType' required>
+                <mat-option value='{{payType.CASH}}'>
+                  Tiền mặt
+                </mat-option>
+                <mat-option value='{{payType.TRANSFER}}'>
+                  Chuyển khoản
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class='row mt-3'>
+            <div class='col-sm'>
+              <label >Tổng thanh toán<span class='star'>*</span></label>
+              <input type="text" class="form-control"  placeholder="Nhập mức giá" formControlName="paidTotal" required  inputCurrency>
+            </div>
+          </div>
+          <div class='row mt-3'>
+            <div class='col-sm' >
+              <label >Ngày Thanh toán</label>
+              <input type='date' class='form-control'  formControlName='paidAt' required>
+            </div>
+          </div>
+          <div class='row mt-3'>
+            <div class='col-sm' >
+              <label >Chú thích</label>
+              <input type='text' class='form-control'  formControlName='note' required>
+            </div>
+          </div>
+
+        </div>
+      </form>
+      <button  class='btn btn-primary' matStepperNext>Next</button>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup"  [editable]="true">
+    <app-pick-order
+      [pickOne]='true'
+      [orders]='customer.orders'
+      (checkEventPickOne)='pickOrder($event)'
+    ></app-pick-order>
+      <button  class='btn btn-primary' matStepperPrevious>Back</button>
+      <button  class='btn btn-primary ml-2' matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Hoàn Thành</ng-template>
+      <h5>Xác nhận thanh toán</h5>
+      <div>
+        <button  class='btn btn-primary' matStepperPrevious>Back</button>
+        <button  class='btn btn-primary ml-2' mat-dialog-close (click)="onSubmit()">Xác nhận</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

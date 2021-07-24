@@ -9,7 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { authReducer } from './+state/auth.reducer';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { ErrorInterceptor, JwtInterceptor } from './interceptors';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 

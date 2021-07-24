@@ -1,0 +1,47 @@
+<div class='container'>
+  <div class='row h3 ml-3'>Ngày lễ</div>
+  <div class=' col-12'>
+    <button (click)='Holiday()' class='btn btn-primary mr-2'>Tạo Ngày lễ </button>
+  </div>
+  <div class='mt-4' >
+    <div class='col-12 animated fadeIn'>
+      <div class='header-profile mt-3 '>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Tên Ngày lễ</div>
+          <input class='form-control input-profile ' type='text' >
+        </div>
+        <div class='border-start title-header col-2'>
+          <div class='title-profile'>Ngày </div>
+          <input class='form-control input-profile ' type='date' >
+        </div>
+        <div class='border-start title-header col-2'>
+          <div class='title-profile'>Hệ số</div>
+          <input class='form-control input-profile' type='number' >
+        </div>
+        <div class='border-start title-header col-2'>
+          <div class='title-profile'>bộ phận</div>
+        </div>
+        <div class='border-start title-header col-3'>
+          <div class='title-profile'>Chú ý</div>
+        </div>
+      </div>
+      <div class='outer' style='width: 100%;'>
+        <div class='row-content' *ngFor='let holiday of holidays$|async'
+             (contextmenu)='child.onContextMenu($event, holiday)'>
+          <app-mouse-right #child (addEvent)='Holiday()'
+                           (readAndUpdateEvent)='Holiday($event)'
+                           (deleteEvent)='deleteHoliday($event)'
+          ></app-mouse-right>
+          <div class='content-profile col-3 pointer '> {{holiday?.name}}</div>
+          <div class='content-profile col-2 pointer ' *ngIf='holiday?.datetime'> {{holiday?.datetime|date:'dd/MM/yyyy'}}</div>
+          <div class='content-profile col-2 pointer ' *ngIf='!holiday?.datetime'> Chưa cập nhật</div>
+          <div class='content-profile col-2  pointer'>{{holiday?.rate}}</div>
+          <div class='content-profile col-2  pointer'>{{holiday?.department?.name}}</div>
+          <div class='content-profile col-3  pointer'>{{holiday?.note}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

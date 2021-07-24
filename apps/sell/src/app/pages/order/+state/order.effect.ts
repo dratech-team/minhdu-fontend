@@ -35,7 +35,7 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.getOrder),
       switchMap((props) => this.orderService.getOne(props.id)),
-      map((bill) => OrderAction.getOrderSuccess({ order: bill })),
+      map((order) => OrderAction.getOrderSuccess({ order: order })),
       catchError((err) => throwError(err))
     ));
 

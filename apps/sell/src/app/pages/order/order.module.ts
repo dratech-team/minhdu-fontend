@@ -16,17 +16,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { customerModule } from '../customer/customer.module';
+import { CustomerModule } from '../customer/customer.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommodityModule } from '../commodity/commodity.module';
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
 import { RouteReducer } from '../route/container/+state/route.reducer';
 import { RouteEffect } from '../route/container/+state/route.effect';
-import { PaymentDialogComponent } from './component/payment-dialog/payment-dialog.component';
 import { RouteModule } from '../route/route.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -43,21 +42,24 @@ import { RouteModule } from '../route/route.module';
     MatDialogModule,
     MatSelectModule,
     MatTabsModule,
-    customerModule,
+    CustomerModule,
     MatCheckboxModule,
     CommodityModule,
     NgxMatSelectSearchModule,
     MatAutocompleteModule,
-    RouteModule
+    RouteModule,
+    SharedModule
   ],
-  declarations:[
+  declarations: [
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
     AddOrderComponent,
-    PaymentDialogComponent
   ],
-  providers:[DatePipe]
+  exports: [
+
+  ],
+  providers: [DatePipe]
 })
 export class OrderModule{
 

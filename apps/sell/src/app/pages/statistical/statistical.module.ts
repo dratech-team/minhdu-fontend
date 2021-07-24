@@ -5,7 +5,9 @@ import { CommonModule } from '@angular/common';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PickStatisticalTypeComponent } from './component/pick-statistical-type/pick-statistical-type.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -14,10 +16,13 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     BarChartModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   declarations: [
     StatisticalComponent,
+    PickStatisticalTypeComponent,
   ],
   providers: [],
 })

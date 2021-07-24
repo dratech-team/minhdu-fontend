@@ -25,6 +25,13 @@ export const getAllDepartment = createSelector(
   selectAll
 );
 
+export const getDepartmentByBranchId = (branchId: number)  => createSelector(
+  getAllDepartment,
+  (departmentEntities) => {
+    return  departmentEntities.filter( department => department.branchId === branchId)
+  }
+);
+
 export const getDepartmentEntities = createSelector(
   getDepartmentState,
   selectEntities

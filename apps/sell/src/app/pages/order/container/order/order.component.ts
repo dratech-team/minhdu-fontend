@@ -6,12 +6,10 @@ import { OrderAction } from '../../+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
-import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from '../../../../../../../../libs/enums/paidType.enum';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../../customer/+state/customer.action';
-import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
+import { PaymentDialogComponent } from '../../../customer/component/payment-dialog/payment-dialog.component';
 
 
 @Component({
@@ -69,12 +67,5 @@ export class OrderComponent implements OnInit {
 
   detailOrder(id: number) {
     this.router.navigate(['order/detail-order', id]).then();
-  }
-
-  payment(order: any) {
-    this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
-      data: { order: order }
-    });
   }
 }

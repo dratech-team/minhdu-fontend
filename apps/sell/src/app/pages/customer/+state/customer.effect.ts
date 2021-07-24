@@ -11,9 +11,12 @@ export class CustomerEffect {
   loadCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadInit),
-      switchMap((props) =>
-        this.customerService.pagination(props)),
-      map((ResponsePaginate) => CustomerAction.loadInitSuccess({ customers: ResponsePaginate.data })),
+      switchMap((props) => {
+        return this.customerService.pagination(props);
+      }),
+      map((ResponsePaginate) => CustomerAction.loadInitSuccess({
+        customers: ResponsePaginate.data
+      })),
       catchError((err) => throwError(err))
     )
   );
@@ -40,7 +43,7 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.getCustomer),
       switchMap((props) => this.customerService.getOne(props.id)),
-      map((customer) => CustomerAction.getCustomerSuccess({ customers: customer })),
+      map((customer) => CustomerAction.getCustomerSuccess({ customer: customer })),
       catchError((err) => throwError(err))
     )
   );
@@ -49,6 +52,16 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.updateCustomer),
       switchMap((props) => this.customerService.update(props.id, props.customer).pipe(
+        map(() => CustomerAction.getCustomer({ id: props.id })),
+        catchError((err) => throwError(err))
+      ))
+    )
+  );
+
+  payment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(CustomerAction.payment),
+      switchMap((props) => this.customerService.payment(props.id, props.infoPayment).pipe(
         map(() => CustomerAction.getCustomer({ id: props.id })),
         catchError((err) => throwError(err))
       ))

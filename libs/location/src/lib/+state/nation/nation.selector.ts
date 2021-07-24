@@ -19,9 +19,6 @@ export const selectorEntities = createSelector(
 export const selectNationById = (id: number) => createSelector(
   selectorEntities,
   (nationEntities) =>{
-    console.log('ssss nationEntities',nationEntities)
-    console.log('ssss id',id)
-    console.log('ssss nationEntities[id]',nationEntities[id])
     return  nationEntities[id]
   }
 )

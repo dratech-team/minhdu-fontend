@@ -16,7 +16,8 @@ export * from './salary/salary'
 export * from './salary/salary-history'
 export  * from './employee/employee'
 export  * from './chart'
-export  * from './statistical/statiscal-province'
+export  * from './payment-history'
+export  * from './statistical/statistical'
 
 
 
