@@ -11,7 +11,7 @@ const routes: Routes = [
     },
     children:[
       {
-        path: 'customer',
+        path: '',
         loadChildren: ()=> import('./pages/customer/customer.module').then(m => m.CustomerModule),
         data:{
           title: 'Khách hàng'
