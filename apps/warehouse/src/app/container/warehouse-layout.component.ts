@@ -14,4 +14,17 @@ export class WarehouseLayoutComponent {
   pickMenuMobile(){
     this.dialog.open(PickMenuComponent, {width: '100%'})
   }
+
+  onListWarehouse() {
+    let listWarehouse = document.getElementById('warehouse')
+    if(listWarehouse?.classList.contains('hide-on-pc')){
+      listWarehouse?.classList.remove('hide-on-pc')
+      listWarehouse?.classList.add('show')
+
+    }else{
+      listWarehouse?.classList.add('hide-on-pc')
+      listWarehouse?.classList.remove('show')
+    }
+
+  }
 }

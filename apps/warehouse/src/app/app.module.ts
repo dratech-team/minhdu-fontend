@@ -16,6 +16,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PickMenuComponent } from './components/pick-menu-moibile/pick-menu.component';
 import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     PickMenuComponent,
@@ -39,7 +42,10 @@ import { WarehouseLayoutComponent } from './container/warehouse-layout.component
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatMenuModule
   ],
   providers: [
     {
