@@ -11,6 +11,7 @@ export const Api = {
   DEGREE: 'degree',
   Payroll:'payroll',
   template_OVERTIME: 'overtime-template',
+  holiday: 'holiday',
   CUSTOMER:'customer',
   COMMODITY:'commodity',
   ORDER: 'order',
@@ -20,6 +21,7 @@ export const Api = {
   PROVINCE: 'province',
   DISTRICT: 'district',
   WARD: 'ward',
-  STATISTICAL_ORDERS: 'statistical/orders',
-  STATISTICAL_REVENUE: 'statistical/revenue',
+  STATISTICAL_AGENCY: 'statistical/agency',
+  STATISTICAL_PROVINCE: 'statistical/nation',
+  STATISTICAL_CHICKEN: 'statistical/chicken',
 };

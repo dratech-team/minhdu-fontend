@@ -18,6 +18,8 @@ import { VerticalBarChartComponent } from './chart/vertical-bar-chart/vertical-b
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { PieChartComponent } from './chart/pie-chart/pie-chart-component';
 import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/staked-vertical-chart.component';
+import { PickLocationComponent } from './pick-location/pick-location.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/
     MatDialogModule,
     InfiniteScrollModule,
     ReactiveFormsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatSelectModule
   ],
   declarations: [
     VerticalBarChartComponent,
@@ -43,6 +46,7 @@ import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/
     PickEmployeeComponent,
     PieChartComponent,
     StakedVerticalChartComponent,
+    PickLocationComponent,
   ],
   providers:[
     DecimalPipe,
@@ -57,7 +61,8 @@ import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/
     InputCurrencyDirective,
     PickEmployeeComponent,
     PieChartComponent,
-    StakedVerticalChartComponent
+    StakedVerticalChartComponent,
+    PickLocationComponent
   ],
 })
 export class ComponentsModule {}

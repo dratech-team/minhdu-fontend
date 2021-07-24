@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TemplateOvertimeComponent, } from './component/template-overtime/template-overtime.component';
+import { TemplateOvertimeComponent } from './component/template-overtime/template-overtime.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -28,6 +28,10 @@ import { templateOvertimeReducer } from './+state/template-overtime/template-ove
 import { TemplateComponent } from './container/template/template.component';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
+import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
+import { HolidayComponent } from './container/holiday/holiday.component';
+import { HolidayReducer } from './+state/holiday/holiday.reducer';
+import { HolidayEffect } from './+state/holiday/holiday.effect';
 
 @NgModule({
   imports: [
@@ -40,8 +44,9 @@ import { UpdateConfirmComponent } from './component/update-comfirm/update-confir
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+    StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect]),
+    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect, HolidayEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -54,7 +59,7 @@ import { UpdateConfirmComponent } from './component/update-comfirm/update-confir
     EmployeeModule,
     FormsModule
   ],
-  declarations:[
+  declarations: [
     PayrollComponent,
     DetailPayrollComponent,
     FilterPipe,
@@ -63,7 +68,9 @@ import { UpdateConfirmComponent } from './component/update-comfirm/update-confir
     TemplateOvertimeComponent,
     TemplateComponent,
     UpdateConfirmComponent,
+    AddHolidayComponent,
+    HolidayComponent,
   ]
 })
-export class PayrollModule{
+export class PayrollModule {
 }

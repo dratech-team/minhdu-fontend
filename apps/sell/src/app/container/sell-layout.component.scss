@@ -4,3 +4,27 @@ button:hover{
 button:focus{
   color: #428bca;
 }
+
+@media only screen and (max-width: 739px){
+  .hide-on-mobile{
+    display: none;
+  }
+  .app-name{
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 !important;
+  }
+  .menu-mobile{
+    display: flex;
+    justify-content: space-between;
+  }
+}
+@media only screen and (min-width: 739px){
+  .hide-on-pc{
+    display: none;
+  }
+  .app-name{
+    font-size: 20px;
+    font-weight: bold;
+  }
+}

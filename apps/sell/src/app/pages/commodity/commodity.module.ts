@@ -17,8 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { DetailCommodityComponent } from './container/detail-commodity/detail-commodity.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { PickCommodityComponent } from './component/pick-commodity/pick-commodity.component';
-import { PickCommodityService } from './component/pick-commodity/pick-commodity.service';
+import { PickCommodityService } from '../../shared/components/pick-commodity/pick-commodity.service';
 
 
 @NgModule({
@@ -41,10 +40,6 @@ import { PickCommodityService } from './component/pick-commodity/pick-commodity.
     CommodityComponent,
     CommodityDialogComponent,
     DetailCommodityComponent,
-    PickCommodityComponent
-  ],
-  exports: [
-    PickCommodityComponent
   ],
   providers: [
     DatePipe,

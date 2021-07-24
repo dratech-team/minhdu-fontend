@@ -94,8 +94,10 @@
          *ngIf='(customers$| async) as customers'>
       <div class='row-content' *ngFor='let customer of customers' (click)='readAndUpdate(customer)'
            (contextmenu)='child.onContextMenu($event,customer)'>
-        <app-mouse-right #child (addEvent)='add()'
+        <app-mouse-right  [type]='pageType.CUSTOMER'
+                          #child (addEvent)='add()'
                          (deleteEvent)='deleteCustomer($event)'
+                          (payment)='payment($event)'
                          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
         <div class='content-profile name pointer '>{{customer?.firstName}} {{customer?.lastName}} </div>
         <div class='content-profile default pointer '>{{customer?.birthday| date:'dd/MM/yyyy'}}</div>

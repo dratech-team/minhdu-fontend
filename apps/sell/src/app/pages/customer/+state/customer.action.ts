@@ -50,7 +50,7 @@ export const getCustomer = createAction(
 
 export const getCustomerSuccess = createAction(
   '[GET_CUSTOMER] Get Customer Success',
-  props<{ customers: Customer }>()
+  props<{ customer: Customer }>()
 );
 
 export const updateCustomer = createAction(
@@ -58,11 +58,18 @@ export const updateCustomer = createAction(
   props<{ customer: any, id: number }>()
 );
 
+export const payment = createAction(
+  '[PAYMENT] Customer Payment',
+  props<{ infoPayment: any, id: number }>()
+);
+
 export const deleteCustomer = createAction(
   '[DELETE_CUSTOMER] Delete Customer',
   props<{ id: number, customerId?: number }>()
 );
+
 export const CustomerAction = {
+  payment,
   addCustomer,
   loadInit,
   loadInitSuccess,

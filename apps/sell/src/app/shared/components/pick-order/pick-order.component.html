@@ -1,0 +1,80 @@
+<div class='container'>
+  <div class='col-12 animated fadeIn'>
+    <form [formGroup]='formGroup' class='header-profile mt-3 '>
+      <div class='border-start title-header col-3'>
+        <div class='title-profile'>Ngày tạo</div>
+        <input class='form-control input-profile'
+               [disabled]='true'
+               type='text'
+               placeholder='PN10001'
+               formControlName='createdAt'
+        >
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Công nợ</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Tổng thanh toán</div>
+        <select class='select'  formControlName='paidType'>
+          <option value='{{paidType.PAID}}'>Có thanh toán</option>
+          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+          <option value=''>tất cả</option>
+        </select>
+      </div>
+      <div class='border-start title-header col-1  '>
+        <div class='title-profile'>All</div>
+        <mat-checkbox *ngIf='data.pickMore'
+                      class='example-margin mt-2 ml-3'
+                      [checked]='isSelectAll'
+                      [indeterminate]="someComplete()"
+                      (change)='setAll($event.checked)'>
+        </mat-checkbox>
+      </div>
+
+    </form>
+    <div class='outer '
+         style='width: 101%; height: 50vh'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+    >
+      <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
+        <div class='content-profile col-3 pointer ' *ngIf='order?.createdAt!== null'>
+          {{order?.createdAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile col-4 pointer ' *ngIf='order?.createdAt=== null' >
+          Đang cập nhật
+        </div>
+        <div class='content-profile col-4 pointer '  style='color: #f86c6b'>
+          {{order.debt|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile col-4 pointer '  style='color: #20c997'>
+          {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <input class='col-1'
+               (change)='pickOneOrder()'
+               *ngIf='data.pickOne||pickOne'
+               type="radio"
+               name="pick-one" value="{{order.id}}"
+        >
+        <div class='content-profile col-1  pointer' >
+          <mat-checkbox  *ngIf='data.pickMore'
+                         class='checkID'
+                         [checked]='order.isSelect ? order.isSelect: false'
+                         [(ngModel)]='order.isSelect'
+                         (ngModelChange)='updateAllSelect(order.id)'>
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <button *ngIf='data.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
+  </div>
+</div>
+
+

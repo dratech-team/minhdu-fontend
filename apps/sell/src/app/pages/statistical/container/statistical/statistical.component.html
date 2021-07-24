@@ -1,24 +1,18 @@
-<div class='p-4'>
-  <div class='p-3 row '>
+<div>
+  <div class=' row '>
     <div class='row col-12'>
       <div class='p-3'>
         <span class='h3'> Tổng quan</span>
       </div>
 
     </div>
-    <div class='row col-12 mt-2'>
-      <div class='col-2'>
-        <span></span>
-          <input type='date' >
-
-
-
-      </div>
+    <div>
     </div>
-    <div class='row col-12 mt-2'>
-      <div class='col-4 p-1'>
+
+    <div class='row col-12 my-2 mx-1'>
+      <div class='col-md-4 col-xm-12 p-1 '>
         <div class='col-12 p-2  rounded bg-success'>
-          <div class='h4'>Lô hàng</div>
+          <div class='h4'>Đơn hàng</div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
           </div>
@@ -29,7 +23,7 @@
 
         </div>
       </div>
-      <div class='col-4 p-1  '>
+      <div class='col-md-4 col-xm-12 p-1   '>
         <div class='col-12 p-2 rounded  bg-warning'>
           <div class='h4'>Khách hàng </div>
           <div class='d-flex'>
@@ -46,9 +40,9 @@
           </div>
         </div>
       </div>
-      <div class='col-4 p-1 '>
+      <div class='col-md-4 col-xm-12 p-1  '>
         <div class='col-12 p-2 rounded  bg-primary'>
-          <div class='h4'>Số lượng gà được bán</div>
+          <div class='h4'>Doanh thu</div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
             <div class='d-flex align-items-center'>
@@ -64,30 +58,42 @@
         </div>
       </div>
     </div>
-    <div class='row col-12 mt-5  '>
-      <div class='d-flex flex-column col-4' >
+    <div class='row col-12 mt-5 d-flex justify-content-center ' >
+      <div class='d-flex flex-column col-md col-xm-12'>
+        <div class='d-flex justify-content-sm-end'>
+          <img (click)='onStatistical(statisticalXType.PROVINCE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
+        </div>
         <span class='h4'>Thống kê doanh thu theo tỉnh</span>
           <app-vertical-bar-chart
-            style='width: 100%; height: 400px'
-            [data]='Data'
+            style='width: 100%; height: 80%'
+            [data]='statisticalProvince'
             [labelX]='"Tỉnh thành"'
-            [labelY]='"Doanh thu"'
+            [labelY]='labelY'
+            [legend]='statisticalProvince.length < 20'
           >
           </app-vertical-bar-chart>
       </div>
-      <div class='d-flex flex-column col-4'>
+      <div class='d-flex flex-column col-md col-xm-12'>
+        <div class='d-flex justify-content-sm-end'>
+          <img (click)='onStatistical(statisticalXType.CHICKEN_TYPE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
+        </div>
         <span class='h4'>Thống kê doanh thu theo loại gà</span>
-        <app-pie-chart style='width: 100%; height: 400px' [data]='Data'></app-pie-chart>
+        <app-pie-chart style='width: 100%; height: 400px' [data]='statisticalChicken'></app-pie-chart>
       </div>
-      <div class='d-flex flex-column col-4'>
+      <div class='d-flex flex-column col-md col-xm-12'>
+        <div class='d-flex justify-content-sm-end'>
+          <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
+        </div>
         <span class='h4'>Thống kê Doanh thu từng đại lý</span>
         <app-staked-vertical-chart
           style='width: 100%; height: 400px'
-          [data]='stakedData'
+          [data]='statisticalAgency'
           [labelY]='"Doanh thu"'
           [labelX]='"Đại lý"'>
         </app-staked-vertical-chart>
       </div>
+    </div>
+    <div class='row col-12 mt-5 '>
     </div>
   </div>
 </div>

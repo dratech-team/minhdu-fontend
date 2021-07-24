@@ -8,4 +8,7 @@
   <ng-template contextMenuItem let-item (execute)="readAndUpdate($event.item)">
     Xem và sửa
   </ng-template>
+  <ng-template  *ngIf='type === pageType.CUSTOMER' contextMenuItem let-item (execute)="onPayment($event.item)" >
+   Thanh toán
+  </ng-template>
 </context-menu>
