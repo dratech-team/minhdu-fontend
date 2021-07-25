@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
+import { AppComponent } from './container/app.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
@@ -14,19 +14,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
-// import { BaseModule } from './base-module/base.module';
+import { MedicineModule } from './child-dashboard/medicine-dashboard/medicine.module';
+import { StationeryModule } from './child-dashboard/stationery-dashboard/stationery.module';
+import { AppliancesModule } from './child-dashboard/appliances-dashboard/appliances.module';
+import { MainDashboardModule } from './child-dashboard/main-dashboard/main-dashboard.module';
+import { ProductModule } from './child-dashboard/Product -dashboard/product.module';
+import { PoultryFoodModule } from './child-dashboard/poultry-food-dashboard/poultry-food.module';
 @NgModule({
   declarations: [
-
     AppComponent,
-    WarehouseLayoutComponent
   ],
   imports: [
-    // BaseModule,
     CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -47,7 +48,13 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MedicineModule,
+    StationeryModule,
+    AppliancesModule,
+    MainDashboardModule,
+    ProductModule,
+    PoultryFoodModule
   ],
   providers: [
     {

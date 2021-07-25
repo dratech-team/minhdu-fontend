@@ -10,7 +10,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/page-type.enum';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { Order } from '../../../order/+state/order.interface';
 

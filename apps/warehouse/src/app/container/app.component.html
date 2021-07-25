@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kho hàng</title>
+</head>
+<div class='px-3 pt-1 grid_on   shadow-sm'>
+  <div class='container py-3'>
+    <div class='row'>
+      <div class='d-flex col-md-7 col-xm-12 '>
+        <div class='col-md-4   d-flex align-items-center'>
+          <button class='col-md-1 col-xm-1 btn d-flex align-items-center justify-content-center'>
+            <img src='../../assets/icon/warehouse-layout/grid-3x3-gap-fill.svg' alt='app'>
+          </button>
+          <span class='col-md-11 col-xm-11 app-name font-weight-bold'>Kho hàng</span>
+        </div>
+      </div>
+      <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
+        <button type='button'
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Facebook"
+                class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
+          <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh'
+             target="_blank" >
+            <img  height='20px btn' src='../../assets/icon/warehouse-layout/facebook.svg' alt='facebook' ></a>
+        </button>
+        <div >
+          <button mat-button [matMenuTriggerFor]="menu">
+            <img  height='20px btn' src='../../assets/icon/warehouse-layout/warehouse-solid.svg' alt='warehouse' >
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>Item 1</button>
+            <button mat-menu-item>Item 2</button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='container'>
+  <app-medicine-dashboard  class='row'></app-medicine-dashboard>
+  <app-stationery-dashboard class='row'></app-stationery-dashboard>
+  <app-appliance-dashboard class='row'></app-appliance-dashboard>
+  <app-main-dashboard class='row'></app-main-dashboard>
+  <app-product-dashboard class='row'></app-product-dashboard>
+  <app-poultry-food-dashboard class='row'></app-poultry-food-dashboard>
+</div>
+
+<app-footer class='container'>
+  <span><a href='https://uranus-solutions.com/' target='_blank'>Uranus Solutions</a> &copy; 2021.</span>
+  <span class='ml-auto'>Powered by <a href='https://uranus-solutions.com/' target='_blank'>Công ty TNHH giải pháp phần
+            mềm Uranus</a></span>
+</app-footer>
+
+</html>
