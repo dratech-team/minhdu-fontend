@@ -11,7 +11,8 @@ import { PaidType } from '../../../../../../../libs/enums/paidType.enum';
 
 @Component({
   selector:'app-pick-order',
-  templateUrl:'pick-order.component.html'
+  templateUrl:'pick-order.component.html',
+  styleUrls:['pick-route.component.scss']
 })
 export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;
@@ -41,7 +42,8 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.data.orders$){
+    console.log(!this.pickOne)
+    if(this?.data?.orders$){
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
       )

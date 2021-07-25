@@ -7,9 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaidType } from '../../../../../../../../libs/enums/paidType.enum';
 import { debounceTime, tap } from 'rxjs/operators';
-import { PaymentDialogComponent } from '../../../customer/component/payment-dialog/payment-dialog.component';
+import { PaidType } from 'libs/enums/paidType.enum';
 
 
 @Component({

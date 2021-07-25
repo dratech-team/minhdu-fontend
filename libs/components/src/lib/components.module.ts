@@ -20,6 +20,7 @@ import { PieChartComponent } from './chart/pie-chart/pie-chart-component';
 import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/staked-vertical-chart.component';
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { MatSelectModule } from '@angular/material/select';
+import { DevelopmentComponent } from './development/development.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule
   ],
   declarations: [
+    DevelopmentComponent,
     VerticalBarChartComponent,
     MouseRightComponent,
     SearchEmployeePipe,
@@ -53,6 +55,7 @@ import { MatSelectModule } from '@angular/material/select';
     PickEmployeeService,
   ],
   exports: [
+    DevelopmentComponent,
     VerticalBarChartComponent,
     MouseRightComponent,
     DialogDeleteComponent,

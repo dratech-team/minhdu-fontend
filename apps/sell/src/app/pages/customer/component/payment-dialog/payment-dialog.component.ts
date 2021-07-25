@@ -56,7 +56,7 @@ export class PaymentDialogComponent implements OnInit {
     const infoPayment = {
       payType: val.payType ? val.payType : undefined,
       total: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
-      paidAt: val.paidAt,
+      paidAt: val.paidAt ,
       orderId: this.orderId,
       note: val.note
     };

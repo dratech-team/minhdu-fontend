@@ -89,12 +89,12 @@ export class AddOrderComponent implements OnInit {
   onSubmit() {
     const val = this.formGroup.value;
     const order = {
-      createdAt: val.createdAt ? new Date(val.createdAt) : undefined,
+      createdAt: val.createdAt,
       explain: val.explain,
       destinationId: val.ward,
       payType: val.payType ? val.payType : undefined,
       paidTotal: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
-      paidAt: val.paidAt ? new Date(val.paidAt) : undefined,
+      paidAt: val.paidAt,
       customerId: this.customerId,
       commodityIds: this.commodityIds,
       routeIds: this.routeIds

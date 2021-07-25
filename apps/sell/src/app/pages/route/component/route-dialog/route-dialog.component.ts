@@ -1,17 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { RouteAction } from '../../container/+state/route.action';
 import { DatePipe } from '@angular/common';
+import { selectorAllOrders } from '../../../order/+state/order.selector';
+import { Order } from '../../../order/+state/order.interface';
+import { OrderAction } from '../../../order/+state/order.action';
 
 @Component({
   templateUrl: 'route-dialog.component.html'
 })
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  employeeId!: number;
-
+  orderIds: number[] = [];
+  orders$ = this.store.pipe(select(selectorAllOrders))
+  orders: Order[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -21,6 +25,11 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(OrderAction.loadInit({take:30, skip: 0}))
+    this.orders$.subscribe(val => {
+      this.orders = JSON.parse(JSON.stringify(val))
+    })
+    console.log(this.orders)
     this.formGroup = this.formBuilder.group({
       name: [this?.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
@@ -30,27 +39,28 @@ export class RouteDialogComponent implements OnInit {
       bsx: [this?.data?.route?.bsx, Validators.required],
       latitude: [this?.data?.route?.latitude, Validators.required],
       longitude: [this?.data?.route?.longitude, Validators.required],
-      driver: [this?.data?.route?.driver, Validators.required]
+      driver: [this?.data?.route?.driver, Validators.required],
+      garage: [this?.data?.route?.driver, Validators.required],
     });
   }
 
 
-  pickEmployees(employeeId: number ) {
-    console.log( employeeId)
-    this.employeeId = employeeId;
+  pickOrders(orders: number[] ) {
+    this.orderIds = orders;
   }
 
   onSubmit() {
     const val = this.formGroup.value;
     const route = {
       name: val.name,
-      endedAt: val.endedAt ? new Date(val.endedAt) : undefined,
-      startedAt: val.startedAt ? new Date(val.startedAt) : undefined,
+      endedAt: val.endedAt,
+      startedAt: val.startedAt ,
       bsx: val.bsx,
       // latitude: val.latitude? val.latitude:undefined,
       // longitude: val.longitude? val.longitude:undefined,
       driver: val.driver,
-      // employeeId: this.employeeId,
+      garage: val.garage,
+      orderIds: this.orderIds
     };
     if (this.data) {
       this.store.dispatch(RouteAction.updateRoute({ route: route, id: this.data.route.id }));
