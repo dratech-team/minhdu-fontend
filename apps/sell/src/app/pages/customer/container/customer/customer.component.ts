@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer, selectorCurrentCustomer } from '../../+state/customer.selector';
+import { selectorAllCustomer } from '../../+state/customer.selector';
 import { AppState } from '../../../../reducers';
 import { CustomerAction } from '../../+state/customer.action';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
@@ -10,9 +10,9 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/page-type.enum';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { Order } from '../../../order/+state/order.interface';
+import { PageTypeEnum } from 'libs/enums/page-type.enum';
 
 @Component({
   templateUrl:'customer.component.html',

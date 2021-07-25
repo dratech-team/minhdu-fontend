@@ -21,6 +21,7 @@ import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
 import { PickRoutesComponent } from '../../shared/components/pick-routes/pick-routes.component';
 import { PickRoutesService } from '../../shared/components/pick-routes/pick-routes.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatRadioModule,
     MatTabsModule,
     MatCheckboxModule,
-    FormsModule
+    FormsModule,
+    SharedModule
 
   ],
   declarations: [

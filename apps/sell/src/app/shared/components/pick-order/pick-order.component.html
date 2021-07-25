@@ -27,7 +27,7 @@
       </div>
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>All</div>
-        <mat-checkbox *ngIf='data.pickMore'
+        <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                       class='example-margin mt-2 ml-3'
                       [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
@@ -59,12 +59,12 @@
         </div>
         <input class='col-1'
                (change)='pickOneOrder()'
-               *ngIf='data.pickOne||pickOne'
+               *ngIf='data?.pickOne||pickOne'
                type="radio"
                name="pick-one" value="{{order.id}}"
         >
         <div class='content-profile col-1  pointer' >
-          <mat-checkbox  *ngIf='data.pickMore'
+          <mat-checkbox  *ngIf='!pickOne||data?.pickMore'
                          class='checkID'
                          [checked]='order.isSelect ? order.isSelect: false'
                          [(ngModel)]='order.isSelect'
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <button *ngIf='data.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
+    <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
   </div>
 </div>
 

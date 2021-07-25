@@ -106,7 +106,7 @@
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.OTHER'> Khác</div>
         <div class='content-profile default pointer '>{{customer?.phone ? customer.phone: 'Chưa cập nhật'}}</div>
         <div class='content-profile default pointer '><input type='checkbox' disabled
-                                                             [checked]='customer.isPotential !== null'></div>
+                                                             [checked]='customer.isPotential'></div>
         <div class='content-profile name pointer '>
           {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
         </div>
