@@ -11,7 +11,8 @@ import { PaidType } from '../../../../../../../libs/enums/paidType.enum';
 
 @Component({
   selector:'app-pick-order',
-  templateUrl:'pick-order.component.html'
+  templateUrl:'pick-order.component.html',
+  styleUrls:['pick-route.component.scss']
 })
 export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;

@@ -10,20 +10,27 @@
                formControlName='createdAt'
         >
       </div>
-      <div class='border-start title-header col-4'>
+      <div class='border-start title-header col-2'>
         <div class='title-profile'>Công nợ</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-4'>
+      <div class='border-start title-header col-3'>
         <div class='title-profile'>Tổng thanh toán</div>
         <select class='select'  formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
         </select>
+      </div>
+      <div class='border-start title-header col-3' style='overflow: hidden'>
+        <div class='title-profile'>lần thanh toán</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
       </div>
       <div class='border-start title-header col-1  '>
         <div class='title-profile'>All</div>
@@ -48,15 +55,20 @@
         <div class='content-profile col-3 pointer ' *ngIf='order?.createdAt!== null'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </div>
-        <div class='content-profile col-4 pointer ' *ngIf='order?.createdAt=== null' >
+        <div class='content-profile col-3 pointer ' *ngIf='order?.createdAt=== null' >
           Đang cập nhật
         </div>
-        <div class='content-profile col-4 pointer '  style='color: #f86c6b'>
+        <div class='content-profile col-2 pointer '  style='color: #f86c6b'>
           {{order.debt|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div class='content-profile col-4 pointer '  style='color: #20c997'>
+        <div class='content-profile col-3 pointer '  style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
+        <a  routerLink="/order/payment-history"
+           [queryParams]='{data:order.paymentHistories|json}'
+           target="_blank" class='btn content-profile col-3 pointer hover-link '  >
+          {{order.paymentHistories.length}}
+        </a>
         <input class='col-1'
                (change)='pickOneOrder()'
                *ngIf='data?.pickOne||pickOne'

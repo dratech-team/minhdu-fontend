@@ -61,7 +61,7 @@
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.PROVINCE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4'>Thống kê doanh thu theo tỉnh</span>
+        <span class='h4 ml-3'>Thống kê doanh thu theo tỉnh</span>
           <app-vertical-bar-chart
             style='height:400px'
             [data]='statisticalProvince'
@@ -75,14 +75,14 @@
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.CHICKEN_TYPE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4'>Thống kê doanh thu theo loại gà</span>
+        <span class='h4 ml-3'>Thống kê doanh thu theo loại gà</span>
         <app-pie-chart style='width: 100%; height: 400px' [data]='statisticalChicken'></app-pie-chart>
       </div>
       <div class='d-flex flex-column col-md  col-xm-12'>
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4'>Thống kê Doanh thu từng đại lý</span>
+        <span class='h4 ml-3'>Thống kê Doanh thu từng đại lý</span>
         <app-staked-vertical-chart
           style='width: 100%; height: 400px'
           [data]='statisticalAgency'

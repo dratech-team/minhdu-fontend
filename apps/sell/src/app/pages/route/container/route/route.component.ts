@@ -7,7 +7,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Router } from '@angular/router';
-import { $e } from '@angular/compiler/src/chars';
 
 @Component({
   templateUrl: 'route.component.html'

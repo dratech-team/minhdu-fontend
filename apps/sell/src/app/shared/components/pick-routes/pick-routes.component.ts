@@ -40,7 +40,6 @@ export class PickRoutesComponent implements OnInit {
         (val: Route[]) => this.routes = JSON.parse(JSON.stringify(val))
       );
     }
-    console.log(this.routes )
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {

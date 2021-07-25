@@ -18,8 +18,6 @@ import { RouteDialogComponent } from './component/route-dialog/route-dialog.comp
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
-import { PickRoutesComponent } from '../../shared/components/pick-routes/pick-routes.component';
-import { PickRoutesService } from '../../shared/components/pick-routes/pick-routes.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../../shared/shared.module';
 
