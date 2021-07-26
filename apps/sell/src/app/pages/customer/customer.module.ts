@@ -7,9 +7,9 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { CustomerReducer } from './+state/customer.reducer';
+import { CustomerReducer } from './+state/customer/customer.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { CustomerEffect } from './+state/customer.effect';
+import { CustomerEffect } from './+state/customer/customer.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -25,6 +25,9 @@ import { PaymentDialogComponent } from './component/payment-dialog/payment-dialo
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SharedModule } from '../../shared/shared.module';
+import { TablePaymentComponent } from './component/table-payment/table-payment.component';
+import { PaymentReducer } from './+state/payment/payment.reducer';
+import { PaymentEffect } from './+state/payment/payment.effect';
 @NgModule({
   imports: [
     LocationModule,
@@ -36,8 +39,9 @@ import { SharedModule } from '../../shared/shared.module';
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
+    StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
     StoreModule.forFeature(FeatureName.CUSTOMER, CustomerReducer),
-    EffectsModule.forFeature([CustomerEffect]),
+    EffectsModule.forFeature([CustomerEffect,PaymentEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -49,6 +53,7 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule
   ],
   declarations: [
+    TablePaymentComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerDialogComponent,

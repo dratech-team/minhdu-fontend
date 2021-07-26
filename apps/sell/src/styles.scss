@@ -4,7 +4,13 @@ body {
   margin: 0 !important;
   background: white !important;
 }
-
+.example::-webkit-scrollbar {
+  display: none;
+}
+.example {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 $spinkit-spinner-color: $body-color;
 @import '~spinkit/scss/spinkit.scss';
 .star {

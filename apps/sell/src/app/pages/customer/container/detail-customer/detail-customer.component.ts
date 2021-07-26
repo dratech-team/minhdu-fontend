@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { selectorCurrentCustomer } from '../../+state/customer.selector';
+import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerAction } from '../../+state/customer.action';
-import { Customer } from '../../+state/customer.interface';
+import { CustomerAction } from '../../+state/customer/customer.action';
+import { Customer } from '../../+state/customer/customer.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';

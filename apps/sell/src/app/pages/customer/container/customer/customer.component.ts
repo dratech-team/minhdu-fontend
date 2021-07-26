@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer } from '../../+state/customer.selector';
+import { selectorAllCustomer } from '../../+state/customer/customer.selector';
 import { AppState } from '../../../../reducers';
-import { CustomerAction } from '../../+state/customer.action';
+import { CustomerAction } from '../../+state/customer/customer.action';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';

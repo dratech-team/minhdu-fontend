@@ -152,7 +152,7 @@
         </div>
         <div class='col-5  form-group'>
 
-          <div class='row align-items-center'>
+          <div class='row align-items-start'>
             <div class='col-md-3 py-2  title-detail'>
               <span>Địa chỉ :</span>
             </div>
@@ -208,7 +208,7 @@
     <div class='col-12  mt-5 '>
       <div class='row'>
         <div class='col-6 mr-5'>
-          <div class='row d-flex align-items-center'>
+          <div class='row d-flex align-items-start'>
             <div class='align-items-center title-table mr-4'>Thông tin Liên hệ</div>
           </div>
           <div class='ml-3'>
@@ -251,7 +251,7 @@
                       {{ customer.zalo}}
                   </span>
                 <span *ngIf='!customer?.zalo'>
-                  chưa cập nhật'
+                  chưa cập nhật
                 </span>
               </div>
             </div>
@@ -267,7 +267,7 @@
               <span>Tk ngân hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-                <span class='contain-detail ' style='color: #7749F8  '>
+                <span >
                     {{customer?.bank?.stk === null ? 'Chưa cập nhật' : customer.bank.stk}}
                 </span>
             </div>
@@ -306,22 +306,7 @@
         <div class='row align-items-center title-table '>Lịch sử thanh toán</div>
       </div>
       <div class='my-3 '>
-        <table class='mt-3'>
-          <tr>
-            <th class='text-center'>Ngày thanh toán</th>
-            <th class='text-center'>Số thanh toán</th>
-            <th class='text-center'>Đơn vị</th>
-            <th class='text-center'> Loại thanh toán</th>
-            <th class='text-center'> Chú thích</th>
-          </tr>
-          <tr *ngFor='let paymentHistory of customer.paymentHistories'>
-            <td class='text-center'> {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}} </td>
-            <td class='text-center'>  {{paymentHistory.total|number:'1.0'|notEmpty:'0'}} đ</td>
-            <td class='text-center' *ngIf='paymentHistory.currency === "VND"'> Việt Nam Đồng</td>
-            <td class='text-center' *ngIf='paymentHistory.payType === "CASH"'> Tiền mặt</td>
-            <td class='text-center'> {{paymentHistory.note}} </td>
-          </tr>
-        </table>
+        <app-table-payment></app-table-payment>
       </div>
     </div>
   </div>
