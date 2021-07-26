@@ -14,7 +14,7 @@ export const loadInit = createAction(
     take: number,
     type?: string,
     resource?: string,
-    isPotential?: boolean,
+    isPotential?: number,
     phone?:number,
     nationId?:number,
   }>()
@@ -32,7 +32,7 @@ export const loadMoreCustomers = createAction(
     take: number,
     type?: string,
     resource?: string,
-    isPotential?: boolean,
+    isPotential?: number,
     phone?:number,
     nationId?:number,
   }>()

@@ -27,6 +27,8 @@ import { RouteEffect } from '../route/container/+state/route.effect';
 import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
+import { TableRouteComponent } from './component/table-route/table-route.component';
+
 
 
 @NgModule({
@@ -52,6 +54,7 @@ import { PaymentHistoryComponent } from './container/payment-history/payment-his
     SharedModule
   ],
   declarations: [
+    TableRouteComponent,
     PaymentHistoryComponent,
     OrderComponent,
     DetailOrderComponent,

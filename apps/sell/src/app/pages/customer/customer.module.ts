@@ -25,8 +25,6 @@ import { PaymentDialogComponent } from './component/payment-dialog/payment-dialo
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SharedModule } from '../../shared/shared.module';
-
-
 @NgModule({
   imports: [
     LocationModule,

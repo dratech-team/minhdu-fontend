@@ -75,7 +75,7 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: value.ward ? value.ward : 1,
+      wardId: value.ward ? value.ward : undefined,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,

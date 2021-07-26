@@ -32,7 +32,8 @@ export class OrderComponent implements OnInit {
   constructor(
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+
   ) {
   }
 
@@ -48,7 +49,7 @@ export class OrderComponent implements OnInit {
   }
 
   add() {
-    this.router.navigate(['order/detail-order/add']).then();
+    this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
   onScroll() {
@@ -65,6 +66,6 @@ export class OrderComponent implements OnInit {
   }
 
   detailOrder(id: number) {
-    this.router.navigate(['order/detail-order', id]).then();
+    this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 }

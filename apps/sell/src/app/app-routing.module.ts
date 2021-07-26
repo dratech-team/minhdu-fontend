@@ -15,32 +15,32 @@ const routes: Routes = [
         loadChildren:() => import('./pages/statistical/statistical.module').then(m => m.StatisticalModule)
       },
       {
-        path: 'customer',
+        path: 'khach-hang',
         loadChildren: ()=> import('./pages/customer/customer.module').then(m => m.CustomerModule),
         data:{
           title: 'Khách hàng'
         }
       },
       {
-        path: 'commodity',
+        path: 'hang-hoa',
         loadChildren: ()=> import('./pages/commodity/commodity.module').then(m => m.CommodityModule),
         data:{
           title: 'Hàng hóa'
         }
       },
       {
-        path: 'order',
+        path: 'don-hang',
         loadChildren: ()=> import('./pages/order/order.module').then(m => m.OrderModule),
         data:{
           title: 'Đơn hàng'
         }
       },
       {
-        path:'route',
+        path:'tuyen-duong',
         loadChildren:() => import('./pages/route/route.module').then(m => m.RouteModule)
       },
       {
-        path:'bill',
+        path:'hoa-don',
         loadChildren:() => import('./pages/bill/bill.module').then(m => m.BillModule)
       },
       { path: '**', redirectTo: '' }

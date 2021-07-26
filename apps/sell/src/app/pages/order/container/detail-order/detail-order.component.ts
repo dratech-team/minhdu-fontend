@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorCurrentOrder } from '../../+state/order.selector';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '../../+state/order.interface';
 import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
@@ -21,6 +21,7 @@ export class DetailOrderComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
+    private readonly router: Router,
   ) {
   }
   ngOnInit() {
@@ -31,5 +32,9 @@ export class DetailOrderComponent implements OnInit {
   }
   updateOrder(order:Order){
     this.dialog.open(OrderDialogComponent, {width: '40%', data:{order:order, type:"UPDATE"}})
+  }
+
+  detailRoute(id: number) {
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id ]).then()
   }
 }

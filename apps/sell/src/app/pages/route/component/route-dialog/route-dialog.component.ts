@@ -40,7 +40,7 @@ export class RouteDialogComponent implements OnInit {
       latitude: [this?.data?.route?.latitude, Validators.required],
       longitude: [this?.data?.route?.longitude, Validators.required],
       driver: [this?.data?.route?.driver, Validators.required],
-      garage: [this?.data?.route?.driver, Validators.required],
+      garage: [this?.data?.route?.garage, Validators.required],
     });
   }
 

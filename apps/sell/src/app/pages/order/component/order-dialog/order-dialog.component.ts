@@ -13,13 +13,14 @@ import {
   selectorWardByDistrictId,
   selectProvincesByNationId
 } from '@minhdu-fontend/location';
-import { NationAction } from '../../../../../../../../libs/location/src/lib/+state/nation/nation.action';
-import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
-import { DistrictAction } from '../../../../../../../../libs/location/src/lib/+state/district/district.action';
-import { WardAction } from '../../../../../../../../libs/location/src/lib/+state/ward/ward.action';
+import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
+import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
+import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
+import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
+
 
 @Component({
-  templateUrl: 'order-dialog.component.html',
+  templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
   nations$ = this.store.pipe(select(selectAllNation));
@@ -32,22 +33,24 @@ export class OrderDialogComponent implements OnInit {
   wards$ = this.store.pipe(select(selectorWardByDistrictId(
     this?.data?.ward?.district?.id
   )));
-  numberChars = new RegExp('[^0-9]', 'g')
+  numberChars = new RegExp('[^0-9]', 'g');
   payType = PaymentType;
   CurrencyUnit = CurrencyUnit;
-  customerId: number|undefined;
+  customerId: number | undefined;
   formGroup!: FormGroup;
   routes: number[] = [];
   provinces?: Province [];
   districts?: District [];
   wards?: Ward [];
+
   constructor(
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
+
   ngOnInit() {
     this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
@@ -60,28 +63,31 @@ export class OrderDialogComponent implements OnInit {
     }
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(
-        this?.data?.order?.createdAt,'yyyy-MM-dd')
-        ,Validators.required],
+        this?.data?.order?.createdAt, 'yyyy-MM-dd')
+        , Validators.required],
       // currency: [this?.data?.order?.currency,Validators.required],
-      explain: [this?.data?.order?.explain,Validators.required],
-    })
+      explain: [this?.data?.order?.explain, Validators.required]
+    });
   }
-  pickCustomer(customerId:number){
-    this.customerId = customerId
+
+  pickCustomer(customerId: number) {
+    this.customerId = customerId;
   }
-  pickRoutes(routes: number[]){
-    this.routes = routes
+
+  pickRoutes(routes: number[]) {
+    this.routes = routes;
   }
-  onSubmit(){
-    const val = this.formGroup.value
+
+  onSubmit() {
+    const val = this.formGroup.value;
     const order = {
       customerId: this.customerId,
       createdAt: new Date(val.createdAt),
-      routes:this.routes,
+      routes: this.routes,
       // currency: val.currency,
-      explain: val.explain,
-    }
-    this.store.dispatch(OrderAction.updateOrder({order:order, id: this.data.order.id}))
+      explain: val.explain
+    };
+    this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id }));
   }
 
   onNation(nation: Nation) {

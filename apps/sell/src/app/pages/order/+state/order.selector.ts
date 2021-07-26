@@ -27,6 +27,7 @@ export const selectorCurrentOrder = (id: number)  =>createSelector(
   (orderEntities) => orderEntities[id]
 )
 
+
 export const selectedLoaded = createSelector(
   selectorOrderState,
   (state) => state.loaded

@@ -1,0 +1,79 @@
+<form [formGroup]='formGroup' class='main-profile col-12' style='width: 100%'>
+    <div class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile'>Khách hàng</div>
+        <input
+          formControlName='name'
+          class='form-control input-profile '
+          type='search'>
+      </div>
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Ngày tạo</div>
+        <input
+          formControlName='createdAt'
+          [disabled]='true'
+          class='form-control input-profile '
+          type='date'>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Điểm đến</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='text'>
+      </div>
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Tổng tiền đơn hàng</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header  col-2'>
+        <div class='title-profile'>Tổng tiền thanh toán</div>
+        <select class='select' matNativeControl required formControlName='paidType'>
+          <option value='{{paidType.PAID}}'>Có thanh toán</option>
+          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+          <option value=''>tất cả</option>
+        </select>
+      </div>
+    </div>
+
+    <div class='  animated fadeIn'
+         style='width: 100%;
+         max-height: 32vh;
+          overflow-y: scroll;
+          '
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(orders$| async) as orders'
+    >
+      <div class='row-content' *ngFor='let order of orders'>
+        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
+          {{order?.customer?.firstName}} {{order?.customer?.lastName}}
+        </div>
+        <div class='content-profile col-2 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>
+          {{order?.createdAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile default pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
+          Đang cập nhật
+        </div>
+        <div class='content-profile col-4 pointer ' (click)='detailOrder(order.id)'>
+          {{order?.destination?.name}} -
+          {{order?.destination?.district?.name}} -
+          {{order?.destination?.district?.province?.name}}
+        </div>
+        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
+          {{order.debt|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
+          {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+      </div>
+    </div>
+  </form>
+
+

@@ -30,6 +30,7 @@ import { PickCommodityService } from './components/pick-commodity/pick-commodity
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule
   ],
   declarations: [
+    TableOrdersComponent,
     PickOrderComponent,
     PickCommodityComponent,
     PickCustomerComponent,
@@ -72,6 +74,7 @@ import { MatSelectModule } from '@angular/material/select';
     PickRoutesService
   ],
   exports: [
+    TableOrdersComponent,
     PickCommodityComponent,
     PickOrderComponent,
     PickCustomerComponent,
