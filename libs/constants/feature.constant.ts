@@ -17,4 +17,5 @@ export const FeatureName = {
   PROVINCE : 'province',
   DISTRICT : 'district',
   WARD : 'ward',
+  WAREHOUSE: 'warehouse'
 };
