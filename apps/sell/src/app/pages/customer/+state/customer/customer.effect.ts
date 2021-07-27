@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
-import { CustomerService } from '../service/customer.service';
+import { CustomerService } from '../../service/customer.service';
 
 @Injectable()
 export class CustomerEffect {
@@ -58,15 +58,6 @@ export class CustomerEffect {
     )
   );
 
-  payment$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(CustomerAction.payment),
-      switchMap((props) => this.customerService.payment(props.id, props.infoPayment).pipe(
-        map(() => CustomerAction.getCustomer({ id: props.id })),
-        catchError((err) => throwError(err))
-      ))
-    )
-  );
 
   deleteCustomer$ = createEffect(() =>
     this.action$.pipe(

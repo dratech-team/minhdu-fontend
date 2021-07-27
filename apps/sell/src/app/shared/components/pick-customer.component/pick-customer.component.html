@@ -4,8 +4,8 @@
     <span class='h5' style='color:#20a8d8;'> Thêm khách hàng</span>
   </button>
   <div class='col-12 animated fadeIn'>
-    <form [formGroup]='formGroup' class='header-profile mt-3 '>
-      <div class='border-start title-header col-4'>
+    <form [formGroup]='formGroup' class='header-profile mt-3 ' style='width: 101%;'>
+      <div class='border-start title-header col-3'>
         <div class='title-profile'>Tên Khách hàng</div>
         <input class='form-control input-profile'
                type='text'
@@ -31,8 +31,8 @@
           <option value=''>Tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-1  '>
-        <div class='title-profile'>All</div>
+      <div class='border-start title-header col-2  '>
+        <div class='title-profile'>Tất cả</div>
         <mat-checkbox *ngIf='data.pickMore'
                       class='example-margin mt-2 ml-3'
                       [checked]='isSelectAll'
@@ -41,7 +41,7 @@
         </mat-checkbox>
       </div>
     </form>
-    <div class='outer '
+    <div class='outer example '
          style='width: 101%; height: 50vh'
          infiniteScroll
          [infiniteScrollDistance]='1'

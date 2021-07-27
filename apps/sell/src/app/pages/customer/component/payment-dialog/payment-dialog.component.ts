@@ -4,11 +4,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer.action';
-import { selectorCurrentCustomer } from '../../+state/customer.selector';
-import { Customer } from '../../+state/customer.interface';
+import { CustomerAction } from '../../+state/customer/customer.action';
+import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
+import { Customer } from '../../+state/customer/customer.interface';
 import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
+import { PaymentAction } from '../../+state/payment/payment.action';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class PaymentDialogComponent implements OnInit {
       orderId: this.orderId,
       note: val.note
     };
-    this.store.dispatch(CustomerAction.payment({ infoPayment: infoPayment, id: this.data.id }));
+    this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment, id: this.data.id }));
   }
 
   pickOrder($event: number) {

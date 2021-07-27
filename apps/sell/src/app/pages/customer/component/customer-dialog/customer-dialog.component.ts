@@ -2,12 +2,10 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import {  Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from 'apps/sell/src/app/reducers';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer.action';
-
-
+import { CustomerAction } from '../../+state/customer/customer.action';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -63,8 +61,8 @@ export class CustomerDialogComponent implements OnInit {
   onSubmit() {
     const value = this.formGroup.value;
     const customer = {
-      firstName: value.firstName? value.firstName: undefined,
-      lastName: value.lastName? value.lastName: undefined,
+      firstName: value.firstName ? value.firstName : undefined,
+      lastName: value.lastName ? value.lastName : undefined,
       identify: value.identify.toString(),
       gender: value.gender,
       phone: value.phone,
@@ -75,12 +73,12 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: value.ward ? value.ward : 1,
+      wardId: value.ward ? value.ward : undefined,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
       religion: value.religion ? value.religion : undefined,
-      isPotential: value.isPotential? value.isPotential: undefined,
+      isPotential: value.isPotential ? value.isPotential : undefined
     };
     if (this.data) {
       this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.id }));

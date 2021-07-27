@@ -1,5 +1,5 @@
 <div class='container'>
-  <div class='col-12 animated fadeIn'>
+  <div class=' animated fadeIn' style='width: 102%'>
     <form [formGroup]='formGroup' class='header-profile mt-3 '>
       <div class='border-start title-header col-3'>
         <div class='title-profile'>Ngày tạo</div>
@@ -25,17 +25,18 @@
           <option value=''>tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-3' style='overflow: hidden'>
+      <div class='border-start title-header col-2' style='overflow: hidden'>
         <div class='title-profile'>lần thanh toán</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-1  '>
-        <div class='title-profile'>All</div>
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile'>Tất cả</div>
         <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
-                      class='example-margin mt-2 ml-3'
+                      class='example-margin mt-2 ml'
+                      style='margin-left: 42%'
                       [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
@@ -43,7 +44,7 @@
       </div>
 
     </form>
-    <div class='outer '
+    <div class='outer example'
          style='width: 101%; height: 50vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
@@ -66,18 +67,19 @@
         </div>
         <a  routerLink="/order/payment-history"
            [queryParams]='{data:order.paymentHistories|json}'
-           target="_blank" class='btn content-profile col-3 pointer hover-link '  >
+           target="_blank" class='btn content-profile col-2 pointer hover-link '  >
           {{order.paymentHistories.length}}
         </a>
-        <input class='col-1'
+        <input class='col-2'
                (change)='pickOneOrder()'
                *ngIf='data?.pickOne||pickOne'
                type="radio"
                name="pick-one" value="{{order.id}}"
         >
-        <div class='content-profile col-1  pointer' >
+        <div class=' col-2  pointer' >
           <mat-checkbox  *ngIf='!pickOne||data?.pickMore'
                          class='checkID'
+                         style='margin-left: 42%'
                          [checked]='order.isSelect ? order.isSelect: false'
                          [(ngModel)]='order.isSelect'
                          (ngModelChange)='updateAllSelect(order.id)'>

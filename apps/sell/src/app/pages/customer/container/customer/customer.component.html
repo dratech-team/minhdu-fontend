@@ -6,17 +6,17 @@
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên khách hàng</div>
         <input
-               formControlName='name'
-              class='form-control input-profile '
-              type='text'
-              placeholder='Trần Gia Hiệu'
+          formControlName='name'
+          class='form-control input-profile '
+          type='text'
+          placeholder='Trần Gia Hiệu'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày sinh</div>
-        <input  [disabled]='true'
+        <input [disabled]='true'
                class='form-control input-profile '
-               >
+        >
       </div>
       <div class='border-start title-header gender'>
         <div class='title-profile'>Giới tính</div>
@@ -28,12 +28,12 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Số điện thoại</div>
-        <input  formControlName='phone'
-                class='form-control input-profile '
-                type='number'>
+        <input formControlName='phone'
+               class='form-control input-profile '
+               type='number'>
       </div>
       <div class='border-start title-header default'>
-        <div class='title-profile'>Tìm năng</div>
+        <div class='title-profile'>Tiềmm năng</div>
         <select class='select' matNativeControl required formControlName='isPotential'>
           <option value='{{true}}'>Tìm năng</option>
           <option value='{{false}}'>Không tìm năng</option>
@@ -42,9 +42,9 @@
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Quốc gia</div>
-        <input  formControlName='nationId'
-                class='form-control input-profile '
-                type='text'>
+        <input formControlName='nationId'
+               class='form-control input-profile '
+               type='text'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Nguồn khách hàng</div>
@@ -72,17 +72,17 @@
       </div>
       <div class='border-start title-header address'>
         <div class='title-profile'>Địa chỉ</div>
-        <input  disabled
-                class='form-control input-profile '
-                type='search'>
+        <input disabled
+               class='form-control input-profile '
+               type='search'>
       </div>
 
 
       <div class='border-start title-header note'>
         <div class='title-profile'>Chú thích</div>
-        <input  disabled
-                class='form-control input-profile '
-                type='search'>
+        <input disabled
+               class='form-control input-profile '
+               type='search'>
       </div>
     </form>
     <div class='outer animated fadeIn'
@@ -94,17 +94,17 @@
          *ngIf='(customers$| async) as customers'>
       <div class='row-content' *ngFor='let customer of customers' (click)='readAndUpdate(customer)'
            (contextmenu)='child.onContextMenu($event,customer)'>
-        <app-mouse-right  [type]='pageType.CUSTOMER'
-                          #child (addEvent)='add()'
+        <app-mouse-right [type]='pageType.CUSTOMER'
+                         #child (addEvent)='add()'
                          (deleteEvent)='deleteCustomer($event)'
-                          (payment)='payment($event)'
+                         (payment)='payment($event)'
                          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
         <div class='content-profile name pointer '>{{customer?.firstName}} {{customer?.lastName}} </div>
         <div class='content-profile default pointer '>{{customer?.birthday| date:'dd/MM/yyyy'}}</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.MALE'> Nam</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.FEMALE'> Nữ</div>
         <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.OTHER'> Khác</div>
-        <div class='content-profile default pointer '>{{customer?.phone ? customer.phone: 'Chưa cập nhật'}}</div>
+        <div class='content-profile default pointer '>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</div>
         <div class='content-profile default pointer '><input type='checkbox' disabled
                                                              [checked]='customer.isPotential'></div>
         <div class='content-profile name pointer '>
@@ -117,13 +117,13 @@
         <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  default ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
-        <div class='content-profile address pointer '>{{customer?.email? customer.email: 'Chưa cập nhật'}}</div>
+        <div class='content-profile address pointer '>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</div>
         <div class='content-profile address pointer '>{{customer?.address}}</div>
         <div class='content-profile  note '> {{customer.note}}</div>
       </div>
     </div>
   </div>
-
 </div>
-
+<div class='container' style='margin-bottom: 50px'>
+</div>
 

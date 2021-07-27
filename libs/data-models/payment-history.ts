@@ -1,5 +1,5 @@
 import { CurrencyUnit, PaymentType } from '../enums';
-import { Customer } from '../../apps/sell/src/app/pages/customer/+state/customer.interface';
+import { Customer } from '../../apps/sell/src/app/pages/customer/+state/customer/customer.interface';
 import { Order } from '@datorama/akita';
 
 export interface PaymentHistory {

@@ -1,4 +1,4 @@
-<div class='main-customer' style='width: 96%; margin-left: 2%;'>
+<div class='main-customer' style='width: 76%; margin-left: 12%;'>
   <div class='row h3 ml-3 mt-3'>Danh sách Tuyến đường</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Tuyến đường</button>
@@ -27,14 +27,6 @@
         <div class='title-profile'>Nhà xe</div>
         <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
       </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>latitude</div>
-        <input [disabled]='true' class='form-control input-profile ' type='number'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>longitude</div>
-        <input [disabled]='true' class='form-control input-profile ' type='number'>
-      </div>
     </div>
 
     <div class='outer   animated fadeIn'
@@ -51,7 +43,7 @@
         <app-mouse-right
           #child (addEvent)='add()'
           (deleteEvent)='deleteRoute($event)'
-          (readAndUpdateEvent)='readDetailRoute($event)'
+          (readAndUpdateEvent)='detailRoute($event)'
         >
         </app-mouse-right>
         <div class='content-profile name pointer '>{{route?.name}}</div>
@@ -72,8 +64,6 @@
           {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
         <div class='content-profile name pointer '>{{route?.bsx}}</div>
         <div class='content-profile name pointer '>{{route?.garage}}</div>
-        <div class='content-profile name pointer '>{{route?.latitude}}</div>
-        <div class='content-profile name pointer '>{{route?.longitude}}</div>
       </div>
     </div>
   </div>

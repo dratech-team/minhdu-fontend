@@ -12,15 +12,15 @@ const routes: Routes = [
     component: OrderComponent,
   },
   {
-    path: 'detail-order/add',
+    path: 'them-don-hang',
     component: AddOrderComponent,
   },
   {
-    path: 'detail-order/:id',
+    path: 'chi-tiet-don-hang/:id',
     component: DetailOrderComponent,
   },
   {
-    path: 'payment-history',
+    path: 'lich-su-thanh-toan',
     component: PaymentHistoryComponent,
   },
 ]

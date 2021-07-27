@@ -9,7 +9,7 @@ const routes:Routes = [
     component: CommodityComponent
   },
   {
-    path:'detail-commodity/:id',
+    path:'chi-tiet-hang-hoa/:id',
     component: DetailCommodityComponent
   }
 
