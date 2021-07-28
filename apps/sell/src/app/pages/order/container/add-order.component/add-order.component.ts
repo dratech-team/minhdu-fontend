@@ -11,6 +11,7 @@ import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick
 import { selectAllCommodity } from '../../../commodity/+state/commodity.selector';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
+import { document } from 'ngx-bootstrap/utils';
 
 
 @Component({
@@ -33,19 +34,19 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    const btnOrder = document.getElementById('order');
+    btnOrder?.classList.add('btn-border');
+    document.getElementById('route').classList.remove('btn-border')
+    document.getElementById('customer').classList.remove('btn-border')
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
       explain: ['', Validators.required],
-      payType: ['', Validators.required],
-      paidTotal: ['', Validators.required],
-      paidAt: ['', Validators.required],
       ward: ['', Validators.required],
       district: ['', Validators.required],
       province: ['', Validators.required],
       nation: ['', Validators.required]
     });
   }
-
 
   pickCustomers() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
@@ -75,9 +76,6 @@ export class AddOrderComponent implements OnInit {
       createdAt: val.createdAt,
       explain: val.explain,
       destinationId: val.ward,
-      payType: val.payType ? val.payType : undefined,
-      paidTotal: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
-      paidAt: val.paidAt,
       customerId: this.customerId,
       commodityIds: this.commodityIds,
     };

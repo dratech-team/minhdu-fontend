@@ -25,13 +25,13 @@ import { DistrictAction } from 'libs/location/src/lib/+state/district/district.a
 export class OrderDialogComponent implements OnInit {
   nations$ = this.store.pipe(select(selectAllNation));
   provinces$ = this.store.pipe(select(selectProvincesByNationId(
-    this?.data?.ward?.district?.province?.nation?.id
+    this?.data?.order?.destination?.district?.province?.nation?.id
   )));
   districts$ = this.store.pipe(select(selectDistrictByProvinceId(
-    this?.data?.ward?.district?.province?.id
+    this?.data?.order?.destination?.district?.province?.id
   )));
   wards$ = this.store.pipe(select(selectorWardByDistrictId(
-    this?.data?.ward?.district?.id
+    this?.data?.order?.destination?.district?.id
   )));
   numberChars = new RegExp('[^0-9]', 'g');
   payType = PaymentType;
@@ -66,7 +66,11 @@ export class OrderDialogComponent implements OnInit {
         this?.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
       // currency: [this?.data?.order?.currency,Validators.required],
-      explain: [this?.data?.order?.explain, Validators.required]
+      explain: [this?.data?.order?.explain, Validators.required],
+      nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
+      province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],
+      district: [this?.data?.order?.destination?.district?.id, Validators.required],
+      ward: [this?.data?.order?.destination.id, Validators.required],
     });
   }
 
@@ -84,6 +88,7 @@ export class OrderDialogComponent implements OnInit {
       customerId: this.customerId,
       createdAt: new Date(val.createdAt),
       routes: this.routes,
+      destination: val.ward,
       // currency: val.currency,
       explain: val.explain
     };

@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Router } from '@angular/router';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -23,6 +24,10 @@ export  class RouteComponent implements OnInit{
   ) {
   }
   ngOnInit() {
+    const btnRoute = document.getElementById('route')
+    btnRoute?.classList.add('btn-border')
+    document.getElementById('customer').classList.remove('btn-border')
+    document.getElementById('order').classList.remove('btn-border')
     this.store.dispatch(RouteAction.loadInit({take:30, skip: 0}))
   }
   add(){

@@ -12,7 +12,7 @@ export class PickOrderService {
   ) {
   }
   loadInit(){
-    return this.store.dispatch(OrderAction.loadInit({take:30, skip: 0}))
+    return this.store.dispatch(OrderAction.loadInit({take:30, skip: 0 }))
   }
   scrollOrder(val: any){
     this.store.dispatch(OrderAction.loadMoreOrders(val));

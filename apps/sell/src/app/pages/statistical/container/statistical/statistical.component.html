@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class='row col-12 mt-5 d-flex justify-content-center ' >
+    <div class='row col-12 mt-5 d-flex  ' >
       <div [ngStyle]='{"width":statisticalProvince.length < 6? "33%": "100%"  }'
            class='d-flex flex-column  col-xm-12'>
         <div class='d-flex justify-content-sm-end'>
@@ -71,14 +71,14 @@
           >
           </app-vertical-bar-chart>
       </div>
-      <div class='d-flex flex-column col-md col-xm-12'>
+      <div class='d-flex flex-column col-md-4 col-xm-12'>
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.CHICKEN_TYPE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
         <span class='h4 ml-3'>Thống kê doanh thu theo loại gà</span>
         <app-pie-chart style='width: 100%; height: 400px' [data]='statisticalChicken'></app-pie-chart>
       </div>
-      <div class='d-flex flex-column col-md  col-xm-12'>
+      <div class='d-flex flex-column col-md-4  col-xm-12'>
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>

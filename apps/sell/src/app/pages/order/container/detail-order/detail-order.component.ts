@@ -8,6 +8,7 @@ import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   templateUrl:'detail-order.component.html',
@@ -25,6 +26,10 @@ export class DetailOrderComponent implements OnInit {
   ) {
   }
   ngOnInit() {
+    const btnOrder = document.getElementById('order');
+    btnOrder?.classList.add('btn-border');
+    document.getElementById('route').classList.remove('btn-border')
+    document.getElementById('customer').classList.remove('btn-border')
     this.store.dispatch(OrderAction.getOrder({id:this.getOrderId}))
   }
   get getOrderId():number{

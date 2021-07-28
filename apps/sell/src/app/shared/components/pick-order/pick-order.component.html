@@ -65,10 +65,10 @@
         <div class='content-profile col-3 pointer '  style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <a  routerLink="/order/payment-history"
+        <a  routerLink="/don-hang/lich-su-thanh-toan"
            [queryParams]='{data:order.paymentHistories|json}'
            target="_blank" class='btn content-profile col-2 pointer hover-link '  >
-          {{order.paymentHistories.length}}
+          {{order?.paymentHistories?.length}}
         </a>
         <input class='col-2'
                (change)='pickOneOrder()'

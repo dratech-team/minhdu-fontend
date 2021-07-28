@@ -50,7 +50,7 @@
     <mat-step [stepControl]="secondFormGroup"  [editable]="true">
     <app-pick-order
       [pickOne]='true'
-      [orders]='customer.orders'
+      [orders]='orders'
       (checkEventPickOne)='pickOrder($event)'
     ></app-pick-order>
       <button  class='btn btn-primary' matStepperPrevious>Back</button>

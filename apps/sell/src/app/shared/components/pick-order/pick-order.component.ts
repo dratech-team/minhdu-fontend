@@ -42,7 +42,6 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(!this.pickOne)
     if(this?.data?.orders$){
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
@@ -56,7 +55,6 @@ export class PickOrderComponent implements OnInit{
         this.assignIsSelect()
       })
     ).subscribe();
-
   }
 
   onScroll() {

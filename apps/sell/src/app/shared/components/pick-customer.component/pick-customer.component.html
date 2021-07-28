@@ -1,11 +1,11 @@
 <div class='container'>
-  <button (click)='addCustomer()' class='btn border ml-3 mt-2'>
+  <button (click)='addCustomer()' class='btn border ml-3 mt-2 d-flex align-items-center'>
     <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
-    <span class='h5' style='color:#20a8d8;'> Thêm khách hàng</span>
+    <span class='ml-1 font-xl' style='color:#20a8d8;'> Thêm khách hàng</span>
   </button>
   <div class='col-12 animated fadeIn'>
     <form [formGroup]='formGroup' class='header-profile mt-3 ' style='width: 101%;'>
-      <div class='border-start title-header col-3'>
+      <div class='border-start title-header col-4'>
         <div class='title-profile'>Tên Khách hàng</div>
         <input class='form-control input-profile'
                type='text'
@@ -21,7 +21,7 @@
           <option value=''>Tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-4'>
+      <div class='border-start title-header col-3'>
         <div class='title-profile'>Nguồn khách hàng</div>
         <select class='select' matNativeControl required formControlName='resource'>
           <option value='{{resourceType.RESEARCH}}'>Tra cứu</option>
@@ -54,19 +54,23 @@
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === undefined'> Chưa cập nhật</div>
-        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
-        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
-        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
-        <div class='content-profile  col-4 ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
-        <div class='content-profile  col-4 ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
-        <div class='content-profile col-1  pointer' >
+        <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
+        <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
+        <div class='content-profile  col-3 ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
+        <div class='content-profile col-2 pointer d-flex justify-content-center ' >
           <mat-checkbox  *ngIf='data.pickMore'
                         class='checkID'
                         [checked]='customer.isSelect ? customer.isSelect: false'
                         [(ngModel)]='customer.isSelect'
                         (ngModelChange)='updateAllSelect(customer.id)'>
           </mat-checkbox>
-          <input (change)='pickOneCustomer()' *ngIf='data.pickOne||pickOne' type="radio"  name="pick-one" value="{{customer.id}}">
+          <input
+            (change)='pickOneCustomer()'
+            *ngIf='data.pickOne||pickOne'
+            type="radio"  name="pick-one"
+            value="{{customer.id}}">
         </div>
       </div>
     </div>

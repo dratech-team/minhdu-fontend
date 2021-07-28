@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PaidType } from 'libs/enums/paidType.enum';
+import { document } from 'ngx-bootstrap/utils';
 
 
 @Component({
@@ -38,6 +39,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.getElementById('order').classList.add('btn-border')
+    document.getElementById('route').classList.remove('btn-border')
+    document.getElementById('customer').classList.remove('btn-border')
     this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

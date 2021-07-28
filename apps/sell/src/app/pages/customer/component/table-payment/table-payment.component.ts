@@ -33,8 +33,6 @@ export class TablePaymentComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-
-      console.log('customerId',this.customerId)
       this.paymentHistories$ = this.paymentService.getPayment()
       this.paymentService.loadInit(this.customerId)
       this.formGroup.valueChanges.pipe(

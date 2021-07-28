@@ -13,7 +13,7 @@ export const Api = {
   template_OVERTIME: 'overtime-template',
   holiday: 'holiday',
   CUSTOMER:'customer',
-  PAYMENT:'payment',
+  PAYMENT:'payment-history',
   COMMODITY:'commodity',
   ORDER: 'order',
   ROUTE: 'route',
