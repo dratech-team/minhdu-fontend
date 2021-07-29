@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
@@ -20,6 +20,7 @@ import { DevelopmentComponent } from '../../../../../../../../libs/components/sr
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
+
   orders: Order[] = [];
   formGroupOrder!: FormGroup;
   paidType =  PaidType;
@@ -61,7 +62,7 @@ export class DetailCustomerComponent implements OnInit {
 
   payment(id: number) {
     this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
+      width: '55%',
       data: { id: id }
     });
   }

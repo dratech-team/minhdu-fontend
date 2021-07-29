@@ -5,7 +5,7 @@ import { Payment } from './payment.interface';
 
 
 export const loadInit = createAction(
-  '[LOAD_CUSTOMER] Load Init',
+  '[LOAD_PAYMENT] Load Init',
   props<{
     skip: number,
     take: number,
@@ -23,7 +23,7 @@ export const loadMorePayment = createAction(
 );
 
 export const loadInitSuccess = createAction(
-  '[LOAD_CUSTOMER] Load Init Success',
+  '[LOAD_PAYMENT] Load Init Success',
   props<{ payments: Payment[] }>()
 );
 

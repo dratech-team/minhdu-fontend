@@ -8,27 +8,54 @@
   <form [formGroup]="formGroup" (submit)="onSubmit()">
     <mat-tab-group  dynamicHeight >
       <mat-tab class="col-12 " label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup' style='padding: 5% 15%'>
+        <div [formGroup]='formGroup' class='px-3' >
           <div class='form-group'>
-            <div class='row'>
+            <div class='row mt-2'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='name'>Tên tuyến đường<span class='star'>*</span>
                 </label>
-                <input type='text' class='form-control' id='name'  formControlName='name'>
+                <input
+                  type='text'
+                  class='form-control'
+                  id='name'
+                  formControlName='name'
+                  placeholder='Tuyến Bình Định - Hà Nội'
+                >
               </div>
-            </div>
-            <div class='row mt-2'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='driver'>Tên tài xế<span class='star'>*</span>
                 </label>
-                <input type='text' class='form-control' id='driver'  formControlName='driver'>
+                <input
+                  type='text'
+                  class='form-control'
+                  id='driver'
+                  formControlName='driver'
+                  placeholder='Trần Văn A'
+                >
               </div>
             </div>
+
             <div class='row mt-2'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='driver'>Tên nhà xe
                 </label>
-                <input type='text' class='form-control' id='garage'  formControlName='garage'>
+                <input
+                  type='text'
+                  class='form-control'
+                  id='garage'
+                  formControlName='garage'
+                  placeholder='nhà xe Phước Sơn'
+                >
+              </div>
+              <div class='col-sm' [formGroup]='formGroup'>
+                <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
+                <input
+                  class='form-control'
+                  formControlName='bsx'
+                  id='bsx'
+                  type='text'
+                  placeholder='77c-55555'
+                >
               </div>
             </div>
             <div class='row mt-3'>
@@ -41,8 +68,6 @@
                   type='date'
                 >
               </div>
-            </div>
-            <div class='row mt-3'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='endedAt'>Ngày Kết thúc</label><span class='star'>*</span>
                 <input
@@ -50,17 +75,6 @@
                   formControlName='endedAt'
                   id='endedAt'
                   type='date'
-                >
-              </div>
-            </div>
-            <div class='row mt-3'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='bsx'
-                  id='bsx'
-                  type='text'
                 >
               </div>
             </div>

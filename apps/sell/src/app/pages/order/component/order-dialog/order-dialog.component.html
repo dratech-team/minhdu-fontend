@@ -68,17 +68,14 @@
               </div>
               </div>
       </mat-tab>
-      <mat-tab class="col-12 " label="Chọn khách hàng">
-        <app-pick-customer [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>
-      </mat-tab>
-      <mat-tab class="col-12 " label="Chọn Tuyến đường">
-        <app-pick-routes  (checkEvent)='pickRoutes($event)'></app-pick-routes>
-      </mat-tab>
+<!--      <mat-tab class="col-12 " label="Chọn khách hàng">-->
+<!--        <app-pick-customer [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>-->
+<!--      </mat-tab>-->
     </mat-tab-group>
     <div class="footer-popup row ml-4">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
       <button  mat-dialog-close  (click)="onSubmit()" class="btn btn-ok ">Lưu</button>
-      <button type="button" class="btn  award"  data-toggle="tooltip"
+      <button type="button" class="btn award"  data-toggle="tooltip"
               data-placement="left"
               title="xóa">
       </button>

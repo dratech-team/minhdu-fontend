@@ -21,6 +21,7 @@ export class PaymentEffect {
       catchError((err) => throwError(err))
     )
   );
+
   loadMorePayment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.loadMorePayment),

@@ -15,7 +15,8 @@ export class TableRouteComponent implements OnInit{
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
-      createdAt: new FormControl(''),
+      startedAt: new FormControl(''),
+      endedAt: new FormControl(''),
       paidType: new FormControl('')
     });
   paidType = PaidType;
@@ -40,6 +41,8 @@ export class TableRouteComponent implements OnInit{
     return {
       take: pageSize,
       skip: pageSize* pageIndex++,
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
       customerId:this.orderId,
       paidType: val.paidType
     }
