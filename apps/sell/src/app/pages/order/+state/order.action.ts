@@ -13,7 +13,12 @@ export const addOrderSuccess = createAction(
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{ take: number, skip: number, paidType?: string, customerId?: number, routeId?: number }>()
+  props<{ take: number,
+    skip: number,
+    paidType?: string,
+    name?: string,
+    customerId?: number,
+    routeId?: number }>()
 );
 
 export const loadInitSuccess = createAction(
