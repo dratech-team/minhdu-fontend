@@ -25,13 +25,11 @@ export class SellLayoutComponent{
    this.dialog.open(DevelopmentComponent , {width:'25%'})
   }
 
-  changeTab() {
+  changeTab(event: any) {
    const btnHeader =document.getElementsByClassName('btn-header')
     for (let i = 0; i < btnHeader.length; i++) {
-      console.log(btnHeader[i].target)
-      if (!btnHeader[i].target ) {
         btnHeader[i].classList.remove('btn-border')
-      }
     }
+    event.classList.add('btn-border')
   }
 }

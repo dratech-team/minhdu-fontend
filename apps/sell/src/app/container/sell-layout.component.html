@@ -34,19 +34,19 @@
       </div>
     </div>
     <div class=' mt-2 ml-2 row hide-on-mobile '>
-      <button routerLink="#" id='home' (click)='changeTab()'  class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
+      <button routerLink="#" id='home' (click)='changeTab($event.target)'  class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
         <img class='m-1' src='../../assets/icon/sell-layout/house-door.svg' alt='home'>
         Bàn làm việc </button>
-      <button  id='customer' (click)='changeTab()'  routerLink="/khach-hang" class='button btn-header font-lg overflow-hidden d-flex align-items-center '>
+      <button  id='customer' (click)='changeTab($event.target)'  routerLink="/khach-hang" class='button btn-header font-lg overflow-hidden d-flex align-items-center '>
         <img class='m-1' src='../../assets/icon/sell-layout/building.svg' alt='home'>
         Khách hàng </button>
       <!--      <button routerLink="/commodity"  class='btn font-lg overflow-hidden d-flex align-items-center '>-->
       <!--        <img class='mr-1' src='../../assets/icon/sell-layout/box.svg' alt='home'>-->
       <!--        Hàng hóa </button>-->
-      <button id='order' (click)='changeTab()'  routerLink="/don-hang" class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
+      <button id='order' (click)='changeTab($event.target)'  routerLink="/don-hang" class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
         <img class='m-1' src='../../assets/icon/sell-layout/cart.svg' alt='home'>
         Đơn hàng</button>
-      <button  (click)='changeTab()' id='route'  routerLink="/tuyen-duong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>
+      <button  (click)='changeTab($event.target)' id='route'  routerLink="/tuyen-duong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>
         <img class='m-1' src='../../assets/icon/sell-layout/car.svg' alt='home'>
         Tuyến đường </button>
 <!--      <button routerLink="/bill"  class='btn  font-lg overflow-hidden d-flex align-items-center '>-->
