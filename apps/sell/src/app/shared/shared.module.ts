@@ -20,9 +20,9 @@ import { PickCustomerComponent } from './components/pick-customer.component/pick
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
 import { RouteReducer } from '../pages/route/container/+state/route.reducer';
-import { CustomerReducer } from '../pages/customer/+state/customer.reducer';
+import { CustomerReducer } from '../pages/customer/+state/customer/customer.reducer';
 import { CommodityReducer } from '../pages/commodity/+state/commodity.reducer';
-import { CustomerEffect } from '../pages/customer/+state/customer.effect';
+import { CustomerEffect } from '../pages/customer/+state/customer/customer.effect';
 import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
 import { RouteEffect } from '../pages/route/container/+state/route.effect';
 import { PickCustomerService } from './components/pick-customer.component/pick-customer.service';
@@ -30,6 +30,7 @@ import { PickCommodityService } from './components/pick-commodity/pick-commodity
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule
   ],
   declarations: [
+    TableOrdersComponent,
     PickOrderComponent,
     PickCommodityComponent,
     PickCustomerComponent,
@@ -72,6 +74,7 @@ import { MatSelectModule } from '@angular/material/select';
     PickRoutesService
   ],
   exports: [
+    TableOrdersComponent,
     PickCommodityComponent,
     PickOrderComponent,
     PickCustomerComponent,

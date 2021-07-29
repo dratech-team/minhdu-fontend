@@ -26,6 +26,9 @@ import { RouteReducer } from '../route/container/+state/route.reducer';
 import { RouteEffect } from '../route/container/+state/route.effect';
 import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
+import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
+import { TableRouteComponent } from './component/table-route/table-route.component';
+
 
 
 @NgModule({
@@ -51,6 +54,8 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule
   ],
   declarations: [
+    TableRouteComponent,
+    PaymentHistoryComponent,
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,

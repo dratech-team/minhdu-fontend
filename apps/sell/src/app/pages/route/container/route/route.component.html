@@ -1,39 +1,31 @@
-<div class='main-customer' style='width: 85%; margin-left: 7%;'>
+<div class='main-customer' style='width: 76%; margin-left: 12%;'>
   <div class='row h3 ml-3 mt-3'>Danh sách Tuyến đường</div>
   <div class='main-profile'>
     <button (click)='add()' class='btn btn-primary'>Thêm Tuyến đường</button>
     <div class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên Tuyến đường</div>
-        <input class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
+        <input [disabled]='true' class='form-control input-profile ' type='text' placeholder=''>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày bắt đầu</div>
-        <input class='form-control input-profile ' type='date'>
+        <input [disabled]='true' class='form-control input-profile ' type='date'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày Kết thúc</div>
-        <input class='form-control input-profile ' type='date'>
+        <input [disabled]='true' class='form-control input-profile ' type='date'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên Tài xế</div>
-        <input class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
+        <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Biển số xe</div>
-        <input class='form-control input-profile ' type='text' placeholder='77G1-55555'>
+        <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='77G1-55555'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Nhà xe</div>
-        <input class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>latitude</div>
-        <input class='form-control input-profile ' type='number'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>longitude</div>
-        <input class='form-control input-profile ' type='number'>
+        <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
       </div>
     </div>
 
@@ -51,7 +43,7 @@
         <app-mouse-right
           #child (addEvent)='add()'
           (deleteEvent)='deleteRoute($event)'
-          (readAndUpdateEvent)='readDetailRoute($event)'
+          (readAndUpdateEvent)='detailRoute($event)'
         >
         </app-mouse-right>
         <div class='content-profile name pointer '>{{route?.name}}</div>
@@ -72,8 +64,6 @@
           {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
         <div class='content-profile name pointer '>{{route?.bsx}}</div>
         <div class='content-profile name pointer '>{{route?.garage}}</div>
-        <div class='content-profile name pointer '>{{route?.latitude}}</div>
-        <div class='content-profile name pointer '>{{route?.longitude}}</div>
       </div>
     </div>
   </div>

@@ -25,7 +25,7 @@
       </mat-select>
     </div>
     <div class='col-sm' [formGroup]='formGroup' >
-      <label for='district'>QUận/Huyện <span class='star'>*</span></label>
+      <label for='district'>Quận/Huyện <span class='star'>*</span></label>
       <mat-select id='district' class='form-control' formControlName='district'>
         <mat-option *ngFor='let district of districts' [value]='district.id' (click)='onDistrict(district)'>
           {{district.name}}

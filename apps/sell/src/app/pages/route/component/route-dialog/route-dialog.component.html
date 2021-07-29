@@ -1,4 +1,4 @@
-<div class="px-5 py-3 main-popup">
+<div class="px-2 py-3 main-popup">
   <div mat-dialog-close class="close-popup">
     <span class="mr-1"> close</span>
     <div class="x-popup">
@@ -8,7 +8,7 @@
   <form [formGroup]="formGroup" (submit)="onSubmit()">
     <mat-tab-group  dynamicHeight >
       <mat-tab class="col-12 " label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup'>
+        <div [formGroup]='formGroup' style='padding: 5% 15%'>
           <div class='form-group'>
             <div class='row'>
               <div class='col-sm' [formGroup]='formGroup'>
@@ -22,6 +22,13 @@
                 <label for='driver'>Tên tài xế<span class='star'>*</span>
                 </label>
                 <input type='text' class='form-control' id='driver'  formControlName='driver'>
+              </div>
+            </div>
+            <div class='row mt-2'>
+              <div class='col-sm' [formGroup]='formGroup'>
+                <label for='driver'>Tên nhà xe
+                </label>
+                <input type='text' class='form-control' id='garage'  formControlName='garage'>
               </div>
             </div>
             <div class='row mt-3'>
@@ -46,28 +53,6 @@
                 >
               </div>
             </div>
-            <div *ngIf='data' class='row mt-3'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='latitude'>Vĩ độ</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='latitude'
-                  id='latitude'
-                  type='number'
-                >
-              </div>
-            </div>
-            <div *ngIf='data'  class='row mt-3'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='longitude'>Kinh độ</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='longitude'
-                  id='longitude'
-                  type='number'
-                >
-              </div>
-            </div>
             <div class='row mt-3'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
@@ -82,10 +67,11 @@
           </div>
         </div>
       </mat-tab>
-<!--      <mat-tab class="col-12 " label="Chọn nhân viên">-->
-<!--        <app-pick-employee [pickOne]='true' (checkEventPickOne)='pickEmployees($event)'></app-pick-employee>-->
-<!--      </mat-tab>-->
+      <mat-tab class="col-12 " label="Chọn đơn hàng">
+        <app-pick-order [orders]='orders' (checkEvent)='pickOrders($event)'></app-pick-order>
+      </mat-tab>
     </mat-tab-group>
+
     <div class="footer-popup row ml-4 mt-3">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
       <button type="submit" mat-dialog-close class="btn btn-ok ">Lưu</button>

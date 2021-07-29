@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer, selectorCurrentCustomer } from '../../+state/customer.selector';
+import { selectorAllCustomer } from '../../+state/customer/customer.selector';
 import { AppState } from '../../../../reducers';
-import { CustomerAction } from '../../+state/customer.action';
+import { CustomerAction } from '../../+state/customer/customer.action';
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,9 +10,9 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { Order } from '../../../order/+state/order.interface';
+import { PageTypeEnum } from 'libs/enums/page-type.enum';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -41,12 +41,14 @@ export class CustomerComponent implements OnInit {
     private readonly dialog : MatDialog,
   ) {
   }
+
   customers$ = this.store.pipe(select(selectorAllCustomer));
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
+        console.log(val.isPotential);
         this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0 )));
       })
     ).subscribe()
@@ -66,7 +68,8 @@ export class CustomerComponent implements OnInit {
         skip: pageSize * pageIndex++,
         take: this.pageSize,
         resource: val.resource ,
-        isPotential: val.isPotential ,
+        isPotential: val.isPotential === 'true'? 1 :
+          val.isPotential === 'false'? 0 : val.isPotential,
         customerType: val.customerType ,
         nationId: val.nationId ,
         phone: val.phone ,
@@ -74,7 +77,7 @@ export class CustomerComponent implements OnInit {
       };
   }
   readAndUpdate($event?: any) {
-    this.router.navigate(['customer/detail-customer', $event.id]).then();
+    this.router.navigate(['khach-hang/chi-tiet-khach-hang', $event.id]).then();
   }
   deleteCustomer($event: any){
     const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%',})

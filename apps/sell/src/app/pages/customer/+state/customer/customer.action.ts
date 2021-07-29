@@ -14,11 +14,12 @@ export const loadInit = createAction(
     take: number,
     type?: string,
     resource?: string,
-    isPotential?: boolean,
-    phone?:number,
-    nationId?:number,
+    isPotential?: number,
+    phone?: number,
+    nationId?: number,
   }>()
 );
+
 
 export const loadInitSuccess = createAction(
   '[LOAD_CUSTOMER] Load Init Success',
@@ -32,15 +33,15 @@ export const loadMoreCustomers = createAction(
     take: number,
     type?: string,
     resource?: string,
-    isPotential?: boolean,
-    phone?:number,
-    nationId?:number,
+    isPotential?: number,
+    phone?: number,
+    nationId?: number,
   }>()
 );
 
 export const loadCustomersSuccess = createAction(
   '[LOAD_MORE_CUSTOMER] Load More Customer Success',
-  props<{ customers: Customer[]}>()
+  props<{ customers: Customer[] }>()
 );
 
 export const getCustomer = createAction(
@@ -58,10 +59,6 @@ export const updateCustomer = createAction(
   props<{ customer: any, id: number }>()
 );
 
-export const payment = createAction(
-  '[PAYMENT] Customer Payment',
-  props<{ infoPayment: any, id: number }>()
-);
 
 export const deleteCustomer = createAction(
   '[DELETE_CUSTOMER] Delete Customer',
@@ -69,7 +66,6 @@ export const deleteCustomer = createAction(
 );
 
 export const CustomerAction = {
-  payment,
   addCustomer,
   loadInit,
   loadInitSuccess,
@@ -78,6 +74,6 @@ export const CustomerAction = {
   getCustomer,
   getCustomerSuccess,
   updateCustomer,
-  deleteCustomer,
-}
+  deleteCustomer
+};
 

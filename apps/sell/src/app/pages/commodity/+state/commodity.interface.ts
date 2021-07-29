@@ -14,5 +14,8 @@ export interface Commodity{
   orders :Order[]
   isSelect:boolean;
   gift:number;
-  more: number,
+  more: {
+    amount: number,
+    price: number,
+  },
 }

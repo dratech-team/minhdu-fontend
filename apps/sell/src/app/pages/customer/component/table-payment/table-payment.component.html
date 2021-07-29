@@ -1,0 +1,73 @@
+<form [formGroup]='formGroup' class='main-profile col-12' style='width: 100%'>
+    <div class='header-profile mt-3 animated fadeIn'>
+
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Ngày Thanh toán</div>
+        <input
+          formControlName='paidAt'
+          class='form-control input-profile '
+          type='date'>
+      </div>
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Số thanh toán</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Đơn vị</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header col-2'>
+        <div class='title-profile'>Loại thanh toán</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header col-4'>
+        <div class='title-profile'>Chú thích</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+    </div>
+
+    <div class='  animated fadeIn'
+         style='width: 100%;
+         max-height: 32vh;
+          overflow-y: scroll;
+          '
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(paymentHistories$| async) as paymentHistories'
+    >
+      <div class='row-content' *ngFor='let paymentHistory of paymentHistories'>
+        <div class='content-profile col-2 pointer ' >
+          {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile col-2 pointer ' *ngIf='paymentHistory?.payType === payType.CASH' >
+          Tiền mặt
+        </div>
+        <div class='content-profile col-2 pointer ' *ngIf='paymentHistory?.payType === payType.TRANSFER' >
+          Chuyển khoản
+        </div>
+        <div class='content-profile col-2 pointer ' >
+          {{paymentHistory.total|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile col-2 pointer ' >
+          {{paymentHistory.note}}
+        </div>
+      </div>
+    </div>
+  </form>
+
+

@@ -2,27 +2,15 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from 'apps/sell/src/app/reducers';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer.action';
-import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
-import {
-  selectAllNation, selectDistrictByProvinceId, selectorWardByDistrictId, selectProvincesByNationId
-} from '@minhdu-fontend/location';
-import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
-import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
-import { DistrictAction } from '../../../../../../../../libs/location/src/lib/+state/district/district.action';
-import { WardAction } from '../../../../../../../../libs/location/src/lib/+state/ward/ward.action';
-
+import { CustomerAction } from '../../+state/customer/customer.action';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
 })
 export class CustomerDialogComponent implements OnInit {
-  provinces?: Province [];
-  districts?: District [];
-  wards?: Ward [];
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
@@ -43,7 +31,7 @@ export class CustomerDialogComponent implements OnInit {
       birthplace: [this?.data?.birthplace, Validators.required],
       idCardAt: [
         this.datePipe.transform(
-          this?.data?.employee?.idCardAt, 'yyyy-MM-dd'
+          this?.data?.idCardAt, 'yyyy-MM-dd'
         )
         , Validators.required],
       email: [this?.data?.email, Validators.required],
@@ -73,24 +61,24 @@ export class CustomerDialogComponent implements OnInit {
   onSubmit() {
     const value = this.formGroup.value;
     const customer = {
-      firstName: value.firstName,
-      lastName: value.lastName,
+      firstName: value.firstName ? value.firstName : undefined,
+      lastName: value.lastName ? value.lastName : undefined,
       identify: value.identify.toString(),
       gender: value.gender,
       phone: value.phone,
       issuedBy: value.issuedBy,
-      birthday: new Date(value.birthday),
+      birthday: value.birthday,
       birthplace: value.birthplace,
-      idCardAt: new Date(value.idCardAt),
+      idCardAt: value.idCardAt,
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: value.ward ? value.ward : 1,
+      wardId: value.ward ? value.ward : undefined,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
       religion: value.religion ? value.religion : undefined,
-      isPotential: value.isPotential
+      isPotential: value.isPotential ? value.isPotential : undefined
     };
     if (this.data) {
       this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.id }));
@@ -99,19 +87,6 @@ export class CustomerDialogComponent implements OnInit {
     }
 
   }
-
-  onNation(nation: Nation) {
-    this.provinces = nation.provinces;
-  }
-
-  onProvince(province: Province) {
-    this.districts = province.districts;
-  }
-
-  onDistrict(district: District) {
-    this.wards = district.wards;
-  }
-
 }
 
 

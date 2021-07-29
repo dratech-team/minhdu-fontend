@@ -4,46 +4,47 @@
     <div class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header name'>
         <div class='title-profile'>Khách hàng</div>
-        <input class='form-control input-profile ' type='search'>
+        <input class='form-control input-profile ' [disabled]='true' type='search'>
       </div>
       <div class='border-start title-header default   '>
         <div class='title-profile'>Thanh toán</div>
-        <input type='checkbox' class='form-control input-profile' style='margin-left: 43%'>
+        <input type='checkbox' class='form-control input-profile' [disabled]='true' style='margin-left: 43%'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày tạo</div>
-        <input class='form-control input-profile ' type='date'>
+        <input class='form-control input-profile ' type='date' [disabled]='true'>
       </div>
       <div class='border-start title-header address'>
         <div class='title-profile'>Diễn giải</div>
-        <input class='form-control input-profile ' type='text'>
+        <input class='form-control input-profile ' type='text' [disabled]='true'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Công nợ</div>
-        <input class='form-control input-profile ' type='number'>
+        <input class='form-control input-profile ' [disabled]='true' type='number'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị tiền</div>
-        <select class='select' matNativeControl required>
+        <select class='select' matNativeControl required  [disabled]='true'>
+          <option value='{{currencyUnit.VND}}'>VND</option>
           <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>
           <option value='{{currencyUnit.EUR}}'>Euro</option>
           <option value='{{currencyUnit.GBP}}'>Bảng anh</option>
           <option value='{{currencyUnit.MMK}}'>Kyat</option>
           <option value='{{currencyUnit.MYR}}'>Ringgit</option>
           <option value='{{currencyUnit.USD}}'>Đô la</option>
-          <option value='{{currencyUnit.VND}}'>VND</option>
+
         </select>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Loại thanh toán</div>
-        <select class='select' matNativeControl required>
+        <select class='select' matNativeControl required [disabled]='true'>
           <option value='{{payType.CASH}}'>Tiền mặt</option>
           <option value='{{payType.TRANSFER}}'>Chuyển khoản</option>
         </select>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tổng thanh toán</div>
-        <input class='form-control input-profile ' type='number'>
+        <input class='form-control input-profile ' [disabled]='true' type='number'>
       </div>
     </div>
 

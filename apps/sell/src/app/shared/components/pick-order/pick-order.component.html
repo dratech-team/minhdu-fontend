@@ -1,5 +1,5 @@
 <div class='container'>
-  <div class='col-12 animated fadeIn'>
+  <div class=' animated fadeIn' style='width: 102%'>
     <form [formGroup]='formGroup' class='header-profile mt-3 '>
       <div class='border-start title-header col-3'>
         <div class='title-profile'>Ngày tạo</div>
@@ -10,14 +10,14 @@
                formControlName='createdAt'
         >
       </div>
-      <div class='border-start title-header col-4'>
+      <div class='border-start title-header col-2'>
         <div class='title-profile'>Công nợ</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-4'>
+      <div class='border-start title-header col-3'>
         <div class='title-profile'>Tổng thanh toán</div>
         <select class='select'  formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
@@ -25,10 +25,18 @@
           <option value=''>tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-1  '>
-        <div class='title-profile'>All</div>
-        <mat-checkbox *ngIf='data.pickMore'
-                      class='example-margin mt-2 ml-3'
+      <div class='border-start title-header col-2' style='overflow: hidden'>
+        <div class='title-profile'>lần thanh toán</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile'>Tất cả</div>
+        <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
+                      class='example-margin mt-2 ml'
+                      style='margin-left: 42%'
                       [checked]='isSelectAll'
                       [indeterminate]="someComplete()"
                       (change)='setAll($event.checked)'>
@@ -36,7 +44,7 @@
       </div>
 
     </form>
-    <div class='outer '
+    <div class='outer example'
          style='width: 101%; height: 50vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
@@ -48,24 +56,30 @@
         <div class='content-profile col-3 pointer ' *ngIf='order?.createdAt!== null'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </div>
-        <div class='content-profile col-4 pointer ' *ngIf='order?.createdAt=== null' >
+        <div class='content-profile col-3 pointer ' *ngIf='order?.createdAt=== null' >
           Đang cập nhật
         </div>
-        <div class='content-profile col-4 pointer '  style='color: #f86c6b'>
+        <div class='content-profile col-2 pointer '  style='color: #f86c6b'>
           {{order.debt|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div class='content-profile col-4 pointer '  style='color: #20c997'>
+        <div class='content-profile col-3 pointer '  style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <input class='col-1'
+        <a  routerLink="/order/payment-history"
+           [queryParams]='{data:order.paymentHistories|json}'
+           target="_blank" class='btn content-profile col-2 pointer hover-link '  >
+          {{order.paymentHistories.length}}
+        </a>
+        <input class='col-2'
                (change)='pickOneOrder()'
-               *ngIf='data.pickOne||pickOne'
+               *ngIf='data?.pickOne||pickOne'
                type="radio"
                name="pick-one" value="{{order.id}}"
         >
-        <div class='content-profile col-1  pointer' >
-          <mat-checkbox  *ngIf='data.pickMore'
+        <div class=' col-2  pointer' >
+          <mat-checkbox  *ngIf='!pickOne||data?.pickMore'
                          class='checkID'
+                         style='margin-left: 42%'
                          [checked]='order.isSelect ? order.isSelect: false'
                          [(ngModel)]='order.isSelect'
                          (ngModelChange)='updateAllSelect(order.id)'>
@@ -73,7 +87,7 @@
         </div>
       </div>
     </div>
-    <button *ngIf='data.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
+    <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
   </div>
 </div>
 

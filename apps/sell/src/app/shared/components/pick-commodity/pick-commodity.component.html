@@ -3,21 +3,23 @@
     <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
     <span class='h5' style='color:#20a8d8;'> Thêm hàng hóa</span>
   </button>
-  <div class=' animated fadeIn'>
-    <form [formGroup]='formGroup' class='header-profile mt-3' style='width: 100%'>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Mã hàng hóa</div>
-        <input class='form-control input-profile'
-               type='text'
-               placeholder='PN10001'
-               formControlName='code'
+  <div class=' animated fadeIn' >
+    <form [formGroup]='formGroup' class='header-profile mt-3' style='width: 101%;'>
+      <div class='border-start title-header col-1'>
+        <div class='title-profile'>Mã hàng </div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile'
+          type='text'
+          placeholder='PN10001'
+          formControlName='code'
         >
       </div>
       <div class='border-start title-header col-2'>
-        <div class='title-profile'>Tên Hàng hàng</div>
-        <input class='form-control input-profile'
+        <div class='title-profile'>Tên Hàng hóa </div>
+        <input [disabled]='true' class='form-control input-profile'
+
                type='text'
-               placeholder='PN10001'
                formControlName='name'
         >
       </div>
@@ -29,8 +31,9 @@
         </select>
       </div>
       <div class='border-start title-header col-2'>
-        <div class='title-profile'>Giá</div>
+        <div class='title-profile'>Giá trước KM</div>
         <input class='form-control input-profile'
+               [disabled]='true'
                type='number'
                placeholder='PN10001'
                formControlName='price'
@@ -50,21 +53,27 @@
         >
       </div>
       <div class='border-start title-header col-1'>
-        <div class='title-profile'>Mức KM</div>
+        <div class='title-profile'>Mua thêm</div>
+        <input class='form-control input-profile'
+               type='number'
+        >
+      </div>
+      <div class='border-start title-header col-1'>
+        <div class='title-profile'>Giá sau KM</div>
         <input class='form-control input-profile'
                type='number'
         >
       </div>
       <div class='border-start title-header col-1  '>
-        <div class='title-profile'>All</div>
+        <div class='title-profile'>Tất cả</div>
         <mat-checkbox class='example-margin mt-2 ' style='margin-left: 40%'
                       [checked]='isSelectAll'
-                      [indeterminate]="someComplete()"
+                      [indeterminate]='someComplete()'
                       (change)='setAll($event.checked)'>
         </mat-checkbox>
       </div>
     </form>
-    <div class='outer '
+    <div class='outer example '
          style='width: 101%; height: 50vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
@@ -73,14 +82,15 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let commodity of commodities'>
-        <div class='content-profile col-2  pointer'>{{commodity.code}} </div>
+        <div class='content-profile col-1  pointer'>{{commodity.code}} </div>
         <div class='content-profile col-2  pointer'>{{commodity.name}} </div>
         <div class='content-profile  col-1 ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</div>
         <div class='content-profile  col-1 ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
         <div class='content-profile col-2  pointer'>{{commodity.price}} </div>
         <div class='content-profile col-2  pointer'>{{commodity.amount}} </div>
         <div class='content-profile col-1  pointer'>{{commodity.gift}} </div>
-        <div class='content-profile col-1  pointer'>{{commodity.more}} </div>
+        <div class='content-profile col-1  pointer'>{{commodity.more.amount}} </div>
+        <div class='content-profile col-1  pointer'>{{commodity.more.price}} </div>
         <div class='content-profile col-1  pointer'>
           <mat-checkbox class='checkID'
                         [checked]='commodity.isSelect ? commodity.isSelect: false'
