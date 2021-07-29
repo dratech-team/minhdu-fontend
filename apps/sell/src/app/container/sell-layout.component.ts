@@ -29,6 +29,7 @@ export class SellLayoutComponent{
    const btnHeader =document.getElementsByClassName('btn-header')
     for (let i = 0; i < btnHeader.length; i++) {
         btnHeader[i].classList.remove('btn-border')
+        btnHeader[i].children.classList.remove('btn-border')
     }
     event.classList.add('btn-border')
   }
