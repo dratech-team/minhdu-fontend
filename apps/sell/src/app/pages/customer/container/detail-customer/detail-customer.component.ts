@@ -62,7 +62,7 @@ export class DetailCustomerComponent implements OnInit {
 
   payment(id: number) {
     this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
+      width: '55%',
       data: { id: id }
     });
   }

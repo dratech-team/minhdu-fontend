@@ -94,7 +94,7 @@ export class CustomerComponent implements OnInit {
 
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
+      width: '55%',
       data: { id: $event.id }
     });
   }
