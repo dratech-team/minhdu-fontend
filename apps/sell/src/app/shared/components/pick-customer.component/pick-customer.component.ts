@@ -14,6 +14,7 @@ import { CustomerDialogComponent } from '../../../pages/customer/component/custo
   templateUrl: 'pick-customer.component.html'
 })
 export class PickCustomerComponent implements OnInit {
+  @Input() customers: Customer[] = [];
   @Input() pickOne = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
@@ -23,7 +24,6 @@ export class PickCustomerComponent implements OnInit {
   pageIndex: number = 1;
   pageSize: number = 30;
   isSelectAll: boolean = false;
-  customers: Customer[] = [];
   customerIds: number[] = [];
   formGroup = new FormGroup(
     {
