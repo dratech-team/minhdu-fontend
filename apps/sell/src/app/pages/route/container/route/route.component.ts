@@ -32,7 +32,7 @@ export  class RouteComponent implements OnInit{
   }
   add(){
     this.dialog.open(RouteDialogComponent, {
-      width: '50%',
+      width: '55%',
     })
   }
   onScroll(){
