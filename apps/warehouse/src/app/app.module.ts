@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './container/app.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -23,11 +23,18 @@ import { AppliancesModule } from './child-dashboard/appliances-dashboard/applian
 import { MainDashboardModule } from './child-dashboard/main-dashboard/main-dashboard.module';
 import { ProductModule } from './child-dashboard/Product -dashboard/product.module';
 import { PoultryFoodModule } from './child-dashboard/poultry-food-dashboard/poultry-food.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { WarehouseModule } from './shared/warehouse/warehouse.module';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    MatSnackBarModule,
+    HttpClientModule,
+    WarehouseModule,
     CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -37,6 +44,8 @@ import { PoultryFoodModule } from './child-dashboard/poultry-food-dashboard/poul
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ }, {}),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,

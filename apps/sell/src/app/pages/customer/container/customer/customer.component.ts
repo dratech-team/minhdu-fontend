@@ -41,7 +41,6 @@ export class CustomerComponent implements OnInit {
     private readonly dialog : MatDialog,
   ) {
   }
-
   customers$ = this.store.pipe(select(selectorAllCustomer));
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
