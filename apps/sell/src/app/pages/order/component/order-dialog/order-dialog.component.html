@@ -1,4 +1,4 @@
-<div class="px-5 py-3 main-popup">
+<div class=" py-3 main-popup">
   <div mat-dialog-close class="close-popup">
     <span class="mr-1"> close</span>
     <div class="x-popup">
@@ -7,17 +7,15 @@
   </div>
   <form [formGroup]="formGroup" >
     <mat-tab-group dynamicHeight >
-       <mat-tab class="col-12 " label='Thông tin đơn hàng'>
-            <div [formGroup]='formGroup' >
-              <div class='form-group'>
+       <mat-tab class="col-12  " label='Thông tin đơn hàng' >
+            <div [formGroup]='formGroup'  style='height: 30vh'>
+              <div class='form-group' style='margin: 5% 10%'>
                 <div class='row'>
                   <div class='col-sm' [formGroup]='formGroup'>
                     <label for='createdAt'>Ngày tạo đơn hàng<span class='star'>*</span>
                     </label>
-                    <input type='date' class='form-control' id='createdAt'  formControlName='createdAt'>
+                    <input type='date' class='form-control' id='createdAt' readonly='readonly'  formControlName='createdAt' >
                   </div>
-                </div>
-                <div class='row mt-3'>
                   <div class='col-sm' [formGroup]='formGroup'>
                     <label for='explain'>Diễn giải<span class='star'>*</span></label>
                     <input type='text' class='form-control' id='explain' formControlName='explain'>
@@ -68,8 +66,16 @@
               </div>
               </div>
       </mat-tab>
-      <mat-tab class="col-12 " label="Chọn khách hàng">
-        <app-pick-customer [customers]='customers'  [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>
+      <mat-tab class="col-12  " label="Chọn khách hàng">
+        <div class='mt-2'>
+          <app-pick-customer [customers]='customers'  [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>
+        </div>
+      </mat-tab>
+      <mat-tab class="col-12 pt-2 " label="Chọn hàng hóa">
+        <div class='mt-2'>
+          <app-pick-commodity [commodities]='commodities'  (checkEvent)='pickCommodity($event)'></app-pick-commodity>
+        </div>
+
       </mat-tab>
     </mat-tab-group>
     <div class="footer-popup row ml-4">

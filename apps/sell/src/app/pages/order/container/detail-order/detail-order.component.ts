@@ -36,7 +36,7 @@ export class DetailOrderComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
   updateOrder(order:Order){
-    this.dialog.open(OrderDialogComponent, {width: '40%', data:{order:order, type:"UPDATE"}})
+    this.dialog.open(OrderDialogComponent, {width: '70%', data:{order:order, type:"UPDATE"}})
   }
 
   detailRoute(id: number) {
