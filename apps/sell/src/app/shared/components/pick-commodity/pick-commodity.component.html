@@ -90,11 +90,15 @@
         </div>
         <div class='content-profile default  pointer'>{{commodity.code}} </div>
         <div class='content-profile name  pointer'>{{commodity.name}} </div>
-        <div class='content-profile default  pointer'>{{commodity.price}} </div>
-        <div class='content-profile default  pointer'>{{commodity.amount}} </div>
-        <div class='content-profile default  pointer'>{{commodity.gift}} </div>
-        <div class='content-profile default  pointer'>{{commodity.more.amount}} </div>
-        <div class='content-profile default  pointer'>{{commodity.more.price}} </div>
+        <div class='content-profile default  pointer'>
+          {{commodity.price|number:'1.0'|notEmpty:'0'}} đ
+          </div>
+        <div class='content-profile default  pointer'>{{commodity.amount|number :'1.0'}} </div>
+        <div class='content-profile default  pointer'>{{commodity.gift|number :'1.0'}} </div>
+        <div class='content-profile default  pointer'>{{commodity.more.amount|number :'1.0'}} </div>
+        <div class='content-profile default  pointer'>
+          {{commodity.more.price|number:'1.0'|notEmpty:'0'}} đ
+        </div>
         <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</div>
         <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
       </div>
