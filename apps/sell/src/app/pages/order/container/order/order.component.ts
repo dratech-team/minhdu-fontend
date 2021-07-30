@@ -63,9 +63,10 @@ export class OrderComponent implements OnInit {
 
   order(val: any, pageSize: number, pageIndex: number) {
     return {
-      skip: pageIndex * pageIndex++,
-      take: pageIndex,
-      paidType: val.paidType
+      skip: pageSize * pageIndex++,
+      take: pageSize,
+      paidType: val.paidType,
+      customer: val.name
     };
   }
 

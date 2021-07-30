@@ -17,6 +17,7 @@ import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action'
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
+import { Customer } from '../../../customer/+state/customer/customer.interface';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class OrderDialogComponent implements OnInit {
   customerId: number | undefined;
   formGroup!: FormGroup;
   routes: number[] = [];
+  customers: Customer[] = [];
   provinces?: Province [];
   districts?: District [];
   wards?: Ward [];
@@ -65,7 +67,6 @@ export class OrderDialogComponent implements OnInit {
       createdAt: [this.datePipe.transform(
         this?.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
-      // currency: [this?.data?.order?.currency,Validators.required],
       explain: [this?.data?.order?.explain, Validators.required],
       nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
       province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],

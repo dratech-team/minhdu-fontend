@@ -68,9 +68,9 @@
               </div>
               </div>
       </mat-tab>
-<!--      <mat-tab class="col-12 " label="Chọn khách hàng">-->
-<!--        <app-pick-customer [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>-->
-<!--      </mat-tab>-->
+      <mat-tab class="col-12 " label="Chọn khách hàng">
+        <app-pick-customer [customers]='customers'  [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>
+      </mat-tab>
     </mat-tab-group>
     <div class="footer-popup row ml-4">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>

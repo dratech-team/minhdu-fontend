@@ -13,7 +13,12 @@ export const addOrderSuccess = createAction(
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{ take: number, skip: number, paidType?: string, customerId?: number, routeId?: number }>()
+  props<{ take: number,
+    skip: number,
+    paidType?: string,
+    customer?: string,
+    customerId?: number,
+    routeId?: number }>()
 );
 
 export const loadInitSuccess = createAction(
@@ -23,7 +28,13 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
-  props<{ take: number, skip: number,paidType?: string, customerId?:number, routeId?: number }>()
+  props<{ take: number,
+    skip: number,
+    paidType?: string,
+    customerId?:number,
+    routeId?: number,
+    customer?: string,
+  }>()
 );
 
 export const loadMoreOrdersSuccess = createAction(
