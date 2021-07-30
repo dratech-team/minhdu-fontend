@@ -3,9 +3,17 @@
     <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
     <span class='ml-1 font-xl' style='color:#20a8d8;'> Thêm hàng hóa</span>
   </button>
-  <div class=' animated fadeIn' >
-    <form [formGroup]='formGroup' class='header-profile mt-3' style='width: 101%;'>
-      <div class='border-start title-header col-1'>
+  <div class=' animated fadeIn '  style='overflow-x: scroll '>
+    <form [formGroup]='formGroup' class='header-profile mt-3' >
+      <div class='border-start title-header pick '>
+        <div class='title-profile'>Tất cả</div>
+        <mat-checkbox class='example-margin mt-2 ml-1 '
+                      [checked]='isSelectAll'
+                      [indeterminate]='someComplete()'
+                      (change)='setAll($event.checked)'>
+        </mat-checkbox>
+      </div>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Mã hàng </div>
         <input
           [disabled]='true'
@@ -15,22 +23,14 @@
           formControlName='code'
         >
       </div>
-      <div class='border-start title-header col-2'>
+      <div class='border-start title-header name'>
         <div class='title-profile'>Tên Hàng hóa </div>
         <input [disabled]='true' class='form-control input-profile'
-
                type='text'
                formControlName='name'
         >
       </div>
-      <div class='border-start title-header col-1'>
-        <div class='title-profile'>Đơn vị</div>
-        <select class='select' matNativeControl required formControlName='unit'>
-          <option value='{{commodityUnit.KG}}'>Kilogam</option>
-          <option value='{{commodityUnit.CON}}'>Con</option>
-        </select>
-      </div>
-      <div class='border-start title-header col-2'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Giá trước KM</div>
         <input class='form-control input-profile'
                [disabled]='true'
@@ -39,42 +39,41 @@
                formControlName='price'
         >
       </div>
-      <div class='border-start title-header col-2'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Số lượng</div>
         <input class='form-control input-profile'
                type='number'
                formControlName='amount'
         >
       </div>
-      <div class='border-start title-header col-1'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Khuyến mãi</div>
         <input class='form-control input-profile'
                type='number'
         >
       </div>
-      <div class='border-start title-header col-1'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Mua thêm</div>
         <input class='form-control input-profile'
                type='number'
         >
       </div>
-      <div class='border-start title-header col-1'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Giá sau KM</div>
         <input class='form-control input-profile'
                type='number'
         >
       </div>
-      <div class='border-start title-header col-1  '>
-        <div class='title-profile'>Tất cả</div>
-        <mat-checkbox class='example-margin mt-2 ' style='margin-left: 40%'
-                      [checked]='isSelectAll'
-                      [indeterminate]='someComplete()'
-                      (change)='setAll($event.checked)'>
-        </mat-checkbox>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Đơn vị</div>
+        <select class='select' matNativeControl required formControlName='unit'>
+          <option value='{{commodityUnit.KG}}'>Kilogam</option>
+          <option value='{{commodityUnit.CON}}'>Con</option>
+        </select>
       </div>
     </form>
     <div class='outer example '
-         style='width: 101%; height: 50vh'
+         style='height: 48vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
@@ -82,26 +81,26 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let commodity of commodities'>
-        <div class='content-profile col-1  pointer'>{{commodity.code}} </div>
-        <div class='content-profile col-2  pointer'>{{commodity.name}} </div>
-        <div class='content-profile  col-1 ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</div>
-        <div class='content-profile  col-1 ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
-        <div class='content-profile col-2  pointer'>{{commodity.price}} </div>
-        <div class='content-profile col-2  pointer'>{{commodity.amount}} </div>
-        <div class='content-profile col-1  pointer'>{{commodity.gift}} </div>
-        <div class='content-profile col-1  pointer'>{{commodity.more.amount}} </div>
-        <div class='content-profile col-1  pointer'>{{commodity.more.price}} </div>
-        <div class='content-profile col-1  pointer'>
+        <div class='content-profile pick  pointer'>
           <mat-checkbox class='checkID'
                         [checked]='commodity.isSelect ? commodity.isSelect: false'
                         [(ngModel)]='commodity.isSelect'
                         (ngModelChange)='updateAllSelect(commodity.id)'>
           </mat-checkbox>
         </div>
+        <div class='content-profile default  pointer'>{{commodity.code}} </div>
+        <div class='content-profile name  pointer'>{{commodity.name}} </div>
+        <div class='content-profile default  pointer'>{{commodity.price}} </div>
+        <div class='content-profile default  pointer'>{{commodity.amount}} </div>
+        <div class='content-profile default  pointer'>{{commodity.gift}} </div>
+        <div class='content-profile default  pointer'>{{commodity.more.amount}} </div>
+        <div class='content-profile default  pointer'>{{commodity.more.price}} </div>
+        <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</div>
+        <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
       </div>
     </div>
-    <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>
   </div>
+  <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>
 </div>
 
 
