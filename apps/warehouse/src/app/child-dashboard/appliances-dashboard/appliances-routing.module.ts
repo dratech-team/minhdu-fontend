@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { ApplianceComponent } from './container/appliance.component';
+import { ApplianceComponent } from './container/appliance-warhouse/appliance.component';
 
 const routes: Routes = [
   {

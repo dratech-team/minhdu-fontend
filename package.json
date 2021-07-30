@@ -66,6 +66,7 @@
     "ngx-mat-select-search": "^3.3.0",
     "ngx-perfect-scrollbar": "^9.0.0",
     "normalizr": "^3.6.1",
+    "redux-devtools-extension": "^2.13.9",
     "rxjs": "~6.6.0",
     "spinkit": "^1.2.5",
     "tslib": "^2.0.0",

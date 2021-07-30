@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
-import { AppComponent } from '../../container/app.component';
+import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
 import { PoultryFoodRoutingModule } from './poultry-food-routing.module';
-import { PoultryFoodComponent } from './container/poultry-food.component';
+import { PoultryFoodComponent } from './container/poultry-food-warehouse/poultry-food.component';
+import { StoreModule } from '@ngrx/store';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { EffectsModule } from '@ngrx/effects';
+import { PoultryFoodReducer } from './+state/poultry-food.reducer';
+import { PoultryFoodEffect } from './+state/poultry-food.effect';
 
 @NgModule({
   imports: [
-    PoultryFoodRoutingModule
+    PoultryFoodRoutingModule,
+    StoreModule.forFeature(FeatureName.POULTRY_FOOD, PoultryFoodReducer),
+    EffectsModule.forFeature([PoultryFoodEffect])
   ],
   declarations: [
     PoultryFoodComponent
@@ -13,7 +20,7 @@ import { PoultryFoodComponent } from './container/poultry-food.component';
   exports: [
     PoultryFoodComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [WarehouseLayoutComponent]
 })
 export class PoultryFoodModule {
 }

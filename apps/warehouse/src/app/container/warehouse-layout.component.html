@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kho hàng</title>
+</head>
+<div class='px-3 pt-1 grid_on   shadow-sm'>
+  <div class=' py-3'>
+    <div class='row'>
+      <div class='d-flex col-md-7 col-xm-12 '>
+        <div class='col-md-4   d-flex align-items-center'>
+          <div class='col-md-1 col-xm-1  d-flex align-items-center justify-content-center'>
+            <img src='../../assets/icon/warehouse-layout/grid-3x3-gap-fill.svg' alt='app'>
+          </div>
+          <span class='col-md-11 col-xm-11 app-name font-xl font-weight-bold'>Kho hàng</span>
+        </div>
+      </div>
+      <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
+        <button type='button'
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Facebook"
+                class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
+          <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh'
+             target="_blank" >
+            <img  height='20px btn' src='../../assets/icon/warehouse-layout/facebook.svg' alt='facebook' ></a>
+        </button>
+        <div >
+          <button mat-button [matMenuTriggerFor]="menu">
+            <img  height='20px btn' src='../../assets/icon/warehouse-layout/warehouse-solid.svg' alt='warehouse' >
+          </button>
+          <mat-menu #menu="matMenu">
+            <button routerLink='' mat-menu-item>Tổng kho vật tư</button>
+            <button routerLink='kho-thuoc' mat-menu-item>Kho thuốc</button>
+            <button routerLink='kho-thuc-pham'  mat-menu-item>Kho thực phẩm</button>
+            <button routerLink='kho-thiet-bi'  mat-menu-item>Kho thiết bị</button>
+            <button routerLink='kho-van-phong-pham' mat-menu-item>Kho văn phòng phẩm</button>
+            <button routerLink='kho-san-pham'  mat-menu-item>Kho sản phẩm</button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=' px-5' >
+<router-outlet>
+
+</router-outlet>
+</div>
+<app-footer >
+  <span><a href='https://uranus-solutions.com/' target='_blank'>Uranus Solutions</a> &copy; 2021.</span>
+  <span class='ml-auto'>Powered by <a href='https://uranus-solutions.com/' target='_blank'>Công ty TNHH giải pháp phần
+            mềm Uranus</a></span>
+</app-footer>
+
+</html>

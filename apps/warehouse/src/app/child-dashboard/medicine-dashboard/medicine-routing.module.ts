@@ -1,12 +1,18 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { MedicineComponent } from './container/medicine.component';
+import { MedicineWarehouseComponent } from './container/medicine-warhouse/medicine-warehouse.component';
+import { DetailMedicineComponent } from './container/detail-medicine/detail-medicine.component';
 
 const routes: Routes = [
   {
     path: '',
-    component:MedicineComponent
+    component:MedicineWarehouseComponent
   },
+  {
+    path: 'chi-tiet-thuoc',
+    component:DetailMedicineComponent
+  },
+
 ];
 
 @NgModule({

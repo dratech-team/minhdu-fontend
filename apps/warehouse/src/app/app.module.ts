@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './container/app.component';
+import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
@@ -18,23 +18,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MedicineModule } from './child-dashboard/medicine-dashboard/medicine.module';
-import { StationeryModule } from './child-dashboard/stationery-dashboard/stationery.module';
 import { AppliancesModule } from './child-dashboard/appliances-dashboard/appliances.module';
 import { MainDashboardModule } from './child-dashboard/main-dashboard/main-dashboard.module';
-import { ProductModule } from './child-dashboard/Product -dashboard/product.module';
 import { PoultryFoodModule } from './child-dashboard/poultry-food-dashboard/poultry-food.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { WarehouseModule } from './shared/warehouse/warehouse.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { RequisiteModule } from './child-dashboard/requisite-dashboard/requisite.module';
+import { AppComponent } from './app.component';
+import { ProductModule } from './child-dashboard/Product-dashboard/product.module';
+
 @NgModule({
   declarations: [
     AppComponent,
+    WarehouseLayoutComponent,
   ],
   imports: [
     MatSnackBarModule,
     HttpClientModule,
-    WarehouseModule,
     CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -59,7 +60,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatSelectModule,
     MatMenuModule,
     MedicineModule,
-    StationeryModule,
+    RequisiteModule,
     AppliancesModule,
     MainDashboardModule,
     ProductModule,

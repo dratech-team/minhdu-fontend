@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { PoultryFoodComponent } from './container/poultry-food.component';
+import { PoultryFoodComponent } from './container/poultry-food-warehouse/poultry-food.component';
 
 const routes: Routes = [
   {

@@ -1,3 +1,5 @@
+import { Requisite } from '../../apps/warehouse/src/app/child-dashboard/requisite-dashboard/+state/requisite .interface';
+
 export const FeatureName = {
   AUTH: 'auth',
   BRANCH: 'branch',
@@ -18,5 +20,9 @@ export const FeatureName = {
   PROVINCE : 'province',
   DISTRICT : 'district',
   WARD : 'ward',
-  WAREHOUSE: 'warehouse'
+  MEDICINE: 'medicine',
+  PRODUCT: 'product',
+  APPLIANCE: 'appliance',
+  POULTRY_FOOD: 'poultryFood',
+  REQUISITE: 'requisite',
 };

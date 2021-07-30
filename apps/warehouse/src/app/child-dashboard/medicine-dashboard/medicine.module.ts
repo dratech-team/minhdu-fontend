@@ -1,19 +1,28 @@
 import { NgModule } from '@angular/core';
-import { AppComponent } from '../../container/app.component';
+import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
 import { MedicineRoutingModule } from './medicine-routing.module';
-import { MedicineComponent } from './container/medicine.component';
+import { MedicineWarehouseComponent } from './container/medicine-warhouse/medicine-warehouse.component';
+import { StoreModule } from '@ngrx/store';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { EffectsModule } from '@ngrx/effects';
+import { MedicineReducer } from './+state/medicine.reducer';
+import { MedicineEffect } from './+state/medicine.effect';
+import { DetailMedicineComponent } from './container/detail-medicine/detail-medicine.component';
 
 @NgModule({
   imports: [
-    MedicineRoutingModule
+    MedicineRoutingModule,
+    StoreModule.forFeature(FeatureName.MEDICINE, MedicineReducer),
+    EffectsModule.forFeature([MedicineEffect])
   ],
   declarations: [
-    MedicineComponent
+    MedicineWarehouseComponent,
+    DetailMedicineComponent
   ],
   exports: [
-    MedicineComponent
+    MedicineWarehouseComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [WarehouseLayoutComponent]
 })
 export class MedicineModule {
 }

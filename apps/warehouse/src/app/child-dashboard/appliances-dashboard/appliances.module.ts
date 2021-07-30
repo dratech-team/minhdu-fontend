@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
-import { AppComponent } from '../../container/app.component';
+import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
 import { AppliancesRoutingModule } from './appliances-routing.module';
-import { ApplianceComponent } from './container/appliance.component';
+import { ApplianceComponent } from './container/appliance-warhouse/appliance.component';
+import { StoreModule } from '@ngrx/store';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplianceReducer } from './+state/appliance.reducer';
+import { ApplianceEffect } from './+state/appliance.effect';
 
 @NgModule({
   imports: [
-    AppliancesRoutingModule
+    AppliancesRoutingModule,
+    StoreModule.forFeature(FeatureName.APPLIANCE, ApplianceReducer),
+    EffectsModule.forFeature([ApplianceEffect])
   ],
   declarations: [
     ApplianceComponent
@@ -13,7 +20,7 @@ import { ApplianceComponent } from './container/appliance.component';
   exports: [
     ApplianceComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [WarehouseLayoutComponent]
 })
 export class AppliancesModule {
 }
