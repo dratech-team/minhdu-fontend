@@ -106,6 +106,7 @@
               <th class='text-center'>Khuyến mãi</th>
               <th class='text-center'>Giá sau khuyến mãi</th>
               <th class='text-center'>Số lượng</th>
+              <th class='text-center'>Xóa</th>
             </tr>
             <tr *ngFor='let commodity of order.commodities'>
               <th class='text-center'> {{commodity.code}} </th>
@@ -116,6 +117,9 @@
               <th class='text-center'> {{commodity.gift}} </th>
               <th class='text-center'>{{commodity.more.price|number:'1.0'|notEmpty:'0'}} đ</th>
               <th class='text-center'> {{commodity.amount}}</th>
+              <th class='text-center'>
+                <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
+              </th>
             </tr>
           </table>
         </div>

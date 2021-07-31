@@ -18,12 +18,19 @@ import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.act
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
+import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
+import { CustomerAction } from '../../../customer/+state/customer/customer.action';
+import { selectAllCommodity } from '../../../commodity/+state/commodity.selector';
+import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { CommodityAction } from '../../../commodity/+state/commodity.action';
 
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
+  customers$ = this.store.pipe(select(selectorAllCustomer));
+  commodities$ = this.store.pipe(select(selectAllCommodity));
   nations$ = this.store.pipe(select(selectAllNation));
   provinces$ = this.store.pipe(select(selectProvincesByNationId(
     this?.data?.order?.destination?.district?.province?.nation?.id
@@ -36,11 +43,11 @@ export class OrderDialogComponent implements OnInit {
   )));
   numberChars = new RegExp('[^0-9]', 'g');
   payType = PaymentType;
-  CurrencyUnit = CurrencyUnit;
-  customerId: number | undefined;
   formGroup!: FormGroup;
   routes: number[] = [];
   customers: Customer[] = [];
+  commodities: Commodity[] = [];
+  commodityIds: number[] = [];
   provinces?: Province [];
   districts?: District [];
   wards?: Ward [];
@@ -54,6 +61,11 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
+    this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
+    console.log(this.commodities);
     this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.store.dispatch(DistrictAction.loadAllDistricts());
@@ -67,31 +79,26 @@ export class OrderDialogComponent implements OnInit {
       createdAt: [this.datePipe.transform(
         this?.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
+
+      deliveredAt: [ Validators.required],
       explain: [this?.data?.order?.explain, Validators.required],
       nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
       province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],
       district: [this?.data?.order?.destination?.district?.id, Validators.required],
-      ward: [this?.data?.order?.destination.id, Validators.required],
+      ward: [this?.data?.order?.destination.id, Validators.required]
     });
   }
 
-  pickCustomer(customerId: number) {
-    this.customerId = customerId;
-  }
 
-  pickRoutes(routes: number[]) {
-    this.routes = routes;
-  }
 
   onSubmit() {
     const val = this.formGroup.value;
     const order = {
-      customerId: this.customerId,
-      createdAt: new Date(val.createdAt),
-      routes: this.routes,
-      destination: val.ward,
-      // currency: val.currency,
-      explain: val.explain
+      customerId: this.data.order.customerId,
+      commodityIds: this.commodityIds,
+      destinationId: val.ward,
+      explain: val.explain,
+      deliveredAt: val.deliveredAt,
     };
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id }));
   }
@@ -106,5 +113,9 @@ export class OrderDialogComponent implements OnInit {
 
   onDistrict(district: District) {
     this.wards = district.wards;
+  }
+
+  pickCommodity(commodityIds: number[]) {
+    this.commodityIds = commodityIds;
   }
 }
