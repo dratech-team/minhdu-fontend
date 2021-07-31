@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kho hàng</title>
 </head>
-<div class='px-3 pt-1 grid_on   shadow-sm'>
+<div class='px-3 pt-1 grid_on header  shadow-sm'>
   <div class=' py-3'>
     <div class='row'>
       <div class='d-flex col-md-7 col-xm-12 '>
@@ -26,29 +26,43 @@
              target="_blank" >
             <img  height='20px btn' src='../../assets/icon/warehouse-layout/facebook.svg' alt='facebook' ></a>
         </button>
-        <div >
-          <button mat-button [matMenuTriggerFor]="menu">
-            <img  height='20px btn' src='../../assets/icon/warehouse-layout/warehouse-solid.svg' alt='warehouse' >
-          </button>
-          <mat-menu #menu="matMenu">
-            <button routerLink='' mat-menu-item>Tổng kho vật tư</button>
-            <button routerLink='kho-thuoc' mat-menu-item>Kho thuốc</button>
-            <button routerLink='kho-thuc-pham'  mat-menu-item>Kho thực phẩm</button>
-            <button routerLink='kho-thiet-bi'  mat-menu-item>Kho thiết bị</button>
-            <button routerLink='kho-van-phong-pham' mat-menu-item>Kho văn phòng phẩm</button>
-            <button routerLink='kho-san-pham'  mat-menu-item>Kho sản phẩm</button>
-          </mat-menu>
-        </div>
       </div>
     </div>
   </div>
+  <div class='flex justify-content-start my-1'>
+    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+            (click)='changeTab($event.target)'
+            id='main-warehouse'
+            routerLink='' mat-menu-item>Tổng kho vật tư</button>
+    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+            (click)='changeTab($event.target)'
+            id='medicine'
+            routerLink='kho-thuoc' mat-menu-item>Kho thuốc</button>
+    <button  class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+             id='poultryFood'
+            (click)='changeTab($event.target)'
+            routerLink='kho-thuc-pham'  mat-menu-item>Kho thực phẩm</button>
+    <button  class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+            (click)='changeTab($event.target)'
+             id='appliance'
+            routerLink='kho-thiet-bi'  mat-menu-item>Kho thiết bị</button>
+    <button  class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+             id='requisite'
+            (click)='changeTab($event.target)'
+             style='width:  170px'
+            routerLink='kho-van-phong-pham' mat-menu-item>Kho văn phòng phẩm</button>
+    <button  class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+             id='product'
+            (click)='changeTab($event.target)'
+            routerLink='kho-san-pham'  mat-menu-item>Kho sản phẩm</button></div>
 </div>
-<div class=' px-5' >
-<router-outlet>
+
+<div class=' px-5'  style='margin-top: 150px' >
+<router-outlet >
 
 </router-outlet>
 </div>
-<app-footer >
+<app-footer class='footer' >
   <span><a href='https://uranus-solutions.com/' target='_blank'>Uranus Solutions</a> &copy; 2021.</span>
   <span class='ml-auto'>Powered by <a href='https://uranus-solutions.com/' target='_blank'>Công ty TNHH giải pháp phần
             mềm Uranus</a></span>

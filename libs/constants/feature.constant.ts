@@ -1,4 +1,4 @@
-import { Requisite } from '../../apps/warehouse/src/app/child-dashboard/requisite-dashboard/+state/requisite .interface';
+
 
 export const FeatureName = {
   AUTH: 'auth',

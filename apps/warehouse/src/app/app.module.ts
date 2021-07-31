@@ -17,16 +17,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
-import { MedicineModule } from './child-dashboard/medicine-dashboard/medicine.module';
-import { AppliancesModule } from './child-dashboard/appliances-dashboard/appliances.module';
-import { MainDashboardModule } from './child-dashboard/main-dashboard/main-dashboard.module';
-import { PoultryFoodModule } from './child-dashboard/poultry-food-dashboard/poultry-food.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { RequisiteModule } from './child-dashboard/requisite-dashboard/requisite.module';
 import { AppComponent } from './app.component';
-import { ProductModule } from './child-dashboard/Product-dashboard/product.module';
+import { MedicineModule } from './pages/medicine-dashboard/medicine.module';
+import { AppliancesModule } from './pages/appliances-dashboard/appliances.module';
+import { ProductModule } from './pages/Product-dashboard/product.module';
+import { RequisiteModule } from './pages/requisite-dashboard/requisite.module';
+import { MainDashboardModule } from './pages/main-dashboard/main-dashboard.module';
+import { PoultryFoodModule } from './pages/poultry-food-dashboard/poultry-food.module';
+
 
 @NgModule({
   declarations: [

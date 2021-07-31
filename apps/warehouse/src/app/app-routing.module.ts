@@ -10,29 +10,29 @@ const routes: Routes = [
       {
         path:'',
         loadChildren:() =>
-          import('./child-dashboard/main-dashboard/main-dashboard.module').then(m => m.MainDashboardModule)
+          import('./pages/main-dashboard/main-dashboard.module').then(m => m.MainDashboardModule)
       },
       {
         path:'kho-thuoc',
         loadChildren:() =>
-          import('./child-dashboard/medicine-dashboard/medicine.module').then(m => m.MedicineModule)
+          import('./pages/medicine-dashboard/medicine.module').then(m => m.MedicineModule)
       },
       {
         path:'kho-thuc-pham',
         loadChildren:() =>
-          import('./child-dashboard/poultry-food-dashboard/poultry-food.module').then(m => m.PoultryFoodModule)
+          import('./pages/poultry-food-dashboard/poultry-food.module').then(m => m.PoultryFoodModule)
       },
       {
         path:'kho-san-pham',
-        loadChildren:() => import('./child-dashboard/Product-dashboard/product.module').then(m => m.ProductModule)
+        loadChildren:() => import('./pages/Product-dashboard/product.module').then(m => m.ProductModule)
       },
       {
         path:'kho-thiet-bi',
-        loadChildren:() => import('./child-dashboard/appliances-dashboard/appliances.module').then(m => m.AppliancesModule)
+        loadChildren:() => import('./pages/appliances-dashboard/appliances.module').then(m => m.AppliancesModule)
       },
       {
         path:'kho-van-phong-pham',
-        loadChildren:() => import('./child-dashboard/requisite-dashboard/requisite.module').then(m => m.RequisiteModule)
+        loadChildren:() => import('./pages/requisite-dashboard/requisite.module').then(m => m.RequisiteModule)
       },
     ]
   }
