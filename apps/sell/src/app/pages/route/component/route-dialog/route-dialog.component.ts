@@ -16,6 +16,7 @@ export class RouteDialogComponent implements OnInit {
   orderIds: number[] = [];
   orders$ = this.store.pipe(select(selectorAllOrders))
   orders: Order[] = [];
+  orderIdsOfRoute: number[] = []
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -25,11 +26,12 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.data.route.orders.forEach( (val:Order)=> this.orderIdsOfRoute.push(val.id))
     this.store.dispatch(OrderAction.loadInit({take:30, skip: 0}))
     this.orders$.subscribe(val => {
       this.orders = JSON.parse(JSON.stringify(val))
     })
-    console.log(this.orders)
+    console.log( this.orders)
     this.formGroup = this.formBuilder.group({
       name: [this?.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
@@ -42,6 +44,7 @@ export class RouteDialogComponent implements OnInit {
       driver: [this?.data?.route?.driver, Validators.required],
       garage: [this?.data?.route?.garage, Validators.required],
     });
+    this.data.route.orders
   }
 
 
