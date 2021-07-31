@@ -17,6 +17,7 @@ import { PaidType } from '../../../../../../../libs/enums/paidType.enum';
 export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;
   @Input() orders!: Order[];
+  @Input() orderIdsOfRoute!: number[];
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
@@ -43,6 +44,7 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.orderIds = this.orderIdsOfRoute;
     if(this?.data?.orders$){
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
@@ -67,17 +69,25 @@ export class PickOrderComponent implements OnInit{
     return{
       take: pageSize,
       skip: pageSize * pageIndex++,
-      name: val.name,
-      customerType: val.type,
-      resource: val.resource
+      customer: val.name,
+      paidType: val.paidType,
+
     }
   }
   assignIsSelect(){
     this.service.getOrders().subscribe(val=> {
       this.orders = JSON.parse(JSON.stringify(val))
-      this.orders.forEach(e => e.isSelect = this.isSelectAll)
+      this.orders.forEach(val => {
+        if(this.orderIds.includes(val.id)){
+          Object.assign(val, {isSelect: true})
+        }else{
+          Object.assign(val, {isSelect: this.isSelectAll})
+        }
+      })
     })
   }
+
+
 
   updateAllSelect(id: number) {
     const index = this.orderIds.indexOf(id);
