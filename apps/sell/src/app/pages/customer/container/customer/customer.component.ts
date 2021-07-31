@@ -12,8 +12,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { Order } from '../../../order/+state/order.interface';
-import { PageTypeEnum } from 'libs/enums/page-type.enum';
 import { document } from 'ngx-bootstrap/utils';
+import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl:'customer.component.html',

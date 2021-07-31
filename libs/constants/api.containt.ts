@@ -25,4 +25,9 @@ export const Api = {
   STATISTICAL_AGENCY: 'statistical/agency',
   STATISTICAL_PROVINCE: 'statistical/nation',
   STATISTICAL_CHICKEN: 'statistical/chicken',
+  MEDICINE: 'medicine',
+  POULTRY_FOOD: 'poultryFood',
+  PRODUCT: 'product',
+  REQUISITE: 'requisite',
+  APPLIANCE: 'appliance',
 };

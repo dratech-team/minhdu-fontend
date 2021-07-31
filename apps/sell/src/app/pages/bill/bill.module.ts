@@ -31,5 +31,4 @@ import { ComponentsModule } from '@minhdu-fontend/components';
   ],
 })
 export class BillModule{
-
 }

@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/apps/sell',
     '<rootDir>/libs/employee',
     '<rootDir>/libs/location',
+    '<rootDir>/apps/warehouse',
   ],
 };

@@ -1,5 +1,5 @@
 import { Employee, Salary,  } from '@minhdu-fontend/data-models';
-import { payslip } from 'libs/data-models/salary/payslip';
+import { payslip } from 'libs/data-models/hr/salary/payslip';
 
 export interface Payroll {
   id:number

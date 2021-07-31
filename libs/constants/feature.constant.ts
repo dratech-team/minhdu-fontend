@@ -1,3 +1,5 @@
+
+
 export const FeatureName = {
   AUTH: 'auth',
   BRANCH: 'branch',
@@ -18,4 +20,9 @@ export const FeatureName = {
   PROVINCE : 'province',
   DISTRICT : 'district',
   WARD : 'ward',
+  MEDICINE: 'medicine',
+  PRODUCT: 'product',
+  APPLIANCE: 'appliance',
+  POULTRY_FOOD: 'poultryFood',
+  REQUISITE: 'requisite',
 };
