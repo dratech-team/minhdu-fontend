@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
 import { PaymentService } from '../../service/payment.Service';
@@ -21,6 +21,7 @@ export class PaymentEffect {
       catchError((err) => throwError(err))
     )
   );
+
   loadMorePayment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.loadMorePayment),
@@ -33,10 +34,9 @@ export class PaymentEffect {
   payment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.payment),
-      switchMap((props) => this.paymentService.payment(props.id, props.infoPayment).pipe(
-        map(() => CustomerAction.getCustomer({ id: props.id })),
+      switchMap((props) => this.paymentService.payment(props.id, props.infoPayment)),
+        map((payment) => CustomerAction.getCustomer({ id: payment.customerId })),
         catchError((err) => throwError(err))
-      ))
     )
   );
 

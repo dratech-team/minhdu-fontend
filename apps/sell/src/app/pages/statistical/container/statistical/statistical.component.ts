@@ -31,6 +31,8 @@ export class StatisticalComponent implements OnInit {
   }
 
   ngOnInit() {
+    const btnOrder = document.getElementById('home')
+    btnOrder?.classList.add('btn-border')
     this.formGroup = this.formBuilder.group({
       type: [Validators.required],
       startedAt: [Validators.required],

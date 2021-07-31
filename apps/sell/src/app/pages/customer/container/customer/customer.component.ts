@@ -13,6 +13,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { Order } from '../../../order/+state/order.interface';
 import { PageTypeEnum } from 'libs/enums/page-type.enum';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -44,6 +45,7 @@ export class CustomerComponent implements OnInit {
 
   customers$ = this.store.pipe(select(selectorAllCustomer));
   ngOnInit() {
+    document.getElementById('customer').classList.add('btn-border')
     this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -92,7 +94,7 @@ export class CustomerComponent implements OnInit {
 
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
+      width: '55%',
       data: { id: $event.id }
     });
   }

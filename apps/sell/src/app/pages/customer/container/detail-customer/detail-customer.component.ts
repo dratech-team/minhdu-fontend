@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
@@ -12,7 +12,10 @@ import { FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Order } from '../../../order/+state/order.interface';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
+import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
+import { PaymentHistory } from '@minhdu-fontend/data-models';
+
+
 
 
 @Component({
@@ -20,10 +23,12 @@ import { DevelopmentComponent } from '../../../../../../../../libs/components/sr
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
+  customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
   orders: Order[] = [];
+  paymentHistories: PaymentHistory[] = [];
   formGroupOrder!: FormGroup;
   paidType =  PaidType;
-  customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
+  customer!: Customer
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
@@ -34,7 +39,6 @@ export class DetailCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
-    this.customer$.subscribe(val=> console.log(val))
   }
 
   updateCustomer(customer: Customer) {
@@ -60,10 +64,11 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   payment(id: number) {
-    this.dialog.open(PaymentDialogComponent, {
-      width: '40%',
-      data: { id: id }
-    });
+     this.dialog.open(PaymentDialogComponent, {
+          width: '55%',
+          data: { id: id }
+        });
+
   }
 
   development() {

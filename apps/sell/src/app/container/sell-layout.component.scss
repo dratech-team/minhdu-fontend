@@ -1,9 +1,14 @@
 button:hover{
   background: #5bc0de6e;
 }
-button:focus{
-  color: #428bca;
+.button{
+  border: none;
+  height: 45px;
+  outline: #5bc0de;
+  border-radius: 4px;
+  background: white;
 }
+
 .header{
   position: fixed;
   top:0;
@@ -22,6 +27,10 @@ button:focus{
   right: 0;
   z-index: 100;
 
+}
+.btn-border{
+  border: solid 2px #5bc0de;
+  color: #428bca;
 }
 @media only screen and (max-width: 739px){
   .hide-on-mobile{

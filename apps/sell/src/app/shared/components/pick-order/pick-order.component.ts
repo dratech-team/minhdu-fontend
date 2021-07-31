@@ -17,6 +17,7 @@ import { PaidType } from '../../../../../../../libs/enums/paidType.enum';
 export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;
   @Input() orders!: Order[];
+  @Input() orderIdsOfRoute!: number[];
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
@@ -29,7 +30,8 @@ export class PickOrderComponent implements OnInit{
     {
       name: new FormControl(''),
       createdAt: new FormControl(''),
-      paidType: new FormControl('')
+      paidType: new FormControl(''),
+
     });
 
   constructor(
@@ -42,7 +44,7 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(!this.pickOne)
+    this.orderIds = this.orderIdsOfRoute;
     if(this?.data?.orders$){
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
@@ -52,33 +54,40 @@ export class PickOrderComponent implements OnInit{
       debounceTime(1000),
       tap((value) => {
         const val = this.formGroup.value
-        this.service.searchOrder(this.customer(val, 30, 0))
+        this.service.searchOrder(this.order(val, 30, 0))
         this.assignIsSelect()
       })
     ).subscribe();
-
   }
 
   onScroll() {
     const val = this.formGroup.value
-    this.service.scrollOrder(this.customer(val,this.pageSize, this.pageIndex))
+    this.service.scrollOrder(this.order(val,this.pageSize, this.pageIndex))
     this.assignIsSelect()
   }
-  customer(val: any, pageSize: number, pageIndex: number){
+  order(val: any, pageSize: number, pageIndex: number){
     return{
       take: pageSize,
       skip: pageSize * pageIndex++,
-      name: val.name,
-      customerType: val.type,
-      resource: val.resource
+      customer: val.name,
+      paidType: val.paidType,
+
     }
   }
   assignIsSelect(){
     this.service.getOrders().subscribe(val=> {
       this.orders = JSON.parse(JSON.stringify(val))
-      this.orders.forEach(e => e.isSelect = this.isSelectAll)
+      this.orders.forEach(val => {
+        if(this.orderIds.includes(val.id)){
+          Object.assign(val, {isSelect: true})
+        }else{
+          Object.assign(val, {isSelect: this.isSelectAll})
+        }
+      })
     })
   }
+
+
 
   updateAllSelect(id: number) {
     const index = this.orderIds.indexOf(id);

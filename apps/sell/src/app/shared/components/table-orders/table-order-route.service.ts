@@ -10,8 +10,8 @@ export class TableOrderRouteService {
     private readonly store: Store,
   ) {
   }
-  loadInit(routeId:number){
-    return this.store.dispatch(OrderAction.loadInit({take:30, skip: 0 ,routeId: routeId }))
+  loadInit(routeId?:number, customerId?:number){
+    return this.store.dispatch(OrderAction.loadInit({take:30, skip: 0 ,routeId: routeId, customerId:customerId  }))
   }
   scrollOrders(val: any){
     this.store.dispatch(OrderAction.loadMoreOrders(val));

@@ -13,9 +13,9 @@ import { OrderAction } from '../../../order/+state/order.action';
 })
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  orderIds: number[] = [];
   orders$ = this.store.pipe(select(selectorAllOrders))
   orders: Order[] = [];
+  orderIdsOfRoute: number[] = []
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -25,11 +25,21 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this?.data?.route?.orders.forEach( (val:Order)=> this.orderIdsOfRoute.push(val.id))
     this.store.dispatch(OrderAction.loadInit({take:30, skip: 0}))
     this.orders$.subscribe(val => {
       this.orders = JSON.parse(JSON.stringify(val))
+      this.orders.forEach(val => {
+        if(this.orderIdsOfRoute.includes(val.id)){
+          Object.assign(val , {isSelect: true})
+        }else{
+          Object.assign(val , {isSelect: false})
+        }
+
+      })
     })
-    console.log(this.orders)
+
     this.formGroup = this.formBuilder.group({
       name: [this?.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
@@ -37,8 +47,6 @@ export class RouteDialogComponent implements OnInit {
       endedAt: [this.datePipe.transform(
         this?.data?.route?.endedAt,'yyyy-MM-dd'), Validators.required],
       bsx: [this?.data?.route?.bsx, Validators.required],
-      latitude: [this?.data?.route?.latitude, Validators.required],
-      longitude: [this?.data?.route?.longitude, Validators.required],
       driver: [this?.data?.route?.driver, Validators.required],
       garage: [this?.data?.route?.garage, Validators.required],
     });
@@ -46,21 +54,20 @@ export class RouteDialogComponent implements OnInit {
 
 
   pickOrders(orders: number[] ) {
-    this.orderIds = orders;
+    this.orderIdsOfRoute = orders;
+    console.log(this.orderIdsOfRoute)
   }
 
   onSubmit() {
     const val = this.formGroup.value;
     const route = {
       name: val.name,
-      endedAt: val.endedAt,
-      startedAt: val.startedAt ,
       bsx: val.bsx,
-      // latitude: val.latitude? val.latitude:undefined,
-      // longitude: val.longitude? val.longitude:undefined,
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
       driver: val.driver,
       garage: val.garage,
-      orderIds: this.orderIds
+      orderIds: this.orderIdsOfRoute
     };
     if (this.data) {
       this.store.dispatch(RouteAction.updateRoute({ route: route, id: this.data.route.id }));

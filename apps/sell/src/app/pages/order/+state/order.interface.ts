@@ -20,4 +20,7 @@ export interface Order {
   destination?: Ward,
   isSelect?: boolean,
   paymentHistories: PaymentHistory[];
+  commodityTotal:number;
+  paymentTotal: number;
+
 }

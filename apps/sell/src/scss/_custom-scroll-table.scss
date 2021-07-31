@@ -46,6 +46,22 @@
 }
 
 
+.pick {
+  width: 100px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.pick > div {
+  height: 35px;
+  overflow: hidden;
+  width: 100px;
+}
+
+.pick > input {
+  width: 100px;
+}
+
 .payment {
   width: 100px;
   text-align: center;
@@ -121,6 +137,8 @@
 
 
 .content-profile {
+  padding: 5px;
+  overflow-wrap: anywhere;
   display: flex;
   justify-content: center;
   align-items: center;

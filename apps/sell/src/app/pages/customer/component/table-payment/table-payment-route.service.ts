@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { CustomerAction,  } from '../../+state/customer/customer.action';
 import { selectorAllPayment } from '../../+state/payment/payment.selector';
 import { PaymentAction } from '../../+state/payment/payment.action';
 
@@ -10,9 +9,6 @@ export class TablePaymentRouteService {
   constructor(
     private readonly store: Store,
   ) {
-  }
-  loadInit(customerId:number){
-    return this.store.dispatch(PaymentAction.loadInit({take:30, skip: 0 ,customerId: customerId }))
   }
   scrollPayments(val: any){
     this.store.dispatch(PaymentAction.loadMorePayment(val));

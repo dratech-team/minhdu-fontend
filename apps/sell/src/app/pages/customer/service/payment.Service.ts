@@ -3,23 +3,23 @@ import { BaseService } from '@minhdu-fontend/service';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { PaymentHistory, ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
-import { Payment } from '../+state/payment/payment.interface';
+
 
 @Injectable({providedIn: 'root'})
-export class PaymentService extends BaseService<Payment> {
+export class PaymentService extends BaseService<PaymentHistory> {
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.PAYMENT, http);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Payment>> {
+  pagination(params: any): Observable<ResponsePaginate<PaymentHistory>> {
     return super.pagination(params);
   }
 
-  payment(id: any, body: any): Observable<Update<any>> {
+  payment(id: any, body: any): Observable<any> {
     return this.http.patch<Update<any>>(Api.CUSTOMER + `/${id}/payment`, body);
   }
 

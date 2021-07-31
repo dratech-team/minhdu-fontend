@@ -37,7 +37,6 @@ export class TableOrdersComponent implements OnInit{
   }
   ngOnInit() {
     if(this.customerId){
-      console.log('customerId',this.customerId)
       this.orders$ = this.customerService.getCustomers()
       this.customerService.loadInit(this.customerId)
       this.formGroup.valueChanges.pipe(
@@ -46,9 +45,8 @@ export class TableOrdersComponent implements OnInit{
           this.customerService.searchOrders(this.orders(10,0, value))
         })).subscribe();
     }else {
-      console.log('routeId', this.routeId)
       this.orders$ = this.routeService.getCustomers()
-      this.routeService.loadInit(this.customerId)
+      this.routeService.loadInit(this.routeId)
       this.formGroup.valueChanges.pipe(
         debounceTime(1000),
         tap((value) => {
@@ -63,7 +61,6 @@ export class TableOrdersComponent implements OnInit{
     }else{
       this.routeService.scrollOrders(this.orders(this.pageSize, this.pageIndex, val))
     }
-
   }
   orders(pageSize: number, pageIndex: number, val?: any): any{
     return {

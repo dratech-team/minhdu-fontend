@@ -102,7 +102,25 @@
           <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
         </div>
         <div class='my-3 '>
-          <app-table-order [routeId]='route.id'></app-table-order>
+<!--          <app-table-order [routeId]='route.id'></app-table-order>-->
+          <table class='mY-3'>
+            <tr>
+              <th class='text-center'> Khách hàng</th>
+              <th class='text-center'> Ngày tạo</th>
+              <th class='text-center'>Điểm đến</th>
+              <th class='text-center'>Diễn giải</th>
+            </tr>
+            <tr *ngFor='let order of route.orders' (click)='detailOrder(order.id)'>
+              <th class='text-center'> {{order?.customer?.firstName}} {{order?.customer?.lastName}} </th>
+              <th class='text-center'> {{order.createdAt|date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center'>
+                {{order?.destination?.name}}
+                {{order?.destination?.district?.name}}
+                {{order?.destination?.district?.province?.name}}
+              </th>
+              <th class='text-center'> {{order.explain}}</th>
+            </tr>
+          </table>
         </div>
       </div>
 

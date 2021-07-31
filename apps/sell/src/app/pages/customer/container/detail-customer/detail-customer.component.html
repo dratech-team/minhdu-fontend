@@ -306,7 +306,7 @@
         <div class='row align-items-center title-table '>Lịch sử thanh toán</div>
       </div>
       <div class='my-3 '>
-        <app-table-payment></app-table-payment>
+        <app-table-payment [paymentHistories]='customer.paymentHistories' [customerId]='customer.id'></app-table-payment>
       </div>
     </div>
   </div>

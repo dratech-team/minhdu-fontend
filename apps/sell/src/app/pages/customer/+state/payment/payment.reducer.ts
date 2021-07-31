@@ -2,14 +2,15 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { createReducer, on } from '@ngrx/store';
 import { PaymentAction } from './payment.action';
-import { Payment } from './payment.interface';
 
-export interface PaymentState extends EntityState<Payment> {
+import { PaymentHistory } from '@minhdu-fontend/data-models';
+
+export interface PaymentState extends EntityState<PaymentHistory> {
   loaded: boolean;
   selectedCustomerId: number
 }
 
-export const adapter: EntityAdapter<Payment> = createEntityAdapter<Payment>();
+export const adapter: EntityAdapter<PaymentHistory> = createEntityAdapter<PaymentHistory>();
 
 export const initialPayment= adapter.getInitialState({ loaded: false });
 

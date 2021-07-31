@@ -4,12 +4,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
-import { Customer } from '../../+state/customer/customer.interface';
 import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../+state/payment/payment.action';
+import { OrderAction } from '../../../order/+state/order.action';
+import { selectorAllOrders } from '../../../order/+state/order.selector';
+import { CustomerAction } from '../../+state/customer/customer.action';
 
 
 @Component({
@@ -17,9 +17,8 @@ import { PaymentAction } from '../../+state/payment/payment.action';
 })
 
 export class PaymentDialogComponent implements OnInit {
-  customer$ = this.store.pipe(select(selectorCurrentCustomer(this?.data?.id)));
+  orders$ = this.store.pipe(select(selectorAllOrders));
   numberChars = new RegExp('[^0-9]', 'g');
-  customer!: Customer;
   orders: Order[] = [];
   orderId!: number;
   payType = PaymentType;
@@ -38,9 +37,9 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.getCustomer({ id: this.data.id }));
-    this.customer$.subscribe(val =>
-      this.customer = JSON.parse(JSON.stringify(val))
+    this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0, customerId: this.data.id}));
+    this.orders$.subscribe(val =>
+      this.orders = JSON.parse(JSON.stringify(val))
     );
     this.formGroup = this.formBuilder.group({
       payType: [Validators.required],
