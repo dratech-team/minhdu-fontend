@@ -47,8 +47,6 @@ export class RouteDialogComponent implements OnInit {
       endedAt: [this.datePipe.transform(
         this?.data?.route?.endedAt,'yyyy-MM-dd'), Validators.required],
       bsx: [this?.data?.route?.bsx, Validators.required],
-      latitude: [this?.data?.route?.latitude, Validators.required],
-      longitude: [this?.data?.route?.longitude, Validators.required],
       driver: [this?.data?.route?.driver, Validators.required],
       garage: [this?.data?.route?.garage, Validators.required],
     });
@@ -65,6 +63,8 @@ export class RouteDialogComponent implements OnInit {
     const route = {
       name: val.name,
       bsx: val.bsx,
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
       driver: val.driver,
       garage: val.garage,
       orderIds: this.orderIdsOfRoute
