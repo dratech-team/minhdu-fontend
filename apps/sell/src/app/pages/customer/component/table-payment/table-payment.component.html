@@ -48,7 +48,6 @@
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-         *ngIf='(paymentHistories$| async) as paymentHistories'
     >
       <div class='row-content' *ngFor='let paymentHistory of paymentHistories'>
         <div class='content-profile col-2 pointer ' >
