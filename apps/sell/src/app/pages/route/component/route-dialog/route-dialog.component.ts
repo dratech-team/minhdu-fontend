@@ -53,11 +53,7 @@ export class RouteDialogComponent implements OnInit {
     const val = this.formGroup.value;
     const route = {
       name: val.name,
-      endedAt: val.endedAt,
-      startedAt: val.startedAt ,
       bsx: val.bsx,
-      // latitude: val.latitude? val.latitude:undefined,
-      // longitude: val.longitude? val.longitude:undefined,
       driver: val.driver,
       garage: val.garage,
       orderIds: this.orderIds

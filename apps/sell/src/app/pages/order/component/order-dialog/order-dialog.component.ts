@@ -43,7 +43,6 @@ export class OrderDialogComponent implements OnInit {
   )));
   numberChars = new RegExp('[^0-9]', 'g');
   payType = PaymentType;
-  customerId: number | undefined;
   formGroup!: FormGroup;
   routes: number[] = [];
   customers: Customer[] = [];
@@ -88,15 +87,12 @@ export class OrderDialogComponent implements OnInit {
     });
   }
 
-  pickCustomer(customerId: number) {
-    this.customerId = customerId;
-  }
 
 
   onSubmit() {
     const val = this.formGroup.value;
     const order = {
-      customerId: this.customerId,
+      customerId: this.data.order.customerId,
       commodityIds: this.commodityIds,
       destinationId: val.ward,
       explain: val.explain

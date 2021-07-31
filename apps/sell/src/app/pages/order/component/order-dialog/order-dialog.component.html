@@ -66,16 +66,10 @@
               </div>
               </div>
       </mat-tab>
-      <mat-tab class="col-12  " label="Chọn khách hàng">
-        <div class='mt-2'>
-          <app-pick-customer [customers]='customers'  [pickOne]='true' (checkEventPickOne)='pickCustomer($event)'></app-pick-customer>
-        </div>
-      </mat-tab>
       <mat-tab class="col-12 pt-2 " label="Chọn hàng hóa">
         <div class='mt-2'>
           <app-pick-commodity [commodities]='commodities'  (checkEvent)='pickCommodity($event)'></app-pick-commodity>
         </div>
-
       </mat-tab>
     </mat-tab-group>
     <div class="footer-popup row ml-4">

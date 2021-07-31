@@ -4,6 +4,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { CommodityService } from '../service/commodity.service';
 import { CommodityAction } from './commodity.action';
 import { throwError } from 'rxjs';
+import { OrderAction } from '../../order/+state/order.action';
 
 @Injectable()
 export class CommodityEffect {
@@ -55,7 +56,7 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.deleteCommodity),
       switchMap((props) => this.commodityService.delete(props.id).pipe(
-        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => OrderAction.getOrder({ id: props.orderId })),
         catchError((err) => throwError(err))
       ))
     )

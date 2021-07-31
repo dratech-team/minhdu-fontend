@@ -9,6 +9,8 @@ import { OrderAction } from '../../+state/order.action';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { CommodityAction } from '../../../commodity/+state/commodity.action';
 
 @Component({
   templateUrl:'detail-order.component.html',
@@ -41,5 +43,13 @@ export class DetailOrderComponent implements OnInit {
 
   detailRoute(id: number) {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id ]).then()
+  }
+  deleteCommodity(commodityId: number){
+    const ref = this.dialog.open(DialogDeleteComponent, {width:'30%'});
+    ref.afterClosed().subscribe(val =>{
+      if(val){
+        this.store.dispatch(CommodityAction.deleteCommodity({id:commodityId, orderId: this.getOrderId  }))
+      }
+    })
   }
 }
