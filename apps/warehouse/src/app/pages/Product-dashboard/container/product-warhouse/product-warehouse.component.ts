@@ -13,6 +13,7 @@ export class ProductWarehouseComponent implements OnInit{
   ) {
   }
   ngOnInit() {
+    document.getElementById('product')!.classList.add('btn-border')
     this.store.dispatch(ProductAction.loadInit({take:30, skip: 0}))
   }
   importProduct() {

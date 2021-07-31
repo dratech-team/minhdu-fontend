@@ -7,12 +7,14 @@ import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { ProductReducer } from './+state/product.reducer';
 import { ProductEffect } from './+state/product.effect';
+import { ComponentModule } from '../../components/component.module';
 
 @NgModule({
   imports: [
     ProductRoutingModule,
     StoreModule.forFeature(FeatureName.PRODUCT, ProductReducer),
     EffectsModule.forFeature([ProductEffect]),
+    ComponentModule
   ],
   declarations: [
     ProductWarehouseComponent

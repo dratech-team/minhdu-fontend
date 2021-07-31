@@ -9,6 +9,7 @@ export class MainDashboardComponent implements OnInit{
   warehouseTypeEnum = WarehouseTypeEnum
   warehouseType = this.warehouseTypeEnum.MEDICINE
   ngOnInit() {
+    document.getElementById('main-warehouse')!.classList.add('btn-border')
   }
   choseWareHouse(TypeWarehouse: WarehouseTypeEnum) {
     switch(TypeWarehouse) {
@@ -18,8 +19,8 @@ export class MainDashboardComponent implements OnInit{
       case this.warehouseTypeEnum.PRODUCT :
         this.warehouseType = this.warehouseTypeEnum.PRODUCT
         break;
-      case this.warehouseTypeEnum.APPLIANCES :
-        this.warehouseType = this.warehouseTypeEnum.APPLIANCES
+      case this.warehouseTypeEnum.APPLIANCE :
+        this.warehouseType = this.warehouseTypeEnum.APPLIANCE
         break;
       case this.warehouseTypeEnum.POULTRY_FOOD :
         this.warehouseType = this.warehouseTypeEnum.POULTRY_FOOD
@@ -29,7 +30,6 @@ export class MainDashboardComponent implements OnInit{
         break;
     }
   }
-
   import() {
 
   }

@@ -1,8 +1,12 @@
 <div >
   <div>
-    <button class='btn btn-primary mt-2' (click)='importAppliance()'>
+    <button class='btn btn-primary mt-2 mr-2' (click)='importAppliance()'>
       <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Nhập kho'>
       Nhập thiết bị
+    </button>
+    <button *ngIf='warehouseType === warehouseTypeEnum.APPLIANCE' class='btn btn-primary mt-2' (click)='importAppliance()'>
+      <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Xuất kho'>
+      Xuất thiết bị
     </button>
     <table class='mt-2' style="width:100%">
       <tr>

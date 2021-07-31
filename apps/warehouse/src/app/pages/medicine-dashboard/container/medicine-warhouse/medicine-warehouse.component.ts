@@ -3,18 +3,21 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllMedicine } from '../../+state/medicine.selector';
 import { MedicineAction } from '../../+state/medicine.action';
 import { Router } from '@angular/router';
+import { WarehouseTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl:'medicine-warehouse.component.html',
 })
 export class MedicineWarehouseComponent implements OnInit{
   medicines$ = this.store.pipe(select(selectorAllMedicine))
+  medicineWarehouse = WarehouseTypeEnum.MEDICINE
   constructor(
     private readonly store: Store,
     private readonly router: Router,
   ) {
   }
   ngOnInit() {
+    document.getElementById('medicine')!.classList.add('btn-border')
     this.store.dispatch(MedicineAction.loadInit({take: 30, skip :0}))
   }
 
