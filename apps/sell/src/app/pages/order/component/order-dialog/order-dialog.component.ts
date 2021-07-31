@@ -79,6 +79,8 @@ export class OrderDialogComponent implements OnInit {
       createdAt: [this.datePipe.transform(
         this?.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
+
+      deliveredAt: [ Validators.required],
       explain: [this?.data?.order?.explain, Validators.required],
       nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
       province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],
@@ -95,7 +97,8 @@ export class OrderDialogComponent implements OnInit {
       customerId: this.data.order.customerId,
       commodityIds: this.commodityIds,
       destinationId: val.ward,
-      explain: val.explain
+      explain: val.explain,
+      deliveredAt: val.deliveredAt,
     };
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id }));
   }
