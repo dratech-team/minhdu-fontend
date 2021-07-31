@@ -10,9 +10,6 @@ export class TablePaymentRouteService {
     private readonly store: Store,
   ) {
   }
-  loadInit(customerId:number){
-    return this.store.dispatch(PaymentAction.loadInit({take:10, skip: 0 ,customerId: customerId }))
-  }
   scrollPayments(val: any){
     this.store.dispatch(PaymentAction.loadMorePayment(val));
   }

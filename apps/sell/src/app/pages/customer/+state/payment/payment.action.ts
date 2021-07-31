@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Payment } from './payment.interface';
+import { PaymentHistory } from '@minhdu-fontend/data-models';
 
 
 
@@ -24,13 +25,13 @@ export const loadMorePayment = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYMENT] Load Init Success',
-  props<{ payments: Payment[] }>()
+  props<{ payments: PaymentHistory[] }>()
 );
 
 
 export const loadMorePaymentSuccess = createAction(
   '[LOAD_MORE_CUSTOMER] Load More Payment Success',
-  props<{ payments: Payment[]}>()
+  props<{ payments: PaymentHistory[]}>()
 );
 
 export const payment = createAction(

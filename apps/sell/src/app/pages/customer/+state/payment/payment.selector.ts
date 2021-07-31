@@ -4,12 +4,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as formPayment from './payment.reducer';
 import { Payment } from './payment.interface';
+import { PaymentHistory } from '@minhdu-fontend/data-models';
 
 export interface state {
   payment: PaymentState,
 }
 
-export const getSelectedCustomerId = (state: Payment) => state.id;
+export const getSelectedCustomerId = (state: PaymentHistory) => state.id;
 export const selectorPaymentState = createFeatureSelector<PaymentState>(
   FeatureName.PAYMENT
 );

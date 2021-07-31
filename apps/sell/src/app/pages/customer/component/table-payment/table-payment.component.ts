@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { TablePaymentRouteService } from './table-payment-route.service';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { Payment } from '../../+state/payment/payment.interface';
+import { PaymentHistory } from '@minhdu-fontend/data-models';
 
 @Component({
   selector:'app-table-payment',
@@ -15,7 +16,7 @@ import { Payment } from '../../+state/payment/payment.interface';
 })
 
 export class TablePaymentComponent implements OnInit{
-  paymentHistories$!: Observable<Payment[]>
+   @Input() paymentHistories?: PaymentHistory[]
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
@@ -33,23 +34,23 @@ export class TablePaymentComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-      this.paymentHistories$ = this.paymentService.getPayment()
-      this.paymentService.loadInit(this.customerId)
       this.formGroup.valueChanges.pipe(
         debounceTime(1000),
         tap((value) => {
           this.paymentService.searchOrders(this.paymentHistory(10,0, value))
+          this.paymentService.getPayment().subscribe(val => this.paymentHistories = JSON.parse(JSON.stringify(val)))
         })).subscribe();
   }
   onScroll(){
     const val = this.formGroup.value
       this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, this.pageIndex, val))
+      this.paymentService.getPayment().subscribe(val => this.paymentHistories = val)
   }
   paymentHistory(pageSize: number, pageIndex: number, val?: any): any{
     return {
       take: pageSize,
       skip: pageSize* pageIndex++,
-      customerId:this.customerId,
+      customerId: this.customerId,
     }
   }
 }

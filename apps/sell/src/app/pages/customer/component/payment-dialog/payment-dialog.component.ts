@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../+state/payment/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
 import { selectorAllOrders } from '../../../order/+state/order.selector';
+import { CustomerAction } from '../../+state/customer/customer.action';
 
 
 @Component({
