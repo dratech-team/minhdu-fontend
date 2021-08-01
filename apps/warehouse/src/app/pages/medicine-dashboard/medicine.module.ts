@@ -7,7 +7,7 @@ import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { MedicineReducer } from './+state/medicine.reducer';
 import { MedicineEffect } from './+state/medicine.effect';
-import { DetailMedicineComponent } from './container/detail-medicine/detail-medicine.component';
+import { DetailMedicineComponent } from '../../components/medicine/detail-medicine/detail-medicine.component';
 import { ComponentModule } from '../../components/component.module';
 
 @NgModule({
@@ -19,7 +19,6 @@ import { ComponentModule } from '../../components/component.module';
   ],
   declarations: [
     MedicineWarehouseComponent,
-    DetailMedicineComponent
   ],
   exports: [
     MedicineWarehouseComponent

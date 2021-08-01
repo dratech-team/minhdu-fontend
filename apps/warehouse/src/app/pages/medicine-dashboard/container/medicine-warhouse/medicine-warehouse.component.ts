@@ -21,10 +21,6 @@ export class MedicineWarehouseComponent implements OnInit{
     this.store.dispatch(MedicineAction.loadInit({take: 30, skip :0}))
   }
 
-  importMedicine() {
-
-  }
-
   detailMedicine() {
     this.router.navigate(['kho-thuoc/chi-tiet-thuoc']).then()
   }
