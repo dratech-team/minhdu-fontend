@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -19,20 +18,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
-import { MedicineModule } from './pages/medicine-dashboard/medicine.module';
-import { AppliancesModule } from './pages/appliances-dashboard/appliances.module';
-import { ProductModule } from './pages/Product-dashboard/product.module';
-import { RequisiteModule } from './pages/requisite-dashboard/requisite.module';
-import { MainDashboardModule } from './pages/main-dashboard/main-dashboard.module';
-import { PoultryFoodModule } from './pages/poultry-food-dashboard/poultry-food.module';
+import { MedicineModule } from './container/dashboard/medicine/medicine.module';
+import { DashboardModule } from './pages/dashboard/dashboard.module';
+import { PoultryFoodModule } from './container/dashboard/poultry-food/poultry-food.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    WarehouseLayoutComponent,
+    AppComponent
   ],
   imports: [
     MatSnackBarModule,
@@ -47,7 +42,7 @@ import { PoultryFoodModule } from './pages/poultry-food-dashboard/poultry-food.m
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([]),
-    StoreModule.forRoot({ }, {}),
+    StoreModule.forRoot({}, {}),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -61,10 +56,7 @@ import { PoultryFoodModule } from './pages/poultry-food-dashboard/poultry-food.m
     MatSelectModule,
     MatMenuModule,
     MedicineModule,
-    RequisiteModule,
-    AppliancesModule,
-    MainDashboardModule,
-    ProductModule,
+    DashboardModule,
     PoultryFoodModule
   ],
   providers: [

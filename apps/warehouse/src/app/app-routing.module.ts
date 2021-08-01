@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { WarehouseLayoutComponent } from './container/warehouse-layout.component';
+import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 
 const routes: Routes = [
   {
@@ -10,29 +10,29 @@ const routes: Routes = [
       {
         path:'',
         loadChildren:() =>
-          import('./pages/main-dashboard/main-dashboard.module').then(m => m.MainDashboardModule)
+          import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path:'kho-thuoc',
         loadChildren:() =>
-          import('./pages/medicine-dashboard/medicine.module').then(m => m.MedicineModule)
+          import('./container/dashboard/medicine/medicine.module').then(m => m.MedicineModule)
       },
       {
         path:'kho-thuc-pham',
         loadChildren:() =>
-          import('./pages/poultry-food-dashboard/poultry-food.module').then(m => m.PoultryFoodModule)
+          import('./container/dashboard/poultry-food/poultry-food.module').then(m => m.PoultryFoodModule)
       },
       {
         path:'kho-san-pham',
-        loadChildren:() => import('./pages/Product-dashboard/product.module').then(m => m.ProductModule)
+        loadChildren:() => import('./container/dashboard/Product/product.module').then(m => m.ProductModule)
       },
       {
         path:'kho-thiet-bi',
-        loadChildren:() => import('./pages/appliances-dashboard/appliances.module').then(m => m.AppliancesModule)
+        loadChildren:() => import('./pages/material-dashboard/material.module').then(m => m.AppliancesModule)
       },
       {
         path:'kho-van-phong-pham',
-        loadChildren:() => import('./pages/requisite-dashboard/requisite.module').then(m => m.RequisiteModule)
+        loadChildren:() => import('./container/dashboard/requisite/requisite.module').then(m => m.RequisiteModule)
       },
     ]
   }
