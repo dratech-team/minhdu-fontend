@@ -1,29 +1,25 @@
-<div >
+<div>
   <div>
-    <button class='btn btn-primary mt-2 mr-2' (click)='importMedicine()'>
+    <button class='btn btn-primary mt-2 mr-2' (click)='importPoultryFood()'>
       <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Nhập kho'>
-      Nhập thuốc
+      Nhập thực phẩm
     </button>
-    <button *ngIf='warehouseType === warehouseTypeEnum.MEDICINE' class='btn btn-primary mt-2' (click)='exportMedicine()'>
+    <button *ngIf='warehouseType === warehouseTypeEnum.POULTRY_FOOD' class='btn btn-primary mt-2' (click)='exportPoultryFood()'>
       <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Xuất kho'>
-      Xuất thuốc
+      Xuất thực phẩm
     </button>
     <table class='mt-2' style="width:100%">
       <tr>
-        <th>Tên thuốc</th>
+        <th>Tên Thực phẩm</th>
         <th>Số lượng</th>
         <th>giá</th>
       </tr>
-      <tr>
+      <tr (click)='detailPoultryFood()'>
         <td>Jill</td>
         <td>Smith</td>
         <td>50</td>
       </tr>
-      <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>94</td>
-      </tr>
+
     </table>
   </div>
 </div>

@@ -4,7 +4,7 @@
       <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Nhập kho'>
       Nhập thiết bị
     </button>
-    <button *ngIf='warehouseType === warehouseTypeEnum.APPLIANCE' class='btn btn-primary mt-2' (click)='importAppliance()'>
+    <button *ngIf='warehouseType === warehouseTypeEnum.APPLIANCE' class='btn btn-primary mt-2' (click)='exportAppliance()'>
       <img src='/assets/icon/warehouse-layout/arrow-bar-right.svg' alt='Xuất kho'>
       Xuất thiết bị
     </button>
@@ -14,16 +14,12 @@
         <th>Số lượng</th>
         <th>giá</th>
       </tr>
-      <tr>
+      <tr (click)='detailAppliance()'>
         <td>Jill</td>
         <td>Smith</td>
         <td>50</td>
       </tr>
-      <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>94</td>
-      </tr>
+
     </table>
   </div>
 </div>
