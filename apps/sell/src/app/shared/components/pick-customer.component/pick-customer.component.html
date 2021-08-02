@@ -1,10 +1,19 @@
-<div class='container'>
+<div>
   <button (click)='addCustomer()' class='btn border ml-3 mt-2 d-flex align-items-center'>
     <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
     <span class='ml-1 font-xl' style='color:#20a8d8;'> Thêm khách hàng</span>
   </button>
   <div class='col-12 animated fadeIn'>
     <form [formGroup]='formGroup' class='header-profile mt-3 ' style='width: 101%;'>
+      <div class='border-start title-header col-2  '>
+        <div class='title-profile'>Tất cả</div>
+        <mat-checkbox *ngIf='data.pickMore'
+                      class='example-margin mt-2 ml-3'
+                      [checked]='isSelectAll'
+                      [indeterminate]="someComplete()"
+                      (change)='setAll($event.checked)'>
+        </mat-checkbox>
+      </div>
       <div class='border-start title-header col-4'>
         <div class='title-profile'>Tên Khách hàng</div>
         <input class='form-control input-profile'
@@ -31,18 +40,10 @@
           <option value=''>Tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-2  '>
-        <div class='title-profile'>Tất cả</div>
-        <mat-checkbox *ngIf='data.pickMore'
-                      class='example-margin mt-2 ml-3'
-                      [checked]='isSelectAll'
-                      [indeterminate]="someComplete()"
-                      (change)='setAll($event.checked)'>
-        </mat-checkbox>
-      </div>
+
     </form>
     <div class='outer example '
-         style='width: 101%; height: 50vh'
+         style='width: 101%; height: 30vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
@@ -50,6 +51,19 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let customer of customers'>
+        <div class='content-profile col-2 pointer d-flex justify-content-center ' >
+          <mat-checkbox  *ngIf='data.pickMore'
+                         class='checkID'
+                         [checked]='customer.isSelect ? customer.isSelect: false'
+                         [(ngModel)]='customer.isSelect'
+                         (ngModelChange)='updateAllSelect(customer.id)'>
+          </mat-checkbox>
+          <input
+            (change)='pickOneCustomer()'
+            *ngIf='data.pickOne||pickOne'
+            type="radio"  name="pick-one"
+            value="{{customer.id}}">
+        </div>
         <div class='content-profile col-4  pointer'>{{customer.firstName}} {{customer.lastName}}</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
@@ -59,19 +73,7 @@
         <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
         <div class='content-profile  col-3 ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
         <div class='content-profile  col-3 ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
-        <div class='content-profile col-2 pointer d-flex justify-content-center ' >
-          <mat-checkbox  *ngIf='data.pickMore'
-                        class='checkID'
-                        [checked]='customer.isSelect ? customer.isSelect: false'
-                        [(ngModel)]='customer.isSelect'
-                        (ngModelChange)='updateAllSelect(customer.id)'>
-          </mat-checkbox>
-          <input
-            (change)='pickOneCustomer()'
-            *ngIf='data.pickOne||pickOne'
-            type="radio"  name="pick-one"
-            value="{{customer.id}}">
-        </div>
+
       </div>
     </div>
     <button *ngIf='data.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>

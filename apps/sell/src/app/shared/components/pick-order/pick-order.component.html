@@ -46,7 +46,7 @@
         <div class=' d-flex justify-content-center mt-2 '  >
           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                         style='margin-right: 2%'
-                        class='example-margin  '
+                        class='example-margin checkID  '
                         [checked]='isSelectAll'
                         [indeterminate]="someComplete()"
                         (change)='setAll($event.checked)'>
@@ -57,7 +57,7 @@
 
     </form>
     <div class='outer example'
-         style='width: 100%; height: 50vh'
+         style='width: 100%; height: 30vh'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
@@ -91,12 +91,14 @@
                type="radio"
                name="pick-one" value="{{order.id}}"
         >
-        <div class=' col-1  pointer mt-2 d-flex justify-content-center' >
-          <mat-checkbox  *ngIf='!pickOne||data?.pickMore'
+        <div class=' col-1  pointer mt-2 d-flex justify-content-center'  >
+          <mat-checkbox
+                         *ngIf='!pickOne||data?.pickMore'
                          class='checkID'
                          [checked]='order.isSelect ? order.isSelect: false'
                          [(ngModel)]='order.isSelect'
                          (ngModelChange)='updateAllSelect(order.id)'>
+
           </mat-checkbox>
         </div>
       </div>

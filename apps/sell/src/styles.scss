@@ -43,6 +43,12 @@ $spinkit-spinner-color: $body-color;
 .contain-detail{
 
 }
+.required{
+  color: red;
+}
+.required-input{
+  border: solid 1px red;
+}
 .title-detail{
   font-size: 13px;
   font-family: Roboto,Arial,Helvetica,sans-serif;

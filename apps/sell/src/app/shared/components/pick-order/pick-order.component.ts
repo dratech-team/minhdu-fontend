@@ -44,7 +44,9 @@ export class PickOrderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.orderIds = this.orderIdsOfRoute;
+    if(this.orderIdsOfRoute){
+      this.orderIds = this.orderIdsOfRoute;
+    }
     if(this?.data?.orders$){
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
@@ -91,6 +93,7 @@ export class PickOrderComponent implements OnInit{
 
   updateAllSelect(id: number) {
     const index = this.orderIds.indexOf(id);
+
     if (index > -1) {
       this.orderIds.splice(index, 1);
     } else {

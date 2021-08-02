@@ -8,8 +8,9 @@ import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../+state/payment/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
-import { selectorAllOrders } from '../../../order/+state/order.selector';
-import { CustomerAction } from '../../+state/customer/customer.action';
+import { selectorAllOrders, selectOrdersByIds } from '../../../order/+state/order.selector';
+import { tap } from 'rxjs/operators';
+
 
 
 @Component({
@@ -20,14 +21,15 @@ export class PaymentDialogComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorAllOrders));
   numberChars = new RegExp('[^0-9]', 'g');
   orders: Order[] = [];
-  orderId!: number;
+  ordersPicked: Order[] = [];
+  orderIds: number[] = [];
   payType = PaymentType;
   formGroup!: FormGroup;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
   customerIds: number[] = [];
   commodityIds: number[] = [];
-
+  paidTotal!: number;
   constructor(
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
@@ -41,6 +43,9 @@ export class PaymentDialogComponent implements OnInit {
     this.orders$.subscribe(val =>
       this.orders = JSON.parse(JSON.stringify(val))
     );
+    this.secondFormGroup = this.formBuilder.group({
+      pick: ['', Validators.required],
+    })
     this.formGroup = this.formBuilder.group({
       payType: [Validators.required],
       paidTotal: ['', Validators.required],
@@ -49,6 +54,10 @@ export class PaymentDialogComponent implements OnInit {
       ), Validators.required],
       note: ['Không', Validators.required]
     });
+    this.formGroup.valueChanges.pipe(
+      tap(val =>{
+          this.paidTotal = typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) :
+            val.paidTotal})).subscribe()
   }
 
   onSubmit() {
@@ -56,14 +65,38 @@ export class PaymentDialogComponent implements OnInit {
     const infoPayment = {
       payType: val.payType ? val.payType : undefined,
       total: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
-      paidAt: val.paidAt ,
-      orderId: this.orderId,
+      paidAt: val.paidAt,
+      orderId: this.orderIds,
       note: val.note
     };
     this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment, id: this.data.id }));
   }
-
-  pickOrder($event: number) {
-    this.orderId = $event;
+  check(){
+    if (!this.formGroup.value.total){
+      const spanTotal = document.getElementById('total')
+      spanTotal?.classList.add('required')
+      const inputTotal = document.getElementById('input-total')
+      inputTotal?.classList.add('required-input')
+      setTimeout(function(){
+        spanTotal?.classList.remove('required')
+        inputTotal?.classList.remove('required-input')
+      }, 500);
+    }
   }
+  pickOrders($event: number[]) {
+    this.orderIds = $event;
+    this.store.pipe(select(selectOrdersByIds(this.orderIds))).subscribe(
+      val=> this.ordersPicked = JSON.parse(JSON.stringify(val))
+    )
+    if(this.orderIds.length >0){
+      this.secondFormGroup = this.formBuilder.group({
+        pick: [Validators.required],
+      })
+    }else{
+      this.secondFormGroup = this.formBuilder.group({
+        pick: ['',Validators.required],
+      })
+    }
+  }
+
 }
