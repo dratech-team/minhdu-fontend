@@ -26,6 +26,19 @@ export const selectorCurrentOrder = (id: number)  =>createSelector(
   selectorOrderEntities,
   (orderEntities) => orderEntities[id]
 )
+export const selectOrdersByIds = (ids: number[]) => createSelector(
+
+  selectorAllOrders,
+  (orders ) => {
+    let result: Order[] = []
+    orders.forEach(val =>{
+        if(ids.includes(val.id)){
+          result.push(val)
+        }
+    })
+    return result;
+  }
+)
 
 
 export const selectedLoaded = createSelector(

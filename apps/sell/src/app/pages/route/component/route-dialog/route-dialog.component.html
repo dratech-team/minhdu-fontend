@@ -8,9 +8,9 @@
   <form [formGroup]="formGroup" (submit)="onSubmit()">
     <mat-tab-group  dynamicHeight >
       <mat-tab class="col-12 " label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup' class='px-3' >
+        <div [formGroup]='formGroup' class='px-3' style='height: 30vh;' >
           <div class='form-group'>
-            <div class='row mt-2'>
+            <div class='row mt-5'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='name'>Tên tuyến đường<span class='star'>*</span>
                 </label>
@@ -85,7 +85,6 @@
         <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute'  [orders]='orders' (checkEvent)='pickOrders($event)'></app-pick-order>
       </mat-tab>
     </mat-tab-group>
-
     <div class="footer-popup row ml-4 mt-3">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
       <button type="submit" mat-dialog-close class="btn btn-ok ">Lưu</button>

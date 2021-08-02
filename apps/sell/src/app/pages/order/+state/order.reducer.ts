@@ -2,6 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Order } from './order.interface';
 import { createReducer, on } from '@ngrx/store';
 import { OrderAction } from './order.action';
+import { map, tap } from 'rxjs/operators';
 
 export interface OrderState extends EntityState<Order> {
   loaded: boolean,
@@ -22,6 +23,9 @@ export const OrderReducer = createReducer(
   ),
   on(OrderAction.getOrderSuccess, (state, action) =>
     adapter.upsertOne(action.order, { ...state, loaded: true })
+  ),
+  on(OrderAction.addOrderSuccess, (state, action) =>
+    adapter.addOne(action.order, {...state,loaded: true}),
   )
 );
 export const {selectAll,selectEntities} = adapter.getSelectors()

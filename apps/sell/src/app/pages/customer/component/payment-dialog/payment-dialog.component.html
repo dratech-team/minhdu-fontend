@@ -8,12 +8,12 @@
   </div>
   <mat-stepper linear #stepper>
     <mat-step  [stepControl]="formGroup" [editable]="true" >
-      <form [formGroup]="formGroup" class='px-5' >
-        <ng-template matStepLabel>Thông tin thanh toán</ng-template>
+      <form [formGroup]="formGroup" class='px-5' style='height: 30vh' >
+        <ng-template matStepLabel >Thông tin thanh toán</ng-template>
         <div class='form-group'>
-          <div class='row mt-3'>
-            <div class='col-sm'>
-                <label >Loại thanh toán</label>
+          <div class='row mt-5'>
+            <div class='col-sm mt-2'>
+                <label class='title-detail' >Loại thanh toán</label>
                 <mat-select class='form-control' formControlName='payType' required>
                   <mat-option value='{{payType.CASH}}'>
                     Tiền mặt
@@ -25,14 +25,14 @@
               <div>
               </div>
             </div>
-            <div class='col-sm'>
-              <label >Tổng thanh toán<span class='star'>*</span></label>
-              <input type="text" class="form-control"  placeholder="Nhập mức giá" formControlName="paidTotal" required  inputCurrency>
+            <div class='col-sm title-detail'>
+              <label id='total'> Tổng thanh toán<span class='star'>*</span></label>
+              <input type="text" class="form-control"  id='input-total' placeholder="Nhập mức giá" formControlName="paidTotal" required  inputCurrency>
             </div>
           </div>
           <div class='row mt-3'>
             <div class='col-sm' >
-              <label >Ngày Thanh toán</label>
+              <label class='title-detail' >Ngày Thanh toán</label>
               <input type='date' class='form-control'  formControlName='paidAt' required>
             </div>
             <div class='col-sm' >
@@ -42,24 +42,62 @@
           </div>
         </div>
       </form>
-      <button  class='btn btn-primary' matStepperNext>Next</button>
+      <button  class='btn btn-primary' (click)='check()' matStepperNext>Tiếp theo</button>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup"  [editable]="true">
     <app-pick-order
-      [pickOne]='true'
+      [formGroup]="secondFormGroup"
       [orders]='orders'
-      (checkEventPickOne)='pickOrder($event)'
-    ></app-pick-order>
-      <button  class='btn btn-primary' matStepperPrevious>Back</button>
-      <button  class='btn btn-primary ml-2' matStepperNext>Next</button>
+      (checkEvent)='pickOrders($event)'
+    ></app-pick-order >
+      <button  class='btn btn-primary' matStepperPrevious>trở lại</button>
+      <button  class='btn btn-primary ml-2' matStepperNext >Tiếp theo</button>
     </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Hoàn Thành</ng-template>
-      <h5>Xác nhận thanh toán</h5>
-      <div>
-        <button  class='btn btn-primary' matStepperPrevious>Back</button>
-        <button  class='btn btn-primary ml-2' mat-dialog-close (click)="onSubmit()">Xác nhận</button>
+    <mat-step >
+      <div style='height: 30vh; overflow-y: scroll'>
+        <ng-template matStepLabel>Hoàn Thành</ng-template>
+        <h4>Xác nhận thanh toán</h4>
+        <div>
+          <div> <span class='title-detail'>Loại thanh toán: </span>
+            <span *ngIf='formGroup.value.payType === payType.CASH'> Tiền mặt </span>
+            <span *ngIf='formGroup.value.payType === payType.TRANSFER'> Chuyển khoản</span>
+          </div>
+        </div>
+        <div>
+          <div class='mt-1'><span class='title-detail'>Tổng thanh toán: </span>
+            <span> {{paidTotal|number:'1.0'|notEmpty:'0'}}</span>
+          </div>
+        </div>
+        <div>
+          <div class='mt-1'><span class=' title-detail'>Ngày thanh toán: </span>
+            <span> {{formGroup.value.paidAt|date:'dd/MM/yyyy'}}</span>
+          </div>
+        </div>
+        <div>
+          <div class='mt-1'><span class=' title-detail'>Chú thích: </span>
+            <span> {{formGroup.value.note}}</span>
+          </div>
+        </div>
+        <div class='h5 mt-2'>Đơn hàng</div>
+        <table class='mt-2'  style="width:100%">
+          <tr>
+            <th>Khách hàng</th>
+            <th>Ngày tạo </th>
+            <th>Tổng tiền hàng</th>
+            <th>Lần thanh toán</th>
+          </tr>
+          <tr *ngFor='let order of ordersPicked'>
+            <td>{{order.customer.firstName}} {{order.customer.lastName}}</td>
+            <td>{{order.createdAt|date:'dd/MM/yyyy'}}</td>
+            <td>{{order.commodityTotal|number:'0.0'}}</td>
+            <td>{{order.paymentHistories.length}}</td>
+          </tr>
+        </table>
+        <div>
       </div>
+      </div>
+      <button  class='btn btn-primary mt-2' matStepperPrevious>Trở lại</button>
+      <button  class='btn btn-primary ml-2 mt-2' mat-dialog-close (click)="onSubmit()">Xác nhận</button>
     </mat-step>
   </mat-stepper>
 </div>

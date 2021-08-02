@@ -12,6 +12,8 @@ import { selectAllCommodity } from '../../../commodity/+state/commodity.selector
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
 import { document } from 'ngx-bootstrap/utils';
+import { Customer } from '../../../customer/+state/customer/customer.interface';
+import { Commodity } from '../../../commodity/+state/commodity.interface';
 
 
 @Component({
@@ -20,6 +22,8 @@ import { document } from 'ngx-bootstrap/utils';
 export class AddOrderComponent implements OnInit {
   commodities$ = this.store.pipe(select(selectAllCommodity));
   customers$ = this.store.pipe(select(selectorAllCustomer));
+  customers: Customer [] = [];
+  Commodities: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerId!: number;
   commodityIds: number[] = [];
@@ -34,12 +38,17 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)) )
+    this.commodities$.subscribe(val => this.Commodities = JSON.parse(JSON.stringify(val)) )
     const btnOrder = document.getElementById('order');
     btnOrder?.classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border')
     document.getElementById('customer').classList.remove('btn-border')
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
+      deliveredAt: ['', Validators.required],
       explain: ['', Validators.required],
       ward: ['', Validators.required],
       district: ['', Validators.required],
@@ -48,37 +57,23 @@ export class AddOrderComponent implements OnInit {
     });
   }
 
-  pickCustomers() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    const dialogRef = this.dialog.open(PickCustomerComponent,
-      {
-        width: '50%',
-        data: { pickOne: true, customers$: this.customers$ }
-      });
-    dialogRef.afterClosed().subscribe(val => this.customerId = val);
-  }
-
-  pickCommodities() {
-    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
-    const dialogRef = this.dialog.open(PickCommodityComponent, {
-      width: '70%',
-      data: {
-        type: 'DIALOG',
-        commodities$: this.commodities$
-      }
-    });
-    dialogRef.afterClosed().subscribe(val => this.commodityIds = val);
-  }
 
   onSubmit() {
     const val = this.formGroup.value;
     const order = {
       createdAt: val.createdAt,
+      deliveredAt: val.deliveredAt,
       explain: val.explain,
       destinationId: val.ward,
       customerId: this.customerId,
       commodityIds: this.commodityIds,
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
+  }
+  pickCustomer(CustomerId: number){
+    this.customerId = CustomerId
+  }
+  pickCommodities(CommodityIds: number[]){
+    this.commodityIds = CommodityIds
   }
 }

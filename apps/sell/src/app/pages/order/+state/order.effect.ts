@@ -11,7 +11,9 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.addOrder),
       switchMap((props) => this.orderService.addOne(props.order).pipe(
-        map(_ => OrderAction.loadInit({ take: 30, skip: 0 })),
+        map(order => {
+          window.location.reload()
+          return  OrderAction.addOrderSuccess({order:order})}),
         catchError((err) => throwError(err))
       ))
     ));

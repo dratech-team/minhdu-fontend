@@ -13,7 +13,7 @@ import { OrderComponent } from './container/order/order.component';
 import { DetailOrderComponent } from './container/detail-order/detail-order.component';
 import { OrderDialogComponent } from './component/order-dialog/order-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CustomerModule } from '../customer/customer.module';
@@ -30,9 +30,9 @@ import { PaymentHistoryComponent } from './container/payment-history/payment-his
 import { TableRouteComponent } from './component/table-route/table-route.component';
 
 
-
 @NgModule({
   imports: [
+
     ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,
@@ -64,7 +64,10 @@ import { TableRouteComponent } from './component/table-route/table-route.compone
   exports: [
 
   ],
-  providers: [DatePipe]
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    DatePipe]
 })
 export class OrderModule{
 
