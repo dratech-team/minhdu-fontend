@@ -44,9 +44,9 @@
             <app-pick-location class='col-9' [formGroup]='formGroup'></app-pick-location>
           </div>
         </div>
-        <div  *ngIf='customerId'>
+        <div  *ngIf='customerId' class='animated'>
           <div class='h5 ml-4'> Khách hàng</div>
-          <table class='mb-3 ml-4' style="width:98%">
+          <table class='mb-1 ml-4' style="width:98%">
             <tr>
               <th class='text-center'>Tên khách hàng</th>
               <th class='text-center'>Loại khách hàng</th>
@@ -69,10 +69,20 @@
               <td class='text-center'> <button (click)='deleteCustomerId()' style=' font-size: 10px' class='btn btn-danger '>bỏ chọn</button> </td>
             </tr>
           </table>
+          <div class='mt-2 ml-4 pointer' (click)='pickCustomer()' >
+            <div class=' d-flex justify-content-center align-items-center '
+                 style='width: 200px;
+                        height: 40px;
+                        background-color: #f0f2f4;
+                        border: 1px solid #d3d7de;
+                        border-radius: 4px;'
+            ><span class='h5' style='color: #20a8d8'>Chọn Khách hàng <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
+            </div>
+          </div>
         </div>
-        <div *ngIf='commodityIds.length > 0'>
+        <div *ngIf='commodityIds.length > 0' class='mt-3'>
           <div class='h5 ml-4'> Hàng hóa</div>
-          <table class='mb-3 ml-4' style="width:98%" >
+          <table class='mb-1 ml-4' style="width:98%" >
             <tr>
               <th class='text-center'>Mã hàng hóa</th>
               <th class='text-center'>Tên hàng hóa</th>
@@ -97,10 +107,19 @@
               <td class='text-center'> <button (click)='deleteCommodityId(commodity.id)' style=' font-size: 10px' class='btn btn-danger'>bỏ chọn</button> </td>
             </tr>
           </table>
+          <div class=' ml-4  my-2'  (click)='pickCommodities()'>
+            <div class=' d-flex justify-content-center align-items-center '
+                 style=' width: 200px;
+                        height: 40px;
+                        background-color: #f0f2f4;
+                        border: 1px solid #d3d7de;
+                        border-radius: 4px;'
+            ><span class='h5' style='color: #20a8d8'>Chọn hàng hóa <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
+            </div>
+          </div>
         </div>
 
-        <div class='mt-5 ml-4 pointer' (click)='pickCustomer()' style="width:98%">
-
+        <div class='mt-5 ml-4 pointer'  *ngIf='!customerId' (click)='pickCustomer()' style="width:98%">
           <div class=' d-flex justify-content-center align-items-center '
           style=' height: 63px;
                   background-color: #f0f2f4;
@@ -109,7 +128,7 @@
           ><span class='h5' style='color: #20a8d8'>Chọn Khách hàng <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
           </div>
         </div>
-        <div class=' ml-4  my-5' style="width:98%" (click)='pickCommodities()'>
+        <div class=' ml-4  my-5' *ngIf='commodityIds.length === 0' style="width:98%" (click)='pickCommodities()'>
           <div class=' d-flex justify-content-center align-items-center '
                style=' height: 63px;
                   background-color: #f0f2f4;
