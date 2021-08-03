@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
-import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
 import { MedicineRoutingModule } from './medicine-routing.module';
 import { MedicineComponent } from './container/medicine/medicine.component';
-import { StoreModule } from '@ngrx/store';
-import { FeatureName } from '@minhdu-fontend/constants';
-import { EffectsModule } from '@ngrx/effects';
-import { MedicineReducer } from './+state/medicine.reducer';
-import { MedicineEffect } from './+state/medicine.effect';
-import { DetailMedicineComponent } from '../../../components/medicine/detail-medicine/detail-medicine.component';
-import { ComponentModule } from '../../../components/component.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
     MedicineRoutingModule,
-    StoreModule.forFeature(FeatureName.MEDICINE, MedicineReducer),
-    EffectsModule.forFeature([MedicineEffect]),
-    ComponentModule
+    ReactiveFormsModule,
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule
   ],
   declarations: [
     MedicineComponent,
@@ -23,7 +20,6 @@ import { ComponentModule } from '../../../components/component.module';
   exports: [
     MedicineComponent
   ],
-  bootstrap: [WarehouseLayoutComponent]
 })
 export class MedicineModule {
 }

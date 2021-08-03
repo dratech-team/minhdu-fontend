@@ -5,6 +5,7 @@ import { PoultryFoodAction } from '../../+state/poultry-food.action';
 import { WarehouseTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
+  selector: 'app-poultry-food',
   templateUrl:'poultry-food-warehouse.component.html',
 })
 export class PoultryFoodWarehouseComponent implements OnInit{
@@ -15,11 +16,9 @@ export class PoultryFoodWarehouseComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-    document.getElementById('poultryFood')!.classList.add('btn-border')
     this.store.dispatch(PoultryFoodAction.loadInit({take:30, skip: 0}))
   }
 
   importPoultryFood() {
-
   }
 }

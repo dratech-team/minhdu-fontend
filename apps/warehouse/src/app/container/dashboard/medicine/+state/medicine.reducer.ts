@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { MedicineAction } from './medicine.action';
+import { loadMedicineInitSuccess, MedicineAction } from './medicine.action';
 import { Medicine } from './medicine.interface';
 
 export interface MedicineState extends EntityState<Medicine> {
@@ -10,11 +10,11 @@ export interface MedicineState extends EntityState<Medicine> {
 
 export const adapter: EntityAdapter<Medicine> = createEntityAdapter<Medicine>();
 
-export const initialMedicine = adapter.getInitialState({ loaded: false });
+export const initialMedicine  = adapter.getInitialState({loaded: false });
 
 export const MedicineReducer = createReducer(
   initialMedicine,
-  on(MedicineAction.loadInitSuccess, (state, action) =>
+  on(MedicineAction.loadMedicineInitSuccess, (state, action) =>
     adapter.setAll(action.medicines, { ...state, loaded: true })
   ),
 

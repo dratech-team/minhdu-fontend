@@ -23,13 +23,16 @@ import { AppComponent } from './app.component';
 import { MedicineModule } from './container/dashboard/medicine/medicine.module';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { PoultryFoodModule } from './container/dashboard/poultry-food/poultry-food.module';
+import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 
 
 @NgModule({
   declarations: [
+    WarehouseLayoutComponent,
     AppComponent
   ],
   imports: [
+
     MatSnackBarModule,
     HttpClientModule,
     CommonModule,

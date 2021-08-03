@@ -7,16 +7,17 @@ export const addMedicine = createAction(
   props<{ medicine: any }>()
 );
 
-export const loadInit = createAction(
-  '[LOAD_MEDICINE] Load Init',
+export const loadMedicineInit = createAction(
+  '[LOAD_MEDICINES] Load Medicine Init',
   props<{
     skip: number,
     take: number,
+    name?:string,
   }>()
 );
 
-export const loadInitSuccess = createAction(
-  '[LOAD_MEDICINES] Load Init Success',
+export const loadMedicineInitSuccess = createAction(
+  '[LOAD_MEDICINES] Load Medicine Init Success',
   props<{ medicines: Medicine[] }>()
 );
 
@@ -56,8 +57,8 @@ export const deleteMedicine = createAction(
 
 export const MedicineAction = {
   addMedicine,
-  loadInit,
-  loadInitSuccess,
+  loadMedicineInit,
+  loadMedicineInitSuccess,
   loadMoreMedicines,
   loadMoreMedicinesSuccess,
   getMedicine,

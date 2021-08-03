@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WarehouseTypeEnum } from '@minhdu-fontend/enums';
 import {  Store } from '@ngrx/store';
-import { AppState } from '../reducers';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
 export class WarehouseLayoutComponent implements OnInit{
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly store: Store,
     private readonly router: Router,
   ) {
   }
