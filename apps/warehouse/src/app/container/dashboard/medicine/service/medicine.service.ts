@@ -18,9 +18,12 @@ export class MedicineService extends BaseService<Medicine> {
   addOne(props: Medicine): Observable<Medicine> {
     return super.addOne(props);
   }
-
   pagination(params: any): Observable<ResponsePaginate<Medicine>> {
     return super.pagination(params);
+  }
+
+  Pagination(params: any): Observable<Medicine[]> {
+    return this.http.get<Medicine[]>(this.url, { params });
   }
 
   getOne(id: any): Observable<Medicine> {

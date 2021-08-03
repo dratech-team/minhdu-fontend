@@ -12,20 +12,6 @@ const routes: Routes = [
         loadChildren:() =>
           import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {
-        path:'kho-thuoc',
-        loadChildren:() =>
-          import('./container/dashboard/medicine/medicine.module').then(m => m.MedicineModule)
-      },
-      {
-        path:'kho-thuc-pham',
-        loadChildren:() =>
-          import('./container/dashboard/poultry-food/poultry-food.module').then(m => m.PoultryFoodModule)
-      },
-      {
-        path:'kho-thiet-bi',
-        loadChildren:() => import('./container/dashboard/material/material.module').then(m => m.MaterialModule)
-      },
     ]
   }
 

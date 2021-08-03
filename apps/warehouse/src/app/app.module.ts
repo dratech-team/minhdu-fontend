@@ -20,11 +20,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
-import { MedicineModule } from './container/dashboard/medicine/medicine.module';
-import { DashboardModule } from './pages/dashboard/dashboard.module';
-import { PoultryFoodModule } from './container/dashboard/poultry-food/poultry-food.module';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
-
 
 @NgModule({
   declarations: [
@@ -32,7 +28,6 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
     AppComponent
   ],
   imports: [
-
     MatSnackBarModule,
     HttpClientModule,
     CommonModule,
@@ -58,9 +53,6 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
     MatFormFieldModule,
     MatSelectModule,
     MatMenuModule,
-    MedicineModule,
-    DashboardModule,
-    PoultryFoodModule
   ],
   providers: [
     {

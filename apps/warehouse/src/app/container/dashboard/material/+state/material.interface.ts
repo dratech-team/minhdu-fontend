@@ -1,3 +1,5 @@
-export interface Appliance {
+export interface Material {
   id: number,
+  name: string,
+  amount: number,
 }

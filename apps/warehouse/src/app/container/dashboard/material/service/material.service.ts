@@ -5,32 +5,31 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
-import { Appliance } from '../+state/material.interface';
+import { Material } from '../+state/material.interface';
 
 @Injectable({ providedIn: 'root' })
-export class MaterialService extends BaseService<Appliance> {
+export class MaterialService extends BaseService<Material> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.APPLIANCE, http);
+    super(Api.MATERIAL, http);
   }
 
-  addOne(props: Appliance): Observable<Appliance> {
+  addOne(props: Material): Observable<Material> {
     return super.addOne(props);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Appliance>> {
+  pagination(params: any): Observable<ResponsePaginate<Material>> {
     return super.pagination(params);
   }
 
-  getOne(id: any): Observable<Appliance> {
+  getOne(id: any): Observable<Material> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Appliance>> {
+  update(id: any, body: any): Observable<Update<Material>> {
     return super.update(id, body);
   }
-
 
   delete(id: number): Observable<void> {
     return super.delete(id);

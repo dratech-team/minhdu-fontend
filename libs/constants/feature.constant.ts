@@ -22,7 +22,7 @@ export const FeatureName = {
   WARD : 'ward',
   MEDICINE: 'medicine',
   PRODUCT: 'product',
-  APPLIANCE: 'appliance',
+  MATERIAL: 'material',
   POULTRY_FOOD: 'poultryFood',
   REQUISITE: 'requisite',
 };

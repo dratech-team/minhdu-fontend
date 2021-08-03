@@ -5,6 +5,13 @@
     </div>
     <button (click)='importMedicine()' class='btn btn-primary font-lg mt-2'>Nhập thuốc</button>
     <div class='header-profile mt-2 animated fadeIn'>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã thuốc</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+        >
+      </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên thuốc</div>
         <input
@@ -13,11 +20,11 @@
           type='search'>
       </div>
       <div class='border-start title-header default'>
-        <div class='title-profile'>Mã thuốc</div>
+        <div class='title-profile'>Mã vạch</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
-        >
+          type='search'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Nhà cung cấp</div>
@@ -40,8 +47,16 @@
           class='form-control input-profile '
           type='number'>
       </div>
+
       <div class='border-start title-header default'>
         <div class='title-profile'>Chiếc khấu</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Hóa đơn</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
@@ -61,94 +76,79 @@
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header default'>
+      <div class='border-start title-header name'>
         <div class='title-profile'>Ngày nhập</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Hóa đơn</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
+
     </div>
 
-<!--    <div class='outer   animated fadeIn'-->
-<!--         style='width: 101%!important;'-->
-<!--         infiniteScroll-->
-<!--         [infiniteScrollDistance]='1'-->
-<!--         [infiniteScrollThrottle]='100'-->
-<!--         [scrollWindow]='false'-->
-<!--         (scrolled)='onScroll()'-->
-<!--         *ngIf='(orders$| async) as orders'-->
-<!--    >-->
-<!--      <div class='row-content' *ngFor='let order of orders'>-->
-<!--        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>-->
-<!--          {{order?.customer?.firstName}} {{order?.customer?.lastName}}-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>-->
-<!--          {{order?.createdAt | date: 'dd/MM/yyyy'}}-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>-->
-<!--          Đang cập nhật-->
-<!--        </div>-->
-<!--        <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>-->
-<!--          {{order?.destination?.name}} - -->
-<!--          {{order?.destination?.district?.name}} - -->
-<!--          {{order?.destination?.district?.province?.name}}-->
-<!--        </div>-->
-<!--        <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>-->
-<!--        <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>-->
-<!--          {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>-->
-<!--          {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.VND || !order?.currency '>-->
-<!--          VND-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.USD'>-->
-<!--          Đô la mỹ-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.MYR'>-->
-<!--          Ringgit-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.MMK'>-->
-<!--          Kyat-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.JPY'>-->
-<!--          Yên Nhật-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.GBP'>-->
-<!--          Bảng anh-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.EUR'>-->
-<!--          Euro-->
-<!--        </div>-->
-<!--        <div class='content-profile col-1 pointer '-->
-<!--             (click)='detailOrder(order.id)'-->
-<!--             *ngIf='order?.currency=== currencyUnit.CNY'>-->
-<!--          Nhân dân tệ-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class='outer   animated fadeIn'
+
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(medicines$| async) as medicines'
+    >
+      <div class='row-content' *ngFor='let medicine of medicines'>
+        <div class='content-profile default pointer '>
+         {{medicine?.code}}
+        </div>
+        <div class='content-profile name pointer '>
+          {{medicine?.name}}
+        </div>
+        <div class='content-profile default pointer '>
+          {{medicine?.barcode}}
+        </div>
+        <div class='content-profile name pointer '>
+          {{medicine?.provider}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.expire !== null' >
+          {{medicine?.expire | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.expire === null' >
+          Đang cập nhật
+        </div>
+        <div class='content-profile default pointer '  style='color: #4dbd74'>
+          {{medicine.price|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile default pointer '  style='color: #4dbd74'>
+          {{medicine.discount}}
+        </div>
+        <div class='content-profile default pointer '>
+          {{medicine?.invoice}}
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.BI'>
+         Bi
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.KG'>
+          Kilogam
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.LIT'>
+          Lít
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.LO'>
+          Lọ
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.VIEN'>
+          Viên
+        </div>
+        <div class='content-profile default pointer ' >
+          {{medicine?.amount}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.createdAt !== null' >
+          {{medicine?.createdAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.createdAt === null' >
+          Đang cập nhật
+        </div>
+
+      </div>
+    </div>
   </form>
 </div>

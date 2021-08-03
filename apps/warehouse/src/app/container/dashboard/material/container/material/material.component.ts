@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllAppliance } from '../../+state/material.selector';
+import { selectorAllMaterial } from '../../+state/material.selector';
 import { MaterialAction } from '../../+state/material.action';
 import { WarehouseTypeEnum } from '@minhdu-fontend/enums';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector:'app-material',
   templateUrl:'material.component.html',
 })
 export class MaterialComponent implements OnInit{
-  appliances$ = this.store.pipe(select(selectorAllAppliance))
+  material$ = this.store.pipe(select(selectorAllMaterial))
   applianceWarehouse = WarehouseTypeEnum.MATERIAL
+  formGroup = new FormGroup(
+    {
+      name: new FormControl(''),
+    }
+  );
   constructor(
     private readonly store: Store
   ) {
@@ -20,6 +26,10 @@ export class MaterialComponent implements OnInit{
   }
 
   importAppliance() {
+
+  }
+
+  importMaterial() {
 
   }
 }

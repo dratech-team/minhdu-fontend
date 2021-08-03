@@ -2,22 +2,22 @@ import { createAction, props } from '@ngrx/store';
 import { Medicine } from './medicine.interface';
 
 
+
 export const addMedicine = createAction(
-  '[ADD_MEDICINE] Add Medicine',
+  '[ADD_MEDICINE] Add Material',
   props<{ medicine: any }>()
 );
 
-export const loadMedicineInit = createAction(
-  '[LOAD_MEDICINES] Load Medicine Init',
+export const loadInit = createAction(
+  '[LOAD_MEDICINES] Load Init',
   props<{
     skip: number,
     take: number,
-    name?:string,
   }>()
 );
 
-export const loadMedicineInitSuccess = createAction(
-  '[LOAD_MEDICINES] Load Medicine Init Success',
+export const loadInitSuccess = createAction(
+  '[LOAD_MEDICINES] Load Init Success',
   props<{ medicines: Medicine[] }>()
 );
 
@@ -52,13 +52,13 @@ export const updateMedicine = createAction(
 
 export const deleteMedicine = createAction(
   '[DELETE_MEDICINE] Delete Medicine',
-  props<{ MedicineId: number }>()
+  props<{ medicineId: number }>()
 );
 
 export const MedicineAction = {
   addMedicine,
-  loadMedicineInit,
-  loadMedicineInitSuccess,
+  loadInit,
+  loadInitSuccess,
   loadMoreMedicines,
   loadMoreMedicinesSuccess,
   getMedicine,
