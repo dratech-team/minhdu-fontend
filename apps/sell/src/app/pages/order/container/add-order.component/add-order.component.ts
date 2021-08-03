@@ -83,7 +83,7 @@ export class AddOrderComponent implements OnInit {
     const ref = this.dialog.open(PickCustomerComponent, {width:'50%',
       data: {
         customers$:this.customers$,
-        pickOne: true
+        pickOne: true,
     } })
     ref.afterClosed().subscribe(val =>
     {
