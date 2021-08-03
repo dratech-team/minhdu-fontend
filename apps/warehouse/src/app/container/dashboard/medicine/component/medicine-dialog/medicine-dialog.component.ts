@@ -34,7 +34,7 @@ export class MedicineDialogComponent implements OnInit {
         )
         , Validators.required],
       price: [this?.data?.price, Validators.required],
-      discount: [this?.data?.discount, Validators.required],
+      discount: [this?.data?.discount ? this.data.discount * 100: undefined , Validators.required],
       invoice: [this?.data?.invoice, Validators.required],
       unit: [this?.data?.unit, Validators.required],
       amount: [this?.data?.amount, Validators.required],
@@ -55,7 +55,7 @@ export class MedicineDialogComponent implements OnInit {
       provider: value.provider,
       expire: value.expire,
       price: typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
-      discount: value?.discount,
+      discount: value?.discount? value.discount/100: undefined,
       createdAt: value.createdAt,
       invoice: value?.invoice,
       amount: value.amount,

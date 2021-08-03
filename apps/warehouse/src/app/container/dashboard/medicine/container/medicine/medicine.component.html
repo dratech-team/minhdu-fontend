@@ -1,9 +1,11 @@
-<div  style='height: 82vh; width: 100%; overflow-x: scroll'>
-  <form [formGroup]='formGroup' class='main-profile'  >
-    <div class='h4'>
-      Danh sách Thuốc
-    </div>
-    <button (click)='importMedicine()' class='btn btn-primary font-lg mt-2'>Nhập thuốc</button>
+<div class='ml-4'>
+  <div class='h4 mt-2'>Danh sách Thuốc</div>
+  <button style='margin-top: 0 !important;' (click)='importMedicine()' class='btn btn-primary font-lg mt-2'>Nhập thuốc</button>
+  <button style='margin-top: 0 !important;' (click)='exportMedicine()' class='btn btn-primary font-lg mt-2 ml-2'>Xuất thuốc</button>
+</div>
+
+<div  style='height: 69vh; width: 100%; overflow-x: scroll'>
+  <form class='ml-4' [formGroup]='formGroup'  >
     <div class='header-profile mt-2 animated fadeIn'>
       <div class='border-start title-header default'>
         <div class='title-profile'>Mã thuốc</div>
@@ -85,9 +87,7 @@
       </div>
 
     </div>
-
     <div class='outer   animated fadeIn'
-
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
@@ -95,7 +95,7 @@
          (scrolled)='onScroll()'
          *ngIf='(medicines$| async) as medicines'
     >
-      <div class='row-content' *ngFor='let medicine of medicines'>
+      <div class='row-content' *ngFor='let medicine of medicines' (click)='updateMedicine(medicine)'>
         <div class='content-profile default pointer '>
          {{medicine?.code}}
         </div>
@@ -117,8 +117,11 @@
         <div class='content-profile default pointer '  style='color: #4dbd74'>
           {{medicine.price|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div class='content-profile default pointer '  style='color: #4dbd74'>
-          {{medicine.discount}}
+        <div class='content-profile default pointer '  *ngIf='medicine.discount' style='color: #4dbd74'>
+          {{medicine.discount* 100}}%
+        </div>
+        <div class='content-profile default pointer '  *ngIf='!medicine.discount' style='color: #4dbd74'>
+          0%
         </div>
         <div class='content-profile default pointer '>
           {{medicine?.invoice}}
@@ -147,7 +150,6 @@
         <div class='content-profile name pointer ' *ngIf='medicine?.createdAt === null' >
           Đang cập nhật
         </div>
-
       </div>
     </div>
   </form>

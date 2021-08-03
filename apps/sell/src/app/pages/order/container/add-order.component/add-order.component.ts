@@ -36,7 +36,6 @@ export class AddOrderComponent implements OnInit {
     private readonly dialog: MatDialog
   ) {
   }
-
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));

@@ -7,6 +7,7 @@ import { MedicineUnit, WarehouseTypeEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicineDialogComponent } from '../../component/medicine-dialog/medicine-dialog.component';
+import { Medicine } from '../../+state/medicine.interface';
 
 @Component({
   selector:'app-medicine',
@@ -42,5 +43,16 @@ export class MedicineComponent implements OnInit{
 
   onScroll() {
 
+  }
+
+  exportMedicine() {
+
+  }
+  updateMedicine(medicine: Medicine){
+    this.dialog.open(MedicineDialogComponent,
+      {
+        width:'45%',
+        data: medicine
+      })
   }
 }
