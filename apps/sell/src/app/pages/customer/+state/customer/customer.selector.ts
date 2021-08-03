@@ -22,10 +22,14 @@ export const selectorAllCustomer = createSelector(
   fromCustomer.selectAll
 );
 
-export const selectorCurrentCustomer = (id: number) => createSelector(
+export const selectorCurrentCustomer = (id?: number) => createSelector(
   selectorCustomerEntities,
   (CustomerEntities) => {
-    return CustomerEntities[id]
+    let result: any
+    if(id){
+      result = CustomerEntities[id]
+    }
+    return result
   }
 );
 

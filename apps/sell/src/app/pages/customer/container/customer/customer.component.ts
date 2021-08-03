@@ -20,8 +20,8 @@ import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
-  pageType = PageTypeEnum;
   resourceType = CustomerResource;
+  pageType = PageTypeEnum;
   genderType = Gender;
   orders?:Order;
   pageIndex: number = 1;

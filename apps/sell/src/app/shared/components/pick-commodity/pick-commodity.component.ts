@@ -63,7 +63,13 @@ export class PickCommodityComponent implements OnInit {
   assignIsSelect(){
     this.service.commodities().subscribe(val => {
       this.commodities = JSON.parse(JSON.stringify(val));
-      this.commodities.forEach(e => e.isSelect = this.isSelectAll);
+      this.commodities.forEach(e => {
+        if(this.commodityIds.includes(e.id)){
+          e.isSelect = true
+        }else{
+          e.isSelect = this.isSelectAll
+        }
+      });
     });
   }
 
