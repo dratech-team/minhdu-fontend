@@ -7,7 +7,8 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
 import { Order } from '../../../pages/order/+state/order.interface';
 import { PickOrderService } from './pick-order.service';
-import { PaidType } from '../../../../../../../libs/enums/paidType.enum';
+import { PaidType } from 'libs/enums/paidType.enum';
+
 
 @Component({
   selector:'app-pick-order',
