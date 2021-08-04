@@ -24,6 +24,18 @@ export const selectorCurrentCommodity = (id: number)  =>createSelector(
   selectorCommodityEntities,
   (CommodityEntities) => CommodityEntities[id]
 )
+export const selectorCommodityByIds = (ids: number[])  =>createSelector(
+  selectAllCommodity,
+  (CommoditiesEntities) =>{
+    let result: Commodity[] = []
+      CommoditiesEntities.forEach(val =>{
+        if(ids.includes(val.id)){
+          result.push(val)
+        }
+      })
+    return result
+  }
+)
 export const selectedLoaded = createSelector(
   selectorCommodityState,
   (state) => state.loaded

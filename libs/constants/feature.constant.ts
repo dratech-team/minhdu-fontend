@@ -14,6 +14,7 @@ export const FeatureName = {
   PAYMENT: 'payment',
   COMMODITY: 'commodity',
   ORDER : 'order',
+  ORDER_ASSIGNED : 'orderAssigned',
   ROUTE : 'route',
   BILL : 'bill',
   NATION : 'nation',

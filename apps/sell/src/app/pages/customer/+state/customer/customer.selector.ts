@@ -14,7 +14,7 @@ export const selectorCustomerState = createFeatureSelector<CustomerState>(
 );
 export const selectorCustomerEntities = createSelector(
   selectorCustomerState,
-  fromCustomer.selectEntities
+  fromCustomer.selectEntities,
 );
 
 export const selectorAllCustomer = createSelector(
@@ -22,10 +22,15 @@ export const selectorAllCustomer = createSelector(
   fromCustomer.selectAll
 );
 
-export const selectorCurrentCustomer = (id: number) => createSelector(
+export const selectorCurrentCustomer = (id?: number) => createSelector(
   selectorCustomerEntities,
   (CustomerEntities) => {
-    return CustomerEntities[id]
+    console.log(CustomerEntities)
+    let result: Customer|undefined
+    if(id){
+      result =  CustomerEntities[id]
+    }
+    return result
   }
 );
 

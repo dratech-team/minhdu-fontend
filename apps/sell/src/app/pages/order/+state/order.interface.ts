@@ -22,5 +22,6 @@ export interface Order {
   paymentHistories: PaymentHistory[];
   commodityTotal:number;
   paymentTotal: number;
+  deliveredAt: Date;
 
 }

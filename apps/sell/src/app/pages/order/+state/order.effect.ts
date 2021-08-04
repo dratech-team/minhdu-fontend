@@ -25,6 +25,27 @@ export class OrderEffect {
       catchError((err) => throwError(err))
     ));
 
+  loadOrdersAssigned$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.loadOrdersAssigned),
+      switchMap((props) => {
+        return this.orderService.pagination(props) }),
+      map((responsePagination) => {
+        return  OrderAction.loadOrdersAssignedSuccess({ orders: responsePagination.data })
+      }
+    ),
+      catchError((err) => throwError(err))
+    ));
+
+  loadMoreOrdersAssigned$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.loadMoreOrdersAssigned),
+      switchMap((props) => this.orderService.pagination(props)),
+      map((responsePagination) =>
+        OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data })),
+      catchError((err) => throwError(err))
+    ));
+
   loadMoreBills$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
@@ -78,3 +99,4 @@ export class OrderEffect {
   ) {
   }
 }
+

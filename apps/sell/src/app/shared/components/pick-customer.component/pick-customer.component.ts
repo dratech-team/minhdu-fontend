@@ -61,7 +61,6 @@ export class PickCustomerComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
-    this.assignIsSelect();
   }
 
   customer(val: any, pageSize: number, pageIndex: number) {
@@ -77,7 +76,13 @@ export class PickCustomerComponent implements OnInit {
   assignIsSelect() {
     this.service.getCustomers().subscribe(val => {
       this.customers = JSON.parse(JSON.stringify(val));
-      this.customers.forEach(e => e.isSelect = this.isSelectAll);
+      this.customers.forEach(e =>{
+        if(this.customerId === e.id || this.customerIds.includes(e.id)){
+          Object.assign(val, {isSelect: true})
+        }else{
+          Object.assign(val, {isSelect: this.isSelectAll})
+        }
+      });
     });
   }
 

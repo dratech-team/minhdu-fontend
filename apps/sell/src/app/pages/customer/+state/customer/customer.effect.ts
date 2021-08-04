@@ -11,9 +11,7 @@ export class CustomerEffect {
   loadCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadInit),
-      switchMap((props) => {
-        return this.customerService.pagination(props);
-      }),
+      switchMap((props) => this.customerService.pagination(props)),
       map((ResponsePaginate) => CustomerAction.loadInitSuccess({
         customers: ResponsePaginate.data
       })),
