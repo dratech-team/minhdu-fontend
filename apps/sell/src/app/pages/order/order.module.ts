@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import {  OrderRoutingModule } from './order-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { OrderReducer } from './+state/order.reducer';
+import { OrderAssignedReducer, OrderReducer } from './+state/order.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { OrderEffect } from './+state/order.effect';
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +37,7 @@ import { TableRouteComponent } from './component/table-route/table-route.compone
     ComponentsModule,
     OrderRoutingModule,
     StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
+    StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     EffectsModule.forFeature([OrderEffect, RouteEffect]),
     MatInputModule,
