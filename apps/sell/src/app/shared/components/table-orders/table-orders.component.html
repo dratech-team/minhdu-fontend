@@ -1,12 +1,5 @@
 <form [formGroup]='formGroup' class='main-profile col-12' style='width: 100%'>
     <div class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header col-2 '>
-        <div class='title-profile'>Khách hàng</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='search'>
-      </div>
       <div class='border-start title-header col-2'>
         <div class='title-profile'>Ngày tạo</div>
         <input
@@ -35,7 +28,20 @@
           class='form-control input-profile '
           type='number'>
       </div>
-
+      <div *ngIf='delivered == 1'   class='border-start title-header  col-2' >
+        <div class='title-profile'>Ngày giao hàng</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div *ngIf='delivered == 0'   class='border-start title-header  col-2' >
+        <div class='title-profile'>Diễn giải</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
     </div>
 
     <div class='  animated fadeIn '
@@ -51,9 +57,6 @@
          *ngIf='(orders$| async) as orders'
     >
       <div class='row-content' *ngFor='let order of orders'>
-        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
-          {{order?.customer?.firstName}} {{order?.customer?.lastName}}
-        </div>
         <div class='content-profile col-2 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </div>
@@ -65,14 +68,19 @@
           {{order?.destination?.district?.name}} -
           {{order?.destination?.district?.province?.name}}
         </div>
-        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
+        <div  class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
           {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
 
         <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
           {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-
+        <div *ngIf='delivered == 1' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
+          {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div *ngIf='delivered == 0' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
+          {{order?.explain }}
+        </div>
       </div>
     </div>
   </form>

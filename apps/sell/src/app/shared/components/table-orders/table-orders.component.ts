@@ -33,7 +33,7 @@ export class TableOrdersComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-
+    this.orders$.subscribe(val =>   console.log(val))
   }
   onScroll(){
     if(this.delivered === 1){
