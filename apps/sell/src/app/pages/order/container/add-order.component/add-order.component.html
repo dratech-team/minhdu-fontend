@@ -27,14 +27,9 @@
             </label>
             <input type='date' class='form-control' id='createdAt' formControlName='createdAt'>
           </div>
-          <div class='col-3' [formGroup]='formGroup'>
+          <div class='col-6' [formGroup]='formGroup'>
             <label for='explain' class='h5'>Diễn giải<span class='star'>*</span></label>
             <input type='text' class='form-control' id='explain' formControlName='explain'>
-          </div>
-          <div class='col-3' [formGroup]='formGroup'>
-            <label for='deliveredAt' class='h5'>Ngày giao hàng<span class='star'>*</span>
-            </label>
-            <input type='date' class='form-control' id='deliveredAt' formControlName='deliveredAt'>
           </div>
         </div>
         <div class='row mt-3 ml-2 d-flex flex-column'>
@@ -44,7 +39,7 @@
             <app-pick-location class='col-9' [formGroup]='formGroup'></app-pick-location>
           </div>
         </div>
-        <div  *ngIf='customerId' class='animated fadeIn'>
+        <div  *ngIf='customerPicked' class='animated fadeIn'>
           <div class='h5 ml-4' > Khách hàng</div>
           <table class='mb-1 ml-4' style="width:98%">
             <tr>
@@ -56,16 +51,16 @@
               <th class='text-center'>Bỏ chọn</th>
             </tr>
             <tr>
-              <td class='text-center'> {{customerPicked.lastName}}  {{customerPicked.firstName}}</td>
-              <td class='text-center' *ngIf='customerPicked.type === customerType.AGENCY'> Đại lý</td>
-              <td class='text-center' *ngIf='customerPicked.type === customerType.RETAIL'> Khách lẻ</td>
+              <td class='text-center'> {{customerPicked?.lastName}}  {{customerPicked.firstName}}</td>
+              <td class='text-center' *ngIf='customerPicked?.type === customerType.AGENCY'> Đại lý</td>
+              <td class='text-center' *ngIf='customerPicked?.type === customerType.RETAIL'> Khách lẻ</td>
               <td class='text-center' *ngIf='customerPicked?.resource === resourceType.OTHER'>Khác</td>
               <td class='text-center' *ngIf='customerPicked?.resource === resourceType.RESEARCH'>Tra cứu</td>
               <td class='text-center' *ngIf='customerPicked?.resource === resourceType.SELF_FIND'>Tự tìm</td>
               <td class='text-center' *ngIf='customerPicked?.resource === resourceType.INTRODUCED'>Giới thiệu</td>
-              <td class='text-center'>{{customerPicked.phone}} </td>
-              <td class='text-center' *ngIf='customerPicked.email'>{{customerPicked.email}} </td>
-              <td class='text-center' *ngIf='!customerPicked.email'>Chưa cập nhật </td>
+              <td class='text-center'>{{customerPicked?.phone}} </td>
+              <td class='text-center' *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
+              <td class='text-center' *ngIf='!customerPicked?.email'>Chưa cập nhật </td>
               <td class='text-center'> <button (click)='deleteCustomerId()' style=' font-size: 10px' class='btn btn-danger '>bỏ chọn</button> </td>
             </tr>
           </table>
@@ -81,7 +76,7 @@
           </div>
         </div>
 
-        <div class='mt-5 ml-4 pointer animated fadeIn'  *ngIf='!customerId' (click)='pickCustomer()' style="width:98%">
+        <div class='mt-5 ml-4 pointer animated fadeIn'  *ngIf='!customerPicked' (click)='pickCustomer()' style="width:98%">
           <div class=' d-flex justify-content-center align-items-center '
           style=' height: 63px;
                   background-color: #f0f2f4;

@@ -18,7 +18,8 @@ export const loadInit = createAction(
     paidType?: string,
     customer?: string,
     customerId?: number,
-    routeId?: number }>()
+    routeId?:number,
+  }>()
 );
 
 export const loadInitSuccess = createAction(
@@ -34,6 +35,7 @@ export const loadMoreOrders = createAction(
     customerId?:number,
     routeId?: number,
     customer?: string,
+    delivered?: number,
   }>()
 );
 
@@ -41,6 +43,10 @@ export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
   props<{ orders: Order[] }>()
 );
+
+
+
+
 
 export const getOrder = createAction(
   '[GET_ORDER] Get Order',
@@ -66,6 +72,35 @@ export const deleteOrder = createAction(
   '[DELETE_ORDER] Delete Order',
   props<{ id: number }>()
 );
+export const loadOrdersAssigned = createAction(
+  '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
+  props<{ take: number,
+    skip: number,
+    paidType?: string,
+    customer?: string,
+    customerId?: number,
+    delivered?: number
+  }>()
+);
+
+export const loadOrdersAssignedSuccess = createAction(
+  '[LOAD_ORDERS_ASSIGNED] Load Order Assigned Success',
+  props<{ orders: Order[] }>()
+);
+export const loadMoreOrdersAssigned = createAction(
+  '[LOAD_MORE_ORDERS_ASSIGNED] Load More Order Assigned',
+  props<{ take: number,
+    skip: number,
+    paidType?: string,
+    customer?: string,
+    customerId?: number,
+    delivered?: number
+  }>()
+);
+export const loadMoreOrdersAssignedSuccess = createAction(
+  '[LOAD__MORE_ORDERS_ASSIGNED] Load More Order Assigned Success',
+  props<{ orders: Order[] }>()
+);
 
 export const OrderAction = {
   addOrder,
@@ -78,5 +113,11 @@ export const OrderAction = {
   getOrderSuccess,
   updateOrder,
   payment,
-  deleteOrder
+  deleteOrder,
+  loadOrdersAssigned,
+  loadOrdersAssignedSuccess,
+  loadMoreOrdersAssigned,
+  loadMoreOrdersAssignedSuccess,
 };
+
+

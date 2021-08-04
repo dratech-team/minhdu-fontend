@@ -297,9 +297,18 @@
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
-        <div class='row align-items-center title-table ml-1'>Đơn hàng</div>
+        <div class='row align-items-center title-table ml-1'>Đơn hàng chưa giao</div>
       </div>
-      <app-table-order [customerId]='customer.id'></app-table-order>
+      <div routerLink="/don-hang/them-don-hang"
+           [queryParams]='{data:customer.id|json}'
+        class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
+      <app-table-order [orders$]='OrdersNotAssigned$' [customerId]='customer.id'></app-table-order>
+    </div>
+    <div class='col-12 mt-5 '>
+      <div class='row d-flex align-items-center '>
+        <div class='row align-items-center title-table ml-1'>Đơn hàng đã giao</div>
+      </div>
+      <app-table-order [delivered]='1' [orders$]='OrdersAssigned$' [customerId]='customer.id'></app-table-order>
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>

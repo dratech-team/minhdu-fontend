@@ -10,15 +10,14 @@ export class TableOrderCustomerService {
     private readonly store: Store,
   ) {
   }
-  loadInit(customerId:number){
-    return this.store.dispatch(OrderAction.loadInit({take:30, skip: 0 ,customerId: customerId }))
-  }
   scrollOrders(val: any){
     this.store.dispatch(OrderAction.loadMoreOrders(val));
   }
-  searchOrders(val: any){
-    this.store.dispatch(OrderAction.loadInit(val))
+
+  scrollOrdersAssigned(val: any){
+    this.store.dispatch(OrderAction.loadMoreOrdersAssigned(val));
   }
+
   getCustomers() {
     return this.orders$
   }

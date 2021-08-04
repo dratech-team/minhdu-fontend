@@ -14,6 +14,8 @@ import { Order } from '../../../order/+state/order.interface';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
+import { selectorAllOrders, selectorAllOrdersAssigned } from '../../../order/+state/order.selector';
+import { OrderAction } from '../../../order/+state/order.action';
 
 
 
@@ -24,6 +26,8 @@ import { PaymentHistory } from '@minhdu-fontend/data-models';
 })
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
+  OrdersNotAssigned$ = this.store.pipe(select(selectorAllOrders))
+  OrdersAssigned$ = this.store.pipe(select(selectorAllOrdersAssigned))
   orders: Order[] = [];
   paymentHistories: PaymentHistory[] = [];
   formGroupOrder!: FormGroup;
@@ -38,6 +42,8 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(OrderAction.loadInit({take:30, skip: 0, customerId: this.getId }))
+    this.store.dispatch(OrderAction.loadOrdersAssigned({take:30, skip: 0, customerId: this.getId , delivered: 1}))
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
   }
 
@@ -68,7 +74,6 @@ export class DetailCustomerComponent implements OnInit {
           width: '55%',
           data: { id: id }
         });
-
   }
 
   development() {
