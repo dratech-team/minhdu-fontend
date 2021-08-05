@@ -40,6 +40,7 @@ export class PoultryFoodWarehouseComponent implements OnInit {
   }
 
   poultryFood(pageSize: number, pageIndex: number, val: any) {
+
     return {
       take: pageSize,
       skip: pageSize * pageIndex++,
