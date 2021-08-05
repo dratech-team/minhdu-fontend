@@ -77,78 +77,39 @@
       </div>
     </div>
 
-    <!--    <div class='outer   animated fadeIn'-->
-    <!--         style='width: 101%!important;'-->
-    <!--         infiniteScroll-->
-    <!--         [infiniteScrollDistance]='1'-->
-    <!--         [infiniteScrollThrottle]='100'-->
-    <!--         [scrollWindow]='false'-->
-    <!--         (scrolled)='onScroll()'-->
-    <!--         *ngIf='(orders$| async) as orders'-->
-    <!--    >-->
-    <!--      <div class='row-content' *ngFor='let order of orders'>-->
-    <!--        <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>-->
-    <!--          {{order?.customer?.firstName}} {{order?.customer?.lastName}}-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>-->
-    <!--          {{order?.createdAt | date: 'dd/MM/yyyy'}}-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>-->
-    <!--          Đang cập nhật-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>-->
-    <!--          {{order?.destination?.name}} - -->
-    <!--          {{order?.destination?.district?.name}} - -->
-    <!--          {{order?.destination?.district?.province?.name}}-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>-->
-    <!--        <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>-->
-    <!--          {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>-->
-    <!--          {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.VND || !order?.currency '>-->
-    <!--          VND-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.USD'>-->
-    <!--          Đô la mỹ-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.MYR'>-->
-    <!--          Ringgit-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.MMK'>-->
-    <!--          Kyat-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.JPY'>-->
-    <!--          Yên Nhật-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.GBP'>-->
-    <!--          Bảng anh-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.EUR'>-->
-    <!--          Euro-->
-    <!--        </div>-->
-    <!--        <div class='content-profile col-1 pointer '-->
-    <!--             (click)='detailOrder(order.id)'-->
-    <!--             *ngIf='order?.currency=== currencyUnit.CNY'>-->
-    <!--          Nhân dân tệ-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+        <div class='outer   animated fadeIn'
+             style='width: 101%!important;'
+             infiniteScroll
+             [infiniteScrollDistance]='1'
+             [infiniteScrollThrottle]='100'
+             [scrollWindow]='false'
+             (scrolled)='onScroll()'
+
+        >
+<!--          *ngIf='(orders$| async) as orders'-->
+<!--          <div class='row-content' *ngFor='let order of orders'>-->
+<!--            <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>-->
+<!--              {{order?.customer?.firstName}} {{order?.customer?.lastName}}-->
+<!--            </div>-->
+<!--            <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>-->
+<!--              {{order?.createdAt | date: 'dd/MM/yyyy'}}-->
+<!--            </div>-->
+<!--            <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>-->
+<!--              Đang cập nhật-->
+<!--            </div>-->
+<!--            <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>-->
+<!--              {{order?.destination?.name}} - -->
+<!--              {{order?.destination?.district?.name}} - -->
+<!--              {{order?.destination?.district?.province?.name}}-->
+<!--            </div>-->
+<!--            <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>-->
+<!--            <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>-->
+<!--              {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ-->
+<!--            </div>-->
+<!--            <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>-->
+<!--              {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ-->
+<!--            </div>-->
+
+        </div>
   </form>
 </div>

@@ -13,6 +13,7 @@ export const loadInit = createAction(
   props<{
     skip: number,
     take: number,
+    name?: string,
   }>()
 );
 

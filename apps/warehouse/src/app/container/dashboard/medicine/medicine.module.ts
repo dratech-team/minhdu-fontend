@@ -10,10 +10,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { MedicineEffect } from './+state/medicine.effect';
 import { MedicineReducer } from './+state/medicine.reducer';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { MedicineDialogComponent } from './component/medicine-dialog/medicine-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { MedicineDialogComponent } from './components/medicine-dialog/medicine-dialog.component';
 
 @NgModule({
   imports: [

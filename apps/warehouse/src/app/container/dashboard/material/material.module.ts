@@ -6,16 +6,28 @@ import { EffectsModule } from '@ngrx/effects';
 import { MaterialReducer } from './+state/material.reducer';
 import { MaterialEffect } from './+state/material.effect';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialDialogComponent } from './components/material-dialog/material-dialog.component';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
   imports: [
+    ComponentsModule,
     StoreModule.forFeature(FeatureName.MATERIAL, MaterialReducer),
     EffectsModule.forFeature([MaterialEffect]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    CommonModule
   ],
   declarations: [
-    MaterialComponent
+    MaterialComponent,
+    MaterialDialogComponent,
   ],
   exports: [
     MaterialComponent

@@ -25,9 +25,9 @@ export class MedicineEffect {
   loadMoreMedicines$ = createEffect(() =>
     this.action$.pipe(
       ofType(MedicineAction.loadMoreMedicines),
-      switchMap((props) => this.medicineService.pagination(props)),
+      switchMap((props) => this.medicineService.Pagination(props)),
       map((ResponsePaginate) =>
-        MedicineAction.loadMoreMedicinesSuccess({ medicines: ResponsePaginate.data })),
+        MedicineAction.loadMoreMedicinesSuccess({ medicines: ResponsePaginate })),
       catchError((err) => throwError(err))
     )
   );
