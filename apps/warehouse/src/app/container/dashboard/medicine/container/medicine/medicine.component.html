@@ -95,7 +95,13 @@
          (scrolled)='onScroll()'
          *ngIf='(medicines$| async) as medicines'
     >
-      <div class='row-content' *ngFor='let medicine of medicines' (click)='updateMedicine(medicine)'>
+      <app-mouse-right  #child
+                        (addEvent)='importMedicine()'
+                       (deleteEvent)='deleteMedicine($event)'
+                       (readAndUpdateEvent)='updateMedicine($event)'></app-mouse-right>
+      <div class='row-content' *ngFor='let medicine of medicines'
+           (contextmenu)='child.onContextMenu($event,medicine)'
+           (click)='updateMedicine(medicine)'>
         <div class='content-profile default pointer '>
          {{medicine?.code}}
         </div>

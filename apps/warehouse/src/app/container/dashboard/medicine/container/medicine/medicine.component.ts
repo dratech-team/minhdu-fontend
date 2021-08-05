@@ -8,6 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicineDialogComponent } from '../../component/medicine-dialog/medicine-dialog.component';
 import { Medicine } from '../../+state/medicine.interface';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   selector:'app-medicine',
@@ -33,9 +34,6 @@ export class MedicineComponent implements OnInit{
 
     this.store.dispatch(MedicineAction.loadInit({take: 30, skip :0}))
   }
-  detailMedicine() {
-    this.router.navigate(['kho-thuoc/chi-tiet-thuoc']).then()
-  }
 
   importMedicine() {
       this.dialog.open(MedicineDialogComponent, {width: '45%'})
@@ -47,6 +45,17 @@ export class MedicineComponent implements OnInit{
 
   exportMedicine() {
 
+  }
+
+  deleteMedicine($event: any){
+    console.log($event)
+     const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'})
+      ref.afterClosed().subscribe(val =>
+      {
+        if(val){
+          this.store.dispatch(MedicineAction.deleteMedicine({medicineId : $event.id}))
+        }
+      })
   }
   updateMedicine(medicine: Medicine){
     this.dialog.open(MedicineDialogComponent,
