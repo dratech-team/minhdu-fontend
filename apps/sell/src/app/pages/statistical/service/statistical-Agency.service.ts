@@ -4,16 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 
 import { Observable } from 'rxjs';
-import { Statistical } from '@minhdu-fontend/data-models';
+import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 
 @Injectable({providedIn:'root'})
-export class StatisticalAgencyService extends BaseService<Statistical>{
+export class StatisticalAgencyService extends BaseService<stakedChart>{
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.STATISTICAL_AGENCY, http)
   }
-  getAll(param: any): Observable<Statistical[]> {
-    return super.getAll();
+  getAll(param: any): Observable<stakedChart[]> {
+    return super.getAll(param);
   }
 }

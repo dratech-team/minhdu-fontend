@@ -4,5 +4,5 @@ export interface Chart {
 }
 export interface stakedChart{
   name: string;
-  series: any
+  series: Chart[]
 }

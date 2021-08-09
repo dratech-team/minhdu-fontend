@@ -1,13 +1,6 @@
 
   <form [formGroup]='formGroup' class='d-flex flex-column p-2'>
     <div class=' mt-1'>
-      <span class='h5'> Chọn Loại thống kê</span>
-      <mat-select class='form-control mt-1' formControlName='type' >
-        <mat-option value='{{statisticalYType.CUSTOMER}}'> Khách hàng</mat-option>
-        <mat-option value='{{statisticalYType.ORDER}}'> Đơn hàng</mat-option>
-      </mat-select>
-    </div>
-    <div class=' mt-1'>
       <span class='h5'>Từ ngày</span>
       <input type='date' class='form-control mt-1'  formControlName='startedAt' >
     </div>

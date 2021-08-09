@@ -111,14 +111,14 @@
               <th class='text-center'>Diễn giải</th>
             </tr>
             <tr *ngFor='let order of route.orders' (click)='detailOrder(order.id)'>
-              <th class='text-center'> {{order?.customer?.firstName}} {{order?.customer?.lastName}} </th>
-              <th class='text-center'> {{order.createdAt|date: 'dd/MM/yyyy'}} </th>
-              <th class='text-center'>
+              <th class='text-center pointer'> {{order?.customer?.firstName}} {{order?.customer?.lastName}} </th>
+              <th class='text-center pointer'> {{order.createdAt|date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center pointer'>
                 {{order?.destination?.name}}
                 {{order?.destination?.district?.name}}
                 {{order?.destination?.district?.province?.name}}
               </th>
-              <th class='text-center'> {{order.explain}}</th>
+              <th class='text-center pointer'> {{order.explain}}</th>
             </tr>
           </table>
         </div>
