@@ -2,6 +2,10 @@ export enum StatisticalYType{
   CUSTOMER ='CUSTOMER',
   ORDER ='ORDER',
   REVENUE ='REVENUE',
+  POTENTIAL = 'POTENTIAL',
+  COMMODITY = 'COMMODITY',
+  COMMODITY_DETAIL = 'COMMODITY_DETAIL',
+  DEBT = 'DEBT'
 }
 
 export enum StatisticalXType {

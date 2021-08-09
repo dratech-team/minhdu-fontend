@@ -92,6 +92,26 @@
       </div>
     </div>
     <div class='row col-12 mt-5 '>
+      <div [ngStyle]='{"width":statisticalPotential.length < 6? "33%": "100%"  }'
+           class='d-flex flex-column  col-xm-12'>
+        <span class='h4 ml-3'>Thống kê khách hàng tiềm năng theo tỉnh</span>
+        <app-staked-vertical-chart
+          style='width: 100%; height: 400px'
+          [data]='statisticalPotential'
+          [labelY]='"Khách hàng"'
+          [labelX]='"Tỉnh Thành"'>
+        </app-staked-vertical-chart>
+      </div>
+      <div [ngStyle]='{"width":statisticalCommodityDetail.length < 6? "33%": "100%"  }'
+           class='d-flex flex-column  col-xm-12'>
+        <span class='h4 ml-3'>Thống kê đơn hàng theo khách hàng</span>
+        <app-staked-vertical-chart
+          style='width: 100%; height: 400px'
+          [data]='statisticalCommodityDetail'
+          [labelY]='"Số lượng gà"'
+          [labelX]='"Khách hàng"'>
+        </app-staked-vertical-chart>
+      </div>
     </div>
   </div>
 </div>

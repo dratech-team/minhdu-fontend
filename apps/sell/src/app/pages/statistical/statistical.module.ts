@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PickStatisticalTypeComponent } from './component/pick-statistical-type/pick-statistical-type.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-day.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   declarations: [
+    PickDayToDayComponent,
     StatisticalComponent,
     PickStatisticalTypeComponent,
   ],

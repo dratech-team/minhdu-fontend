@@ -21,10 +21,12 @@ import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { MatSelectModule } from '@angular/material/select';
 import { DevelopmentComponent } from './development/development.component';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar'
+import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.component';
 
 @NgModule({
   imports: [
+    MatSnackBarModule,
     CommonModule,
     RouterModule,
     MatMenuModule,
@@ -38,6 +40,7 @@ import { DevelopmentComponent } from './development/development.component';
     MatSelectModule
   ],
   declarations: [
+    SnackBarSuccessComponent,
     DevelopmentComponent,
     VerticalBarChartComponent,
     MouseRightComponent,
@@ -55,6 +58,7 @@ import { DevelopmentComponent } from './development/development.component';
     PickEmployeeService,
   ],
   exports: [
+    SnackBarSuccessComponent,
     DevelopmentComponent,
     VerticalBarChartComponent,
     MouseRightComponent,

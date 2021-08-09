@@ -15,6 +15,7 @@ import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
+import { Observable, Subject } from 'rxjs';
 
 
 @Component({
@@ -34,14 +35,29 @@ export class AddOrderComponent implements OnInit {
   customerId: number|undefined;
   commodityIds: number[] = [];
   payType = PaymentType;
+  reload = new Subject<boolean>();
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
+
+   observer = new MutationObserver((mutations) => {
+    if (document.contains(document.getElementById('success'))){
+      this.formGroup.reset()
+      this.reload.next(true)
+      this.customerId = undefined;
+      this.customerPicked = undefined;
+      this.commodityIds = [];
+      this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
+        this.CommoditiesPicked = JSON.parse(JSON.stringify(val))
+      })
+    }
+  });
   constructor(
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+
   ) {
   }
 
@@ -67,6 +83,7 @@ export class AddOrderComponent implements OnInit {
       province: ['', Validators.required],
       nation: ['', Validators.required]
     });
+
   }
 
   getCustomerId(){
@@ -128,7 +145,6 @@ export class AddOrderComponent implements OnInit {
     this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
       this.CommoditiesPicked = JSON.parse(JSON.stringify(val))
     })
-    console.log(this.commodityIds)
   }
 
   onSubmit() {
@@ -141,5 +157,6 @@ export class AddOrderComponent implements OnInit {
       commodityIds: this.commodityIds,
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
+    this.observer.observe(document, { childList: true, subtree:true});
   }
 }

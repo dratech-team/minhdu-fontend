@@ -6,10 +6,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
-  templateUrl:'pick-statistical-type.component.html',
+  templateUrl:'pick-day-to-day.component.html',
 })
-export class PickStatisticalTypeComponent implements OnInit {
-  statisticalYType = StatisticalYType;
+export class PickDayToDayComponent implements OnInit {
   formGroup!: FormGroup;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,7 +19,6 @@ export class PickStatisticalTypeComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      type: [Validators.required],
       startedAt: [Validators.required],
       endedAt: [Validators.required]
     })
@@ -29,9 +27,8 @@ export class PickStatisticalTypeComponent implements OnInit {
   onSubmit() {
     const val = this.formGroup.value
     return  {
-      startedAt: val.startedAt,
-      endedAt: val.endedAt,
-      type: val.type
+      startedAt: new Date(val.startedAt) ,
+      endedAt: new Date(val.endedAt) ,
     }
   }
 }

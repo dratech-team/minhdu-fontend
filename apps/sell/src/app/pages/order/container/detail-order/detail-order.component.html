@@ -109,7 +109,7 @@
               <th class='text-center'>Xóa</th>
             </tr>
             <tr *ngFor='let commodity of order.commodities'>
-              <th class='text-center'> {{commodity.code}} </th>
+              <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
               <th class='text-center' *ngIf='commodity.unit === commodityUnit.KG'> Kilogam</th>
               <th class='text-center' *ngIf='commodity.unit === commodityUnit.CON'> Con</th>
@@ -138,12 +138,12 @@
             <th class='text-center'>Biển số xe</th>
           </tr>
           <tr *ngFor='let route of order.routes' (click)='detailRoute(route.id)'>
-            <th class='text-center'> {{route.name}} </th>
-            <th class='text-center'> {{route.startedAt|date: 'dd/MM/yyyy'}} </th>
-            <th class='text-center'> {{route.endedAt|date: 'dd/MM/yyyy'}} </th>
-            <th class='text-center'> {{route.driver}} </th>
-            <th class='text-center'> {{route.garage}} </th>
-            <th class='text-center'> {{route.bsx}}</th>
+            <th class='text-center pointer'> {{route.name}} </th>
+            <th class='text-center pointer'> {{route.startedAt|date: 'dd/MM/yyyy'}} </th>
+            <th class='text-center pointer'> {{route.endedAt|date: 'dd/MM/yyyy'}} </th>
+            <th class='text-center pointer'> {{route.driver}} </th>
+            <th class='text-center pointer'> {{route.garage}} </th>
+            <th class='text-center pointer'> {{route.bsx}}</th>
           </tr>
         </table>
 <!--       <app-route-order ></app-route-order>-->
