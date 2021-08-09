@@ -7,6 +7,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../container/dashboard/material/material.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import { MaterialModule } from '../../container/dashboard/material/material.modu
     MatMenuModule,
     MatButtonModule,
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   declarations: [
     DashboardComponent

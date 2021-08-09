@@ -1,18 +1,20 @@
-<div class=' mt-5' style='overflow-x: hidden;'>
-  <div class='row d-flex align-items-center justify-content-between '>
+<div  style='overflow-x: hidden;'>
+  <div class='row d-flex align-items-center justify-content-between '
+       style='padding: 15px;position: fixed; left: 0; right: 0; background: white '>
     <div class='h2 ml-4'>Tổng kho vật tư </div>
     <div>
-      <button class='btn btn-primary mr-4' mat-button [matMenuTriggerFor]="menu">
-        <span class='h5'> Loại Hàng</span>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button (click)='choseWareHouse(warehouseTypeEnum.MEDICINE)' mat-menu-item> thuốc</button>
-        <button (click)='choseWareHouse(warehouseTypeEnum.POULTRY_FOOD)' mat-menu-item> thực phẩm</button>
-        <button (click)='choseWareHouse(warehouseTypeEnum.MATERIAL)' mat-menu-item> thiết bị</button>
-      </mat-menu>
+
+      <div class='mr-5' >
+        <label for='type'  class='h5'>Loại hàng</label>
+        <mat-select [(value)]="warehouseType" id='type' class='form-control'>
+          <mat-option [value]='warehouseTypeEnum.MEDICINE'>Thuốc</mat-option>
+          <mat-option [value]='warehouseTypeEnum.POULTRY_FOOD'>Thực phẩm</mat-option>
+          <mat-option  [value]='warehouseTypeEnum.MATERIAL'>Thiết bị</mat-option>
+        </mat-select>
+      </div>
     </div>
   </div>
-  <div style='margin: 0 auto'>
+  <div style='margin: 100px auto 0'>
     <app-medicine *ngIf='warehouseType === warehouseTypeEnum.MEDICINE'></app-medicine>
     <app-poultry-food *ngIf='warehouseType === warehouseTypeEnum.POULTRY_FOOD'></app-poultry-food>
     <app-material *ngIf='warehouseType === warehouseTypeEnum.MATERIAL'></app-material>
