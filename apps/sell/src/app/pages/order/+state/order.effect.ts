@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
 import { OrderAction } from './order.action';
-import { catchError, concatMap, delay, map, switchMap } from 'rxjs/operators';
-import { throwError, timer } from 'rxjs';
+import { catchError, delay, map, switchMap, tap } from 'rxjs/operators';
+import {  throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
 
@@ -15,12 +15,13 @@ export class OrderEffect {
       ofType(OrderAction.addOrder),
       switchMap((props) => this.orderService.addOne(props.order).pipe(
         map(order => {
-
-          window.location.reload()
+          return OrderAction.addOrderSuccess({ order: order });
+        }),
+        tap(_ => {
           this.snackBar.openFromComponent(SnackBarSuccessComponent, {
-            duration: 2000
-          })
-          return  OrderAction.addOrderSuccess({order:order})
+            duration: 2500,
+            panelClass: ['background-snackbar']
+          });
         }),
         catchError((err) => throwError(err))
       ))
@@ -100,6 +101,7 @@ export class OrderEffect {
         )
       )
     ));
+
 
   constructor(
     private snackBar: MatSnackBar,
