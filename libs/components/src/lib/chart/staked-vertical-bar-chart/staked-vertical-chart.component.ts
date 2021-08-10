@@ -6,32 +6,29 @@ import { stakedChart } from '@minhdu-fontend/data-models';
   templateUrl: 'staked-vertical-chart.component.html'
 })
 export class StakedVerticalChartComponent implements OnChanges {
-
   @Input() data!: stakedChart[];
   @Input() labelX!: string;
   @Input() labelY!: string;
-  length = true;
+  width = 400;
   colorScheme = {
     domain: ['#20a8d8', '#f86c6b']
   };
 
   ngOnChanges() {
-    let i = 1;
     if (this.data) {
-
+      this.data.length >=0 && this.data.length <6 ? this.width = 400:
+        this.data.length >6 && this.data.length < 20 ? this.width = 800:
+          this.data.length >20 && this.data.length < 30  ? this.width = 1800:
+            this.data.length >30 && this.data.length < 40  ? this.width = 2400:
+              this.data.length >40 && this.data.length < 50  ? this.width = 3200:
+                this.data.length >50 && this.data.length < 60  ? this.width = 4000:
+                  this.data.length >60 && this.data.length < 70  ? this.width = 4800:
+                    this.data.length >70 && this.data.length < 80  ? this.width = 5600:
+                      this.data.length >80 && this.data.length < 90  ? this.width = 6400: this.width = 7200;
       this.data.map((val, index) => {
-          let sum = val.series.map(a => a.value).reduce(function(a, b) {
-            return a + b;
-          });
-          if (sum > 0) {
-            val.name = `${i++} - ${val.name}`;
-          } else {
-            this.data.splice(index, 1);
-          }
+            val.name = `${index + 1} - ${val.name}`;
         }
       );
     }
-    console.log(i)
-    i > 15? this.length = false: this.length = true;
   }
 }

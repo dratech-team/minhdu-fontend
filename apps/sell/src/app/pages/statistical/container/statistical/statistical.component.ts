@@ -8,6 +8,7 @@ import { StatisticalAgencyService } from '../../service/statistical-Agency.servi
 import { StatisticalChickenService } from '../../service/statistical-chicken.service';
 import { StatisticalProvinceService } from '../../service/statistical-province.service';
 import { StatisticalCustomerPotentialService } from '../../service/statistical-customer-potential.service';
+import { getMonth } from 'ngx-bootstrap/chronos';
 
 @Component({
   templateUrl: 'statistical.component.html'
@@ -16,6 +17,8 @@ export class StatisticalComponent implements OnInit {
   statisticalProvince: Statistical[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
+  potential = 0;
+  CurrentMonth =  getMonth(new Date()) + 1
   statisticalCommodityDetail: stakedChart[] = [];
   statisticalChicken: Statistical[] = [];
   statisticalYType = StatisticalYType;
@@ -37,6 +40,7 @@ export class StatisticalComponent implements OnInit {
   ngOnInit() {
     this.statisticalCustomer({type:this.statisticalYType.POTENTIAL })
     this.statisticalCustomer({type:this.statisticalYType.COMMODITY_DETAIL })
+
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
     this.formGroup = this.formBuilder.group({
@@ -93,6 +97,10 @@ export class StatisticalComponent implements OnInit {
         switch (param.type) {
           case this.statisticalYType.POTENTIAL:
             this.statisticalPotential = value;
+            this.statisticalPotential.forEach(val =>{
+              console.log(val.series[0].value)
+              this.potential =  this.potential +  val.series[0].value
+            });
             break;
           case this.statisticalYType.COMMODITY_DETAIL:
             this.statisticalCommodityDetail = value;

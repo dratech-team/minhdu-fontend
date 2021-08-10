@@ -12,7 +12,7 @@
         <div class='col-12 p-2  rounded bg-success'>
           <div class='h4'>Đơn hàng</div>
           <div class='d-flex'>
-            <div class='h3 mr-2'> 10</div>
+            <div class='h3 mr-2'>{{potential}} </div>
           </div>
           <div class='h5 d-flex'>
             <div>Tổng số xe :</div>
@@ -24,22 +24,21 @@
         <div class='col-12 p-2 rounded  bg-warning'>
           <div class='h4'>Khách hàng </div>
           <div class='d-flex'>
-            <div class='h3 mr-2'> 10</div>
+
             <div class='d-flex align-items-center'>
-              <img src='/assets/icon/share/caret-up-fill.svg' alt='up'>
-              <img *ngIf='false' src='/assets/icon/share/caret-down-fill.svg' alt='up'>
-              <span class='ml-2'>50%</span>
+              <span class='h5'>Tiềm năng :</span>
             </div>
+            <div class=' ml-2 h5'> {{potential}}</div>
           </div>
           <div class='h5 d-flex'>
-            <div>tháng trước :</div>
-            <span class='ml-2'>5</span>
+            <div>Tổng Khách hàng :</div>
+            <span class='ml-2'> {{statisticalCommodityDetail.length}}</span>
           </div>
         </div>
       </div>
       <div class='col-md-4 col-xm-12 p-1  '>
         <div class='col-12 p-2 rounded  bg-primary'>
-          <div class='h4'>Doanh thu</div>
+          <div class='h4'>Doanh thu tháng {{CurrentMonth}}</div>
           <div class='d-flex'>
             <div class='h3 mr-2'> 10</div>
             <div class='d-flex align-items-center'>
@@ -56,18 +55,19 @@
       </div>
     </div>
     <div class='row col-12 mt-5 d-flex  ' >
-      <div [ngStyle]='{"width":statisticalProvince.length < 6? "33%": "100%"  }'
+      <div [ngStyle]='{"width":statisticalProvince.length < 6? "33%": "100%" ,
+       "overflow-x": statisticalProvince.length < 6? "hidden": "scroll"
+       }'
+           style='height: 470px;'
            class='d-flex flex-column  col-xm-12'>
-        <div class='d-flex justify-content-sm-end'>
+        <div class='d-flex justify-content-sm-end ' >
           <img (click)='onStatistical(statisticalXType.PROVINCE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4 ml-3'>Thống kê doanh thu theo tỉnh</span>
+        <span style='font-size: 20px; font-weight: bold' class=' ml-3 mb-1'>Thống kê doanh thu theo tỉnh</span>
           <app-vertical-bar-chart
-            style='height:400px'
             [data]='statisticalProvince'
             [labelX]='"Tỉnh thành"'
             [labelY]='labelY'
-            [legend]='statisticalProvince.length < 20'
           >
           </app-vertical-bar-chart>
       </div>
@@ -75,14 +75,14 @@
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.CHICKEN_TYPE)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4 ml-3'>Thống kê doanh thu theo loại gà</span>
+        <span style='font-size: 20px; font-weight: bold' class=' ml-3'>Thống kê doanh thu theo loại gà</span>
         <app-pie-chart style='width: 100%; height: 400px' [data]='statisticalChicken'></app-pie-chart>
       </div>
       <div class='d-flex flex-column col-md-4  col-xm-12'>
         <div class='d-flex justify-content-sm-end'>
           <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2' src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class='h4 ml-3'>Thống kê Doanh thu từng đại lý</span>
+        <span style='font-size: 20px; font-weight: bold' class=' ml-3'>Thống kê Doanh thu từng đại lý</span>
         <app-staked-vertical-chart
           style='width: 100%; height: 400px'
           [data]='statisticalAgency'
@@ -92,25 +92,29 @@
       </div>
     </div>
     <div class='row col-12 mt-5 '>
-      <div [ngStyle]='{"width":statisticalPotential.length < 6? "33%": "100%"  }'
-           class='d-flex flex-column  col-xm-12'>
-        <span class='h4 ml-3'>Thống kê khách hàng tiềm năng theo tỉnh</span>
+      <div class='d-flex flex-column mb-5 col-xm-12'
+           [ngStyle]='{"width":statisticalPotential.length < 6? "33%": "100%" ,
+             "overflow-x": statisticalPotential.length < 6? "hidden": "scroll"
+            }'
+           style='height: 470px;'>
+        <span class='ml-3 mb-3' style='font-size: 20px; font-weight: bold'>Thống kê khách tiềm năng theo tỉnh</span>
         <app-staked-vertical-chart
-          style='width: 100%; height: 400px'
           [data]='statisticalPotential'
           [labelY]='"Khách hàng"'
           [labelX]='"Tỉnh Thành"'>
         </app-staked-vertical-chart>
       </div>
-      <div [ngStyle]='{"width":statisticalCommodityDetail.length < 6? "33%": "100%"  }'
-           class='d-flex flex-column  col-xm-12'>
-        <span class='h4 ml-3'>Thống kê đơn hàng theo khách hàng</span>
-        <app-staked-vertical-chart
-          style='width: 100%; height: 400px'
-          [data]='statisticalCommodityDetail'
-          [labelY]='"Số lượng gà"'
-          [labelX]='"Khách hàng"'>
-        </app-staked-vertical-chart>
+      <div class='d-flex flex-column mb-5 col-xm-12'
+           [ngStyle]='{"width":statisticalCommodityDetail.length < 6? "33%": "100%",
+              "overflow-x": statisticalCommodityDetail.length < 6? "hidden": "scroll"
+             }'
+           style='height: 470px;'>
+        <span style='font-size: 20px; font-weight: bold' class=' ml-3 mb-3'>Thống kê đơn hàng theo khách hàng</span>
+          <app-staked-vertical-chart
+            [data]='statisticalCommodityDetail'
+            [labelY]='"Số lượng gà"'
+            [labelX]='"Khách hàng"'>
+          </app-staked-vertical-chart>
       </div>
     </div>
   </div>
