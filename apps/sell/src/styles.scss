@@ -17,6 +17,14 @@ $spinkit-spinner-color: $body-color;
   color: red;
   font-size: 15px;
 }
+.chart-legend{
+  position: absolute;
+  bottom:0px;
+  left: 10px;
+  max-width: 520px;
+  overflow: hidden;
+
+}
 // Here you can add other styles
 .main {
   background: white;
