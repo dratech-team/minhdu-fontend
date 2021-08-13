@@ -44,7 +44,7 @@ export class ChartService {
 
   editNameChart(data: stakedChart[]) {
     data.map((val, index) => {
-        val.name = `${index + 1} - ${val.name}`;
+        val.name = `${index + 1}-${val.name}`;
       }
     );
     return data;
