@@ -14,7 +14,6 @@ import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
 import { PickEmployeeService } from './pick-employee/pick-employee.service';
-import { VerticalBarChartComponent } from './chart/vertical-bar-chart/vertical-bar-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { PieChartComponent } from './chart/pie-chart/pie-chart-component';
 import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/staked-vertical-chart.component';
@@ -23,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DevelopmentComponent } from './development/development.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.component';
+import { SwimLaneChartComponent } from './chart/swimlane-chart/swim-lane-chart.component';
 
 @NgModule({
   imports: [
@@ -40,9 +40,9 @@ import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.c
     MatSelectModule
   ],
   declarations: [
+    SwimLaneChartComponent,
     SnackBarSuccessComponent,
     DevelopmentComponent,
-    VerticalBarChartComponent,
     MouseRightComponent,
     SearchEmployeePipe,
     DialogDeleteComponent,
@@ -58,9 +58,9 @@ import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.c
     PickEmployeeService,
   ],
   exports: [
+    SwimLaneChartComponent,
     SnackBarSuccessComponent,
     DevelopmentComponent,
-    VerticalBarChartComponent,
     MouseRightComponent,
     DialogDeleteComponent,
     NotEmptyPipe,
