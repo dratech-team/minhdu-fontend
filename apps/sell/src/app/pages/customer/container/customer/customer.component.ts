@@ -50,7 +50,6 @@ export class CustomerComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        console.log(val.isPotential);
         this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0 )));
       })
     ).subscribe()

@@ -11,14 +11,17 @@ import { StatisticalCustomerPotentialService } from '../../service/statistical-c
 import { getMonth } from 'ngx-bootstrap/chronos';
 
 @Component({
-  templateUrl: 'statistical.component.html'
+  templateUrl: 'statistical.component.html',
+  styleUrls: ['statistical.component.scss']
 })
 export class StatisticalComponent implements OnInit {
-  statisticalProvince: Statistical[] = [];
+  statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
-  potential = 0;
-  CurrentMonth =  getMonth(new Date()) + 1
+  TotalPotential = 0;
+  totalOrders = 0;
+  date = new Date();
+  CurrentMonth = getMonth(new Date()) + 1;
   statisticalCommodityDetail: stakedChart[] = [];
   statisticalChicken: Statistical[] = [];
   statisticalYType = StatisticalYType;
@@ -38,9 +41,18 @@ export class StatisticalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.statisticalCustomer({type:this.statisticalYType.POTENTIAL })
-    this.statisticalCustomer({type:this.statisticalYType.COMMODITY_DETAIL })
-
+    this.statisticalProvinceService.getAll({
+      type: this.statisticalYType.ORDER,
+      startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),
+      endedAt: new Date()
+    }).subscribe(val => {
+        val.forEach(value => {
+          value.series.forEach(item => this.totalOrders = this.totalOrders + item.value);
+        });
+      }
+    );
+    this.statisticalCustomer({ type: this.statisticalYType.POTENTIAL });
+    this.statisticalCustomer({ type: this.statisticalYType.COMMODITY_DETAIL });
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
     this.formGroup = this.formBuilder.group({
@@ -73,6 +85,7 @@ export class StatisticalComponent implements OnInit {
               this.statisticalProvinceService.getAll(val).subscribe(value => {
                 if (value) {
                   this.statisticalProvince = value;
+
                 }
               });
           }
@@ -84,22 +97,21 @@ export class StatisticalComponent implements OnInit {
               this.labelY = 'Doanh thu';
               break;
             default:
-              this.labelY = 'Đơn hàng';
+              this.labelY = 'Số lượng';
           }
         }
       }
     );
   }
 
-  statisticalCustomer( param: any) {
+  statisticalCustomer(param: any) {
     this.statisticalCustomerPotentialService.getAll(param).subscribe(value => {
       if (value) {
         switch (param.type) {
           case this.statisticalYType.POTENTIAL:
             this.statisticalPotential = value;
-            this.statisticalPotential.forEach(val =>{
-              console.log(val.series[0].value)
-              this.potential =  this.potential +  val.series[0].value
+            this.statisticalPotential.forEach(val => {
+              this.TotalPotential = this.TotalPotential + val.series[0].value;
             });
             break;
           case this.statisticalYType.COMMODITY_DETAIL:

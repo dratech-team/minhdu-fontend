@@ -55,7 +55,6 @@ export class RouteDialogComponent implements OnInit {
 
   pickOrders(orders: number[] ) {
     this.orderIdsOfRoute = orders;
-    console.log(this.orderIdsOfRoute)
   }
 
   onSubmit() {

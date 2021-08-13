@@ -48,7 +48,6 @@ export class OrgchartContainer implements OnInit {
           }
           if (type === this.type.BRANCH) {
             if (isEdit) {
-              console.log(value);
               this.store.dispatch(OrgchartActions.updateBranch({ id: value.id, name: value.name }));
             } else {
               this.store.dispatch(OrgchartActions.addBranch({ branch: { name: value.name } }));
@@ -69,7 +68,6 @@ export class OrgchartContainer implements OnInit {
   }
 
   openDialogDelete(title: string, type: string, id: any): void {
-    console.log(type);
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
       width: '30%',
       data: { title }

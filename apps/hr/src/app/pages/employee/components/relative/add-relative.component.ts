@@ -22,7 +22,6 @@ export class AddRelativeComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data?.relative?.profile?.firstName);
     this.formGroup = this.formBuilder.group({
       firstName: [this.data?.relative?.firstName, Validators.required],
       lastName: [this.data?.relative?.lastName, Validators.required],

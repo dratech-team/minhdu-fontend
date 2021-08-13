@@ -47,7 +47,6 @@ export  class RouteComponent implements OnInit{
   }
 
   deleteRoute($event: any){
-    console.log($event.id)
       this.store.dispatch(RouteAction.deleteRoute({idRoute: $event.id}))
   }
   detailRoute(id: number){

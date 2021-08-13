@@ -65,7 +65,6 @@ export class OrderDialogComponent implements OnInit {
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
-    console.log(this.commodities);
     this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.store.dispatch(DistrictAction.loadAllDistricts());
