@@ -19,6 +19,7 @@ export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;
   @Input() orders!: Order[];
   @Input() orderIdsOfRoute!: number[];
+  @Input() customerId!: number
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
@@ -72,6 +73,7 @@ export class PickOrderComponent implements OnInit{
     return{
       take: pageSize,
       skip: pageSize * pageIndex++,
+      customerId: this?.customerId,
       customer: val.name,
       paidType: val.paidType,
 
