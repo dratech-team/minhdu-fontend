@@ -73,8 +73,8 @@ export class CustomerComponent implements OnInit {
           val.isPotential === 'false'? 0 : val.isPotential,
         customerType: val.customerType ,
         nationId: val.nationId ,
-        phone: val.phone ,
-        name: val.name ,
+        phone: val.phone.trim() ,
+        name: val.name.trim(),
       };
   }
   readAndUpdate($event?: any) {

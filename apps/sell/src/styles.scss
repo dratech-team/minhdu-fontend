@@ -29,6 +29,9 @@ $spinkit-spinner-color: $body-color;
   background: white;
   font-family: Roboto, serif;
 }
+.no-underline{
+  text-decoration: none !important
+}
 .ngx-charts-outer {
   margin: auto;
 }

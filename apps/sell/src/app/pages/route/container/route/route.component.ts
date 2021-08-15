@@ -3,11 +3,12 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorAllRoute } from '../+state/Route.selector';
 import { RouteAction } from '../+state/route.action';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Router } from '@angular/router';
 import { document } from 'ngx-bootstrap/utils';
+import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -15,7 +16,17 @@ import { document } from 'ngx-bootstrap/utils';
 export  class RouteComponent implements OnInit{
   pageIndex: number = 1;
   pageSize: number = 30;
-  formGroup!: FormGroup;
+  formGroup = new FormGroup(
+    {
+      skip: new FormControl(''),
+      take: new FormControl(''),
+      startedAt: new FormControl(''),
+      endedAt: new FormControl(''),
+      driver: new FormControl(''),
+      name: new FormControl(''),
+      bsx:  new FormControl(''),
+    }
+    );
   routes$ = this.store.pipe(select(selectorAllRoute))
   constructor(
       private readonly store: Store<AppState>,
@@ -24,11 +35,19 @@ export  class RouteComponent implements OnInit{
   ) {
   }
   ngOnInit() {
+    const test = '  dsdasd'
+    console.log(test.trim())
     const btnRoute = document.getElementById('route')
     btnRoute?.classList.add('btn-border')
     document.getElementById('customer').classList.remove('btn-border')
     document.getElementById('order').classList.remove('btn-border')
     this.store.dispatch(RouteAction.loadInit({take:30, skip: 0}))
+    this.formGroup.valueChanges.pipe(
+      debounceTime(1000),
+      tap((val) => {
+        this.store.dispatch(RouteAction.loadInit(this.route(val, 30, 0 )));
+      })
+    ).subscribe()
   }
   add(){
     this.dialog.open(RouteDialogComponent, {
@@ -42,7 +61,12 @@ export  class RouteComponent implements OnInit{
   route(val: any, pageSize: number, pageIndex: number){
     return {
       skip: pageSize *pageIndex++,
-      take: pageSize
+      take: pageSize,
+      name: val.name.trim(),
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
+      driver: val.driver.trim(),
+      bsx: val.bsx.trim(),
     }
   }
 

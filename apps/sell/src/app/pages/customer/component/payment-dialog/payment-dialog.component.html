@@ -47,6 +47,7 @@
     <mat-step [stepControl]="secondFormGroup"  [editable]="true">
       <ng-template matStepLabel >Chọn đơn hàng</ng-template>
     <app-pick-order
+      [payment]='true'
       [formGroup]="secondFormGroup"
       [orders]='orders'
       [customerId]='data.id'

@@ -43,7 +43,7 @@ export const updateCommodity = createAction(
 );
 export const deleteCommodity = createAction(
   '[DELETE_COMMODITY] Delete Commodity',
-  props<{ id: number, orderId: number }>()
+  props<{ id: number, orderId?: number }>()
 );
 export const CommodityAction = {
   addCommodity,
