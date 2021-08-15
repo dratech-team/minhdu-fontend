@@ -13,7 +13,16 @@ export const addRouteSuccess = createAction(
 
 export const loadInit = createAction(
   '[LOAD_ROUTES] Load Route',
-  props<{ take: number, skip: number, orderId?: number }>()
+  props<{
+    take: number,
+    skip: number,
+    orderId?: number,
+    name?: string,
+    startedAt?: Date,
+    endedAt?: Date,
+    driver?: string,
+    bsx?: string,
+  }>()
 );
 
 export const loadInitSuccess = createAction(
@@ -23,7 +32,16 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreRoutes = createAction(
   '[LOAD_MORE_ROUTES] Load More Order',
-  props<{ take: number, skip: number,orderId?: number }>()
+  props<{
+    take: number,
+    skip: number,
+    orderId?: number,
+    name?: string,
+    startedAt?: Date,
+    endedAt?: Date,
+    driver?: string,
+    bsx?: string,
+  }>()
 );
 
 export const loadMoreRoutesSuccess = createAction(

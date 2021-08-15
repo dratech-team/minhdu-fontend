@@ -40,33 +40,36 @@
         <div class='title-profile'>Số lượng</div>
         <input class='form-control input-profile'
                type='number'
-               formControlName='amount'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Khuyến mãi</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Mua thêm</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Giá sau KM</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <select class='select' matNativeControl required formControlName='unit'>
-          <option value='{{commodityUnit.KG}}'>Kilogam</option>
-          <option value='{{commodityUnit.CON}}'>Con</option>
-        </select>
+        <input class='form-control input-profile'
+               type='number'
+               [disabled]='true'
+        >
       </div>
     </form>
     <div class='outer example '
