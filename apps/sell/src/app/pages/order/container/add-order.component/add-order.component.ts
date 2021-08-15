@@ -128,7 +128,6 @@ export class AddOrderComponent implements OnInit {
     ref.afterClosed().subscribe(val =>
       {
         if(val){
-          console.log(val)
           this.commodityIds = val
           this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
             this.CommoditiesPicked = JSON.parse(JSON.stringify(val))

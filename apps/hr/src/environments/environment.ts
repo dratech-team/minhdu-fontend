@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
+<<<<<<< HEAD
   apiUrl: 'http://192.168.1.19:3000/v2/',
+=======
+  apiUrl: 'http://192.168.1.12:3000/v2/',
+>>>>>>> f15c0aa2e628ae0ad8a5764d74ae3ed10c775975
   apiKey: 'pWPfDJ72krAmNy4g',
 };
 

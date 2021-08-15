@@ -18,7 +18,6 @@ export class UpdateConfirmComponent {
   }
 
   onSubmit() {
-    console.log(this.data.type )
     if (this.data.type === 'paidAt') {
       this.val = {
         paidAt: new Date()

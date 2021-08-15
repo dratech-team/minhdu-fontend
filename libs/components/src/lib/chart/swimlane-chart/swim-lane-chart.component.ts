@@ -1,28 +1,27 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { stakedChart } from '@minhdu-fontend/data-models';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { ChartService } from '../services/chart.service';
 
-
 @Component({
-  selector: 'app-staked-vertical-chart',
-  templateUrl: 'staked-vertical-chart.component.html'
+  selector: 'app-swim-lane-chart',
+  templateUrl: 'swim-lane-chart.component.html'
 })
-export class StakedVerticalChartComponent implements OnChanges {
+export class SwimLaneChartComponent implements OnInit {
   @Input() data!: stakedChart[];
   @Input() labelX!: string;
   @Input() labelY!: string;
-  @Input() legend = false;
+  @Input() legend!: boolean;
   legendPosition = LegendPosition.Below;
   width = 0;
   height = 315;
   colorScheme = {
-    domain: ['#20a8d8', '#f86c6b', '#4dbd74', '#f8cb00', '#6f42c1']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#f86c6b', '#6f42c1']
   };
 
-  ngOnChanges() {
+  ngOnInit() {
     this.data = this.chartService.editNameChart(this.data);
-    this.width = this.chartService.fixWithChartColumn(this.data);
+    this.width = this.chartService.fixWithChartMultiColumn(this.data);
   }
 
   constructor(

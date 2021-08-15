@@ -25,7 +25,6 @@ export class AddDegreeComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this?.data?.id);
     this.formGroup = this.formBuilder.group({
       type: [this.data?.degree?.type, Validators.required],
       startedAt: [this.data?.degree?.startedAt, Validators.required],

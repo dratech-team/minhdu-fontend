@@ -60,7 +60,6 @@ export class SalaryComponent implements OnInit {
       note: [this?.data?.salary?.note, Validators.required],
       createdAt: [this.data?.salary?.createdAt, Validators.required],
     });
-    console.log(this.formGroup.value.price)
   }
 
   pickEmployees(employeeIds: number []): any {
