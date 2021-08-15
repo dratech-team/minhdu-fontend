@@ -75,7 +75,7 @@ export class PickOrderComponent implements OnInit{
       take: pageSize,
       skip: pageSize * pageIndex++,
       customerId: this?.customerId,
-      customer: val.name,
+      customer: val.name.trim(),
       paidType: val.paidType,
 
     }

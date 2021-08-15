@@ -66,7 +66,7 @@ export class OrderComponent implements OnInit {
       skip: pageSize * pageIndex++,
       take: pageSize,
       paidType: val.paidType,
-      customer: val.name
+      customer: val.name.trim()
     };
   }
 

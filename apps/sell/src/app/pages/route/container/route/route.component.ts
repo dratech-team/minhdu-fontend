@@ -35,6 +35,8 @@ export  class RouteComponent implements OnInit{
   ) {
   }
   ngOnInit() {
+    const test = '  dsdasd'
+    console.log(test.trim())
     const btnRoute = document.getElementById('route')
     btnRoute?.classList.add('btn-border')
     document.getElementById('customer').classList.remove('btn-border')
@@ -60,11 +62,11 @@ export  class RouteComponent implements OnInit{
     return {
       skip: pageSize *pageIndex++,
       take: pageSize,
-      name: val.name,
+      name: val.name.trim(),
       startedAt: val.startedAt,
       endedAt: val.endedAt,
-      driver: val.driver,
-      bsx: val.bsx,
+      driver: val.driver.trim(),
+      bsx: val.bsx.trim(),
     }
   }
 

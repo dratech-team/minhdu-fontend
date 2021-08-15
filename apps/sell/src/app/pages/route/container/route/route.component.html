@@ -1,77 +1,74 @@
-<div class='main-customer' style='width: 76%; margin-left: 12%;'>
-  <div class='row h3 ml-3 mt-3 '>
-    <span >Danh sách Tuyến đường</span>
-  </div>
 
-  <div class='main-profile'>
-    <div class='d-flex justify-content-between row'>
-      <button (click)='add()' class='btn btn-primary font-lg ml-3'>Thêm Tuyến đường </button>
-      <button class='btn btn-primary font-lg mr-3' >in Tuyến đường</button>
+<div style='margin:0 5% ' class='row h3 mt-3 '>
+  <span >Danh sách Tuyến đường</span>
+</div>
+<div style='margin:0 4% 0 5% ' class='d-flex justify-content-between mt-3 row'>
+  <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường </button>
+  <button class='btn btn-primary font-lg mr-3' >in Tuyến đường</button>
+</div>
+<div class='main-customer' style='width: 90%; margin-left: 5%;'>
+  <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Tên Tuyến đường</div>
+      <input formControlName='name' class='form-control input-profile ' type='text' placeholder=''>
     </div>
-
-    <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên Tuyến đường</div>
-        <input formControlName='name' class='form-control input-profile ' type='text' placeholder=''>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Ngày bắt đầu</div>
+      <input formControlName='startedAt'  class='form-control input-profile ' type='date'>
+    </div>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Ngày Kết thúc</div>
+      <input formControlName='endedAt'  class='form-control input-profile ' type='date'>
+    </div>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Tên Tài xế</div>
+      <input formControlName='driver'  class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
+    </div>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Biển số xe</div>
+      <input formControlName='bsx'  class='form-control input-profile ' type='text' placeholder='77G1-55555'>
+    </div>
+    <div class='border-start title-header col-2'>
+      <div class='title-profile'>Nhà xe</div>
+      <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
+    </div>
+  </form>
+  <div class='outer  animated fadeIn'
+        style='width: 100.5%'
+       infiniteScroll
+       [infiniteScrollDistance]='1'
+       [infiniteScrollThrottle]='100'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'
+       *ngIf='(routes$| async) as routes'
+  >
+    <div class='row-content' *ngFor='let route of routes'
+         (click)='detailRoute(route.id)'
+         (contextmenu)='child.onContextMenu($event,route)'>
+      <app-mouse-right
+        #child (addEvent)='add()'
+        (deleteEvent)='deleteRoute($event)'
+        (readAndUpdateEvent)='detailRoute($event)'
+      >
+      </app-mouse-right>
+      <div class='content-profile col-2 pointer '>{{route?.name}}</div>
+      <div class='content-profile col-2 pointer ' *ngIf='route.startedAt !== null'>
+        {{route?.startedAt|date:'dd/MM/yyyy'}}
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Ngày bắt đầu</div>
-        <input formControlName='startedAt'  class='form-control input-profile ' type='date'>
+      <div class='content-profile col-2 pointer ' *ngIf='route.startedAt === null'>
+        Chưa cập nhật
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Ngày Kết thúc</div>
-        <input formControlName='endedAt'  class='form-control input-profile ' type='date'>
+      <div class='content-profile col-2 pointer ' *ngIf='route.endedAt !== null'>
+        {{route?.endedAt|date:'dd/MM/yyyy'}}
       </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên Tài xế</div>
-        <input formControlName='driver'  class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
+      <div class='content-profile col-2 pointer ' *ngIf='route.endedAt === null'>
+        Chưa cập nhật
       </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Biển số xe</div>
-        <input formControlName='bsx'  class='form-control input-profile ' type='text' placeholder='77G1-55555'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Nhà xe</div>
-        <input [disabled]='true' class='form-control input-profile ' type='text' placeholder='Nhập nhà xe'>
-      </div>
-    </form>
-
-    <div class='outer   animated fadeIn'
-         infiniteScroll
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         *ngIf='(routes$| async) as routes'
-    >
-      <div class='row-content' *ngFor='let route of routes'
-           (click)='detailRoute(route.id)'
-           (contextmenu)='child.onContextMenu($event,route)'>
-        <app-mouse-right
-          #child (addEvent)='add()'
-          (deleteEvent)='deleteRoute($event)'
-          (readAndUpdateEvent)='detailRoute($event)'
-        >
-        </app-mouse-right>
-        <div class='content-profile name pointer '>{{route?.name}}</div>
-        <div class='content-profile default pointer ' *ngIf='route.startedAt !== null'>
-          {{route?.startedAt|date:'dd/MM/yyyy'}}
-        </div>
-        <div class='content-profile default pointer ' *ngIf='route.startedAt === null'>
-          Chưa cập nhật
-        </div>
-        <div class='content-profile default pointer ' *ngIf='route.endedAt !== null'>
-          {{route?.endedAt|date:'dd/MM/yyyy'}}
-        </div>
-        <div class='content-profile default pointer ' *ngIf='route.endedAt === null'>
-          Chưa cập nhật
-        </div>
-        <div class='content-profile name pointer' *ngIf='route.driver'>{{route?.driver}}</div>
-        <div class='content-profile name pointer' *ngIf='!route.driver'>
-          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
-        <div class='content-profile name pointer '>{{route?.bsx}}</div>
-        <div class='content-profile name pointer '>{{route?.garage}}</div>
-      </div>
+      <div class='content-profile col-2 pointer' *ngIf='route.driver'>{{route?.driver}}</div>
+      <div class='content-profile col-2 pointer' *ngIf='!route.driver'>
+        {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
+      <div class='content-profile col-2 pointer '>{{route?.bsx}}</div>
+      <div class='content-profile col-2 pointer '>{{route?.garage}}</div>
     </div>
   </div>
 </div>
