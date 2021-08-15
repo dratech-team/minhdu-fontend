@@ -6,6 +6,8 @@ import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PickCommodityService } from './pick-commodity.service';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
+import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -62,6 +64,7 @@ export class PickCommodityComponent implements OnInit {
 
   assignIsSelect(){
     this.service.commodities().subscribe(val => {
+      console.log(val)
       this.commodities = JSON.parse(JSON.stringify(val));
       this.commodities.forEach(e => {
         if(this.commodityIds.includes(e.id)){
@@ -73,7 +76,18 @@ export class PickCommodityComponent implements OnInit {
     });
   }
 
-
+  deleteCommodity($event: any) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    dialogRef.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.assignIsSelect()
+      }
+    });
+  }
+  UpdateCommodity($event: any) {
+    this.dialog.open(CommodityDialogComponent,{width: '40%' , data: $event})
+  }
   updateAllSelect(id: number) {
     const index = this.commodityIds.indexOf(id);
     if (index > -1) {

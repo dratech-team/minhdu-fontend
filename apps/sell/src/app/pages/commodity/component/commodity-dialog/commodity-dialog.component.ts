@@ -28,7 +28,7 @@ export class CommodityDialogComponent implements OnInit{
         unit: [this?.data?.unit, Validators.required],
         amount: [this?.data?.amount, Validators.required],
         gift: [this?.data?.gift, Validators.required],
-        more: [this?.data?.more, Validators.required],
+        more: [this?.data?.more.amount, Validators.required],
       }
     )
   }

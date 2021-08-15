@@ -77,7 +77,13 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'
     >
-      <div class='row-content' *ngFor='let commodity of commodities'>
+      <div class='row-content' *ngFor='let commodity of commodities'
+           (contextmenu)='child.onContextMenu($event,commodity)'>
+        <app-mouse-right
+          #child (addEvent)='addCommodity()'
+          (deleteEvent)='deleteCommodity($event)'
+          (readAndUpdateEvent)='UpdateCommodity($event)'></app-mouse-right>
+
         <div class='content-profile pick  pointer'>
           <mat-checkbox class='checkID'
                         [checked]='commodity.isSelect ? commodity.isSelect: false'
