@@ -23,6 +23,7 @@ export class StatisticalComponent implements OnInit {
   date = new Date();
   CurrentMonth = getMonth(new Date()) + 1;
   statisticalCommodityDetail: stakedChart[] = [];
+  statisticalDebt: stakedChart[] = [];
   statisticalChicken: Statistical[] = [];
   statisticalYType = StatisticalYType;
   statisticalXType = StatisticalXType;
@@ -53,6 +54,7 @@ export class StatisticalComponent implements OnInit {
     );
     this.statisticalCustomer({ type: this.statisticalYType.POTENTIAL });
     this.statisticalCustomer({ type: this.statisticalYType.COMMODITY_DETAIL });
+    this.statisticalCustomer({ type: this.statisticalYType.DEBT });
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
     this.formGroup = this.formBuilder.group({
@@ -116,6 +118,9 @@ export class StatisticalComponent implements OnInit {
             break;
           case this.statisticalYType.COMMODITY_DETAIL:
             this.statisticalCommodityDetail = value;
+            break;
+          case this.statisticalYType.DEBT:
+            this.statisticalDebt = value;
             break;
         }
       }

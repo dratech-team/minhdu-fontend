@@ -125,6 +125,19 @@
           </app-staked-vertical-chart>
         </div>
       </div>
+      <div class='d-flex flex-column mt-3 mb-5 col-xm-12  p-1 border'
+           [ngStyle]='{"width":statisticalCommodityDetail.length < 6? "49.5%": "99%"}'
+           style='height: 450px;  position: relative'>
+        <span class=' ml-3 mb-3 title-chart'>Thống kê nợ theo khách hàng</span>
+        <div [ngStyle]='{"overflow-x":statisticalDebt.length == 0? "hidden":"scroll" }'>
+          <app-staked-vertical-chart
+            [data]='statisticalDebt'
+            [labelY]='"Khoản nợ"'
+            [labelX]='"Khách hàng"'
+            [legend]='true'>
+          </app-staked-vertical-chart>
+        </div>
+      </div>
     </div>
   </div>
 </div>
