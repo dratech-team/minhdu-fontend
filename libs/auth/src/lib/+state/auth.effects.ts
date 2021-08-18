@@ -62,7 +62,7 @@ export class AuthEffects {
         tap((_) => {
           localStorage.removeItem('role');
           localStorage.removeItem('token');
-          this.router.navigate(['/auth/signin']).then((r: boolean) => console.log(r));
+          this.router.navigate(['/']).then((r: boolean) => console.log(r));
         })
       ),
     { dispatch: false }
