@@ -74,6 +74,6 @@ export  class RouteComponent implements OnInit{
       this.store.dispatch(RouteAction.deleteRoute({idRoute: $event.id}))
   }
   detailRoute(id: number){
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong',id]).then()
+    this.router.navigate(['/ban-hang/tuyen-duong/chi-tiet-tuyen-duong',id]).then()
   }
 }

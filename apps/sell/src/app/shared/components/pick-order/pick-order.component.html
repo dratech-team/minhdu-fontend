@@ -70,32 +70,32 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-3 pointer no-underline '  *ngIf='!payment' >
          {{order.customer.firstName}} {{ order.customer.lastName}}
         </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt!== null'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt=== null' >
           Đang cập nhật
         </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
           {{order.debt|number:'1.0'|notEmpty:'0'}} đ
         </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
         </a>
-        <a  routerLink="/don-hang/lich-su-thanh-toan"
+        <a  routerLink="/ban-hang/don-hang/lich-su-thanh-toan"
            [queryParams]='{data:order.paymentHistories|json}'
            target="_blank" class='btn content-profile col-2 pointer hover-link '  >
           {{order?.paymentHistories?.length}}
         </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank'  class='content-profile col-3 pointer no-underline '  *ngIf='payment'>
           {{order.explain}}
         </a>

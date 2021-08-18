@@ -53,7 +53,7 @@ export class OrderComponent implements OnInit {
   }
 
   add() {
-    this.router.navigate(['don-hang/them-don-hang']).then();
+    this.router.navigate(['/ban-hang/don-hang/them-don-hang']).then();
   }
 
   onScroll() {
@@ -71,6 +71,6 @@ export class OrderComponent implements OnInit {
   }
 
   detailOrder(id: number) {
-    this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
+    this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then();
   }
 }

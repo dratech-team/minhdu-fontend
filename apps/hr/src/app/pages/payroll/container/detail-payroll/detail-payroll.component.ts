@@ -9,8 +9,8 @@ import { SalaryComponent } from '../../component/salary/salary.component';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -37,7 +37,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   onDetailEmployee(id: number) {
-    this.router.navigate(['profile/detail-employee', id]).then();
+    this.router.navigate(['nhan-su/ho-so/chi-tiet-nhan-vien', id]).then();
   }
 
   addAndUpdateSalary(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary): any {

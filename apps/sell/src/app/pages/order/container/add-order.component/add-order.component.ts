@@ -15,7 +15,7 @@ import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -25,14 +25,14 @@ export class AddOrderComponent implements OnInit {
 
   commodities$ = this.store.pipe(select(selectAllCommodity));
   customers$ = this.store.pipe(select(selectorAllCustomer));
-  customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())))
+  customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
   customers: Customer [] = [];
-  customerPicked: Customer|undefined;
+  customerPicked: Customer | undefined;
   commodityUnit = CommodityUnit;
   Commodities: Commodity [] = [];
   CommoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
-  customerId: number|undefined;
+  customerId: number | undefined;
   commodityIds: number[] = [];
   payType = PaymentType;
   reload = new Subject<boolean>();
@@ -40,41 +40,41 @@ export class AddOrderComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
 
-   observer = new MutationObserver((mutations) => {
-    if (document.contains(document.getElementById('success'))){
-      this.formGroup.reset()
-      this.reload.next(true)
+  observer = new MutationObserver((mutations) => {
+    if (document.contains(document.getElementById('success'))) {
+      this.formGroup.reset();
+      this.reload.next(true);
       this.customerId = undefined;
       this.customerPicked = undefined;
       this.commodityIds = [];
-      this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
-        this.CommoditiesPicked = JSON.parse(JSON.stringify(val))
-      })
+      this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
+        this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
+      });
     }
   });
+
   constructor(
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    private readonly route: ActivatedRoute,
-
+    private readonly route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
-    this.customerPicked$.subscribe(val=> {
-        if(val){
-          this.customerPicked = JSON.parse(JSON.stringify(val))
-        }
-    })
-    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)) )
-    this.commodities$.subscribe(val => this.Commodities = JSON.parse(JSON.stringify(val)) )
+    this.customerPicked$.subscribe(val => {
+      if (val) {
+        this.customerPicked = JSON.parse(JSON.stringify(val));
+      }
+    });
+    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
+    this.commodities$.subscribe(val => this.Commodities = JSON.parse(JSON.stringify(val)));
     const btnOrder = document.getElementById('order');
     btnOrder?.classList.add('btn-border');
-    document.getElementById('route').classList.remove('btn-border')
-    document.getElementById('customer').classList.remove('btn-border')
+    document.getElementById('route').classList.remove('btn-border');
+    document.getElementById('customer').classList.remove('btn-border');
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
       explain: ['', Validators.required],
@@ -86,64 +86,66 @@ export class AddOrderComponent implements OnInit {
 
   }
 
-  getCustomerId(){
-    this.route.queryParams.subscribe(param =>{
-      if(param.data){
-        this.customerId = JSON.parse(param.data)
+  getCustomerId() {
+    this.route.queryParams.subscribe(param => {
+      if (param.data) {
+        this.customerId = JSON.parse(param.data);
       }
-    })
-    return this.customerId
+    });
+    return this.customerId;
   }
 
-  pickCustomer(){
-    const ref = this.dialog.open(PickCustomerComponent, {width:'50%',
+  pickCustomer() {
+    const ref = this.dialog.open(PickCustomerComponent, {
+      width: '50%',
       data: {
-        customers$:this.customers$,
-        pickOne: true,
-    } })
-    ref.afterClosed().subscribe(val =>
-    {
-      if(val){
-        this.customerId = val
-        this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val =>{
-          this.customerPicked = JSON.parse(JSON.stringify(val))
-        })
+        customers$: this.customers$,
+        pickOne: true
       }
-    }
-    )
+    });
+    ref.afterClosed().subscribe(val => {
+        if (val) {
+          this.customerId = val;
+          this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val => {
+            this.customerPicked = JSON.parse(JSON.stringify(val));
+          });
+        }
+      }
+    );
   }
 
   deleteCustomerId() {
     this.customerId = undefined;
-    this.customerPicked = undefined
+    this.customerPicked = undefined;
   }
 
   pickCommodities() {
-    const ref = this.dialog.open(PickCommodityComponent, {width:'65%',
+    const ref = this.dialog.open(PickCommodityComponent, {
+      width: '65%',
       data: {
-        commodities$:this.commodities$,
+        commodities$: this.commodities$,
         pickMore: true,
-        type:'DIALOG'
-      } })
-    ref.afterClosed().subscribe(val =>
-      {
-        if(val){
-          this.commodityIds = val
-          this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
-            this.CommoditiesPicked = JSON.parse(JSON.stringify(val))
-          })
+        type: 'DIALOG'
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+        if (val) {
+          this.commodityIds = val;
+          this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
+            this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
+          });
         }
       }
-    )
+    );
   }
 
   deleteCommodityId(commodityId: number) {
-    this.commodityIds.forEach((element,index)=>{
-      if(element === commodityId)  this.commodityIds.splice(index,1);
+    this.commodityIds.forEach((element, index) => {
+      if (element === commodityId) this.commodityIds.splice(index, 1);
     });
-    this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val =>{
-      this.CommoditiesPicked = JSON.parse(JSON.stringify(val))
-    })
+    this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
+      this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
+    });
   }
 
   onSubmit() {
@@ -153,9 +155,9 @@ export class AddOrderComponent implements OnInit {
       explain: val.explain,
       destinationId: val.ward,
       customerId: this.customerId,
-      commodityIds: this.commodityIds,
+      commodityIds: this.commodityIds
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
-    this.observer.observe(document, { childList: true, subtree:true});
+    this.observer.observe(document, { childList: true, subtree: true });
   }
 }

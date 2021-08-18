@@ -8,13 +8,14 @@ export class AuthService {
   constructor(private readonly http: HttpClient) {
   }
 
-  signIn(username: string, password: string): Observable<any> {
+  signIn(username: string, password: string , app: string): Observable<any> {
     console.log('service', username, password);
     return this.http.post<any>(
       'auth/signin',
       {
         username,
-        password
+        password,
+        app
       });
   }
 }

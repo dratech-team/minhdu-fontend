@@ -11,21 +11,21 @@ const routes: Routes = [
     component: PayrollComponent
   },
   {
-    path: 'detail-payroll/:id',
+    path: 'chi-tiet-phieu-luong/:id',
     component: DetailPayrollComponent,
     data: {
       title: 'Chi tiết Phiếu lương'
     }
   },
   {
-    path: 'template',
+    path: 'ban-mau',
     component: TemplateComponent,
     data: {
       title: 'Tạo mẫu'
     }
   },
   {
-    path: 'holiday',
+    path: 'ngay-le',
     component: HolidayComponent,
     data: {
       title: 'Ngày lễ'

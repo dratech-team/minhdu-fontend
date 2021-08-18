@@ -9,7 +9,7 @@ const routes: Routes = [
     component: EmployeeComponent
   },
   {
-    path: 'detail-employee/:id',
+    path: 'chi-tiet-nhan-vien/:id',
     component: DetailEmployeeComponent,
     data: {
       title: 'Chi tiết nhân viên'

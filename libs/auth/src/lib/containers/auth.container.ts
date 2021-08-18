@@ -18,6 +18,7 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -31,14 +32,22 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(): void {
+
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
+    const host = `${window.location.host}`
+    console.log(host);
+    const app = host === 'localhost:4000'? 'hr':
+                  host === 'localhost:4001'?'sell':
+                    host === 'localhost:4002'?'warehouse': '';
+    console.log(app);
     this.store.dispatch(
       AuthActions.login({
         username: this.f.username.value,
-        password: this.f.password.value
+        password: this.f.password.value,
+        app: app
       })
     );
   }

@@ -51,6 +51,6 @@ export class TableOrdersComponent implements OnInit{
     }
   }
   detailOrder(id: number) {
-      this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then()
+      this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then()
   }
 }

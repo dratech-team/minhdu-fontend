@@ -5,25 +5,25 @@ import { DefaultLayoutComponent } from './container/default-layout.component';
 
 const routes: Routes = [
   {
-    path: 'auth/signin',
+    path: '',
     loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
   },
   {
-    path: '',
+    path: 'nhan-su',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
     },
     children: [
       {
-        path: 'profile',
+        path: 'ho-so',
         loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
         data: {
           title: 'Hồ sơ nhân viên'
         }
       },
       {
-        path: 'payroll',
+        path: 'phieu-luong',
         loadChildren: () => import('./pages/payroll/payroll.module').then(m => m.PayrollModule),
         data: {
           title: 'Danh sách phiếu lương'
@@ -31,7 +31,7 @@ const routes: Routes = [
 
       },
       {
-        path: 'org-chart',
+        path: 'to-chuc',
         loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartPageModule),
         data: {
           title: 'Hệ thống nhân sự'

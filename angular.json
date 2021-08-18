@@ -99,7 +99,10 @@
               "browserTarget": "hr:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4000
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -199,6 +202,7 @@
       }
     },
     "sell": {
+
       "projectType": "application",
       "root": "apps/sell",
       "sourceRoot": "apps/sell/src",
@@ -266,7 +270,10 @@
               "browserTarget": "sell:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4001
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

@@ -78,7 +78,7 @@ export class CustomerComponent implements OnInit {
       };
   }
   readAndUpdate($event?: any) {
-    this.router.navigate(['khach-hang/chi-tiet-khach-hang', $event.id]).then();
+    this.router.navigate(['ban-hang/khach-hang/chi-tiet-khach-hang', $event.id]).then();
   }
   deleteCustomer($event: any){
     const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%',})

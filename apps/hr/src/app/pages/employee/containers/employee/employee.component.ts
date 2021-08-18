@@ -103,6 +103,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   readAndUpdate($event: any): void {
-    this.router.navigate(['profile/detail-employee', $event.id]).then();
+    this.router.navigate(['nhan-su/ho-so/chi-tiet-nhan-vien', $event.id]).then();
   }
 }

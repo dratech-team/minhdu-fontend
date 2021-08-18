@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 
 const routes: Routes = [
+
   {
     path:'',
     component:WarehouseLayoutComponent,
@@ -22,18 +23,7 @@ const routes: Routes = [
         loadChildren:() =>
           import('./container/dashboard/poultry-food/poultry-food.module').then(m => m.PoultryFoodModule)
       },
-      {
-        path:'kho-san-pham',
-        loadChildren:() => import('./container/dashboard/Product/product.module').then(m => m.ProductModule)
-      },
-      {
-        path:'kho-thiet-bi',
-        loadChildren:() => import('./pages/material-dashboard/material.module').then(m => m.AppliancesModule)
-      },
-      {
-        path:'kho-van-phong-pham',
-        loadChildren:() => import('./container/dashboard/requisite/requisite.module').then(m => m.RequisiteModule)
-      },
+
     ]
   }
 
