@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthActions, AuthState, selectLoginLoading } from '@minhdu-fontend/auth';
 import { Store } from '@ngrx/store';
 import { App } from '@minhdu-fontend/enums';
+import { MatDialog } from '@angular/material/dialog';
+import { Localhost } from '../../../../enums/localhost.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +14,10 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   loading$ = this.store.select(selectLoginLoading);
   appEnum = App;
+  localhost = Localhost;
   constructor(
     private formBuilder: FormBuilder,
+    private readonly dialog: MatDialog,
     private readonly store: Store<AuthState>
   ) {
   }
@@ -39,10 +43,9 @@ export class AuthComponent implements OnInit {
       return;
     }
     const host = `${window.location.host}`
-    console.log(host);
-    const app = host === 'localhost:4000'? this.appEnum.HR:
-                  host === 'localhost:4001'?this.appEnum.SELL:
-                    host === 'localhost:4002'? this.appEnum.WAREHOUSE: '';
+    const app = host === this.localhost.APP_HR? this.appEnum.HR:
+                  host === this.localhost.APP_SELL?this.appEnum.SELL:
+                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE: '';
     this.store.dispatch(
       AuthActions.login({
         username: this.f.username.value,

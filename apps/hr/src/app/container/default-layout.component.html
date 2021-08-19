@@ -16,8 +16,8 @@
     <app-sidebar-nav [navItems]='navItems' [perfectScrollbar] [disabled]='appSidebar.minimized'>
     </app-sidebar-nav>
     <app-sidebar-footer>
-      <a class='dropdown-item settings' style='color: white'><i class='fa fa-lock'></i> Thiết lập</a>
-      <a (click)='logout()' class='dropdown-item' style='color: red'><i class='fa fa-lock'></i> Logout</a>
+      <a *ngIf='role === roleEnum.ADMIN ' (click)='signUp()' class=' pointer text-left dropdown-item settings' style='color: white'> Tạo tài khoản</a>
+      <a (click)='logout()' class='pointer text-left dropdown-item' style='color: red'> Logout</a>
     </app-sidebar-footer>
   </app-sidebar>
   <main class='main'>

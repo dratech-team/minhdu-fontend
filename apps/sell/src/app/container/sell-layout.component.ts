@@ -5,7 +5,9 @@ import { document } from 'ngx-bootstrap/utils';
 import { AuthActions } from '@minhdu-fontend/auth';
 import { Store } from '@ngrx/store';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
-import { LogoutComponent } from 'libs/auth/src/lib/components/logout.component';
+import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import { Role } from '../../../../../libs/enums/hr/role.enum';
 
 
 @Component({
@@ -14,6 +16,8 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/logout.component';
   styleUrls: ['./sell-layout.component.scss']
 })
 export class SellLayoutComponent{
+  role = localStorage.getItem('role')
+  roleEnum = Role;
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
@@ -49,5 +53,8 @@ export class SellLayoutComponent{
         this.store.dispatch(AuthActions.logout());
       }
     })
+  }
+  signUp() {
+    this.dialog.open(RegisterComponent, {width:'40%'})
   }
 }

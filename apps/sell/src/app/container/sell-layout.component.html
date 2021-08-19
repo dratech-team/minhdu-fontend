@@ -26,6 +26,9 @@
 <!--        <button type='button' data-toggle="tooltip" data-placement="bottom" title="Thông báo" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>-->
 <!--          <img height='20px' src='../../assets/icon/sell-layout/bell.svg' alt='notification'>-->
 <!--        </button>-->
+        <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle="tooltip" data-placement="bottom" title="Tạo tài khoản" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
+          <img height='20px' src='./assets/icon/sell-layout/person-plus.svg' alt='create'>
+        </button>
         <button (click)='setting()' type='button' data-toggle="tooltip" data-placement="bottom" title="Cài đặt" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <img height='20px' src='../../assets/icon/sell-layout/gear.svg' alt='setting'>
         </button>

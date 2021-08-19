@@ -8,7 +8,7 @@
               <div class="card-body">
                 <h1>Minh Dư</h1>
                 <p class="text-muted">Công ty TNHH giống gia cầm Minh Dư</p>
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="loginForm">
                   <div class="form-group">
                     <label for="username">Tên đăng nhập</label>
                     <input
@@ -33,7 +33,7 @@
                       <div *ngIf="f.password.errors.required">Password is required</div>
                     </div>
                   </div>
-                  <button [disabled]="loading$ | async" class="btn btn-primary">
+                  <button (click)='onSubmit()' [disabled]="loading$ | async" class="btn btn-primary">
                     <span *ngIf="loading$ | async" class="spinner-border spinner-border-sm mr-1"></span>
                     Đăng nhập
                   </button>

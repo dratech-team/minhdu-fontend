@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { navItems } from './_nav';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '@minhdu-fontend/auth';
 import { MatDialog } from '@angular/material/dialog';
-import { LogoutComponent } from '../../../../../libs/auth/src/lib/components/logout.component';
+import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import { Role } from '../../../../../libs/enums/hr/role.enum';
 
 
 @Component({
@@ -12,6 +14,8 @@ import { LogoutComponent } from '../../../../../libs/auth/src/lib/components/log
   styleUrls: ['./default-layout.component.scss']
 })
 export class DefaultLayoutComponent {
+  role = localStorage.getItem('role');
+  roleEnum = Role
   constructor(
     private readonly store: Store,
     private readonly dialog: MatDialog
@@ -34,5 +38,9 @@ export class DefaultLayoutComponent {
       this.store.dispatch(AuthActions.logout());
     }
   })
+  }
+
+  signUp() {
+    this.dialog.open(RegisterComponent, {width:'40%'})
   }
 }
