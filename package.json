@@ -6,6 +6,7 @@
     "dev:hr": "nx run hr:serve --open",
     "dev:sell": "nx run sell:serve --open",
     "dev:warehouse": "nx run warehouse:serve --open",
+    "dev:admin": "nx run admin:serve --open",
     "ng": "nx",
     "nx": "nx",
     "start": "ng serve",

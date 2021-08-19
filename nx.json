@@ -53,6 +53,13 @@
     "warehouse-e2e": {
       "tags": [],
       "implicitDependencies": ["warehouse"]
+    },
+    "admin": {
+      "tags": []
+    },
+    "admin-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin"]
     }
   }
 }
