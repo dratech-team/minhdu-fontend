@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Store } from '@ngrx/store';
 
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wareHouse',
@@ -11,8 +9,6 @@ import { Router } from '@angular/router';
 export class WarehouseLayoutComponent implements OnInit{
 
   constructor(
-    private readonly store: Store,
-    private readonly router: Router,
   ) {
   }
   ngOnInit() {
