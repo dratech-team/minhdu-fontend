@@ -29,8 +29,8 @@ export class PickStatisticalTypeComponent implements OnInit {
   onSubmit() {
     const val = this.formGroup.value
     return  {
-      startedAt: new Date(val.startedAt) ,
-      endedAt: new Date(val.endedAt) ,
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
       type: val.type
     }
   }

@@ -1,10 +1,11 @@
+<div class='h3 ml-5'>
+  Danh sách đơn hàng
+</div>
+<div class='ml-5'>
+  <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm Đơn hàng</button>
+</div>
 <div class='main-customer d-flex justify-content-center' >
-
     <form [formGroup]='formGroup' class='main-profile' style='width: 96%' >
-      <div class='h3'>
-       Danh sách đơn hàng
-      </div>
-      <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm Đơn hàng</button>
       <div class='header-profile mt-3 animated fadeIn'>
         <div class='border-start title-header col-2'>
           <div class='title-profile'>Khách hàng</div>
@@ -35,14 +36,14 @@
             type='text'>
         </div>
         <div class='border-start title-header col-1'>
-          <div class='title-profile'>Tổng tiền hàng</div>
+          <div class='title-profile'>Tiền hàng</div>
           <input
             [disabled]='true'
             class='form-control input-profile '
             type='number'>
         </div>
         <div class='border-start title-header col-1'>
-          <div class='title-profile'>Tổng thanh toán</div>
+          <div class='title-profile'> Thanh toán</div>
           <select class='select' matNativeControl required formControlName='paidType'>
             <option value='{{paidType.PAID}}'>Có thanh toán</option>
             <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>

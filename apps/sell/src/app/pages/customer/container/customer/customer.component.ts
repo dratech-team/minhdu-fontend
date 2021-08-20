@@ -50,7 +50,6 @@ export class CustomerComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        console.log(val.isPotential);
         this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0 )));
       })
     ).subscribe()
@@ -74,12 +73,12 @@ export class CustomerComponent implements OnInit {
           val.isPotential === 'false'? 0 : val.isPotential,
         customerType: val.customerType ,
         nationId: val.nationId ,
-        phone: val.phone ,
-        name: val.name ,
+        phone: val.phone.trim() ,
+        name: val.name.trim(),
       };
   }
   readAndUpdate($event?: any) {
-    this.router.navigate(['khach-hang/chi-tiet-khach-hang', $event.id]).then();
+    this.router.navigate(['ban-hang/khach-hang/chi-tiet-khach-hang', $event.id]).then();
   }
   deleteCustomer($event: any){
     const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%',})

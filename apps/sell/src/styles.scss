@@ -17,15 +17,30 @@ $spinkit-spinner-color: $body-color;
   color: red;
   font-size: 15px;
 }
-
+.chart-legend{
+  position: absolute;
+  bottom:0px;
+  left: 10px;
+  max-width: 520px;
+  overflow: hidden;
+}
 // Here you can add other styles
 .main {
   background: white;
   font-family: Roboto, serif;
 }
+.no-underline{
+  text-decoration: none !important
+}
+.ngx-charts-outer {
+  margin: auto;
+}
 .btn-border{
   border: solid 2px #5bc0de;
   color: #428bca;
+}
+.background-snackbar{
+  background:#f0fff5;
 }
 
 .main-title {

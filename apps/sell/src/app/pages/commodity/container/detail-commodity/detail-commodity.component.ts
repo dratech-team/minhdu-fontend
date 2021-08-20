@@ -20,7 +20,6 @@ export class DetailCommodityComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-    console.log(this.getId)
     this.store.dispatch(CommodityAction.getCommodity({id: this.getId}))
 
   }

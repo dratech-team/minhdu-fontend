@@ -5,6 +5,10 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   {
     path: '',
+    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+  },
+  {
+    path: 'ban-hang',
     component: SellLayoutComponent,
     data: {
       title: 'Home'

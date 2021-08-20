@@ -3,7 +3,7 @@ import { AppState } from '../../../../reducers';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
 import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
@@ -65,7 +65,6 @@ export class OrderDialogComponent implements OnInit {
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
-    console.log(this.commodities);
     this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.store.dispatch(DistrictAction.loadAllDistricts());
@@ -80,7 +79,7 @@ export class OrderDialogComponent implements OnInit {
         this?.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
 
-      deliveredAt: [ Validators.required],
+      deliveredAt: [Validators.required],
       explain: [this?.data?.order?.explain, Validators.required],
       nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
       province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],
@@ -90,7 +89,6 @@ export class OrderDialogComponent implements OnInit {
   }
 
 
-
   onSubmit() {
     const val = this.formGroup.value;
     const order = {
@@ -98,7 +96,7 @@ export class OrderDialogComponent implements OnInit {
       commodityIds: this.commodityIds,
       destinationId: val.ward,
       explain: val.explain,
-      deliveredAt: val.deliveredAt,
+      deliveredAt: val.deliveredAt
     };
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id }));
   }

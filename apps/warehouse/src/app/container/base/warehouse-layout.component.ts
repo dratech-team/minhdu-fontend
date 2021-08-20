@@ -8,9 +8,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WarehouseLayoutComponent implements OnInit{
 
-  constructor(
-  ) {
-  }
   ngOnInit() {
   }
   changeTab(event: any) {

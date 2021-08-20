@@ -29,9 +29,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if ([403].indexOf(err.status) !== -1) {
           this.snackBar.open('Permission denied', 'Đã hiểu');
         } else {
-          this.snackBar.open('[ FAILURE ]  ' + err.error.message, 'Đóng');
+          this.snackBar.open('[ FAILURE ]  ' + err?.error?.message, 'Đóng');
         }
-        const error = err.error.message || err.statusText;
+        const error = err?.error?.message || err?.statusText;
         return throwError(error);
       })
     );

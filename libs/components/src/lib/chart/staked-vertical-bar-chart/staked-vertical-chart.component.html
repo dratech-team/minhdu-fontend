@@ -1,13 +1,20 @@
 <ngx-charts-bar-vertical-stacked
-  [scheme]="colorScheme"
-  [results]="data"
-  [gradient]="false"
-  [xAxis]="true"
-  [yAxis]="true"
-  [legend]="true"
-  [showXAxisLabel]="true"
-  [showYAxisLabel]="true"
-  [xAxisLabel]="labelX"
-  [yAxisLabel]="labelY"
-  [animations]="true">
+  [view]='[width,height]'
+  [scheme]='colorScheme'
+  [results]='data'
+  [gradient]='false'
+  [xAxis]='true'
+  [yAxis]='true'
+  [showXAxisLabel]='true'
+  [showYAxisLabel]='true'
+  [xAxisLabel]='labelX'
+  [yAxisLabel]='labelY'
+  [animations]='true'
+  [legend]='legend'
+  [legendTitle]='"Chú Thích"'
+  [roundDomains]='true'
+  [showDataLabel]='true'
+  [legendPosition]='legendPosition'
+  [maxXAxisTickLength]='10'
+>
 </ngx-charts-bar-vertical-stacked>

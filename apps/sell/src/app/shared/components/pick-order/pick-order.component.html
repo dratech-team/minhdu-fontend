@@ -1,7 +1,7 @@
 <div class='container'>
   <div class=' animated fadeIn' style='width: 102%'>
     <form [formGroup]='formGroup' class='header-profile mt-3 '>
-      <div class='border-start title-header col-3'>
+      <div class='border-start title-header col-3' *ngIf='!payment'>
         <div class='title-profile'>Khách hàng</div>
         <input class='form-control input-profile'
                [disabled]='true'
@@ -15,8 +15,6 @@
         <input class='form-control input-profile'
                [disabled]='true'
                type='text'
-               placeholder='PN10001'
-               formControlName='createdAt'
         >
       </div>
       <div class='border-start title-header col-2'>
@@ -40,6 +38,13 @@
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
+      </div>
+      <div class='border-start title-header col-3'  *ngIf='payment'>
+        <div class='title-profile'>Diễn giải</div>
+        <input class='form-control input-profile'
+               [disabled]='true'
+               type='text'
+        >
       </div>
       <div class='border-start title-header col-1 '>
         <div class='title-profile d-flex justify-content-center align-items-center'>Tất cả</div>
@@ -65,25 +70,34 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
-        <div class='content-profile col-3 pointer '  >
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank' class='content-profile col-3 pointer no-underline '  *ngIf='!payment' >
          {{order.customer.firstName}} {{ order.customer.lastName}}
-        </div>
-        <div class='content-profile col-2 pointer ' *ngIf='order?.createdAt!== null'>
+        </a>
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt!== null'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
-        </div>
-        <div class='content-profile col-2 pointer ' *ngIf='order?.createdAt=== null' >
+        </a>
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt=== null' >
           Đang cập nhật
-        </div>
-        <div class='content-profile col-2 pointer '  style='color: #f86c6b'>
+        </a>
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
           {{order.debt|number:'1.0'|notEmpty:'0'}} đ
-        </div>
-        <div class='content-profile col-2 pointer '  style='color: #20c997'>
+        </a>
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
-        </div>
-        <a  routerLink="/don-hang/lich-su-thanh-toan"
+        </a>
+        <a  routerLink="/ban-hang/don-hang/lich-su-thanh-toan"
            [queryParams]='{data:order.paymentHistories|json}'
            target="_blank" class='btn content-profile col-2 pointer hover-link '  >
           {{order?.paymentHistories?.length}}
+        </a>
+        <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
+           target='_blank'  class='content-profile col-3 pointer no-underline '  *ngIf='payment'>
+          {{order.explain}}
         </a>
         <input class='col-1'
                (change)='pickOneOrder()'

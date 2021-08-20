@@ -20,14 +20,12 @@
           class='form-control input-profile'
           type='text'
           placeholder='PN10001'
-          formControlName='code'
         >
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên Hàng hóa </div>
         <input [disabled]='true' class='form-control input-profile'
                type='text'
-               formControlName='name'
         >
       </div>
       <div class='border-start title-header default'>
@@ -36,40 +34,42 @@
                [disabled]='true'
                type='number'
                placeholder='PN10001'
-               formControlName='price'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Số lượng</div>
         <input class='form-control input-profile'
                type='number'
-               formControlName='amount'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Khuyến mãi</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Mua thêm</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Giá sau KM</div>
         <input class='form-control input-profile'
                type='number'
+               [disabled]='true'
         >
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <select class='select' matNativeControl required formControlName='unit'>
-          <option value='{{commodityUnit.KG}}'>Kilogam</option>
-          <option value='{{commodityUnit.CON}}'>Con</option>
-        </select>
+        <input class='form-control input-profile'
+               type='number'
+               [disabled]='true'
+        >
       </div>
     </form>
     <div class='outer example '
@@ -80,7 +80,13 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'
     >
-      <div class='row-content' *ngFor='let commodity of commodities'>
+      <div class='row-content' *ngFor='let commodity of commodities'
+           (contextmenu)='child.onContextMenu($event,commodity)'>
+        <app-mouse-right
+          #child (addEvent)='addCommodity()'
+          (deleteEvent)='deleteCommodity($event)'
+          (readAndUpdateEvent)='UpdateCommodity($event)'></app-mouse-right>
+
         <div class='content-profile pick  pointer'>
           <mat-checkbox class='checkID'
                         [checked]='commodity.isSelect ? commodity.isSelect: false'

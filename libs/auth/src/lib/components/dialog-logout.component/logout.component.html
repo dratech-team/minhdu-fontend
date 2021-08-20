@@ -1,0 +1,18 @@
+<div class="animated main-popup p-3">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"></span>
+  </div>
+  <div class="title-popup">
+    <span>Xác nhận</span>
+  </div>
+  <div class="row mt-4 ml-3 content-popup">
+    <span>Bạn có chắc muốn đăng xuất </span>
+  </div>
+  <div class="row mt-4 ml-3">
+    <button mat-dialog-close class="  col-md-2 btn btn-cancel d-flex justify-content-center">Hủy</button>
+    <button [mat-dialog-close]="onClick()"
+            class="ml-3 col-md-3 btn btn-ok d-flex justify-content-center">Đồng ý
+    </button>
+  </div>
+</div>
+

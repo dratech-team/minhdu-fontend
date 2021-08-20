@@ -19,7 +19,6 @@ export class AddPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required]
     });

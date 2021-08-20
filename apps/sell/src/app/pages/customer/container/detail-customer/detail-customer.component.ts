@@ -37,7 +37,6 @@ export class DetailCustomerComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router,
   ) {
   }
 

@@ -13,6 +13,7 @@ import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.act
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import {  Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pick-location',
@@ -20,6 +21,7 @@ import { ControlContainer, FormGroup } from '@angular/forms';
 })
 export class PickLocationComponent implements OnInit {
   @Input() data?: any;
+  @Input() reload$?: Subject<boolean>
   nations$ = this.store.pipe(select(selectAllNation));
   provinces?: Province [];
   districts?: District [];
@@ -31,6 +33,11 @@ export class PickLocationComponent implements OnInit {
   ) {
   }
   ngOnInit() {
+    this.reload$?.subscribe(val => {
+      if(val){
+        this.formGroup.reset()
+      }
+    })
     this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.store.dispatch(DistrictAction.loadAllDistricts());
@@ -45,7 +52,6 @@ export class PickLocationComponent implements OnInit {
       this?.data?.ward?.district?.id
     ))).subscribe(val => this.wards = val);
     this.formGroup = <FormGroup>this.controlContainer.control;
-    console.log(this.provinces)
   }
   onNation(nation: Nation) {
     this.provinces = nation.provinces;

@@ -11,6 +11,10 @@ import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from './interceptors';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LogoutComponent } from './components/dialog-logout.component/logout.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RegisterComponent } from './components/dialog-register.component/register.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -21,9 +25,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HttpClientModule,
     MatSnackBarModule,
     StoreModule.forFeature('auth', authReducer),
-    EffectsModule.forFeature([AuthEffects])
+    EffectsModule.forFeature([AuthEffects]),
+    MatDialogModule,
+    MatSelectModule
   ],
-  declarations: [AuthComponent],
+  declarations: [
+    RegisterComponent,
+    LogoutComponent,
+    AuthComponent],
   providers: [
     AuthService,
     {

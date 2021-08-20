@@ -5,15 +5,49 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
+import { App } from '@minhdu-fontend/enums';
+import { SnackBarSuccessComponent } from '../../../../components/src/lib/snackBar-success/snack-bar-success.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private snackBar: MatSnackBar,
   ) {
   }
+
+  SignUp$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.signUp),
+      map((actions) => actions),
+      switchMap((payload) =>
+        this.authService
+          .signUp(payload.username, payload.password , payload.app, payload.role , payload?.employeeId)
+          .pipe(map(user=>AuthActions.signUpSuccess({user: user}) ))
+
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  SignUpSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.signUpSuccess),
+      map((_) => {
+        this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+          duration: 2500,
+          panelClass: ['background-snackbar']
+        });
+      }),
+      catchError((err) => throwError(err))
+    ),
+    { dispatch: false }
+  );
+
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -21,11 +55,12 @@ export class AuthEffects {
       map((actions) => actions),
       switchMap((payload) =>
         this.authService
-          .signIn(payload.username, payload.password)
+          .signIn(payload.username, payload.password , payload.app)
           .pipe(map((user) => AuthActions.loginSuccess({ user })))
       ),
       catchError((err) => throwError(err))
     )
+
   );
 
   loginSuccess$ = createEffect(
@@ -36,7 +71,18 @@ export class AuthEffects {
           console.log(user);
           localStorage.setItem('role', user.user.role);
           localStorage.setItem('token', user.user.token);
-          this.router.navigate(['/']).then();
+          switch( user.user.app) {
+            case App.HR:
+              this.router.navigate(['/nhan-su']).then();
+              break;
+            case App.SELL:
+              this.router.navigate(['/ban-hang']).then();
+              break;
+            case App.WAREHOUSE:
+              this.router.navigate(['/kho']).then();
+              break;
+          }
+
         })
       ),
     { dispatch: false }
@@ -49,7 +95,7 @@ export class AuthEffects {
         tap((_) => {
           localStorage.removeItem('role');
           localStorage.removeItem('token');
-          this.router.navigate(['/auth/signin']).then((r: boolean) => console.log(r));
+          this.router.navigate(['/']).then((r: boolean) => console.log(r));
         })
       ),
     { dispatch: false }

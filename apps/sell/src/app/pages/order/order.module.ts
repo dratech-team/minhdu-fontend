@@ -28,11 +28,11 @@ import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar'
 
 @NgModule({
   imports: [
-
+    MatSnackBarModule,
     ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,

@@ -46,14 +46,14 @@ export class CommodityComponent implements OnInit {
     this.store.dispatch(CommodityAction.loadMoreCommodity(this.commodity(val, this.pageSize, this.pageIndex)));
   }
 
-  // deleteCommodity(id: number) {
-  //   const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
-  //   dialogRef.afterClosed().subscribe(val => {
-  //     if (val) {
-  //       this.store.dispatch(CommodityAction.deleteCommodity({ id: id }));
-  //     }
-  //   });
-  // }
+  deleteCommodity($event: any) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    dialogRef.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+      }
+    });
+  }
 
   commodity(val: any, pageSize: number, pageIndex: number) {
     return {
@@ -62,8 +62,7 @@ export class CommodityComponent implements OnInit {
     };
   }
 
-  // detailCommodity($event: any){
-  //   console.log($event.id)
-  //   this.router.navigate(['commodity/detail-commodity', $event.id] ).then()
-  // }
+  UpdateCommodity($event: any) {
+
+  }
 }

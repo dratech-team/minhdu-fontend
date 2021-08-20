@@ -17,8 +17,10 @@ import { PaidType } from 'libs/enums/paidType.enum';
 })
 export class PickOrderComponent implements OnInit{
   @Input() pickOne = false;
+  @Input() payment = false;
   @Input() orders!: Order[];
   @Input() orderIdsOfRoute!: number[];
+  @Input() customerId!: number
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
@@ -30,7 +32,7 @@ export class PickOrderComponent implements OnInit{
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
-      createdAt: new FormControl(''),
+      // createdAt: new FormControl(''),
       paidType: new FormControl(''),
 
     });
@@ -72,7 +74,8 @@ export class PickOrderComponent implements OnInit{
     return{
       take: pageSize,
       skip: pageSize * pageIndex++,
-      customer: val.name,
+      customerId: this?.customerId,
+      customer: val.name.trim(),
       paidType: val.paidType,
 
     }

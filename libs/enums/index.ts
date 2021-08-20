@@ -19,4 +19,5 @@ export * from './sell/statistical-type';
 export * from './sell/customer-type';
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
+export * from './app.enum';
 

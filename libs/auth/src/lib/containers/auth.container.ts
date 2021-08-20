@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthActions, AuthState, selectLoginLoading } from '@minhdu-fontend/auth';
 import { Store } from '@ngrx/store';
+import { App } from '@minhdu-fontend/enums';
+import { MatDialog } from '@angular/material/dialog';
+import { Localhost } from '../../../../enums/localhost.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,14 +13,17 @@ import { Store } from '@ngrx/store';
 export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   loading$ = this.store.select(selectLoginLoading);
-
+  appEnum = App;
+  localhost = Localhost;
   constructor(
     private formBuilder: FormBuilder,
+    private readonly dialog: MatDialog,
     private readonly store: Store<AuthState>
   ) {
   }
 
   ngOnInit(): void {
+
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -31,14 +37,20 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(): void {
+
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
+    const host = `${window.location.host}`
+    const app = host === this.localhost.APP_HR? this.appEnum.HR:
+                  host === this.localhost.APP_SELL?this.appEnum.SELL:
+                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE: '';
     this.store.dispatch(
       AuthActions.login({
         username: this.f.username.value,
-        password: this.f.password.value
+        password: this.f.password.value,
+        app: app
       })
     );
   }

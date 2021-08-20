@@ -25,7 +25,6 @@ export const selectorAllCustomer = createSelector(
 export const selectorCurrentCustomer = (id?: number) => createSelector(
   selectorCustomerEntities,
   (CustomerEntities) => {
-    console.log(CustomerEntities)
     let result: Customer|undefined
     if(id){
       result =  CustomerEntities[id]

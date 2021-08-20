@@ -45,9 +45,12 @@
       <button  class='btn btn-primary' (click)='check()' matStepperNext>Tiếp theo</button>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup"  [editable]="true">
+      <ng-template matStepLabel >Chọn đơn hàng</ng-template>
     <app-pick-order
+      [payment]='true'
       [formGroup]="secondFormGroup"
       [orders]='orders'
+      [customerId]='data.id'
       (checkEvent)='pickOrders($event)'
     ></app-pick-order >
       <button  class='btn btn-primary' matStepperPrevious>trở lại</button>

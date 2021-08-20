@@ -4,7 +4,11 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
 
 const routes: Routes = [
   {
-    path:'',
+    path: '',
+    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+  },
+  {
+    path:'kho',
     component:WarehouseLayoutComponent,
     children:[
       {
@@ -14,8 +18,6 @@ const routes: Routes = [
       },
     ]
   }
-
-
 ];
 @NgModule({
   imports:[RouterModule.forRoot(routes, { useHash: true, initialNavigation: 'enabled' })],

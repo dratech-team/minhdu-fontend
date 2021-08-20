@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/libs/employee',
     '<rootDir>/libs/location',
     '<rootDir>/apps/warehouse',
+    '<rootDir>/apps/admin',
   ],
 };

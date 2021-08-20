@@ -61,7 +61,12 @@
          *ngIf='(commodity$| async) as commodities'
     >
 
-      <div class='row-content' *ngFor='let commodity of commodities'>
+      <div class='row-content' *ngFor='let commodity of commodities'
+           (contextmenu)='child.onContextMenu($event,commodity)'>
+        <app-mouse-right
+                         #child (addEvent)='add()'
+                         (deleteEvent)='deleteCommodity($event)'
+                         (readAndUpdateEvent)='UpdateCommodity($event)'></app-mouse-right>
         <div class='content-profile default pointer '>{{commodity?.code}} </div>
         <div class='content-profile note pointer '>{{commodity?.name}} </div>
         <div class='content-profile default pointer ' *ngIf='commodity.unit === commodityUnit.KG '>Kilogam</div>
