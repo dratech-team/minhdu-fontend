@@ -12,6 +12,7 @@ import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-d
 
 @NgModule({
   imports: [
+
     ComponentsModule,
     StatisticalRoutingModule,
     CommonModule,

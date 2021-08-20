@@ -47,6 +47,16 @@ $spinkit-spinner-color: $body-color;
   line-height: 35px;
   letter-spacing: 0.2px;
 }
+.chart-legend{
+  position: absolute;
+  bottom:0px;
+  left: 10px;
+  max-width: 520px;
+  overflow: hidden;
+}
+.ngx-charts-outer {
+  margin: auto;
+}
 
 .btn-cancel {
   display: flex;

@@ -1,4 +1,8 @@
-
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Title</title>
+</head>
 <div class='px-3 pt-1 grid_on header  shadow-sm'>
   <div class=' py-2'>
     <div class='row'>
@@ -10,7 +14,7 @@
           <span routerLink='/quan-tri'  class='pointer col-md-11 col-xm-11 app-name font-xl font-weight-bold'>Quản trị</span>
         </div>
       </div>
-      <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
+      <div class=' col-md-5 col-xm-12  d-flex justify-content-end'>
         <button type='button'
                 data-toggle="tooltip"
                 data-placement="bottom"
@@ -26,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class='flex justify-content-start my-1'>
+  <div class='d-flex  justify-content-start my-1'>
     <button class=' button   btn-header font-lg overflow-hidden d-flex align-items-center '
             (click)='changeTab($event.target)'
             routerLink='/quan-tri' mat-menu-item>Tổng quan bán hàng</button>
@@ -35,10 +39,8 @@
             routerLink='/quan-tri/kho' mat-menu-item>Tổng quan kho</button>
   </div>
 </div>
-<div class=' px-5'  style='margin-top: 124px' >
-  <router-outlet >
+  <router-outlet class='main-body' >
   </router-outlet>
-</div>
 <app-footer class='footer' >
   <span><a href='https://uranus-solutions.com/' target='_blank'>Uranus Solutions</a> &copy; 2021.</span>
   <span class='ml-auto'>Powered by <a href='https://uranus-solutions.com/' target='_blank'>Công ty TNHH giải pháp phần

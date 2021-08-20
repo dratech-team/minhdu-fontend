@@ -45,7 +45,8 @@ export class AuthComponent implements OnInit {
     const host = `${window.location.host}`
     const app = host === this.localhost.APP_HR? this.appEnum.HR:
                   host === this.localhost.APP_SELL?this.appEnum.SELL:
-                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE: '';
+                    host === this.localhost.APP_WAREHOUSE? this.appEnum.WAREHOUSE:
+                      host === this.localhost.APP_ADMIN? this.appEnum.ADMIN: '';
     this.store.dispatch(
       AuthActions.login({
         username: this.f.username.value,

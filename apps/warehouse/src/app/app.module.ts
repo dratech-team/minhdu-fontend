@@ -21,6 +21,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,9 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
     AppComponent
   ],
   imports: [
+
+    ReactiveFormsModule,
+    FormsModule,
     MatSnackBarModule,
     HttpClientModule,
     CommonModule,

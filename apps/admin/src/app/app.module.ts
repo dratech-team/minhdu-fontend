@@ -14,6 +14,7 @@ import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { AppFooterModule } from '@coreui/angular';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     AppComponent
   ],
   imports: [
+    MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
     HttpClientModule,

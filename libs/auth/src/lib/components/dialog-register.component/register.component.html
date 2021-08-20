@@ -16,7 +16,6 @@
         </div>
       </div>
       <div class='row mt-3'>
-
         <div class='col-sm' >
           <div class='d-flex flex-column'>
             <span *ngIf='isHidden' style='color: red; font-size: 10px'>Nhập lại mật khẩu chưa đúng</span>
@@ -90,6 +89,19 @@
           </mat-select>
         </div>
       </div>
+      <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>
+      <div class='col-sm' [formGroup]='formGroup'>
+        <label >Phân quyền<span class='star'>*</span></label>
+        <mat-select  class='form-control' formControlName='role'>
+          <mat-option value='{{role.ADMIN}}'>
+            Quản trị viên
+          </mat-option>
+          <mat-option value='{{role.NONE}}'>
+            none
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
         <button type='submit'  class='btn btn-dark ml-2'> Xác nhận</button>

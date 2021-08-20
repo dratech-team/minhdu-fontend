@@ -81,6 +81,9 @@ export class AuthEffects {
             case App.WAREHOUSE:
               this.router.navigate(['/kho']).then();
               break;
+            case App.ADMIN:
+              this.router.navigate(['/quan-tri']).then();
+              break;
           }
 
         })
