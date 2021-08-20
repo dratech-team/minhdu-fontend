@@ -60,7 +60,6 @@ export class AddOrderComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {
   }
-
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));

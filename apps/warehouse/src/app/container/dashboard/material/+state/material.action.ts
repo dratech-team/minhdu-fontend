@@ -1,68 +1,69 @@
 import { createAction, props } from '@ngrx/store';
-import { Appliance } from './material.interface';
+import { Material } from './material.interface';
 
 
-export const addAppliance = createAction(
-  '[ADD_APPLIANCE] Add Appliances',
-  props<{ appliance: any }>()
+export const addMaterial = createAction(
+  '[ADD_MATERIAL] Add Material',
+  props<{ material: any }>()
 );
 
 export const loadInit = createAction(
-  '[LOAD_APPLIANCES] Load Init',
+  '[LOAD_MATERIALS] Load Init',
   props<{
     skip: number,
     take: number,
+    name?:string
   }>()
 );
 
 export const loadInitSuccess = createAction(
-  '[LOAD_APPLIANCES] Load Init Success',
-  props<{ appliances: Appliance[] }>()
+  '[LOAD_MATERIALS] Load Init Success',
+  props<{ materials: Material[] }>()
 );
 
-export const loadMoreAppliances = createAction(
-  '[LOAD_MORE_APPLIANCES] Load More Appliances',
+export const loadMoreMaterials = createAction(
+  '[LOAD_MORE_MATERIALS] Load More Materials',
   props<{
     skip: number,
     take: number,
   }>()
 );
 
-export const loadMoreAppliancesSuccess = createAction(
-  '[LOAD_MORE_APPLIANCES] Load More Appliances Success',
-  props<{ appliances: Appliance[] }>()
+export const loadMoreMaterialsSuccess = createAction(
+  '[LOAD_MORE_MATERIALS] Load More Materials Success',
+  props<{ materials: Material[] }>()
 );
 
-export const getAppliance = createAction(
-  '[GET_APPLIANCE] Get Appliance ',
+export const getMaterial = createAction(
+  '[GET_MATERIAL] Get Material ',
   props<{ id: number }>()
 );
 
-export const getApplianceSuccess = createAction(
-  '[GET_APPLIANCE] Get Appliance Success',
-  props<{ appliance: Appliance }>()
+export const getMaterialSuccess = createAction(
+  '[GET_MATERIALGet] Material Success',
+  props<{ material: Material }>()
 );
 
-export const updateAppliance = createAction(
-  '[UPDATE_APPLIANCE] Update Appliance',
-  props<{ appliance: any, id: number }>()
+export const updateMaterial = createAction(
+  '[UPDATE_MATERIAL] Update Material',
+  props<{ material: any, id: number }>()
 );
 
 
-export const deleteAppliance = createAction(
-  '[DELETE_APPLIANCE] Delete Appliance',
-  props<{ applianceId: number }>()
+export const deleteMaterial = createAction(
+  '[DELETE_MATERIAL] Delete Material',
+  props<{ materialId: number }>()
 );
 
 export const MaterialAction = {
-  addAppliance,
+  addMaterial,
   loadInit,
   loadInitSuccess,
-  loadMoreAppliances,
-  loadMoreAppliancesSuccess,
-  getAppliance,
-  getApplianceSuccess,
-  updateAppliance,
-  deleteAppliance
+  loadMoreMaterials,
+  loadMoreMaterialsSuccess,
+  getMaterial,
+  getMaterialSuccess,
+  updateMaterial,
+  deleteMaterial
 };
 

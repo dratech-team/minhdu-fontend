@@ -1,29 +1,42 @@
 import { NgModule } from '@angular/core';
-import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
-import { MedicineRoutingModule } from './medicine-routing.module';
 import { MedicineComponent } from './container/medicine/medicine.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
-import { MedicineReducer } from './+state/medicine.reducer';
 import { MedicineEffect } from './+state/medicine.effect';
-import { DetailMedicineComponent } from '../../../components/medicine/detail-medicine/detail-medicine.component';
-import { ComponentModule } from '../../../components/component.module';
+import { MedicineReducer } from './+state/medicine.reducer';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+import { MedicineDialogComponent } from './components/medicine-dialog/medicine-dialog.component';
 
 @NgModule({
   imports: [
-    MedicineRoutingModule,
+    ComponentsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule,
     StoreModule.forFeature(FeatureName.MEDICINE, MedicineReducer),
     EffectsModule.forFeature([MedicineEffect]),
-    ComponentModule
+    MatSelectModule,
+    MatDialogModule
   ],
   declarations: [
+    MedicineDialogComponent,
     MedicineComponent,
   ],
   exports: [
     MedicineComponent
   ],
-  bootstrap: [WarehouseLayoutComponent]
+  providers:[
+    DatePipe
+  ]
 })
 export class MedicineModule {
 }

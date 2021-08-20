@@ -3,9 +3,12 @@ import { NgModule } from '@angular/core';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 
 const routes: Routes = [
-
   {
-    path:'',
+    path: '',
+    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+  },
+  {
+    path:'kho',
     component:WarehouseLayoutComponent,
     children:[
       {
@@ -13,21 +16,8 @@ const routes: Routes = [
         loadChildren:() =>
           import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {
-        path:'kho-thuoc',
-        loadChildren:() =>
-          import('./container/dashboard/medicine/medicine.module').then(m => m.MedicineModule)
-      },
-      {
-        path:'kho-thuc-pham',
-        loadChildren:() =>
-          import('./container/dashboard/poultry-food/poultry-food.module').then(m => m.PoultryFoodModule)
-      },
-
     ]
   }
-
-
 ];
 @NgModule({
   imports:[RouterModule.forRoot(routes, { useHash: true, initialNavigation: 'enabled' })],

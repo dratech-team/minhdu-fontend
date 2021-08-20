@@ -3,9 +3,10 @@ import { createReducer, on } from '@ngrx/store';
 import { MedicineAction } from './medicine.action';
 import { Medicine } from './medicine.interface';
 
+
 export interface MedicineState extends EntityState<Medicine> {
   loaded: boolean;
-  selectedMedicineId: number
+  selectedApplianceId: number
 }
 
 export const adapter: EntityAdapter<Medicine> = createEntityAdapter<Medicine>();

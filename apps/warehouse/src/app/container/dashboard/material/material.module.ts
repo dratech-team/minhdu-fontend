@@ -1,28 +1,37 @@
 import { NgModule } from '@angular/core';
-import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
-import { MaterialRoutingModule } from './material-routing.module';
 import { MaterialComponent } from './container/material/material.component';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { MaterialReducer } from './+state/material.reducer';
 import { MaterialEffect } from './+state/material.effect';
-import { ComponentModule } from '../../components/component.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialDialogComponent } from './components/material-dialog/material-dialog.component';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   imports: [
-    MaterialRoutingModule,
-    StoreModule.forFeature(FeatureName.APPLIANCE, MaterialReducer),
+    ComponentsModule,
+    StoreModule.forFeature(FeatureName.MATERIAL, MaterialReducer),
     EffectsModule.forFeature([MaterialEffect]),
-    ComponentModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    CommonModule
   ],
   declarations: [
-    MaterialComponent
+    MaterialComponent,
+    MaterialDialogComponent,
   ],
   exports: [
     MaterialComponent
   ],
-  bootstrap: [WarehouseLayoutComponent]
 })
 export class MaterialModule {
 }

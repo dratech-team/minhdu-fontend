@@ -30,5 +30,5 @@ export const Api = {
   POULTRY_FOOD: 'poultryFood',
   PRODUCT: 'product',
   REQUISITE: 'requisite',
-  APPLIANCE: 'appliance',
+  MATERIAL: 'material',
 };

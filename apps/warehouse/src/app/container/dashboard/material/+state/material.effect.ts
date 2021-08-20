@@ -4,65 +4,66 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MaterialAction } from './material.action';
 import { MaterialService } from '../service/material.service';
+
 @Injectable()
 export class MaterialEffect {
 
-  loadAppliances$ = createEffect(() =>
+  loadMaterials$ = createEffect(() =>
     this.action$.pipe(
       ofType(MaterialAction.loadInit),
       switchMap((props) => {
         return this.applianceService.pagination(props);
       }),
       map((ResponsePaginate) => MaterialAction.loadInitSuccess({
-        appliances: ResponsePaginate.data
+        materials: ResponsePaginate.data
       })),
       catchError((err) => throwError(err))
     )
   );
-  loadMoreAppliances$ = createEffect(() =>
+  loadMoreMaterials$ = createEffect(() =>
     this.action$.pipe(
-      ofType(MaterialAction.loadMoreAppliances),
+      ofType(MaterialAction.loadMoreMaterials),
       switchMap((props) => this.applianceService.pagination(props)),
       map((ResponsePaginate) =>
-        MaterialAction.loadMoreAppliancesSuccess({ appliances: ResponsePaginate.data })),
+        MaterialAction.loadMoreMaterialsSuccess({ materials: ResponsePaginate.data })),
       catchError((err) => throwError(err))
     )
   );
 
-  addAppliance$ = createEffect(() =>
+  addMaterial$ = createEffect(() =>
     this.action$.pipe(
-      ofType(MaterialAction.addAppliance),
-      switchMap((props) => this.applianceService.addOne(props.appliance).pipe(
+      ofType(MaterialAction.addMaterial),
+      switchMap((props) => this.applianceService.addOne(props.material).pipe(
         map(() => MaterialAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))
     )
   );
 
-  getAppliances$ = createEffect(() =>
+  getMaterial$ = createEffect(() =>
     this.action$.pipe(
-      ofType(MaterialAction.getAppliance),
+      ofType(MaterialAction.getMaterial),
       switchMap((props) => this.applianceService.getOne(props.id)),
-      map((appliance) => MaterialAction.getApplianceSuccess({ appliance: appliance })),
+      map((Material) => MaterialAction.getMaterialSuccess({ material: Material })),
       catchError((err) => throwError(err))
     )
   );
 
-  updateMedicine$ = createEffect(() =>
+  updateMaterial$ = createEffect(() =>
     this.action$.pipe(
-      ofType(MaterialAction.updateAppliance),
-      switchMap((props) => this.applianceService.update(props.id, props.appliance).pipe(
-        map(() => MaterialAction.getAppliance({ id: props.id })),
+      ofType(MaterialAction.updateMaterial),
+      switchMap((props) => this.applianceService.update(props.id, props.material).pipe(
+        map(() => MaterialAction.getMaterial({ id: props.id })),
         catchError((err) => throwError(err))
       ))
     )
   );
 
 
-  deleteMedicine$ = createEffect(() =>
+  deleteMaterial$ = createEffect(() =>
     this.action$.pipe(
-      ofType(MaterialAction.deleteAppliance),
-      switchMap((props) => this.applianceService.delete(props.applianceId).pipe(
+      ofType(MaterialAction.deleteMaterial),
+      switchMap((props) => this.applianceService.delete(props.materialId).pipe(
         map(() => MaterialAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))

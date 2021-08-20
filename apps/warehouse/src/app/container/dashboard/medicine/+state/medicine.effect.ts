@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { MedicineAction } from './medicine.action';
+import { MedicineAction } from './medicine.action'
 import { MedicineService } from '../service/medicine.service';
+
 @Injectable()
 export class MedicineEffect {
 
@@ -11,20 +12,22 @@ export class MedicineEffect {
     this.action$.pipe(
       ofType(MedicineAction.loadInit),
       switchMap((props) => {
-        return this.medicineService.pagination(props);
+        return this.medicineService.Pagination(props);
       }),
-      map((ResponsePaginate) => MedicineAction.loadInitSuccess({
-        medicines: ResponsePaginate.data
-      })),
+      map((ResponsePaginate) => {
+        return MedicineAction.loadInitSuccess({
+          medicines: ResponsePaginate
+        })
+      }),
       catchError((err) => throwError(err))
     )
   );
-  loadMoreCustomers$ = createEffect(() =>
+  loadMoreMedicines$ = createEffect(() =>
     this.action$.pipe(
       ofType(MedicineAction.loadMoreMedicines),
-      switchMap((props) => this.medicineService.pagination(props)),
+      switchMap((props) => this.medicineService.Pagination(props)),
       map((ResponsePaginate) =>
-        MedicineAction.loadMoreMedicinesSuccess({ medicines: ResponsePaginate.data })),
+        MedicineAction.loadMoreMedicinesSuccess({ medicines: ResponsePaginate })),
       catchError((err) => throwError(err))
     )
   );
@@ -43,7 +46,7 @@ export class MedicineEffect {
     this.action$.pipe(
       ofType(MedicineAction.getMedicine),
       switchMap((props) => this.medicineService.getOne(props.id)),
-      map((medicine) => MedicineAction.getMedicineSuccess({ medicine: medicine })),
+      map((Material) => MedicineAction.getMedicineSuccess({ medicine: Material })),
       catchError((err) => throwError(err))
     )
   );
@@ -59,10 +62,10 @@ export class MedicineEffect {
   );
 
 
-  deleteMedicine$ = createEffect(() =>
+  deleteMaterial$ = createEffect(() =>
     this.action$.pipe(
       ofType(MedicineAction.deleteMedicine),
-      switchMap((props) => this.medicineService.delete(props.MedicineId).pipe(
+      switchMap((props) => this.medicineService.delete(props.medicineId).pipe(
         map(() => MedicineAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))

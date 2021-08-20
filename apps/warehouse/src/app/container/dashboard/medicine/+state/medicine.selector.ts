@@ -4,11 +4,12 @@ import * as fromMedicine from './medicine.reducer';
 import { MedicineState } from './medicine.reducer';
 import { Medicine } from './medicine.interface';
 
+
 export interface state {
   customer: MedicineState,
 }
 
-export const getSelectedMedicineId = (state: Medicine) => state.id;
+export const getSelectedApplianceId = (state: Medicine) => state.id;
 export const selectorMedicineState = createFeatureSelector<MedicineState>(
   FeatureName.MEDICINE
 );
@@ -17,15 +18,15 @@ export const selectorMedicineEntities = createSelector(
   fromMedicine.selectEntities
 );
 
-export const selectorAllMedicine = createSelector(
+export const selectorAllMedicines = createSelector(
   selectorMedicineState,
   fromMedicine.selectAll
 );
 
 export const selectorCurrentMedicine = (id: number) => createSelector(
   selectorMedicineEntities,
-  (CustomerEntities) => {
-    return CustomerEntities[id]
+  (MedicineEntities) => {
+    return MedicineEntities[id]
   }
 );
 

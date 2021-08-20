@@ -1,28 +1,32 @@
 import { NgModule } from '@angular/core';
-import { WarehouseLayoutComponent } from '../../container/warehouse-layout.component';
-import { PoultryFoodRoutingModule } from './poultry-food-routing.module';
 import { PoultryFoodWarehouseComponent } from './container/poultry-food-warehouse/poultry-food-warehouse.component';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { PoultryFoodReducer } from './+state/poultry-food.reducer';
 import { PoultryFoodEffect } from './+state/poultry-food.effect';
-import { ComponentModule } from '../../../components/component.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PoultryFoodDialogComponent } from './components/poultry-food-dialog/poultry-food-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
-    PoultryFoodRoutingModule,
     StoreModule.forFeature(FeatureName.POULTRY_FOOD, PoultryFoodReducer),
     EffectsModule.forFeature([PoultryFoodEffect]),
-    ComponentModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatDialogModule,
+    InfiniteScrollModule
   ],
   declarations: [
+    PoultryFoodDialogComponent,
     PoultryFoodWarehouseComponent
   ],
   exports: [
     PoultryFoodWarehouseComponent
   ],
-  bootstrap: [WarehouseLayoutComponent]
 })
 export class PoultryFoodModule {
 }

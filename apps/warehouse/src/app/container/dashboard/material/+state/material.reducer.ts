@@ -1,29 +1,29 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { MaterialAction } from './material.action';
-import { Appliance } from './material.interface';
+import { Material } from './material.interface';
 
-export interface ApplianceState extends EntityState<Appliance> {
+export interface MaterialState extends EntityState<Material> {
   loaded: boolean;
   selectedApplianceId: number
 }
 
-export const adapter: EntityAdapter<Appliance> = createEntityAdapter<Appliance>();
+export const adapter: EntityAdapter<Material> = createEntityAdapter<Material>();
 
-export const initialAppliance = adapter.getInitialState({ loaded: false });
+export const initialMaterial = adapter.getInitialState({ loaded: false });
 
 export const MaterialReducer = createReducer(
-  initialAppliance,
+  initialMaterial,
   on(MaterialAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.appliances, { ...state, loaded: true })
+    adapter.setAll(action.materials, { ...state, loaded: true })
   ),
 
-  on(MaterialAction.loadMoreAppliancesSuccess, (state, action) =>
-    adapter.addMany(action.appliances, { ...state, loaded: true})
+  on(MaterialAction.loadMoreMaterialsSuccess, (state, action) =>
+    adapter.addMany(action.materials, { ...state, loaded: true})
   ),
 
-  on(MaterialAction.getApplianceSuccess, (state, action) =>
-    adapter.upsertOne(action.appliance, { ...state, loaded: true})
+  on(MaterialAction.getMaterialSuccess, (state, action) =>
+    adapter.upsertOne(action.material, { ...state, loaded: true})
   ),
 );
 export const {

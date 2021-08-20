@@ -1,4 +1,162 @@
-<div class='container mt-5' style='height: 85vh'>
-  <div class=' h2'>kho thuốc</div>
- <app-medicine [warehouseType]='medicineWarehouse'></app-medicine>
+<div class='ml-4'>
+  <div class='h4 mt-2'>Danh sách Thuốc</div>
+  <button style='margin-top: 0 !important;' (click)='importMedicine()' class='btn btn-primary font-lg mt-2'>Nhập thuốc</button>
+  <button style='margin-top: 0 !important;' (click)='exportMedicine()' class='btn btn-primary font-lg mt-2 ml-2'>Xuất thuốc</button>
+</div>
+
+<div  style='height: 65vh; width: 100%; overflow-x: scroll ; overflow-y: hidden '>
+  <form class='ml-4' [formGroup]='formGroup'  >
+    <div class='header-profile mt-2 animated fadeIn'>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã thuốc</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+        >
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tên thuốc</div>
+        <input
+          formControlName='name'
+          class='form-control input-profile '
+          type='search'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã vạch</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Nhà cung cấp</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Hạn sử dụng</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='date'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Giá</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Chiếc khấu</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Hóa đơn</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Đơn vị</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Số lượng</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày nhập</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+
+    </div>
+    <div class='outer  animated fadeIn'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(medicines$| async) as medicines'
+    >
+      <app-mouse-right  #child
+                        (addEvent)='importMedicine()'
+                       (deleteEvent)='deleteMedicine($event)'
+                       (readAndUpdateEvent)='updateMedicine($event)'></app-mouse-right>
+      <div class='row-content' *ngFor='let medicine of medicines'
+           (contextmenu)='child.onContextMenu($event,medicine)'
+           (click)='updateMedicine(medicine)'>
+        <div class='content-profile default pointer '>
+         {{medicine?.code}}
+        </div>
+        <div class='content-profile name pointer '>
+          {{medicine?.name}}
+        </div>
+        <div class='content-profile default pointer '>
+          {{medicine?.barcode}}
+        </div>
+        <div class='content-profile name pointer '>
+          {{medicine?.provider}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.expire !== null' >
+          {{medicine?.expire | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.expire === null' >
+          Đang cập nhật
+        </div>
+        <div class='content-profile default pointer '  style='color: #4dbd74'>
+          {{medicine.price|number:'1.0'|notEmpty:'0'}} đ
+        </div>
+        <div class='content-profile default pointer '  *ngIf='medicine.discount' style='color: #4dbd74'>
+          {{medicine.discount* 100}}%
+        </div>
+        <div class='content-profile default pointer '  *ngIf='!medicine.discount' style='color: #4dbd74'>
+          0%
+        </div>
+        <div class='content-profile default pointer '>
+          {{medicine?.invoice}}
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.BI'>
+         Bi
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.KG'>
+          Kilogam
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.LIT'>
+          Lít
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.LO'>
+          Lọ
+        </div>
+        <div class='content-profile default pointer' *ngIf='medicine.unit === medicineUnit.VIEN'>
+          Viên
+        </div>
+        <div class='content-profile default pointer ' >
+          {{medicine?.amount}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.createdAt !== null' >
+          {{medicine?.createdAt | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='medicine?.createdAt === null' >
+          Đang cập nhật
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
