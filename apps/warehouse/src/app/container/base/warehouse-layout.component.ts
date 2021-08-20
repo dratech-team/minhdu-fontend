@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,10 +19,14 @@ export class WarehouseLayoutComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
+    private readonly router: Router,
   ) {
   }
 
   ngOnInit() {
+    if(!this.role){
+      this.router.navigate(['/']).then()
+    }
   }
 
   changeTab(event: any) {

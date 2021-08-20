@@ -5,7 +5,9 @@ import { AuthActions } from '@minhdu-fontend/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Role } from '../../../../../libs/enums/hr/role.enum';
+import { Role } from 'libs/enums/hr/role.enum';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -13,13 +15,20 @@ import { Role } from '../../../../../libs/enums/hr/role.enum';
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss']
 })
-export class DefaultLayoutComponent {
+export class DefaultLayoutComponent implements OnInit{
   role = localStorage.getItem('role');
-  roleEnum = Role
+  roleEnum = Role;
   constructor(
     private readonly store: Store,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly router: Router,
   ) {
+  }
+
+  ngOnInit() {
+    if(this.role){
+      this.router.navigate(['/']).then();
+    }
   }
 
   showFiller = false;

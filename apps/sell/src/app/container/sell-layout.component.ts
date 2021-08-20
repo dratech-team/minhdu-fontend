@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
 import { document } from 'ngx-bootstrap/utils';
@@ -8,6 +8,7 @@ import { DevelopmentComponent } from 'libs/components/src/lib/development/develo
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from '../../../../../libs/enums/hr/role.enum';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,13 +16,19 @@ import { Role } from '../../../../../libs/enums/hr/role.enum';
   templateUrl: './sell-layout.component.html',
   styleUrls: ['./sell-layout.component.scss']
 })
-export class SellLayoutComponent{
+export class SellLayoutComponent implements OnInit{
   role = localStorage.getItem('role')
   roleEnum = Role;
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
+    private readonly router: Router,
   ) {
+  }
+  ngOnInit() {
+    if(!this.role){
+      this.router.navigate(['/']).then()
+    }
   }
 
   pickMenuMobile(){
