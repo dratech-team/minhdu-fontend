@@ -72,7 +72,7 @@
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
         <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-3 pointer no-underline '  *ngIf='!payment' >
-         {{order.customer.firstName}} {{ order.customer.lastName}}
+         {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
         </a>
         <a [routerLink]='["/ban-hang/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt!== null'>
