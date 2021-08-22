@@ -86,7 +86,6 @@ export class OrderEffect {
                 return  OrderAction.getOrder({ id: props.id })
               }
           }
-
         ),
         catchError((err) => throwError(err))
         )
