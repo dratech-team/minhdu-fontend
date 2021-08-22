@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { navItems } from './_nav';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '@minhdu-fontend/auth';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss']
 })
-export class DefaultLayoutComponent implements OnInit{
+export class DefaultLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
   constructor(
@@ -26,7 +26,9 @@ export class DefaultLayoutComponent implements OnInit{
   }
 
   ngOnInit() {
-    if(this.role){
+  console.log(this.role)
+    if(!this.role){
+
       this.router.navigate(['/']).then();
     }
   }
@@ -52,4 +54,5 @@ export class DefaultLayoutComponent implements OnInit{
   signUp() {
     this.dialog.open(RegisterComponent, {width:'40%'})
   }
+
 }

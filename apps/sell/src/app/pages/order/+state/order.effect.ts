@@ -3,13 +3,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
 import { OrderAction } from './order.action';
 import { catchError, delay, map, switchMap, tap } from 'rxjs/operators';
-import {  throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
 
 
 @Injectable()
 export class OrderEffect {
+
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
@@ -26,6 +27,7 @@ export class OrderEffect {
         catchError((err) => throwError(err))
       ))
     ));
+
   loadInit$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadInit),
@@ -38,11 +40,12 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadOrdersAssigned),
       switchMap((props) => {
-        return this.orderService.pagination(props) }),
+        return this.orderService.pagination(props);
+      }),
       map((responsePagination) => {
-        return  OrderAction.loadOrdersAssignedSuccess({ orders: responsePagination.data })
-      }
-    ),
+          return OrderAction.loadOrdersAssignedSuccess({ orders: responsePagination.data });
+        }
+      ),
       catchError((err) => throwError(err))
     ));
 
@@ -71,11 +74,20 @@ export class OrderEffect {
       catchError((err) => throwError(err))
     ));
 
-  updateBill$ = createEffect(() =>
+  updateOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.updateOrder),
       switchMap((props) => this.orderService.update(props.id, props.order).pipe(
-        map((_) => OrderAction.getOrder({ id: props.id })),
+        map((_) =>
+          {
+              if(props.typeUpdate === 'DELIVERED'){
+                return  OrderAction.loadInit({ take:30,skip:0 })
+              }else{
+                return  OrderAction.getOrder({ id: props.id })
+              }
+          }
+
+        ),
         catchError((err) => throwError(err))
         )
       )

@@ -16,7 +16,7 @@ export class AuthEffects {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly authService: AuthService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -26,28 +26,26 @@ export class AuthEffects {
       map((actions) => actions),
       switchMap((payload) =>
         this.authService
-          .signUp(payload.username, payload.password , payload.app, payload.role , payload?.employeeId)
-          .pipe(map(user=>AuthActions.signUpSuccess({user: user}) ))
-
+          .signUp(payload.username, payload.password, payload.app, payload.role, payload?.employeeId)
+          .pipe(map(user => AuthActions.signUpSuccess({ user: user })))
       ),
       catchError((err) => throwError(err))
     )
   );
 
   SignUpSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.signUpSuccess),
-      map((_) => {
-        this.snackBar.openFromComponent(SnackBarSuccessComponent, {
-          duration: 2500,
-          panelClass: ['background-snackbar']
-        });
-      }),
-      catchError((err) => throwError(err))
-    ),
+      this.actions$.pipe(
+        ofType(AuthActions.signUpSuccess),
+        map((_) => {
+          this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+            duration: 2500,
+            panelClass: ['background-snackbar']
+          });
+        }),
+        catchError((err) => throwError(err))
+      ),
     { dispatch: false }
   );
-
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -55,12 +53,13 @@ export class AuthEffects {
       map((actions) => actions),
       switchMap((payload) =>
         this.authService
-          .signIn(payload.username, payload.password , payload.app)
+          .signIn(payload.username, payload.password, payload.app)
           .pipe(map((user) => AuthActions.loginSuccess({ user })))
       ),
-      catchError((err) => throwError(err))
+      catchError((err) => {
+        return throwError(err);
+      })
     )
-
   );
 
   loginSuccess$ = createEffect(
@@ -68,10 +67,9 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap((user) => {
-          console.log(user);
           localStorage.setItem('role', user.user.role);
           localStorage.setItem('token', user.user.token);
-          switch( user.user.app) {
+          switch (user.user.app) {
             case App.HR:
               this.router.navigate(['/nhan-su']).then();
               break;
@@ -85,7 +83,6 @@ export class AuthEffects {
               this.router.navigate(['/quan-tri']).then();
               break;
           }
-
         })
       ),
     { dispatch: false }

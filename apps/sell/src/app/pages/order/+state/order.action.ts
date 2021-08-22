@@ -44,10 +44,6 @@ export const loadMoreOrdersSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
-
-
-
-
 export const getOrder = createAction(
   '[GET_ORDER] Get Order',
   props<{ id: number }>()
@@ -60,7 +56,7 @@ export const getOrderSuccess = createAction(
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ order: any, id: number }>()
+  props<{ order: any, id: number, typeUpdate?: string}>()
 );
 
 export const payment = createAction(

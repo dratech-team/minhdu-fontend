@@ -74,7 +74,13 @@
            (scrolled)='onScroll()'
            *ngIf='(orders$| async) as orders'
       >
-        <div class='row-content' *ngFor='let order of orders'>
+
+        <div class='row-content' *ngFor='let order of orders'   (contextmenu)='child.onContextMenu($event,order)' >
+          <app-mouse-right #child [type]='pageTypeEnum.ORDER'
+                            (addEvent)='addOrder()'
+                            (readAndUpdateEvent)='detailOrder($event.id)'
+                            (delivered)='UpdateOrder($event)'
+          ></app-mouse-right>
           <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
             {{order?.customer?.firstName}} {{order?.customer?.lastName}}
           </div>

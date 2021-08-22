@@ -20,6 +20,10 @@ export const loginSuccess = createAction(
   props<{ user: any }>()
 );
 
+export const loginFail = createAction(
+  '[Auth/API]  Login Fail',
+);
+
 export const logout = createAction('[Auth/PAGE] User Logout');
 
-export const AuthActions = { login, loginSuccess, logout, signUp, signUpSuccess };
+export const AuthActions = { login, loginSuccess, logout, signUp, signUpSuccess ,loginFail};

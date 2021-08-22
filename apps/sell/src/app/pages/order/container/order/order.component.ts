@@ -10,6 +10,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { document } from 'ngx-bootstrap/utils';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 
 
 @Component({
@@ -17,6 +19,7 @@ import { document } from 'ngx-bootstrap/utils';
 
 })
 export class OrderComponent implements OnInit {
+  pageTypeEnum = PageTypeEnum ;
   paidType = PaidType;
   currencyUnit = CurrencyUnit;
   payType = PaymentType;
@@ -72,5 +75,13 @@ export class OrderComponent implements OnInit {
 
   detailOrder(id: number) {
     this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then();
+  }
+
+  UpdateOrder($event: any) {
+    this.dialog.open(OrderDialogComponent, {width:'60%', data: {order:$event , type:'DELIVERED'}})
+  }
+
+  addOrder(){
+    this.router.navigate(['/ban-hang/don-hang/them-don-hang']).then()
   }
 }

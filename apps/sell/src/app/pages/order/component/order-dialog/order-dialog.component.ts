@@ -61,6 +61,7 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data.type)
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
@@ -98,7 +99,7 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
-    this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id }));
+      this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id , typeUpdate: this.data.type}));
   }
 
   onNation(nation: Nation) {

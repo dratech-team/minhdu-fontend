@@ -14,6 +14,7 @@ export class MouseRightComponent {
   @Output() deleteEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
   @Output() payment = new EventEmitter();
+  @Output() delivered = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -42,5 +43,9 @@ export class MouseRightComponent {
   }
   onPayment(item: any): void{
     this.payment.emit(item);
+  }
+
+  onDelivered(item: any){
+    this.delivered.emit(item);
   }
 }
