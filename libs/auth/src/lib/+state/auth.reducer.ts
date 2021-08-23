@@ -13,6 +13,7 @@ export const initAuthState: AuthState = {
 export const authReducer = createReducer(
   initAuthState,
   on(AuthActions.login, (state) => {
+    console.log('login')
     return {
       ...state,
       loading: true
@@ -27,6 +28,7 @@ export const authReducer = createReducer(
   }),
 
 on(AuthActions.loginFail, (state) => {
+  console.log('login fail')
   return {
     ...state,
     loading: false
