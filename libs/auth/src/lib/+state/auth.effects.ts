@@ -8,12 +8,14 @@ import { throwError } from 'rxjs';
 import { App } from '@minhdu-fontend/enums';
 import { SnackBarSuccessComponent } from '../../../../components/src/lib/snackBar-success/snack-bar-success.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private readonly actions$: Actions,
+    private readonly store: Store,
     private readonly router: Router,
     private readonly authService: AuthService,
     private snackBar: MatSnackBar
@@ -57,8 +59,8 @@ export class AuthEffects {
           .pipe(map((user) => AuthActions.loginSuccess({ user })))
       ),
       catchError((err) => {
-        AuthActions.loginFail()
-        return throwError(err);
+          this.store.dispatch(AuthActions.loginFail())
+          return throwError(err);
       })
     )
   );
