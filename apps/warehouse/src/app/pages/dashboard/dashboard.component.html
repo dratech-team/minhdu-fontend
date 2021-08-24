@@ -1,9 +1,8 @@
-<div  style='overflow-x: hidden;'>
+
   <div class='row d-flex align-items-center justify-content-between '
-       style='padding: 15px;position: fixed; left: 0; right: 0; background: white '>
+       style=' padding: 5px 15px;position: fixed; left: 0; right: 0; background: white '>
     <div class='h2 ml-4'>Tổng kho vật tư </div>
     <div>
-
       <div class='mr-5' >
         <label for='type'  class='h5'>Loại hàng</label>
         <mat-select [(value)]="warehouseType" id='type' class='form-control'>
@@ -14,9 +13,9 @@
       </div>
     </div>
   </div>
-  <div style='margin: 100px auto 0'>
+  <div style='margin: 100px auto 50px;'>
     <app-medicine *ngIf='warehouseType === warehouseTypeEnum.MEDICINE'></app-medicine>
     <app-poultry-food *ngIf='warehouseType === warehouseTypeEnum.POULTRY_FOOD'></app-poultry-food>
     <app-material *ngIf='warehouseType === warehouseTypeEnum.MATERIAL'></app-material>
   </div>
-</div>
+

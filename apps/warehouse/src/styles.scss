@@ -1,8 +1,10 @@
 @import "~@coreui/coreui-pro/scss/coreui";
 
 body {
+  height: fit-content !important;
   margin: 0 !important;
   background: white !important;
+  overflow-y: scroll;
 }
 
 $spinkit-spinner-color: $body-color;

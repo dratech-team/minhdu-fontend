@@ -64,4 +64,8 @@ export class MaterialComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(MaterialAction.loadMoreMaterials(this.material(this.pageSize, this.pageIndex, val)));
   }
+
+  exportMaterial() {
+
+  }
 }

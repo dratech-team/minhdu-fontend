@@ -14,18 +14,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./warehouse-layout.component.scss']
 })
 export class WarehouseLayoutComponent implements OnInit {
-  role = localStorage.getItem('role')
+  role = localStorage.getItem('role');
   roleEnum = Role;
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
   }
 
   ngOnInit() {
-    if(!this.role){
-      this.router.navigate(['/']).then()
+    if (!this.role) {
+      this.router.navigate(['/']).then();
     }
   }
 
@@ -45,7 +46,8 @@ export class WarehouseLayoutComponent implements OnInit {
       }
     });
   }
+
   signUp() {
-    this.dialog.open(RegisterComponent, {width:'40%'})
+    this.dialog.open(RegisterComponent, { width: '40%' });
   }
 }

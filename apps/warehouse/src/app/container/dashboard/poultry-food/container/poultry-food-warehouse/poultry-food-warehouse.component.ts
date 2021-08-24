@@ -64,4 +64,8 @@ export class PoultryFoodWarehouseComponent implements OnInit {
     this.store.dispatch(PoultryFoodAction.loadMorePoultryFoods(
       this.poultryFood(this.pageSize, this.pageIndex, val)));
   }
+
+  exportPoultryFood() {
+
+  }
 }
