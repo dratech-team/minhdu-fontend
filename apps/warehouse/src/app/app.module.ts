@@ -4,7 +4,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../../../sell/src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,6 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { environmentAppWarehouse } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
+      logOnly: environmentAppWarehouse.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([]),

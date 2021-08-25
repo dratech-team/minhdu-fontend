@@ -23,7 +23,7 @@ import { NxModule } from '@nrwl/angular';
 import { DefaultLayoutComponent } from './container/default-layout.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
+import { environmentAppHr } from '../environments/environmentAppHr';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -54,7 +54,7 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
+      logOnly: environmentAppHr.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([]),
