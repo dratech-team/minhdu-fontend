@@ -8,7 +8,7 @@ import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../+state/payment/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
-import { selectorAllOrders, selectOrdersByIds } from '../../../order/+state/order.selector';
+import { selectorAllOrders, selectorCurrentOrder, selectOrdersByIds } from '../../../order/+state/order.selector';
 import { tap } from 'rxjs/operators';
 
 
@@ -21,8 +21,8 @@ export class PaymentDialogComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorAllOrders));
   numberChars = new RegExp('[^0-9]', 'g');
   orders: Order[] = [];
-  ordersPicked: Order[] = [];
-  orderIds: number[] = [];
+  ordersPicked!: Order;
+  orderId!: number;
   payType = PaymentType;
   formGroup!: FormGroup;
   firstFormGroup!: FormGroup;
@@ -66,7 +66,7 @@ export class PaymentDialogComponent implements OnInit {
       payType: val.payType ? val.payType : undefined,
       total: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
       paidAt: val.paidAt,
-      orderId: this.orderIds,
+      orderId: this.orderId,
       note: val.note
     };
     this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment, id: this.data.id }));
@@ -83,12 +83,12 @@ export class PaymentDialogComponent implements OnInit {
       }, 500);
     }
   }
-  pickOrders($event: number[]) {
-    this.orderIds = $event;
-    this.store.pipe(select(selectOrdersByIds(this.orderIds))).subscribe(
+  pickOrders($event: number) {
+    this.orderId = $event;
+    this.store.pipe(select(selectorCurrentOrder(this.orderId))).subscribe(
       val=> this.ordersPicked = JSON.parse(JSON.stringify(val))
     )
-    if(this.orderIds.length >0){
+    if(this.orderId){
       this.secondFormGroup = this.formBuilder.group({
         pick: [Validators.required],
       })

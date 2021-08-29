@@ -34,12 +34,12 @@ export class PaymentEffect {
   payment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.payment),
-      switchMap((props) => this.paymentService.payment(props.id, props.infoPayment)),
-        map((payment) => CustomerAction.getCustomer({ id: payment.customerId })),
+      switchMap((props) => this.paymentService.payment(props.id, props.infoPayment).pipe(
+        map(_=> CustomerAction.getCustomer({id: props.id}))
+      )),
         catchError((err) => throwError(err))
     )
   );
-
   constructor(
     private readonly action$: Actions,
     private readonly paymentService: PaymentService

@@ -37,7 +37,9 @@ export const selectorAllOrders = createSelector(
 
 export const selectorCurrentOrder = (id: number)  =>createSelector(
   selectorOrderEntities,
-  (orderEntities) => orderEntities[id]
+  (orderEntities) =>{
+    return  orderEntities[id]
+  }
 )
 export const selectOrdersByIds = (ids: number[]) => createSelector(
   selectorAllOrders,

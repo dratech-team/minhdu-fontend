@@ -28,9 +28,9 @@ export class SellLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.role) {
-      this.router.navigate(['/']).then();
-    }
+    // if (!this.role) {
+    //   this.router.navigate(['/']).then();
+    // }
   }
 
   pickMenuMobile() {
