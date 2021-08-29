@@ -7,13 +7,12 @@ import { Observable } from 'rxjs';
 import { stakedChart } from '@minhdu-fontend/data-models';
 
 @Injectable({providedIn:'root'})
-export class StatisticalCustomerPotentialService extends BaseService<stakedChart>{
+export class StatisticalAgencyService extends BaseService<stakedChart>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.STATISTICAL_CUSTOMER, http)
+    super(Api.STATISTICAL_AGENCY, http)
   }
-
   getAll(param: any): Observable<stakedChart[]> {
     return super.getAll(param);
   }

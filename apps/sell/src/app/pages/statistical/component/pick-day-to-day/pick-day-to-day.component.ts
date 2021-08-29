@@ -30,4 +30,13 @@ export class PickDayToDayComponent implements OnInit {
       endedAt: new Date(val.endedAt) ,
     }
   }
+
+  print() {
+    const val = this.formGroup.value
+    return  {
+      startedAt: new Date(val.startedAt) ,
+      endedAt: new Date(val.endedAt) ,
+      print: true
+    }
+  }
 }

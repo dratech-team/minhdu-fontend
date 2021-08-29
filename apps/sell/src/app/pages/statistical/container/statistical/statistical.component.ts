@@ -4,11 +4,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
-import { StatisticalAgencyService } from '../../service/statistical-Agency.service';
-import { StatisticalChickenService } from '../../service/statistical-chicken.service';
-import { StatisticalProvinceService } from '../../service/statistical-province.service';
-import { StatisticalCustomerPotentialService } from '../../service/statistical-customer-potential.service';
+import { StatisticalAgencyService } from '../../service/statistical/statistical-Agency.service';
+import { StatisticalChickenService } from '../../service/statistical/statistical-chicken.service';
+import { StatisticalProvinceService } from '../../service/statistical/statistical-province.service';
+import { StatisticalCustomerService } from '../../service/statistical/statistical-customer.service';
 import { getMonth } from 'ngx-bootstrap/chronos';
+import { AgencyPrintService } from '../../service/statistical_print/agency-print.service';
+import { ChickenPrintService } from '../../service/statistical_print/chicken-print.service';
+import { ProvincePrintService } from '../../service/statistical_print/province-print.service';
+import { CustomerPrintService } from '../../service/statistical_print/customer-print.service';
+import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
+
 
 @Component({
   templateUrl: 'statistical.component.html',
@@ -35,9 +41,13 @@ export class StatisticalComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly statisticalAgencyService: StatisticalAgencyService,
+    private readonly agencyPrintService: AgencyPrintService,
     private readonly statisticalChickenService: StatisticalChickenService,
+    private readonly chickenPrintService: ChickenPrintService,
     private readonly statisticalProvinceService: StatisticalProvinceService,
-    private readonly statisticalCustomerPotentialService: StatisticalCustomerPotentialService
+    private readonly provincePrintService: ProvincePrintService,
+    private readonly statisticalCustomerService: StatisticalCustomerService,
+    private readonly customerPrintService: CustomerPrintService
   ) {
   }
 
@@ -68,28 +78,37 @@ export class StatisticalComponent implements OnInit {
     const ref = this.dialog.open(PickStatisticalTypeComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
         if (val) {
-          switch (type) {
-            case this.statisticalXType.AGENCY:
-              this.statisticalAgencyService.getAll(val).subscribe(value => {
-                if (val) {
-                  this.statisticalAgency = value;
+            switch (type) {
+              case this.statisticalXType.AGENCY:
+                this.statisticalAgencyService.getAll(val).subscribe(value => {
+                  if (val) {
+                    this.statisticalAgency = value;
+                  }
+                });
+                if(val.print){
+                  this.agencyPrintService.getAll(val).subscribe();
                 }
-              });
-              break;
-            case this.statisticalXType.CHICKEN_TYPE:
-              this.statisticalChickenService.getAll(val).subscribe(value => {
-                if (val) {
-                  this.statisticalChicken = value;
+                break;
+              case this.statisticalXType.CHICKEN_TYPE:
+                this.statisticalChickenService.getAll(val).subscribe(value => {
+                  if (val) {
+                    this.statisticalChicken = value;
+                  }
+                });
+                if(val.print){
+                  this.chickenPrintService.getAll(val).subscribe();
                 }
-              });
-              break;
-            default:
-              this.statisticalProvinceService.getAll(val).subscribe(value => {
-                if (value) {
-                  this.statisticalProvince = value;
-
+                break;
+              default:
+                this.statisticalProvinceService.getAll(val).subscribe(value => {
+                  if (value) {
+                    this.statisticalProvince = value;
+                  }
+                });
+                if(val.print){
+                  this.provincePrintService.getAll(val).subscribe();
                 }
-              });
+            }
           }
           switch (val.type) {
             case this.statisticalYType.CUSTOMER:
@@ -101,13 +120,16 @@ export class StatisticalComponent implements OnInit {
             default:
               this.labelY = 'Số lượng';
           }
-        }
       }
     );
   }
 
+  printCustomer(type:StatisticalYType ){
+    this.dialog.open(DevelopmentComponent, {width: '30%'})
+    // this.customerPrintService.getAll(type).subscribe();
+  }
   statisticalCustomer(param: any) {
-    this.statisticalCustomerPotentialService.getAll(param).subscribe(value => {
+    this.statisticalCustomerService.getAll(param).subscribe(value => {
       if (value) {
         switch (param.type) {
           case this.statisticalYType.POTENTIAL:
