@@ -25,9 +25,9 @@ export class PickOrderComponent implements OnInit{
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
   paidType = PaidType;
-  pageIndex: number = 1;
-  pageSize: number = 30;
-  isSelectAll: boolean = false;
+  pageIndex = 1;
+  pageSize = 30;
+  isSelectAll = false;
   orderIds: number[] = [];
   formGroup = new FormGroup(
     {

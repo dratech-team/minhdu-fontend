@@ -8,7 +8,7 @@ export interface Payment {
   payType: PaymentType,
   total: number,
   customerId: number,
-  note: String,
+  note: string,
   orderId: number,
   order: {
     id: number

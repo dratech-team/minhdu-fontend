@@ -15,8 +15,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CommodityComponent implements OnInit {
   commodity$ = this.store.pipe(select(selectAllCommodity));
   commodityUnit = CommodityUnit;
-  pageIndex: number = 1;
-  pageSize: number = 30;
+  pageIndex = 1;
+  pageSize = 30;
   formGroup = new FormGroup(
     {
       name: new FormControl(''),

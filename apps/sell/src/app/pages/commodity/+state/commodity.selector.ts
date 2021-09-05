@@ -27,7 +27,7 @@ export const selectorCurrentCommodity = (id: number)  =>createSelector(
 export const selectorCommodityByIds = (ids: number[])  =>createSelector(
   selectAllCommodity,
   (CommoditiesEntities) =>{
-    let result: Commodity[] = []
+    const result: Commodity[] = []
       CommoditiesEntities.forEach(val =>{
         if(ids.includes(val.id)){
           result.push(val)

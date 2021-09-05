@@ -25,8 +25,8 @@ export class CustomerComponent implements OnInit {
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?:Order;
-  pageIndex: number = 1;
-  pageSize: number = 30;
+  pageIndex = 1;
+  pageSize = 30;
   formGroup = new FormGroup(
     {
       resource: new FormControl(''),

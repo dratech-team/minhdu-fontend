@@ -62,7 +62,7 @@
                alt='setting'>
         </div>
         <span class=' ml-3 mb-1 title-chart'>Thống kê theo tỉnh</span>
-        <div  [ngStyle]='{"overflow-x":statisticalProvince.length == 0 ? "hidden":"scroll" }'>
+        <div  [ngStyle]='{"overflow-x":statisticalProvince.length === 0 ? "hidden":"scroll" }'>
           <app-swim-lane-chart
             [data]='statisticalProvince'
             [labelX]='"Tỉnh thành"'
@@ -92,7 +92,7 @@
                alt='setting'>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê khách tiềm năng theo tỉnh</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalPotential.length == 0? "hidden":"scroll" }'>
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalPotential.length === 0? "hidden":"scroll" }'>
           <app-staked-vertical-chart
             [data]='statisticalPotential'
             [legend]='true'
@@ -126,7 +126,7 @@
                alt='setting'>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê đơn hàng theo khách hàng</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalCommodityDetail.length == 0? "hidden":"scroll" }'>
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalCommodityDetail.length === 0? "hidden":"scroll" }'>
           <app-staked-vertical-chart
             [data]='statisticalCommodityDetail'
             [legend]='true'
@@ -143,7 +143,7 @@
                alt='setting'>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê nợ theo khách hàng</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalDebt.length == 0? "hidden":"scroll" }'>
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalDebt.length === 0? "hidden":"scroll" }'>
           <app-staked-vertical-chart
             [data]='statisticalDebt'
             [legend]='true'

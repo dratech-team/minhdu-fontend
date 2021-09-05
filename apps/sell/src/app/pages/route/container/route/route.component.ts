@@ -15,8 +15,8 @@ import { ExportRouteService } from '../../service/export-route.service';
   templateUrl: 'route.component.html'
 })
 export  class RouteComponent implements OnInit{
-  pageIndex: number = 1;
-  pageSize: number = 30;
+  pageIndex = 1;
+  pageSize = 30;
   formGroup = new FormGroup(
     {
       skip: new FormControl(''),

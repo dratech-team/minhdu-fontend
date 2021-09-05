@@ -16,9 +16,9 @@ export class PickRoutesComponent implements OnInit {
   @Input() pickPOne: boolean | undefined;
   @Input() routes: Route[] = [];
   @Output() checkEvent = new EventEmitter();
-  pageIndex: number = 1;
-  pageSize: number = 30;
-  isSelectAll: boolean = false;
+  pageIndex = 1;
+  pageSize = 30;
+  isSelectAll = false;
   routeIds: number[] = [];
   formGroup = new FormGroup(
     {}

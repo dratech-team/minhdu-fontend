@@ -24,8 +24,8 @@ export class OrderComponent implements OnInit {
   paidType = PaidType;
   currencyUnit = CurrencyUnit;
   payType = PaymentType;
-  pageIndex: number = 1;
-  pageSize: number = 30;
+  pageIndex = 1;
+  pageSize = 30;
   orders$ = this.store.pipe(select(selectorAllOrders));
   formGroup = new FormGroup(
     {

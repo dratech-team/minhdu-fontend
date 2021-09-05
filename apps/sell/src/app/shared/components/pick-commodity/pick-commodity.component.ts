@@ -20,9 +20,9 @@ export class PickCommodityComponent implements OnInit {
   @Output() checkEvent = new EventEmitter();
   resourceType = CustomerResource;
   customerType = CustomerType;
-  pageIndex: number = 1;
-  pageSize: number = 30;
-  isSelectAll: boolean = false;
+  pageIndex = 1;
+  pageSize = 30;
+  isSelectAll = false;
 
   commodityIds: number[] = [];
 

@@ -44,7 +44,7 @@ export const selectorCurrentOrder = (id: number)  =>createSelector(
 export const selectOrdersByIds = (ids: number[]) => createSelector(
   selectorAllOrders,
   (orders ) => {
-    let result: Order[] = []
+    const result: Order[] = []
     orders.forEach(val =>{
         if(ids.includes(val.id)){
           result.push(val)

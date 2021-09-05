@@ -28,14 +28,14 @@
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='delivered == 1'   class='border-start title-header  col-2' >
+      <div *ngIf='delivered === 1'   class='border-start title-header  col-2' >
         <div class='title-profile'>Ngày giao hàng</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='delivered == 0'   class='border-start title-header  col-2' >
+      <div *ngIf='delivered === 0'   class='border-start title-header  col-2' >
         <div class='title-profile'>Diễn giải</div>
         <input
           [disabled]='true'
@@ -75,10 +75,10 @@
         <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
           {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div *ngIf='delivered == 1' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
+        <div *ngIf='delivered === 1' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
           {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
         </div>
-        <div *ngIf='delivered == 0' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
+        <div *ngIf='delivered === 0' class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>
           {{order?.explain }}
         </div>
       </div>
