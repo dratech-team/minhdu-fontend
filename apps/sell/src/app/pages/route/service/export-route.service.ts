@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from '@minhdu-fontend/service';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Api } from '@minhdu-fontend/constants';
-import { Observable } from 'rxjs';
+import { environment } from 'libs/environments/environment';
 
-@Injectable({providedIn: 'root'})
-export  class ExportRouteService extends BaseService<any>{
+@Injectable({ providedIn: 'root' })
+export class ExportRouteService {
   constructor(
-    public readonly http: HttpClient
-  ) {
-    super(Api.ROUTE_EXPORT , http);
+    public readonly http: HttpClient,
+    private sanitizer: DomSanitizer
+  ) {}
+
+  print(endpoint: string): void {
+    this.goToLink(environment.apiUrl + endpoint);
   }
-  print(param: any): Observable<any> {
-    return super.getAll(param);
+
+  goToLink(url: string) {
+    window.open(url, '_blank');
   }
 }
