@@ -8,9 +8,9 @@
   <form [formGroup]="formGroup" (submit)="onSubmit()">
     <mat-tab-group  dynamicHeight >
       <mat-tab class="col-12 " label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup' class='px-3' style='height: 30vh;' >
+        <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll' >
           <div class='form-group'>
-            <div class='row mt-5'>
+            <div class='row mt-2'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='name'>Tên tuyến đường<span class='star'>*</span>
                 </label>
