@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '@minhdu-fontend/service';
-import { HttpClient } from '@angular/common/http';
-import { Api } from '@minhdu-fontend/constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Api } from '@minhdu-fontend/constants';
 @Injectable({providedIn: 'root'})
-export  class ExportRouteService extends BaseService<any>{
+export  class ExportRouteService {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.ROUTE_EXPORT , http);
   }
-  print(param: any): Observable<any> {
-    return super.getAll(param);
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url= window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

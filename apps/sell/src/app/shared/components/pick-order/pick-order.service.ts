@@ -3,7 +3,6 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllOrders } from '../../../pages/order/+state/order.selector';
 import { OrderAction } from '../../../pages/order/+state/order.action';
 
-
 @Injectable({providedIn: 'root'})
 export class PickOrderService {
   orders$ = this.store.pipe(select(selectorAllOrders))

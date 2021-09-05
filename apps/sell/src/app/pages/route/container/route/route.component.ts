@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ExportRouteService } from '../../service/export-route.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -34,6 +35,7 @@ export  class RouteComponent implements OnInit{
       private readonly dialog: MatDialog,
       private readonly router: Router,
       private readonly exportRouterService: ExportRouteService,
+      private sanitizer: DomSanitizer,
   ) {
   }
   ngOnInit() {
@@ -78,7 +80,7 @@ export  class RouteComponent implements OnInit{
   }
 
   printRouter() {
-    const val = this.formGroup.value
+    const val = this.formGroup.value;
     const route = {
       name: val.name.trim(),
       startedAt: val.startedAt,
@@ -86,6 +88,16 @@ export  class RouteComponent implements OnInit{
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
     }
-    this.exportRouterService.print(route).subscribe()
+    this.exportRouterService.print(route).subscribe(val =>{
+      console.log(val.type)
+      this.downloadFile(val)
+    }
+
+    )
+  }
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url= window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

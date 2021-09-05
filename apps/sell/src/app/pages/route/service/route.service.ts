@@ -29,5 +29,4 @@ export  class RouteService extends BaseService<Route>{
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
-
 }
