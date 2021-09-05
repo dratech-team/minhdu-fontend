@@ -36,13 +36,12 @@ export class PickStatisticalTypeComponent implements OnInit {
   }
 
   print() {
-    this.dialog.open(DevelopmentComponent, {width:'30%'})
-    // const val = this.formGroup.value
-    // return  {
-    //   startedAt: val.startedAt,
-    //   endedAt: val.endedAt,
-    //   type: val.type,
-    //   // print: true
-    // }
+    const val = this.formGroup.value
+    return  {
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
+      type: val.type,
+      print: true
+    }
   }
 }

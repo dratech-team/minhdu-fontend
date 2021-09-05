@@ -10,8 +10,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { document } from 'ngx-bootstrap/utils';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
+import { ExportOrderService } from '../../service/export-order.service';
+import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class OrderComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router,
+    private readonly exportOrderService: ExportOrderService,
 
   ) {
   }
@@ -83,5 +85,14 @@ export class OrderComponent implements OnInit {
 
   addOrder(){
     this.router.navigate(['/ban-hang/don-hang/them-don-hang']).then()
+  }
+
+  printOrder() {
+      const val = this.formGroup.value
+      const order = {
+        paidType: val.paidType,
+        customer: val.name.trim()
+    }
+    this.exportOrderService.print(order).subscribe()
   }
 }

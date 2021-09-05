@@ -14,7 +14,7 @@ export class CustomerPrintService extends BaseService<stakedChart>{
     super(Api.STATISTICAL_CUSTOMER_PRINT, http)
   }
 
-  getAll(param: any): Observable<stakedChart[]> {
+  print(param: any): Observable<stakedChart[]> {
     return super.getAll(param);
   }
 }

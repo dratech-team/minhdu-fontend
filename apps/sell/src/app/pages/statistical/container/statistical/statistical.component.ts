@@ -13,7 +13,6 @@ import { AgencyPrintService } from '../../service/statistical_print/agency-print
 import { ChickenPrintService } from '../../service/statistical_print/chicken-print.service';
 import { ProvincePrintService } from '../../service/statistical_print/province-print.service';
 import { CustomerPrintService } from '../../service/statistical_print/customer-print.service';
-import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 
 
 @Component({
@@ -78,56 +77,62 @@ export class StatisticalComponent implements OnInit {
     const ref = this.dialog.open(PickStatisticalTypeComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
         if (val) {
-            switch (type) {
-              case this.statisticalXType.AGENCY:
-                this.statisticalAgencyService.getAll(val).subscribe(value => {
-                  if (val) {
-                    this.statisticalAgency = value;
-                  }
-                });
-                if(val.print){
-                  this.agencyPrintService.getAll(val).subscribe();
+          const value = {
+            startedAt: val.startedAt,
+            endedAt: val.endedAt,
+            type: val.type
+          };
+          switch (type) {
+            case this.statisticalXType.AGENCY:
+              this.statisticalAgencyService.getAll(value).subscribe(value => {
+                if (val) {
+                  this.statisticalAgency = value;
                 }
-                break;
-              case this.statisticalXType.CHICKEN_TYPE:
-                this.statisticalChickenService.getAll(val).subscribe(value => {
-                  if (val) {
-                    this.statisticalChicken = value;
-                  }
-                });
-                if(val.print){
-                  this.chickenPrintService.getAll(val).subscribe();
-                }
-                break;
-              default:
-                this.statisticalProvinceService.getAll(val).subscribe(value => {
-                  if (value) {
-                    this.statisticalProvince = value;
-                  }
-                });
-                if(val.print){
-                  this.provincePrintService.getAll(val).subscribe();
-                }
-            }
-          }
-          switch (val.type) {
-            case this.statisticalYType.CUSTOMER:
-              this.labelY = 'Khách hàng';
+              });
+              if (val.print) {
+                this.agencyPrintService.getAll(value).subscribe();
+              }
               break;
-            case this.statisticalYType.REVENUE:
-              this.labelY = 'Doanh thu';
+            case this.statisticalXType.CHICKEN_TYPE:
+              this.statisticalChickenService.getAll(val).subscribe(value => {
+                if (val) {
+
+                  this.statisticalChicken = value;
+                }
+              });
+              if (val.print) {
+                this.chickenPrintService.getAll(value).subscribe();
+              }
               break;
-            default:
-              this.labelY = 'Số lượng';
+            case this.statisticalXType.PROVINCE:
+              this.statisticalProvinceService.getAll(val).subscribe(value => {
+                if (value) {
+                  this.statisticalProvince = value;
+                }
+              });
+              if (val.print) {
+                this.provincePrintService.getAll(value).subscribe();
+              }
           }
+        }
+        switch (val.type) {
+          case this.statisticalYType.CUSTOMER:
+            this.labelY = 'Khách hàng';
+            break;
+          case this.statisticalYType.REVENUE:
+            this.labelY = 'Doanh thu';
+            break;
+          default:
+            this.labelY = 'Số lượng';
+        }
       }
     );
   }
 
-  printCustomer(type:StatisticalYType ){
-    this.dialog.open(DevelopmentComponent, {width: '30%'})
-    // this.customerPrintService.getAll(type).subscribe();
+  printCustomer(type: StatisticalYType) {
+    this.customerPrintService.getAll(type).subscribe();
   }
+
   statisticalCustomer(param: any) {
     this.statisticalCustomerService.getAll(param).subscribe(value => {
       if (value) {

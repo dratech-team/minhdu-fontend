@@ -14,6 +14,7 @@ import { PaymentDialogComponent } from '../../component/payment-dialog/payment-d
 import { Order } from '../../../order/+state/order.interface';
 import { document } from 'ngx-bootstrap/utils';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
+import { ExportCustomerService } from '../../service/export-customer.service';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -40,6 +41,7 @@ export class CustomerComponent implements OnInit {
     private readonly store :Store<AppState>,
     private readonly router :Router,
     private readonly dialog : MatDialog,
+    private readonly exportCustomerService : ExportCustomerService,
   ) {
   }
 
@@ -96,5 +98,19 @@ export class CustomerComponent implements OnInit {
       width: '55%',
       data: { id: $event.id }
     });
+  }
+
+  printCustomer() {
+    const val = this.formGroup.value
+    const customers = {
+      resource: val.resource ,
+      isPotential: val.isPotential === 'true'? 1 :
+        val.isPotential === 'false'? 0 : val.isPotential,
+      customerType: val.customerType ,
+      nationId: val.nationId ,
+      phone: val.phone.trim() ,
+      name: val.name.trim(),
+    }
+    this.exportCustomerService.print(customers).subscribe()
   }
 }

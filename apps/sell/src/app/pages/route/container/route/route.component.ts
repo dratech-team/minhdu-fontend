@@ -9,6 +9,7 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 import { Router } from '@angular/router';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
+import { ExportRouteService } from '../../service/export-route.service';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -32,11 +33,10 @@ export  class RouteComponent implements OnInit{
       private readonly store: Store<AppState>,
       private readonly dialog: MatDialog,
       private readonly router: Router,
+      private readonly exportRouterService: ExportRouteService,
   ) {
   }
   ngOnInit() {
-    const test = '  dsdasd'
-    console.log(test.trim())
     const btnRoute = document.getElementById('route')
     btnRoute?.classList.add('btn-border')
     document.getElementById('customer').classList.remove('btn-border')
@@ -75,5 +75,17 @@ export  class RouteComponent implements OnInit{
   }
   detailRoute(id: number){
     this.router.navigate(['/ban-hang/tuyen-duong/chi-tiet-tuyen-duong',id]).then()
+  }
+
+  printRouter() {
+    const val = this.formGroup.value
+    const route = {
+      name: val.name.trim(),
+      startedAt: val.startedAt,
+      endedAt: val.endedAt,
+      driver: val.driver.trim(),
+      bsx: val.bsx.trim(),
+    }
+    this.exportRouterService.print(route).subscribe()
   }
 }

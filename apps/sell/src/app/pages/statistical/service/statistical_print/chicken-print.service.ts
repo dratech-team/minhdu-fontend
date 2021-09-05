@@ -12,7 +12,7 @@ export class ChickenPrintService extends BaseService<Statistical>{
   ) {
     super(Api.STATISTICAL_CHICKEN_PRINT, http)
   }
-  getAll(param: any): Observable<Statistical[]> {
+  print(param: any): Observable<Statistical[]> {
     return super.getAll(param);
   }
 }

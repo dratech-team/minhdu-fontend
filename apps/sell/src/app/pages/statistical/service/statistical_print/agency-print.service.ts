@@ -13,7 +13,7 @@ export class AgencyPrintService extends BaseService<stakedChart>{
   ) {
     super(Api.STATISTICAL_AGENCY_PRINT, http)
   }
-  getAll(param: any): Observable<stakedChart[]> {
+  print(param: any): Observable<stakedChart[]> {
     return super.getAll(param);
   }
 }
