@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllCustomer } from '../../+state/customer/customer.selector';
 import { AppState } from '../../../../reducers';
 import { CustomerAction } from '../../+state/customer/customer.action';
-import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
+import { CustomerResource, CustomerType, Gender, TypeFile } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -14,7 +14,8 @@ import { PaymentDialogComponent } from '../../component/payment-dialog/payment-d
 import { Order } from '../../../order/+state/order.interface';
 import { document } from 'ngx-bootstrap/utils';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
-import { ExportCustomerService } from '../../service/export-customer.service';
+import { DownloadService, ExportService } from '@minhdu-fontend/service';
+import { Api } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl:'customer.component.html',
@@ -41,7 +42,8 @@ export class CustomerComponent implements OnInit {
     private readonly store :Store<AppState>,
     private readonly router :Router,
     private readonly dialog : MatDialog,
-    private readonly exportCustomerService : ExportCustomerService,
+    private readonly exportService : ExportService,
+    private readonly downloadService : DownloadService,
   ) {
   }
 
@@ -111,6 +113,10 @@ export class CustomerComponent implements OnInit {
       phone: val.phone.trim() ,
       name: val.name.trim(),
     }
-    this.exportCustomerService.print(customers).subscribe()
+    this.exportService.print(Api.CUSTOMER_EXPORT, customers).subscribe(val =>{
+        const type = TypeFile.EXCEL
+        this.downloadService.downloadFile(val, type)
+      }
+    )
   }
 }

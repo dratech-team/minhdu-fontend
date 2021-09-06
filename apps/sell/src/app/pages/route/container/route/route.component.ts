@@ -9,13 +9,16 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 import { Router } from '@angular/router';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
-import { ExportRouteService } from '../../service/export-route.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DownloadService } from 'libs/service/download.service';
+import { ExportService } from 'libs/service/export.service';
+import { TypeFile } from '@minhdu-fontend/enums';
+import { Api } from '@minhdu-fontend/constants';
+
 
 @Component({
   templateUrl: 'route.component.html'
 })
-export  class RouteComponent implements OnInit{
+export  class RouteComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
   formGroup = new FormGroup(
@@ -34,8 +37,8 @@ export  class RouteComponent implements OnInit{
       private readonly store: Store<AppState>,
       private readonly dialog: MatDialog,
       private readonly router: Router,
-      private readonly exportRouterService: ExportRouteService,
-      private sanitizer: DomSanitizer,
+      private readonly downloadService: DownloadService,
+      private readonly exportService: ExportService,
   ) {
   }
   ngOnInit() {
@@ -88,16 +91,11 @@ export  class RouteComponent implements OnInit{
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
     }
-    this.exportRouterService.print(route).subscribe(val =>{
-      console.log(val.type)
-      this.downloadFile(val)
+    this.exportService.print(Api.ROUTE_EXPORT, route).subscribe(val =>{
+        const type = TypeFile.EXCEL
+        this.downloadService.downloadFile(val, type)
     }
-
     )
   }
-  downloadFile(data: any) {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-    const url= window.URL.createObjectURL(blob);
-    window.open(url);
-  }
+
 }

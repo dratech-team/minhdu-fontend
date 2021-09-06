@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DatetimeUnitEnum, StatisticalXType, StatisticalYType } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, StatisticalXType, StatisticalYType, TypeFile } from '@minhdu-fontend/enums';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
-import { StatisticalAgencyService } from '../../service/statistical/statistical-Agency.service';
-import { StatisticalChickenService } from '../../service/statistical/statistical-chicken.service';
-import { StatisticalProvinceService } from '../../service/statistical/statistical-province.service';
-import { StatisticalCustomerService } from '../../service/statistical/statistical-customer.service';
 import { getMonth } from 'ngx-bootstrap/chronos';
-import { AgencyPrintService } from '../../service/statistical_print/agency-print.service';
-import { ChickenPrintService } from '../../service/statistical_print/chicken-print.service';
-import { ProvincePrintService } from '../../service/statistical_print/province-print.service';
-import { CustomerPrintService } from '../../service/statistical_print/customer-print.service';
+import { DownloadService, ExportService } from '@minhdu-fontend/service';
+import { Api } from '@minhdu-fontend/constants';
+import { StatisticalService } from '../../service/statistical/statistical.service';
 
 
 @Component({
@@ -39,25 +34,20 @@ export class StatisticalComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    private readonly statisticalAgencyService: StatisticalAgencyService,
-    private readonly agencyPrintService: AgencyPrintService,
-    private readonly statisticalChickenService: StatisticalChickenService,
-    private readonly chickenPrintService: ChickenPrintService,
-    private readonly statisticalProvinceService: StatisticalProvinceService,
-    private readonly provincePrintService: ProvincePrintService,
-    private readonly statisticalCustomerService: StatisticalCustomerService,
-    private readonly customerPrintService: CustomerPrintService
+    private readonly statisticalService: StatisticalService,
+    private readonly downloadService: DownloadService,
+    private readonly exportService: ExportService
   ) {
   }
 
   ngOnInit() {
-    this.statisticalProvinceService.getAll({
+    this.statisticalService.getAll(Api.STATISTICAL_PROVINCE, {
       type: this.statisticalYType.ORDER,
       startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),
       endedAt: new Date()
     }).subscribe(val => {
         val.forEach(value => {
-          value.series.forEach(item => this.totalOrders = this.totalOrders + item.value);
+          value.series.forEach((item: any) => this.totalOrders = this.totalOrders + item.value);
         });
       }
     );
@@ -84,34 +74,45 @@ export class StatisticalComponent implements OnInit {
           };
           switch (type) {
             case this.statisticalXType.AGENCY:
-              this.statisticalAgencyService.getAll(value).subscribe(value => {
+              this.statisticalService.getAll(Api.STATISTICAL_AGENCY, value).subscribe(value => {
                 if (val) {
                   this.statisticalAgency = value;
                 }
               });
               if (val.print) {
-                this.agencyPrintService.getAll(value).subscribe();
+                this.exportService.print(Api.STATISTICAL_AGENCY_PRINT, value).subscribe(val => {
+                    const type = TypeFile.EXCEL;
+                    this.downloadService.downloadFile(val, type);
+                  }
+                );
               }
               break;
             case this.statisticalXType.CHICKEN_TYPE:
-              this.statisticalChickenService.getAll(val).subscribe(value => {
+              this.statisticalService.getAll(Api.STATISTICAL_CHICKEN, value).subscribe(value => {
                 if (val) {
-
                   this.statisticalChicken = value;
                 }
               });
               if (val.print) {
-                this.chickenPrintService.getAll(value).subscribe();
+                this.exportService.print(Api.STATISTICAL_CHICKEN_PRINT, value).subscribe(val => {
+                    const type = TypeFile.EXCEL;
+                    this.downloadService.downloadFile(val, type);
+                  }
+                );
               }
               break;
             case this.statisticalXType.PROVINCE:
-              this.statisticalProvinceService.getAll(val).subscribe(value => {
+              this.statisticalService.getAll(Api.STATISTICAL_PROVINCE, value).subscribe(value => {
                 if (value) {
                   this.statisticalProvince = value;
                 }
               });
               if (val.print) {
-                this.provincePrintService.getAll(value).subscribe();
+                this.exportService.print(Api.STATISTICAL_PROVINCE_PRINT, value).subscribe(val => {
+                    const type = TypeFile.EXCEL;
+                    this.downloadService.downloadFile(val, type);
+                  }
+                );
               }
           }
         }
@@ -130,11 +131,14 @@ export class StatisticalComponent implements OnInit {
   }
 
   printCustomer(type: StatisticalYType) {
-    this.customerPrintService.getAll(type).subscribe();
+    this.exportService.print(Api.STATISTICAL_CUSTOMER_PRINT, type).subscribe(val => {
+      const type = TypeFile.EXCEL;
+      this.downloadService.downloadFile(val, type);
+    });
   }
 
   statisticalCustomer(param: any) {
-    this.statisticalCustomerService.getAll(param).subscribe(value => {
+    this.statisticalService.getAll(Api.STATISTICAL_CUSTOMER, param).subscribe(value => {
       if (value) {
         switch (param.type) {
           case this.statisticalYType.POTENTIAL:

@@ -4,15 +4,16 @@ import { AppState } from '../../../../reducers';
 import { selectorAllOrders } from '../../+state/order.selector';
 import { OrderAction } from '../../+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
-import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { CurrencyUnit, PaymentType, TypeFile } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { document } from 'ngx-bootstrap/utils';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
-import { ExportOrderService } from '../../service/export-order.service';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
+import { Api } from '@minhdu-fontend/constants';
+import { DownloadService, ExportService } from '@minhdu-fontend/service';
 
 
 @Component({
@@ -38,8 +39,8 @@ export class OrderComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly exportOrderService: ExportOrderService,
-
+    private readonly exportService: ExportService,
+    private readonly downloadService: DownloadService,
   ) {
   }
 
@@ -93,6 +94,10 @@ export class OrderComponent implements OnInit {
         paidType: val.paidType,
         customer: val.name.trim()
     }
-    this.exportOrderService.print(order).subscribe()
+    this.exportService.print(Api.ORDER_EXPORT, order).subscribe(val =>{
+        const type = TypeFile.EXCEL
+        this.downloadService.downloadFile(val, type)
+      }
+    )
   }
 }

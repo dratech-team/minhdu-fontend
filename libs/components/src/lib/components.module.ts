@@ -23,6 +23,7 @@ import { DevelopmentComponent } from './development/development.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.component';
 import { SwimLaneChartComponent } from './chart/swimlane-chart/swim-lane-chart.component';
+import { DownloadService } from '../../../service/download.service';
 
 @NgModule({
   imports: [
