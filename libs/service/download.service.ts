@@ -10,7 +10,7 @@ export class DownloadService {
     const blob = new Blob([data], { type: type });
     const url= window.URL.createObjectURL(blob);
     this.forceDownload(url,filename)
-
+    window.open(url)
   }
   forceDownload(blob:string, filename?: string) {
     const a = document.createElement('a');
