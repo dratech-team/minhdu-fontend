@@ -21,7 +21,7 @@ import { DownloadService, ExportService } from '@minhdu-fontend/service';
 
 })
 export class OrderComponent implements OnInit {
-  pageTypeEnum = PageTypeEnum ;
+  pageTypeEnum = PageTypeEnum;
   paidType = PaidType;
   currencyUnit = CurrencyUnit;
   payType = PaymentType;
@@ -31,7 +31,7 @@ export class OrderComponent implements OnInit {
   formGroup = new FormGroup(
     {
       paidType: new FormControl(''),
-      name: new FormControl(''),
+      name: new FormControl('')
     }
   );
 
@@ -40,19 +40,19 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly exportService: ExportService,
-    private readonly downloadService: DownloadService,
+    private readonly downloadService: DownloadService
   ) {
   }
 
   ngOnInit() {
-    document.getElementById('order').classList.add('btn-border')
-    document.getElementById('route').classList.remove('btn-border')
-    document.getElementById('customer').classList.remove('btn-border')
+    document.getElementById('order').classList.add('btn-border');
+    document.getElementById('route').classList.remove('btn-border');
+    document.getElementById('customer').classList.remove('btn-border');
     this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-          this.store.dispatch(OrderAction.loadInit(this.order(val,30, 0)));
+          this.store.dispatch(OrderAction.loadInit(this.order(val, 30, 0)));
         }
       )
     ).subscribe();
@@ -64,7 +64,7 @@ export class OrderComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(OrderAction.loadMoreOrders(this.order(val,this.pageSize, this.pageIndex)));
+    this.store.dispatch(OrderAction.loadMoreOrders(this.order(val, this.pageSize, this.pageIndex)));
   }
 
   order(val: any, pageSize: number, pageIndex: number) {
@@ -81,23 +81,24 @@ export class OrderComponent implements OnInit {
   }
 
   UpdateOrder($event: any) {
-    this.dialog.open(OrderDialogComponent, {width:'60%', data: {order:$event , type:'DELIVERED'}})
+    this.dialog.open(OrderDialogComponent, { width: '60%', data: { order: $event, type: 'DELIVERED' } });
   }
 
-  addOrder(){
-    this.router.navigate(['/ban-hang/don-hang/them-don-hang']).then()
+  addOrder() {
+    this.router.navigate(['/ban-hang/don-hang/them-don-hang']).then();
   }
 
   printOrder() {
-      const val = this.formGroup.value
-      const order = {
-        paidType: val.paidType,
-        customer: val.name.trim()
-    }
-    this.exportService.print(Api.ORDER_EXPORT, order).subscribe(val =>{
-        const type = TypeFile.EXCEL
-        this.downloadService.downloadFile(val, type)
+    const val = this.formGroup.value;
+    const order = {
+      paidType: val.paidType,
+      customer: val.name.trim()
+    };
+    this.exportService.print(Api.ORDER_EXPORT, order).subscribe(val => {
+        const fileName = `Danh sách đơn hàng`;
+        const type = TypeFile.EXCEL;
+        this.downloadService.downloadFile(val, type, fileName);
       }
-    )
+    );
   }
 }

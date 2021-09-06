@@ -30,7 +30,7 @@
           </div>
           <div class='h5 d-flex'>
             <div>Tổng Khách hàng :</div>
-            <span class='ml-2'> {{statisticalCommodityDetail.length}}</span>
+            <span class='ml-2'> {{statisticalCustomerData.length}}</span>
           </div>
         </div>
       </div>
@@ -56,13 +56,14 @@
       <div class='d-flex flex-column mt-4  col-xm-12 px-2 border  '
            [ngStyle]='{"width":statisticalProvince.length < 6? "49%": "99%" }'
            style='height:450px ; margin-right: 1%; position: relative'
-           >
+      >
         <div class='d-flex justify-content-sm-end mt-2'>
-          <img (click)='onStatistical(statisticalXType.PROVINCE)' class='mr-2 pointer' src='/assets/icon/sell-layout/gear.svg'
+          <img (click)='onStatistical(statisticalXType.PROVINCE)' class='mr-2 pointer'
+               src='/assets/icon/sell-layout/gear.svg'
                alt='setting'>
         </div>
         <span class=' ml-3 mb-1 title-chart'>Thống kê theo tỉnh</span>
-        <div  [ngStyle]='{"overflow-x":statisticalProvince.length === 0 ? "hidden":"scroll" }'>
+        <div [ngStyle]='{"overflow-x":statisticalProvince.length === 0 ? "hidden":"scroll" }'>
           <app-swim-lane-chart
             [data]='statisticalProvince'
             [labelX]='"Tỉnh thành"'
@@ -79,7 +80,7 @@
           <img (click)='onStatistical(statisticalXType.CHICKEN_TYPE)' class='mr-2 pointer'
                src='/assets/icon/sell-layout/gear.svg' alt='setting'>
         </div>
-        <span class=' ml-3 title-chart'>Thống kê doanh thu theo loại gà</span>
+        <span class=' ml-3 title-chart'>Thống kê theo loại gà</span>
         <app-pie-chart style='width: 100%; height: 400px' [data]='statisticalChicken'></app-pie-chart>
       </div>
     </div>
@@ -88,7 +89,8 @@
            [ngStyle]='{"width":statisticalPotential.length < 6 ? "49%": "99%"}'
            style='height: 450px; margin-right: 1%;  position: relative'>
         <div class='d-flex justify-content-sm-end'>
-          <img (click)='printCustomer(statisticalYType.POTENTIAL)' class='mr-2 pointer' src='/assets/icon/share/printer-fill%20(1).svg'
+          <img (click)='printCustomer(statisticalYType.POTENTIAL)' class='mr-2 pointer'
+               src='/assets/icon/share/printer-fill%20(1).svg'
                alt='setting'>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê khách tiềm năng theo tỉnh</span>
@@ -101,11 +103,12 @@
           </app-staked-vertical-chart>
         </div>
       </div>
-      <div  class='d-flex flex-column  mt-4  col-xm-12 border p-1  '
+      <div class='d-flex flex-column  mt-4  col-xm-12 border p-1  '
            [ngStyle]='{"width":statisticalAgency.length < 6? "49%": "99%" }'
-            style='height: 450px; position: relative'>
+           style='height: 450px; position: relative'>
         <div class='d-flex justify-content-sm-end'>
-          <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2 pointer' src='/assets/icon/sell-layout/gear.svg'
+          <img (click)='onStatistical(statisticalXType.AGENCY)' class='mr-2 pointer'
+               src='/assets/icon/sell-layout/gear.svg'
                alt='setting'>
         </div>
         <span class=' ml-3 title-chart'>Thống kê Doanh thu từng đại lý</span>
@@ -119,35 +122,30 @@
     </div>
     <div class=' col-12 mt-3 mb-5 d-flex flex-wrap ml-2'>
       <div class='d-flex flex-column mt-4 col-xm-12 border  p-1'
-           [ngStyle]='{"width":statisticalCommodityDetail.length < 6 ? "49%": "99%"}'
+           [ngStyle]='{"width":statisticalCustomerData.length < 6 ? "49%": "99%"}'
            style='height: 450px;margin-right: 1%; position: relative'>
         <div class='d-flex justify-content-sm-end'>
-          <img (click)='printCustomer(statisticalYType.COMMODITY_DETAIL)' class='mr-2 pointer' src='/assets/icon/share/printer-fill%20(1).svg'
+          <img (click)='printCustomer(statisticalYType.COMMODITY_DETAIL)' class='mr-1 mt-1 pointer'
+               src='/assets/icon/share/printer-fill%20(1).svg'
                alt='setting'>
+          <div>
+            <button mat-button [matMenuTriggerFor]='menu' style='min-width: 0; line-height: normal'>
+              <img class=' pointer' src='/assets/icon/sell-layout/gear.svg'
+                   alt='setting'>
+            </button>
+            <mat-menu #menu='matMenu'>
+              <button mat-menu-item (click)='statisticalCustomer( {type: statisticalYType.DEBT})'>Nợ</button>
+              <button mat-menu-item (click)='statisticalCustomer({type:statisticalYType.COMMODITY_DETAIL})'>Đơn hàng
+              </button>
+            </mat-menu>
+          </div>
         </div>
-        <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê đơn hàng theo khách hàng</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalCommodityDetail.length === 0? "hidden":"scroll" }'>
+        <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê theo khách hàng</span>
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalCustomerData.length === 0? "hidden":"scroll" }'>
           <app-staked-vertical-chart
-            [data]='statisticalCommodityDetail'
+            [data]='statisticalCustomerData'
             [legend]='true'
-            [labelY]='"Số lượng gà"'
-            [labelX]='"Khách hàng"'>
-          </app-staked-vertical-chart>
-        </div>
-      </div>
-      <div class='d-flex flex-column mt-4 col-xm-12 border  p-1'
-           [ngStyle]='{"width":statisticalDebt.length < 6 ? "49%": "99%"}'
-           style='height: 450px; position: relative'>
-        <div class='d-flex justify-content-sm-end'>
-          <img (click)='printCustomer(statisticalYType.DEBT)' class='mr-2 pointer' src='/assets/icon/share/printer-fill%20(1).svg'
-               alt='setting'>
-        </div>
-        <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê nợ theo khách hàng</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalDebt.length === 0? "hidden":"scroll" }'>
-          <app-staked-vertical-chart
-            [data]='statisticalDebt'
-            [legend]='true'
-            [labelY]='"Khoản nợ"'
+            [labelY]='labelYCustomer'
             [labelX]='"Khách hàng"'>
           </app-staked-vertical-chart>
         </div>

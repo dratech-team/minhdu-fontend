@@ -18,14 +18,14 @@ import { DownloadService, ExportService } from '@minhdu-fontend/service';
 import { Api } from '@minhdu-fontend/constants';
 
 @Component({
-  templateUrl:'customer.component.html',
+  templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   pageType = PageTypeEnum;
   genderType = Gender;
-  orders?:Order;
+  orders?: Order;
   pageIndex = 1;
   pageSize = 30;
   formGroup = new FormGroup(
@@ -35,64 +35,70 @@ export class CustomerComponent implements OnInit {
       customerType: new FormControl(''),
       nationId: new FormControl(''),
       phone: new FormControl(''),
-      name: new FormControl(''),
+      name: new FormControl('')
     }
   );
+
   constructor(
-    private readonly store :Store<AppState>,
-    private readonly router :Router,
-    private readonly dialog : MatDialog,
-    private readonly exportService : ExportService,
-    private readonly downloadService : DownloadService,
+    private readonly store: Store<AppState>,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly exportService: ExportService,
+    private readonly downloadService: DownloadService
   ) {
   }
 
   customers$ = this.store.pipe(select(selectorAllCustomer));
+
   ngOnInit() {
-    document.getElementById('customer').classList.add('btn-border')
-    this.store.dispatch(CustomerAction.loadInit({take:30, skip: 0}))
+    document.getElementById('customer').classList.add('btn-border');
+    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0 )));
+        this.store.dispatch(CustomerAction.loadInit(this.customer(val, 30, 0)));
       })
-    ).subscribe()
+    ).subscribe();
   }
-  add($event?: any){
+
+  add($event?: any) {
     this.dialog.open(CustomerDialogComponent, {
       width: '50%',
       data: $event
-    })
+    });
   }
+
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(CustomerAction.loadMoreCustomers(this.customer(val, this.pageSize, this.pageIndex)));
   }
+
   customer(val: any, pageSize: number, pageIndex: number) {
-      return {
-        skip: pageSize * pageIndex++,
-        take: this.pageSize,
-        resource: val.resource ,
-        isPotential: val.isPotential === 'true'? 1 :
-          val.isPotential === 'false'? 0 : val.isPotential,
-        customerType: val.customerType ,
-        nationId: val.nationId ,
-        phone: val.phone.trim() ,
-        name: val.name.trim(),
-      };
+    return {
+      skip: pageSize * pageIndex++,
+      take: this.pageSize,
+      resource: val.resource,
+      isPotential: val.isPotential === 'true' ? 1 :
+        val.isPotential === 'false' ? 0 : val.isPotential,
+      customerType: val.customerType,
+      nationId: val.nationId,
+      phone: val.phone.trim(),
+      name: val.name.trim()
+    };
   }
+
   readAndUpdate($event?: any) {
     this.router.navigate(['ban-hang/khach-hang/chi-tiet-khach-hang', $event.id]).then();
   }
-  deleteCustomer($event: any){
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%',})
-    dialogRef.afterClosed().subscribe(val =>
-      {
-        if(val){
-          this.store.dispatch(CustomerAction.deleteCustomer({id: $event.id}))
+
+  deleteCustomer($event: any) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    dialogRef.afterClosed().subscribe(val => {
+        if (val) {
+          this.store.dispatch(CustomerAction.deleteCustomer({ id: $event.id }));
         }
       }
-    )
+    );
   }
 
   payment($event: any) {
@@ -103,20 +109,21 @@ export class CustomerComponent implements OnInit {
   }
 
   printCustomer() {
-    const val = this.formGroup.value
+    const val = this.formGroup.value;
     const customers = {
-      resource: val.resource ,
-      isPotential: val.isPotential === 'true'? 1 :
-        val.isPotential === 'false'? 0 : val.isPotential,
-      customerType: val.customerType ,
-      nationId: val.nationId ,
-      phone: val.phone.trim() ,
-      name: val.name.trim(),
-    }
-    this.exportService.print(Api.CUSTOMER_EXPORT, customers).subscribe(val =>{
-        const type = TypeFile.EXCEL
-        this.downloadService.downloadFile(val, type)
+      resource: val.resource,
+      isPotential: val.isPotential === 'true' ? 1 :
+        val.isPotential === 'false' ? 0 : val.isPotential,
+      customerType: val.customerType,
+      nationId: val.nationId,
+      phone: val.phone.trim(),
+      name: val.name.trim()
+    };
+    this.exportService.print(Api.CUSTOMER_EXPORT, customers).subscribe(val => {
+        const fileName = `Danh sách Khách hàng`;
+        const type = TypeFile.EXCEL;
+        this.downloadService.downloadFile(val, type, fileName);
       }
-    )
+    );
   }
 }

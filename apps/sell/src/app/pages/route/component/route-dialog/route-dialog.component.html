@@ -1,14 +1,14 @@
-<div class="px-2 py-3 main-popup">
-  <div mat-dialog-close class="close-popup">
-    <span class="mr-1"> close</span>
-    <div class="x-popup">
-      <img src="assets/icon/share/x2-lg.svg" alt="cancel">
+<div class='px-2 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='assets/icon/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <form [formGroup]="formGroup" (submit)="onSubmit()">
-    <mat-tab-group  dynamicHeight >
-      <mat-tab class="col-12 " label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll' >
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <mat-tab-group dynamicHeight>
+      <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
+        <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll'>
           <div class='form-group'>
             <div class='row mt-2'>
               <div class='col-sm' [formGroup]='formGroup'>
@@ -81,13 +81,14 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab class="col-12 " label="Chọn đơn hàng">
-        <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute'  [orders]='orders' (checkEvent)='pickOrders($event)'></app-pick-order>
+      <mat-tab class='col-12 ' label='Chọn đơn hàng'>
+        <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute' [orders]='orders'
+                        (checkEvent)='pickOrders($event)'></app-pick-order>
       </mat-tab>
     </mat-tab-group>
-    <div class="footer-popup row ml-4 mt-3">
-      <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
-      <button type="submit" mat-dialog-close class="btn btn-ok ">Lưu</button>
+    <div class='footer-popup row ml-4 mt-3'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button type='submit' mat-dialog-close class='btn btn-ok '>Lưu</button>
     </div>
   </form>
 </div>

@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-@Injectable({providedIn:'root'})
-export class StatisticalService  {
+@Injectable({ providedIn: 'root' })
+export class StatisticalService {
   constructor(
     public readonly http: HttpClient
   ) {
   }
-  getAll(url:string, params: any): Observable<any[]> {
-    return this.http.get<any[]>(url,{params})
+
+  getAll(url: string, params: any): Observable<any[]> {
+    return this.http.get<any[]>(url, { params });
   }
 }

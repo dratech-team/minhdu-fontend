@@ -1,9 +1,9 @@
 <div class='row h3 ml-3 mt-3'>Hồ sơ Khách hàng</div>
-<div class='ml-3 d-flex justify-content-between ' style='width: 100%' >
+<div class='ml-3 d-flex justify-content-between ' style='width: 100%'>
   <button (click)='add()' class='btn btn-primary font-lg'>Thêm Khách hàng</button>
-  <button (click)='printCustomer()' class='btn btn-primary font-lg mr-5 ' >In Danh sách Khách hàng</button>
+  <button (click)='printCustomer()' class='btn btn-primary font-lg mr-5 '>In Danh sách Khách hàng</button>
 </div>
-<div class='main-customer ' >
+<div class='main-customer '>
   <div class='main-profile'>
     <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header name'>
@@ -34,7 +34,7 @@
         <input formControlName='phone'
                class='form-control input-profile '
                type='tel'
-               pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12">
+               pattern='[0-9]{3} [0-9]{3} [0-9]{4}' maxlength='12'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tiềmm năng</div>

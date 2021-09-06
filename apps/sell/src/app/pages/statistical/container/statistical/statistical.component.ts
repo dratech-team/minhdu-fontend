@@ -22,7 +22,7 @@ export class StatisticalComponent implements OnInit {
   totalOrders = 0;
   date = new Date();
   CurrentMonth = getMonth(new Date()) + 1;
-  statisticalCommodityDetail: stakedChart[] = [];
+  statisticalCustomerData: stakedChart[] = [];
   statisticalDebt: stakedChart[] = [];
   statisticalChicken: Statistical[] = [];
   statisticalYType = StatisticalYType;
@@ -30,6 +30,7 @@ export class StatisticalComponent implements OnInit {
   formGroup!: FormGroup;
   dateTime = DatetimeUnitEnum;
   labelY!: string;
+  labelYCustomer!: string;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -53,7 +54,6 @@ export class StatisticalComponent implements OnInit {
     );
     this.statisticalCustomer({ type: this.statisticalYType.POTENTIAL });
     this.statisticalCustomer({ type: this.statisticalYType.COMMODITY_DETAIL });
-    this.statisticalCustomer({ type: this.statisticalYType.DEBT });
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
     this.formGroup = this.formBuilder.group({
@@ -81,8 +81,9 @@ export class StatisticalComponent implements OnInit {
               });
               if (val.print) {
                 this.exportService.print(Api.STATISTICAL_AGENCY_PRINT, value).subscribe(val => {
+                    const fileName = `Thống kê Theo Đại lí`;
                     const type = TypeFile.EXCEL;
-                    this.downloadService.downloadFile(val, type);
+                    this.downloadService.downloadFile(val, type, fileName);
                   }
                 );
               }
@@ -95,8 +96,9 @@ export class StatisticalComponent implements OnInit {
               });
               if (val.print) {
                 this.exportService.print(Api.STATISTICAL_CHICKEN_PRINT, value).subscribe(val => {
+                    const fileName = `Thống kê Theo loại gà`;
                     const type = TypeFile.EXCEL;
-                    this.downloadService.downloadFile(val, type);
+                    this.downloadService.downloadFile(val, type, fileName);
                   }
                 );
               }
@@ -109,8 +111,9 @@ export class StatisticalComponent implements OnInit {
               });
               if (val.print) {
                 this.exportService.print(Api.STATISTICAL_PROVINCE_PRINT, value).subscribe(val => {
+                    const fileName = `Thống kê Theo tỉnh`;
                     const type = TypeFile.EXCEL;
-                    this.downloadService.downloadFile(val, type);
+                    this.downloadService.downloadFile(val, type, fileName);
                   }
                 );
               }
@@ -132,12 +135,14 @@ export class StatisticalComponent implements OnInit {
 
   printCustomer(type: StatisticalYType) {
     this.exportService.print(Api.STATISTICAL_CUSTOMER_PRINT, type).subscribe(val => {
+      const fileName = `Thống kê khách hàng `;
       const type = TypeFile.EXCEL;
-      this.downloadService.downloadFile(val, type);
+      this.downloadService.downloadFile(val, type, fileName);
     });
   }
 
   statisticalCustomer(param: any) {
+    console.log(param);
     this.statisticalService.getAll(Api.STATISTICAL_CUSTOMER, param).subscribe(value => {
       if (value) {
         switch (param.type) {
@@ -148,9 +153,11 @@ export class StatisticalComponent implements OnInit {
             });
             break;
           case this.statisticalYType.COMMODITY_DETAIL:
-            this.statisticalCommodityDetail = value;
+            this.labelYCustomer = 'Số lượng gà';
+            this.statisticalCustomerData = value;
             break;
           case this.statisticalYType.DEBT:
+            this.labelYCustomer = 'Số Tiền';
             this.statisticalDebt = value;
             break;
         }

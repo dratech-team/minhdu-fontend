@@ -13,47 +13,48 @@ import { OrderAction } from '../../../order/+state/order.action';
 })
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  orders$ = this.store.pipe(select(selectorAllOrders))
+  orders$ = this.store.pipe(select(selectorAllOrders));
   orders: Order[] = [];
-  orderIdsOfRoute: number[] = []
+  orderIdsOfRoute: number[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly datePipe: DatePipe,
+    private readonly datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
 
-    this?.data?.route?.orders.forEach( (val:Order)=> this.orderIdsOfRoute.push(val.id))
-    this.store.dispatch(OrderAction.loadInit({take:30, skip: 0}))
+    this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val.id));
+    this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
     this.orders$.subscribe(val => {
-      this.orders = JSON.parse(JSON.stringify(val))
+      this.orders = JSON.parse(JSON.stringify(val));
       this.orders.forEach(val => {
-        if(this.orderIdsOfRoute.includes(val.id)){
-          Object.assign(val , {isSelect: true})
-        }else{
-          Object.assign(val , {isSelect: false})
+        if (this.orderIdsOfRoute.includes(val.id)) {
+          Object.assign(val, { isSelect: true });
+        } else {
+          Object.assign(val, { isSelect: false });
         }
 
-      })
-    })
+      });
+    });
 
     this.formGroup = this.formBuilder.group({
       name: [this?.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
-        this?.data?.route?.startedAt,'yyyy-MM-dd'), Validators.required],
+        this?.data?.route?.startedAt, 'yyyy-MM-dd'), Validators.required],
       endedAt: [this.datePipe.transform(
-        this?.data?.route?.endedAt,'yyyy-MM-dd'), Validators.required],
+        this?.data?.route?.endedAt, 'yyyy-MM-dd'), Validators.required],
       bsx: [this?.data?.route?.bsx, Validators.required],
       driver: [this?.data?.route?.driver, Validators.required],
-      garage: [this?.data?.route?.garage, Validators.required],
+      garage: [this?.data?.route?.garage, Validators.required]
     });
   }
 
 
-  pickOrders(orders: number[] ) {
+  pickOrders(orders: number[]) {
     this.orderIdsOfRoute = orders;
   }
 

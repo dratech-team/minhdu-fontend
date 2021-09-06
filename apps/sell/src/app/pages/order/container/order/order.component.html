@@ -3,148 +3,148 @@
 </div>
 <div class='ml-5 d-flex justify-content-between'>
   <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm Đơn hàng</button>
-  <button (click)='printOrder()' class='btn btn-primary font-lg mr-5 mt-3' >In Đơn hàng</button>
+  <button (click)='printOrder()' class='btn btn-primary font-lg mr-5 mt-3'>In Đơn hàng</button>
 </div>
-<div class='main-customer d-flex justify-content-center' >
-    <form [formGroup]='formGroup' class='main-profile' style='width: 96%' >
-      <div class='header-profile mt-3 animated fadeIn'>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Khách hàng</div>
-          <input
-            formControlName='name'
-            class='form-control input-profile '
-            type='search'>
+<div class='main-customer d-flex justify-content-center'>
+  <form [formGroup]='formGroup' class='main-profile' style='width: 96%'>
+    <div class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Khách hàng</div>
+        <input
+          formControlName='name'
+          class='form-control input-profile '
+          type='search'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Ngày tạo</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+        >
+      </div>
+      <div class='border-start title-header note'>
+        <div class='title-profile'>Điểm đến</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Diễn giải</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tiền hàng</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'> Thanh toán</div>
+        <select class='select' matNativeControl required formControlName='paidType'>
+          <option value='{{paidType.PAID}}'>Có thanh toán</option>
+          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+          <option value=''>tất cả</option>
+        </select>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Đơn vị tiền</div>
+        <input class='form-control input-profile ' [disabled]='true'>
+        <!--          <select  class='select'  matNativeControl required [disabled]='true'>-->
+        <!--            <option value='{{currencyUnit.VND}}'>VND</option>-->
+        <!--            <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>-->
+        <!--            <option value='{{currencyUnit.EUR}}'>Euro</option>-->
+        <!--            <option value='{{currencyUnit.GBP}}'>Bảng anh</option>-->
+        <!--            <option value='{{currencyUnit.MMK}}'>Kyat</option>-->
+        <!--            <option value='{{currencyUnit.MYR}}'>Ringgit</option>-->
+        <!--            <option value='{{currencyUnit.USD}}'>Đô la</option>-->
+        <!--          </select>-->
+      </div>
+    </div>
+
+    <div class='outer  animated fadeIn d-flex'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+         *ngIf='(orders$| async) as orders'
+    >
+
+      <div class='row-content' *ngFor='let order of orders' (contextmenu)='child.onContextMenu($event,order)'>
+        <app-mouse-right #child [type]='pageTypeEnum.ORDER'
+                         (addEvent)='addOrder()'
+                         (readAndUpdateEvent)='detailOrder($event.id)'
+                         (delivered)='UpdateOrder($event)'
+        ></app-mouse-right>
+        <div class='content-profile name pointer ' (click)='detailOrder(order.id)'>
+          {{order?.customer?.firstName}} {{order?.customer?.lastName}}
         </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Ngày tạo</div>
-          <input
-            [disabled]='true'
-            class='form-control input-profile '
-           >
+        <div class='content-profile default pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>
+          {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </div>
-        <div class='border-start title-header note'>
-          <div class='title-profile'>Điểm đến</div>
-          <input
-            [disabled]='true'
-            class='form-control input-profile '
-            type='text'>
+        <div class='content-profile default pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
+          Đang cập nhật
         </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Diễn giải</div>
-          <input
-            [disabled]='true'
-            class='form-control input-profile '
-            type='text'>
+        <div class='content-profile note pointer ' (click)='detailOrder(order.id)'>
+          {{order?.destination?.name}} -
+          {{order?.destination?.district?.name}} -
+          {{order?.destination?.district?.province?.name}}
         </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Tiền hàng</div>
-          <input
-            [disabled]='true'
-            class='form-control input-profile '
-            type='number'>
+        <div class='content-profile name pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>
+        <div class='content-profile name pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
+          {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'> Thanh toán</div>
-          <select class='select' matNativeControl required formControlName='paidType'>
-            <option value='{{paidType.PAID}}'>Có thanh toán</option>
-            <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
-            <option value=''>tất cả</option>
-          </select>
+        <div class='content-profile name pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
+          {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
         </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Đơn vị tiền</div>
-          <input class='form-control input-profile ' [disabled]='true'>
-<!--          <select  class='select'  matNativeControl required [disabled]='true'>-->
-<!--            <option value='{{currencyUnit.VND}}'>VND</option>-->
-<!--            <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>-->
-<!--            <option value='{{currencyUnit.EUR}}'>Euro</option>-->
-<!--            <option value='{{currencyUnit.GBP}}'>Bảng anh</option>-->
-<!--            <option value='{{currencyUnit.MMK}}'>Kyat</option>-->
-<!--            <option value='{{currencyUnit.MYR}}'>Ringgit</option>-->
-<!--            <option value='{{currencyUnit.USD}}'>Đô la</option>-->
-<!--          </select>-->
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.VND || !order?.currency '>
+          VND
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.USD'>
+          Đô la mỹ
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.MYR'>
+          Ringgit
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.MMK'>
+          Kyat
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.JPY'>
+          Yên Nhật
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.GBP'>
+          Bảng anh
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.EUR'>
+          Euro
+        </div>
+        <div class='content-profile default pointer '
+             (click)='detailOrder(order.id)'
+             *ngIf='order?.currency=== currencyUnit.CNY'>
+          Nhân dân tệ
         </div>
       </div>
-
-      <div class='outer  animated fadeIn d-flex'
-           infiniteScroll
-           [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='100'
-           [scrollWindow]='false'
-           (scrolled)='onScroll()'
-           *ngIf='(orders$| async) as orders'
-      >
-
-        <div class='row-content' *ngFor='let order of orders'   (contextmenu)='child.onContextMenu($event,order)' >
-          <app-mouse-right #child [type]='pageTypeEnum.ORDER'
-                            (addEvent)='addOrder()'
-                            (readAndUpdateEvent)='detailOrder($event.id)'
-                            (delivered)='UpdateOrder($event)'
-          ></app-mouse-right>
-          <div class='content-profile name pointer ' (click)='detailOrder(order.id)'>
-            {{order?.customer?.firstName}} {{order?.customer?.lastName}}
-          </div>
-          <div class='content-profile default pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>
-            {{order?.createdAt | date: 'dd/MM/yyyy'}}
-          </div>
-          <div class='content-profile default pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
-            Đang cập nhật
-          </div>
-          <div class='content-profile note pointer ' (click)='detailOrder(order.id)'>
-            {{order?.destination?.name}} -
-            {{order?.destination?.district?.name}} -
-            {{order?.destination?.district?.province?.name}}
-          </div>
-          <div class='content-profile name pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>
-          <div class='content-profile name pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
-            {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
-          </div>
-          <div class='content-profile name pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
-            {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.VND || !order?.currency '>
-            VND
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.USD'>
-            Đô la mỹ
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.MYR'>
-            Ringgit
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.MMK'>
-            Kyat
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.JPY'>
-            Yên Nhật
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.GBP'>
-            Bảng anh
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.EUR'>
-            Euro
-          </div>
-          <div class='content-profile default pointer '
-               (click)='detailOrder(order.id)'
-               *ngIf='order?.currency=== currencyUnit.CNY'>
-            Nhân dân tệ
-          </div>
-        </div>
-      </div>
-    </form>
+    </div>
+  </form>
 </div>
 
 
