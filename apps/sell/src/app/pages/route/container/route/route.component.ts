@@ -92,7 +92,8 @@ export  class RouteComponent implements OnInit {
       bsx: val.bsx.trim(),
     }
     this.exportService.print(Api.ROUTE_EXPORT, route).subscribe(val =>{
-        const fileName=`Danh sách tuyến đường`
+
+        const fileName= val.headers.get('content-disposition')
         const type = TypeFile.EXCEL
         this.downloadService.downloadFile(val, type , fileName)
     }
