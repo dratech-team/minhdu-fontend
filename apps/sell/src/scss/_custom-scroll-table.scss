@@ -186,6 +186,35 @@
 .note > input {
   width: 350px;
 }
+.address-customer {
+  width: 320px;
+  text-align: center;
+}
+
+.address-customer > div {
+  height: 35px;
+  overflow: hidden;
+  width: 320px;
+}
+
+.address-customer > input {
+  width: 320px;
+}
+.explain {
+  width: 300px;
+  text-align: center;
+}
+
+.explain > div {
+  height: 35px;
+  overflow: hidden;
+  width: 300px;
+}
+
+.explain > input {
+  width: 300px;
+}
+
 .address {
   width: 450px;
   text-align: center;

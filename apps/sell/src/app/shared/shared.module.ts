@@ -31,6 +31,7 @@ import { PickRoutesService } from './components/pick-routes/pick-routes.service'
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TableOrdersComponent } from './components/table-orders/table-orders.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { TableOrdersComponent } from './components/table-orders/table-orders.com
     NgxChartsModule,
     MatInputModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   declarations: [
     TableOrdersComponent,

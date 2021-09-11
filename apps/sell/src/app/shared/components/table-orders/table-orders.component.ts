@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { TableOrderCustomerService } from './table-order-customer.service';
 import { Observable } from 'rxjs';
 import { Order } from '../../../pages/order/+state/order.interface';
-import { TableOrderRouteService } from './table-order-route.service';
+import { OrderAction } from '../../../pages/order/+state/order.action';
 
 @Component({
   selector:'app-table-order',
@@ -17,6 +17,8 @@ export class TableOrdersComponent implements OnInit{
   @Input() orders$!: Observable<Order[]>
   @Input() delivered = 0;
   @Input() customerId!: number;
+  lstOrder: Order[] = []
+  hideDebt!: boolean
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
@@ -29,11 +31,14 @@ export class TableOrdersComponent implements OnInit{
     private readonly store: Store,
     private readonly router: Router,
     private readonly customerService: TableOrderCustomerService,
-    private readonly routeService: TableOrderRouteService,
   ) {
   }
   ngOnInit() {
-    this.orders$.subscribe(val =>   console.log(val))
+    this.orders$.subscribe(val =>
+      {
+        this.lstOrder = JSON.parse(JSON.stringify(val))
+      }
+    )
   }
   onScroll(){
     if(this.delivered === 1){
@@ -42,7 +47,7 @@ export class TableOrdersComponent implements OnInit{
       this.customerService.scrollOrders(this.orders(this.pageSize, this.pageIndex ))
     }
   }
-  orders(pageSize: number, pageIndex: number, val?: any): any{
+  orders(pageSize: number, pageIndex: number): any{
     return {
       take: pageSize,
       skip: pageSize* pageIndex++,
@@ -52,5 +57,19 @@ export class TableOrdersComponent implements OnInit{
   }
   detailOrder(id: number) {
       this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then()
+  }
+
+  UpdateOrder(order:Order ) {
+    this.lstOrder.forEach(val =>
+      {
+        if(val.id === order.id){
+          val.hide = order.hide
+        }
+      }
+    )
+    const val = {
+      hide: !order.hide
+    }
+    this.store.dispatch(OrderAction.updateOrder({order:val,id:order.id}))
   }
 }

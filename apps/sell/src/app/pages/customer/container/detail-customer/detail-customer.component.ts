@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
@@ -8,12 +8,10 @@ import { Customer } from '../../+state/customer/customer.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Order } from '../../../order/+state/order.interface';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
-import { PaymentHistory } from '@minhdu-fontend/data-models';
 import { selectorAllOrders, selectorAllOrdersAssigned } from '../../../order/+state/order.selector';
 import { OrderAction } from '../../../order/+state/order.action';
 
@@ -29,8 +27,6 @@ export class DetailCustomerComponent implements OnInit {
   OrdersNotAssigned$ = this.store.pipe(select(selectorAllOrders))
   OrdersAssigned$ = this.store.pipe(select(selectorAllOrdersAssigned))
   orders: Order[] = [];
-  paymentHistories: PaymentHistory[] = [];
-  formGroupOrder!: FormGroup;
   paidType =  PaidType;
   customer!: Customer
   constructor(
