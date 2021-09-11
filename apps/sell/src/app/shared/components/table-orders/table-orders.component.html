@@ -60,9 +60,9 @@
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-         *ngIf='(orders$| async) as orders'
+
     >
-      <div  class='row-content' *ngFor='let order of orders' >
+      <div  class='row-content' *ngFor='let order of lstOrder' >
           <div  class='content-profile default pointer ' *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
             {{order?.createdAt | date: 'dd/MM/yyyy'}}
           </div>
@@ -87,7 +87,7 @@
             {{order?.explain}}
           </div>
           <div *ngIf='delivered === 1' class='content-profile default pointer ' >
-            <mat-slide-toggle [checked]='order.hide'  (click)='updateOrder(order)' class='m-auto'> </mat-slide-toggle>
+            <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'> </mat-slide-toggle>
           </div>
         </div>
     </div>

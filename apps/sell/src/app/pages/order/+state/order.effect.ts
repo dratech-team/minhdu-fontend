@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
 import { OrderAction } from './order.action';
-import { catchError, delay, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
+import { Store } from '@ngrx/store';
 
 
 @Injectable()
@@ -78,20 +79,23 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.updateOrder),
       switchMap((props) => this.orderService.update(props.id, props.order).pipe(
-        map((_) =>
-          {
-              switch (props.typeUpdate){
-                case 'DELIVERED':
-                  return  OrderAction.loadInit({ take:30,skip:0 })
-                case 'HIDE_DEBT':
-                  return  OrderAction.loadOrdersAssigned({ take:30,skip:0,delivered:1 })
-                default:
-                  return  OrderAction.getOrder({ id: props.id })
-              }
+        map((_) => {
+            switch (props.typeUpdate) {
+              case 'DELIVERED':
+                return OrderAction.loadInit({ take: 30, skip: 0 });
+              case 'HIDE_DEBT':
+                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: 1 });
+              default:
+                return OrderAction.getOrder({ id: props.id });
+            }
           }
         ),
-        catchError((err) => throwError(err))
-        )
+        catchError((err) => {
+          if(props.typeUpdate === 'HIDE_DEBT'){
+            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: 1}))
+          }
+          return throwError(err);
+        }))
       )
     ));
 
@@ -104,7 +108,6 @@ export class OrderEffect {
         )
       )
     ));
-
 
   deleteOrder$ = createEffect(() =>
     this.action.pipe(
@@ -120,7 +123,8 @@ export class OrderEffect {
   constructor(
     private snackBar: MatSnackBar,
     private readonly action: Actions,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
+    private readonly  store: Store
   ) {
   }
 }
