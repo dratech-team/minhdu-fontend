@@ -75,10 +75,10 @@
             {{order?.destination?.district?.province?.name}}
           </div>
           <div  class='content-profile default pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
-            {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
+            {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
           </div>
           <div class='content-profile default pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
-            {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
+            {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
           </div>
           <div *ngIf='delivered === 1' class='content-profile default pointer ' (click)='detailOrder(order.id)'>
             {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
@@ -87,7 +87,7 @@
             {{order?.explain}}
           </div>
           <div *ngIf='delivered === 1' class='content-profile default pointer ' >
-            <mat-slide-toggle [checked]='order.hide' (click)='UpdateOrder(order)' class='m-auto'> </mat-slide-toggle>
+            <mat-slide-toggle [checked]='order.hide'  (click)='updateOrder(order)' class='m-auto'> </mat-slide-toggle>
           </div>
         </div>
     </div>

@@ -80,10 +80,13 @@ export class OrderEffect {
       switchMap((props) => this.orderService.update(props.id, props.order).pipe(
         map((_) =>
           {
-              if(props.typeUpdate === 'DELIVERED'){
-                return  OrderAction.loadInit({ take:30,skip:0 })
-              }else{
-                return  OrderAction.getOrder({ id: props.id })
+              switch (props.typeUpdate){
+                case 'DELIVERED':
+                  return  OrderAction.loadInit({ take:30,skip:0 })
+                case 'HIDE_DEBT':
+                  return  OrderAction.loadOrdersAssigned({ take:30,skip:0,delivered:1 })
+                default:
+                  return  OrderAction.getOrder({ id: props.id })
               }
           }
         ),
@@ -103,7 +106,7 @@ export class OrderEffect {
     ));
 
 
-  deleteBill$ = createEffect(() =>
+  deleteOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.deleteOrder),
       switchMap((props) => this.orderService.delete(props.id).pipe(

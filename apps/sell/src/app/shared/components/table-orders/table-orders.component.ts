@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import {  Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -13,7 +13,7 @@ import { OrderAction } from '../../../pages/order/+state/order.action';
   templateUrl:'table-orders.component.html',
 })
 
-export class TableOrdersComponent implements OnInit{
+export class TableOrdersComponent  {
   @Input() orders$!: Observable<Order[]>
   @Input() delivered = 0;
   @Input() customerId!: number;
@@ -30,8 +30,6 @@ export class TableOrdersComponent implements OnInit{
     private readonly router: Router,
     private readonly customerService: TableOrderCustomerService,
   ) {
-  }
-  ngOnInit() {
   }
   onScroll(){
     if(this.delivered === 1){
@@ -52,10 +50,10 @@ export class TableOrdersComponent implements OnInit{
       this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then()
   }
 
-  UpdateOrder(order:Order ) {
+  updateOrder(order:Order ) {
     const val = {
-      hide: !order.hide
+      hide: !order.hide,
     }
-    this.store.dispatch(OrderAction.updateOrder({order:val,id:order.id}))
+    this.store.dispatch(OrderAction.updateOrder({order:val,id:order.id,typeUpdate:'HIDE_DEBT'}))
   }
 }
