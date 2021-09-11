@@ -60,8 +60,9 @@
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
+         *ngIf='(orders$| async) as orders'
     >
-      <div  class='row-content' *ngFor='let order of lstOrder' >
+      <div  class='row-content' *ngFor='let order of orders' >
           <div  class='content-profile default pointer ' *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
             {{order?.createdAt | date: 'dd/MM/yyyy'}}
           </div>

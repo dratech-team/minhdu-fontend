@@ -17,8 +17,6 @@ export class TableOrdersComponent implements OnInit{
   @Input() orders$!: Observable<Order[]>
   @Input() delivered = 0;
   @Input() customerId!: number;
-  lstOrder: Order[] = []
-  hideDebt!: boolean
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
@@ -34,11 +32,6 @@ export class TableOrdersComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-    this.orders$.subscribe(val =>
-      {
-        this.lstOrder = JSON.parse(JSON.stringify(val))
-      }
-    )
   }
   onScroll(){
     if(this.delivered === 1){
@@ -60,13 +53,6 @@ export class TableOrdersComponent implements OnInit{
   }
 
   UpdateOrder(order:Order ) {
-    this.lstOrder.forEach(val =>
-      {
-        if(val.id === order.id){
-          val.hide = order.hide
-        }
-      }
-    )
     const val = {
       hide: !order.hide
     }
