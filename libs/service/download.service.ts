@@ -9,14 +9,18 @@ export class DownloadService {
   downloadFile(data: any, type: string, filename?:string) {
     const blob = new Blob([data], { type: type });
     const url= window.URL.createObjectURL(blob);
-    this.forceDownload(url,filename)
+    const filenameConvert = this.regexFIleName(filename)
+    this.forceDownload(url,filenameConvert)
   }
-  forceDownload(blob:string, filename?: string) {
+  forceDownload(blob:string, filename: string) {
     const a = document.createElement('a');
-    a.download = filename? filename: 'data';
+    a.download = filename
     a.href = blob;
     document.body.appendChild(a);
     a.click();
     a.remove();
+  }
+  regexFIleName(fileName?: string): string{
+    return 'data'
   }
 }
