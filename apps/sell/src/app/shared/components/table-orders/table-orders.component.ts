@@ -64,7 +64,7 @@ export class TableOrdersComponent implements OnInit {
 
   updateOrder(order: Order) {
     const val = {
-      hide:!order.hide
+     hide:!order.hide
     };
     this.store.dispatch(OrderAction.updateOrder({ order: val, id: order.id, typeUpdate: 'HIDE_DEBT' }));
   }
