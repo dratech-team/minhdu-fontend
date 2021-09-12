@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Customer } from './customer.interface';
+import { CustomerType, Gender } from '@minhdu-fontend/enums';
 
 
 export const addCustomer = createAction(
@@ -17,6 +18,13 @@ export const loadInit = createAction(
     isPotential?: number,
     phone?: number,
     nationId?: number,
+    gender?: Gender,
+    birthDay?:Date,
+    email?:string,
+    note?:string,
+    customerType?:CustomerType,
+    customer?:string,
+
   }>()
 );
 
@@ -36,6 +44,12 @@ export const loadMoreCustomers = createAction(
     isPotential?: number,
     phone?: number,
     nationId?: number,
+    gender?: Gender,
+    birthDay?:Date,
+    email?:string,
+    note?:string,
+    customerType?:CustomerType,
+    customer?:string,
   }>()
 );
 

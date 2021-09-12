@@ -22,6 +22,7 @@ export const loadInit = createAction(
     endedAt?: Date,
     driver?: string,
     bsx?: string,
+    garage?: string,
   }>()
 );
 
@@ -41,6 +42,7 @@ export const loadMoreRoutes = createAction(
     endedAt?: Date,
     driver?: string,
     bsx?: string,
+    garage?: string,
   }>()
 );
 

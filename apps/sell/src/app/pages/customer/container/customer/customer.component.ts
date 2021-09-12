@@ -36,6 +36,11 @@ export class CustomerComponent implements OnInit {
     nationId: new FormControl(''),
     phone: new FormControl(''),
     name: new FormControl(''),
+    birthDay: new FormControl(''),
+    gender: new FormControl(''),
+    email: new FormControl(''),
+    address: new FormControl(''),
+    note: new FormControl(''),
   });
 
   constructor(
@@ -92,7 +97,12 @@ export class CustomerComponent implements OnInit {
       customerType: val.customerType,
       nationId: val.nationId,
       phone: val.phone.trim(),
-      name: val.name.trim(),
+      customer: val.name.trim(),
+      birthDay: val.birthDay,
+      gender: val.gender,
+      email: val.email.trim(),
+      address: val.address.trim(),
+      note: val.note.trim(),
     };
   }
 
@@ -131,7 +141,13 @@ export class CustomerComponent implements OnInit {
       customerType: val.customerType,
       nationId: val.nationId,
       phone: val.phone.trim(),
-      name: val.name.trim(),
+      customer: val.name.trim(),
+      birthDay: val.birthDay,
+      gender: val.gender,
+      email: val.email.trim(),
+      address: val.address.trim(),
+      note: val.note.trim(),
+
     };
     this.exportService.print(Api.CUSTOMER_EXPORT, customers);
   }

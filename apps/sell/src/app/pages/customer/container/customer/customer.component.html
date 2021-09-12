@@ -17,16 +17,18 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày sinh</div>
-        <input [disabled]='true'
+        <input  formControlName='birthDay'
                class='form-control input-profile '
+                type='date'
         >
       </div>
       <div class='border-start title-header gender'>
         <div class='title-profile'>Giới tính</div>
-        <select class='select' matNativeControl required [disabled]='true'>
+        <select class='select' matNativeControl required  formControlName='gender'>
           <option value='MALE'>Nam</option>
           <option value='FEMALE'>Nữ</option>
           <option value='OTHER'>Khác</option>
+          <option value=''>Tất cả</option>
         </select>
       </div>
       <div class='border-start title-header default'>
@@ -70,19 +72,19 @@
       </div>
       <div class='border-start title-header address'>
         <div class='title-profile'>Email</div>
-        <input [disabled]='true'
+        <input  formControlName='email'
                class='form-control input-profile '
                type='text'>
       </div>
       <div class='border-start title-header address'>
         <div class='title-profile'>Địa chỉ</div>
-        <input disabled
+        <input formControlName='address'
                class='form-control input-profile '
                type='search'>
       </div>
       <div class='border-start title-header note'>
         <div class='title-profile'>Chú thích</div>
-        <input disabled
+        <input formControlName='note'
                class='form-control input-profile '
                type='search'>
       </div>

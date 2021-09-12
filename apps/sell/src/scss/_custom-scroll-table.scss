@@ -47,6 +47,22 @@
 }
 
 
+.cancel {
+  width: 70px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.cancel > div {
+  height: 35px;
+  overflow: hidden;
+  width: 70px;
+}
+
+.cancel > input {
+  width: 70px;
+}
+
 .pick {
   width: 100px;
   text-align: center;
@@ -213,6 +229,20 @@
 
 .explain > input {
   width: 300px;
+}
+.explain-order {
+  width: 230px;
+  text-align: center;
+}
+
+.explain-order > div {
+  height: 35px;
+  overflow: hidden;
+  width: 230px;
+}
+
+.explain-order > input {
+  width: 230px;
 }
 
 .address {

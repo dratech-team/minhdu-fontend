@@ -7,7 +7,9 @@ import { TableOrderCustomerService } from './table-order-customer.service';
 import { Observable } from 'rxjs';
 import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
-import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+
 
 @Component({
   selector: 'app-table-order',
@@ -30,6 +32,7 @@ export class TableOrdersComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly router: Router,
+    private readonly dialog: MatDialog,
     private readonly customerService: TableOrderCustomerService
   ) {
   }
@@ -67,5 +70,13 @@ export class TableOrdersComponent implements OnInit {
       id: order.id,
       typeUpdate: 'HIDE_DEBT'
     }));
+  }
+  deleteOrder(orderId: number){
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'})
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        this.store.dispatch(OrderAction.deleteOrder({id: orderId}))
+      }
+    })
   }
 }

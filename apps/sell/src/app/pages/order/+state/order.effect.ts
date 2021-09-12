@@ -12,7 +12,7 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Injectable()
 export class OrderEffect {
-  boolean = ConvertBoolean;
+  convertBoolean = ConvertBoolean;
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
@@ -85,7 +85,7 @@ export class OrderEffect {
               case 'DELIVERED':
                 return OrderAction.loadInit({ take: 30, skip: 0 });
               case 'HIDE_DEBT':
-                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.boolean.TRUE});
+                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE});
               default:
                 return OrderAction.getOrder({ id: props.id });
             }
@@ -93,7 +93,7 @@ export class OrderEffect {
         ),
         catchError((err) => {
           if(props.typeUpdate === 'HIDE_DEBT'){
-            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: this.boolean.TRUE}))
+            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: this.convertBoolean.TRUE}))
           }
           return throwError(err);
         }))

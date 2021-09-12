@@ -17,9 +17,13 @@ export const loadInit = createAction(
     take: number;
     skip: number;
     paidType?: string;
-    customer?: string;
     customerId?: number;
     routeId?: number;
+    customer?: string;
+    delivered?: number;
+    explain?: string;
+    createdAt?: Date;
+    destination?: string
   }>()
 );
 
@@ -38,6 +42,9 @@ export const loadMoreOrders = createAction(
     routeId?: number;
     customer?: string;
     delivered?: number;
+    explain?: string;
+    createdAt?: Date;
+    destination?: string
   }>()
 );
 

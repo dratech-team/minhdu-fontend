@@ -19,13 +19,12 @@ export class RouteComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
   formGroup = new FormGroup({
-    skip: new FormControl(''),
-    take: new FormControl(''),
     startedAt: new FormControl(''),
     endedAt: new FormControl(''),
     driver: new FormControl(''),
     name: new FormControl(''),
     bsx: new FormControl(''),
+    garage: new FormControl(''),
   });
   routes$ = this.store.pipe(select(selectorAllRoute));
   constructor(
@@ -69,6 +68,7 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
+      garage: val.garage.trim(),
     };
   }
 
@@ -89,6 +89,7 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
+      garage: val.garage.trim(),
     };
     this.exportService.print(Api.ROUTE_EXPORT, route);
   }

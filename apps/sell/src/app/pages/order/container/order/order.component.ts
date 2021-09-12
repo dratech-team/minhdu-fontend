@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
-import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { ConvertBoolean, CurrencyUnit, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -21,7 +21,9 @@ import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.
 export class OrderComponent implements OnInit {
   pageTypeEnum = PageTypeEnum;
   paidType = PaidType;
+  statusOrder = StatusOrder;
   currencyUnit = CurrencyUnit;
+  convertBoolean = ConvertBoolean;
   payType = PaymentType;
   pageIndex = 1;
   pageSize = 30;
@@ -29,6 +31,11 @@ export class OrderComponent implements OnInit {
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
+    deliveredAt: new FormControl(''),
+    explain: new FormControl(''),
+    createdAt: new FormControl(''),
+    commodityTotal: new FormControl(''),
+    destination: new FormControl(''),
   });
 
   constructor(
@@ -70,6 +77,13 @@ export class OrderComponent implements OnInit {
       take: pageSize,
       paidType: val.paidType,
       customer: val.name.trim(),
+      destination: val.destination.trim(),
+      commodityTotal: val.commodityTotal,
+      explain: val.explain.trim(),
+      createdAt: val.createdAt.trim(),
+      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED?
+        this.convertBoolean.TRUE:
+        this.convertBoolean.FALSE,
     };
   }
 
@@ -93,6 +107,13 @@ export class OrderComponent implements OnInit {
     const order = {
       paidType: val.paidType,
       customer: val.name.trim(),
+      destination: val.destination.trim(),
+      commodityTotal: val.commodityTotal.trim(),
+      explain: val.explain.trim(),
+      createdAt: val.createdAt.trim(),
+      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED?
+        this.convertBoolean.TRUE:
+        this.convertBoolean.FALSE,
     };
     this.exportService.print(Api.ORDER_EXPORT, order);
   }

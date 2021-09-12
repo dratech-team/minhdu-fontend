@@ -35,7 +35,7 @@
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='!delivered'   class='border-start title-header  explain' >
+      <div *ngIf='!delivered'   class='border-start title-header  explain-order' >
         <div class='title-profile'>Diễn giải</div>
         <input
           [disabled]='true'
@@ -44,6 +44,13 @@
       </div>
       <div *ngIf='delivered' class='border-start title-header  default '>
         <div  class='title-profile'>Ẩn nợ</div>
+        <input
+          [disabled]='true'
+          class='form-control input-profile '
+          type='number'>
+      </div>
+      <div *ngIf='!delivered'   class='border-start title-header  cancel' >
+        <div class='title-profile'>Hủy</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
@@ -83,11 +90,14 @@
           <div *ngIf='delivered' class='content-profile default pointer ' (click)='detailOrder(order.id)'>
             {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
           </div>
-          <div *ngIf='!delivered' class='content-profile explain pointer ' (click)='detailOrder(order.id)'>
+          <div *ngIf='!delivered' class='content-profile explain-order pointer ' (click)='detailOrder(order.id)'>
             {{order?.explain}}
           </div>
           <div *ngIf='delivered' class='content-profile default pointer ' >
             <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'> </mat-slide-toggle>
+          </div>
+          <div *ngIf='!delivered' class='content-profile cancel pointer' >
+           <button class='btn btn-danger' (click)='deleteOrder(order.id)'>Hủy</button>
           </div>
         </div>
     </div>
