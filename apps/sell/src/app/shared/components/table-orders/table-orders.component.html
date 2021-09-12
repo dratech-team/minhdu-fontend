@@ -28,21 +28,21 @@
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='delivered === 1'   class='border-start title-header  default' >
+      <div *ngIf='delivered'   class='border-start title-header  default' >
         <div class='title-profile'>Ngày giao hàng</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='delivered === 0'   class='border-start title-header  explain' >
+      <div *ngIf='!delivered'   class='border-start title-header  explain' >
         <div class='title-profile'>Diễn giải</div>
         <input
           [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div *ngIf='delivered === 1' class='border-start title-header  default '>
+      <div *ngIf='delivered' class='border-start title-header  default '>
         <div  class='title-profile'>Ẩn nợ</div>
         <input
           [disabled]='true'
@@ -60,9 +60,9 @@
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-
+         *ngIf='(orders$| async) as orders'
     >
-      <div  class='row-content' *ngFor='let order of lstOrder' >
+      <div  class='row-content' *ngFor='let order of orders' >
           <div  class='content-profile default pointer ' *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
             {{order?.createdAt | date: 'dd/MM/yyyy'}}
           </div>
@@ -80,13 +80,13 @@
           <div class='content-profile default pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
             {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
           </div>
-          <div *ngIf='delivered === 1' class='content-profile default pointer ' (click)='detailOrder(order.id)'>
+          <div *ngIf='delivered' class='content-profile default pointer ' (click)='detailOrder(order.id)'>
             {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
           </div>
-          <div *ngIf='delivered === 0' class='content-profile explain pointer ' (click)='detailOrder(order.id)'>
+          <div *ngIf='!delivered' class='content-profile explain pointer ' (click)='detailOrder(order.id)'>
             {{order?.explain}}
           </div>
-          <div *ngIf='delivered === 1' class='content-profile default pointer ' >
+          <div *ngIf='delivered' class='content-profile default pointer ' >
             <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'> </mat-slide-toggle>
           </div>
         </div>

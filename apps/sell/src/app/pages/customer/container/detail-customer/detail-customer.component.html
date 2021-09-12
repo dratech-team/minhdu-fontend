@@ -32,6 +32,17 @@
         </div>
       </div>
       <div class='col-7 d-flex justify-content-end align-items-start'>
+        <div class='align-items-center'>
+          <div class=' mr-2 p-2 '
+               style='border: solid 1px'
+               [ngStyle]="{ 'border-color': customer.debt && customer.debt < 0? 'red': 'green'}"
+          >
+            <span class='title-detail' [ngStyle]="{
+            'color': customer.debt && customer.debt < 0? 'red': 'green'}" >
+               {{customer.debt| number: '1.0-0'}}
+            </span>
+          </div>
+        </div>
         <button (click)='payment(customer.id)' class='btn btn-danger'><span class='h5'> Thanh toán</span></button>
       </div>
     </div>
@@ -202,16 +213,6 @@
             </span>
             </div>
           </div>
-          <div class='row  align-items-center'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Số nợ :</span>
-            </div>
-            <div class='col-md-9 py-2 border-bottom '>
-            <span class='title-detail' [ngStyle]="{'color': customer.debt && customer.debt < 0? 'red': 'green'}" >
-               {{customer.debt| number: '1.0-0'}}
-            </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -312,13 +313,13 @@
       <div routerLink="/ban-hang/don-hang/them-don-hang"
            [queryParams]='{data:customer.id|json}'
         class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
-      <app-table-order [orders$]='OrdersNotAssigned$' [customerId]='customer.id'></app-table-order>
+      <app-table-order [delivered]='false' [orders$]='OrdersNotAssigned$' [customerId]='customer.id'></app-table-order>
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đã giao</div>
       </div>
-      <app-table-order [delivered]='1' [orders$]='OrdersAssigned$' [customerId]='customer.id'></app-table-order>
+      <app-table-order [delivered]='true' [orders$]='OrdersAssigned$' [customerId]='customer.id'></app-table-order>
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>

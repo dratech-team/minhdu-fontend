@@ -7,11 +7,12 @@ import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
 import { Store } from '@ngrx/store';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 
 @Injectable()
 export class OrderEffect {
-
+  boolean = ConvertBoolean;
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
@@ -84,7 +85,7 @@ export class OrderEffect {
               case 'DELIVERED':
                 return OrderAction.loadInit({ take: 30, skip: 0 });
               case 'HIDE_DEBT':
-                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: 1 });
+                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.boolean.TRUE});
               default:
                 return OrderAction.getOrder({ id: props.id });
             }
@@ -92,7 +93,7 @@ export class OrderEffect {
         ),
         catchError((err) => {
           if(props.typeUpdate === 'HIDE_DEBT'){
-            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: 1}))
+            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: this.boolean.TRUE}))
           }
           return throwError(err);
         }))
@@ -119,12 +120,11 @@ export class OrderEffect {
       )
     ));
 
-
   constructor(
     private snackBar: MatSnackBar,
     private readonly action: Actions,
     private readonly orderService: OrderService,
-    private readonly  store: Store
+    private readonly  store: Store,
   ) {
   }
 }

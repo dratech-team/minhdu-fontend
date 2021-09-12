@@ -16,7 +16,7 @@ import { take } from 'rxjs/operators';
 
 export class TableOrdersComponent implements OnInit {
   @Input() orders$!: Observable<Order[]>;
-  @Input() delivered = 0;
+  @Input() delivered!: boolean;
   @Input() customerId!: number;
   lstOrder: Order[] = [];
   formGroup = new FormGroup(
@@ -36,13 +36,11 @@ export class TableOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orders$.subscribe(val => {
-      this.lstOrder = JSON.parse(JSON.stringify(val));
-    });
+    console.log(!this.delivered)
   }
 
   onScroll() {
-    if (this.delivered === 1) {
+    if (this.delivered) {
       this.customerService.scrollOrdersAssigned(this.orders(this.pageSize, this.pageIndex));
     } else {
       this.customerService.scrollOrders(this.orders(this.pageSize, this.pageIndex));

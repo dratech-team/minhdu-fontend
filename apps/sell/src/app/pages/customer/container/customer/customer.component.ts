@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
-import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
+import { ConvertBoolean, CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -22,6 +22,7 @@ import { PaymentDialogComponent } from '../../component/payment-dialog/payment-d
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
+  boolean = ConvertBoolean
   resourceType = CustomerResource;
   pageType = PageTypeEnum;
   genderType = Gender;
@@ -84,9 +85,9 @@ export class CustomerComponent implements OnInit {
       resource: val.resource,
       isPotential:
         val.isPotential === 'true'
-          ? 1
+          ? this.boolean.TRUE
           : val.isPotential === 'false'
-          ? 0
+          ? this.boolean.FALSE
           : val.isPotential,
       customerType: val.customerType,
       nationId: val.nationId,
