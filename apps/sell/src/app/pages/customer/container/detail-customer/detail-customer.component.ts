@@ -11,12 +11,11 @@ import { selectorCurrentCustomer } from '../../+state/customer/customer.selector
 import { AppState } from '../../../../reducers';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
-import {
-  selectorAllOrders,
-  selectorAllOrdersAssigned
+import { selectorOrdersAssignedById, selectorOrdersNotAssignedById
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -24,8 +23,9 @@ import { PaymentDialogComponent } from '../../component/payment-dialog/payment-d
 })
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
-  OrdersNotAssigned$ = this.store.pipe(select(selectorAllOrders));
-  OrdersAssigned$ = this.store.pipe(select(selectorAllOrdersAssigned));
+  ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
+  ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
+  convertBoolean = ConvertBoolean;
   orders: Order[] = [];
   paidType = PaidType;
   customer!: Customer;
@@ -36,6 +36,7 @@ export class DetailCustomerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
       OrderAction.loadInit({ take: 30, skip: 0, customerId: this.getId })
     );
@@ -44,10 +45,10 @@ export class DetailCustomerComponent implements OnInit {
         take: 30,
         skip: 0,
         customerId: this.getId,
-        delivered: 1,
+        delivered: this.convertBoolean.TRUE ,
       })
     );
-    this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
+
   }
 
   updateCustomer(customer: Customer) {

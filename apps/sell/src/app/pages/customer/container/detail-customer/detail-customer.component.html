@@ -313,13 +313,13 @@
       <div routerLink="/ban-hang/don-hang/them-don-hang"
            [queryParams]='{data:customer.id|json}'
         class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
-      <app-table-order [delivered]='false' [orders$]='OrdersNotAssigned$' [customerId]='customer.id'></app-table-order>
+      <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'></app-table-order>
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đã giao</div>
       </div>
-      <app-table-order [delivered]='true' [orders$]='OrdersAssigned$' [customerId]='customer.id'></app-table-order>
+      <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>

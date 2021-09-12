@@ -29,6 +29,32 @@ export const selectorAllOrdersAssigned = createSelector(
   selectorOrderAssignedState,
   fromOrder.selectAll,
 );
+export const selectorOrdersAssignedById = (id: number) => createSelector(
+  selectorAllOrdersAssigned,
+  (OrdersAssigned) =>{
+    console.log(id)
+    const result:Order[] = []
+    OrdersAssigned.forEach(item => {
+      if(item.customerId == id){
+        result.push(item)
+      }
+    })
+    return result
+  }
+);
+export const selectorOrdersNotAssignedById = (id: number) => createSelector(
+  selectorAllOrders,
+  (OrdersNotAssigned) =>{
+    const result:Order[] = []
+    OrdersNotAssigned.forEach(item => {
+      if(item.customerId == id){
+        result.push(item)
+      }
+    })
+    return result
+  }
+);
+
 
 export const selectorAllOrders = createSelector(
   selectorOrderState,
