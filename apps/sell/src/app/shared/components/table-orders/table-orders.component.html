@@ -100,6 +100,12 @@
            <button class='btn btn-danger' (click)='deleteOrder(order.id)'>Hủy</button>
           </div>
         </div>
+      <div *ngIf='!orders || orders.length === 0 ' style='height: 150px'
+           class=' d-flex justify-content-center align-content-center'>
+        <div class='font-xl d-flex align-items-center'>
+          Hiện chưa có đơn hàng nào!
+        </div>
+      </div>
     </div>
   </form>
 

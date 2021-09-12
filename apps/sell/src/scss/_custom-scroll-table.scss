@@ -116,6 +116,7 @@
   border-top: solid 1px #9aaec1;
   border-right: solid 1px #9aaec1;
   border-bottom: solid 1px #9aaec1;
+  font-size: 16px;
 }
 .select{
   font-size: 15px;
@@ -139,7 +140,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
   color: #3C3B54;
 
@@ -258,4 +259,8 @@
 
 .address > input {
   width: 450px;
+}
+.title-pick{
+  height:35px !important;
+  font-size: 16px !important;
 }

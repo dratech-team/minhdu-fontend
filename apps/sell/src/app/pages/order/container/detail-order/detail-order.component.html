@@ -121,6 +121,9 @@
                 <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
               </th>
             </tr>
+            <tr *ngIf='order.commodities.length === 0'  class='font-lg my-4' >
+              <td colspan='6' class='text-center'> Hiện chưa có hàng hóa nào</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -137,13 +140,16 @@
             <th class='text-center'>Tên nhà xe</th>
             <th class='text-center'>Biển số xe</th>
           </tr>
-          <tr *ngFor='let route of order.routes' (click)='detailRoute(route.id)'>
-            <th class='text-center pointer'> {{route.name}} </th>
+          <tr *ngFor='let route of order.routes'  (click)='detailRoute(route.id)'>
+            <th  class='text-center pointer'> {{route.name}} </th>
             <th class='text-center pointer'> {{route.startedAt|date: 'dd/MM/yyyy'}} </th>
             <th class='text-center pointer'> {{route.endedAt|date: 'dd/MM/yyyy'}} </th>
             <th class='text-center pointer'> {{route.driver}} </th>
             <th class='text-center pointer'> {{route.garage}} </th>
             <th class='text-center pointer'> {{route.bsx}}</th>
+          </tr>
+          <tr *ngIf='order.routes.length === 0'  class='font-lg my-4' >
+            <td colspan='6' class='text-center'> Hiện chưa có tuyến đường nào</td>
           </tr>
         </table>
 <!--       <app-route-order ></app-route-order>-->

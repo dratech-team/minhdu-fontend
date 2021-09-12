@@ -22,4 +22,6 @@ export * from './warehouse/warehouse-type.enum';
 export * from './app.enum';
 export * from './convert-boolean.enum';
 export * from './status-order.enum';
+export * from './sell/status-route';
+
 

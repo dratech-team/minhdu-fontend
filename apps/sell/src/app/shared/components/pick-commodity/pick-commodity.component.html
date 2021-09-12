@@ -108,6 +108,12 @@
         <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</div>
         <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
       </div>
+      <div *ngIf='!commodities || commodities.length === 0 ' style='height: 150px'
+           class=' d-flex justify-content-center align-content-center'>
+        <div class='font-xl d-flex align-items-center'>
+          Hiện chưa có hàng hóa nào!
+        </div>
+      </div>
     </div>
   </div>
   <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>

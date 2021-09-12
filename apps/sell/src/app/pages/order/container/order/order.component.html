@@ -158,6 +158,12 @@
           Đang giao
         </div>
       </div>
+      <div *ngIf='!orders || orders.length === 0'
+        class='d-flex justify-content-center align-items-center font-2xl '
+           style='height: 300px'
+      >
+          Hiện tại chưa có đơn hàng nào
+      </div>
     </div>
   </form>
 </div>

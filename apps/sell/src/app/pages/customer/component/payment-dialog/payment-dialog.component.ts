@@ -8,7 +8,7 @@ import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../+state/payment/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
-import { selectorAllOrders, selectorCurrentOrder, selectOrdersByIds } from '../../../order/+state/order.selector';
+import { selectorAllOrders, selectorCurrentOrder } from '../../../order/+state/order.selector';
 import { tap } from 'rxjs/operators';
 
 

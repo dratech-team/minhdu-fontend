@@ -102,11 +102,11 @@
             <tr *ngFor='let commodity of CommoditiesPicked'>
               <td class='text-center'> {{commodity.code}}  </td>
               <td class='text-center'> {{commodity.name}}  </td>
-              <td class='text-center'>{{commodity.price|number:'1.0'|notEmpty:'0'}} đ </td>
-              <td class='text-center'>{{commodity.amount|number :'1.0'}} </td>
-              <td class='text-center'>{{commodity.gift|number :'1.0'}} </td>
-              <td class='text-center'>{{commodity.more.amount|number :'1.0'}} </td>
-              <td class='text-center'>  {{commodity.more.price|number:'1.0'|notEmpty:'0'}} đ </td>
+              <td class='text-center'>{{commodity.price|number:'1.0-0'|notEmpty:'0'}} đ </td>
+              <td class='text-center'>{{commodity.amount|number :'1.0-0'}} </td>
+              <td class='text-center'>{{commodity.gift|number :'1.0-0'}} </td>
+              <td class='text-center'>{{commodity.more.amount|number :'1.0-0'}} </td>
+              <td class='text-center'>  {{commodity.more.price|number:'1.0-0'|notEmpty:'0'}} đ </td>
               <td class='text-center ' *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</td>
               <td class='text-center ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</td>
               <td class='text-center'> <button (click)='deleteCommodityId(commodity.id)' style=' font-size: 10px' class='btn btn-danger'>bỏ chọn</button> </td>

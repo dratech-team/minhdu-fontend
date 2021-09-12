@@ -11,16 +11,16 @@ import { PaidType } from 'libs/enums/paidType.enum';
 
 
 @Component({
-  selector:'app-pick-order',
-  templateUrl:'pick-order.component.html',
-  styleUrls:['pick-route.component.scss']
+  selector: 'app-pick-order',
+  templateUrl: 'pick-order.component.html',
+  styleUrls: ['pick-route.component.scss']
 })
-export class PickOrderComponent implements OnInit{
+export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
   @Input() payment = false;
   @Input() orders!: Order[];
   @Input() orderIdsOfRoute!: number[];
-  @Input() customerId!: number
+  @Input() customerId!: number;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
@@ -32,8 +32,10 @@ export class PickOrderComponent implements OnInit{
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
-      // createdAt: new FormControl(''),
+      createdAt: new FormControl(''),
       paidType: new FormControl(''),
+      explain: new FormControl(''),
+      commodityTotal: new FormControl('')
 
     });
 
@@ -42,57 +44,60 @@ export class PickOrderComponent implements OnInit{
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly service: PickOrderService,
-    private dialogRef: MatDialogRef<PickOrderComponent>,
+    private dialogRef: MatDialogRef<PickOrderComponent>
   ) {
   }
 
   ngOnInit(): void {
-    if(this.orderIdsOfRoute){
+    if (this.orderIdsOfRoute) {
       this.orderIds = this.orderIdsOfRoute;
     }
-    if(this?.data?.orders$){
+    if (this?.data?.orders$) {
       this.data.orders$.subscribe(
         (val: Order[]) => this.orders = val
-      )
+      );
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        const val = this.formGroup.value
-        this.service.searchOrder(this.order(val, 30, 0))
-        this.assignIsSelect()
+        const val = this.formGroup.value;
+        this.service.searchOrder(this.order(val, 30, 0));
+        this.assignIsSelect();
       })
     ).subscribe();
   }
 
   onScroll() {
-    const val = this.formGroup.value
-    this.service.scrollOrder(this.order(val,this.pageSize, this.pageIndex))
-    this.assignIsSelect()
+    const val = this.formGroup.value;
+    this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
+    this.assignIsSelect();
   }
-  order(val: any, pageSize: number, pageIndex: number){
-    return{
+
+  order(val: any, pageSize: number, pageIndex: number) {
+    return {
       take: pageSize,
       skip: pageSize * pageIndex++,
       customerId: this?.customerId,
       customer: val.name.trim(),
       paidType: val.paidType,
-
-    }
+      explain: val.explain.trim(),
+      createdAt: val.createdAt,
+      commodityTotal: val.commodityTotal
+    };
   }
-  assignIsSelect(){
-    this.service.getOrders().subscribe(val=> {
-      this.orders = JSON.parse(JSON.stringify(val))
+
+  assignIsSelect() {
+    this.service.getOrders().subscribe(val => {
+      this.orders = JSON.parse(JSON.stringify(val));
       this.orders.forEach(val => {
-        if(this.orderIds.includes(val.id)){
-          Object.assign(val, {isSelect: true})
-        }else{
-          Object.assign(val, {isSelect: this.isSelectAll})
+        if (this.orderIds.includes(val.id)) {
+          Object.assign(val, { isSelect: true });
+        } else {
+          Object.assign(val, { isSelect: this.isSelectAll });
         }
-      })
-    })
+      });
+    });
   }
-
 
 
   updateAllSelect(id: number) {
@@ -123,7 +128,7 @@ export class PickOrderComponent implements OnInit{
     }
     this.orderIds = [];
     this.orders?.forEach(order => {
-      order.isSelect = select;
+        order.isSelect = select;
         if (select) {
           this.orderIds.push(order.id);
         }
@@ -132,7 +137,7 @@ export class PickOrderComponent implements OnInit{
     this.checkEvent.emit(this.orderIds);
   }
 
-  pickOneOrder(){
+  pickOneOrder() {
     const pickOrder = document.getElementsByName('pick-one');
     for (let i = 0; i < pickOrder.length; i++) {
       if (pickOrder[i].checked) {

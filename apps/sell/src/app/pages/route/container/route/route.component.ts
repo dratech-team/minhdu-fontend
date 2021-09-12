@@ -11,6 +11,8 @@ import { RouteAction } from '../+state/route.action';
 import { selectorAllRoute } from '../+state/Route.selector';
 import { AppState } from '../../../../reducers';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
+import { StatusRoute } from '@minhdu-fontend/enums';
+import { Route } from '../+state/route.interface';
 
 @Component({
   templateUrl: 'route.component.html',
@@ -18,6 +20,9 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 export class RouteComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
+  today = new Date().getTime()
+  statusRoute = StatusRoute;
+  routes : Route[] = []
   formGroup = new FormGroup({
     startedAt: new FormControl(''),
     endedAt: new FormControl(''),
@@ -25,6 +30,7 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
+    statusRoute: new FormControl(''),
   });
   routes$ = this.store.pipe(select(selectorAllRoute));
   constructor(
@@ -34,6 +40,12 @@ export class RouteComponent implements OnInit {
     private readonly exportService: ExportService
   ) {}
   ngOnInit() {
+    this.routes$.subscribe(val => {
+      this.routes = JSON.parse(JSON.stringify(val))
+      this.routes.forEach(item => {
+        item.endedAt = new Date(item.endedAt)
+      })
+    })
     const btnRoute = document.getElementById('route');
     btnRoute?.classList.add('btn-border');
     document.getElementById('customer').classList.remove('btn-border');

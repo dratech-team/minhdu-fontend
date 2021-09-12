@@ -1,53 +1,48 @@
 <div class='container'>
   <div class=' animated fadeIn' style='width: 102%'>
     <form [formGroup]='formGroup' class='header-profile mt-3 '>
-      <div class='border-start title-header col-3' *ngIf='!payment'>
-        <div class='title-profile'>Khách hàng</div>
+      <div class='border-start title-header col-3 ' *ngIf='!payment'>
+        <div class='title-profile title-pick'>Khách hàng</div>
         <input class='form-control input-profile'
-               [disabled]='true'
                type='text'
                placeholder='PN10001'
                formControlName='name'
         >
       </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Ngày tạo</div>
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile title-pick'>Ngày tạo</div>
         <input class='form-control input-profile'
-               [disabled]='true'
-               type='text'
+               type='text' formControlName='createdAt'
         >
       </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Tổng tiền hàng</div>
-        <input
-          [disabled]='true'
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile title-pick'>Tiền hàng</div>
+        <input formControlName='commodityTotal'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Thanh toán</div>
+      <div class='border-start title-header col-2 '>
+        <div class='title-profile title-pick'>Thanh toán</div>
         <select class='select'  formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
         </select>
       </div>
-      <div class='border-start title-header col-2' style='overflow: hidden'>
-        <div class='title-profile'>lần thanh toán</div>
+      <div class='border-start title-header col-2 ' style='overflow: hidden'>
+        <div class='title-profile title-pick'>lần thanh toán</div>
         <input
-          [disabled]='true'
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-3'  *ngIf='payment'>
-        <div class='title-profile'>Diễn giải</div>
+      <div class='border-start title-header col-3 '  *ngIf='payment'>
+        <div class='title-profile title-pick'>Diễn giải</div>
         <input class='form-control input-profile'
-               [disabled]='true'
-               type='text'
+               type='text' formControlName='explain'
         >
       </div>
       <div class='border-start title-header col-1 '>
-        <div class='title-profile d-flex justify-content-center align-items-center'>Tất cả</div>
+        <div class='title-profile d-flex justify-content-center align-items-center title-pick'>Tất cả</div>
         <div class=' d-flex justify-content-center mt-2 '  >
           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                         style='margin-right: 2%'
@@ -115,6 +110,12 @@
 
           </mat-checkbox>
         </div>
+      </div>
+      <div *ngIf='!orders || orders.length === 0'
+           class='d-flex justify-content-center align-items-center font-2xl '
+           style='height: 150px'
+      >
+        Hiện tại chưa có đơn hàng  nào
       </div>
     </div>
     <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
