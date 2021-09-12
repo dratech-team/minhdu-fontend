@@ -202,6 +202,16 @@
             </span>
             </div>
           </div>
+          <div class='row  align-items-center'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Số nợ :</span>
+            </div>
+            <div class='col-md-9 py-2 border-bottom '>
+            <span class='title-detail' [ngStyle]="{'color': customer.debt && customer.debt < 0? 'red': 'green'}" >
+               {{customer.debt| number: '1.0-0'}}
+            </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

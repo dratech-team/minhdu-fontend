@@ -65,7 +65,7 @@ export class TableOrdersComponent implements OnInit {
   }
 
   updateOrder(order: Order) {
-    console.log(!order.hide)
+    console.log(!order.hide);
     const val = {
       hide: !order.hide,
     };
