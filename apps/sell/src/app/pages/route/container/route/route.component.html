@@ -6,86 +6,88 @@
   <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường </button>
   <a (click)='printRouter()' target='_blank' download='data.xlsx' class='btn text-white btn-primary font-lg mr-3' >Xuất</a>
 </div>
-<div class='main-customer' style='width: 90%; margin-left: 5%;'>
-  <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Tên Tuyến đường</div>
-      <input formControlName='name' class='form-control input-profile ' type='text' placeholder=''>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Ngày bắt đầu</div>
-      <input formControlName='startedAt'  class='form-control input-profile ' type='date'>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Ngày Kết thúc</div>
-      <input formControlName='endedAt'  class='form-control input-profile ' type='date'>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Tên Tài xế</div>
-      <input formControlName='driver'  class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Biển số xe</div>
-      <input formControlName='bsx'  class='form-control input-profile ' type='text' placeholder='77G1-55555'>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile'>Nhà xe</div>
-      <input  class='form-control input-profile ' type='text'
-              placeholder='Nhập nhà xe' formControlName='garage'>
-    </div>
-    <div class='border-start title-header name'>
-      <div class='title-profile '>Trạng thái chuyến xe</div>
-      <select class='select' matNativeControl required formControlName='statusRoute'>
-        <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
-        <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
-        <option value=''>Tất cả</option>
-      </select>
-    </div>
-  </form>
-  <div class='outer  animated fadeIn d-flex '
-       [ngStyle]="{'min-width': header.offsetWidth+'px'}"
-       infiniteScroll
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='100'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'
+<div class='main-customer'>
+  <div class='main-profile mx-auto'>
+    <form [formGroup]='formGroup' #header  class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tên Tuyến đường</div>
+        <input formControlName='name' class='form-control input-profile ' type='text' placeholder=''>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày bắt đầu</div>
+        <input formControlName='startedAt'  class='form-control input-profile ' type='date'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày Kết thúc</div>
+        <input formControlName='endedAt'  class='form-control input-profile ' type='date'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tên Tài xế</div>
+        <input formControlName='driver'  class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Biển số xe</div>
+        <input formControlName='bsx'  class='form-control input-profile ' type='text' placeholder='77G1-55555'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Nhà xe</div>
+        <input  class='form-control input-profile ' type='text'
+                placeholder='Nhập nhà xe' formControlName='garage'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile '>Trạng thái chuyến xe</div>
+        <select class='select' matNativeControl required formControlName='statusRoute'>
+          <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
+          <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
+          <option value=''>Tất cả</option>
+        </select>
+      </div>
+    </form>
+    <div class='outer  animated fadeIn d-flex '
+         [ngStyle]="{'min-width': header.offsetWidth+'px'}"
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='100'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
 
-  >
-    <div class='row-content' *ngFor='let route of routes'
-         (click)='detailRoute(route.id)'
-         (contextmenu)='child.onContextMenu($event,route)'>
-      <app-mouse-right
-        #child (addEvent)='add()'
-        (deleteEvent)='deleteRoute($event)'
-        (readAndUpdateEvent)='detailRoute($event)'
-      >
-      </app-mouse-right>
-      <div class='content-profile name pointer '>{{route?.name}}</div>
-      <div class='content-profile name pointer ' *ngIf='route.startedAt !== null'>
-        {{route?.startedAt|date:'dd/MM/yyyy'}}
-      </div>
-      <div class='content-profile name pointer ' *ngIf='route.startedAt === null'>
-        Chưa cập nhật
-      </div>
-      <div class='content-profile name pointer ' *ngIf='route.endedAt !== null'>
-        {{route?.endedAt|date:'dd/MM/yyyy'}}
-      </div>
-      <div class='content-profile name pointer ' *ngIf='route.endedAt === null'>
-        Chưa cập nhật
-      </div>
-      <div class='content-profile name pointer' *ngIf='route.driver'>{{route?.driver}}</div>
-      <div class='content-profile name pointer' *ngIf='!route.driver'>
-        {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
-      <div class='content-profile name pointer '>{{route?.bsx}}</div>
-      <div class='content-profile name pointer '>{{route?.garage}}</div>
-      <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() > today '>Hoàn thành</div>
-      <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() <= today '>Đang chạy</div>
-    </div>
-    <div *ngIf='!routes || routes.length === 0'
-         class='d-flex justify-content-center align-items-center font-2xl '
-         style='height: 60vh'
     >
-      Hiện tại chưa có đơn Tuyến đường nào
+      <div class='row-content' *ngFor='let route of routes'
+           (click)='detailRoute(route.id)'
+           (contextmenu)='child.onContextMenu($event,route)'>
+        <app-mouse-right
+          #child (addEvent)='add()'
+          (deleteEvent)='deleteRoute($event)'
+          (readAndUpdateEvent)='detailRoute($event)'
+        >
+        </app-mouse-right>
+        <div class='content-profile name pointer '>{{route?.name}}</div>
+        <div class='content-profile name pointer ' *ngIf='route.startedAt !== null'>
+          {{route?.startedAt|date:'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='route.startedAt === null'>
+          Chưa cập nhật
+        </div>
+        <div class='content-profile name pointer ' *ngIf='route.endedAt !== null'>
+          {{route?.endedAt|date:'dd/MM/yyyy'}}
+        </div>
+        <div class='content-profile name pointer ' *ngIf='route.endedAt === null'>
+          Chưa cập nhật
+        </div>
+        <div class='content-profile name pointer' *ngIf='route.driver'>{{route?.driver}}</div>
+        <div class='content-profile name pointer' *ngIf='!route.driver'>
+          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
+        <div class='content-profile name pointer '>{{route?.bsx}}</div>
+        <div class='content-profile name pointer '>{{route?.garage}}</div>
+        <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() > today '>Hoàn thành</div>
+        <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() <= today '>Đang chạy</div>
+      </div>
+      <div *ngIf='!routes || routes.length === 0'
+           class='d-flex justify-content-center align-items-center font-2xl '
+           style='height: 65vh'
+      >
+        Hiện tại chưa có đơn Tuyến đường nào
+      </div>
     </div>
   </div>
 

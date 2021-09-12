@@ -5,76 +5,77 @@
   <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm Đơn hàng</button>
   <button (click)='printOrder()' class='btn btn-primary font-lg mr-5 mt-3'>Xuất</button>
 </div>
-<div class='main-customer d-flex justify-content-center'>
-  <form [formGroup]='formGroup' #header class='main-profile' style='width: 96%'>
-    <div class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Khách hàng</div>
-        <input
-          formControlName='name'
-          class='form-control input-profile '
-          type='search'>
+<div class='main-customer '>
+  <div class='main-profile mx-auto'>
+    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn' >
+      <div class='header-profile mt-3 animated fadeIn'>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Khách hàng</div>
+          <input
+            formControlName='name'
+            class='form-control input-profile '
+            type='search'>
+        </div>
+        <div class='border-start title-header default'>
+          <div class='title-profile'>Ngày tạo</div>
+          <input
+            formControlName='createdAt'
+            class=' form-control input-profile '
+            type='date'
+          >
+        </div>
+        <div class='border-start title-header note'>
+          <div class='title-profile'>Điểm đến</div>
+          <input
+            formControlName='destination'
+            class='form-control input-profile '
+            type='text'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Diễn giải</div>
+          <input
+            formControlName='explain'
+            class='form-control input-profile '
+            type='text'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Tiền hàng</div>
+          <input
+            formControlName='commodityTotal'
+            class='form-control input-profile '
+            type='number'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'> Thanh toán</div>
+          <select class='select' matNativeControl required formControlName='paidType'>
+            <option value='{{paidType.PAID}}'>Có thanh toán</option>
+            <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+            <option value=''>tất cả</option>
+          </select>
+        </div>
+        <div class='border-start title-header default'>
+          <div class='title-profile'>Đơn vị tiền</div>
+          <input class='form-control input-profile ' [disabled]='true'>
+          <!--          <select  class='select'  matNativeControl required [disabled]='true'>-->
+          <!--            <option value='{{currencyUnit.VND}}'>VND</option>-->
+          <!--            <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>-->
+          <!--            <option value='{{currencyUnit.EUR}}'>Euro</option>-->
+          <!--            <option value='{{currencyUnit.GBP}}'>Bảng anh</option>-->
+          <!--            <option value='{{currencyUnit.MMK}}'>Kyat</option>-->
+          <!--            <option value='{{currencyUnit.MYR}}'>Ringgit</option>-->
+          <!--            <option value='{{currencyUnit.USD}}'>Đô la</option>-->
+          <!--          </select>-->
+        </div>
+        <div class='border-start title-header default'>
+          <div class='title-profile'> Trạng thái đơn hàng</div>
+          <select class='select' matNativeControl required formControlName='deliveredAt'>
+            <option value='{{statusOrder.DELIVERED}}'>Đã giao</option>
+            <option value='{{statusOrder.NOT_DELIVERED}}'>Đang giao</option>
+            <option value=''>tất cả</option>
+          </select>
+        </div>
       </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Ngày tạo</div>
-        <input
-          formControlName='createdAt'
-          class=' form-control input-profile '
-          type='date'
-        >
-      </div>
-      <div class='border-start title-header note'>
-        <div class='title-profile'>Điểm đến</div>
-        <input
-          formControlName='destination'
-          class='form-control input-profile '
-          type='text'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Diễn giải</div>
-        <input
-          formControlName='explain'
-          class='form-control input-profile '
-          type='text'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tiền hàng</div>
-        <input
-          formControlName='commodityTotal'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'> Thanh toán</div>
-        <select class='select' matNativeControl required formControlName='paidType'>
-          <option value='{{paidType.PAID}}'>Có thanh toán</option>
-          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
-          <option value=''>tất cả</option>
-        </select>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Đơn vị tiền</div>
-        <input class='form-control input-profile ' [disabled]='true'>
-        <!--          <select  class='select'  matNativeControl required [disabled]='true'>-->
-        <!--            <option value='{{currencyUnit.VND}}'>VND</option>-->
-        <!--            <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>-->
-        <!--            <option value='{{currencyUnit.EUR}}'>Euro</option>-->
-        <!--            <option value='{{currencyUnit.GBP}}'>Bảng anh</option>-->
-        <!--            <option value='{{currencyUnit.MMK}}'>Kyat</option>-->
-        <!--            <option value='{{currencyUnit.MYR}}'>Ringgit</option>-->
-        <!--            <option value='{{currencyUnit.USD}}'>Đô la</option>-->
-        <!--          </select>-->
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'> Trạng thái đơn hàng</div>
-        <select class='select' matNativeControl required formControlName='deliveredAt'>
-          <option value='{{statusOrder.DELIVERED}}'>Đã giao</option>
-          <option value='{{statusOrder.NOT_DELIVERED}}'>Đang giao</option>
-          <option value=''>tất cả</option>
-        </select>
-      </div>
-    </div>
-
+    </form>
     <div class='outer  animated fadeIn d-flex'
          [ngStyle]="{'min-width': header.offsetWidth+'px'}"
          infiniteScroll
@@ -166,7 +167,8 @@
         Hiện tại chưa có đơn hàng nào!
       </div>
     </div>
-  </form>
+  </div>
+
 </div>
 
 
