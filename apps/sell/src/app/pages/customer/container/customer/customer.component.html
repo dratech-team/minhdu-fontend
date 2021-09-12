@@ -5,7 +5,7 @@
 </div>
 <div class='main-customer '>
   <div class='main-profile'>
-    <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
+    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên khách hàng</div>
         <input
@@ -90,6 +90,7 @@
       </div>
     </form>
     <div class='outer animated fadeIn d-flex'
+         [ngStyle]="{'min-width': header.offsetWidth + 'px'}"
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
@@ -125,10 +126,10 @@
         <div class='content-profile address pointer '>{{customer?.address}}</div>
         <div class='content-profile  note '> {{customer.note}}</div>
       </div>
-      <div *ngIf='!customers || customers.length === 0 ' style='height: 300px'
+      <div *ngIf='!customers || customers.length === 0 ' style='height:60vh; '
            class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl d-flex align-items-center'>
-          Hiện chưa có Khách hàng nào
+        <div class='font-xl font-weight-bold d-flex align-items-center'>
+          Hiện chưa có Khách hàng nào!
         </div>
       </div>
     </div>

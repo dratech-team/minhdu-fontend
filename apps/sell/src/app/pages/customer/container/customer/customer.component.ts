@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -18,11 +18,11 @@ import { CustomerDialogComponent } from '../../component/customer-dialog/custome
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 
 @Component({
-  templateUrl: 'customer.component.html',
+  templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
   customerType = CustomerType;
-  boolean = ConvertBoolean
+  boolean = ConvertBoolean;
   resourceType = CustomerResource;
   pageType = PageTypeEnum;
   genderType = Gender;
@@ -40,7 +40,7 @@ export class CustomerComponent implements OnInit {
     gender: new FormControl(''),
     email: new FormControl(''),
     address: new FormControl(''),
-    note: new FormControl(''),
+    note: new FormControl('')
   });
 
   constructor(
@@ -48,7 +48,8 @@ export class CustomerComponent implements OnInit {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService
-  ) {}
+  ) {
+  }
 
   customers$ = this.store.pipe(select(selectorAllCustomer));
 
@@ -70,7 +71,7 @@ export class CustomerComponent implements OnInit {
   add($event?: any) {
     this.dialog.open(CustomerDialogComponent, {
       width: '50%',
-      data: $event,
+      data: $event
     });
   }
 
@@ -102,7 +103,7 @@ export class CustomerComponent implements OnInit {
       gender: val.gender,
       email: val.email.trim(),
       address: val.address.trim(),
-      note: val.note.trim(),
+      note: val.note.trim()
     };
   }
 
@@ -124,7 +125,7 @@ export class CustomerComponent implements OnInit {
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: { id: $event.id },
+      data: { id: $event.id }
     });
   }
 
@@ -146,7 +147,7 @@ export class CustomerComponent implements OnInit {
       gender: val.gender,
       email: val.email.trim(),
       address: val.address.trim(),
-      note: val.note.trim(),
+      note: val.note.trim()
 
     };
     this.exportService.print(Api.CUSTOMER_EXPORT, customers);
