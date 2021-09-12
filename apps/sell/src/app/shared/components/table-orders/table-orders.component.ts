@@ -18,7 +18,6 @@ export class TableOrdersComponent implements OnInit {
   @Input() orders$!: Observable<Order[]>;
   @Input() delivered!: boolean;
   @Input() customerId!: number;
-  lstOrder: Order[] = [];
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
@@ -36,7 +35,6 @@ export class TableOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(!this.delivered)
   }
 
   onScroll() {
@@ -64,6 +62,10 @@ export class TableOrdersComponent implements OnInit {
     const val = {
      hide:!order.hide
     };
-    this.store.dispatch(OrderAction.updateOrder({ order: val, id: order.id, typeUpdate: 'HIDE_DEBT' }));
+    this.store.dispatch(OrderAction.updateOrder({
+      order: val,
+      id: order.id,
+      typeUpdate: 'HIDE_DEBT'
+    }));
   }
 }
