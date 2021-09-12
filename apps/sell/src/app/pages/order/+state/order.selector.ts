@@ -47,7 +47,7 @@ export const selectorOrdersNotAssignedById = (id: number) => createSelector(
   (OrdersNotAssigned) =>{
     const result:Order[] = []
     OrdersNotAssigned.forEach(item => {
-      if(item.customerId == id){
+      if(item.customerId == id && !item.deliveredAt){
         result.push(item)
       }
     })
