@@ -13,12 +13,13 @@ export const addOrderSuccess = createAction(
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{ take: number,
-    skip: number,
-    paidType?: string,
-    customer?: string,
-    customerId?: number,
-    routeId?:number,
+  props<{
+    take: number;
+    skip: number;
+    paidType?: string;
+    customer?: string;
+    customerId?: number;
+    routeId?: number;
   }>()
 );
 
@@ -29,13 +30,14 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
-  props<{ take: number,
-    skip: number,
-    paidType?: string,
-    customerId?:number,
-    routeId?: number,
-    customer?: string,
-    delivered?: number,
+  props<{
+    take: number;
+    skip: number;
+    paidType?: string;
+    customerId?: number;
+    routeId?: number;
+    customer?: string;
+    delivered?: number;
   }>()
 );
 
@@ -56,12 +58,12 @@ export const getOrderSuccess = createAction(
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ order: any, id: number, typeUpdate?: string}>()
+  props<{ order: any; id: number; typeUpdate?: string }>()
 );
 
 export const payment = createAction(
   '[PAYMENT] Payment',
-  props<{ order: any, id: number }>()
+  props<{ order: any; id: number }>()
 );
 
 export const deleteOrder = createAction(
@@ -70,12 +72,13 @@ export const deleteOrder = createAction(
 );
 export const loadOrdersAssigned = createAction(
   '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
-  props<{ take: number,
-    skip: number,
-    paidType?: string,
-    customer?: string,
-    customerId?: number,
-    delivered?: number
+  props<{
+    take: number;
+    skip: number;
+    paidType?: string;
+    customer?: string;
+    customerId?: number;
+    delivered?: number;
   }>()
 );
 
@@ -85,12 +88,13 @@ export const loadOrdersAssignedSuccess = createAction(
 );
 export const loadMoreOrdersAssigned = createAction(
   '[LOAD_MORE_ORDERS_ASSIGNED] Load More Order Assigned',
-  props<{ take: number,
-    skip: number,
-    paidType?: string,
-    customer?: string,
-    customerId?: number,
-    delivered?: number
+  props<{
+    take: number;
+    skip: number;
+    paidType?: string;
+    customer?: string;
+    customerId?: number;
+    delivered?: number;
   }>()
 );
 export const loadMoreOrdersAssignedSuccess = createAction(
@@ -115,5 +119,3 @@ export const OrderAction = {
   loadMoreOrdersAssigned,
   loadMoreOrdersAssignedSuccess,
 };
-
-

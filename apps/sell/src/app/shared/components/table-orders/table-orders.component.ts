@@ -1,29 +1,26 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
-import { TableOrderCustomerService } from './table-order-customer.service';
+import { Store } from '@ngrx/store';
+import { PaidType } from 'libs/enums/paidType.enum';
 import { Observable } from 'rxjs';
-import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
-import { take } from 'rxjs/operators';
+import { Order } from '../../../pages/order/+state/order.interface';
+import { TableOrderCustomerService } from './table-order-customer.service';
 
 @Component({
   selector: 'app-table-order',
-  templateUrl: 'table-orders.component.html'
+  templateUrl: 'table-orders.component.html',
 })
-
 export class TableOrdersComponent implements OnInit {
   @Input() orders$!: Observable<Order[]>;
   @Input() delivered = 0;
   @Input() customerId!: number;
   lstOrder: Order[] = [];
-  formGroup = new FormGroup(
-    {
-      createdAt: new FormControl(''),
-      paidType: new FormControl('')
-    });
+  formGroup = new FormGroup({
+    createdAt: new FormControl(''),
+    paidType: new FormControl(''),
+  });
   paidType = PaidType;
   pageSize = 10;
   pageIndex = 1;
@@ -32,20 +29,25 @@ export class TableOrdersComponent implements OnInit {
     private readonly store: Store,
     private readonly router: Router,
     private readonly customerService: TableOrderCustomerService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.orders$.subscribe(val => {
-      this.lstOrder = JSON.parse(JSON.stringify(val));
+    this.orders$.subscribe((val) => {
+      val.forEach((v) => {
+        console.log(v.id, v.hide);
+      });
     });
   }
 
   onScroll() {
     if (this.delivered === 1) {
-      this.customerService.scrollOrdersAssigned(this.orders(this.pageSize, this.pageIndex));
+      this.customerService.scrollOrdersAssigned(
+        this.orders(this.pageSize, this.pageIndex)
+      );
     } else {
-      this.customerService.scrollOrders(this.orders(this.pageSize, this.pageIndex));
+      this.customerService.scrollOrders(
+        this.orders(this.pageSize, this.pageIndex)
+      );
     }
   }
 
@@ -54,7 +56,7 @@ export class TableOrdersComponent implements OnInit {
       take: pageSize,
       skip: pageSize * pageIndex++,
       customerId: this.customerId,
-      delivered: this.delivered
+      delivered: this.delivered,
     };
   }
 
@@ -63,9 +65,16 @@ export class TableOrdersComponent implements OnInit {
   }
 
   updateOrder(order: Order) {
+    console.log(!order.hide)
     const val = {
-      hide:!order.hide
+      hide: !order.hide,
     };
-    this.store.dispatch(OrderAction.updateOrder({ order: val, id: order.id, typeUpdate: 'HIDE_DEBT' }));
+    this.store.dispatch(
+      OrderAction.updateOrder({
+        order: val,
+        id: order.id,
+        typeUpdate: 'HIDE_DEBT',
+      })
+    );
   }
 }
