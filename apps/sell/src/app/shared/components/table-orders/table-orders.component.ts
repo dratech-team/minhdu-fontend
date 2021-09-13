@@ -50,7 +50,7 @@ export class TableOrdersComponent implements OnInit {
 
   orders(pageSize: number, pageIndex?: number): any {
     return {
-      kip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: pageSize,
       customerId: this.customerId,
       delivered: this.delivered

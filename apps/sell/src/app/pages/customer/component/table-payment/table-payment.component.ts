@@ -24,6 +24,7 @@ export class TablePaymentComponent implements OnInit {
   @Input() customerId!: number;
   pageSize = 10;
   pageIndex = 1;
+  pageIndexInit = 0;
 
   constructor(
     private readonly store: Store,
@@ -36,21 +37,21 @@ export class TablePaymentComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.paymentService.searchOrders(this.paymentHistory(10, 0, value));
+        this.paymentService.searchOrders(this.paymentHistory(this.pageSize, this.pageIndexInit, value));
         this.paymentService.getPayment().subscribe(val => this.paymentHistories = JSON.parse(JSON.stringify(val)));
       })).subscribe();
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, this.pageIndex, val));
+    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, val));
     this.paymentService.getPayment().subscribe(val => this.paymentHistories = val);
   }
 
-  paymentHistory(pageSize: number, pageIndex: number, val?: any): any {
+  paymentHistory(pageSize: number, pageIndex?: number, val?: any): any {
     return {
       take: pageSize,
-      skip: pageSize * pageIndex++,
+      skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
       customerId: this.customerId
     };
   }
