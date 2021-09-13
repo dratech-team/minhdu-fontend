@@ -27,6 +27,7 @@ export class OrderComponent implements OnInit {
   payType = PaymentType;
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   orders$ = this.store.pipe(select(selectorAllOrders));
   formGroup = new FormGroup({
     paidType: new FormControl(''),
@@ -49,12 +50,12 @@ export class OrderComponent implements OnInit {
     document.getElementById('order').classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
-    this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(OrderAction.loadInit(this.order(val, 30, 0)));
+          this.store.dispatch(OrderAction.loadInit(this.order(val, 30, this.pageIndexInit)));
         })
       )
       .subscribe();
@@ -67,13 +68,13 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      OrderAction.loadMoreOrders(this.order(val, this.pageSize, this.pageIndex))
+      OrderAction.loadMoreOrders(this.order(val, this.pageSize))
     );
   }
 
-  order(val: any, pageSize: number, pageIndex: number) {
+  order(val: any, pageSize: number, pageIndex?: number) {
     return {
-      skip: pageSize * pageIndex++,
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: pageSize,
       paidType: val.paidType,
       customer: val.name.trim(),

@@ -20,6 +20,7 @@ import { Route } from '../+state/route.interface';
 export class RouteComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   today = new Date().getTime()
   statusRoute = StatusRoute;
   routes : Route[] = []
@@ -51,12 +52,12 @@ export class RouteComponent implements OnInit {
     btnRoute?.classList.add('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
     document.getElementById('order').classList.remove('btn-border');
-    this.store.dispatch(RouteAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(RouteAction.loadInit(this.route(val, 30, 0)));
+          this.store.dispatch(RouteAction.loadInit(this.route(val, this.pageSize, this.pageIndexInit)));
         })
       )
       .subscribe();
@@ -69,12 +70,12 @@ export class RouteComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      RouteAction.loadMoreRoutes(this.route(val, this.pageSize, this.pageIndex))
+      RouteAction.loadMoreRoutes(this.route(val, this.pageSize))
     );
   }
-  route(val: any, pageSize: number, pageIndex: number) {
+  route(val: any, pageSize: number, pageIndex?: number) {
     return {
-      skip: pageSize * pageIndex++,
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: pageSize,
       name: val.name.trim(),
       startedAt: val.startedAt,

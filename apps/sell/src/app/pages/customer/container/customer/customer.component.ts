@@ -29,6 +29,7 @@ export class CustomerComponent implements OnInit {
   orders?: Order;
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   formGroup = new FormGroup({
     resource: new FormControl(''),
     isPotential: new FormControl(''),
@@ -55,13 +56,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('customer').classList.add('btn-border');
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val, 30, 0))
+            CustomerAction.loadInit(this.customer(val, this.pageSize,this.pageIndexInit))
           );
         })
       )
@@ -79,14 +80,14 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       CustomerAction.loadMoreCustomers(
-        this.customer(val, this.pageSize, this.pageIndex)
+        this.customer(val, this.pageSize)
       )
     );
   }
 
-  customer(val: any, pageSize: number, pageIndex: number) {
+  customer(val: any, pageSize: number , pageIndex? : number) {
     return {
-      skip: pageSize * pageIndex++,
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: this.pageSize,
       resource: val.resource,
       isPotential:

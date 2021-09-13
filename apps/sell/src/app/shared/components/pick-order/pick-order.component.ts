@@ -27,6 +27,7 @@ export class PickOrderComponent implements OnInit {
   paidType = PaidType;
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   isSelectAll = false;
   orderIds: number[] = [];
   formGroup = new FormGroup(
@@ -61,7 +62,7 @@ export class PickOrderComponent implements OnInit {
       debounceTime(1000),
       tap((value) => {
         const val = this.formGroup.value;
-        this.service.searchOrder(this.order(val, 30, 0));
+        this.service.searchOrder(this.order(val, this.pageSize, this.pageIndexInit));
         this.assignIsSelect();
       })
     ).subscribe();
@@ -69,14 +70,14 @@ export class PickOrderComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
+    this.service.scrollOrder(this.order(val, this.pageSize));
     this.assignIsSelect();
   }
 
-  order(val: any, pageSize: number, pageIndex: number) {
+  order(val: any, pageSize: number, pageIndex?: number) {
     return {
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: pageSize,
-      skip: pageSize * pageIndex++,
       customerId: this?.customerId,
       customer: val.name.trim(),
       paidType: val.paidType,

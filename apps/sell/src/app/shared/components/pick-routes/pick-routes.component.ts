@@ -18,6 +18,7 @@ export class PickRoutesComponent implements OnInit {
   @Output() checkEvent = new EventEmitter();
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   isSelectAll = false;
   routeIds: number[] = [];
   formGroup = new FormGroup(
@@ -44,8 +45,8 @@ export class PickRoutesComponent implements OnInit {
       debounceTime(1000),
       tap((value) => {
         const val = {
-          take: 30,
-          skip: 0
+          take: this.pageSize,
+          skip: this.pageIndexInit
         };
         this.service.searchRoutes(val);
         this.assignIsSelect();

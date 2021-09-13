@@ -23,6 +23,7 @@ export class PickCustomerComponent implements OnInit {
   customerType = CustomerType;
   pageIndex = 1;
   pageSize = 30;
+  pageIndexInit = 0;
   isSelectAll = false;
   customerIds: number[] = [];
   formGroup = new FormGroup(
@@ -52,7 +53,7 @@ export class PickCustomerComponent implements OnInit {
       debounceTime(1000),
       tap((value) => {
         const val = this.formGroup.value;
-        this.service.searchCustomer(this.customer(val, 30, 0));
+        this.service.searchCustomer(this.customer(val, this.pageSize, this.pageIndexInit));
         this.assignIsSelect();
       })
     ).subscribe();
@@ -60,13 +61,13 @@ export class PickCustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
+    this.service.scrollCustomer(this.customer(val, this.pageSize));
   }
 
-  customer(val: any, pageSize: number, pageIndex: number) {
+  customer(val: any, pageSize: number, pageIndex?: number) {
     return {
+      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
       take: pageSize,
-      skip: pageSize * pageIndex++,
       name: val.name.trim(),
       customerType: val.type,
       resource: val.resource

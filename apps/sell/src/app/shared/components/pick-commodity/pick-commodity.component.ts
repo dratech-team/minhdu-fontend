@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import {  Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommodityUnit, CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
@@ -14,7 +14,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  @Input() commodities: Commodity[] = []
+  @Input() commodities: Commodity[] = [];
   commodityUnit = CommodityUnit;
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter();
@@ -31,7 +31,7 @@ export class PickCommodityComponent implements OnInit {
       code: new FormControl(''),
       name: new FormControl(''),
       unit: new FormControl(''),
-      price: new FormControl(''),
+      price: new FormControl('')
     }
   );
 
@@ -45,10 +45,10 @@ export class PickCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data.commodities$){
+    if (this.data.commodities$) {
       this.data.commodities$.subscribe(
         (val: any) => this.commodities = JSON.parse(JSON.stringify(val))
-      )
+      );
     }
   }
 
@@ -58,18 +58,18 @@ export class PickCommodityComponent implements OnInit {
       skip: this.pageIndex++
     };
     this.service.scrollCommodities(val);
-    this.assignIsSelect()
+    this.assignIsSelect();
   }
 
-  assignIsSelect(){
+  assignIsSelect() {
     this.service.commodities().subscribe(val => {
-      console.log(val)
+      console.log(val);
       this.commodities = JSON.parse(JSON.stringify(val));
       this.commodities.forEach(e => {
-        if(this.commodityIds.includes(e.id)){
-          e.isSelect = true
-        }else{
-          e.isSelect = this.isSelectAll
+        if (this.commodityIds.includes(e.id)) {
+          e.isSelect = true;
+        } else {
+          e.isSelect = this.isSelectAll;
         }
       });
     });
@@ -80,13 +80,15 @@ export class PickCommodityComponent implements OnInit {
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
-        this.assignIsSelect()
+        this.assignIsSelect();
       }
     });
   }
+
   UpdateCommodity($event: any) {
-    this.dialog.open(CommodityDialogComponent,{width: '40%' , data: $event})
+    this.dialog.open(CommodityDialogComponent, { width: '40%', data: $event });
   }
+
   updateAllSelect(id: number) {
     const index = this.commodityIds.indexOf(id);
     if (index > -1) {
@@ -108,7 +110,6 @@ export class PickCommodityComponent implements OnInit {
   }
 
 
-
   setAll(select: boolean) {
     this.isSelectAll = select;
     if (this.commodities == null) {
@@ -128,7 +129,8 @@ export class PickCommodityComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close(this.commodityIds);
   }
-  addCommodity(){
-    this.dialog.open(CommodityDialogComponent,{width: '40%'})
+
+  addCommodity() {
+    this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 }
