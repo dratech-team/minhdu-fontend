@@ -68,13 +68,14 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      OrderAction.loadMoreOrders(this.order(val, this.pageSize))
+      OrderAction.loadMoreOrders(this.order(val, this.pageSize , this.pageIndex))
     );
   }
 
-  order(val: any, pageSize: number, pageIndex?: number) {
+  order(val: any, pageSize: number, pageIndex: number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
     return {
-      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip: pageSize * pageIndex,
       take: pageSize,
       paidType: val.paidType,
       customer: val.name.trim(),

@@ -70,13 +70,14 @@ export class PickOrderComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollOrder(this.order(val, this.pageSize));
+    this.service.scrollOrder(this.order(val, this.pageSize,this.pageIndex));
     this.assignIsSelect();
   }
 
-  order(val: any, pageSize: number, pageIndex?: number) {
+  order(val: any, pageSize: number, pageIndex: number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip:  pageSize * pageIndex,
       take: pageSize,
       customerId: this?.customerId,
       customer: val.name.trim(),

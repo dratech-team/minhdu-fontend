@@ -70,12 +70,13 @@ export class RouteComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      RouteAction.loadMoreRoutes(this.route(val, this.pageSize))
+      RouteAction.loadMoreRoutes(this.route(val, this.pageSize, this.pageIndex))
     );
   }
-  route(val: any, pageSize: number, pageIndex?: number) {
+  route(val: any, pageSize: number, pageIndex: number) {
+    pageIndex === 0 ? this.pageIndex = 0 : this.pageIndex++
     return {
-      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip:  pageSize * pageIndex,
       take: pageSize,
       name: val.name.trim(),
       startedAt: val.startedAt,

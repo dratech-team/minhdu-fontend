@@ -80,14 +80,15 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       CustomerAction.loadMoreCustomers(
-        this.customer(val, this.pageSize)
+        this.customer(val, this.pageSize, this.pageIndex)
       )
     );
   }
 
-  customer(val: any, pageSize: number , pageIndex? : number) {
+  customer(val: any, pageSize: number , pageIndex : number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
     return {
-      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip:  pageSize * pageIndex,
       take: this.pageSize,
       resource: val.resource,
       isPotential:

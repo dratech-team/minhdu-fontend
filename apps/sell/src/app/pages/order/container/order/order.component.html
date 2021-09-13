@@ -80,6 +80,8 @@
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
+         [alwaysCallback]='true'
+         [immediateCheck]='true'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
          *ngIf='(orders$| async) as orders'

@@ -44,14 +44,15 @@ export class TablePaymentComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, val));
+    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize,this.pageIndex, val));
     this.paymentService.getPayment().subscribe(val => this.paymentHistories = val);
   }
 
-  paymentHistory(pageSize: number, pageIndex?: number, val?: any): any {
+  paymentHistory(pageSize: number, pageIndex: number, val?: any): any {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
       take: pageSize,
-      skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
+      skip: pageSize * pageIndex,
       customerId: this.customerId
     };
   }

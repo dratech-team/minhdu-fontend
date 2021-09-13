@@ -23,6 +23,7 @@ export class EmployeeComponent implements OnInit {
   employees$ = this.store.pipe(select(selectorAllEmployee));
   pageIndex: number = 1;
   pageSize: number = 30;
+  pageIndexInit = 0;
 
   formGroup = new FormGroup(
     {
@@ -44,11 +45,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({ skip: 0, take: 30 }));
+    this.store.dispatch(EmployeeAction.loadInit({ skip: this.pageSize, take: this.pageIndexInit }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, 30, 0)));
+        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, this.pageSize, this.pageIndexInit)));
       })
     ).subscribe();
   }
@@ -71,9 +72,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   employee(val: any, pageSize: number, pageIndex: number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
     if (val.workedAt) {
       return {
-        skip: pageSize * pageIndex++,
+        skip: pageSize * pageIndex ,
         take: this.pageSize,
         code: val.code,
         name: val.name,
@@ -85,7 +87,7 @@ export class EmployeeComponent implements OnInit {
       };
     } else {
       return {
-        skip: pageSize * pageIndex++,
+        skip: pageSize * pageIndex,
         take: this.pageSize,
         code: val.code,
         name: val.name,

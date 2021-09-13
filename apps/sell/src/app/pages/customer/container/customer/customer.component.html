@@ -92,8 +92,8 @@
     <div class='outer animated fadeIn d-flex'
          infiniteScroll
          [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
+         [alwaysCallback]='true'
          (scrolled)='onScroll()'
          *ngIf='(customers$| async) as customers'
          [ngStyle]="{'width':customers.length ===0 ? header.offsetWidth + 'px': 'auto'}"

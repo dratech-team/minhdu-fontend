@@ -38,6 +38,7 @@ export class PayrollComponent implements OnInit {
   contextMenu!: MatMenuTrigger;
   pageIndex: number = 1;
   pageSize: number = 30;
+  pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
   code?: string;
 
@@ -46,25 +47,26 @@ export class PayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: FormBuilder
   ) {
   }
 
 
   ngOnInit() {
-    this.store.dispatch(PayrollAction.loadInit({ skip: 0, take: 30 }));
+    this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, 30, 0)));
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageIndexInit, this.pageSize)));
       })
     ).subscribe();
   }
 
-  Payroll(val: any, pageSize: number, pageIndex: number) {
+  Payroll(val: any, pageSize: number, pageIndex?: number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     if (val.createdAt) {
       return {
-        skip: pageSize * pageIndex++,
+        skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
         take: this.pageSize,
         code: val.code,
         name: val.name,
@@ -77,7 +79,7 @@ export class PayrollComponent implements OnInit {
       };
     } else {
       return {
-        skip: pageSize * pageIndex++,
+        skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
         take: this.pageSize,
         code: val.code,
         name: val.name,
@@ -92,9 +94,8 @@ export class PayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize)));
   }
-
 
 
   addPayroll($event?: any): void {
@@ -111,10 +112,10 @@ export class PayrollComponent implements OnInit {
   }
 
   updatePayroll(id: number, type: string) {
-      this.dialog.open(UpdateConfirmComponent, {
-        width: '25%',
-        data:{id, type}
-      })
+    this.dialog.open(UpdateConfirmComponent, {
+      width: '25%',
+      data: { id, type }
+    });
   }
 
   addSalary(type: SalaryTypeEnum): any {

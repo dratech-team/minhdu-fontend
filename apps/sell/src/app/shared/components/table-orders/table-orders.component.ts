@@ -42,15 +42,16 @@ export class TableOrdersComponent implements OnInit {
 
   onScroll() {
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(this.pageSize));
+      this.customerService.scrollOrdersAssigned(this.orders(this.pageSize, this.pageIndex));
     } else {
-      this.customerService.scrollOrders(this.orders(this.pageSize));
+      this.customerService.scrollOrders(this.orders(this.pageSize, this.pageIndex));
     }
   }
 
-  orders(pageSize: number, pageIndex?: number): any {
+  orders(pageSize: number, pageIndex: number): any {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
     return {
-      skip: pageIndex === 0 ? pageSize * pageIndex: pageSize * this.pageIndex++,
+      skip: pageSize * pageIndex,
       take: pageSize,
       customerId: this.customerId,
       delivered: this.delivered
