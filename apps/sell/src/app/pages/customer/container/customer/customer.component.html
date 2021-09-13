@@ -90,13 +90,15 @@
       </div>
     </form>
     <div class='outer animated fadeIn d-flex'
-         [ngStyle]="{'min-width': header.offsetWidth + 'px'}"
+
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
-         *ngIf='(customers$| async) as customers'>
+         *ngIf='(customers$| async) as customers'
+         [ngStyle]="{'width':customers.length ===0 ? header.offsetWidth + 'px': 'auto'}"
+    >
       <div class='row-content' *ngFor='let customer of customers' (click)='readAndUpdate(customer)'
            (contextmenu)='child.onContextMenu($event,customer)'>
         <app-mouse-right [type]='pageType.CUSTOMER'

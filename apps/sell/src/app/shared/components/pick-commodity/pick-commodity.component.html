@@ -4,7 +4,7 @@
     <span class='ml-1 font-xl' style='color:#20a8d8;'> Thêm hàng hóa</span>
   </button>
   <div class=' animated fadeIn '  style='overflow-x: scroll '>
-    <form [formGroup]='formGroup' class='header-profile mt-3' >
+    <form [formGroup]='formGroup' #header class='header-profile mt-3' >
       <div class='border-start title-header pick '>
         <div class='title-profile'>Tất cả</div>
         <mat-checkbox class='example-margin mt-2 ml-1 '
@@ -73,12 +73,14 @@
       </div>
     </form>
     <div class='outer example '
-         style='height: 30vh'
+         style='height: 30vh; width: max-content'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
+         [ngStyle]="{
+         }"
     >
       <div class='row-content' *ngFor='let commodity of commodities'
            (contextmenu)='child.onContextMenu($event,commodity)'>
@@ -109,10 +111,13 @@
         <div class='content-profile  default ' *ngIf='commodity?.unit === commodityUnit.CON'> Con</div>
       </div>
       <div *ngIf='!commodities || commodities.length === 0 ' style='height: 150px'
-           class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl d-flex align-items-center'>
+           [ngStyle]="{'width':header.offsetWidth+'px'}"
+           class='d-flex justify-content-center align-items-center'
+      >
+        <span class='font-xl m-auto'
+        >
           Hiện chưa có hàng hóa nào!
-        </div>
+        </span>
       </div>
     </div>
   </div>

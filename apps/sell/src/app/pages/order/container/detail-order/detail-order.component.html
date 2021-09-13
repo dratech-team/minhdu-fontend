@@ -122,7 +122,7 @@
               </th>
             </tr>
             <tr *ngIf='order.commodities.length === 0'  class='font-lg my-4' >
-              <td colspan='8' class='text-center font-weight-bold'> Hiện chưa có hàng hóa nào!</td>
+              <td colspan='8' class='text-center check-content'> Hiện chưa có hàng hóa nào!</td>
             </tr>
           </table>
         </div>
@@ -148,8 +148,8 @@
             <th class='text-center pointer'> {{route.garage}} </th>
             <th class='text-center pointer'> {{route.bsx}}</th>
           </tr>
-          <tr *ngIf='order.routes.length === 0'  class='font-lg my-4' >
-            <td colspan='6' class='text-center font-weight-bold'> Hiện chưa có tuyến đường nào!</td>
+          <tr *ngIf='!order.routes||order.routes.length === 0'  class='font-lg my-4' >
+            <td colspan='6' class='text-center check-content'> Hiện chưa có tuyến đường nào!</td>
           </tr>
         </table>
 <!--       <app-route-order ></app-route-order>-->

@@ -18,6 +18,9 @@
         <td class='text-center' *ngIf='paymentHistory.payType === "CASH"'> Tiền mặt </td>
         <td class='text-center'> {{paymentHistory.note}} </td>
       </tr>
+      <tr *ngIf='!paymentHistories|| paymentHistories.length === 0'>
+        <td colspan='5' class='text-center check-content'> Chưa có lịch sử thanh toán nào! </td>
+      </tr>
 
     </table>
   </div>

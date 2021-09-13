@@ -44,6 +44,7 @@ export class RouteComponent implements OnInit {
       this.routes = JSON.parse(JSON.stringify(val))
       this.routes.forEach(item => {
         item.endedAt = new Date(item.endedAt)
+        console.log(item.endedAt.getTime() > this.today)
       })
     })
     const btnRoute = document.getElementById('route');

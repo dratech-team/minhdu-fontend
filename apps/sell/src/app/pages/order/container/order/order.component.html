@@ -77,13 +77,13 @@
       </div>
     </form>
     <div class='outer  animated fadeIn d-flex'
-         [ngStyle]="{'min-width': header.offsetWidth+'px'}"
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
          *ngIf='(orders$| async) as orders'
+         [ngStyle]="{'width':orders.length ===0 ? header.offsetWidth + 'px': 'auto'}"
     >
 
       <div class='row-content' *ngFor='let order of orders' (contextmenu)='child.onContextMenu($event,order)'>

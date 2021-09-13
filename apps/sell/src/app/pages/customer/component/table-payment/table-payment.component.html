@@ -40,14 +40,13 @@
 
     <div class='  animated fadeIn'
          style='width: 101.5%;
-         max-height: 32vh;
-          overflow-y: scroll;
-          '
+         max-height: 32vh;'
          infiniteScroll
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
          (scrolled)='onScroll()'
+         [ngStyle]="{'overflow':!paymentHistories ||paymentHistories.length === 0?'hidden': 'scroll'}"
     >
       <div class='row-content' *ngFor='let paymentHistory of paymentHistories'>
         <div class='content-profile col-2 pointer ' >
