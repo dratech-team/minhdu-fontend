@@ -69,7 +69,7 @@ export class PickCustomerComponent implements OnInit {
     return {
       skip: pageSize * pageIndex,
       take: pageSize,
-      name: val.name.trim(),
+      customer: val.name.trim(),
       customerType: val.type,
       resource: val.resource
     };
