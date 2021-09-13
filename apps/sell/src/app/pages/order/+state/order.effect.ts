@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
 import { Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { CommodityAction } from '../../commodity/+state/commodity.action';
 
 
 @Injectable()
@@ -26,6 +27,7 @@ export class OrderEffect {
             panelClass: ['background-snackbar']
           });
         }),
+        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))
     ));
@@ -85,15 +87,19 @@ export class OrderEffect {
               case 'DELIVERED':
                 return OrderAction.loadInit({ take: 30, skip: 0 });
               case 'HIDE_DEBT':
-                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE});
+                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE });
               default:
                 return OrderAction.getOrder({ id: props.id });
             }
           }
         ),
         catchError((err) => {
-          if(props.typeUpdate === 'HIDE_DEBT'){
-            this.store.dispatch(OrderAction.loadOrdersAssigned({ take:30, skip:0, delivered: this.convertBoolean.TRUE}))
+          if (props.typeUpdate === 'HIDE_DEBT') {
+            this.store.dispatch(OrderAction.loadOrdersAssigned({
+              take: 30,
+              skip: 0,
+              delivered: this.convertBoolean.TRUE
+            }));
           }
           return throwError(err);
         }))
@@ -124,7 +130,7 @@ export class OrderEffect {
     private snackBar: MatSnackBar,
     private readonly action: Actions,
     private readonly orderService: OrderService,
-    private readonly  store: Store,
+    private readonly store: Store
   ) {
   }
 }
