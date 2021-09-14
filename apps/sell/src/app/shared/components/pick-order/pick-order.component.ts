@@ -50,8 +50,9 @@ export class PickOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.orders.forEach(val => val.isSelect = this.isSelectAll)
     if (this.orderIdsOfRoute) {
-      this.orderIds = this.orderIdsOfRoute;
+        this.orderIds = this.orderIdsOfRoute;
     }
     if (this?.data?.orders$) {
       this.data.orders$.subscribe(
@@ -90,7 +91,8 @@ export class PickOrderComponent implements OnInit {
 
   assignIsSelect() {
     this.service.getOrders().subscribe(val => {
-      this.orders = JSON.parse(JSON.stringify(val));
+      const ordersScroll = JSON.parse(JSON.stringify(val));
+      this.orders.concat(ordersScroll);
       this.orders.forEach(val => {
         if (this.orderIds.includes(val.id)) {
           Object.assign(val, { isSelect: true });
@@ -98,9 +100,9 @@ export class PickOrderComponent implements OnInit {
           Object.assign(val, { isSelect: this.isSelectAll });
         }
       });
+      console.log(this.orders)
     });
   }
-
 
   updateAllSelect(id: number) {
     const index = this.orderIds.indexOf(id);

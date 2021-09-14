@@ -26,7 +26,6 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val.id));
     this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
     this.orders$.subscribe(val => {
@@ -37,7 +36,6 @@ export class RouteDialogComponent implements OnInit {
         } else {
           Object.assign(val, { isSelect: false });
         }
-
       });
     });
 

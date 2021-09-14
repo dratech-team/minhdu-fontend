@@ -22,7 +22,8 @@ export class StakedVerticalChartComponent implements OnChanges {
 
   ngOnChanges() {
     this.data = this.chartService.editNameChart(this.data);
-    this.width = this.chartService.fixWithChartColumn(this.data);
+    this.width = this.chartService.fixWithChartColumn(this.data)
+
   }
 
   constructor(

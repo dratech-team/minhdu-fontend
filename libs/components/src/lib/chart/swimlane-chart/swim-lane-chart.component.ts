@@ -21,7 +21,7 @@ export class SwimLaneChartComponent implements OnInit {
 
   ngOnInit() {
     this.data = this.chartService.editNameChart(this.data);
-    this.width = this.chartService.fixWithChartMultiColumn(this.data);
+    this.width = this.chartService.fixWithChartColumn(this.data);
   }
 
   constructor(
