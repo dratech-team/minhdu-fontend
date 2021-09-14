@@ -83,6 +83,7 @@
       </mat-tab>
       <mat-tab class='col-12 ' label='Chọn đơn hàng'>
         <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute' [orders]='orders'
+                        (selectAllEvent)='pickAllOrder($event)'
                         (checkEvent)='pickOrders($event)'></app-pick-order>
       </mat-tab>
     </mat-tab-group>

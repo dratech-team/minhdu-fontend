@@ -5,7 +5,6 @@ import { OrderAction } from '../../../pages/order/+state/order.action';
 
 @Injectable({providedIn: 'root'})
 export class PickOrderService {
-  orders$ = this.store.pipe(select(selectorAllOrders))
   constructor(
     private readonly store: Store,
   ) {
@@ -15,8 +14,5 @@ export class PickOrderService {
   }
   searchOrder(val: any){
     this.store.dispatch(OrderAction.loadInit(val))
-  }
-  getOrders() {
-    return this.orders$
   }
 }

@@ -16,7 +16,7 @@ export class RouteDialogComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorAllOrders));
   orders: Order[] = [];
   orderIdsOfRoute: number[] = [];
-
+  isSelectAll = false
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -35,6 +35,14 @@ export class RouteDialogComponent implements OnInit {
           Object.assign(val, { isSelect: true });
         } else {
           Object.assign(val, { isSelect: false });
+        }
+        if(this.isSelectAll){
+          val.isSelect = this.isSelectAll
+          this.orderIdsOfRoute = []
+          this.orderIdsOfRoute.push(val.id)
+          console.log(this.orderIdsOfRoute)
+        }else {
+          this.orderIdsOfRoute = []
         }
       });
     });
@@ -72,5 +80,10 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }
+  }
+
+  pickAllOrder($event : boolean) {
+    this.isSelectAll = $event
+    console.log(this.isSelectAll)
   }
 }

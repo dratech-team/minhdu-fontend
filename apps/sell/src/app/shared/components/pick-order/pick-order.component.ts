@@ -22,6 +22,7 @@ export class PickOrderComponent implements OnInit {
   @Input() orderIdsOfRoute!: number[];
   @Input() customerId!: number;
   @Output() checkEvent = new EventEmitter<number[]>();
+  @Output() selectAllEvent = new EventEmitter<boolean>()
   @Output() checkEventPickOne = new EventEmitter<number>();
   orderId!: number;
   paidType = PaidType;
@@ -50,9 +51,8 @@ export class PickOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orders.forEach(val => val.isSelect = this.isSelectAll)
     if (this.orderIdsOfRoute) {
-        this.orderIds = this.orderIdsOfRoute;
+      this.orderIds = this.orderIdsOfRoute;
     }
     if (this?.data?.orders$) {
       this.data.orders$.subscribe(
@@ -64,21 +64,19 @@ export class PickOrderComponent implements OnInit {
       tap((value) => {
         const val = this.formGroup.value;
         this.service.searchOrder(this.order(val, this.pageSize, this.pageIndexInit));
-        this.assignIsSelect();
       })
     ).subscribe();
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollOrder(this.order(val, this.pageSize,this.pageIndex));
-    this.assignIsSelect();
+    this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
   }
 
   order(val: any, pageSize: number, pageIndex: number) {
     pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip:  pageSize * pageIndex,
+      skip: pageSize * pageIndex,
       take: pageSize,
       customerId: this?.customerId,
       customer: val.name.trim(),
@@ -89,24 +87,8 @@ export class PickOrderComponent implements OnInit {
     };
   }
 
-  assignIsSelect() {
-    this.service.getOrders().subscribe(val => {
-      const ordersScroll = JSON.parse(JSON.stringify(val));
-      this.orders.concat(ordersScroll);
-      this.orders.forEach(val => {
-        if (this.orderIds.includes(val.id)) {
-          Object.assign(val, { isSelect: true });
-        } else {
-          Object.assign(val, { isSelect: this.isSelectAll });
-        }
-      });
-      console.log(this.orders)
-    });
-  }
-
   updateAllSelect(id: number) {
     const index = this.orderIds.indexOf(id);
-
     if (index > -1) {
       this.orderIds.splice(index, 1);
     } else {
@@ -127,9 +109,6 @@ export class PickOrderComponent implements OnInit {
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    if (this.orders == null) {
-      return;
-    }
     this.orderIds = [];
     this.orders?.forEach(order => {
         order.isSelect = select;
@@ -138,6 +117,7 @@ export class PickOrderComponent implements OnInit {
         }
       }
     );
+    this.selectAllEvent.emit(this.isSelectAll)
     this.checkEvent.emit(this.orderIds);
   }
 
@@ -148,6 +128,7 @@ export class PickOrderComponent implements OnInit {
         this.orderId = parseInt(pickOrder[i].value);
       }
     }
+
     this.checkEventPickOne.emit(this.orderId);
   }
 
