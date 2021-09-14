@@ -70,12 +70,18 @@ export class PickCommodityComponent implements OnInit {
         } else {
           e.isSelect = this.isSelectAll;
         }
+        if(this.isSelectAll){
+          this.commodityIds = []
+          this.commodityIds.push(e.id)
+        }else{
+          this.commodityIds = []
+        }
       });
     });
   }
 
   deleteCommodity($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '35%' });
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
