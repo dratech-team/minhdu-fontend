@@ -73,7 +73,7 @@ export class RouteComponent implements OnInit {
     );
   }
   route(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 0 : this.pageIndex++
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
     return {
       skip:  pageSize * pageIndex,
       take: pageSize,
