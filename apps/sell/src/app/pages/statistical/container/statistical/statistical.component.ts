@@ -115,17 +115,18 @@ export class StatisticalComponent implements OnInit {
               this.exportService.print(Api.STATISTICAL_PROVINCE_PRINT, value);
             }
         }
+        switch (val.type) {
+          case this.statisticalYType.CUSTOMER:
+            this.labelY = 'Khách hàng';
+            break;
+          case this.statisticalYType.REVENUE:
+            this.labelY = 'Doanh thu';
+            break;
+          default:
+            this.labelY = 'Số lượng';
+        }
       }
-      switch (val.type) {
-        case this.statisticalYType.CUSTOMER:
-          this.labelY = 'Khách hàng';
-          break;
-        case this.statisticalYType.REVENUE:
-          this.labelY = 'Doanh thu';
-          break;
-        default:
-          this.labelY = 'Số lượng';
-      }
+
     });
   }
 
