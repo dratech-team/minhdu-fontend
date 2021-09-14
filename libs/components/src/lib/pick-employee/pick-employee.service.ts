@@ -5,20 +5,24 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class PickEmployeeService {
-  employees$ = this.store.pipe(select(selectorAllEmployee))
-  employees: Employee[] = []
+  employees$ = this.store.pipe(select(selectorAllEmployee));
+
   constructor(private readonly store: Store) {
   }
-  onInit(){
-    this.store.dispatch(EmployeeAction.loadInit({take:30, skip: 0}))
+
+  onInit() {
+    this.store.dispatch(EmployeeAction.loadInit({ take: 30, skip: 0 }));
   }
-  scrollEmployee( val: any){
+
+  scrollEmployee(val: any) {
     this.store.dispatch(EmployeeAction.loadMoreEmployees(val));
   }
-  searchEmployees(val: any){
-    this.store.dispatch(EmployeeAction.loadInit(val))
+
+  searchEmployees(val: any) {
+    this.store.dispatch(EmployeeAction.loadInit(val));
   }
+
   Employees() {
-    return this.employees$
-   }
+    return this.employees$;
+  }
 }

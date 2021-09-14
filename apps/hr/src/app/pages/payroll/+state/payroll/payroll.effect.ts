@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { confirmPayroll, PayrollAction } from './payroll.action';
+import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
+import { props } from '@ngrx/store';
 
 @Injectable()
 export class PayrollEffect {
@@ -39,8 +40,8 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) => this.salaryService.addOne(props.salary).pipe(
-        map(_ => props.payrollId?PayrollAction.getPayroll({id:props.payrollId}):
-          PayrollAction.loadInit({take:30, skip: 0})
+        map(_ => props.payrollId ? PayrollAction.getPayroll({ id: props.payrollId }) :
+          PayrollAction.loadInit({ take: 30, skip: 0 })
         ),
         catchError((err) => throwError(err))
       ))
@@ -67,22 +68,21 @@ export class PayrollEffect {
   confirmPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.confirmPayroll),
-      switchMap((props) =>  this.payrollService.update(props.id, props.Payroll).pipe(
-        map(() => PayrollAction.loadInit({ take:30, skip: 0 })),
+      switchMap((props) => this.payrollService.update(props.id, props.Payroll).pipe(
+        map(() => PayrollAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
         )
       )
     ));
 
 
-
   updateSalary$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.updateSalary),
       switchMap((props) => this.salaryService.update(props.id, props.salary).pipe(
-        map(() => PayrollAction.getPayroll({ id: props.payrollId })),
-        catchError((err) => throwError(err))
-      ))
+        map(_ => PayrollAction.getPayroll({ id: props.payrollId }))
+      )),
+      catchError((err) => throwError(err))
     ));
 
   deletePayroll$ = createEffect(() =>

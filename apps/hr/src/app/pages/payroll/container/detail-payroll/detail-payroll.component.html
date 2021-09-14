@@ -47,8 +47,11 @@
           </div>
           <div class='col'>
             <div class='row justify-content-center'> Ngày làm việc thực tế</div>
-            <div class='row content-title'>
+            <div class='row content-title' *ngIf='payroll.payslip?.actualDay'>
               {{payroll.payslip?.actualDay}}
+            </div>
+            <div class='row content-title' *ngIf='!payroll.payslip?.actualDay'>
+             0
             </div>
           </div>
           <div class='col'>

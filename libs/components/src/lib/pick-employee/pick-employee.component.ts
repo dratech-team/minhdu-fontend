@@ -18,6 +18,7 @@ export class PickEmployeeComponent implements OnInit {
   type = SalaryTypeEnum;
   pageIndex: number = 1;
   pageSize: number = 30;
+  pageIndexInit = 0;
   isSelectAll: boolean = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
@@ -44,9 +45,10 @@ export class PickEmployeeComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
+        this.pageIndex = 1;
         const search = {
-          skip: 0,
-          take: 30,
+          skip: this.pageIndexInit,
+          take: this.pageSize,
           code: val.code,
           name: val.name,
           branch: val.branch
@@ -60,12 +62,13 @@ export class PickEmployeeComponent implements OnInit {
   onScroll() {
     const value = this.formGroup.value;
     const val = {
-      skip: this.pageSize * this.pageIndex++,
+      skip: this.pageSize * this.pageIndex,
       take: this.pageSize,
       code: value.code,
       name: value.name,
       position: value.position
     };
+    this.pageIndex ++
     this.service.scrollEmployee(val);
     this.assignIsSelect();
   }

@@ -26,11 +26,10 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-  console.log(this.role)
     if(!this.role){
-
       this.router.navigate(['/']).then();
     }
+    console.log(this.role)
   }
 
   showFiller = false;

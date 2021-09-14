@@ -8,7 +8,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
-import { DatePipe, } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { DatePipe, } from '@angular/common';
   styleUrls: ['salary.component.scss']
 })
 export class SalaryComponent implements OnInit {
-  numberChars = new RegExp('[^0-9]', 'g')
+  numberChars = new RegExp('[^0-9]', 'g');
   employeeIds: number[] = [];
   price!: number;
   title!: string;
@@ -38,7 +38,6 @@ export class SalaryComponent implements OnInit {
   selected = 'ALLOWANCE';
 
   ngOnInit(): void {
-
     if (this.data.type === this.type.OVERTIME) {
       this.store.dispatch(TemplateOvertimeAction.loadAllTempLate());
     }
@@ -54,11 +53,11 @@ export class SalaryComponent implements OnInit {
       times: [this.data?.salary?.times ? this.data?.salary?.times : undefined, Validators.required],
       datetime: [
         this.datePipe.transform(
-          this?.data?.salary?.datetime,'yyyy-MM-dd')
-        ,Validators.required],
+          this?.data?.salary?.datetime, 'yyyy-MM-dd')
+        , Validators.required],
       forgot: [this?.data?.salary?.forgot, Validators.required],
       note: [this?.data?.salary?.note, Validators.required],
-      createdAt: [this.data?.salary?.createdAt, Validators.required],
+      createdAt: [this.data?.salary?.createdAt, Validators.required]
     });
   }
 
@@ -68,10 +67,9 @@ export class SalaryComponent implements OnInit {
 
   onSubmit(): any {
     const value = this.formGroup.value;
-
     return {
       update: !!this.data.salary,
-      data:{
+      data: {
         title: value.title === '' && value.type === this.type.BASIC_ISNURANCE ? 'Lương cơ bản trước bảo hiểm' :
           value.title === '' && value.type === this.type.BASIC ? 'Lương cơ bản' :
             value.title === '' && value.type === this.type.OVERTIME ? this.title :
@@ -79,16 +77,16 @@ export class SalaryComponent implements OnInit {
                 value.title === '' && this.data.type === this.type.LATE ? 'Đi trễ' :
                   value.title,
         price: this.data.type === this.type.OVERTIME ? this.price :
-         typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
+          typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         type: value.type === null ? this.type.ABSENT : value.type,
         rate: value.rate,
-        times: value.times? value.times: undefined ,
-        datetime: value.datetime? new Date(value.datetime): undefined ,
-        forgot: value.forgot? value.forgot:undefined,
+        times: value.times ? value.times : undefined,
+        datetime: value.datetime ? new Date(value.datetime) : undefined,
+        forgot: value.forgot ? value.forgot : undefined,
         note: value.note,
-        unit: value.unit? value.unit: undefined,
-        employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined ,
-        payrollId: this?.data?.payroll?.id? this.data.payroll.id: undefined,
+        unit: value.unit ? value.unit : undefined,
+        employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
+        payrollId: this?.data?.payroll?.id ? this.data.payroll.id : undefined
       }
     };
   }
