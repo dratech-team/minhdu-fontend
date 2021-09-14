@@ -32,7 +32,6 @@ export const selectorAllOrdersAssigned = createSelector(
 export const selectorOrdersAssignedById = (id: number) => createSelector(
   selectorAllOrdersAssigned,
   (OrdersAssigned) =>{
-    console.log(id)
     const result:Order[] = []
     OrdersAssigned.forEach(item => {
       if(item.customerId == id){
@@ -59,6 +58,19 @@ export const selectorOrdersNotAssignedById = (id: number) => createSelector(
 export const selectorAllOrders = createSelector(
   selectorOrderState,
   fromOrder.selectAll,
+);
+
+export const selectorOrdersByCustomerId = (customerId: number) => createSelector(
+  selectorAllOrders,
+  (orderEntities) => {
+    const result: Order[] = []
+    orderEntities.forEach(val =>{
+       if(val.customerId == customerId){
+         result.push(val)
+       }
+    })
+    return result
+  }
 );
 
 export const selectorCurrentOrder = (id: number)  =>createSelector(
