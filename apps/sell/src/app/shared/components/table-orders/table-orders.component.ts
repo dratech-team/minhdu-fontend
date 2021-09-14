@@ -72,11 +72,11 @@ export class TableOrdersComponent implements OnInit {
       typeUpdate: 'HIDE_DEBT'
     }));
   }
-  deleteOrder(orderId: number){
+  deleteOrder(order: Order){
     const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'})
     ref.afterClosed().subscribe(val => {
       if(val){
-        this.store.dispatch(OrderAction.deleteOrder({id: orderId}))
+        this.store.dispatch(OrderAction.deleteOrder({id: order.id,customerId: order.customerId }))
       }
     })
   }

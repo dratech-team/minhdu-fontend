@@ -75,7 +75,7 @@ export const payment = createAction(
 
 export const deleteOrder = createAction(
   '[DELETE_ORDER] Delete Order',
-  props<{ id: number }>()
+  props<{ id: number, customerId?: number }>()
 );
 export const loadOrdersAssigned = createAction(
   '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',

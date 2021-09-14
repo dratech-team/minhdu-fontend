@@ -9,6 +9,7 @@ import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-succe
 import { Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
+import { CustomerAction } from '../../customer/+state/customer/customer.action';
 
 
 @Injectable()
@@ -120,7 +121,13 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.deleteOrder),
       switchMap((props) => this.orderService.delete(props.id).pipe(
-        map((_) => OrderAction.loadInit({ take: 30, skip: 0 })),
+        map((_) =>
+        {
+          if(props.customerId){
+            CustomerAction.getCustomer({id: props.customerId})
+          }
+            return  OrderAction.loadInit({ take: 30, skip: 0 })
+        } ),
         catchError((err) => throwError(err))
         )
       )

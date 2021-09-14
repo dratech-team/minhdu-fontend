@@ -95,7 +95,7 @@
         <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
       </div>
       <div *ngIf='!delivered' class='content-profile cancel pointer'>
-        <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order.id)'>Hủy</button>
+        <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order)'>Hủy</button>
       </div>
     </div>
     <div *ngIf='!orders || orders.length === 0 ' style='height: 150px'
