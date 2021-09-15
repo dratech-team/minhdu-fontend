@@ -10,6 +10,15 @@ export class TableOrderCustomerService {
     private readonly store: Store,
   ) {
   }
+
+  searchOrders(val: any){
+    this.store.dispatch(OrderAction.loadInit(val));
+  }
+
+  searchOrdersAssigned(val: any){
+    this.store.dispatch(OrderAction.loadOrdersAssigned(val));
+  }
+
   scrollOrders(val: any){
     this.store.dispatch(OrderAction.loadMoreOrders(val));
   }

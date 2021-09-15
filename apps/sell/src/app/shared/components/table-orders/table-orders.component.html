@@ -3,14 +3,14 @@
     <div class='border-start title-header default'>
       <div class='title-profile'>Ngày tạo</div>
       <input
-        [disabled]='true'
+        formControlName='createdAt'
         class='form-control input-profile '
         type='date'>
     </div>
     <div class='border-start title-header address-customer'>
       <div class='title-profile'>Điểm đến</div>
       <input
-        [disabled]='true'
+        formControlName='destination'
         class='form-control input-profile '
         type='text'>
     </div>
@@ -33,12 +33,12 @@
       <input
         [disabled]='true'
         class='form-control input-profile '
-        type='number'>
+        type='date'>
     </div>
     <div *ngIf='!delivered' class='border-start title-header  explain-order'>
       <div class='title-profile'>Diễn giải</div>
       <input
-        [disabled]='true'
+        formControlName='explain'
         class='form-control input-profile '
         type='number'>
     </div>
