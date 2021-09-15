@@ -32,7 +32,6 @@ export class PickLocationComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    console.log(this.data)
     this.reload$?.subscribe(val => {
       if(val){
         this.formGroup.reset()
@@ -42,13 +41,22 @@ export class PickLocationComponent implements OnInit {
     if(this.data){
       this.store.dispatch(DistrictAction.loadAllDistricts());
       this.store.dispatch(WardAction.loadAllWards());
+      if(this.data?.ward){
+        this.store.pipe(select(selectDistrictByProvinceId(
+          this?.data?.ward?.district?.province?.id
+        ))).subscribe(val => this.districts = val);
+        this.store.pipe(select(selectorWardByDistrictId(
+          this?.data?.ward?.district?.id
+        ))).subscribe(val => this.wards = val);
+      }else{
+        this.store.pipe(select(selectDistrictByProvinceId(
+          this?.data?.destination?.district?.province?.id
+        ))).subscribe(val => this.districts = val);
+        this.store.pipe(select(selectorWardByDistrictId(
+          this?.data?.destination?.district?.id
+        ))).subscribe(val => this.wards = val);
+      }
     }
-    this.store.pipe(select(selectDistrictByProvinceId(
-      this?.data?.ward?.district?.province?.id
-    ))).subscribe(val => this.districts = val);
-     this.store.pipe(select(selectorWardByDistrictId(
-      this?.data?.ward?.district?.id
-    ))).subscribe(val => this.wards = val);
     this.formGroup = <FormGroup>this.controlContainer.control;
   }
 
