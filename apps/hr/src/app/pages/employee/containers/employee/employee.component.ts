@@ -6,7 +6,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
-import { Gender, SearchEmployeeType } from '@minhdu-fontend/enums';
+import { ConvertBoolean, FlatSalary, Gender, SearchEmployeeType } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
@@ -17,6 +17,8 @@ import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 export class EmployeeComponent implements OnInit {
   searchType = SearchEmployeeType;
   genderType = Gender;
+  flatSalary = FlatSalary;
+  convertBoolean = ConvertBoolean;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -33,7 +35,8 @@ export class EmployeeComponent implements OnInit {
       position: new FormControl(''),
       department: new FormControl(''),
       branch: new FormControl(''),
-      workedAt: new FormControl('')
+      workedAt: new FormControl(''),
+      flatSalary: new FormControl('')
     }
   );
 
@@ -45,7 +48,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({ skip: this.pageSize, take: this.pageIndexInit }));
+    this.store.dispatch(EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
@@ -72,10 +75,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   employee(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     if (val.workedAt) {
       return {
-        skip: pageSize * pageIndex ,
+        skip: pageSize * pageIndex,
         take: this.pageSize,
         code: val.code,
         name: val.name,
@@ -83,7 +86,11 @@ export class EmployeeComponent implements OnInit {
         position: val.position,
         department: val.department,
         branch: val.branch,
-        workedAt: val.workedAt.toString()
+        workedAt: val.workedAt.toString(),
+        isFlatSalary:
+          val.flatSalary === this.flatSalary.FLAT_SALARY? this.convertBoolean.TRUE:
+            val.flatSalary === this.flatSalary.NOT_FLAT_SALARY? this.convertBoolean.FALSE:
+              val.flatSalary,
       };
     } else {
       return {
@@ -94,7 +101,11 @@ export class EmployeeComponent implements OnInit {
         gender: val.gender,
         position: val.position,
         department: val.department,
-        branch: val.branch
+        branch: val.branch,
+        isFlatSalary:
+          val.flatSalary === this.flatSalary.FLAT_SALARY? this.convertBoolean.TRUE:
+            val.flatSalary === this.flatSalary.NOT_FLAT_SALARY? this.convertBoolean.FALSE:
+              val.flatSalary,
       };
     }
   }

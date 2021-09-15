@@ -6,14 +6,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
-import { District, Nation, Province, Ward } from '@minhdu-fontend/data-models';
+import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import {
-  selectAllNation,
   selectDistrictByProvinceId,
   selectorWardByDistrictId,
   selectProvincesByNationId
 } from '@minhdu-fontend/location';
-import { NationAction } from 'libs/location/src/lib/+state/nation/nation.action';
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
@@ -31,7 +29,6 @@ import { CommodityAction } from '../../../commodity/+state/commodity.action';
 export class OrderDialogComponent implements OnInit {
   customers$ = this.store.pipe(select(selectorAllCustomer));
   commodities$ = this.store.pipe(select(selectAllCommodity));
-  nations$ = this.store.pipe(select(selectAllNation));
   provinces$ = this.store.pipe(select(selectProvincesByNationId(
     this?.data?.order?.destination?.district?.province?.nation?.id
   )));
@@ -41,14 +38,12 @@ export class OrderDialogComponent implements OnInit {
   wards$ = this.store.pipe(select(selectorWardByDistrictId(
     this?.data?.order?.destination?.district?.id
   )));
-  numberChars = new RegExp('[^0-9]', 'g');
   payType = PaymentType;
   formGroup!: FormGroup;
   routes: number[] = [];
   customers: Customer[] = [];
   commodities: Commodity[] = [];
   commodityIds: number[] = [];
-  provinces?: Province [];
   districts?: District [];
   wards?: Ward [];
 
@@ -61,31 +56,31 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data.type)
+    console.log(this.data?.order?.deliveredAt);
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
-    this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.store.dispatch(DistrictAction.loadAllDistricts());
     this.store.dispatch(WardAction.loadAllWards());
     if (this.data) {
-      this.provinces$.subscribe(val => this.provinces = val);
       this.districts$.subscribe(val => this.districts = val);
       this.wards$.subscribe(val => this.wards = val);
     }
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(
-        this?.data?.order?.createdAt, 'yyyy-MM-dd')
+        this.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
 
-      deliveredAt: [Validators.required],
-      explain: [this?.data?.order?.explain, Validators.required],
-      nation: [this?.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
-      province: [this?.data?.order?.destination?.district?.province?.id, Validators.required],
-      district: [this?.data?.order?.destination?.district?.id, Validators.required],
-      ward: [this?.data?.order?.destination.id, Validators.required]
+      deliveredAt:  [this.datePipe.transform(
+        this.data?.order?.deliveredAt, 'yyyy-MM-dd')
+        , Validators.required],
+      explain: [this.data?.order?.explain],
+      nation: [this.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
+      province: [this.data?.order?.destination?.district?.province?.id, Validators.required],
+      district: [this.data?.order?.destination?.district?.id, Validators.required],
+      ward: [this.data?.order?.destination?.id, Validators.required]
     });
   }
 
@@ -99,11 +94,7 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
-      this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id , typeUpdate: this.data.type}));
-  }
-
-  onNation(nation: Nation) {
-    this.provinces = nation.provinces;
+    this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id, typeUpdate: this.data.type }));
   }
 
   onProvince(province: Province) {

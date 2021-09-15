@@ -124,9 +124,11 @@ export class OrderEffect {
         map((_) =>
         {
           if(props.customerId){
-            CustomerAction.getCustomer({id: props.customerId})
+            this.store.dispatch(CustomerAction.getCustomer({id:props.customerId}))
+          return  OrderAction.loadInit({ take: 30, skip: 0, customerId:props.customerId})
+          }else{
+            return  OrderAction.loadInit({ take: 30, skip: 0})
           }
-            return  OrderAction.loadInit({ take: 30, skip: 0 })
         } ),
         catchError((err) => throwError(err))
         )

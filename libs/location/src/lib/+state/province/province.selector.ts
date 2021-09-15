@@ -8,7 +8,7 @@ export const SelectorProvinceState = createFeatureSelector<ProvinceState>(
   FeatureName.PROVINCE
 )
 export const getSelectedProvinceId = (state: Province) => state.id
-export const getAllProvince = createSelector(
+export const selectAllProvince = createSelector(
   SelectorProvinceState,
   fromProvince.selectAll
 )
@@ -17,7 +17,7 @@ export const selectorProvinceEntities = createSelector(
   fromProvince.selectEntities
 )
 export const selectProvincesByNationId = (nationId : number) => createSelector(
-  getAllProvince,
+  selectAllProvince,
   (provinceEntities) =>  provinceEntities.filter(province => province.nationId === nationId)
 )
 export const selectProvinceById = (id : number) => createSelector(
