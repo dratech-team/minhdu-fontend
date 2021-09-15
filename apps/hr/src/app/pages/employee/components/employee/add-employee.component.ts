@@ -51,51 +51,51 @@ export class AddEmployeeComponent implements OnInit {
     this.departments$.subscribe(val => this.departments = val);
     this.positions$.subscribe(val => this.positions = val);
     this.formGroup = this.formBuilder.group({
-      identify: [this?.data?.employee?.identify, Validators.required],
-      issuedBy: [this?.data?.employee?.issuedBy, Validators.required],
-      birthplace: [this?.data?.employee?.birthplace, Validators.required],
+      identify: [this.data?.employee?.identify, Validators.required],
+      issuedBy: [this.data?.employee?.issuedBy, Validators.required],
+      birthplace: [this.data?.employee?.birthplace, Validators.required],
       idCardAt: [
         this.datePipe.transform(
           this?.data?.employee?.idCardAt, 'yyyy-MM-dd'
         )
         , Validators.required],
-      email: [this?.data?.employee?.email, Validators.required],
-      phone: [this?.data?.employee?.phone, Validators.required],
-      note: [this?.data?.employee.note, Validators.required],
+      email: [this.data?.employee?.email],
+      phone: [this.data?.employee?.phone, Validators.required],
+      note: [this.data?.employee.note],
       workedAt: [
         this.datePipe.transform(
-          this?.data?.employee?.workedAt, 'yyyy-MM-dd'
+          this.data?.employee?.workedAt, 'yyyy-MM-dd'
         )
         , Validators.required],
       createdAt: [
         this.datePipe.transform(
-          this?.data?.employee?.createdAt, 'yyyy-MM-dd'
+          this.data?.employee?.createdAt, 'yyyy-MM-dd'
         )
         , Validators.required],
-      isFlatSalary: [this?.data?.employee?.isFlatSalary ?
+      isFlatSalary: [this.data?.employee?.isFlatSalary ?
         this.flatSalary.FLAT_SALARY :
         this.flatSalary.NOT_FLAT_SALARY
         , Validators.required],
-      firstName: [this?.data?.employee?.firstName, Validators.required],
-      lastName: [this?.data?.employee?.lastName, Validators.required],
-      address: [this?.data?.employee?.address, Validators.required],
+      firstName: [this.data?.employee?.firstName, Validators.required],
+      lastName: [this.data?.employee?.lastName, Validators.required],
+      address: [this.data?.employee?.address, Validators.required],
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
         this.datePipe.transform(
           this?.data?.employee?.birthday, 'yyyy-MM-dd'
         )
         , Validators.required],
-      branch: [this?.data?.employee?.position.department?.branch?.id, Validators.required],
-      department: [this?.data?.employee?.position?.department.id, Validators.required],
-      position: [this?.data?.employee?.position.id, Validators.required],
-      ward: [this?.data?.employee?.ward?.id, Validators.required],
-      district: [this?.data?.employee?.ward?.district?.id, Validators.required],
-      province: [this?.data?.employee?.ward?.district?.province?.id, Validators.required],
-      nation: [this?.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
-      ethnicity: [this?.data?.employee?.ethnicity, Validators.required],
-      religion: [this?.data?.employee?.religion, Validators.required],
-      facebook: [this?.data?.employee?.facebook, Validators.required],
-      zalo: [this?.data?.employee?.zalo, Validators.required]
+      branch: [this.data?.employee?.position.department?.branch?.id, Validators.required],
+      department: [this.data?.employee?.position?.department.id, Validators.required],
+      position: [this.data?.employee?.position.id, Validators.required],
+      ward: [this.data?.employee?.ward?.id, Validators.required],
+      district: [this.data?.employee?.ward?.district?.id, Validators.required],
+      province: [this.data?.employee?.ward?.district?.province?.id, Validators.required],
+      nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
+      ethnicity: [this.data?.employee?.ethnicity, Validators.required],
+      religion: [this.data?.employee?.religion, Validators.required],
+      facebook: [this.data?.employee?.facebook],
+      zalo: [this.data?.employee?.zalo]
     });
   }
 

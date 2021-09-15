@@ -37,9 +37,10 @@
                style='border: solid 1px'
                [ngStyle]="{ 'border-color': customer.debt && customer.debt < 0? 'red': 'green'}"
           >
-            <span class='title-detail' [ngStyle]="{
-            'color': customer.debt && customer.debt < 0? 'red': 'green'}" >
-               {{customer.debt| number: '1.0-0'}}
+            <span class='title-detail '
+                  style='padding: 8px'
+                  [ngStyle]="{ 'color': customer.debt && customer.debt < 0? 'red': 'green'}" >
+                  {{customer.debt| number: '1.0-0'}}
             </span>
           </div>
         </div>

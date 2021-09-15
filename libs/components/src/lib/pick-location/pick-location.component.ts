@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
-  selectAllNation,
+  selectAllNation, selectAllProvince,
   selectDistrictByProvinceId,
   selectorWardByDistrictId,
   selectProvincesByNationId
@@ -22,8 +22,7 @@ import {  Subject } from 'rxjs';
 export class PickLocationComponent implements OnInit {
   @Input() data?: any;
   @Input() reload$?: Subject<boolean>
-  nations$ = this.store.pipe(select(selectAllNation));
-  provinces?: Province [];
+  provinces$ = this.store.pipe(select(selectAllProvince));
   districts?: District [];
   wards?: Ward [];
   formGroup!: FormGroup;
@@ -38,13 +37,11 @@ export class PickLocationComponent implements OnInit {
         this.formGroup.reset()
       }
     })
-    this.store.dispatch(NationAction.loadAllNation());
     this.store.dispatch(ProvinceAction.loadAllProvinces());
-    this.store.dispatch(DistrictAction.loadAllDistricts());
-    this.store.dispatch(WardAction.loadAllWards());
-    this.store.pipe(select(selectProvincesByNationId(
-      this?.data?.ward?.district?.province?.nation?.id
-    ))).subscribe(val => this.provinces = val);
+    if(this.data){
+      this.store.dispatch(DistrictAction.loadAllDistricts());
+      this.store.dispatch(WardAction.loadAllWards());
+    }
     this.store.pipe(select(selectDistrictByProvinceId(
       this?.data?.ward?.district?.province?.id
     ))).subscribe(val => this.districts = val);
@@ -52,9 +49,6 @@ export class PickLocationComponent implements OnInit {
       this?.data?.ward?.district?.id
     ))).subscribe(val => this.wards = val);
     this.formGroup = <FormGroup>this.controlContainer.control;
-  }
-  onNation(nation: Nation) {
-    this.provinces = nation.provinces;
   }
 
   onProvince(province: Province) {

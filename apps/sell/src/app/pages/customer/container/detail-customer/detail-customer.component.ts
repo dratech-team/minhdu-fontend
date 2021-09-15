@@ -11,7 +11,8 @@ import { selectorCurrentCustomer } from '../../+state/customer/customer.selector
 import { AppState } from '../../../../reducers';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
-import { selectorOrdersAssignedById, selectorOrdersNotAssignedById
+import {
+  selectorOrdersAssignedById, selectorOrdersNotAssignedById
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
@@ -19,7 +20,7 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
-  styleUrls: ['detail-customer.component.scss'],
+  styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
@@ -29,11 +30,13 @@ export class DetailCustomerComponent implements OnInit {
   orders: Order[] = [];
   paidType = PaidType;
   customer!: Customer;
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
@@ -45,16 +48,15 @@ export class DetailCustomerComponent implements OnInit {
         take: 30,
         skip: 0,
         customerId: this.getId,
-        delivered: this.convertBoolean.TRUE ,
+        delivered: this.convertBoolean.TRUE
       })
     );
-
   }
 
   updateCustomer(customer: Customer) {
     this.dialog.open(CustomerDialogComponent, {
       data: customer,
-      width: '50%',
+      width: '50%'
     });
   }
 
@@ -64,7 +66,7 @@ export class DetailCustomerComponent implements OnInit {
 
   deleteCustomer(id: any) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '25%',
+      width: '25%'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -76,7 +78,7 @@ export class DetailCustomerComponent implements OnInit {
   payment(id: number) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: { id: id },
+      data: { id: id }
     });
   }
 

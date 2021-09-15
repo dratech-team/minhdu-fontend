@@ -34,9 +34,9 @@ export class CustomerDialogComponent implements OnInit {
           this?.data?.idCardAt, 'yyyy-MM-dd'
         )
         , Validators.required],
-      email: [this?.data?.email, Validators.required],
+      email: [this?.data?.email],
       phone: [this?.data?.phone, Validators.required],
-      note: [this?.data?.note, Validators.required],
+      note: [this?.data?.note],
       firstName: [this?.data?.firstName, Validators.required],
       lastName: [this?.data?.lastName, Validators.required],
       address: [this?.data?.address, Validators.required],
@@ -49,12 +49,12 @@ export class CustomerDialogComponent implements OnInit {
       ward: [this?.data?.ward?.id, Validators.required],
       district: [this?.data?.ward?.district?.id, Validators.required],
       province: [this?.data?.ward?.district?.province?.id, Validators.required],
-      nation: [this?.data?.ward?.district?.province?.nation?.id, Validators.required],
-      ethnicity: [this?.data?.ethnicity, Validators.required],
-      religion: [this?.data?.religion, Validators.required],
+      // nation: [this?.data?.ward?.district?.province?.nation?.id, Validators.required],
+      ethnicity: [this?.data?.ethnicity],
+      religion: [this?.data?.religion],
       type: [this?.data?.type, Validators.required],
       resource: [this?.data?.resource, Validators.required],
-      isPotential: [this?.data?.isPotential, Validators.required]
+      isPotential: [this?.data?.isPotential]
     });
   }
 
