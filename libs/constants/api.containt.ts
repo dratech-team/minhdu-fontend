@@ -6,6 +6,7 @@ export const Api = {
   POSITION: 'position',
   EMPLOYEE: 'employee',
   PAYROLL: 'payroll',
+  PAYROLL_EXPORT: 'payroll/export/print',
   SALARY: 'salary',
   RELATIVE: 'relative',
   DEGREE: 'degree',
