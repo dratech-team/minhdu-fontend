@@ -48,14 +48,14 @@ export class RouteDialogComponent implements OnInit {
     });
 
     this.formGroup = this.formBuilder.group({
-      name: [this?.data?.route?.name, Validators.required],
+      name: [this.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
-        this?.data?.route?.startedAt, 'yyyy-MM-dd'), Validators.required],
+        this.data?.route?.startedAt, 'yyyy-MM-dd'), Validators.required],
       endedAt: [this.datePipe.transform(
-        this?.data?.route?.endedAt, 'yyyy-MM-dd'), Validators.required],
-      bsx: [this?.data?.route?.bsx, Validators.required],
-      driver: [this?.data?.route?.driver, Validators.required],
-      garage: [this?.data?.route?.garage, Validators.required]
+        this.data?.route?.endedAt, 'yyyy-MM-dd'), Validators.required],
+      bsx: [this.data?.route?.bsx, Validators.required],
+      driver: [this.data?.route?.driver, Validators.required],
+      garage: [this.data?.route?.garage]
     });
   }
 

@@ -80,11 +80,20 @@
             <div class='col-md-4 py-2 title-employee title-detail'>
               <span>Điểm đến:</span>
             </div>
-            <div class='col-md-8 py-2 border-bottom '>
+            <div class='col-md-8 py-2 border-bottom  '
+                 *ngIf='order?.destination'
+            >
             <span class='title-detail' >
               {{order?.destination?.name}} -
               {{order?.destination?.district?.name}} -
               {{order?.destination?.district?.province?.name}}
+            </span>
+            </div>
+            <div class='col-md-8 py-2 border-bottom  '
+                 *ngIf='!order?.destination'
+            >
+            <span class='title-detail' >
+              Chưa cập nhật
             </span>
             </div>
           </div>
