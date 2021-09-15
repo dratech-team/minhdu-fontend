@@ -29,7 +29,7 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
-    name: 'bản mẫu',
+    name: 'Bản mẫu',
     url: '/phieu-luong/ban-mau',
     icon: 'cil-lock-locked'
   },
