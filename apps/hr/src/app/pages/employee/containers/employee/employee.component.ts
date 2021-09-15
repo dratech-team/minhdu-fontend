@@ -45,7 +45,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({ skip: this.pageSize, take: this.pageIndexInit }));
+    this.store.dispatch(EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
