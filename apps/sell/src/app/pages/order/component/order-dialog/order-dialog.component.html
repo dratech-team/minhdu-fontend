@@ -26,7 +26,7 @@
                 <input type='date' class='form-control' id='deliveredAt' formControlName='deliveredAt'>
               </div>
             </div>
-            <app-pick-location [ward]='data.order.destination' [formGroup]='formGroup'></app-pick-location>
+            <app-pick-location [ward]='data?.order?.destination' [formGroup]='formGroup'></app-pick-location>
           </div>
         </div>
       </mat-tab>
