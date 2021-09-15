@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { Api } from '@minhdu-fontend/constants';
+import { ExportService } from '@minhdu-fontend/service';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -47,7 +49,8 @@ export class PayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly exportService: ExportService
   ) {
   }
 
@@ -64,31 +67,23 @@ export class PayrollComponent implements OnInit {
 
   Payroll(val: any, pageSize: number, pageIndex?: number) {
     pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+    const payroll = {
+      skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
+      take: this.pageSize,
+      code: val.code,
+      name: val.name,
+      position: val.position,
+      department: val.department,
+      branch: val.branch,
+      createdAt: val.createdAt,
+      paidAt: val.paidAt,
+      accConfirmedAt: val.accConfirmedAt
+    };
     if (val.createdAt) {
-      return {
-        skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
-        take: this.pageSize,
-        code: val.code,
-        name: val.name,
-        position: val.position,
-        department: val.department,
-        branch: val.branch,
-        createdAt: val.createdAt.toString(),
-        paidAt: val.paidAt,
-        accConfirmedAt: val.accConfirmedAt
-      };
+      return payroll;
     } else {
-      return {
-        skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
-        take: this.pageSize,
-        code: val.code,
-        name: val.name,
-        position: val.position,
-        department: val.department,
-        branch: val.branch,
-        paidAt: val.paidAt,
-        accConfirmedAt: val.accConfirmedAt
-      };
+      delete payroll.createdAt;
+      return payroll;
     }
   }
 
@@ -138,6 +133,21 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
+    const val = this.formGroup.value;
+    const payroll = {
+      code: val.code,
+      name: val.name,
+      position: val.position,
+      department: val.department,
+      branch: val.branch,
+      paidAt: val.paidAt,
+      accConfirmedAt: val.accConfirmedAt
+    };
+    this.exportService.print(Api.PAYROLL_EXPORT,
+      val.createdAt ?
+        Object.assign(payroll, { createdAt: val.createdAt }) :
+        payroll
+    );
   }
 
   exportTimekeeping(data: any) {
