@@ -22,7 +22,9 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày sinh</div>
-        <input disabled class='form-control input-profile ' type='search'>
+        <input
+          disabled class='form-control input-profile'
+          type='search'>
       </div>
       <div class='border-start title-header gender' [formGroup]='formGroup'>
         <div class='title-profile'>Giới tính</div>
@@ -42,11 +44,17 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Loại lương</div>
-        <input class='form-control input-profile ' type='text' disabled>
+        <select class='select' matNativeControl required formControlName='flatSalary' >
+          <option value='{{flatSalary.FLAT_SALARY}}' >Lương cố định</option>
+          <option value='{{flatSalary.NOT_FLAT_SALARY}}' >Lương không cố định</option>
+          <option value='' >Mặc định</option>
+        </select>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Số điện thoại</div>
-        <input disabled class='form-control input-profile ' type='number'>
+        <input  disabled
+                class='form-control input-profile '
+                type='number'>
       </div>
       <div class='border-start title-header default' >
         <div class='title-profile'>Đơn vị</div>
