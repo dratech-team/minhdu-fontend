@@ -9,6 +9,7 @@ import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
 
 
 @Component({
