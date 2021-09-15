@@ -34,8 +34,6 @@ export class SalaryComponent implements OnInit {
   isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
-  result: any;
-  selected = 'ALLOWANCE';
 
   ngOnInit(): void {
     if (this.data.type === this.type.OVERTIME) {
@@ -53,10 +51,10 @@ export class SalaryComponent implements OnInit {
       times: [this.data?.salary?.times ? this.data?.salary?.times : undefined, Validators.required],
       datetime: [
         this.datePipe.transform(
-          this?.data?.salary?.datetime, 'yyyy-MM-dd')
+          this.data?.salary?.datetime, 'yyyy-MM-dd')
         , Validators.required],
-      forgot: [this?.data?.salary?.forgot, Validators.required],
-      note: [this?.data?.salary?.note, Validators.required],
+      forgot: [this.data?.salary?.forgot],
+      note: [this.data?.salary?.note],
       createdAt: [this.data?.salary?.createdAt, Validators.required]
     });
   }
@@ -81,7 +79,7 @@ export class SalaryComponent implements OnInit {
         type: value.type === null ? this.type.ABSENT : value.type,
         rate: value.rate,
         times: value.times ? value.times : undefined,
-        datetime: value.datetime ? new Date(value.datetime) : undefined,
+        datetime: value.datetime ? value.datetime : undefined,
         forgot: value.forgot ? value.forgot : undefined,
         note: value.note,
         unit: value.unit ? value.unit : undefined,
