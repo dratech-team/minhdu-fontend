@@ -32,6 +32,7 @@ export class PickLocationComponent implements OnInit {
   ) {
   }
   ngOnInit() {
+    console.log(this.data)
     this.reload$?.subscribe(val => {
       if(val){
         this.formGroup.reset()
