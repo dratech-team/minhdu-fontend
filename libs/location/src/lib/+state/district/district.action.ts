@@ -5,6 +5,16 @@ export const loadAllDistricts= createAction(
   '[LOAD_DISTRICTS] Load All Districts'
 )
 
+export const getDistrictsByProvinceId = createAction(
+  '[LOAD_DISTRICT] Get Districts by ProvinceId',
+  props<{provinceId: number}>()
+)
+
+export const getDistrictsByProvinceIdSuccess = createAction(
+  '[LOAD_DISTRICT] Get Districts by ProvinceId Success',
+  props<{districts: District[]}>()
+)
+
 export const loadAllDistrictsSuccess = createAction(
   '[LOAD_DISTRICTS] Load All Districts Success',
   props<{districts: District [] }>()
@@ -23,5 +33,7 @@ export const DistrictAction = {
   getDistrict,
   getDistrictSuccess,
   loadAllDistricts,
-  loadAllDistrictsSuccess
+  loadAllDistrictsSuccess,
+  getDistrictsByProvinceId,
+  getDistrictsByProvinceIdSuccess
 }

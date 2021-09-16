@@ -22,6 +22,14 @@ export class DistrictEffect {
       catchError(err => throwError(err))
     ));
 
+  getDistrictsByProvinceId$ = createEffect(() =>
+    this.action.pipe(
+      ofType(DistrictAction.getDistrictsByProvinceId),
+      switchMap(props => this.DistrictService.getAll(props)),
+      map((props) => DistrictAction.getDistrictsByProvinceIdSuccess({ districts: props })),
+      catchError(err => throwError(err))
+    ));
+
   constructor(
     private readonly action: Actions,
     private readonly DistrictService: DistrictService

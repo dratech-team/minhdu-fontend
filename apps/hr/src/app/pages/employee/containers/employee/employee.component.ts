@@ -76,8 +76,7 @@ export class EmployeeComponent implements OnInit {
 
   employee(val: any, pageSize: number, pageIndex: number) {
     pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
-    if (val.workedAt) {
-      return {
+      const employee = {
         skip: pageSize * pageIndex,
         take: this.pageSize,
         code: val.code,
@@ -92,22 +91,12 @@ export class EmployeeComponent implements OnInit {
             val.flatSalary === this.flatSalary.NOT_FLAT_SALARY? this.convertBoolean.FALSE:
               val.flatSalary,
       };
-    } else {
-      return {
-        skip: pageSize * pageIndex,
-        take: this.pageSize,
-        code: val.code,
-        name: val.name,
-        gender: val.gender,
-        position: val.position,
-        department: val.department,
-        branch: val.branch,
-        isFlatSalary:
-          val.flatSalary === this.flatSalary.FLAT_SALARY? this.convertBoolean.TRUE:
-            val.flatSalary === this.flatSalary.NOT_FLAT_SALARY? this.convertBoolean.FALSE:
-              val.flatSalary,
-      };
-    }
+      if(val.workedAt){
+        return employee
+      }else{
+        delete employee.workedAt
+        return employee
+      }
   }
 
   onScroll() {

@@ -49,7 +49,6 @@ export class DetailPayrollComponent implements OnInit {
       (value) => {
         if (value) {
           if (value.update) {
-            console.log(value.data)
               this.store.dispatch(PayrollAction.updateSalary({
                 id: salary?.id,
                 payrollId: payroll.id,

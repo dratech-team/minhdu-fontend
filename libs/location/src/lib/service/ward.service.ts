@@ -13,8 +13,8 @@ export class WardService extends BaseService<Ward> {
     super(Api.WARD, http);
   }
 
-  getAll(): Observable<Ward[]> {
-    return super.getAll();
+  getAll(params?: any): Observable<Ward[]> {
+    return super.getAll(params);
   }
 
   getOne(id: any): Observable<Ward> {

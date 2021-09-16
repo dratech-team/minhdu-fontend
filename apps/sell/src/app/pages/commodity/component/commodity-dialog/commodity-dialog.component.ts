@@ -22,13 +22,13 @@ export class CommodityDialogComponent implements OnInit{
   ngOnInit() {
     this.formGroup = this.formBuilder.group(
       {
-        name: [this?.data?.name, Validators.required],
-        code: [this?.data?.code, Validators.required],
-        price: [this?.data?.price, Validators.required],
-        unit: [this?.data?.unit, Validators.required],
-        amount: [this?.data?.amount, Validators.required],
-        gift: [this?.data?.gift, Validators.required],
-        more: [this?.data?.more.amount, Validators.required],
+        name: [this.data?.name, Validators.required],
+        code: [this.data?.code, Validators.required],
+        price: [this.data?.price, Validators.required],
+        unit: [this.data?.unit, Validators.required],
+        amount: [this.data?.amount, Validators.required],
+        gift: [this.data?.gift, Validators.required],
+        more: [this.data?.more.amount, Validators.required],
       }
     )
   }

@@ -49,7 +49,7 @@ export class AddDegreeComponent implements OnInit {
       formality: value.formality,
       level: value.level,
       status: value.status,
-      employeeId: this?.data?.employeeId
+      employeeId: this.data?.employeeId
     };
     if (this.data.degree) {
       this.store.dispatch(EmployeeAction.updateDegree(
