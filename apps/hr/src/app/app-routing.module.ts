@@ -5,11 +5,11 @@ import { DefaultLayoutComponent } from './container/default-layout.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'auth/login',
     loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
   },
   {
-    path: 'trang-chu',
+    path: '',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'

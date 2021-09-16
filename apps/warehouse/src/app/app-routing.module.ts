@@ -4,12 +4,12 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'auth/login',
     loadChildren: () =>
       import('@minhdu-fontend/auth').then((m) => m.AuthModule),
   },
   {
-    path: 'trang-chu',
+    path: '',
     component: WarehouseLayoutComponent,
     children: [
       {
