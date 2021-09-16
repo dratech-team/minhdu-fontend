@@ -91,7 +91,7 @@ export class RouteComponent implements OnInit {
   }
   detailRoute(id: number) {
     this.router
-      .navigate(['trang-chu/tuyen-duong/chi-tiet-tuyen-duong', id])
+      .navigate(['tuyen-duong/chi-tiet-tuyen-duong', id])
       .then();
   }
 

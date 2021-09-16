@@ -111,7 +111,7 @@ export class CustomerComponent implements OnInit {
 
   readAndUpdate($event?: any) {
     this.router
-      .navigate(['trang-chu/khach-hang/chi-tiet-khach-hang', $event.id])
+      .navigate(['khach-hang/chi-tiet-khach-hang', $event.id])
       .then();
   }
 

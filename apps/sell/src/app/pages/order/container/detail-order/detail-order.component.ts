@@ -42,7 +42,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   detailRoute(id: number) {
-    this.router.navigate(['trang-chu/tuyen-duong/chi-tiet-tuyen-duong', id ]).then()
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id ]).then()
   }
   deleteCommodity(commodityId: number){
     const ref = this.dialog.open(DialogDeleteComponent, {width:'30%'});

@@ -43,6 +43,6 @@ export class DetailRouteComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
   detailOrder(orderId: number){
-    this.router.navigate(['trang-chu/don-hang/chi-tiet-don-hang', orderId]).then()
+    this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then()
   }
 }
