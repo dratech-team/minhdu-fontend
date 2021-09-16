@@ -12,7 +12,7 @@
           <!--Basic - Lương cơ bản-->
           <div *ngIf="data.type === type.BASIC " class="form-group">
             <div class="row mb-5 title-popup">
-              <span>Thêm lương cơ bản</span>
+              <span> Lương cơ bản</span>
             </div>
             <div class="contract-salary">
               <div class="row title-item mb-1">
@@ -49,7 +49,7 @@
           <!--Allowance stayed - Phụ cáp ở lại ảnh hưởng tới lương + / - -->
           <div *ngIf="data.type === type.STAY " class="form-group" [formGroup]="formGroup">
             <div class="row mb-5 title-popup">
-              <span> Sửa tiền phụ cấp</span>
+              <span> Tiền phụ cấp ở lại</span>
             </div>
             <div class="name-allowance">
               <div class="row title-item mb-1">
@@ -175,7 +175,7 @@
           <!--Overtime - Tăng ca -->
           <div *ngIf="data.type === type.OVERTIME " class="form-group" >
             <div class="row mb-5 title-popup">
-              <span>Thêm lương ngoài giờ</span>
+              <span>Lương ngoài giờ</span>
             </div>
             <div>
               <div class="row datepicker" >
@@ -287,7 +287,7 @@
           <div *ngIf=" data.type === type.ABSENT ">
             <div class="Deductions">
               <div class="row mb-5 title-popup">
-                <span>Thêm tiền khấu trừ</span>
+                <span>Tiền khấu trừ</span>
               </div>
               <div class="row title-item mb-2">
                 <span>Khoảng khấu trừ </span>
