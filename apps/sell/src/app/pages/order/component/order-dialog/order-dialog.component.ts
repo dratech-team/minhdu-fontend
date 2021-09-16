@@ -6,15 +6,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
-import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import {
-  selectDistrictByProvinceId,
-  selectorWardByDistrictId,
-  selectProvincesByNationId
-} from '@minhdu-fontend/location';
-import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
-import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
-import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
 import { CustomerAction } from '../../../customer/+state/customer/customer.action';
@@ -35,8 +26,6 @@ export class OrderDialogComponent implements OnInit {
   customers: Customer[] = [];
   commodities: Commodity[] = [];
   commodityIds: number[] = [];
-  districts?: District [];
-  wards?: Ward [];
 
   constructor(
     private readonly store: Store<AppState>,
@@ -76,15 +65,10 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
+    if(!val.deliveredAt){
+      delete order.deliveredAt
+    }
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id, typeUpdate: this.data.type }));
-  }
-
-  onProvince(province: Province) {
-    this.districts = province.districts;
-  }
-
-  onDistrict(district: District) {
-    this.wards = district.wards;
   }
 
   pickCommodity(commodityIds: number[]) {
