@@ -29,15 +29,6 @@ import { CommodityAction } from '../../../commodity/+state/commodity.action';
 export class OrderDialogComponent implements OnInit {
   customers$ = this.store.pipe(select(selectorAllCustomer));
   commodities$ = this.store.pipe(select(selectAllCommodity));
-  provinces$ = this.store.pipe(select(selectProvincesByNationId(
-    this?.data?.order?.destination?.district?.province?.nation?.id
-  )));
-  districts$ = this.store.pipe(select(selectDistrictByProvinceId(
-    this?.data?.order?.destination?.district?.province?.id
-  )));
-  wards$ = this.store.pipe(select(selectorWardByDistrictId(
-    this?.data?.order?.destination?.district?.id
-  )));
   payType = PaymentType;
   formGroup!: FormGroup;
   routes: number[] = [];
@@ -56,23 +47,14 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data)
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
-    this.store.dispatch(ProvinceAction.loadAllProvinces());
-    this.store.dispatch(DistrictAction.loadAllDistricts());
-    this.store.dispatch(WardAction.loadAllWards());
-    if (this.data) {
-      this.districts$.subscribe(val => this.districts = val);
-      this.wards$.subscribe(val => this.wards = val);
-    }
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(
         this.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
-
       deliveredAt:  [this.datePipe.transform(
         this.data?.order?.deliveredAt, 'yyyy-MM-dd')
         , Validators.required],
