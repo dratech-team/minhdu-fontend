@@ -82,7 +82,7 @@ export class AddEmployeeComponent implements OnInit {
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
         this.datePipe.transform(
-          this?.data?.employee?.birthday, 'yyyy-MM-dd'
+          this.data?.employee?.birthday, 'yyyy-MM-dd'
         )
         , Validators.required],
       branch: [this.data?.employee?.position.department?.branch?.id, Validators.required],

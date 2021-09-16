@@ -9,6 +9,7 @@ import { AppState } from '../../../../reducers';
 import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { DepartmentActions, getDepartmentByBranchId } from '../../../../../../../../libs/orgchart/src/lib/+state/department';
 
+
 @Component({
   templateUrl: 'add-holiday.component.html'
 })
@@ -32,15 +33,15 @@ export class AddHolidayComponent implements OnInit {
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.departments$.subscribe(val =>{console.log(val) ;this.departments = val} );
     this.formGroup = this.formBuilder.group({
-      name: [this?.data?.name, Validators.required],
+      name: [this.data?.name, Validators.required],
       datetime: [
         this.datePipe.transform(
-          this?.data?.datetime, 'yyyy-MM-dd'
+          this.data?.datetime, 'yyyy-MM-dd'
         ),
         Validators.required],
-      rate: [this?.data?.rate, Validators.required],
-      department: [this?.data?.department?.id, Validators.required],
-      branch: [this?.data?.department?.branchId, Validators.required],
+      rate: [this.data?.rate, Validators.required],
+      department: [this.data?.department?.id, Validators.required],
+      branch: [this.data?.department?.branchId, Validators.required],
     });
   }
 
@@ -53,7 +54,7 @@ export class AddHolidayComponent implements OnInit {
       departmentId: val.department
     };
     if (this.data) {
-      this.store.dispatch(HolidayAction.UpdateHoliday({ id: this?.data?.id, holiday: holiday }));
+      this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }

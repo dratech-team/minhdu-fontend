@@ -29,7 +29,6 @@ export class DefaultLayoutComponent implements OnInit {
     if(!this.role){
       this.router.navigate(['/']).then();
     }
-    console.log(this.role)
   }
 
   showFiller = false;

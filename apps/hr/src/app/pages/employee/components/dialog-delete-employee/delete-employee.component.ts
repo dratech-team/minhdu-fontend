@@ -18,7 +18,7 @@ export class DeleteEmployeeComponent implements OnInit {
 
   submit(): void {
     this.dialogRef.close({
-      leftAt: this?.leftAt ? new Date(this.leftAt) : undefined
+      leftAt: this.leftAt ? this.leftAt : undefined
     });
   }
 }

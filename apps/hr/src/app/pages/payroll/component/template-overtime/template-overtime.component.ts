@@ -39,13 +39,13 @@ export class TemplateOvertimeComponent implements OnInit {
     this.branch$.subscribe(val => this.departments = val?.departments);
     this.department$.subscribe(val => this.positions = val?.positions);
     this.formGroup = this.formBuilder.group({
-      title: [this?.data?.title, Validators.required],
-      position: [this?.data?.positionId, Validators.required],
-      branch: [this?.data?.position?.department?.branch?.id, Validators.required],
-      department: [this?.data?.position?.department?.id, Validators.required],
-      price: [this?.data?.price, Validators.required],
-      unit: [this?.data?.unit, Validators.required],
-      note: [this?.data?.note, Validators.required]
+      title: [this.data?.title, Validators.required],
+      position: [this.data?.positionId, Validators.required],
+      branch: [this.data?.position?.department?.branch?.id, Validators.required],
+      department: [this.data?.position?.department?.id, Validators.required],
+      price: [this.data?.price, Validators.required],
+      unit: [this.data?.unit, Validators.required],
+      note: [this.data?.note, Validators.required]
     });
   }
 
@@ -53,7 +53,7 @@ export class TemplateOvertimeComponent implements OnInit {
     const value = this.formGroup.value;
     return {
       isUpdate: !!this.data,
-      id: this?.data?.id,
+      id: this.data?.id,
       data:{
         title: value.title,
         positionId: value.position,

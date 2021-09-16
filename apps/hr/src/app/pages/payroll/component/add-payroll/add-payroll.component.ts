@@ -26,7 +26,7 @@ export class AddPayrollComponent implements OnInit {
 
   onSubmit() {
     return {
-      employeeId: this?.data?.id,
+      employeeId: this.data?.id,
       createdAt: new Date(this.formGroup.value.createdAt),
       // employeesId: this.employeeIds.length > 0? this.employeeIds: undefined,
     };

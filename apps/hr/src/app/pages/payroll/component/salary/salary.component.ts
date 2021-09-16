@@ -84,7 +84,7 @@ export class SalaryComponent implements OnInit {
         note: value.note,
         unit: value.unit ? value.unit : undefined,
         employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
-        payrollId: this?.data?.payroll?.id ? this.data.payroll.id : undefined
+        payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
       }
     };
   }
