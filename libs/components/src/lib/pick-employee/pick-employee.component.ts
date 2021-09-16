@@ -76,7 +76,15 @@ export class PickEmployeeComponent implements OnInit {
   assignIsSelect() {
     this.service.Employees().subscribe(val => {
       this.employees = JSON.parse(JSON.stringify(val));
-      this.employees.forEach(e => e.isSelect = this.isSelectAll);
+      this.employees.forEach(e =>
+      {
+        e.isSelect = this.employeeIds.includes(e.id);
+      });
+      if(this.isSelectAll){
+        this.employeeIds = []
+        this.employees.forEach(e => this.employeeIds.push(e.id))
+        this.checkEvent.emit(this.employeeIds)
+      }
     });
   }
 
@@ -88,13 +96,11 @@ export class PickEmployeeComponent implements OnInit {
       this.employeeIds.push(id);
     }
     this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
+    console.log(this.isSelectAll)
     this.checkEvent.emit(this.employeeIds);
   }
 
   someComplete(): boolean {
-    if (this.employees == null) {
-      return false;
-    }
     return (
       this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectAll
     );
