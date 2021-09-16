@@ -61,7 +61,7 @@ export class OrderDialogComponent implements OnInit {
     const order = {
       customerId: this.data.order.customerId,
       commodityIds: this.commodityIds,
-      destinationId: val.ward,
+      wardId: val.ward,
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
