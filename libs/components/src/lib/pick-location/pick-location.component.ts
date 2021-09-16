@@ -39,13 +39,13 @@ export class PickLocationComponent implements OnInit {
     })
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     if(this.ward){
-      this.store.dispatch(DistrictAction.loadAllDistricts());
-      this.store.dispatch(WardAction.loadAllWards());
+      this.store.dispatch(DistrictAction.getDistrictsByProvinceId({provinceId:this.ward.district.province.id }));
+      this.store.dispatch(WardAction.getWardsByDistrictId({districtId:this.ward.district.id }));
         this.store.pipe(select(selectDistrictByProvinceId(
-          this.ward?.district?.province?.id
+          this.ward.district.province.id
         ))).subscribe(val => this.districts = val);
         this.store.pipe(select(selectorWardByDistrictId(
-          this.ward?.district?.id
+          this.ward.district.id
         ))).subscribe(val => this.wards = val);
     }
     this.formGroup = <FormGroup>this.controlContainer.control;

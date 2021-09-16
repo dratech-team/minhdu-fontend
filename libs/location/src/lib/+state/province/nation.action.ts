@@ -1,6 +1,6 @@
 
 import { createAction, props } from '@ngrx/store';
-import {  Province } from '@minhdu-fontend/data-models';
+import { District, Province } from '@minhdu-fontend/data-models';
 
 export const loadAllProvinces = createAction(
   '[LOAD_PROVINCES] Load All Provinces'
@@ -20,6 +20,7 @@ export const getProvinceSuccess = createAction(
   '[GET_PROVINCE] Get Province Success',
   props<{province: Province}>()
 )
+
 export const ProvinceAction = {
   loadAllProvinces,
   loadAllProvincesSuccess,

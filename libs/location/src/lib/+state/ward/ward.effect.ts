@@ -22,6 +22,14 @@ export class WardEffect {
       catchError(err => throwError(err))
     ));
 
+  getWardsByDistrictId$ = createEffect(() =>
+    this.action.pipe(
+      ofType(WardAction.getWard),
+      switchMap(props => this.WardService.getAll(props)),
+      map((props) => WardAction.getWardsByDistrictIdSuccess({ wards: props })),
+      catchError(err => throwError(err))
+    ));
+
   constructor(
     private readonly action: Actions,
     private readonly WardService: WardService

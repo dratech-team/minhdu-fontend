@@ -13,8 +13,8 @@ export class DistrictService extends BaseService<District> {
     super(Api.DISTRICT, http);
   }
 
-  getAll(): Observable<District[]> {
-    return super.getAll();
+  getAll(params?: any): Observable<District[]> {
+    return super.getAll(params);
   }
 
   getOne(id: any): Observable<District> {

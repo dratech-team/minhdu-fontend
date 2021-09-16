@@ -18,6 +18,9 @@ export const DistrictReducer = createReducer(
   ),
   on(DistrictAction.getDistrictSuccess , (state, action) =>
     adapter.upsertOne(action.district , {...state, loaded: true})
+  ),
+  on(DistrictAction.getDistrictsByProvinceIdSuccess , (state, action) =>
+    adapter.upsertMany(action.districts , {...state, loaded: true})
   )
 )
 export const {selectEntities, selectAll} = adapter.getSelectors()
