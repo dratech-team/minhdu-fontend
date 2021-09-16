@@ -57,13 +57,13 @@ export class CommodityEffect {
       ofType(CommodityAction.deleteCommodity),
       switchMap((props) => this.commodityService.delete(props.id).pipe(
         map(_ => {
-          if(props.orderId){
-           return   OrderAction.getOrder({ id: props.orderId })
-          }else{
-            return   CommodityAction.loadInit({take:30, skip:0})
+            if (props.orderId) {
+              return OrderAction.getOrder({ id: props.orderId });
+            } else {
+              return CommodityAction.loadInit({ take: 30, skip: 0 });
+            }
           }
-          }
-         ),
+        ),
         catchError((err) => throwError(err))
       ))
     )

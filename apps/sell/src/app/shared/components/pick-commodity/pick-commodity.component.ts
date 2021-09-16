@@ -47,7 +47,10 @@ export class PickCommodityComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.commodities$) {
       this.data.commodities$.subscribe(
-        (val: any) => this.commodities = JSON.parse(JSON.stringify(val))
+        (val: any) => {
+          this.commodities = JSON.parse(JSON.stringify(val));
+          this.assignIsSelect();
+        }
       );
     }
   }
@@ -55,29 +58,28 @@ export class PickCommodityComponent implements OnInit {
   onScroll() {
     const val = {
       take: this.pageSize,
-      skip: this.pageIndex++
+      skip: this.pageSize * this.pageIndex
     };
+    this.pageIndex++;
     this.service.scrollCommodities(val);
-    this.assignIsSelect();
   }
 
   assignIsSelect() {
-    this.service.commodities().subscribe(val => {
-      this.commodities = JSON.parse(JSON.stringify(val));
+    if (this.isSelectAll) {
+      this.commodityIds = [];
+      this.commodities.forEach(commodity =>{
+        commodity.isSelect = this.isSelectAll
+        this.commodityIds.push(commodity.id);
+      })
+    }else{
       this.commodities.forEach(e => {
-        if (this.commodityIds.includes(e.id)) {
-          e.isSelect = true;
-        } else {
-          e.isSelect = this.isSelectAll;
-        }
-        if(this.isSelectAll){
-          this.commodityIds = []
-          this.commodityIds.push(e.id)
-        }else{
-          this.commodityIds = []
-        }
+        e.isSelect = this.commodityIds.includes(e.id);
       });
-    });
+    }
+  }
+
+  addCommodity() {
+    this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 
   deleteCommodity($event: any) {
@@ -85,7 +87,6 @@ export class PickCommodityComponent implements OnInit {
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
-        this.assignIsSelect();
       }
     });
   }
@@ -114,28 +115,21 @@ export class PickCommodityComponent implements OnInit {
     );
   }
 
-
   setAll(select: boolean) {
     this.isSelectAll = select;
-    if (this.commodities == null) {
-      return;
-    }
     this.commodityIds = [];
-    this.commodities?.forEach(customer => {
-        customer.isSelect = select;
+    this.commodities?.forEach(commodity => {
+        commodity.isSelect = select;
         if (select) {
-          this.commodityIds.push(customer.id);
+          this.commodityIds.push(commodity.id);
         }
       }
     );
+    console.log(this.commodityIds)
     this.checkEvent.emit(this.commodityIds);
   }
 
   closeDialog() {
     this.dialogRef.close(this.commodityIds);
-  }
-
-  addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 }
