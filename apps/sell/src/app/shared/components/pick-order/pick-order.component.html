@@ -18,12 +18,12 @@
       <div class='border-start title-header col-2 '>
         <div class='title-profile title-pick'>Tiền hàng</div>
         <input formControlName='commodityTotal'
-          class='form-control input-profile '
-          type='number'>
+               class='form-control input-profile '
+               type='number'>
       </div>
       <div class='border-start title-header col-2 '>
         <div class='title-profile title-pick'>Thanh toán</div>
-        <select class='select'  formControlName='paidType'>
+        <select class='select' formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
@@ -36,7 +36,7 @@
           class='form-control input-profile '
           type='number'>
       </div>
-      <div class='border-start title-header col-3 '  *ngIf='payment'>
+      <div class='border-start title-header col-3 ' *ngIf='payment'>
         <div class='title-profile title-pick'>Diễn giải</div>
         <input class='form-control input-profile'
                type='text' formControlName='explain'
@@ -44,12 +44,12 @@
       </div>
       <div class='border-start title-header col-1 '>
         <div class='title-profile d-flex justify-content-center align-items-center title-pick'>Tất cả</div>
-        <div class=' d-flex justify-content-center mt-2 '  >
+        <div class=' d-flex justify-content-center mt-2 '>
           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                         style='margin-right: 2%'
                         class='example-margin checkID  '
                         [checked]='isSelectAll'
-                        [indeterminate]="someComplete()"
+                        [indeterminate]='someComplete()'
                         (change)='setAll($event.checked)'>
           </mat-checkbox>
         </div>
@@ -67,48 +67,47 @@
     >
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-3 pointer no-underline '  *ngIf='!payment' >
-         {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
+           target='_blank' class='content-profile col-3 pointer no-underline ' *ngIf='!payment'>
+          {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
         </a>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt!== null'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
         </a>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt=== null' >
+           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt=== null'>
           Đang cập nhật
         </a>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
+           target='_blank' class='content-profile col-2 pointer no-underline ' style='color: #f86c6b'>
           {{order.debt|number:'1.0'|notEmpty:'0'}} đ
         </a>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
+           target='_blank' class='content-profile col-2 pointer no-underline ' style='color: #20c997'>
           {{order?.paidTotal|number:'1.0'|notEmpty:'0'}} đ
         </a>
-        <a  routerLink="/trang-chu/don-hang/lich-su-thanh-toan"
+        <a routerLink='/trang-chu/don-hang/lich-su-thanh-toan'
            [queryParams]='{data:order.paymentHistories|json}'
-           target="_blank" class='btn content-profile col-2 pointer hover-link '  >
+           target='_blank' class='btn content-profile col-2 pointer hover-link '>
           {{order?.paymentHistories?.length}}
         </a>
         <a [routerLink]='["/trang-chu/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank'  class='content-profile col-3 pointer no-underline '  *ngIf='payment'>
+           target='_blank' class='content-profile col-3 pointer no-underline ' *ngIf='payment'>
           {{order.explain}}
         </a>
         <input class='col-1'
                (change)='pickOneOrder()'
                *ngIf='data?.pickOne||pickOne'
-               type="radio"
-               name="pick-one" value="{{order.id}}"
+               type='radio'
+               name='pick-one' value='{{order.id}}'
         >
-        <div class=' col-1  pointer mt-2 d-flex justify-content-center'  >
+        <div class=' col-1  pointer mt-2 d-flex justify-content-center'>
           <mat-checkbox
-                         *ngIf='!pickOne||data?.pickMore'
-                         class='checkID'
-                         [checked]='order.isSelect ? order.isSelect: false'
-                         [(ngModel)]='order.isSelect'
-                         (ngModelChange)='updateAllSelect(order.id)'>
-
+            *ngIf='!pickOne||data?.pickMore'
+            class='checkID'
+            [checked]='order.isSelect ? order.isSelect: false'
+            [(ngModel)]='order.isSelect'
+            (ngModelChange)='updateAllSelect(order.id)'>
           </mat-checkbox>
         </div>
       </div>
@@ -116,10 +115,11 @@
            class='d-flex justify-content-center align-items-center font-2xl '
            style='height: 150px'
       >
-        Hiện tại chưa có đơn hàng  nào
+        Hiện tại chưa có đơn hàng nào
       </div>
     </div>
-    <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
+    <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận
+    </button>
   </div>
 </div>
 

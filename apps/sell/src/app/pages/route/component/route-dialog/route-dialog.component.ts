@@ -30,21 +30,19 @@ export class RouteDialogComponent implements OnInit {
     this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
     this.orders$.subscribe(val => {
       this.orders = JSON.parse(JSON.stringify(val));
-      this.orders.forEach(val => {
-        if (this.orderIdsOfRoute.includes(val.id)) {
-          Object.assign(val, { isSelect: true });
-        } else {
-          Object.assign(val, { isSelect: false });
-        }
-        if(this.isSelectAll){
-          val.isSelect = this.isSelectAll
-          this.orderIdsOfRoute = []
-          this.orderIdsOfRoute.push(val.id)
-          console.log(this.orderIdsOfRoute)
-        }else {
-          this.orderIdsOfRoute = []
-        }
-      });
+      if(this.isSelectAll){
+        this.orderIdsOfRoute = []
+        this.orders.forEach(val =>
+          {
+            val.isSelect = this.isSelectAll
+            this.orderIdsOfRoute.push(val.id)
+          }
+        )
+      }else {
+        this.orders.forEach(val =>{
+          val.isSelect = this.orderIdsOfRoute.includes(val.id);
+        })
+      }
     });
 
     this.formGroup = this.formBuilder.group({
