@@ -18,6 +18,9 @@ export const WardReducer = createReducer(
   ),
   on(WardAction.getWardSuccess , (state, action) =>
     adapter.upsertOne(action.ward , {...state, loaded: true})
+  ),
+  on(WardAction.getWardsByDistrictIdSuccess , (state, action) =>
+    adapter.upsertMany(action.wards , {...state, loaded: true})
   )
 )
 export const {selectEntities, selectAll} = adapter.getSelectors()

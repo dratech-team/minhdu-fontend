@@ -24,7 +24,7 @@ export class WardEffect {
 
   getWardsByDistrictId$ = createEffect(() =>
     this.action.pipe(
-      ofType(WardAction.getWard),
+      ofType(WardAction.getWardsByDistrictId),
       switchMap(props => this.WardService.getAll(props)),
       map((props) => WardAction.getWardsByDistrictIdSuccess({ wards: props })),
       catchError(err => throwError(err))

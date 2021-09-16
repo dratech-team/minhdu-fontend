@@ -37,7 +37,6 @@ const routes: Routes = [
           title: 'Hệ thống nhân sự'
         },
       },
-
       { path: '**', redirectTo: '' }
     ]
   }

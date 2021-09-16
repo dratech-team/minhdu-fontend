@@ -78,7 +78,7 @@ export class AuthEffects {
           localStorage.setItem('role', user.user.role);
           localStorage.setItem('token', user.user.token);
           if (user.user) {
-            this.router.navigate(['']).then();
+            this.router.navigate(['/']).then();
           }
         })
       ),
