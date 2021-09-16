@@ -4,12 +4,12 @@ import { SellLayoutComponent } from './container/sell-layout.component';
 
 const routes: Routes = [
   {
-    path: 'auth/login',
+    path: '',
     loadChildren: () =>
       import('@minhdu-fontend/auth').then((m) => m.AuthModule),
   },
   {
-    path: '',
+    path: 'trang-chu',
     component: SellLayoutComponent,
     data: {
       title: 'Home',

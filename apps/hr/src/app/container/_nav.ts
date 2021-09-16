@@ -3,7 +3,7 @@ import { INavData } from '@coreui/angular';
 export const navItems: INavData[] = [
   {
     name: 'Dashboard',
-    url: '',
+    url: '/trang-chu',
     icon: '',
     badge: {
       variant: 'info',
@@ -16,7 +16,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Hồ sơ',
-    url: '/ho-so',
+    url: '/trang-chu/ho-so',
     icon: 'cil-lock-locked'
   },
   {
@@ -25,17 +25,17 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Phiếu lương',
-    url: '/phieu-luong',
+    url: '/trang-chu/phieu-luong',
     icon: 'cil-lock-locked'
   },
   {
     name: 'Bản mẫu',
-    url: '/phieu-luong/ban-mau',
+    url: '/trang-chu/phieu-luong/ban-mau',
     icon: 'cil-lock-locked'
   },
   {
     name: 'Ngày lễ',
-    url: '/phieu-luong/ngay-le',
+    url: '/trang-chu/phieu-luong/ngay-le',
     icon: 'cil-lock-locked'
   },
   {
@@ -44,7 +44,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Tổ chức',
-    url: '/to-chuc',
+    url: '/trang-chu/to-chuc',
     icon: 'cil-lock-locked'
   }
 ];

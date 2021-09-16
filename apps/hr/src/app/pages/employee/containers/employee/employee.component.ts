@@ -105,6 +105,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   readAndUpdate($event: any): void {
-    this.router.navigate(['nhan-su/ho-so/chi-tiet-nhan-vien', $event.id]).then();
+    this.router.navigate(['trang-chu/ho-so/chi-tiet-nhan-vien', $event.id]).then();
   }
 }

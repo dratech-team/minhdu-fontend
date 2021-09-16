@@ -129,7 +129,7 @@ export class PayrollComponent implements OnInit {
   }
 
   readPayroll($event: any) {
-    this.router.navigate(['nhan-su/phieu-luong/chi-tiet-phieu-luong', $event.id]).then();
+    this.router.navigate(['trang-chu/phieu-luong/chi-tiet-phieu-luong', $event.id]).then();
   }
 
   exportPayroll() {

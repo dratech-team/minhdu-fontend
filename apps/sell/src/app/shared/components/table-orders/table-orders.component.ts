@@ -82,7 +82,7 @@ export class TableOrdersComponent implements OnInit {
   }
 
   detailOrder(id: number) {
-    this.router.navigate(['/ban-hang/don-hang/chi-tiet-don-hang', id]).then();
+    this.router.navigate(['trang-chu/don-hang/chi-tiet-don-hang', id]).then();
   }
 
   updateOrder(order: Order) {
