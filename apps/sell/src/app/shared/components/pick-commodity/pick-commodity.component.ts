@@ -23,7 +23,6 @@ export class PickCommodityComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
   isSelectAll = false;
-
   commodityIds: number[] = [];
 
   formGroup = new FormGroup(
@@ -67,11 +66,11 @@ export class PickCommodityComponent implements OnInit {
   assignIsSelect() {
     if (this.isSelectAll) {
       this.commodityIds = [];
-      this.commodities.forEach(commodity =>{
-        commodity.isSelect = this.isSelectAll
+      this.commodities.forEach(commodity => {
+        commodity.isSelect = this.isSelectAll;
         this.commodityIds.push(commodity.id);
-      })
-    }else{
+      });
+    } else {
       this.commodities.forEach(e => {
         e.isSelect = this.commodityIds.includes(e.id);
       });
@@ -125,7 +124,7 @@ export class PickCommodityComponent implements OnInit {
         }
       }
     );
-    console.log(this.commodityIds)
+    console.log(this.commodityIds);
     this.checkEvent.emit(this.commodityIds);
   }
 
