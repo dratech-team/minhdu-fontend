@@ -20,7 +20,7 @@ import {  Subject } from 'rxjs';
   templateUrl:'pick-location.component.html'
 })
 export class PickLocationComponent implements OnInit {
-  @Input() data?: any;
+  @Input() ward?: any;
   @Input() reload$?: Subject<boolean>
   provinces$ = this.store.pipe(select(selectAllProvince));
   districts?: District [];
@@ -32,23 +32,22 @@ export class PickLocationComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    console.log(this.data)
     this.reload$?.subscribe(val => {
       if(val){
         this.formGroup.reset()
       }
     })
     this.store.dispatch(ProvinceAction.loadAllProvinces());
-    if(this.data){
+    if(this.ward){
       this.store.dispatch(DistrictAction.loadAllDistricts());
       this.store.dispatch(WardAction.loadAllWards());
+        this.store.pipe(select(selectDistrictByProvinceId(
+          this.ward?.district?.province?.id
+        ))).subscribe(val => this.districts = val);
+        this.store.pipe(select(selectorWardByDistrictId(
+          this.ward?.district?.id
+        ))).subscribe(val => this.wards = val);
     }
-    this.store.pipe(select(selectDistrictByProvinceId(
-      this?.data?.ward?.district?.province?.id
-    ))).subscribe(val => this.districts = val);
-     this.store.pipe(select(selectorWardByDistrictId(
-      this?.data?.ward?.district?.id
-    ))).subscribe(val => this.wards = val);
     this.formGroup = <FormGroup>this.controlContainer.control;
   }
 
