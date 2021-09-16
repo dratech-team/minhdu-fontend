@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -107,7 +107,7 @@ export class PayrollComponent implements OnInit {
   }
 
   updatePayroll(id: number, type: string) {
-    this.dialog.open(UpdateConfirmComponent, {
+   this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
     });

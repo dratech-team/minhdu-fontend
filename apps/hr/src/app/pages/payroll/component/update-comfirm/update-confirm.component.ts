@@ -9,7 +9,6 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
   templateUrl: 'update-confirm.component.html'
 })
 export class UpdateConfirmComponent {
-  val!: Object;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -19,20 +18,21 @@ export class UpdateConfirmComponent {
 
   onSubmit() {
     if (this.data.type === 'paidAt') {
-      this.val = {
+      const val = {
         paidAt: new Date()
       };
-      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: this.val }));
+      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
+      return true
     } else {
-      this.val = {
+      const val = {
         accConfirmedAt: new Date()
       };
       if(this.data.detail){
-        this.store.dispatch(PayrollAction.updatePayroll({ id: this.data.id, Payroll: this.val }));
+        this.store.dispatch(PayrollAction.updatePayroll({ id: this.data.id, Payroll: val }));
       }else {
-        this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: this.val }));
+        this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
       }
+      return true
     }
-
   }
 }

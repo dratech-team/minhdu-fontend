@@ -131,18 +131,27 @@
         {{payroll.employee.firstName}} {{payroll.employee.lastName}}
       </div>
       <div  class='content-profile default pointer '>
-        <input
-          [disabled]='payroll.accConfirmedAt'
-          (change)='updatePayroll(payroll.id,"accConfirmedAt")'
-          type='checkbox'
-          [checked]='payroll.accConfirmedAt !== null'>
+        <div (click)='updatePayroll(payroll.id,"accConfirmedAt")'
+             style='width:fit-content;height: fit-content'
+        >
+          <input
+            style='pointer-events: none'
+            disabled
+            type='checkbox'
+            [checked]='payroll.accConfirmedAt !== null'>
+        </div>
+
       </div>
       <div  class='content-profile default pointer '>
-        <input
-          [disabled]='payroll.paidAt'
-          type='checkbox'
-          (change)='updatePayroll(payroll.id,"paidAt")'
-          [checked]='payroll.paidAt !== null'>
+        <div (click)='updatePayroll(payroll.id,"paidAt")'
+        style='width:fit-content;height: fit-content'
+        >
+          <input
+            style='pointer-events: none'
+            disabled
+            type='checkbox'
+            [checked]='payroll.paidAt !== null'>
+        </div>
       </div>
       <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll?.employee?.position?.name}}
