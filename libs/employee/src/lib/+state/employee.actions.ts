@@ -19,6 +19,11 @@ export const loadInit = createAction(
   }>()
 );
 
+export const loadAllEmployee = createAction(
+  '[LOAD_EMPLOYEE] Load All Employee'
+)
+
+
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
   props<{
@@ -119,6 +124,7 @@ export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
   loadInit,
+  loadAllEmployee,
   LoadEmployeesSuccess,
   addEmployee,
   addEmployeeSuccess,

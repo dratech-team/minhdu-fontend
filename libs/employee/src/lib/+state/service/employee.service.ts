@@ -23,7 +23,7 @@ export class EmployeeService extends BaseService<Employee> {
     return super.getOne(id);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Employee>> {
+  pagination(params?: any): Observable<ResponsePaginate<Employee>> {
     return super.pagination(params);
   }
 

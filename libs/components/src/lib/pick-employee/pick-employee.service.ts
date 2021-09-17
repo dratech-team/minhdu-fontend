@@ -11,7 +11,7 @@ export class PickEmployeeService {
   }
 
   onInit() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
+    this.store.dispatch(EmployeeAction.loadAllEmployee());
   }
 
   scrollEmployee(val: any) {

@@ -6,7 +6,7 @@ import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
-import { EmployeeAction, LoadEmployeesSuccess } from '@minhdu-fontend/employee';
+import { EmployeeAction, loadAllEmployee } from '@minhdu-fontend/employee';
 
 
 @Injectable()
@@ -20,6 +20,14 @@ export class EmployeeEffect {
       catchError(err => throwError(err))
     ));
 
+  loadAllEmployee$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.loadAllEmployee),
+      switchMap((_) => this.employeeService.pagination()),
+      map((responsePagination)=> EmployeeAction.LoadEmployeesSuccess({employees: responsePagination.data})),
+      catchError(err => throwError(err))
+    ));
+
   loadMoreEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadMoreEmployees),
@@ -27,7 +35,7 @@ export class EmployeeEffect {
       map((responsePagination)=> EmployeeAction.LoadMoreEmployeesSuccess({employees: responsePagination.data})),
       catchError(err => throwError(err))
     ));
-  
+
   addEmployee$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.addEmployee),
