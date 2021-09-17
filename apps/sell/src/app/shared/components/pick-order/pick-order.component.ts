@@ -120,7 +120,6 @@ export class PickOrderComponent implements OnInit {
     }
     this.isSelectAll = this.orders !== null && this.orders.every(e => e.isSelect);
     this.checkEvent.emit(this.orderIds);
-    this.selectAllEvent.emit(this.isSelectAll)
   }
 
   someComplete(): boolean {
