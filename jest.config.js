@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/location',
     '<rootDir>/apps/warehouse',
     '<rootDir>/apps/admin',
+    '<rootDir>/libs/system-history',
   ],
 };

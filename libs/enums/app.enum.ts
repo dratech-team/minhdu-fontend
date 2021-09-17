@@ -1,6 +1,5 @@
-export enum App{
-  HR='HR',
-  SELL='SELL',
-  WAREHOUSE='WAREHOUSE',
-  ADMIN='ADMIN',
+export enum App {
+  HUMAN_RESOURCE = 'HUMAN_RESOURCE',
+  SELL = 'SELL',
+  WAREHOUSE = 'WAREHOUSE'
 }

@@ -26,4 +26,5 @@ export const FeatureName = {
   MATERIAL: 'material',
   POULTRY_FOOD: 'poultryFood',
   REQUISITE: 'requisite',
+  SYSTEM_HISTORY : 'systemHistory',
 };
