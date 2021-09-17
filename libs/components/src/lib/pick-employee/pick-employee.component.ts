@@ -47,8 +47,6 @@ export class PickEmployeeComponent implements OnInit {
       tap((val) => {
         this.pageIndex = 1;
         const search = {
-          skip: this.pageIndexInit,
-          take: this.pageSize,
           code: val.code,
           name: val.name,
           branch: val.branch

@@ -13,7 +13,7 @@ export const addCommoditySuccess = createAction(
 
 export const loadInit = createAction(
   '[LOAD_COMMODITY] Load Commodity',
-  props<{ take: number, skip: number , orderId?: number}>()
+  props<{ take?: number, skip?: number , orderId?: number}>()
 );
 export const loadInitSuccess = createAction(
   '[LOAD_COMMODITY] Load Commodity Success',
