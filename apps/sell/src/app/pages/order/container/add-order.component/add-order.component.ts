@@ -61,7 +61,7 @@ export class AddOrderComponent implements OnInit {
   }
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadAllCommodities());
     this.customerPicked$.subscribe(val => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));

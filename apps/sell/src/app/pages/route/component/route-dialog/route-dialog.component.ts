@@ -16,7 +16,8 @@ export class RouteDialogComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorAllOrders));
   orders: Order[] = [];
   orderIdsOfRoute: number[] = [];
-  isSelectAll = false
+  isSelectAll = false;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -27,21 +28,20 @@ export class RouteDialogComponent implements OnInit {
 
   ngOnInit() {
     this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val.id));
-    this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(OrderAction.loadAllOrder());
     this.orders$.subscribe(val => {
       this.orders = JSON.parse(JSON.stringify(val));
-      if(this.isSelectAll){
-        this.orderIdsOfRoute = []
-        this.orders.forEach(val =>
-          {
-            val.isSelect = this.isSelectAll
-            this.orderIdsOfRoute.push(val.id)
+      if (this.isSelectAll) {
+        this.orders.forEach(val => {
+          val.isSelect = true;
+          if (!this.orderIdsOfRoute.includes(val.id)) {
+            this.orderIdsOfRoute.push(val.id);
           }
-        )
-      }else {
-        this.orders.forEach(val =>{
+        });
+      } else {
+        this.orders.forEach(val => {
           val.isSelect = this.orderIdsOfRoute.includes(val.id);
-        })
+        });
       }
     });
 
@@ -80,8 +80,8 @@ export class RouteDialogComponent implements OnInit {
     }
   }
 
-  pickAllOrder($event : boolean) {
-    this.isSelectAll = $event
-    console.log(this.isSelectAll)
+  pickAllOrder($event: boolean) {
+    this.isSelectAll = $event;
+    console.log(this.isSelectAll);
   }
 }

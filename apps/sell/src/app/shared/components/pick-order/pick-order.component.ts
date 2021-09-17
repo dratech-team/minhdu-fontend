@@ -51,33 +51,33 @@ export class PickOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //case: update set value default
     if (this.orderIdsOfRoute) {
       this.orderIds = this.orderIdsOfRoute;
     }
+    //case dialog
     if (this?.data?.orders$) {
       this.data.orders$.subscribe(
-        (val: Order[]) => this.orders = val
+        (val: Order[]) => this.orders = JSON.parse(JSON.stringify(val))
       );
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
-      tap((value) => {
+      tap((_) => {
         const val = this.formGroup.value;
-        this.service.searchOrder(this.order(val, this.pageSize, this.pageIndexInit));
+        this.service.searchOrder(this.order(val));
       })
     ).subscribe();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
-  }
+  // onScroll() {
+  //   const val = this.formGroup.value;
+  //   this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
+  // }
 
-  order(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  order(val: any) {
+    // pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip: pageSize * pageIndex,
-      take: pageSize,
       customerId: this?.customerId,
       customer: val.name.trim(),
       paidType: val.paidType,
@@ -129,17 +129,18 @@ export class PickOrderComponent implements OnInit {
         this.orderId = parseInt(pickOrder[i].value);
       }
     }
-
     this.checkEventPickOne.emit(this.orderId);
   }
 
   closeDialog() {
+    //case: pick one
     const pickOrder = document.getElementsByName('pick-one');
     for (let i = 0; i < pickOrder.length; i++) {
       if (pickOrder[i].checked) {
         this.orderId = parseInt(pickOrder[i].value);
       }
     }
+    //case: pick multiple
     this.dialogRef.close(this.orderId);
   }
 }

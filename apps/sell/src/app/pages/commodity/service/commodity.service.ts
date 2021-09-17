@@ -21,7 +21,11 @@ export class CommodityService extends BaseService<Commodity> {
     return super.addOne(props);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Commodity>> {
+  getAll(params?: any): Observable<Commodity[]> {
+    return super.getAll(params);
+  }
+
+  pagination(params?: any): Observable<ResponsePaginate<Commodity>> {
     return super.pagination(params);
   }
 
