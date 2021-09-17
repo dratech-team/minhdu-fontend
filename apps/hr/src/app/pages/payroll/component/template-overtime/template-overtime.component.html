@@ -1,9 +1,7 @@
-<div class='animated'>
-  <div class='title-popup row ml-2 '>
-    Mẫu tăng ca
-  </div>
+<h2 mat-dialog-title>Mẫu tăng ca</h2>
+<mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup'>
-    <div [formGroup]='formGroup' class='m-4 '>
+    <div class='m-4'>
       <div class=' main-popup'>
         <div><span class='main-title'>Tiêu đề tăng ca</span><span class='star'>*</span></div>
         <input class='form-control mt-1' type='text' formControlName='title' placeholder='Nhập tiêu đề'>
@@ -68,4 +66,5 @@
       <button type="submit" [mat-dialog-close]="onSubmit()" class=' btn btn-ok ml-2'>Lưu</button>
     </div>
   </form>
-</div>
+</mat-dialog-content>
+

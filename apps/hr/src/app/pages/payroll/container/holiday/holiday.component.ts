@@ -26,7 +26,7 @@ export class HolidayComponent implements OnInit{
 
   Holiday($event?: any) {
     const dialogRef = this.dialog.open(AddHolidayComponent, {
-      width: '30%',
+      width: '35%',
       data: $event
     })
     dialogRef.afterClosed().subscribe((val) => {

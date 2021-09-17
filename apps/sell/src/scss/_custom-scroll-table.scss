@@ -162,18 +162,18 @@
   align-items: center;
   font-weight: 400;
   color: #3C3B54;
+  min-height: 35px;
 }
 
+
+.row-content:nth-child(even) {
+  background-color: #dddddd;
+}
 .row-content {
   margin-top: 2px;
   display: flex;
   padding: 2px;
-  min-height: 35px;
   border-bottom: solid 1px #9aaec1;
-}
-
-.row-content:nth-child(even) {
-  background-color: #dddddd;
 }
 .name {
   width: 250px;

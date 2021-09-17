@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -60,15 +60,15 @@ export class PayrollComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageIndexInit, this.pageSize)));
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageSize,this.pageIndexInit)));
       })
     ).subscribe();
   }
 
-  Payroll(val: any, pageSize: number, pageIndex?: number) {
+  Payroll(val: any, pageSize: number, pageIndex: number) {
     pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     const payroll = {
-      skip: pageIndex === 0 ? pageSize * pageIndex : pageSize * this.pageIndex++,
+      skip:  pageSize * pageIndex ,
       take: this.pageSize,
       code: val.code,
       name: val.name,
@@ -89,7 +89,7 @@ export class PayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
   }
 
 
@@ -107,7 +107,7 @@ export class PayrollComponent implements OnInit {
   }
 
   updatePayroll(id: number, type: string) {
-    this.dialog.open(UpdateConfirmComponent, {
+   this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
     });

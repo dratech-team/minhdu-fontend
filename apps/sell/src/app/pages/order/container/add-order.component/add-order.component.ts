@@ -22,7 +22,6 @@ import { Subject } from 'rxjs';
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-
   commodities$ = this.store.pipe(select(selectAllCommodity));
   customers$ = this.store.pipe(select(selectorAllCustomer));
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
@@ -153,7 +152,7 @@ export class AddOrderComponent implements OnInit {
     const order = {
       createdAt: val.createdAt,
       explain: val.explain,
-      destinationId: val.ward,
+      wardId: val.ward,
       customerId: this.customerId,
       commodityIds: this.commodityIds
     };

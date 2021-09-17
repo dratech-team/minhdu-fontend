@@ -41,11 +41,11 @@ export class DetailCustomerComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
-      OrderAction.loadInit({ take: 30, skip: 0, customerId: this.getId })
+      OrderAction.loadInit({ take: 10, skip: 0, customerId: this.getId })
     );
     this.store.dispatch(
       OrderAction.loadOrdersAssigned({
-        take: 30,
+        take: 10,
         skip: 0,
         customerId: this.getId,
         delivered: this.convertBoolean.TRUE
