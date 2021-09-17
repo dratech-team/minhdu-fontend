@@ -78,14 +78,20 @@ export class PickEmployeeComponent implements OnInit {
       {
         e.isSelect = this.employeeIds.includes(e.id);
       });
-      if(this.isSelectAll){
-        this.employees.forEach(e => {
-          if(!this.employeeIds.includes(e.id))
-          this.employeeIds.push(e.id)
-        })
-        this.checkEvent.emit(this.employeeIds)
+      if(this.isSelectAll && this.employeeIds.length >= this.employees.length){
+          this.employees.forEach(e => {
+            if(!this.employeeIds.includes(e.id))
+              this.employeeIds.push(e.id)
+          })
+      }else {
+        this.isSelectAll = false
+        this.employees.forEach(e =>
+        {
+          e.isSelect = this.employeeIds.includes(e.id);
+        });
       }
     });
+    this.checkEvent.emit(this.employeeIds)
   }
 
   updateSelect(id: number) {
@@ -110,11 +116,17 @@ export class PickEmployeeComponent implements OnInit {
     if (this.employees == null) {
       return;
     }
-    this.employeeIds = [];
     this.employees?.forEach(employee => {
         employee.isSelect = select;
         if (select) {
-          this.employeeIds.push(employee.id);
+          if(!this.employeeIds.includes(employee.id)){
+            this.employeeIds.push(employee.id)
+          }
+        }else {
+          const index = this.employeeIds.indexOf(employee.id);
+          if (index > -1) {
+            this.employeeIds.splice(index, 1);
+          }
         }
       }
     );
