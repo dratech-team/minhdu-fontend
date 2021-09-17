@@ -79,7 +79,7 @@
         </a>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
-          {{order.debt|number:'1.0'|notEmpty:'0'}} đ
+          {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
         </a>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
