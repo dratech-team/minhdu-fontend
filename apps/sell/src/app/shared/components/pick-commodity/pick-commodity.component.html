@@ -78,9 +78,6 @@
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         [ngStyle]="{
-         }"
     >
       <div class='row-content' *ngFor='let commodity of commodities'
            (contextmenu)='child.onContextMenu($event,commodity)'>

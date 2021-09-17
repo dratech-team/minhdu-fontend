@@ -11,6 +11,10 @@ export const addCommoditySuccess = createAction(
   props<{ commodity: Commodity }>()
 );
 
+export const loadAllCommodities = createAction(
+  '[LOAD_COMMODITY] load All Commodity'
+)
+
 export const loadInit = createAction(
   '[LOAD_COMMODITY] Load Commodity',
   props<{ take?: number, skip?: number , orderId?: number}>()
@@ -46,6 +50,7 @@ export const deleteCommodity = createAction(
   props<{ id: number, orderId?: number }>()
 );
 export const CommodityAction = {
+  loadAllCommodities,
   addCommodity,
   addCommoditySuccess,
   loadInit,

@@ -54,14 +54,14 @@ export class PickCommodityComponent implements OnInit {
     }
   }
 
-  onScroll() {
-    const val = {
-      take: this.pageSize,
-      skip: this.pageSize * this.pageIndex
-    };
-    this.pageIndex++;
-    this.service.scrollCommodities(val);
-  }
+  // onScroll() {
+  //   const val = {
+  //     take: this.pageSize,
+  //     skip: this.pageSize * this.pageIndex
+  //   };
+  //   this.pageIndex++;
+  //   this.service.scrollCommodities(val);
+  // }
 
   assignIsSelect() {
     if (this.isSelectAll) {

@@ -57,19 +57,19 @@ export class PickEmployeeComponent implements OnInit {
     ).subscribe();
   }
 
-  onScroll() {
-    const value = this.formGroup.value;
-    const val = {
-      skip: this.pageSize * this.pageIndex,
-      take: this.pageSize,
-      code: value.code,
-      name: value.name,
-      position: value.position
-    };
-    this.pageIndex ++
-    this.service.scrollEmployee(val);
-    this.assignIsSelect();
-  }
+  // onScroll() {
+  //   const value = this.formGroup.value;
+  //   const val = {
+  //     skip: this.pageSize * this.pageIndex,
+  //     take: this.pageSize,
+  //     code: value.code,
+  //     name: value.name,
+  //     position: value.position
+  //   };
+  //   this.pageIndex ++
+  //   this.service.scrollEmployee(val);
+  //   this.assignIsSelect();
+  // }
 
   assignIsSelect() {
     this.service.Employees().subscribe(val => {
@@ -78,12 +78,20 @@ export class PickEmployeeComponent implements OnInit {
       {
         e.isSelect = this.employeeIds.includes(e.id);
       });
-      if(this.isSelectAll){
-        this.employeeIds = []
-        this.employees.forEach(e => this.employeeIds.push(e.id))
-        this.checkEvent.emit(this.employeeIds)
+      if(this.isSelectAll && this.employeeIds.length >= this.employees.length){
+          this.employees.forEach(e => {
+            if(!this.employeeIds.includes(e.id))
+              this.employeeIds.push(e.id)
+          })
+      }else {
+        this.isSelectAll = false
+        this.employees.forEach(e =>
+        {
+          e.isSelect = this.employeeIds.includes(e.id);
+        });
       }
     });
+    this.checkEvent.emit(this.employeeIds)
   }
 
   updateSelect(id: number) {
@@ -94,7 +102,6 @@ export class PickEmployeeComponent implements OnInit {
       this.employeeIds.push(id);
     }
     this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
-    console.log(this.isSelectAll)
     this.checkEvent.emit(this.employeeIds);
   }
 
@@ -109,11 +116,17 @@ export class PickEmployeeComponent implements OnInit {
     if (this.employees == null) {
       return;
     }
-    this.employeeIds = [];
     this.employees?.forEach(employee => {
         employee.isSelect = select;
         if (select) {
-          this.employeeIds.push(employee.id);
+          if(!this.employeeIds.includes(employee.id)){
+            this.employeeIds.push(employee.id)
+          }
+        }else {
+          const index = this.employeeIds.indexOf(employee.id);
+          if (index > -1) {
+            this.employeeIds.splice(index, 1);
+          }
         }
       }
     );

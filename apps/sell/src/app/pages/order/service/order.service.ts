@@ -19,7 +19,7 @@ export class OrderService extends BaseService<Order> {
     return super.addOne(props);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Order>> {
+  pagination(params?: any): Observable<ResponsePaginate<Order>> {
     return super.pagination(params);
   }
 

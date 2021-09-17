@@ -11,6 +11,10 @@ export const addOrderSuccess = createAction(
   props<{ order: Order }>()
 );
 
+export  const loadAllOrder = createAction(
+  '[LOAD_ORDERS] Load All Order'
+)
+
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
   props<{
@@ -113,6 +117,7 @@ export const OrderAction = {
   addOrder,
   addOrderSuccess,
   loadInit,
+  loadAllOrder,
   loadInitSuccess,
   loadMoreOrders,
   loadMoreOrdersSuccess,

@@ -23,7 +23,6 @@ import { tap } from 'rxjs/operators';
 export class PaymentDialogComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorOrdersByCustomerId(this.data.id)));
   numberChars = new RegExp('[^0-9]', 'g');
-  orders: Order[] = [];
   ordersPicked!: Order;
   orderId!: number;
   payType = PaymentType;
@@ -40,10 +39,7 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrderAction.loadInit({ take: 30, skip: 0, customerId: this.data.id }));
-    this.orders$.subscribe(val =>
-      this.orders = JSON.parse(JSON.stringify(val))
-    );
+    this.store.dispatch(OrderAction.loadInit({ customerId: this.data.id }));
     this.secondFormGroup = this.formBuilder.group({
       pick: ['', Validators.required]
     });

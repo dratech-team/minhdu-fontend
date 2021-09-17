@@ -12,7 +12,7 @@
       <div class='border-start title-header col-2 '>
         <div class='title-profile title-pick'>Ngày tạo</div>
         <input class='form-control input-profile'
-               type='text' formControlName='createdAt'
+               type='date' formControlName='createdAt'
         >
       </div>
       <div class='border-start title-header col-2 '>
@@ -63,7 +63,6 @@
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'
     >
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
@@ -80,7 +79,7 @@
         </a>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
-          {{order.debt|number:'1.0'|notEmpty:'0'}} đ
+          {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
         </a>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
