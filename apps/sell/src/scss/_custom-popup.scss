@@ -1,0 +1,35 @@
+.main-popup {
+  position: relative;
+}
+
+.main-popup .close-popup {
+  font-size: 16px;
+  color: #7749F8;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+
+.main-popup .close-popup .x-popup > img {
+  width: 7px;
+}
+
+.content-popup {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #80828B;
+}
+
+.x-popup {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 14px;
+  height: 14px;
+  border: solid 1px #7749F8;
+  border-radius: 50%;
+  background: #7749F8;
+}

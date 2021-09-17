@@ -1,0 +1,62 @@
+
+.tab {
+  position: relative;
+  margin-top: 10px;
+  left: 5%;
+  width: 80%;
+}
+
+.edit {
+  cursor: pointer;
+  display: flex;
+  margin-right: 10px;
+  background: #4B3880;
+  padding: 4px;
+  border: solid 1px #4B3880;
+  border-radius: 4px;
+}
+
+.add {
+  display: flex;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 28px;
+  color: #7749F8
+}
+
+.btn-edit {
+  border: solid 1px #80828B;
+  border-radius: 20%;
+}
+
+.btn-print {
+  border: solid 1px #95AAF8;
+  background: #95AAF8;
+  border-radius: 32px;
+}
+
+.btn-ok {
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #ffffff;
+  background: #3C3B54;
+  border-radius: 4px;
+}
+
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  background: #EBEBEB;
+  border-radius: 4px;
+}
