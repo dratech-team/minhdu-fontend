@@ -40,7 +40,6 @@
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let employee of employees'>
         <div class='content-profile col-3 pointer '> {{employee.code}}</div>

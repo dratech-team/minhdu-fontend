@@ -47,8 +47,6 @@ export class PickEmployeeComponent implements OnInit {
       tap((val) => {
         this.pageIndex = 1;
         const search = {
-          skip: this.pageIndexInit,
-          take: this.pageSize,
           code: val.code,
           name: val.name,
           branch: val.branch
@@ -59,19 +57,19 @@ export class PickEmployeeComponent implements OnInit {
     ).subscribe();
   }
 
-  onScroll() {
-    const value = this.formGroup.value;
-    const val = {
-      skip: this.pageSize * this.pageIndex,
-      take: this.pageSize,
-      code: value.code,
-      name: value.name,
-      position: value.position
-    };
-    this.pageIndex ++
-    this.service.scrollEmployee(val);
-    this.assignIsSelect();
-  }
+  // onScroll() {
+  //   const value = this.formGroup.value;
+  //   const val = {
+  //     skip: this.pageSize * this.pageIndex,
+  //     take: this.pageSize,
+  //     code: value.code,
+  //     name: value.name,
+  //     position: value.position
+  //   };
+  //   this.pageIndex ++
+  //   this.service.scrollEmployee(val);
+  //   this.assignIsSelect();
+  // }
 
   assignIsSelect() {
     this.service.Employees().subscribe(val => {
@@ -81,8 +79,10 @@ export class PickEmployeeComponent implements OnInit {
         e.isSelect = this.employeeIds.includes(e.id);
       });
       if(this.isSelectAll){
-        this.employeeIds = []
-        this.employees.forEach(e => this.employeeIds.push(e.id))
+        this.employees.forEach(e => {
+          if(!this.employeeIds.includes(e.id))
+          this.employeeIds.push(e.id)
+        })
         this.checkEvent.emit(this.employeeIds)
       }
     });
@@ -96,7 +96,6 @@ export class PickEmployeeComponent implements OnInit {
       this.employeeIds.push(id);
     }
     this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
-    console.log(this.isSelectAll)
     this.checkEvent.emit(this.employeeIds);
   }
 
