@@ -29,22 +29,6 @@ export class RouteDialogComponent implements OnInit {
   ngOnInit() {
     this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val.id));
     this.store.dispatch(OrderAction.loadAllOrder());
-    this.orders$.subscribe(val => {
-      this.orders = JSON.parse(JSON.stringify(val));
-      if (this.isSelectAll) {
-        this.orders.forEach(val => {
-          val.isSelect = true;
-          if (!this.orderIdsOfRoute.includes(val.id)) {
-            this.orderIdsOfRoute.push(val.id);
-          }
-        });
-      } else {
-        this.orders.forEach(val => {
-          val.isSelect = this.orderIdsOfRoute.includes(val.id);
-        });
-      }
-    });
-
     this.formGroup = this.formBuilder.group({
       name: [this.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
@@ -78,10 +62,5 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }
-  }
-
-  pickAllOrder($event: boolean) {
-    this.isSelectAll = $event;
-    console.log(this.isSelectAll);
   }
 }

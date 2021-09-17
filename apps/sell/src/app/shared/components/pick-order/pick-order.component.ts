@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -18,12 +17,12 @@ import { PaidType } from 'libs/enums/paidType.enum';
 export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
   @Input() payment = false;
-  @Input() orders!: Order[];
+  @Input() orders$: any;
   @Input() orderIdsOfRoute!: number[];
   @Input() customerId!: number;
   @Output() checkEvent = new EventEmitter<number[]>();
-  @Output() selectAllEvent = new EventEmitter<boolean>()
   @Output() checkEventPickOne = new EventEmitter<number>();
+  orders: Order[] = [];
   orderId!: number;
   paidType = PaidType;
   pageIndex = 1;
@@ -55,10 +54,20 @@ export class PickOrderComponent implements OnInit {
     if (this.orderIdsOfRoute) {
       this.orderIds = this.orderIdsOfRoute;
     }
-    //case dialog
-    if (this?.data?.orders$) {
+    //case: dialog
+    if (this.data?.orders$) {
       this.data.orders$.subscribe(
-        (val: Order[]) => this.orders = JSON.parse(JSON.stringify(val))
+        (val: Order[]) => {
+          this.orders = JSON.parse(JSON.stringify(val));
+          this.assignIsSelect();
+        }
+      );
+    } else {
+      this.orders$.subscribe((order: Order) => {
+          this.orders = JSON.parse(JSON.stringify(order));
+          console.log(this.orders);
+          this.assignIsSelect();
+        }
       );
     }
     this.formGroup.valueChanges.pipe(
@@ -74,6 +83,22 @@ export class PickOrderComponent implements OnInit {
   //   const val = this.formGroup.value;
   //   this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
   // }
+
+
+  assignIsSelect() {
+    if (this.isSelectAll) {
+      this.orders.forEach(val => {
+        val.isSelect = true;
+        if (!this.orderIdsOfRoute.includes(val.id)) {
+          this.orderIdsOfRoute.push(val.id);
+        }
+      });
+    } else {
+      this.orders.forEach(val => {
+        val.isSelect = this.orderIdsOfRoute?.includes(val.id);
+      });
+    }
+  }
 
   order(val: any) {
     // pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
@@ -96,7 +121,6 @@ export class PickOrderComponent implements OnInit {
     }
     this.isSelectAll = this.orders !== null && this.orders.every(e => e.isSelect);
     this.checkEvent.emit(this.orderIds);
-    this.selectAllEvent.emit(this.isSelectAll)
   }
 
   someComplete(): boolean {
@@ -118,7 +142,6 @@ export class PickOrderComponent implements OnInit {
         }
       }
     );
-    this.selectAllEvent.emit(this.isSelectAll)
     this.checkEvent.emit(this.orderIds);
   }
 

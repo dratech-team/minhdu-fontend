@@ -18,8 +18,8 @@ export  const loadAllOrder = createAction(
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
   props<{
-    take: number;
-    skip: number;
+    take?: number;
+    skip?: number;
     paidType?: string;
     customerId?: number;
     routeId?: number;
