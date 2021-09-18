@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    
     "dev:hr": "nx run hr:serve --open",
     "dev:sell": "nx run sell:serve --open",
     "dev:warehouse": "nx run warehouse:serve --open",

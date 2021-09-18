@@ -33,6 +33,14 @@ export class OrderEffect {
       ))
     ));
 
+  loadAllOrder$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.loadAllOrder),
+      switchMap((props) => this.orderService.pagination()),
+      map((responsePagination) => OrderAction.loadInitSuccess({ orders: responsePagination.data })),
+      catchError((err) => throwError(err))
+    ));
+
   loadInit$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadInit),

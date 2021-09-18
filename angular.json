@@ -619,6 +619,31 @@
           }
         }
       }
+    },
+    "system-history": {
+      "projectType": "library",
+      "root": "libs/system-history",
+      "sourceRoot": "libs/system-history/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/system-history"],
+          "options": {
+            "jestConfig": "libs/system-history/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/system-history/src/**/*.ts",
+              "libs/system-history/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }

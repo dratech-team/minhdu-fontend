@@ -19,6 +19,13 @@ const routes: Routes = [
             (m) => m.DashboardModule
           ),
       },
+      {
+        path: 'lich-su-he-thong',
+        loadChildren: () =>
+          import('@minhdu-fontend/system-history').then(
+            (m) => m.SystemHistoryModule
+          ),
+      },
     ],
   },
 ];

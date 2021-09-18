@@ -59,6 +59,7 @@ export class SellLayoutComponent implements OnInit {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {
+        console.log('sss')
         this.store.dispatch(AuthActions.logout());
       }
     });

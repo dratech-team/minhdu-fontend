@@ -39,4 +39,5 @@ export const Api = {
   PRODUCT: 'product',
   REQUISITE: 'requisite',
   MATERIAL: 'material',
+  LOGGER: 'logger',
 };

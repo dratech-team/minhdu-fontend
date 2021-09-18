@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -18,17 +17,14 @@ import { PaidType } from 'libs/enums/paidType.enum';
 export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
   @Input() payment = false;
-  @Input() orders!: Order[];
+  @Input() orders$: any;
   @Input() orderIdsOfRoute!: number[];
   @Input() customerId!: number;
   @Output() checkEvent = new EventEmitter<number[]>();
-  @Output() selectAllEvent = new EventEmitter<boolean>()
   @Output() checkEventPickOne = new EventEmitter<number>();
+  orders: Order[] = [];
   orderId!: number;
   paidType = PaidType;
-  pageIndex = 1;
-  pageSize = 30;
-  pageIndexInit = 0;
   isSelectAll = false;
   orderIds: number[] = [];
   formGroup = new FormGroup(
@@ -51,33 +47,61 @@ export class PickOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //case: update set value default
     if (this.orderIdsOfRoute) {
       this.orderIds = this.orderIdsOfRoute;
     }
-    if (this?.data?.orders$) {
+    //case: dialog
+    if (this.data?.orders$) {
       this.data.orders$.subscribe(
-        (val: Order[]) => this.orders = val
+        (val: Order[]) => {
+          this.orders = JSON.parse(JSON.stringify(val));
+          this.assignIsSelect();
+        }
+      );
+    } else {
+      this.orders$.subscribe((order: Order) => {
+          this.orders = JSON.parse(JSON.stringify(order));
+          console.log(this.orders);
+          this.assignIsSelect();
+        }
       );
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
-      tap((value) => {
+      tap((_) => {
         const val = this.formGroup.value;
-        this.service.searchOrder(this.order(val, this.pageSize, this.pageIndexInit));
+        this.service.searchOrder(this.order(val));
       })
     ).subscribe();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
+  // onScroll() {
+  //   const val = this.formGroup.value;
+  //   this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
+  // }
+
+
+  assignIsSelect() {
+    if (this.isSelectAll  && this.orderIdsOfRoute.length >= this.orders.length) {
+      this.orders.forEach(val => {
+        val.isSelect = true;
+        if (!this.orderIdsOfRoute.includes(val.id)) {
+          this.orderIdsOfRoute.push(val.id);
+        }
+      });
+    } else {
+      this.isSelectAll = false
+      this.orders.forEach(order => {
+        order.isSelect = this.orderIdsOfRoute?.includes(order.id);
+      });
+    }
+    this.checkEvent.emit(this.orderIdsOfRoute)
   }
 
-  order(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  order(val: any) {
+    // pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip: pageSize * pageIndex,
-      take: pageSize,
       customerId: this?.customerId,
       customer: val.name.trim(),
       paidType: val.paidType,
@@ -96,7 +120,6 @@ export class PickOrderComponent implements OnInit {
     }
     this.isSelectAll = this.orders !== null && this.orders.every(e => e.isSelect);
     this.checkEvent.emit(this.orderIds);
-    this.selectAllEvent.emit(this.isSelectAll)
   }
 
   someComplete(): boolean {
@@ -118,7 +141,6 @@ export class PickOrderComponent implements OnInit {
         }
       }
     );
-    this.selectAllEvent.emit(this.isSelectAll)
     this.checkEvent.emit(this.orderIds);
   }
 
@@ -129,17 +151,18 @@ export class PickOrderComponent implements OnInit {
         this.orderId = parseInt(pickOrder[i].value);
       }
     }
-
     this.checkEventPickOne.emit(this.orderId);
   }
 
   closeDialog() {
+    //case: pick one
     const pickOrder = document.getElementsByName('pick-one');
     for (let i = 0; i < pickOrder.length; i++) {
       if (pickOrder[i].checked) {
         this.orderId = parseInt(pickOrder[i].value);
       }
     }
+    //case: pick multiple
     this.dialogRef.close(this.orderId);
   }
 }

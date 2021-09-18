@@ -60,6 +60,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/bill/bill.module').then((m) => m.BillModule),
       },
+      {
+        path: 'lich-su-he-thong',
+        loadChildren: () =>
+          import('@minhdu-fontend/system-history').then((m) => m.SystemHistoryModule),
+      },
       { path: '**', redirectTo: '' },
     ],
   },
