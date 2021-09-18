@@ -2,14 +2,6 @@
 <div class='main-customer mx-auto' style='width: auto'>
   <div class='main-profile'>
     <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Mã số</div>
-        <input
-          formControlName='id'
-          class='form-control input-profile '
-          type='text'
-        >
-      </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ứng dụng</div>
         <input  formControlName='appName'
@@ -58,7 +50,6 @@
          'overflow-y':systemHistories.length === 0 ? 'hidden': 'scroll'}"
     >
       <div class='row-content' *ngFor='let systemHistory of systemHistories'>
-        <div class='content-profile name pointer '>{{systemHistory.id}}</div>
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.SELL' >Bán hàng</div>
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.WAREHOUSE' >Kho</div>
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.HUMAN_RESOURCE' >Nhan sự</div>
