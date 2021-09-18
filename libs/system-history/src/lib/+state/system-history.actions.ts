@@ -7,6 +7,13 @@ export const loadSystemHistory = createAction(
   props<{
     take: number,
     skip: number,
+    id?:number,
+    appName?: string,
+    name?:string,
+    activity?: string,
+    description?: string,
+    ip?: string,
+    createdAt?: Date
   }>()
 );
 
@@ -20,6 +27,13 @@ export const loadMoreSystemHistory = createAction(
   props<{
     take: number,
     skip: number,
+    id?:number,
+    appName?: string,
+    name?:string,
+    activity?: string,
+    description?: string,
+    ip?: string,
+    createdAt?: Date
   }>()
 );
 

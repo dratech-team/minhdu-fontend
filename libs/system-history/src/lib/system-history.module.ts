@@ -11,6 +11,8 @@ import { SystemHistoryRoutingModule } from './system-history-routing.module';
 import { SystemHistoryContainer } from './containers/system-history.container';
 import { SystemHistoryReducer } from './+state/system-history.reducer';
 import { SystemHistoryEffects } from './+state/system-history.effects';
+import { MatInputModule } from '@angular/material/input';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { SystemHistoryEffects } from './+state/system-history.effects';
     EffectsModule.forFeature([SystemHistoryEffects]),
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatInputModule,
+    InfiniteScrollModule
   ],
   declarations: [
     SystemHistoryContainer

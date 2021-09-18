@@ -21,6 +21,6 @@ export  * from './sell/statistical/statistical-agency'
 export  * from './sell/statistical/statiscal-province'
 export  * from './sell/payment-history'
 export  * from './warehouse/warehouse'
-export  * from './system-history'
+
 
 

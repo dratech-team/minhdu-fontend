@@ -1,0 +1,79 @@
+<div class='row h3 ml-3 mt-3'>Lịch sử hệ thống</div>
+<div class='main-customer mx-auto' style='width: auto'>
+  <div class='main-profile'>
+    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Mã số</div>
+        <input
+          formControlName='id'
+          class='form-control input-profile '
+          type='text'
+        >
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Ứng dụng</div>
+        <input  formControlName='appName'
+                class='form-control  '
+                type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Chủ tài khoản</div>
+        <input  formControlName='name'
+               class='form-control  '
+               type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Hành động</div>
+        <input  formControlName='activity'
+                class='form-control  '
+                type='text'>
+      </div>
+      <div class='border-start title-header note'>
+        <div class='title-profile'>Mô tả</div>
+        <input formControlName='description'
+               class='form-control input-profile '
+               type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Địa chỉ máy</div>
+        <input formControlName='ip'
+               class='form-control input-profile '
+               type='text'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày</div>
+        <input formControlName='createdAt'
+               class='form-control input-profile '
+               type='date'>
+      </div>
+    </form>
+    <div class='outer animated fadeIn d-flex'
+         infiniteScroll
+         [infiniteScrollDistance]='0.5'
+         [scrollWindow]='false'
+         [alwaysCallback]='true'
+         (scrolled)='onScroll()'
+         *ngIf='(systemHistory$| async) as systemHistories'
+         [ngStyle]="{'width':systemHistories.length === 0 ? header.offsetWidth + 'px': 'auto',
+         'overflow-y':systemHistories.length === 0 ? 'hidden': 'scroll'}"
+    >
+      <div class='row-content' *ngFor='let systemHistory of systemHistories'>
+        <div class='content-profile name pointer '>{{systemHistory.id}}</div>
+        <div class='content-profile  default ' >{{systemHistory.appName}}</div>
+        <div class='content-profile name pointer '>{{systemHistory.name}}</div>
+        <div class='content-profile  name '>{{systemHistory.activity}} </div>
+        <div class='content-profile note pointer '>{{systemHistory.description}}</div>
+        <div class='content-profile name pointer '>{{systemHistory?.ip}}</div>
+        <div class='content-profile  name '> {{systemHistory?.createdAt| date:'dd/MM/yyyy'}}</div>
+      </div>
+      <div *ngIf='!systemHistories || systemHistories.length === 0 ' style='height:60vh; '
+           class=' d-flex justify-content-center align-content-center'>
+        <div class='font-xl font-weight-bold d-flex align-items-center'>
+          Hiện chưa có lịch sử hệ thống nào!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

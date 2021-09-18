@@ -1,11 +1,9 @@
-import { ActivityType, App } from '@minhdu-fontend/enums';
-
 
 export interface SystemHistory {
   id: number,
-  appName: App,
+  appName: string,
   name: string,
-  activity: ActivityType
+  activity: string
   description: string,
   ip: string,
   createdAt?: Date,

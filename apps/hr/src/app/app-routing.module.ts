@@ -37,6 +37,13 @@ const routes: Routes = [
           title: 'Hệ thống nhân sự'
         },
       },
+      {
+        path: 'lich-su-he-thong',
+        loadChildren: () => import('@minhdu-fontend/system-history').then(m => m.SystemHistoryModule),
+        data: {
+          title: 'Lịch sử hệ thống'
+        },
+      },
       { path: '**', redirectTo: '' }
     ]
   }

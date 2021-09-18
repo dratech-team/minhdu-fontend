@@ -15,7 +15,7 @@ export const selectorSystemHistoryEntities = createSelector(
   selectorSystemHistoryState,
   formSystemHistory.selectEntities
 );
-export const selectorAllBills = createSelector(
+export const selectorAllSystemHistory = createSelector(
   selectorSystemHistoryState,
   formSystemHistory.selectAll
 );
