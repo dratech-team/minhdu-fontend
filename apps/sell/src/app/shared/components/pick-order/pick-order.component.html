@@ -84,7 +84,7 @@
         </a>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
-          {{order?.paidTotal|number:'1.0-0'|notEmpty:'0'}} đ
+          {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
         </a>
         <a  routerLink="/don-hang/lich-su-thanh-toan"
            [queryParams]='{data:order.paymentHistories|json}'
