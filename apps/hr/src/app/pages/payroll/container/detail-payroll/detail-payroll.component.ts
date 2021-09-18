@@ -11,6 +11,8 @@ import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
+
 
 @Component({
   templateUrl: 'detail-payroll.component.html',
@@ -78,5 +80,9 @@ export class DetailPayrollComponent implements OnInit {
         width: "25%",
         data: {id: id, type: 'accConfirmedAt', detail: true}
     })
+  }
+
+  historySalary(employeeId: number) {
+    this.dialog.open(DevelopmentComponent, {width:'30%'})
   }
 }

@@ -283,7 +283,8 @@
     <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
     </div>
     <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
-      <button class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
+      <button (click)='historySalary(payroll.id)'
+              class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
       </button>
