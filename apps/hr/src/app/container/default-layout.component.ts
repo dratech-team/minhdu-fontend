@@ -44,7 +44,7 @@ export class DefaultLayoutComponent implements OnInit {
   ref.afterClosed().subscribe(val =>
   {
     if(val){
-      this.store.dispatch(AuthActions.logout());
+      this.store.dispatch(AuthActions.logout())
     }
   })
   }

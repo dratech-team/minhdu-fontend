@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions } from '@minhdu-fontend/auth';
+import { AuthActions, logout } from '@minhdu-fontend/auth';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -89,10 +89,10 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap((_) => {
+        map((_) => {
           localStorage.removeItem('role');
           localStorage.removeItem('token');
-          this.router.navigate(['/']).then((r: boolean) => console.log(r));
+          this.router.navigate(['auth/login']).then();
         })
       ),
     { dispatch: false }
