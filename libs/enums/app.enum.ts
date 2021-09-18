@@ -3,5 +3,6 @@ export enum App {
   SELL = 'SELL',
   WAREHOUSE = 'WAREHOUSE',
   HR = 'HR',
-  ADMIN = 'ADMIN'
+  ADMIN = 'ADMIN',
+  UNKNOWN ='UNKNOWN',
 }

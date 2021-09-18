@@ -53,6 +53,7 @@
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.SELL' >Bán hàng</div>
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.WAREHOUSE' >Kho</div>
         <div class='content-profile  default ' *ngIf='systemHistory.appName === app.HUMAN_RESOURCE' >Nhan sự</div>
+        <div class='content-profile  default ' *ngIf='systemHistory.appName === app.UNKNOWN' >Chưa xác định</div>
         <div class='content-profile name pointer '>{{systemHistory.name}}</div>
         <div class='content-profile  name ' *ngIf='systemHistory.activity === activityType.DELETE'>
           Xóa
@@ -67,7 +68,8 @@
           xem dữ liệu
         </div>
         <div class='content-profile note pointer '>{{systemHistory.description}}</div>
-        <div class='content-profile name pointer '>{{systemHistory?.ip}}</div>
+        <div class='content-profile name pointer ' *ngIf='systemHistory?.ip'>{{systemHistory?.ip}}</div>
+        <div class='content-profile name pointer ' *ngIf='!systemHistory?.ip'>Chưa xác định</div>
         <div class='content-profile  name '> {{systemHistory?.createdAt| date:'dd/MM/yyyy'}}</div>
       </div>
       <div *ngIf='!systemHistories || systemHistories.length === 0 ' style='height:60vh; '
