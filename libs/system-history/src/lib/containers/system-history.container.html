@@ -17,7 +17,7 @@
                 type='text'>
       </div>
       <div class='border-start title-header name'>
-        <div class='title-profile'>Chủ tài khoản</div>
+        <div class='title-profile'>Tài khoản</div>
         <input  formControlName='name'
                class='form-control  '
                type='text'>
@@ -59,9 +59,22 @@
     >
       <div class='row-content' *ngFor='let systemHistory of systemHistories'>
         <div class='content-profile name pointer '>{{systemHistory.id}}</div>
-        <div class='content-profile  default ' >{{systemHistory.appName}}</div>
+        <div class='content-profile  default ' *ngIf='systemHistory.appName === app.SELL' >Bán hàng</div>
+        <div class='content-profile  default ' *ngIf='systemHistory.appName === app.WAREHOUSE' >Kho</div>
+        <div class='content-profile  default ' *ngIf='systemHistory.appName === app.HUMAN_RESOURCE' >Nhan sự</div>
         <div class='content-profile name pointer '>{{systemHistory.name}}</div>
-        <div class='content-profile  name '>{{systemHistory.activity}} </div>
+        <div class='content-profile  name ' *ngIf='systemHistory.activity === activityType.DELETE'>
+          Xóa
+        </div>
+        <div class='content-profile  name ' *ngIf='systemHistory.activity === activityType.POST'>
+          Thêm
+        </div>
+        <div class='content-profile  name ' *ngIf='systemHistory.activity === activityType.PATCH'>
+          Chỉnh sửa
+        </div>
+        <div class='content-profile  name ' *ngIf='systemHistory.activity === activityType.GET'>
+          xem dữ liệu
+        </div>
         <div class='content-profile note pointer '>{{systemHistory.description}}</div>
         <div class='content-profile name pointer '>{{systemHistory?.ip}}</div>
         <div class='content-profile  name '> {{systemHistory?.createdAt| date:'dd/MM/yyyy'}}</div>
