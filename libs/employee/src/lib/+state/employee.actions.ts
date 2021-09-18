@@ -22,8 +22,8 @@ export const loadInit = createAction(
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
   props<{
-    take?: number,
-    skip?: number,
+    take: number,
+    skip: number,
     name?: string,
     workedAt?: Date,
     code?: string,

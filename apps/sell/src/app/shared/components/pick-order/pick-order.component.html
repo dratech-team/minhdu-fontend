@@ -63,7 +63,6 @@
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'
     >
       <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'

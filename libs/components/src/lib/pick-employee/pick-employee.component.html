@@ -35,12 +35,12 @@
       </div>
     </form>
     <div class='outer '
-         style='width: 102%; height: 50vh'
+         style='height: 50vh'
+         [ngStyle]="{'width': employees.length > 11? '102%' : '100%'}"
          infiniteScroll
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'
-         (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let employee of employees'>
         <div class='content-profile col-3 pointer '> {{employee.code}}</div>

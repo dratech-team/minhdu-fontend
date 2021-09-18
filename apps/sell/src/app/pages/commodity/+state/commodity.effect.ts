@@ -17,6 +17,15 @@ export class CommodityEffect {
       ))
     ));
 
+  loadAllCommodities$ = createEffect(() =>
+    this.action.pipe(
+      ofType(CommodityAction.loadAllCommodities),
+      switchMap((_) => this.commodityService.pagination()),
+      map((ResponsePaginate) => CommodityAction.loadInitSuccess({ commodity: ResponsePaginate.data })),
+      catchError((err) => throwError(err))
+    )
+  );
+
   loadCommodity$ = createEffect(() =>
     this.action.pipe(
       ofType(CommodityAction.loadInit),
