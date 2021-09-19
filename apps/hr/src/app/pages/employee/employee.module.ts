@@ -22,7 +22,7 @@ import { EmployeeComponent } from './containers/employee/employee.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
 import { LocationModule } from '@minhdu-fontend/location';
-
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -42,7 +42,8 @@ import { LocationModule } from '@minhdu-fontend/location';
     MatInputModule,
     InfiniteScrollModule,
     FormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxSkeletonLoaderModule.forRoot(),
   ],
   declarations: [
     AddDegreeComponent,
@@ -54,10 +55,6 @@ import { LocationModule } from '@minhdu-fontend/location';
     AddProfileComponent,
     DeleteEmployeeComponent,
   ],
-  providers: [
-    DatePipe,
-  ],
+  providers: [DatePipe],
 })
-
-export class EmployeeModule {
-}
+export class EmployeeModule {}

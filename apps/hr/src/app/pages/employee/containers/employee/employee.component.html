@@ -1,84 +1,57 @@
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
 <button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
-<div class='main-profile'>
-  <form [formGroup]='formGroup' class='header-profile mt-2 animated fadeIn' >
-      <div class='border-start title-header default' >
+<ngx-skeleton-loader *ngIf="!(loaded$ | async); else employees" count="10" appearance="line"></ngx-skeleton-loader>
+<ng-template #employees>
+  <div class='main-profile'>
+    <form [formGroup]='formGroup' class='header-profile mt-2 animated fadeIn'>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Mã nhân Viên</div>
-        <input
-          class='form-control input-profile '
-          type='text'
-          placeholder='PN10001'
-          formControlName='code'
-        >
+        <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
-        <input
-          class='form-control input-profile'
-          type='search'
-          placeholder='Trần Gia Hiệu'
-          formControlName='name'
-        >
+        <input class='form-control input-profile' type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Ngày sinh</div>
-        <input
-          disabled class='form-control input-profile'
-          type='search'>
+        <input disabled class='form-control input-profile' type='search'>
       </div>
       <div class='border-start title-header gender' [formGroup]='formGroup'>
         <div class='title-profile'>Giới tính</div>
-        <select class='select' matNativeControl required formControlName='gender' >
-          <option value='{{genderType.MALE}}' >Nam</option>
-          <option value='{{genderType.FEMALE}}' >Nữ</option>
-          <option value='{{genderType.OTHER}}' >Khác</option>
-          <option value='' >Mặc định</option>
+        <select class='select' matNativeControl required formControlName='gender'>
+          <option value='{{genderType.MALE}}'>Nam</option>
+          <option value='{{genderType.FEMALE}}'>Nữ</option>
+          <option value='{{genderType.OTHER}}'>Khác</option>
+          <option value=''>Mặc định</option>
         </select>
       </div>
-      <div class='border-start title-header default' >
+      <div class='border-start title-header default'>
         <div class='title-profile'>Ngày vào làm</div>
-        <input
-          class='form-control input-profile '
-          type='date'
-          formControlName='workedAt' >
+        <input class='form-control input-profile ' type='date' formControlName='workedAt'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Loại lương</div>
-        <select class='select' matNativeControl required formControlName='flatSalary' >
-          <option value='{{flatSalary.FLAT_SALARY}}' >Lương cố định</option>
-          <option value='{{flatSalary.NOT_FLAT_SALARY}}' >Lương không cố định</option>
-          <option value='' >Mặc định</option>
+        <select class='select' matNativeControl required formControlName='flatSalary'>
+          <option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</option>
+          <option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</option>
+          <option value=''>Mặc định</option>
         </select>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Số điện thoại</div>
-        <input  disabled
-                class='form-control input-profile '
-                type='number'>
+        <input disabled class='form-control input-profile ' type='number'>
       </div>
-      <div class='border-start title-header default' >
+      <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <input
-          class='form-control input-profile '
-          type='text'
-          formControlName='branch'
-        >
+        <input class='form-control input-profile ' type='text' formControlName='branch'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Bộ phận</div>
-        <input
-          class='form-control input-profile '
-          type='text'
-          formControlName='department'
-        >
+        <input class='form-control input-profile ' type='text' formControlName='department'>
       </div>
-      <div class='border-start title-header default' >
+      <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input
-          class='form-control input-profile '
-          type='text'
-          formControlName='position'
-        >
+        <input class='form-control input-profile ' type='text' formControlName='position'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>CMND / CCCD</div>
@@ -92,38 +65,33 @@
         <div class='title-profile'>Chú thích</div>
         <input disabled class='form-control input-profile ' type='search'>
       </div>
-  </form>
-  <div class='outer  animated fadeIn'
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='1'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'
-       *ngIf='(employees$| async) as employees'>
-    <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)'
-         (contextmenu)='child.onContextMenu($event, employee)'>
-      <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
-                       (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-      <div class='content-profile default pointer '> {{employee?.code}}</div>
-      <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
-      <div class='content-profile default pointer '> {{employee?.birthday|date:'dd/MM/yyyy'}}</div>
-      <div class='content-profile gender pointer '> {{
-        employee.gender === 'MALE' ? 'Nam' :
+    </form>
+    <div class='outer  animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
+      [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(employees$| async) as employees'>
+      <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)'
+        (contextmenu)='child.onContextMenu($event, employee)'>
+        <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
+          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
+        <div class='content-profile default pointer '> {{employee?.code}}</div>
+        <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
+        <div class='content-profile default pointer '> {{employee?.birthday|date:'dd/MM/yyyy'}}</div>
+        <div class='content-profile gender pointer '> {{
+          employee.gender === 'MALE' ? 'Nam' :
           employee.gender === 'FEMALE' ? 'Nữ' :
-            'Khác'
-        }}</div>
-      <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
-      <div
-        class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}</div>
-      <div class='content-profile default pointer '>{{employee?.phone}}</div>
-      <div class='content-profile default pointer '>{{employee?.position?.department?.branch?.name}}</div>
-      <div class='content-profile default pointer '> {{employee?.position?.department?.name}}</div>
-      <div class='content-profile default pointer '> {{employee?.position?.name}}</div>
-      <div class='content-profile default pointer '> {{employee?.identify}} </div>
-      <div class='content-profile address pointer '> {{employee?.address}}</div>
-      <div class='content-profile note pointer '> {{employee?.note}}</div>
+          'Khác'
+          }}</div>
+        <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
+        <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố
+          định'}}
+        </div>
+        <div class='content-profile default pointer '>{{employee?.phone}}</div>
+        <div class='content-profile default pointer '>{{employee?.position?.department?.branch?.name}}</div>
+        <div class='content-profile default pointer '> {{employee?.position?.department?.name}}</div>
+        <div class='content-profile default pointer '> {{employee?.position?.name}}</div>
+        <div class='content-profile default pointer '> {{employee?.identify}} </div>
+        <div class='content-profile address pointer '> {{employee?.address}}</div>
+        <div class='content-profile note pointer '> {{employee?.note}}</div>
+      </div>
     </div>
   </div>
-</div>
-
-
+</ng-template>
