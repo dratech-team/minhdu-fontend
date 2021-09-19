@@ -30,3 +30,7 @@ export const selectedLoaded = createSelector(
   selectorEmployeeState,
   (state) => state.loaded
 );
+export const selectorEmployeeTotal = createSelector(
+  selectorEmployeeState,
+  fromEmployee.selectTotal
+);

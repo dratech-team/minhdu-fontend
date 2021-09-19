@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer } from './customer.selector';
+import { selectorCustomerTotal } from './customer.selector';
 
 @Injectable()
 export class CustomerEffect {
@@ -25,14 +25,12 @@ export class CustomerEffect {
   loadMoreCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadMoreCustomers),
+      withLatestFrom(this.store.pipe(select(selectorCustomerTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+      ),
       switchMap((props) => {
-        let total = 0;
-        this.store.pipe(select(selectorAllCustomer)).subscribe(
-          val => total = val.length
-        );
-        return this.customerService.pagination(
-          Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-        );
+        return this.customerService.pagination(props);
       }),
       map((ResponsePaginate) => {
           if (ResponsePaginate.data.length === 0) {

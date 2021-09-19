@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouteAction } from './route.action';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { RouteService } from '../../service/route.service';
 import { throwError } from 'rxjs';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { selectorAllRoute } from './Route.selector';
+import { selectorAllRoute, selectorRouteTotal } from './Route.selector';
+import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
 
 @Injectable()
 export class RouteEffect {
@@ -30,17 +31,13 @@ export class RouteEffect {
   loadMoreRoutes$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.loadMoreRoutes),
-      switchMap((props) => {
-          let total = 0;
-          this.store.pipe(select(selectorAllRoute)).subscribe(
-            val => total = val.length
-          );
-          console.log(total)
-          return this.routeService.pagination(
-            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-          );
-        }
+      withLatestFrom(this.store.pipe(select(selectorRouteTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
+      switchMap((props) => {
+        return this.routeService.pagination(props);
+      }),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {

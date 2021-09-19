@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
 import { OrderAction } from './order.action';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
@@ -10,7 +10,10 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
 import { CustomerAction } from '../../customer/+state/customer/customer.action';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { selectorAllOrders, selectorAllOrdersAssigned } from './order.selector';
+import { selectorAllOrdersAssigned, selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Order } from './order.interface';
+import { selectorSystemHistoryTotal } from '../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
 
 
 @Injectable()
@@ -54,16 +57,13 @@ export class OrderEffect {
   loadMoreOrders$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
-      switchMap((props) => {
-          let total = 0;
-          this.store.pipe(select(selectorAllOrders)).subscribe(
-            val => total = val.length
-          );
-          return this.orderService.pagination(
-            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-          );
-        }
+      withLatestFrom(this.store.pipe(select(selectorOrderTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
+      switchMap((props) => {
+        return this.orderService.pagination(props);
+      }),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {
@@ -94,14 +94,12 @@ export class OrderEffect {
   loadMoreOrdersAssigned$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrdersAssigned),
+      withLatestFrom(this.store.pipe(select(selectorOrderAssignedTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+      ),
       switchMap((props) => {
-        let total = 0;
-        this.store.pipe(select(selectorAllOrdersAssigned)).subscribe(
-          val => total = val.length
-        );
-        return this.orderService.pagination(
-          Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-        );
+        return this.orderService.pagination(props);
       }),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {

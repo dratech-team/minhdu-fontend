@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, delay, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
@@ -8,7 +8,8 @@ import { SalaryService } from '../../service/salary.service';
 import { props, select, Store } from '@ngrx/store';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { selectorAllPayroll } from './payroll.selector';
+import { selectorAllPayroll, selectorPayrollTotal } from './payroll.selector';
+import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
 
 @Injectable()
 export class PayrollEffect {
@@ -25,16 +26,13 @@ export class PayrollEffect {
   loadMorePayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.loadMorePayrolls),
-      concatMap((props) => {
-          let total = 0;
-          this.store.pipe(select(selectorAllPayroll)).subscribe(
-            val => total = val.length
-          );
-          return this.payrollService.pagination(
-            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-          );
-        }
+      withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
+      switchMap((props) => {
+        return this.payrollService.pagination(props);
+      }),
       map((ResponsePaginate) => {
           if (ResponsePaginate.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {

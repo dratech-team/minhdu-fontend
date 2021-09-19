@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
-import { EmployeeAction, LoadEmployeesSuccess, selectorAllEmployee } from '@minhdu-fontend/employee';
+import {
+  EmployeeAction,
+  selectorEmployeeTotal
+} from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 import { select, Store } from '@ngrx/store';
@@ -26,16 +29,13 @@ export class EmployeeEffect {
   loadMoreEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadMoreEmployees),
-      switchMap((props) => {
-          let total = 0;
-          this.store.pipe(select(selectorAllEmployee)).subscribe(
-            value => total = value.length
-          );
-          return this.employeeService.pagination(
-            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
-          );
-        }
+      withLatestFrom(this.store.pipe(select(selectorEmployeeTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
+      switchMap((props) => {
+        return this.employeeService.pagination(props);
+      }),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {

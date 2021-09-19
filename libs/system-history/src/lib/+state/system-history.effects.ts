@@ -7,7 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { SystemHistoryActions } from './system-history.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
-import { selectorAllSystemHistory, selectorSystemHistoryTotal } from './system-history.selectors';
+import { selectorSystemHistoryTotal } from './system-history.selectors';
 
 @Injectable()
 export class SystemHistoryEffects {
@@ -18,7 +18,7 @@ export class SystemHistoryEffects {
       map((responsePagination) =>
         SystemHistoryActions.loadSystemHistorySuccess({
           systemHistory: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         })
       ),
       catchError((err) => throwError(err))
@@ -40,11 +40,11 @@ export class SystemHistoryEffects {
           this.snackBar.openFromComponent(SnackBarComponent, {
             data: { content: 'Đã lấy hết dữ liệu' },
             duration: 2500,
-            panelClass: ['background-snackbar'],
+            panelClass: ['background-snackbar']
           });
         }
         return SystemHistoryActions.loadMoreSystemHistorySuccess({
-          systemHistory: responsePagination.data,
+          systemHistory: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -56,7 +56,8 @@ export class SystemHistoryEffects {
     private readonly store: Store,
     private readonly systemHistoryService: SystemHistoryService,
     private readonly snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 }
 
 
