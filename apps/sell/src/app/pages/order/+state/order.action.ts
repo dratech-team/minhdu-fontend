@@ -72,6 +72,11 @@ export const updateOrder = createAction(
   props<{ order: any; id: number; typeUpdate?: string }>()
 );
 
+export const updateHideOrder = createAction(
+  '[UPDATE_ORDER] Update Hide Order',
+  props<{ order: any; id: number}>()
+);
+
 export const payment = createAction(
   '[PAYMENT] Payment',
   props<{ order: any; id: number }>()
@@ -124,6 +129,7 @@ export const OrderAction = {
   getOrder,
   getOrderSuccess,
   updateOrder,
+  updateHideOrder,
   payment,
   deleteOrder,
   loadOrdersAssigned,

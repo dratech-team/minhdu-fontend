@@ -133,26 +133,37 @@ export class OrderEffect {
             switch (props.typeUpdate) {
               case 'DELIVERED':
                 return OrderAction.loadInit({ take: 30, skip: 0 });
-              case 'HIDE_DEBT':
-                return OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE });
               default:
                 return OrderAction.getOrder({ id: props.id });
             }
           }
         ),
         catchError((err) => {
-          if (props.typeUpdate === 'HIDE_DEBT') {
-            this.store.dispatch(OrderAction.loadOrdersAssigned({
-              take: 30,
-              skip: 0,
-              delivered: this.convertBoolean.TRUE
-            }));
-          }
           return throwError(err);
         }))
       )
     ));
 
+  updateHideOrder$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.updateHideOrder),
+      switchMap((props) =>
+        this.orderService.updateHide(props.id, props.order).pipe(
+          map((_) =>
+            OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE })
+          ),
+          catchError((err) => {
+              this.store.dispatch(OrderAction.loadOrdersAssigned({
+                take: 30,
+                skip: 0,
+                delivered: this.convertBoolean.TRUE
+              }));
+              return throwError(err);
+            }
+          )
+        )
+      )
+    ));
   paymentBill$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.payment),
