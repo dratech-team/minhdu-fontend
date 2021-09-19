@@ -4,6 +4,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../../service/customer.service';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class CustomerEffect {
@@ -22,7 +24,17 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.loadMoreCustomers),
       switchMap((props) => this.customerService.pagination(props)),
-      map((ResponsePaginate) => CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data })),
+      map((ResponsePaginate) => {
+          if (ResponsePaginate.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Đã lấy hết khách hàng' }
+            });
+          }
+          return CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -69,7 +81,8 @@ export class CustomerEffect {
 
   constructor(
     private readonly action$: Actions,
-    private readonly customerService: CustomerService
+    private readonly customerService: CustomerService,
+    private readonly snackBar: MatSnackBar
   ) {
   }
 }

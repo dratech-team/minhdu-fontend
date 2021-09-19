@@ -26,7 +26,7 @@ export class OrderEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: {content: 'Thao tác thành công'}
+            data: { content: 'Thao tác thành công' }
           });
         }),
         map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
@@ -54,7 +54,17 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
       switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data })),
+      map((responsePagination) => {
+          if (responsePagination.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Đã lấy hết đơn hàng' }
+            });
+          }
+          return OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data });
+        }
+      ),
       catchError((err) => throwError(err))
     ));
 
@@ -75,8 +85,17 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadMoreOrdersAssigned),
       switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) =>
-        OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data })),
+      map((responsePagination) => {
+          if (responsePagination.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Đã lấy hết đơn hàng' }
+            });
+          }
+          return OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data });
+        }
+      ),
       catchError((err) => throwError(err))
     ));
 
@@ -130,15 +149,14 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.deleteOrder),
       switchMap((props) => this.orderService.delete(props.id).pipe(
-        map((_) =>
-        {
-          if(props.customerId){
-            this.store.dispatch(CustomerAction.getCustomer({id:props.customerId}))
-          return  OrderAction.loadInit({ take: 30, skip: 0, customerId:props.customerId})
-          }else{
-            return  OrderAction.loadInit({ take: 30, skip: 0})
+        map((_) => {
+          if (props.customerId) {
+            this.store.dispatch(CustomerAction.getCustomer({ id: props.customerId }));
+            return OrderAction.loadInit({ take: 30, skip: 0, customerId: props.customerId });
+          } else {
+            return OrderAction.loadInit({ take: 30, skip: 0 });
           }
-        } ),
+        }),
         catchError((err) => throwError(err))
         )
       )
