@@ -25,6 +25,8 @@ export class OrderComponent implements OnInit {
   currencyUnit = CurrencyUnit;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
+  totalOrder =  Number(localStorage.getItem('totalOrder'));
+  totalOrderStore!: number;
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
@@ -47,10 +49,12 @@ export class OrderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.totalOrder)
     document.getElementById('order').classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
     this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.orders$.subscribe(val => this.totalOrderStore = val.length)
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -66,10 +70,13 @@ export class OrderComponent implements OnInit {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    this.store.dispatch(
-      OrderAction.loadMoreOrders(this.order(val, this.pageSize , this.pageIndex))
-    );
+    if(this.totalOrderStore < this.totalOrder){
+      console.log('ssss')
+      const val = this.formGroup.value;
+      this.store.dispatch(
+        OrderAction.loadMoreOrders(this.order(val, this.pageSize , this.pageIndex))
+      );
+    }
   }
 
   order(val: any, pageSize: number, pageIndex: number) {

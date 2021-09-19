@@ -3,12 +3,10 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { SystemHistory } from './system-history.model';
 import { SystemHistoryActions } from './system-history.actions';
 
-
 export interface SystemHistoryState extends EntityState<SystemHistory> {
   loaded: boolean,
-  selectedBillId: number,
+  selectedSystemHistoryId: number,
 }
-
 export const adapter: EntityAdapter<SystemHistory> = createEntityAdapter<SystemHistory>();
 export const initialSystemHistory = adapter.getInitialState({ loaded: false });
 export const SystemHistoryReducer = createReducer(

@@ -37,7 +37,10 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadAllOrder),
       switchMap((props) => this.orderService.pagination()),
-      map((responsePagination) => OrderAction.loadInitSuccess({ orders: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalOrder', responsePagination.total.toString());
+        return OrderAction.loadInitSuccess({ orders: responsePagination.data })
+      } ),
       catchError((err) => throwError(err))
     ));
 
@@ -45,7 +48,10 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadInit),
       switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) => OrderAction.loadInitSuccess({ orders: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalOrder', responsePagination.total.toString());
+        return OrderAction.loadInitSuccess({ orders: responsePagination.data })
+      } ),
       catchError((err) => throwError(err))
     ));
 
@@ -56,6 +62,7 @@ export class OrderEffect {
         return this.orderService.pagination(props);
       }),
       map((responsePagination) => {
+          localStorage.setItem('totalAssignedOrder', responsePagination.total.toString());
           return OrderAction.loadOrdersAssignedSuccess({ orders: responsePagination.data });
         }
       ),
@@ -66,16 +73,22 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadMoreOrdersAssigned),
       switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) =>
-        OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalAssignedOrder', responsePagination.total.toString());
+        return  OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data })
+      }
+       ),
       catchError((err) => throwError(err))
     ));
 
-  loadMoreBills$ = createEffect(() =>
+  loadMoreOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
       switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalOrder', responsePagination.total.toString());
+        return  OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data })
+      }),
       catchError((err) => throwError(err))
     ));
 

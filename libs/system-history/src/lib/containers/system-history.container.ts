@@ -13,6 +13,9 @@ import { document } from 'ngx-bootstrap/utils';
   templateUrl: 'system-history.container.html'
 })
 export class SystemHistoryContainer implements OnInit {
+  systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
+  totalSystemHistory =  Number(localStorage.getItem('totalSystemHistory'));
+  totalSystemHistoryStore!: number;
   app = App;
   pageSize = 30;
   pageIndex = 1;
@@ -33,13 +36,15 @@ export class SystemHistoryContainer implements OnInit {
   ) {
   }
 
-  systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
-
   ngOnInit(): void {
+    this.systemHistory$.subscribe(val => {
+       this.totalSystemHistoryStore = val.length
+    })
     const btnRoute = document.getElementById('systemHistory');
     btnRoute?.classList.add('btn-border');
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
       { take: this.pageSize, skip: this.pageIndexInit }));
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -50,16 +55,18 @@ export class SystemHistoryContainer implements OnInit {
         })
       )
       .subscribe();
-
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    this.store.dispatch(
-      SystemHistoryActions.loadSystemHistory(
-        this.systemHistory(val, this.pageSize, this.pageIndex)
-      )
-    );
+    if(this.totalSystemHistoryStore < this.totalSystemHistory)
+    {
+      const val = this.formGroup.value;
+      this.store.dispatch(
+        SystemHistoryActions.loadMoreSystemHistory(
+          this.systemHistory(val, this.pageSize, this.pageIndex)
+        )
+      );
+    }
   }
 
   systemHistory(val: any, pageSize: number, pageIndex: number) {
@@ -67,13 +74,13 @@ export class SystemHistoryContainer implements OnInit {
     return {
       skip: pageSize * pageIndex,
       take: this.pageSize,
-      id: val.id,
-      appName: val.appName,
-      name: val.name,
-      activity: val.activity,
-      description: val.description,
-      ip: val.ip,
-      createdAt: val.createdAt
+      // id: val.id,
+      // appName: val.appName,
+      // name: val.name,
+      // activity: val.activity,
+      // description: val.description,
+      // ip: val.ip,
+      // createdAt: val.createdAt
     };
   }
 }

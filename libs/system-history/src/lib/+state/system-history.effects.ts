@@ -12,8 +12,11 @@ export class SystemHistoryEffects {
     this.actions.pipe(
       ofType(SystemHistoryActions.loadSystemHistory),
       switchMap((props) => this.systemHistoryService.pagination(props)),
-      map((responsePagination) =>
-        SystemHistoryActions.loadSystemHistorySuccess({ systemHistory: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalSystemHistory', responsePagination.total.toString());
+        return SystemHistoryActions.loadSystemHistorySuccess({ systemHistory: responsePagination.data })
+      }
+        ),
       catchError(err => throwError(err))
     ));
 
@@ -21,8 +24,11 @@ export class SystemHistoryEffects {
     this.actions.pipe(
       ofType(SystemHistoryActions.loadMoreSystemHistory),
       switchMap((props) => this.systemHistoryService.pagination(props)),
-      map((responsePagination) =>
-        SystemHistoryActions.loadMoreSystemHistorySuccess({ systemHistory: responsePagination.data })),
+      map((responsePagination) =>{
+        localStorage.setItem('totalSystemHistory', responsePagination.total.toString());
+        return SystemHistoryActions.loadMoreSystemHistorySuccess({ systemHistory: responsePagination.data })
+        }
+        ),
       catchError(err => throwError(err))
     ));
 
