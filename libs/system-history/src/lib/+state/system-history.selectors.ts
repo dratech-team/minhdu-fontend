@@ -1,10 +1,12 @@
-import { SystemHistoryState } from './system-history.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as formSystemHistory from './system-history.reducer';
+import { EntityState } from '@ngrx/entity';
+import { SystemHistory } from './system-history.model';
 
-export interface state {
-  systemHistory: SystemHistoryState,
+export interface SystemHistoryState extends EntityState<SystemHistory> {
+  loaded: boolean;
+  selectedBillId: number;
 }
 
 export const selectorSystemHistoryState = createFeatureSelector<SystemHistoryState>(
@@ -25,3 +27,7 @@ export const selectedLoaded = createSelector(
   (state) => state.loaded
 );
 
+export const selectorSystemHistoryTotal = createSelector(
+  selectorSystemHistoryState,
+  formSystemHistory.selectTotal
+);
