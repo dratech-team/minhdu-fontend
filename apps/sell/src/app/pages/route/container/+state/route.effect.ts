@@ -6,6 +6,8 @@ import { RouteService } from '../../service/route.service';
 import { throwError } from 'rxjs';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { select, Store } from '@ngrx/store';
+import { selectorAllRoute } from './Route.selector';
 
 @Injectable()
 export class RouteEffect {
@@ -28,7 +30,17 @@ export class RouteEffect {
   loadMoreRoutes$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.loadMoreRoutes),
-      switchMap((props) => this.routeService.pagination(props)),
+      switchMap((props) => {
+          let total = 0;
+          this.store.pipe(select(selectorAllRoute)).subscribe(
+            val => total = val.length
+          );
+          console.log(total)
+          return this.routeService.pagination(
+            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+          );
+        }
+      ),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {
@@ -42,6 +54,7 @@ export class RouteEffect {
       ),
       catchError((err) => throwError(err))
     ));
+
   getRoute$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.getRoute),
@@ -71,7 +84,8 @@ export class RouteEffect {
   constructor(
     private readonly action: Actions,
     private readonly routeService: RouteService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly store: Store
   ) {
   }
 }

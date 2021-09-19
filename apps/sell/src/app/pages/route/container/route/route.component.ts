@@ -18,7 +18,6 @@ import { Route } from '../+state/route.interface';
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  totalRouteStore!: number;
   pageSize = 30;
   pageIndexInit = 0;
   today = new Date().getTime();
@@ -46,7 +45,6 @@ export class RouteComponent implements OnInit {
   ngOnInit() {
     this.routes$.subscribe(val => {
       this.routes = JSON.parse(JSON.stringify(val));
-      this.totalRouteStore = val.length;
       this.routes.forEach(item => {
         item.endedAt = new Date(item.endedAt);
       });
@@ -60,7 +58,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(RouteAction.loadInit(this.route(val, this.pageIndexInit)));
+          this.store.dispatch(RouteAction.loadInit(this.route(val)));
         })
       )
       .subscribe();
@@ -79,9 +77,9 @@ export class RouteComponent implements OnInit {
     );
   }
 
-  route(val: any, pageIndex?: number) {
+  route(val: any) {
     return {
-      skip: pageIndex ? pageIndex : this.totalRouteStore,
+      skip: 0,
       take: this.pageSize,
       name: val.name.trim(),
       startedAt: val.startedAt,
