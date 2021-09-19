@@ -18,7 +18,6 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // add auth header with jwt if user is logged in and request is to api url
-    console.log('requesting...');
 
     const token = localStorage.getItem('token');
 

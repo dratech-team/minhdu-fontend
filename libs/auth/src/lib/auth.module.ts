@@ -27,25 +27,21 @@ import { MatSelectModule } from '@angular/material/select';
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([AuthEffects]),
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
   ],
-  declarations: [
-    RegisterComponent,
-    LogoutComponent,
-    AuthComponent],
+  declarations: [RegisterComponent, LogoutComponent, AuthComponent],
   providers: [
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
-  ]
+  ],
 })
-export class AuthModule {
-}
+export class AuthModule {}

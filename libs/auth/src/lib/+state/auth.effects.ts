@@ -19,7 +19,7 @@ export class AuthEffects {
     private snackBar: MatSnackBar
   ) {}
 
-  SignUp$ = createEffect(() =>
+  signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.signUp),
       map((actions) => actions),
@@ -38,7 +38,7 @@ export class AuthEffects {
     )
   );
 
-  SignUpSuccess$ = createEffect(
+  signUpSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.signUpSuccess),
@@ -89,7 +89,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        map((_) => {
+        tap((_) => {
           localStorage.removeItem('role');
           localStorage.removeItem('token');
           this.router.navigate(['auth/login']).then();

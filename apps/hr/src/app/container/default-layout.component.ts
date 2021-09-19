@@ -8,12 +8,10 @@ import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.
 import { Role } from 'libs/enums/hr/role.enum';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html',
-  styleUrls: ['./default-layout.component.scss']
+  styleUrls: ['./default-layout.component.scss'],
 })
 export class DefaultLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
@@ -21,12 +19,11 @@ export class DefaultLayoutComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly dialog: MatDialog,
-    private readonly router: Router,
-  ) {
-  }
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
-    if(!this.role){
+    if (!this.role) {
       this.router.navigate(['/']).then();
     }
   }
@@ -40,17 +37,19 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   logout() {
-  const ref = this.dialog.open(LogoutComponent,{width:'30%'});
-  ref.afterClosed().subscribe(val =>
-  {
-    if(val){
-      this.store.dispatch(AuthActions.logout())
-    }
-  })
+    const ref = this.dialog.open(LogoutComponent, { width: '30%' });
+    ref.afterClosed().subscribe((val) => {
+      if (val) {
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
+        this.router.navigate(['/auth/login']).then();
+        /// FIXME: action not working
+        return this.store.dispatch(AuthActions.logout());
+      }
+    });
   }
 
   signUp() {
-    this.dialog.open(RegisterComponent, {width:'40%'})
+    this.dialog.open(RegisterComponent, { width: '40%' });
   }
-
 }
