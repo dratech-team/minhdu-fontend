@@ -23,7 +23,7 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
-  pageIndex: number = 1;
+  totalEmployeeStore!: number
   pageSize: number = 30;
   pageIndexInit = 0;
 
@@ -48,11 +48,12 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.employees$.subscribe(val => this.totalEmployeeStore = val.length)
     this.store.dispatch(EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, this.pageSize, this.pageIndexInit)));
+        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, this.pageIndexInit)));
       })
     ).subscribe();
   }
@@ -74,10 +75,11 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  employee(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  employee(val: any, pageIndex?: number) {
       const employee = {
-        skip: pageSize * pageIndex,
+        skip: pageIndex !== undefined ?
+          pageIndex:
+          this.totalEmployeeStore,
         take: this.pageSize,
         code: val.code,
         name: val.name,
@@ -101,7 +103,7 @@ export class EmployeeComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val, this.pageSize, this.pageIndex)));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val)));
   }
 
   readAndUpdate($event: any): void {

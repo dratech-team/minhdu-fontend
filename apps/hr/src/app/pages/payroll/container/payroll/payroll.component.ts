@@ -38,7 +38,7 @@ export class PayrollComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
-  pageIndex: number = 1;
+  totalPayrollStore!: number
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
@@ -57,18 +57,20 @@ export class PayrollComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
+    this.payroll$.subscribe(val => this.totalPayrollStore = val.length)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageSize,this.pageIndexInit)));
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageIndexInit)));
       })
     ).subscribe();
   }
 
-  Payroll(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  Payroll(val: any, pageIndex?: number) {
     const payroll = {
-      skip:  pageSize * pageIndex ,
+      skip: pageIndex !== undefined ?
+        pageIndex :
+        this.totalPayrollStore,
       take: this.pageSize,
       code: val.code,
       name: val.name,
@@ -89,7 +91,7 @@ export class PayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val, this.pageSize, this.pageIndex)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
   }
 
 
@@ -107,7 +109,7 @@ export class PayrollComponent implements OnInit {
   }
 
   updatePayroll(id: number, type: string) {
-   this.dialog.open(UpdateConfirmComponent, {
+    this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
     });
