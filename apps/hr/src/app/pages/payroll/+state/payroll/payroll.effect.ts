@@ -6,6 +6,8 @@ import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { props } from '@ngrx/store';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PayrollEffect {
@@ -23,7 +25,17 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadMorePayrolls),
       concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
-      map((ResponsePaginate) => PayrollAction.loadMorePayrollsSuccess({ payrolls: ResponsePaginate.data })),
+      map((ResponsePaginate) => {
+          if (ResponsePaginate.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Đã lấy hết phiếu lương' }
+            });
+          }
+          return PayrollAction.loadMorePayrollsSuccess({ payrolls: ResponsePaginate.data });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -107,7 +119,8 @@ export class PayrollEffect {
   constructor(
     private readonly action$: Actions,
     private readonly payrollService: PayrollService,
-    private readonly salaryService: SalaryService
+    private readonly salaryService: SalaryService,
+    private readonly snackBar: MatSnackBar
   ) {
   }
 }
