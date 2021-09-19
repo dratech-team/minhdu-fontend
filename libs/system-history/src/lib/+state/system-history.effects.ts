@@ -3,8 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { SystemHistoryService } from '../services/system-history.service';
 import { throwError } from 'rxjs';
-import {  Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { SystemHistoryActions } from './system-history.actions';
+import { selectorAllSystemHistory } from './system-history.selectors';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 
 @Injectable()
 export class SystemHistoryEffects {
@@ -23,9 +26,17 @@ export class SystemHistoryEffects {
   loadMore$ = createEffect(() =>
     this.actions.pipe(
       ofType(SystemHistoryActions.loadMoreSystemHistory),
-      switchMap((props) => this.systemHistoryService.pagination(props)
+      switchMap((props) =>
+        this.systemHistoryService.pagination(Object.assign( props))
       ),
       map((responsePagination) => {
+        if(responsePagination.data.length === 0){
+          this.snackBar.openFromComponent(SnackBarComponent,{
+            data: {content: 'Đã lấy hết dữ liệu'},
+            duration: 2500,
+            panelClass: ['background-snackbar'],
+          })
+        }
           return SystemHistoryActions.loadMoreSystemHistorySuccess(
             { systemHistory: responsePagination.data, total: responsePagination.total });
         }
@@ -37,6 +48,9 @@ export class SystemHistoryEffects {
     private readonly actions: Actions,
     private readonly store: Store,
     private readonly systemHistoryService: SystemHistoryService,
+    private readonly snackBar: MatSnackBar,
   ) {
   }
 }
+
+
