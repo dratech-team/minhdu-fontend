@@ -24,3 +24,8 @@ export const selectedLoaded = createSelector(
   selectorSystemHistoryState,
   (state) => state.loaded
 );
+
+export const selectedTotal = createSelector(
+  selectorSystemHistoryState,
+  (state) => state.total
+);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivityType, App } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { selectorAllSystemHistory } from '../+state/system-history.selectors';
+import { selectedTotal, selectorAllSystemHistory } from '../+state/system-history.selectors';
 import { SystemHistoryActions } from '../+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../../../../apps/sell/src/app/pages/customer/+state/customer/customer.action';
@@ -15,8 +15,9 @@ import { document } from 'ngx-bootstrap/utils';
 export class SystemHistoryContainer implements OnInit {
   app = App;
   pageSize = 30;
-  pageIndex = 1;
   pageIndexInit = 0;
+  totalSystemHistoryCurrent!: number;
+  totalSystemHistory!: number;
   activityType = ActivityType;
   formGroup = new FormGroup({
     id: new FormControl(''),
@@ -34,8 +35,11 @@ export class SystemHistoryContainer implements OnInit {
   }
 
   systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
+  totalSystemHistory$ = this.store.pipe(select(selectedTotal));
 
   ngOnInit(): void {
+    this.systemHistory$.subscribe(val => this.totalSystemHistoryCurrent = val.length);
+    this.totalSystemHistory$.subscribe(val => this.totalSystemHistory = val);
     const btnRoute = document.getElementById('systemHistory');
     btnRoute?.classList.add('btn-border');
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
@@ -45,7 +49,7 @@ export class SystemHistoryContainer implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            SystemHistoryActions.loadSystemHistory(this.systemHistory(val, this.pageSize, this.pageIndexInit))
+            SystemHistoryActions.loadSystemHistory(this.systemHistory(val, this.pageIndexInit))
           );
         })
       )
@@ -54,18 +58,19 @@ export class SystemHistoryContainer implements OnInit {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    this.store.dispatch(
-      SystemHistoryActions.loadSystemHistory(
-        this.systemHistory(val, this.pageSize, this.pageIndex)
-      )
-    );
+    if (this.totalSystemHistoryCurrent < this.totalSystemHistory) {
+      const val = this.formGroup.value;
+      this.store.dispatch(
+        SystemHistoryActions.loadMoreSystemHistory(
+          this.systemHistory(val)
+        )
+      );
+    }
   }
 
-  systemHistory(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  systemHistory(val: any, pageIndexSearch?: number) {
     return {
-      skip: pageSize * pageIndex,
+      skip: pageIndexSearch !== undefined ? pageIndexSearch : this.totalSystemHistoryCurrent,
       take: this.pageSize,
       id: val.id,
       appName: val.appName,
