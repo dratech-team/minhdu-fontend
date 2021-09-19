@@ -14,16 +14,19 @@ import { CustomerDialogComponent } from '../../../pages/customer/component/custo
   templateUrl: 'pick-customer.component.html'
 })
 export class PickCustomerComponent implements OnInit {
-  @Input() customers: Customer[] = [];
+  @Input() customers$: any;
   @Input() pickOne = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
   customerType = CustomerType;
+  customers: Customer[] = [];
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
+  totalCustomer = Number(localStorage.getItem('totalCustomer'));
+  totalCustomerStore!: number;
   isSelectAll = false;
   customerIds: number[] = [];
   formGroup = new FormGroup(
@@ -43,11 +46,20 @@ export class PickCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //case: dialog
     if (this.data.customers$) {
       this.data.customers$.subscribe(
-        (val: Customer[]) =>
-          this.customers = JSON.parse(JSON.stringify(val))
+        (val: Customer[]) => {
+          this.totalCustomerStore = val.length;
+          this.customers = JSON.parse(JSON.stringify(val));
+        }
       );
+    } else {
+      //case: input
+      this.customers$.subscribe((val: Customer[]) => {
+        this.totalCustomerStore = val.length;
+        this.customers = JSON.parse(JSON.stringify(val));
+      });
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -60,12 +72,14 @@ export class PickCustomerComponent implements OnInit {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
+    if (this.totalCustomerStore < this.totalCustomer) {
+      const val = this.formGroup.value;
+      this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
+    }
   }
 
   customer(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
       skip: pageSize * pageIndex,
       take: pageSize,
@@ -78,11 +92,11 @@ export class PickCustomerComponent implements OnInit {
   assignIsSelect() {
     this.service.getCustomers().subscribe(val => {
       this.customers = JSON.parse(JSON.stringify(val));
-      this.customers.forEach(e =>{
-        if(this.customerId === e.id || this.customerIds.includes(e.id)){
-          Object.assign(val, {isSelect: true})
-        }else{
-          Object.assign(val, {isSelect: this.isSelectAll})
+      this.customers.forEach(e => {
+        if (this.customerId === e.id || this.customerIds.includes(e.id)) {
+          Object.assign(val, { isSelect: true });
+        } else {
+          Object.assign(val, { isSelect: this.isSelectAll });
         }
       });
     });

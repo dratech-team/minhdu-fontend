@@ -30,7 +30,6 @@ export class AddOrderComponent implements OnInit {
   commodityUnit = CommodityUnit;
   Commodities: Commodity [] = [];
   CommoditiesPicked: Commodity [] = [];
-  numberChars = new RegExp('[^0-9]', 'g');
   customerId: number | undefined;
   commodityIds: number[] = [];
   payType = PaymentType;
@@ -59,6 +58,7 @@ export class AddOrderComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {
   }
+
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadAllCommodities());
@@ -129,7 +129,7 @@ export class AddOrderComponent implements OnInit {
     ref.afterClosed().subscribe(val => {
         if (val) {
           this.commodityIds = val;
-          console.log(this.commodityIds)
+          console.log(this.commodityIds);
           this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
             this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
           });

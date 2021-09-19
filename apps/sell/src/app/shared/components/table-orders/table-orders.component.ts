@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -9,7 +9,6 @@ import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
@@ -33,6 +32,8 @@ export class TableOrdersComponent implements OnInit {
   pageSize = 10;
   pageIndex = 1;
   pageIndexInit = 0;
+  totalOrder = Number(localStorage.getItem('totalOrder'));
+  totalOrderStore!: number;
   convertBoolean = ConvertBoolean;
 
   constructor(
@@ -44,6 +45,7 @@ export class TableOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orders$.subscribe(val => this.totalOrderStore = val.length);
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
@@ -58,11 +60,14 @@ export class TableOrdersComponent implements OnInit {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(val, this.pageSize, this.pageIndex));
-    } else {
-      this.customerService.scrollOrders(this.orders(val, this.pageSize, this.pageIndex));
+    if (this.totalOrderStore < this.totalOrder) {
+      console.log(this.totalOrderStore)
+      const val = this.formGroup.value;
+      if (this.delivered) {
+        this.customerService.scrollOrdersAssigned(this.orders(val, this.pageSize, this.pageIndex));
+      } else {
+        this.customerService.scrollOrders(this.orders(val, this.pageSize, this.pageIndex));
+      }
     }
   }
 
@@ -72,7 +77,7 @@ export class TableOrdersComponent implements OnInit {
       skip: pageSize * pageIndex,
       take: pageSize,
       customerId: this.customerId,
-      delivered: this.delivered?
+      delivered: this.delivered ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       createdAt: val.createdAt,
