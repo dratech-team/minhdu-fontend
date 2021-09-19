@@ -27,6 +27,8 @@ export class CustomerComponent implements OnInit {
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
+  totalCustomer = Number(localStorage.getItem('totalCustomer'));
+  totalCustomerStore!: number;
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
@@ -56,13 +58,14 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('customer').classList.add('btn-border');
+    this.customers$.subscribe(val => this.totalCustomerStore = val.length);
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val, this.pageSize,this.pageIndexInit))
+            CustomerAction.loadInit(this.customer(val, this.pageSize, this.pageIndexInit))
           );
         })
       )
@@ -77,18 +80,20 @@ export class CustomerComponent implements OnInit {
   }
 
   onScroll() {
-    const val = this.formGroup.value;
-    this.store.dispatch(
-      CustomerAction.loadMoreCustomers(
-        this.customer(val, this.pageSize, this.pageIndex)
-      )
-    );
+    if (this.totalCustomerStore < this.totalCustomer) {
+      const val = this.formGroup.value;
+      this.store.dispatch(
+        CustomerAction.loadMoreCustomers(
+          this.customer(val, this.pageSize, this.pageIndex)
+        )
+      );
+    }
   }
 
-  customer(val: any, pageSize: number , pageIndex : number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+  customer(val: any, pageSize: number, pageIndex: number) {
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip:  pageSize * pageIndex,
+      skip: pageSize * pageIndex,
       take: this.pageSize,
       resource: val.resource,
       isPotential:

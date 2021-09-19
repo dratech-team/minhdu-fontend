@@ -16,7 +16,7 @@ import { AppState } from '../../../../reducers';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 
 @Component({
-  templateUrl: 'order.component.html',
+  templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
   pageTypeEnum = PageTypeEnum;
@@ -25,12 +25,11 @@ export class OrderComponent implements OnInit {
   currencyUnit = CurrencyUnit;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  totalOrder =  Number(localStorage.getItem('totalOrder'));
+  totalOrder = Number(localStorage.getItem('totalOrder'));
   totalOrderStore!: number;
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
-  orders$ = this.store.pipe(select(selectorAllOrders));
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
@@ -38,7 +37,7 @@ export class OrderComponent implements OnInit {
     explain: new FormControl(''),
     createdAt: new FormControl(''),
     commodityTotal: new FormControl(''),
-    destination: new FormControl(''),
+    destination: new FormControl('')
   });
 
   constructor(
@@ -46,15 +45,18 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly exportService: ExportService
-  ) {}
+  ) {
+  }
+
+  orders$ = this.store.pipe(select(selectorAllOrders));
 
   ngOnInit() {
-    console.log(this.totalOrder)
+    console.log(this.totalOrder);
     document.getElementById('order').classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
     this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
-    this.orders$.subscribe(val => this.totalOrderStore = val.length)
+    this.orders$.subscribe(val => this.totalOrderStore = val.length);
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -70,17 +72,17 @@ export class OrderComponent implements OnInit {
   }
 
   onScroll() {
-    if(this.totalOrderStore < this.totalOrder){
-      console.log('ssss')
+    if (this.totalOrderStore < this.totalOrder) {
+      console.log('ssss');
       const val = this.formGroup.value;
       this.store.dispatch(
-        OrderAction.loadMoreOrders(this.order(val, this.pageSize , this.pageIndex))
+        OrderAction.loadMoreOrders(this.order(val, this.pageSize, this.pageIndex))
       );
     }
   }
 
   order(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
       skip: pageSize * pageIndex,
       take: pageSize,
@@ -90,9 +92,9 @@ export class OrderComponent implements OnInit {
       commodityTotal: val.commodityTotal,
       explain: val.explain.trim(),
       createdAt: val.createdAt.trim(),
-      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED?
-        this.convertBoolean.TRUE:
-        this.convertBoolean.FALSE,
+      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED ?
+        this.convertBoolean.TRUE :
+        this.convertBoolean.FALSE
     };
   }
 
@@ -103,7 +105,7 @@ export class OrderComponent implements OnInit {
   UpdateOrder($event: any) {
     this.dialog.open(OrderDialogComponent, {
       width: '60%',
-      data: { order: $event, type: 'DELIVERED' },
+      data: { order: $event, type: 'DELIVERED' }
     });
   }
 
@@ -120,9 +122,9 @@ export class OrderComponent implements OnInit {
       commodityTotal: val.commodityTotal.trim(),
       explain: val.explain.trim(),
       createdAt: val.createdAt.trim(),
-      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED?
-        this.convertBoolean.TRUE:
-        this.convertBoolean.FALSE,
+      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED ?
+        this.convertBoolean.TRUE :
+        this.convertBoolean.FALSE
     };
     this.exportService.print(Api.ORDER_EXPORT, order);
   }

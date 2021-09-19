@@ -12,9 +12,12 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.loadInit),
       switchMap((props) => this.customerService.pagination(props)),
-      map((ResponsePaginate) => CustomerAction.loadInitSuccess({
-        customers: ResponsePaginate.data
-      })),
+      map((ResponsePaginate) =>{
+        localStorage.setItem('totalCustomer', ResponsePaginate.total.toString())
+         return CustomerAction.loadInitSuccess({
+           customers: ResponsePaginate.data
+         })
+      } ),
       catchError((err) => throwError(err))
     )
   );
@@ -22,7 +25,10 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.loadMoreCustomers),
       switchMap((props) => this.customerService.pagination(props)),
-      map((ResponsePaginate) => CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data })),
+      map((ResponsePaginate) =>{
+        localStorage.setItem('totalCustomer', ResponsePaginate.total.toString())
+        return CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data })
+      } ),
       catchError((err) => throwError(err))
     )
   );

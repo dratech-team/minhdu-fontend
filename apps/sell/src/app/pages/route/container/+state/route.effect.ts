@@ -12,14 +12,17 @@ export class RouteEffect {
     this.action.pipe(
       ofType(RouteAction.addRoute),
       switchMap((props) => this.routeService.addOne(props.route)),
-      map((route) => RouteAction.loadInit({take:30, skip:0})),
+      map((route) => RouteAction.loadInit({ take: 30, skip: 0 })),
       catchError((err) => throwError(err))
     ));
   loadInit$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.loadInit),
       switchMap((props) => this.routeService.pagination(props)),
-      map((responsePagination) => RouteAction.loadInitSuccess({ routes: responsePagination.data })),
+      map((responsePagination) => {
+        localStorage.setItem('totalRoute', responsePagination.total.toString());
+        return RouteAction.loadInitSuccess({ routes: responsePagination.data });
+      }),
       catchError((err) => throwError(err))
     ));
 
@@ -27,7 +30,10 @@ export class RouteEffect {
     this.action.pipe(
       ofType(RouteAction.loadMoreRoutes),
       switchMap((props) => this.routeService.pagination(props)),
-      map((responsePagination) => RouteAction.loadMoreRoutesSuccess({ routes: responsePagination.data })),
+      map((responsePagination) => {
+        localStorage.setItem('totalRoute', responsePagination.total.toString());
+        return RouteAction.loadMoreRoutesSuccess({ routes: responsePagination.data });
+      }),
       catchError((err) => throwError(err))
     ));
   getRoute$ = createEffect(() =>

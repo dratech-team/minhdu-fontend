@@ -15,15 +15,17 @@ import { StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
 
 @Component({
-  templateUrl: 'route.component.html',
+  templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
   pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
-  today = new Date().getTime()
+  totalRoute = Number(localStorage.getItem('totalRoute'));
+  totalRouteStore!: number;
+  today = new Date().getTime();
   statusRoute = StatusRoute;
-  routes : Route[] = []
+  routes: Route[] = [];
   formGroup = new FormGroup({
     startedAt: new FormControl(''),
     endedAt: new FormControl(''),
@@ -31,22 +33,27 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
-    statusRoute: new FormControl(''),
+    statusRoute: new FormControl('')
   });
-  routes$ = this.store.pipe(select(selectorAllRoute));
+
   constructor(
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly exportService: ExportService
-  ) {}
+  ) {
+  }
+
+  routes$ = this.store.pipe(select(selectorAllRoute));
+
   ngOnInit() {
     this.routes$.subscribe(val => {
-      this.routes = JSON.parse(JSON.stringify(val))
+      this.totalRouteStore = val.length;
+      this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach(item => {
-        item.endedAt = new Date(item.endedAt)
-      })
-    })
+        item.endedAt = new Date(item.endedAt);
+      });
+    });
     const btnRoute = document.getElementById('route');
     btnRoute?.classList.add('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
@@ -61,34 +68,40 @@ export class RouteComponent implements OnInit {
       )
       .subscribe();
   }
+
   add() {
     this.dialog.open(RouteDialogComponent, {
-      width: '55%',
+      width: '55%'
     });
   }
+
   onScroll() {
-    const val = this.formGroup.value;
-    this.store.dispatch(
-      RouteAction.loadMoreRoutes(this.route(val, this.pageSize, this.pageIndex))
-    );
+    if (this.totalRouteStore < this.totalRoute) {
+      const val = this.formGroup.value;
+      this.store.dispatch(
+        RouteAction.loadMoreRoutes(this.route(val, this.pageSize, this.pageIndex))
+      );
+    }
   }
+
   route(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      skip:  pageSize * pageIndex,
+      skip: pageSize * pageIndex,
       take: pageSize,
       name: val.name.trim(),
       startedAt: val.startedAt,
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim(),
+      garage: val.garage.trim()
     };
   }
 
   deleteRoute($event: any) {
     this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
   }
+
   detailRoute(id: number) {
     this.router
       .navigate(['tuyen-duong/chi-tiet-tuyen-duong', id])
@@ -103,7 +116,7 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim(),
+      garage: val.garage.trim()
     };
     this.exportService.print(Api.ROUTE_EXPORT, route);
   }
