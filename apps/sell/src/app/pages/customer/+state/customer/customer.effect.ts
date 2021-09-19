@@ -6,6 +6,8 @@ import { CustomerAction } from './customer.action';
 import { CustomerService } from '../../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { select, Store } from '@ngrx/store';
+import { selectorAllCustomer } from './customer.selector';
 
 @Injectable()
 export class CustomerEffect {
@@ -23,7 +25,15 @@ export class CustomerEffect {
   loadMoreCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadMoreCustomers),
-      switchMap((props) => this.customerService.pagination(props)),
+      switchMap((props) => {
+        let total = 0;
+        this.store.pipe(select(selectorAllCustomer)).subscribe(
+          val => total = val.length
+        );
+        return this.customerService.pagination(
+          Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+        );
+      }),
       map((ResponsePaginate) => {
           if (ResponsePaginate.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {
@@ -82,7 +92,8 @@ export class CustomerEffect {
   constructor(
     private readonly action$: Actions,
     private readonly customerService: CustomerService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly store: Store
   ) {
   }
 }

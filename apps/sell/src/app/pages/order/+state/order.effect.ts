@@ -5,11 +5,12 @@ import { OrderAction } from './order.action';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
 import { CustomerAction } from '../../customer/+state/customer/customer.action';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { selectorAllOrders, selectorAllOrdersAssigned } from './order.selector';
 
 
 @Injectable()
@@ -53,7 +54,16 @@ export class OrderEffect {
   loadMoreOrders$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrders),
-      switchMap((props) => this.orderService.pagination(props)),
+      switchMap((props) => {
+          let total = 0;
+          this.store.pipe(select(selectorAllOrders)).subscribe(
+            val => total = val.length
+          );
+          return this.orderService.pagination(
+            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+          );
+        }
+      ),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {
@@ -84,7 +94,15 @@ export class OrderEffect {
   loadMoreOrdersAssigned$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadMoreOrdersAssigned),
-      switchMap((props) => this.orderService.pagination(props)),
+      switchMap((props) => {
+        let total = 0;
+        this.store.pipe(select(selectorAllOrdersAssigned)).subscribe(
+          val => total = val.length
+        );
+        return this.orderService.pagination(
+          Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+        );
+      }),
       map((responsePagination) => {
           if (responsePagination.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {

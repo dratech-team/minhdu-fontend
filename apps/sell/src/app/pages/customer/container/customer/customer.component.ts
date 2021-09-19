@@ -27,7 +27,6 @@ export class CustomerComponent implements OnInit {
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
-  totalCustomerStore!: number
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup({
@@ -56,14 +55,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('customer').classList.add('btn-border');
-    this.customers$.subscribe(val => this.totalCustomerStore = val.length)
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val,this.pageIndexInit))
+            CustomerAction.loadInit(this.customer(val))
           );
         })
       )
@@ -86,12 +84,10 @@ export class CustomerComponent implements OnInit {
     );
   }
 
-  customer(val: any , pageIndex?: number) {
+  customer(val: any) {
 
     return {
-      skip: pageIndex !== undefined ?
-      pageIndex:
-      this.totalCustomerStore,
+      skip: 0,
       take: this.pageSize,
       resource: val.resource,
       isPotential:

@@ -25,7 +25,6 @@ export class OrderComponent implements OnInit {
   currencyUnit = CurrencyUnit;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  totalOrderStore!: number;
   pageSize = 30;
   pageIndexInit = 0;
   orders$ = this.store.pipe(select(selectorAllOrders));
@@ -52,12 +51,11 @@ export class OrderComponent implements OnInit {
     document.getElementById('route').classList.remove('btn-border');
     document.getElementById('customer').classList.remove('btn-border');
     this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
-    this.orders$.subscribe(val => this.totalOrderStore = val.length);
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(OrderAction.loadInit(this.order(val, this.pageIndexInit)));
+          this.store.dispatch(OrderAction.loadInit(this.order(val)));
         })
       )
       .subscribe();
@@ -74,10 +72,9 @@ export class OrderComponent implements OnInit {
     );
   }
 
-  order(val: any, pageIndex?: number) {
+  order(val: any) {
     return {
-      skip: pageIndex !== undefined ?
-        pageIndex : this.totalOrderStore,
+      skip: this.pageIndexInit,
       take: this.pageSize,
       paidType: val.paidType,
       customer: val.name.trim(),
