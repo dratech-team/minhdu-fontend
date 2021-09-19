@@ -38,4 +38,8 @@ export const selectedLoaded = createSelector(
   (state) => state.loaded
 );
 
+export const selectorCustomerTotal = createSelector(
+  selectorCustomerState,
+  fromCustomer.selectTotal
+);
 

@@ -35,6 +35,7 @@ export const payrollReducer = createReducer(
 
 export const {
   selectEntities,
-  selectAll
+  selectAll,
+  selectTotal
 } = adapter.getSelectors();
 

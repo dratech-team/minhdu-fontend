@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, delay, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { props } from '@ngrx/store';
+import { props, select, Store } from '@ngrx/store';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { selectorAllPayroll, selectorPayrollTotal } from './payroll.selector';
+import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
 
 @Injectable()
 export class PayrollEffect {
@@ -22,8 +26,24 @@ export class PayrollEffect {
   loadMorePayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.loadMorePayrolls),
-      concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
-      map((ResponsePaginate) => PayrollAction.loadMorePayrollsSuccess({ payrolls: ResponsePaginate.data })),
+      withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+      ),
+      switchMap((props) => {
+        return this.payrollService.pagination(props);
+      }),
+      map((ResponsePaginate) => {
+          if (ResponsePaginate.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Đã lấy hết phiếu lương' }
+            });
+          }
+          return PayrollAction.loadMorePayrollsSuccess({ payrolls: ResponsePaginate.data });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -107,7 +127,9 @@ export class PayrollEffect {
   constructor(
     private readonly action$: Actions,
     private readonly payrollService: PayrollService,
-    private readonly salaryService: SalaryService
+    private readonly salaryService: SalaryService,
+    private readonly snackBar: MatSnackBar,
+    private readonly store: Store
   ) {
   }
 }

@@ -97,3 +97,12 @@ export const selectedLoaded = createSelector(
   selectorOrderState,
   (state) => state.loaded
 )
+
+export const selectorOrderTotal = createSelector(
+  selectorOrderState,
+  fromOrder.selectTotal
+);
+export const selectorOrderAssignedTotal = createSelector(
+  selectorOrderAssignedState,
+  fromOrder.selectTotal
+);

@@ -5,7 +5,6 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllSystemHistory } from '../+state/system-history.selectors';
 import { SystemHistoryActions } from '../+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../../../../apps/sell/src/app/pages/customer/+state/customer/customer.action';
 import { document } from 'ngx-bootstrap/utils';
 
 @Component({
@@ -15,7 +14,6 @@ import { document } from 'ngx-bootstrap/utils';
 export class SystemHistoryContainer implements OnInit {
   app = App;
   pageSize = 30;
-  pageIndex = 1;
   pageIndexInit = 0;
   activityType = ActivityType;
   formGroup = new FormGroup({
@@ -45,28 +43,27 @@ export class SystemHistoryContainer implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            SystemHistoryActions.loadSystemHistory(this.systemHistory(val, this.pageSize, this.pageIndexInit))
+            SystemHistoryActions.loadSystemHistory(
+              this.systemHistory(val))
           );
         })
       )
       .subscribe();
-
   }
 
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      SystemHistoryActions.loadSystemHistory(
-        this.systemHistory(val, this.pageSize, this.pageIndex)
+      SystemHistoryActions.loadMoreSystemHistory(
+        this.systemHistory(val)
       )
     );
   }
 
-  systemHistory(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  systemHistory(val: any) {
     return {
-      skip: pageSize * pageIndex,
       take: this.pageSize,
+      skip: this.pageIndexInit,
       id: val.id,
       appName: val.appName,
       name: val.name,

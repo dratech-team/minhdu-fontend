@@ -34,6 +34,9 @@ export class OrderService extends BaseService<Order> {
   update(id: any, body: any): Observable<Update<Order>> {
     return super.update(id, body);
   }
+  updateHide(id: any, body: any): Observable<Update<Order>> {
+    return this.http.patch<Update<Order>>('order/hide' + `/${id}`, body);
+  }
 
   delete(id: number): Observable<void> {
     return super.delete(id);

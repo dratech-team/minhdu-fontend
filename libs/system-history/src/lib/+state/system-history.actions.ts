@@ -19,14 +19,13 @@ export const loadSystemHistory = createAction(
 
 export const loadSystemHistorySuccess = createAction(
   '[LOAD_HISTORY] Load System History Success',
-  props<{ systemHistory: SystemHistory[] }>()
+  props<{ systemHistory: SystemHistory[], total: number }>()
 );
 
 export const loadMoreSystemHistory = createAction(
-  '[LOAD_HISTORY] Load System History',
+  '[LOAD_HISTORY] Load More System History',
   props<{
     take: number,
-    skip: number,
     id?:number,
     appName?: string,
     name?:string,
@@ -38,7 +37,7 @@ export const loadMoreSystemHistory = createAction(
 );
 
 export const loadMoreSystemHistorySuccess = createAction(
-  '[LOAD_HISTORY] Load System History Success',
+  '[LOAD_HISTORY] Load More System History Success',
   props<{ systemHistory: SystemHistory[] }>()
 );
 

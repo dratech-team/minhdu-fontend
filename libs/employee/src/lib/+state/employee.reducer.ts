@@ -38,6 +38,7 @@ export const EmployeeReducer = createReducer(
 
 export const {
   selectEntities,
-  selectAll
+  selectAll,
+  selectTotal
 } = adapter.getSelectors();
 

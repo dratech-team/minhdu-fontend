@@ -28,5 +28,6 @@ export const CustomerReducer = createReducer(
 );
 export const {
   selectEntities,
-  selectAll
+  selectAll,
+  selectTotal
 } = adapter.getSelectors();

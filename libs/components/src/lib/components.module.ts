@@ -22,7 +22,7 @@ import { PickEmployeeService } from './pick-employee/pick-employee.service';
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
-import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.component';
+import { SnackBarComponent } from './snackBar/snack-bar.component';
 
 @NgModule({
   imports: [
@@ -41,7 +41,7 @@ import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.c
   ],
   declarations: [
     SwimLaneChartComponent,
-    SnackBarSuccessComponent,
+    SnackBarComponent,
     DevelopmentComponent,
     MouseRightComponent,
     SearchEmployeePipe,
@@ -56,7 +56,7 @@ import { SnackBarSuccessComponent } from './snackBar-success/snack-bar-success.c
   providers: [DecimalPipe, PickEmployeeService],
   exports: [
     SwimLaneChartComponent,
-    SnackBarSuccessComponent,
+    SnackBarComponent,
     DevelopmentComponent,
     MouseRightComponent,
     DialogDeleteComponent,
