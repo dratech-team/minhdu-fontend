@@ -5,9 +5,10 @@ import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { props } from '@ngrx/store';
+import { props, select, Store } from '@ngrx/store';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { selectorAllPayroll } from './payroll.selector';
 
 @Injectable()
 export class PayrollEffect {
@@ -24,7 +25,16 @@ export class PayrollEffect {
   loadMorePayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.loadMorePayrolls),
-      concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
+      concatMap((props) => {
+          let total = 0;
+          this.store.pipe(select(selectorAllPayroll)).subscribe(
+            val => total = val.length
+          );
+          return this.payrollService.pagination(
+            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+          );
+        }
+      ),
       map((ResponsePaginate) => {
           if (ResponsePaginate.data.length === 0) {
             this.snackBar.openFromComponent(SnackBarComponent, {
@@ -120,7 +130,8 @@ export class PayrollEffect {
     private readonly action$: Actions,
     private readonly payrollService: PayrollService,
     private readonly salaryService: SalaryService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly store: Store
   ) {
   }
 }

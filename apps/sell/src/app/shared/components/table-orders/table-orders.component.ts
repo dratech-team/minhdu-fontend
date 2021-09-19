@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -30,7 +30,6 @@ export class TableOrdersComponent implements OnInit {
     });
   paidType = PaidType;
   pageSize = 10;
-  totalOrderStore!: number
   pageIndexInit = 0;
   convertBoolean = ConvertBoolean;
 
@@ -43,14 +42,13 @@ export class TableOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orders$.subscribe(val => this.totalOrderStore = val.length)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
           if (this.delivered) {
-            this.customerService.searchOrdersAssigned(this.orders(val, this.pageIndexInit));
+            this.customerService.searchOrdersAssigned(this.orders(val));
           } else {
-            this.customerService.searchOrders(this.orders(val, this.pageIndexInit));
+            this.customerService.searchOrders(this.orders(val));
           }
         }
       )
@@ -66,14 +64,12 @@ export class TableOrdersComponent implements OnInit {
     }
   }
 
-  orders(val: any, pageIndex?: number): any {
+  orders(val: any): any {
     return {
-      skip: pageIndex !== undefined?
-        pageIndex :
-        this.totalOrderStore,
+      skip: this.pageIndexInit,
       take: this.pageSize,
       customerId: this.customerId,
-      delivered: this.delivered?
+      delivered: this.delivered ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       createdAt: val.createdAt,

@@ -23,7 +23,6 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
-  totalEmployeeStore!: number
   pageSize: number = 30;
   pageIndexInit = 0;
 
@@ -48,12 +47,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employees$.subscribe(val => this.totalEmployeeStore = val.length)
     this.store.dispatch(EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(EmployeeAction.loadInit(this.employee(val, this.pageIndexInit)));
+        this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
       })
     ).subscribe();
   }
@@ -75,30 +73,28 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  employee(val: any, pageIndex?: number) {
-      const employee = {
-        skip: pageIndex !== undefined ?
-          pageIndex:
-          this.totalEmployeeStore,
-        take: this.pageSize,
-        code: val.code,
-        name: val.name,
-        gender: val.gender,
-        position: val.position,
-        department: val.department,
-        branch: val.branch,
-        workedAt: val.workedAt.toString(),
-        isFlatSalary:
-          val.flatSalary === this.flatSalary.FLAT_SALARY? this.convertBoolean.TRUE:
-            val.flatSalary === this.flatSalary.NOT_FLAT_SALARY? this.convertBoolean.FALSE:
-              val.flatSalary,
-      };
-      if(val.workedAt){
-        return employee
-      }else{
-        delete employee.workedAt
-        return employee
-      }
+  employee(val: any) {
+    const employee = {
+      skip: this.pageIndexInit,
+      take: this.pageSize,
+      code: val.code,
+      name: val.name,
+      gender: val.gender,
+      position: val.position,
+      department: val.department,
+      branch: val.branch,
+      workedAt: val.workedAt.toString(),
+      isFlatSalary:
+        val.flatSalary === this.flatSalary.FLAT_SALARY ? this.convertBoolean.TRUE :
+          val.flatSalary === this.flatSalary.NOT_FLAT_SALARY ? this.convertBoolean.FALSE :
+            val.flatSalary
+    };
+    if (val.workedAt) {
+      return employee;
+    } else {
+      delete employee.workedAt;
+      return employee;
+    }
   }
 
   onScroll() {

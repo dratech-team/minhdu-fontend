@@ -38,7 +38,6 @@ export class PayrollComponent implements OnInit {
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
-  totalPayrollStore!: number
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
@@ -57,20 +56,17 @@ export class PayrollComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
-    this.payroll$.subscribe(val => this.totalPayrollStore = val.length)
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val, this.pageIndexInit)));
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
       })
     ).subscribe();
   }
 
-  Payroll(val: any, pageIndex?: number) {
+  Payroll(val: any) {
     const payroll = {
-      skip: pageIndex !== undefined ?
-        pageIndex :
-        this.totalPayrollStore,
+      skip: this.pageIndexInit,
       take: this.pageSize,
       code: val.code,
       name: val.name,

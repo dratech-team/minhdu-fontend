@@ -6,9 +6,10 @@ import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
-import { EmployeeAction, LoadEmployeesSuccess } from '@minhdu-fontend/employee';
+import { EmployeeAction, LoadEmployeesSuccess, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
+import { select, Store } from '@ngrx/store';
 
 
 @Injectable()
@@ -18,25 +19,34 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.loadInit),
       switchMap((props) => this.employeeService.pagination(props)),
-      map((responsePagination)=> EmployeeAction.LoadEmployeesSuccess({employees: responsePagination.data})),
+      map((responsePagination) => EmployeeAction.LoadEmployeesSuccess({ employees: responsePagination.data })),
       catchError(err => throwError(err))
     ));
 
   loadMoreEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadMoreEmployees),
-      switchMap((props) => this.employeeService.pagination(props)),
-      map((responsePagination)=>{
-        if(responsePagination.data.length === 0){
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: {content: 'Lấy hết nhân viên'}
-          })
+      switchMap((props) => {
+          let total = 0;
+          this.store.pipe(select(selectorAllEmployee)).subscribe(
+            value => total = value.length
+          );
+          return this.employeeService.pagination(
+            Object.assign(JSON.parse(JSON.stringify(props)), { skip: total })
+          );
         }
-        return  EmployeeAction.LoadMoreEmployeesSuccess({employees: responsePagination.data})
-      }
-       ),
+      ),
+      map((responsePagination) => {
+          if (responsePagination.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: { content: 'Lấy hết nhân viên' }
+            });
+          }
+          return EmployeeAction.LoadMoreEmployeesSuccess({ employees: responsePagination.data });
+        }
+      ),
       catchError(err => throwError(err))
     ));
 
@@ -134,7 +144,8 @@ export class EmployeeEffect {
     private readonly employeeService: EmployeeService,
     private readonly relativeService: RelativeService,
     private readonly degreeService: DegreeService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly store: Store
   ) {
   }
 }
