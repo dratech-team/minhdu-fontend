@@ -5,8 +5,9 @@ import { select, Store } from '@ngrx/store';
 import { selectedTotal, selectorAllSystemHistory } from '../+state/system-history.selectors';
 import { SystemHistoryActions } from '../+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../../../../apps/sell/src/app/pages/customer/+state/customer/customer.action';
 import { document } from 'ngx-bootstrap/utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +31,8 @@ export class SystemHistoryContainer implements OnInit {
   });
 
   constructor(
-    private readonly store: Store
+    private readonly store: Store,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -65,6 +67,12 @@ export class SystemHistoryContainer implements OnInit {
           this.systemHistory(val)
         )
       );
+    }else{
+        this.snackBar.openFromComponent(SnackBarComponent, {
+          duration: 2500,
+          panelClass: ['background-snackbar'],
+          data:{content: 'Đã lấy hết dữ liệu'}
+        });
     }
   }
 

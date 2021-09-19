@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions, logout } from '@minhdu-fontend/auth';
+import { AuthActions } from '@minhdu-fontend/auth';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
-import { App } from '@minhdu-fontend/enums';
-import { SnackBarSuccessComponent } from '../../../../components/src/lib/snackBar-success/snack-bar-success.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
+import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 
 @Injectable()
 export class AuthEffects {
@@ -44,9 +43,10 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.signUpSuccess),
         map((_) => {
-          this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+          this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
+            data: {content: 'Đăng kí tài khoản thành công'}
           });
         }),
         catchError((err) => throwError(err))

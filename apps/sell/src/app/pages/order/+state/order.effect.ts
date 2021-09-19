@@ -5,11 +5,11 @@ import { OrderAction } from './order.action';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarSuccessComponent } from 'libs/components/src/lib/snackBar-success/snack-bar-success.component';
 import { Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
 import { CustomerAction } from '../../customer/+state/customer/customer.action';
+import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 
 
 @Injectable()
@@ -23,9 +23,10 @@ export class OrderEffect {
           return OrderAction.addOrderSuccess({ order: order });
         }),
         tap(_ => {
-          this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+          this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
-            panelClass: ['background-snackbar']
+            panelClass: ['background-snackbar'],
+            data: {content: 'Thao tác thành công'}
           });
         }),
         map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
