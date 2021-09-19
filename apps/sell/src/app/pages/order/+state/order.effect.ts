@@ -50,6 +50,14 @@ export class OrderEffect {
       catchError((err) => throwError(err))
     ));
 
+  loadMoreOrders$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.loadMoreOrders),
+      switchMap((props) => this.orderService.pagination(props)),
+      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data })),
+      catchError((err) => throwError(err))
+    ));
+
   loadOrdersAssigned$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadOrdersAssigned),
@@ -69,14 +77,6 @@ export class OrderEffect {
       switchMap((props) => this.orderService.pagination(props)),
       map((responsePagination) =>
         OrderAction.loadMoreOrdersAssignedSuccess({ orders: responsePagination.data })),
-      catchError((err) => throwError(err))
-    ));
-
-  loadMoreBills$ = createEffect(() =>
-    this.action.pipe(
-      ofType(OrderAction.loadMoreOrders),
-      switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) => OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data })),
       catchError((err) => throwError(err))
     ));
 

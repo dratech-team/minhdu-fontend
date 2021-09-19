@@ -27,7 +27,7 @@ export class CustomerComponent implements OnInit {
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
-  pageIndex = 1;
+  totalCustomerStore!: number
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup({
@@ -56,13 +56,14 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('customer').classList.add('btn-border');
+    this.customers$.subscribe(val => this.totalCustomerStore = val.length)
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val, this.pageSize,this.pageIndexInit))
+            CustomerAction.loadInit(this.customer(val,this.pageIndexInit))
           );
         })
       )
@@ -80,15 +81,17 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       CustomerAction.loadMoreCustomers(
-        this.customer(val, this.pageSize, this.pageIndex)
+        this.customer(val)
       )
     );
   }
 
-  customer(val: any, pageSize: number , pageIndex : number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+  customer(val: any , pageIndex?: number) {
+
     return {
-      skip:  pageSize * pageIndex,
+      skip: pageIndex !== undefined ?
+      pageIndex:
+      this.totalCustomerStore,
       take: this.pageSize,
       resource: val.resource,
       isPotential:
@@ -150,7 +153,6 @@ export class CustomerComponent implements OnInit {
       email: val.email.trim(),
       address: val.address.trim(),
       note: val.note.trim()
-
     };
     this.exportService.print(Api.CUSTOMER_EXPORT, customers);
   }
