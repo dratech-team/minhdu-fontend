@@ -26,7 +26,6 @@ export const loadMoreSystemHistory = createAction(
   '[LOAD_HISTORY] Load More System History',
   props<{
     take: number,
-    skip: number,
     id?:number,
     appName?: string,
     name?:string,
@@ -39,7 +38,7 @@ export const loadMoreSystemHistory = createAction(
 
 export const loadMoreSystemHistorySuccess = createAction(
   '[LOAD_HISTORY] Load More System History Success',
-  props<{ systemHistory: SystemHistory[], total: number }>()
+  props<{ systemHistory: SystemHistory[] }>()
 );
 
 export const SystemHistoryActions = {

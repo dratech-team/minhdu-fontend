@@ -4,7 +4,7 @@ import { FeatureName } from '@minhdu-fontend/constants';
 import * as formSystemHistory from './system-history.reducer';
 
 export interface state {
-  systemHistory: SystemHistoryState
+  systemHistory: SystemHistoryState,
 }
 
 export const selectorSystemHistoryState = createFeatureSelector<SystemHistoryState>(
@@ -25,7 +25,3 @@ export const selectedLoaded = createSelector(
   (state) => state.loaded
 );
 
-export const selectedTotal = createSelector(
-  selectorSystemHistoryState,
-  (state) => state.total
-);

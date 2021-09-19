@@ -6,7 +6,6 @@ import { SystemHistoryActions } from './system-history.actions';
 
 export interface SystemHistoryState extends EntityState<SystemHistory> {
   loaded: boolean,
-  total: number,
   selectedBillId: number,
 }
 
@@ -15,10 +14,10 @@ export const initialSystemHistory = adapter.getInitialState({ loaded: false });
 export const SystemHistoryReducer = createReducer(
   initialSystemHistory,
   on(SystemHistoryActions.loadSystemHistorySuccess, (state, action) =>
-    adapter.setAll(action.systemHistory, { ...state, loaded: true, total: action.total })
+    adapter.setAll(action.systemHistory, { ...state, loaded: true})
   ),
   on(SystemHistoryActions.loadMoreSystemHistorySuccess, (state, action) =>
-    adapter.addMany(action.systemHistory, { ...state, loaded: true, total:action.total })
+    adapter.addMany(action.systemHistory, { ...state, loaded: true })
   )
 );
 export const { selectAll, selectEntities } = adapter.getSelectors();
