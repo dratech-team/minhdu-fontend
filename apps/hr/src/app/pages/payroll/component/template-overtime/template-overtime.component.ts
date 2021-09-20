@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, getBranchById, OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -13,7 +13,7 @@ import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
-  numberChars = new RegExp('[^0-9]', 'g')
+  numberChars = new RegExp('[^0-9]', 'g');
   typeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   departments?: Department[];
@@ -24,11 +24,13 @@ export class TemplateOvertimeComponent implements OnInit {
   )));
   department$ = this.store.pipe(select(getDepartmentById(
     this?.data?.position?.department?.id)));
+  submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly dialogRef: MatDialogRef<TemplateOvertimeComponent>
   ) {
   }
 
@@ -45,23 +47,33 @@ export class TemplateOvertimeComponent implements OnInit {
       department: [this.data?.position?.department?.id, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
-      note: [this.data?.note, Validators.required]
+      note: [this.data?.note]
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit(): any {
+    console.log(this.formGroup);
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
-    return {
+    const template = {
       isUpdate: !!this.data,
       id: this.data?.id,
-      data:{
+      data: {
         title: value.title,
         positionId: value.position,
-        price: typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
+        price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         unit: value.unit,
         note: value.note
       }
     };
+    this.dialogRef.close(template);
   }
 
   onBranch(branch: Branch): void {
