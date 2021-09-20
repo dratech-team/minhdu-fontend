@@ -3,6 +3,7 @@ import { Employee } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
 import { Gender } from '@minhdu-fontend/enums';
 
+/// FIXME: Optimze code model các tham số này tạo thành model theo nguyên tắc k dùng 2 chỗ lặp lại. lỡ sinh ra 1 trươngf nữa thì fai copy code bỏ qua nhiều chỗ. k clear
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
   props<{
@@ -19,6 +20,7 @@ export const loadInit = createAction(
   }>()
 );
 
+/// FIXME: Optimze code model các tham số này tạo thành model theo nguyên tắc k dùng 2 chỗ lặp lại. lỡ sinh ra 1 trươngf nữa thì fai copy code bỏ qua nhiều chỗ. k clear
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
   props<{

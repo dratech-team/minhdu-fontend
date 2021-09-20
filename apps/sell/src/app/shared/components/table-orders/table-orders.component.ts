@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -9,7 +9,6 @@ import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
@@ -31,7 +30,6 @@ export class TableOrdersComponent implements OnInit {
     });
   paidType = PaidType;
   pageSize = 10;
-  pageIndex = 1;
   pageIndexInit = 0;
   convertBoolean = ConvertBoolean;
 
@@ -48,9 +46,9 @@ export class TableOrdersComponent implements OnInit {
       debounceTime(1000),
       tap((val) => {
           if (this.delivered) {
-            this.customerService.searchOrdersAssigned(this.orders(val, this.pageSize, this.pageIndexInit));
+            this.customerService.searchOrdersAssigned(this.orders(val));
           } else {
-            this.customerService.searchOrders(this.orders(val, this.pageSize, this.pageIndexInit));
+            this.customerService.searchOrders(this.orders(val));
           }
         }
       )
@@ -60,19 +58,18 @@ export class TableOrdersComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(val, this.pageSize, this.pageIndex));
+      this.customerService.scrollOrdersAssigned(this.orders(val));
     } else {
-      this.customerService.scrollOrders(this.orders(val, this.pageSize, this.pageIndex));
+      this.customerService.scrollOrders(this.orders(val));
     }
   }
 
-  orders(val: any, pageSize: number, pageIndex: number): any {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
+  orders(val: any): any {
     return {
-      skip: pageSize * pageIndex,
-      take: pageSize,
+      skip: this.pageIndexInit,
+      take: this.pageSize,
       customerId: this.customerId,
-      delivered: this.delivered?
+      delivered: this.delivered ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       createdAt: val.createdAt,
@@ -89,10 +86,9 @@ export class TableOrdersComponent implements OnInit {
     const val = {
       hide: !order.hide
     };
-    this.store.dispatch(OrderAction.updateOrder({
-      order: val,
+    this.store.dispatch(OrderAction.updateHideOrder({
       id: order.id,
-      typeUpdate: 'HIDE_DEBT'
+      order: val,
     }));
   }
 

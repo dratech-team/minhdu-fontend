@@ -21,7 +21,6 @@ export class PickCustomerComponent implements OnInit {
   customerId!: number;
   resourceType = CustomerResource;
   customerType = CustomerType;
-  pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
   isSelectAll = false;
@@ -53,7 +52,7 @@ export class PickCustomerComponent implements OnInit {
       debounceTime(1000),
       tap((value) => {
         const val = this.formGroup.value;
-        this.service.searchCustomer(this.customer(val, this.pageSize, this.pageIndexInit));
+        this.service.searchCustomer(this.customer(val));
         this.assignIsSelect();
       })
     ).subscribe();
@@ -61,14 +60,13 @@ export class PickCustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val, this.pageSize, this.pageIndex));
+    this.service.scrollCustomer(this.customer(val));
   }
 
-  customer(val: any, pageSize: number, pageIndex: number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+  customer(val: any) {
     return {
-      skip: pageSize * pageIndex,
-      take: pageSize,
+      skip: 0,
+      take: this.pageSize,
       customer: val.name.trim(),
       customerType: val.type,
       resource: val.resource
@@ -78,11 +76,11 @@ export class PickCustomerComponent implements OnInit {
   assignIsSelect() {
     this.service.getCustomers().subscribe(val => {
       this.customers = JSON.parse(JSON.stringify(val));
-      this.customers.forEach(e =>{
-        if(this.customerId === e.id || this.customerIds.includes(e.id)){
-          Object.assign(val, {isSelect: true})
-        }else{
-          Object.assign(val, {isSelect: this.isSelectAll})
+      this.customers.forEach(e => {
+        if (this.customerId === e.id || this.customerIds.includes(e.id)) {
+          Object.assign(val, { isSelect: true });
+        } else {
+          Object.assign(val, { isSelect: this.isSelectAll });
         }
       });
     });

@@ -3,8 +3,9 @@ import { EmployeeState } from './employee.reducer';
 import * as fromEmployee from './employee.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Employee } from '@minhdu-fontend/data-models';
-export interface State {employees: fromEmployee.EmployeeState;}
-
+export interface State {
+  employees: fromEmployee.EmployeeState;
+}
 
 export const selectorEmployeeState = createFeatureSelector<EmployeeState>(
   FeatureName.EMPLOYEE
@@ -21,12 +22,27 @@ export const selectorAllEmployee = createSelector(
   fromEmployee.selectAll
 );
 
-export const selectCurrentEmployee = (id: number) => createSelector(
-  selectorEmployeeEntities,
-  (employeeEntities) => employeeEntities[id]
+export const selectCurrentEmployee = (id: number) =>
+  createSelector(
+    selectorEmployeeEntities,
+    (employeeEntities) => employeeEntities[id]
+  );
+
+export const selectEmployeeLoaded = createSelector(
+  selectorEmployeeState,
+  (state) => {
+    return state.loaded;
+  }
 );
 
-export const selectedLoaded = createSelector(
+export const selectEmployeeError = createSelector(
   selectorEmployeeState,
-  (state) => state.loaded
+  (state) => {
+    return state.loaded;
+  }
+);
+
+export const selectorEmployeeTotal = createSelector(
+  selectorEmployeeState,
+  fromEmployee.selectTotal
 );

@@ -35,7 +35,6 @@ export const loadMoreRoutes = createAction(
   '[LOAD_MORE_ROUTES] Load More Order',
   props<{
     take: number,
-    skip: number,
     orderId?: number,
     name?: string,
     startedAt?: Date,

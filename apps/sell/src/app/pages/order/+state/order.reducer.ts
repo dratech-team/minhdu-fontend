@@ -43,4 +43,4 @@ export const OrderAssignedReducer = createReducer(
   )
 )
 
-export const {selectAll,selectEntities} = adapter.getSelectors()
+export const {selectAll,selectEntities,selectTotal} = adapter.getSelectors()

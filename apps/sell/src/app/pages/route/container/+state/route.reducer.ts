@@ -26,4 +26,5 @@ export const RouteReducer = createReducer(
 export const {
   selectAll,
   selectEntities,
+  selectTotal,
 } = adapter.getSelectors()

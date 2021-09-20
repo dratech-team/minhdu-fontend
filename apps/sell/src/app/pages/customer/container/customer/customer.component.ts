@@ -27,7 +27,6 @@ export class CustomerComponent implements OnInit {
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
-  pageIndex = 1;
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup({
@@ -62,7 +61,7 @@ export class CustomerComponent implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val, this.pageSize,this.pageIndexInit))
+            CustomerAction.loadInit(this.customer(val))
           );
         })
       )
@@ -80,15 +79,15 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       CustomerAction.loadMoreCustomers(
-        this.customer(val, this.pageSize, this.pageIndex)
+        this.customer(val)
       )
     );
   }
 
-  customer(val: any, pageSize: number , pageIndex : number) {
-    pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++
+  customer(val: any) {
+
     return {
-      skip:  pageSize * pageIndex,
+      skip: 0,
       take: this.pageSize,
       resource: val.resource,
       isPotential:
@@ -150,7 +149,6 @@ export class CustomerComponent implements OnInit {
       email: val.email.trim(),
       address: val.address.trim(),
       note: val.note.trim()
-
     };
     this.exportService.print(Api.CUSTOMER_EXPORT, customers);
   }
