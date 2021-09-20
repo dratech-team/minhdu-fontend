@@ -5,7 +5,8 @@
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
           <label for='type'>Bằng cấp</label> <span class='star'>*</span>
-          <mat-select id='type' class='form-control' formControlName='type'>
+          <mat-select id='type' class='form-control' formControlName='type'
+                      [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
             <mat-option [value]='degreeTypeEnum.UNIVERSITY'>
               Đại học
             </mat-option>
@@ -22,44 +23,49 @@
               Tiến sĩ
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='type'
-                 *ngIf='formGroup.get("type")?.invalid'
-          >Chưa chọn Bằng cấp </label>
+          <div *ngIf='submitted && f.type.errors' class='invalid-feedback'>
+            <div>Chưa chọn bằng cấp</div>
+          </div>
         </div>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='school'>Nơi đào tạo</label><span class='star'>*</span>
-        <input type='text' class='form-control' id='school' placeholder='Đại học Quy Nhơn' formControlName='school'>
-        <label class='mt-2 text-danger' for='school'
-               *ngIf='formGroup.get("school")?.invalid'
-        >Chưa Nhập nơi đào tạo</label>
+        <input type='text' class='form-control' id='school' placeholder='Đại học Quy Nhơn' formControlName='school'
+               [ngClass]="{ 'is-invalid': submitted && f.school.errors }">
+        <div *ngIf='submitted && f.school.errors' class='invalid-feedback'>
+          <div>Chưa nhập nơi đào tạo</div>
+        </div>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='startedAt'>Bắt đầu</label><span class='star'>*</span>
-        <input type='date' id='startedAt' class='form-control' formControlName='startedAt'>
-        <label class='mt-2 text-danger' for='startedAt'
-               *ngIf='formGroup.get("startedAt")?.invalid'
-        >Chưa Nhập ngày bắt đầu</label>
+        <input type='date' id='startedAt' class='form-control' formControlName='startedAt'
+               [ngClass]="{ 'is-invalid': submitted && f.startedAt.errors }">
+        <div *ngIf='submitted && f.startedAt.errors' class='invalid-feedback'>
+          <div>Chưa nhập ngày bắt đầu</div>
+        </div>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='endedAt'>Kết thúc</label><span class='star'>*</span>
-        <input type='date' id='endedAt' class='form-control' formControlName='endedAt'>
-        <label class='mt-2 text-danger' for='endedAt'
-               *ngIf='formGroup.get("endedAt")?.invalid'
-        >Chưa Nhập ngày kết thúc</label>
+        <input type='date' id='endedAt' class='form-control' formControlName='endedAt'
+               [ngClass]="{ 'is-invalid': submitted && f.endedAt.errors }">
+        <div *ngIf='submitted && f.endedAt.errors' class='invalid-feedback'>
+          <div>Chưa nhập ngày kết thúc</div>
+        </div>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
         <label for='major'>Chuyên nghành<span class='star'>*</span>
         </label>
-        <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'>
-        <label class='mt-2 text-danger' for='major'
-               *ngIf='formGroup.get("major")?.invalid'
-        >Chưa Nhập chuyên nghành</label>
+        <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'
+               [ngClass]="{ 'is-invalid': submitted && f.major.errors }">
+        <div *ngIf='submitted && f.major.errors' class='invalid-feedback'>
+          <div>Chưa nhập chuyên ngành</div>
+        </div>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
           <label for='formality'>Hình thức đào tạo</label><span class='star'>*</span>
-          <mat-select id='formality' class='form-control' formControlName='formality'>
+          <mat-select id='formality' class='form-control' formControlName='formality'
+                      [ngClass]="{ 'is-invalid': submitted && f.formality.errors }">
             <mat-option value='REMOTE'>
               Đao tạo từ xa
             </mat-option>
@@ -73,15 +79,16 @@
               Đang đào tạo
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='formality'
-                 *ngIf='formGroup.get("formality")?.invalid'
-          >Chưa chọn hình thức đào tạo</label>
+          <div *ngIf='submitted && f.formality.errors' class='invalid-feedback'>
+            <div>Chưa chọn hình thức đào tạo</div>
+          </div>
         </div>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
           <label for='level'>Xếp loại</label><span class='star'>*</span>
-          <mat-select id='level' class='form-control' formControlName='level'>
+          <mat-select id='level' class='form-control' formControlName='level'
+                      [ngClass]="{ 'is-invalid': submitted && f.level.errors }">
             <mat-option [value]='degreeLevelEnum.BELOW_AVERAGE'>
               Dưới trung bình
             </mat-option>
@@ -95,15 +102,16 @@
               Giỏi
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='level'
-                 *ngIf='formGroup.get("level")?.invalid'
-          >Chưa chọn xếp loại</label>
+          <div *ngIf='submitted && f.level.errors' class='invalid-feedback'>
+            <div>Chưa chọn xếp loại</div>
+          </div>
         </div>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
           <label for='status'>Hoàn thành</label><span class='star'>*</span>
-          <mat-select id='status' class='form-control' formControlName='status'>
+          <mat-select id='status' class='form-control' formControlName='status'
+                      [ngClass]="{ 'is-invalid': submitted && f.status.errors }">
             <mat-option [value]='degreeStatusEnum.NOT_GRADUATED'>
               Chưa hoàn thành
             </mat-option>
@@ -111,14 +119,14 @@
               Hoàn thành
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='status'
-                 *ngIf='formGroup.get("status")?.invalid'
-          >Chưa chọn Hoàn thành</label>
+          <div *ngIf='submitted && f.level.errors' class='invalid-feedback'>
+            <div>Chưa chọn hoàn thành</div>
+          </div>
         </div>
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+        <button type='submit' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

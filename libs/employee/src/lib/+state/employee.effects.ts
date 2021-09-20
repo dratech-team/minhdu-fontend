@@ -8,11 +8,12 @@ import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
 import {
   EmployeeAction,
-  selectorEmployeeTotal,
+  selectorEmployeeTotal
 } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 import { select, Store } from '@ngrx/store';
+import { SlackService } from '@minhdu-fontend/service';
 
 @Injectable()
 export class EmployeeEffect {
@@ -22,7 +23,7 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.pagination(props)),
       map((responsePagination) => {
         return EmployeeAction.LoadEmployeesSuccess({
-          employees: responsePagination.data,
+          employees: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -44,11 +45,11 @@ export class EmployeeEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Lấy hết nhân viên' },
+            data: { content: 'Lấy hết nhân viên' }
           });
         }
         return EmployeeAction.LoadMoreEmployeesSuccess({
-          employees: responsePagination.data,
+          employees: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -73,8 +74,9 @@ export class EmployeeEffect {
             EmployeeAction.getEmployee({ id: props.relative.employeeId })
           ),
           catchError((err) => {
-            console.log(err)
-            return  throwError(err) })
+            this.slackService.sendErr(err);
+            return throwError(err);
+          })
         )
       )
     )
@@ -183,6 +185,8 @@ export class EmployeeEffect {
     private readonly relativeService: RelativeService,
     private readonly degreeService: DegreeService,
     private readonly snackBar: MatSnackBar,
-    private readonly store: Store
-  ) {}
+    private readonly store: Store,
+    private readonly slackService: SlackService
+  ) {
+  }
 }
