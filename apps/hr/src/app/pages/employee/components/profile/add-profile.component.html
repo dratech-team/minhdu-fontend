@@ -135,14 +135,12 @@
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='gender'>Giới tính</label><span class='star'>*</span>
-        <div id='gender'>
-          <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
+          <mat-radio-group class='d-flex justify-content-around' formControlName='gender' id='gender'>
             <mat-radio-button value='MALE'>Nam</mat-radio-button>
             <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
             <mat-radio-button value='OTHER'>Khác</mat-radio-button>
           </mat-radio-group>
-        </div>
-        <div *ngIf='submitted && form.gender.errors?.required ' class='invalid-feedback'>
+        <div *ngIf='submitted && form.gender.errors?.required ' class='invalid-feedback ng-star-inserted' >
           <div>Chưa chọn giới tính</div>
         </div>
       </div>

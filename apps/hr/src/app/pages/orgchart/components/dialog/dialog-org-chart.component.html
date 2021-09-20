@@ -12,28 +12,30 @@
     <div class='main-popup'>
       <div class='row mt-2' [formGroup]='formGroupOrgChart'>
         <span class='ml-1 row title-item'> {{data.title}} <span class='star'>*</span></span>
-        <input class='form-control mt-2' formControlName='inputOrgChart'>
-        <label class='mt-2 text-danger'
-               *ngIf='formGroupOrgChart.get("inputOrgChart")?.invalid && data.type === type.BRANCH'
-        >Chưa nhập khu </label>
-        <label class='mt-2 text-danger'
-               *ngIf='formGroupOrgChart.get("inputOrgChart")?.invalid && data.type === type.DEPARTMENT'
-        >Chưa nhập phòng ban </label>
-        <label class='mt-2 text-danger'
-               *ngIf='formGroupOrgChart.get("inputOrgChart")?.invalid && data.type === type.POSITION'
-        >Chưa nhập chức vụ </label>
+        <input class='form-control mt-2' formControlName='inputOrgChart'
+               [ngClass]="{ 'is-invalid': submitted && f.inputOrgChart.errors }">
+        <div *ngIf=' data.type === type.BRANCH && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+          <div>Chưa nhập khu</div>
+        </div>
+        <div *ngIf=' data.type === type.DEPARTMENT && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+          <div>Chưa nhập phòng ban</div>
+        </div>
+        <div *ngIf=' data.type === type.POSITION && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+          <div>Chưa nhập chức vụ</div>
+        </div>
       </div>
       <div *ngIf="data.type === 'POSITION'" class='row mt-3' [formGroup]='formGroupOrgChart'>
         <span class='ml-1 row title-item'>Ngày công chuẩn</span>
-        <input type='number' class='form-control mt-1' formControlName='workday'>
-        <label class='mt-2 text-danger'
-               *ngIf='formGroupOrgChart.get("workday")?.invalid'
-        >Chưa nhập ngày công chuẩn </label>
+        <input type='number' class='form-control mt-1' formControlName='workday'
+               [ngClass]="{ 'is-invalid': submitted && f.workday.errors }">
+        <div *ngIf=' data.type === type.POSITION && submitted && f.workday.errors' class='invalid-feedback'>
+          <div>Chưa nhập ngày công chuẩn</div>
+        </div>
       </div>
     </div>
     <div class='footer-popup row'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button type='submit' [mat-dialog-close]='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button type='submit' (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
     </div>
   </form>
 </div>
