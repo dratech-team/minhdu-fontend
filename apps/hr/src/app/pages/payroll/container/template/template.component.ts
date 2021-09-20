@@ -8,6 +8,7 @@ import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TemplateOvertimeComponent } from '../../component/template-overtime/template-overtime.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SystemHistoryActions } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.actions';
 
 
 @Component({
@@ -16,14 +17,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class TemplateComponent implements OnInit {
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
-  templates$ = this.store.pipe(select(selectorAllTemplate));
+  pageSize = 30;
+  pageIndexInit = 0;
   formGroup = new FormGroup(
     {
       title: new FormControl(''),
       price: new FormControl(''),
       unit: new FormControl(''),
       note: new FormControl(''),
-      position: new FormControl(''),
+      position: new FormControl('')
     }
   );
 
@@ -33,8 +35,11 @@ export class TemplateComponent implements OnInit {
   ) {
   }
 
+  templates$ = this.store.pipe(select(selectorAllTemplate));
+
   ngOnInit() {
     this.store.dispatch(TemplateOvertimeAction.loadAllTempLate());
+
   }
 
   templateOvertime($event?: any) {
@@ -65,6 +70,23 @@ export class TemplateComponent implements OnInit {
   }
 
   onScroll() {
+    const val = this.formGroup.value;
+    this.store.dispatch(
+      SystemHistoryActions.loadMoreSystemHistory(
+        this.template(val)
+      )
+    );
+  }
 
+  template(val: any) {
+    return {
+      take: this.pageSize,
+      skip: this.pageIndexInit,
+      title: val.title,
+      price: val.price,
+      unit: val.unit,
+      note: val.note,
+      position: val.position
+    };
   }
 }

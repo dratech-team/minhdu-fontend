@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { TemplateOvertime } from './template-overtime.interface';
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
 export const AddTemplate = createAction(
   '[Add_Template_Overtime] Add Template Overtime',
@@ -11,12 +12,37 @@ export const AddTemplateSuccess = createAction(
   props<{ templateOvertime: TemplateOvertime }>()
 );
 
-export const loadAllTempLate = createAction(
-  '[Load_Template_Overtime] Load Template overtime'
+export const loadInit = createAction(
+  '[Load_Template_Overtime] Load init',
+  props<{
+    take?: number,
+    skip?: number,
+    title?: string,
+    price?: number,
+    unit?: DatetimeUnitEnum,
+    note?: string,
+    position?: string
+  }>()
+);
+export const loadInitTempLateSuccess = createAction(
+  '[Load_Template_Overtime] Load Template overtime Success',
+  props<{ templateOvertime: TemplateOvertime[] }>()
 );
 
-export const loadAllTempLateSuccess = createAction(
-  '[Load_Template_Overtime] Load Template overtime Success',
+
+export const loadMoreTemplateOverTime = createAction(
+  '[Load_Template_Overtime] Load More  Template OverTime',
+  props<{
+    take: number,
+    title?: string,
+    price?: number,
+    unit?: DatetimeUnitEnum,
+    note?: string,
+    position?: string
+  }>()
+);
+export const loadMoreTempLateSuccess = createAction(
+  '[Load_Template_Overtime] Load More Template overtime Success',
   props<{ templateOvertime: TemplateOvertime[] }>()
 );
 
@@ -32,10 +58,12 @@ export const deleteTemplate = createAction(
 
 
 export const TemplateOvertimeAction = {
+  loadMoreTemplateOverTime,
+  loadInit,
   AddTemplate,
   AddTemplateSuccess,
   updateTemplate,
-  loadAllTempLate,
-  loadAllTempLateSuccess,
+  loadInitTempLateSuccess,
+  loadMoreTempLateSuccess,
   deleteTemplate
 };

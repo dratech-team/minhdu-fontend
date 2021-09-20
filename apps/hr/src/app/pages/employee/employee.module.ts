@@ -43,7 +43,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     InfiniteScrollModule,
     FormsModule,
     MatCheckboxModule,
-    NgxSkeletonLoaderModule.forRoot(),
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     AddDegreeComponent,
@@ -53,8 +53,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DetailEmployeeComponent,
     AddRelativeComponent,
     AddProfileComponent,
-    DeleteEmployeeComponent,
+    DeleteEmployeeComponent
   ],
-  providers: [DatePipe],
+  providers: [DatePipe]
 })
-export class EmployeeModule {}
+export class EmployeeModule {
+}
