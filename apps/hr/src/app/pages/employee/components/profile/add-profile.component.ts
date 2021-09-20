@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import { login } from '@minhdu-fontend/auth';
 
 
 @Component({
@@ -8,6 +9,8 @@ import { ControlContainer, FormGroup } from '@angular/forms';
 })
 
 export class AddProfileComponent implements OnInit {
+  @Input() submitted!: boolean
+  @Input() form: any
   formGroup!: FormGroup;
 
   constructor(
@@ -18,4 +21,5 @@ export class AddProfileComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup = <FormGroup>this.controlContainer.control;
   }
+
 }

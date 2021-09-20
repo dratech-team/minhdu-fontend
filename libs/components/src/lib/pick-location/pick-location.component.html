@@ -18,36 +18,39 @@
         id='province'
         class='form-control'
         formControlName='province'
+        [ngClass]="{ 'is-invalid': submitted && form.province.errors?.required }"
       >
         <mat-option *ngFor='let province of provinces$ | async' [value]='province.id' (click)='onProvince(province)'>
           {{province.name}}
         </mat-option>
       </mat-select>
-      <label class='mt-2 text-danger' for='province'
-             *ngIf='formGroup.get("province")?.invalid'
-      >Chưa chọn Tỉnh/Thành phố </label>
+      <div *ngIf='submitted && form.province.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn Tỉnh/Thành phố</div>
+      </div>
     </div>
     <div class='col-sm' [formGroup]='formGroup' >
       <label for='district'>Quận/Huyện</label>
-      <mat-select id='district' class='form-control' formControlName='district'>
+      <mat-select id='district' class='form-control' formControlName='district'
+                  [ngClass]="{ 'is-invalid': submitted && form.district.errors?.required }">
         <mat-option *ngFor='let district of districts' [value]='district.id' (click)='onDistrict(district)'>
           {{district.name}}
         </mat-option>
       </mat-select>
-      <label class='ml-1 text-danger' for='district'
-             *ngIf='formGroup.get("district")?.invalid'
-      >Chưa chọn Quận/Huyện </label>
+      <div *ngIf='submitted && form.district.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn Quận/Huyện</div>
+      </div>
     </div>
     <div class='col-sm'  [formGroup]='formGroup'>
       <label for='ward'>Xã/Phường </label>
-      <mat-select id='ward' class='form-control' formControlName='ward'>
+      <mat-select id='ward' class='form-control' formControlName='ward'
+                  [ngClass]="{ 'is-invalid': submitted && form.ward.errors?.required }">
         <mat-option *ngFor='let ward of wards' [value]='ward.id'>
           {{ward.name}}
         </mat-option>
       </mat-select>
-      <label class='mt-2 text-danger' for='ward'
-             *ngIf='formGroup.get("ward")?.invalid'
-      >Chưa chọn Xã/Phường </label>
+      <div *ngIf='submitted && form.ward.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn Xã/Phường</div>
+      </div>
     </div>
   </div>
 </form>

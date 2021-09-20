@@ -72,7 +72,9 @@ export class EmployeeEffect {
           map(() =>
             EmployeeAction.getEmployee({ id: props.relative.employeeId })
           ),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+            console.log(err)
+            return  throwError(err) })
         )
       )
     )

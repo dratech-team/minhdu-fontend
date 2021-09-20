@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>Thông tin nhân viên</h2>
 <mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+  <form [formGroup]='formGroup'>
     <div class='form-group'>
-      <app-add-profile [formGroup]='formGroup'></app-add-profile>
-      <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup'></app-pick-location>
+      <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
+      <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-pick-location>
       <div class='row mt-3 d-flex'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='branch'>Đơn vị công tác</label><span class='star'>*</span>
@@ -11,44 +11,49 @@
             id='branch'
             class='form-control'
             formControlName='branch'
-            required
+            [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
           >
             <mat-option *ngFor='let branch of branches$|async ' [value]='branch.id' (click)='onBranch(branch)'>
               {{branch.name}}
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='branch'
-                 *ngIf='formGroup.get("branch")?.invalid'
-          >Chưa chọn  Đơn vị công tác </label>
+          <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+            <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị công tác</div>
+          </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='department'>Bộ phận công tác </label><span class='star'>*</span>
-          <mat-select id='department' class='form-control' formControlName='department'>
+          <mat-select id='department'
+                      class='form-control'
+                      formControlName='department'
+                      [ngClass]="{ 'is-invalid': submitted && f.department.errors }">
             <mat-option *ngFor='let department of departments' [value]='department.id'
                         (click)='onDepartment(department)'>
               {{department.name}}
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='department'
-                 *ngIf='formGroup.get("department")?.invalid'
-          >Chưa chọn bộ phận công tác </label>
+          <div *ngIf="submitted && f.department.errors" class="invalid-feedback">
+            <div *ngIf="f.department.errors?.required">Chưa chọn bộ phận công tác</div>
+          </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='position'>Chức vụ </label><span class='star'>*</span>
-          <mat-select id='position' class='form-control' formControlName='position'>
+          <mat-select id='position' class='form-control' formControlName='position'
+                      [ngClass]="{ 'is-invalid': submitted && f.position.errors }">
             <mat-option *ngFor='let position of positions' [value]='position.id'>
               {{position.name}}
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='position'
-                 *ngIf='formGroup.get("position")?.invalid'
-          >Chưa chọn chức vụ </label>
+          <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+            <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
+          </div>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
-          <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'>
+          <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
+                      [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
             <mat-option value='{{flatSalary.FLAT_SALARY}}'>
               Lương cố định
             </mat-option>
@@ -56,9 +61,9 @@
               Lương không cố định
             </mat-option>
           </mat-select>
-          <label class='mt-2 text-danger' for='isFlatSalary'
-                 *ngIf='formGroup.get("isFlatSalary")?.invalid'
-          >Chưa chọn loại lương </label>
+          <div *ngIf="submitted && f.isFlatSalary.errors" class="invalid-feedback">
+            <div *ngIf="f.isFlatSalary.errors?.required">Chưa chọn loại lương</div>
+          </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label>Email </label>
@@ -73,10 +78,11 @@
             type='date'
             class='form-control'
             formControlName='workedAt'
+            [ngClass]="{ 'is-invalid': submitted && f.workedAt.errors }"
           >
-          <label class='mt-2 text-danger' for='workedAt'
-                 *ngIf='formGroup.get("workedAt")?.invalid'
-          >Chưa nhập ngày vào làm chính thức </label>
+          <div *ngIf="submitted && f.workedAt.errors" class="invalid-feedback">
+            <div *ngIf="f.workedAt.errors?.required">Chưa nhập ngày vào làm chính thức</div>
+          </div>
         </div>
          <div class='col-sm'>
            <label for='createdAt'>Ngày vào làm </label><span class='star'>*</span>
@@ -85,10 +91,11 @@
              type='date'
              class='form-control'
              formControlName='createdAt'
+             [ngClass]="{ 'is-invalid': submitted && f.createdAt.errors }"
            >
-           <label class='mt-2 text-danger' for='createdAt'
-                  *ngIf='formGroup.get("createdAt")?.invalid'
-           >Chưa nhập nguyên quán </label>
+           <div *ngIf="submitted && f.createdAt.errors" class="invalid-feedback">
+             <div *ngIf="f.createdAt.errors?.required">Chưa nhập ngày vào làm</div>
+           </div>
          </div>
       </div>
       <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
@@ -113,7 +120,7 @@
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' mat-dialog-close  class='btn btn-dark ml-2'> Xác nhận</button>
+        <button (click)='onSubmit()'  class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>
