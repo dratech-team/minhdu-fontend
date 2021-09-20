@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
@@ -11,10 +11,12 @@ export class AddPayrollComponent implements OnInit {
   isManyPeople = false;
   formGroup!: FormGroup;
   type!: string;
+  submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
+    private readonly dialogRef: MatDialogRef<AddPayrollComponent>
   ) {
   }
 
@@ -24,12 +26,22 @@ export class AddPayrollComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
-    return {
+    console.log(this.f.createdAt.errors?.required)
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    const payroll = {
       employeeId: this.data?.id,
-      createdAt: new Date(this.formGroup.value.createdAt),
+      createdAt: this.formGroup.value.createdAt
       // employeesId: this.employeeIds.length > 0? this.employeeIds: undefined,
     };
+    this.dialogRef.close(payroll);
   }
 
   tabChanged($event: MatTabChangeEvent) {

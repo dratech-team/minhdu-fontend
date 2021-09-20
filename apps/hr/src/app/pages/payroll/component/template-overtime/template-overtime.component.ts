@@ -56,7 +56,6 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
