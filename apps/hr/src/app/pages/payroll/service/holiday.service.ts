@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { TemplateOvertime } from '../+state/template-overtime/template-overtime.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { Holiday } from '../+state/holiday/holiday.interface';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 @Injectable({providedIn:'root'})
 export class HolidayService extends BaseService<Holiday>{
@@ -17,6 +17,10 @@ export class HolidayService extends BaseService<Holiday>{
 
   addOne(props: Holiday): Observable<Holiday> {
     return super.addOne(props);
+  }
+
+  pagination(params?: any): Observable<ResponsePaginate<Holiday>> {
+    return super.pagination(params);
   }
 
   getAll(): Observable<Holiday[]> {

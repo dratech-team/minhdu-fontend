@@ -17,6 +17,8 @@ import { AddRelativeComponent } from '../../components/relative/add-relative.com
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
+import { BHYTComponent } from '../../components/bhyt/BHYT.component';
+import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
 
 
 @Component({
@@ -93,4 +95,13 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
+  addOrUpdateBHYT(bhyt?: any) {
+    this.dialog.open(DevelopmentComponent, {width: '30%'})
+    // this.dialog.open(BHYTComponent, {
+    //   width: '50%',
+    //   data: {bhyt, update: !!bhyt}
+    //
+    //
+    // });
+  }
 }

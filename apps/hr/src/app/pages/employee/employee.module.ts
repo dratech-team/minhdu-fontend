@@ -23,6 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
 import { LocationModule } from '@minhdu-fontend/location';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { BHYTComponent } from './components/bhyt/BHYT.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DetailEmployeeComponent,
     AddRelativeComponent,
     AddProfileComponent,
-    DeleteEmployeeComponent
+    DeleteEmployeeComponent,
+    BHYTComponent
   ],
   providers: [DatePipe]
 })

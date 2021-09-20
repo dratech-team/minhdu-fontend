@@ -99,10 +99,6 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  get form(): any {
-    return this.formGroup.controls;
-  }
-
   onSubmit(): any {
     const value = this.formGroup.value;
     const employee = {

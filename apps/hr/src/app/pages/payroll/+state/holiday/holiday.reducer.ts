@@ -13,11 +13,13 @@ export const initialHoliday = adapter.getInitialState({ loaded: false });
 
 export const HolidayReducer = createReducer(
   initialHoliday,
-  on(HolidayAction.LoadAllHolidaySuccess, (state, action) =>
+  on(HolidayAction.LoadInitHolidaySuccess, (state, action) =>
     adapter.setAll(action.holidays, { ...state, loaded: true })),
+  on(HolidayAction.LoadMoreHolidaySuccess, (state, action) =>
+    adapter.addMany(action.holidays, { ...state, loaded: true })),
   on(HolidayAction.AddHolidaySuccess, (state, action) =>
     adapter.setOne(action.holiday, { ...state, loaded: true })
   )
 );
 
-export const { selectAll } = adapter.getSelectors();
+export const { selectAll, selectTotal } = adapter.getSelectors();

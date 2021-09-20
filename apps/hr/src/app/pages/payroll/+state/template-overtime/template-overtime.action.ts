@@ -18,8 +18,8 @@ export const loadALlTemplate = createAction(
 export const loadInit = createAction(
   '[Load_Template_Overtime] Load init',
   props<{
-    take?: number,
-    skip?: number,
+    take: number,
+    skip: number,
     title?: string,
     price?: number,
     unit?: DatetimeUnitEnum,
