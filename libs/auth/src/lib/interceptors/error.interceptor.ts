@@ -47,11 +47,11 @@ export class ErrorInterceptor implements HttpInterceptor {
           'Lỗi từ server. Vui lòng liên hệ kỹ thuật để được hỗ trợ';
         this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng');
 
-        /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook 
+        /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook. Tắt vpn để error rơi vào case này
         this.http
           .post(Api.SLACK_WEBHOOK, {
             username: 'Bug Report',
-            text: err || 'Lỗi Không kết nối được server',
+            text: err?.message.toString() || 'Lỗi Không kết nối được server',
             icon_emoji: ':ladybug:',
           })
           .subscribe((v) => console.log('send report bug to slack', v)).unsubscribe();
