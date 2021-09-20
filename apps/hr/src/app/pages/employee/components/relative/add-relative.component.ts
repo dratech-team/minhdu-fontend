@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
@@ -11,12 +11,14 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 })
 export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
+  submitted = false;
 
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly dialogRef: MatDialogRef<AddRelativeComponent>
   ) {
   }
 
@@ -27,7 +29,6 @@ export class AddRelativeComponent implements OnInit {
       issuedBy: [this.data?.relative?.issuedBy, Validators.required],
       religion: [this.data?.relative?.religion],
       ethnicity: [this.data?.relative?.ethnicity],
-
       birthplace: [
         this.data?.relative?.birthplace, Validators.required],
       ward: [this.data?.relative?.ward?.id, Validators.required],
@@ -54,7 +55,15 @@ export class AddRelativeComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
+    this.submitted = true
+    if (this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
     const relative = {
       relationship: value.relationship,
@@ -69,7 +78,7 @@ export class AddRelativeComponent implements OnInit {
       address: value.address,
       employeeId: this?.data?.employeeId,
       birthday: value.birthday ? value.birthday : undefined,
-      idCardAt: value.idCardAt ? value.idCardAt: undefined,
+      idCardAt: value.idCardAt ? value.idCardAt : undefined,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
       sos: value.sos ? value.sos : undefined,
@@ -81,5 +90,6 @@ export class AddRelativeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
+    this.dialogRef.close();
   }
 }

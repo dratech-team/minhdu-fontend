@@ -32,7 +32,8 @@ export class PositionEffects {
   updatePosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.updatePosition),
-      switchMap(param => this.positionService.update(param.id, { name: param.name }).pipe(
+      switchMap(param => this.positionService.update(param.id,
+        { name: param.name, workday: param.workday }).pipe(
         map(_ => OrgchartActions.init()),
         catchError(err => throwError(err))
       ))
@@ -48,9 +49,10 @@ export class PositionEffects {
       ))
     )
   );
+
   constructor(
     private actions$: Actions,
-    private positionService: PositionService,
+    private positionService: PositionService
   ) {
   }
 }

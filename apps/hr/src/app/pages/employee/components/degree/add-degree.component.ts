@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-
 
 
 @Component({
@@ -16,11 +15,13 @@ export class AddDegreeComponent implements OnInit {
   degreeTypeEnum = DegreeTypeEnum;
   degreeStatusEnum = DegreeStatusEnum;
   formGroup!: FormGroup;
+  submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly dialogRef: MatDialogRef<AddDegreeComponent>
   ) {
   }
 
@@ -30,7 +31,7 @@ export class AddDegreeComponent implements OnInit {
       startedAt: [this.data?.degree?.startedAt, Validators.required],
       endedAt: [this.data?.degree?.endedAt, Validators.required],
       school: [this.data?.degree?.school, Validators.required],
-      trainingBy: [this.data?.degree?.trainingBy, Validators.required],
+      // trainingBy: [this.data?.degree?.trainingBy, Validators.required],
       major: [this.data?.degree?.major, Validators.required],
       formality: [this.data?.degree?.formality, Validators.required],
       level: [this.data?.degree?.level, Validators.required],
@@ -38,7 +39,16 @@ export class AddDegreeComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
+    console.log(this.formGroup)
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
     const degree = {
       startedAt: new Date(value.startedAt),
@@ -57,5 +67,6 @@ export class AddDegreeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addDegree({ degree: degree }));
     }
+    this.dialogRef.close()
   }
 }

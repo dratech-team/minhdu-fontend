@@ -1,5 +1,5 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -33,14 +33,15 @@ export class AddEmployeeComponent implements OnInit {
   departments?: Department[];
   branches?: Branch[];
   positions?: Position[];
-
+  submitted = false;
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
     private readonly employeeService: EmployeeService,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>,
   ) {
   }
 
@@ -91,45 +92,53 @@ export class AddEmployeeComponent implements OnInit {
       ward: [this.data?.employee?.ward?.id, Validators.required],
       district: [this.data?.employee?.ward?.district?.id, Validators.required],
       province: [this.data?.employee?.ward?.district?.province?.id, Validators.required],
-      nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
-      ethnicity: [this.data?.employee?.ethnicity, Validators.required],
-      religion: [this.data?.employee?.religion, Validators.required],
+      // nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
+      ethnicity: [this.data?.employee?.ethnicity],
+      religion: [this.data?.employee?.religion],
       facebook: [this.data?.employee?.facebook],
       zalo: [this.data?.employee?.zalo]
     });
   }
 
+  get f() { return this.formGroup.controls; }
+
   onSubmit(): any {
-    const value = this.formGroup.value;
-    const employee = {
-      id: this?.data?.employee?.id,
-      isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-      positionId: value.position,
-      workedAt: new Date(value.workedAt),
-      createdAt: new Date(value.createdAt),
-      firstName: value.firstName,
-      lastName: value.lastName,
-      gender: value.gender,
-      phone: value.phone.toString(),
-      birthday: new Date(value.birthday),
-      birthplace: value.birthplace,
-      identify: value?.identify.toString(),
-      idCardAt: new Date(value.idCardAt),
-      issuedBy: value.issuedBy,
-      wardId: value.ward === null ? 1 : value.ward,
-      address: value.address,
-      religion: value.religion ? value.religion : undefined,
-      ethnicity: value.ethnicity ? value.ethnicity : undefined,
-      email: value.email ? value.email : undefined,
-      facebook: value?.facebook ? value.facebook : undefined,
-      zalo: value?.zalo ? value?.zalo?.toString() : undefined,
-      note: value.note ? value.note : undefined
-    };
-    if (this.data !== null) {
-      this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
-    } else {
-      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+    console.log(this.formGroup)
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
     }
+      const value = this.formGroup.value;
+      const employee = {
+        id: this?.data?.employee?.id,
+        isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
+        positionId: value.position,
+        workedAt: new Date(value.workedAt),
+        createdAt: new Date(value.createdAt),
+        firstName: value.firstName,
+        lastName: value.lastName,
+        gender: value.gender,
+        phone: value.phone.toString(),
+        birthday: new Date(value.birthday),
+        birthplace: value.birthplace,
+        identify: value?.identify.toString(),
+        idCardAt: new Date(value.idCardAt),
+        issuedBy: value.issuedBy,
+        wardId: value.ward === null ? 1 : value.ward,
+        address: value.address,
+        religion: value.religion ? value.religion : undefined,
+        ethnicity: value.ethnicity ? value.ethnicity : undefined,
+        email: value.email ? value.email : undefined,
+        facebook: value?.facebook ? value.facebook : undefined,
+        zalo: value?.zalo ? value?.zalo?.toString() : undefined,
+        note: value.note ? value.note : undefined
+      };
+      if (this.data !== null) {
+        this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
+      } else {
+        this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+      }
+      this.dialogRef.close()
   }
 
   onBranch(branch: Branch): void {

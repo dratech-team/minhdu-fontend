@@ -16,8 +16,7 @@
             </div>
             <div class="contract-salary">
               <div class="row title-item mb-1">
-                <span>Loại lương</span>
-                <div class="star">*</div>
+                <span>Loại lương</span> <div class="star">*</div>
               </div>
               <div class="row mb-3" [formGroup]="formGroup">
                 <mat-select
@@ -28,6 +27,9 @@
                   <mat-option value="{{type.BASIC}}">Lương cơ bản</mat-option>
                   <mat-option value="{{type.BASIC_ISNURANCE}}">Lương cơ bản trước bảo hiểm</mat-option>
                 </mat-select>
+                <label class='mt-2 text-danger'
+                       *ngIf='formGroup.get("type")?.invalid'
+                >Chưa chọn lương cơ bản </label>
               </div>
             </div>
             <div class="basic-salary">
@@ -43,7 +45,11 @@
                   formControlName="price"
                   inputCurrency
                 >
+                <label class='mt-2 text-danger'
+                       *ngIf='formGroup.get("price")?.invalid'
+                >Chưa nhập mức lương </label>
               </div>
+
             </div>
           </div>
           <!--Allowance stayed - Phụ cáp ở lại ảnh hưởng tới lương + / - -->
@@ -58,6 +64,9 @@
               </div>
               <div class="row mb-3" [formGroup]="formGroup">
                 <input class="form-control" placeholder="Nhập phụ cấp" formControlName="title">
+                <label class='mt-2 text-danger'
+                       *ngIf='formGroup.get("title")?.invalid'
+                >Chưa nhập tên phụ cấp </label>
               </div>
             </div>
             <div class=level-allowance>
@@ -67,6 +76,9 @@
               </div>
               <div class="row mb-3" [formGroup]="formGroup">
                 <input type="text" class="form-control" placeholder="Nhập mức phụ cấp" formControlName="price" inputCurrency>
+                <label class='mt-2 text-danger'
+                       *ngIf='formGroup.get("price")?.invalid'
+                >Chưa nhập mức phụ cấp </label>
               </div>
             </div>
           </div>

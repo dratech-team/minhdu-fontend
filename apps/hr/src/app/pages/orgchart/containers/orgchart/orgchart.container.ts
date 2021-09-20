@@ -33,6 +33,7 @@ export class OrgchartContainer implements OnInit {
     });
     dialogRef.afterClosed().subscribe(
       (value) => {
+        console.log(value)
         if (value.name !== undefined) {
           if (type === this.type.DEPARTMENT) {
             if (isEdit) {

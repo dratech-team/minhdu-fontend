@@ -20,6 +20,8 @@ import {  Subject } from 'rxjs';
   templateUrl:'pick-location.component.html'
 })
 export class PickLocationComponent implements OnInit {
+  @Input() form: any;
+  @Input() submitted!: boolean
   @Input() ward?: any;
   @Input() reload$?: Subject<boolean>
   provinces$ = this.store.pipe(select(selectAllProvince));

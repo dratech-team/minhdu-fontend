@@ -1,0 +1,115 @@
+<h2 mat-dialog-title>Thông tin bảo hiểm</h2>
+<mat-dialog-content class='mat-typography'>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div class='form-group'>
+      <div class='row mt-3' [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='createdAt'>Ngày tham gia bảo hiểm</label><span class='star'>*</span>
+          <input
+            id='createdAt'
+            type='date'
+            class='form-control'
+            formControlName='createdAt'
+          >
+          <label class='mt-2 text-danger' for='createdAt'
+                 *ngIf='formGroup.get("createdAt")?.invalid'
+          >Chưa nhập ngày tham gia bảo hiểm </label>
+        </div>
+        <div class='col-sm'>
+           <label for='endedAt'>Ngày hết hạn </label><span class='star'>*</span>
+           <input
+             id='endedAt'
+             type='date'
+             class='form-control'
+             formControlName='endedAt'
+           >
+           <label class='mt-2 text-danger' for='endedAt'
+                  *ngIf='formGroup.get("endedAt")?.invalid'
+           >Chưa nhập ngày hết hạn </label>
+         </div>
+      </div>
+      <div class='row mt-3'  [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='BHYTId'>Số thẻ bảo hiểm y tế</label><span class='star'>*</span>
+          <input
+            id='BHYTId'
+            type='number'
+            class='form-control'
+            formControlName='BHYTId'
+          >
+          <label class='mt-2 text-danger' for='BHYTId'
+                 *ngIf='formGroup.get("BHYTId")?.invalid'
+          >Chưa nhập số thẻ bảo hiểm y tế </label>
+        </div>
+        <div class='col-sm'>
+          <label for='IdBookBHXH'>Số sổ bảo hiểm xã hội</label><span class='star'>*</span>
+          <input
+            id='IdBookBHXH'
+            type='number'
+            class='form-control'
+            formControlName='IdBookBHXH'
+          >
+          <label class='mt-2 text-danger' for='IdBookBHXH'
+                 *ngIf='formGroup.get("IdBookBHXH")?.invalid'
+          >Chưa nhập số sổ bảo hiểm xã hội</label>
+        </div>
+      </div>
+      <div class='row mt-3' [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='provinceId'>Mã tỉnh cấp</label><span class='star'>*</span>
+          <input
+            id='provinceId'
+            type='text'
+            class='form-control'
+            formControlName='provinceId'
+          >
+          <label class='mt-2 text-danger' for='provinceId'
+                 *ngIf='formGroup.get("provinceId")?.invalid'
+          >Chưa nhập mã tỉnh cấp </label>
+        </div>
+        <div class='col-sm'>
+          <label for='codeBHXH'>Mã sổ bảo hiểm xã hội</label><span class='star'>*</span>
+          <input
+            id='codeBHXH'
+            type='number'
+            class='form-control'
+            formControlName='codeBHXH'
+          >
+          <label class='mt-2 text-danger' for='codeBHXH'
+                 *ngIf='formGroup.get("codeBHXH")?.invalid'
+          >Chưa nhập số sổ bảo hiểm xã hội</label>
+        </div>
+      </div>
+      <div class='row mt-3' [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='registerPlaceKCB'>Nơi đăng kí KCB</label><span class='star'>*</span>
+          <input
+            id='registerPlaceKCB'
+            type='text'
+            class='form-control'
+            formControlName='registerPlaceKCB'
+          >
+          <label class='mt-2 text-danger' for='registerPlaceKCB'
+                 *ngIf='formGroup.get("registerPlaceKCB")?.invalid'
+          >Chưa nhập nơi đăng kí KCB </label>
+        </div>
+        <div class='col-sm'>
+          <label for='registerPlaceId'>Mã số nới đăng kí KCB</label><span class='star'>*</span>
+          <input
+            id='registerPlaceId'
+            type='number'
+            class='form-control'
+            formControlName='registerPlaceId'
+          >
+          <label class='mt-2 text-danger' for='registerPlaceId'
+                 *ngIf='formGroup.get("registerPlaceId")?.invalid'
+          >Chưa nhập mã số nơi đăng kí KCB</label>
+        </div>
+      </div>
+      <div class='row d-flex mt-3 justify-content-center'>
+        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+        <button type='submit' mat-dialog-close  class='btn btn-dark ml-2'> Xác nhận</button>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

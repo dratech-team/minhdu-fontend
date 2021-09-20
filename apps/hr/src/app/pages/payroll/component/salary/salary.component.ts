@@ -37,7 +37,7 @@ export class SalaryComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.type === this.type.OVERTIME) {
-      this.store.dispatch(TemplateOvertimeAction.loadAllTempLate());
+      this.store.dispatch(TemplateOvertimeAction.loadALlTemplate());
     }
     this.formGroup = this.formBuilder.group({
       title: [this.data?.salary?.title ?? '', Validators.required],

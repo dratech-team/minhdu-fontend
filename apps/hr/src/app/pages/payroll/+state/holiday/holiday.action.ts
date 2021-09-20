@@ -13,11 +13,39 @@ export const AddHolidaySuccess = createAction(
 );
 
 export const LoadAllHoliday = createAction(
-  '[Load_HOLIDAY] Load holiday'
+  '[Load_HOLIDAY] Load All holiday'
 );
 
-export const LoadAllHolidaySuccess = createAction(
-  '[Load_HOLIDAY] Load holiday overtime Success',
+export const LoadInit = createAction(
+  '[Load_HOLIDAY] Load Init holiday',
+  props<{
+    take: number,
+    skip: number,
+    name?: string,
+    datetime?: Date,
+    department?: string,
+    rate?: number,
+  }>()
+);
+
+export const LoadInitHolidaySuccess = createAction(
+  '[Load_HOLIDAY] Load holiday Success',
+  props<{ holidays: Holiday[] }>()
+);
+
+export const LoadMoreHoliday = createAction(
+  '[Load_HOLIDAY] Load More holiday',
+  props<{
+    take: number,
+    name?: string,
+    datetime?: Date,
+    department?: string,
+    rate?: number,
+  }>()
+);
+
+export const LoadMoreHolidaySuccess = createAction(
+  '[Load_HOLIDAY] Load More holiday Success',
   props<{ holidays: Holiday[] }>()
 );
 
@@ -36,7 +64,10 @@ export const HolidayAction = {
   AddHoliday,
   AddHolidaySuccess,
   LoadAllHoliday,
-  LoadAllHolidaySuccess,
+  LoadInit,
+  LoadInitHolidaySuccess,
+  LoadMoreHoliday,
+  LoadMoreHolidaySuccess,
   UpdateHoliday,
   DeleteHoliday
 };

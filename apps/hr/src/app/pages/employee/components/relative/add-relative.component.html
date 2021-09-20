@@ -2,8 +2,8 @@
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div>
-      <app-add-profile [formGroup]='formGroup'></app-add-profile>
-      <app-pick-location [ward]='data?.relative?.ward' [formGroup]='formGroup'></app-pick-location>
+      <app-add-profile [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-add-profile>
+      <app-pick-location [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-pick-location>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
           <label for='career'>Nghề nghiệp<span class='star'>*</span>
@@ -16,12 +16,11 @@
             type='text'
           >
         </div>
-      </div>
-      <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
           <label for='relationship'>Quan hệ<span class='star'>*</span>
           </label>
-          <mat-select id='relationship' class='form-control' formControlName='relationship'>
+          <mat-select id='relationship' class='form-control' formControlName='relationship'
+                      [ngClass]="{ 'is-invalid': submitted && f.relationship.errors }">
             <mat-option value='FATHER'>
               Cha
             </mat-option>
@@ -42,25 +41,29 @@
             </mat-option>
           </mat-select>
         </div>
+        <div *ngIf="submitted && f.relationship.errors?.required" class="invalid-feedback">
+          <div>Chưa chọn mối quan hệ</div>
+        </div>
       </div>
-      <div class='row mt-3 d-flex align-items-center '>
-        <div class='col-3 star font-weight-bold'>
+      <div class='row mt-3'>
+        <div class='col-3 star font-weight-bold d-flex align-items-center'>
           Liên hệ khẩn cấp :
+          <div class='col-1 '>
+            <input
+              style='height: 20px;
+              width: 20px;'
+              class='form-control'
+              formControlName='sos'
+              id='sos'
+              type='checkbox'
+            >
+          </div>
         </div>
-        <div class='col-1'>
-          <input
-            style='height: 20px;
-           width: 20px;'
-            class='form-control'
-            formControlName='sos'
-            id='sos'
-            type='checkbox'
-          >
-        </div>
+
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+        <button type='submit'  class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

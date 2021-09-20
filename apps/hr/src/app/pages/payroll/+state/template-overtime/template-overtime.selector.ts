@@ -15,3 +15,7 @@ export const selectorAllTemplate = createSelector(
   selectorTemplateState,
   fromTemplateOvertime.selectAll
 );
+export const selectorTemplateTotal = createSelector(
+  selectorTemplateState,
+  fromTemplateOvertime.selectTotal
+);
