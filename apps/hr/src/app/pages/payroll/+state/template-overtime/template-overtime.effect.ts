@@ -12,7 +12,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
 export class TemplateOvertimeEffect {
 
-  loadTemplate$ = createEffect(() =>
+  loadAll$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TemplateOvertimeAction.loadALlTemplate),
+      switchMap(_ => this.templateOvertimeService.pagination()),
+      map((responsePagination) =>
+        TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertime: responsePagination.data })),
+      catchError((err) => throwError(err))
+    ));
+
+  loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadInit),
       switchMap(props => this.templateOvertimeService.pagination(props)),

@@ -9,6 +9,7 @@ import { TemplateOvertimeComponent } from '../../component/template-overtime/tem
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SystemHistoryActions } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.actions';
+import { debounceTime, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -38,8 +39,18 @@ export class TemplateComponent implements OnInit {
   templates$ = this.store.pipe(select(selectorAllTemplate));
 
   ngOnInit() {
-    this.store.dispatch(TemplateOvertimeAction.loadAllTempLate());
-
+    this.store.dispatch(TemplateOvertimeAction.loadInit({take:this.pageSize, skip: this.pageIndexInit}));
+    this.formGroup.valueChanges
+      .pipe(
+        debounceTime(1000),
+        tap((val) => {
+          this.store.dispatch(
+            TemplateOvertimeAction.loadInit(
+              this.template(val))
+          );
+        })
+      )
+      .subscribe();
   }
 
   templateOvertime($event?: any) {

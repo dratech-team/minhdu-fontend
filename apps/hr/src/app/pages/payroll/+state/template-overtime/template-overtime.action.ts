@@ -11,6 +11,9 @@ export const AddTemplateSuccess = createAction(
   '[Add_Template_Overtime] Add Template Overtime success',
   props<{ templateOvertime: TemplateOvertime }>()
 );
+export const loadALlTemplate = createAction(
+  '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime'
+);
 
 export const loadInit = createAction(
   '[Load_Template_Overtime] Load init',
@@ -58,8 +61,9 @@ export const deleteTemplate = createAction(
 
 
 export const TemplateOvertimeAction = {
-  loadMoreTemplateOverTime,
+  loadALlTemplate,
   loadInit,
+  loadMoreTemplateOverTime,
   AddTemplate,
   AddTemplateSuccess,
   updateTemplate,
