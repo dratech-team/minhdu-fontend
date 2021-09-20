@@ -4,40 +4,50 @@
     <div class='form-group'>
       <app-add-profile [formGroup]='formGroup'></app-add-profile>
       <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup'></app-pick-location>
-      <div class='row mt-3'>
+      <div class='row mt-3 d-flex'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='branch'>Đơn vị công tác <span class='star'>*</span></label>
+          <label for='branch'>Đơn vị công tác</label><span class='star'>*</span>
           <mat-select
             id='branch'
             class='form-control'
             formControlName='branch'
+            required
           >
             <mat-option *ngFor='let branch of branches$|async ' [value]='branch.id' (click)='onBranch(branch)'>
               {{branch.name}}
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='branch'
+                 *ngIf='formGroup.get("branch")?.invalid'
+          >Chưa chọn  Đơn vị công tác </label>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='department'>Bộ phận công tác <span class='star'>*</span></label>
+          <label for='department'>Bộ phận công tác </label><span class='star'>*</span>
           <mat-select id='department' class='form-control' formControlName='department'>
             <mat-option *ngFor='let department of departments' [value]='department.id'
                         (click)='onDepartment(department)'>
               {{department.name}}
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='department'
+                 *ngIf='formGroup.get("department")?.invalid'
+          >Chưa chọn bộ phận công tác </label>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='position'>Chức vụ <span class='star'>*</span></label>
+          <label for='position'>Chức vụ </label><span class='star'>*</span>
           <mat-select id='position' class='form-control' formControlName='position'>
             <mat-option *ngFor='let position of positions' [value]='position.id'>
               {{position.name}}
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='position'
+                 *ngIf='formGroup.get("position")?.invalid'
+          >Chưa chọn chức vụ </label>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='isFlatSalary'>Loại lương <span class='star'>*</span></label>
+          <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
           <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'>
             <mat-option value='{{flatSalary.FLAT_SALARY}}'>
               Lương cố định
@@ -46,6 +56,9 @@
               Lương không cố định
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='isFlatSalary'
+                 *ngIf='formGroup.get("isFlatSalary")?.invalid'
+          >Chưa chọn loại lương </label>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label>Email </label>
@@ -61,6 +74,9 @@
             class='form-control'
             formControlName='workedAt'
           >
+          <label class='mt-2 text-danger' for='workedAt'
+                 *ngIf='formGroup.get("workedAt")?.invalid'
+          >Chưa nhập ngày vào làm chính thức </label>
         </div>
          <div class='col-sm'>
            <label for='createdAt'>Ngày vào làm </label><span class='star'>*</span>
@@ -70,11 +86,14 @@
              class='form-control'
              formControlName='createdAt'
            >
+           <label class='mt-2 text-danger' for='createdAt'
+                  *ngIf='formGroup.get("createdAt")?.invalid'
+           >Chưa nhập nguyên quán </label>
          </div>
       </div>
       <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
         <div class='col-sm'>
-          <label for='facebook'>Facebook</label><span class='star'>*</span>
+          <label for='facebook'>Facebook</label>
           <input
             id='facebook'
             type='text'
@@ -83,7 +102,7 @@
           >
         </div>
         <div class='col-sm'>
-          <label for='zalo'>Zalo</label><span class='star'>*</span>
+          <label for='zalo'>Zalo</label>
           <input
             id='zalo'
             type='number'
@@ -94,7 +113,7 @@
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+        <button type='submit' mat-dialog-close  class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

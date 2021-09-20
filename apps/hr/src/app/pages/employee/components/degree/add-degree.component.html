@@ -4,7 +4,7 @@
     <div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
-          <label for='type'>Bằng<span>*</span></label>
+          <label for='type'>Bằng cấp</label> <span class='star'>*</span>
           <mat-select id='type' class='form-control' formControlName='type'>
             <mat-option [value]='degreeTypeEnum.UNIVERSITY'>
               Đại học
@@ -22,29 +22,43 @@
               Tiến sĩ
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='type'
+                 *ngIf='formGroup.get("type")?.invalid'
+          >Chưa chọn Bằng cấp </label>
         </div>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='school'>Nơi đào tạo<span>*</span>
-        </label>
+        <label for='school'>Nơi đào tạo</label><span class='star'>*</span>
         <input type='text' class='form-control' id='school' placeholder='Đại học Quy Nhơn' formControlName='school'>
+        <label class='mt-2 text-danger' for='school'
+               *ngIf='formGroup.get("school")?.invalid'
+        >Chưa Nhập nơi đào tạo</label>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='startedAt'>Bắt đầu<span>*</span></label>
+        <label for='startedAt'>Bắt đầu</label><span class='star'>*</span>
         <input type='date' id='startedAt' class='form-control' formControlName='startedAt'>
+        <label class='mt-2 text-danger' for='startedAt'
+               *ngIf='formGroup.get("startedAt")?.invalid'
+        >Chưa Nhập ngày bắt đầu</label>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='endedAt'>Kết thúc<span>*</span></label>
+        <label for='endedAt'>Kết thúc</label><span class='star'>*</span>
         <input type='date' id='endedAt' class='form-control' formControlName='endedAt'>
+        <label class='mt-2 text-danger' for='endedAt'
+               *ngIf='formGroup.get("endedAt")?.invalid'
+        >Chưa Nhập ngày kết thúc</label>
       </div>
       <div class='col-12 mt-3' [formGroup]='formGroup'>
-        <label for='major'>Chuyên nghành<span>*</span>
+        <label for='major'>Chuyên nghành<span class='star'>*</span>
         </label>
         <input type='text' class='form-control' id='major' placeholder='Kế toán' formControlName='major'>
+        <label class='mt-2 text-danger' for='major'
+               *ngIf='formGroup.get("major")?.invalid'
+        >Chưa Nhập chuyên nghành</label>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
-          <label for='formality'>Hình thức đào tạo<span>*</span></label>
+          <label for='formality'>Hình thức đào tạo</label><span class='star'>*</span>
           <mat-select id='formality' class='form-control' formControlName='formality'>
             <mat-option value='REMOTE'>
               Đao tạo từ xa
@@ -59,11 +73,14 @@
               Đang đào tạo
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='formality'
+                 *ngIf='formGroup.get("formality")?.invalid'
+          >Chưa chọn hình thức đào tạo</label>
         </div>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
-          <label for='level'>Xếp loại<span>*</span></label>
+          <label for='level'>Xếp loại</label><span class='star'>*</span>
           <mat-select id='level' class='form-control' formControlName='level'>
             <mat-option [value]='degreeLevelEnum.BELOW_AVERAGE'>
               Dưới trung bình
@@ -78,11 +95,14 @@
               Giỏi
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='level'
+                 *ngIf='formGroup.get("level")?.invalid'
+          >Chưa chọn xếp loại</label>
         </div>
       </div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
-          <label for='status'>Hoàn thành<span>*</span></label>
+          <label for='status'>Hoàn thành</label><span class='star'>*</span>
           <mat-select id='status' class='form-control' formControlName='status'>
             <mat-option [value]='degreeStatusEnum.NOT_GRADUATED'>
               Chưa hoàn thành
@@ -91,6 +111,9 @@
               Hoàn thành
             </mat-option>
           </mat-select>
+          <label class='mt-2 text-danger' for='status'
+                 *ngIf='formGroup.get("status")?.invalid'
+          >Chưa chọn Hoàn thành</label>
         </div>
       </div>
       <div class='row d-flex mt-3 justify-content-center'>

@@ -92,11 +92,15 @@ export class AddEmployeeComponent implements OnInit {
       district: [this.data?.employee?.ward?.district?.id, Validators.required],
       province: [this.data?.employee?.ward?.district?.province?.id, Validators.required],
       nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
-      ethnicity: [this.data?.employee?.ethnicity, Validators.required],
-      religion: [this.data?.employee?.religion, Validators.required],
+      ethnicity: [this.data?.employee?.ethnicity],
+      religion: [this.data?.employee?.religion],
       facebook: [this.data?.employee?.facebook],
       zalo: [this.data?.employee?.zalo]
     });
+  }
+
+  get form(): any {
+    return this.formGroup.controls;
   }
 
   onSubmit(): any {

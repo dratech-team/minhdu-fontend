@@ -57,7 +57,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   addAndUpdateRelative(employeeId: number, id?: number, relative?: Relative): void {
     this.dialog.open(AddRelativeComponent, {
-      width: '40%',
+      width: '60%',
       data: { employeeId: employeeId, id: id, relative: relative }
     });
   }

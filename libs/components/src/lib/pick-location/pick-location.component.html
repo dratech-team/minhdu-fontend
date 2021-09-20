@@ -13,7 +13,7 @@
 <!--      </mat-select>-->
 <!--    </div>-->
     <div class='col-sm' [formGroup]='formGroup'>
-      <label for='province'>Tỉnh<span class='star'>*</span></label>
+      <label for='province'>Tỉnh/Thành phố</label>
       <mat-select
         id='province'
         class='form-control'
@@ -23,22 +23,31 @@
           {{province.name}}
         </mat-option>
       </mat-select>
+      <label class='mt-2 text-danger' for='province'
+             *ngIf='formGroup.get("province")?.invalid'
+      >Chưa chọn Tỉnh/Thành phố </label>
     </div>
     <div class='col-sm' [formGroup]='formGroup' >
-      <label for='district'>Quận/Huyện <span class='star'>*</span></label>
+      <label for='district'>Quận/Huyện</label>
       <mat-select id='district' class='form-control' formControlName='district'>
         <mat-option *ngFor='let district of districts' [value]='district.id' (click)='onDistrict(district)'>
           {{district.name}}
         </mat-option>
       </mat-select>
+      <label class='ml-1 text-danger' for='district'
+             *ngIf='formGroup.get("district")?.invalid'
+      >Chưa chọn Quận/Huyện </label>
     </div>
     <div class='col-sm'  [formGroup]='formGroup'>
-      <label for='ward'>Xã/Phường <span class='star'>*</span></label>
+      <label for='ward'>Xã/Phường </label>
       <mat-select id='ward' class='form-control' formControlName='ward'>
         <mat-option *ngFor='let ward of wards' [value]='ward.id'>
           {{ward.name}}
         </mat-option>
       </mat-select>
+      <label class='mt-2 text-danger' for='ward'
+             *ngIf='formGroup.get("ward")?.invalid'
+      >Chưa chọn Xã/Phường </label>
     </div>
   </div>
 </form>

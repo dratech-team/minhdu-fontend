@@ -2,13 +2,14 @@
   <div class='form-group'>
     <div class='row'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='firstName'>họ<span class='star'>*</span>
-        </label>
+        <label for='firstName'>Họ</label><span class='star'>*</span>
         <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'>
+        <label class='mt-2 text-danger' for='firstName'
+               *ngIf='formGroup.get("firstName")?.invalid'
+        >Chưa nhập Họ </label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='lastName'>Tên<span class='star'>*</span>
-        </label>
+        <label for='lastName'>Tên</label><span class='star'>*</span>
         <input
           class='form-control'
           formControlName='lastName'
@@ -16,6 +17,9 @@
           placeholder='Hiệu'
           type='text'
         >
+        <label class='mt-2 text-danger' for='lastName'
+               *ngIf='formGroup.get("lastName")?.invalid'
+        >Chưa nhập tên</label>
       </div>
     </div>
     <div class='row mt-3'>
@@ -46,11 +50,15 @@
           placeholder='Phước Sơn - Tuy Phước - Bình Định '
           type='text'
         >
+        <label class='ml-1 text-danger' for='birthplace'
+               *ngIf='formGroup.get("birthplace")?.invalid'
+        >Chưa nhập nguyên quán </label>
       </div>
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='address'>Địa chỉ</label> <span class='star'>*</span>
+        <label for='address'>Địa chỉ</label><span class='star'>*</span>
+
         <input
           class='form-control'
           formControlName='address'
@@ -58,6 +66,9 @@
           placeholder='Số nhà / thôn xóm'
           type='text'
         >
+        <label class='mt-2 text-danger' for='address'
+               *ngIf='formGroup.get("address")?.invalid'
+        >Chưa nhập địa chỉ </label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='note'>Ghi chú</label>
@@ -71,11 +82,14 @@
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='cmnd'>CMND/CCCD <span class='star'>*</span></label>
-        <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'>
+        <label for='identify'>CMND/CCCD</label><span class='star'>*</span>
+        <input type='number' class='form-control' id='identify' placeholder='215421236' formControlName='identify'>
+        <label class='mt-2 text-danger' for='identify'
+               *ngIf='formGroup.get("identify")?.invalid'
+        >Chưa nhập CMND?CCCD</label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='idCardAt'>Ngày cấp<span class='star'>*</span></label>
+        <label for='idCardAt'>Ngày cấp</label><span class='star'>*</span>
         <input
           type='date'
           placeholder='06/05/1997'
@@ -83,29 +97,44 @@
           id='idCardAt'
           formControlName='idCardAt'
         >
+        <label class='mt-2 text-danger' for='idCardAt'
+               *ngIf='formGroup.get("idCardAt")?.invalid'
+        >Chưa nhập ngày cấp </label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='issuedBy'>Nơi cấp <span class='star'>*</span></label>
+        <label for='issuedBy'>Nơi cấp </label><span class='star'>*</span>
         <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'>
+        <label class='mt-2 text-danger' for='issuedBy'
+               *ngIf='formGroup.get("issuedBy")?.invalid'
+        >Chưa nhập nơi cấp </label>
       </div>
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='phone'>Số điện thoại <span class='star'>*</span></label>
+        <label for='phone'>Số điện thoại </label><span class='star'>*</span>
         <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'>
+        <label class='mt-2 text-danger' for='phone'
+               *ngIf='formGroup.get("phone")?.invalid'
+        >Chưa nhập số điện thoại </label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthday'>Ngày sinh <span class='star'>*</span></label>
+        <label for='birthday'>Ngày sinh </label><span class='star'>*</span>
         <input type='date' id='birthday' class='form-control' formControlName='birthday'>
+        <label class='mt-2 text-danger' for='birthday'
+               *ngIf='formGroup.get("birthday")?.invalid'
+        >Chưa nhập ngày sinh </label>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='gender'>Giới tính<span class='star'>*</span></label>
+        <label for='gender'>Giới tính</label><span class='star'>*</span>
         <div id='gender'>
           <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
             <mat-radio-button value='MALE'>Nam</mat-radio-button>
             <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
             <mat-radio-button value='OTHER'>Khác</mat-radio-button>
           </mat-radio-group>
+          <label class='mt-2 text-danger' for='gender'
+                 *ngIf='formGroup.get("gender")?.invalid'
+          >Chưa chọn giới tính </label>
         </div>
       </div>
     </div>
