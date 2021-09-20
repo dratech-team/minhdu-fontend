@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 @Injectable({providedIn:'root'})
 export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
@@ -12,6 +13,9 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
     public readonly http: HttpClient,
   ) {
     super(Api.template_OVERTIME,http)
+  }
+  pagination(params?: any): Observable<ResponsePaginate<TemplateOvertime>> {
+    return super.pagination(params);
   }
 
   addOne(props: TemplateOvertime): Observable<TemplateOvertime> {

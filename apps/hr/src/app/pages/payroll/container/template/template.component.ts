@@ -4,17 +4,28 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TemplateOvertimeComponent } from '../../component/template-overtime/template-overtime.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
-  templateUrl: 'template.component.html',
+  templateUrl: 'template.component.html'
 })
 export class TemplateComponent implements OnInit {
   type = SalaryTypeEnum;
+  unit = DatetimeUnitEnum;
   templates$ = this.store.pipe(select(selectorAllTemplate));
+  formGroup = new FormGroup(
+    {
+      title: new FormControl(''),
+      price: new FormControl(''),
+      unit: new FormControl(''),
+      note: new FormControl(''),
+      position: new FormControl(''),
+    }
+  );
 
   constructor(
     private readonly dialog: MatDialog,
@@ -44,12 +55,16 @@ export class TemplateComponent implements OnInit {
   }
 
   deleteOvertime($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent,{width:'30%'});
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
           this.store.dispatch(TemplateOvertimeAction.deleteTemplate($event.id));
         }
       }
     );
+  }
+
+  onScroll() {
+
   }
 }

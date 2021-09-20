@@ -5,7 +5,6 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllSystemHistory } from '../+state/system-history.selectors';
 import { SystemHistoryActions } from '../+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../../../../apps/sell/src/app/pages/customer/+state/customer/customer.action';
 import { document } from 'ngx-bootstrap/utils';
 
 @Component({

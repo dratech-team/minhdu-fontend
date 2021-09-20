@@ -11,9 +11,9 @@ export class TemplateOvertimeEffect {
   loadTemplate$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadAllTempLate),
-      switchMap(_ => this.templateOvertimeService.getAll()),
-      map((templateOvertime) =>
-        TemplateOvertimeAction.loadAllTempLateSuccess({ templateOvertime: templateOvertime })),
+      switchMap(props => this.templateOvertimeService.pagination(props)),
+      map((responsePagination) =>
+        TemplateOvertimeAction.loadAllTempLateSuccess({ templateOvertime: responsePagination.data })),
       catchError((err) => throwError(err))
     ));
 

@@ -1,50 +1,92 @@
-<div class='container'>
-  <div class='row h3 ml-3'>Bản mẫu Tăng ca</div>
-  <div class=' col-12'>
-    <button (click)='templateOvertime()' class='btn btn-primary mr-2'>Tạo mới</button>
+
+<div class='main-customer mx-auto' style='width: fit-content'>
+  <div class='row h3 ml-3'>Bản mẫu tăng ca</div>
+  <div class='row ml-3'>
+    <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
   </div>
-  <div class='mt-4' >
-    <div class='col-12 animated fadeIn'>
-      <div class='header-profile mt-3 '>
-        <div class='border-start title-header col-3'>
-          <div class='title-profile'>Tên bản mẫu</div>
-          <input class='form-control input-profile ' type='search' placeholder='PN10001'>
+
+  <div class='main-profile'>
+    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tên bản mẫu</div>
+        <input
+          class='form-control input-profile'
+          type='text'
+          formControlName='title'
+        >
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Giá</div>
+        <input
+          class='form-control input-profile '
+          type='text' formControlName='price'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Đơn vị</div>
+        <select class='select' matNativeControl required formControlName='unit'>
+          <option value='{{unit.DAY}}'>Ngày</option>
+          <option value='{{unit.HOUR}}'>Giờ</option>
+          <option value=''>Tất cả</option>
+        </select>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Chức vụ</div>
+        <input
+          class='form-control input-profile '
+          type='text' formControlName='position'>
+      </div>
+      <div class='border-start title-header note'>
+        <div class='title-profile'>Chú ý</div>
+        <input
+          class='form-control input-profile '
+          type='search' formControlName='note'>
+      </div>
+    </form>
+    <div class='outer animated fadeIn d-flex'
+         infiniteScroll
+         [infiniteScrollDistance]='0.5'
+         [scrollWindow]='false'
+         [alwaysCallback]='true'
+         (scrolled)='onScroll()'
+         *ngIf='(templates$| async) as templates'
+         [ngStyle]="{'width':templates.length === 0 ? header.offsetWidth + 'px': 'auto',
+         'overflow-y':templates.length === 0 ? 'hidden': 'scroll'}"
+    >
+      <div class='row-content' *ngFor='let template of templates'
+           (contextmenu)='child.onContextMenu($event,template)'>
+        <app-mouse-right #child (addEvent)='templateOvertime($event)'
+                         (readAndUpdateEvent)='templateOvertime($event)'
+                         (deleteEvent)='deleteOvertime($event)'
+        ></app-mouse-right>
+        <div class='content-profile name pointer '>
+          {{template.title}}
         </div>
-        <div class='border-start title-header col-2'>
-          <div class='title-profile'>Loại bản mẫu </div>
-          <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu'>
+        <div class='content-profile name pointer '>
+          {{template.price}}
         </div>
-        <div class='border-start title-header col-2'>
-          <div class='title-profile'>Giá</div>
-          <input class='form-control input-profile' type='search' placeholder='200,000'>
+        <div class='content-profile default pointer' *ngIf='template.unit === unit.DAY'>
+          Ngày
         </div>
-        <div class='border-start title-header col-2'>
-          <div class='title-profile'>Đơn vị</div>
+        <div class='content-profile default pointer' *ngIf='template.unit === unit.HOUR'>
+          giờ
         </div>
-        <div class='border-start title-header col-3'>
-          <div class='title-profile'>Chú ý</div>
+        <div class='content-profile name pointer '>
+          {{template.position.department.branch.name}}
+        </div>
+        <div class='content-profile note pointer '>
+          {{template.note}}
         </div>
       </div>
-      <div class='outer' style='width: 100%;'>
-        <div class='row-content' *ngFor='let template of templates$|async'
-        (contextmenu)='child.onContextMenu($event, template)'
-             (click)='templateOvertime(template)'
-        >
-          <app-mouse-right #child (addEvent)='templateOvertime()'
-                                  (readAndUpdateEvent)='templateOvertime($event)'
-                                  (deleteEvent)='deleteOvertime($event)'
-          ></app-mouse-right>
-          <div class='content-profile col-3 pointer '> {{template?.title}}</div>
-          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.OVERTIME'>Tăng ca</div>
-          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.ABSENT'>Khấu trừ</div>
-          <div class='content-profile col-2  pointer' *ngIf='template?.type === type.ALLOWANCE'>Phụ cấp</div>
-          <div class='content-profile col-2  pointer'>{{template.price|number:'1.0'|notEmpty:'0'}} đ</div>
-          <div class='content-profile col-2  pointer'>{{template?.position?.name}}</div>
-          <div class='content-profile col-3  pointer'>{{template?.note}}</div>
+      <div *ngIf='!templates || templates.length === 0 ' style='height:60vh; '
+           class=' d-flex justify-content-center align-content-center'>
+        <div class='font-xl font-weight-bold d-flex align-items-center'>
+          Hiện chưa có bản mẫu tăng ca nào!
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
