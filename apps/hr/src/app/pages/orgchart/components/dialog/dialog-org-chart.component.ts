@@ -37,7 +37,6 @@ export class DialogOrgChartComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroupOrgChart)
     this.submitted = true;
     if (this.formGroupOrgChart.invalid) {
       return;

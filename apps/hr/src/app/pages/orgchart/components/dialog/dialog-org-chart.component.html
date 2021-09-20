@@ -13,22 +13,22 @@
       <div class='row mt-2' [formGroup]='formGroupOrgChart'>
         <span class='ml-1 row title-item'> {{data.title}} <span class='star'>*</span></span>
         <input class='form-control mt-2' formControlName='inputOrgChart'
-               [ngClass]="{ 'is-invalid': submitted && f.inputOrgChart.errors }">
-        <div *ngIf=' data.type === type.BRANCH && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+               [ngClass]="{ 'is-invalid': submitted && f.inputOrgChart.errors?.required }">
+        <div *ngIf=' data.type === type.BRANCH && submitted && f.inputOrgChart.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập khu</div>
         </div>
-        <div *ngIf=' data.type === type.DEPARTMENT && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+        <div *ngIf=' data.type === type.DEPARTMENT && submitted && f.inputOrgChart.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập phòng ban</div>
         </div>
-        <div *ngIf=' data.type === type.POSITION && submitted && f.inputOrgChart.errors' class='invalid-feedback'>
+        <div *ngIf=' data.type === type.POSITION && submitted && f.inputOrgChart.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập chức vụ</div>
         </div>
       </div>
       <div *ngIf="data.type === 'POSITION'" class='row mt-3' [formGroup]='formGroupOrgChart'>
         <span class='ml-1 row title-item'>Ngày công chuẩn</span>
         <input type='number' class='form-control mt-1' formControlName='workday'
-               [ngClass]="{ 'is-invalid': submitted && f.workday.errors }">
-        <div *ngIf=' data.type === type.POSITION && submitted && f.workday.errors' class='invalid-feedback'>
+               [ngClass]="{ 'is-invalid': submitted && f.workday.errors?.required }">
+        <div *ngIf=' data.type === type.POSITION && submitted && f.workday.errors?.required' class='invalid-feedback'>
           <div>Chưa nhập ngày công chuẩn</div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
-import { HolidayAction, LoadInit } from '../../+state/holiday/holiday.action';
+import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from 'apps/hr/src/app/reducers';

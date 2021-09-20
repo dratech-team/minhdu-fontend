@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Branch, Department } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
@@ -14,6 +14,7 @@ import { DepartmentActions, getDepartmentByBranchId } from '../../../../../../..
   templateUrl: 'add-holiday.component.html'
 })
 export class AddHolidayComponent implements OnInit {
+  submitted = false;
   branches$ = this.store.pipe(select(getAllOrgchart));
   departments$ = this.store.pipe(select(getDepartmentByBranchId(
     this?.data?.department?.branchId
@@ -25,7 +26,8 @@ export class AddHolidayComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+  private readonly dialogRef: MatDialogRef<AddHolidayComponent>,
   ) {
   }
   ngOnInit() {
@@ -44,8 +46,14 @@ export class AddHolidayComponent implements OnInit {
       branch: [this.data?.department?.branchId, Validators.required],
     });
   }
-
+  get f() {
+    return this.formGroup.controls;
+  }
   onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const val = this.formGroup.value;
     const holiday = {
       name: val.name,
@@ -58,6 +66,7 @@ export class AddHolidayComponent implements OnInit {
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
+    this.dialogRef.close()
   }
 
   onBranch(branch: Branch) {
