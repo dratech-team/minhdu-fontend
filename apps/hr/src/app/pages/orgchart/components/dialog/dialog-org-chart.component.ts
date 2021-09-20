@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OrgchartEnum } from '@minhdu-fontend/enums';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class DialogOrgChartComponent implements OnInit {
   formGroupOrgChart!: FormGroup;
-
+  type = OrgchartEnum;
   constructor(
     private readonly formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
