@@ -103,7 +103,6 @@ export class AddEmployeeComponent implements OnInit {
   get f() { return this.formGroup.controls; }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

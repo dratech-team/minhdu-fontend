@@ -2,13 +2,17 @@
   <span>Xoá nhân viên</span>
 </div>
 <div class='mt-2'>
-  <div>
+  <form [formGroup]='formGroup'>
     <label class='title-child'>Ngày nghỉ việc</label>
-    <input type='date' class='form-control' [(ngModel)]='leftAt'>
-  </div>
+    <input type='date' class='form-control' formControlName='leftAt'
+           [ngClass]="{ 'is-invalid': submitted && f.leftAt.errors?.required }">
+    <div *ngIf="submitted && f.leftAt.errors?.required" class="invalid-feedback">
+      <div>Chưa nhập ngày nghỉ việc</div>
+    </div>
+  </form>
   <div class='mt-4 ' mat-dialog-actions>
     <button class='btn btn-secondary mr-2' mat-dialog-close>Huỷ</button>
-    <button class='btn btn-dark ml-2' mat-dialog-close (click)='submit()'>Đồng ý</button>
+    <button class='btn btn-dark ml-2'  (click)='submit()'>Đồng ý</button>
   </div>
 </div>
 
