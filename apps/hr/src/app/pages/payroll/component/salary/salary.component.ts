@@ -99,7 +99,7 @@ export class SalaryComponent implements OnInit {
               this.data?.salary?.datetime, 'yyyy-MM-dd')
             , Validators.required],
           forgot: [this.data?.salary?.forgot],
-          times: [this.data?.salary?.times ? this.data?.salary?.times : undefined, Validators.required],
+          times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
           note: [this.data?.salary?.note],
           type: [this.data.type, Validators.required],
           rate: [1, Validators.required]
@@ -121,12 +121,11 @@ export class SalaryComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.data.type === this.type.ALLOWANCE
-      && this.formGroup.value.unit === 'HOUR' &&
+    if (this.formGroup.value.unit === 'HOUR' &&
       this.formGroup.value.times === 0) {
       this.snackBar.openFromComponent(SnackBarComponent,
         {
-          data: { content: 'Số giờ làm việc phải lơn hơn 0' },
+          data: { content: 'Số giờ phải lơn hơn 0' },
           panelClass: ['background-snackbar-validate'],
           duration: 2500
         });

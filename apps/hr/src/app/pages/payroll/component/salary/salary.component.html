@@ -363,10 +363,14 @@
                   class='form-control'
                   [formGroup]='formGroup'
                   formControlName='unit'
+                  [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
                 >
                   <mat-option value='DAY'>Vắng</mat-option>
                   <mat-option value='HOUR'>Đi muộn</mat-option>
                 </mat-select>
+                <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+                  <div>Chưa chọn loại khấu trừ</div>
+                </div>
               </div>
             </div>
             <div>
@@ -380,7 +384,11 @@
                       placeholder='06/05/1997'
                       class='form-control'
                       formControlName='datetime'
+                      [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }"
                     >
+                    <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                      <div>Chưa chọn ngày</div>
+                    </div>
                   </div>
                 </div>
                 <div class='col' [formGroup]='formGroup' *ngIf="formGroup.value.unit === 'DAY'">
@@ -401,7 +409,11 @@
                 <div class='star'>*</div>
               </div>
               <div class='row mb-3' [formGroup]='formGroup'>
-                <input class='form-control' type='number' formControlName='times'>
+                <input class='form-control' type='number' formControlName='times'
+                       [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
+                <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
+                  <div>Chưa nhập số giờ đi trễ</div>
+                </div>
               </div>
             </div>
             <div class='note'>
