@@ -49,16 +49,16 @@
                          (readAndUpdateEvent)='Holiday($event)'
                          (deleteEvent)='deleteHoliday($event)'
         ></app-mouse-right>
-        <div class='content-profile name pointer '>
+        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
           {{holiday.name}}
         </div>
-        <div class='content-profile name pointer '>
+        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
           {{holiday.datetime |date: 'dd/MM/yyyy'}}
         </div>
-        <div class='content-profile default pointer '>
+        <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
           {{holiday.rate}}
         </div>
-        <div class='content-profile name pointer '>
+        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
           {{holiday.department?.name}}
         </div>
       </div>
