@@ -30,23 +30,6 @@
       >
     </div>
     <div class='border-start title-header default'>
-      <div class='title-profile'>Xác nhận</div>
-      <select class='select' matNativeControl required formControlName='accConfirmedAt'>
-        <option value='TRUE'>Đã xác nhận</option>
-        <option value='FALSE'>chưa xác nhận</option>
-        <option value=''>Mặc định</option>
-      </select>
-    </div>
-    <div class='border-start title-header default'>
-      <div class='title-profile'>Thanh toán</div>
-      <select class='select' matNativeControl required formControlName='paidAt'>
-        <option value='TRUE'>Đã Thanh toán</option>
-        <option value='FALSE'>Chưa thanh toán</option>
-        <option value=''>Mặc định</option>
-      </select>
-    </div>
-
-    <div class='border-start title-header default'>
       <div class='title-profile'>Chức vụ</div>
       <input
         placeholder='Giám đốc'
@@ -109,7 +92,22 @@
       <div disabled class='title-profile'>Tổng thu nhập</div>
       <input disabled class='form-control input-profile ' type='search'>
     </div>
-
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Xác nhận</div>
+      <select class='select' matNativeControl required formControlName='accConfirmedAt'>
+        <option value='TRUE'>Đã xác nhận</option>
+        <option value='FALSE'>chưa xác nhận</option>
+        <option value=''>Mặc định</option>
+      </select>
+    </div>
+    <div class='border-start title-header default'>
+      <div class='title-profile'>Thanh toán</div>
+      <select class='select' matNativeControl required formControlName='paidAt'>
+        <option value='TRUE'>Đã Thanh toán</option>
+        <option value='FALSE'>Chưa thanh toán</option>
+        <option value=''>Mặc định</option>
+      </select>
+    </div>
   </form>
   <div class='outer   animated fadeIn'
        infiniteScroll
@@ -129,29 +127,6 @@
       </div>
       <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
         {{payroll.employee.firstName}} {{payroll.employee.lastName}}
-      </div>
-      <div  class='content-profile default pointer '>
-        <div (click)='updatePayroll(payroll.id,"accConfirmedAt")'
-             style='width:fit-content;height: fit-content'
-        >
-          <input
-            style='pointer-events: none'
-            disabled
-            type='checkbox'
-            [checked]='payroll.accConfirmedAt !== null'>
-        </div>
-
-      </div>
-      <div  class='content-profile default pointer '>
-        <div (click)='updatePayroll(payroll.id,"paidAt")'
-        style='width:fit-content;height: fit-content'
-        >
-          <input
-            style='pointer-events: none'
-            disabled
-            type='checkbox'
-            [checked]='payroll.paidAt !== null'>
-        </div>
       </div>
       <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll?.employee?.position?.name}}
@@ -191,6 +166,29 @@
       </div>
       <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
         {{payroll.payslip?.total}}
+      </div>
+      <div  class='content-profile default pointer '>
+        <div (click)='updatePayroll(payroll.id,"accConfirmedAt")'
+             style='width:fit-content;height: fit-content'
+        >
+          <input
+            style='pointer-events: none'
+            disabled
+            type='checkbox'
+            [checked]='payroll.accConfirmedAt !== null'>
+        </div>
+
+      </div>
+      <div  class='content-profile default pointer '>
+        <div (click)='updatePayroll(payroll.id,"paidAt")'
+             style='width:fit-content;height: fit-content'
+        >
+          <input
+            style='pointer-events: none'
+            disabled
+            type='checkbox'
+            [checked]='payroll.paidAt !== null'>
+        </div>
       </div>
     </div>
   </div>

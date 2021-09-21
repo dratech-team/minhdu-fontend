@@ -239,6 +239,65 @@
         </div>
       </div>
     </div>
+    <div class='col-12 mt-3'>
+      <div class=' d-flex align-items-center'>
+        <div class='align-items-center main-title mr-4'>Thông tin liên hệ</div>
+      </div>
+      <div class='row pl-3'>
+        <div class='col-6  form-group'>
+          <div class='mt-3 row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>ĐT di động:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #7749F8  '>
+                {{employee.phone === null ? 'Chưa cập nhật' : employee.phone}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Email cá nhân:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee.email === null ? 'Chưa cập nhật' : employee?.email}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Facebook:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.facebook === null ? 'Chưa cập nhật' : employee.facebook}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>zalo:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee?.zalo === null ? 'Chưa cập nhật' : employee?.zalo}}
+            </span>
+            </div>
+          </div>
+          <div class=' row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Nguyên quán:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail'>
+                {{employee.birthplace === null ? 'Chưa cập nhật' : employee.birthplace}}
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class='col-12'>
       <div class=' d-flex align-items-center'>
         <div class='ml-2 mt-5  d-flex align-items-center main-title'>Thông tin bảo hiểm
@@ -352,65 +411,6 @@
             <div class='col-md-8 py-2'>
             <span class='contain-detail'>
                 {{employee?.bhyt === null ? 'Chưa cập nhật' : employee?.bhyt }}
-            </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class='col-12  mt-5'>
-      <div class=' d-flex align-items-center'>
-        <div class='align-items-center main-title mr-4'>Thông tin liên hệ</div>
-      </div>
-      <div class='row pl-3'>
-        <div class='col-6  form-group'>
-          <div class='mt-3 row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>ĐT di động:</span>
-            </div>
-            <div class='col-md-8 py-2'>
-            <span class='contain-detail' style='color: #7749F8  '>
-                {{employee.phone === null ? 'Chưa cập nhật' : employee.phone}}
-            </span>
-            </div>
-          </div>
-          <div class=' row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Email cá nhân:</span>
-            </div>
-            <div class='col-md-8 py-2'>
-            <span class='contain-detail'>
-                {{employee.email === null ? 'Chưa cập nhật' : employee?.email}}
-            </span>
-            </div>
-          </div>
-          <div class=' row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Facebook:</span>
-            </div>
-            <div class='col-md-8 py-2'>
-            <span class='contain-detail'>
-                {{employee?.facebook === null ? 'Chưa cập nhật' : employee.facebook}}
-            </span>
-            </div>
-          </div>
-          <div class=' row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>zalo:</span>
-            </div>
-            <div class='col-md-8 py-2'>
-            <span class='contain-detail'>
-                {{employee?.zalo === null ? 'Chưa cập nhật' : employee?.zalo}}
-            </span>
-            </div>
-          </div>
-          <div class=' row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Nguyên quán:</span>
-            </div>
-            <div class='col-md-8 py-2'>
-            <span class='contain-detail'>
-                {{employee.birthplace === null ? 'Chưa cập nhật' : employee.birthplace}}
             </span>
             </div>
           </div>
