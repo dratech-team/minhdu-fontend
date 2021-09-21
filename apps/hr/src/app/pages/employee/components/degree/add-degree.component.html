@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Bằng cấp</h2>
 <mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+  <form [formGroup]='formGroup'>
     <div>
       <div class='col-12 mt-3'>
         <div [formGroup]='formGroup'>
@@ -126,7 +126,7 @@
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' class='btn btn-dark ml-2'> Xác nhận</button>
+        <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

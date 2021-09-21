@@ -1,19 +1,8 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { FlatSalary } from '@minhdu-fontend/enums';
-import {
-  getAllOrgchart,
-  OrgchartActions
-} from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
-import { DepartmentActions, getDepartmentByBranchId } from 'libs/orgchart/src/lib/+state/department';
-import { getPositionsByDepartmentId, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
-import { EmployeeAction } from '@minhdu-fontend/employee';
 
 @Component({
   templateUrl: 'BHYT.component.html'
@@ -21,13 +10,15 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 
 export class BHYTComponent implements OnInit {
   formGroup!: FormGroup;
+  submitted = false;
 
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
     private readonly employeeService: EmployeeService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly dialogRef: MatDialogRef<BHYTComponent>
   ) {
   }
 
@@ -45,11 +36,20 @@ export class BHYTComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit(): any {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
     const BHYT = {};
     if (this.data.update) {
     } else {
     }
+    this.dialogRef.close()
   }
 }

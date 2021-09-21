@@ -77,9 +77,13 @@ export class TemplateOvertimeEffect {
   deleteTemplate$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.deleteTemplate),
-      switchMap((pram) => this.templateOvertimeService.delete(pram.id).pipe(
-        map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 }))
-      ))
+      switchMap((pram) => {
+        console.log(pram.id)
+        return  this.templateOvertimeService.delete(pram.id).pipe(
+          map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 }))
+        )
+        }
+      )
     ));
 
   constructor(

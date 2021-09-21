@@ -33,6 +33,7 @@ export class SystemHistoryEffects {
         Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
       switchMap((props) => {
+        console.log('ssss')
         return this.systemHistoryService.pagination(props);
       }),
       map((responsePagination) => {

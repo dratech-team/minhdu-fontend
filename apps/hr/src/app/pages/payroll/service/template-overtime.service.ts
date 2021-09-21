@@ -30,6 +30,7 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
   }
 
   delete(id: number): Observable<void> {
+    console.log(id)
     return super.delete(id);
   }
 

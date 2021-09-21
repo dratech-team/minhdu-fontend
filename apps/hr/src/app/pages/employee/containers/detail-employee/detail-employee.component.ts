@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import {
@@ -17,8 +17,8 @@ import { AddRelativeComponent } from '../../components/relative/add-relative.com
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
-import { BHYTComponent } from '../../components/bhyt/BHYT.component';
 import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
+import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 
 
 @Component({
@@ -38,7 +38,8 @@ export class DetailEmployeeComponent implements OnInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly router: Router
   ) {
   }
 
@@ -54,6 +55,18 @@ export class DetailEmployeeComponent implements OnInit {
     this.dialog.open(AddEmployeeComponent, {
       width: '60%',
       data: { employee: employee }
+    });
+  }
+
+  deleteEmployee(employeeId: number): void {
+    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
+      minWidth: '30%'
+    });
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.store.dispatch(EmployeeAction.deleteEmployee({ id: employeeId }));
+        this.router.navigate(['/ho-so']).then();
+      }
     });
   }
 
@@ -96,7 +109,7 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   addOrUpdateBHYT(bhyt?: any) {
-    this.dialog.open(DevelopmentComponent, {width: '30%'})
+    this.dialog.open(DevelopmentComponent, { width: '30%' });
     // this.dialog.open(BHYTComponent, {
     //   width: '50%',
     //   data: {bhyt, update: !!bhyt}

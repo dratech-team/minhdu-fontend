@@ -112,6 +112,7 @@ export class PayrollComponent implements OnInit {
   }
 
   addSalary(type: SalaryTypeEnum): any {
+    console.log(type)
     const dialogRef = this.dialog.open(SalaryComponent, {
       width: '50%',
       data: { type: type }

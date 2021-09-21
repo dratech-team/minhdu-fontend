@@ -8,6 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { selectorTemplateTotal } from '../template-overtime/template-overtime.selector';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { selectorHolidayTotal } from './holiday.selector';
 
 @Injectable()
 export class HolidayEffect {
@@ -33,7 +34,7 @@ export class HolidayEffect {
   loadMore$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.LoadMoreHoliday),
-      withLatestFrom(this.store.pipe(select(selectorTemplateTotal))),
+      withLatestFrom(this.store.pipe(select(selectorHolidayTotal))),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
