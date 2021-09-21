@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -9,6 +9,8 @@ import { selectorAllTemplate } from '../../+state/template-overtime/template-ove
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 
 
 @Component({
@@ -21,64 +23,130 @@ export class SalaryComponent implements OnInit {
   price!: number;
   title!: string;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  isManyPeople = false;
+  type = SalaryTypeEnum;
+  formGroup!: FormGroup;
+  submitted = false;
 
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly dialogRef: MatDialogRef<SalaryComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
 
-  isManyPeople = false;
-  type = SalaryTypeEnum;
-  formGroup!: FormGroup;
 
   ngOnInit(): void {
-    if (this.data.type === this.type.OVERTIME) {
-      this.store.dispatch(TemplateOvertimeAction.loadALlTemplate());
+    switch (this.data.type) {
+      case this.type.OVERTIME:
+        this.store.dispatch(TemplateOvertimeAction.loadALlTemplate());
+        this.formGroup = this.formBuilder.group({
+          unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
+          datetime: [
+            this.datePipe.transform(
+              this.data?.salary?.datetime, 'yyyy-MM-dd')
+            , Validators.required],
+          rate: [1, Validators.required],
+          price: [this.data?.salary?.price, Validators.required],
+          times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
+          note: [this.data?.salary?.note],
+          type: [this.data?.salary?.type ? this.data?.salary?.type : this.data.type, Validators.required]
+        });
+        break;
+      case this.type.BASIC:
+        this.formGroup = this.formBuilder.group({
+          price: [this.data?.salary?.price, Validators.required],
+          type: [this.data?.salary?.type ?
+            this.data?.salary?.type : this.data.type
+            , Validators.required],
+          rate: [1, Validators.required]
+        });
+        break;
+      case this.type.STAY:
+        this.formGroup = this.formBuilder.group({
+          title: [this.data?.salary?.title ?? '', Validators.required],
+          price: [this.data?.salary?.price, Validators.required],
+          type: [this.data.type, Validators.required],
+          rate: [1, Validators.required]
+        });
+        break;
+      case this.type.ALLOWANCE:
+        this.formGroup = this.formBuilder.group({
+          title: [this.data?.salary?.title ?? '', Validators.required],
+          unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
+          datetime: [
+            this.datePipe.transform(
+              this.data?.salary?.datetime, 'yyyy-MM-dd')
+            , Validators.required],
+          times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
+          price: [this.data?.salary?.price, Validators.required],
+          note: [this.data?.salary?.note],
+          type: [this.data?.salary?.type ?
+            this.data?.salary?.type : this.data.type
+            , Validators.required],
+          rate: [1, Validators.required]
+        });
+        break;
+      case this.type.ABSENT:
+        this.formGroup = this.formBuilder.group({
+          unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
+          datetime: [
+            this.datePipe.transform(
+              this.data?.salary?.datetime, 'yyyy-MM-dd')
+            , Validators.required],
+          forgot: [this.data?.salary?.forgot],
+          times: [this.data?.salary?.times ? this.data?.salary?.times : undefined, Validators.required],
+          note: [this.data?.salary?.note],
+          type: [this.data.type, Validators.required],
+          rate: [1, Validators.required]
+        });
+        break;
     }
-    this.formGroup = this.formBuilder.group({
-      title: [this.data?.salary?.title ?? '', Validators.required],
-      price: [this.data?.salary?.price, Validators.required],
-      type: [this.data?.salary?.type ?
-        this.data?.salary?.type : this.data.type
-        , Validators.required],
-      unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
-      rate: [1, Validators.required],
-      minutes: [null, Validators.required],
-      times: [this.data?.salary?.times ? this.data?.salary?.times : undefined, Validators.required],
-      datetime: [
-        this.datePipe.transform(
-          this.data?.salary?.datetime, 'yyyy-MM-dd')
-        , Validators.required],
-      forgot: [this.data?.salary?.forgot],
-      note: [this.data?.salary?.note],
-      createdAt: [this.data?.salary?.createdAt, Validators.required]
-    });
   }
 
   pickEmployees(employeeIds: number []): any {
     this.employeeIds = employeeIds;
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit(): any {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    if (this.data.type === this.type.ALLOWANCE
+      && this.formGroup.value.unit === 'HOUR' &&
+      this.formGroup.value.times === 0) {
+      this.snackBar.openFromComponent(SnackBarComponent,
+        {
+          data: { content: 'Số giờ làm việc phải lơn hơn 0' },
+          panelClass: ['background-snackbar-validate'],
+          duration: 2500
+        });
+      return
+    }
     const value = this.formGroup.value;
-    return {
+    const salary = {
       update: !!this.data.salary,
       data: {
-        title: value.title === '' && value.type === this.type.BASIC_ISNURANCE ? 'Lương cơ bản trước bảo hiểm' :
-          value.title === '' && value.type === this.type.BASIC ? 'Lương cơ bản' :
-            value.title === '' && value.type === this.type.OVERTIME ? this.title :
-              value.title === '' && this.data.unit === this.type.ABSENT ? 'Vắng' :
-                value.title === '' && this.data.type === this.type.LATE ? 'Đi trễ' :
+        title: !value.title && value.type === this.type.BASIC_ISNURANCE ? 'Lương cơ bản trước bảo hiểm' :
+          !value.title && value.type === this.type.BASIC ? 'Lương cơ bản' :
+            !value.title && value.type === this.type.OVERTIME ? this.title :
+              !value.title && this.data.unit === this.type.ABSENT ? 'Vắng' :
+                !value.title && this.data.type === this.type.LATE ? 'Đi trễ' :
                   value.title,
         price: this.data.type === this.type.OVERTIME ? this.price :
           typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         type: value.type === null ? this.type.ABSENT : value.type,
         rate: value.rate,
-        times: value.times ? value.times : undefined,
+        times: value.times && value !== 0 ? value.times : undefined,
         datetime: value.datetime ? value.datetime : undefined,
         forgot: value.forgot ? value.forgot : undefined,
         note: value.note,
@@ -87,6 +155,7 @@ export class SalaryComponent implements OnInit {
         payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
       }
     };
+    this.dialogRef.close(salary);
   }
 
   tabChanged($event: MatTabChangeEvent) {
