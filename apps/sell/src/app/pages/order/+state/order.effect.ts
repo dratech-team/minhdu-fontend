@@ -10,10 +10,7 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
 import { CustomerAction } from '../../customer/+state/customer/customer.action';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { selectorAllOrdersAssigned, selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Order } from './order.interface';
-import { selectorSystemHistoryTotal } from '../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
+import { selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
 
 
 @Injectable()
