@@ -71,9 +71,11 @@ export class TemplateComponent implements OnInit {
   }
 
   deleteOvertime($event: any) {
+
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
+          console.log($event.id)
           this.store.dispatch(TemplateOvertimeAction.deleteTemplate($event.id));
         }
       }
@@ -83,7 +85,7 @@ export class TemplateComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      SystemHistoryActions.loadMoreSystemHistory(
+      TemplateOvertimeAction.loadMoreTemplateOverTime(
         this.template(val)
       )
     );

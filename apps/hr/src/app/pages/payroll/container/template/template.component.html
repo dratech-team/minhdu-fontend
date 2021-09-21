@@ -52,28 +52,27 @@
          [ngStyle]="{'width':templates.length === 0 ? header.offsetWidth + 'px': 'auto',
          'overflow-y':templates.length === 0 ? 'hidden': 'scroll'}"
     >
-      <div class='row-content' *ngFor='let template of templates'
-           (contextmenu)='child.onContextMenu($event,template)'>
-        <app-mouse-right #child (addEvent)='templateOvertime($event)'
-                         (readAndUpdateEvent)='templateOvertime($event)'
-                         (deleteEvent)='deleteOvertime($event)'
-        ></app-mouse-right>
-        <div class='content-profile name pointer '>
+      <div class='row-content' *ngFor='let template of templates'>
+        <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
           {{template.title}}
         </div>
-        <div class='content-profile name pointer '>
+        <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
           {{template.price}}
         </div>
-        <div class='content-profile default pointer' *ngIf='template.unit === unit.DAY'>
+        <div class='content-profile default pointer' *ngIf='template.unit === unit.DAY'
+             (click)='templateOvertime(template)'>
           Ngày
         </div>
-        <div class='content-profile default pointer' *ngIf='template.unit === unit.HOUR'>
+        <div class='content-profile default pointer' *ngIf='template.unit === unit.HOUR'
+             (click)='templateOvertime(template)'>
           giờ
         </div>
-        <div class='content-profile name pointer '>
+        <div class='content-profile name pointer '
+             (click)='templateOvertime(template)'>
           {{template.position.department.branch.name}}
         </div>
-        <div class='content-profile note pointer '>
+        <div class='content-profile note pointer '
+             (click)='templateOvertime(template)'>
           {{template.note}}
         </div>
       </div>

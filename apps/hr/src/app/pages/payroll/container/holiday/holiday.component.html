@@ -4,7 +4,7 @@
     <button (click)='Holiday()' class='btn btn-primary mt-3 '>Tạo ngày lễ</button>
   </div>
 
-  <div class='main-profile' style='overflow-x: hidden'>
+  <div class='main-profile'>
     <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên ngày lễ</div>
@@ -53,7 +53,7 @@
           {{holiday.name}}
         </div>
         <div class='content-profile name pointer '>
-          {{holiday.datetime |date: 'dd/mm/yyyy'}}
+          {{holiday.datetime |date: 'dd/MM/yyyy'}}
         </div>
         <div class='content-profile default pointer '>
           {{holiday.rate}}
