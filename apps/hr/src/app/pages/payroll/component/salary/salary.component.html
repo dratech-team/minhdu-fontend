@@ -234,7 +234,7 @@
                       <mat-option *ngFor='let overtime of templateOvertime' value='{{overtime.unit}}'
                                   (click)='getPrice(overtime)'>
                         {{overtime.title}}
-                        <input [style.display]="'none'" value='{{overtime.title}}' formControlName='title'>
+                        <input [style.display]="'none'" value='{{overtime.title}}'>
                       </mat-option>
                     </mat-select>
                     <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>

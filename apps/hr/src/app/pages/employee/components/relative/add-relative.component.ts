@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
 import { EmployeeAction } from '@minhdu-fontend/employee';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-
+  convertBoolean = ConvertBoolean;
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -81,7 +82,10 @@ export class AddRelativeComponent implements OnInit {
       idCardAt: value.idCardAt ? value.idCardAt : undefined,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
-      sos: value.sos ? value.sos : undefined,
+      sos: value.sos ?
+        this.convertBoolean.TRUE:
+        this.convertBoolean.FALSE
+      ,
       career: value.career ? value.career : undefined
     };
     if (this.data.relative) {

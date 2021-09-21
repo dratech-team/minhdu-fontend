@@ -54,7 +54,7 @@ export class SalaryComponent implements OnInit {
           price: [this.data?.salary?.price, Validators.required],
           times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
           note: [this.data?.salary?.note],
-          type: [this.data?.salary?.type ? this.data?.salary?.type : this.data.type, Validators.required]
+          type: [this.data?.salary?.type ? this.data?.salary?.type : this.data.type, Validators.required],
         });
         break;
       case this.type.BASIC:
