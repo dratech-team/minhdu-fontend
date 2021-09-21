@@ -40,6 +40,5 @@ export const Api = {
   REQUISITE: 'requisite',
   MATERIAL: 'material',
   LOGGER: 'logger',
-  SLACK_WEBHOOK:
-    'https://hooks.slack.com/services/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',
+  SLACK_WEBHOOK:'https://hooks.slack.com/services/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',
 };
