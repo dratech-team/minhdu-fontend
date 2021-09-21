@@ -62,7 +62,6 @@ export class PickOrderComponent implements OnInit {
     } else {
       this.orders$.subscribe((order: Order) => {
           this.orders = JSON.parse(JSON.stringify(order));
-          console.log(this.orders);
           this.assignIsSelect();
         }
       );
@@ -83,7 +82,7 @@ export class PickOrderComponent implements OnInit {
 
 
   assignIsSelect() {
-    if (this.isSelectAll  && this.orderIdsOfRoute.length >= this.orders.length) {
+    if (this.isSelectAll && this.orderIdsOfRoute.length >= this.orders.length) {
       this.orders.forEach(val => {
         val.isSelect = true;
         if (!this.orderIdsOfRoute.includes(val.id)) {
@@ -91,12 +90,12 @@ export class PickOrderComponent implements OnInit {
         }
       });
     } else {
-      this.isSelectAll = false
+      this.isSelectAll = false;
       this.orders.forEach(order => {
         order.isSelect = this.orderIdsOfRoute?.includes(order.id);
       });
     }
-    this.checkEvent.emit(this.orderIdsOfRoute)
+    this.checkEvent.emit(this.orderIdsOfRoute);
   }
 
   order(val: any) {

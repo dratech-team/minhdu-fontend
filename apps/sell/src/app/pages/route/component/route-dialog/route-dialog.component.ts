@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { RouteAction } from '../../container/+state/route.action';
@@ -13,6 +13,7 @@ import { OrderAction } from '../../../order/+state/order.action';
 })
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
+  submitted = false;
   orders$ = this.store.pipe(select(selectorAllOrders));
   orders: Order[] = [];
   orderIdsOfRoute: number[] = [];
@@ -22,7 +23,8 @@ export class RouteDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
   ) {
   }
 
@@ -34,7 +36,7 @@ export class RouteDialogComponent implements OnInit {
       startedAt: [this.datePipe.transform(
         this.data?.route?.startedAt, 'yyyy-MM-dd'), Validators.required],
       endedAt: [this.datePipe.transform(
-        this.data?.route?.endedAt, 'yyyy-MM-dd'), Validators.required],
+        this.data?.route?.endedAt, 'yyyy-MM-dd')],
       bsx: [this.data?.route?.bsx, Validators.required],
       driver: [this.data?.route?.driver, Validators.required],
       garage: [this.data?.route?.garage]
@@ -46,7 +48,14 @@ export class RouteDialogComponent implements OnInit {
     this.orderIdsOfRoute = orders;
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
   onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const val = this.formGroup.value;
     const route = {
       name: val.name,
@@ -62,5 +71,6 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }
+    this.dialogRef.close()
   }
 }

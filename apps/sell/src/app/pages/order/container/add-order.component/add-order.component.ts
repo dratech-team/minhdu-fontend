@@ -16,6 +16,8 @@ import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { ActivatedRoute } from '@angular/router';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 
 
 @Component({
@@ -38,11 +40,10 @@ export class AddOrderComponent implements OnInit {
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
+  submitted = false;
 
   observer = new MutationObserver((mutations) => {
     if (document.contains(document.getElementById('success'))) {
-      this.formGroup.reset();
-      this.reload.next(true);
       this.customerId = undefined;
       this.customerPicked = undefined;
       this.commodityIds = [];
@@ -56,9 +57,11 @@ export class AddOrderComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly snackbar: MatSnackBar
   ) {
   }
+
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadAllCommodities());
@@ -75,11 +78,10 @@ export class AddOrderComponent implements OnInit {
     document.getElementById('customer').classList.remove('btn-border');
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
-      explain: ['', Validators.required],
+      explain: [''],
       ward: ['', Validators.required],
       district: ['', Validators.required],
-      province: ['', Validators.required],
-      nation: ['', Validators.required]
+      province: ['', Validators.required]
     });
 
   }
@@ -129,7 +131,7 @@ export class AddOrderComponent implements OnInit {
     ref.afterClosed().subscribe(val => {
         if (val) {
           this.commodityIds = val;
-          console.log(this.commodityIds)
+          console.log(this.commodityIds);
           this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
             this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
           });
@@ -147,7 +149,23 @@ export class AddOrderComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    if (!this.customerId) {
+      this.snackbar.openFromComponent(SnackBarComponent, {
+        data: { content: 'Chưa chọn khách hàng' },
+        panelClass: ['background-snackbar-validate'],
+        duration: 2500
+      });
+      return;
+    }
     const val = this.formGroup.value;
     const order = {
       createdAt: val.createdAt,
