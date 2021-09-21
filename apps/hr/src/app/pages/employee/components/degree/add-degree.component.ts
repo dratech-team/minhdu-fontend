@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
 import { EmployeeAction } from '@minhdu-fontend/employee';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class AddDegreeComponent implements OnInit {
   submitted = false;
 
   constructor(
+    public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
@@ -28,8 +30,16 @@ export class AddDegreeComponent implements OnInit {
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       type: [this.data?.degree?.type, Validators.required],
-      startedAt: [this.data?.degree?.startedAt, Validators.required],
-      endedAt: [this.data?.degree?.endedAt, Validators.required],
+      startedAt: [
+        this.datePipe.transform(
+          this?.data?.degree?.startedAt, 'yyyy-MM-dd'
+        )
+        , Validators.required],
+      endedAt: [
+        this.datePipe.transform(
+          this?.data?.degree?.endedAt, 'yyyy-MM-dd'
+        )
+        , Validators.required],
       school: [this.data?.degree?.school, Validators.required],
       // trainingBy: [this.data?.degree?.trainingBy, Validators.required],
       major: [this.data?.degree?.major, Validators.required],
@@ -44,7 +54,7 @@ export class AddDegreeComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formGroup)
+    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -67,6 +77,6 @@ export class AddDegreeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addDegree({ degree: degree }));
     }
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

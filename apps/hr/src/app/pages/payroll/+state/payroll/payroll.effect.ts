@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, delay, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { props, select, Store } from '@ngrx/store';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { selectorAllPayroll, selectorPayrollTotal } from './payroll.selector';
-import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
+import { selectorPayrollTotal } from './payroll.selector';
+import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
+import { SlackService } from '@minhdu-fontend/service';
 
 @Injectable()
 export class PayrollEffect {
@@ -63,7 +63,9 @@ export class PayrollEffect {
         map(_ => props.payrollId ? PayrollAction.getPayroll({ id: props.payrollId }) :
           PayrollAction.loadInit({ take: 30, skip: 0 })
         ),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+          return throwError(err);
+        })
       ))
     ));
 

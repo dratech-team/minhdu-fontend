@@ -34,7 +34,7 @@ export class HolidayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(HolidayAction.LoadAllHoliday());
+    this.store.dispatch(HolidayAction.LoadInit({take:this.pageSize, skip: this.pageIndexInit}));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -76,7 +76,7 @@ export class HolidayComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      SystemHistoryActions.loadMoreSystemHistory(
+      HolidayAction.LoadMoreHoliday(
         this.template(val)
       )
     );
@@ -89,7 +89,7 @@ export class HolidayComponent implements OnInit {
       name: val.name,
       rate: val.rate,
       department: val.department,
-      price: val.price
+      datetime: val.datetime
     };
   }
 }
