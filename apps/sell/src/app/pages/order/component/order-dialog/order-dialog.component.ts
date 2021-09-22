@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
@@ -22,6 +22,7 @@ export class OrderDialogComponent implements OnInit {
   commodities$ = this.store.pipe(select(selectAllCommodity));
   payType = PaymentType;
   formGroup!: FormGroup;
+  submitted = false;
   routes: number[] = [];
   customers: Customer[] = [];
   commodities: Commodity[] = [];
@@ -31,6 +32,7 @@ export class OrderDialogComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
+    private readonly dialogRef: MatDialogRef<OrderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -44,19 +46,24 @@ export class OrderDialogComponent implements OnInit {
       createdAt: [this.datePipe.transform(
         this.data?.order?.createdAt, 'yyyy-MM-dd')
         , Validators.required],
-      deliveredAt:  [this.datePipe.transform(
-        this.data?.order?.deliveredAt, 'yyyy-MM-dd')
-        , Validators.required],
+      deliveredAt: [this.datePipe.transform(
+        this.data?.order?.deliveredAt, 'yyyy-MM-dd')],
       explain: [this.data?.order?.explain],
-      nation: [this.data?.order?.destination?.district?.province?.nation?.id, Validators.required],
       province: [this.data?.order?.destination?.district?.province?.id, Validators.required],
       district: [this.data?.order?.destination?.district?.id, Validators.required],
       ward: [this.data?.order?.destination?.id, Validators.required]
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
 
   onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const val = this.formGroup.value;
     const order = {
       customerId: this.data.order.customerId,
@@ -65,10 +72,11 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
-    if(!val.deliveredAt){
-      delete order.deliveredAt
+    if (!val.deliveredAt) {
+      delete order.deliveredAt;
     }
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id, typeUpdate: this.data.type }));
+    this.dialogRef.close()
   }
 
   pickCommodity(commodityIds: number[]) {

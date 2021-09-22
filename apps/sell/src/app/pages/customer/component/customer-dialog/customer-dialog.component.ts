@@ -1,6 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'apps/sell/src/app/reducers';
@@ -14,13 +14,15 @@ export class CustomerDialogComponent implements OnInit {
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
+  submitted = false;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+    private readonly dialogRef: MatDialogRef<CustomerDialogComponent>
   ) {
   }
 
@@ -58,7 +60,15 @@ export class CustomerDialogComponent implements OnInit {
     });
   }
 
+  get f() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
     const customer = {
       firstName: value.firstName ? value.firstName : undefined,
@@ -85,7 +95,7 @@ export class CustomerDialogComponent implements OnInit {
     } else {
       this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
     }
-
+    this.dialogRef.close();
   }
 }
 

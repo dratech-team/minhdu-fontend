@@ -5,43 +5,56 @@ body {
   background: white !important;
   overflow-x: hidden;
 }
+
 .example::-webkit-scrollbar {
   display: none;
 }
+
 .example {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
+
 $spinkit-spinner-color: $body-color;
 @import '~spinkit/scss/spinkit.scss';
 .star {
   color: red;
   font-size: 15px;
 }
-.chart-legend{
+
+.background-snackbar {
+  background: #4dbd74d1;
+}
+
+.background-snackbar-validate {
+  background: #f86c6ba6;
+}
+
+.chart-legend {
   position: absolute;
-  bottom:0px;
+  bottom: 0px;
   left: 10px;
   max-width: 520px;
   overflow: hidden;
 }
+
 // Here you can add other styles
 .main {
   background: white;
   font-family: Roboto, serif;
 }
-.no-underline{
+
+.no-underline {
   text-decoration: none !important
 }
+
 .ngx-charts-outer {
   margin: auto;
 }
-.btn-border{
+
+.btn-border {
   border: solid 2px #5bc0de;
   color: #428bca;
-}
-.background-snackbar{
-  background:#f0fff5;
 }
 
 .main-title {
@@ -53,25 +66,30 @@ $spinkit-spinner-color: $body-color;
 .title-table {
   font-size: 18px;
   font-weight: 500;
-  font-family: Roboto,Arial,Helvetica,sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
   color: #1f2229;
 }
-.contain-detail{
+
+.contain-detail {
 
 }
-.required{
+
+.required {
   color: red;
 }
-.required-input{
+
+.required-input {
   border: solid 1px red;
 }
-.title-detail{
+
+.title-detail {
   font-size: 13px;
-  font-family: Roboto,Arial,Helvetica,sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
   font-weight: 400;
   color: #1f2229;
   padding-right: 8px;
 }
+
 .label-input {
   font-size: 16px;
   line-height: 19px;
@@ -285,4 +303,5 @@ tr:nth-child(even) {
   line-height: 28px;
   color: #7749F8
 }
+
 @import "scss/custom-scroll-table";
