@@ -1,9 +1,9 @@
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
 <button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
-<ngx-skeleton-loader *ngIf="!(loaded$ | async); else employees" count="10" appearance="line"></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #employees>
   <div class='main-profile'>
-    <form [formGroup]='formGroup' class='header-profile mt-2 animated fadeIn'>
+    <form [formGroup]='formGroup' #header class='header-profile mt-2 animated fadeIn'>
       <div class='border-start title-header default'>
         <div class='title-profile'>Mã nhân Viên</div>
         <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>
@@ -66,19 +66,25 @@
         <input disabled class='form-control input-profile ' type='search'>
       </div>
     </form>
-    <div class='outer  animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-      [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(employees$| async) as employees'>
+    <div class='outer  animated fadeIn'
+         infiniteScroll
+         [alwaysCallback]='true'
+         [infiniteScrollDistance]='1'
+         [scrollWindow]='false' (scrolled)='onScroll()'
+         *ngIf='(employees$| async) as employees'
+         [ngStyle]="{'width':employees.length === 0 ? header.offsetWidth + 'px': 'fit-content',
+         'overflow-y':employees.length === 0 ? 'hidden': 'scroll'}">
       <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)'
-        (contextmenu)='child.onContextMenu($event, employee)'>
+           (contextmenu)='child.onContextMenu($event, employee)'>
         <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
-          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
+                         (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
         <div class='content-profile default pointer '> {{employee?.code}}</div>
         <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
         <div class='content-profile default pointer '> {{employee?.birthday|date:'dd/MM/yyyy'}}</div>
         <div class='content-profile gender pointer '> {{
           employee.gender === 'MALE' ? 'Nam' :
-          employee.gender === 'FEMALE' ? 'Nữ' :
-          'Khác'
+            employee.gender === 'FEMALE' ? 'Nữ' :
+              'Khác'
           }}</div>
         <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
         <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố
@@ -91,6 +97,12 @@
         <div class='content-profile default pointer '> {{employee?.identify}} </div>
         <div class='content-profile address pointer '> {{employee?.address}}</div>
         <div class='content-profile note pointer '> {{employee?.note}}</div>
+      </div>
+      <div *ngIf='!employees || employees.length === 0 ' style='height:60vh; '
+           class=' d-flex justify-content-center align-content-center'>
+        <div class='font-xl font-weight-bold d-flex align-items-center'>
+          Hiện chưa có nhân viên nào!
+        </div>
       </div>
     </div>
   </div>

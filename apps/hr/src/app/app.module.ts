@@ -35,7 +35,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PayrollModule } from './pages/payroll/payroll.module';
 
-
 @NgModule({
   imports: [
     MatDialogModule,
@@ -69,8 +68,7 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     MatSidenavModule,
     MatButtonModule,
     MatCheckboxModule,
-    InfiniteScrollModule
-
+    InfiniteScrollModule,
   ],
   declarations: [
     AppComponent,

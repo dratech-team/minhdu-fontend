@@ -78,10 +78,10 @@ export class TemplateOvertimeEffect {
     this.action$.pipe(
       ofType(TemplateOvertimeAction.deleteTemplate),
       switchMap((pram) => {
-        console.log(pram.id)
-        return  this.templateOvertimeService.delete(pram.id).pipe(
-          map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 }))
-        )
+          console.log(pram);
+          return this.templateOvertimeService.delete(pram.id).pipe(
+            map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 }))
+          );
         }
       )
     ));

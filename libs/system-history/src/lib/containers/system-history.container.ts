@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivityType, App } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { selectorAllSystemHistory } from '../+state/system-history.selectors';
+import { selectedSystemHistoryLoaded, selectorAllSystemHistory } from '../+state/system-history.selectors';
 import { SystemHistoryActions } from '../+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
@@ -32,6 +32,7 @@ export class SystemHistoryContainer implements OnInit {
   }
 
   systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
+  loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
 
   ngOnInit(): void {
     const btnRoute = document.getElementById('systemHistory');

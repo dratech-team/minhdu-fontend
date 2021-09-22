@@ -19,3 +19,9 @@ export const selectorTemplateTotal = createSelector(
   selectorTemplateState,
   fromTemplateOvertime.selectTotal
 );
+export const selectTemplateLoaded = createSelector(
+  selectorTemplateState,
+  (state) => {
+    return state.loaded;
+  }
+);

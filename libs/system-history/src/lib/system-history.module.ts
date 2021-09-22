@@ -13,6 +13,7 @@ import { SystemHistoryReducer } from './+state/system-history.reducer';
 import { SystemHistoryEffects } from './+state/system-history.effects';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FormsModule,
     HttpClientModule,
     MatInputModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     SystemHistoryContainer

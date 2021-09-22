@@ -24,7 +24,9 @@ export const loadInit = createAction(
     price?: number,
     unit?: DatetimeUnitEnum,
     note?: string,
-    position?: string
+    position?: string,
+    department?: string,
+    branch?: string
   }>()
 );
 export const loadInitTempLateSuccess = createAction(
@@ -34,14 +36,16 @@ export const loadInitTempLateSuccess = createAction(
 
 
 export const loadMoreTemplateOverTime = createAction(
-  '[Load_Template_Overtime] Load More  Template OverTime',
+  '[Load_Template_Overtime] Load More Template OverTime',
   props<{
     take: number,
     title?: string,
     price?: number,
     unit?: DatetimeUnitEnum,
     note?: string,
-    position?: string
+    position?: string,
+    department?: string,
+    branch?: string
   }>()
 );
 export const loadMoreTempLateSuccess = createAction(

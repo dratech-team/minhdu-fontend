@@ -1,75 +1,87 @@
-<div class='main-customer mx-auto' style='width: fit-content'>
+<div class='main-customer mx-auto' style='width: fit-content; min-width: 100vh'>
   <div class='row h3 ml-3'>Ngày lễ</div>
   <div class='row ml-3'>
     <button (click)='Holiday()' class='btn btn-primary mt-3 '>Tạo ngày lễ</button>
   </div>
-
-  <div class='main-profile'>
-    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên ngày lễ</div>
-        <input
-          class='form-control input-profile'
-          type='text'
-          formControlName='name'
-        >
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Ngày</div>
-        <input
-          class='form-control input-profile '
-          type='date' formControlName='datetime'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Hệ số</div>
-        <input
-          class='form-control input-profile '
-          type='number' formControlName='rate'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Bộ phận</div>
-        <input
-          class='form-control input-profile '
-          type='text' formControlName='department'>
-      </div>
-    </form>
-    <div class='outer animated fadeIn d-flex'
-         infiniteScroll
-         [infiniteScrollDistance]='0.5'
-         [scrollWindow]='false'
-         [alwaysCallback]='true'
-         (scrolled)='onScroll()'
-         *ngIf='(holidays$| async) as holidays'
-         [ngStyle]="{'width':holidays.length === 0 ? header.offsetWidth + 'px': 'auto',
+  <ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
+  <ng-template #holiday>
+    <div class='main-profile'>
+      <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Tên ngày lễ</div>
+          <input
+            class='form-control input-profile'
+            type='text'
+            formControlName='name'
+          >
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Ngày</div>
+          <input
+            class='form-control input-profile '
+            type='date' formControlName='datetime'>
+        </div>
+        <div class='border-start title-header default'>
+          <div class='title-profile'>Hệ số</div>
+          <input
+            class='form-control input-profile '
+            type='number' formControlName='rate'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Đơn vị</div>
+          <input
+            class='form-control input-profile '
+            type='text' formControlName='department'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Bộ phận</div>
+          <input
+            class='form-control input-profile '
+            type='text' formControlName='department'>
+        </div>
+      </form>
+      <div class='outer animated fadeIn d-flex'
+           infiniteScroll
+           [infiniteScrollDistance]='0.5'
+           [scrollWindow]='false'
+           [alwaysCallback]='true'
+           (scrolled)='onScroll()'
+           *ngIf='(holidays$| async) as holidays'
+           [ngStyle]="{'width':holidays.length === 0 ? header.offsetWidth + 'px': 'auto',
          'overflow-y':holidays.length === 0 ? 'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let holiday of holidays'
-           (contextmenu)='child.onContextMenu($event,holiday)'>
-        <app-mouse-right #child (addEvent)='Holiday($event)'
-                         (readAndUpdateEvent)='Holiday($event)'
-                         (deleteEvent)='deleteHoliday($event)'
-        ></app-mouse-right>
-        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-          {{holiday.name}}
+      >
+        <div class='row-content' *ngFor='let holiday of holidays'
+             (contextmenu)='child.onContextMenu($event,holiday)'>
+          <app-mouse-right #child (addEvent)='Holiday($event)'
+                           (readAndUpdateEvent)='Holiday($event)'
+                           (deleteEvent)='deleteHoliday($event)'
+          ></app-mouse-right>
+          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
+            {{holiday.name}}
+          </div>
+          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
+            {{holiday.datetime |date: 'dd/MM/yyyy'}}
+          </div>
+          <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
+            {{holiday.rate}}
+          </div>
+          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
+            {{holiday.department?.branch?.name}}
+          </div>
+          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
+            {{holiday.department?.name}}
+          </div>
         </div>
-        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-          {{holiday.datetime |date: 'dd/MM/yyyy'}}
-        </div>
-        <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
-          {{holiday.rate}}
-        </div>
-        <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-          {{holiday.department?.name}}
-        </div>
-      </div>
-      <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '
-           class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl font-weight-bold d-flex align-items-center'>
-          Hiện chưa có ngày lễ nào!
+        <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '
+             class=' d-flex justify-content-center align-content-center'>
+          <div class='font-xl font-weight-bold d-flex align-items-center'>
+            Hiện chưa có ngày lễ nào!
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
+
 </div>
 
 

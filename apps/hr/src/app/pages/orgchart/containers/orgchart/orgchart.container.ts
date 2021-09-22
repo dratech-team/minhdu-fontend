@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOrgChartComponent } from '../../components/dialog/dialog-org-chart.component';
@@ -15,6 +15,7 @@ import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
 })
 export class OrgchartContainer implements OnInit {
   orgchart$ = this.store.pipe(select(getAllOrgchart));
+  loaded$ = this.store.pipe(select(getOrgchartLoaded));
   type = OrgchartEnum;
 
   constructor(

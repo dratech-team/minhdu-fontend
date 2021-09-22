@@ -10,6 +10,7 @@ import { DialogOrgChartComponent } from './components/dialog/dialog-org-chart.co
 import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const CONTAINERS = [OrgchartContainer];
 
@@ -23,7 +24,8 @@ const CONTAINERS = [OrgchartContainer];
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     CONTAINERS,

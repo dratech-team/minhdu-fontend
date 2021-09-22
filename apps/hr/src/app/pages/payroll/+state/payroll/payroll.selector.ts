@@ -28,7 +28,7 @@ export const selectCurrentPayroll = (id: number) => createSelector(
   (payrollEntities) => payrollEntities[id]
 );
 
-export const selectedLoaded = createSelector(
+export const selectedLoadedPayroll = createSelector(
   selectorPayrollState,
   (state) => state.loaded
 );

@@ -32,6 +32,7 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
 import { HolidayComponent } from './container/holiday/holiday.component';
 import { HolidayReducer } from './+state/holiday/holiday.reducer';
 import { HolidayEffect } from './+state/holiday/holiday.effect';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { HolidayEffect } from './+state/holiday/holiday.effect';
     MatIconModule,
     MatAutocompleteModule,
     EmployeeModule,
-    FormsModule
+    FormsModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     PayrollComponent,
