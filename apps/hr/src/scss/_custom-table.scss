@@ -161,3 +161,14 @@
   background-color: #dddddd;
 }
 
+.create-salary {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background: $base-color;
+  padding: 6px 10px;
+  border: solid 1px $base-color;
+  border-radius: 4px;
+}

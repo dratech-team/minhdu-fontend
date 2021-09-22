@@ -192,9 +192,9 @@ tr:nth-child(even) {
   cursor: pointer;
   display: flex;
   margin-right: 10px;
-  background: #4B3880;
+  background: $base-color;
   padding: 4px;
-  border: solid 1px #4B3880;
+  border: solid 1px $base-color;
   border-radius: 4px;
 }
 
@@ -203,7 +203,7 @@ tr:nth-child(even) {
   cursor: pointer;
   font-size: 12px;
   line-height: 28px;
-  color: #7749F8
+  color: $base-color
 }
 //custom class bootstrap
 .form-control.is-invalid{

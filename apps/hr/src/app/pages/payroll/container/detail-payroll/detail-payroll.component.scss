@@ -1,15 +1,19 @@
 
-.info-employee{
-  display: flex;justify-content: center;align-items: center;
+.info-employee {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.title-header{
-  display:flex;
+
+.title-header {
+  display: flex;
   justify-content: center;
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
 }
-.content-title{
+
+.content-title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +21,8 @@
   font-size: 36px;
   line-height: 44px;
 }
-.position{
+
+.position {
   height: 22px;
   display: flex;
   font-weight: 600;
@@ -31,49 +36,41 @@
   justify-content: center;
   align-items: center;
 }
-.id-employee{
+
+.id-employee {
   display: flex;
   align-items: center;
   justify-content: center;
-  color:#EB5757 ;
+  color: #EB5757;
   height: 22px;
   font-size: 10px;
   line-height: 12px;
 }
 
-.is-edit{
+.is-edit {
   cursor: pointer;
   height: 30px;
-  display:flex ;
+  display: flex;
   align-items: center;
-  color:white;
+  color: white;
   background: #7749F8;
   padding: 6px 10px;
   border: solid 1px #7749F8;
   border-radius: 4px;
 }
-.save-change{
+
+.save-change {
   cursor: pointer;
   height: 30px;
-  display:flex ;
+  display: flex;
   align-items: center;
-  color:white;
+  color: white;
   background: #29CC97;
   padding: 6px 10px;
   border: solid 1px #29CC97;
   border-radius: 4px;
 }
-.create-salary{
-  cursor: pointer;
-  height: 30px;
-  display:flex ;
-  align-items: center;
-  color:white;
-  background: #7749F8;
-  padding: 6px 10px;
-  border: solid 1px #7749F8;
-  border-radius: 4px;
-}
+
 
 .main-content {
   width: 100%;
@@ -85,11 +82,13 @@
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
 }
-.title{
-  font-size:14px;
+
+.title {
+  font-size: 14px;
   line-height: 24px;
   font-weight: 600
 }
+
 .title-table {
   height: 50px;
   display: flex;
@@ -118,18 +117,6 @@
   border-radius: 4px;
 }
 
-.create-salary {
-  cursor: pointer;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  color: white;
-  background: #7749F8;
-  padding: 4px 10px;
-  border: solid 1px #7749F8;
-  border-radius: 4px;
-}
-
 .over-time {
   color: #29CC97;
 }
@@ -137,7 +124,8 @@
 .deduct {
   color: #EB5757;
 }
-.employee{
+
+.employee {
   box-shadow: 0 4px 12px rgb(0 0 0 / 6%);
   border: solid 1px white;
   padding: 25px;
