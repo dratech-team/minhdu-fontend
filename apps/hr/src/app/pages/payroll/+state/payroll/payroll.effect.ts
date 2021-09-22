@@ -97,15 +97,6 @@ export class PayrollEffect {
       )
     ));
 
-  confirmPaidAtPayroll$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PayrollAction.confirmPaidAtPayroll),
-      switchMap((props) => this.payrollService.confirmPaidAtPayroll(props.id).pipe(
-        map(() => PayrollAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
-        )
-      )
-    ));
 
   updateSalary$ = createEffect(() =>
     this.action$.pipe(

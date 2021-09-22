@@ -33,6 +33,8 @@ import { HolidayComponent } from './container/holiday/holiday.component';
 import { HolidayReducer } from './+state/holiday/holiday.reducer';
 import { HolidayEffect } from './+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
 
 @NgModule({
   imports: [
@@ -60,6 +62,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     EmployeeModule,
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
+    MatProgressBarModule,
   ],
   declarations: [
     PayrollComponent,
@@ -72,6 +75,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     UpdateConfirmComponent,
     AddHolidayComponent,
     HolidayComponent,
+    DialogOvertimeComponent,
   ]
 })
 export class PayrollModule {

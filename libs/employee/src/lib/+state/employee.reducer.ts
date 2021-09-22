@@ -7,13 +7,14 @@ export const EMPLOYEE_FEATURE_KEY = 'employee';
 
 export interface EmployeeState extends EntityState<Employee> {
   loaded: boolean;
+  added: boolean
   error: string;
   selectedEmployeeId: number;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
-export const initialEmployee = adapter.getInitialState({ loaded: false });
+export const initialEmployee = adapter.getInitialState({ loaded: false, added: false });
 
 export const EmployeeReducer = createReducer(
   initialEmployee,
@@ -23,14 +24,14 @@ export const EmployeeReducer = createReducer(
     return { ...state, loaded: false };
   }),
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.setAll(action.employees, { ...state, loaded: true })
+    adapter.setAll(action.employees, { ...state, loaded: true})
   ),
   on(EmployeeAction.LoadMoreEmployeesSuccess, (state, action) =>
     adapter.addMany(action.employees, { ...state, loaded: true })
   ),
 
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
-    adapter.addOne(action.employee, { ...state, loaded: true })
+    adapter.addOne(action.employee, { ...state, loaded: true, added: true  })
   ),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
@@ -49,5 +50,5 @@ export const EmployeeReducer = createReducer(
 export const {
   selectEntities,
   selectAll,
-  selectTotal,
+  selectTotal
 } = adapter.getSelectors();

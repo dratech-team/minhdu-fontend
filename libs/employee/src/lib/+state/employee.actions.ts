@@ -117,6 +117,11 @@ export const deleteDegree = createAction(
   props<{ id: number, employeeId: number }>()
 );
 
+export const setLoaded = createAction(
+  '[SET_STATE] Update state loaded ',
+  props<{ loaded: boolean}>()
+);
+
 export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
@@ -135,5 +140,6 @@ export const EmployeeAction = {
   deleteEmployee,
   deleteEmployeeSuccess,
   deleteRelative,
-  deleteDegree
+  deleteDegree,
+  setLoaded
 };

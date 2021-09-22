@@ -1,13 +1,13 @@
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
 <button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
-<ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='28' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #employees>
   <div class='main-profile'>
     <form [formGroup]='formGroup' #header class='header-profile mt-2 animated fadeIn'>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Mã nhân Viên</div>
-        <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>
-      </div>
+<!--      <div class='border-start title-header default'>-->
+<!--        <div class='title-profile'>Mã nhân Viên</div>-->
+<!--        <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>-->
+<!--      </div>-->
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
         <input class='form-control input-profile' type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
@@ -78,7 +78,7 @@
            (contextmenu)='child.onContextMenu($event, employee)'>
         <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
                          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-        <div class='content-profile default pointer '> {{employee?.code}}</div>
+<!--        <div class='content-profile default pointer '> {{employee?.code}}</div>-->
         <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
         <div class='content-profile default pointer '> {{employee?.birthday|date:'dd/MM/yyyy'}}</div>
         <div class='content-profile gender pointer '> {{

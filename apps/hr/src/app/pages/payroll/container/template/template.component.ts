@@ -76,7 +76,7 @@ export class TemplateComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
-          this.store.dispatch(TemplateOvertimeAction.deleteTemplate($event.id));
+          this.store.dispatch(TemplateOvertimeAction.deleteTemplate({id: $event.id}));
         }
       }
     );

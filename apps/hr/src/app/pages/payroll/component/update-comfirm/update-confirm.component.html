@@ -17,6 +17,11 @@
               <span> Xác nhận phiếu lương</span>
             </div>
           </div>
+          <div class='form-group'  *ngIf='data.type === "manConfirmedAt"' >
+            <div class='row mp-5 title-popup'>
+              <span>Quản lý xác nhận phiếu lương</span>
+            </div>
+          </div>
         </div>
     <div class="footer-popup row mt-3 ml-2">
       <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>

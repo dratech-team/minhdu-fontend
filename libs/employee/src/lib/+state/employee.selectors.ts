@@ -28,7 +28,7 @@ export const selectCurrentEmployee = (id: number) =>
     (employeeEntities) => employeeEntities[id]
   );
 
-export const selectEmployeeLoaded = createSelector(
+export const selectEmployeeAdded = createSelector(
   selectorEmployeeState,
   (state) => {
     return state.loaded;

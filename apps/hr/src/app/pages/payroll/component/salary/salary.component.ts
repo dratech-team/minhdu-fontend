@@ -11,7 +11,8 @@ import { TemplateOvertime } from '../../+state/template-overtime/template-overti
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-
+import * as lodash from 'lodash';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'salary.component.html',
@@ -27,7 +28,6 @@ export class SalaryComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -42,21 +42,6 @@ export class SalaryComponent implements OnInit {
 
   ngOnInit(): void {
     switch (this.data.type) {
-      case this.type.OVERTIME:
-        this.store.dispatch(TemplateOvertimeAction.loadALlTemplate());
-        this.formGroup = this.formBuilder.group({
-          unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
-          datetime: [
-            this.datePipe.transform(
-              this.data?.salary?.datetime, 'yyyy-MM-dd')
-            , Validators.required],
-          // rate: [1, Validators.required],
-          price: [this.data?.salary?.price, Validators.required],
-          times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
-          note: [this.data?.salary?.note],
-          type: [this.data?.salary?.type ? this.data?.salary?.type : this.data.type, Validators.required],
-        });
-        break;
       case this.type.BASIC:
         this.formGroup = this.formBuilder.group({
           price: [this.data?.salary?.price, Validators.required],
@@ -68,10 +53,9 @@ export class SalaryComponent implements OnInit {
         break;
       case this.type.STAY:
         this.formGroup = this.formBuilder.group({
-          title: [this.data?.salary?.title ?? '', Validators.required],
           price: [this.data?.salary?.price, Validators.required],
           type: [this.data.type, Validators.required],
-          rate: [1, Validators.required]
+          rate:  [1, Validators.required]
         });
         break;
       case this.type.ALLOWANCE:
@@ -111,11 +95,12 @@ export class SalaryComponent implements OnInit {
   pickEmployees(employeeIds: number []): any {
     this.employeeIds = employeeIds;
   }
-
+  get salariesStay(){
+    return ['Phụ cấp ở lại', 'Phụ cấp điện thoại', 'Phụ cấp tiền ăn']
+  }
   get f() {
     return this.formGroup.controls;
   }
-
   onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
@@ -138,15 +123,18 @@ export class SalaryComponent implements OnInit {
         title: !value.title && value.type === this.type.BASIC_ISNURANCE ? 'Lương cơ bản trước bảo hiểm' :
           !value.title && value.type === this.type.BASIC ? 'Lương cơ bản' :
             !value.title && value.type === this.type.OVERTIME ? this.title :
-              !value.title && this.data.unit === this.type.ABSENT ? 'Vắng' :
+              !value.title && this.data.type === this.type.ABSENT ? 'Vắng' :
                 !value.title && this.data.type === this.type.LATE ? 'Đi trễ' :
-                  value.title,
+                  !value.title && this.data.type === this.type.STAY? this.salariesStay[value.type]:
+                    value.title
+        ,
         price: this.data.type === this.type.OVERTIME ? this.price :
           typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-        type: value.type === null ? this.type.ABSENT : value.type,
+        type: typeof value.type === 'number' ? this.type.STAY :
+                    !value.type? this.type.ABSENT: this.data.type,
         rate: value.rate,
         times: value.times && value !== 0 ? value.times : undefined,
-        datetime: value.datetime ? value.datetime : undefined,
+        datetime: value.datetime ? new Date(value.datetime): undefined,
         forgot: value.forgot ? value.forgot : undefined,
         note: value.note,
         unit: value.unit ? value.unit : undefined,

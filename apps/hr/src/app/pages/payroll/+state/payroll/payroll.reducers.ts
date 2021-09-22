@@ -5,12 +5,13 @@ import { Payroll } from './payroll.interface';
 
 export interface PayrollState extends EntityState <Payroll> {
   loaded: boolean,
+  adding: boolean,
   selectedPayrollId: number
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
-export const initialPayroll = adapter.getInitialState({ loaded: false });
+export const initialPayroll = adapter.getInitialState({ loaded: false, adding: false });
 
 export const payrollReducer = createReducer(
   initialPayroll,
@@ -20,11 +21,17 @@ export const payrollReducer = createReducer(
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) =>
     adapter.addMany(action.payrolls, { ...state, loaded: true })),
 
+  on(PayrollAction.addPayroll, (state, _) =>
+  {return { ...state, adding: true }}),
+
   on(PayrollAction.addPayrollSuccess, (state, action) =>
-    adapter.addOne(action.payroll, { ...state, loaded: true })),
+    adapter.addOne(action.payroll, { ...state, adding: false })),
+
+  on(PayrollAction.updatePayroll, (state, _) =>
+  {return { ...state, adding: true }}),
 
   on(PayrollAction.getPayrollSuccess, (state, action) =>
-    adapter.upsertOne(action.payroll, { ...state, loaded: true })),
+    adapter.upsertOne(action.payroll, { ...state, adding: false })),
 
   on(PayrollAction.updatePayrollSuccess, (state, action) =>
     adapter.updateOne(action.payroll, { ...state, loaded: true })),

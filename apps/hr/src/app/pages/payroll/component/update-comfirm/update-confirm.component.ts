@@ -17,13 +17,6 @@ export class UpdateConfirmComponent {
   }
 
   onSubmit() {
-    // xác phận thanh toán
-    if (this.data.type === 'paidAt') {
-      this.store.dispatch(PayrollAction.confirmPaidAtPayroll({ id: this.data.id}));
-    }
-    //xác nhân phiếu lương
-    if(this.data.type === 'accConfirmedAt'){
       this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id }));
-    }
   }
 }

@@ -1,0 +1,166 @@
+<div class='px-5 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+      <mat-tab class='col-12 ' label='Thông tin đơn'>
+        <div [formGroup]='formGroup' class='tab'>
+          <!--Overtime - Tăng ca -->
+          <div *ngIf='data.type === type.OVERTIME ' class='form-group'>
+            <div class='row mb-5 title-popup'>
+              <span>Lương ngoài giờ</span>
+            </div>
+            <div>
+              <div class='row datepicker'>
+                <div class='date-or-time col '>
+                  <div class='row title-item mb-1'>
+                    <span> Loại tăng ca</span>
+                    <div class='star'>*</div>
+                  </div>
+                  <div class='row mb-3' *ngIf='(templateOvertime$|async) as templateOvertime'>
+                    <mat-select
+                      class='form-control col'
+                      formControlName='unit'
+                      [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
+                    >
+                      <mat-option *ngFor='let overtime of templateOvertime' value='{{overtime.unit}}'
+                                  (click)='getPrice(overtime)'>
+                        {{overtime.title}}
+                        <input [style.display]="'none'" value='{{overtime.title}}'>
+                      </mat-option>
+                    </mat-select>
+                    <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+                      <div>Chưa chọn loại tăng ca</div>
+                    </div>
+                  </div>
+                </div>
+                <div class='date-or-time col ml-2'>
+                  <div class='row title-item mb-1'>
+                    <span>Ngày</span>
+                    <div class='star'>*</div>
+                  </div>
+                  <div class='row mb-3' [formGroup]='formGroup'>
+                    <input
+                      type='date'
+                      class='form-control'
+                      formControlName='datetime'
+                      [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }"
+                    >
+                    <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                      <div>Chưa nhập ngày</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf=" formGroup.value.unit =='DAY'">
+<!--              <div class='row'>-->
+<!--                <div class='col'>-->
+<!--                  <div class='row title-item mb-1'>-->
+<!--                    <span>Hệ số</span>-->
+<!--                    <div style='color: red'>*</div>-->
+<!--                  </div>-->
+<!--                  <div class='row mb-3' [formGroup]='formGroup'>-->
+<!--                    <input-->
+<!--                      type='number'-->
+<!--                      class='form-control'-->
+<!--                      placeholder='Nhập hệ số'-->
+<!--                      formControlName='rate'-->
+<!--                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"-->
+<!--                    >-->
+<!--                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>-->
+<!--                      <div>Chưa nhập hệ số</div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+              <div class='unit-price'>
+                <div class='row title-item mb-1'>
+                  <span>Giá tăng ca</span>
+                  <div class='star'>*</div>
+                </div>
+                <div class='row mb-3' [formGroup]='formGroup'>
+                  <input type='number' class='form-control  px-1' formControlName='price'
+                         [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                  >
+                  <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+                    <div>Chưa nhập giá tăng ca</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="formGroup.value.unit === 'HOUR'">
+              <div class='work-time'>
+                <div class='row'>
+                  <div class='col mr-2'>
+                    <div class='row title-item mb-1'>
+                      <span>Giờ làm việc</span>
+                      <div class='star'>*</div>
+                    </div>
+                    <div class='row mb-3' [formGroup]='formGroup'>
+                      <input
+                        type='number'
+                        class='form-control px-1'
+                        placeholder='Nhập số giờ làm việc'
+                        formControlName='times'
+                        min='0'
+                        [ngClass]="{ 'is-invalid': submitted && f.times.errors }"
+                      >
+                      <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
+                        <div>Chưa nhập số giờ làm việc</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='unit-price'>
+                <div class='row title-item mb-1'>
+                  <span>Đơn giá (1 giờ)</span>
+                  <div class='star'>*</div>
+                </div>
+                <div class='row mb-3' [formGroup]='formGroup'>
+                  <input type='number' class='form-control  px-1' formControlName='price'
+                         placeholder='{{data?.salary?.price}}'
+                         [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                  >
+                  <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+                    <div>Chưa nhập đơn giá 1 giờ</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='note'>
+              <div class='row title-item mb-1'>
+                <span>Chú thích</span>
+              </div>
+              <div class='row mb-3' [formGroup]='formGroup'>
+                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab  [disabled]='data.salary || !checkposition ' class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee [positionId]='checkposition'
+                           (checkEvent)='pickEmployees($event)'></app-pick-employee>
+      </mat-tab>
+    </mat-tab-group>
+    <div class='footer-popup row ml-4'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button (click)='onSubmit()' class='btn btn-ok ' >Lưu</button>
+      <button type='button' class='btn  award' data-toggle='tooltip'
+              data-placement='left'
+              title='xóa'>
+        ?
+      </button>
+    </div>
+  </form>
+</div>
+
+

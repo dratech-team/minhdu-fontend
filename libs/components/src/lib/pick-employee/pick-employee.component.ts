@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
@@ -11,8 +11,9 @@ import { document } from 'ngx-bootstrap/utils';
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
-export class PickEmployeeComponent implements OnInit {
+export class PickEmployeeComponent implements OnInit, OnChanges {
   @Input() pickOne = false;
+  @Input() positionId?: number;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   type = SalaryTypeEnum;
@@ -55,6 +56,10 @@ export class PickEmployeeComponent implements OnInit {
         this.assignIsSelect();
       })
     ).subscribe();
+  }
+  ngOnChanges() {
+    this.service.onInit({positionId: this?.positionId});
+    this.assignIsSelect();
   }
 
   // onScroll() {

@@ -10,8 +10,8 @@ export class PickEmployeeService {
   constructor(private readonly store: Store) {
   }
 
-  onInit() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
+  onInit(props?: any) {
+    this.store.dispatch(EmployeeAction.loadInit(props));
   }
 
   scrollEmployee(val: any) {

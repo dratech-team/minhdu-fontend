@@ -18,11 +18,10 @@
         >
       </div>
       <div class='border-start title-header col-4'>
-        <div class='title-profile'>Đơn vị</div>
+        <div class='title-profile'>Chức vụ</div>
         <input class='form-control input-profile '
                type='text'
-               placeholder='Trần Gia Hiệu'
-               formControlName='branch'
+               disabled
         >
       </div>
       <div class='border-start title-header col-1  '>
@@ -45,7 +44,7 @@
       <div class='row-content' *ngFor='let employee of employees'>
         <div class='content-profile col-3 pointer '> {{employee.code}}</div>
         <div class='content-profile col-4  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
-        <div class='content-profile col-4  pointer'>{{employee.position?.department?.branch?.name}}</div>
+        <div class='content-profile col-4  pointer'>{{employee.position?.name}}</div>
         <div class='content-profile col-1  pointer'>
           <mat-checkbox *ngIf='!pickOne' class='checkID ml-1'
                         [checked]='employee.isSelect ? employee.isSelect: false'

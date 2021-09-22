@@ -10,5 +10,6 @@ export interface Payroll {
   manConfirmedAt: Date,
   paidAt: Date,
   accConfirmedAt: Date,
+  actualDay: number,
 }
 
