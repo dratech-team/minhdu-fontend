@@ -28,6 +28,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { TablePaymentComponent } from './component/table-payment/table-payment.component';
 import { PaymentReducer } from './+state/payment/payment.reducer';
 import { PaymentEffect } from './+state/payment/payment.effect';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @NgModule({
   imports: [
     LocationModule,
@@ -50,7 +51,8 @@ import { PaymentEffect } from './+state/payment/payment.effect';
     FormsModule,
     MatTabsModule,
     MatStepperModule,
-    SharedModule
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     TablePaymentComponent,

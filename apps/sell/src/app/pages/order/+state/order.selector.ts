@@ -93,8 +93,13 @@ export const selectOrdersByIds = (ids: number[]) => createSelector(
 )
 
 
-export const selectedLoaded = createSelector(
+export const selectedOrderLoaded = createSelector(
   selectorOrderState,
+  (state) => state.loaded
+)
+
+export const selectedNotOrderLoaded = createSelector(
+  selectorOrderAssignedState,
   (state) => state.loaded
 )
 

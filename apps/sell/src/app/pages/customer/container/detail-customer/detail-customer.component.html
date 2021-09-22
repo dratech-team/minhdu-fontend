@@ -1,3 +1,4 @@
+
 <div class='animated fadeIn container mb-5 ' style='min-height: 80vh!important;'>
   <div class='row' *ngIf='(customer$ | async)  as customer'>
     <div class='row col-12 mt-5 '>
@@ -314,13 +315,20 @@
       <div routerLink="/don-hang/them-don-hang"
            [queryParams]='{data:customer.id|json}'
         class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
-      <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'></app-table-order>
+      <ngx-skeleton-loader *ngIf='!(loadedOrdersAssigned$ | async); else orderNotAssigned' count='7' appearance='line'></ngx-skeleton-loader>
+      <ng-template #orderNotAssigned>
+        <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'></app-table-order>
+      </ng-template>
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đã giao</div>
       </div>
-      <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>
+      <ngx-skeleton-loader *ngIf='!(loadedOrdersNotAssigned$ | async); else orderAssigned' count='7' appearance='line'></ngx-skeleton-loader>
+      <ng-template #orderAssigned>
+        <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>
+      </ng-template>
+
     </div>
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>

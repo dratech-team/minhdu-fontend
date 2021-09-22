@@ -29,6 +29,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar'
     NgxMatSelectSearchModule,
     MatAutocompleteModule,
     RouteModule,
-    SharedModule
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     TableRouteComponent,

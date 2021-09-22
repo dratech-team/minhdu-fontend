@@ -23,7 +23,7 @@ export const selectorCurrentRoute =(id:number) => createSelector(
   selectorRouteEntities,
   (routeEntities) => routeEntities[id],
 )
-export const selectedLoaded = createSelector(
+export const selectedRouteLoaded = createSelector(
   selectorRouteState,
   (state) => state.loaded
 )
