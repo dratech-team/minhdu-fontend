@@ -8,7 +8,7 @@ import { login } from '@minhdu-fontend/auth';
   templateUrl: 'add-profile.component.html'
 })
 
-export class AddProfileComponent implements OnInit , OnChanges {
+export class AddProfileComponent implements OnInit  {
   @Input() submitted!: boolean
   @Input() form: any
   formGroup!: FormGroup;
@@ -20,8 +20,5 @@ export class AddProfileComponent implements OnInit , OnChanges {
 
   ngOnInit(): void {
     this.formGroup = <FormGroup>this.controlContainer.control;
-  }
-  ngOnChanges() {
-    console.log(this.form.gender.errors?.required)
   }
 }

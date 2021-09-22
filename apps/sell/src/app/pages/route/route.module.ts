@@ -20,6 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../../shared/shared.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -38,8 +39,8 @@ import { SharedModule } from '../../shared/shared.module';
     MatTabsModule,
     MatCheckboxModule,
     FormsModule,
-    SharedModule
-
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     RouteComponent,

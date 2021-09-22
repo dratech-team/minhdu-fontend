@@ -62,14 +62,22 @@
             </div>
             <div class='name-allowance'>
               <div class='row title-item mb-1'>
-                <span>Tên phụ cấp</span>
+                <span>Loại phụ cấp ở lại</span>
                 <div class='star'>*</div>
               </div>
               <div class='row mb-3' [formGroup]='formGroup'>
-                <input class='form-control' placeholder='Nhập phụ cấp' formControlName='title'
-                       [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
-                <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập tên phụ cấp</div>
+                <mat-select
+                  class='form-control col'
+                  formControlName='type'
+
+                >
+                  <mat-option  *ngFor='let item of salariesStay; let i = index' value='{{i}}'>
+                    {{item}}
+                  </mat-option>
+
+                </mat-select>
+                <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
+                  <div>Chưa chọn loại lương</div>
                 </div>
               </div>
             </div>
@@ -204,7 +212,6 @@
               <div class='note'>
                 <div class='row title-item mb-1'>
                   <span>Chú thích</span>
-                  <div class='star'>*</div>
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
                   <input type='text' class='form-control  px-1' placeholder='Nhập chú thích' formControlName='note'>
@@ -262,26 +269,26 @@
               </div>
             </div>
             <div *ngIf=" formGroup.value.unit =='DAY'">
-              <div class='row'>
-                <div class='col'>
-                  <div class='row title-item mb-1'>
-                    <span>Hệ số</span>
-                    <div style='color: red'>*</div>
-                  </div>
-                  <div class='row mb-3' [formGroup]='formGroup'>
-                    <input
-                      type='number'
-                      class='form-control'
-                      placeholder='Nhập hệ số'
-                      formControlName='rate'
-                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"
-                    >
-                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
-                      <div>Chưa nhập hệ số</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!--              <div class='row'>-->
+<!--                <div class='col'>-->
+<!--                  <div class='row title-item mb-1'>-->
+<!--                    <span>Hệ số</span>-->
+<!--                    <div style='color: red'>*</div>-->
+<!--                  </div>-->
+<!--                  <div class='row mb-3' [formGroup]='formGroup'>-->
+<!--                    <input-->
+<!--                      type='number'-->
+<!--                      class='form-control'-->
+<!--                      placeholder='Nhập hệ số'-->
+<!--                      formControlName='rate'-->
+<!--                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"-->
+<!--                    >-->
+<!--                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>-->
+<!--                      <div>Chưa nhập hệ số</div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
               <div class='unit-price'>
                 <div class='row title-item mb-1'>
                   <span>Giá tăng ca</span>
@@ -434,7 +441,7 @@
     </mat-tab-group>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button (click)='onSubmit()' class='btn btn-ok ' >Lưu</button>
       <button type='button' class='btn  award' data-toggle='tooltip'
               data-placement='left'
               title='xóa'>

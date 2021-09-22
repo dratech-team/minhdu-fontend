@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentPayroll } from '../../+state/payroll/payroll.selector';
+import { selectCurrentPayroll,selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryComponent } from '../../component/salary/salary.component';
@@ -12,6 +12,7 @@ import { Payroll } from '../../+state/payroll/payroll.interface';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
+import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { DevelopmentComponent } from 'libs/components/src/lib/development/develo
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
-
+  adding$ = this.store.pipe(select(selectedAddedPayroll))
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -67,6 +68,13 @@ export class DetailPayrollComponent implements OnInit {
     );
   }
 
+  addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+    this.dialog.open(DialogOvertimeComponent, {
+      width: '50%',
+      data:{type, payroll, salary}
+    })
+  }
+
   removeSalary(id: number, payrollId: number) {
     const dialogRef = this.dialog.open(DialogDeleteComponent,{width:'30%'});
     dialogRef.afterClosed().subscribe((value) => {
@@ -75,10 +83,10 @@ export class DetailPayrollComponent implements OnInit {
       }
     });
   }
-  confirmSalary(id: number){
+  confirmPayroll(id: number){
     this.dialog.open(UpdateConfirmComponent , {
         width: "25%",
-        data: {id: id, type: 'accConfirmedAt', detail: true}
+        data: {id: id, type: 'accConfirmedAt'}
     })
   }
 

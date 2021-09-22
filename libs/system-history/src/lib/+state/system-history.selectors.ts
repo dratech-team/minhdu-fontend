@@ -22,7 +22,7 @@ export const selectorAllSystemHistory = createSelector(
   formSystemHistory.selectAll
 );
 
-export const selectedLoaded = createSelector(
+export const selectedSystemHistoryLoaded = createSelector(
   selectorSystemHistoryState,
   (state) => state.loaded
 );

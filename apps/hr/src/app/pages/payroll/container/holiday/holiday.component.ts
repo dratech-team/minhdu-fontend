@@ -5,7 +5,7 @@ import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from 'apps/hr/src/app/reducers';
-import { selectorAllHoliday } from '../../+state/holiday/holiday.selector';
+import { selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SystemHistoryActions } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -17,13 +17,13 @@ import { debounceTime, tap } from 'rxjs/operators';
 export class HolidayComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
-  holidays$ = this.store.pipe(select(selectorAllHoliday));
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
       datetime: new FormControl(''),
       rate: new FormControl(''),
-      department: new FormControl('')
+      department: new FormControl(''),
+      branch: new FormControl('')
     }
   );
 
@@ -33,8 +33,11 @@ export class HolidayComponent implements OnInit {
   ) {
   }
 
+  holidays$ = this.store.pipe(select(selectorAllHoliday));
+  loaded$ = this.store.pipe(select(selectHolidayLoaded));
+
   ngOnInit() {
-    this.store.dispatch(HolidayAction.LoadInit({take:this.pageSize, skip: this.pageIndexInit}));
+    this.store.dispatch(HolidayAction.LoadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -89,6 +92,7 @@ export class HolidayComponent implements OnInit {
       name: val.name,
       rate: val.rate,
       department: val.department,
+      branch: val.branch,
       datetime: val.datetime
     };
   }

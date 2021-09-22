@@ -11,7 +11,7 @@ import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
-import { selectorAllOrders } from '../../+state/order.selector';
+import { selectorAllOrders ,selectedOrderLoaded} from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 
@@ -27,7 +27,6 @@ export class OrderComponent implements OnInit {
   payType = PaymentType;
   pageSize = 30;
   pageIndexInit = 0;
-  orders$ = this.store.pipe(select(selectorAllOrders));
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
@@ -45,6 +44,9 @@ export class OrderComponent implements OnInit {
     private readonly exportService: ExportService
   ) {
   }
+
+  orders$ = this.store.pipe(select(selectorAllOrders));
+  loaded$ = this.store.pipe(select(selectedOrderLoaded));
 
   ngOnInit() {
     document.getElementById('order').classList.add('btn-border');

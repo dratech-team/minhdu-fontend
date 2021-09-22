@@ -17,22 +17,6 @@ export class UpdateConfirmComponent {
   }
 
   onSubmit() {
-    if (this.data.type === 'paidAt') {
-      const val = {
-        paidAt: new Date()
-      };
-      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
-      return true
-    } else {
-      const val = {
-        accConfirmedAt: new Date()
-      };
-      if(this.data.detail){
-        this.store.dispatch(PayrollAction.updatePayroll({ id: this.data.id, Payroll: val }));
-      }else {
-        this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
-      }
-      return true
-    }
+      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id }));
   }
 }

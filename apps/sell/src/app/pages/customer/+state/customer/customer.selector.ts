@@ -33,7 +33,7 @@ export const selectorCurrentCustomer = (id?: number) => createSelector(
   }
 );
 
-export const selectedLoaded = createSelector(
+export const selectedCustomerLoaded = createSelector(
   selectorCustomerState,
   (state) => state.loaded
 );

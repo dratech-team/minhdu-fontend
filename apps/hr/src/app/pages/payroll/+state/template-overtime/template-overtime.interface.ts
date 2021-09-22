@@ -9,4 +9,5 @@ export interface TemplateOvertime {
   note?: string,
   positionId: number,
   position: Position,
+  rate: number
 }

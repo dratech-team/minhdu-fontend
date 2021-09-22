@@ -12,7 +12,10 @@ import { AppState } from '../../../../reducers';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
 import {
-  selectorOrdersAssignedById, selectorOrdersNotAssignedById
+  selectorOrdersAssignedById,
+  selectorOrdersNotAssignedById,
+  selectedOrderLoaded,
+  selectedNotOrderLoaded
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
@@ -23,9 +26,6 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
-  customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
-  ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
-  ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
   convertBoolean = ConvertBoolean;
   orders: Order[] = [];
   paidType = PaidType;
@@ -38,6 +38,11 @@ export class DetailCustomerComponent implements OnInit {
   ) {
   }
 
+  customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
+  ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
+  ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
+  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded))
+  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded))
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(

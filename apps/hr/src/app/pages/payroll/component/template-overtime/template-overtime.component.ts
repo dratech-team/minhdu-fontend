@@ -47,6 +47,7 @@ export class TemplateOvertimeComponent implements OnInit {
       department: [this.data?.position?.department?.id, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
+      rate: [this.data?.rate, Validators.required],
       note: [this.data?.note]
     });
   }
@@ -69,7 +70,8 @@ export class TemplateOvertimeComponent implements OnInit {
         positionId: value.position,
         price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         unit: value.unit,
-        note: value.note
+        note: value.note,
+        rate: value.rate,
       }
     };
     this.dialogRef.close(template);

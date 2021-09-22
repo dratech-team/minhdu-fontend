@@ -28,9 +28,14 @@ export const selectCurrentPayroll = (id: number) => createSelector(
   (payrollEntities) => payrollEntities[id]
 );
 
-export const selectedLoaded = createSelector(
+export const selectedLoadedPayroll = createSelector(
   selectorPayrollState,
   (state) => state.loaded
+);
+
+export const selectedAddedPayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.adding
 );
 
 export const selectorPayrollTotal = createSelector(

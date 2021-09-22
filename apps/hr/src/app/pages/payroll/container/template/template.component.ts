@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
-import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
+import { selectorAllTemplate, selectTemplateLoaded } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TemplateOvertimeComponent } from '../../component/template-overtime/template-overtime.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SystemHistoryActions } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
 
 
@@ -26,7 +25,9 @@ export class TemplateComponent implements OnInit {
       price: new FormControl(''),
       unit: new FormControl(''),
       note: new FormControl(''),
-      position: new FormControl('')
+      position: new FormControl(''),
+      department: new FormControl(''),
+      branch: new FormControl(''),
     }
   );
 
@@ -37,6 +38,7 @@ export class TemplateComponent implements OnInit {
   }
 
   templates$ = this.store.pipe(select(selectorAllTemplate));
+  loaded$ = this.store.pipe(select(selectTemplateLoaded));
 
   ngOnInit() {
     this.store.dispatch(TemplateOvertimeAction.loadInit({take:this.pageSize, skip: this.pageIndexInit}));
@@ -71,12 +73,10 @@ export class TemplateComponent implements OnInit {
   }
 
   deleteOvertime($event: any) {
-
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
-          console.log($event.id)
-          this.store.dispatch(TemplateOvertimeAction.deleteTemplate($event.id));
+          this.store.dispatch(TemplateOvertimeAction.deleteTemplate({id: $event.id}));
         }
       }
     );
@@ -99,7 +99,9 @@ export class TemplateComponent implements OnInit {
       price: val.price,
       unit: val.unit,
       note: val.note,
-      position: val.position
+      position: val.position,
+      department: val.department,
+      branch: val.branch
     };
   }
 }

@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 import { DepartmentActions, getDepartmentByBranchId } from 'libs/orgchart/src/lib/+state/department';
 import { getPositionsByDepartmentId, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
-import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 
 
 @Component({
@@ -30,10 +30,12 @@ export class AddEmployeeComponent implements OnInit {
     this?.data?.employee?.position?.department?.branch?.id
   )));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  added$ = this.store.pipe(select(selectEmployeeAdded));
   departments?: Department[];
   branches?: Branch[];
   positions?: Position[];
   submitted = false;
+
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,11 +43,12 @@ export class AddEmployeeComponent implements OnInit {
     private readonly employeeService: EmployeeService,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store<AppState>,
-    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>,
+    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>
   ) {
   }
 
   ngOnInit(): void {
+    this.added$.subscribe(val => console.log(val));
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());
@@ -100,44 +103,52 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  get f() { return this.formGroup.controls; }
+  get f() {
+    return this.formGroup.controls;
+  }
 
   onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
-      const value = this.formGroup.value;
-      const employee = {
-        id: this?.data?.employee?.id,
-        isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-        positionId: value.position,
-        workedAt: value.workedAt,
-        createdAt: value.createdAt,
-        firstName: value.firstName,
-        lastName: value.lastName,
-        gender: value.gender,
-        phone: value.phone.toString(),
-        birthday: value.birthday,
-        birthplace: value.birthplace,
-        identify: value?.identify.toString(),
-        idCardAt: value.idCardAt,
-        issuedBy: value.issuedBy,
-        wardId: value.ward === null ? 1 : value.ward,
-        address: value.address,
-        religion: value.religion ? value.religion : undefined,
-        ethnicity: value.ethnicity ? value.ethnicity : undefined,
-        email: value.email ? value.email : undefined,
-        facebook: value?.facebook ? value.facebook : undefined,
-        zalo: value?.zalo ? value?.zalo?.toString() : undefined,
-        note: value.note ? value.note : undefined
-      };
-      if (this.data !== null) {
-        this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
-      } else {
-        this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+    const value = this.formGroup.value;
+    const employee = {
+      id: this?.data?.employee?.id,
+      isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
+      positionId: value.position,
+      workedAt: value.workedAt,
+      createdAt: value.createdAt,
+      firstName: value.firstName,
+      lastName: value.lastName,
+      gender: value.gender,
+      phone: value.phone.toString(),
+      birthday: value.birthday,
+      birthplace: value.birthplace,
+      identify: value?.identify.toString(),
+      idCardAt: value.idCardAt,
+      issuedBy: value.issuedBy,
+      wardId: value.ward === null ? 1 : value.ward,
+      address: value.address,
+      religion: value.religion ? value.religion : undefined,
+      ethnicity: value.ethnicity ? value.ethnicity : undefined,
+      email: value.email ? value.email : undefined,
+      facebook: value?.facebook ? value.facebook : undefined,
+      zalo: value?.zalo ? value?.zalo?.toString() : undefined,
+      note: value.note ? value.note : undefined
+    };
+    if (this.data !== null) {
+      this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
+    } else {
+      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+    }
+    ///TODO: handle later
+    this.store.pipe(select(selectEmployeeAdded)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
       }
-      this.dialogRef.close()
+    });
+
   }
 
   onBranch(branch: Branch): void {

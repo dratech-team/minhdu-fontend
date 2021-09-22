@@ -1,0 +1,39 @@
+.main-popup{
+  position: relative;
+}
+.award{
+  color: #9aaec1;
+  position: absolute;
+   right: 0;
+  bottom: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.title-item{
+  font-family: Inter, serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+}
+.salary-type{
+ color: #CED4DA;
+  font-size: 12px;
+  height: 35px;
+}
+.input-item{
+  width: 100%;
+  font-family: Inter, serif;
+  line-height: 21px;
+  border: 1px solid #CED4DA;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.footer-popup{
+  margin-top: 60px
+}
+.datepicker{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

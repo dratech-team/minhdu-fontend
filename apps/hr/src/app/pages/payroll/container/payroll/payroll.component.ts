@@ -3,7 +3,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { Router } from '@angular/router';
-import { selectorAllPayroll } from '../../+state/payroll/payroll.selector';
+import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
+import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -31,7 +32,8 @@ export class PayrollComponent implements OnInit {
       branch: new FormControl(''),
       paidAt: new FormControl(''),
       accConfirmedAt: new FormControl(''),
-      createdAt: new FormControl()
+      manConfirmedAt: new FormControl(''),
+      createdAt: new FormControl(),
     }
   );
   salaryType = SalaryTypeEnum;
@@ -41,8 +43,8 @@ export class PayrollComponent implements OnInit {
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
+  loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
-
   constructor(
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -104,27 +106,19 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  updatePayroll(id: number, type: string) {
+  updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type }
+      data: { id, type}
     });
   }
 
   addSalary(type: SalaryTypeEnum): any {
     console.log(type)
-    const dialogRef = this.dialog.open(SalaryComponent, {
+    this.dialog.open(DialogOvertimeComponent, {
       width: '50%',
       data: { type: type }
     });
-    dialogRef.afterClosed().subscribe(value => {
-        if (value) {
-          this.store.dispatch(PayrollAction.addSalary({
-            salary: value.data
-          }));
-        }
-      }
-    );
   }
 
   readPayroll($event: any) {
@@ -149,7 +143,8 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  exportTimekeeping(data: any) {
+  exportTimekeeping() {
+    this.exportService.print(Api.TIMEKEEPING_EXPORT)
   }
 
 }

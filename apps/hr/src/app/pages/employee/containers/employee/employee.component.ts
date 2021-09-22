@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import {
   EmployeeAction,
-  selectEmployeeLoaded,
+  selectEmployeeAdded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
 import {
@@ -32,7 +32,7 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
-  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
+  loaded$ = this.store.pipe(select(selectEmployeeAdded));
   pageSize: number = 30;
   pageIndexInit = 0;
 

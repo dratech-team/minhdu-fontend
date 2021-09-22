@@ -69,6 +69,14 @@
         </div>
       </div>
       <div class=' main-popup mt-2' [formGroup]='formGroup'>
+        <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+        <input class='form-control mt-1' type='number' formControlName='rate'
+               [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
+        <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+          <div>Chưa nhập hệ số</div>
+        </div>
+      </div>
+      <div class=' main-popup mt-2' [formGroup]='formGroup'>
         <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
         <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency
                [ngClass]="{ 'is-invalid': submitted && f.price.errors?.required }">

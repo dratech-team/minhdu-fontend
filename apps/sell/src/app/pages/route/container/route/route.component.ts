@@ -8,7 +8,7 @@ import { ExportService } from 'libs/service/export.service';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { RouteAction } from '../+state/route.action';
-import { selectorAllRoute } from '../+state/Route.selector';
+import { selectorAllRoute, selectedRouteLoaded } from '../+state/Route.selector';
 import { AppState } from '../../../../reducers';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { StatusRoute } from '@minhdu-fontend/enums';
@@ -32,7 +32,6 @@ export class RouteComponent implements OnInit {
     garage: new FormControl(''),
     statusRoute: new FormControl('')
   });
-  routes$ = this.store.pipe(select(selectorAllRoute));
 
   constructor(
     private readonly store: Store<AppState>,
@@ -41,6 +40,9 @@ export class RouteComponent implements OnInit {
     private readonly exportService: ExportService
   ) {
   }
+
+  routes$ = this.store.pipe(select(selectorAllRoute));
+  loaded$ = this.store.pipe(select(selectedRouteLoaded));
 
   ngOnInit() {
     this.routes$.subscribe(val => {

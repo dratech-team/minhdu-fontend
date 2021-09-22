@@ -11,7 +11,7 @@ import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectorAllCustomer } from '../../+state/customer/customer.selector';
+import { selectorAllCustomer, selectedCustomerLoaded } from '../../+state/customer/customer.selector';
 import { AppState } from '../../../../reducers';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
@@ -52,6 +52,7 @@ export class CustomerComponent implements OnInit {
   }
 
   customers$ = this.store.pipe(select(selectorAllCustomer));
+  loaded$ = this.store.pipe(select(selectedCustomerLoaded));
 
   ngOnInit() {
     document.getElementById('customer').classList.add('btn-border');
