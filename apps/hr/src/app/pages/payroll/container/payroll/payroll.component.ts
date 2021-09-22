@@ -105,7 +105,7 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  updatePayroll(id: number, type: string) {
+  updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }

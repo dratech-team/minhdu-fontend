@@ -75,10 +75,10 @@ export class DetailPayrollComponent implements OnInit {
       }
     });
   }
-  confirmSalary(id: number){
+  confirmPayroll(id: number){
     this.dialog.open(UpdateConfirmComponent , {
         width: "25%",
-        data: {id: id, type: 'accConfirmedAt', detail: true}
+        data: {id: id, type: 'accConfirmedAt'}
     })
   }
 

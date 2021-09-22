@@ -1,6 +1,6 @@
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
 <button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
-<ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='10' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='28' appearance='line'></ngx-skeleton-loader>
 <ng-template #employees>
   <div class='main-profile'>
     <form [formGroup]='formGroup' #header class='header-profile mt-2 animated fadeIn'>

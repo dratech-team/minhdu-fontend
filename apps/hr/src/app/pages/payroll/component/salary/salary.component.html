@@ -262,26 +262,26 @@
               </div>
             </div>
             <div *ngIf=" formGroup.value.unit =='DAY'">
-              <div class='row'>
-                <div class='col'>
-                  <div class='row title-item mb-1'>
-                    <span>Hệ số</span>
-                    <div style='color: red'>*</div>
-                  </div>
-                  <div class='row mb-3' [formGroup]='formGroup'>
-                    <input
-                      type='number'
-                      class='form-control'
-                      placeholder='Nhập hệ số'
-                      formControlName='rate'
-                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"
-                    >
-                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
-                      <div>Chưa nhập hệ số</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!--              <div class='row'>-->
+<!--                <div class='col'>-->
+<!--                  <div class='row title-item mb-1'>-->
+<!--                    <span>Hệ số</span>-->
+<!--                    <div style='color: red'>*</div>-->
+<!--                  </div>-->
+<!--                  <div class='row mb-3' [formGroup]='formGroup'>-->
+<!--                    <input-->
+<!--                      type='number'-->
+<!--                      class='form-control'-->
+<!--                      placeholder='Nhập hệ số'-->
+<!--                      formControlName='rate'-->
+<!--                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"-->
+<!--                    >-->
+<!--                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>-->
+<!--                      <div>Chưa nhập hệ số</div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
               <div class='unit-price'>
                 <div class='row title-item mb-1'>
                   <span>Giá tăng ca</span>

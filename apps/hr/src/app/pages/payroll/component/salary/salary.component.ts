@@ -50,7 +50,7 @@ export class SalaryComponent implements OnInit {
             this.datePipe.transform(
               this.data?.salary?.datetime, 'yyyy-MM-dd')
             , Validators.required],
-          rate: [1, Validators.required],
+          // rate: [1, Validators.required],
           price: [this.data?.salary?.price, Validators.required],
           times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
           note: [this.data?.salary?.note],

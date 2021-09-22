@@ -17,22 +17,13 @@ export class UpdateConfirmComponent {
   }
 
   onSubmit() {
+    // xác phận thanh toán
     if (this.data.type === 'paidAt') {
-      const val = {
-        paidAt: new Date()
-      };
-      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
-      return true
-    } else {
-      const val = {
-        accConfirmedAt: new Date()
-      };
-      if(this.data.detail){
-        this.store.dispatch(PayrollAction.updatePayroll({ id: this.data.id, Payroll: val }));
-      }else {
-        this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, Payroll: val }));
-      }
-      return true
+      this.store.dispatch(PayrollAction.confirmPaidAtPayroll({ id: this.data.id}));
+    }
+    //xác nhân phiếu lương
+    if(this.data.type === 'accConfirmedAt'){
+      this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id }));
     }
   }
 }

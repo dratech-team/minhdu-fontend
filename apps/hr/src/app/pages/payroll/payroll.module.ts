@@ -59,7 +59,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatAutocompleteModule,
     EmployeeModule,
     FormsModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
   ],
   declarations: [
     PayrollComponent,
