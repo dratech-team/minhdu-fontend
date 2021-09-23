@@ -28,7 +28,7 @@
                       [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
                     >
                       <mat-option *ngFor='let overtime of templateOvertime' value='{{overtime.unit}}'
-                                  (click)='getPrice(overtime)'>
+                                  (click)='pickOverTime(overtime)'>
                         {{overtime.title}}
                         <input [style.display]="'none'" value='{{overtime.title}}'>
                       </mat-option>
@@ -58,39 +58,15 @@
               </div>
             </div>
             <div *ngIf=" formGroup.value.unit =='DAY'">
-<!--              <div class='row'>-->
-<!--                <div class='col'>-->
-<!--                  <div class='row title-item mb-1'>-->
-<!--                    <span>Hệ số</span>-->
-<!--                    <div style='color: red'>*</div>-->
-<!--                  </div>-->
-<!--                  <div class='row mb-3' [formGroup]='formGroup'>-->
-<!--                    <input-->
-<!--                      type='number'-->
-<!--                      class='form-control'-->
-<!--                      placeholder='Nhập hệ số'-->
-<!--                      formControlName='rate'-->
-<!--                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors }"-->
-<!--                    >-->
-<!--                    <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>-->
-<!--                      <div>Chưa nhập hệ số</div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
               <div class='unit-price'>
                 <div class='row title-item mb-1'>
                   <span>Giá tăng ca</span>
                   <div class='star'>*</div>
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
-                  <input type='number' class='form-control  px-1' formControlName='price'
-                         [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
-                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                  <input type='number' class='form-control  px-1'
+                          value='{{price}}' disabled
                   >
-                  <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-                    <div>Chưa nhập giá tăng ca</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -124,14 +100,10 @@
                   <div class='star'>*</div>
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
-                  <input type='number' class='form-control  px-1' formControlName='price'
+                  <input type='number' class='form-control  px-1'
                          placeholder='{{data?.salary?.price}}'
-                         [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
-                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                         value='{{price}}' disabled
                   >
-                  <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-                    <div>Chưa nhập đơn giá 1 giờ</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -146,8 +118,8 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab  [disabled]='data.salary || !checkposition ' class='col-12 ' label='Chọn nhân viên'>
-        <app-pick-employee [positionId]='checkposition'
+      <mat-tab  [disabled]='data.salary || !searchInit ' class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee [employees$]='employee$' [searchInit]='searchInit'
                            (checkEvent)='pickEmployees($event)'></app-pick-employee>
       </mat-tab>
     </mat-tab-group>

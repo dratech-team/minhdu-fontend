@@ -24,6 +24,7 @@ export class SalaryService extends BaseService<Salary>{
 
 
   update(id: any, body: any): Observable<Update<Salary>> {
+    console.log(id)
     return super.update(id, body);
   }
 

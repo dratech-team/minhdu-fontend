@@ -14,10 +14,6 @@ export class PickEmployeeService {
     this.store.dispatch(EmployeeAction.loadInit(props));
   }
 
-  scrollEmployee(val: any) {
-    this.store.dispatch(EmployeeAction.loadMoreEmployees(val));
-  }
-
   searchEmployees(val: any) {
     this.store.dispatch(EmployeeAction.loadInit(val));
   }

@@ -16,9 +16,6 @@ export class StakedVerticalChartComponent implements OnChanges {
   legendPosition = LegendPosition.Below;
   width = 0;
   height = 315;
-  colorScheme = {
-    domain: ['#20a8d8', '#f86c6b', '#4dbd74', '#f8cb00', '#6f42c1']
-  };
 
   ngOnChanges() {
     this.data = this.chartService.editNameChart(this.data);

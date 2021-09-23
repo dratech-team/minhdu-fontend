@@ -1,0 +1,55 @@
+<div class='px-5 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div *ngIf='data.type === type.STAY ' class='form-group' [formGroup]='formGroup'>
+      <div class='row mb-5 title-popup'>
+        <span> Tiền phụ cấp ở lại</span>
+      </div>
+      <div class='name-allowance'>
+        <div class='row title-item mb-1'>
+          <span>Loại phụ cấp ở lại</span>
+          <div class='star'>*</div>
+        </div>
+        <div class='row mb-3' [formGroup]='formGroup'>
+          <mat-select
+            class='form-control col'
+           value='{{indexTitle}}'
+          >
+            <mat-option *ngFor='let item of salariesStay; let i = index' value='{{i}}'>
+              {{item}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='level-allowance'>
+        <div class='row title-item mb-1'>
+          <span>Mức phụ cấp</span>
+          <div class='star'>*</div>
+        </div>
+        <div class='row mb-3' [formGroup]='formGroup'>
+          <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price'
+                 inputCurrency [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập mức phụ cấp</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='footer-popup row ml-4'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button type='button' class='btn  award' data-toggle='tooltip'
+              data-placement='left'
+              title='xóa'>
+        ?
+      </button>
+    </div>
+  </form>
+</div>
+
+

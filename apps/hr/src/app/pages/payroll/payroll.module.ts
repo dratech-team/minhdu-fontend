@@ -14,7 +14,6 @@ import { DetailPayrollComponent } from './container/detail-payroll/detail-payrol
 import { PayrollRoutingModule } from './payroll-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
-import { SalaryComponent } from './component/salary/salary.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
@@ -35,6 +34,10 @@ import { HolidayEffect } from './+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
+import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
+import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
+import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
 
 @NgModule({
   imports: [
@@ -68,7 +71,7 @@ import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-over
     PayrollComponent,
     DetailPayrollComponent,
     FilterPipe,
-    SalaryComponent,
+    DialogAllowanceComponent,
     AddPayrollComponent,
     TemplateOvertimeComponent,
     TemplateComponent,
@@ -76,6 +79,9 @@ import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-over
     AddHolidayComponent,
     HolidayComponent,
     DialogOvertimeComponent,
+    DialogBasicComponent,
+    DialogAbsentComponent,
+    DialogStayComponent
   ]
 })
 export class PayrollModule {
