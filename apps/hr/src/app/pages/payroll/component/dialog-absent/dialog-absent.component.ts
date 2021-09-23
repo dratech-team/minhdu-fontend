@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import * as lodash from 'lodash';
 import { map } from 'rxjs/operators';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'dialog-absent.component.html',
@@ -84,6 +85,14 @@ export class DialogAbsentComponent implements OnInit {
         payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
       }
     };
+    if (this.data.salary) {
+      console.log(this.data.payroll.id)
+      this.store.dispatch(PayrollAction.updateSalary({
+        id: this.data.salary.id, payrollId:
+        this.data.payroll.id , salary: salary }));
+    } else {
+      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id , salary: salary }));
+    }
     this.dialogRef.close(salary);
   }
 }

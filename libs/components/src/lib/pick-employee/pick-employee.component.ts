@@ -53,22 +53,7 @@ export class PickEmployeeComponent implements OnInit {
     ).subscribe();
   }
 
-  // onScroll() {
-  //   const value = this.formGroup.value;
-  //   const val = {
-  //     skip: this.pageSize * this.pageIndex,
-  //     take: this.pageSize,
-  //     code: value.code,
-  //     name: value.name,
-  //     position: value.position
-  //   };
-  //   this.pageIndex ++
-  //   this.service.scrollEmployee(val);
-  //   this.assignIsSelect();
-  // }
-
   assignIsSelect() {
-
     this.employees.forEach(e => {
       e.isSelect = this.employeeIds.includes(e.id);
     });

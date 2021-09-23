@@ -14,6 +14,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
+import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
 
 
 @Component({
@@ -76,10 +77,15 @@ export class DetailPayrollComponent implements OnInit {
     })
   }
 
-
   addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     console.log(payroll)
     this.dialog.open(DialogBasicComponent, {
+      width: '50%',
+      data:{type, payroll, salary}
+    })
+  }
+  addAndUpdateAbsent(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+    this.dialog.open(DialogAbsentComponent, {
       width: '50%',
       data:{type, payroll, salary}
     })
