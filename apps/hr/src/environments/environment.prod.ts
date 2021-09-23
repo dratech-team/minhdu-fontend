@@ -1,7 +1,7 @@
-import { envDev } from '@minhdu-fontend/environment';
+import { envProd } from '@minhdu-fontend/environment';
 
 export const environment = {
   production: true,
-  apiUrl: envDev,
+  apiUrl: envProd,
   apiKey: 'pWPfDJ72krAmNy4g',
 };
