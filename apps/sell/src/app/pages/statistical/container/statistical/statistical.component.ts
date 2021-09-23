@@ -135,7 +135,6 @@ export class StatisticalComponent implements OnInit {
   }
 
   statisticalCustomer(param: any) {
-    console.log(param);
     this.statisticalService
       .getAll(Api.STATISTICAL_CUSTOMER, param)
       .subscribe((value) => {

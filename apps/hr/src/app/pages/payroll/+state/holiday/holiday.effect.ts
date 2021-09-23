@@ -75,7 +75,6 @@ export class HolidayEffect {
     this.action$.pipe(
       ofType(HolidayAction.DeleteHoliday),
       switchMap((pram) => {
-        console.log(pram)
           return this.holidayService.delete(pram.id).pipe(
             map(_ => HolidayAction.LoadInit({ take: 30, skip: 0 }))
           );

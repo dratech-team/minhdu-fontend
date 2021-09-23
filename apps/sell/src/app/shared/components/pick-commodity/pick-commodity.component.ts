@@ -124,7 +124,6 @@ export class PickCommodityComponent implements OnInit {
         }
       }
     );
-    console.log(this.commodityIds);
     this.checkEvent.emit(this.commodityIds);
   }
 

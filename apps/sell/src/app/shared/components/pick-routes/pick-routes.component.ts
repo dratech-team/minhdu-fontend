@@ -35,7 +35,6 @@ export class PickRoutesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data.routes$)
     if (this.data.routes$) {
       this.data.routes$.subscribe(
         (val: Route[]) => this.routes = JSON.parse(JSON.stringify(val))

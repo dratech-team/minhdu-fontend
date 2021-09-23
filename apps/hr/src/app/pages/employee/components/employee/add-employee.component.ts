@@ -54,7 +54,6 @@ export class AddEmployeeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.added$.subscribe((val) => console.log(val));
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());

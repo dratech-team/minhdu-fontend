@@ -38,7 +38,6 @@ export class RegisterComponent implements OnInit{
 
   onSubmit() {
     const val = this.formGroup.value;
-    console.log(val.role);
     if(val.password2 === val.password){
       const account = {
         username: val.userName,

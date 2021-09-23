@@ -65,7 +65,6 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -95,7 +94,6 @@ export class DialogOvertimeComponent implements OnInit {
 
     };
     if (this.data.salary) {
-      console.log(this.data.salary.id)
       this.store.dispatch(PayrollAction.updateSalary({
         payrollId: this.data.payroll.id, id: this.data.salary.id, salary: salary }));
     } else {
