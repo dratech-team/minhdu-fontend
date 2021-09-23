@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "dev:hr": "nx run hr:serve --open",
-    "prod:hr": "npx nx build hr --prod",
+    "build:prod:hr": "npx nx build hr --prod",
+    "lite:hr": "npx lite-server --baseDir=dist/apps/hr",
+    "prod:hr": "yarn build:prod:hr && yarn lite:hr",
     "dev:sell": "nx run sell:serve --open",
     "dev:warehouse": "nx run warehouse:serve --open",
     "dev:admin": "nx run admin:serve --open",

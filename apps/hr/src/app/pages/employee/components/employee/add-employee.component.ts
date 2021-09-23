@@ -1,34 +1,41 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { FlatSalary } from '@minhdu-fontend/enums';
-import {
-  getAllOrgchart,
-  OrgchartActions
-} from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
-import { DepartmentActions, getDepartmentByBranchId } from 'libs/orgchart/src/lib/+state/department';
-import { getPositionsByDepartmentId, PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
+import { Component, Inject, isDevMode, LOCALE_ID, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
-
+import { FlatSalary } from '@minhdu-fontend/enums';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { select, Store } from '@ngrx/store';
+import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
+import {
+  DepartmentActions,
+  getDepartmentByBranchId
+} from 'libs/orgchart/src/lib/+state/department';
+import {
+  getPositionsByDepartmentId,
+  PositionActions
+} from 'libs/orgchart/src/lib/+state/position';
+import { AppState } from '../../../../reducers';
 
 @Component({
-  templateUrl: 'add-employee.component.html'
+  templateUrl: 'add-employee.component.html',
 })
-
 export class AddEmployeeComponent implements OnInit {
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  positions$ = this.store.pipe(select(getPositionsByDepartmentId(
-    this?.data?.employee?.position?.department?.id
-  )));
-  departments$ = this.store.pipe(select(getDepartmentByBranchId(
-    this?.data?.employee?.position?.department?.branch?.id
-  )));
+  positions$ = this.store.pipe(
+    select(
+      getPositionsByDepartmentId(this?.data?.employee?.position?.department?.id)
+    )
+  );
+  departments$ = this.store.pipe(
+    select(
+      getDepartmentByBranchId(
+        this?.data?.employee?.position?.department?.branch?.id
+      )
+    )
+  );
   branches$ = this.store.pipe(select(getAllOrgchart));
   added$ = this.store.pipe(select(selectEmployeeAdded));
   departments?: Department[];
@@ -44,62 +51,110 @@ export class AddEmployeeComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<AddEmployeeComponent>
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.added$.subscribe(val => console.log(val));
+    this.added$.subscribe((val) => console.log(val));
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());
-    this.departments$.subscribe(val => this.departments = val);
-    this.positions$.subscribe(val => this.positions = val);
+    this.departments$.subscribe((val) => (this.departments = val));
+    this.positions$.subscribe((val) => (this.positions = val));
     this.formGroup = this.formBuilder.group({
-      identify: [this.data?.employee?.identify, Validators.required],
-      issuedBy: [this.data?.employee?.issuedBy, Validators.required],
-      birthplace: [this.data?.employee?.birthplace, Validators.required],
+      identify: [
+        isDevMode() ? '123456789' : this.data?.employee?.identify,
+        Validators.required,
+      ],
+      issuedBy: [
+        isDevMode() ? 'CA Bình Định' : this.data?.employee?.issuedBy,
+        Validators.required,
+      ],
+      birthplace: [
+        isDevMode() ? 'Phước Hiệp' : this.data?.employee?.birthplace,
+        Validators.required,
+      ],
       idCardAt: [
-        this.datePipe.transform(
-          this?.data?.employee?.idCardAt, 'yyyy-MM-dd'
-        )
-        , Validators.required],
+        isDevMode()
+          ? this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+          : this.datePipe.transform(
+              this?.data?.employee?.idCardAt,
+              'yyyy-MM-dd'
+            ),
+        Validators.required,
+      ],
       email: [this.data?.employee?.email],
-      phone: [this.data?.employee?.phone, Validators.required],
+      phone: [
+        isDevMode() ? '0337552146' : this.data?.employee?.phone,
+        Validators.required,
+      ],
       note: [this.data?.employee.note],
       workedAt: [
-        this.datePipe.transform(
-          this.data?.employee?.workedAt, 'yyyy-MM-dd'
-        )
-        , Validators.required],
+        isDevMode()
+          ? this.datePipe.transform(new Date())
+          : this.datePipe.transform(
+              this.data?.employee?.workedAt,
+              'yyyy-MM-dd'
+            ),
+        Validators.required,
+      ],
       createdAt: [
-        this.datePipe.transform(
-          this.data?.employee?.createdAt, 'yyyy-MM-dd'
-        )
-        , Validators.required],
-      isFlatSalary: [this.data?.employee?.isFlatSalary ?
-        this.flatSalary.FLAT_SALARY :
-        this.flatSalary.NOT_FLAT_SALARY
-        , Validators.required],
-      firstName: [this.data?.employee?.firstName, Validators.required],
-      lastName: [this.data?.employee?.lastName, Validators.required],
-      address: [this.data?.employee?.address, Validators.required],
+        isDevMode()
+          ? this.datePipe.transform(new Date())
+          : this.datePipe.transform(
+              this.data?.employee?.createdAt,
+              'yyyy-MM-dd'
+            ),
+        Validators.required,
+      ],
+      isFlatSalary: [
+        this.data?.employee?.isFlatSalary
+          ? this.flatSalary.FLAT_SALARY
+          : this.flatSalary.NOT_FLAT_SALARY,
+        Validators.required,
+      ],
+      firstName: [
+        isDevMode() ? 'Trần' : this.data?.employee?.firstName,
+        Validators.required,
+      ],
+      lastName: [
+        isDevMode() ? 'Long' : this.data?.employee?.lastName,
+        Validators.required,
+      ],
+      address: [
+        isDevMode() ? 'Đội 2' : this.data?.employee?.firstName,
+        this.data?.employee?.address,
+        Validators.required,
+      ],
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
-        this.datePipe.transform(
-          this.data?.employee?.birthday, 'yyyy-MM-dd'
-        )
-        , Validators.required],
-      branch: [this.data?.employee?.position.department?.branch?.id, Validators.required],
-      department: [this.data?.employee?.position?.department.id, Validators.required],
+        isDevMode()
+          ? this.datePipe.transform(new Date())
+          : this.datePipe.transform(
+              this.data?.employee?.birthday,
+              'yyyy-MM-dd'
+            ),
+        Validators.required,
+      ],
+      branch: [
+        this.data?.employee?.position.department?.branch?.id,
+        Validators.required,
+      ],
+      department: [
+        this.data?.employee?.position?.department.id,
+        Validators.required,
+      ],
       position: [this.data?.employee?.position.id, Validators.required],
       ward: [this.data?.employee?.ward?.id, Validators.required],
       district: [this.data?.employee?.ward?.district?.id, Validators.required],
-      province: [this.data?.employee?.ward?.district?.province?.id, Validators.required],
+      province: [
+        this.data?.employee?.ward?.district?.province?.id,
+        Validators.required,
+      ],
       // nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
       ethnicity: [this.data?.employee?.ethnicity],
       religion: [this.data?.employee?.religion],
       facebook: [this.data?.employee?.facebook],
-      zalo: [this.data?.employee?.zalo]
+      zalo: [this.data?.employee?.zalo],
     });
   }
 
@@ -135,20 +190,24 @@ export class AddEmployeeComponent implements OnInit {
       email: value.email ? value.email : undefined,
       facebook: value?.facebook ? value.facebook : undefined,
       zalo: value?.zalo ? value?.zalo?.toString() : undefined,
-      note: value.note ? value.note : undefined
+      note: value.note ? value.note : undefined,
     };
     if (this.data !== null) {
-      this.store.dispatch(EmployeeAction.updateEmployee({ id: this.data.employee.id, employee: employee }));
+      this.store.dispatch(
+        EmployeeAction.updateEmployee({
+          id: this.data.employee.id,
+          employee: employee,
+        })
+      );
     } else {
       this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
     ///TODO: handle later
-    this.store.pipe(select(selectEmployeeAdded)).subscribe(added => {
+    this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
       if (added) {
         this.dialogRef.close();
       }
     });
-
   }
 
   onBranch(branch: Branch): void {
