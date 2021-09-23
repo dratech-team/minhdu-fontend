@@ -8,7 +8,6 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
-import { SalaryComponent } from '../../component/salary/salary.component';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';

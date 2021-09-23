@@ -140,7 +140,7 @@
         <div class=' row  table'>
           <div class='row col-md-12 title-table'>
             <div class='col-md-8 title'>Phụ cấp</div>
-            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.ALLOWANCE, payroll ) '><span class='mr-1'>Thêm mục</span>
+            <div class='col-md-4 add' (click)='addAndUpdateAllowance(type.ALLOWANCE, payroll ) '><span class='mr-1'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                    alt='add icon'>
             </div>
@@ -163,7 +163,7 @@
                 data-placement='top'
                 title=' chỉnh sửa '
                 class='edit animated'
-                (click)='addAndUpdateSalary(type.ALLOWANCE, payroll ,salary)'
+                (click)='addAndUpdateAllowance(type.ALLOWANCE, payroll ,salary)'
               >
                 <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
               </button>
@@ -234,7 +234,7 @@
         <div class=' row  table'>
           <div class='row col-md-12 title-table'>
             <div class='col-md-8 title'>Khấu trừ</div>
-            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.ABSENT,payroll) '><span
+            <div class='col-md-4 add' (click)='addAndUpdateAbsent(type.ABSENT,payroll) '><span
               class='mr-1'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                    alt='add icon'>
@@ -261,7 +261,7 @@
                 data-placement='top'
                 title=' chỉnh sửa '
                 class='edit animated'
-                (click)='addAndUpdateSalary(type.ABSENT, payroll, salary)'
+                (click)='addAndUpdateAbsent(type.ABSENT, payroll, salary)'
               >
                 <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
               </button>

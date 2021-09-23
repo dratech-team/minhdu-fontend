@@ -17,7 +17,6 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'dialog-basic.component.html',
-  styleUrls: ['dialog-basic.component.scss']
 })
 export class DialogBasicComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');

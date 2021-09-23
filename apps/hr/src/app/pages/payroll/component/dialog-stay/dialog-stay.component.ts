@@ -17,7 +17,6 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'dialog-stay.component.html',
-  styleUrls: ['dialog-stay.component.scss']
 })
 export class DialogStayComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');

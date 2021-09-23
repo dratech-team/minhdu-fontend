@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { selectCurrentPayroll,selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { SalaryComponent } from '../../component/salary/salary.component';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
@@ -16,6 +15,7 @@ import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-
 import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
 import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
+import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 
 
 @Component({
@@ -46,30 +46,6 @@ export class DetailPayrollComponent implements OnInit {
     this.router.navigate(['nhan-su/ho-so/chi-tiet-nhan-vien', id]).then();
   }
 
-  addAndUpdateSalary(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary): any {
-    const dialogRef = this.dialog.open(SalaryComponent, {
-      width: '50%',
-      data: { type, salary ,payroll}
-    });
-    dialogRef.afterClosed().subscribe(
-      (value) => {
-        if (value) {
-          if (value.update) {
-              this.store.dispatch(PayrollAction.updateSalary({
-                id: salary?.id,
-                payrollId: payroll.id,
-                salary: value.data
-              }));
-          } else {
-              this.store.dispatch(PayrollAction.addSalary({
-                payrollId: payroll.id,
-                salary: value.data
-              }));
-          }
-        }
-      }
-    );
-  }
 
   addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogOvertimeComponent, {
@@ -94,6 +70,13 @@ export class DetailPayrollComponent implements OnInit {
 
   addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogStayComponent, {
+      width: '50%',
+      data:{type, payroll, salary}
+    })
+  }
+
+  addAndUpdateAllowance(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+    this.dialog.open(DialogAllowanceComponent, {
       width: '50%',
       data:{type, payroll, salary}
     })

@@ -17,13 +17,13 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'dialog-absent.component.html',
-  styleUrls: ['dialog-absent.component.scss']
 })
 export class DialogAbsentComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -37,23 +37,24 @@ export class DialogAbsentComponent implements OnInit {
 
 
   ngOnInit(): void {
-        this.formGroup = this.formBuilder.group({
-          unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
-          datetime: [
-            this.datePipe.transform(
-              this.data?.salary?.datetime, 'yyyy-MM-dd')
-            , Validators.required],
-          forgot: [this.data?.salary?.forgot],
-          times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
-          note: [this.data?.salary?.note],
-          type: [this.data.type, Validators.required],
-          rate: [1, Validators.required]
-        });
+    this.formGroup = this.formBuilder.group({
+      unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
+      datetime: [
+        this.datePipe.transform(
+          this.data?.salary?.datetime, 'yyyy-MM-dd')
+        , Validators.required],
+      forgot: [this.data?.salary?.forgot],
+      times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
+      note: [this.data?.salary?.note],
+      type: [this.data.type, Validators.required],
+      rate: [1, Validators.required]
+    });
   }
 
   get f() {
     return this.formGroup.controls;
   }
+
   onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
@@ -67,31 +68,28 @@ export class DialogAbsentComponent implements OnInit {
           panelClass: ['background-snackbar-validate'],
           duration: 2500
         });
-      return
+      return;
     }
     const value = this.formGroup.value;
     const salary = {
-      update: !!this.data.salary,
-      data: {
-        title:  this.data.type === this.type.ABSENT ? 'Vắng' :'Đi trễ'  ,
-        type: typeof value.type === 'number' ? this.type.STAY :
-                    !value.type? this.type.ABSENT: this.data.type,
-        rate: value.rate,
-        times: value.times && value !== 0 ? value.times : undefined,
-        datetime: value.datetime ? new Date(value.datetime): undefined,
-        forgot: value.forgot ? value.forgot : undefined,
-        note: value.note,
-        unit: value.unit ? value.unit : undefined,
-        payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
-      }
+      title: this.data.type === this.type.ABSENT ? 'Vắng' : 'Đi trễ',
+      type: typeof value.type === 'number' ? this.type.STAY :
+        !value.type ? this.type.ABSENT : this.data.type,
+      rate: value.rate,
+      times: value.times && value !== 0 ? value.times : undefined,
+      datetime: value.datetime ? new Date(value.datetime) : undefined,
+      forgot: value.forgot ? value.forgot : undefined,
+      note: value.note,
+      unit: value.unit ? value.unit : undefined,
+      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
     };
     if (this.data.salary) {
-      console.log(this.data.payroll.id)
       this.store.dispatch(PayrollAction.updateSalary({
         id: this.data.salary.id, payrollId:
-        this.data.payroll.id , salary: salary }));
+        this.data.payroll.id, salary: salary
+      }));
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id , salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
     this.dialogRef.close(salary);
   }
