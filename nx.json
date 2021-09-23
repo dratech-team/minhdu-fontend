@@ -37,10 +37,6 @@
     "sell": {
       "tags": []
     },
-    "sell-e2e": {
-      "tags": [],
-      "implicitDependencies": ["sell"]
-    },
     "employee": {
       "tags": []
     },
@@ -50,16 +46,8 @@
     "warehouse": {
       "tags": []
     },
-    "warehouse-e2e": {
-      "tags": [],
-      "implicitDependencies": ["warehouse"]
-    },
     "admin": {
       "tags": []
-    },
-    "admin-e2e": {
-      "tags": [],
-      "implicitDependencies": ["admin"]
     },
     "system-history": {
       "tags": []

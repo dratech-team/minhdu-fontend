@@ -297,32 +297,6 @@
         }
       }
     },
-    "sell-e2e": {
-      "root": "apps/sell-e2e",
-      "sourceRoot": "apps/sell-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/sell-e2e/cypress.json",
-            "tsConfig": "apps/sell-e2e/tsconfig.e2e.json",
-            "devServerTarget": "sell:serve:development"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "sell:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/sell-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
     "employee": {
       "projectType": "library",
       "root": "libs/employee",
@@ -472,32 +446,6 @@
         }
       }
     },
-    "warehouse-e2e": {
-      "root": "apps/warehouse-e2e",
-      "sourceRoot": "apps/warehouse-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/warehouse-e2e/cypress.json",
-            "tsConfig": "apps/warehouse-e2e/tsconfig.e2e.json",
-            "devServerTarget": "warehouse:serve:development"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "warehouse:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/warehouse-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
     "admin": {
       "projectType": "application",
       "root": "apps/admin",
@@ -590,32 +538,6 @@
           "options": {
             "jestConfig": "apps/admin/jest.config.js",
             "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-e2e": {
-      "root": "apps/admin-e2e",
-      "sourceRoot": "apps/admin-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/admin-e2e/cypress.json",
-            "tsConfig": "apps/admin-e2e/tsconfig.e2e.json",
-            "devServerTarget": "admin:serve:development"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "admin:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
           }
         }
       }
