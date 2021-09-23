@@ -2,11 +2,11 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { envProd } from '@minhdu-fontend/environment';
+import { envDev } from '@minhdu-fontend/environment';
 
-export const environmentAppHr = {
+export const environment = {
   production: false,
-  apiUrl: envProd,
+  apiUrl: envDev,
   apiKey: 'pWPfDJ72krAmNy4g',
 };
 
