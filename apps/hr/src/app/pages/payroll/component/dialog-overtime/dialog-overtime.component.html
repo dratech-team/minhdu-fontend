@@ -65,7 +65,7 @@
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
                   <input type='number' class='form-control  px-1'
-                         [(ngModel)]='price' [value]='price' disabled
+                          value='{{price}}' disabled
                   >
                 </div>
               </div>
@@ -102,7 +102,7 @@
                 <div class='row mb-3' [formGroup]='formGroup'>
                   <input type='number' class='form-control  px-1'
                          placeholder='{{data?.salary?.price}}'
-                         [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
+                         value='{{price}}' disabled
                   >
                 </div>
               </div>
