@@ -56,6 +56,7 @@ export class DialogAbsentComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup.value.forgot)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -78,7 +79,7 @@ export class DialogAbsentComponent implements OnInit {
       rate: value.rate,
       times: value.times && value !== 0 ? value.times : undefined,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
-      forgot: value.forgot ? value.forgot : undefined,
+      forgot: value.forgot,
       note: value.note,
       unit: value.unit ? value.unit : undefined,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
