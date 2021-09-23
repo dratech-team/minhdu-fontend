@@ -73,7 +73,7 @@
         <div class=' row  table'>
           <div class='row col-md-12 title-table'>
             <div class='col-md-8 title'>Lương cơ bản</div>
-            <div class='col-md-4 add' (click)='addAndUpdateSalary(type.BASIC,payroll)'>
+            <div class='col-md-4 add' (click)='addAndUpdateBasic(type.BASIC,payroll)'>
               <span class='mr-1'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                    alt='add icon'>
@@ -94,10 +94,9 @@
                 data-placement='top'
                 title=' chỉnh sửa '
                 class='edit animated'
-                (click)='addAndUpdateSalary(type.BASIC, payroll,salary)'>
+                (click)='addAndUpdateBasic(type.BASIC, payroll,salary)'>
                 <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
               </button>
-
             </div>
           </div>
         </div>

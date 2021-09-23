@@ -101,9 +101,13 @@ export class PayrollEffect {
   updateSalary$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.updateSalary),
-      switchMap((props) => this.salaryService.update(props.id, props.salary).pipe(
-        map(_ => PayrollAction.getPayroll({ id: props.payrollId }))
-      )),
+      switchMap((props) =>
+      {
+        return   this.salaryService.update(props.id, props.salary).pipe(
+          map(_ => PayrollAction.getPayroll({ id: props.payrollId }))
+        )
+      }
+      ),
       catchError((err) => throwError(err))
     ));
 

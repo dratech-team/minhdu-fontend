@@ -13,6 +13,7 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
+import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
 
 
 @Component({
@@ -70,6 +71,15 @@ export class DetailPayrollComponent implements OnInit {
 
   addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogOvertimeComponent, {
+      width: '50%',
+      data:{type, payroll, salary}
+    })
+  }
+
+
+  addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+    console.log(payroll)
+    this.dialog.open(DialogBasicComponent, {
       width: '50%',
       data:{type, payroll, salary}
     })

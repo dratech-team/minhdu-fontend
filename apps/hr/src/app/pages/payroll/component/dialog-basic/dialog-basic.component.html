@@ -1,0 +1,66 @@
+<div class='px-5 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div *ngIf='data.type === type.BASIC ' class='form-group'>
+      <div class='row mb-5 title-popup'>
+        <span> Lương cơ bản</span>
+      </div>
+      <div class='contract-salary'>
+        <div class='row title-item mb-1'>
+          <span>Loại lương</span>
+          <div class='star'>*</div>
+        </div>
+        <div class='row mb-3' [formGroup]='formGroup'>
+          <mat-select
+            [disabled]='data.salary'
+            class='form-control col'
+            formControlName='type'
+            [ngClass]="{ 'is-invalid': submitted && f.type.errors }"
+          >
+            <mat-option value='{{type.BASIC}}'>Lương cơ bản</mat-option>
+            <mat-option value='{{type.BASIC_ISNURANCE}}'>Lương cơ bản trước bảo hiểm</mat-option>
+          </mat-select>
+          <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
+            <div>Chưa chọn loại lương</div>
+          </div>
+        </div>
+      </div>
+      <div class='basic-salary'>
+        <div class='row title-item mb-1'>
+          <span>Mức lương</span>
+          <div class='star'>*</div>
+        </div>
+        <div class='row mb-3' [formGroup]='formGroup'>
+          <input
+            class='form-control'
+            type='text'
+            placeholder='Nhập mức lương'
+            formControlName='price'
+            inputCurrency
+            [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+          >
+          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập mức lương</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='footer-popup row ml-4'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button type='button' class='btn  award' data-toggle='tooltip'
+              data-placement='left'
+              title='xóa'>
+        ?
+      </button>
+    </div>
+  </form>
+</div>
+
+

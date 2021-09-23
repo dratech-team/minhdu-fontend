@@ -83,10 +83,10 @@ export class DialogOvertimeComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const salary = {
-      title: this.title,
-      price: this.price,
+      title: this.title|| this.data?.salary?.title,
+      price: this.price|| this.data?.salary?.price,
       type: this.data.type,
-      rate: this.rate,
+      rate: this.rate|| this.data?.salary?.rate,
       times: value.times && value !== 0 ? value.times : undefined,
       datetime: value.datetime? new Date(value.datetime): undefined,
       note: value.note,
@@ -96,7 +96,9 @@ export class DialogOvertimeComponent implements OnInit {
 
     };
     if (this.data.salary) {
-      this.store.dispatch(PayrollAction.updateSalary({ payrollId: this.data.payrollId, salary: salary }));
+      console.log(this.data.salary.id)
+      this.store.dispatch(PayrollAction.updateSalary({
+        payrollId: this.data.payroll.id, id: this.data.salary.id, salary: salary }));
     } else {
       this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payrollId, salary: salary }));
     }
