@@ -1,22 +1,22 @@
-import { DatePipe } from '@angular/common';
-import { Component, Inject, isDevMode, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
+import { Branch, Department, Position } from '@minhdu-fontend/data-models';
+import { DatePipe } from '@angular/common';
 import {
   DepartmentActions,
-  getDepartmentByBranchId
+  getDepartmentByBranchId,
 } from 'libs/orgchart/src/lib/+state/department';
 import {
   getPositionsByDepartmentId,
-  PositionActions
+  PositionActions,
 } from 'libs/orgchart/src/lib/+state/position';
-import { AppState } from '../../../../reducers';
+import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 
 @Component({
   templateUrl: 'add-employee.component.html',
@@ -60,49 +60,22 @@ export class AddEmployeeComponent implements OnInit {
     this.departments$.subscribe((val) => (this.departments = val));
     this.positions$.subscribe((val) => (this.positions = val));
     this.formGroup = this.formBuilder.group({
-      identify: [
-        isDevMode() ? '123456789' : this.data?.employee?.identify,
-        Validators.required,
-      ],
-      issuedBy: [
-        isDevMode() ? 'CA Bình Định' : this.data?.employee?.issuedBy,
-        Validators.required,
-      ],
-      birthplace: [
-        isDevMode() ? 'Phước Hiệp' : this.data?.employee?.birthplace,
-        Validators.required,
-      ],
+      identify: [this.data?.employee?.identify, Validators.required],
+      issuedBy: [this.data?.employee?.issuedBy, Validators.required],
+      birthplace: [this.data?.employee?.birthplace, Validators.required],
       idCardAt: [
-        isDevMode()
-          ? this.datePipe.transform(new Date(), 'yyyy-MM-dd')
-          : this.datePipe.transform(
-              this?.data?.employee?.idCardAt,
-              'yyyy-MM-dd'
-            ),
+        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd'),
         Validators.required,
       ],
       email: [this.data?.employee?.email],
-      phone: [
-        isDevMode() ? '0337552146' : this.data?.employee?.phone,
-        Validators.required,
-      ],
+      phone: [this.data?.employee?.phone, Validators.required],
       note: [this.data?.employee.note],
       workedAt: [
-        isDevMode()
-          ? this.datePipe.transform(new Date())
-          : this.datePipe.transform(
-              this.data?.employee?.workedAt,
-              'yyyy-MM-dd'
-            ),
+        this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd'),
         Validators.required,
       ],
       createdAt: [
-        isDevMode()
-          ? this.datePipe.transform(new Date())
-          : this.datePipe.transform(
-              this.data?.employee?.createdAt,
-              'yyyy-MM-dd'
-            ),
+        this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd'),
         Validators.required,
       ],
       isFlatSalary: [
@@ -111,27 +84,12 @@ export class AddEmployeeComponent implements OnInit {
           : this.flatSalary.NOT_FLAT_SALARY,
         Validators.required,
       ],
-      firstName: [
-        isDevMode() ? 'Trần' : this.data?.employee?.firstName,
-        Validators.required,
-      ],
-      lastName: [
-        isDevMode() ? 'Long' : this.data?.employee?.lastName,
-        Validators.required,
-      ],
-      address: [
-        isDevMode() ? 'Đội 2' : this.data?.employee?.firstName,
-        this.data?.employee?.address,
-        Validators.required,
-      ],
+      firstName: [this.data?.employee?.firstName, Validators.required],
+      lastName: [this.data?.employee?.lastName, Validators.required],
+      address: [this.data?.employee?.address, Validators.required],
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
-        isDevMode()
-          ? this.datePipe.transform(new Date())
-          : this.datePipe.transform(
-              this.data?.employee?.birthday,
-              'yyyy-MM-dd'
-            ),
+        this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd'),
         Validators.required,
       ],
       branch: [
