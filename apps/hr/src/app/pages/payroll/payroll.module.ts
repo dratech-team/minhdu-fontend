@@ -37,6 +37,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
 
 @NgModule({
   imports: [
@@ -79,7 +80,8 @@ import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.c
     HolidayComponent,
     DialogOvertimeComponent,
     DialogBasicComponent,
-    DialogAbsentComponent
+    DialogAbsentComponent,
+    DialogStayComponent
   ]
 })
 export class PayrollModule {

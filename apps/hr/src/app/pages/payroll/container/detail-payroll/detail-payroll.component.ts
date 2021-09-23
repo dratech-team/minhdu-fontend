@@ -15,6 +15,7 @@ import { DevelopmentComponent } from 'libs/components/src/lib/development/develo
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
 
 
 @Component({
@@ -86,6 +87,13 @@ export class DetailPayrollComponent implements OnInit {
   }
   addAndUpdateAbsent(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogAbsentComponent, {
+      width: '50%',
+      data:{type, payroll, salary}
+    })
+  }
+
+  addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+    this.dialog.open(DialogStayComponent, {
       width: '50%',
       data:{type, payroll, salary}
     })
