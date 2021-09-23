@@ -44,6 +44,7 @@ export class DialogOvertimeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log(this.data.salary)
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       { positionId: this.data?.payroll?.employee?.position?.id }));
     this.formGroup = this.formBuilder.group({
