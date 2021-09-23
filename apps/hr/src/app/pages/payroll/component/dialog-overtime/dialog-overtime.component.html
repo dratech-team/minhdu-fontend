@@ -85,12 +85,8 @@
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
                   <input type='number' class='form-control  px-1'
-                         [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
                          [(ngModel)]='price' [attr.disabled]='data.type === type.OVERTIME'
                   >
-                  <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-                    <div>Chưa nhập giá tăng ca</div>
-                  </div>
                 </div>
               </div>
             </div>
