@@ -23,7 +23,7 @@
             [ngClass]="{ 'is-invalid': submitted && f.type.errors }"
           >
             <mat-option value='{{type.BASIC}}'>Lương cơ bản</mat-option>
-            <mat-option value='{{type.BASIC_ISNURANCE}}'>Lương cơ bản trước bảo hiểm</mat-option>
+            <mat-option value='{{type.BASIC_INSURANCE}}'>Lương cơ bản trước bảo hiểm</mat-option>
           </mat-select>
           <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
             <div>Chưa chọn loại lương</div>

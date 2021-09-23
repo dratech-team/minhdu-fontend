@@ -190,7 +190,7 @@
           {{payroll.payslip?.allowance |number:'1.0-0'}} VND
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
-          {{ payroll.payslip.overtime || 0}} VND
+          {{ payroll.payslip?.overtime || 0}} VND
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.deduction | number: '1.0-0'}} VND

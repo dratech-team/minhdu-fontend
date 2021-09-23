@@ -56,12 +56,12 @@ export class DialogBasicComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const salary = {
-      title: value.type === this.type.BASIC_ISNURANCE ?
+      title: value.type === this.type.BASIC_INSURANCE ?
         'Lương cơ bản trước bảo hiểm' : 'Lương cơ bản',
       price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
       rate: value.rate,
       payrollId:this.data?.payroll?.id || undefined,
-      type:this.data.type
+      type:value.type
     };
     if (this.data.salary) {
       console.log(this.data.payroll.id)
