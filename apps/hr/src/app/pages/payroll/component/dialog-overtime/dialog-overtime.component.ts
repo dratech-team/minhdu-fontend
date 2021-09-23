@@ -44,7 +44,7 @@ export class DialogOvertimeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.data.salary)
+    this.price = this.data?.salary?.price
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       { positionId: this.data?.payroll?.employee?.position?.id }));
     this.formGroup = this.formBuilder.group({
@@ -53,7 +53,6 @@ export class DialogOvertimeComponent implements OnInit {
         this.datePipe.transform(
           this.data?.salary?.datetime, 'yyyy-MM-dd')
         , Validators.required],
-      price: [this.data?.salary?.price, Validators.required],
       times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
       note: [this.data?.salary?.note]
     });
@@ -89,7 +88,7 @@ export class DialogOvertimeComponent implements OnInit {
       type: this.data.type,
       rate: this.rate,
       times: value.times && value !== 0 ? value.times : undefined,
-      datetime: value.datetime || undefined,
+      datetime: value.datetime? new Date(value.datetime): undefined,
       note: value.note,
       unit: value.unit || undefined,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
