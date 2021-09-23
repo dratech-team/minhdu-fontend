@@ -10,10 +10,9 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import * as lodash from 'lodash';
-import { map } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 
 @Component({
   templateUrl: 'dialog-overtime.component.html',
@@ -24,12 +23,14 @@ export class DialogOvertimeComponent implements OnInit {
   employeeIds: number[] = [];
   price!: number;
   title!: string;
+  rate!: number
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  employee$ = this.store.pipe(select(selectorAllEmployee));
   isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  checkposition!: number
+  searchInit: any
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -51,7 +52,6 @@ export class DialogOvertimeComponent implements OnInit {
         this.datePipe.transform(
           this.data?.salary?.datetime, 'yyyy-MM-dd')
         , Validators.required],
-      rate: [this.data?.salary?.rate, Validators.required],
       price: [this.data?.salary?.price, Validators.required],
       times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
       note: [this.data?.salary?.note]
@@ -66,6 +66,7 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -85,7 +86,7 @@ export class DialogOvertimeComponent implements OnInit {
       title: this.title,
       price: this.price,
       type: this.data.type,
-      rate: this.data.rate,
+      rate: this.rate,
       times: value.times && value !== 0 ? value.times : undefined,
       datetime: value.datetime || undefined,
       note: value.note,
@@ -112,10 +113,11 @@ export class DialogOvertimeComponent implements OnInit {
     }
   }
 
-  getPrice(data: TemplateOvertime) {
-    console.log(data)
+  pickOverTime(data: TemplateOvertime) {
     this.price = data.price;
     this.title = data.title;
-    this.checkposition = data.positionId
+    this.rate = data.rate
+    this.searchInit = { positionId: data.positionId}
+    this.store.dispatch(EmployeeAction.loadInit({positionId: data.positionId}))
   }
 }

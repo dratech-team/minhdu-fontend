@@ -28,7 +28,7 @@
                       [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
                     >
                       <mat-option *ngFor='let overtime of templateOvertime' value='{{overtime.unit}}'
-                                  (click)='getPrice(overtime)'>
+                                  (click)='pickOverTime(overtime)'>
                         {{overtime.title}}
                         <input [style.display]="'none'" value='{{overtime.title}}'>
                       </mat-option>
@@ -146,8 +146,8 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab  [disabled]='data.salary || !checkposition ' class='col-12 ' label='Chọn nhân viên'>
-        <app-pick-employee [positionId]='checkposition'
+      <mat-tab  [disabled]='data.salary || !searchInit ' class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee [employees$]='employee$' [searchInit]='searchInit'
                            (checkEvent)='pickEmployees($event)'></app-pick-employee>
       </mat-tab>
     </mat-tab-group>
