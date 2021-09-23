@@ -56,7 +56,6 @@ export class DialogAbsentComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup.value.forgot)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

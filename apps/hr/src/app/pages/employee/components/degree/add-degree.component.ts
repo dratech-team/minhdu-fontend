@@ -54,7 +54,6 @@ export class AddDegreeComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

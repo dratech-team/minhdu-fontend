@@ -113,7 +113,6 @@ export class PayrollComponent implements OnInit {
   }
 
   addSalary(type: SalaryTypeEnum): any {
-    console.log(type)
     this.dialog.open(DialogOvertimeComponent, {
       width: '50%',
       data: { type: type }

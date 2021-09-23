@@ -64,7 +64,6 @@ export class DialogBasicComponent implements OnInit {
       type:value.type
     };
     if (this.data.salary) {
-      console.log(this.data.payroll.id)
       this.store.dispatch(PayrollAction.updateSalary({
         id: this.data.salary.id, payrollId:
         this.data.payroll.id , salary: salary }));

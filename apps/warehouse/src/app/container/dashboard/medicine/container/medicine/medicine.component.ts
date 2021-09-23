@@ -67,7 +67,6 @@ export class MedicineComponent implements OnInit {
   }
 
   deleteMedicine($event: any) {
-    console.log($event);
     const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {

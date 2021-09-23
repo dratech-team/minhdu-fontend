@@ -39,7 +39,6 @@ export class AddHolidayComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(DepartmentActions.loadDepartment());
     this.departments$.subscribe(val => {
-      console.log(val);
       this.departments = val;
     });
     this.formGroup = this.formBuilder.group({

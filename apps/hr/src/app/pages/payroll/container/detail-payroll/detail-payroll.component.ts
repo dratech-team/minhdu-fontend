@@ -55,7 +55,6 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
-    console.log(payroll)
     this.dialog.open(DialogBasicComponent, {
       width: '50%',
       data:{type, payroll, salary}

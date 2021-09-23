@@ -31,7 +31,6 @@ export class AddPayrollComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.f.createdAt.errors?.required)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
