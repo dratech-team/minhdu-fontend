@@ -1,47 +1,54 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatePipe } from '@angular/common';
 import {
-  DepartmentActions,
-  getDepartmentByBranchId,
-} from 'libs/orgchart/src/lib/+state/department';
-import {
-  getPositionsByDepartmentId,
+  getAllPosition,
   PositionActions,
 } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
-
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { map, startWith, tap, debounceTime } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { TransferWithinAStationSharp } from '@material-ui/icons';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
+import { PositionService } from './../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import { BranchService } from './../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 @Component({
   templateUrl: 'add-employee.component.html',
 })
 export class AddEmployeeComponent implements OnInit {
+  @ViewChild('positionInput') inputPosition!: ElementRef;
+  @ViewChild('branchInput') branchInput!: ElementRef;
+  branchId?: number;
+  positionId?: number;
+  positions = new FormControl();
+  branches = new FormControl();
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  positions$ = this.store.pipe(
-    select(
-      getPositionsByDepartmentId(this?.data?.employee?.position?.department?.id)
-    )
-  );
-  departments$ = this.store.pipe(
-    select(
-      getDepartmentByBranchId(
-        this?.data?.employee?.position?.department?.branch?.id
-      )
-    )
-  );
+  positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  added$ = this.store.pipe(select(selectEmployeeAdded));
-  departments?: Department[];
-  branches?: Branch[];
-  positions?: Position[];
   submitted = false;
+  optionPosition: Position[] = [];
+  optionBranches: Branch[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -49,34 +56,36 @@ export class AddEmployeeComponent implements OnInit {
     @Inject(LOCALE_ID) private locale: string,
     private readonly employeeService: EmployeeService,
     private readonly formBuilder: FormBuilder,
+    private readonly snackbar: MatSnackBar,
+    private readonly positionService: PositionService,
+    private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<AddEmployeeComponent>
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
-    this.store.dispatch(DepartmentActions.loadDepartment());
     this.store.dispatch(PositionActions.loadPosition());
-    this.departments$.subscribe((val) => (this.departments = val));
-    this.positions$.subscribe((val) => (this.positions = val));
+    this.branches$.subscribe(
+      (val) => (this.optionBranches = JSON.parse(JSON.stringify(val)))
+    );
+    this.positions$.subscribe((val) => console.log(val));
     this.formGroup = this.formBuilder.group({
-      identify: [this.data?.employee?.identify, Validators.required],
-      issuedBy: [this.data?.employee?.issuedBy, Validators.required],
-      birthplace: [this.data?.employee?.birthplace, Validators.required],
+      identify: [this.data?.employee?.identify],
+      issuedBy: [this.data?.employee?.issuedBy],
+      birthplace: [this.data?.employee?.birthplace],
       idCardAt: [
         this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd'),
-        Validators.required,
       ],
       email: [this.data?.employee?.email],
-      phone: [this.data?.employee?.phone, Validators.required],
+      workday: [this.data?.employee?.position.workday, Validators.required],
+      phone: [this.data?.employee?.phone],
       note: [this.data?.employee.note],
       workedAt: [
         this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd'),
-        Validators.required,
       ],
       createdAt: [
         this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd'),
-        Validators.required,
       ],
       isFlatSalary: [
         this.data?.employee?.isFlatSalary
@@ -84,6 +93,11 @@ export class AddEmployeeComponent implements OnInit {
           : this.flatSalary.NOT_FLAT_SALARY,
         Validators.required,
       ],
+      province: [
+        this.data?.employee?.ward?.district?.province?.id,
+        Validators.required,
+      ],
+      district: [this.data?.employee?.ward?.district?.id, Validators.required],
       firstName: [this.data?.employee?.firstName, Validators.required],
       lastName: [this.data?.employee?.lastName, Validators.required],
       address: [this.data?.employee?.address, Validators.required],
@@ -92,27 +106,52 @@ export class AddEmployeeComponent implements OnInit {
         this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd'),
         Validators.required,
       ],
-      branch: [
-        this.data?.employee?.position.department?.branch?.id,
-        Validators.required,
-      ],
-      department: [
-        this.data?.employee?.position?.department.id,
-        Validators.required,
-      ],
-      position: [this.data?.employee?.position.id, Validators.required],
       ward: [this.data?.employee?.ward?.id, Validators.required],
-      district: [this.data?.employee?.ward?.district?.id, Validators.required],
-      province: [
-        this.data?.employee?.ward?.district?.province?.id,
-        Validators.required,
-      ],
       // nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
       ethnicity: [this.data?.employee?.ethnicity],
       religion: [this.data?.employee?.religion],
       facebook: [this.data?.employee?.facebook],
       zalo: [this.data?.employee?.zalo],
     });
+
+    ///FIXME: Chưa work đc giá trị ban đầu
+    this.positions$ = combineLatest([
+      this.positions.valueChanges,
+      this.positions$,
+    ]).pipe(
+      map(([position, positions]) => {
+        if (position) {
+          const result = positions.filter((e) => {
+            return e.name.toLowerCase().includes(position?.toLowerCase());
+          });
+          if (!result.length) {
+            result.push({ id: 0, name: 'Tạo mới chức vụ' });
+          }
+          return result;
+        } else {
+          return positions;
+        }
+      })
+    );
+
+    this.branches$ = combineLatest([
+      this.branches.valueChanges,
+      this.branches$,
+    ]).pipe(
+      map(([branch, branches]) => {
+        if (branch) {
+          const result = branches.filter((e) => {
+            return e.name.toLowerCase().includes(branch?.toLowerCase());
+          });
+          if (!result.length) {
+            result.push({ id: 0, name: 'Tạo mới đơn vị' });
+          }
+          return result;
+        } else {
+          return branches;
+        }
+      })
+    );
   }
 
   get f() {
@@ -124,20 +163,22 @@ export class AddEmployeeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+
     const value = this.formGroup.value;
     const employee = {
       id: this?.data?.employee?.id,
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-      positionId: value.position,
+      positionId: this.positionId,
+      branchId: this.branchId,
       workedAt: value.workedAt,
-      createdAt: value.createdAt,
+      createdAt: value.createdAt ? new Date(value.createdAt): undefined,
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone.toString(),
+      phone: value.phone?.toString(),
       birthday: value.birthday,
       birthplace: value.birthplace,
-      identify: value?.identify.toString(),
+      identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
       issuedBy: value.issuedBy,
       wardId: value.ward === null ? 1 : value.ward,
@@ -148,7 +189,9 @@ export class AddEmployeeComponent implements OnInit {
       facebook: value?.facebook ? value.facebook : undefined,
       zalo: value?.zalo ? value?.zalo?.toString() : undefined,
       note: value.note ? value.note : undefined,
+      workday: value.workday,
     };
+    console.log(employee);
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
@@ -167,11 +210,35 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  onBranch(branch: Branch): void {
-    this.departments = branch.departments;
+  onCreatePosition(position: Position) {
+    if (position.id) {
+      this.positionId = position.id
+      this.formGroup.patchValue({
+        workday: position.workday,
+        position: position.name,
+      });
+    } else {
+      this.positionService
+        .addOne({
+          name: this.inputPosition.nativeElement.value,
+          workday: this.formGroup.value.workday,
+        })
+        .subscribe((position) => (this.positionId = position.id));
+      this.snackbar.open('Đã tạo', '', { duration: 2500 });
+    }
   }
-
-  onDepartment(department: Department): void {
-    this.positions = department.positions;
+  onCreateBranch(branch: Branch) {
+    if (branch.id === 0) {
+      this.branchService
+        .addOne({ name: this.branchInput.nativeElement.value })
+        .subscribe((branch) => (this.branchId = branch.id));
+      this.snackbar.open('Đã tạo', '', { duration: 2500 });
+    }else{
+      this.branchId = branch.id
+    }
+    this.positionService.addOne({
+      name: this.inputPosition.nativeElement.value,
+      workday: this.formGroup.value.workday,
+    });
   }
 }

@@ -30,13 +30,13 @@ const routes: Routes = [
         },
 
       },
-      {
-        path: 'to-chuc',
-        loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartPageModule),
-        data: {
-          title: 'Hệ thống nhân sự'
-        },
-      },
+      // {
+      //   path: 'to-chuc',
+      //   loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartPageModule),
+      //   data: {
+      //     title: 'Hệ thống nhân sự'
+      //   },
+      // },
       {
         path: 'lich-su-he-thong',
         loadChildren: () => import('@minhdu-fontend/system-history').then(m => m.SystemHistoryModule),

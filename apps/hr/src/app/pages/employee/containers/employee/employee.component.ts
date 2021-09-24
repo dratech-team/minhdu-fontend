@@ -41,7 +41,6 @@ export class EmployeeComponent implements OnInit {
     name: new FormControl(''),
     gender: new FormControl(''),
     position: new FormControl(''),
-    department: new FormControl(''),
     branch: new FormControl(''),
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
@@ -92,9 +91,8 @@ export class EmployeeComponent implements OnInit {
       name: val.name,
       gender: val.gender,
       position: val.position,
-      department: val.department,
       branch: val.branch,
-      workedAt: val.workedAt.toString(),
+      workedAt: val.workedAt,
       isFlatSalary:
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE

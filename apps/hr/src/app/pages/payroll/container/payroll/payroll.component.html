@@ -143,11 +143,8 @@
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll?.employee?.position?.name}}
         </div>
-        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
-          {{payroll?.employee?.position?.department?.name}}
-        </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.employee?.position?.department?.branch?.name}}
+          {{payroll.employee?.branch?.name}}
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.createdAt|date:'MM/yyyy'}}

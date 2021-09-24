@@ -44,18 +44,14 @@
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthplace'>Nguyên quán</label><span class='star'>*</span>
+        <label for='birthplace'>Nguyên quán</label>
         <input
           class='form-control'
           formControlName='birthplace'
           id='birthplace'
           placeholder='Phước Sơn - Tuy Phước - Bình Định '
           type='text'
-          [ngClass]="{ 'is-invalid': submitted && form.birthplace.errors?.required }"
         >
-        <div *ngIf='submitted && form.birthplace.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập nguyên quán</div>
-        </div>
       </div>
     </div>
     <div class='row mt-3'>
@@ -86,44 +82,30 @@
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='identify'>CMND/CCCD</label><span class='star'>*</span>
-        <input type='number' class='form-control' id='identify' placeholder='215421236' formControlName='identify'
-               [ngClass]="{ 'is-invalid': submitted && form.identify.errors?.required }">
-        <div *ngIf='submitted && form.identify.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập CMND/CCCD</div>
-        </div>
+        <label for='identify'>CMND/CCCD</label>
+        <input type='number' class='form-control' id='identify'
+               placeholder='215421236' formControlName='identify'>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='idCardAt'>Ngày cấp</label><span class='star'>*</span>
+        <label for='idCardAt'>Ngày cấp</label>
         <input
           type='date'
           placeholder='06/05/1997'
           class='form-control'
           id='idCardAt'
           formControlName='idCardAt'
-          [ngClass]="{ 'is-invalid': submitted && form.idCardAt.errors?.required }"
         >
-        <div *ngIf='submitted && form.idCardAt.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập ngày cấp</div>
-        </div>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='issuedBy'>Nơi cấp </label><span class='star'>*</span>
-        <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
-               [ngClass]="{ 'is-invalid': submitted && form.issuedBy.errors?.required }">
-        <div *ngIf='submitted && form.issuedBy.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập nơi cấp</div>
-        </div>
+        <label for='issuedBy'>Nơi cấp </label>
+        <input type='text' class='form-control' id='issuedBy'
+               placeholder='Bình Định' formControlName='issuedBy'>
       </div>
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='phone'>Số điện thoại </label><span class='star'>*</span>
-        <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'
-               [ngClass]="{ 'is-invalid': submitted && form.phone.errors?.required }">
-        <div *ngIf='submitted && form.phone.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập số điện thoại</div>
-        </div>
+        <label for='phone'>Số điện thoại </label>
+        <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='birthday'>Ngày sinh </label><span class='star'>*</span>

@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import {  Position } from '@minhdu-fontend/data-models';
+import { Position } from '@minhdu-fontend/data-models';
 import { PositionActions } from './position.actions';
 
 
@@ -30,6 +30,9 @@ const positionReducer = createReducer(
   })),
   on(PositionActions.loadPositionSuccess, (state, { position }) =>
     positionAdapter.setAll(position, { ...state, loaded: true })
+  ),
+  on(PositionActions.addPositionSuccess, (state, { position }) =>
+    positionAdapter.addOne(position, { ...state, loaded: true })
   ),
   on(PositionActions.loadPositionFailure, (state, { error }) => ({
     ...state,

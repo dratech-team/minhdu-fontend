@@ -77,9 +77,4 @@ export class AddHolidayComponent implements OnInit {
     }
     this.dialogRef.close();
   }
-
-  onBranch(branch: Branch) {
-    this.departments = branch.departments;
-  }
-
 }

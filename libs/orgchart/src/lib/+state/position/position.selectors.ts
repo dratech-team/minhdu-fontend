@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { POSITION_FEATURE_KEY, positionAdapter, positionState } from './position.reducer';
-import {  Position } from '@minhdu-fontend/data-models';
 
 export const getPositionState = createFeatureSelector<positionState>(
   POSITION_FEATURE_KEY
@@ -18,27 +17,29 @@ export const getDepartmentError = createSelector(
   (state: positionState) => state.error
 );
 
-export const getAllPosition = createSelector(getPositionState, (state: positionState) =>
-  selectAll(state)
+export const getAllPosition = createSelector(
+  getPositionState,
+  (state: positionState) => selectAll(state)
 );
 
-export const getPositionsByDepartmentId = (departmentId: number) => createSelector(
-  getAllPosition,
-  (positionEntities) => {
-    return  positionEntities.filter( position => position.departmentId === departmentId)
-  }
-)
 
+/**
+ * @deprecated
+ * */
 export const getPositionEntities = createSelector(
   getPositionState,
   (state: positionState) => selectEntities(state)
 );
-
+/**
+ * @deprecated
+ * */
 export const getSelectedId = createSelector(
   getPositionState,
   (state: positionState) => state.selectedId
 );
-
+/**
+ * @deprecated
+ * */
 export const getSelected = createSelector(
   getPositionEntities,
   getSelectedId,

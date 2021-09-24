@@ -116,7 +116,7 @@ export class DialogOvertimeComponent implements OnInit {
     this.price = data.price;
     this.title = data.title;
     this.rate = data.rate
-    this.searchInit = { positionId: data.positionId}
-    this.store.dispatch(EmployeeAction.loadInit({positionId: data.positionId}))
+    // this.searchInit = { positionId: data.positionId}
+    // this.store.dispatch(EmployeeAction.loadInit({positionId: data.positionId}))
   }
 }

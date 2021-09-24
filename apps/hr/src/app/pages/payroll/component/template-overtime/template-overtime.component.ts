@@ -37,9 +37,9 @@ export class TemplateOvertimeComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(DepartmentActions.loadDepartment());
-    this.store.dispatch(OrgchartActions.init());
-    this.branch$.subscribe(val => this.departments = val?.departments);
-    this.department$.subscribe(val => this.positions = val?.positions);
+    // this.store.dispatch(OrgchartActions.init());
+    // this.branch$.subscribe(val => this.departments = val?.departments);
+    // this.department$.subscribe(val => this.positions = val?.positions);
     this.formGroup = this.formBuilder.group({
       title: [this.data?.title, Validators.required],
       position: [this.data?.positionId, Validators.required],
@@ -77,12 +77,12 @@ export class TemplateOvertimeComponent implements OnInit {
     this.dialogRef.close(template);
   }
 
-  onBranch(branch: Branch): void {
-    this.departments = branch.departments;
-  }
+  // onBranch(branch: Branch): void {
+  //   this.departments = branch.departments;
+  // }
 
-  onDepartment(department: Department): void {
-    this.positions = department.positions;
-  }
+  // onDepartment(department: Department): void {
+  //   this.positions = department.positions;
+  // }
 
 }

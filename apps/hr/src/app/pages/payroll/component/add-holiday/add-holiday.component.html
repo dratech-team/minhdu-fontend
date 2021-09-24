@@ -47,21 +47,6 @@
           </div>
         </div>
         <div class='mt-3 row' [formGroup]='formGroup'>
-          <label for='branch'>Đơn vị công tác <span class='star'>*</span></label>
-          <mat-select
-            id='branch'
-            class='form-control'
-            formControlName='branch'
-            [ngClass]="{ 'is-invalid': submitted && f.branch.errors?.required }">
-            <mat-option *ngFor='let branch of branches$|async ' [value]='branch.id' (click)='onBranch(branch)'>
-              {{branch.name}}
-            </mat-option>
-          </mat-select>
-          <div *ngIf='submitted && f.branch.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn đơn vị</div>
-          </div>
-        </div>
-        <div class='mt-3 row' [formGroup]='formGroup'>
           <label for='department'>Bộ phận công tác <span class='star'>*</span></label>
           <mat-select id='department' class='form-control' formControlName='department'
                       [ngClass]="{ 'is-invalid': submitted && f.department.errors?.required }">

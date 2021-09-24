@@ -30,30 +30,8 @@
       </div>
       <div class='main-popup mt-2' [formGroup]='formGroup'>
         <label class='main-title' for='branch'>Đơn vị <span class='star'>*</span></label>
-        <mat-select
-          id='branch'
-          class='form-control'
-          formControlName='branch'
-          [ngClass]="{ 'is-invalid': submitted && f.branch.errors?.required }"
-        >
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.id' (click)='onBranch(branch)'>
-            {{branch.name}}
-          </mat-option>
-        </mat-select>
         <div *ngIf='submitted && f.branch.errors?.required' class='invalid-feedback'>
           <div>Chưa chọn đơn vị</div>
-        </div>
-      </div>
-      <div class='main-popup mt-2' [formGroup]='formGroup'>
-        <label class='main-title' for='department'>Bộ phận <span class='star'>*</span></label>
-        <mat-select id='department' class='form-control' formControlName='department'
-                    [ngClass]="{ 'is-invalid': submitted && f.department.errors?.required }">
-          <mat-option *ngFor='let department of departments' [value]='department.id' (click)='onDepartment(department)'>
-            {{department.name}}
-          </mat-option>
-        </mat-select>
-        <div *ngIf='submitted && f.department.errors?.required' class='invalid-feedback'>
-          <div>Chưa chọn bộ phận</div>
         </div>
       </div>
       <div class='main-popup mt-2' [formGroup]='formGroup'>

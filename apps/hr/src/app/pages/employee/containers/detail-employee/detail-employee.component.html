@@ -158,20 +158,8 @@
             </div>
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #3C3B54'>
-              {{employee?.position?.department?.branch?.name}}
+              {{employee?.branch?.name}}
             </span>
-            </div>
-
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Bộ phận :</span>
-            </div>
-            <div class='col py-2'>
-              <div class='font-weight-bold p-1'
-              >
-                <div style='margin: 0 20px; '>{{employee?.position?.department?.name}}</div>
-              </div>
             </div>
 
           </div>
@@ -643,8 +631,7 @@
           <tr *ngFor='let workHistory of employee.workHistories'>
             <td class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{workHistory?.position?.name}}</td>
-            <td class='text-center'>{{workHistory?.position?.department?.name}}</td>
-            <td class='text-center'>{{workHistory?.position?.department?.branch?.name}}</td>
+            <td class='text-center'>{{workHistory?.branch?.name}}</td>
           </tr>
         </table>
       </div>

@@ -12,19 +12,30 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ position: {name: string, departmentId: number, workday: number}}>()
+  props<{ position: {name: string, workday?: number}}>()
 );
 
-
+export const addPositionSuccess = createAction(
+  '[Position/API] Add Position Success',
+  props<{position: Position}>()
+);
+/**
+ * @deprecated
+ * */
 export const updatePosition = createAction(
   '[Position/API] Update Position',
   props<{ id: number, name: string, workday: Date }>()
 );
-
+/**
+ * @deprecated
+ * */
 export const deletePosition = createAction(
   '[Position/API] Delete Position',
   props<{ id: number }>()
 );
+/**
+ * @deprecated
+ * */
 export const loadPositionFailure = createAction(
   '[Position/API] Load Position Failure',
   props<{ error: any }>()
@@ -33,6 +44,7 @@ export const loadPositionFailure = createAction(
 
 export const PositionActions = {
   addPosition,
+  addPositionSuccess,
   loadPosition,
   loadPositionSuccess,
   loadPositionFailure,

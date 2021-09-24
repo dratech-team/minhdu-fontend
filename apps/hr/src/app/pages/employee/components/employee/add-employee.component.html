@@ -3,57 +3,52 @@
   <form [formGroup]='formGroup'>
     <div class='form-group'>
       <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
-      <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-pick-location>
+      <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup' [submitted]='submitted' [form]='f'>
+      </app-pick-location>
       <div class='row mt-3 d-flex'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='branch'>Đơn vị công tác</label><span class='star'>*</span>
-          <mat-select
-            id='branch'
-            class='form-control'
-            formControlName='branch'
-            [ngClass]="{ 'is-invalid': submitted && f.branch.errors }"
-          >
-            <mat-option *ngFor='let branch of branches$|async ' [value]='branch.id' (click)='onBranch(branch)'>
-              {{branch.name}}
-            </mat-option>
-          </mat-select>
-          <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
-            <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị công tác</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='department'>Bộ phận công tác </label><span class='star'>*</span>
-          <mat-select id='department'
-                      class='form-control'
-                      formControlName='department'
-                      [ngClass]="{ 'is-invalid': submitted && f.department.errors }">
-            <mat-option *ngFor='let department of departments' [value]='department.id'
-                        (click)='onDepartment(department)'>
-              {{department.name}}
-            </mat-option>
-          </mat-select>
-          <div *ngIf="submitted && f.department.errors" class="invalid-feedback">
-            <div *ngIf="f.department.errors?.required">Chưa chọn bộ phận công tác</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='position'>Chức vụ </label><span class='star'>*</span>
-          <mat-select id='position' class='form-control' formControlName='position'
-                      [ngClass]="{ 'is-invalid': submitted && f.position.errors }">
-            <mat-option *ngFor='let position of positions' [value]='position.id'>
+          <label >Chức vụ </label><span class='star'>*</span>
+          <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
+            #positionInput>
+          <mat-autocomplete #position="matAutocomplete">
+            <mat-option *ngFor="let position of positions$ | async"
+              [value]="!position.id ? positionInput.value : position.name " (click)='onCreatePosition(position)'>
               {{position.name}}
             </mat-option>
-          </mat-select>
-          <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+          </mat-autocomplete>
+          <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
             <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
+          </div> -->
+        </div>
+        <div class='col-sm'  [formGroup]='formGroup' >
+          <label for='position'>Ngày công chuẩn </label><span class='star'>*</span>
+          <input class='form-control' type="number" formControlName="workday"
+          [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
+          >
+          <div *ngIf="submitted && f.workday.errors" class="invalid-feedback">
+            <div *ngIf="f.workday.errors?.required">Chưa nhập ngày công chuẩn</div>
           </div>
+        </div>
+        <div class='col-sm'>
+          <label>Đơn vị </label><span class='star'>*</span>
+          <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
+            #branchInput >
+          <mat-autocomplete #branch="matAutocomplete" >
+            <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
+              (click)='onCreateBranch(branch)'>
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+            <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
+          </div> -->
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
           <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
-                      [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
+            [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
             <mat-option value='{{flatSalary.FLAT_SALARY}}'>
               Lương cố định
             </mat-option>
@@ -72,55 +67,27 @@
       </div>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
-          <label for='workedAt'>Ngày vào làm chính thức</label><span class='star'>*</span>
-          <input
-            id='workedAt'
-            type='date'
-            class='form-control'
-            formControlName='workedAt'
-            [ngClass]="{ 'is-invalid': submitted && f.workedAt.errors }"
-          >
-          <div *ngIf="submitted && f.workedAt.errors" class="invalid-feedback">
-            <div *ngIf="f.workedAt.errors?.required">Chưa nhập ngày vào làm chính thức</div>
-          </div>
+          <label for='createdAt'>Ngày vào làm </label>
+          <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
         </div>
-         <div class='col-sm'>
-           <label for='createdAt'>Ngày vào làm </label><span class='star'>*</span>
-           <input
-             id='createdAt'
-             type='date'
-             class='form-control'
-             formControlName='createdAt'
-             [ngClass]="{ 'is-invalid': submitted && f.createdAt.errors }"
-           >
-           <div *ngIf="submitted && f.createdAt.errors" class="invalid-feedback">
-             <div *ngIf="f.createdAt.errors?.required">Chưa nhập ngày vào làm</div>
-           </div>
-         </div>
+        <div class='col-sm'>
+          <label for='workedAt'>Ngày vào làm chính thức</label>
+          <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
+        </div>
       </div>
       <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
         <div class='col-sm'>
           <label for='facebook'>Facebook</label>
-          <input
-            id='facebook'
-            type='text'
-            class='form-control'
-            formControlName='facebook'
-          >
+          <input id='facebook' type='text' class='form-control' formControlName='facebook'>
         </div>
         <div class='col-sm'>
           <label for='zalo'>Zalo</label>
-          <input
-            id='zalo'
-            type='number'
-            class='form-control'
-            formControlName='zalo'
-          >
+          <input id='zalo' type='number' class='form-control' formControlName='zalo'>
         </div>
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button (click)='onSubmit()'  class='btn btn-dark ml-2'> Xác nhận</button>
+        <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

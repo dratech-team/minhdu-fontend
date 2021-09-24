@@ -4,11 +4,7 @@
 <div class='mt-2'>
   <form [formGroup]='formGroup'>
     <label class='title-child'>Ngày nghỉ việc</label>
-    <input type='date' class='form-control' formControlName='leftAt'
-           [ngClass]="{ 'is-invalid': submitted && f.leftAt.errors?.required }">
-    <div *ngIf="submitted && f.leftAt.errors?.required" class="invalid-feedback">
-      <div>Chưa nhập ngày nghỉ việc</div>
-    </div>
+    <input type='date' class='form-control' formControlName='leftAt'>
   </form>
   <div class='mt-4 ' mat-dialog-actions>
     <button class='btn btn-secondary mr-2' mat-dialog-close>Huỷ</button>

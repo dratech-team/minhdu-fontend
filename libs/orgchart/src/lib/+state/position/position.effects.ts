@@ -21,11 +21,10 @@ export class PositionEffects {
   addPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
-      switchMap(param => this.positionService.addOne(param.position).pipe(
-        map(_ => OrgchartActions.init()),
-        catchError(err => throwError(err))
-      ))
-    ), { dispatch: true }
+      switchMap(param => this.positionService.addOne(param.position)),
+      map(position => PositionActions.addPositionSuccess({ position })),
+      catchError(err => throwError(err))
+    )
   );
 
 

@@ -38,6 +38,7 @@ import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.comp
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
 import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
+import { PayrollSalaryComponent } from './container/payroll-salary/payroll-salary.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-al
     DialogOvertimeComponent,
     DialogBasicComponent,
     DialogAbsentComponent,
-    DialogStayComponent
+    DialogStayComponent,
+    PayrollSalaryComponent
   ]
 })
 export class PayrollModule {

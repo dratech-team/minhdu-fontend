@@ -24,6 +24,7 @@ import { EmployeeLibModule } from '@minhdu-fontend/employee';
 import { LocationModule } from '@minhdu-fontend/location';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BHYTComponent } from './components/bhyt/BHYT.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { BHYTComponent } from './components/bhyt/BHYT.component';
     InfiniteScrollModule,
     FormsModule,
     MatCheckboxModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
+    MatAutocompleteModule
   ],
   declarations: [
     AddDegreeComponent,

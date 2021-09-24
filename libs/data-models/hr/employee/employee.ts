@@ -8,6 +8,7 @@ import {
 } from '@minhdu-fontend/data-models';
 import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
 import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
+import { Branch } from '../orgChart/branch';
 
 
 export interface Employee {
@@ -37,7 +38,7 @@ export interface Employee {
   leftAt: Date,
   isFlatSalary: boolean,
   position: Position,
-  positionId: number,
+  branch: Branch,
   note?: string;
   facebook: string,
   zalo: string,
@@ -48,6 +49,6 @@ export interface Employee {
   relatives: Relative[],
   isSelect?: boolean;
   workHistories?: WorkHistory[];
-  historySalaries:SalaryHistory[];
+  historySalaries: SalaryHistory[];
 }
 

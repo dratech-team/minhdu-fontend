@@ -20,10 +20,9 @@ export class OrgchartEffects {
   addBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.addBranch),
-      switchMap(param => this.branchService.addOne(param.branch).pipe(
-        map(_ => OrgchartActions.init()),
-        catchError(err => throwError(err))
-      ))
+      switchMap(param => this.branchService.addOne(param.branch)),
+      map(branch => OrgchartActions.addBranchSuccess({ branch })),
+      catchError(err => throwError(err))
     ), { dispatch: true }
   );
 
@@ -60,7 +59,7 @@ export class OrgchartEffects {
   constructor(
     private actions$: Actions,
     private branchService: BranchService,
-    private orgchartService: OrgchartService,
+    private orgchartService: OrgchartService
   ) {
   }
 }

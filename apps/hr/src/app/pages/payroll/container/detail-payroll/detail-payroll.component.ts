@@ -56,7 +56,7 @@ export class DetailPayrollComponent implements OnInit {
 
   addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogBasicComponent, {
-      width: '50%',
+      width: '40%',
       data:{type, payroll, salary}
     })
   }
@@ -69,14 +69,14 @@ export class DetailPayrollComponent implements OnInit {
 
   addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogStayComponent, {
-      width: '50%',
+      width: '40%',
       data:{type, payroll, salary}
     })
   }
 
   addAndUpdateAllowance(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
     this.dialog.open(DialogAllowanceComponent, {
-      width: '50%',
+      width: '40%',
       data:{type, payroll, salary}
     })
   }
