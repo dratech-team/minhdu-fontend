@@ -14,7 +14,7 @@ export class SalaryService extends BaseService<Salary>{
     super(Api.SALARY , http );
   }
 
-  addOne(salary:Salary): Observable<Salary> {
+  addOne(salary:any): Observable<Salary> {
     return super.addOne(salary);
   }
 

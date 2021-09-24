@@ -29,22 +29,22 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
-    name: 'Bản mẫu',
-    url: '/phieu-luong/ban-mau',
-    icon: 'cil-lock-locked'
-  },
-  {
     name: 'Ngày lễ',
     url: '/phieu-luong/ngay-le',
     icon: 'cil-lock-locked'
   },
   {
     title: true,
-    name: 'Sơ đồ'
+    name: 'Bản Mẫu'
   },
   {
-    name: 'Tổ chức',
-    url: '/to-chuc',
+    name: 'Lương cơ bản',
+    url: '/ban-mau',
+    icon: 'cil-lock-locked'
+  },
+  {
+    name: 'Tăng ca',
+    url: '/ban-mau/tang-ca',
     icon: 'cil-lock-locked'
   },
   {

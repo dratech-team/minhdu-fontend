@@ -18,13 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TemplateOvertimeComponent } from './component/template-overtime/template-overtime.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
-import { TemplateComponent } from './container/template/template.component';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
 import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
@@ -38,7 +36,6 @@ import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.comp
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
 import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
-import { PayrollSalaryComponent } from './container/payroll-salary/payroll-salary.component';
 
 @NgModule({
   imports: [
@@ -74,8 +71,6 @@ import { PayrollSalaryComponent } from './container/payroll-salary/payroll-salar
     FilterPipe,
     DialogAllowanceComponent,
     AddPayrollComponent,
-    TemplateOvertimeComponent,
-    TemplateComponent,
     UpdateConfirmComponent,
     AddHolidayComponent,
     HolidayComponent,
@@ -83,7 +78,6 @@ import { PayrollSalaryComponent } from './container/payroll-salary/payroll-salar
     DialogBasicComponent,
     DialogAbsentComponent,
     DialogStayComponent,
-    PayrollSalaryComponent
   ]
 })
 export class PayrollModule {

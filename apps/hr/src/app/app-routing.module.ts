@@ -28,15 +28,14 @@ const routes: Routes = [
         data: {
           title: 'Danh sách phiếu lương'
         },
-
       },
-      // {
-      //   path: 'to-chuc',
-      //   loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartPageModule),
-      //   data: {
-      //     title: 'Hệ thống nhân sự'
-      //   },
-      // },
+      {
+        path: 'ban-mau',
+        loadChildren: () => import('./pages/template/template.module').then(m => m.TemplateModule),
+        data: {
+          title: 'Bản mẫu'
+        },
+      },
       {
         path: 'lich-su-he-thong',
         loadChildren: () => import('@minhdu-fontend/system-history').then(m => m.SystemHistoryModule),

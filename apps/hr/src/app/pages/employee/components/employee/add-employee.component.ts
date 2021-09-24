@@ -78,7 +78,7 @@ export class AddEmployeeComponent implements OnInit {
         this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd'),
       ],
       email: [this.data?.employee?.email],
-      workday: [this.data?.employee?.position.workday, Validators.required],
+      workday: [this.data?.employee?.workday, Validators.required],
       phone: [this.data?.employee?.phone],
       note: [this.data?.employee.note],
       workedAt: [

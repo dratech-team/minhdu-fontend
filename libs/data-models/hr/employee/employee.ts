@@ -34,6 +34,7 @@ export interface Employee {
   mst?: string,
   createdAt: Date,
   workedAt: Date;
+  workday:number,
   contractAt: string,
   leftAt: Date,
   isFlatSalary: boolean,

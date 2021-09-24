@@ -2,10 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { getAllOrgchart, getBranchById, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import {  Department, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
-import { DepartmentActions, getDepartmentById } from '../../../../../../../../libs/orgchart/src/lib/+state/department';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
 
 
@@ -16,14 +15,8 @@ export class TemplateOvertimeComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   typeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
-  departments?: Department[];
   positions?: Position[];
   branches$ = this.store.pipe(select(getAllOrgchart));
-  branch$ = this.store.pipe(select(getBranchById(
-    this?.data?.position?.department?.branch?.id
-  )));
-  department$ = this.store.pipe(select(getDepartmentById(
-    this?.data?.position?.department?.id)));
   submitted = false;
 
   constructor(
@@ -36,10 +29,7 @@ export class TemplateOvertimeComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(DepartmentActions.loadDepartment());
-    // this.store.dispatch(OrgchartActions.init());
-    // this.branch$.subscribe(val => this.departments = val?.departments);
-    // this.department$.subscribe(val => this.positions = val?.positions);
+    this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
       title: [this.data?.title, Validators.required],
       position: [this.data?.positionId, Validators.required],
@@ -76,13 +66,4 @@ export class TemplateOvertimeComponent implements OnInit {
     };
     this.dialogRef.close(template);
   }
-
-  // onBranch(branch: Branch): void {
-  //   this.departments = branch.departments;
-  // }
-
-  // onDepartment(department: Department): void {
-  //   this.positions = department.positions;
-  // }
-
 }

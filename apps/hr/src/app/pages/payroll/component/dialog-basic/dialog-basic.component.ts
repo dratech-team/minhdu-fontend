@@ -1,19 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import * as lodash from 'lodash';
-import { map } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { TemplateBasicSalaryService } from '../../../template/service/template-basic-salary.service';
+import { Observable } from 'rxjs';
+import { TemplateSalaryBasic } from '../../../template/+state/teamlate-salary-basic/template-salary-basic';
+import { SalaryService } from '../../service/salary.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'dialog-basic.component.html',
@@ -23,6 +24,8 @@ export class DialogBasicComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
+  checkSalary!: boolean;
+  templateBasicSalary$!: Observable<TemplateSalaryBasic[]>;
 
   constructor(
     public datePipe: DatePipe,
@@ -30,18 +33,20 @@ export class DialogBasicComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
+    private readonly templateBasicSalaryService: TemplateBasicSalaryService,
+    private readonly salaryService: SalaryService,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {
-  }
-
+  ) {}
 
   ngOnInit(): void {
+    this.templateBasicSalary$ = this.templateBasicSalaryService.getAll();
     this.formGroup = this.formBuilder.group({
       price: [this.data?.salary?.price, Validators.required],
-      type: [this.data?.salary?.type ?
-        this.data?.salary?.type : this.data.type
-        , Validators.required],
-      rate: [1, Validators.required]
+      type: [
+        this.data?.salary?.type ? this.data?.salary?.type : this.data.type,
+        Validators.required,
+      ],
+      rate: [1, Validators.required],
     });
   }
 
@@ -56,20 +61,40 @@ export class DialogBasicComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const salary = {
-      title: value.type === this.type.BASIC_INSURANCE ?
-        'Lương cơ bản trước bảo hiểm' : 'Lương cơ bản',
-      price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
+      title:
+        value.type.trim() === this.type.BASIC_INSURANCE
+          ? 'Lương cơ bản trích BH'
+          : 'Lương theo PL.HĐ',
+      price: this.checkSalary
+        ? typeof value.price === 'string'
+          ? Number(value.price.replace(this.numberChars, ''))
+          : value.price
+        : value.price,
       rate: value.rate,
-      payrollId:this.data?.payroll?.id || undefined,
-      type:value.type
+      payrollId: this.data?.payroll?.id || undefined,
+      type: value.type,
     };
     if (this.data.salary) {
-      this.store.dispatch(PayrollAction.updateSalary({
-        id: this.data.salary.id, payrollId:
-        this.data.payroll.id , salary: salary }));
+      this.store.dispatch(
+        PayrollAction.updateSalary({
+          id: this.data.salary.id,
+          payrollId: this.data.payroll.id,
+          salary: salary,
+        })
+      );
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id , salary: salary }));
+      /// TODO: bùa
+      this.salaryService.addOne(salary).pipe(debounceTime(2000)).subscribe((val) => {
+        if (val) {
+          location.reload();
+        }
+      });
     }
     this.dialogRef.close();
+  }
+
+  //TODO
+  onCheckValue(val: boolean) {
+    this.checkSalary = val;
   }
 }

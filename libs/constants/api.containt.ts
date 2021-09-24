@@ -13,7 +13,8 @@ export const Api = {
   RELATIVE: 'relative',
   DEGREE: 'degree',
   Payroll: 'payroll',
-  template_OVERTIME: 'overtime-template',
+  OVERTIME_TEMPLATE: 'overtime-template',
+  BASIC_TEMPLATE: 'basic-template',
   holiday: 'holiday',
   CUSTOMER: 'customer',
   CUSTOMER_EXPORT: 'customer/export/print',
@@ -42,5 +43,6 @@ export const Api = {
   REQUISITE: 'requisite',
   MATERIAL: 'material',
   LOGGER: 'logger',
-  SLACK_WEBHOOK:'https://hooks.slack.com/services/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',
+  SLACK_WEBHOOK:
+    'https://hooks.slack.com/services/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',
 };

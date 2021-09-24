@@ -4,29 +4,25 @@ import { TemplateOvertime } from '../+state/template-overtime/template-overtime.
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { TemplateSalaryBasic } from '../+state/teamlate-salary-basic/template-salary-basic';
 
 @Injectable({providedIn:'root'})
-export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
+export class TemplateBasicSalaryService extends BaseService<TemplateSalaryBasic>{
   constructor(
     public readonly http: HttpClient,
   ) {
-    super(Api.OVERTIME_TEMPLATE,http)
-  }
-  pagination(params?: any): Observable<ResponsePaginate<TemplateOvertime>> {
-    return super.pagination(params);
+    super(Api.BASIC_TEMPLATE,http)
   }
 
-  addOne(props: TemplateOvertime): Observable<TemplateOvertime> {
+  addOne(props: TemplateSalaryBasic): Observable<TemplateSalaryBasic> {
     return super.addOne(props);
   }
 
-  getAll(): Observable<TemplateOvertime[]> {
+  getAll(): Observable<TemplateSalaryBasic[]> {
     return super.getAll();
   }
-  update(id: any, body: any): Observable<Update<TemplateOvertime>> {
-    return super.update(id, body);
+  updateBasicSalary(id: any, body: any): Observable<TemplateSalaryBasic> {
+    return this.http.patch<TemplateSalaryBasic>(this.url + `/${id}`, body);
   }
 
   delete(id: number): Observable<void> {

@@ -54,7 +54,7 @@ export class DialogStayComponent implements OnInit {
 
 //FIXME
   get salariesStay() {
-    return ['Phụ cấp ở lại', 'Phụ cấp điện thoại và tín nhiệm', 'Phụ cấp thêm'];
+    return ['Phụ cấp ở lại', 'Phụ cấp điện thoại', 'Phụ cấp khác', 'Phụ cấp tín nhiệm'];
   }
 
   onSubmit(): any {

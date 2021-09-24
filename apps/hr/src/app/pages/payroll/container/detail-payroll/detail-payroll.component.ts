@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentPayroll,selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
+import { selectCurrentPayroll, selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -25,7 +25,8 @@ import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialo
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
-  adding$ = this.store.pipe(select(selectedAddedPayroll))
+  adding$ = this.store.pipe(select(selectedAddedPayroll));
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -47,56 +48,58 @@ export class DetailPayrollComponent implements OnInit {
   }
 
 
-  addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+  addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
     this.dialog.open(DialogOvertimeComponent, {
       width: '50%',
-      data:{type, payroll, salary}
-    })
+      data: { type, payroll, salary }
+    });
   }
 
-  addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+  addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
     this.dialog.open(DialogBasicComponent, {
       width: '40%',
-      data:{type, payroll, salary}
-    })
+      data: { type, payroll, salary }
+    });
   }
-  addAndUpdateAbsent(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+
+  addAndUpdateAbsent(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
     this.dialog.open(DialogAbsentComponent, {
       width: '50%',
-      data:{type, payroll, salary}
-    })
+      data: { type, payroll, salary }
+    });
   }
 
-  addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+  addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
     this.dialog.open(DialogStayComponent, {
       width: '40%',
-      data:{type, payroll, salary}
-    })
+      data: { type, payroll, salary }
+    });
   }
 
-  addAndUpdateAllowance(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary){
+  addAndUpdateAllowance(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
     this.dialog.open(DialogAllowanceComponent, {
       width: '40%',
-      data:{type, payroll, salary}
-    })
+      data: { type, payroll, salary }
+    });
   }
 
   removeSalary(id: number, payrollId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent,{width:'30%'});
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
       }
     });
   }
-  confirmPayroll(id: number){
-    this.dialog.open(UpdateConfirmComponent , {
-        width: "25%",
-        data: {id: id, type: 'accConfirmedAt'}
-    })
+
+  confirmPayroll(id: number) {
+    this.dialog.open(UpdateConfirmComponent, {
+      width: '25%',
+      data: { id: id, type: 'accConfirmedAt' }
+    });
   }
 
   historySalary(employeeId: number) {
-    this.dialog.open(DevelopmentComponent, {width:'30%'})
+    this.dialog.open(DevelopmentComponent, { width: '30%' });
   }
 }

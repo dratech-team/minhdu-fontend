@@ -22,8 +22,12 @@
             formControlName='type'
             [ngClass]="{ 'is-invalid': submitted && f.type.errors }"
           >
-            <mat-option value='{{type.BASIC}}'>Lương cơ bản</mat-option>
-            <mat-option value='{{type.BASIC_INSURANCE}}'>Lương cơ bản trước bảo hiểm</mat-option>
+            <mat-option value='{{type.BASIC}}' (click)='onCheckValue(true)'>
+              Lương theo PL.HD
+            </mat-option>
+            <mat-option value='{{type.BASIC_INSURANCE}}' (click)='onCheckValue(false)'>
+              Lương cơ bản trích BH
+            </mat-option>
           </mat-select>
           <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
             <div>Chưa chọn loại lương</div>
@@ -35,7 +39,7 @@
           <span>Mức lương</span>
           <div class='star'>*</div>
         </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
+        <div class='row mb-3' [formGroup]='formGroup' *ngIf='checkSalary'>
           <input
             class='form-control'
             type='text'
@@ -48,7 +52,17 @@
             <div>Chưa nhập mức lương</div>
           </div>
         </div>
-
+        <div class='row mb-3' [formGroup]='formGroup' *ngIf='!checkSalary'>
+          <mat-select
+            class='form-control col'
+            formControlName='price'
+            [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+          >
+            <mat-option *ngFor='let item of templateBasicSalary$ | async' [value]='item.price'>
+              {{item.price}}
+            </mat-option>
+          </mat-select>
+        </div>
       </div>
     </div>
     <div class='footer-popup row ml-4'>

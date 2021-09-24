@@ -1,0 +1,42 @@
+<div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
+  <div class='row h3 ml-3'>Bản mẫu lương cơ bản</div>
+  <div class='row ml-3'>
+    <button (click)='templateBasicSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+  </div>
+    <div class='main-profile'>
+      <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
+        <div class='border-start title-header address'>
+          <div class='title-profile'>Tên bản mẫu</div>
+          <input
+            class='form-control input-profile'
+            type='text'
+            formControlName='title'
+          >
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Giá</div>
+          <input
+            class='form-control input-profile '
+            type='text' formControlName='price'>
+        </div>
+      </form>
+      <div class='outer animated fadeIn d-flex'>
+        <div class='row-content' *ngFor='let salaryBasic of salaryBasic'
+             (contextmenu)='child.onContextMenu($event,salaryBasic)'>
+          <app-mouse-right #child (addEvent)='templateBasicSalary($event)'
+                           (deleteEvent)='deleteBasicSalary($event)'
+          ></app-mouse-right>
+          <div class='content-profile address pointer ' (click)='templateBasicSalary(salaryBasic)'>
+            {{salaryBasic?.title}}
+          </div>
+          <div class='content-profile name pointer ' (click)='templateBasicSalary(salaryBasic)'>
+            {{salaryBasic?.price}}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
