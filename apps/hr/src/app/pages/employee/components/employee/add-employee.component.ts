@@ -47,8 +47,6 @@ export class AddEmployeeComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
-  optionPosition: Position[] = [];
-  optionBranches: Branch[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -66,10 +64,6 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    this.branches$.subscribe(
-      (val) => (this.optionBranches = JSON.parse(JSON.stringify(val)))
-    );
-    this.positions$.subscribe((val) => console.log(val));
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
       issuedBy: [this.data?.employee?.issuedBy],
@@ -191,7 +185,6 @@ export class AddEmployeeComponent implements OnInit {
       note: value.note ? value.note : undefined,
       workday: value.workday,
     };
-    console.log(employee);
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
@@ -227,6 +220,8 @@ export class AddEmployeeComponent implements OnInit {
       this.snackbar.open('Đã tạo', '', { duration: 2500 });
     }
   }
+
+  /// FIXME: Duplicate code
   onCreateBranch(branch: Branch) {
     if (branch.id === 0) {
       this.branchService
@@ -236,9 +231,5 @@ export class AddEmployeeComponent implements OnInit {
     }else{
       this.branchId = branch.id
     }
-    this.positionService.addOne({
-      name: this.inputPosition.nativeElement.value,
-      workday: this.formGroup.value.workday,
-    });
   }
 }

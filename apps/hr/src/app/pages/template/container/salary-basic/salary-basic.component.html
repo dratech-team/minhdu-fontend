@@ -3,8 +3,8 @@
   <div class='row ml-3'>
     <button (click)='templateBasicSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
   </div>
-    <div class='main-profile'>
-      <form [formGroup]='formGroup' class='header-profile mt-3 animated fadeIn'>
+    <div class='main-profile' style='width: fit-content'>
+      <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
         <div class='border-start title-header address'>
           <div class='title-profile'>Tên bản mẫu</div>
           <input
@@ -20,8 +20,16 @@
             type='text' formControlName='price'>
         </div>
       </form>
-      <div class='outer animated fadeIn d-flex'>
-        <div class='row-content' *ngFor='let salaryBasic of salaryBasic'
+      <div class='outer animated fadeIn d-flex'
+           infiniteScroll
+           [infiniteScrollDistance]='0.5'
+           [scrollWindow]='false'
+           [alwaysCallback]='true'
+           (scrolled)='onScroll()'
+           *ngIf='(templateSalaryBasic$| async) as templates'
+           [ngStyle]="{'width':templates.length === 0 ? header.offsetWidth + 'px': 'auto',
+         'overflow-y':templates.length === 0 ? 'hidden': 'scroll'}">
+        <div class='row-content' *ngFor='let salaryBasic of templates'
              (contextmenu)='child.onContextMenu($event,salaryBasic)'>
           <app-mouse-right #child (addEvent)='templateBasicSalary($event)'
                            (deleteEvent)='deleteBasicSalary($event)'
@@ -30,7 +38,7 @@
             {{salaryBasic?.title}}
           </div>
           <div class='content-profile name pointer ' (click)='templateBasicSalary(salaryBasic)'>
-            {{salaryBasic?.price}}
+            {{salaryBasic?.price | number: '1.0-0' }} vnd
           </div>
         </div>
       </div>

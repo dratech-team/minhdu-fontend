@@ -25,7 +25,9 @@ const CONTAINERS = [OrgchartContainer];
     MatIconModule,
     ReactiveFormsModule,
     MatDialogModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
+    MatDialogModule,
+    MatDialogModule
   ],
   declarations: [
     CONTAINERS,

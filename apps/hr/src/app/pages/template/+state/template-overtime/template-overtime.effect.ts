@@ -15,18 +15,27 @@ export class TemplateOvertimeEffect {
   loadAll$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadALlTemplate),
-      switchMap(props => this.templateOvertimeService.pagination(props)),
+      switchMap(props =>
+      {
+        return  this.templateOvertimeService.pagination(props)
+      }
+        ),
       map((responsePagination) =>
-        TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertime: responsePagination.data })),
+        TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data })),
       catchError((err) => throwError(err))
     ));
 
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadInit),
-      switchMap(props => this.templateOvertimeService.pagination(props)),
-      map((responsePagination) =>
-        TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertime: responsePagination.data })),
+      switchMap(props =>
+      {
+        return  this.templateOvertimeService.pagination(props)
+      }),
+      map((responsePagination) =>{
+        return   TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data })
+      }
+       ),
       catchError((err) => throwError(err))
     ));
 
@@ -49,7 +58,7 @@ export class TemplateOvertimeEffect {
           });
         }
         return TemplateOvertimeAction.loadMoreTempLateSuccess({
-          templateOvertime: responsePagination.data
+          templateOvertimes: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -59,7 +68,7 @@ export class TemplateOvertimeEffect {
   addTemplate$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.AddTemplate),
-      switchMap((pram) => this.templateOvertimeService.addOne(pram.templateOvertime).pipe(
+      switchMap((pram) => this.templateOvertimeService.addOne(pram.template).pipe(
         map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 })),
         catchError((err) => throwError(err))
       ))

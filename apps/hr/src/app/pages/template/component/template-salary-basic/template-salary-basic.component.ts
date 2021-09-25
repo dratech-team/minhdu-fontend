@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import {  Department, Position } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import {  Store } from '@ngrx/store';
+import {  OrgchartActions } from '@minhdu-fontend/orgchart';
+import {  SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { TemplateBasicSalaryService } from '../../service/template-basic-salary.service';
+import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
 
 
 @Component({
@@ -21,7 +20,6 @@ export class TemplateSalaryBasicComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly templateBasicSalaryService: TemplateBasicSalaryService,
     private readonly dialogRef: MatDialogRef<TemplateSalaryBasicComponent>
   ) {
   }
@@ -46,15 +44,18 @@ export class TemplateSalaryBasicComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const template = {
+        title:value.title,
         price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         type: this.type.BASIC
-    };
-    this.templateBasicSalaryService.addOne(template).subscribe(val => {
-      if(val){
-        location.reload();
-      }
-    })
-
+    }
+    if(this.data){
+      this.store.dispatch(TemplateBasicAction.updateTemplate(
+        {id: this.data.id,
+                  templateBasic: template }))
+    }else{
+      this.store.dispatch(TemplateBasicAction.AddTemplate(
+        {template: template }))
+    }
     this.dialogRef.close(template);
   }
 }

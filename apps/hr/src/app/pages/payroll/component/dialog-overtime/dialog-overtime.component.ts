@@ -5,14 +5,14 @@ import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
+import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
+
 
 @Component({
   templateUrl: 'dialog-overtime.component.html',
@@ -112,11 +112,11 @@ export class DialogOvertimeComponent implements OnInit {
     }
   }
 
-  pickOverTime(data: TemplateOvertime) {
+  pickOverTime(data: any) {
     this.price = data.price;
     this.title = data.title;
     this.rate = data.rate
-    // this.searchInit = { positionId: data.positionId}
-    // this.store.dispatch(EmployeeAction.loadInit({positionId: data.positionId}))
+    this.searchInit = { templateId: data.id}
+    this.store.dispatch(EmployeeAction.loadInit({templateId: data.id}))
   }
 }

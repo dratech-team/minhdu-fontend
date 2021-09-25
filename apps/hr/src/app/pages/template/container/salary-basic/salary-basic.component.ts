@@ -2,19 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TemplateSalaryBasic } from '../../+state/teamlate-salary-basic/template-salary-basic';
-import { TemplateBasicSalaryService } from '../../service/template-basic-salary.service';
+import { TemplateBasicSalary } from '../../+state/teamlate-salary-basic/template-basic-salary';
 import { TemplateSalaryBasicComponent } from '../../component/template-salary-basic/template-salary-basic.component';
-import { debounce, debounceTime } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { selectorAllTemplate } from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
+import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
+import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 
 @Component({
   templateUrl: 'salary-basic.component.html'
 })
 export class SalaryBasicComponent implements OnInit {
+  templateSalaryBasic$ = this.store.pipe(select(selectorAllTemplate))
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
-  salaryBasic!: TemplateSalaryBasic [];
+  pageSize = 30;
+  pageIndexInit = 0;
+  salaryBasic!: TemplateBasicSalary [];
   formGroup = new FormGroup(
     {
       title: new FormControl(''),
@@ -24,29 +31,57 @@ export class SalaryBasicComponent implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly templateSalaryService: TemplateBasicSalaryService,
+    private readonly store: Store,
   ) {
   }
 
   ngOnInit() {
-    this.templateSalaryService.getAll().subscribe(val =>{
-      this.salaryBasic = val
-    })
+    this.store.dispatch(TemplateBasicAction.loadInit({take:this.pageSize, skip: this.pageIndexInit}))
+    this.formGroup.valueChanges
+      .pipe(
+        debounceTime(1000),
+        tap((val) => {
+          this.store.dispatch(
+            TemplateOvertimeAction.loadInit(
+              this.template(val))
+          );
+        })
+      )
+      .subscribe();
   }
 
+
+
   templateBasicSalary(template?: any) {
-   const ref = this.dialog.open(TemplateSalaryBasicComponent, {
+    this.dialog.open(TemplateSalaryBasicComponent, {
       width: '40%',
       data: template
     })
-
   }
-//TODO
+
+
+  template(val: any) {
+    return {
+      take: this.pageSize,
+      skip: this.pageIndexInit,
+      title: val.title,
+      price: val.price,
+    };
+  }
+
   deleteBasicSalary($event: any) {
-    this.templateSalaryService.delete($event.id).pipe(debounceTime(2000)).subscribe(_ => {
-
-        location.reload()
-
+     const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'})
+    ref.afterClosed().subscribe(val =>{
+      if (val){
+        this.store.dispatch(TemplateBasicAction.deleteTemplate({id: $event.id}))
+      }
     })
+  }
+
+  onScroll() {
+    const val = this.formGroup.value;
+    this.store.dispatch(
+      TemplateBasicAction.loadMoreTemplateBasic(this.template(val))
+    );
   }
 }

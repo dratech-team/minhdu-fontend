@@ -118,7 +118,7 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab  [disabled]='data.salary || !searchInit ' class='col-12 ' label='Chọn nhân viên'>
+      <mat-tab *ngIf='!data.payroll'  [disabled]='!searchInit' class='col-12 ' label='Chọn nhân viên'>
         <app-pick-employee [employees$]='employee$' [searchInit]='searchInit'
                            (checkEvent)='pickEmployees($event)'></app-pick-employee>
       </mat-tab>

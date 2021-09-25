@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { TemplateOvertime } from '../+state/template-overtime/template-overtime.interface';
+import { ReqOvertime, TemplateOvertime } from '../+state/template-overtime/template-overtime.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
     return super.pagination(params);
   }
 
-  addOne(props: TemplateOvertime): Observable<TemplateOvertime> {
+  addOne(props: ReqOvertime): Observable<TemplateOvertime> {
     return super.addOne(props);
   }
 

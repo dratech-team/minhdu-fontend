@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { TemplateBasicSalaryService } from '../../../template/service/template-basic-salary.service';
 import { Observable } from 'rxjs';
-import { TemplateSalaryBasic } from '../../../template/+state/teamlate-salary-basic/template-salary-basic';
+import { TemplateBasicSalary } from '../../../template/+state/teamlate-salary-basic/template-basic-salary';
 import { SalaryService } from '../../service/salary.service';
 import { debounceTime } from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ export class DialogBasicComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   checkSalary!: boolean;
-  templateBasicSalary$!: Observable<TemplateSalaryBasic[]>;
+  templateBasicSalary$!: Observable<TemplateBasicSalary[]>;
 
   constructor(
     public datePipe: DatePipe,
@@ -86,7 +86,7 @@ export class DialogBasicComponent implements OnInit {
       /// TODO: bùa
       this.salaryService.addOne(salary).pipe(debounceTime(2000)).subscribe((val) => {
         if (val) {
-          location.reload();
+          // location.reload();
         }
       });
     }

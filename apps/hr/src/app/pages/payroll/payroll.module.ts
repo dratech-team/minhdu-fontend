@@ -21,8 +21,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
-import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
 import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
@@ -36,6 +34,8 @@ import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.comp
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
 import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
+import { templateOvertimeReducer } from '../template/+state/template-overtime/template-overtime.reducer';
+import { TemplateOvertimeEffect } from '../template/+state/template-overtime/template-overtime.effect';
 
 @NgModule({
   imports: [
@@ -50,7 +50,7 @@ import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-al
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect, TemplateOvertimeEffect, HolidayEffect]),
+    EffectsModule.forFeature([PayrollEffect, HolidayEffect, TemplateOvertimeEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,

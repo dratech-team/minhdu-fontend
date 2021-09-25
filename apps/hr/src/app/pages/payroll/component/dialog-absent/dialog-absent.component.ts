@@ -2,17 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
+import {  Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { TemplateOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import * as lodash from 'lodash';
-import { map } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
@@ -56,7 +50,6 @@ export class DialogAbsentComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup.value.forgot)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

@@ -1,23 +1,23 @@
-import { templateOvertimeState } from './template-overtime.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import * as fromTemplateOvertime from '../template-overtime/template-overtime.reducer';
+import * as fromTemplateBasic from '../teamlate-salary-basic/template-basic-salary.reducer';
+import { templateBasicState } from './template-basic-salary.reducer';
 
 export interface state {
-  templateOvertime: templateOvertimeState;
+  templateBasic: templateBasicState;
 }
 
-export const selectorTemplateState = createFeatureSelector<templateOvertimeState>(
-  FeatureName.TEMPLATE_OVERTIME
+export const selectorTemplateState = createFeatureSelector<templateBasicState>(
+  FeatureName.TEMPLATE_BASIC
 );
 
 export const selectorAllTemplate = createSelector(
   selectorTemplateState,
-  fromTemplateOvertime.selectAll
+  fromTemplateBasic.selectAll
 );
 export const selectorTemplateTotal = createSelector(
   selectorTemplateState,
-  fromTemplateOvertime.selectTotal
+  fromTemplateBasic.selectTotal
 );
 export const selectTemplateLoaded = createSelector(
   selectorTemplateState,

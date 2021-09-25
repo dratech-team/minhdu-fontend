@@ -15,6 +15,7 @@ export const initialPayroll = adapter.getInitialState({ loaded: false, adding: f
 
 export const payrollReducer = createReducer(
   initialPayroll,
+
   on(PayrollAction.loadInitSuccess, (state, action) =>
     adapter.setAll(action.payrolls, { ...state, loaded: true })),
 

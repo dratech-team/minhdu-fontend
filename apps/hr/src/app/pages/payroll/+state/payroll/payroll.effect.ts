@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { PayrollAction } from './payroll.action';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectorPayrollTotal } from './payroll.selector';
 import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
-import { SlackService } from '@minhdu-fontend/service';
+import { PayrollAction } from './payroll.action';
 
 @Injectable()
 export class PayrollEffect {
@@ -17,8 +16,12 @@ export class PayrollEffect {
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
-      concatMap((requestPaginate) => this.payrollService.pagination(requestPaginate)),
-      map((ResponsePaginate) => PayrollAction.loadInitSuccess({ payrolls: ResponsePaginate.data })),
+      concatMap((requestPaginate) =>  {
+        return this.payrollService.pagination(requestPaginate)
+        }),
+      map((ResponsePaginate) =>{
+        return  PayrollAction.loadInitSuccess({ payrolls: ResponsePaginate.data })
+      } ),
       catchError((err) => throwError(err))
     )
   );
