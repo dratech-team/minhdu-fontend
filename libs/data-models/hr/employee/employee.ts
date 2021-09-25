@@ -46,7 +46,7 @@ export interface Employee {
   degrees?: Degree[],
   bhyt?: string,
   payrolls: Payroll[],
-  contracts: ContractsEnum;
+  contracts: any[];
   relatives: Relative[],
   isSelect?: boolean;
   workHistories?: WorkHistory[];

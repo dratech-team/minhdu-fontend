@@ -27,17 +27,11 @@
             class='form-control input-profile '
             type='number' formControlName='rate'>
         </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Đơn vị</div>
+        <div class='border-start title-header address'>
+          <div class='title-profile'>Chúc vụ</div>
           <input
             class='form-control input-profile '
-            type='text' formControlName='department'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Bộ phận</div>
-          <input
-            class='form-control input-profile '
-            type='text' formControlName='department'>
+            type='text' formControlName='position'>
         </div>
       </form>
       <div class='outer animated fadeIn d-flex'
@@ -65,11 +59,8 @@
           <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
             {{holiday.rate}}
           </div>
-          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-            {{holiday.department?.branch?.name}}
-          </div>
-          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-            {{holiday.department?.name}}
+          <div class='content-profile address pointer ' (click)='Holiday(holiday)'>
+           <span class='mr-2' *ngFor='let item of holiday.positions'> {{item.name}},</span>
           </div>
         </div>
         <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '

@@ -12,6 +12,7 @@ export const Api = {
   SALARY: 'salary',
   RELATIVE: 'relative',
   DEGREE: 'degree',
+  CONTRACT: 'contract',
   Payroll: 'payroll',
   OVERTIME_TEMPLATE: 'overtime-template',
   BASIC_TEMPLATE: 'basic-template',

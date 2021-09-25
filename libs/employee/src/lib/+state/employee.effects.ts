@@ -22,6 +22,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.loadInit),
       switchMap((props) => this.employeeService.pagination(props)),
       map((responsePagination) => {
+        this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
         return EmployeeAction.LoadEmployeesSuccess({
           employees: responsePagination.data
         });
@@ -60,7 +61,11 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.addEmployee),
       switchMap((props) => this.employeeService.addOne(props.employee)),
-      map((employee) => EmployeeAction.addEmployeeSuccess({ employee })),
+      map((employee) => {
+          this.snackBar.open('Thêm nhân viên thành công', '', { duration: 1000 });
+          return EmployeeAction.addEmployeeSuccess({ employee });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -70,8 +75,10 @@ export class EmployeeEffect {
       ofType(EmployeeAction.addRelative),
       switchMap((props) =>
         this.relativeService.addOne(props.relative).pipe(
-          map(() =>
-            EmployeeAction.getEmployee({ id: props.relative.employeeId })
+          map(() => {
+              this.snackBar.open('Thêm người thân thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.relative.employeeId });
+            }
           ),
           catchError((err) => {
             this.slackService.sendErr(err);
@@ -87,8 +94,10 @@ export class EmployeeEffect {
       ofType(EmployeeAction.addDegree),
       switchMap((props) =>
         this.degreeService.addOne(props.degree).pipe(
-          map(() =>
-            EmployeeAction.getEmployee({ id: props.degree.employeeId })
+          map(() => {
+              this.snackBar.open('Thêm bằng cấp thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.degree.employeeId });
+            }
           ),
           catchError((err) => throwError(err))
         )
@@ -101,6 +110,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.getEmployee),
       switchMap((props) => this.employeeService.getOne(props.id)),
       map((employee) => {
+        this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
         return EmployeeAction.getEmployeeSuccess({ employee });
       }),
       catchError((err) => throwError(err))
@@ -112,7 +122,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.updateEmployee),
       switchMap((props) =>
         this.employeeService.update(props.id, props.employee).pipe(
-          map(() => EmployeeAction.getEmployee({ id: props.id })),
+          map(() => {
+              this.snackBar.open('Cập nhật nhân viên thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.id });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )
@@ -124,7 +138,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.updateRelative),
       switchMap((props) =>
         this.relativeService.update(props.id, props.relative).pipe(
-          map(() => EmployeeAction.getEmployee({ id: props.employeeId })),
+          map(() => {
+              this.snackBar.open('Cập nhật nhân viên thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.employeeId });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )
@@ -136,7 +154,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.updateDegree),
       switchMap((props) =>
         this.degreeService.update(props.id, props.degree).pipe(
-          map(() => EmployeeAction.getEmployee({ id: props.employeeId })),
+          map(() => {
+              this.snackBar.open('Cập nhật bằng cấp thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.employeeId });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )
@@ -148,7 +170,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.deleteEmployee),
       switchMap((props) =>
         this.employeeService.delete(props.id).pipe(
-          map(() => EmployeeAction.deleteEmployeeSuccess({ id: props.id })),
+          map(() => {
+              this.snackBar.open('Xóa nhân viên thành công', '', { duration: 1000 });
+              return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )
@@ -160,7 +186,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.deleteRelative),
       switchMap((props) =>
         this.relativeService.delete(props.id).pipe(
-          map(() => EmployeeAction.getEmployee({ id: props.employeeId })),
+          map(() => {
+              this.snackBar.open('Xóa người thân thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.employeeId });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )
@@ -172,7 +202,11 @@ export class EmployeeEffect {
       ofType(EmployeeAction.deleteDegree),
       switchMap((props) =>
         this.degreeService.delete(props.id).pipe(
-          map(() => EmployeeAction.getEmployee({ id: props.employeeId })),
+          map(() => {
+              this.snackBar.open('Xóa bằng cấp thành công', '', { duration: 1000 });
+              return EmployeeAction.getEmployee({ id: props.employeeId });
+            }
+          ),
           catchError((err) => throwError(err))
         )
       )

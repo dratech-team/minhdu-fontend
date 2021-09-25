@@ -19,6 +19,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
+import { UpdateContractComponent } from '../../components/dialog-update-contract/update-contract.component';
 
 
 @Component({
@@ -116,5 +117,9 @@ export class DetailEmployeeComponent implements OnInit {
     //
     //
     // });
+  }
+
+  updateContract(employee: Employee) {
+    this.dialog.open(UpdateContractComponent, {width: '30%' , data: employee})
   }
 }

@@ -12,7 +12,7 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ position: {name: string, workday?: number}}>()
+  props<{ name: string, workday?: number}>()
 );
 
 export const addPositionSuccess = createAction(

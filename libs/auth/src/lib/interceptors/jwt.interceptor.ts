@@ -25,7 +25,6 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // add auth header with jwt if user is logged in and request is to api url
-    this.snackBar.open('[ LOADING ]  ' + 'Đang gửi yêu cầu...', 'Đóng');
     const token = localStorage.getItem('token');
 
     const environment = isDevMode() ? envDev : envProd;
@@ -49,13 +48,6 @@ export class JwtInterceptor implements HttpInterceptor {
     request = request.clone({ url });
 
       return next.handle(request).pipe(
-        tap(() => {
-          if(request.body?.username){
-            this.snackBar.open('[ FAILED]  ' + 'Thất bại.!!!!', 'Đóng', { duration: 1000 });
-          }else{
-            this.snackBar.open('[ SUCCESS]  ' + 'Thành công.!!!!', 'Đóng', { duration: 1000 });
-          }
-        }),
         catchError(err => throwError(err))
       );
   }

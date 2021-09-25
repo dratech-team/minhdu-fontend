@@ -36,6 +36,8 @@ import { DialogStayComponent } from './component/dialog-stay/dialog-stay.compone
 import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
 import { templateOvertimeReducer } from '../template/+state/template-overtime/template-overtime.reducer';
 import { TemplateOvertimeEffect } from '../template/+state/template-overtime/template-overtime.effect';
+import { templateBasicReducer } from '../template/+state/teamlate-salary-basic/template-basic-salary.reducer';
+import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-basic/template-basic-salary.effect';
 
 @NgModule({
   imports: [
@@ -47,10 +49,16 @@ import { TemplateOvertimeEffect } from '../template/+state/template-overtime/tem
     MatDialogModule,
     EffectsModule,
     InfiniteScrollModule,
+    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([PayrollEffect, HolidayEffect, TemplateOvertimeEffect]),
+    EffectsModule.forFeature([
+      PayrollEffect,
+      HolidayEffect,
+      TemplateOvertimeEffect,
+      TemplateBasicSalaryEffect
+    ]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,

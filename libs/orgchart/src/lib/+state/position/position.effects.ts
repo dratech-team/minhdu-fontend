@@ -21,7 +21,7 @@ export class PositionEffects {
   addPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
-      switchMap(param => this.positionService.addOne(param.position)),
+      switchMap(param => this.positionService.addOne(param)),
       map(position => PositionActions.addPositionSuccess({ position })),
       catchError(err => throwError(err))
     )

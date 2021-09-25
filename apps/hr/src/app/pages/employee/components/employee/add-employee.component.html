@@ -12,7 +12,7 @@
             #positionInput>
           <mat-autocomplete #position="matAutocomplete">
             <mat-option *ngFor="let position of positions$ | async"
-              [value]="!position.id ? positionInput.value : position.name " (click)='onCreatePosition(position)'>
+              [value]="!position.id ? positionInput.value : position.name " (click)='onSelectPosition(position)'>
               {{position.name}}
             </mat-option>
           </mat-autocomplete>
@@ -80,6 +80,16 @@
         <div class='col-sm'>
           <label for='zalo'>Zalo</label>
           <input id='zalo' type='number' class='form-control' formControlName='zalo'>
+        </div>
+      </div>
+      <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
+        <div class='col-sm'>
+          <label for='facebook'>Ngày kí hợp đồng</label>
+          <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
+        </div>
+        <div class='col-sm'>
+          <label for='zalo'>ngày hết hạn hợp đồng</label>
+          <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
         </div>
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
