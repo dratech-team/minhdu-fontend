@@ -27,27 +27,25 @@ export class AddRelativeComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       firstName: [this.data?.relative?.firstName, Validators.required],
       lastName: [this.data?.relative?.lastName, Validators.required],
-      issuedBy: [this.data?.relative?.issuedBy, Validators.required],
+      issuedBy: [this.data?.relative?.issuedBy],
       religion: [this.data?.relative?.religion],
       ethnicity: [this.data?.relative?.ethnicity],
       birthplace: [
-        this.data?.relative?.birthplace, Validators.required],
+        this.data?.relative?.birthplace],
       ward: [this.data?.relative?.ward?.id, Validators.required],
       province: [this.data?.relative?.ward?.district?.province?.id, Validators.required],
       district: [this.data?.relative?.ward?.district?.id, Validators.required],
       address: [this.data?.relative?.address, Validators.required],
-      identify: [this.data?.relative?.identify, Validators.required],
+      identify: [this.data?.relative?.identify],
       idCardAt: [
         this.datePipe.transform(
           this?.data?.relative?.idCardAt, 'yyyy-MM-dd'
-        )
-        , Validators.required],
-      phone: [this.data?.relative?.phone, Validators.required],
+        )],
+      phone: [this.data?.relative?.phone],
       birthday: [
         this.datePipe.transform(
           this.data?.relative?.birthday, 'yyyy-MM-dd'
-        )
-        , Validators.required],
+        ), Validators.required],
       gender: [this.data?.relative?.gender, Validators.required],
       note: [this.data?.relative?.note],
       relationship: [this.data?.relative?.relationship, Validators.required],

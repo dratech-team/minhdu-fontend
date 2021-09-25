@@ -6,15 +6,12 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { TemplateBasicSalaryService } from '../../../template/service/template-basic-salary.service';
-import { Observable } from 'rxjs';
-import { TemplateSalaryBasic } from '../../../template/+state/teamlate-salary-basic/template-salary-basic';
-import { SalaryService } from '../../service/salary.service';
-import { debounceTime } from 'rxjs/operators';
+import { selectorAllTemplate } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.selector';
+import { TemplateBasicAction } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.action';
 
 @Component({
   templateUrl: 'dialog-basic.component.html',
@@ -24,8 +21,8 @@ export class DialogBasicComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  checkSalary!: boolean;
-  templateBasicSalary$!: Observable<TemplateSalaryBasic[]>;
+  checkSalary =  true;
+  templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate))
 
   constructor(
     public datePipe: DatePipe,
@@ -33,13 +30,14 @@ export class DialogBasicComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
-    private readonly templateBasicSalaryService: TemplateBasicSalaryService,
-    private readonly salaryService: SalaryService,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {}
 
   ngOnInit(): void {
-    this.templateBasicSalary$ = this.templateBasicSalaryService.getAll();
+    if(this.data?.salary?.type === this.type.BASIC){
+      this.checkSalary = false
+    }
+    this.store.dispatch(TemplateBasicAction.loadALlTemplate())
     this.formGroup = this.formBuilder.group({
       price: [this.data?.salary?.price, Validators.required],
       type: [
@@ -83,12 +81,10 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      /// TODO: bùa
-      this.salaryService.addOne(salary).pipe(debounceTime(2000)).subscribe((val) => {
-        if (val) {
-          location.reload();
-        }
-      });
+      this.store.dispatch(PayrollAction.addSalary({
+        payrollId: this.data.payroll.id,
+        salary: salary
+      }))
     }
     this.dialogRef.close();
   }

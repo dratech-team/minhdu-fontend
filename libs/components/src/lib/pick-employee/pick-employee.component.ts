@@ -19,7 +19,7 @@ export class PickEmployeeComponent implements OnInit {
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   type = SalaryTypeEnum;
-  isSelectAll: boolean = false;
+  isSelectAll = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
   employeeId!: number;

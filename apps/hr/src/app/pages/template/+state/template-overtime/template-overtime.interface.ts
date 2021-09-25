@@ -3,11 +3,15 @@ import { Branch, Position } from '@minhdu-fontend/data-models';
 
 export interface TemplateOvertime {
   title: string;
-  type?: SalaryTypeEnum;
+  type: SalaryTypeEnum;
   price: number;
   unit: DatetimeUnitEnum;
   note?: string;
-  position: Position;
+  positions?: Position [];
   branch: Branch;
   rate: number;
+}
+export interface ReqOvertime extends Omit<TemplateOvertime, "position" | "branch"> {
+  positionIds: number[];
+  branchId: number;
 }

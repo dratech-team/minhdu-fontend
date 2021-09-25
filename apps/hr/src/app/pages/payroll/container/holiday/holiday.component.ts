@@ -22,8 +22,7 @@ export class HolidayComponent implements OnInit {
       name: new FormControl(''),
       datetime: new FormControl(''),
       rate: new FormControl(''),
-      department: new FormControl(''),
-      branch: new FormControl('')
+      position: new FormControl(''),
     }
   );
 
@@ -91,8 +90,7 @@ export class HolidayComponent implements OnInit {
       skip: this.pageIndexInit,
       name: val.name,
       rate: val.rate,
-      department: val.department,
-      branch: val.branch,
+      position: val.position,
       datetime: val.datetime
     };
   }

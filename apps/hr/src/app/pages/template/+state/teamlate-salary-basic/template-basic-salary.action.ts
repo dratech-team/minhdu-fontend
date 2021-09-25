@@ -1,23 +1,22 @@
 import { createAction, props } from '@ngrx/store';
-import { TemplateOvertime } from './template-overtime.interface';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { TemplateBasicSalary } from './template-basic-salary';
 
 export const AddTemplate = createAction(
-  '[Add_Template_Overtime] Add Template Overtime',
-  props<{ templateOvertime: TemplateOvertime }>()
+  '[Add_Template_Basic] Add Template Basic',
+  props<{ template: {price: number, title: string} }>()
 );
 
 export const AddTemplateSuccess = createAction(
-  '[Add_Template_Overtime] Add Template Overtime success',
-  props<{ templateOvertime: TemplateOvertime }>()
+  '[Add_Template_Basic] Add Template Basic success',
+  props<{ template: TemplateBasicSalary }>()
 );
 export const loadALlTemplate = createAction(
-  '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
-  props<{ positionId?: number }>()
+  '[LOAD_Template_Basic] Load All Template Basic',
 );
 
 export const loadInit = createAction(
-  '[Load_Template_Overtime] Load init',
+  '[Load_Template_Basic] Load init',
   props<{
     take: number,
     skip: number,
@@ -31,13 +30,13 @@ export const loadInit = createAction(
   }>()
 );
 export const loadInitTempLateSuccess = createAction(
-  '[Load_Template_Overtime] Load Template overtime Success',
-  props<{ templateOvertime: TemplateOvertime[] }>()
+  '[Load_Template_Basic] Load Template Basic Success',
+  props<{ templateBasics: TemplateBasicSalary[] }>()
 );
 
 
-export const loadMoreTemplateOverTime = createAction(
-  '[Load_Template_Overtime] Load More Template OverTime',
+export const loadMoreTemplateBasic = createAction(
+  '[Load_Template_Basic] Load More Template Basic',
   props<{
     take: number,
     title?: string,
@@ -50,29 +49,29 @@ export const loadMoreTemplateOverTime = createAction(
   }>()
 );
 export const loadMoreTempLateSuccess = createAction(
-  '[Load_Template_Overtime] Load More Template overtime Success',
-  props<{ templateOvertime: TemplateOvertime[] }>()
+  '[Load_Template_Basic] Load More Template Basic Success',
+  props<{ templateBasics: TemplateBasicSalary[] }>()
 );
 
 export const updateTemplate = createAction(
-  '[UPDATE_TEMPLATE_OVERTIME] Update Template Overtime',
-  props<{ id: number, templateOvertime: TemplateOvertime }>()
+  '[UPDATE_Template_Basic] Update Template Basic',
+  props<{ id: number, templateBasic: Partial<TemplateBasicSalary> }>()
 );
 
 export const deleteTemplate = createAction(
-  '[DELETE_TEMPLATE_OVERTIME] Delete Template Overtime',
+  '[DELETE_Template_Basic] Delete Template Basic',
   props<{ id: number }>()
 );
 
 
-export const TemplateOvertimeAction = {
+export const TemplateBasicAction = {
   loadALlTemplate,
   loadInit,
-  loadMoreTemplateOverTime,
   AddTemplate,
   AddTemplateSuccess,
   updateTemplate,
   loadInitTempLateSuccess,
+  loadMoreTemplateBasic,
   loadMoreTempLateSuccess,
   deleteTemplate
 };

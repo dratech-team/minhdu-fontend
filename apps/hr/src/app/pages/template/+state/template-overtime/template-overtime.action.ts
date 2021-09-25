@@ -1,10 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { TemplateOvertime } from './template-overtime.interface';
+import { ReqOvertime, TemplateOvertime } from './template-overtime.interface';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 
 export const AddTemplate = createAction(
   '[Add_Template_Overtime] Add Template Overtime',
-  props<{ templateOvertime: TemplateOvertime }>()
+  props<{ template: ReqOvertime }>()
 );
 
 export const AddTemplateSuccess = createAction(
@@ -32,7 +32,7 @@ export const loadInit = createAction(
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Overtime] Load Template overtime Success',
-  props<{ templateOvertime: TemplateOvertime[] }>()
+  props<{ templateOvertimes: TemplateOvertime[] }>()
 );
 
 
@@ -51,12 +51,12 @@ export const loadMoreTemplateOverTime = createAction(
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Overtime] Load More Template overtime Success',
-  props<{ templateOvertime: TemplateOvertime[] }>()
+  props<{ templateOvertimes: TemplateOvertime[] }>()
 );
 
 export const updateTemplate = createAction(
   '[UPDATE_TEMPLATE_OVERTIME] Update Template Overtime',
-  props<{ id: number, templateOvertime: TemplateOvertime }>()
+  props<{ id: number, templateOvertime: Partial<TemplateOvertime> }>()
 );
 
 export const deleteTemplate = createAction(

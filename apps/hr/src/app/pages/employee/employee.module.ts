@@ -25,6 +25,7 @@ import { LocationModule } from '@minhdu-fontend/location';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BHYTComponent } from './components/bhyt/BHYT.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { UpdateContractComponent } from './components/dialog-update-contract/update-contract.component';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     AddRelativeComponent,
     AddProfileComponent,
     DeleteEmployeeComponent,
-    BHYTComponent
+    BHYTComponent,
+    UpdateContractComponent
   ],
   providers: [DatePipe]
 })

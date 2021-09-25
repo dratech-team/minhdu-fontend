@@ -234,6 +234,24 @@
             </span>
             </div>
           </div>
+          <div class='row  align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Thuộc diện hợp đồng :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+              <div style='width: fit-content; height: fit-content'
+                   (click)='updateContract(employee)'
+              >
+                <input
+
+                  style='pointer-events: none'
+                  disabled
+                  type='checkbox'
+                  [checked]='employee?.contracts'>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -635,7 +653,6 @@
           <tr>
             <th class='text-center'>Từ ngày</th>
             <th class='text-center'>Vị trí công việc</th>
-            <th class='text-center'>bộ phận công tác</th>
             <th class='text-center'>Đơn vị công tác</th>
           </tr>
           <tr *ngFor='let workHistory of employee.workHistories'>
@@ -645,7 +662,6 @@
           </tr>
         </table>
       </div>
-
     </div>
   </div>
 </div>

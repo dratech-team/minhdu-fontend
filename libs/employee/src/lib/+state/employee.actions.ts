@@ -17,7 +17,7 @@ export const loadInit = createAction(
     branch?: string,
     gender?: Gender,
     isSelect?: boolean,
-    positionId?: number,
+    templateId?: number,
   }>()
 );
 

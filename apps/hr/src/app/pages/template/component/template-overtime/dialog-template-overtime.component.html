@@ -29,22 +29,39 @@
         </div>
       </div>
       <div class='main-popup mt-2' [formGroup]='formGroup'>
-        <label class='main-title' for='branch'>Đơn vị <span class='star'>*</span></label>
-        <div *ngIf='submitted && f.branch.errors?.required' class='invalid-feedback'>
-          <div>Chưa chọn đơn vị</div>
-        </div>
-      </div>
-      <div class='main-popup mt-2' [formGroup]='formGroup'>
-        <label class='main-title' for='position'>Chức vụ <span class='star'>*</span></label>
-        <mat-select id='position' class='form-control' formControlName='position'
-                    [ngClass]="{ 'is-invalid': submitted && f.position.errors?.required }">
-          <mat-option *ngFor='let position of positions' [value]='position.id'>
+        <div><span class='main-title'>Chức vụ</span></div>
+        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
+               #positionInput>
+        <mat-autocomplete #position="matAutocomplete">
+          <mat-option *ngFor="let position of positions$ | async"
+                      [value]="!position.id ? positionInput.value : position.name " (click)='onCreatePosition(position)'>
             {{position.name}}
           </mat-option>
-        </mat-select>
-        <div *ngIf='submitted && f.position.errors?.required' class='invalid-feedback'>
-          <div>Chưa chọn chức vụ</div>
-        </div>
+        </mat-autocomplete>
+          <div class='mt-2'>
+            <span class='mr-3 position-relative' *ngFor='let position of positionSelected'>{{position.name}}
+              <label class='position-absolute text-danger' style='top:-7px ; right: -10px'
+                     (click)='removePosition(position)'>x</label>
+            </span>
+          </div>
+
+        <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+          <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
+        </div> -->
+      </div>
+      <div class='main-popup mt-2'>
+        <div><span class='main-title'>Đơn vị</span></div>
+        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
+               #branchInput >
+        <mat-autocomplete #branch="matAutocomplete" >
+          <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
+                      (click)='onCreateBranch(branch)'>
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
+        <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+          <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
+        </div> -->
       </div>
       <div class=' main-popup mt-2' [formGroup]='formGroup'>
         <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>

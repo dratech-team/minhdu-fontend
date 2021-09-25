@@ -12,7 +12,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TemplateOvertimeComponent } from './component/template-overtime/template-overtime.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -23,6 +22,10 @@ import { EmployeeModule } from '../employee/employee.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { TemplateSalaryBasicComponent } from './component/template-salary-basic/template-salary-basic.component';
+import { TemplateOvertimeComponent } from './container/overtime-template/template-overtime.component';
+import { DialogTemplateOvertimeComponent } from './component/template-overtime/dialog-template-overtime.component';
+import { TemplateBasicSalaryEffect } from './+state/teamlate-salary-basic/template-basic-salary.effect';
+import { templateBasicReducer } from './+state/teamlate-salary-basic/template-basic-salary.reducer';
 
 @NgModule({
   imports: [
@@ -35,7 +38,8 @@ import { TemplateSalaryBasicComponent } from './component/template-salary-basic/
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    EffectsModule.forFeature([TemplateOvertimeEffect]),
+    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
+    EffectsModule.forFeature([TemplateOvertimeEffect,TemplateBasicSalaryEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -49,12 +53,12 @@ import { TemplateSalaryBasicComponent } from './component/template-salary-basic/
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
-    ReactiveFormsModule
   ],
   declarations: [
     TemplateOvertimeComponent,
     SalaryBasicComponent,
     TemplateSalaryBasicComponent,
+    DialogTemplateOvertimeComponent,
   ]
 })
 export class TemplateModule {

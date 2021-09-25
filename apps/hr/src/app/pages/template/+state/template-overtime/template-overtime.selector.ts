@@ -25,3 +25,9 @@ export const selectTemplateLoaded = createSelector(
     return state.loaded;
   }
 );
+export const selectTemplateAdded = createSelector(
+  selectorTemplateState,
+  (state) => {
+    return state.added;
+  }
+);

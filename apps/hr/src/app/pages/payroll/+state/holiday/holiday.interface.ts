@@ -1,10 +1,10 @@
-import { Department } from '@minhdu-fontend/data-models';
+import { Position } from '@minhdu-fontend/data-models';
 
 export interface Holiday {
   id: number,
   name: string,
   datetime: Date,
   rate: number,
-  department?: Department;
+  positions: Position[]
   note?: string
 }
