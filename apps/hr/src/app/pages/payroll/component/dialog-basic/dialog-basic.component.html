@@ -16,17 +16,11 @@
           <div class='star'>*</div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
-          <mat-select
-            [disabled]='data.salary'
-            class='form-control col'
-            formControlName='type'
-            [ngClass]="{ 'is-invalid': submitted && f.type.errors }"
-          >
-            <mat-option value='{{type.BASIC}}' (click)='onCheckValue(true)'>
-              Lương theo PL.HD
-            </mat-option>
-            <mat-option value='{{type.BASIC_INSURANCE}}' (click)='onCheckValue(false)'>
-              Lương cơ bản trích BH
+          <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
+            [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+            <mat-option *ngFor="let salary of salaries" [value]="salary.title"
+              (click)='onCheckValue(salary.type === type.BASIC_INSURANCE ? true : false)'>
+              {{salary.title}}
             </mat-option>
           </mat-select>
           <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
@@ -40,24 +34,15 @@
           <div class='star'>*</div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup' *ngIf='checkSalary'>
-          <input
-            class='form-control'
-            type='text'
-            placeholder='Nhập mức lương'
-            formControlName='price'
-            inputCurrency
-            [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
-          >
+          <input class='form-control' type='text' placeholder='Nhập mức lương' formControlName='price' inputCurrency
+            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
           <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập mức lương</div>
           </div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup' *ngIf='!checkSalary'>
-          <mat-select
-            class='form-control col'
-            formControlName='price'
-            [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
-          >
+          <mat-select class='form-control col' formControlName='price'
+            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
             <mat-option *ngFor='let item of templateBasicSalary$ | async' [value]='item.price'>
               {{item.price}}
             </mat-option>
@@ -68,13 +53,9 @@
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
       <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip'
-              data-placement='left'
-              title='xóa'>
+      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>
     </div>
   </form>
 </div>
-
-
