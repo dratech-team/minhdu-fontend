@@ -186,10 +186,11 @@ export class AddEmployeeComponent implements OnInit {
       note: value.note ? value.note : undefined,
       workday: value.workday,
       contract:{
-        createdAt: value.createAtContractv,
-        expiredAt : value.expiredAtContract,
+        createdAt: value.createAtContract ? new Date(value.createAtContract): undefined,
+        expiredAt : value.expiredAtContract ? new Date(value.expiredAtContract): undefined,
       }
     };
+    console.log(employee)
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
