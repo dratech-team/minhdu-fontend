@@ -1,5 +1,5 @@
-<!--FIXME-->
-<mat-progress-bar *ngIf='(adding$|async)' mode='indeterminate'></mat-progress-bar>
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else payroll' count='18' appearance='line'></ngx-skeleton-loader>
+<ng-template #payroll>
 <div class='row animated fadeIn '>
   <div class='container'>
     <div class='row'>
@@ -297,3 +297,4 @@
     </div>
   </div>
 </div>
+</ng-template>
