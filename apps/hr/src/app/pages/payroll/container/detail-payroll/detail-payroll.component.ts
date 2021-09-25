@@ -25,7 +25,6 @@ import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialo
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
-  adding$ = this.store.pipe(select(selectedAddedPayroll));
 
   constructor(
     private readonly dialog: MatDialog,

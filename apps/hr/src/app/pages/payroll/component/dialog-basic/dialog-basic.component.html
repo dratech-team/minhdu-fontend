@@ -18,8 +18,8 @@
         <div class='row mb-3' [formGroup]='formGroup'>
           <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
             [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-            <mat-option *ngFor="let salary of salaries" [value]="salary.title"
-              (click)='onCheckValue(salary.type === type.BASIC_INSURANCE ? true : false)'>
+            <mat-option *ngFor="let salary of salaries" value='{{salary.type}}'
+              (click)='onCheckValue(salary.type !== type.BASIC_INSURANCE)'>
               {{salary.title}}
             </mat-option>
           </mat-select>

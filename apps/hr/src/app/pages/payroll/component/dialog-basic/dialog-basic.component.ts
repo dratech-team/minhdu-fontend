@@ -27,7 +27,7 @@ export class DialogBasicComponent implements OnInit {
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
     { title: 'Lương theo PL.HD', type: SalaryTypeEnum.BASIC },
-    { title: 'Lương Tín nhiệm', type: SalaryTypeEnum.BASIC },
+    { title: 'Lương Tín nhiệm', type: SalaryTypeEnum.BASIC_TRUST },
   ];
 
   constructor(
@@ -40,16 +40,15 @@ export class DialogBasicComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.data?.salary?.type === this.type.BASIC) {
+    if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
     this.store.dispatch(TemplateBasicAction.loadALlTemplate());
     this.formGroup = this.formBuilder.group({
       price: [this.data?.salary?.price, Validators.required],
-      type: [
-        this.data?.salary?.type ? this.data?.salary?.type : this.data.type,
-        Validators.required,
-      ],
+      type: [this.data?.salary?.title ==='Lương Tín nhiệm'? this.type.BASIC_TRUST:
+        this.data?.salary?.type,
+        Validators.required],
       rate: [1, Validators.required],
     });
   }
@@ -65,9 +64,10 @@ export class DialogBasicComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    console.log('value salary', value);
+    const titleSalary = this.salaries.find(val =>
+      val.type === value.type)
     const salary = {
-      title: value.title,
+      title:  titleSalary?.title,
       price: this.checkSalary
         ? typeof value.price === 'string'
           ? Number(value.price.replace(this.numberChars, ''))
@@ -75,7 +75,7 @@ export class DialogBasicComponent implements OnInit {
         : value.price,
       rate: value.rate,
       payrollId: this.data?.payroll?.id || undefined,
-      type: value.type,
+      type: value.type === this.type.BASIC_INSURANCE? value.type: this.type.BASIC,
     };
     if (this.data.salary) {
       this.store.dispatch(

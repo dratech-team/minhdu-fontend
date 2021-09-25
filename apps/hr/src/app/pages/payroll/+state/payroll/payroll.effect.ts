@@ -86,7 +86,7 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.getOne(props.id)),
       map((payroll) => {
           this.snackBar.open('Tải phiếu lương thành công', '', { duration: 1000 });
-          return PayrollAction.getPayrollSuccess({ payroll });
+          return PayrollAction.getPayrollSuccess({ payroll: payroll });
         }
       ),
       catchError((err) => throwError(err))
