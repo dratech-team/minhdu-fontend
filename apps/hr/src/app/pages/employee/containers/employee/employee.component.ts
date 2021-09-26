@@ -4,14 +4,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import {
-  EmployeeAction, selectEmployeeLoaded,
-  selectorAllEmployee
+  EmployeeAction,
+  selectEmployeeLoaded,
+  selectorAllEmployee,
 } from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
   FlatSalary,
   Gender,
-  SearchEmployeeType
+  SearchEmployeeType,
 } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -67,6 +68,7 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
+      data: { mode: 'CREATE' },
       width: '60%',
     });
   }

@@ -206,6 +206,7 @@ export class AddEmployeeComponent implements OnInit {
       this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
 
+    /// FIXME: close k work
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
       if (added) {
         this.dialogRef.close();
