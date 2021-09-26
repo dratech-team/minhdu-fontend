@@ -157,8 +157,8 @@ export class AddEmployeeComponent implements OnInit {
     const employee = {
       id: this?.data?.employee?.id,
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-      positionId: this.positionId,
-      branchId: this.branchId,
+      positionId: this.positionId||this.data?.employee.positionId,
+      branchId: this.branchId ||this.data?.employee.branchId,
       workedAt: value.workedAt,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       firstName: value.firstName,
@@ -170,7 +170,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
       issuedBy: value.issuedBy,
-      wardId: this.wardId,
+      wardId: this.wardId|| this.data.employee.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -184,9 +184,7 @@ export class AddEmployeeComponent implements OnInit {
         expiredAt : value.expiredAtContract ? new Date(value.expiredAtContract): undefined,
       }
     };
-
     if (this.data !== null) {
-      console.log(employee)
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.data.employee.id,
@@ -199,7 +197,6 @@ export class AddEmployeeComponent implements OnInit {
 
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
       if (added) {
-        console.log(added)
         this.dialogRef.close();
       }
     });

@@ -36,7 +36,7 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
-    adapter.addOne(action.employee, { ...state, loaded: true, added: true })
+    adapter.addOne(action.employee, { ...state, added: true })
   ),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
@@ -49,7 +49,9 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
-    adapter.updateOne(action.employee, { ...state, loaded: true, added: true })
+  {
+    return  adapter.updateOne(action.employee, { ...state, added: true })
+  }
   ),
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
