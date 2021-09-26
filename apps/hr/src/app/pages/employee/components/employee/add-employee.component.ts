@@ -1,35 +1,32 @@
+import { DatePipe } from '@angular/common';
 import {
-  Component,
-  Inject,
+  Component, ElementRef, Inject,
   LOCALE_ID,
   OnInit,
-  ViewChild,
-  ElementRef,
+  ViewChild
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { DatePipe } from '@angular/common';
+import { select, Store } from '@ngrx/store';
 import {
   getAllPosition,
-  PositionActions,
+  PositionActions
 } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { map } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import { map } from 'rxjs/operators';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import { AppState } from '../../../../reducers';
 @Component({
   templateUrl: 'add-employee.component.html',
 })
@@ -153,12 +150,14 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     /// FIXME: dummy tạm
-    if (!this.wardId || !this.branchId || !this.positionId) {
-      return this.snakbar.open(
-        'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
-        'Đóng',
-        { duration: 3000 }
-      );
+    if (!(this.data.mode === 'UPDATE')) {
+      if (!this.wardId || !this.branchId || !this.positionId) {
+        return this.snakbar.open(
+          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
+          'Đóng',
+          { duration: 3000 }
+        );
+      }
     }
 
     const value = this.formGroup.value;
