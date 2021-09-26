@@ -200,8 +200,10 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
+
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
       if (added) {
+        console.log(added)
         this.dialogRef.close();
       }
     });

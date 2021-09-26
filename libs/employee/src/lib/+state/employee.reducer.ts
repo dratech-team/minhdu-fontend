@@ -30,7 +30,7 @@ export const EmployeeReducer = createReducer(
     adapter.addMany(action.employees, { ...state, loaded: true })
   ),
 
-  on(EmployeeAction.addEmployeeSuccess, (state, _) => {
+  on(EmployeeAction.addEmployee, (state, _) => {
       return { ...state, added: false };
     }
   ),
