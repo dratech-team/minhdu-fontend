@@ -24,27 +24,32 @@ export const EmployeeReducer = createReducer(
     return { ...state, loaded: false };
   }),
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.setAll(action.employees, { ...state, loaded: true})
+    adapter.setAll(action.employees, { ...state, loaded: true })
   ),
   on(EmployeeAction.LoadMoreEmployeesSuccess, (state, action) =>
     adapter.addMany(action.employees, { ...state, loaded: true })
   ),
 
-  on(EmployeeAction.addEmployeeSuccess, (state, _) =>
-    {
-       return { ...state, added: false };
+  on(EmployeeAction.addEmployeeSuccess, (state, _) => {
+      return { ...state, added: false };
     }
   ),
+
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
-    adapter.addOne(action.employee, { ...state, loaded: true, added: true  })
+    adapter.addOne(action.employee, { ...state, loaded: true, added: true })
   ),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
     adapter.upsertOne(action.employee, { ...state, loaded: true })
   ),
 
+  on(EmployeeAction.updateEmployee, (state, _) => {
+      return { ...state, added: false };
+    }
+  ),
+
   on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
-    adapter.updateOne(action.employee, { ...state, loaded: true })
+    adapter.updateOne(action.employee, { ...state, loaded: true, added: true })
   ),
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
