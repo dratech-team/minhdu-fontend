@@ -17,6 +17,7 @@ export const Api = {
   OVERTIME_TEMPLATE: 'overtime-template',
   BASIC_TEMPLATE: 'basic-template',
   holiday: 'holiday',
+  PAYSLIP: 'payslip',
   CUSTOMER: 'customer',
   CUSTOMER_EXPORT: 'customer/export/print',
   PAYMENT: 'payment-history',
