@@ -16,12 +16,8 @@
           <span class='star'>*</span>
         </div>
         <div class='row mb-3'>
-          <mat-select
-            class='form-control'
-            [formGroup]='formGroup'
-            formControlName='unit'
-            [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
-          >
+          <mat-select class='form-control' [formGroup]='formGroup' formControlName='unit'
+            [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
             <mat-option value='DAY'>Vắng</mat-option>
             <mat-option value='HOUR'>Đi muộn</mat-option>
           </mat-select>
@@ -36,25 +32,16 @@
             <span>Ngày</span>
             <span class='star'>*</span>
             <div class='row mb-3 mt-1' [formGroup]='formGroup'>
-              <input
-                type='date'
-                placeholder='06/05/1997'
-                class='form-control'
-                formControlName='datetime'
-                [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }"
-              >
+              <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+                [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
               <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn ngày</div>
               </div>
             </div>
           </div>
           <div class='col' [formGroup]='formGroup' *ngIf="formGroup.value.unit === 'DAY'">
-            <mat-checkbox
-              formControlName='forgot'
-              labelPosition='before'
-              class='example-margin'
-              style='font-size: 12px'
-            >
+            <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
+              style='font-size: 12px'>
               Quên giấy phép và bsc
             </mat-checkbox>
           </div>
@@ -67,7 +54,7 @@
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
           <input class='form-control' type='number' formControlName='times'
-                 [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
+            [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
           <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập số giờ đi trễ</div>
           </div>
@@ -85,14 +72,10 @@
     </div>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip'
-              data-placement='left'
-              title='xóa'>
+      <button class='btn btn-ok '>Lưu</button>
+      <button type=' button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>
     </div>
   </form>
 </div>
-
-

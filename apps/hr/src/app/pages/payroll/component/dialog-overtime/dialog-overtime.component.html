@@ -22,13 +22,10 @@
                     <div class='star'>*</div>
                   </div>
                   <div class='row mb-3' *ngIf='(templateOvertime$|async) as templateOvertime'>
-                    <mat-select
-                      class='form-control col'
-                      formControlName='unit'
-                      [ngClass]="{ 'is-invalid': submitted && f.unit.errors }"
-                    >
+                    <mat-select class='form-control col' formControlName='unit'
+                      [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
                       <mat-option *ngFor='let overtime of templateOvertime' value='{{overtime.unit}}'
-                                  (click)='pickOverTime(overtime)'>
+                        (click)='pickOverTime(overtime)'>
                         {{overtime.title}}
                         <input [style.display]="'none'" value='{{overtime.title}}'>
                       </mat-option>
@@ -44,12 +41,8 @@
                     <div class='star'>*</div>
                   </div>
                   <div class='row mb-3' [formGroup]='formGroup'>
-                    <input
-                      type='date'
-                      class='form-control'
-                      formControlName='datetime'
-                      [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }"
-                    >
+                    <input type='date' class='form-control' formControlName='datetime'
+                      [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
                     <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
                       <div>Chưa nhập ngày</div>
                     </div>
@@ -64,9 +57,7 @@
                   <div class='star'>*</div>
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
-                  <input type='number' class='form-control  px-1'
-                          value='{{price}}' disabled
-                  >
+                  <input type='number' class='form-control  px-1' value='{{price}}' disabled>
                 </div>
               </div>
             </div>
@@ -79,14 +70,8 @@
                       <div class='star'>*</div>
                     </div>
                     <div class='row mb-3' [formGroup]='formGroup'>
-                      <input
-                        type='number'
-                        class='form-control px-1'
-                        placeholder='Nhập số giờ làm việc'
-                        formControlName='times'
-                        min='0'
-                        [ngClass]="{ 'is-invalid': submitted && f.times.errors }"
-                      >
+                      <input type='number' class='form-control px-1' placeholder='Nhập số giờ làm việc'
+                        formControlName='times' min='0' [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
                       <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
                         <div>Chưa nhập số giờ làm việc</div>
                       </div>
@@ -100,10 +85,8 @@
                   <div class='star'>*</div>
                 </div>
                 <div class='row mb-3' [formGroup]='formGroup'>
-                  <input type='number' class='form-control  px-1'
-                         placeholder='{{data?.salary?.price}}'
-                         value='{{price}}' disabled
-                  >
+                  <input type='number' class='form-control  px-1' placeholder='{{data?.salary?.price}}'
+                    value='{{price}}' disabled>
                 </div>
               </div>
             </div>
@@ -118,21 +101,17 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab *ngIf='!data.payroll'  [disabled]='!searchInit' class='col-12 ' label='Chọn nhân viên'>
-        <app-pick-employee [employees$]='employee$' [searchInit]='searchInit'
-                           (checkEvent)='pickEmployees($event)'></app-pick-employee>
+      <mat-tab *ngIf='!data.payroll' [disabled]='!searchInit' class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee [employees$]='employee$' [searchInit]='searchInit' (checkEvent)='pickEmployees($event)'>
+        </app-pick-employee>
       </mat-tab>
     </mat-tab-group>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button (click)='onSubmit()' class='btn btn-ok ' >Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip'
-              data-placement='left'
-              title='xóa'>
+      <button class='btn btn-ok '>Lưu</button>
+      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>
     </div>
   </form>
 </div>
-
-

@@ -3,7 +3,7 @@ import {
   HttpHandler,
   HttpHeaders,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { envDev, envProd } from '@minhdu-fontend/environment';
@@ -15,8 +15,7 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private readonly snackBar: MatSnackBar) {
-  }
+  constructor(private readonly snackBar: MatSnackBar) {}
 
   localhost = Localhost;
 
@@ -36,19 +35,17 @@ export class JwtInterceptor implements HttpInterceptor {
       request = request.clone({
         url,
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         headers: new HttpHeaders({
-          'x-api-key': environment.environment.apiKey
-        })
+          'x-api-key': environment.environment.apiKey,
+        }),
       });
     } else {
       request = request.clone({ url });
     }
     request = request.clone({ url });
-
-      return next.handle(request).pipe(
-        catchError(err => throwError(err))
-      );
+    console.log(request);
+    return next.handle(request).pipe(catchError((err) => throwError(err)));
   }
 }
