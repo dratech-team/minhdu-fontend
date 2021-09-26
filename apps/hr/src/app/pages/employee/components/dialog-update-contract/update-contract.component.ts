@@ -29,19 +29,12 @@ export class UpdateContractComponent implements OnInit{
   )
   }
 
-//TODO
   onSubmit() {
-
     const contract = {
       employeeId: this.data.id,
       createdAt: this.formGroup.value.createdAt,
       expiredAt : this.formGroup.value.expiredAt
     }
-    this.contractService.addOne(contract).pipe(
-      tap(_ =>{
-        this.store.dispatch(EmployeeAction.getEmployee({id: this.data.id}))
-      })
-    ).subscribe()
-
+    this.contractService.addOne(contract).subscribe()
   }
 }

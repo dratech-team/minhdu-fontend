@@ -38,6 +38,7 @@ import { templateOvertimeReducer } from '../template/+state/template-overtime/te
 import { TemplateOvertimeEffect } from '../template/+state/template-overtime/template-overtime.effect';
 import { templateBasicReducer } from '../template/+state/teamlate-salary-basic/template-basic-salary.reducer';
 import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-basic/template-basic-salary.effect';
+import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-ba
     DialogBasicComponent,
     DialogAbsentComponent,
     DialogStayComponent,
+    ConfirmPayrollComponent
   ]
 })
 export class PayrollModule {

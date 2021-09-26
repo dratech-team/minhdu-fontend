@@ -20,6 +20,7 @@ import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.
 import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
 import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
+import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 
 
 @Component({
@@ -96,9 +97,9 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(id: number) {
-    this.dialog.open(UpdateConfirmComponent, {
-      width: '25%',
-      data: { id: id, type: 'accConfirmedAt' }
+    this.dialog.open(ConfirmPayrollComponent, {
+      width: '40%',
+      data: { id: id }
     });
   }
 

@@ -1,0 +1,55 @@
+<div class="px-3 py-3 main-popup">
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"> close</span>
+    <div class="x-popup">
+      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel">
+    </div>
+  </div>
+  <div >
+        <div class='tab'>
+          <h2 class='font-weight-bold'>Phiếu lương</h2>
+          <div class='mt-3 row'>
+            <div class='col-12'>
+              <span class='col-5 font-weight-bold'>Ngày công chuẩn:</span>
+              <span>{{payslip.actualDay}}</span>
+            </div>
+            <div class='col-12 mt-2'>
+              <span class='col-5 font-weight-bold'>Ngày đi làm thực tế:</span>
+              <span>{{payslip.workday|| 0}}</span>
+            </div>
+            <div class='col-12 mt-2'>
+              <span class='col-5 font-weight-bold'>Tổng lương cơ bản:</span>
+              <span class='text-success'>{{payslip.basic}} VND</span>
+            </div>
+            <div class='col-12 mt-2'>
+              <span class='col-5 font-weight-bold'>Tổng phụ cấp ở lại:</span>
+              <span class='text-success'>{{payslip.stay}} VND</span>
+            </div >
+            <div class='col-12 mt-2' >
+              <span class='col-5 font-weight-bold'>Tổng phụ cấp khác:</span>
+              <span class='text-success'>{{payslip.allowance||0}} VND</span>
+            </div>
+            <div class='col-12 mt-2' >
+              <span class='col-5 font-weight-bold'>Tổng tiền tăng ca:</span>
+              <span class='text-success'>{{payslip.overtime ||0}} VND</span>
+            </div>
+            <div class='col-12 mt-2' >
+              <span class='col-5 font-weight-bold'>Tổng tiền khấu trừ:</span>
+              <span class='text-danger'>{{payslip.deduction ||0}} VND</span>
+            </div>
+            <div class='col-12 mt-2' >
+              <span class='col-5 font-weight-bold'>Tổng tền thuế:</span>
+              <span class='text-danger'>{{payslip.tax ||0}} VND</span>
+            </div>
+            <div class='col-12 mt-2'>
+              <span class='col-5 font-weight-bold'>Tổng Lương:</span>
+              <span class='text-success'>{{payslip.total ||0}}VND</span>
+            </div>
+          </div>
+        </div>
+    <div class="footer-popup row mt-3 ml-2">
+      <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
+      <button mat-dialog-close (click)='onSubmit()' class="btn btn-ok ">Xác nhận</button>
+    </div>
+  </div>
+</div>
