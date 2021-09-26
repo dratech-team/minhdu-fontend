@@ -26,7 +26,7 @@ import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.s
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { map} from 'rxjs/operators';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
@@ -190,7 +190,6 @@ export class AddEmployeeComponent implements OnInit {
         expiredAt : value.expiredAtContract ? new Date(value.expiredAtContract): undefined,
       }
     };
-    console.log(employee)
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
@@ -201,7 +200,6 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
-    ///TODO: handle later
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
       if (added) {
         this.dialogRef.close();

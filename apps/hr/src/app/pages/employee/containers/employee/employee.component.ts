@@ -4,8 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import {
-  EmployeeAction,
-  selectEmployeeAdded,
+  EmployeeAction, selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
 import {
@@ -32,7 +31,7 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
-  loaded$ = this.store.pipe(select(selectEmployeeAdded));
+  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   pageSize: number = 30;
   pageIndexInit = 0;
 
