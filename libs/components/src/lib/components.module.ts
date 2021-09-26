@@ -23,6 +23,8 @@ import { PickLocationComponent } from './pick-location/pick-location.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -38,6 +40,8 @@ import { SnackBarComponent } from './snackBar/snack-bar.component';
     ReactiveFormsModule,
     NgxChartsModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule
   ],
   declarations: [
     SwimLaneChartComponent,

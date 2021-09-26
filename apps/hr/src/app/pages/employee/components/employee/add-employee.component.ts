@@ -45,6 +45,7 @@ export class AddEmployeeComponent implements OnInit {
   positions$: Observable<Position[]> | undefined;
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
+  wardId!: number;
 
   constructor(
     public datePipe: DatePipe,
@@ -86,11 +87,6 @@ export class AddEmployeeComponent implements OnInit {
           : this.flatSalary.NOT_FLAT_SALARY,
         Validators.required
       ],
-      province: [
-        this.data?.employee?.ward?.district?.province?.id,
-        Validators.required
-      ],
-      district: [this.data?.employee?.ward?.district?.id, Validators.required],
       firstName: [this.data?.employee?.firstName, Validators.required],
       lastName: [this.data?.employee?.lastName, Validators.required],
       address: [this.data?.employee?.address, Validators.required],
@@ -99,8 +95,6 @@ export class AddEmployeeComponent implements OnInit {
         this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd'),
         Validators.required
       ],
-      ward: [this.data?.employee?.ward?.id, Validators.required],
-      // nation: [this.data?.employee?.ward?.district?.province?.nation?.id, Validators.required],
       ethnicity: [this.data?.employee?.ethnicity],
       religion: [this.data?.employee?.religion],
       facebook: [this.data?.employee?.facebook],
@@ -176,7 +170,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
       issuedBy: value.issuedBy,
-      wardId: value.ward === null ? 1 : value.ward,
+      wardId: this.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -190,7 +184,9 @@ export class AddEmployeeComponent implements OnInit {
         expiredAt : value.expiredAtContract ? new Date(value.expiredAtContract): undefined,
       }
     };
+
     if (this.data !== null) {
+      console.log(employee)
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.data.employee.id,
@@ -241,5 +237,8 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       this.branchId = branch.id;
     }
+  }
+  onSelectWard($event: number) {
+    this.wardId = $event
   }
 }

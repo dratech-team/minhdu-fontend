@@ -13,44 +13,32 @@
 <!--      </mat-select>-->
 <!--    </div>-->
     <div class='col-sm' [formGroup]='formGroup'>
-      <label for='province'>Tỉnh/Thành phố</label><span class='star'>*</span>
-      <mat-select
-        id='province'
-        class='form-control'
-        formControlName='province'
-        [ngClass]="{ 'is-invalid': submitted && form.province.errors?.required }"
-      >
-        <mat-option *ngFor='let province of provinces$ | async' [value]='province.id' (click)='onProvince(province)'>
+      <label>Tỉnh/Thành phố </label><span class='star'>*</span>
+      <input class='form-control' type="text" matInput [formControl]="provinces" [matAutocomplete]="province">
+      <mat-autocomplete #province="matAutocomplete" >
+        <mat-option *ngFor="let province of provinces$ | async" [value]="province.name" (click)='onProvince(province)'>
           {{province.name}}
         </mat-option>
-      </mat-select>
-      <div *ngIf='submitted && form.province.errors?.required ' class='invalid-feedback'>
-        <div>Chưa chọn Tỉnh/Thành phố</div>
-      </div>
+      </mat-autocomplete>
     </div>
+
     <div class='col-sm' [formGroup]='formGroup' >
-      <label for='district'>Quận/Huyện</label><span class='star'>*</span>
-      <mat-select id='district' class='form-control' formControlName='district'
-                  [ngClass]="{ 'is-invalid': submitted && form.district.errors?.required }">
-        <mat-option *ngFor='let district of districts' [value]='district.id' (click)='onDistrict(district)'>
+      <label>Quận/Huyện</label><span class='star'>*</span>
+      <input class='form-control' type="text" matInput [formControl]="districts" [matAutocomplete]="district">
+      <mat-autocomplete #district="matAutocomplete" >
+        <mat-option *ngFor="let district of districts$|async" [value]="district.name" (click)='onDistrict(district)'>
           {{district.name}}
         </mat-option>
-      </mat-select>
-      <div *ngIf='submitted && form.district.errors?.required ' class='invalid-feedback'>
-        <div>Chưa chọn Quận/Huyện</div>
-      </div>
+      </mat-autocomplete>
     </div>
     <div class='col-sm'  [formGroup]='formGroup'>
-      <label for='ward'>Xã/Phường </label><span class='star'>*</span>
-      <mat-select id='ward' class='form-control' formControlName='ward'
-                  [ngClass]="{ 'is-invalid': submitted && form.ward.errors?.required }">
-        <mat-option *ngFor='let ward of wards' [value]='ward.id'>
+      <label>Phường/Xã</label><span class='star'>*</span>
+      <input class='form-control' type="text" matInput [formControl]="wards" [matAutocomplete]="ward">
+      <mat-autocomplete #ward="matAutocomplete" >
+        <mat-option *ngFor="let ward of wards$|async" [value]="ward.name" (click)='onWard(ward)'>
           {{ward.name}}
         </mat-option>
-      </mat-select>
-      <div *ngIf='submitted && form.ward.errors?.required ' class='invalid-feedback'>
-        <div>Chưa chọn Xã/Phường</div>
-      </div>
+      </mat-autocomplete>
     </div>
   </div>
 </form>
