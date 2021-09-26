@@ -3,7 +3,12 @@
   <form [formGroup]='formGroup'>
     <div class='form-group'>
       <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
-      <app-pick-location [ward]='data?.employee?.ward' [formGroup]='formGroup' [submitted]='submitted' [form]='f'>
+      <app-pick-location [ward]='data?.employee?.ward'
+                         [formGroup]='formGroup'
+                         [submitted]='submitted'
+                         [form]='f'
+                         (eventSelectWard)='onSelectWard($event)'
+      >
       </app-pick-location>
       <div class='row mt-3 d-flex'>
         <div class='col-sm' [formGroup]='formGroup'>
@@ -18,7 +23,7 @@
           </mat-autocomplete>
         </div>
         <div class='col-sm'  [formGroup]='formGroup' >
-          <label for='position'>Ngày công chuẩn </label><span class='star'>*</span>
+          <label >Ngày công chuẩn </label><span class='star'>*</span>
           <input class='form-control' type="number" formControlName="workday"
           [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
           >
