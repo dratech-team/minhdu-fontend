@@ -43,7 +43,7 @@
               <div>Chưa chọn đơn vị</div>
             </div>
           </div>
-          <div *ngIf="formGroup.value.unit === 'HOUR' || formGroup.value.unit === 'DAY'" class='date-or-time col ml-2'>
+          <!-- <div *ngIf="formGroup.value.unit === 'HOUR' || formGroup.value.unit === 'DAY'" class='date-or-time col ml-2'>
             <div class='row title-item mb-1'>
               <span>Ngày</span>
               <div class='star'>*</div>
@@ -54,8 +54,8 @@
               <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
                 <div>Chưa nhập ngày</div>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           <div *ngIf="formGroup.value.unit === 'MONTH'" class='date-or-time col ml-2'>
             <div class='row title-item mb-1'>
               <span>Tháng</span>
