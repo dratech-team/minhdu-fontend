@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
+import {
+  EmployeeAction,
+  selectCurrentEmployee
+} from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
   DegreeStatusEnum,
   DegreeTypeEnum,
   FlatSalary,
   FormalityEnum,
-  RelationshipEnum,
+  RelationshipEnum
 } from '@minhdu-fontend/enums';
-import { MatDialog } from '@angular/material/dialog';
-import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
-import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { AddRelativeComponent } from '../../components/relative/add-relative.component';
-import { AddDegreeComponent } from '../../components/degree/add-degree.component';
+import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import {
-  EmployeeAction,
-  selectCurrentEmployee,
-} from '@minhdu-fontend/employee';
 import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
+import { AppState } from '../../../../reducers';
+import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { UpdateContractComponent } from '../../components/dialog-update-contract/update-contract.component';
+import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -56,7 +56,7 @@ export class DetailEmployeeComponent implements OnInit {
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
       width: '60%',
-      data: { employee: employee, mode: 'UPDATE' },
+      data: { employee: employee },
     });
   }
 

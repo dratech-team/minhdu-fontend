@@ -1,6 +1,8 @@
 import { DatePipe } from '@angular/common';
 import {
-  Component, ElementRef, Inject,
+  Component,
+  ElementRef,
+  Inject,
   LOCALE_ID,
   OnInit,
   ViewChild
@@ -149,23 +151,12 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
 
-    /// FIXME: dummy tạm
-    if (!(this.data.mode === 'UPDATE')) {
-      if (!this.wardId || !this.branchId || !this.positionId) {
-        return this.snakbar.open(
-          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
-          'Đóng',
-          { duration: 3000 }
-        );
-      }
-    }
-
     const value = this.formGroup.value;
     const employee = {
       id: this?.data?.employee?.id,
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-      positionId: this.positionId || this.data?.employee.positionId,
-      branchId: this.branchId || this.data?.employee.branchId,
+      positionId: this.positionId || this.data?.employee?.positionId,
+      branchId: this.branchId || this.data?.employee?.branchId,
       workedAt: value.workedAt,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       firstName: value.firstName,
@@ -177,7 +168,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
       issuedBy: value.issuedBy,
-      wardId: this.wardId || this.data.employee.wardId,
+      wardId: this.wardId || this.data?.employee?.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -203,7 +194,16 @@ export class AddEmployeeComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+          /// FIXME: dummy tạm
+      if (!this.wardId || !this.branchId || !this.positionId) {
+        this.snakbar.open(
+          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
+          'Đóng',
+          { duration: 3000 }
+        );
+      } else {
+        this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+      }
     }
 
     /// FIXME: close k work
