@@ -11,8 +11,11 @@ export class ContractService extends BaseService<any> {
   ) {
     super(Api.CONTRACT, http);
   }
-
-  addOne(contract: any): Observable<any> {
-    return super.addOne(contract);
+  addOne(props: any): Observable<any> {
+  return super.addOne(props);
   }
+
+  update(id: any, body: any): Observable<any> {
+   return super.update(id, body);
+ }
 }
