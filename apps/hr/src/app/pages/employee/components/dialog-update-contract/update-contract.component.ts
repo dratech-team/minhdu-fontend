@@ -5,7 +5,8 @@ import { AppState } from '../../../../reducers';
 import { Store } from '@ngrx/store';
 import { ContractService } from '../../../../../../../../libs/employee/src/lib/+state/service/contract.service';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { map, tap } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+
 
 
 @Component({
@@ -13,7 +14,9 @@ import { map, tap } from 'rxjs/operators';
 })
 export class UpdateContractComponent implements OnInit{
   formGroup!: FormGroup;
+  lastContract!: number
   constructor(
+    public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
@@ -22,9 +25,18 @@ export class UpdateContractComponent implements OnInit{
   }
 
   ngOnInit() {
+    //FIXME mới làm trường hợp hợp đồng mới nhất
+
+    if(this.data?.contracts){
+      this.lastContract =  this.data?.contracts.length -1
+    }
     this.formGroup = this.formBuilder.group({
-      createdAt: [this.data, Validators.required],
-      expiredAt :[this.data, Validators.required],
+      createdAt: [
+        this.datePipe.transform( this.data?.contracts[this.lastContract]?.createdAt, 'yyyy-MM-dd')
+       , Validators.required],
+      expiredAt :[
+        this.datePipe.transform( this.data?.contracts[this.lastContract]?.expiredAt, 'yyyy-MM-dd'),
+        Validators.required],
     }
   )
   }
@@ -35,6 +47,16 @@ export class UpdateContractComponent implements OnInit{
       createdAt: this.formGroup.value.createdAt,
       expiredAt : this.formGroup.value.expiredAt
     }
-    this.contractService.addOne(contract).subscribe()
+    if(this.data?.contracts?.length > 0 ){
+      this.contractService.update(this.data.contracts[this.lastContract].id, contract).subscribe(_ =>{
+        this.store.dispatch(EmployeeAction.getEmployee({id:this.data.id}))
+      })
+    }else{
+      console.log(contract)
+      this.contractService.addOne(contract).subscribe(_ =>{
+        this.store.dispatch(EmployeeAction.getEmployee({id:this.data.id}))
+      })
+    }
+
   }
 }
