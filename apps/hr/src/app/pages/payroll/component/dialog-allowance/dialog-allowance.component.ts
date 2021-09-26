@@ -24,7 +24,7 @@ export class DialogAllowanceComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -44,7 +44,6 @@ export class DialogAllowanceComponent implements OnInit {
       ],
       datetime: [
         this.datePipe.transform(this.data?.salary?.datetime, 'yyyy-MM-dd'),
-        Validators.required,
       ],
       times: [
         this.data?.salary?.times ? this.data?.salary?.times : 0,
