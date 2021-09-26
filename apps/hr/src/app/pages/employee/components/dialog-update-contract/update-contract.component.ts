@@ -25,7 +25,7 @@ export class UpdateContractComponent implements OnInit{
   }
 
   ngOnInit() {
-    //FIXME m?i làm tru?ng h?p h?p d?ng m?i nh?t
+    //FIXME m?i lï¿½m tru?ng h?p h?p d?ng m?i nh?t
 
     if(this.data?.contracts){
       this.lastContract =  this.data?.contracts.length -1
@@ -52,7 +52,6 @@ export class UpdateContractComponent implements OnInit{
         this.store.dispatch(EmployeeAction.getEmployee({id:this.data.id}))
       })
     }else{
-      console.log(contract)
       this.contractService.addOne(contract).subscribe(_ =>{
         this.store.dispatch(EmployeeAction.getEmployee({id:this.data.id}))
       })

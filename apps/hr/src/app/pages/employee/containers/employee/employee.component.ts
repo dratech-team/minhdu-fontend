@@ -59,7 +59,6 @@ export class EmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          console.log(val)
           this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
         })
       )

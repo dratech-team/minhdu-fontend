@@ -90,7 +90,6 @@ export class AddHolidayComponent implements OnInit {
     if (this.data) {
       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
     } else {
-      console.log(holiday)
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
     this.dialogRef.close();
