@@ -35,7 +35,7 @@ export const selectedLoadedPayroll = createSelector(
 
 export const selectedAddedPayroll = createSelector(
   selectorPayrollState,
-  (state) => state.adding
+  (state) => state.added
 );
 
 export const selectorPayrollTotal = createSelector(

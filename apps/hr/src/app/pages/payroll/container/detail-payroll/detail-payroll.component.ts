@@ -48,7 +48,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   onDetailEmployee(id: number) {
-    this.router.navigate(['nhan-su/ho-so/chi-tiet-nhan-vien', id]).then();
+    this.router.navigate(['ho-so/chi-tiet-nhan-vien', id]).then();
   }
 
 
