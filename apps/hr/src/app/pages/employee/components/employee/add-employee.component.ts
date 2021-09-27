@@ -174,7 +174,7 @@ export class AddEmployeeComponent implements OnInit {
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone?.toString(),
+      phone: value.phone? value.phone.toString(): undefined,
       birthday: value.birthday,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),

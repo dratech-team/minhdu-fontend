@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
-import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 
@@ -67,7 +67,7 @@ export class AddRelativeComponent implements OnInit {
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone,
+      phone: value.phone? value.phone.toString(): undefined,
       birthplace: value.birthplace,
       identify: value.identify?.toString(),
       issuedBy: value.issuedBy,
@@ -90,7 +90,11 @@ export class AddRelativeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
-    this.dialogRef.close();
+    this.store.pipe(select(selectEmployeeAdded)).subscribe(val =>{
+      if(val){
+        this.dialogRef.close();
+      }
+    })
   }
 
   onSelectWard(wardId: number) {
