@@ -305,6 +305,15 @@
         Xác nhận phiếu lương
       </button>
     </div>
+    <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: space-between'>
+      <button (click)='prePayroll(payroll)'  class='mb-5 create-salary'>
+        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-left.svg' alt='edit icon'><span>Phiếu lương trước đó</span>
+      </button>
+      <button (click)='nextPayroll(payroll)' class='mb-5 create-salary'>
+        Phiếu lương tiếp theo
+        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-right%20(1).svg' alt='edit icon'>
+      </button>
+    </div>
   </div>
 </div>
 </ng-template>

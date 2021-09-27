@@ -12,6 +12,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { AppState } from '../../../../reducers';
 import { TemplateBasicAction } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.action';
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.selector';
+import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 
 @Component({
   templateUrl: 'dialog-basic.component.html',
@@ -40,6 +41,7 @@ export class DialogBasicComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(val => console.log(val))
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
@@ -96,7 +98,12 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     }
-    this.dialogRef.close();
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(val =>{
+      if(val){
+        this.dialogRef.close();
+      }
+    })
+
   }
 
   //TODO

@@ -9,6 +9,7 @@ import {
 import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
 import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { Branch } from '../orgChart/branch';
+import { Contracts } from './contracts';
 
 
 export interface Employee {
@@ -46,7 +47,7 @@ export interface Employee {
   degrees?: Degree[],
   bhyt?: string,
   payrolls: Payroll[],
-  contracts: any[];
+  contracts: Contracts[];
   relatives: Relative[],
   isSelect?: boolean;
   workHistories?: WorkHistory[];

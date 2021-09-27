@@ -11,5 +11,6 @@ export interface Payroll {
   paidAt: Date,
   accConfirmedAt: Date,
   actualDay: number,
+  payrollIds: number[]
 }
 
