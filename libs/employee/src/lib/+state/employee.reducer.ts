@@ -36,11 +36,14 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.addEmployeeSuccess, (state, action) =>
-    adapter.addOne(action.employee, { ...state, added: true })
+  {
+    return  adapter.addOne(action.employee, { ...state, added: true })
+  }
+
   ),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
-    adapter.upsertOne(action.employee, { ...state, loaded: true })
+    adapter.upsertOne(action.employee, { ...state, loaded: true, added: true })
   ),
 
   on(EmployeeAction.updateEmployee, (state, _) => {

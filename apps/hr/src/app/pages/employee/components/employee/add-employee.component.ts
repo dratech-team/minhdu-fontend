@@ -153,12 +153,14 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     /// FIXME: dummy tạm
-    if (!this.wardId || !this.branchId || !this.positionId) {
-      return this.snakbar.open(
-        'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
-        'Đóng',
-        { duration: 3000 }
-      );
+    if(!this.data){
+      if (!this.wardId || !this.branchId || !this.positionId) {
+        return this.snakbar.open(
+          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
+          'Đóng',
+          { duration: 3000 }
+        );
+      }
     }
 
     const value = this.formGroup.value;
@@ -208,6 +210,7 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
+      console.log(added)
       if (added) {
         this.dialogRef.close();
       }

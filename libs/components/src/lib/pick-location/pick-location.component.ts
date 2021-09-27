@@ -92,7 +92,6 @@ export class PickLocationComponent implements OnInit {
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
-
   }
 
   onDistrict(district: District) {
