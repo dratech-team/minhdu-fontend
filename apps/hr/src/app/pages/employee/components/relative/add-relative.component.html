@@ -4,7 +4,11 @@
     <div>
       <app-add-profile [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-add-profile>
       <app-pick-location [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f'
-                         [submitted]='submitted'></app-pick-location>
+                         [submitted]='submitted'
+                         (eventSelectWard)='onSelectWard($event)'
+      >
+
+      </app-pick-location>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
           <label for='career'>Nghề nghiệp</label>
