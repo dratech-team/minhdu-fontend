@@ -1,34 +1,35 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
-  ElementRef,
   Inject,
   LOCALE_ID,
   OnInit,
-  ViewChild
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
+  Validators,
 } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../../../reducers';
 import { FlatSalary } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
+import { DatePipe } from '@angular/common';
 import {
   getAllPosition,
-  PositionActions
+  PositionActions,
 } from 'libs/orgchart/src/lib/+state/position';
-import { combineLatest, Observable } from 'rxjs';
+import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { Branch, Position } from '@minhdu-fontend/data-models';
 import { map } from 'rxjs/operators';
-import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { combineLatest, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import { AppState } from '../../../../reducers';
+import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 @Component({
   templateUrl: 'add-employee.component.html',
 })
@@ -151,12 +152,23 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
 
+    /// FIXME: dummy tạm
+    if(!this.data){
+      if (!this.wardId || !this.branchId || !this.positionId) {
+        return this.snakbar.open(
+          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
+          'Đóng',
+          { duration: 3000 }
+        );
+      }
+    }
+
     const value = this.formGroup.value;
     const employee = {
       id: this?.data?.employee?.id,
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
-      positionId: this.positionId || this.data?.employee?.positionId,
-      branchId: this.branchId || this.data?.employee?.branchId,
+      positionId: this.positionId || this.data?.employee.positionId,
+      branchId: this.branchId || this.data?.employee.branchId,
       workedAt: value.workedAt,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       firstName: value.firstName,
@@ -168,7 +180,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
       issuedBy: value.issuedBy,
-      wardId: this.wardId || this.data?.employee?.wardId,
+      wardId: this.wardId || this.data.employee.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -194,20 +206,11 @@ export class AddEmployeeComponent implements OnInit {
         })
       );
     } else {
-          /// FIXME: dummy tạm
-      if (!this.wardId || !this.branchId || !this.positionId) {
-        this.snakbar.open(
-          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
-          'Đóng',
-          { duration: 3000 }
-        );
-      } else {
-        this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
-      }
+      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
 
-    /// FIXME: close k work
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
+      console.log(added)
       if (added) {
         this.dialogRef.close();
       }

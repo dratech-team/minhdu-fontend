@@ -14,6 +14,7 @@ export class AddRelativeComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   convertBoolean = ConvertBoolean;
+  wardId!: number
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,9 +33,6 @@ export class AddRelativeComponent implements OnInit {
       ethnicity: [this.data?.relative?.ethnicity],
       birthplace: [
         this.data?.relative?.birthplace],
-      ward: [this.data?.relative?.ward?.id, Validators.required],
-      province: [this.data?.relative?.ward?.district?.province?.id, Validators.required],
-      district: [this.data?.relative?.ward?.district?.id, Validators.required],
       address: [this.data?.relative?.address, Validators.required],
       identify: [this.data?.relative?.identify],
       idCardAt: [
@@ -73,7 +71,7 @@ export class AddRelativeComponent implements OnInit {
       birthplace: value.birthplace,
       identify: value.identify?.toString(),
       issuedBy: value.issuedBy,
-      wardId: value.ward,
+      wardId: this.wardId,
       address: value.address,
       employeeId: this?.data?.employeeId,
       birthday: value.birthday ? value.birthday : undefined,
@@ -93,5 +91,9 @@ export class AddRelativeComponent implements OnInit {
       this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
     this.dialogRef.close();
+  }
+
+  onSelectWard(wardId: number) {
+    this.wardId = wardId
   }
 }
