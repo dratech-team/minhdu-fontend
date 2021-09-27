@@ -4,7 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import {
-  EmployeeAction, selectEmployeeLoaded,
+  EmployeeAction,
+  selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
 import {

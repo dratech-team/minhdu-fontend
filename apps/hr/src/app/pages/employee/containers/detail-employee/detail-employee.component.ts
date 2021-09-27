@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
+import {
+  EmployeeAction,
+  selectCurrentEmployee
+} from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
   DegreeStatusEnum,
@@ -10,21 +14,19 @@ import {
   FormalityEnum,
   RelationshipEnum
 } from '@minhdu-fontend/enums';
-import { MatDialog } from '@angular/material/dialog';
-import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
-import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { AddRelativeComponent } from '../../components/relative/add-relative.component';
-import { AddDegreeComponent } from '../../components/degree/add-degree.component';
+import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { EmployeeAction, selectCurrentEmployee } from '@minhdu-fontend/employee';
 import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
+import { AppState } from '../../../../reducers';
+import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { UpdateContractComponent } from '../../components/dialog-update-contract/update-contract.component';
-
+import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { AddRelativeComponent } from '../../components/relative/add-relative.component';
 
 @Component({
   templateUrl: 'detail-employee.component.html',
-  styleUrls: ['detail-employee.component.scss']
+  styleUrls: ['detail-employee.component.scss'],
 })
 export class DetailEmployeeComponent implements OnInit {
   formalityEnum = FormalityEnum;
@@ -41,8 +43,7 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.getEmployee({ id: this.employeeId }));
@@ -55,13 +56,13 @@ export class DetailEmployeeComponent implements OnInit {
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
       width: '60%',
-      data: { employee: employee }
+      data: { employee: employee },
     });
   }
 
   deleteEmployee(employeeId: number): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%'
+      minWidth: '30%',
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -71,40 +72,46 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  addAndUpdateRelative(employeeId: number, id?: number, relative?: Relative): void {
+  addAndUpdateRelative(
+    employeeId: number,
+    id?: number,
+    relative?: Relative
+  ): void {
     this.dialog.open(AddRelativeComponent, {
       width: '60%',
-      data: { employeeId: employeeId, id: id, relative: relative }
+      data: { employeeId: employeeId, id: id, relative: relative },
     });
   }
 
   deleteRelative(id: number, employeeId: number) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '30%'
+      width: '30%',
     });
-    dialogRef.afterClosed().subscribe(val => {
-        if (val) {
-          this.store.dispatch(EmployeeAction.deleteRelative({ id: id, employeeId: employeeId }));
-        }
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.store.dispatch(
+          EmployeeAction.deleteRelative({ id: id, employeeId: employeeId })
+        );
       }
-    );
-
+    });
   }
 
   addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
     this.dialog.open(AddDegreeComponent, {
       width: '40%',
-      data: { employeeId: employeeId, id: id, degree: degree }
+      data: { employeeId: employeeId, id: id, degree: degree },
     });
   }
 
   deleteDegree(id: number, employeeId: number) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '30%'
+      width: '30%',
     });
-    dialogRef.afterClosed().subscribe(val => {
+    dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(EmployeeAction.deleteDegree({ id: id, employeeId: employeeId }));
+        this.store.dispatch(
+          EmployeeAction.deleteDegree({ id: id, employeeId: employeeId })
+        );
       }
     });
   }
@@ -120,6 +127,6 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   updateContract(employee: Employee) {
-    this.dialog.open(UpdateContractComponent, {width: '30%' , data: employee})
+    this.dialog.open(UpdateContractComponent, { width: '30%', data: employee });
   }
 }

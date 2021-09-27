@@ -13,7 +13,6 @@ export const loadInit = createAction(
     workedAt?: Date,
     code?: string,
     position?: string,
-    department?: string,
     branch?: string,
     gender?: Gender,
     isSelect?: boolean,

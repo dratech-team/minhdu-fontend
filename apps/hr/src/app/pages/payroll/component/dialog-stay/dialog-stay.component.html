@@ -16,12 +16,7 @@
           <div class='star'>*</div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
-          <mat-select
-            class='form-control col'
-            [(value)]='indexTitle'
-            #title
-            (change)='setValueTitle(title.value)'
-           >
+          <mat-select class='form-control col' [(value)]='indexTitle' #title (change)='setValueTitle(title.value)'>
             <mat-option *ngFor='let item of salariesStay; let i = index' [value]='i'>
               {{item}}
             </mat-option>
@@ -34,8 +29,8 @@
           <div class='star'>*</div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
-          <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price'
-                 inputCurrency [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+          <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price' inputCurrency
+            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
           <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập mức phụ cấp</div>
           </div>
@@ -44,14 +39,10 @@
     </div>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip'
-              data-placement='left'
-              title='xóa'>
+      <button class='btn btn-ok '>Lưu</button>
+      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>
     </div>
   </form>
 </div>
-
-
