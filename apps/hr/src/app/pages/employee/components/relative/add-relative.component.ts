@@ -100,8 +100,4 @@ export class AddRelativeComponent implements OnInit {
   onSelectWard(wardId: number) {
     this.wardId = wardId
   }
-
-  onSelectWard(wardId: number) {
-    this.wardId = wardId
-  }
 }
