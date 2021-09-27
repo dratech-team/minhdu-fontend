@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -24,6 +24,11 @@ export class DialogAllowanceComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
+  isAllDay = true;
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
 
   constructor(
     public datePipe: DatePipe,

@@ -39,6 +39,8 @@ import { TemplateOvertimeEffect } from '../template/+state/template-overtime/tem
 import { templateBasicReducer } from '../template/+state/teamlate-salary-basic/template-basic-salary.reducer';
 import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-basic/template-basic-salary.effect';
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -73,6 +75,8 @@ import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-pay
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
+    MatFormFieldModule,
+    MatDatepickerModule
   ],
   declarations: [
     PayrollComponent,
