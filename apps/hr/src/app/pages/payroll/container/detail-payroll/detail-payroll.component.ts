@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
   selectedAddedPayroll,
-  selectedLoadedPayroll
+  selectedLoadedPayroll, selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,6 +29,7 @@ import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm
 })
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
+  allPayroll$ = this.store.pipe(select(selectorAllPayroll))
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   constructor(
@@ -37,6 +38,9 @@ export class DetailPayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   ngOnInit() {
@@ -105,5 +109,25 @@ export class DetailPayrollComponent implements OnInit {
 
   historySalary(employeeId: number) {
     this.dialog.open(DevelopmentComponent, { width: '30%' });
+  }
+
+  nextPayroll( payroll: Payroll) {
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id)
+    const payrollIds = payroll.payrollIds
+    if(indexPayrollCurrent < payrollIds.length -1){
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then()
+    }else{
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then()
+    }
+  }
+  prePayroll( payroll: Payroll) {
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id)
+    const payrollIds = payroll.payrollIds
+    if(indexPayrollCurrent > 0){
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1] ]).then()
+    }else{
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length -1] ]).then()
+    }
+
   }
 }

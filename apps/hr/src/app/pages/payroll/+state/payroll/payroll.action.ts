@@ -5,8 +5,8 @@ import { Payroll } from './payroll.interface';
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
   props<{
-    take: number,
-    skip: number,
+    take?: number,
+    skip?: number,
     name?: string,
     code?: string,
     position?: string,
