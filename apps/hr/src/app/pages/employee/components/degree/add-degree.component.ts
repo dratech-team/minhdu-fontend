@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
-import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { DatePipe } from '@angular/common';
 
 
@@ -76,6 +76,10 @@ export class AddDegreeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addDegree({ degree: degree }));
     }
-    this.dialogRef.close();
+    this.store.pipe(select(selectEmployeeAdded)).subscribe(val => {
+      if (val) {
+        this.dialogRef.close();
+      }
+    });
   }
 }

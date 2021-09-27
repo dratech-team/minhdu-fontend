@@ -35,11 +35,9 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
-  on(EmployeeAction.addEmployeeSuccess, (state, action) =>
-  {
-    return  adapter.addOne(action.employee, { ...state, added: true })
-  }
-
+  on(EmployeeAction.addEmployeeSuccess, (state, action) => {
+      return adapter.addOne(action.employee, { ...state, added: true });
+    }
   ),
 
   on(EmployeeAction.getEmployeeSuccess, (state, action) =>
@@ -51,14 +49,33 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
-  on(EmployeeAction.updateEmployeeSuccess, (state, action) =>
-  {
-    return  adapter.updateOne(action.employee, { ...state, added: true })
-  }
+  on(EmployeeAction.updateEmployeeSuccess, (state, action) => {
+      return adapter.updateOne(action.employee, { ...state, added: true });
+    }
   ),
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })
+  ),
+
+  on(EmployeeAction.addRelative, (state, _) => {
+      return { ...state, added: false };
+    }
+  ),
+
+  on(EmployeeAction.updateRelative, (state, _) => {
+      return { ...state, added: false };
+    }
+  ),
+
+  on(EmployeeAction.addDegree, (state, _) => {
+      return { ...state, added: false };
+    }
+  ),
+
+  on(EmployeeAction.updateDegree, (state, _) => {
+      return { ...state, added: false };
+    }
   )
 );
 

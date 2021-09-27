@@ -1,43 +1,51 @@
-<h2 mat-dialog-title>Mẫu tăng ca</h2>
-<mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup'>
-    <div class='m-4'>
-      <div class=' main-popup'>
-        <div><span class='main-title'>Tiêu đề tăng ca</span><span class='star'>*</span></div>
-        <input class='form-control mt-1' type='text' formControlName='title' placeholder='Nhập tiêu đề'
-               [ngClass]="{ 'is-invalid': submitted && f.title.errors?.required }">
-        <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
-          <div>Chưa nhập tiêu đề</div>
-        </div>
-      </div>
-      <div class='main-popup mt-2 '>
-        <div class=' main-title mb-1'>
-          <label class='main-title' for='branch'>Loại tăng ca <span class='star'>*</span></label>
-        </div>
-        <div class=' mt-1'>
-          <mat-select
-            class='form-control col'
-            formControlName='unit'
-            [ngClass]="{ 'is-invalid': submitted && f.unit.errors?.required }"
-          >
-            <mat-option value='DAY'>Ngày</mat-option>
-            <mat-option value='HOUR'>Giờ</mat-option>
-          </mat-select>
-          <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn loại tăng ca</div>
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <h2 mat-dialog-title>Mẫu tăng ca</h2>
+  <mat-dialog-content class='mat-typography'>
+    <form [formGroup]='formGroup'>
+      <div class='m-4'>
+        <div class=' main-popup'>
+          <div><span class='main-title'>Tiêu đề tăng ca</span><span class='star'>*</span></div>
+          <input class='form-control mt-1' type='text' formControlName='title' placeholder='Nhập tiêu đề'
+                 [ngClass]="{ 'is-invalid': submitted && f.title.errors?.required }">
+          <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập tiêu đề</div>
           </div>
         </div>
-      </div>
-      <div class='main-popup mt-2' [formGroup]='formGroup'>
-        <div><span class='main-title'>Chức vụ</span></div>
-        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
-               #positionInput>
-        <mat-autocomplete #position="matAutocomplete">
-          <mat-option *ngFor="let position of positions$ | async"
-                      [value]="!position.id ? positionInput.value : position.name " (click)='onCreatePosition(position)'>
-            {{position.name}}
-          </mat-option>
-        </mat-autocomplete>
+        <div class='main-popup mt-2 '>
+          <div class=' main-title mb-1'>
+            <label class='main-title'>Loại tăng ca <span class='star'>*</span></label>
+          </div>
+          <div class=' mt-1'>
+            <mat-select
+              class='form-control col'
+              formControlName='unit'
+              [ngClass]="{ 'is-invalid': submitted && f.unit.errors?.required }"
+            >
+              <mat-option value='DAY'>Ngày</mat-option>
+              <mat-option value='HOUR'>Giờ</mat-option>
+            </mat-select>
+            <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn loại tăng ca</div>
+            </div>
+          </div>
+        </div>
+        <div class='main-popup mt-2' [formGroup]='formGroup'>
+          <div><span class='main-title'>Chức vụ</span></div>
+          <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
+                 #positionInput>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async'
+                        [value]='!position.id ? positionInput.value : position.name '
+                        (click)='onCreatePosition(position)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
           <div class='mt-2'>
             <span class='mr-3 position-relative' *ngFor='let position of positionSelected'>{{position.name}}
               <label class='position-absolute text-danger' style='top:-7px ; right: -10px'
@@ -45,53 +53,54 @@
             </span>
           </div>
 
-        <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
-          <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
-        </div> -->
-      </div>
-      <div class='main-popup mt-2'>
-        <div><span class='main-title'>Đơn vị</span></div>
-        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
-               #branchInput >
-        <mat-autocomplete #branch="matAutocomplete" >
-          <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
-                      (click)='onCreateBranch(branch)'>
-            {{branch.name}}
-          </mat-option>
-        </mat-autocomplete>
-        <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
-          <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
-        </div> -->
-      </div>
-      <div class=' main-popup mt-2' [formGroup]='formGroup'>
-        <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
-        <input class='form-control mt-1' type='number' formControlName='rate'
-               [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
-        <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-          <div>Chưa nhập hệ số</div>
+          <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+            <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
+          </div> -->
+        </div>
+        <div class='main-popup mt-2'>
+          <div><span class='main-title'>Đơn vị</span></div>
+          <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
+                 #branchInput>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='!branch.id ? branchInput.value : branch.name'
+                        (click)='onCreateBranch(branch)'>
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+            <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
+          </div> -->
+        </div>
+        <div class=' main-popup mt-2' [formGroup]='formGroup'>
+          <div><span class='main-title'>Hệ số</span><span class='star'>*</span></div>
+          <input class='form-control mt-1' type='number' formControlName='rate'
+                 [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
+          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập hệ số</div>
+          </div>
+        </div>
+        <div class=' main-popup mt-2' [formGroup]='formGroup'>
+          <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
+          <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency
+                 [ngClass]="{ 'is-invalid': submitted && f.price.errors?.required }">
+          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập mức tăng ca</div>
+          </div>
+        </div>
+        <div class='main-popup mt-2'>
+          <div class=' main-title mb-1'>
+            <span>Chú thích</span>
+          </div>
+          <div class=' mb-3' [formGroup]='formGroup'>
+            <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+          </div>
         </div>
       </div>
-      <div class=' main-popup mt-2' [formGroup]='formGroup'>
-        <div><span class='main-title'>Mức tăng ca</span><span class='star'>*</span></div>
-        <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency
-               [ngClass]="{ 'is-invalid': submitted && f.price.errors?.required }">
-        <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-          <div>Chưa nhập mức tăng ca</div>
-        </div>
+      <div class='footer-popup row ml-2'>
+        <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
       </div>
-      <div class='main-popup mt-2'>
-        <div class=' main-title mb-1'>
-          <span>Chú thích</span>
-        </div>
-        <div class=' mb-3' [formGroup]='formGroup'>
-          <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
-        </div>
-      </div>
-    </div>
-    <div class='footer-popup row ml-2'>
-      <button mat-dialog-close class=' btn btn-cancel '>Hủy</button>
-      <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
-    </div>
-  </form>
-</mat-dialog-content>
+    </form>
+  </mat-dialog-content>
+</div>
+
 

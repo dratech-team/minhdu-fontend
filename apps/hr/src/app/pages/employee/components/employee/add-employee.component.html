@@ -1,106 +1,116 @@
-<h2 mat-dialog-title>Thông tin nhân viên</h2>
-<mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup'>
-    <div class='form-group'>
-      <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
-      <app-pick-location [ward]='data?.employee?.ward'
-                         [formGroup]='formGroup'
-                         [submitted]='submitted'
-                         [form]='f'
-                         (eventSelectWard)='onSelectWard($event)'
-      >
-      </app-pick-location>
-      <div class='row mt-3 d-flex'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label >Chức vụ </label><span class='star'>*</span>
-          <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
-            #positionInput>
-          <mat-autocomplete #position="matAutocomplete">
-            <mat-option *ngFor="let position of positions$ | async"
-              [value]="!position.id ? positionInput.value : position.name " (click)='onSelectPosition(position)'>
-              {{position.name}}
-            </mat-option>
-          </mat-autocomplete>
-        </div>
-        <div class='col-sm'  [formGroup]='formGroup' >
-          <label >Ngày công chuẩn </label><span class='star'>*</span>
-          <input class='form-control' type="number" formControlName="workday"
-          [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
-          >
-          <div *ngIf="submitted && f.workday.errors" class="invalid-feedback">
-            <div *ngIf="f.workday.errors?.required">Chưa nhập ngày công chuẩn</div>
-          </div>
-        </div>
-        <div class='col-sm'>
-          <label>Đơn vị </label><span class='star'>*</span>
-          <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
-            #branchInput >
-          <mat-autocomplete #branch="matAutocomplete" >
-            <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
-              (click)='onCreateBranch(branch)'>
-              {{branch.name}}
-            </mat-option>
-          </mat-autocomplete>
-          <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
-            <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
-          </div> -->
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
-          <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
-            [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
-            <mat-option value='{{flatSalary.FLAT_SALARY}}'>
-              Lương cố định
-            </mat-option>
-            <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>
-              Lương không cố định
-            </mat-option>
-          </mat-select>
-          <div *ngIf="submitted && f.isFlatSalary.errors" class="invalid-feedback">
-            <div *ngIf="f.isFlatSalary.errors?.required">Chưa chọn loại lương</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label>Email </label>
-          <input class='form-control' type='text' formControlName='email'>
-        </div>
-      </div>
-      <div class='row mt-3' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='createdAt'>Ngày vào làm </label>
-          <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
-        </div>
-        <div class='col-sm'>
-          <label for='workedAt'>Ngày vào làm chính thức</label>
-          <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
-        </div>
-      </div>
-      <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='facebook'>Facebook</label>
-          <input id='facebook' type='text' class='form-control' formControlName='facebook'>
-        </div>
-        <div class='col-sm'>
-          <label for='zalo'>Zalo</label>
-          <input id='zalo' type='number' class='form-control' formControlName='zalo'>
-        </div>
-      </div>
-      <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='facebook'>Ngày kí hợp đồng</label>
-          <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
-        </div>
-        <div class='col-sm'>
-          <label for='zalo'>ngày hết hạn hợp đồng</label>
-          <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
-        </div>
-      </div>
-      <div class='row d-flex mt-3 justify-content-center'>
-        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
-      </div>
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
-  </form>
-</mat-dialog-content>
+  </div>
+  <h2 mat-dialog-title>Thông tin nhân viên</h2>
+  <mat-dialog-content class='mat-typography'>
+    <form [formGroup]='formGroup'>
+      <div class='form-group'>
+        <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
+        <app-pick-location [ward]='data?.employee?.ward'
+                           [formGroup]='formGroup'
+                           [submitted]='submitted'
+                           [form]='f'
+                           (eventSelectWard)='onSelectWard($event)'
+        >
+        </app-pick-location>
+        <div class='row mt-3 d-flex'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label >Chức vụ </label><span class='star'>*</span>
+            <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
+                   #positionInput>
+            <mat-autocomplete #position="matAutocomplete">
+              <mat-option *ngFor="let position of positions$ | async"
+                          [value]="!position.id ? positionInput.value : position.name " (click)='onSelectPosition(position)'
+                          (onSelectionChange)='onSelectPosition(position)' >
+                {{position.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class='col-sm'  [formGroup]='formGroup' >
+            <label >Ngày công chuẩn </label><span class='star'>*</span>
+            <input class='form-control' type="number" formControlName="workday"
+                   [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
+            >
+            <div *ngIf="submitted && f.workday.errors" class="invalid-feedback">
+              <div *ngIf="f.workday.errors?.required">Chưa nhập ngày công chuẩn</div>
+            </div>
+          </div>
+          <div class='col-sm'>
+            <label>Đơn vị </label><span class='star'>*</span>
+            <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
+                   #branchInput >
+            <mat-autocomplete #branch="matAutocomplete" >
+              <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
+                          (click)='onCreateBranch(branch)'
+                          (onSelectionChange)='onCreateBranch(branch)'>
+                {{branch.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
+              <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
+            </div> -->
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
+            <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
+                        [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
+              <mat-option value='{{flatSalary.FLAT_SALARY}}'>
+                Lương cố định
+              </mat-option>
+              <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>
+                Lương không cố định
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.isFlatSalary.errors" class="invalid-feedback">
+              <div *ngIf="f.isFlatSalary.errors?.required">Chưa chọn loại lương</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Email </label>
+            <input class='form-control' type='text' formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='createdAt'>Ngày vào làm </label>
+            <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
+          </div>
+          <div class='col-sm'>
+            <label for='workedAt'>Ngày vào làm chính thức</label>
+            <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
+          </div>
+        </div>
+        <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Facebook</label>
+            <input id='facebook' type='text' class='form-control' formControlName='facebook'>
+          </div>
+          <div class='col-sm'>
+            <label for='zalo'>Zalo</label>
+            <input id='zalo' type='number' class='form-control' formControlName='zalo'>
+          </div>
+        </div>
+        <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Ngày kí hợp đồng</label>
+            <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
+          </div>
+          <div class='col-sm'>
+            <label for='zalo'>ngày hết hạn hợp đồng</label>
+            <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
+          </div>
+        </div>
+        <div class='row d-flex mt-3 justify-content-center'>
+          <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
+

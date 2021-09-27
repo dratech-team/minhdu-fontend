@@ -1,78 +1,87 @@
-<h2 mat-dialog-title>Thêm Ngày lễ</h2>
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <h2 mat-dialog-title>Thêm Ngày lễ</h2>
   <mat-dialog-content class='mat-typography'>
-  <form [formGroup]="formGroup" class='p-3' >
-    <div>
-      <div class='form-group '>
-        <div class='mt-3'>
-          <div class='row title-item mb-2'>
-            <span>Tên ngày lễ</span>
-            <div class="star">*</div>
-          </div>
-          <div class="row mb-3" [formGroup]="formGroup">
-            <input type='text' class="form-control  px-1" formControlName="name"
-                   [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }">
-            <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
-              <div>Chưa nhập tên ngày lễ</div>
+    <form [formGroup]='formGroup' class='p-3'>
+      <div>
+        <div class='form-group '>
+          <div>
+            <div class='row title-item mb-2'>
+              <span>Tên ngày lễ</span>
+              <div class='star'>*</div>
             </div>
-          </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control  px-1' formControlName='name'
+                     [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }">
+              <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập tên ngày lễ</div>
+              </div>
+            </div>
 
-        </div>
-        <div class='mt-3'>
-          <div class='row title-item mb-2'>
-            <span>Chọn ngày</span>
-            <div class="star">*</div>
           </div>
-          <div class="row mb-3" [formGroup]="formGroup">
-            <input type='date' class="form-control  px-1" formControlName="datetime"
-                   [ngClass]="{ 'is-invalid': submitted && f.datetime.errors?.required }">
-            <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
-              <div>Chưa nhập ngày lễ</div>
+          <div class='mt-3'>
+            <div class='row title-item mb-2'>
+              <span>Chọn ngày</span>
+              <div class='star'>*</div>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='date' class='form-control  px-1' formControlName='datetime'
+                     [ngClass]="{ 'is-invalid': submitted && f.datetime.errors?.required }">
+              <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập ngày lễ</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class='mt-3'>
-          <div class='row title-item mb-2'>
-            <span>Hệ số</span>
-            <div class="star">*</div>
-          </div>
-          <div class="row mb-3" [formGroup]="formGroup">
-            <input type='number' class="form-control  px-1" formControlName="rate"
-                   [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
+          <div class='mt-3'>
+            <div class='row title-item mb-2'>
+              <span>Hệ số</span>
+              <div class='star'>*</div>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='number' class='form-control  px-1' formControlName='rate'
+                     [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
+              <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập hệ số</div>
+              </div>
+            </div>
             <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
               <div>Chưa nhập hệ số</div>
             </div>
           </div>
-          <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập hệ số</div>
-          </div>
-        </div>
-        <div class=' row mt-2' [formGroup]='formGroup'>
-          <div><span class='main-title'>Chức vụ</span></div>
-          <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position"
-                 #positionInput>
-          <mat-autocomplete #position="matAutocomplete">
-            <mat-option *ngFor="let position of positions$ | async"
-                        [value]="!position.id ? positionInput.value : position.name " (click)='onCreatePosition(position)'>
-              {{position.name}}
-            </mat-option>
-          </mat-autocomplete>
-          <div class='mt-2'>
+          <div class=' row mt-2' [formGroup]='formGroup'>
+            <div><span class='main-title'>Chức vụ</span></div>
+            <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
+                   #positionInput>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async'
+                          [value]='!position.id ? positionInput.value : position.name '
+                          (click)='onCreatePosition(position)'>
+                {{position.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <div class='mt-2'>
             <span class='mr-3 position-relative' *ngFor='let position of positionSelected'>{{position.name}}
               <label class='position-absolute text-danger' style='top:-7px ; right: -10px'
                      (click)='removePosition(position)'>x</label>
             </span>
-          </div>
+            </div>
 
-          <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
-            <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
-          </div> -->
+            <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+              <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
+            </div> -->
+          </div>
         </div>
       </div>
-    </div>
-    <div class="footer-popup row mt-3 ml-2">
-      <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
-      <button (click)='onSubmit()' class="btn btn-ok ">Lưu</button>
-    </div>
-  </form>
+      <div class='footer-popup row mt-3 ml-2'>
+        <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      </div>
+    </form>
   </mat-dialog-content>
+</div>
+
 
