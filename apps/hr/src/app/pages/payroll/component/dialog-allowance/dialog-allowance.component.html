@@ -35,14 +35,15 @@
                 <span> Đơn vị</span>
                 <div class='star'>*</div>
               </div>
-              <div class='row mb-3' [formGroup]='formGroup'>
+              <div class='row mb-3' *ngIf='!data.isUpdate' [formGroup]='formGroup'>
                 <mat-select class='form-control col' formControlName='unit'
                             [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
                   <mat-option value='MONTH'>Tháng</mat-option>
                   <mat-option value='DAY'>Ngày</mat-option>
-                  <mat-option value='HOUR'>Giờ</mat-option>
+<!--                  <mat-option value='HOUR'>Giờ</mat-option>-->
                 </mat-select>
               </div>
+              <div class='row mb-3 form-control' style='background: #80808059'   *ngIf='data.isUpdate && data.salary.unit === "DAY"'> Ngày</div>
               <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn đơn vị</div>
               </div>
@@ -63,7 +64,7 @@
           </div>
           <div *ngIf="formGroup.value.unit === 'DAY'">
             <section class='row mb-1'>
-              <mat-checkbox class='example-margin' [checked]='isAllDay' (change)='changeDatePicker()'>Dựa theo ngày đi
+              <mat-checkbox class='example-margin' [disabled]='true' [checked]='isAllDay' (change)='changeDatePicker()'>Dựa theo ngày đi
                 làm thực tế
               </mat-checkbox>
             </section>

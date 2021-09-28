@@ -52,6 +52,9 @@ export class DialogOvertimeComponent implements OnInit {
 
 //TODO CHƯA VALIDATE ĐƯỢC CÁC TRƯỜNG LIÊN QUAN ĐẾN AUTOCOMPLETE
   ngOnInit(): void {
+    if(this.data.isUpdate&& this.data.salary.allowance){
+      this.onAllowanceOvertime = true
+    }
     this.price = this.data?.salary?.price;
     this.unit = this.data?.salary?.unit;
     this.times = this.data?.salary?.times;
@@ -60,16 +63,27 @@ export class DialogOvertimeComponent implements OnInit {
         positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
         unit: this.data?.salary ? this.data?.salary.unit : ''
       }));
-    this.formGroup = this.formBuilder.group({
-      datetime: [
-        this.datePipe.transform(
-          this.data?.salary?.datetime, 'yyyy-MM-dd')
-        , Validators.required],
-      note: [this.data?.salary?.note],
-      times: [this.data?.salary?.times],
-      priceAllowance: [this.data?.salary?.allowance?.price],
-      titleAllowance: [this.data?.salary?.allowance?.title]
-    });
+    if(this.data.isUpdate){
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(
+            this.data.salary.datetime, 'yyyy-MM-dd')
+          , Validators.required],
+        note: [this.data.salary.note],
+        times: [this.data.salary.times],
+        priceAllowance: [this.data.salary.allowance?.price],
+        titleAllowance: [this.data.salary.allowance?.title]
+      });
+    }else{
+      this.formGroup = this.formBuilder.group({
+        datetime: ['',Validators.required],
+        note: [''],
+        times: [''],
+        priceAllowance: [],
+        titleAllowance: []
+      });
+    }
+
     this.templateOvertime$ = combineLatest([
       this.titleOvertimes.valueChanges,
       this.store.pipe(select(selectorAllTemplate))
@@ -125,14 +139,14 @@ export class DialogOvertimeComponent implements OnInit {
             : value.priceAllowance
         } : undefined,
     };
-    if (this.data.salary) {
+    if (this.data.isUpdate) {
       this.unit = this.data.salary.unit;
       this.title = this.data.salary.title;
       this.store.dispatch(PayrollAction.updateSalary({
-        payrollId: this.data.payroll.id, id: this.data.salary.id, salary: salary
+        payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payrollId, salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
     this.dialogRef.close();
   }

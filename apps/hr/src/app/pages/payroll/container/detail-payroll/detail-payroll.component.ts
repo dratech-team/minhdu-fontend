@@ -2,17 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  selectCurrentPayroll,
-  selectedAddedPayroll,
-  selectedLoadedPayroll, selectorAllPayroll
-} from '../../+state/payroll/payroll.selector';
+import { selectCurrentPayroll, selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
-import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
@@ -29,16 +24,17 @@ import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm
 })
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
-  allPayroll$ = this.store.pipe(select(selectorAllPayroll))
+  allPayroll$ = this.store.pipe(select(selectorAllPayroll));
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
   }
@@ -55,40 +51,66 @@ export class DetailPayrollComponent implements OnInit {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', id]).then();
   }
 
-
-  addAndUpdateOvertime(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
-    this.dialog.open(DialogOvertimeComponent, {
-      width: '50%',
-      data: { type, payroll, salary }
-    });
-  }
-
-  addAndUpdateBasic(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
-    this.dialog.open(DialogBasicComponent, {
+  addSalary(type: SalaryTypeEnum, payroll: Payroll) {
+    const config = {
       width: '40%',
-      data: { type, payroll, salary }
-    });
+      data: { type, payroll, isUpdate: false }
+    };
+    switch (type) {
+      case SalaryTypeEnum.BASIC : {
+        this.dialog.open(DialogBasicComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.STAY: {
+        this.dialog.open(DialogStayComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.ALLOWANCE: {
+        this.dialog.open(DialogAllowanceComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.OVERTIME: {
+        this.dialog.open(DialogOvertimeComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.ABSENT: {
+        this.dialog.open(DialogAbsentComponent, config);
+      }
+        break;
+      default :
+        console.error('error add salary in detail payroll');
+    }
   }
 
-  addAndUpdateAbsent(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
-    this.dialog.open(DialogAbsentComponent, {
-      width: '50%',
-      data: { type, payroll, salary }
-    });
-  }
-
-  addAndUpdateStay(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
-    this.dialog.open(DialogStayComponent, {
+  updateSalary(type: SalaryTypeEnum, salary: Salary) {
+    const config = {
       width: '40%',
-      data: { type, payroll, salary }
-    });
-  }
-
-  addAndUpdateAllowance(type: SalaryTypeEnum, payroll: Payroll, salary?: Salary) {
-    this.dialog.open(DialogAllowanceComponent, {
-      width: '40%',
-      data: { type, payroll, salary }
-    });
+      data: { type, salary, isUpdate: true }
+    };
+    switch (type) {
+      case SalaryTypeEnum.BASIC : {
+        this.dialog.open(DialogBasicComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.STAY: {
+        this.dialog.open(DialogStayComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.ALLOWANCE: {
+        this.dialog.open(DialogAllowanceComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.OVERTIME: {
+        this.dialog.open(DialogOvertimeComponent, config);
+      }
+        break;
+      case SalaryTypeEnum.ABSENT: {
+        this.dialog.open(DialogAbsentComponent, config);
+      }
+        break;
+      default :
+        console.error('error add salary in detail payroll');
+    }
   }
 
   removeSalary(id: number, payrollId: number) {
@@ -111,22 +133,23 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(DevelopmentComponent, { width: '30%' });
   }
 
-  nextPayroll( payroll: Payroll) {
-    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id)
-    const payrollIds = payroll.payrollIds
-    if(indexPayrollCurrent < payrollIds.length -1){
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then()
-    }else{
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then()
+  nextPayroll(payroll: Payroll) {
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
+    const payrollIds = payroll.payrollIds;
+    if (indexPayrollCurrent < payrollIds.length - 1) {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent + 1]]).then();
+    } else {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[0]]).then();
     }
   }
-  prePayroll( payroll: Payroll) {
-    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id)
-    const payrollIds = payroll.payrollIds
-    if(indexPayrollCurrent > 0){
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1] ]).then()
-    }else{
-      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length -1] ]).then()
+
+  prePayroll(payroll: Payroll) {
+    const indexPayrollCurrent = payroll.payrollIds.indexOf(payroll.id);
+    const payrollIds = payroll.payrollIds;
+    if (indexPayrollCurrent > 0) {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[indexPayrollCurrent - 1]]).then();
+    } else {
+      this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
     }
 
   }

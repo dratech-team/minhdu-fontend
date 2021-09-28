@@ -43,6 +43,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TimekeepingComponent } from './component/time-keeping/timekeeping.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ConvertTimePipe } from './pipes/convert-time.pipe';
 
 @NgModule({
   imports: [
@@ -95,7 +96,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     DialogAbsentComponent,
     DialogStayComponent,
     ConfirmPayrollComponent,
-    TimekeepingComponent
+    TimekeepingComponent,
+    ConvertTimePipe
   ],
   providers:[
     MatDatepickerModule

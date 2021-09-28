@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import {  Store } from '@ngrx/store';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,13 +10,17 @@ import { SnackBarComponent } from '../../../../../../../../libs/components/src/l
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 
 @Component({
-  templateUrl: 'dialog-absent.component.html',
+  templateUrl: 'dialog-absent.component.html'
 })
 export class DialogAbsentComponent implements OnInit {
+  @ViewChild('titleAbsent') titleAbsent!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
+  selectedIndex!: number;
+  unitMinute = false;
 
   constructor(
     public datePipe: DatePipe,
@@ -29,20 +33,46 @@ export class DialogAbsentComponent implements OnInit {
   ) {
   }
 
+  //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
+  titleAbsents = [
+    { title: 'Vắng', type: this.datetimeUnit.DAY },
+    { title: 'Không đi làm', type: this.datetimeUnit.DAY },
+    { title: 'Đi trễ', type: this.datetimeUnit.MINUTE },
+    { title: 'Về Sớm', type: this.datetimeUnit.MINUTE }
+  ];
 
   ngOnInit(): void {
-    this.formGroup = this.formBuilder.group({
-      unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
-      datetime: [
-        this.datePipe.transform(
-          this.data?.salary?.datetime, 'yyyy-MM-dd')
-        , Validators.required],
-      forgot: [this.data?.salary?.forgot],
-      times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
-      note: [this.data?.salary?.note],
-      type: [this.data.type, Validators.required],
-      rate: [1, Validators.required]
-    });
+    if (this.data.isUpdate) {
+      if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
+        this.unitMinute = true;
+      }
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(
+            this.data.salary.datetime, 'yyyy-MM-dd')
+          ],
+        forgot: [this.data.salary.forgot],
+        times: [this.data.salary.unit === DatetimeUnitEnum.MINUTE ?
+          Math.floor(this.data.salary.times / 60) : this.data.salary.unit
+          ],
+        minutes: [this.data.salary.unit === DatetimeUnitEnum.MINUTE ?
+          this.data.salary.times % 60 : undefined],
+        note: [this.data.salary.note],
+        type: [this.data.type],
+        rate: [1]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        datetime: ['', Validators.required],
+        times: [],
+        minutes: [],
+        type: [this.data.type, Validators.required],
+        rate: [1, Validators.required],
+        note: [],
+        forgot: []
+      });
+    }
+
   }
 
   get f() {
@@ -51,11 +81,12 @@ export class DialogAbsentComponent implements OnInit {
 
   onSubmit(): any {
     this.submitted = true;
+    console.log(this.formGroup);
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.formGroup.value.unit === 'HOUR' &&
-      this.formGroup.value.times === 0) {
+    if (this.formGroup.value.unit === DatetimeUnitEnum.MINUTE &&
+      this.formGroup.value.times == 0 && this.formGroup.value.minutes == 0) {
       this.snackBar.openFromComponent(SnackBarComponent,
         {
           data: { content: 'Số giờ phải lơn hơn 0' },
@@ -66,25 +97,31 @@ export class DialogAbsentComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const salary = {
-      title: this.data.type === this.type.ABSENT ? 'Vắng' : 'Đi trễ',
-      type: typeof value.type === 'number' ? this.type.STAY :
-        !value.type ? this.type.ABSENT : this.data.type,
+      title: this.titleAbsents[this.selectedIndex]?.title,
+      type: this.type.ABSENT,
       rate: value.rate,
-      times: value.times && value !== 0 ? value.times : undefined,
+      times: value.times > 0 ? value.times * 60 + value.minutes : value.times,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: value.unit ? value.unit : undefined,
+      unit: this.titleAbsents[this.selectedIndex]?.type,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
     };
-    if (this.data.salary) {
+    if (this.data.isUpdate) {
       this.store.dispatch(PayrollAction.updateSalary({
-        id: this.data.salary.id, payrollId:
-        this.data.payroll.id, salary: salary
+        id: this.data.salary.id,
+        payrollId: this.data.salary.payrollId, salary: salary
       }));
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({
+        payrollId: this.data.payroll.id, salary: salary
+      }));
     }
-    this.dialogRef.close(salary);
+    this.dialogRef.close()
+
+  }
+
+  onSelectAbsent(index: number) {
+    this.selectedIndex = index;
   }
 }
