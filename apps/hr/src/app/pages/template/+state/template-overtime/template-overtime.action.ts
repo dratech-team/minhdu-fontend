@@ -13,7 +13,7 @@ export const AddTemplateSuccess = createAction(
 );
 export const loadALlTemplate = createAction(
   '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
-  props<{ positionId?: number }>()
+  props<{ positionId?: number, unit?: string }>()
 );
 
 export const loadInit = createAction(

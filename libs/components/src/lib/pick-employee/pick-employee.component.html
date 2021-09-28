@@ -1,61 +1,74 @@
-<div class='container'>
-  <div class='col-12 animated fadeIn'>
-    <form [formGroup]='formGroup' class='header-profile mt-3 '>
-      <div class='border-start title-header col-3'>
-        <div class='title-profile'>Mã nhân Viên</div>
-        <input class='form-control input-profile'
-               type='text'
-               placeholder='PN10001'
-               formControlName='code'
-        >
-      </div>
-      <div class='border-start title-header col-4'>
-        <div class='title-profile'>Tên nhân viên</div>
-        <input class='form-control input-profile '
-               type='text'
-               placeholder='Trần Gia Hiệu'
-               formControlName='name'
-        >
-      </div>
-      <div class='border-start title-header col-4'>
-        <div class='title-profile'>Chức vụ</div>
-        <input class='form-control input-profile '
-               type='text'
-               disabled
-        >
-      </div>
-      <div class='border-start title-header col-1  '>
-        <div class='title-profile'>all</div>
-        <mat-checkbox *ngIf='!pickOne' class='example-margin mt-2 mx-auto'
-                      [checked]='isSelectAll'
-                      [indeterminate]="someComplete()"
-                      (change)='setAll($event.checked)'>
-        </mat-checkbox>
-      </div>
-    </form>
-    <div class='outer '
-         style='height: 50vh'
-         [ngStyle]="{'width': employees.length > 11? '102%' : '100%'}"
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [scrollWindow]='false'
-    >
-      <div class='row-content' *ngFor='let employee of employees'>
-        <div class='content-profile col-3 pointer '> {{employee.code}}</div>
-        <div class='content-profile col-4  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
-        <div class='content-profile col-4  pointer'>{{employee.position?.name}}</div>
-        <div class='content-profile col-1  pointer'>
-          <mat-checkbox *ngIf='!pickOne' class='checkID ml-1'
-                        [checked]='employee.isSelect ? employee.isSelect: false'
-                        [(ngModel)]='employee.isSelect'
-                        (ngModelChange)='updateSelect(employee.id)'>
+<div class='container' style='overflow-x: auto'>
+    <div class='col-12 animated fadeIn'>
+      <form [formGroup]='formGroup' class='header-profile mt-3 '>
+        <div class='border-start title-header default'>
+          <div class='title-profile'>Mã nhân Viên</div>
+          <input class='form-control input-profile'
+                 type='text'
+                 placeholder='PN10001'
+                 formControlName='code'
+          >
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Tên nhân viên</div>
+          <input class='form-control input-profile '
+                 type='text'
+                 placeholder='Trần Gia Hiệu'
+                 formControlName='name'
+          >
+        </div>
+        <div class='border-start title-header default'>
+          <div class='title-profile'>Chức vụ</div>
+          <input class='form-control input-profile '
+                 type='text'
+                 disabled
+          >
+        </div>
+        <div class='border-start title-header default  '>
+          <div class='title-profile'>Tất cả</div>
+          <mat-checkbox  class='example-margin mt-2 mx-auto'
+                        [checked]='isSelectEmployee'
+                        [indeterminate]="someCompleteEmployee()"
+                        (change)='setAllEmployee($event.checked)'>
           </mat-checkbox>
-          <input (change)='pickOneEmployee()'  *ngIf='pickOne' type="radio"  name="pick-one" value="{{employee.id}}">
+        </div>
+        <div class='border-start title-header default' *ngIf='checkAllowance'>
+          <div class='title-profile'>Phụ cấp cơm</div>
+          <mat-checkbox  class='example-margin mt-2 mx-auto'
+                        [checked]='isSelectAllowance'
+                        [indeterminate]="someCompleteAllowance()"
+                        (change)='setAllAllowance($event.checked)'>
+          </mat-checkbox>
+        </div>
+      </form>
+      <div class='outer '
+           style='height: 40vh'
+           infiniteScroll
+           [alwaysCallback]='true'
+           [infiniteScrollDistance]='1'
+           [scrollWindow]='false'
+      >
+        <div class='row-content' *ngFor='let employee of employees'>
+          <div class='content-profile default pointer '> {{employee.code}}</div>
+          <div class='content-profile name  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
+          <div class='content-profile default pointer'>{{employee.position?.name}}</div>
+          <div class='content-profile default pointer'>
+            <mat-checkbox  class='checkID'
+                          [checked]='employee.isSelect ? employee.isSelect: false'
+                          [(ngModel)]='employee.isSelect'
+                          (ngModelChange)='updateSelectEmployee(employee.id)'>
+            </mat-checkbox>
+          </div>
+          <div class='content-profile default pointer' *ngIf='checkAllowance'>
+            <mat-checkbox  class='checkID'
+                          [checked]='employee.isSelectAllowance ? employee.isSelectAllowance: false'
+                          [(ngModel)]='employee.isSelectAllowance'
+                          (ngModelChange)='updateSelectAllowance(employee.id)'>
+            </mat-checkbox>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 
 

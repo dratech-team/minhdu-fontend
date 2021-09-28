@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -7,29 +7,38 @@ import { AppState } from '../../../../reducers';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
 
 
 @Component({
-  templateUrl: 'dialog-overtime.component.html',
+  templateUrl: 'dialog-overtime.component.html'
 })
+
 export class DialogOvertimeComponent implements OnInit {
+  titleOvertimes = new FormControl();
+  onAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
   employeeIds: number[] = [];
+  allowEmpIds: number[] = [];
   price!: number;
   title!: string;
-  rate!: number
+  unit!: string;
+  rate!: number;
+  times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   employee$ = this.store.pipe(select(selectorAllEmployee));
   isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  searchInit: any
+  searchInit: any;
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -41,23 +50,63 @@ export class DialogOvertimeComponent implements OnInit {
   ) {
   }
 
-
+//TODO CHƯA VALIDATE ĐƯỢC CÁC TRƯỜNG LIÊN QUAN ĐẾN AUTOCOMPLETE
   ngOnInit(): void {
-    this.price = this.data?.salary?.price
+    if(this.data.isUpdate&& this.data.salary.allowance){
+      this.onAllowanceOvertime = true
+    }
+    this.price = this.data?.salary?.price;
+    this.unit = this.data?.salary?.unit;
+    this.times = this.data?.salary?.times;
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
-      { positionId: this.data?.payroll?.employee?.position?.id }));
-    this.formGroup = this.formBuilder.group({
-      unit: [this.data?.salary?.unit ? this.data?.salary?.unit : undefined, Validators.required],
-      datetime: [
-        this.datePipe.transform(
-          this.data?.salary?.datetime, 'yyyy-MM-dd')
-        , Validators.required],
-      times: [this.data?.salary?.times ? this.data?.salary?.times : 0, Validators.required],
-      note: [this.data?.salary?.note]
-    });
+      {
+        positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
+        unit: this.data?.salary ? this.data?.salary.unit : ''
+      }));
+    if(this.data.isUpdate){
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(
+            this.data.salary.datetime, 'yyyy-MM-dd')
+          , Validators.required],
+        note: [this.data.salary.note],
+        times: [this.data.salary.times],
+        priceAllowance: [this.data.salary.allowance?.price],
+        titleAllowance: [this.data.salary.allowance?.title]
+      });
+    }else{
+      this.formGroup = this.formBuilder.group({
+        datetime: ['',Validators.required],
+        note: [''],
+        times: [''],
+        priceAllowance: [],
+        titleAllowance: []
+      });
+    }
+
+    this.templateOvertime$ = combineLatest([
+      this.titleOvertimes.valueChanges,
+      this.store.pipe(select(selectorAllTemplate))
+    ]).pipe(
+      map(([titleOvertime, TempLateOvertimes]) => {
+        if (titleOvertime) {
+          return TempLateOvertimes.filter((e) => {
+            return e.title.toLowerCase().includes(titleOvertime?.toLowerCase());
+          });
+        } else {
+          return TempLateOvertimes;
+        }
+      })
+    );
   }
+
   pickEmployees(employeeIds: number []): any {
     this.employeeIds = employeeIds;
+    console.log(employeeIds)
+  }
+  pickAllowance(allowEmpIds: number[]) {
+    this.allowEmpIds = allowEmpIds;
+    console.log(allowEmpIds)
   }
 
   get f() {
@@ -69,35 +118,35 @@ export class DialogOvertimeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.formGroup.value.unit === 'HOUR' &&
-      this.formGroup.value.times === 0) {
-      this.snackBar.openFromComponent(SnackBarComponent,
-        {
-          data: { content: 'Số giờ phải lơn hơn 0' },
-          panelClass: ['background-snackbar-validate'],
-          duration: 2500
-        });
-      return;
-    }
     const value = this.formGroup.value;
     const salary = {
-      title: this.title|| this.data?.salary?.title,
-      price: this.price|| this.data?.salary?.price,
+      title: this.title || this.data?.salary?.title,
+      price: this.price || this.data?.salary?.price,
       type: this.data.type,
-      rate: this.rate|| this.data?.salary?.rate,
-      times: value.times && value !== 0 ? value.times : undefined,
-      datetime: value.datetime? new Date(value.datetime): undefined,
+      rate: this.rate || this.data?.salary?.rate,
+      times: value.times,
+      datetime: value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
-      unit: value.unit || undefined,
+      unit: this.unit || undefined,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
-      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
-
+      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined,
+      allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
+      allowance: value.titleAllowance && value.priceAllowance ?
+        {
+          title: value.titleAllowance,
+          price: typeof value.priceAllowance === 'string'
+            ? Number(value.priceAllowance.replace(this.numberChars, ''))
+            : value.priceAllowance
+        } : undefined,
     };
-    if (this.data.salary) {
+    if (this.data.isUpdate) {
+      this.unit = this.data.salary.unit;
+      this.title = this.data.salary.title;
       this.store.dispatch(PayrollAction.updateSalary({
-        payrollId: this.data.payroll.id, id: this.data.salary.id, salary: salary }));
+        payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
+      }));
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payrollId, salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
     this.dialogRef.close();
   }
@@ -112,11 +161,20 @@ export class DialogOvertimeComponent implements OnInit {
     }
   }
 
-  pickOverTime(data: any) {
+  pickOverTime(data: TemplateOvertime) {
     this.price = data.price;
     this.title = data.title;
-    this.rate = data.rate
-    this.searchInit = { templateId: data.id}
-    this.store.dispatch(EmployeeAction.loadInit({templateId: data.id}))
+    this.rate = data.rate;
+    this.unit = data.unit;
+    this.formGroup.value.times = 0;
+    this.searchInit = { templateId: data.id };
+    if (!this.data?.payroll) {
+      this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
+    }
   }
+  checkAllowanceOvertime() {
+    this.onAllowanceOvertime = !this.onAllowanceOvertime
+  }
+
+
 }

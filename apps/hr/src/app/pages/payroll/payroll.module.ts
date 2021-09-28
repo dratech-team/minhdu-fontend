@@ -41,6 +41,9 @@ import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-ba
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { TimekeepingComponent } from './component/time-keeping/timekeeping.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ConvertTimePipe } from './pipes/convert-time.pipe';
 
 @NgModule({
   imports: [
@@ -60,7 +63,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
       PayrollEffect,
       HolidayEffect,
       TemplateOvertimeEffect,
-      TemplateBasicSalaryEffect
+      TemplateBasicSalaryEffect,
     ]),
     CommonModule,
     MatInputModule,
@@ -76,7 +79,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
     MatFormFieldModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     PayrollComponent,
@@ -91,8 +95,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     DialogBasicComponent,
     DialogAbsentComponent,
     DialogStayComponent,
-    ConfirmPayrollComponent
+    ConfirmPayrollComponent,
+    TimekeepingComponent,
+    ConvertTimePipe
+  ],
+  providers:[
+    MatDatepickerModule
   ]
 })
+
 export class PayrollModule {
 }

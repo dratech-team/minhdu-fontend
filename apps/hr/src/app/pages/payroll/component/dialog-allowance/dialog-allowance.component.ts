@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogRef,
+  MatDialogRef
 } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 
 @Component({
-  templateUrl: 'dialog-allowance.component.html',
+  templateUrl: 'dialog-allowance.component.html'
 })
 export class DialogAllowanceComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
@@ -25,10 +25,6 @@ export class DialogAllowanceComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   isAllDay = true;
-  range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl()
-  });
 
   constructor(
     public datePipe: DatePipe,
@@ -38,30 +34,40 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.formGroup = this.formBuilder.group({
-      title: [this.data?.salary?.title ?? '', Validators.required],
-      unit: [
-        this.data?.salary?.unit ? this.data?.salary?.unit : undefined,
-        Validators.required,
-      ],
-      datetime: [
-        this.datePipe.transform(this.data?.salary?.datetime, 'yyyy-MM-dd'),
-      ],
-      times: [
-        this.data?.salary?.times ? this.data?.salary?.times : 0,
-        Validators.required,
-      ],
-      price: [this.data?.salary?.price, Validators.required],
-      note: [this.data?.salary?.note],
-      type: [
-        this.data?.salary?.type ? this.data?.salary?.type : this.data.type,
-        Validators.required,
-      ],
-      rate: [1, Validators.required],
-    });
+
+      if(this.data?.salary?.datetime?.start && this.data?.salary?.datetime?.start){
+        this.isAllDay = false
+      }
+      if(this.data.isUpdate){
+        this.formGroup = this.formBuilder.group({
+          title: [this.data.salary.title, Validators.required],
+          unit: [this.data.salary.unit,Validators.required],
+          price: [this.data.salary.price, Validators.required],
+          note: [this.data.salary.note],
+          datetime: [this.data.salary.datetime],
+          // times: [this.data.salary.times],
+          // start: [this.data.salary.allowance.start],
+          // end: [this.data.salary.allowance?.end],
+          type: [this.data.type, Validators.required],
+          rate: [this.data.salary.rate ? this.data.salary.rate : 1]
+        });
+      }else{
+        this.formGroup = this.formBuilder.group({
+          title: ['', Validators.required],
+          unit: ['',Validators.required],
+          price: ['', Validators.required],
+          note: [],
+          datetime: [],
+          // times: [],
+          // start: [],
+          // end: [],
+          rate: [1]
+        });
+      }
   }
 
   get f() {
@@ -69,19 +75,9 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
-      return;
-    }
-    if (
-      this.formGroup.value.unit === 'HOUR' &&
-      this.formGroup.value.times === 0
-    ) {
-      this.snackBar.openFromComponent(SnackBarComponent, {
-        data: { content: 'Số giờ phải lơn hơn 0' },
-        panelClass: ['background-snackbar-validate'],
-        duration: 2500,
-      });
       return;
     }
     const value = this.formGroup.value;
@@ -89,32 +85,38 @@ export class DialogAllowanceComponent implements OnInit {
       title: value.title,
       price:
         typeof value.price === 'string'
-          ? Number(value.price.replace(this.numberChars, ''))
+          ? Number(value.price.replace(this.numberChars,''))
           : value.price,
-      type: value.type,
+      type: this.data.type,
       rate: value.rate,
-      times: value.times && value !== 0 ? value.times : undefined,
-      datetime: value.datetime ? new Date(value.datetime) : undefined,
+      // times: value.times ? value.times : undefined,
+      datetime: value.unit === 'MONTH' ? value.datetime : undefined,
+                    // value.unit === 'DAY' && !this.isAllDay ? {start: value.start, end: value.end}:
+                    //     undefined,
       note: value.note,
       unit: value.unit ? value.unit : undefined,
-      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined,
+      payrollId: this.data.isUpdate? this.data.salary.id: this.data.payroll.id
     };
-    if (this.data.salary) {
+    if (this.data.isUpdate) {
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,
-          payrollId: this.data.payroll.id,
-          salary: salary,
+          payrollId: this.data.salary.payrollId,
+          salary: salary
         })
       );
     } else {
       this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
-          salary: salary,
+          salary: salary
         })
       );
     }
     this.dialogRef.close(salary);
+  }
+
+  changeDatePicker() {
+    this.isAllDay = !this.isAllDay;
   }
 }

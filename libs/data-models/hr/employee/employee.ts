@@ -50,6 +50,7 @@ export interface Employee {
   contracts: Contracts[];
   relatives: Relative[],
   isSelect?: boolean;
+  isSelectAllowance?: boolean;
   workHistories?: WorkHistory[];
   historySalaries: SalaryHistory[];
   contractType?: string

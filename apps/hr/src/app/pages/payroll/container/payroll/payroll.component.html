@@ -9,6 +9,9 @@
   <div>
     <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
   </div>
+  <div>
+    <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
+  </div>
 </div>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else payroll' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #payroll>

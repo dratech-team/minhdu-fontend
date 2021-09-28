@@ -41,21 +41,31 @@ export class DialogBasicComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.pipe(select(selectedAddedPayroll)).subscribe(val => console.log(val))
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
+
     this.store.dispatch(TemplateBasicAction.loadALlTemplate());
-    this.formGroup = this.formBuilder.group({
-      price: [this.data?.salary?.price, Validators.required],
-      type: [
-        this.data?.salary?.title === 'Lương Tín nhiệm'
-          ? this.type.BASIC_TRUST
-          : this.data?.salary?.type,
-        Validators.required,
-      ],
-      rate: [1, Validators.required],
-    });
+
+   if(this.data.isUpdate) {
+     this.formGroup = this.formBuilder.group({
+       price: [this.data.salary.price, Validators.required],
+       type: [
+         this.data.salary.title === 'Lương Tín nhiệm'
+           ? this.type.BASIC_TRUST
+           : this.data?.salary?.type,
+         Validators.required,
+       ],
+       rate: [1, Validators.required],
+     });
+   }else{
+     this.formGroup = this.formBuilder.group({
+       price: ['', Validators.required],
+       type: ['', Validators.required,
+       ],
+       rate: [1, Validators.required],
+     });
+   }
   }
 
   get f() {
@@ -78,15 +88,15 @@ export class DialogBasicComponent implements OnInit {
           : value.price
         : value.price,
       rate: value.rate,
-      payrollId: this.data?.payroll?.id || undefined,
+      payrollId:this.data.isUpdate? this.data.salary.payrollId: this.data.payroll.id,
       type:
         value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC,
     };
-    if (this.data.salary) {
+    if (this.data.isUpdate) {
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,
-          payrollId: this.data.payroll.id,
+          payrollId: this.data.salary.payrollId,
           salary: salary,
         })
       );

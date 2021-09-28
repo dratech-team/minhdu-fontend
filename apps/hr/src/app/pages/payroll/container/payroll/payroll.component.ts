@@ -15,6 +15,8 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { TimekeepingComponent } from '../../component/time-keeping/timekeeping.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -43,6 +45,7 @@ export class PayrollComponent implements OnInit {
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  employee$ = this.store.pipe(select(selectorAllEmployee))
   code?: string;
   constructor(
     private readonly datePipe: DatePipe,
@@ -114,7 +117,7 @@ export class PayrollComponent implements OnInit {
 
   addSalary(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeComponent, {
-      width: '50%',
+      width: '850px',
       data: { type: type }
     });
   }
@@ -145,4 +148,11 @@ export class PayrollComponent implements OnInit {
     this.exportService.print(Api.TIMEKEEPING_EXPORT)
   }
 
+  Timekeeping() {
+    this.store.dispatch(EmployeeAction.loadInit({}))
+    this.dialog.open(TimekeepingComponent, {
+      width: '930px',
+      data: this.employee$
+    })
+  }
 }

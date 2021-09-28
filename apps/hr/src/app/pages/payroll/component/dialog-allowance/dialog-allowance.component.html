@@ -1,122 +1,136 @@
-<div class='px-5 py-3 main-popup'>
+<div>
+
+</div>
+<div class='main-popup'>
   <div mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
       <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <!--Allowance - Phụ cáp không ảnh hưởng tới các khoảng trừ / cộng-->
-    <div *ngIf='data.type === type.ALLOWANCE ' class='form-group'>
-      <div class='row mb-5 title-popup'>
-        <span> Phụ cấp khác</span>
-      </div>
-      <div>
-        <div>
-          <div class='row title-item mb-1'>
-            <span>Tên phụ cấp</span>
-            <div class='star'>*</div>
-          </div>
-          <div class='row mb-3' [formGroup]='formGroup'>
-            <input type='text' class='form-control px-1' placeholder='Nhập tên phụ cấp' formControlName='title'
-              [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
-            <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
-              <div>Chưa nhập tên phụ cấp khác</div>
-            </div>
-          </div>
+  <mat-dialog-content class='mat-typography '>
+    <form [formGroup]='formGroup' (submit)='onSubmit()' class='mx-3'>
+      <!--Allowance - Phụ cáp không ảnh hưởng tới các khoảng trừ / cộng-->
+      <div *ngIf='data.type === type.ALLOWANCE ' class='form-group'>
+        <div class='row mb-5 title-popup'>
+          <span> Phụ cấp khác</span>
         </div>
-        <div class='row date-or-time'>
-          <div class='col'>
+        <div>
+          <div>
             <div class='row title-item mb-1'>
-              <span> Đơn vị</span>
+              <span>Tên phụ cấp</span>
               <div class='star'>*</div>
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
-              <mat-select class='form-control col' formControlName='unit'
-                [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
-                <mat-option value='MONTH'>Tháng</mat-option>
-                <mat-option value='DAY'>Ngày</mat-option>
-                <mat-option value='HOUR'>Giờ</mat-option>
-              </mat-select>
-            </div>
-            <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
-              <div>Chưa chọn đơn vị</div>
-            </div>
-          </div>
-          <!-- TODO: Handle if unit = true -->
-          <!-- <div *ngIf="formGroup.value.unit === 'DAY'" class='date-or-time col ml-2'>
-            <section class="example-section">
-              <mat-checkbox class="example-margin" [(ngModel)]="isAllDay">Dựa theo ngày đi làm thực tế</mat-checkbox>
-            </section>
-            <mat-form-field *ngIf="!isAllDay" appearance="fill">
-              <mat-label>Enter a date range</mat-label>
-              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input matStartDate formControlName="start" placeholder="Start date">
-                <input matEndDate formControlName="end" placeholder="End date">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-
-              <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-              <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-            </mat-form-field>
-          </div> -->
-          <div *ngIf="formGroup.value.unit === 'MONTH'" class='date-or-time col ml-2'>
-            <div class='row title-item mb-1'>
-              <span>Tháng</span>
-              <div class='star'>*</div>
-            </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
-              <input type='date' class='form-control' formControlName='datetime'
-                [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
-              <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
-                <div>Chưa nhập tháng</div>
+              <input type='text' class='form-control px-1' placeholder='Nhập tên phụ cấp' formControlName='title'
+                     [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+              <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập tên phụ cấp khác</div>
               </div>
             </div>
           </div>
-        </div>
-        <div *ngIf="formGroup.value.unit === 'HOUR'">
-          <div class='row title-item mb-1'>
-            <span>Số giờ</span>
-            <div class='star'>*</div>
-          </div>
-          <div class='row mb-3' [formGroup]='formGroup'>
-            <input type='number' class='form-control px-1' placeholder='Nhập số giờ' formControlName='times' min='0'
-              [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
-            <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
-              <div>Chưa nhập số giờ</div>
+          <div class='row date-or-time'>
+            <div class='col'>
+              <div class='row title-item mb-1'>
+                <span> Đơn vị</span>
+                <div class='star'>*</div>
+              </div>
+              <div class='row mb-3' *ngIf='!data.isUpdate' [formGroup]='formGroup'>
+                <mat-select class='form-control col' formControlName='unit'
+                            [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
+                  <mat-option value='MONTH'>Tháng</mat-option>
+                  <mat-option value='DAY'>Ngày</mat-option>
+<!--                  <mat-option value='HOUR'>Giờ</mat-option>-->
+                </mat-select>
+              </div>
+              <div class='row mb-3 form-control' style='background: #80808059'   *ngIf='data.isUpdate && data.salary.unit === "DAY"'> Ngày</div>
+              <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+                <div>Chưa chọn đơn vị</div>
+              </div>
+            </div>
+            <div *ngIf="formGroup.value.unit === 'MONTH'" class='date-or-time col ml-2'>
+              <div class='row title-item mb-1'>
+                <span>Tháng</span>
+                <div class='star'>*</div>
+              </div>
+              <div class='row mb-3' [formGroup]='formGroup'>
+                <input type='date' class='form-control' formControlName='datetime'
+                       [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+                <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                  <div>Chưa nhập tháng</div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class='unit-price'>
-          <div class='row title-item mb-1'>
-            <span>Mức phụ cấp</span>
-            <div class='star'>*</div>
-          </div>
-          <div class='row mb-3' [formGroup]='formGroup'>
-            <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price' inputCurrency
-              [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
-            <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-              <div>Chưa nhập mức phụ cấp</div>
-            </div>
-          </div>
-        </div>
-        <div class='note'>
-          <div class='row title-item mb-1'>
-            <span>Chú thích</span>
-          </div>
-          <div class='row mb-3' [formGroup]='formGroup'>
-            <input type='text' class='form-control  px-1' placeholder='Nhập chú thích' formControlName='note'>
-          </div>
-        </div>
+          <div *ngIf="formGroup.value.unit === 'DAY'">
+            <section class='row mb-1'>
+              <mat-checkbox class='example-margin' [disabled]='true' [checked]='isAllDay' (change)='changeDatePicker()'>Dựa theo ngày đi
+                làm thực tế
+              </mat-checkbox>
+            </section>
+            <mat-form-field *ngIf='!isAllDay' appearance='fill' class='row'>
+              <mat-label>Chọn từ ngày đến ngày</mat-label>
+              <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'
+                                    [ngClass]="{ 'is-invalid': submitted && f.start.errors  && f.end.errors }" >
+                <input matStartDate formControlName='start' placeholder='Start date'>
+                <input matEndDate formControlName='end' placeholder='End date'>
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <div *ngIf='submitted && f.start.errors?.required && f.end.errors?.required '
+                   style='width: 100%;
+                   margin-top: 0.25rem;
+                   font-size: 80%;
+                   color: #f86c6b'>
+                <div>Chưa chọn từ ngày đến ngày</div>
+              </div>
+            </mat-form-field>
 
+          </div>
+          <div *ngIf="formGroup.value.unit === 'HOUR'">
+            <div class='row title-item mb-1'>
+              <span>Số giờ</span>
+              <div class='star'>*</div>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='number' class='form-control px-1' placeholder='Nhập số giờ' formControlName='times' min='0'
+                     [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
+              <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập số giờ</div>
+              </div>
+            </div>
+          </div>
+          <div class='unit-price'>
+            <div class='row title-item mb-1'>
+              <span>Mức phụ cấp</span>
+              <div class='star'>*</div>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price' inputCurrency
+                     [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+              <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập mức phụ cấp </div>
+              </div>
+            </div>
+          </div>
+          <div class='note'>
+            <div class='row title-item mb-1'>
+              <span>Chú thích</span>
+            </div>
+            <div class='row mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control  px-1' placeholder='Nhập chú thích' formControlName='note'>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
-    <div class='footer-popup row '>
-      <button class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-        ?
-      </button>
-    </div>
-  </form>
+      <div class='mt-2 row '>
+        <button class='btn btn-ok '>Lưu</button>
+        <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          ?
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+
 </div>
