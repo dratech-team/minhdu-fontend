@@ -42,6 +42,7 @@ import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-pay
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TimekeepingComponent } from './component/time-keeping/timekeeping.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -61,7 +62,7 @@ import { TimekeepingComponent } from './component/time-keeping/timekeeping.compo
       PayrollEffect,
       HolidayEffect,
       TemplateOvertimeEffect,
-      TemplateBasicSalaryEffect
+      TemplateBasicSalaryEffect,
     ]),
     CommonModule,
     MatInputModule,
@@ -77,7 +78,8 @@ import { TimekeepingComponent } from './component/time-keeping/timekeeping.compo
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
     MatFormFieldModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     PayrollComponent,
@@ -94,7 +96,11 @@ import { TimekeepingComponent } from './component/time-keeping/timekeeping.compo
     DialogStayComponent,
     ConfirmPayrollComponent,
     TimekeepingComponent
+  ],
+  providers:[
+    MatDatepickerModule
   ]
 })
+
 export class PayrollModule {
 }
