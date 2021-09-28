@@ -55,7 +55,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       title: [this.data?.title, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
-      rate: [this.data?.rate, Validators.required],
+      rate: [this.data?.rate? this.data.rate: 1, Validators.required],
       note: [this.data?.note]
     });
     ///FIXME: Chưa work đc giá trị ban đầu
@@ -121,12 +121,12 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         rate: value.rate
       } as ReqOvertime
     };
-    console.log(template)
     if (template.isUpdate) {
       this.store.dispatch(TemplateOvertimeAction.updateTemplate({ id: template.id, templateOvertime: template.data }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));
     }
+
     this.dialogRef.close();
   }
 

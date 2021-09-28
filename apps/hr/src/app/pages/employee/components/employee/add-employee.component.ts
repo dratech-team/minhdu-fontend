@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FlatSalary } from '@minhdu-fontend/enums';
+import { FlatSalary, RecipeType } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
 import {
@@ -45,6 +45,7 @@ export class AddEmployeeComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
   wardId!: number;
+  recipeType = RecipeType;
 
   constructor(
     public datePipe: DatePipe,
@@ -99,6 +100,7 @@ export class AddEmployeeComponent implements OnInit {
       zalo: [this.data?.employee?.zalo],
       createAtContract: [''],
       expiredAtContract: [''],
+      recipeType:[this.data?.employee?.recipeType === 'CT1']
     });
 
     ///FIXME: Chưa work đc giá trị ban đầu
@@ -196,6 +198,7 @@ export class AddEmployeeComponent implements OnInit {
           ? new Date(value.expiredAtContract)
           : undefined,
       },
+      recipeType: value.recipeType? this.recipeType.CT1: this.recipeType.CT2,
     };
     if (this.data !== null) {
       this.store.dispatch(

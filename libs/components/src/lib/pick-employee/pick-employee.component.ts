@@ -5,23 +5,25 @@ import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
-import { document } from 'ngx-bootstrap/utils';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
+//PICK-EMPLOYEE - OVERTIME chuyển về app-hr
 export class PickEmployeeComponent implements OnInit {
-  @Input() pickOne = false;
   @Input() employees$!: Observable<Employee[]>;
   @Input() searchInit: any;
-  @Output() checkEvent = new EventEmitter<number[]>();
-  @Output() checkEventPickOne = new EventEmitter<number>();
+  @Input() checkAllowance = false;
+  @Output() EventSelectEmployee = new EventEmitter<number[]>();
+  @Output() EventSelectAllowance = new EventEmitter<number[]>();
   type = SalaryTypeEnum;
-  isSelectAll = false;
+  isSelectEmployee = false;
+  isSelectAllowance = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
+  allowEmpIds: number[] = [];
   employeeId!: number;
   formGroup = new FormGroup(
     {
@@ -56,41 +58,69 @@ export class PickEmployeeComponent implements OnInit {
   assignIsSelect() {
     this.employees.forEach(e => {
       e.isSelect = this.employeeIds.includes(e.id);
+      e.isSelectAllowance = this.allowEmpIds.includes(e.id)
     });
-    if (this.isSelectAll && this.employeeIds.length >= this.employees.length) {
+
+    if (this.isSelectEmployee && this.employeeIds.length >= this.employees.length) {
       this.employees.forEach(e => {
         if (!this.employeeIds.includes(e.id))
           this.employeeIds.push(e.id);
       });
     } else {
-      this.isSelectAll = false;
+      this.isSelectEmployee = false;
       this.employees.forEach(e => {
         e.isSelect = this.employeeIds.includes(e.id);
       });
     }
 
-    this.checkEvent.emit(this.employeeIds);
+    if(this.isSelectAllowance && this.allowEmpIds.length >= this.employees.length){
+      this.employees.forEach(e => {
+        if (!this.allowEmpIds.includes(e.id))
+          this.allowEmpIds.push(e.id);
+      });
+    }else{
+      this.isSelectAllowance = false;
+      this.employees.forEach(e => {
+        e.isSelectAllowance = this.allowEmpIds.includes(e.id);
+      });
+    }
+    this.EventSelectEmployee.emit(this.employeeIds);
   }
 
-  updateSelect(id: number) {
+  updateSelectEmployee(id: number) {
     const index = this.employeeIds.indexOf(id);
     if (index > -1) {
       this.employeeIds.splice(index, 1);
     } else {
       this.employeeIds.push(id);
     }
-    this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
-    this.checkEvent.emit(this.employeeIds);
+    this.isSelectEmployee = this.employees !== null && this.employees.every(e => e.isSelect);
+    this.EventSelectEmployee.emit(this.employeeIds);
   }
-
-  someComplete(): boolean {
+  updateSelectAllowance(id: number) {
+    const index = this.allowEmpIds.indexOf(id);
+    if (index > -1) {
+      this.allowEmpIds.splice(index, 1);
+    } else {
+      this.allowEmpIds.push(id);
+    }
+    this.isSelectAllowance = this.employees !== null && this.employees.every(e => e.isSelectAllowance);
+    this.EventSelectAllowance.emit(this.allowEmpIds);
+  }
+  someCompleteEmployee(): boolean {
     return (
-      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectEmployee
+    );
+  }
+  someCompleteAllowance(): boolean {
+    return (
+      this.employees.filter(e => e.isSelectAllowance).length > 0 && !this.isSelectAllowance
     );
   }
 
-  setAll(select: boolean) {
-    this.isSelectAll = select;
+
+  setAllEmployee(select: boolean) {
+    this.isSelectEmployee = select;
     if (this.employees == null) {
       return;
     }
@@ -108,17 +138,28 @@ export class PickEmployeeComponent implements OnInit {
         }
       }
     );
-    this.checkEvent.emit(this.employeeIds);
+    this.EventSelectEmployee.emit(this.employeeIds);
   }
-
-  pickOneEmployee() {
-    const pickEmployee = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickEmployee.length; i++) {
-      if (pickEmployee[i].checked) {
-        this.employeeId = parseInt(pickEmployee[i].value);
-      }
+  setAllAllowance(select: boolean) {
+    this.isSelectAllowance = select;
+    if (this.employees == null) {
+      return;
     }
-    this.checkEventPickOne.emit(this.employeeId);
+    this.employees?.forEach(employee => {
+        employee.isSelectAllowance = select;
+        if (select) {
+          if (!this.allowEmpIds.includes(employee.id)) {
+            this.allowEmpIds.push(employee.id);
+          }
+        } else {
+          const index = this.allowEmpIds.indexOf(employee.id);
+          if (index > -1) {
+            this.allowEmpIds.splice(index, 1);
+          }
+        }
+      }
+    );
+    this.EventSelectAllowance.emit(this.employeeIds);
   }
 }
 
