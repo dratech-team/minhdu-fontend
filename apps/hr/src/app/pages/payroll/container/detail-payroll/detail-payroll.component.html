@@ -204,8 +204,8 @@
           <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['OVERTIME'] ">
             <div class='col-md-7 title-child'>
               <span *ngIf='salary.times' >{{salary.title}} ({{salary.times}} giờ -
-                {{salary.datetime|date:'dd/MM/yyyy'}}) </span>
-              <span *ngIf='!salary.times' >{{salary.title}} ({{salary.datetime|date:'dd/MM/yyyy'}}) </span>
+                {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note? ' - ' + salary.note: '' }}) </span>
+              <span *ngIf='!salary.times' >{{salary.title}} ({{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note? ' - ' + salary.note: '' }}) </span>
             </div>
             <div class='col-md-7 title-child'
                  *ngIf="salary.type === 'ALLOWANCE' && salary.datetime === null">

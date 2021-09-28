@@ -22,7 +22,6 @@ import {
   getAllPosition,
   PositionActions,
 } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeService } from 'libs/employee/src/lib/+state/service/employee.service';
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { map } from 'rxjs/operators';

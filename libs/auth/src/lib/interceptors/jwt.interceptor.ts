@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { Localhost } from '../../../../enums/localhost.enum';
 import { Api } from '@minhdu-fontend/constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, finalize, tap } from 'rxjs/operators';
+import { catchError, } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {

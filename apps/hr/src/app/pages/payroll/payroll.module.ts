@@ -41,6 +41,7 @@ import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-ba
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { TimekeepingComponent } from './component/time-keeping/timekeeping.component';
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     DialogBasicComponent,
     DialogAbsentComponent,
     DialogStayComponent,
-    ConfirmPayrollComponent
+    ConfirmPayrollComponent,
+    TimekeepingComponent
   ]
 })
 export class PayrollModule {

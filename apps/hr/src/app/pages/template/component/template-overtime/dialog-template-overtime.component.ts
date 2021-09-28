@@ -121,12 +121,12 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         rate: value.rate
       } as ReqOvertime
     };
+    console.log(template)
     if (template.isUpdate) {
       this.store.dispatch(TemplateOvertimeAction.updateTemplate({ id: template.id, templateOvertime: template.data }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));
     }
-
     this.dialogRef.close();
   }
 
