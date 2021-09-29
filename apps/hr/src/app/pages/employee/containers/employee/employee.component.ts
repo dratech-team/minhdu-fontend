@@ -15,7 +15,7 @@ import {
   SearchEmployeeType
 } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
@@ -74,16 +74,10 @@ export class EmployeeComponent implements OnInit {
         })
       )
       .subscribe();
-    this.positions.valueChanges.pipe(
-      debounceTime(2000),
-      tap(_ =>{
-        const val = this.formGroup.value
-        this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
-      })
-    ).subscribe()
+
     ///FIXME: Chưa work đc giá trị ban đầu
     this.positions$ = combineLatest([
-      this.positions.valueChanges,
+      this.positions.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
@@ -97,17 +91,21 @@ export class EmployeeComponent implements OnInit {
         }
       })
     );
-    //search branch
-    this.branches.valueChanges.pipe(
+    //search branch and position
+    combineLatest([
+      this.positions.valueChanges.pipe(startWith('')),
+      this.branches.valueChanges.pipe(startWith(''))
+    ]).pipe(
       debounceTime(2000),
-      tap((_) => {
-        const val = this.formGroup.value
+      tap(_ =>{
+        const  val = this.formGroup.value
         this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
       })
-    ).subscribe();
+    ).subscribe()
+
     //Auto complete
     this.branches$ = combineLatest([
-      this.branches.valueChanges,
+      this.branches.valueChanges.pipe(startWith('')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
