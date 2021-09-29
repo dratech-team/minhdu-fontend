@@ -207,7 +207,7 @@
               <div class='col-md-7 title-child'>
                 <div *ngIf='salary.times' >{{salary.title}} ({{salary.times}} giờ -
                   {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }}) </div>
-                <div  *ngIf='salary.allowance' >{{salary.allowance.title}}</div>
+                <div class='ml-4' *ngIf='salary.allowance' >-  {{salary.allowance.title}}</div>
                 <div *ngIf='!salary.times'>
                   {{salary.title}}({{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }})
                 </div>
