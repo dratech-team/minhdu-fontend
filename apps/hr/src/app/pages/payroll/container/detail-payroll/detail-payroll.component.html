@@ -268,7 +268,7 @@
                 {{salary.title + ' ' + salary.times + ' Giờ, ngày'}} {{salary.datetime | date:'dd/MM/yyyy'}}
               </div>
               <div class='col-md-7 title-child' *ngIf="salary.unit === 'MINUTE' ">
-                {{salary.title}} ({{salary.times | convertTime }})
+                {{salary.title}} ({{salary.times | convertTime }} - ngày {{salary.datetime|date: 'dd/MM/yyyy'}} )
               </div>
               <div
                 class='col-md-3 salary'

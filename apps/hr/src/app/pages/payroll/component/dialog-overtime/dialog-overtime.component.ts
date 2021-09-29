@@ -50,9 +50,9 @@ export class DialogOvertimeComponent implements OnInit {
   ) {
   }
 
-//TODO CHƯA VALIDATE ĐƯỢC CÁC TRƯỜNG LIÊN QUAN ĐẾN AUTOCOMPLETE
+
   ngOnInit(): void {
-    if(this.data.isUpdate&& this.data.salary.allowance){
+    if(this.data.isUpdate && this.data.salary.allowance){
       this.onAllowanceOvertime = true
     }
     this.price = this.data?.salary?.price;
@@ -129,7 +129,7 @@ export class DialogOvertimeComponent implements OnInit {
       note: value.note,
       unit: this.unit || undefined,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
-      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined,
+      payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId,
       allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
       allowance: value.titleAllowance && value.priceAllowance ?
         {

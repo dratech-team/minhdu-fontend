@@ -65,7 +65,7 @@ export class DialogStayComponent implements OnInit {
     };
     if (this.data.salary) {
       this.store.dispatch(PayrollAction.updateSalary({
-        payrollId: this.data.payroll.id, id: this.data.salary.id, salary: salary
+        payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
       this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payrollId, salary: salary }));

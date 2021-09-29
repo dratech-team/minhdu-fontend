@@ -91,7 +91,7 @@
                 </div>
                 <div *ngIf='unit === "HOUR"' class='row d-flex align-items-center title-item mb-2'>
                   <span>Phụ cấp tăng ca:</span>
-                  <input type='checkbox' class='ml-2' (click)='checkAllowanceOvertime()'>
+                  <input [disabled]='onAllowanceOvertime' type='checkbox' class='ml-2' (click)='checkAllowanceOvertime()'>
                 </div>
                 <div class='allowance-overtime p-2 border' *ngIf='unit === "HOUR" && onAllowanceOvertime' >
                   <div class=' mb-2'>
