@@ -43,11 +43,25 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control input-profile ' type='text' formControlName='branch'>
+        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch">
+        <mat-autocomplete #branch="matAutocomplete" >
+          <mat-option *ngFor="let branch of branches$ | async" [value]='branch.name'
+          (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input class='form-control input-profile ' type='text' formControlName='position'>
+        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position">
+        <mat-autocomplete #position="matAutocomplete">
+          <mat-option *ngFor="let position of positions$ | async"
+                      [value]="position.name" (click)='onSelectPosition(position)'
+                      (onSelectionChange)='onSelectPosition(position)' >
+            {{position.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>CMND / CCCD</div>
@@ -83,8 +97,7 @@
               'Khác'
           }}</div>
         <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
-        <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố
-          định'}}
+        <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
         </div>
         <div class='content-profile default pointer '>{{employee?.phone}}</div>
         <div class='content-profile default pointer '>{{employee?.branch?.name}}</div>
