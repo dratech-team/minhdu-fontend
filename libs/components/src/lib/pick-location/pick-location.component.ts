@@ -10,7 +10,7 @@ import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.act
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -28,9 +28,9 @@ export class PickLocationComponent implements OnInit {
   wards$!: Observable<Ward[]>;
   lstDistrict: District[] = [];
   lstWard: Ward [] = [];
-  provinces = new FormControl();
-  districts = new FormControl();
-  wards = new FormControl();
+  formProvince = new FormControl();
+  formDistrict = new FormControl();
+  formWard = new FormControl();
   formGroup!: FormGroup;
 
   constructor(
@@ -56,7 +56,7 @@ export class PickLocationComponent implements OnInit {
     this.formGroup = <FormGroup>this.controlContainer.control;
     ///FIXME: Chưa work đc giá trị ban đầu
     this.provinces$ = combineLatest([
-      this.provinces.valueChanges,
+      this.formProvince.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectAllProvince))
     ]).pipe(
       map(([province, provinces]) => {
@@ -70,33 +70,39 @@ export class PickLocationComponent implements OnInit {
       })
     );
 
-    this.districts$ = this.districts.valueChanges.pipe(
+    this.districts$ = this.formDistrict.valueChanges.pipe(
       startWith(''),
-      map(District => District ? this._filterDistrict(District) : this.lstDistrict)
-    );
-    this.wards$ = this.wards.valueChanges.pipe(
+      map(district => {
+          if (district) {
+            return this.lstDistrict.filter(item => item.name.toLowerCase().includes(district.toLowerCase()));
+          } else {
+            this.lstWard = []
+            return this.lstDistrict;
+          }
+        }
+      ));
+    this.wards$ = this.formWard.valueChanges.pipe(
       startWith(''),
-      map(ward => ward ? this._filterWard(ward) : this.lstWard)
-    );
+      map(ward => {
+          if (ward) {
+            return this.lstWard.filter(item => item.name.toLowerCase().includes(ward.toLowerCase()));
+          } else {
+            return this.lstWard;
+          }
+        }
+      ));
   }
 
-  private _filterWard(ward: string): Ward[] {
-    const filterValue = ward.toLowerCase();
-    return this.lstWard.filter(ward => ward.name.toLowerCase().includes(filterValue));
-  }
-
-  private _filterDistrict(District: string): District[] {
-    const filterValue = District.toLowerCase();
-    return this.lstDistrict.filter(district => district.name.toLowerCase().includes(filterValue));
-  }
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
+    // this.districts$ = of(province.districts)
   }
 
   onDistrict(district: District) {
     this.lstWard = district.wards;
   }
+
   onWard(ward: Ward) {
     this.eventSelectWard.emit(ward.id);
   }

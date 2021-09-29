@@ -75,7 +75,6 @@ export class EmployeeComponent implements OnInit {
       )
       .subscribe();
 
-    ///FIXME: Chưa work đc giá trị ban đầu
     this.positions$ = combineLatest([
       this.positions.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
@@ -103,7 +102,6 @@ export class EmployeeComponent implements OnInit {
       })
     ).subscribe()
 
-    //Auto complete
     this.branches$ = combineLatest([
       this.branches.valueChanges.pipe(startWith('')),
       this.branches$
