@@ -100,7 +100,7 @@ export class DialogAbsentComponent implements OnInit {
       title: this.titleAbsents[this.selectedIndex]?.title,
       type: this.type.ABSENT,
       rate: value.rate,
-      times: value.times > 0 ? value.times * 60 + value.minutes : value.times,
+      times: value.times > 0 ? value.times * 60 + value.minutes : value.minutes,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,

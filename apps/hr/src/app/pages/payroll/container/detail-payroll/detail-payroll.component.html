@@ -25,9 +25,9 @@
                   <span>{{payroll.employee?.firstName}} {{payroll.employee?.lastName}}</span>
                 </div>
                 <div class='row mt-2'
-                     style='border: solid 1px #EB5757;border-radius: 20px;height: 24px ;max-width: 250px;'>
+                     style='border: solid 1px #EB5757;border-radius: 20px;height: 24px ;max-width: 150px;'>
                   <div class='col-md position'>{{payroll.employee.position.name}}</div>
-                  <div class='col-md id-employee'>{{payroll.employee.code}}</div>
+<!--                  <div class='col-md id-employee'>{{payroll.employee.code}}</div>-->
                 </div>
               </div>
               <div (click)='onDetailEmployee(payroll.employee.id)' class='col-md-4 mt-4' style='
@@ -207,7 +207,7 @@
               <div class='col-md-7 title-child'>
                 <div *ngIf='salary.times' >{{salary.title}} ({{salary.times}} giờ -
                   {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }}) </div>
-                <div  *ngIf='salary.allowance' >{{salary.allowance.title}}</div>
+                <div class='ml-4' *ngIf='salary.allowance' >-  {{salary.allowance.title}}</div>
                 <div *ngIf='!salary.times'>
                   {{salary.title}}({{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }})
                 </div>
@@ -268,7 +268,7 @@
                 {{salary.title + ' ' + salary.times + ' Giờ, ngày'}} {{salary.datetime | date:'dd/MM/yyyy'}}
               </div>
               <div class='col-md-7 title-child' *ngIf="salary.unit === 'MINUTE' ">
-                {{salary.title}} ({{salary.times | convertTime }})
+                {{salary.title}} ({{salary.times | convertTime }} - ngày {{salary.datetime|date: 'dd/MM/yyyy'}} )
               </div>
               <div
                 class='col-md-3 salary'

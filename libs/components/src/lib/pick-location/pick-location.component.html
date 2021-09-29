@@ -14,7 +14,7 @@
 <!--    </div>-->
     <div class='col-sm' [formGroup]='formGroup'>
       <label>Tỉnh/Thành phố </label><span class='star'>*</span>
-      <input class='form-control' type="text" matInput [formControl]="provinces" [matAutocomplete]="province" >
+      <input class='form-control' type="text" matInput [formControl]="formProvince" [matAutocomplete]="province" >
       <mat-autocomplete #province="matAutocomplete" >
         <mat-option *ngFor="let province of provinces$ | async" [value]="province.name" (click)='onProvince(province)' (onSelectionChange)='onProvince(province)'>
           {{province.name}}
@@ -24,7 +24,7 @@
 
     <div class='col-sm' [formGroup]='formGroup' >
       <label>Quận/Huyện</label><span class='star'>*</span>
-      <input class='form-control' type="text" matInput [formControl]="districts" [matAutocomplete]="district">
+      <input class='form-control'  type="text" matInput [formControl]="formDistrict" [matAutocomplete]="district">
       <mat-autocomplete #district="matAutocomplete" >
         <mat-option *ngFor="let district of districts$|async" [value]="district.name" (click)='onDistrict(district)' (onSelectionChange)='onDistrict(district)'>
           {{district.name}}
@@ -33,7 +33,7 @@
     </div>
     <div class='col-sm'  [formGroup]='formGroup'>
       <label>Phường/Xã</label><span class='star'>*</span>
-      <input class='form-control' type="text" matInput [formControl]="wards" [matAutocomplete]="ward">
+      <input class='form-control' type="text" matInput [formControl]="formWard" [matAutocomplete]="ward">
       <mat-autocomplete #ward="matAutocomplete" >
         <mat-option *ngFor="let ward of wards$|async" [value]="ward.name" (click)='onWard(ward)' (onSelectionChange)='onWard(ward)'>
           {{ward.name}}

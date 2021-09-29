@@ -36,10 +36,14 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input
-          placeholder='Giám đốc'
-          class='form-control input-profile '
-          type='text' formControlName='position'>
+        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position">
+        <mat-autocomplete #position="matAutocomplete">
+          <mat-option *ngFor="let position of positions$ | async"
+                      [value]="position.name" (click)='onSelectPosition(position)'
+                      (onSelectionChange)='onSelectPosition(position)' >
+            {{position.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
 <!--      <div class='border-start title-header default'>-->
 <!--        <div class='title-profile'>Bộ phận</div>-->
@@ -50,10 +54,14 @@
 <!--      </div>-->
       <div class='border-start title-header name'>
         <div class='title-profile'>Đơn vị</div>
-        <input
-          placeholder='Phước Thuận '
-          class='form-control input-profile '
-          type='search' formControlName='branch'>
+        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch">
+        <mat-autocomplete #branch="matAutocomplete" >
+          <mat-option *ngFor="let branch of branches$ | async" [value]='branch.name'
+                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tháng</div>

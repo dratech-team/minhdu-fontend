@@ -4,14 +4,14 @@ import {
   LOCALE_ID,
   OnInit,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -20,7 +20,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
 import {
   getAllPosition,
-  PositionActions,
+  PositionActions
 } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
@@ -29,15 +29,16 @@ import { combineLatest, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+
 @Component({
-  templateUrl: 'add-employee.component.html',
+  templateUrl: 'add-employee.component.html'
 })
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
   branchId?: number;
   positionId?: number;
-  positions = new FormControl();
+  formPosition = new FormControl();
   branches = new FormControl();
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
@@ -46,7 +47,6 @@ export class AddEmployeeComponent implements OnInit {
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
-
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -58,7 +58,8 @@ export class AddEmployeeComponent implements OnInit {
     private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<AddEmployeeComponent>
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
@@ -68,23 +69,23 @@ export class AddEmployeeComponent implements OnInit {
       issuedBy: [this.data?.employee?.issuedBy],
       birthplace: [this.data?.employee?.birthplace],
       idCardAt: [
-        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
       ],
       email: [this.data?.employee?.email],
       workday: [this.data?.employee?.workday, Validators.required],
       phone: [this.data?.employee?.phone],
       note: [this.data?.employee.note],
       workedAt: [
-        this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd')
       ],
       createdAt: [
-        this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd')
       ],
       isFlatSalary: [
         this.data?.employee?.isFlatSalary
           ? this.flatSalary.FLAT_SALARY
           : this.flatSalary.NOT_FLAT_SALARY,
-        Validators.required,
+        Validators.required
       ],
       firstName: [this.data?.employee?.firstName, Validators.required],
       lastName: [this.data?.employee?.lastName, Validators.required],
@@ -92,7 +93,7 @@ export class AddEmployeeComponent implements OnInit {
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
         this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd'),
-        Validators.required,
+        Validators.required
       ],
       ethnicity: [this.data?.employee?.ethnicity],
       religion: [this.data?.employee?.religion],
@@ -100,20 +101,20 @@ export class AddEmployeeComponent implements OnInit {
       zalo: [this.data?.employee?.zalo],
       createAtContract: [''],
       expiredAtContract: [''],
-      recipeType:[this.data?.employee?.recipeType === 'CT1']
+      recipeType: [this.data?.employee?.recipeType === 'CT1']
     });
 
     ///FIXME: Chưa work đc giá trị ban đầu
     this.positions$ = combineLatest([
-      this.positions.valueChanges,
-      this.store.pipe(select(getAllPosition)),
+      this.formPosition.valueChanges,
+      this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
         if (position) {
           const result = positions.filter((e) => {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
-          if (!result.length) {
+          if(result.length === 0){
             result.push({ id: 0, name: 'Tạo mới chức vụ' });
           }
           return result;
@@ -125,17 +126,17 @@ export class AddEmployeeComponent implements OnInit {
 
     this.branches$ = combineLatest([
       this.branches.valueChanges,
-      this.branches$,
+      this.branches$
     ]).pipe(
       map(([branch, branches]) => {
         if (branch) {
           const result = branches.filter((e) => {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
-          if (!result.length) {
+          if(result.length === 0){
             result.push({ id: 0, name: 'Tạo mới đơn vị' });
           }
-          return result;
+          return result
         } else {
           return branches;
         }
@@ -154,7 +155,7 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     /// FIXME: dummy tạm
-    if(!this.data){
+    if (!this.data) {
       if (!this.wardId || !this.branchId || !this.positionId) {
         return this.snakbar.open(
           'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
@@ -175,7 +176,7 @@ export class AddEmployeeComponent implements OnInit {
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone? value.phone.toString(): undefined,
+      phone: value.phone ? value.phone.toString() : undefined,
       birthday: value.birthday,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
@@ -196,15 +197,15 @@ export class AddEmployeeComponent implements OnInit {
           : undefined,
         expiredAt: value.expiredAtContract
           ? new Date(value.expiredAtContract)
-          : undefined,
+          : undefined
       },
-      recipeType: value.recipeType? this.recipeType.CT1: this.recipeType.CT2,
+      recipeType: value.recipeType ? this.recipeType.CT1 : this.recipeType.CT2
     };
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.data.employee.id,
-          employee: employee,
+          employee: employee
         })
       );
     } else {
@@ -212,7 +213,7 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
-      console.log(added)
+      console.log(added);
       if (added) {
         this.dialogRef.close();
       }
@@ -224,10 +225,10 @@ export class AddEmployeeComponent implements OnInit {
       this.positionId = position.id;
       this.formGroup.patchValue({
         workday: position.workday,
-        position: position.name,
+        position: position.name
       });
     } else {
-      this.onCreatePosition();
+      this.onCreatePosition()
     }
   }
 
@@ -235,7 +236,7 @@ export class AddEmployeeComponent implements OnInit {
     this.positionService
       .addOne({
         name: this.inputPosition.nativeElement.value,
-        workday: this.formGroup.value.workday,
+        workday: this.formGroup.value.workday
       })
       .subscribe((position) => (this.positionId = position.id));
     this.snackbar.open('Đã tạo', '', { duration: 2500 });
@@ -252,6 +253,7 @@ export class AddEmployeeComponent implements OnInit {
       this.branchId = branch.id;
     }
   }
+
   onSelectWard($event: number) {
     this.wardId = $event;
   }
