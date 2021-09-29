@@ -21,4 +21,5 @@ export interface Salary {
   salaryHistory: SalaryHistory,
   salaryHistoryId: number,
   payslip: payslip,
+  allowance?: any
 }
