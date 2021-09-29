@@ -24,7 +24,7 @@
 
     <div class='col-sm' [formGroup]='formGroup' >
       <label>Quận/Huyện</label><span class='star'>*</span>
-      <input class='form-control' type="text" matInput [formControl]="formDistrict" [matAutocomplete]="district">
+      <input class='form-control'  type="text" matInput [formControl]="formDistrict" [matAutocomplete]="district">
       <mat-autocomplete #district="matAutocomplete" >
         <mat-option *ngFor="let district of districts$|async" [value]="district.name" (click)='onDistrict(district)' (onSelectionChange)='onDistrict(district)'>
           {{district.name}}

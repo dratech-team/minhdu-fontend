@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import {
   selectAllProvince,
@@ -10,7 +10,7 @@ import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.act
 import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
 import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
 import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
-import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -53,8 +53,8 @@ export class PickLocationComponent implements OnInit {
         this.ward.district.province.id
       )));
     }
+
     this.formGroup = <FormGroup>this.controlContainer.control;
-    ///FIXME: Chưa work đc giá trị ban đầu
     this.provinces$ = combineLatest([
       this.formProvince.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectAllProvince))
@@ -65,6 +65,8 @@ export class PickLocationComponent implements OnInit {
             return e.name.toLowerCase().includes(province?.toLowerCase());
           });
         } else {
+          this.lstDistrict = []
+          this.formDistrict.patchValue('')
           return provinces;
         }
       })
@@ -77,6 +79,7 @@ export class PickLocationComponent implements OnInit {
             return this.lstDistrict.filter(item => item.name.toLowerCase().includes(district.toLowerCase()));
           } else {
             this.lstWard = []
+            this.formWard.patchValue('')
             return this.lstDistrict;
           }
         }
@@ -96,7 +99,6 @@ export class PickLocationComponent implements OnInit {
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
-    // this.districts$ = of(province.districts)
   }
 
   onDistrict(district: District) {
