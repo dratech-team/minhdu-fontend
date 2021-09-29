@@ -99,10 +99,12 @@ export class PickLocationComponent implements OnInit {
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
+    this.formDistrict.patchValue('')
   }
 
   onDistrict(district: District) {
     this.lstWard = district.wards;
+    this.formWard.patchValue('')
   }
 
   onWard(ward: Ward) {
