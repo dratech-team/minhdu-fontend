@@ -123,7 +123,7 @@
               </div>
             </div>
             <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['STAY'] ">
-              <div class='col-md-7 title-child'> {{salary.title}}</div>
+              <div class='col-md-6 title-child'> {{salary.title}}</div>
               <div
                 class='col-md-4 salary'
                 style='color: #4B3880'
@@ -139,6 +139,15 @@
                   (click)='updateSalary(type.STAY,salary)'
                 >
                   <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                </button>
+                <button
+                  data-toggle='tooltip'
+                  data-placement='top'
+                  title='xóa'
+                  class='trash animated'
+                  (click)='removeSalary(salary.id, payroll.id)'
+                >
+                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                 </button>
               </div>
             </div>
