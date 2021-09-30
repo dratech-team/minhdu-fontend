@@ -58,10 +58,11 @@ export class DialogAbsentComponent implements OnInit {
           this.datePipe.transform(
             this.data.salary.datetime, 'yyyy-MM-dd')
         ],
-        forgot: [this.data.salary.forgot],
+        forgot: [this.data.salary?.forgot],
         times: [this.data.salary.unit === DatetimeUnitEnum.MINUTE ?
-          Math.floor(this.data.salary.times / 60) : this.data.salary.unit
+          Math.floor(this.data.salary.times / 60) : this.data.salary.times
         ],
+        unit: [this.data.salary.unit],
         minutes: [this.data.salary.unit === DatetimeUnitEnum.MINUTE ?
           this.data.salary.times % 60 : undefined],
         note: [this.data.salary.note],
@@ -89,7 +90,6 @@ export class DialogAbsentComponent implements OnInit {
 
   onSubmit(): any {
     this.submitted = true;
-    console.log(this.formGroup);
     if (this.formGroup.invalid) {
       return;
     }
@@ -97,7 +97,7 @@ export class DialogAbsentComponent implements OnInit {
       this.formGroup.value.times == 0 && this.formGroup.value.minutes == 0) {
       this.snackBar.openFromComponent(SnackBarComponent,
         {
-          data: { content: 'Số giờ phải lơn hơn 0' },
+          data: { content: 'thơi gian phải lớn hơn 0' },
           panelClass: ['background-snackbar-validate'],
           duration: 2500
         });
@@ -105,28 +105,19 @@ export class DialogAbsentComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
-
     const salary = {
+      title: this.titleAbsents[this.selectedIndex]?.title,
       type: this.type.ABSENT,
       rate: value.rate,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: this.titleAbsents[this.selectedIndex]?.type,
-      payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
+      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.type,
+      payrollId: this.data?.payroll ? this.data.payroll.id : this.data.salary.payrollId,
+      times: value.times
     };
-    if(typeof value.session === 'number'){
-      Object.assign(salary,
-        {
-          title: this.titleAbsents[this.selectedIndex].title + ' ' + this.titleSession[value.session].title,
-          times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY? 1: 0.5,
-        })
-    }else {
-      Object.assign(salary,
-        {
-          title: this.titleAbsents[this.selectedIndex].title,
-          times: value.times > 0 ? value.times * 60 + value.minutes : value.minutes,
-        })
+    if (value.unit === DatetimeUnitEnum.MINUTE || this.titleAbsents[this.selectedIndex]?.type === DatetimeUnitEnum.MINUTE) {
+      Object.assign(salary, { times: value.times ? value.times * 60 + value.minutes : value.minutes });
     }
     if (this.data.isUpdate) {
       this.store.dispatch(PayrollAction.updateSalary({
@@ -134,6 +125,14 @@ export class DialogAbsentComponent implements OnInit {
         payrollId: this.data.salary.payrollId, salary: salary
       }));
     } else {
+      if (typeof value?.session === 'number') {
+        Object.assign(
+          salary, {
+            title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.session]?.title,
+            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0
+          }
+        );
+      }
       this.store.dispatch(PayrollAction.addSalary({
         payrollId: this.data.payroll.id, salary: salary
       }));
