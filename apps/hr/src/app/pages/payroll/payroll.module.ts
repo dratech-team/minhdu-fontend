@@ -45,6 +45,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ConvertTimePipe } from './pipes/convert-time.pipe';
 import { PickEmployeeAbsentComponent } from './component/pick-employee-absent/pick-employee-absent.component';
 import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timekeeping.component';
+import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
+import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 
 @NgModule({
   imports: [
@@ -99,6 +101,8 @@ import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timek
     ConfirmPayrollComponent,
     PickEmployeeAbsentComponent,
     DialogTimekeepingComponent,
+    PickEmployeeOvertimeComponent,
+    DialogOvertimeMultipleComponent,
     ConvertTimePipe
   ],
   providers:[

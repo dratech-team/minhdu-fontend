@@ -1,7 +1,7 @@
 <div class='row h3 ml-3'>Bảng lương nhân viên</div>
 <div class='row ml-3 mt-3'>
   <div>
-    <button (click)='addSalary(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+    <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
   </div>
   <div>
     <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
@@ -45,13 +45,6 @@
           </mat-option>
         </mat-autocomplete>
       </div>
-<!--      <div class='border-start title-header default'>-->
-<!--        <div class='title-profile'>Bộ phận</div>-->
-<!--        <input-->
-<!--          placeholder='Nhân sự'-->
-<!--          class='form-control input-profile '-->
-<!--          type='text' formControlName='department'>-->
-<!--      </div>-->
       <div class='border-start title-header name'>
         <div class='title-profile'>Đơn vị</div>
         <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch">

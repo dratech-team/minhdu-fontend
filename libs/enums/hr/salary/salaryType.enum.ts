@@ -7,5 +7,6 @@ export enum SalaryTypeEnum {
   ABSENT = 'ABSENT',
   EARLY = 'EARLY',
   LATE = 'LATE',
-  BASIC_TRUST = 'BASIC_TRUST'
+  BASIC_TRUST = 'BASIC_TRUST',
+  DAY_OFF = 'DAY_OFF',
 }

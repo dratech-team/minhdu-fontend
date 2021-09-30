@@ -1,20 +1,17 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
-
 
 @Component({
   templateUrl: 'dialog-overtime.component.html'
@@ -24,20 +21,15 @@ export class DialogOvertimeComponent implements OnInit {
   titleOvertimes = new FormControl();
   onAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
-  employeeIds: number[] = [];
-  allowEmpIds: number[] = [];
   price!: number;
   title!: string;
   unit!: string;
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  employee$ = this.store.pipe(select(selectorAllEmployee));
-  isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  searchInit: any;
 
   constructor(
     public datePipe: DatePipe,
@@ -50,10 +42,9 @@ export class DialogOvertimeComponent implements OnInit {
   ) {
   }
 
-
   ngOnInit(): void {
-    if(this.data.isUpdate && this.data.salary.allowance){
-      this.onAllowanceOvertime = true
+    if (this.data.isUpdate && this.data.salary.allowance) {
+      this.onAllowanceOvertime = true;
     }
     this.price = this.data?.salary?.price;
     this.unit = this.data?.salary?.unit;
@@ -63,7 +54,7 @@ export class DialogOvertimeComponent implements OnInit {
         positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
         unit: this.data?.salary ? this.data?.salary.unit : ''
       }));
-    if(this.data.isUpdate){
+    if (this.data.isUpdate) {
       this.formGroup = this.formBuilder.group({
         datetime: [
           this.datePipe.transform(
@@ -74,9 +65,9 @@ export class DialogOvertimeComponent implements OnInit {
         priceAllowance: [this.data.salary.allowance?.price],
         titleAllowance: [this.data.salary.allowance?.title]
       });
-    }else{
+    } else {
       this.formGroup = this.formBuilder.group({
-        datetime: ['',Validators.required],
+        datetime: ['', Validators.required],
         note: [''],
         times: [''],
         priceAllowance: [],
@@ -100,15 +91,6 @@ export class DialogOvertimeComponent implements OnInit {
     );
   }
 
-  pickEmployees(employeeIds: number []): any {
-    this.employeeIds = employeeIds;
-    console.log(employeeIds)
-  }
-  pickAllowance(allowEmpIds: number[]) {
-    this.allowEmpIds = allowEmpIds;
-    console.log(allowEmpIds)
-  }
-
   get f() {
     return this.formGroup.controls;
   }
@@ -128,18 +110,24 @@ export class DialogOvertimeComponent implements OnInit {
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
       unit: this.unit || undefined,
-      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
-      payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId,
-      allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
-      allowance: value.titleAllowance && value.priceAllowance ?
-        {
-          title: value.titleAllowance,
-          price: typeof value.priceAllowance === 'string'
-            ? Number(value.priceAllowance.replace(this.numberChars, ''))
-            : value.priceAllowance
-        } : undefined,
+      payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId
     };
+    if (this.onAllowanceOvertime) {
+      Object.assign(salary, {
+        allowance:
+          {
+            title: value.titleAllowance,
+            price: typeof value.priceAllowance === 'string'
+              ? Number(value.priceAllowance.replace(this.numberChars, ''))
+              : value.priceAllowance
+          }
+      });
+    }
     if (this.data.isUpdate) {
+      if (!this.onAllowanceOvertime && this.data.salary.allowance) {
+        this.store.dispatch(PayrollAction.deleteSalary(
+          { id: this.data.salary.allowance.id, PayrollId: this.data.salary.payrollId }));
+      }
       this.unit = this.data.salary.unit;
       this.title = this.data.salary.title;
       this.store.dispatch(PayrollAction.updateSalary({
@@ -151,30 +139,16 @@ export class DialogOvertimeComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
-    }
-  }
-
   pickOverTime(data: TemplateOvertime) {
     this.price = data.price;
     this.title = data.title;
     this.rate = data.rate;
     this.unit = data.unit;
     this.formGroup.value.times = 0;
-    this.searchInit = { templateId: data.id };
-    if (!this.data?.payroll) {
-      this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
-    }
-  }
-  checkAllowanceOvertime() {
-    this.onAllowanceOvertime = !this.onAllowanceOvertime
   }
 
+  checkAllowanceOvertime() {
+    this.onAllowanceOvertime = !this.onAllowanceOvertime;
+  }
 
 }

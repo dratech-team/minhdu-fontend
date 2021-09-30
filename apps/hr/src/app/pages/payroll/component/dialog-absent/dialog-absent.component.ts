@@ -8,8 +8,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { SessionDayEnum } from '@minhdu-fontend/data-models';
-import { DATE } from 'ngx-bootstrap/chronos/units/constants';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -23,7 +22,7 @@ export class DialogAbsentComponent implements OnInit {
   submitted = false;
   selectedIndex!: number;
   unitMinute = false;
-  unitHour = false;
+  unitAbsent = false;
 
   constructor(
     public datePipe: DatePipe,
@@ -38,24 +37,24 @@ export class DialogAbsentComponent implements OnInit {
 
   //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
   titleAbsents = [
-    { title: 'Vắng', type: this.datetimeUnit.HOUR },
-    { title: 'Không đi làm', type: this.datetimeUnit.DAY },
-    { title: 'Đi trễ', type: this.datetimeUnit.MINUTE },
-    { title: 'Về Sớm', type: this.datetimeUnit.MINUTE }
+    { title: 'Vắng', unit: this.datetimeUnit.DAY , type: this.type.ABSENT  },
+    { title: 'Không đi làm', unit: this.datetimeUnit.DAY,type: this.type.DAY_OFF  },
+    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  },
+    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  }
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
-    { title: 'buổi sáng', type: SessionDayEnum.MORNING },
-    { title: 'buổi chiều', type: SessionDayEnum.AFTERNOON },
-    { title: 'nguyên ngày', type: SessionDayEnum.ALL_DAY }
+    { title: 'buổi sáng', type: PartialDayEnum.MORNING },
+    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON },
+    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY }
   ];
 
   ngOnInit(): void {
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
-      }else if(this.data.salary.unit === DatetimeUnitEnum.HOUR){
-        this.unitHour = true
+      } else if (this.data.salary.unit === DatetimeUnitEnum.DAY && this.data.type === this.type.ABSENT) {
+        this.unitAbsent = true;
       }
       this.formGroup = this.formBuilder.group({
         datetime: [
@@ -72,7 +71,7 @@ export class DialogAbsentComponent implements OnInit {
         note: [this.data.salary.note],
         type: [this.data.type],
         rate: [1],
-        session:[this.data.salary.unit]
+        partialDay: []
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -83,7 +82,7 @@ export class DialogAbsentComponent implements OnInit {
         rate: [1, Validators.required],
         note: [],
         forgot: [],
-        session: []
+        partialDay: []
       });
     }
 
@@ -110,39 +109,57 @@ export class DialogAbsentComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
+    console.log(this.titleAbsents[this.selectedIndex]?.type)
     const salary = {
-      title: this.titleAbsents[this.selectedIndex]?.title,
-      type: this.type.ABSENT,
+      title: this.data?.salary?.title,
+      type: this.data?.salary?.type? this.data.salary.type : this.titleAbsents[this.selectedIndex]?.type,
       rate: value.rate,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.type,
+      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.unit,
       payrollId: this.data?.payroll ? this.data.payroll.id : this.data.salary.payrollId,
       times: value.times
     };
-    if (value.unit === DatetimeUnitEnum.MINUTE || this.titleAbsents[this.selectedIndex]?.type === DatetimeUnitEnum.MINUTE) {
+    if (value.unit === DatetimeUnitEnum.MINUTE || this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE) {
       Object.assign(salary, { times: value.times ? value.times * 60 + value.minutes : value.minutes });
     }
     if (this.data.isUpdate) {
-      if (this.data.salary.unit === DatetimeUnitEnum.HOUR) {
-        Object.assign(
-          salary, {
-            title: 'Vắng ' + this.titleSession[value.session]?.title,
-            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0.5
-          }
-        );
+      Object.assign(salary, { title: this.data.salary.title });
+      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
+        if(this.data.salary.type ===this.type.ABSENT && value.partialDay){
+          Object.assign(
+            salary, {
+              title: 'Vắng ' + this.titleSession[value.partialDay]?.title,
+              times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+            }
+          );
+        }else if(this.data.salary.type ===this.type.DAY_OFF && value.partialDay){
+          Object.assign(
+            salary, {
+              title: 'Không đi làm ' + this.titleSession[value.partialDay].title,
+              times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+            }
+          );
+        }
       }
       this.store.dispatch(PayrollAction.updateSalary({
         id: this.data.salary.id,
         payrollId: this.data.salary.payrollId, salary: salary
       }));
     } else {
-      if (typeof value?.session === 'number') {
+      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY) {
+          Object.assign(
+            salary, {
+              title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title,
+              times: this.titleSession[value.session]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+            }
+          );
+      }else{
         Object.assign(
           salary, {
-            title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.session]?.title,
-            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0.5
+            title: this.titleAbsents[this.selectedIndex]?.title,
+            times: value.times? value.times * 60 + value.minutes: value.minutes,
           }
         );
       }

@@ -7,7 +7,7 @@ import { Branch, Department, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -58,9 +58,8 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       rate: [this.data?.rate? this.data.rate: 1, Validators.required],
       note: [this.data?.note]
     });
-    ///FIXME: Chưa work đc giá trị ban đầu
     this.positions$ = combineLatest([
-      this.positions.valueChanges,
+      this.positions.valueChanges.pipe(startWith('')),
       this.positions$
     ]).pipe(
       map(([position, positions]) => {
@@ -79,7 +78,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     );
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges,
+      this.branches.valueChanges.pipe(startWith('')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
