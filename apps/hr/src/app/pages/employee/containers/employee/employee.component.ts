@@ -20,9 +20,9 @@ import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { Branch, Position } from '@minhdu-fontend/data-models';
+import { Position } from '@minhdu-fontend/data-models';
 import { combineLatest } from 'rxjs';
-import { getAllOrgchart, init, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Component({
   templateUrl: 'employee.component.html'
