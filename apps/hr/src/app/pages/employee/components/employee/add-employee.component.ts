@@ -24,7 +24,7 @@ import {
 } from 'libs/orgchart/src/lib/+state/position';
 import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
@@ -104,9 +104,8 @@ export class AddEmployeeComponent implements OnInit {
       recipeType: [this.data?.employee?.recipeType === 'CT1']
     });
 
-    ///FIXME: Chưa work đc giá trị ban đầu
     this.positions$ = combineLatest([
-      this.formPosition.valueChanges,
+      this.formPosition.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
@@ -125,7 +124,7 @@ export class AddEmployeeComponent implements OnInit {
     );
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges,
+      this.branches.valueChanges.pipe(startWith('')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {

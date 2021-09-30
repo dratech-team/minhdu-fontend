@@ -12,7 +12,7 @@ import { selectorAllTemplate } from '../../../template/+state/template-overtime/
 import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
 
 
@@ -85,7 +85,7 @@ export class DialogOvertimeComponent implements OnInit {
     }
 
     this.templateOvertime$ = combineLatest([
-      this.titleOvertimes.valueChanges,
+      this.titleOvertimes.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectorAllTemplate))
     ]).pipe(
       map(([titleOvertime, TempLateOvertimes]) => {
