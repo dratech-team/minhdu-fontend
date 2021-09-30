@@ -30,7 +30,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 export class PayrollComponent implements OnInit {
   formGroup = new FormGroup(
     {
-      code: new FormControl(''),
+      // code: new FormControl(''),
       name: new FormControl(''),
       paidAt: new FormControl(''),
       accConfirmedAt: new FormControl(''),
@@ -72,6 +72,8 @@ export class PayrollComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
+        this.namePositionSearch = this.positions.value ? this.positions.value : '';
+        this.nameBranchSearch = this.branches.value ? this.branches.value : '';
         this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
       })
     ).subscribe();
@@ -91,11 +93,13 @@ export class PayrollComponent implements OnInit {
       })
     )//search branch and position
     combineLatest([
-      this.positions.valueChanges.pipe(startWith('')),
-      this.branches.valueChanges.pipe(startWith(''))
+      this.positions.valueChanges.pipe(startWith(this.nameBranchSearch)),
+      this.branches.valueChanges.pipe(startWith(this.namePositionSearch))
     ]).pipe(
       debounceTime(2000),
-      tap(_ =>{
+      tap(([position, branch]) =>{
+        this.namePositionSearch = position;
+        this.nameBranchSearch = branch;
         const  val = this.formGroup.value
         this.store.dispatch(EmployeeAction.loadInit(this.Payroll(val)));
       })
@@ -121,7 +125,7 @@ export class PayrollComponent implements OnInit {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      code: val.code,
+      // code: val.code,
       name: val.name,
       position: this.namePositionSearch,
       branch: this.nameBranchSearch,

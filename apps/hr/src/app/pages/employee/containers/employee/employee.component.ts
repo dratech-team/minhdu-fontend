@@ -34,7 +34,6 @@ export class EmployeeComponent implements OnInit {
   genderType = Gender;
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
-  contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -43,10 +42,10 @@ export class EmployeeComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   pageSize: number = 30;
   pageIndexInit = 0;
-  namePositionSearch = '';
-  nameBranchSearch = '';
+  namePositionSearch: string = '';
+  nameBranchSearch: string = '';
   formGroup = new FormGroup({
-    code: new FormControl(''),
+    // code: new FormControl(''),
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
@@ -70,13 +69,15 @@ export class EmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          this.namePositionSearch = this.positions.value ? this.positions.value : '';
+          this.nameBranchSearch = this.branches.value ? this.branches.value : '';
           this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
         })
       )
       .subscribe();
 
     this.positions$ = combineLatest([
-      this.positions.valueChanges.pipe(startWith('')),
+      this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
       this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
@@ -85,25 +86,27 @@ export class EmployeeComponent implements OnInit {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
         } else {
-          this.namePositionSearch = ''
+          this.namePositionSearch = '';
           return positions;
         }
       })
     );
     //search branch and position
     combineLatest([
-      this.positions.valueChanges.pipe(startWith('')),
-      this.branches.valueChanges.pipe(startWith(''))
+      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
+      this.positions.valueChanges.pipe(startWith(this.namePositionSearch))
     ]).pipe(
       debounceTime(2000),
-      tap(_ =>{
-        const  val = this.formGroup.value
+      tap(([branch, position]) => {
+        this.namePositionSearch = position;
+        this.nameBranchSearch = branch;
+        const val = this.formGroup.value;
         this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
       })
-    ).subscribe()
+    ).subscribe();
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith('')),
+      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
@@ -112,7 +115,7 @@ export class EmployeeComponent implements OnInit {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
         } else {
-          this.nameBranchSearch = ''
+          this.nameBranchSearch = '';
           return branches;
         }
       })
@@ -140,7 +143,7 @@ export class EmployeeComponent implements OnInit {
     const employee = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      code: val.code,
+      // code: val.code,
       name: val.name,
       gender: val.gender,
       position: this.namePositionSearch,
@@ -156,7 +159,7 @@ export class EmployeeComponent implements OnInit {
     if (val.workedAt) {
       return employee;
     } else {
-      delete employee.workedAt;
+      // delete employee.workedAt;
       return employee;
     }
   }
@@ -176,5 +179,6 @@ export class EmployeeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.nameBranchSearch = branchName;
+    console.log(this.nameBranchSearch);
   }
 }
