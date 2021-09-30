@@ -53,16 +53,16 @@ export class DetailPayrollComponent implements OnInit {
 
   addSalary(type: SalaryTypeEnum, payroll: Payroll) {
     const config = {
-      width: '40%',
+      width: '700px',
       data: { type, payroll, isUpdate: false }
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, config);
+        this.dialog.open(DialogBasicComponent, Object.assign(config,{width:'400px'}));
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, config);
+        this.dialog.open(DialogStayComponent, Object.assign(config,{width:'400px'}));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
@@ -70,11 +70,11 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.OVERTIME: {
-        this.dialog.open(DialogOvertimeComponent, config);
+        this.dialog.open(DialogOvertimeComponent,config);
       }
         break;
       case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, config);
+        this.dialog.open(DialogAbsentComponent, Object.assign(config,{width:'600px'}));
       }
         break;
       default :
@@ -89,7 +89,7 @@ export class DetailPayrollComponent implements OnInit {
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, config);
+        this.dialog.open(DialogBasicComponent, Object.assign(config,{width:'400px'}));
       }
         break;
       case SalaryTypeEnum.STAY: {
@@ -105,7 +105,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, config);
+        this.dialog.open(DialogAbsentComponent, Object.assign(config,{width:'600px'}));
       }
         break;
       default :

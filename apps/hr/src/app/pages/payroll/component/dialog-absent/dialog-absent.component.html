@@ -7,16 +7,16 @@
   </div>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div>
-      <div class='Deductions'>
-        <div class='row mb-5 title-popup'>
-          <span>Tiền khấu trừ</span>
-        </div>
-        <div class='row title-item mb-2'>
+      <div class='row mb-5 title-popup'>
+        <span>Tiền khấu trừ</span>
+      </div>
+      <div class='row mb-2 d-flex flex-column '>
+        <div class='title-item col-12 '>
           <span>Khoảng khấu trừ </span>
           <span class='star'>*</span>
         </div>
-        <div class='row mb-3 ' *ngIf='!data.isUpdate'>
-          <mat-select class='form-control'  [value]='selectedIndex' >
+        <div class=' my-2 col-12 ' *ngIf='!data.isUpdate'>
+          <mat-select class='form-control' [value]='selectedIndex'>
             <mat-option *ngFor='let item of titleAbsents; let i = index'
                         [value]='i'
                         (onSelectionChange)='onSelectAbsent(i)'
@@ -24,53 +24,52 @@
             >{{item.title}}</mat-option>
           </mat-select>
         </div>
-        <div *ngIf='data.isUpdate' class='row'>
-          <div class='form-control ' style='background: #e4e7ea' > {{data.salary.title}}</div>
+        <div *ngIf='data.isUpdate' class='col-12'>
+          <div class='form-control ' style='background: #e4e7ea'> {{data.salary.title}}</div>
         </div>
       </div>
-      <div>
-        <div class=' row mb-2 mt-2' style='align-items: center'>
-          <div class='col title-item'>
-            <span>Ngày</span>
-            <span class='star'>*</span>
-            <div class='row mb-3 mt-1' [formGroup]='formGroup'>
-              <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
-                [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
-              <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
-                <div>Chưa chọn ngày</div>
-              </div>
+      <div class='row mb-3 '
+           *ngIf='!data.isUpdate && titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR'>
+        <div class='col-6'>
+          <span class=' title-item mb-1'>Buổi </span>
+          <mat-select class='form-control' formControlName='session'>
+            <mat-option *ngFor='let item of titleSession ; let i = index' [value]='i'>{{item.title}}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class='row my-2 d-flex align-items-center'>
+        <div class=' title-item col-6'>
+          <span>Ngày</span>
+          <span class='star'>*</span>
+          <div class=' mb-3 mt-1' [formGroup]='formGroup'>
+            <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+                   [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+            <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn ngày</div>
             </div>
           </div>
-          <div class='col' [formGroup]='formGroup'  *ngIf="selectedIndex == 0 ">
-            <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
-              style='font-size: 12px'>
-              Quên giấy phép và bsc
-            </mat-checkbox>
-          </div>
+        </div>
+        <div [formGroup]='formGroup'
+             *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR' class='col-5 ml-1'>
+          <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
+                        style='font-size: 12px'>
+            Quên giấy phép và bsc
+          </mat-checkbox>
         </div>
       </div>
-      <div *ngIf="titleAbsents[selectedIndex]?.type  === datetimeUnit.MINUTE||unitMinute ">
-        <div class='row title-item mb-1'>
-          <span>số giờ </span>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
+      <div class='row mb-3 d-flex' *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.MINUTE||unitMinute '>
+        <div [formGroup]='formGroup' class='col-6'>
+          <span class='title-item mb-1'>số giờ </span>
           <input class='form-control' type='number' formControlName='times'>
         </div>
-      </div>
-      <div *ngIf="titleAbsents[selectedIndex]?.type === datetimeUnit.MINUTE || unitMinute">
-        <div class='row title-item mb-1'>
-          <span>số phút</span>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
+        <div [formGroup]='formGroup' class='col-5 ml-1'>
+          <span class='title-item'>số phút</span>
           <input class='form-control' type='number' formControlName='minutes'>
         </div>
       </div>
-      <div class='note'>
-        <div class='row title-item mb-1'>
-          <span>Chú thích</span>
-          <div class='star'>*</div>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
+      <div class='row mb-3'>
+        <div [formGroup]='formGroup' class='col-12'>
+          <span class='title-item'>Chú thích</span>
           <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
         </div>
       </div>
