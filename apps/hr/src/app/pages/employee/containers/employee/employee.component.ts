@@ -69,6 +69,7 @@ export class EmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          //chưa biết vì sao khi search các input khác thì giá trị branch và position bị reset phải set lại
           this.namePositionSearch = this.positions.value ? this.positions.value : '';
           this.nameBranchSearch = this.branches.value ? this.branches.value : '';
           this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
