@@ -180,5 +180,6 @@ export class EmployeeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.nameBranchSearch = branchName;
+    console.log(this.nameBranchSearch);
   }
 }
