@@ -16,11 +16,11 @@ import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-import { TimekeepingComponent } from '../../component/time-keeping/timekeeping.component';
 import { Position } from '@minhdu-fontend/data-models';
 import { combineLatest } from 'rxjs';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -202,8 +202,8 @@ export class PayrollComponent implements OnInit {
 
   Timekeeping() {
     this.store.dispatch(EmployeeAction.loadInit({}))
-    this.dialog.open(TimekeepingComponent, {
-      width: '930px',
+    this.dialog.open(DialogTimekeepingComponent, {
+      width: 'fit-content',
       data: this.employee$
     })
   }

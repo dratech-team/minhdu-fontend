@@ -41,9 +41,10 @@ import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-ba
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { TimekeepingComponent } from './component/time-keeping/timekeeping.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ConvertTimePipe } from './pipes/convert-time.pipe';
+import { PickEmployeeAbsentComponent } from './component/pick-employee-absent/pick-employee-absent.component';
+import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timekeeping.component';
 
 @NgModule({
   imports: [
@@ -96,7 +97,8 @@ import { ConvertTimePipe } from './pipes/convert-time.pipe';
     DialogAbsentComponent,
     DialogStayComponent,
     ConfirmPayrollComponent,
-    TimekeepingComponent,
+    PickEmployeeAbsentComponent,
+    DialogTimekeepingComponent,
     ConvertTimePipe
   ],
   providers:[
