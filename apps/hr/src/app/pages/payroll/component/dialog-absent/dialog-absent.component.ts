@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SessionDayEnum } from '@minhdu-fontend/data-models';
+import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -22,6 +23,7 @@ export class DialogAbsentComponent implements OnInit {
   submitted = false;
   selectedIndex!: number;
   unitMinute = false;
+  unitHour = false;
 
   constructor(
     public datePipe: DatePipe,
@@ -52,6 +54,8 @@ export class DialogAbsentComponent implements OnInit {
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
+      }else if(this.data.salary.unit === DatetimeUnitEnum.HOUR){
+        this.unitHour = true
       }
       this.formGroup = this.formBuilder.group({
         datetime: [
@@ -67,7 +71,8 @@ export class DialogAbsentComponent implements OnInit {
           this.data.salary.times % 60 : undefined],
         note: [this.data.salary.note],
         type: [this.data.type],
-        rate: [1]
+        rate: [1],
+        session:[this.data.salary.unit]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -120,6 +125,14 @@ export class DialogAbsentComponent implements OnInit {
       Object.assign(salary, { times: value.times ? value.times * 60 + value.minutes : value.minutes });
     }
     if (this.data.isUpdate) {
+      if (this.data.salary.unit === DatetimeUnitEnum.HOUR) {
+        Object.assign(
+          salary, {
+            title: 'Vắng ' + this.titleSession[value.session]?.title,
+            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0.5
+          }
+        );
+      }
       this.store.dispatch(PayrollAction.updateSalary({
         id: this.data.salary.id,
         payrollId: this.data.salary.payrollId, salary: salary
@@ -129,7 +142,7 @@ export class DialogAbsentComponent implements OnInit {
         Object.assign(
           salary, {
             title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.session]?.title,
-            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0
+            times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0.5
           }
         );
       }

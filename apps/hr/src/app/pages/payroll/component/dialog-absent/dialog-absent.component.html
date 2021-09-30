@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class='row mb-3 '
-           *ngIf='!data.isUpdate && titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR'>
+           *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR ||unitHour'>
         <div class='col-6'>
           <span class=' title-item mb-1'>Buổi </span>
           <mat-select class='form-control' formControlName='session'>
