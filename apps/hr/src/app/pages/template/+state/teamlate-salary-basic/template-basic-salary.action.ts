@@ -7,6 +7,10 @@ export const AddTemplate = createAction(
   props<{ template: {price: number, title: string} }>()
 );
 
+export const HandelTemplateError = createAction(
+  '[API_Template_Basic] Template Basic  Error',
+);
+
 export const AddTemplateSuccess = createAction(
   '[Add_Template_Basic] Add Template Basic success',
   props<{ template: TemplateBasicSalary }>()
@@ -69,6 +73,7 @@ export const TemplateBasicAction = {
   loadInit,
   AddTemplate,
   AddTemplateSuccess,
+  HandelTemplateError,
   updateTemplate,
   loadInitTempLateSuccess,
   loadMoreTemplateBasic,

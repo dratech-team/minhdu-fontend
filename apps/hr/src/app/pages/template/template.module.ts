@@ -26,6 +26,7 @@ import { TemplateOvertimeComponent } from './container/overtime-template/templat
 import { DialogTemplateOvertimeComponent } from './component/template-overtime/dialog-template-overtime.component';
 import { TemplateBasicSalaryEffect } from './+state/teamlate-salary-basic/template-basic-salary.effect';
 import { templateBasicReducer } from './+state/teamlate-salary-basic/template-basic-salary.reducer';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -39,7 +40,7 @@ import { templateBasicReducer } from './+state/teamlate-salary-basic/template-ba
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
-    EffectsModule.forFeature([TemplateOvertimeEffect,TemplateBasicSalaryEffect]),
+    EffectsModule.forFeature([TemplateOvertimeEffect, TemplateBasicSalaryEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -53,6 +54,7 @@ import { templateBasicReducer } from './+state/teamlate-salary-basic/template-ba
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     TemplateOvertimeComponent,
