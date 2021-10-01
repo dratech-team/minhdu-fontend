@@ -75,26 +75,20 @@ export class DialogTimekeepingComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.formGroup.value.unit === DatetimeUnitEnum.MINUTE &&
-      this.formGroup.value.times == 0 && this.formGroup.value.minutes == 0) {
-      this.snackBar.openFromComponent(SnackBarComponent,
-        {
-          data: { content: 'thơi gian phải lớn hơn 0' },
-          panelClass: ['background-snackbar-validate'],
-          duration: 2500
-        });
-      return;
+    if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
+      !this.formGroup.value.times && !this.formGroup.value.minutes) {
+       return this.snackBar.open('Chưa nhập thời gian','',{duration:2000})
     }
 
     const value = this.formGroup.value;
     const salary = {
       title: this.titleAbsents[this.selectedIndex]?.title,
-      type: this.type.ABSENT,
+      type: this.titleAbsents[this.selectedIndex]?.type,
       rate: value.rate,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.unit,
+      unit: this.titleAbsents[this.selectedIndex]?.unit,
       times: value.times,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
     };
