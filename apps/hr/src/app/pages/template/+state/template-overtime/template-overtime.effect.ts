@@ -15,11 +15,10 @@ export class TemplateOvertimeEffect {
   loadAll$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadALlTemplate),
-      switchMap(props =>
-      {
-        return  this.templateOvertimeService.pagination(props)
-      }
-        ),
+      switchMap(props => {
+          return this.templateOvertimeService.pagination(props);
+        }
+      ),
       map((responsePagination) =>
         TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data })),
       catchError((err) => throwError(err))
@@ -28,14 +27,13 @@ export class TemplateOvertimeEffect {
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadInit),
-      switchMap(props =>
-      {
-        return  this.templateOvertimeService.pagination(props)
+      switchMap(props => {
+        return this.templateOvertimeService.pagination(props);
       }),
-      map((responsePagination) =>{
-        return   TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data })
-      }
-       ),
+      map((responsePagination) => {
+          return TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data });
+        }
+      ),
       catchError((err) => throwError(err))
     ));
 
@@ -70,7 +68,11 @@ export class TemplateOvertimeEffect {
       ofType(TemplateOvertimeAction.AddTemplate),
       switchMap((pram) => this.templateOvertimeService.addOne(pram.template).pipe(
         map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(TemplateOvertimeAction.HandleTemplateError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 
@@ -79,7 +81,11 @@ export class TemplateOvertimeEffect {
       ofType(TemplateOvertimeAction.updateTemplate),
       switchMap((pram) => this.templateOvertimeService.update(pram.id, pram.templateOvertime).pipe(
         map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(TemplateOvertimeAction.HandleTemplateError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 

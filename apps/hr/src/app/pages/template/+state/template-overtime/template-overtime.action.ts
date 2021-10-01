@@ -11,6 +11,10 @@ export const AddTemplateSuccess = createAction(
   '[Add_Template_Overtime] Add Template Overtime success',
   props<{ templateOvertime: TemplateOvertime }>()
 );
+
+export const HandleTemplateError = createAction(
+  '[API_Template_Overtime]  Template Overtime Error'
+);
 export const loadALlTemplate = createAction(
   '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
   props<{ positionId?: number, unit?: string }>()
@@ -71,6 +75,7 @@ export const TemplateOvertimeAction = {
   loadMoreTemplateOverTime,
   AddTemplate,
   AddTemplateSuccess,
+  HandleTemplateError,
   updateTemplate,
   loadInitTempLateSuccess,
   loadMoreTempLateSuccess,

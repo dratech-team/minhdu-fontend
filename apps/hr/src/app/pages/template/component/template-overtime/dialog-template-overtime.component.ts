@@ -14,6 +14,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
+import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
+import { add } from 'ngx-bootstrap/chronos';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -55,7 +57,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       title: [this.data?.title, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
-      rate: [this.data?.rate? this.data.rate: 1, Validators.required],
+      rate: [this.data?.rate ? this.data.rate : 1, Validators.required],
       note: [this.data?.note]
     });
     this.positions$ = combineLatest([
@@ -125,16 +127,19 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));
     }
-
-    this.dialogRef.close();
+    this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    });
   }
 
   onCreatePosition(position: any) {
     if (position.id) {
-      if(this.positionSelected.includes(position)){
-        throw this.snackbar.open('chức vụ đã được chọn','', {duration: 1000})
+      if (this.positionSelected.includes(position)) {
+        throw this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
       }
-        this.positionSelected.push(position);
+      this.positionSelected.push(position);
     } else {
       this.positionService
         .addOne({

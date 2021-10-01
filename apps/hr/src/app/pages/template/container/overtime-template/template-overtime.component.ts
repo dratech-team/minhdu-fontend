@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
-import { selectorAllTemplate } from '../../+state/template-overtime/template-overtime.selector';
+import { selectorAllTemplate, selectTemplateAdding } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -15,6 +15,7 @@ import { DialogTemplateOvertimeComponent } from '../../component/template-overti
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
+  adding$ = this.store.pipe(select(selectTemplateAdding))
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   pageSize = 30;
