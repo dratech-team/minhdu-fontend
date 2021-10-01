@@ -22,7 +22,7 @@
             </div>
             <div class='col-md-6'>
               <div class='row' style='width: 100%;'>
-                <span>{{payroll.employee?.firstName}} {{payroll.employee?.lastName}}</span>
+                <span>{{payroll.employee.firstName}} {{payroll.employee.lastName}}</span>
               </div>
               <div class='row mt-2'
                    style='border: solid 1px #EB5757;border-radius: 20px;height: 24px ;max-width: 150px;'>
@@ -50,7 +50,7 @@
           <div class='col'>
             <div class='row justify-content-center'> Ngày làm việc thực tế</div>
             <div class='row content-title'>
-              {{payroll?.actualDay || 0}}
+              {{payroll.actualDay || "0"}}
             </div>
           </div>
           <div class='col'>

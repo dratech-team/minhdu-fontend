@@ -29,7 +29,6 @@ import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm
 })
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
-  allPayroll$ = this.store.pipe(select(selectorAllPayroll));
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
