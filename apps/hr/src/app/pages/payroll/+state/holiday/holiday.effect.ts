@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import {  HolidayAction } from './holiday.action';
+import { HolidayAction } from './holiday.action';
 import { HolidayService } from '../../service/holiday.service';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -57,7 +57,11 @@ export class HolidayEffect {
       ofType(HolidayAction.AddHoliday),
       switchMap((pram) => this.holidayService.addOne(pram.holiday).pipe(
         map(_ => HolidayAction.LoadAllHoliday()),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(HolidayAction.handleHolidayError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 
@@ -66,7 +70,11 @@ export class HolidayEffect {
       ofType(HolidayAction.UpdateHoliday),
       switchMap((pram) => this.holidayService.update(pram.id, pram.holiday).pipe(
         map(_ => HolidayAction.LoadAllHoliday()),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(HolidayAction.handleHolidayError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 

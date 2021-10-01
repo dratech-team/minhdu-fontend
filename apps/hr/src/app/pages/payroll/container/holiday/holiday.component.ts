@@ -5,9 +5,8 @@ import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from 'apps/hr/src/app/reducers';
-import { selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
+import { selectHolidayAdding, selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SystemHistoryActions } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
 
 
@@ -15,6 +14,7 @@ import { debounceTime, tap } from 'rxjs/operators';
   templateUrl: 'holiday.component.html'
 })
 export class HolidayComponent implements OnInit {
+  adding$ = this.store.pipe(select(selectHolidayAdding))
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(

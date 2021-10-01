@@ -12,6 +12,7 @@ import * as lodash from 'lodash';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
 
 
 @Component({
@@ -92,7 +93,11 @@ export class AddHolidayComponent implements OnInit {
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
-    this.dialogRef.close();
+    this.store.pipe(select(selectHolidayAdded)).subscribe(added => {
+      if(added){
+        this.dialogRef.close();
+      }
+    })
   }
 
   onCreatePosition(position: any) {
