@@ -1,16 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef
 } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 
@@ -22,6 +21,7 @@ export class DialogAllowanceComponent implements OnInit {
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   isManyPeople = false;
   type = SalaryTypeEnum;
+  datetimeEnum = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
   isAllDay = true;
@@ -38,7 +38,6 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
       if(this.data?.salary?.datetime?.start && this.data?.salary?.datetime?.start){
         this.isAllDay = false
       }

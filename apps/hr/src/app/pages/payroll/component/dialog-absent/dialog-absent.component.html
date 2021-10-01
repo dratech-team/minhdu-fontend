@@ -29,10 +29,10 @@
         </div>
       </div>
       <div class='row mb-3 '
-           *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR ||unitHour'>
+           *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY || data?.salary?.unit === datetimeUnit.DAY  '>
         <div class='col-6'>
           <span class=' title-item mb-1'>Buổi </span>
-          <mat-select class='form-control' formControlName='session'>
+          <mat-select class='form-control' formControlName='partialDay'>
             <mat-option *ngFor='let item of titleSession ; let i = index' [value]='i'>{{item.title}}</mat-option>
           </mat-select>
         </div>
@@ -50,14 +50,14 @@
           </div>
         </div>
         <div [formGroup]='formGroup'
-             *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.HOUR' class='col-5 ml-1'>
+             *ngIf='selectedIndex  === 0 ||unitAbsent' class='col-5 ml-1'>
           <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
                         style='font-size: 12px'>
             Quên giấy phép và bsc
           </mat-checkbox>
         </div>
       </div>
-      <div class='row mb-3 d-flex' *ngIf='titleAbsents[selectedIndex]?.type  === datetimeUnit.MINUTE||unitMinute '>
+      <div class='row mb-3 d-flex' *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
         <div [formGroup]='formGroup' class='col-6'>
           <span class='title-item mb-1'>số giờ </span>
           <input class='form-control' type='number' formControlName='times'>

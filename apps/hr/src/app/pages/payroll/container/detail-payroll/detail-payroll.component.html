@@ -123,7 +123,7 @@
               </div>
             </div>
             <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['STAY'] ">
-              <div class='col-md-7 title-child'> {{salary.title}}</div>
+              <div class='col-md-6 title-child'> {{salary.title}}</div>
               <div
                 class='col-md-4 salary'
                 style='color: #4B3880'
@@ -139,6 +139,15 @@
                   (click)='updateSalary(type.STAY,salary)'
                 >
                   <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                </button>
+                <button
+                  data-toggle='tooltip'
+                  data-placement='top'
+                  title='xóa'
+                  class='trash animated'
+                  (click)='removeSalary(salary.id, payroll.id)'
+                >
+                  <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
                 </button>
               </div>
             </div>
@@ -260,13 +269,13 @@
                      alt='add icon'>
               </div>
             </div>
-            <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT']  ">
+            <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF']  ">
               <div class='col-md-7 title-child' *ngIf="salary.unit === 'DAY'">
                 {{salary.title + ' Ngày '}} {{salary.datetime | date:'dd/MM/yyyy'}} {{salary.forgot ? '(Quên giấy phép)' : ''}}
               </div>
-              <div class='col-md-7 title-child' *ngIf="salary.unit === 'HOUR' ">
-                {{salary.title}} (ngày {{salary.datetime | date:'dd/MM/yyyy'}})
-              </div>
+<!--              <div class='col-md-7 title-child' *ngIf="salary.unit === 'HOUR' ">-->
+<!--                {{salary.title}} (ngày {{salary.datetime | date:'dd/MM/yyyy'}})-->
+<!--              </div>-->
               <div class='col-md-7 title-child' *ngIf="salary.unit === 'MINUTE' ">
                 {{salary.title}} ({{salary.times | convertTime }} - ngày {{salary.datetime|date: 'dd/MM/yyyy'}} )
               </div>

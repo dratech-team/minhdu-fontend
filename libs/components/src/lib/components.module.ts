@@ -17,8 +17,6 @@ import { DevelopmentComponent } from './development/development.component';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
-import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
-import { PickEmployeeService } from './pick-employee/pick-employee.service';
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
@@ -52,12 +50,11 @@ import { MatInputModule } from '@angular/material/input';
     DialogDeleteComponent,
     NotEmptyPipe,
     InputCurrencyDirective,
-    PickEmployeeComponent,
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,
   ],
-  providers: [DecimalPipe, PickEmployeeService],
+  providers: [DecimalPipe],
   exports: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -67,7 +64,6 @@ import { MatInputModule } from '@angular/material/input';
     NotEmptyPipe,
     SearchEmployeePipe,
     InputCurrencyDirective,
-    PickEmployeeComponent,
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,

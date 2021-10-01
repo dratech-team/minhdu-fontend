@@ -14,13 +14,13 @@ import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
-import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { Position } from '@minhdu-fontend/data-models';
 import { combineLatest } from 'rxjs';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
+import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -91,7 +91,8 @@ export class PayrollComponent implements OnInit {
           return positions;
         }
       })
-    )//search branch and position
+    )
+    //search branch and position
     combineLatest([
       this.positions.valueChanges.pipe(startWith(this.nameBranchSearch)),
       this.branches.valueChanges.pipe(startWith(this.namePositionSearch))
@@ -167,9 +168,9 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  addSalary(type: SalaryTypeEnum): any {
-    this.dialog.open(DialogOvertimeComponent, {
-      width: '850px',
+  addSalaryOvertime(type: SalaryTypeEnum): any {
+    this.dialog.open(DialogOvertimeMultipleComponent, {
+      width: 'fit-content',
       data: { type: type }
     });
   }

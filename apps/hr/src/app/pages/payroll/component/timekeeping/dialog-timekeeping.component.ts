@@ -7,7 +7,7 @@ import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { SessionDayEnum } from '@minhdu-fontend/data-models';
+import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 
@@ -39,16 +39,16 @@ export class DialogTimekeepingComponent implements OnInit {
 
   //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
   titleAbsents = [
-    { title: 'Vắng', type: this.datetimeUnit.HOUR },
-    { title: 'Không đi làm', type: this.datetimeUnit.DAY },
-    { title: 'Đi trễ', type: this.datetimeUnit.MINUTE },
-    { title: 'Về Sớm', type: this.datetimeUnit.MINUTE }
+    { title: 'Vắng', unit: this.datetimeUnit.DAY , type: this.type.ABSENT  },
+    { title: 'Không đi làm', unit: this.datetimeUnit.DAY,type: this.type.DAY_OFF  },
+    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  },
+    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  }
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
-    { title: 'buổi sáng', type: SessionDayEnum.MORNING },
-    { title: 'buổi chiều', type: SessionDayEnum.AFTERNOON },
-    { title: 'nguyên ngày', type: SessionDayEnum.ALL_DAY }
+    { title: 'buổi sáng', type: PartialDayEnum.MORNING },
+    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON },
+    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY }
   ];
 
   ngOnInit(): void {
@@ -59,7 +59,7 @@ export class DialogTimekeepingComponent implements OnInit {
       rate: [1, Validators.required],
       note: [],
       forgot: [],
-      session: []
+      partialDay: []
     });
   }
 
@@ -92,22 +92,25 @@ export class DialogTimekeepingComponent implements OnInit {
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.type,
+      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.unit,
       times: value.times,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds: undefined
     };
-    if (this.titleAbsents[this.selectedIndex]?.type === DatetimeUnitEnum.MINUTE) {
-      Object.assign(salary, { times: value.times ? value.times * 60 + value.minutes : value.minutes });
-    }
-    if (typeof value?.session === 'number') {
+    if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY) {
       Object.assign(
         salary, {
-          title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.session]?.title,
-          times: this.titleSession[value.session].type === SessionDayEnum.ALL_DAY ? 1 : 0.5
+          title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title,
+          times: this.titleSession[value.session]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+        }
+      );
+    }else{
+      Object.assign(
+        salary, {
+          title: this.titleAbsents[this.selectedIndex]?.title,
+          times: value.times? value.times * 60 + value.minutes: value.minutes,
         }
       );
     }
-    console.log(salary)
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary
     }));
@@ -120,7 +123,6 @@ export class DialogTimekeepingComponent implements OnInit {
 
   pickEmployees(employeeIds: number[]) {
     this.employeeIds = employeeIds
-    console.log(this.employeeIds)
   }
 
   tabChanged($event: MatTabChangeEvent) {

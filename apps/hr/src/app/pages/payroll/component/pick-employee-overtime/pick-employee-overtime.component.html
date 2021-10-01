@@ -1,14 +1,14 @@
 <div class='container' style='overflow-x: auto'>
     <div class='col-12 animated fadeIn'>
       <form [formGroup]='formGroup' class='header-profile mt-3 '>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Mã nhân Viên</div>
-          <input class='form-control input-profile'
-                 type='text'
-                 placeholder='PN10001'
-                 formControlName='code'
-          >
-        </div>
+<!--        <div class='border-start title-header default'>-->
+<!--          <div class='title-profile'>Mã nhân Viên</div>-->
+<!--          <input class='form-control input-profile'-->
+<!--                 type='text'-->
+<!--                 placeholder='PN10001'-->
+<!--                 formControlName='code'-->
+<!--          >-->
+<!--        </div>-->
         <div class='border-start title-header name'>
           <div class='title-profile'>Tên nhân viên</div>
           <input class='form-control input-profile '
@@ -49,7 +49,7 @@
            [scrollWindow]='false'
       >
         <div class='row-content' *ngFor='let employee of employees'>
-          <div class='content-profile default pointer '> {{employee.code}}</div>
+<!--          <div class='content-profile default pointer '> {{employee.code}}</div>-->
           <div class='content-profile name  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
           <div class='content-profile default pointer'>{{employee.position?.name}}</div>
           <div class='content-profile default pointer'>

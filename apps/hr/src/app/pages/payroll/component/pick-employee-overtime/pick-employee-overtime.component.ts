@@ -1,33 +1,30 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
-import { Observable } from 'rxjs';
+import { selectorAllEmployee } from '@minhdu-fontend/employee';
 
 @Component({
-  selector: 'app-pick-employee',
-  templateUrl: './pick-employee.component.html'
+  selector: 'app-pick-employee-overtime',
+  templateUrl: 'pick-employee-overtime.component.html'
 })
-//PICK-EMPLOYEE - OVERTIME chuyển về app-hr
-export class PickEmployeeComponent implements OnInit {
-  @Input() employees$!: Observable<Employee[]>;
-  @Input() searchInit: any;
-  @Input() checkAllowance = false;
+export class PickEmployeeOvertimeComponent implements OnInit {
+  @Input() checkAllowance= false;
+  @Input() templateId?: number;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   @Output() EventSelectAllowance = new EventEmitter<number[]>();
+  employees$ = this.store.pipe(select(selectorAllEmployee))
   type = SalaryTypeEnum;
   isSelectEmployee = false;
   isSelectAllowance = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
-  employeeId!: number;
   formGroup = new FormGroup(
     {
-      code: new FormControl(''),
       name: new FormControl('')
     });
 
@@ -40,16 +37,15 @@ export class PickEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
+      this.assignIsSelect();
     });
-    this.assignIsSelect();
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
         const search = {
-          code: val.code,
-          name: val.name
+          name: val.name,
+          templateId: this.templateId
         };
-        Object.assign(search, this.searchInit);
         this.service.searchEmployees(search);
       })
     ).subscribe();
