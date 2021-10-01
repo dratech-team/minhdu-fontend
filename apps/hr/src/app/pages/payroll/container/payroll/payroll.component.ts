@@ -107,7 +107,7 @@ export class PayrollComponent implements OnInit {
         this.namePositionSearch = position;
         this.nameBranchSearch = branch;
         const  val = this.formGroup.value
-        this.store.dispatch(EmployeeAction.loadInit(this.Payroll(val)));
+        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
       })
     ).subscribe()
     this.branches$ = combineLatest([
@@ -136,8 +136,8 @@ export class PayrollComponent implements OnInit {
       position: this.namePositionSearch,
       branch: this.nameBranchSearch,
       createdAt: val.createdAt,
-      paidAt: val.paidAt,
-      accConfirmedAt: val.accConfirmedAt
+      isPaid: val.paidAt,
+      isConfirm: val.accConfirmedAt
     };
     if (val.createdAt) {
       return payroll;
