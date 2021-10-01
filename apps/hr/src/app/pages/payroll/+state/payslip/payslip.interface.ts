@@ -12,4 +12,6 @@ export interface Payslip {
   salaryActual: number,
   tax?: number,
   total?: number
+  holiday?: number,
+  totalSalaryHoliday?: number
 }

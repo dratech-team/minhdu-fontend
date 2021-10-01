@@ -10,4 +10,6 @@ export interface payslip {
   salaryActual: number,
   tax: number,
   total: number,
+  holiday?: number,
+  totalSalaryHoliday?: number
 }
