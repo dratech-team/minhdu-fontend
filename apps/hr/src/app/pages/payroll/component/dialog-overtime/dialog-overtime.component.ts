@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
@@ -23,11 +23,12 @@ export class DialogOvertimeComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   price!: number;
   title!: string;
-  unit!: string;
+  unit!: DatetimeUnitEnum;
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
 

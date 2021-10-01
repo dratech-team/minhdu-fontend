@@ -126,10 +126,17 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+    //validate sửa lại sau
+    if(this.employeeIds.length === 0){
+      return this.snackBar.open('chưa chọn nhân viên', '', {duration:1000})
+    }
     const value = this.formGroup.value;
+    if(this.unit && !value.times){
+      return this.snackBar.open('chưa nhập số giờ tăng ca', '', {duration:1000})
+    }
     const salary = {
-      title: this.title || this.data?.salary?.title,
-      price: this.price || this.data?.salary?.price,
+      title: this.title,
+      price: this.price ,
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
       times: value.times,

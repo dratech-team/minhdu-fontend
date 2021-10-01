@@ -44,7 +44,6 @@ export class DialogBasicComponent implements OnInit {
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
-
     this.store.dispatch(TemplateBasicAction.loadALlTemplate());
 
    if(this.data.isUpdate) {
