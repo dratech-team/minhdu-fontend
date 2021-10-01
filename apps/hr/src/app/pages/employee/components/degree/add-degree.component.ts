@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { DegreeLevelEnum, DegreeStatusEnum, DegreeTypeEnum } from '@minhdu-fontend/enums';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded, selectEmployeeAdding } from '@minhdu-fontend/employee';
 import { DatePipe } from '@angular/common';
 
 
@@ -76,8 +76,8 @@ export class AddDegreeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addDegree({ degree: degree }));
     }
-    this.store.pipe(select(selectEmployeeAdded)).subscribe(val => {
-      if (val) {
+    this.store.pipe(select(selectEmployeeAdded)).subscribe(added => {
+      if (added) {
         this.dialogRef.close();
       }
     });

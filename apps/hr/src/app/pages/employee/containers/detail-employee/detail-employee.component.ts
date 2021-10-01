@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
-  selectCurrentEmployee
+  selectCurrentEmployee, selectEmployeeAdding
 } from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
@@ -37,7 +37,7 @@ export class DetailEmployeeComponent implements OnInit {
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
-
+  adding$ = this.store.pipe(select(selectEmployeeAdding))
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,

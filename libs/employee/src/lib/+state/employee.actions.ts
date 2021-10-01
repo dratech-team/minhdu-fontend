@@ -52,6 +52,10 @@ export const addEmployee = createAction(
   props<{ employee: any }>()
 );
 
+export const handleEmployeeError = createAction(
+  '[ADD_EMPLOYEE] Add Employee Error'
+);
+
 export const addEmployeeSuccess = createAction(
   '[ADD_EMPLOYEE] Add Employee Success',
   props<{ employee: Employee, }>()
@@ -61,10 +65,17 @@ export const addRelative = createAction(
   '[ADD_RELATIVE] Add Relative',
   props<{ relative: any }>()
 );
+export const handleRelativeError = createAction(
+  '[ADD_RELATIVE] Add Relative Error'
+);
 
 export const addDegree = createAction(
   '[ADD_DEGREE] Add addDegree',
   props<{ degree: any }>()
+);
+
+export const handleDegreeError = createAction(
+  '[ADD_DEGREE] Add Degree Error'
 );
 
 export const getEmployee = createAction(
@@ -119,7 +130,7 @@ export const deleteDegree = createAction(
 
 export const setLoaded = createAction(
   '[SET_STATE] Update state loaded ',
-  props<{ loaded: boolean}>()
+  props<{ loaded: boolean }>()
 );
 
 export const EmployeeAction = {
@@ -129,8 +140,11 @@ export const EmployeeAction = {
   LoadEmployeesSuccess,
   addEmployee,
   addEmployeeSuccess,
+  handleEmployeeError,
   addRelative,
+  handleRelativeError,
   addDegree,
+  handleDegreeError,
   getEmployee,
   getEmployeeSuccess,
   updateEmployee,

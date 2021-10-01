@@ -1,3 +1,4 @@
+<mat-spinner *ngIf='(adding$|async)' class='loading'></mat-spinner>
 <div class='animated fadeIn container mb-3 '>
   <div class='row' *ngIf='(employee$ | async)  as employee'>
     <div class='row mt-5'>

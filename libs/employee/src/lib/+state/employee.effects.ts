@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
 import {
-  EmployeeAction,
+  EmployeeAction, handleRelativeError,
   selectorEmployeeTotal
 } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -53,7 +53,9 @@ export class EmployeeEffect {
           employees: responsePagination.data
         });
       }),
-      catchError((err) => throwError(err))
+      catchError((err) => {
+        return throwError(err);
+      })
     )
   );
 
@@ -61,12 +63,16 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.addEmployee),
       switchMap((props) => this.employeeService.addOne(props.employee)),
+      debounceTime(20000),
       map((employee) => {
           this.snackBar.open('Thêm nhân viên thành công', '', { duration: 1000 });
           return EmployeeAction.addEmployeeSuccess({ employee });
         }
       ),
-      catchError((err) => throwError(err))
+      catchError((err) => {
+        this.store.dispatch(EmployeeAction.handleEmployeeError());
+        return throwError(err);
+      })
     )
   );
 
@@ -81,7 +87,7 @@ export class EmployeeEffect {
             }
           ),
           catchError((err) => {
-            this.slackService.sendErr(err);
+            this.store.dispatch(EmployeeAction.handleRelativeError());
             return throwError(err);
           })
         )
@@ -99,7 +105,11 @@ export class EmployeeEffect {
               return EmployeeAction.getEmployee({ id: props.degree.employeeId });
             }
           ),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+              this.store.dispatch(EmployeeAction.handleDegreeError());
+              return throwError(err);
+            }
+          )
         )
       )
     )
@@ -127,7 +137,12 @@ export class EmployeeEffect {
               return EmployeeAction.getEmployee({ id: props.id });
             }
           ),
-          catchError((err) => throwError(err))
+          catchError((err) =>
+          {
+            this.store.dispatch(EmployeeAction.handleEmployeeError())
+           return  throwError(err)
+          }
+            )
         )
       )
     )
@@ -143,7 +158,11 @@ export class EmployeeEffect {
               return EmployeeAction.getEmployee({ id: props.employeeId });
             }
           ),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+              this.store.dispatch(EmployeeAction.handleDegreeError());
+              return throwError(err);
+            }
+          )
         )
       )
     )
@@ -159,7 +178,11 @@ export class EmployeeEffect {
               return EmployeeAction.getEmployee({ id: props.employeeId });
             }
           ),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+              this.store.dispatch(EmployeeAction.handleDegreeError());
+              return throwError(err);
+            }
+          )
         )
       )
     )

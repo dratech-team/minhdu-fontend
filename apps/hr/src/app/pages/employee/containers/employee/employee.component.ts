@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import {
-  EmployeeAction,
+  EmployeeAction, selectEmployeeAdding,
   selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
@@ -38,6 +38,7 @@ export class EmployeeComponent implements OnInit {
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
+  adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   pageSize: number = 30;
@@ -180,6 +181,5 @@ export class EmployeeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.nameBranchSearch = branchName;
-    console.log(this.nameBranchSearch);
   }
 }

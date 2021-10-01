@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded, selectEmployeeAdding } from '@minhdu-fontend/employee';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 
@@ -90,8 +90,8 @@ export class AddRelativeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.addRelative({ relative: relative }));
     }
-    this.store.pipe(select(selectEmployeeAdded)).subscribe(val =>{
-      if(val){
+    this.store.pipe(select(selectEmployeeAdded)).subscribe(added =>{
+      if(added){
         this.dialogRef.close();
       }
     })
