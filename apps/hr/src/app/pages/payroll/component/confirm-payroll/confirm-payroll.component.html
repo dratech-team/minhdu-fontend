@@ -13,6 +13,10 @@
               <div class='col-5 font-weight-bold'>Ngày công chuẩn:</div>
               <div class=' col-4'>{{payslip.workday}}</div>
             </div>
+            <div class='row' *ngIf='payslip.holiday'>
+              <div class='col-5 font-weight-bold'>Số ngày lễ:</div>
+              <div class=' col-4'>{{payslip.holiday}}</div>
+            </div>
             <div class='row mt-2'>
               <div class='col-5 font-weight-bold'>Ngày đi làm thực tế:</div>
               <div class=' col-4' >{{payslip.actualDay|| 0 }}</div>
@@ -32,6 +36,10 @@
             <div class='row mt-2' >
               <div class='col-5 font-weight-bold'>Tổng tiền tăng ca:</div>
               <div class='text-success col-4'>{{payslip.overtime ||0 |number: '1.0-0'}} VND</div>
+            </div>
+            <div class='row mt-2' *ngIf='payslip.totalSalaryHoliday' >
+              <div class='col-5 font-weight-bold'>Tổng tiền ngày lễ:</div>
+              <div class='text-success col-4'>{{payslip.totalSalaryHoliday ||0 |number: '1.0-0'}} VND</div>
             </div>
             <div class='row mt-2' >
               <div class='col-5 font-weight-bold'>Tổng tiền khấu trừ:</div>
