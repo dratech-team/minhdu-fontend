@@ -6,7 +6,7 @@ import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.co
 import { throwError } from 'rxjs';
 import {
   catchError,
-  concatMap, map,
+  concatMap, debounceTime, map,
   switchMap,
   withLatestFrom
 } from 'rxjs/operators';
@@ -25,10 +25,10 @@ export class PayrollEffect {
       }),
       map((ResponsePaginate) => {
         this.snackBar.open('Tải phiếu lương thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data,
+          payrolls: ResponsePaginate.data
         });
       }),
       catchError((err) => throwError(err))
@@ -50,11 +50,11 @@ export class PayrollEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết phiếu lương' },
+            data: { content: 'Đã lấy hết phiếu lương' }
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data,
+          payrolls: ResponsePaginate.data
         });
       }),
       catchError((err) => throwError(err))
@@ -67,7 +67,7 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.addOne(props.payroll)),
       map((_) => {
         this.snackBar.open('Thêm phiếu lương thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return PayrollAction.loadInit({ take: 30, skip: 0 });
       }),
@@ -87,6 +87,7 @@ export class PayrollEffect {
               : PayrollAction.loadInit({ take: 30, skip: 0 });
           }),
           catchError((err) => {
+            this.store.dispatch(PayrollAction.handleSalaryError());
             return throwError(err);
           })
         )
@@ -100,7 +101,7 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.getOne(props.id)),
       map((payroll) => {
         this.snackBar.open('Tải phiếu lương thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return PayrollAction.getPayrollSuccess({ payroll: payroll });
       }),
@@ -149,7 +150,11 @@ export class PayrollEffect {
           })
         );
       }),
-      catchError((err) => throwError(err))
+      catchError((err) => {
+          this.store.dispatch(PayrollAction.handleSalaryError());
+          return throwError(err);
+        }
+      )
     )
   );
 
@@ -183,5 +188,6 @@ export class PayrollEffect {
     private readonly salaryService: SalaryService,
     private readonly snackBar: MatSnackBar,
     private readonly store: Store
-  ) {}
+  ) {
+  }
 }

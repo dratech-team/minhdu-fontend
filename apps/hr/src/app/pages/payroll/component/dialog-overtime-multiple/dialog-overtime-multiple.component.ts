@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -59,13 +59,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {}));
-    this.price = this.data?.salary?.price;
-    this.unit = this.data?.salary?.unit;
-    this.times = this.data?.salary?.times;
     this.formGroup = this.formBuilder.group({
       datetime: ['', Validators.required],
       note: [''],
-      times: [''],
+      times: [1],
       priceAllowance: [],
       titleAllowance: []
     });
@@ -126,7 +123,9 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    //validate sửa lại sau
+    if(!this.templateId){
+      return this.snackBar.open('chưa chọn loại tăng ca', '', {duration:1000})
+    }
     if(this.employeeIds.length === 0){
       return this.snackBar.open('chưa chọn nhân viên', '', {duration:1000})
     }
@@ -172,7 +171,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.title = data.title;
     this.rate = data.rate;
     this.unit = data.unit;
-    this.formGroup.value.times = 0;
     this.templateId =  data.id;
     this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
   }

@@ -58,6 +58,10 @@ export const addSalary = createAction(
   props<{ salary: any, payrollId?: number }>()
 );
 
+export const handleSalaryError = createAction(
+  '[API_SALARY] Salary Error ',
+);
+
 export const getPayroll = createAction(
   '[GET_PAYROLL] Get Payroll',
   props<{ id?: number }>()
@@ -112,6 +116,7 @@ export const PayrollAction = {
   loadMorePayrollsSuccess,
   addPayroll,
   addPayrollSuccess,
+  handleSalaryError,
   addSalary,
   getPayroll,
   getPayrollSuccess,

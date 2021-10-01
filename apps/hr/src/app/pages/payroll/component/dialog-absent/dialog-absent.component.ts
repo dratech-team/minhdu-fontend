@@ -2,13 +2,14 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -109,7 +110,6 @@ export class DialogAbsentComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
-    console.log(this.titleAbsents[this.selectedIndex]?.type)
     const salary = {
       title: this.data?.salary?.title,
       type: this.data?.salary?.type? this.data.salary.type : this.titleAbsents[this.selectedIndex]?.type,
@@ -163,12 +163,22 @@ export class DialogAbsentComponent implements OnInit {
           }
         );
       }
+      //validate
+      if(this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY && !value.partialDay){
+        return this.snackBar.open('chưa chọn buổi','',{duration:2000})
+      }else if(!value.times && !value.minutes){
+        return this.snackBar.open('chưa nhập thời gian','',{duration:2000})
+      }
       this.store.dispatch(PayrollAction.addSalary({
         payrollId: this.data.payroll.id, salary: salary
       }));
     }
-    this.dialogRef.close();
 
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+      if(added){
+        this.dialogRef.close();
+      }
+    })
   }
 
   onSelectAbsent(index: number) {
