@@ -61,7 +61,11 @@ export class TemplateBasicSalaryEffect {
       ofType(TemplateBasicAction.AddTemplate),
       switchMap((pram) => this.templateBasicSalaryService.addOne(pram.template).pipe(
         map(_ => TemplateBasicAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(TemplateBasicAction.HandelTemplateError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 
@@ -70,7 +74,11 @@ export class TemplateBasicSalaryEffect {
       ofType(TemplateBasicAction.updateTemplate),
       switchMap((pram) => this.templateBasicSalaryService.update(pram.id, pram.templateBasic).pipe(
         map(_ => TemplateBasicAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
+        catchError((err) => {
+            this.store.dispatch(TemplateBasicAction.HandelTemplateError());
+            return throwError(err);
+          }
+        )
       ))
     ));
 

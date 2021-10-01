@@ -22,7 +22,7 @@ import {
   getAllPosition,
   PositionActions
 } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded, selectEmployeeAdding } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { map, startWith } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
@@ -47,6 +47,7 @@ export class AddEmployeeComponent implements OnInit {
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
+
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -113,7 +114,7 @@ export class AddEmployeeComponent implements OnInit {
           const result = positions.filter((e) => {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
-          if(result.length === 0){
+          if (result.length === 0) {
             result.push({ id: 0, name: 'Tạo mới chức vụ' });
           }
           return result;
@@ -132,10 +133,10 @@ export class AddEmployeeComponent implements OnInit {
           const result = branches.filter((e) => {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
-          if(result.length === 0){
+          if (result.length === 0) {
             result.push({ id: 0, name: 'Tạo mới đơn vị' });
           }
-          return result
+          return result;
         } else {
           return branches;
         }
@@ -212,7 +213,6 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
-      console.log(added);
       if (added) {
         this.dialogRef.close();
       }
@@ -227,7 +227,7 @@ export class AddEmployeeComponent implements OnInit {
         position: position.name
       });
     } else {
-      this.onCreatePosition()
+      this.onCreatePosition();
     }
   }
 

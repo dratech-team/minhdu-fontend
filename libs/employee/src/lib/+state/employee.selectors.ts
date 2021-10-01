@@ -35,6 +35,13 @@ export const selectEmployeeLoaded = createSelector(
   }
 );
 
+export const selectEmployeeAdding = createSelector(
+  selectorEmployeeState,
+  (state) => {
+    return state.adding;
+  }
+);
+
 export const selectEmployeeAdded = createSelector(
   selectorEmployeeState,
   (state) => {

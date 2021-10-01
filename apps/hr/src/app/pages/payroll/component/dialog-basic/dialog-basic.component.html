@@ -44,7 +44,7 @@
           <mat-select class='form-control col' formControlName='price'
             [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
             <mat-option *ngFor='let item of templateBasicSalary$ | async' [value]='item.price'>
-              {{item.price}}
+              {{item.price|number:'1.0-0'}}đ
             </mat-option>
           </mat-select>
         </div>

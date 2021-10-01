@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +10,7 @@ import { SnackBarComponent } from '../../../../../../../../libs/components/src/l
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 
 
 @Component({
@@ -21,11 +22,12 @@ export class DialogTimekeepingComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
-  selectedIndex!: number;
+  selectedIndex = 0;
   unitMinute = false;
   unitHour = false;
   employeeIds: number[] = [];
   isManyPeople = false;
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -39,10 +41,10 @@ export class DialogTimekeepingComponent implements OnInit {
 
   //DUMMY DATA Không thay đổi thứ tự index hiện tại -> thêm title ở cuối mảng
   titleAbsents = [
-    { title: 'Vắng', unit: this.datetimeUnit.DAY , type: this.type.ABSENT  },
-    { title: 'Không đi làm', unit: this.datetimeUnit.DAY,type: this.type.DAY_OFF  },
-    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  },
-    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE,type: this.type.ABSENT  }
+    { title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT },
+    { title: 'Không đi làm', unit: this.datetimeUnit.DAY, type: this.type.DAY_OFF },
+    { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
+    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT }
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
@@ -68,53 +70,58 @@ export class DialogTimekeepingComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
+    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.formGroup.value.unit === DatetimeUnitEnum.MINUTE &&
-      this.formGroup.value.times == 0 && this.formGroup.value.minutes == 0) {
-      this.snackBar.openFromComponent(SnackBarComponent,
-        {
-          data: { content: 'thơi gian phải lớn hơn 0' },
-          panelClass: ['background-snackbar-validate'],
-          duration: 2500
-        });
-      return;
+    if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
+      !this.formGroup.value.times && !this.formGroup.value.minutes) {
+       return this.snackBar.open('Chưa nhập thời gian','',{duration:2000})
     }
 
     const value = this.formGroup.value;
     const salary = {
       title: this.titleAbsents[this.selectedIndex]?.title,
-      type: this.type.ABSENT,
+      type: this.titleAbsents[this.selectedIndex]?.type,
       rate: value.rate,
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: value.unit ? value.unit : this.titleAbsents[this.selectedIndex]?.unit,
+      unit: this.titleAbsents[this.selectedIndex]?.unit,
       times: value.times,
-      employeeIds: this.employeeIds.length > 0 ? this.employeeIds: undefined
+      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
     };
+    if(this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY && typeof value.partialDay !== 'number' ){
+      return this.snackBar.open('Chưa chọn buổi','', {duration:2000})
+    }
+    if(this.employeeIds.length === 0){
+      return this.snackBar.open('Chưa chọn nhân viên','', {duration:2000})
+    }
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY) {
       Object.assign(
         salary, {
           title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title,
-          times: this.titleSession[value.session]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+          times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
         }
       );
-    }else{
+    } else {
       Object.assign(
         salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
-          times: value.times? value.times * 60 + value.minutes: value.minutes,
+          times: value.times ? value.times * 60 + value.minutes : value.minutes
         }
       );
     }
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary
     }));
-    this.dialogRef.close();
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    });
+
   }
 
   onSelectAbsent(index: number) {
@@ -122,7 +129,7 @@ export class DialogTimekeepingComponent implements OnInit {
   }
 
   pickEmployees(employeeIds: number[]) {
-    this.employeeIds = employeeIds
+    this.employeeIds = employeeIds;
   }
 
   tabChanged($event: MatTabChangeEvent) {

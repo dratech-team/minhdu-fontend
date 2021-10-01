@@ -3,7 +3,11 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { Router } from '@angular/router';
-import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
+import {
+  selectedAddingPayroll,
+  selectedLoadedPayroll,
+  selectorAllPayroll
+} from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
@@ -50,6 +54,7 @@ export class PayrollComponent implements OnInit {
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  adding$ = this.store.pipe(select(selectedAddingPayroll))
   positions = new FormControl();
   branches = new FormControl();
   namePositionSearch = '';

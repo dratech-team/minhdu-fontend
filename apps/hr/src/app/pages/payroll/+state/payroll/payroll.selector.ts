@@ -33,6 +33,11 @@ export const selectedLoadedPayroll = createSelector(
   (state) => state.loaded
 );
 
+export const selectedAddingPayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.adding
+);
+
 export const selectedAddedPayroll = createSelector(
   selectorPayrollState,
   (state) => state.added

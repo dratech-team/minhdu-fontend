@@ -111,7 +111,7 @@
                       <div class='star'>*</div>
                     </div>
                     <div class=' mb-3' [formGroup]='formGroup'>
-                      <input type='number' class='form-control px-1' placeholder='Nhập số giờ làm việc'
+                      <input type='number' class='row form-control' placeholder='Nhập số giờ làm việc'
                              min='0' formControlName='times'>
                     </div>
                   </div>
@@ -120,7 +120,7 @@
               <div class='unit-price'>
                 <div class=' title-item mb-1'>
                   <span>Đơn giá (1 giờ)</span>
-                  <div class='star'>*</div>
+                  <span class='star'>*</span>
                 </div>
                 <div class=' mb-3' [formGroup]='formGroup'>
                   <input type='number' class='form-control  px-1' placeholder='{{data?.salary?.price}}'

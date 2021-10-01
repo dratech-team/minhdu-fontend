@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
+import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'
@@ -112,7 +113,12 @@ export class DialogAllowanceComponent implements OnInit {
         })
       );
     }
-    this.dialogRef.close(salary);
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+      if(added){
+        this.dialogRef.close();
+      }
+    })
+
   }
 
   changeDatePicker() {

@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {  Store } from '@ngrx/store';
-import {  OrgchartActions } from '@minhdu-fontend/orgchart';
-import {  SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
+import { selectTemplateLoaded } from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class TemplateSalaryBasicComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   type = SalaryTypeEnum;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -23,13 +25,14 @@ export class TemplateSalaryBasicComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<TemplateSalaryBasicComponent>
   ) {
   }
+
 //TODO
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
       price: [this.data?.price, Validators.required],
-      title: ['Lương cơ bản trích BH', Validators.required],
+      title: ['Lương cơ bản trích BH', Validators.required]
     });
   }
 
@@ -44,18 +47,24 @@ export class TemplateSalaryBasicComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const template = {
-        title:value.title,
-        price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-        type: this.type.BASIC
-    }
-    if(this.data){
+      title: value.title,
+      price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
+      type: this.type.BASIC
+    };
+    if (this.data) {
       this.store.dispatch(TemplateBasicAction.updateTemplate(
-        {id: this.data.id,
-                  templateBasic: template }))
-    }else{
+        {
+          id: this.data.id,
+          templateBasic: template
+        }));
+    } else {
       this.store.dispatch(TemplateBasicAction.AddTemplate(
-        {template: template }))
+        { template: template }));
     }
-    this.dialogRef.close(template);
+    this.store.pipe(select(selectTemplateLoaded)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close(template);
+      }
+    });
   }
 }

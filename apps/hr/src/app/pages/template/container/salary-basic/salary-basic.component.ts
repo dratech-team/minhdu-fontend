@@ -6,7 +6,10 @@ import { TemplateBasicSalary } from '../../+state/teamlate-salary-basic/template
 import { TemplateSalaryBasicComponent } from '../../component/template-salary-basic/template-salary-basic.component';
 import { debounceTime, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { selectorAllTemplate } from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
+import {
+  selectorAllTemplate,
+  selectTemplateAdding
+} from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
 import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,6 +19,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
   templateUrl: 'salary-basic.component.html'
 })
 export class SalaryBasicComponent implements OnInit {
+  adding$ = this.store.pipe(select(selectTemplateAdding))
   templateSalaryBasic$ = this.store.pipe(select(selectorAllTemplate))
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;

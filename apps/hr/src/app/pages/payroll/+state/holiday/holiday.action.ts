@@ -12,6 +12,10 @@ export const AddHolidaySuccess = createAction(
   props<{ holiday: Holiday }>()
 );
 
+export const handleHolidayError = createAction(
+  '[API_HOLIDAY] Handle HOLIDAY Error',
+);
+
 export const LoadAllHoliday = createAction(
   '[Load_HOLIDAY] Load All holiday'
 );
@@ -63,6 +67,7 @@ export const DeleteHoliday = createAction(
 export const HolidayAction = {
   AddHoliday,
   AddHolidaySuccess,
+  handleHolidayError,
   LoadAllHoliday,
   LoadInit,
   LoadInitHolidaySuccess,

@@ -2,7 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentPayroll, selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
+import {
+  selectCurrentPayroll,
+  selectedAddingPayroll,
+  selectedLoadedPayroll,
+  selectorAllPayroll
+} from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -27,6 +32,7 @@ export class DetailPayrollComponent implements OnInit {
   allPayroll$ = this.store.pipe(select(selectorAllPayroll));
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  adding$ = this.store.pipe(select(selectedAddingPayroll));
 
   constructor(
     private readonly dialog: MatDialog,

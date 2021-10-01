@@ -6,41 +6,53 @@ import { Payroll } from './payroll.interface';
 export interface PayrollState extends EntityState <Payroll> {
   loaded: boolean,
   added: boolean,
+  adding: boolean,
   selectedPayrollId: number
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
-export const initialPayroll = adapter.getInitialState({ loaded: false, added: false });
+export const initialPayroll = adapter.getInitialState({ loaded: false, added: false, adding: false });
 
 export const payrollReducer = createReducer(
   initialPayroll,
 
   on(PayrollAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.payrolls, { ...state, loaded: true })),
+    adapter.setAll(action.payrolls, { ...state, loaded: true, added: true, adding: false })),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) =>
     adapter.addMany(action.payrolls, { ...state, loaded: true })),
 
-  on(PayrollAction.addPayroll, (state, _) =>
-  {return { ...state, added: false }}),
+  on(PayrollAction.addPayroll, (state, _) => {
+    return { ...state, added: false };
+  }),
 
   on(PayrollAction.addPayrollSuccess, (state, action) =>
     adapter.addOne(action.payroll, { ...state, added: true })),
 
-  on(PayrollAction.getPayroll, (state, _) =>{
-    return {...state, loaded: false,}
-  } ),
+  on(PayrollAction.getPayroll, (state, _) => {
+    return { ...state, loaded: false };
+  }),
 
   on(PayrollAction.getPayrollSuccess, (state, action) =>
-      adapter.upsertOne(action.payroll, { ...state,loaded: true, added: true })
-   ),
+    adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false })
+  ),
 
   on(PayrollAction.updatePayrollSuccess, (state, action) =>
     adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true }))
+    adapter.removeOne(action.id, { ...state, loaded: true })),
+
+  on(PayrollAction.addSalary, (state, _) => {
+    return { ...state, adding: true, added: false };
+  }),
+  on(PayrollAction.updateSalary, (state, _) => {
+    return { ...state, adding: true, added: false };
+  }),
+  on(PayrollAction.handleSalaryError, (state, _) => {
+    return { ...state, adding: false };
+  })
 );
 
 export const {

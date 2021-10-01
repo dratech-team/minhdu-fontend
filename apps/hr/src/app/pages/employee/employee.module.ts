@@ -26,6 +26,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BHYTComponent } from './components/bhyt/BHYT.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UpdateContractComponent } from './components/dialog-update-contract/update-contract.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -47,7 +49,9 @@ import { UpdateContractComponent } from './components/dialog-update-contract/upd
     FormsModule,
     MatCheckboxModule,
     NgxSkeletonLoaderModule.forRoot(),
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     AddDegreeComponent,

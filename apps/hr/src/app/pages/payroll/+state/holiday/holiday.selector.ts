@@ -2,7 +2,6 @@ import { holidayState } from './holiday.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as fromHoliday from './holiday.reducer';
-import { selectorEmployeeState } from '@minhdu-fontend/employee';
 
 
 export interface state {
@@ -25,5 +24,17 @@ export const selectHolidayLoaded = createSelector(
   selectorHolidayState,
   (state) => {
     return state.loaded;
+  }
+);
+export const selectHolidayAdded = createSelector(
+  selectorHolidayState,
+  (state) => {
+    return state.added;
+  }
+);
+export const selectHolidayAdding = createSelector(
+  selectorHolidayState,
+  (state) => {
+    return state.adding;
   }
 );

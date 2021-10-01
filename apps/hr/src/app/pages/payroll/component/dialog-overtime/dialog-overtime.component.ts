@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
@@ -23,11 +23,12 @@ export class DialogOvertimeComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   price!: number;
   title!: string;
-  unit!: string;
+  unit!: DatetimeUnitEnum;
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
 
@@ -69,7 +70,7 @@ export class DialogOvertimeComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         datetime: ['', Validators.required],
         note: [''],
-        times: [''],
+        times: [1],
         priceAllowance: [],
         titleAllowance: []
       });
@@ -134,6 +135,9 @@ export class DialogOvertimeComponent implements OnInit {
         payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
+      if(this.unit === DatetimeUnitEnum.HOUR && !value.times){
+       return  this.snackBar.open('chưa nhập số giờ tăng ca','',{duration:2000})
+      }
       this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
     this.dialogRef.close();
@@ -144,7 +148,6 @@ export class DialogOvertimeComponent implements OnInit {
     this.title = data.title;
     this.rate = data.rate;
     this.unit = data.unit;
-    this.formGroup.value.times = 0;
   }
 
   checkAllowanceOvertime() {

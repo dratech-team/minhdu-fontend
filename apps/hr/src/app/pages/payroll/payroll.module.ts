@@ -47,6 +47,7 @@ import { PickEmployeeAbsentComponent } from './component/pick-employee-absent/pi
 import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timekeeping.component';
 import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
 import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -66,7 +67,7 @@ import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-mul
       PayrollEffect,
       HolidayEffect,
       TemplateOvertimeEffect,
-      TemplateBasicSalaryEffect,
+      TemplateBasicSalaryEffect
     ]),
     CommonModule,
     MatInputModule,
@@ -84,6 +85,7 @@ import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-mul
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     PayrollComponent,

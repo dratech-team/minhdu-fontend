@@ -2,11 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
+import { skipUntil } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -68,9 +70,13 @@ export class DialogStayComponent implements OnInit {
         payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payrollId, salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
-    this.dialogRef.close(salary);
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added=>{
+      if(added){
+        this.dialogRef.close();
+      }
+    })
   }
 
   setValueTitle(value: number) {
