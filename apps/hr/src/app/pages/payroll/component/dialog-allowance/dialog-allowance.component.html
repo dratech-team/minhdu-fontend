@@ -43,7 +43,14 @@
 <!--                  <mat-option value='HOUR'>Giờ</mat-option>-->
                 </mat-select>
               </div>
-              <div class='row mb-3 form-control' style='background: #80808059'   *ngIf='data.isUpdate && data.salary.unit === "DAY"'> Ngày</div>
+              <div class='row mb-3 form-control '
+                   style='background: #80808059'
+                   *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.MONTH'
+                   [formGroup]='formGroup'>Tháng
+              </div>
+              <div class='row mb-3 form-control'
+                   style='background: #80808059'
+                   *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.DAY'> Ngày</div>
               <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn đơn vị</div>
               </div>

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -39,7 +39,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  searchInit: any;
+  templateId?: number;
   positionId?: number;
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
@@ -166,10 +166,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.rate = data.rate;
     this.unit = data.unit;
     this.formGroup.value.times = 0;
-    this.searchInit = { templateId: data.id };
-    if (!this.data?.payroll) {
-      this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
-    }
+    this.templateId =  data.id;
+    this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
   }
 
   checkAllowanceOvertime() {

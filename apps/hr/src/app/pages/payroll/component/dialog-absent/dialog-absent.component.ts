@@ -53,7 +53,7 @@ export class DialogAbsentComponent implements OnInit {
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
-      } else if (this.data.salary.unit === DatetimeUnitEnum.DAY && this.data.type === this.type.ABSENT) {
+      } else if (this.data.salary.unit === DatetimeUnitEnum.DAY && this.data.salary.type === this.type.ABSENT) {
         this.unitAbsent = true;
       }
       this.formGroup = this.formBuilder.group({
