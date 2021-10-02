@@ -38,4 +38,8 @@ export class PayrollService extends BaseService<Payroll> {
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
+
+  generate(): Observable<any> {
+    return this.http.get<any>(Api.GENERATE);
+  }
 }

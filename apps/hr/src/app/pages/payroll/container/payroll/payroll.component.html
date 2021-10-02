@@ -1,17 +1,25 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
+<mat-spinner *ngIf='generating' class='loading'></mat-spinner>
 <div class='row h3 ml-3'>Bảng lương nhân viên</div>
-<div class='row ml-3 mt-3'>
-  <div>
-    <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+<div class='row ml-3 mt-3 d-flex justify-content-between' >
+  <div class='d-flex '>
+    <div>
+      <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+    </div>
+    <div>
+      <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
+    </div>
+    <div>
+      <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
+    </div>
+    <div>
+      <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
+    </div>
   </div>
-  <div>
-    <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
-  </div>
-  <div>
-    <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
-  </div>
-  <div>
-    <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
+  <div class='mr-2'>
+    <div>
+      <button (click)='generate()' class='btn btn-primary mr-2'>generate</button>
+    </div>
   </div>
 
 </div>
@@ -19,15 +27,15 @@
 <ng-template #payroll>
   <div class='main-profile '>
     <form [formGroup]='formGroup' #header class=' header-profile mt-1 animated fadeIn'>
-<!--      <div class='border-start title-header default'>-->
-<!--        <div class='title-profile'>Mã nhân viên</div>-->
-<!--        <input-->
-<!--          class='form-control input-profile'-->
-<!--          type='text'-->
-<!--          placeholder='PT100001'-->
-<!--          formControlName='code'-->
-<!--        >-->
-<!--      </div>-->
+      <!--      <div class='border-start title-header default'>-->
+      <!--        <div class='title-profile'>Mã nhân viên</div>-->
+      <!--        <input-->
+      <!--          class='form-control input-profile'-->
+      <!--          type='text'-->
+      <!--          placeholder='PT100001'-->
+      <!--          formControlName='code'-->
+      <!--        >-->
+      <!--      </div>-->
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
         <input
@@ -38,20 +46,20 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position">
-        <mat-autocomplete #position="matAutocomplete">
-          <mat-option *ngFor="let position of positions$ | async"
-                      [value]="position.name" (click)='onSelectPosition(position)'
-                      (onSelectionChange)='onSelectPosition(position)' >
+        <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'>
+        <mat-autocomplete #position='matAutocomplete'>
+          <mat-option *ngFor='let position of positions$ | async'
+                      [value]='position.name' (click)='onSelectPosition(position)'
+                      (onSelectionChange)='onSelectPosition(position)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch">
-        <mat-autocomplete #branch="matAutocomplete" >
-          <mat-option *ngFor="let branch of branches$ | async" [value]='branch.name'
+        <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                       (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
           >
             {{branch.name}}
@@ -148,9 +156,9 @@
            (contextmenu)='child.onContextMenu($event,payroll)'>
         <app-mouse-right #child (addEvent)='addPayroll($event)'
                          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
-<!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
-<!--          {{payroll.employee.code}}-->
-<!--        </div>-->
+        <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
+        <!--          {{payroll.employee.code}}-->
+        <!--        </div>-->
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee.firstName}} {{payroll.employee.lastName}}
         </div>
@@ -177,7 +185,7 @@
               style='pointer-events: none'
               disabled
               type='checkbox'
-              [checked]='payroll.accConfirmedAt !== null' >
+              [checked]='payroll.accConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer '>
