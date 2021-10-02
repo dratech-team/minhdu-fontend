@@ -68,8 +68,8 @@
             <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
             <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
               <img
-                [src]=" payroll.employee.contractAt !== null ? '../../../../../assets/img/payroll/check.svg' : '../../../../../assets/img/share/x-lg.svg' "
-                [alt]="payroll.employee.contractAt !== null ? 'contract' : 'not contract' ">
+                [src]=" payroll.employee.contracts.length === 0 ?'../../../../../assets/img/share/x-lg.svg': ' ../../../../../assets/img/payroll/check.svg' "
+                [alt]="payroll.employee.contracts.length === 0 ? 'contract' : 'not contract' ">
             </div>
           </div>
         </div>
