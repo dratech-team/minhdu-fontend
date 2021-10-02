@@ -17,11 +17,11 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
   selectedLoadedPayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
 import {
   getAllPosition,
-  PositionActions
+  PositionActions,
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
 import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
@@ -72,9 +72,9 @@ export class PayrollComponent implements OnInit {
 
   ngOnInit() {
     /// FIXME: Reload 2 lần
-    // this.store.dispatch(
-    //   PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize })
-    // );
+    this.store.dispatch(
+      PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize })
+    );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
@@ -107,7 +107,7 @@ export class PayrollComponent implements OnInit {
       this.positions.valueChanges.pipe(startWith('')),
       this.branches.valueChanges.pipe(startWith('')),
     ])
-      .pipe(debounceTime(2000))
+      .pipe(debounceTime(1000))
       .subscribe(([position, branch]) => {
         this.namePositionSearch = position;
         this.nameBranchSearch = branch;
@@ -210,7 +210,13 @@ export class PayrollComponent implements OnInit {
   }
 
   exportTimekeeping() {
-    this.exportService.print(Api.TIMEKEEPING_EXPORT);
+    // this.exportService.print(Api.TIMEKEEPING_EXPORT);
+    /// FIXME: Hard code to release
+    this.snackbar.open(
+      'Tính năng sẽ được hoàn thành vào ngày 6/10/2021. Xin lỗi vì sự bất tiện',
+      '',
+      { duration: 3000 }
+    );
   }
 
   Timekeeping() {

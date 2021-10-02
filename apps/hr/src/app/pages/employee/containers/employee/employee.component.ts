@@ -65,9 +65,9 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     /// FIXME: Load 2 lần
-    // this.store.dispatch(
-    //   EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
-    // );
+    this.store.dispatch(
+      EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+    );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
@@ -107,7 +107,7 @@ export class EmployeeComponent implements OnInit {
       this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
       this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
     ])
-      .pipe(debounceTime(2000))
+      .pipe(debounceTime(1000))
       .subscribe(([branch, position]) => {
         this.namePositionSearch = position;
         this.nameBranchSearch = branch;
