@@ -1,5 +1,6 @@
 import { Employee, Salary,  } from '@minhdu-fontend/data-models';
-import { PayslipCT1, PayslipCT2 } from '../payslip/payslip.interface';
+import { Payslip } from '../payslip/payslip.interface';
+
 
 export interface Payroll {
   id: number
@@ -11,5 +12,5 @@ export interface Payroll {
   accConfirmedAt: Date,
   actualDay: number,
   payrollIds: number[]
-  payslip:  PayslipCT2 & PayslipCT1
+  payslip:  Payslip
 }
