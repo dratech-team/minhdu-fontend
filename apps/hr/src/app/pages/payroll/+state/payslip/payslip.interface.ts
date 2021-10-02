@@ -1,17 +1,27 @@
-
-
 export interface Payslip {
-  basic: number,
-  stay: number,
-  overtime: number,
-  allowance?: number,
-  deduction?: number,
-  daySalary: number,
-  actualDay: number,
   workday: number,
-  salaryActual: number,
-  tax?: number,
-  total?: number
-  holiday?: number,
-  totalSalaryHoliday?: number
+  tax: number,
+  total: number,
+  actualDay: number,
+  basic: number,
+  totalStandard: number;
+  overtime: number;
+  deduction: number;
+  daySalary: number;
+  workdayNotInHoliday: number;
+  worksInHoliday: workHoliday[];
+  worksNotInHoliday: workHoliday[];
+  totalWorkday: number;
+  payslipNormalDay: number;
+  payslipInHoliday: number;
+  payslipNotInHoliday: number;
+  stay: number;
+  payslipOutOfWorkday: number;
+  allowance: number;
+}
+
+interface workHoliday {
+  day: number,
+  datetime: Date,
+  rate: number
 }

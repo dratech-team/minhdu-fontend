@@ -127,10 +127,10 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  confirmPayroll(id: number) {
+  confirmPayroll(payroll: Payroll) {
     this.dialog.open(ConfirmPayrollComponent, {
-      width: '550px',
-      data: { id: id }
+      width: 'fit-content',
+      data: { id: payroll.id ,recipeType:payroll.employee.recipeType }
     });
   }
 

@@ -185,6 +185,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         positionId:  this.positionId,
         unit: this.unitOvertime? this.unitOvertime:''
       }));
+    this.titleOvertimes.patchValue('')
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
@@ -194,5 +195,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         positionId:  this.positionId,
         unit: this.unitOvertime? this.unitOvertime: ''
       }));
+    this.titleOvertimes.patchValue('')
   }
 }

@@ -5,14 +5,15 @@
     <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
   </div>
   <div>
+    <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
+  </div>
+  <div>
     <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
   </div>
   <div>
     <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
   </div>
-  <div>
-    <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
-  </div>
+
 </div>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else payroll' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #payroll>
@@ -101,6 +102,14 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tăng ca</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Lương đi làm ngày lễ</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Lương không đi làm ngày lễ</div>
         <input disabled class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header default'>
@@ -193,6 +202,12 @@
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{ payroll.payslip?.overtime || 0}} VND
+        </div>
+        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
+          {{ payroll.payslip?.payslipInHoliday || 0}} VND
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{ payroll.payslip?.payslipNotInHoliday || 0}} VND
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.deduction | number: '1.0-0'}} VND
