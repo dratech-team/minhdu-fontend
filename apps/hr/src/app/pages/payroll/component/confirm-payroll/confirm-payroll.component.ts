@@ -34,7 +34,6 @@ export class ConfirmPayrollComponent implements OnInit {
         }
       );
     }
-
   }
 
   onSubmit() {

@@ -18,12 +18,13 @@ import { TemplateOvertime } from '../../../template/+state/template-overtime/tem
 })
 
 export class DialogOvertimeComponent implements OnInit {
+  datetimeUnitEnum = DatetimeUnitEnum;
   titleOvertimes = new FormControl();
   onAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
   price!: number;
   title!: string;
-  unit!: DatetimeUnitEnum;
+  unit?: DatetimeUnitEnum;
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
@@ -135,6 +136,9 @@ export class DialogOvertimeComponent implements OnInit {
         payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
+      if(!this.title){
+       return  this.snackBar.open('Chưa chọn loại tăng ca','',{duration:2000})
+      }
       if(this.unit === DatetimeUnitEnum.HOUR && !value.times){
        return  this.snackBar.open('chưa nhập số giờ tăng ca','',{duration:2000})
       }
@@ -154,4 +158,15 @@ export class DialogOvertimeComponent implements OnInit {
     this.onAllowanceOvertime = !this.onAllowanceOvertime;
   }
 
+  selectUnitOvertime(unit?: DatetimeUnitEnum) {
+    this.unit = unit;
+    this.title = '';
+    this.price = 0;
+    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
+      {
+        positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
+        unit: this.unit? this.unit: ''
+      }));
+    this.titleOvertimes.patchValue('')
+  }
 }

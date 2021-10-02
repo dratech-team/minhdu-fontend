@@ -105,6 +105,14 @@
         <input disabled class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header default'>
+        <div class='title-profile'>Lương đi làm ngày lễ</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Lương không đi làm ngày lễ</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header default'>
         <div class='title-profile'>Khấu trừ</div>
         <input disabled class='form-control input-profile ' type='search'>
       </div>
@@ -194,6 +202,12 @@
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{ payroll.payslip?.overtime || 0}} VND
+        </div>
+        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
+          {{ payroll.payslip?.payslipInHoliday || 0}} VND
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{ payroll.payslip?.payslipNotInHoliday || 0}} VND
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.deduction | number: '1.0-0'}} VND
