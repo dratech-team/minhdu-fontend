@@ -1,7 +1,18 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 
 <div class='row animated fadeIn '>
+
   <div class='container'>
+    <div class='row' *ngIf='(payroll$ | async) as payroll'
+         style='display: flex; justify-content: space-between'>
+      <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
+        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-left.svg' alt='edit icon'><span>Phiếu lương trước đó</span>
+      </button>
+      <button (click)='nextPayroll(payroll)' class='mb-5 mr-4 create-salary'>
+        Phiếu lương tiếp theo
+        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-right%20(1).svg' alt='edit icon'>
+      </button>
+    </div>
     <div class='row'>
       <div class='row col-md-12 main-title'>
       <span>
@@ -324,16 +335,6 @@
       <button (click)='confirmPayroll(payroll)' class='mb-5 create-salary'>
         <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
         Xác nhận phiếu lương
-      </button>
-    </div>
-    <div class='col-md-12' *ngIf='(payroll$ | async) as payroll'
-         style='display: flex; justify-content: space-between'>
-      <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
-        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-left.svg' alt='edit icon'><span>Phiếu lương trước đó</span>
-      </button>
-      <button (click)='nextPayroll(payroll)' class='mb-5 create-salary'>
-        Phiếu lương tiếp theo
-        <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-right%20(1).svg' alt='edit icon'>
       </button>
     </div>
   </div>
