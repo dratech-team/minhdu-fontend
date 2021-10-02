@@ -38,6 +38,7 @@ export class AddHolidayComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data.isConstraint)
     if(this.data?.positions){
       this.positionSelected = [...this.data.positions]
     }
@@ -50,6 +51,7 @@ export class AddHolidayComponent implements OnInit {
         ),
         Validators.required],
       rate: [this.data?.rate, Validators.required],
+      isConstraint:[this.data ? this.data?.isConstraint: true]
     });
     this.positions$ = combineLatest([
       this.positions.valueChanges,
@@ -87,6 +89,7 @@ export class AddHolidayComponent implements OnInit {
       datetime: val.datetime,
       rate: val.rate,
       positionIds: this.positionSelected.map(val => val.id),
+      isConstraint: val.isConstraint
     };
     if (this.data) {
       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
