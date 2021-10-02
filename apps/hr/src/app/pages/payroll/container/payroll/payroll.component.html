@@ -167,7 +167,7 @@
           {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.payslip?.workday ? payroll.payslip?.workday : 'Đang cập nhật'}}
+          {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
         </div>
         <div class='content-profile default pointer '>
           <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
