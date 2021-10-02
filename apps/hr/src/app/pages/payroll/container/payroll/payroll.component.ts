@@ -25,6 +25,8 @@ import { getAllPosition, PositionActions } from '../../../../../../../../libs/or
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { GenerateService } from '../../service/generate.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -61,11 +63,13 @@ export class PayrollComponent implements OnInit {
   nameBranchSearch = '';
   constructor(
     private readonly datePipe: DatePipe,
+    private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private readonly generateService: GenerateService
   ) {
   }
 
@@ -219,5 +223,12 @@ export class PayrollComponent implements OnInit {
   }
   onSelectBranch(branchName: string) {
     this.nameBranchSearch = branchName;
+  }
+
+  generate(){
+    this.generateService.generate().subscribe(res => {
+      this.snackbar.open(res.message,'',{duration:1000
+      })
+    })
   }
 }
