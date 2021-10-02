@@ -4,6 +4,10 @@ import { createAction, props } from '@ngrx/store';
 export const loadPosition= createAction(
   '[Position/API] Load Position',
 );
+export const searchPosition= createAction(
+  '[Position/API] Search Position',
+  props<{position: string }>()
+);
 
 export const loadPositionSuccess = createAction(
   '[loadPosition/API] Load Position Success',
@@ -47,6 +51,7 @@ export const PositionActions = {
   addPositionSuccess,
   loadPosition,
   loadPositionSuccess,
+  searchPosition,
   loadPositionFailure,
   updatePosition,
   deletePosition,

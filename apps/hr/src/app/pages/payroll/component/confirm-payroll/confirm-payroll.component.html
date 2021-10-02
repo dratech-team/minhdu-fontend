@@ -9,8 +9,6 @@
     <h2 class='font-weight-bold'>Phiếu lương</h2>
     <mat-dialog-content class='mat-typography'>
         <div class='px-3'>
-
-          CT2
           <div class='mt-3'  *ngIf='this.data.recipeType === "CT2" && payslip'>
             <div class='row'>
               <div class='col-5 font-weight-bold'>Ngày công chuẩn:</div>
@@ -49,7 +47,6 @@
               <div  class='text-success col-4'>{{payslip.total ||0 |number: '1.0-0'}}VND</div>
             </div>
           </div>
-          CT1
           <div class='mt-3 px-3' style='width: 550px'  *ngIf='this.data.recipeType === "CT1" && payslip'>
             <div class='row'>
               <div class='col-5 font-weight-bold'>Ngày công chuẩn:</div>
