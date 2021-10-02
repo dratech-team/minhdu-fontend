@@ -1,7 +1,6 @@
 import { Payroll } from '../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '../../../enums';
 import { SalaryHistory } from './salary-history';
-import { payslip } from './payslip';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 
 
@@ -21,7 +20,6 @@ export interface Salary {
   PayrollId: number,
   salaryHistory: SalaryHistory,
   salaryHistoryId: number,
-  payslip: payslip,
   allowance?: any,
   DAY?: PartialDayEnum,
 }

@@ -8,6 +8,7 @@ import { AppState } from 'apps/hr/src/app/reducers';
 import { selectHolidayAdding, selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 })
 export class HolidayComponent implements OnInit {
   adding$ = this.store.pipe(select(selectHolidayAdding))
+  convertBoolean = ConvertBoolean
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
@@ -23,6 +25,7 @@ export class HolidayComponent implements OnInit {
       datetime: new FormControl(''),
       rate: new FormControl(''),
       position: new FormControl(''),
+      isConstraint: new FormControl(''),
     }
   );
 
