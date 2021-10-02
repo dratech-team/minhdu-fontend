@@ -53,6 +53,7 @@ export interface Employee {
   isSelectAllowance?: boolean;
   workHistories?: WorkHistory[];
   historySalaries: SalaryHistory[];
-  contractType?: string
+  contractType?: string,
+  recipeType: Boolean
 }
 
