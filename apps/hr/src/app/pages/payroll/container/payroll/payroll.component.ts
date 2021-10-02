@@ -25,8 +25,8 @@ import { getAllPosition, PositionActions } from '../../../../../../../../libs/or
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { GenerateService } from '../../service/generate.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PayrollService } from '../../service/payroll.service';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -45,6 +45,7 @@ export class PayrollComponent implements OnInit {
     }
   );
   salaryType = SalaryTypeEnum;
+  generating = false;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -69,7 +70,7 @@ export class PayrollComponent implements OnInit {
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly exportService: ExportService,
-    private readonly generateService: GenerateService
+    private readonly payrollService: PayrollService,
   ) {
   }
 
@@ -162,6 +163,7 @@ export class PayrollComponent implements OnInit {
       width: '50%',
       data: { id: $event?.employee?.id }
     });
+
     dialogRef.afterClosed().subscribe((value) => {
         if (value) {
           this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
@@ -226,9 +228,13 @@ export class PayrollComponent implements OnInit {
   }
 
   generate(){
-    this.generateService.generate().subscribe(res => {
+    this.generating = true
+    this.payrollService.generate().subscribe(res => {
+      this.generating = false
       this.snackbar.open(res.message,'',{duration:1000
       })
+      console.log('sss')
+      this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
     })
   }
 }
