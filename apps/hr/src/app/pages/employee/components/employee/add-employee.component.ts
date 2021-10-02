@@ -63,6 +63,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem('recipeType'))
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
@@ -102,7 +103,8 @@ export class AddEmployeeComponent implements OnInit {
       zalo: [this.data?.employee?.zalo],
       createAtContract: [''],
       expiredAtContract: [''],
-      recipeType: [this.data?.employee?.recipeType === 'CT1']
+      recipeType: [this.data?.employee?.recipeType === 'CT1'||
+      localStorage.getItem('recipeType') === 'true']
     });
 
     this.positions$ = combineLatest([
@@ -201,6 +203,9 @@ export class AddEmployeeComponent implements OnInit {
       },
       recipeType: value.recipeType ? this.recipeType.CT1 : this.recipeType.CT2
     };
+    if(value.recipeType){
+      localStorage.setItem('recipeType',value.recipeType)
+    }
     if (this.data !== null) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
