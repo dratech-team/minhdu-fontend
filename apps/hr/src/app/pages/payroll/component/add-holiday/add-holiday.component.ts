@@ -11,7 +11,7 @@ import { Position } from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
 
 
@@ -32,13 +32,13 @@ export class AddHolidayComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store<AppState>,
     private readonly dialogRef: MatDialogRef<AddHolidayComponent>,
-    private readonly snackbar: MatSnackBar,
+    private readonly snackBar: MatSnackBar,
     private readonly positionService: PositionService
   ) {
   }
 
   ngOnInit() {
-    console.log(this.data.isConstraint)
+    this.store.dispatch(PositionActions.loadPosition());
     if(this.data?.positions){
       this.positionSelected = [...this.data.positions]
     }
@@ -54,7 +54,7 @@ export class AddHolidayComponent implements OnInit {
       isConstraint:[this.data ? this.data?.isConstraint: true]
     });
     this.positions$ = combineLatest([
-      this.positions.valueChanges,
+      this.positions.valueChanges.pipe(startWith('')),
       this.positions$
     ]).pipe(
       map(([position, positions]) => {
@@ -77,11 +77,13 @@ export class AddHolidayComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onSubmit() {
-    this.store.dispatch(PositionActions.loadPosition());
+  onSubmit():any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
+    }
+    if(this.positionSelected.length === 0){
+      return this.snackBar.open('chưa chọn chức vụ', '', { duration: 2000 });
     }
     const val = this.formGroup.value;
     const holiday = {
@@ -92,7 +94,7 @@ export class AddHolidayComponent implements OnInit {
       isConstraint: val.isConstraint
     };
     if (this.data) {
-      this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
+       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
@@ -106,7 +108,7 @@ export class AddHolidayComponent implements OnInit {
   onCreatePosition(position: any) {
     if (position.id) {
       if (this.positionSelected.includes(position)) {
-        throw this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+        throw this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
       }
       this.positionSelected.push(position);
     } else {
@@ -117,7 +119,7 @@ export class AddHolidayComponent implements OnInit {
         .subscribe((position) => (
           this.positionSelected.push(position)
         ));
-      this.snackbar.open('Đã tạo', '', { duration: 2500 });
+      this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
     this.positions.setValue('');
   }
