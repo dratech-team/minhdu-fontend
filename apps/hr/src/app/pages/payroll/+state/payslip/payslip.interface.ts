@@ -14,8 +14,8 @@ export interface Payslip {
   basicSalary?: number,
   totalStandard?: number,
   workdayNotInHoliday?: number,
-  worksInHoliday?:any[],
-  worksNotInHoliday:any[],
+  worksInHoliday?:workHoliday[],
+  worksNotInHoliday:workHoliday[],
   totalWorkday?:number
   payslipNormalDay?:number,
   payslipInHoliday?:number,
@@ -27,4 +27,9 @@ export interface Payslip {
   workday: number,
   tax: number,
   total: number,
+}
+interface workHoliday {
+  day: number,
+  datetime: Date,
+  rate: number
 }

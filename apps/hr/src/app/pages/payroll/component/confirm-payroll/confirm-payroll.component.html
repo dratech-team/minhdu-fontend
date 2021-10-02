@@ -60,21 +60,21 @@
             <div class='row mt-2'>
               <div class='col-5 font-weight-bold'>Ngày lễ đi làm:</div>
               <div class=' col-7' >
-                <span class='pr-3'  *ngFor='let item of payslip.worksInHoliday' >
-                  {{item.datetime |date:'dd/MM/yyyy'}}
-                </span>
+                <div class='pr-4'  *ngFor='let item of payslip.worksInHoliday' >
+                  {{item.datetime |date:'dd/MM/yyyy'}} (Hệ số: {{item.rate}} - {{item.day === 1 ? 'nguyên ngày': 'nửa ngày' }}),
+                </div>
               </div>
             </div>
             <div class='row mt-2'>
               <div class='col-5 font-weight-bold'>Ngày lễ không đi làm:</div>
               <div class=' col-7' >
-                  <span class='pr-3'  *ngFor='let item of payslip.worksNotInHoliday' >
-                  {{item.datetime |date:'dd/MM/yyyy'}}
+                  <span class='pr-4'  *ngFor='let item of payslip.worksNotInHoliday' >
+                  {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày': 'nửa ngày' }}),
                 </span>
               </div>
             </div>
             <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng ngày công thực nhận lương:</div>
+              <div class='col-5 font-weight-bold'>Tổng ngày công thực nhận:</div>
               <div class=' col-7' >{{payslip.totalWorkday}}</div>
             </div>
             <div class='row mt-2'>
