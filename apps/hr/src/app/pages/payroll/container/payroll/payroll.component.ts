@@ -1,49 +1,47 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Api } from '@minhdu-fontend/constants';
+import { Position } from '@minhdu-fontend/data-models';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { ExportService } from '@minhdu-fontend/service';
+import { select, Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
+import { debounceTime, map, startWith } from 'rxjs/operators';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
   selectedLoadedPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  getAllPosition,
+  PositionActions
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { AppState } from '../../../../reducers';
 import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
-import { DatePipe } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
-import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { Api } from '@minhdu-fontend/constants';
-import { ExportService } from '@minhdu-fontend/service';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-import { Position } from '@minhdu-fontend/data-models';
-import { combineLatest } from 'rxjs';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { PayrollService } from '../../service/payroll.service';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'payroll.component.html',
 })
-
-
 export class PayrollComponent implements OnInit {
-  formGroup = new FormGroup(
-    {
-      // code: new FormControl(''),
-      name: new FormControl(''),
-      paidAt: new FormControl(''),
-      accConfirmedAt: new FormControl(''),
-      manConfirmedAt: new FormControl(''),
-      createdAt: new FormControl(),
-    }
-  );
+  formGroup = new FormGroup({
+    // code: new FormControl(''),
+    name: new FormControl(''),
+    paidAt: new FormControl(''),
+    accConfirmedAt: new FormControl(''),
+    manConfirmedAt: new FormControl(''),
+    createdAt: new FormControl(),
+  });
   salaryType = SalaryTypeEnum;
   generating = false;
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -53,43 +51,44 @@ export class PayrollComponent implements OnInit {
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
-  employee$ = this.store.pipe(select(selectorAllEmployee))
+  employee$ = this.store.pipe(select(selectorAllEmployee));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  adding$ = this.store.pipe(select(selectedAddingPayroll))
+  adding$ = this.store.pipe(select(selectedAddingPayroll));
   positions = new FormControl();
   branches = new FormControl();
   namePositionSearch = '';
   nameBranchSearch = '';
+
   constructor(
-    private readonly datePipe: DatePipe,
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder,
     private readonly exportService: ExportService,
-    private readonly payrollService: PayrollService,
-  ) {
-  }
-
+    private readonly payrollService: PayrollService
+  ) {}
 
   ngOnInit() {
-    this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
+    /// FIXME: Reload 2 lần
+    // this.store.dispatch(
+    //   PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize })
+    // );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-    this.formGroup.valueChanges.pipe(
-      debounceTime(1000),
-      tap((val) => {
-        this.namePositionSearch = this.positions.value ? this.positions.value : '';
-        this.nameBranchSearch = this.branches.value ? this.branches.value : '';
-        this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
-      })
-    ).subscribe();
+
+    this.formGroup.valueChanges.pipe(debounceTime(1000)).subscribe((val) => {
+      this.namePositionSearch = this.positions.value
+        ? this.positions.value
+        : '';
+      this.nameBranchSearch = this.branches.value ? this.branches.value : '';
+      this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
+    });
+
     this.positions$ = combineLatest([
       this.positions.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
+      this.store.pipe(select(getAllPosition)),
     ]).pipe(
       map(([position, positions]) => {
         if (position) {
@@ -97,27 +96,28 @@ export class PayrollComponent implements OnInit {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
         } else {
-          this.namePositionSearch = ''
+          this.namePositionSearch = '';
           return positions;
         }
       })
-    )
+    );
+
     //search branch and position
     combineLatest([
-      this.positions.valueChanges.pipe(startWith(this.nameBranchSearch)),
-      this.branches.valueChanges.pipe(startWith(this.namePositionSearch))
-    ]).pipe(
-      debounceTime(2000),
-      tap(([position, branch]) =>{
+      this.positions.valueChanges.pipe(startWith('')),
+      this.branches.valueChanges.pipe(startWith('')),
+    ])
+      .pipe(debounceTime(2000))
+      .subscribe(([position, branch]) => {
         this.namePositionSearch = position;
         this.nameBranchSearch = branch;
-        const  val = this.formGroup.value
+        const val = this.formGroup.value;
         this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
-      })
-    ).subscribe()
+      });
+
     this.branches$ = combineLatest([
       this.branches.valueChanges.pipe(startWith('')),
-      this.branches$
+      this.branches$,
     ]).pipe(
       map(([branch, branches]) => {
         if (branch) {
@@ -125,7 +125,7 @@ export class PayrollComponent implements OnInit {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
         } else {
-          this.nameBranchSearch = ''
+          this.nameBranchSearch = '';
           return branches;
         }
       })
@@ -142,7 +142,7 @@ export class PayrollComponent implements OnInit {
       branch: this.nameBranchSearch,
       createdAt: val.createdAt,
       isPaid: val.paidAt,
-      isConfirm: val.accConfirmedAt
+      isConfirm: val.accConfirmedAt,
     };
     if (val.createdAt) {
       return payroll;
@@ -157,37 +157,37 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
   }
 
-
   addPayroll($event?: any): void {
     const dialogRef = this.dialog.open(AddPayrollComponent, {
       width: '50%',
-      data: { id: $event?.employee?.id }
+      data: { id: $event?.employee?.id },
     });
 
     dialogRef.afterClosed().subscribe((value) => {
-        if (value) {
-          this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-        }
+      if (value) {
+        this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
       }
-    );
+    });
   }
 
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type}
+      data: { id, type },
     });
   }
 
   addSalaryOvertime(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
-      data: { type: type }
+      data: { type: type },
     });
   }
 
   readPayroll($event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id]).then();
+    this.router
+      .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id])
+      .then();
   }
 
   exportPayroll() {
@@ -199,25 +199,26 @@ export class PayrollComponent implements OnInit {
       department: val.department,
       branch: val.branch,
       paidAt: val.paidAt,
-      accConfirmedAt: val.accConfirmedAt
+      accConfirmedAt: val.accConfirmedAt,
     };
-    this.exportService.print(Api.PAYROLL_EXPORT,
-      val.createdAt ?
-        Object.assign(payroll, { createdAt: val.createdAt }) :
-        payroll
+    this.exportService.print(
+      Api.PAYROLL_EXPORT,
+      val.createdAt
+        ? Object.assign(payroll, { createdAt: val.createdAt })
+        : payroll
     );
   }
 
   exportTimekeeping() {
-    this.exportService.print(Api.TIMEKEEPING_EXPORT)
+    this.exportService.print(Api.TIMEKEEPING_EXPORT);
   }
 
   Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({}))
+    this.store.dispatch(EmployeeAction.loadInit({}));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data: this.employee$
-    })
+      data: this.employee$,
+    });
   }
 
   onSelectPosition(position: Position) {
@@ -227,14 +228,18 @@ export class PayrollComponent implements OnInit {
     this.nameBranchSearch = branchName;
   }
 
-  generate(){
-    this.generating = true
-    this.payrollService.generate().subscribe(res => {
-      this.generating = false
-      this.snackbar.open(res.message,'',{duration:1000
-      })
-      console.log('sss')
-      this.store.dispatch(PayrollAction.loadInit({ skip: this.pageIndexInit, take: this.pageSize }));
-    })
+  generate() {
+    this.generating = true;
+    this.payrollService.generate().subscribe((res) => {
+      this.generating = false;
+      this.snackbar.open(res.message, '', { duration: 1000 });
+      console.log('sss');
+      this.store.dispatch(
+        PayrollAction.loadInit({
+          skip: this.pageIndexInit,
+          take: this.pageSize,
+        })
+      );
+    });
   }
 }

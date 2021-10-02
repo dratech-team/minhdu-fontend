@@ -3,8 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { Position } from '@minhdu-fontend/data-models';
 import {
-  EmployeeAction, selectEmployeeAdding,
+  EmployeeAction,
+  selectEmployeeAdding,
   selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
@@ -14,18 +16,20 @@ import {
   Gender,
   SearchEmployeeType
 } from '@minhdu-fontend/enums';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
+import {
+  getAllPosition,
+  PositionActions
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { Position } from '@minhdu-fontend/data-models';
-import { combineLatest } from 'rxjs';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Component({
-  templateUrl: 'employee.component.html'
+  templateUrl: 'employee.component.html',
 })
 export class EmployeeComponent implements OnInit {
   positions = new FormControl();
@@ -50,20 +54,20 @@ export class EmployeeComponent implements OnInit {
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
-    flatSalary: new FormControl('')
+    flatSalary: new FormControl(''),
   });
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(
-      EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
-    );
+    /// FIXME: Load 2 lần
+    // this.store.dispatch(
+    //   EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+    // );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
@@ -71,8 +75,12 @@ export class EmployeeComponent implements OnInit {
         debounceTime(1000),
         tap((val) => {
           //chưa biết vì sao khi search các input khác thì giá trị branch và position bị reset phải set lại
-          this.namePositionSearch = this.positions.value ? this.positions.value : '';
-          this.nameBranchSearch = this.branches.value ? this.branches.value : '';
+          this.namePositionSearch = this.positions.value
+            ? this.positions.value
+            : '';
+          this.nameBranchSearch = this.branches.value
+            ? this.branches.value
+            : '';
           this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
         })
       )
@@ -80,7 +88,7 @@ export class EmployeeComponent implements OnInit {
 
     this.positions$ = combineLatest([
       this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
-      this.store.pipe(select(getAllPosition))
+      this.store.pipe(select(getAllPosition)),
     ]).pipe(
       map(([position, positions]) => {
         if (position) {
@@ -93,23 +101,23 @@ export class EmployeeComponent implements OnInit {
         }
       })
     );
+
     //search branch and position
     combineLatest([
       this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
-      this.positions.valueChanges.pipe(startWith(this.namePositionSearch))
-    ]).pipe(
-      debounceTime(2000),
-      tap(([branch, position]) => {
+      this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
+    ])
+      .pipe(debounceTime(2000))
+      .subscribe(([branch, position]) => {
         this.namePositionSearch = position;
         this.nameBranchSearch = branch;
         const val = this.formGroup.value;
         this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
-      })
-    ).subscribe();
+      });
 
     this.branches$ = combineLatest([
       this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
-      this.branches$
+      this.branches$,
     ]).pipe(
       map(([branch, branches]) => {
         if (branch) {
@@ -126,13 +134,13 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '60%'
+      width: '60%',
     });
   }
 
   delete($event: any): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%'
+      minWidth: '30%',
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -156,7 +164,7 @@ export class EmployeeComponent implements OnInit {
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
           ? this.convertBoolean.FALSE
-          : val.flatSalary
+          : val.flatSalary,
     };
     if (val.workedAt) {
       return employee;
