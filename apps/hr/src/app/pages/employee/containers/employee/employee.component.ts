@@ -29,7 +29,7 @@ import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 
 @Component({
-  templateUrl: 'employee.component.html',
+  templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
   searchType = SearchEmployeeType;
@@ -52,14 +52,15 @@ export class EmployeeComponent implements OnInit {
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
     position: new FormControl(''),
-    branch: new FormControl(''),
+    branch: new FormControl('')
   });
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     /// FIXME: Load 2 lần
@@ -70,16 +71,13 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
-        debounceTime(1500),
-        tap((val) => {
-          this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
-        })
+        debounceTime(1500)
       )
-      .subscribe();
+      .subscribe(val => this.store.dispatch(EmployeeAction.loadInit(this.employee(val))));
 
     this.positions$ = combineLatest([
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition)),
+      this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
         if (position) {
@@ -94,7 +92,7 @@ export class EmployeeComponent implements OnInit {
 
     this.branches$ = combineLatest([
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
-      this.branches$,
+      this.branches$
     ]).pipe(
       map(([branch, branches]) => {
         if (branch) {
@@ -110,13 +108,13 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '60%',
+      width: '60%'
     });
   }
 
   delete($event: any): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%',
+      minWidth: '30%'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -140,7 +138,7 @@ export class EmployeeComponent implements OnInit {
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
           ? this.convertBoolean.FALSE
-          : val.flatSalary,
+          : val.flatSalary
     };
     if (val.workedAt) {
       return employee;
