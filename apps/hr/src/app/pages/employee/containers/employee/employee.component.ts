@@ -32,8 +32,6 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
   templateUrl: 'employee.component.html',
 })
 export class EmployeeComponent implements OnInit {
-  positions = new FormControl();
-  branches = new FormControl();
   searchType = SearchEmployeeType;
   genderType = Gender;
   flatSalary = FlatSalary;
@@ -47,14 +45,14 @@ export class EmployeeComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   pageSize: number = 30;
   pageIndexInit = 0;
-  namePositionSearch: string = '';
-  nameBranchSearch: string = '';
   formGroup = new FormGroup({
     // code: new FormControl(''),
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
+    position: new FormControl(''),
+    branch: new FormControl(''),
   });
 
   constructor(
@@ -72,22 +70,15 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
-        debounceTime(1000),
+        debounceTime(1500),
         tap((val) => {
-          //chưa biết vì sao khi search các input khác thì giá trị branch và position bị reset phải set lại
-          this.namePositionSearch = this.positions.value
-            ? this.positions.value
-            : '';
-          this.nameBranchSearch = this.branches.value
-            ? this.branches.value
-            : '';
           this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
         })
       )
       .subscribe();
 
     this.positions$ = combineLatest([
-      this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition)),
     ]).pipe(
       map(([position, positions]) => {
@@ -96,27 +87,13 @@ export class EmployeeComponent implements OnInit {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
         } else {
-          this.namePositionSearch = '';
           return positions;
         }
       })
     );
 
-    //search branch and position
-    combineLatest([
-      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
-      this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
-    ])
-      .pipe(debounceTime(1000))
-      .subscribe(([branch, position]) => {
-        this.namePositionSearch = position;
-        this.nameBranchSearch = branch;
-        const val = this.formGroup.value;
-        this.store.dispatch(EmployeeAction.loadInit(this.employee(val)));
-      });
-
     this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$,
     ]).pipe(
       map(([branch, branches]) => {
@@ -125,7 +102,6 @@ export class EmployeeComponent implements OnInit {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
         } else {
-          this.nameBranchSearch = '';
           return branches;
         }
       })
@@ -156,8 +132,8 @@ export class EmployeeComponent implements OnInit {
       // code: val.code,
       name: val.name,
       gender: val.gender,
-      position: this.namePositionSearch,
-      branch: this.nameBranchSearch,
+      position: val.position,
+      branch: val.branch,
       workedAt: val.workedAt,
       isFlatSalary:
         val.flatSalary === this.flatSalary.FLAT_SALARY
@@ -174,6 +150,14 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val)));
@@ -181,13 +165,5 @@ export class EmployeeComponent implements OnInit {
 
   readAndUpdate($event: any): void {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id]).then();
-  }
-
-  onSelectPosition(position: Position) {
-    this.namePositionSearch = position.name;
-  }
-
-  onSelectBranch(branchName: string) {
-    this.nameBranchSearch = branchName;
   }
 }
