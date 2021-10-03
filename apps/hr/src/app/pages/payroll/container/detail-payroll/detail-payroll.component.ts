@@ -145,7 +145,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   historySalary(employeeId: number) {
-    this.dialog.open(DevelopmentComponent, { width: '30%' });
+    this.router.navigate(['phieu-luong/lich-su-luong', employeeId]).then()
   }
 
   nextPayroll(payroll: Payroll) {
