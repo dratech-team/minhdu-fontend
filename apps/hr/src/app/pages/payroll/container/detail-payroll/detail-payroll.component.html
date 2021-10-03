@@ -1,9 +1,8 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 
-<div class='row animated fadeIn '>
-
+<div class='row animated fadeIn '  *ngIf='(payroll$ | async) as payroll'>
   <div class='container'>
-    <div class='row' *ngIf='(payroll$ | async) as payroll'
+    <div class='row'
          style='display: flex; justify-content: space-between'>
       <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
         <img class='mr-2' style='height: 14px;' src='assets/img/payroll/caret-left.svg' alt='edit icon'><span>Phiếu lương trước đó</span>
@@ -14,23 +13,21 @@
       </button>
     </div>
     <div class='row'>
-      <div class='row col-md-12 main-title'>
-      <span>
-        Tính lương nhân viên
-      </span>
+      <div class='col-12  main-title font-2xl text-center mb-2'>
+       Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
       </div>
-      <div class='row col-md-12' *ngIf='(payroll$ | async) as payroll'>
-        <div class=' col col-md-6'>
+      <div class='row col-md-12'>
+        <div class=' col-4'>
           <div class='employee row col-md-12 mt-3'>
-            <div class='row col-md-2 mr-1 info-employee'>
-              <img
-                class='rounded-circle'
-                alt='50x50'
-                src='{{payroll.employee?.avt}}'
-                data-holder-rendered='true'
-                height='64px'
-              />
-            </div>
+<!--            <div class='row col-md-3 mr-1 info-employee'>-->
+<!--              <img-->
+<!--                class='rounded-circle'-->
+<!--                alt='50x50'-->
+<!--                src='{{payroll.employee?.avt}}'-->
+<!--                data-holder-rendered='true'-->
+<!--                height='64px'-->
+<!--              />-->
+<!--            </div>-->
             <div class='col-md-6'>
               <div class='row' style='width: 100%;'>
                 <span>{{payroll.employee.firstName}} {{payroll.employee.lastName}}</span>
@@ -41,17 +38,15 @@
                 <!--                  <div class='col-md id-employee'>{{payroll.employee.code}}</div>-->
               </div>
             </div>
-            <div (click)='onDetailEmployee(payroll.employee.id)' class='col-md-4 mt-4' style='
-            font-size: 14px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;'>
-              <span class='mr-2'>Xem thông tin</span>
-              <img src='../../../../../assets/img/share/box-arrow-up-right.svg' alt='view info icon'>
+            <div (click)='onDetailEmployee(payroll.employee.id)' class='col-md-6 mt-4 '>
+              <div class='float-right'>
+                <span class='mr-2'>Xem thông tin</span>
+                <img src='../../../../../assets/img/share/box-arrow-up-right.svg' alt='view info icon'>
+              </div>
             </div>
           </div>
         </div>
-        <div class='employee row col mt-3' style='display: flex; align-items: flex-end;'>
+        <div class='employee row col mt-3'>
           <div class='col'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
@@ -62,6 +57,12 @@
             <div class='row justify-content-center'> Ngày làm việc thực tế</div>
             <div class='row content-title'>
               {{payroll.totalWorkday || "0"}}
+            </div>
+          </div>
+          <div class='col'>
+            <div class='row d-flex justify-content-center '>Số ngày trong tháng</div>
+            <div class='row content-title'>
+              {{dayIsMonth}}
             </div>
           </div>
           <div class='col'>
@@ -78,7 +79,7 @@
     <div class='row' style='display: flex ; align-items: center'>
       <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
     </div>
-    <div class='row' *ngIf='(payroll$ | async) as payroll'>
+    <div class='row'>
       <!--Lương cơ bản-->
       <div class='col'>
         <div class=' row  table'>
@@ -332,7 +333,7 @@
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
       </button>
-      <button (click)='confirmPayroll(payroll.id)' class='mb-5 create-salary'>
+      <button (click)='confirmPayroll(payroll.id, payroll.createdAt)' class='mb-5 create-salary'>
         <img class='mr-2' style='height: 12px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
         Xác nhận phiếu lương
       </button>
