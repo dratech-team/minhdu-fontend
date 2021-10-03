@@ -21,6 +21,7 @@ import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-abse
 import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
+import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
 
 
 @Component({
@@ -32,13 +33,13 @@ export class DetailPayrollComponent implements OnInit {
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  dayIsMonth!: number;
+  daysInMonth!: number;
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -49,11 +50,9 @@ export class DetailPayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
     this.payroll$.subscribe(val => {
         if (val) {
-          const month = new Date(val.createdAt).getMonth() + 1;
-          const year = new Date(val.createdAt).getFullYear();
-          this.dayIsMonth = new Date(year, month, 0).getDate();
+          this.daysInMonth = getDaysInMonth(val.createdAt)
         }else{
-          this.dayIsMonth = new Date().getDate()
+          this.daysInMonth = new Date().getDate()
         }
       }
     );
