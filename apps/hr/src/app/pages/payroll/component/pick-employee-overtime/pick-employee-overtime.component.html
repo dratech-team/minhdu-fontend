@@ -54,16 +54,14 @@
           <div class='content-profile default pointer'>{{employee.position?.name}}</div>
           <div class='content-profile default pointer'>
             <mat-checkbox  class='checkID'
-                          [checked]='employee.isSelect ? employee.isSelect: false'
-                          [(ngModel)]='employee.isSelect'
-                          (ngModelChange)='updateSelectEmployee(employee.id)'>
+                          [checked]='employeeIds.includes(employee.id)'
+                          (change)='updateSelectEmployee(employee.id)'>
             </mat-checkbox>
           </div>
           <div class='content-profile default pointer' *ngIf='checkAllowance'>
             <mat-checkbox  class='checkID'
-                          [checked]='employee.isSelectAllowance ? employee.isSelectAllowance: false'
-                          [(ngModel)]='employee.isSelectAllowance'
-                          (ngModelChange)='updateSelectAllowance(employee.id)'>
+                          [checked]='allowEmpIds.includes(employee.id)'
+                          (change)='updateSelectAllowance(employee.id)'>
             </mat-checkbox>
           </div>
         </div>

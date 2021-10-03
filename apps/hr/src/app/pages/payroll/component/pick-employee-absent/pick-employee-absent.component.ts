@@ -41,7 +41,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadInit({}));
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
-      this.assignIsSelect();
     });
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -83,22 +82,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
     );
   }
 
-  assignIsSelect() {
-    this.employees.forEach(e => {
-      e.isSelect = this.employeeIds.includes(e.id);
-    });
-    if (this.isSelectAll) {
-      this.employees.forEach(e => {
-        if (!this.employeeIds.includes(e.id))
-          this.employeeIds.push(e.id);
-      });
-    } else {
-      this.employees.forEach(e => {
-        e.isSelect = this.employeeIds.includes(e.id);
-      });
-    }
-  }
-
   updateSelect(id: number) {
     const index = this.employeeIds.indexOf(id);
     if (index > -1) {
@@ -106,13 +89,13 @@ export class PickEmployeeAbsentComponent implements OnInit {
     } else {
       this.employeeIds.push(id);
     }
-    this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
+    this.isSelectAll = this.employees !== null && this.employees.every(e => this.employeeIds.includes(e.id));
     this.EventSelectEmployee.emit(this.employeeIds);
   }
 
   someComplete(): boolean {
     return (
-      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.employees.filter(e => this.employeeIds.includes(e.id)).length > 0 && !this.isSelectAll
     );
   }
 
@@ -122,7 +105,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
       return;
     }
     this.employees?.forEach(employee => {
-        employee.isSelect = select;
         if (select) {
           if (!this.employeeIds.includes(employee.id)) {
             this.employeeIds.push(employee.id);

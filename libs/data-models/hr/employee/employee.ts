@@ -49,8 +49,6 @@ export interface Employee {
   payrolls: Payroll[],
   contracts: Contracts[];
   relatives: Relative[],
-  isSelect?: boolean;
-  isSelectAllowance?: boolean;
   workHistories?: WorkHistory[];
   historySalaries: SalaryHistory[];
   contractType?: string,

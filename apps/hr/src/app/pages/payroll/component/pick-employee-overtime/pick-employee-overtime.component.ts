@@ -12,11 +12,11 @@ import { selectorAllEmployee } from '@minhdu-fontend/employee';
   templateUrl: 'pick-employee-overtime.component.html'
 })
 export class PickEmployeeOvertimeComponent implements OnInit {
-  @Input() checkAllowance= false;
+  @Input() checkAllowance = false;
   @Input() templateId?: number;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   @Output() EventSelectAllowance = new EventEmitter<number[]>();
-  employees$ = this.store.pipe(select(selectorAllEmployee))
+  employees$ = this.store.pipe(select(selectorAllEmployee));
   type = SalaryTypeEnum;
   isSelectEmployee = false;
   isSelectAllowance = false;
@@ -37,7 +37,6 @@ export class PickEmployeeOvertimeComponent implements OnInit {
   ngOnInit(): void {
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
-      this.assignIsSelect();
     });
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -51,38 +50,7 @@ export class PickEmployeeOvertimeComponent implements OnInit {
     ).subscribe();
   }
 
-  assignIsSelect() {
-    this.employees.forEach(e => {
-      e.isSelect = this.employeeIds.includes(e.id);
-      e.isSelectAllowance = this.allowEmpIds.includes(e.id)
-    });
-
-    if (this.isSelectEmployee && this.employeeIds.length >= this.employees.length) {
-      this.employees.forEach(e => {
-        if (!this.employeeIds.includes(e.id))
-          this.employeeIds.push(e.id);
-      });
-    } else {
-      this.isSelectEmployee = false;
-      this.employees.forEach(e => {
-        e.isSelect = this.employeeIds.includes(e.id);
-      });
-    }
-
-    if(this.isSelectAllowance && this.allowEmpIds.length >= this.employees.length){
-      this.employees.forEach(e => {
-        if (!this.allowEmpIds.includes(e.id))
-          this.allowEmpIds.push(e.id);
-      });
-    }else{
-      this.isSelectAllowance = false;
-      this.employees.forEach(e => {
-        e.isSelectAllowance = this.allowEmpIds.includes(e.id);
-      });
-    }
-    this.EventSelectEmployee.emit(this.employeeIds);
-  }
-
+//check-box-employee
   updateSelectEmployee(id: number) {
     const index = this.employeeIds.indexOf(id);
     if (index > -1) {
@@ -90,30 +58,15 @@ export class PickEmployeeOvertimeComponent implements OnInit {
     } else {
       this.employeeIds.push(id);
     }
-    this.isSelectEmployee = this.employees !== null && this.employees.every(e => e.isSelect);
+    this.isSelectEmployee = this.employees !== null && this.employees.every(e => this.employeeIds.includes(e.id));
     this.EventSelectEmployee.emit(this.employeeIds);
   }
-  updateSelectAllowance(id: number) {
-    const index = this.allowEmpIds.indexOf(id);
-    if (index > -1) {
-      this.allowEmpIds.splice(index, 1);
-    } else {
-      this.allowEmpIds.push(id);
-    }
-    this.isSelectAllowance = this.employees !== null && this.employees.every(e => e.isSelectAllowance);
-    this.EventSelectAllowance.emit(this.allowEmpIds);
-  }
+
   someCompleteEmployee(): boolean {
     return (
-      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectEmployee
+      this.employees.filter(e => this.employeeIds.includes(e.id)).length > 0 && !this.isSelectEmployee
     );
   }
-  someCompleteAllowance(): boolean {
-    return (
-      this.employees.filter(e => e.isSelectAllowance).length > 0 && !this.isSelectAllowance
-    );
-  }
-
 
   setAllEmployee(select: boolean) {
     this.isSelectEmployee = select;
@@ -121,7 +74,6 @@ export class PickEmployeeOvertimeComponent implements OnInit {
       return;
     }
     this.employees?.forEach(employee => {
-        employee.isSelect = select;
         if (select) {
           if (!this.employeeIds.includes(employee.id)) {
             this.employeeIds.push(employee.id);
@@ -136,13 +88,31 @@ export class PickEmployeeOvertimeComponent implements OnInit {
     );
     this.EventSelectEmployee.emit(this.employeeIds);
   }
+
+//check-box-allowance
+  updateSelectAllowance(id: number) {
+    const index = this.allowEmpIds.indexOf(id);
+    if (index > -1) {
+      this.allowEmpIds.splice(index, 1);
+    } else {
+      this.allowEmpIds.push(id);
+    }
+    this.isSelectAllowance = this.employees !== null && this.employees.every(e => this.allowEmpIds.includes(e.id));
+    this.EventSelectAllowance.emit(this.allowEmpIds);
+  }
+
+  someCompleteAllowance(): boolean {
+    return (
+      this.employees.filter(e => this.allowEmpIds.includes(e.id)).length > 0 && !this.isSelectAllowance
+    );
+  }
+
   setAllAllowance(select: boolean) {
     this.isSelectAllowance = select;
     if (this.employees == null) {
       return;
     }
     this.employees?.forEach(employee => {
-        employee.isSelectAllowance = select;
         if (select) {
           if (!this.allowEmpIds.includes(employee.id)) {
             this.allowEmpIds.push(employee.id);
@@ -155,7 +125,7 @@ export class PickEmployeeOvertimeComponent implements OnInit {
         }
       }
     );
-    this.EventSelectAllowance.emit(this.employeeIds);
+    this.EventSelectAllowance.emit(this.allowEmpIds);
   }
 }
 

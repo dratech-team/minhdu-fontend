@@ -58,7 +58,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   ngOnInit() {
     if (this.data?.positions) {
       this.positionSelected = [...this.data.positions];
-
     }
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -164,7 +163,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         ));
       this.snackbar.open('Đã tạo', '', { duration: 2500 });
     }
-    this.positions.setValue('');
+    this.positions.patchValue('');
   }
 
   onCreateBranch(branch?: Branch) {
