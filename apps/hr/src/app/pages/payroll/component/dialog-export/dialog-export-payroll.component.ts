@@ -15,7 +15,6 @@ export class DialogExportPayrollComponent  {
     ) {}
   submit(): any {
     const fileName =  this.name.value
-    console.log(fileName)
     const payroll = {
       code: this.data.code,
       name: this.data.name,
