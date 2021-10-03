@@ -48,6 +48,7 @@ import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timek
 import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
 import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
 
 @NgModule({
   imports: [
@@ -105,7 +106,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     DialogTimekeepingComponent,
     PickEmployeeOvertimeComponent,
     DialogOvertimeMultipleComponent,
-    ConvertTimePipe
+    ConvertTimePipe,
+    DialogExportPayrollComponent,
   ],
   providers:[
     MatDatepickerModule

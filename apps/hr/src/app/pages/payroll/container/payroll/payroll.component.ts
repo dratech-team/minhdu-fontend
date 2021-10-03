@@ -4,12 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
 import { Position } from '@minhdu-fontend/data-models';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -29,6 +27,7 @@ import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { PayrollService } from '../../service/payroll.service';
+import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 
 @Component({
   templateUrl: 'payroll.component.html',
@@ -66,7 +65,6 @@ export class PayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly exportService: ExportService,
     private readonly payrollService: PayrollService
   ) {}
 
@@ -191,22 +189,7 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    const val = this.formGroup.value;
-    const payroll = {
-      code: val.code,
-      name: val.name,
-      position: val.position,
-      department: val.department,
-      branch: val.branch,
-      paidAt: val.paidAt,
-      accConfirmedAt: val.accConfirmedAt,
-    };
-    this.exportService.print(
-      Api.PAYROLL_EXPORT,
-      val.createdAt
-        ? Object.assign(payroll, { createdAt: val.createdAt })
-        : payroll
-    );
+    this.dialog.open(DialogExportPayrollComponent, {width: '30%', data: this.formGroup.value})
   }
 
   exportTimekeeping() {
