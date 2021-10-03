@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -27,26 +27,23 @@ import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-t
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { SelectMonthGenerateComponent } from '../../component/select-month-generate/select-month-generate.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
-import { DatePipe } from '@angular/common';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'history-payroll.component.html'
 })
-export class PayrollComponent implements OnInit {
+export class HistoryPayrollComponent implements OnInit {
   formGroup = new FormGroup({
-    // code: new FormControl(''),
     name: new FormControl(''),
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl( this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+    createdAt: new FormControl(),
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  salaryType = SalaryTypeEnum;
-  contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
+  salaryType =SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
@@ -62,17 +59,15 @@ export class PayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
   }
 
   ngOnInit() {
+    /// FIXME: Reload 2 lần
     this.store.dispatch(
       PayrollAction.loadInit(
-        { skip: this.pageIndexInit,
-          take: this.pageSize,
-          createdAt: new Date()
-        }
+        { skip: this.pageIndexInit, take: this.pageSize, employeeId: this.getEmployeeId }
       )
     );
     this.store.dispatch(PositionActions.loadPosition());
@@ -123,7 +118,8 @@ export class PayrollComponent implements OnInit {
       branch: val.branch,
       createdAt: val.createdAt,
       isPaid: val.paidAt,
-      isConfirm: val.accConfirmedAt
+      isConfirm: val.accConfirmedAt,
+      employeeId: this.getEmployeeId
     };
     if (val.createdAt) {
       return payroll;
@@ -133,6 +129,9 @@ export class PayrollComponent implements OnInit {
     }
   }
 
+  get getEmployeeId(): number {
+    return this.activatedRoute.snapshot.params.id;
+  }
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
@@ -158,12 +157,12 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  addSalaryOvertime(type: SalaryTypeEnum): any {
-    this.dialog.open(DialogOvertimeMultipleComponent, {
-      width: 'fit-content',
-      data: { type: type }
-    });
-  }
+  // addSalaryOvertime(type: SalaryTypeEnum): any {
+  //   this.dialog.open(DialogOvertimeMultipleComponent, {
+  //     width: 'fit-content',
+  //     data: { type: type }
+  //   });
+  // }
 
   readPayroll($event: any) {
     this.router
@@ -185,13 +184,13 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
-    this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content',
-      data: this.employee$
-    });
-  }
+  // Timekeeping() {
+  //   this.store.dispatch(EmployeeAction.loadInit({}));
+  //   this.dialog.open(DialogTimekeepingComponent, {
+  //     width: 'fit-content',
+  //     data: this.employee$
+  //   });
+  // }
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);

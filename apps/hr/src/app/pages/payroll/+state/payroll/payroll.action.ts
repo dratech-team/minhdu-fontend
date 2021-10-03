@@ -15,6 +15,7 @@ export const loadInit = createAction(
     createdAt?: Date,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
+    employeeId?: number
   }>()
 );
 
