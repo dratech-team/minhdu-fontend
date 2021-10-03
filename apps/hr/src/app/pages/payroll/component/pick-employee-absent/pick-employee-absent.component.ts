@@ -5,14 +5,13 @@ import { Employee, Position } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Component({
-  selector:'app-pick-employee-absent',
+  selector: 'app-pick-employee-absent',
   templateUrl: './pick-employee-absent.component.html'
 })
 export class PickEmployeeAbsentComponent implements OnInit {
@@ -20,7 +19,7 @@ export class PickEmployeeAbsentComponent implements OnInit {
   type = SalaryTypeEnum;
   positions = new FormControl();
   branches = new FormControl();
-  employees$ = this.store.pipe(select(selectorAllEmployee))
+  employees$ = this.store.pipe(select(selectorAllEmployee));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   namePositionSearch: string = '';
@@ -36,15 +35,14 @@ export class PickEmployeeAbsentComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly service: TimekeepingService,
+    private readonly service: TimekeepingService
   ) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({}))
+    this.store.dispatch(EmployeeAction.loadInit({}));
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
-      this.assignIsSelect()
     });
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -111,22 +109,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
     );
   }
 
-  assignIsSelect() {
-    this.employees.forEach(e => {
-      e.isSelect = this.employeeIds.includes(e.id);
-    });
-    if (this.isSelectAll) {
-      this.employees.forEach(e => {
-        if (!this.employeeIds.includes(e.id))
-          this.employeeIds.push(e.id);
-      });
-    } else {
-      this.employees.forEach(e => {
-        e.isSelect = this.employeeIds.includes(e.id);
-      });
-    }
-  }
-
   updateSelect(id: number) {
     const index = this.employeeIds.indexOf(id);
     if (index > -1) {
@@ -134,13 +116,13 @@ export class PickEmployeeAbsentComponent implements OnInit {
     } else {
       this.employeeIds.push(id);
     }
-    this.isSelectAll = this.employees !== null && this.employees.every(e => e.isSelect);
+    this.isSelectAll = this.employees !== null && this.employees.every(e => this.employeeIds.includes(e.id));
     this.EventSelectEmployee.emit(this.employeeIds);
   }
 
   someComplete(): boolean {
     return (
-      this.employees.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.employees.filter(e => this.employeeIds.includes(e.id)).length > 0 && !this.isSelectAll
     );
   }
 
@@ -150,7 +132,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
       return;
     }
     this.employees?.forEach(employee => {
-        employee.isSelect = select;
         if (select) {
           if (!this.employeeIds.includes(employee.id)) {
             this.employeeIds.push(employee.id);
