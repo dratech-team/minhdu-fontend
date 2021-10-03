@@ -24,10 +24,7 @@ export class DialogExportPayrollComponent  {
       accConfirmedAt: this.data.accConfirmedAt,
     };
     this.exportService.print(
-      Api.PAYROLL_EXPORT,
-      this.data.createdAt
-        ? Object.assign(payroll, { createdAt: this.data.createdAt })
-        : payroll
+      Api.PAYROLL_EXPORT, Object.assign(payroll,  this.data?.createdAt ? { createdAt: this.data.createdAt } : {})
     );
   }
 }
