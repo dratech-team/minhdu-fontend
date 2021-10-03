@@ -108,10 +108,12 @@ export class DialogOvertimeMultipleComponent implements OnInit {
 
   pickEmployees(employeeIds: number []): any {
     this.employeeIds = employeeIds;
+    console.log(this.employeeIds, 'employeeIds')
   }
 
   pickAllowance(allowEmpIds: number[]) {
     this.allowEmpIds = allowEmpIds;
+    console.log(this.allowEmpIds, 'allowance')
   }
 
   get f() {
