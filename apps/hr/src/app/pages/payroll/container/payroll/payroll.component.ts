@@ -55,7 +55,7 @@ export class PayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-
+  monthPayroll = new Date();
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -73,6 +73,11 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
+      if(val.createdAt){
+        this.monthPayroll = val.createdAt
+      }else {
+        this.monthPayroll = new Date()
+      }
       this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
     });
 

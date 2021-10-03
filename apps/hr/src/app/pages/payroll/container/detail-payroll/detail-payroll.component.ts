@@ -21,6 +21,7 @@ import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-abse
 import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
+import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
 
 
 @Component({
@@ -32,12 +33,13 @@ export class DetailPayrollComponent implements OnInit {
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
+  daysInMonth!: number;
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -46,6 +48,14 @@ export class DetailPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
+    this.payroll$.subscribe(val => {
+        if (val) {
+          this.daysInMonth = getDaysInMonth(val.createdAt)
+        }else{
+          this.daysInMonth = new Date().getDate()
+        }
+      }
+    );
   }
 
   get getPayrollId(): number {
@@ -63,11 +73,11 @@ export class DetailPayrollComponent implements OnInit {
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config,{width:'400px'}));
+        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: '400px' }));
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, Object.assign(config,{width:'400px'}));
+        this.dialog.open(DialogStayComponent, Object.assign(config, { width: '400px' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
@@ -75,11 +85,11 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.OVERTIME: {
-        this.dialog.open(DialogOvertimeComponent,config);
+        this.dialog.open(DialogOvertimeComponent, config);
       }
         break;
       case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, Object.assign(config,{width:'600px'}));
+        this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
       default :
@@ -94,7 +104,7 @@ export class DetailPayrollComponent implements OnInit {
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config,{width:'400px'}));
+        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: '400px' }));
       }
         break;
       case SalaryTypeEnum.STAY: {
@@ -110,7 +120,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, Object.assign(config,{width:'600px'}));
+        this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
       default :
@@ -127,10 +137,10 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  confirmPayroll(id: number) {
+  confirmPayroll(id: number, createAt: Date) {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
-      data: { id}
+      data: { id, createAt }
     });
   }
 
@@ -156,6 +166,5 @@ export class DetailPayrollComponent implements OnInit {
     } else {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
     }
-
   }
 }
