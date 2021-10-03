@@ -1,10 +1,6 @@
 // Here you can add other styles
-.cdk-overlay-container {
-  position: fixed;
-  z-index: 10000;
-}
-.z-index-snackbar{
-  z-index: 2000;
+.cdk-overlay-container{
+  z-index: 1020 !important;
 }
 .background-snackbar{
   background:#4dbd74d1;
