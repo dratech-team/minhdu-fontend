@@ -50,6 +50,7 @@ import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-mul
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
 import { SelectMonthGenerateComponent } from './component/select-month-generate/select-month-generate.component';
+import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import { SelectMonthGenerateComponent } from './component/select-month-generate/
     ConvertTimePipe,
     SelectMonthGenerateComponent,
     DialogExportPayrollComponent,
+    HistoryPayrollComponent,
   ],
   providers:[
     MatDatepickerModule

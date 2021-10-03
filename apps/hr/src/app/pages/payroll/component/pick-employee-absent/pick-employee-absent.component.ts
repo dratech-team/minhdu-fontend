@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee, Position } from '@minhdu-fontend/data-models';
@@ -17,20 +17,18 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 export class PickEmployeeAbsentComponent implements OnInit {
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   type = SalaryTypeEnum;
-  positions = new FormControl();
-  branches = new FormControl();
   employees$ = this.store.pipe(select(selectorAllEmployee));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  namePositionSearch: string = '';
-  nameBranchSearch: string = '';
   isSelectAll = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
   employeeId!: number;
   formGroup = new FormGroup(
     {
-      name: new FormControl('')
+      name: new FormControl(''),
+      position : new FormControl(''),
+      branch : new FormControl(''),
     });
 
   constructor(
@@ -49,35 +47,12 @@ export class PickEmployeeAbsentComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        this.namePositionSearch = this.positions.value ? this.positions.value : '';
-        this.nameBranchSearch = this.branches.value ? this.branches.value : '';
-        const search = {
-          name: val.name,
-          position: this.namePositionSearch,
-          branch: this.nameBranchSearch
-        };
-        this.service.searchEmployees(search);
-      })
-    ).subscribe();
-    combineLatest([
-      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
-      this.positions.valueChanges.pipe(startWith(this.namePositionSearch))
-    ]).pipe(
-      debounceTime(2000),
-      tap(([branch, position]) => {
-        this.namePositionSearch = position;
-        this.nameBranchSearch = branch;
-        const val = {
-          name: this.formGroup.value.name,
-          position: this.namePositionSearch,
-          branch: this.nameBranchSearch
-        };
-        this.store.dispatch(EmployeeAction.loadInit(val));
+        this.service.searchEmployees(val);
       })
     ).subscribe();
 
     this.positions$ = combineLatest([
-      this.positions.valueChanges.pipe(startWith(this.namePositionSearch)),
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
     ]).pipe(
       map(([position, positions]) => {
@@ -86,14 +61,13 @@ export class PickEmployeeAbsentComponent implements OnInit {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
         } else {
-          this.namePositionSearch = '';
           return positions;
         }
       })
     );
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith(this.nameBranchSearch)),
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
@@ -102,7 +76,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
         } else {
-          this.nameBranchSearch = '';
           return branches;
         }
       })
@@ -147,12 +120,12 @@ export class PickEmployeeAbsentComponent implements OnInit {
     this.EventSelectEmployee.emit(this.employeeIds);
   }
 
-  onSelectPosition(position: Position) {
-    this.namePositionSearch = position.name;
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.nameBranchSearch = branchName;
+    this.formGroup.get('branch')!.patchValue(branchName);
   }
 }
 

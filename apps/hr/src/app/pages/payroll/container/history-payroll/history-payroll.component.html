@@ -1,13 +1,7 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row h3 ml-3'>Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}</div>
+<div class='row h3 ml-3'>Lịch sử lương</div>
 <div class='row ml-3 mt-3 d-flex justify-content-between' >
   <div class='d-flex '>
-    <div>
-      <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
-    </div>
-    <div>
-      <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
-    </div>
     <div>
       <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
     </div>
@@ -35,13 +29,11 @@
       <!--          formControlName='code'-->
       <!--        >-->
       <!--      </div>-->
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên nhân viên</div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Tháng</div>
         <input
           class='form-control input-profile '
-          type='search' formControlName='name'
-          placeholder='Trần Gia Hiệu'
-        >
+          type='date' formControlName='createdAt'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
@@ -64,12 +56,6 @@
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Tháng</div>
-        <input
-          class='form-control input-profile '
-          type='date' formControlName='createdAt'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Ngày đi làm thực tế</div>
@@ -158,17 +144,14 @@
         <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
         <!--          {{payroll.employee.code}}-->
         <!--        </div>-->
-        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.employee.firstName}} {{payroll.employee.lastName}}
+        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.createdAt|date:'MM/yyyy'}}
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll?.employee?.position?.name}}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee?.branch?.name}}
-        </div>
-        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.createdAt|date:'MM/yyyy'}}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
