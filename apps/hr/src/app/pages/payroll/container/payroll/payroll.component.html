@@ -1,5 +1,4 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<mat-spinner *ngIf='generating' class='loading'></mat-spinner>
 <div class='row h3 ml-3'>Bảng lương nhân viên</div>
 <div class='row ml-3 mt-3 d-flex justify-content-between' >
   <div class='d-flex '>
@@ -18,7 +17,7 @@
   </div>
   <div class='mr-2'>
     <div>
-      <button (click)='generate()' class='btn btn-primary mr-2'>generate</button>
+      <button (click)='generate()' class='btn btn-primary mr-2'>Tự động tạo</button>
     </div>
   </div>
 
@@ -46,18 +45,18 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'>
+        <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
         <mat-autocomplete #position='matAutocomplete'>
           <mat-option *ngFor='let position of positions$ | async'
-                      [value]='position.name' (click)='onSelectPosition(position)'
-                      (onSelectionChange)='onSelectPosition(position)'>
+                      [value]='position.name' (click)='onSelectPosition(position.name)'
+                      (onSelectionChange)='onSelectPosition(position.name)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'>
+        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                       (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'

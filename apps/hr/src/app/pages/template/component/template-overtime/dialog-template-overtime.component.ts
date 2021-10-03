@@ -1,4 +1,13 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
@@ -25,7 +34,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
   branchId?: number;
-  positionIds: number[] = [];
   positionSelected: Position[] = [];
   positions = new FormControl();
   branches = new FormControl();
@@ -50,6 +58,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   ngOnInit() {
     if (this.data?.positions) {
       this.positionSelected = [...this.data.positions];
+
     }
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -80,7 +89,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     );
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith('')),
+      this.branches.valueChanges.pipe(startWith(this.data?.branch.name||'')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
@@ -93,10 +102,15 @@ export class DialogTemplateOvertimeComponent implements OnInit {
           }
           return result;
         } else {
+          this.branchId = undefined;
           return branches;
         }
       })
     );
+    if (this.data?.branch) {
+      this.branches.patchValue(this.data?.branch.name);
+      this.branchId = this.data?.branch.id;
+    }
   }
 
   get f() {
@@ -153,14 +167,14 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     this.positions.setValue('');
   }
 
-  onCreateBranch(branch: Branch) {
-    if (branch.id === 0) {
+  onCreateBranch(branch?: Branch) {
+    if (branch?.id === 0) {
       this.branchService
         .addOne({ name: this.branchInput.nativeElement.value })
         .subscribe((branch) => (this.branchId = branch.id));
       this.snackbar.open('Đã tạo', '', { duration: 2500 });
     } else {
-      this.branchId = branch.id;
+      this.branchId = branch?.id;
     }
   }
 
