@@ -15,6 +15,7 @@ export class PayrollService extends BaseService<Payroll> {
     super(Api.PAYROLL, http);
   }
 
+
   addOne(payroll: Payroll): Observable<Payroll> {
     return super.addOne(payroll);
   }
@@ -39,7 +40,7 @@ export class PayrollService extends BaseService<Payroll> {
     return super.delete(id);
   }
 
-  generate(): Observable<any> {
-    return this.http.get<any>(Api.GENERATE);
+  generate(params?: any): Observable<any> {
+    return this.http.get<any>(Api.GENERATE, { params });
   }
 }
