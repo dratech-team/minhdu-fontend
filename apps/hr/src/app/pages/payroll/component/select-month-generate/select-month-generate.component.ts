@@ -48,6 +48,6 @@ export class SelectMonthGenerateComponent implements OnInit {
       );
       this.generating = false
       this.dialogRef.close();
-    });
+    }).unsubscribe();
   }
 }
