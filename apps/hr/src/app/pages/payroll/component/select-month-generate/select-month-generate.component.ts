@@ -14,7 +14,6 @@ export class SelectMonthGenerateComponent implements OnInit {
   formGroup!: FormGroup;
   generating = false
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<SelectMonthGenerateComponent>,
     private readonly formBuilder: FormBuilder,
     private readonly payrollService: PayrollService,
