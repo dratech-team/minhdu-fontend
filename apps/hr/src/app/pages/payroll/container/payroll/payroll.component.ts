@@ -28,7 +28,7 @@ import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.com
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { PayrollService } from '../../service/payroll.service';
+import { SelectMonthGenerateComponent } from '../../component/select-month-generate/select-month-generate.component';
 
 @Component({
   templateUrl: 'payroll.component.html',
@@ -43,7 +43,6 @@ export class PayrollComponent implements OnInit {
     createdAt: new FormControl(),
   });
   salaryType = SalaryTypeEnum;
-  generating = false;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -67,7 +66,6 @@ export class PayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly exportService: ExportService,
-    private readonly payrollService: PayrollService
   ) {}
 
   ngOnInit() {
@@ -235,17 +233,6 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    this.generating = true;
-    this.payrollService.generate().subscribe((res) => {
-      this.generating = false;
-      this.snackbar.open(res.message, '', { duration: 1000 });
-      console.log('sss');
-      this.store.dispatch(
-        PayrollAction.loadInit({
-          skip: this.pageIndexInit,
-          take: this.pageSize,
-        })
-      );
-    });
+    this.dialog.open(SelectMonthGenerateComponent, {width:'30%'})
   }
 }

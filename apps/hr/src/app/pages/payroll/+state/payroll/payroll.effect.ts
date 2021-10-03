@@ -24,9 +24,10 @@ export class PayrollEffect {
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
-        this.snackBar.open('Tải phiếu lương thành công', '', {
-          duration: 1000
-        });
+        this.snackBar.open('Tải phiếu lương thành công','',
+          {
+            duration:1000
+          });
         return PayrollAction.loadInitSuccess({
           payrolls: ResponsePaginate.data
         });
