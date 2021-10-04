@@ -140,6 +140,7 @@
       <div class='row-content' *ngFor='let payroll of payrolls'
            (contextmenu)='child.onContextMenu($event,payroll)'>
         <app-mouse-right #child (addEvent)='addPayroll($event)'
+                         [type]='PageTypeEnum.HISTORY_PAYROLL'
                          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
         <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
         <!--          {{payroll.employee.code}}-->

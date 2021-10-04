@@ -132,7 +132,12 @@ export class PayrollEffect {
         this.payrollService.confirmPayroll(props.id).pipe(
           map(() => {
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
-            return PayrollAction.loadInit({ take: 30, skip: 0 });
+            if(props.detailPayroll){
+              return PayrollAction.getPayroll({ id: props.id });
+            }else{
+              return PayrollAction.loadInit({ take: 30, skip: 0 });
+            }
+
           }),
           catchError((err) => throwError(err))
         )
