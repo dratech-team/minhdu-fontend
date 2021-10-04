@@ -22,7 +22,7 @@ import {
   getAllPosition,
   PositionActions
 } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeAction, selectEmployeeAdded, selectEmployeeAdding } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { map, startWith } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
@@ -63,6 +63,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.data?.employee?.recipeType )
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
@@ -102,7 +103,7 @@ export class AddEmployeeComponent implements OnInit {
       zalo: [this.data?.employee?.zalo],
       createAtContract: [''],
       expiredAtContract: [''],
-      recipeType: [this.data?.employee?.recipeType === 'CT1']
+      recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2]
     });
 
     this.positions$ = combineLatest([
@@ -199,7 +200,7 @@ export class AddEmployeeComponent implements OnInit {
           ? new Date(value.expiredAtContract)
           : undefined
       },
-      recipeType: value.recipeType ? this.recipeType.CT1 : this.recipeType.CT2
+      recipeType: value.recipeType
     };
     if (this.data !== null) {
       this.store.dispatch(

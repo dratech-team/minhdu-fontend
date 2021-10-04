@@ -16,8 +16,8 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
 
-  addOne(payroll: Payroll): Observable<Payroll> {
-    return super.addOne(payroll);
+  addPayroll(body: any): Observable<any> {
+    return this.http.post<any>(this.url, body);
   }
 
   getOne(id: any): Observable<Payroll> {
@@ -42,5 +42,9 @@ export class PayrollService extends BaseService<Payroll> {
 
   generate(params?: any): Observable<any> {
     return this.http.get<any>(Api.GENERATE, { params });
+  }
+
+  scanHoliday(PayrollId: number):any{
+    return this.http.get<any>(Api.PAYROLL + `/${PayrollId}/` + Api.GENERATE_HOLIDAY);
   }
 }

@@ -2,7 +2,7 @@
   <ng-template  contextMenuItem let-item (execute)="add($event.item)">
     Thêm
   </ng-template>
-  <ng-template  *ngIf='type !== pageType.ORDER' contextMenuItem let-item (execute)="delete($event.item)">
+  <ng-template  *ngIf='type !== pageType.HISTORY_PAYROLL && type !== pageType.ORDER ' contextMenuItem let-item (execute)="delete($event.item)">
     Xóa
   </ng-template>
   <ng-template  contextMenuItem let-item (execute)="readAndUpdate($event.item)">
