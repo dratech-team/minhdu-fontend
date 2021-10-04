@@ -1,6 +1,6 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row h3 ml-3'>Lịch sử lương</div>
-<div class='row ml-3 mt-3 d-flex justify-content-between' >
+<div class='row h3 ml-3'>Lịch sử lương {{title}}</div>
+<div class='row ml-3 mt-3 d-flex justify-content-between'>
   <div class='d-flex '>
     <div>
       <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
@@ -31,17 +31,14 @@
       <!--      </div>-->
       <div class='border-start title-header default'>
         <div class='title-profile'>Tháng</div>
-        <input
-          class='form-control input-profile '
-          type='date' formControlName='createdAt'>
+        <input class='form-control input-profile ' type='date' formControlName='createdAt'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
         <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
         <mat-autocomplete #position='matAutocomplete'>
-          <mat-option *ngFor='let position of positions$ | async'
-                      [value]='position.name' (click)='onSelectPosition(position.name)'
-                      (onSelectionChange)='onSelectPosition(position.name)'>
+          <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+            (click)='onSelectPosition(position.name)' (onSelectionChange)='onSelectPosition(position.name)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
@@ -51,8 +48,7 @@
         <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-          >
+            (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'>
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
@@ -126,22 +122,13 @@
         </select>
       </div>
     </form>
-    <div class='outer   animated fadeIn'
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         *ngIf='(payroll$|async) as payrolls'
-         [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
-         'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let payroll of payrolls'
-           (contextmenu)='child.onContextMenu($event,payroll)'>
-        <app-mouse-right #child (addEvent)='createPayroll()'
-                         [type]='PageTypeEnum.HISTORY_PAYROLL'
-                         (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+    <div class='outer   animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
+      [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(payroll$|async) as payrolls'
+      [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
+         'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
+      <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
+        <app-mouse-right #child (addEvent)='createPayroll()' [type]='PageTypeEnum.HISTORY_PAYROLL'
+          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
         <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
         <!--          {{payroll.employee.code}}-->
         <!--        </div>-->
@@ -162,24 +149,14 @@
         </div>
         <div class='content-profile default pointer '>
           <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.accConfirmedAt !== null'>
+            style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.accConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer '>
           <div (click)='updateConfirmPayroll(payroll.id,"manConfirmedAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.manConfirmedAt !== null'>
+            style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.manConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
@@ -210,19 +187,13 @@
           {{payroll.payslip?.total| number: '1.0-0'}} VND
         </div>
         <div class='content-profile default pointer '>
-          <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.paidAt !== null'>
+          <div (click)='updateConfirmPayroll(payroll.id,"paidAt")' style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
           </div>
         </div>
       </div>
       <div *ngIf='!payrolls || payrolls.length === 0 ' style='height:60vh; '
-           class=' d-flex justify-content-center align-content-center'>
+        class=' d-flex justify-content-center align-content-center'>
         <div class='font-xl font-weight-bold d-flex align-items-center'>
           Hiện chưa có phiếu lương nào!
         </div>
@@ -230,5 +201,3 @@
     </div>
   </div>
 </ng-template>
-
-
