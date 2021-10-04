@@ -129,4 +129,8 @@ export class DetailEmployeeComponent implements OnInit {
   updateContract(employee: Employee) {
     this.dialog.open(UpdateContractComponent, { width: '30%', data: employee });
   }
+
+  historySalary(employeeId:number) {
+    this.router.navigate(['phieu-luong/lich-su-luong', employeeId]).then()
+  }
 }

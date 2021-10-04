@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -21,12 +21,9 @@ import {
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
-import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
-import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { SelectMonthGenerateComponent } from '../../component/select-month-generate/select-month-generate.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
+import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 
 @Component({
   templateUrl: 'history-payroll.component.html'
@@ -43,7 +40,7 @@ export class HistoryPayrollComponent implements OnInit {
   });
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
-  salaryType =SalaryTypeEnum;
+  salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
@@ -59,7 +56,7 @@ export class HistoryPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly activatedRoute: ActivatedRoute
   ) {
   }
 
@@ -132,22 +129,10 @@ export class HistoryPayrollComponent implements OnInit {
   get getEmployeeId(): number {
     return this.activatedRoute.snapshot.params.id;
   }
+
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
-  }
-
-  addPayroll($event?: any): void {
-    const dialogRef = this.dialog.open(AddPayrollComponent, {
-      width: '50%',
-      data: { id: $event?.employee?.id }
-    });
-
-    dialogRef.afterClosed().subscribe((value) => {
-      if (value) {
-        this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-      }
-    });
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -157,13 +142,6 @@ export class HistoryPayrollComponent implements OnInit {
     });
   }
 
-  // addSalaryOvertime(type: SalaryTypeEnum): any {
-  //   this.dialog.open(DialogOvertimeMultipleComponent, {
-  //     width: 'fit-content',
-  //     data: { type: type }
-  //   });
-  // }
-
   readPayroll($event: any) {
     this.router
       .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id])
@@ -171,7 +149,7 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent, {width: '30%', data: this.formGroup.value})
+    this.dialog.open(DialogExportPayrollComponent, { width: '30%', data: this.formGroup.value });
   }
 
   exportTimekeeping() {
@@ -184,14 +162,6 @@ export class HistoryPayrollComponent implements OnInit {
     );
   }
 
-  // Timekeeping() {
-  //   this.store.dispatch(EmployeeAction.loadInit({}));
-  //   this.dialog.open(DialogTimekeepingComponent, {
-  //     width: 'fit-content',
-  //     data: this.employee$
-  //   });
-  // }
-
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);
   }
@@ -200,7 +170,8 @@ export class HistoryPayrollComponent implements OnInit {
     this.formGroup.get('branch')!.patchValue(branchName);
   }
 
-  generate() {
-    this.dialog.open(SelectMonthGenerateComponent, {width:'30%'})
+  createPayroll() {
+    this.dialog.open(AddPayrollComponent,
+      { width: '30%', data: { employeeId: this.getEmployeeId , addOne: true } });
   }
 }
