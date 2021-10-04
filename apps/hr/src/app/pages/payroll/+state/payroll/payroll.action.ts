@@ -81,12 +81,12 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, detailPayroll?: boolean}>()
+  props<{ id: number, inDetailPayroll?: boolean}>()
 )
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll> }>()
+  props<{  payrollId: number }>()
 );
 
 export const updateSalary = createAction(

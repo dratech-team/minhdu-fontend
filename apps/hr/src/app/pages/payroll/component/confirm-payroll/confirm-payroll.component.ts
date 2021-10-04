@@ -29,6 +29,6 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, detailPayroll: true}));
+    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, inDetailPayroll: true}));
   }
 }
