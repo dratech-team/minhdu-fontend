@@ -42,7 +42,7 @@ export const payrollReducer = createReducer(
   ),
 
   on(PayrollAction.updatePayrollSuccess, (state, { payrollId }) =>
-    adapter.updateOne({ id: payrollId, changes: { manConfirmedAt: new Date(),} }, { ...state, loaded: true })),
+    adapter.updateOne({ id: payrollId, changes: { manConfirmedAt: new Date() } }, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })),
@@ -56,7 +56,7 @@ export const payrollReducer = createReducer(
   on(PayrollAction.handleSalaryError, (state, _) => {
     return { ...state, adding: false };
   })
-)
+);
 
 export const {
   selectEntities,

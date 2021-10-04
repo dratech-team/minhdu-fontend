@@ -60,7 +60,7 @@ export const addSalary = createAction(
 );
 
 export const handleSalaryError = createAction(
-  '[API_SALARY] Salary Error ',
+  '[API_SALARY] Salary Error '
 );
 
 export const getPayroll = createAction(
@@ -81,17 +81,17 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, inDetailPayroll?: boolean}>()
-)
+  props<{ id: number }>()
+);
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{  payrollId: number }>()
+  props<{ payrollId: number }>()
 );
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{  payrollId: number, salary: any ,id?: number  }>()
+  props<{ payrollId: number, salary: any, id?: number }>()
 );
 
 export const deletePayroll = createAction(

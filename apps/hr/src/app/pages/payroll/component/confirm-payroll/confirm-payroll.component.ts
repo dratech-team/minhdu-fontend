@@ -19,16 +19,14 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.payslipService.getOne(this.data.id).subscribe(
-        payslip => {
-          console.log(payslip)
-          this.payslip = payslip;
-        }
-      );
-
+    this.payslipService.getOne(this.data.id).subscribe(
+      payslip => {
+        this.payslip = payslip;
+      }
+    );
   }
 
   onSubmit() {
-    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id, inDetailPayroll: true}));
+    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id }));
   }
 }
