@@ -21,13 +21,12 @@ import {
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
-import { AddPayrollComponent } from '../../component/add-payroll/add-payroll.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { SelectMonthGenerateComponent } from '../../component/select-month-generate/select-month-generate.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { DatePipe } from '@angular/common';
+import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -144,16 +143,8 @@ export class PayrollComponent implements OnInit {
   }
 
   addPayroll($event?: any): void {
-    const dialogRef = this.dialog.open(AddPayrollComponent, {
-      width: '50%',
-      data: { id: $event?.employee?.id }
-    });
-
-    dialogRef.afterClosed().subscribe((value) => {
-      if (value) {
-        this.store.dispatch(PayrollAction.addPayroll({ payroll: value }));
-      }
-    });
+    this.dialog.open(AddPayrollComponent,
+      {width:'30%' , data:{employeeId: $event?.employee?.id ,  addOne: true } })
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -207,6 +198,6 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    this.dialog.open(SelectMonthGenerateComponent, {width:'30%'})
+    this.dialog.open(AddPayrollComponent, {width:'30%'})
   }
 }

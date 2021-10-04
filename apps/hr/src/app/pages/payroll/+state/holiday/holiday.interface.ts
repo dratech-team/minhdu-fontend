@@ -7,5 +7,6 @@ export interface Holiday {
   rate: number,
   positions: Position[]
   note?: string,
-  isConstraint?: boolean
+  isConstraint?: boolean,
+  price?: number
 }
