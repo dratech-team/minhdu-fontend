@@ -11,7 +11,7 @@
   </div>
   <div class='mr-2'>
     <div>
-      <button (click)='generate()' class='btn btn-primary mr-2'>Tự động tạo</button>
+      <button (click)='createPayroll()' class='btn btn-primary mr-2'>Tạo</button>
     </div>
   </div>
 
@@ -139,7 +139,7 @@
     >
       <div class='row-content' *ngFor='let payroll of payrolls'
            (contextmenu)='child.onContextMenu($event,payroll)'>
-        <app-mouse-right #child (addEvent)='addPayroll($event)'
+        <app-mouse-right #child (addEvent)='createPayroll()'
                          [type]='PageTypeEnum.HISTORY_PAYROLL'
                          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
         <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->

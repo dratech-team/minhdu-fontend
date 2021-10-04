@@ -46,12 +46,15 @@ export const loadMorePayrollsSuccess = createAction(
 
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ payroll: any }>()
+  props<{ generate: any , addOne?:boolean}>()
 );
 
 export const addPayrollSuccess = createAction(
   '[ADD_PAYROLL] Add Payroll Success',
-  props<{ payroll: Payroll, }>()
+);
+
+export const handlePayrollError = createAction(
+  '[API_PAYROLL]  Payroll Error',
 );
 
 export const addSalary = createAction(
@@ -127,5 +130,6 @@ export const PayrollAction = {
   updateSalary,
   deletePayroll,
   deletePayrollSuccess,
-  deleteSalary
+  deleteSalary,
+  handlePayrollError
 };

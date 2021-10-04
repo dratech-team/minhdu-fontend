@@ -27,11 +27,14 @@ export const payrollReducer = createReducer(
     adapter.addMany(action.payrolls, { ...state, loaded: true })),
 
   on(PayrollAction.addPayroll, (state, _) => {
-    return { ...state, added: false };
+    console.log('ssss')
+    return { ...state, adding: true, added: false };
   }),
 
-  on(PayrollAction.addPayrollSuccess, (state, action) =>
-    adapter.addOne(action.payroll, { ...state, added: true })),
+  on(PayrollAction.addPayrollSuccess, (state, _) => {
+      return { ...state, adding: false, added: true };
+    }
+  ),
 
   on(PayrollAction.getPayroll, (state, _) => {
     return { ...state, loaded: false };
@@ -55,7 +58,11 @@ export const payrollReducer = createReducer(
   }),
   on(PayrollAction.handleSalaryError, (state, _) => {
     return { ...state, adding: false };
-  })
+  }),
+  on(PayrollAction.handlePayrollError, (state, _) => {
+      return { ...state, adding: false, added: false };
+    }
+  )
 );
 
 export const {

@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { PayrollAction } from './payroll.action';
+import { addPayrollSuccess, PayrollAction } from './payroll.action';
 import { selectorPayrollTotal } from './payroll.selector';
 
 @Injectable()
@@ -65,14 +65,24 @@ export class PayrollEffect {
   addPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
-      switchMap((props) => this.payrollService.addOne(props.payroll)),
-      map((_) => {
-        this.snackBar.open('Thêm phiếu lương thành công', '', {
-          duration: 1000
-        });
-        return PayrollAction.loadInit({ take: 30, skip: 0 });
-      }),
-      catchError((err) => throwError(err))
+      switchMap((props) => this.payrollService.addPayroll(props.generate).pipe(
+        map((res) => {
+          this.snackBar.open(res.messeage, '', {
+            duration: 1000
+          });
+          if (props.addOne) {
+            this.store.dispatch(
+              PayrollAction.loadInit({ take: 30, skip: 0, employeeId: props.generate.employeeId })
+            );
+          }
+          return PayrollAction.addPayrollSuccess();
+        })
+      )),
+      catchError((err) => {
+          this.store.dispatch(PayrollAction.handlePayrollError());
+          return throwError(err);
+        }
+      )
     )
   );
 
