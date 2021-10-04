@@ -22,6 +22,7 @@ import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.com
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
+import { PayrollService } from '../../service/payroll.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router,
+    private readonly payrollService: PayrollService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -50,9 +52,9 @@ export class DetailPayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
     this.payroll$.subscribe(val => {
         if (val) {
-          this.daysInMonth = getDaysInMonth(val.createdAt)
-        }else{
-          this.daysInMonth = new Date().getDate()
+          this.daysInMonth = getDaysInMonth(val.createdAt);
+        } else {
+          this.daysInMonth = new Date().getDate();
         }
       }
     );
@@ -145,7 +147,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   historySalary(employeeId: number) {
-    this.router.navigate(['phieu-luong/lich-su-luong', employeeId]).then()
+    this.router.navigate(['phieu-luong/lich-su-luong', employeeId]).then();
   }
 
   nextPayroll(payroll: Payroll) {
@@ -166,5 +168,14 @@ export class DetailPayrollComponent implements OnInit {
     } else {
       this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', payrollIds[payrollIds.length - 1]]).then();
     }
+  }
+
+  scanHoliday(payrollId: number) {
+    this.payrollService.scanHoliday(payrollId).subscribe((res:any) => {
+      if (res) {
+        console.log(res)
+        this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
+      }
+    });
   }
 }

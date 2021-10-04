@@ -49,4 +49,5 @@ export const Api = {
   SLACK_WEBHOOK:
     'https://hooks.slack.com/services/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',
   GENERATE: 'payroll/generate',
+  GENERATE_HOLIDAY: 'generate-holiday',
 };

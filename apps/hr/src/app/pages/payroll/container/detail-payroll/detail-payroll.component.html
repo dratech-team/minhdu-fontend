@@ -273,7 +273,7 @@
       </div>
       <div class='w-100'></div>
       <!--Khấu trừ-->
-      <div class='col-md-6'>
+      <div class='col'>
         <div class=' row  table'>
           <div class='row col-md-12 title-table'>
             <div class='col-md-8 title'>Khấu trừ</div>
@@ -320,6 +320,38 @@
                   alt='delete icon'
                 >
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--      ngày lễ-->
+      <div class='col'>
+        <div class=' row  table'>
+          <div class='row col-md-12 title-table'>
+            <div class='col-md-8 title'>Ngày lễ</div>
+            <div class='col-md-4 add' (click)='scanHoliday(payroll.id)'><span
+              class='mx-2'>Quét</span>
+              <img style='margin-left: 2px;width: 13px;' src='./assets/icon/search.svg'
+                   alt='add icon'>
+            </div>
+          </div>
+          <div class='content-table ' *ngFor="let salary of payroll.salaries  | filterTypeSalary:['HOLIDAY'] ">
+            <div class='col-md-7 title-child' *ngIf="salary.unit === 'DAY'">
+              {{salary.title}} (ngày {{salary.datetime | date:'dd/MM/yyyy'}})
+            </div>
+            <div
+              *ngIf='salary.price'
+              class='col-md-3 salary'
+              style='color: #29CC97'
+            >
+              {{salary.price}}
+            </div>
+            <div
+              *ngIf='!salary.price'
+              class='col-md-3 salary'
+              style='color: #29CC97'
+            >
+              X {{salary.rate}}
             </div>
           </div>
         </div>
