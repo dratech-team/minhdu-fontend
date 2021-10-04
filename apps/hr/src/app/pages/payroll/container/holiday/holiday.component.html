@@ -29,6 +29,12 @@
             type='number' formControlName='rate'>
         </div>
         <div class='border-start title-header default'>
+          <div class='title-profile'>Giá</div>
+          <input
+            class='form-control input-profile '
+            type='number' disabled>
+        </div>
+        <div class='border-start title-header default'>
           <div class='title-profile'>Ràng buộc ngày lễ</div>
           <select class='select'>
             <option value=''>Mặc định</option>
@@ -68,6 +74,11 @@
           </div>
           <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
             {{holiday.rate}}
+          </div>
+          <div class='content-profile default pointer '  *ngIf='holiday.price' (click)='Holiday(holiday)'>
+            {{holiday.price | number :'1.0-0'}}
+          </div>
+          <div class='content-profile default pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
           </div>
           <div class='content-profile default pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
             có ràng buộc
