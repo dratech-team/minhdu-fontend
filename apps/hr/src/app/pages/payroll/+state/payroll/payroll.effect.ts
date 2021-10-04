@@ -24,9 +24,9 @@ export class PayrollEffect {
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
-        this.snackBar.open('Tải phiếu lương thành công','',
+        this.snackBar.open('Tải phiếu lương thành công', '',
           {
-            duration:1000
+            duration: 1000
           });
         return PayrollAction.loadInitSuccess({
           payrolls: ResponsePaginate.data
@@ -132,7 +132,7 @@ export class PayrollEffect {
         this.payrollService.confirmPayroll(props.id).pipe(
           map(() => {
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
-            return PayrollAction.loadInit({ take: 30, skip: 0 });
+            return PayrollAction.updatePayrollSuccess({ payrollId: props.id });
           }),
           catchError((err) => throwError(err))
         )
