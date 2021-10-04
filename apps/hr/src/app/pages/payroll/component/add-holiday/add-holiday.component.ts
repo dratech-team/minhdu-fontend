@@ -20,11 +20,13 @@ import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
 })
 export class AddHolidayComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
+  numberChars = new RegExp('[^0-9]', 'g');
   submitted = false;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
   positions = new FormControl();
   positionSelected: Position[] = [];
+  hidePrice = true;
 
   constructor(
     public datePipe: DatePipe,
@@ -39,9 +41,14 @@ export class AddHolidayComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
-    if(this.data?.positions){
-      this.positionSelected = [...this.data.positions]
+    if (this.data) {
+      if (this.data.positions) {
+        this.positionSelected = [...this.data.positions];
+      }
+      this.hidePrice = this.data.rate <= 1;
+      console.log(this.hidePrice)
     }
+
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
       name: [this.data?.name, Validators.required],
@@ -50,8 +57,9 @@ export class AddHolidayComponent implements OnInit {
           this.data?.datetime, 'yyyy-MM-dd'
         ),
         Validators.required],
-      rate: [this.data?.rate, Validators.required],
-      isConstraint:[this.data ? this.data?.isConstraint: true]
+      rate: [this.data ? this.data.rate : 1, Validators.required],
+      isConstraint: [this.data ? this.data?.isConstraint : true],
+      price: [this.data?.price]
     });
     this.positions$ = combineLatest([
       this.positions.valueChanges.pipe(startWith('')),
@@ -71,18 +79,21 @@ export class AddHolidayComponent implements OnInit {
         }
       })
     );
+    this.formGroup.get('rate')!.valueChanges.subscribe(
+      rate => this.hidePrice = rate <= 1
+    );
   }
 
   get f() {
     return this.formGroup.controls;
   }
 
-  onSubmit():any {
+  onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.positionSelected.length === 0){
+    if (this.positionSelected.length === 0) {
       return this.snackBar.open('chưa chọn chức vụ', '', { duration: 2000 });
     }
     const val = this.formGroup.value;
@@ -91,18 +102,23 @@ export class AddHolidayComponent implements OnInit {
       datetime: val.datetime,
       rate: val.rate,
       positionIds: this.positionSelected.map(val => val.id),
-      isConstraint: val.isConstraint
+      isConstraint: val.isConstraint,
+      price:  val.rate <=1
+        ? typeof val.price === 'string'
+          ? Number(val.price.replace(this.numberChars, ''))
+          : val.price
+        : undefined,
     };
     if (this.data) {
-       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
+      this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
     this.store.pipe(select(selectHolidayAdded)).subscribe(added => {
-      if(added){
+      if (added) {
         this.dialogRef.close();
       }
-    })
+    });
   }
 
   onCreatePosition(position: any) {

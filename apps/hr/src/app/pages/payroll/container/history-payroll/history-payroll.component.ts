@@ -24,6 +24,7 @@ import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl: 'history-payroll.component.html'
@@ -50,7 +51,7 @@ export class HistoryPayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-
+  PageTypeEnum = PageTypeEnum;
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
