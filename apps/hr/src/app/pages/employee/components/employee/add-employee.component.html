@@ -107,9 +107,14 @@
           </div>
         </div>
         <div class='row mt-3' [formGroup]='formGroup'>
-          <div class='col-sm'>
-            <label for='recipeType'>Công nhân trại chăn nuôi </label>
-            <input id='recipeType' type='checkbox' class='form-control' formControlName='recipeType'>
+          <div class='col-4'>
+            <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
+            <mat-select id='recipeType' class='form-control' formControlName='recipeType'>
+              <mat-option value='{{recipeType.CT1}}'>Công thức 1
+              </mat-option>
+              <mat-option value='{{recipeType.CT2}}'>Công thức 2
+              </mat-option>
+            </mat-select>
           </div>
         </div>
         <div class='row d-flex mt-3 justify-content-center'>
