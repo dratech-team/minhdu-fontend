@@ -43,4 +43,8 @@ export class PayrollService extends BaseService<Payroll> {
   generate(params?: any): Observable<any> {
     return this.http.get<any>(Api.GENERATE, { params });
   }
+
+  scanHoliday(PayrollId: number):any{
+    return this.http.get<any>(Api.PAYROLL + `/${PayrollId}/` + Api.GENERATE_HOLIDAY);
+  }
 }
