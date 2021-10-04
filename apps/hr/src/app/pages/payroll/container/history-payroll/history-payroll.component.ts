@@ -157,7 +157,7 @@ export class HistoryPayrollComponent implements OnInit {
     // this.exportService.print(Api.TIMEKEEPING_EXPORT);
     /// FIXME: Hard code to release
     this.snackbar.open(
-      'Tính năng sẽ được hoàn thành vào ngày 6/10/2021. Xin lỗi vì sự bất tiện',
+      'Tính năng sẽ được phát triển. Xin lỗi vì sự bất tiện',
       '',
       { duration: 3000 }
     );
