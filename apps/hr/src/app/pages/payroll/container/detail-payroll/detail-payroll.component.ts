@@ -173,9 +173,8 @@ export class DetailPayrollComponent implements OnInit {
   scanHoliday(payrollId: number) {
     this.payrollService.scanHoliday(payrollId).subscribe((res:any) => {
       if (res) {
-        console.log(res)
         this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
       }
-    });
+    }).unsubscribe;
   }
 }
