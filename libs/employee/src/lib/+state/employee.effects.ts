@@ -63,7 +63,6 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.addEmployee),
       switchMap((props) => this.employeeService.addOne(props.employee)),
-      debounceTime(20000),
       map((employee) => {
           this.snackBar.open('Thêm nhân viên thành công', '', { duration: 1000 });
           return EmployeeAction.addEmployeeSuccess({ employee });
