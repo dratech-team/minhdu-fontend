@@ -76,7 +76,7 @@
             {{holiday.rate}}
           </div>
           <div class='content-profile default pointer '  *ngIf='holiday.price' (click)='Holiday(holiday)'>
-            {{holiday.price | number :'1.0-0'}}
+            {{holiday.price | number :'1.0-0'}}đ
           </div>
           <div class='content-profile default pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
           </div>

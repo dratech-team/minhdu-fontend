@@ -20,6 +20,7 @@ import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
 })
 export class AddHolidayComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
+  numberChars = new RegExp('[^0-9]', 'g');
   submitted = false;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
@@ -102,7 +103,11 @@ export class AddHolidayComponent implements OnInit {
       rate: val.rate,
       positionIds: this.positionSelected.map(val => val.id),
       isConstraint: val.isConstraint,
-      price: val.rate > 1 ? undefined : val.price
+      price:  val.rate <=1
+        ? typeof val.price === 'string'
+          ? Number(val.price.replace(this.numberChars, ''))
+          : val.price
+        : undefined,
     };
     if (this.data) {
       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
