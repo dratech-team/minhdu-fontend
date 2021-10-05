@@ -40,6 +40,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   templateId?: number;
+  createdPayroll?: Date;
   positionId?: number;
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
@@ -67,13 +68,14 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       titleAllowance: []
     });
     this.titleOvertimes.valueChanges.pipe(
-      map(_ =>{
+      map(_ => {
         this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
           {
-            positionId:  this.positionId,
-            unit: this.unitOvertime? this.unitOvertime:''}))
+            positionId: this.positionId,
+            unit: this.unitOvertime ? this.unitOvertime : ''
+          }));
       })
-    ).subscribe()
+    ).subscribe();
     this.templateOvertime$ = combineLatest([
       this.titleOvertimes.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectorAllTemplate))
@@ -98,22 +100,29 @@ export class DialogOvertimeMultipleComponent implements OnInit {
             return e.name.toLowerCase().includes(position?.toLowerCase());
           });
         } else {
-          this.positionId = undefined
-          this.titleOvertimes.patchValue('')
+          this.positionId = undefined;
+          this.titleOvertimes.patchValue('');
           return positions;
         }
       })
-    )
+    );
+    this.formGroup.get('datetime')!.valueChanges.subscribe(datetime => {
+      if (datetime && this.templateId) {
+        this.createdPayroll = datetime;
+        this.store.dispatch(EmployeeAction.loadInit(
+          { templateId: this.templateId, createdPayroll: new Date(datetime) }));
+      }
+    });
   }
 
   pickEmployees(employeeIds: number []): any {
     this.employeeIds = employeeIds;
-    console.log(this.employeeIds, 'employeeIds')
+    console.log(this.employeeIds, 'employeeIds');
   }
 
   pickAllowance(allowEmpIds: number[]) {
     this.allowEmpIds = allowEmpIds;
-    console.log(this.allowEmpIds, 'allowance')
+    console.log(this.allowEmpIds, 'allowance');
   }
 
   get f() {
@@ -125,19 +134,19 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if(!this.templateId){
-      return this.snackBar.open('chưa chọn loại tăng ca', '', {duration:1000})
+    if (!this.templateId) {
+      return this.snackBar.open('chưa chọn loại tăng ca', '', { duration: 1000 });
     }
-    if(this.employeeIds.length === 0){
-      return this.snackBar.open('chưa chọn nhân viên', '', {duration:1000})
+    if (this.employeeIds.length === 0) {
+      return this.snackBar.open('chưa chọn nhân viên', '', { duration: 1000 });
     }
     const value = this.formGroup.value;
-    if(this.unit && !value.times){
-      return this.snackBar.open('chưa nhập số giờ tăng ca', '', {duration:1000})
+    if (this.unit && !value.times) {
+      return this.snackBar.open('chưa nhập số giờ tăng ca', '', { duration: 1000 });
     }
     const salary = {
       title: this.title,
-      price: this.price ,
+      price: this.price,
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
       times: value.times,
@@ -173,30 +182,34 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.title = data.title;
     this.rate = data.rate;
     this.unit = data.unit;
-    this.templateId =  data.id;
-    this.store.dispatch(EmployeeAction.loadInit({ templateId: data.id }));
+    this.templateId = data.id;
+    if (this.createdPayroll) {
+      this.store.dispatch(EmployeeAction.loadInit(
+        { templateId: data.id, createdPayroll: new Date(this.createdPayroll) }));
+    }
   }
 
   checkAllowanceOvertime() {
     this.onAllowanceOvertime = !this.onAllowanceOvertime;
   }
+
   onSelectPosition(positionId: number) {
     this.positionId = positionId;
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {
-        positionId:  this.positionId,
-        unit: this.unitOvertime? this.unitOvertime:''
+        positionId: this.positionId,
+        unit: this.unitOvertime ? this.unitOvertime : ''
       }));
-    this.titleOvertimes.patchValue('')
+    this.titleOvertimes.patchValue('');
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
-    this.unitOvertime = unit
+    this.unitOvertime = unit;
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {
-        positionId:  this.positionId,
-        unit: this.unitOvertime? this.unitOvertime: ''
+        positionId: this.positionId,
+        unit: this.unitOvertime ? this.unitOvertime : ''
       }));
-    this.titleOvertimes.patchValue('')
+    this.titleOvertimes.patchValue('');
   }
 }

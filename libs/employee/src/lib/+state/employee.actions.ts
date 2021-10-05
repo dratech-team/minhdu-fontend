@@ -17,6 +17,7 @@ export const loadInit = createAction(
     gender?: Gender,
     isSelect?: boolean,
     templateId?: number,
+    createdPayroll?: Date
   }>()
 );
 

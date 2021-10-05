@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee, Position } from '@minhdu-fontend/data-models';
@@ -15,6 +15,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
   templateUrl: './pick-employee-absent.component.html'
 })
 export class PickEmployeeAbsentComponent implements OnInit {
+  @Input() createdPayroll!: Date;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   type = SalaryTypeEnum;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -27,8 +28,8 @@ export class PickEmployeeAbsentComponent implements OnInit {
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
-      position : new FormControl(''),
-      branch : new FormControl(''),
+      position: new FormControl(''),
+      branch: new FormControl('')
     });
 
   constructor(
@@ -38,7 +39,6 @@ export class PickEmployeeAbsentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(EmployeeAction.loadInit({}));
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
     });
@@ -47,6 +47,7 @@ export class PickEmployeeAbsentComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
+        Object.assign(val, { createdPayroll: new Date(this.createdPayroll) });
         this.service.searchEmployees(val);
       })
     ).subscribe();

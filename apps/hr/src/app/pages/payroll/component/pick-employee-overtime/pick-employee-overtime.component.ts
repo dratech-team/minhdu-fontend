@@ -13,7 +13,7 @@ import { selectorAllEmployee } from '@minhdu-fontend/employee';
 })
 export class PickEmployeeOvertimeComponent implements OnInit {
   @Input() checkAllowance = false;
-  @Input() templateId?: number;
+  @Input() search!: any;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   @Output() EventSelectAllowance = new EventEmitter<number[]>();
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -41,11 +41,12 @@ export class PickEmployeeOvertimeComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-        const search = {
+        const param = {
           name: val.name,
-          templateId: this.templateId
+          templateId: this.search.templateId,
+          createdPayroll: new Date(this.search.createdPayroll),
         };
-        this.service.searchEmployees(search);
+        this.service.searchEmployees(param);
       })
     ).subscribe();
   }
