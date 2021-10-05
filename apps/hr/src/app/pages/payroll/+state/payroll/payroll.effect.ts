@@ -95,7 +95,7 @@ export class PayrollEffect {
             this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
             return props.payrollId
               ? PayrollAction.getPayroll({ id: props.payrollId })
-              : PayrollAction.loadInit({ take: 30, skip: 0 });
+              : PayrollAction.loadInit({ take: 30, skip: 0, createdAt: new Date() });
           }),
           catchError((err) => {
             this.store.dispatch(PayrollAction.handleSalaryError());
