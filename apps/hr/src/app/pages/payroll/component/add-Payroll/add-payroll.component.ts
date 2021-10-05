@@ -43,12 +43,12 @@ export class AddPayrollComponent implements OnInit {
     if (this.data?.addOne) {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
-        employeeId: this.data.employeeId
+        employeeId: +this.data.employeeId
       };
       this.store.dispatch(PayrollAction.addPayroll({ generate: generate, addOne: true }));
     } else {
       const generate = {
-        createdAt: this.formGroup.value.generate
+        createdAt: new Date(this.formGroup.value.generate)
       };
       this.store.dispatch(PayrollAction.addPayroll({ generate: generate }));
     }

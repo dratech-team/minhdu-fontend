@@ -175,6 +175,6 @@ export class DetailPayrollComponent implements OnInit {
       if (res) {
         this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
       }
-    }).unsubscribe;
+    });
   }
 }
