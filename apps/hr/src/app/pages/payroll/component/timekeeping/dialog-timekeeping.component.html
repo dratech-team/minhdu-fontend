@@ -79,8 +79,9 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab class='col-12 ' label='Chọn nhân viên'>
+        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-employee-absent
+            [createdPayroll]='formGroup.get("datetime")?.value'
             (EventSelectEmployee)='pickEmployees($event)'
           >
           </app-pick-employee-absent>

@@ -66,7 +66,7 @@
                            (readAndUpdateEvent)='Holiday($event)'
                            (deleteEvent)='deleteHoliday($event)'
           ></app-mouse-right>
-          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
+          <div class=' content-profile name pointer ' (click)='Holiday(holiday)'>
             <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.name}}</div>
           </div>
           <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
@@ -88,7 +88,7 @@
             <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
           </div>
           <div class='content-profile  pointer   address' (click)='Holiday(holiday)'>
-            <span [style]='{"width":item.name.length+ "ch"}' class='mr-2'
+            <span [style]='{"width":item.name.length+ 1+ "ch"}' class='mr-1 d-inline-block '
                   *ngFor='let item of holiday.positions'> {{item.name}},</span>
           </div>
         </div>

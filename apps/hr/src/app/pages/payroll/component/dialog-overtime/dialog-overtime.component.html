@@ -28,9 +28,9 @@
                   <mat-option [value]='datetimeUnitEnum.HOUR'
                               (click)='selectUnitOvertime(datetimeUnitEnum.HOUR)'>Giờ
                   </mat-option>
-                  <mat-option
+                  <!-- <mat-option
                     (click)='selectUnitOvertime()'>Tất cả
-                  </mat-option>
+                  </mat-option> -->
                 </mat-select>
               </div>
             </div>
@@ -107,29 +107,28 @@
                        value='{{price}}' disabled>
               </div>
             </div>
-            <div *ngIf='unit === "HOUR"' class='row d-flex align-items-center title-item mb-2'>
-              <span>Phụ cấp tăng ca:</span>
-              <input type='checkbox' [checked]='onAllowanceOvertime' class='ml-2' (click)='checkAllowanceOvertime()'>
+          </div>
+          <div  class='row d-flex align-items-center title-item mb-2'>
+            <span>Phụ cấp tăng ca:</span>
+            <input type='checkbox' [checked]='onAllowanceOvertime' class='ml-2' (click)='checkAllowanceOvertime()'>
+          </div>
+          <div class='allowance-overtime p-2 border' *ngIf='onAllowanceOvertime'>
+            <div class=' mb-2'>
+              <span class='title-item mb-2'>Tiêu đề phụ cấp tăng ca</span>
             </div>
-            <div class='allowance-overtime p-2 border' *ngIf='unit === datetimeUnit.HOUR && onAllowanceOvertime'>
-              <div class=' mb-2'>
-                <span class='title-item mb-2'>Tiêu đề phụ cấp tăng ca</span>
+            <div class=' mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control  px-1'
+                     formControlName='titleAllowance'>
+            </div>
+            <div class=''>
+              <div class=' title-item mb-1'>
+                <span>Mức Phụ cấp tăng ca</span>
               </div>
               <div class=' mb-3' [formGroup]='formGroup'>
                 <input type='text' class='form-control  px-1'
-                       formControlName='titleAllowance'>
-              </div>
-              <div class=''>
-                <div class=' title-item mb-1'>
-                  <span>Mức Phụ cấp tăng ca</span>
-                </div>
-                <div class=' mb-3' [formGroup]='formGroup'>
-                  <input type='text' class='form-control  px-1'
-                         formControlName='priceAllowance' inputCurrency>
-                </div>
+                       formControlName='priceAllowance' inputCurrency>
               </div>
             </div>
-
           </div>
           <div>
             <div class='row title-item mb-1 mt-3'>

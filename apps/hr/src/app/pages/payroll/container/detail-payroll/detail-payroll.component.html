@@ -180,7 +180,7 @@
           <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ALLOWANCE'] ">
             <div class='col-md-7 title-child'>
             <span *ngIf="salary.unit === 'DAY' "> {{salary.title}}
-              theo ngày {{salary.datetime|date:'dd/MM/yyyy'}} </span>
+              theo ngày  ({{salary.datetime|date:'MM/yyyy'}}) </span>
               <span *ngIf="salary.unit === 'MONTH' "> {{salary.title}}
                 theo tháng {{salary.datetime|date: 'MM/yyyy'}}</span>
               <span *ngIf="salary.unit === 'HOUR' "> {{salary.title + ' ' + salary.times}}
@@ -225,9 +225,18 @@
           </div>
           <div class='content-table '
                *ngFor="let salary of payroll.salaries | filterTypeSalary:['OVERTIME'] ">
-            <div class='col-md-7 title-child'>
+            <div class='col-md-7 title-child' *ngIf='salary.unit === "HOUR"'>
               <div *ngIf='salary.times'>{{salary.title}} ({{salary.times}} giờ -
                 {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }})
+              </div>
+              <div class='ml-4' *ngIf='salary.allowance'>-  {{salary.allowance.title}}</div>
+              <div *ngIf='!salary.times'>
+                {{salary.title}}({{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }})
+              </div>
+            </div>
+            <div class='col-md-7 title-child' *ngIf='salary.unit === "DAY"'>
+              <div *ngIf='salary.times'>{{salary.title}}
+                {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }}
               </div>
               <div class='ml-4' *ngIf='salary.allowance'>-  {{salary.allowance.title}}</div>
               <div *ngIf='!salary.times'>
@@ -360,7 +369,7 @@
     <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
     </div>
     <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
-      <button (click)='historySalary(payroll.employee.id)'
+      <button (click)='historySalary(payroll)'
               class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>

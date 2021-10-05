@@ -6,13 +6,14 @@ import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.co
 import { throwError } from 'rxjs';
 import {
   catchError,
-  concatMap, debounceTime, map,
+  concatMap,
+  map,
   switchMap,
-  withLatestFrom
+  withLatestFrom,
 } from 'rxjs/operators';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { addPayrollSuccess, PayrollAction } from './payroll.action';
+import { PayrollAction } from './payroll.action';
 import { selectorPayrollTotal } from './payroll.selector';
 
 @Injectable()
@@ -24,12 +25,12 @@ export class PayrollEffect {
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
-        this.snackBar.open('Tải phiếu lương thành công', '',
-          {
-            duration: 1000
-          });
+        /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
+        // this.snackBar.open('Tải phiếu lương thành công', '', {
+        //   duration: 1000,
+        // });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
         });
       }),
       catchError((err) => throwError(err))
@@ -51,11 +52,11 @@ export class PayrollEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết phiếu lương' }
+            data: { content: 'Đã lấy hết phiếu lương' },
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
         });
       }),
       catchError((err) => throwError(err))
@@ -65,24 +66,37 @@ export class PayrollEffect {
   addPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
-      switchMap((props) => this.payrollService.addPayroll(props.generate).pipe(
-        map((res) => {
-          this.snackBar.open(res.messeage, '', {
-            duration: 1000
-          });
-          if (props.addOne) {
-            this.store.dispatch(
-              PayrollAction.loadInit({ take: 30, skip: 0, employeeId: props.generate.employeeId })
-            );
-          }
-          return PayrollAction.addPayrollSuccess();
-        })
-      )),
+      switchMap((props) =>
+        this.payrollService.addPayroll(props.generate).pipe(
+          map((_) => {
+            this.snackBar.open('Tạo phiếu lương thành công', '', {
+              duration: 1000,
+            });
+            if (props.inHistory) {
+              this.store.dispatch(
+                PayrollAction.loadInit({
+                  take: 30,
+                  skip: 0,
+                  employeeId: props.generate.employeeId,
+                })
+              );
+            } else {
+              this.store.dispatch(
+                PayrollAction.loadInit({
+                  take: 30,
+                  skip: 0,
+                  createdAt: new Date(),
+                })
+              );
+            }
+            return PayrollAction.addPayrollSuccess();
+          })
+        )
+      ),
       catchError((err) => {
-          this.store.dispatch(PayrollAction.handlePayrollError());
-          return throwError(err);
-        }
-      )
+        this.store.dispatch(PayrollAction.handlePayrollError());
+        return throwError(err);
+      })
     )
   );
 
@@ -91,11 +105,20 @@ export class PayrollEffect {
       ofType(PayrollAction.addSalary),
       switchMap((props) =>
         this.salaryService.addOne(props.salary).pipe(
-          map((_) => {
-            this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
+          map((res) => {
+            /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
+            if (res?.status === 201) {
+              this.snackBar.open(res.message, 'Xác nhận');
+            } else {
+              this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
+            }
             return props.payrollId
               ? PayrollAction.getPayroll({ id: props.payrollId })
-              : PayrollAction.loadInit({ take: 30, skip: 0 });
+              : PayrollAction.loadInit({
+                  take: 30,
+                  skip: 0,
+                  createdAt: new Date(),
+                });
           }),
           catchError((err) => {
             this.store.dispatch(PayrollAction.handleSalaryError());
@@ -112,7 +135,7 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.getOne(props.id)),
       map((payroll) => {
         this.snackBar.open('Tải phiếu lương thành công', '', {
-          duration: 1000
+          duration: 1000,
         });
         return PayrollAction.getPayrollSuccess({ payroll: payroll });
       }),
@@ -162,10 +185,9 @@ export class PayrollEffect {
         );
       }),
       catchError((err) => {
-          this.store.dispatch(PayrollAction.handleSalaryError());
-          return throwError(err);
-        }
-      )
+        this.store.dispatch(PayrollAction.handleSalaryError());
+        return throwError(err);
+      })
     )
   );
 
@@ -199,6 +221,5 @@ export class PayrollEffect {
     private readonly salaryService: SalaryService,
     private readonly snackBar: MatSnackBar,
     private readonly store: Store
-  ) {
-  }
+  ) {}
 }
