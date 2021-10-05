@@ -96,9 +96,7 @@
              *ngIf='!template?.branch'
         >
         </div>
-        <div class='content-profile pointer address  '
-             (click)='templateOvertime(template)'>
-          <span class=' d-inline-block' [style]='{"width":item.name.length+1 + "ch"}'  *ngFor='let item of template.positions'> {{item.name}},</span>
+        <div class='content-profile pointer address  '>
         </div>
         <div class='content-profile name pointer '
              (click)='templateOvertime(template)'>
