@@ -3,12 +3,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -30,8 +30,7 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
   templateUrl: 'history-payroll.component.html'
 })
 export class HistoryPayrollComponent implements OnInit {
-  /// FIXME: Dummy data. Hieeuj Fix later
-  title: string = 'rỗng';
+  name$!: Observable<string>;
   formGroup = new FormGroup({
     name: new FormControl(''),
     paidAt: new FormControl(''),
@@ -46,19 +45,8 @@ export class HistoryPayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
-  payroll$ = this.store.pipe(select(selectorAllPayroll)).pipe(
-    /// FIXME: Dummy data. Hieeuj Fix later
-    tap((payrolls) => {
-      if (payrolls?.length) {
-        this.title =
-          'của nhân viên ' +
-          payrolls[0].employee.firstName +
-          payrolls[0].employee.lastName;
-      }
-    })
-  );
+  payroll$ = this.store.pipe(select(selectorAllPayroll))
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
-  employee$ = this.store.pipe(select(selectorAllEmployee));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -75,7 +63,7 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    /// FIXME: Reload 2 lần
+    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name))
     this.store.dispatch(
       PayrollAction.loadInit({
         skip: this.pageIndexInit,

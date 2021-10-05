@@ -137,7 +137,6 @@ export class AddHolidayComponent implements OnInit {
         ));
       this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
-
     this.positions.setValue('');
   }
 

@@ -77,7 +77,8 @@
              (click)='templateOvertime(template)'>
           <div class='m-auto d-flex align-items-center justify-content-center'>Ngày</div>
         </div>
-        <div class='content-profile default pointer' *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
+        <div class='content-profile default pointer'
+             *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
              (click)='templateOvertime(template)'>
           <div class='m-auto d-flex align-items-center justify-content-center'>Giờ</div>
         </div>
@@ -96,7 +97,10 @@
              *ngIf='!template?.branch'
         >
         </div>
-        <div class='content-profile pointer address  '>
+        <div class='content-profile address pointer '
+             (click)='templateOvertime(template)'>
+          <span class='mr-2 d-inline-block' [style]='{"width":item.name.length+1 + "ch"}'
+                *ngFor='let item of template.positions'> {{item.name}},</span>
         </div>
         <div class='content-profile name pointer '
              (click)='templateOvertime(template)'>

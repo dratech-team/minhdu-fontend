@@ -6,13 +6,13 @@ import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.co
 import { throwError } from 'rxjs';
 import {
   catchError,
-  concatMap, debounceTime, map,
+  concatMap, map,
   switchMap,
   withLatestFrom
 } from 'rxjs/operators';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { addPayrollSuccess, PayrollAction } from './payroll.action';
+import { PayrollAction } from './payroll.action';
 import { selectorPayrollTotal } from './payroll.selector';
 
 @Injectable()

@@ -1,20 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
   selectedAddingPayroll,
   selectedLoadedPayroll,
-  selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Salary } from '@minhdu-fontend/data-models';
+import { Employee, Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
@@ -35,13 +33,13 @@ export class DetailPayrollComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   daysInMonth!: number;
-
+  employeeName!: string;
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly payrollService: PayrollService
+    private readonly payrollService: PayrollService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -146,8 +144,9 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  historySalary(employeeId: number) {
-    this.router.navigate(['phieu-luong/lich-su-luong', employeeId]).then();
+  historySalary(payroll: Payroll) {
+    this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id ],
+      {queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName}}).then();
   }
 
   nextPayroll(payroll: Payroll) {

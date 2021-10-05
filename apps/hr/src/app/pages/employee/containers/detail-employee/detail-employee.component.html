@@ -28,7 +28,7 @@
       </div>
     </div>
     <div>
-      <button (click)='historySalary(employee.id)'
+      <button (click)='historySalary(employee )'
               class='mt-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
               style='border: solid 1px #4B3880'>
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
@@ -168,6 +168,39 @@
             </span>
             </div>
           </div>
+          <div class='row ml-1  align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Công thức lương:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail' *ngIf='employee.recipeType === recipeType.CT2 '>
+              Công thức hai
+            </span>
+              <span class='contain-detail' *ngIf='employee.recipeType === recipeType.CT1 '>
+              Công thức một
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày vào làm :</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.createdAt|date:'dd/MM/yyyy'}}
+            </span>
+            </div>
+          </div>
+          <div class='row  ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày làm chính thức:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.workedAt |date:'dd/MM/yyyy'}}
+            </span>
+            </div>
+          </div>
         </div>
         <div class='col-6  form-group'>
           <div class='row align-items-center'>
@@ -258,16 +291,6 @@
                   [checked]='employee?.contracts?.length !==0'>
               </div>
 
-            </div>
-          </div>
-          <div class='row  align-items-center'>
-            <div class='col-md-3 py-2 title-employee title-detail'>
-              <span>Hợp đồng :</span>
-            </div>
-            <div class='col-md-8 py-2 '>
-            <span class='contain-detail'>
-               {{employee.contractType}}
-            </span>
             </div>
           </div>
         </div>
