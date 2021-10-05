@@ -24,7 +24,7 @@ export class AddHolidayComponent implements OnInit {
   submitted = false;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
-  positions = new FormControl();
+  positions = new FormControl('');
   positionSelected: Position[] = [];
   hidePrice = true;
 
@@ -138,7 +138,9 @@ export class AddHolidayComponent implements OnInit {
         ));
       this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
-    this.positions.patchValue('');
+    setTimeout(() =>
+      this.positions.setValue('')
+    );
 
   }
 

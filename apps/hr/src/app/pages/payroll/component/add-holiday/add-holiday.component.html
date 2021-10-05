@@ -65,14 +65,16 @@
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async'
                           [value]='!position.id ? positionInput.value : position.name '
-                          (onSelectionChange)='onCreatePosition(position)'
+                          (click)='onCreatePosition(position)'
               >
                 {{position.name}}
               </mat-option>
             </mat-autocomplete>
             <div class='mt-2'>
-            <span class='mr-3 position-relative' *ngFor='let position of positionSelected'>{{position.name}}
-              <label class='position-absolute text-danger' style='top:-7px ; right: -10px'
+            <span class='mr-3 position-relative'
+                  [style]='{"width":position.name.length+1 + "ch"}'
+                  *ngFor='let position of positionSelected'>{{position.name}}
+              <label class='position-absolute text-danger pointer' style='top:-7px ; right: -10px'
                      (click)='removePosition(position)'>x</label>
             </span>
             </div>
