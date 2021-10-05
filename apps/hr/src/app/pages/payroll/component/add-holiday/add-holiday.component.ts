@@ -46,7 +46,7 @@ export class AddHolidayComponent implements OnInit {
         this.positionSelected = [...this.data.positions];
       }
       this.hidePrice = this.data.rate <= 1;
-      console.log(this.hidePrice)
+      console.log(this.hidePrice);
     }
 
     this.store.dispatch(PositionActions.loadPosition());
@@ -103,11 +103,11 @@ export class AddHolidayComponent implements OnInit {
       rate: val.rate,
       positionIds: this.positionSelected.map(val => val.id),
       isConstraint: val.isConstraint,
-      price:  val.rate <=1
+      price: val.rate <= 1
         ? typeof val.price === 'string'
           ? Number(val.price.replace(this.numberChars, ''))
           : val.price
-        : undefined,
+        : undefined
     };
     if (this.data) {
       this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
@@ -121,12 +121,13 @@ export class AddHolidayComponent implements OnInit {
     });
   }
 
-  onCreatePosition(position: any) {
+  onCreatePosition(position: any): any {
     if (position.id) {
-      if (this.positionSelected.includes(position)) {
-        throw this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+      if (this.positionSelected.filter(item => item.id === position.id).length > 0) {
+        this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+      } else {
+        this.positionSelected.push(position);
       }
-      this.positionSelected.push(position);
     } else {
       this.positionService
         .addOne({
@@ -137,7 +138,8 @@ export class AddHolidayComponent implements OnInit {
         ));
       this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
-    this.positions.setValue('');
+    this.positions.patchValue('');
+
   }
 
   removePosition(position: Position) {
