@@ -52,8 +52,8 @@ export class HistoryPayrollComponent implements OnInit {
       if (payrolls?.length) {
         this.title =
           'của nhân viên ' +
-          payrolls[0].employee.firstName +
-          payrolls[0].employee.lastName;
+          payrolls[0].employee.firstName + " "
+         + payrolls[0].employee.lastName;
       }
     })
   );

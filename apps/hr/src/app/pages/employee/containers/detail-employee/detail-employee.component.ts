@@ -11,7 +11,7 @@ import {
   DegreeStatusEnum,
   DegreeTypeEnum,
   FlatSalary,
-  FormalityEnum,
+  FormalityEnum, RecipeType,
   RelationshipEnum
 } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -34,6 +34,7 @@ export class DetailEmployeeComponent implements OnInit {
   relationship = RelationshipEnum;
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
+  recipeType = RecipeType;
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
