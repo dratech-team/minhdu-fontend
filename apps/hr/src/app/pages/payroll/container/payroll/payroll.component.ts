@@ -144,7 +144,7 @@ export class PayrollComponent implements OnInit {
 
   addPayroll($event?: any): void {
     this.dialog.open(AddPayrollComponent,
-      {width:'30%' , data:{employeeId: $event?.employee?.id ,  addOne: true } })
+      {width:'30%' , data:{employeeId: $event?.employee?.id ,addOne:true} })
   }
 
   updateConfirmPayroll(id: number, type: string) {

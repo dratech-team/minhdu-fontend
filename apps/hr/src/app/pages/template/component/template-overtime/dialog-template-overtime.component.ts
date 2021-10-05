@@ -88,7 +88,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     );
 
     this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith(this.data?.branch.name||'')),
+      this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
       this.branches$
     ]).pipe(
       map(([branch, branches]) => {
@@ -149,10 +149,11 @@ export class DialogTemplateOvertimeComponent implements OnInit {
 
   onCreatePosition(position: any) {
     if (position.id) {
-      if (this.positionSelected.includes(position)) {
-        throw this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+      if (this.positionSelected.some(item => item.id === position.id)) {
+        this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+      } else {
+        this.positionSelected.push(position);
       }
-      this.positionSelected.push(position);
     } else {
       this.positionService
         .addOne({
@@ -163,7 +164,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         ));
       this.snackbar.open('Đã tạo', '', { duration: 2500 });
     }
-    this.positions.patchValue('');
+    this.positions.setValue('')
   }
 
   onCreateBranch(branch?: Branch) {

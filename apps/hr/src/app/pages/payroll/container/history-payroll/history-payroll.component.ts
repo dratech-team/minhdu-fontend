@@ -189,7 +189,7 @@ export class HistoryPayrollComponent implements OnInit {
   createPayroll() {
     this.dialog.open(AddPayrollComponent, {
       width: '30%',
-      data: { employeeId: this.getEmployeeId, addOne: true }
+      data: { employeeId: this.getEmployeeId, addOne: true, inHistory: true }
     });
   }
 }

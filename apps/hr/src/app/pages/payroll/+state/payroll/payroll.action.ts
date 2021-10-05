@@ -46,7 +46,7 @@ export const loadMorePayrollsSuccess = createAction(
 
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ generate: any , addOne?:boolean}>()
+  props<{ generate: any , addOne?:boolean, inHistory?: boolean}>()
 );
 
 export const addPayrollSuccess = createAction(
