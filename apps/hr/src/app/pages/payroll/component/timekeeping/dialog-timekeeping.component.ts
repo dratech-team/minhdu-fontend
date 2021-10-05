@@ -10,7 +10,6 @@ import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { EmployeeAction } from '@minhdu-fontend/employee';
 
 
 @Component({
@@ -27,7 +26,6 @@ export class DialogTimekeepingComponent implements OnInit {
   unitHour = false;
   employeeIds: number[] = [];
   isManyPeople = false;
-  createdPayroll!: Date;
 
   constructor(
     public datePipe: DatePipe,
@@ -56,7 +54,7 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      datetime: ['', Validators.required],
+      datetime: [,Validators.required],
       times: [],
       minutes: [],
       rate: [1, Validators.required],
@@ -64,15 +62,6 @@ export class DialogTimekeepingComponent implements OnInit {
       forgot: [],
       partialDay: []
     });
-    this.formGroup.get('datetime')!.valueChanges.subscribe(
-      datetime => {
-        console.log(datetime)
-        if (datetime) {
-          this.createdPayroll = datetime;
-          this.store.dispatch(EmployeeAction.loadInit({ createdPayroll: new Date(datetime)}));
-        }
-      }
-    );
   }
 
   get f() {
@@ -80,7 +69,6 @@ export class DialogTimekeepingComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

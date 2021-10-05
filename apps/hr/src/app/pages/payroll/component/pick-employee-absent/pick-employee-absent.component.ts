@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Employee, Position } from '@minhdu-fontend/data-models';
+import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
@@ -14,7 +14,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
   selector: 'app-pick-employee-absent',
   templateUrl: './pick-employee-absent.component.html'
 })
-export class PickEmployeeAbsentComponent implements OnInit {
+export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   @Input() createdPayroll!: Date;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   type = SalaryTypeEnum;
@@ -39,11 +39,17 @@ export class PickEmployeeAbsentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.createdPayroll) {
+      this.store.dispatch(EmployeeAction.loadInit(
+        { createdPayroll: new Date(this.createdPayroll) }
+      ));
+    }
     this.employees$.subscribe(employee => {
       this.employees = JSON.parse(JSON.stringify(employee));
     });
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
+
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
@@ -81,6 +87,13 @@ export class PickEmployeeAbsentComponent implements OnInit {
         }
       })
     );
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.createdPayroll.previousValue !== changes.createdPayroll.currentValue) {
+      this.store.dispatch(EmployeeAction.loadInit({ createdPayroll: new Date(changes.createdPayroll.currentValue) }));
+    }
   }
 
   updateSelect(id: number) {

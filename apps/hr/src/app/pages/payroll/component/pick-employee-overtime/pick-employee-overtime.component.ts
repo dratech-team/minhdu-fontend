@@ -1,19 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
-import { selectorAllEmployee } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
 
 @Component({
   selector: 'app-pick-employee-overtime',
   templateUrl: 'pick-employee-overtime.component.html'
 })
-export class PickEmployeeOvertimeComponent implements OnInit {
+export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   @Input() checkAllowance = false;
-  @Input() search!: any;
+  @Input() search: any;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   @Output() EventSelectAllowance = new EventEmitter<number[]>();
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -44,11 +44,31 @@ export class PickEmployeeOvertimeComponent implements OnInit {
         const param = {
           name: val.name,
           templateId: this.search.templateId,
-          createdPayroll: new Date(this.search.createdPayroll),
+          createdPayroll: new Date(this.search.createdPayroll)
         };
         this.service.searchEmployees(param);
       })
     ).subscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
+    const currentTemplateId = changes.search?.currentValue?.templateId;
+    const previousTemplateId = changes.search?.previousValue?.templateId;
+
+    const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
+    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
+
+    console.log(changes);
+    if (currentTemplateId &&
+      (currentTemplateId !== previousTemplateId ||
+        currentCreatedPayroll !== previousCreatedPayroll)) {
+      this.store.dispatch(EmployeeAction.loadInit(
+        {
+          templateId: changes.search.currentValue.templateId,
+          createdPayroll: new Date(changes.search.currentValue.createdPayroll)
+        }));
+    }
   }
 
 //check-box-employee

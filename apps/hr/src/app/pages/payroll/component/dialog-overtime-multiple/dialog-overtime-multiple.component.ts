@@ -40,7 +40,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   templateId?: number;
-  createdPayroll?: Date;
   positionId?: number;
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
@@ -61,7 +60,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {}));
     this.formGroup = this.formBuilder.group({
-      datetime: ['', Validators.required],
+      datetime: [undefined, Validators.required],
       note: [''],
       times: [1],
       priceAllowance: [],
@@ -106,13 +105,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         }
       })
     );
-    this.formGroup.get('datetime')!.valueChanges.subscribe(datetime => {
-      if (datetime && this.templateId) {
-        this.createdPayroll = datetime;
-        this.store.dispatch(EmployeeAction.loadInit(
-          { templateId: this.templateId, createdPayroll: new Date(datetime) }));
-      }
-    });
   }
 
   pickEmployees(employeeIds: number []): any {
@@ -183,10 +175,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.rate = data.rate;
     this.unit = data.unit;
     this.templateId = data.id;
-    if (this.createdPayroll) {
-      this.store.dispatch(EmployeeAction.loadInit(
-        { templateId: data.id, createdPayroll: new Date(this.createdPayroll) }));
-    }
   }
 
   checkAllowanceOvertime() {
