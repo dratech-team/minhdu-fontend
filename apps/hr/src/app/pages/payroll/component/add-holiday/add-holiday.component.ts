@@ -138,10 +138,7 @@ export class AddHolidayComponent implements OnInit {
         ));
       this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
-    setTimeout(() =>
-      this.positions.setValue('')
-    );
-
+    this.positions.setValue('');
   }
 
   removePosition(position: Position) {

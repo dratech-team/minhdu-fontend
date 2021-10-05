@@ -164,7 +164,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         ));
       this.snackbar.open('Đã tạo', '', { duration: 2500 });
     }
-    setTimeout(() => this.positions.setValue(''));
+    this.positions.setValue('')
   }
 
   onCreateBranch(branch?: Branch) {
