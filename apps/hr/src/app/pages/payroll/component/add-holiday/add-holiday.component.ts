@@ -46,7 +46,6 @@ export class AddHolidayComponent implements OnInit {
         this.positionSelected = [...this.data.positions];
       }
       this.hidePrice = this.data.rate <= 1;
-      console.log(this.hidePrice);
     }
 
     this.store.dispatch(PositionActions.loadPosition());
@@ -123,7 +122,7 @@ export class AddHolidayComponent implements OnInit {
 
   onCreatePosition(position: any): any {
     if (position.id) {
-      if (this.positionSelected.filter(item => item.id === position.id).length > 0) {
+      if (this.positionSelected.some(item => item.id === position.id)) {
         this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
       } else {
         this.positionSelected.push(position);
@@ -138,6 +137,7 @@ export class AddHolidayComponent implements OnInit {
         ));
       this.snackBar.open('Đã tạo', '', { duration: 2500 });
     }
+
     this.positions.setValue('');
   }
 

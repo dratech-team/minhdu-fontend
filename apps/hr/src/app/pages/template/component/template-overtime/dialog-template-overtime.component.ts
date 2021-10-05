@@ -149,7 +149,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
 
   onCreatePosition(position: any) {
     if (position.id) {
-      if (this.positionSelected.filter(item => item.id === position.id).length > 0) {
+      if (this.positionSelected.some(item => item.id === position.id)) {
         this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
       } else {
         this.positionSelected.push(position);
