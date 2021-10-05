@@ -9,8 +9,8 @@
     <h2 class='font-weight-bold'>Phiếu lương tháng {{data.createAt|date:'MM/yyyy'}}</h2>
     <mat-dialog-content class='mat-typography'>
       <div class='px-3'>
-        <div class='mt-3 px-3' style='width: 600px' *ngIf='payslip'>
-          <div class='row'>
+        <div class='mt-3 px-3' style='width: 600px' *ngIf='( payslip$ | async) as payslip'>
+          <div class=' row'>
             <div class='col-6 font-weight-bold'>Ngày công chuẩn:</div>
             <div class=' col-6'>{{payslip?.workday}}</div>
           </div>
@@ -20,26 +20,26 @@
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Ngày lễ đi làm:</div>
-            <div class=' col-6' *ngIf=' payslip.worksInHoliday.length > 0'>
-              <div class='pr-4' *ngFor='let item of payslip.worksInHoliday'>
+            <div class=' col-6' *ngIf='payslip?.worksInHoliday?.length; else worksInHoliday'>
+              <div class='pr-4' *ngFor='let item of payslip?.worksInHoliday'>
                 {{item.datetime |date:'dd/MM/yyyy'}} (Hệ số: {{item.rate}}
                 - {{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
               </div>
             </div>
-            <div class=' col-6' *ngIf=' payslip.worksInHoliday.length === 0'>
+            <ng-template class=' col-6' #worksInHoliday>
               0 ngày
-            </div>
+            </ng-template>
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Ngày lễ không đi làm:</div>
-            <div class=' col-6' *ngIf=' payslip.worksNotInHoliday.length > 0'>
-                  <span class='pr-4' *ngFor='let item of payslip.worksNotInHoliday'>
-                  {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
-                </span>
+            <div class=' col-6' *ngIf='payslip?.worksNotInHoliday?.length; else worksNotInHoliday'>
+              <span class='pr-4' *ngFor='let item of payslip?.worksNotInHoliday'>
+                {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
+              </span>
             </div>
-            <div class=' col-6' *ngIf=' payslip.worksNotInHoliday.length === 0'>
-                  0 ngày
-            </div>
+            <ng-template class=' col-6' #worksNotInHoliday>
+              0 ngày
+            </ng-template>
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng ngày công thực nhận:</div>
@@ -51,10 +51,10 @@
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng lương ngày đi làm thực tế trừ lễ:</div>
-            <div class='text-success col-6'>{{payslip.payslipNormalDay |number: '1.0-0'}} VND</div>
+            <div class='text-success col-6'>{{payslip?.payslipNormalDay |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
-            <div class='col-6 font-weight-bold'>Lương đi làm ngày lễ:</div>
+            <div class='col-6 font-weight-bold'>Lương / Phụ cấp đi làm ngày lễ:</div>
             <div class='text-success col-6'>{{payslip.payslipInHoliday |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
@@ -72,7 +72,7 @@
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng lương làm ngoài giờ :</div>
-            <div class='text-success col-6'>{{payslip.payslipOutOfWorkday || 0 |number: '1.0-0'}} VND</div>
+            <div class='text-success col-6'>{{payslip?.payslipOutOfWorkday || 0 |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng phụ cấp khác:</div>
