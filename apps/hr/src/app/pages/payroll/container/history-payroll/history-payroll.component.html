@@ -147,13 +147,13 @@
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
         </div>
-        <div class='content-profile default pointer '>
+        <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
             style='width:fit-content;height: fit-content'>
             <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.accConfirmedAt !== null'>
           </div>
         </div>
-        <div class='content-profile default pointer '>
+        <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"manConfirmedAt")'
             style='width:fit-content;height: fit-content'>
             <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.manConfirmedAt !== null'>
@@ -186,7 +186,7 @@
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.total| number: '1.0-0'}} VND
         </div>
-        <div class='content-profile default pointer '>
+        <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"paidAt")' style='width:fit-content;height: fit-content'>
             <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
           </div>
