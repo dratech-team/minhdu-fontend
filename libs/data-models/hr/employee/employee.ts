@@ -10,6 +10,7 @@ import { ContractsEnum, Gender } from '@minhdu-fontend/enums';
 import { Payroll } from 'apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
 import { Branch } from '../orgChart/branch';
 import { Contracts } from './contracts';
+import { RecipeType } from '../../../enums';
 
 
 export interface Employee {
@@ -52,6 +53,6 @@ export interface Employee {
   workHistories?: WorkHistory[];
   historySalaries: SalaryHistory[];
   contractType?: string,
-  recipeType: Boolean
+  recipeType: RecipeType
 }
 

@@ -6,13 +6,13 @@ import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.co
 import { throwError } from 'rxjs';
 import {
   catchError,
-  concatMap, debounceTime, map,
+  concatMap, map,
   switchMap,
   withLatestFrom
 } from 'rxjs/operators';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { addPayrollSuccess, PayrollAction } from './payroll.action';
+import { PayrollAction } from './payroll.action';
 import { selectorPayrollTotal } from './payroll.selector';
 
 @Injectable()
@@ -66,13 +66,17 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
       switchMap((props) => this.payrollService.addPayroll(props.generate).pipe(
-        map((res) => {
-          this.snackBar.open(res.messeage, '', {
+        map((_) => {
+          this.snackBar.open('Tạo phiếu lương thành công', '', {
             duration: 1000
           });
-          if (props.addOne) {
+          if (props.inHistory) {
             this.store.dispatch(
               PayrollAction.loadInit({ take: 30, skip: 0, employeeId: props.generate.employeeId })
+            );
+          }else {
+            this.store.dispatch(
+              PayrollAction.loadInit({ take: 30, skip: 0,createdAt: new Date()})
             );
           }
           return PayrollAction.addPayrollSuccess();
