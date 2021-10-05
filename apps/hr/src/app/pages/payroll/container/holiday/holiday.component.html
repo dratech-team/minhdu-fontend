@@ -66,14 +66,15 @@
                            (readAndUpdateEvent)='Holiday($event)'
                            (deleteEvent)='deleteHoliday($event)'
           ></app-mouse-right>
-          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-            {{holiday.name}}
+          <div class=' content-profile name pointer ' (click)='Holiday(holiday)'>
+            <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.name}}</div>
           </div>
           <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-            {{holiday.datetime |date: 'dd/MM/yyyy'}}
+            <div
+              class='m-auto d-flex align-items-center justify-content-center'> {{holiday.datetime |date: 'dd/MM/yyyy'}}</div>
           </div>
           <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
-            {{holiday.rate}}
+            <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.rate}}</div>
           </div>
           <div class='content-profile default pointer '  *ngIf='holiday.price' (click)='Holiday(holiday)'>
             {{holiday.price | number :'1.0-0'}}đ
@@ -81,20 +82,21 @@
           <div class='content-profile default pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
           </div>
           <div class='content-profile default pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
-            có ràng buộc
+            <div class='m-auto d-flex align-items-center justify-content-center'>có ràng buộc</div>
           </div>
           <div class='content-profile default pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
-            không ràng buộc
+            <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
           </div>
-          <div class='content-profile address pointer ' (click)='Holiday(holiday)'>
-           <span class='mr-2' *ngFor='let item of holiday.positions'> {{item.name}},</span>
+          <div class='content-profile  pointer   address' (click)='Holiday(holiday)'>
+            <span [style]='{"width":item.name.length+ 1+ "ch"}' class='mr-1 d-inline-block '
+                  *ngFor='let item of holiday.positions'> {{item.name}},</span>
           </div>
         </div>
         <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '
              class=' d-flex justify-content-center align-content-center'>
-          <div class='font-xl font-weight-bold d-flex align-items-center'>
+          <span class='font-xl font-weight-bold d-flex align-items-center'>
             Hiện chưa có ngày lễ nào!
-          </div>
+          </span>
         </div>
       </div>
     </div>

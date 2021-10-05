@@ -34,13 +34,13 @@
           class='form-control input-profile '
           type='text' formControlName='branch'>
       </div>
-      <div class='border-start title-header name'>
+      <div class='border-start title-header address'>
         <div class='title-profile'>Chức vụ</div>
         <input
           class='form-control input-profile '
           type='text' formControlName='position'>
       </div>
-      <div class='border-start title-header note'>
+      <div class='border-start title-header name'>
         <div class='title-profile'>Chú ý</div>
         <input
           class='form-control input-profile '
@@ -64,39 +64,43 @@
                          (deleteEvent)='deleteOvertime($event)'
         ></app-mouse-right>
         <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
-          {{template.title}}
+          <div class='m-auto d-flex align-items-center justify-content-center'>
+            {{template.title}}
+          </div>
         </div>
         <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
-          {{template.price| number: '1.0-0'}} VND
+          <div class='m-auto d-flex align-items-center justify-content-center'>
+            {{template.price| number: '1.0-0'}} VND
+          </div>
         </div>
         <div class='content-profile default pointer' *ngIf='template.unit === unit.DAY'
              (click)='templateOvertime(template)'>
-          Ngày
+          <div class='m-auto d-flex align-items-center justify-content-center'>Ngày</div>
         </div>
         <div class='content-profile default pointer' *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
              (click)='templateOvertime(template)'>
-          giờ
+          <div class='m-auto d-flex align-items-center justify-content-center'>Giờ</div>
         </div>
         <div class='content-profile default pointer' *ngIf='template.unit === unit.MONTH'
              (click)='templateOvertime(template)'>
-          Tháng
+          <div class='m-auto d-flex align-items-center justify-content-center'>Tháng</div>
         </div>
         <div class='content-profile name pointer '
              (click)='templateOvertime(template)'
              *ngIf='template?.branch'
         >
-          {{template?.branch?.name}}
+          <div class='m-auto d-flex align-items-center justify-content-center'> {{template?.branch?.name}}</div>
         </div>
         <div class='content-profile name pointer '
              (click)='templateOvertime(template)'
              *ngIf='!template?.branch'
         >
         </div>
-        <div class='content-profile name pointer '
+        <div class='content-profile pointer address  '
              (click)='templateOvertime(template)'>
-          <span class='mr-2' *ngFor='let item of template.positions'> {{item.name}},</span>
+          <span class=' d-inline-block' [style]='{"width":item.name.length+1 + "ch"}'  *ngFor='let item of template.positions'> {{item.name}},</span>
         </div>
-        <div class='content-profile note pointer '
+        <div class='content-profile name pointer '
              (click)='templateOvertime(template)'>
           {{template.note}}
         </div>
