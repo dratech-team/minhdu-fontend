@@ -160,9 +160,10 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]='!templateId' class='col-12 ' label='Chọn nhân viên'>
+        <mat-tab [disabled]='!templateId && !formGroup.get("datetime")?.value ' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-employee-overtime [checkAllowance]='onAllowanceOvertime'
-                                      [templateId]='templateId'
+                                      [search]='   {templateId: templateId ,
+                                                  createdPayroll: formGroup.get("datetime")?.value}'
                                       (EventSelectAllowance)='pickAllowance($event)'
                                       (EventSelectEmployee)='pickEmployees($event)'
           >

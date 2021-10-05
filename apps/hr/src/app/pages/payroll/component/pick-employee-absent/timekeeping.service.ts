@@ -1,6 +1,5 @@
-import { select, Store } from '@ngrx/store';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-import { Employee } from '@minhdu-fontend/data-models';
+import { Store } from '@ngrx/store';
+import { EmployeeAction } from '@minhdu-fontend/employee';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -9,6 +8,6 @@ export class TimekeepingService {
   }
 
   searchEmployees(val: any) {
-    this.store.dispatch(EmployeeAction.loadInit(val));
+    return this.store.dispatch(EmployeeAction.loadInit(val));
   }
 }

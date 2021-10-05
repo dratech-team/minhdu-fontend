@@ -1,6 +1,6 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div class='row h3 ml-3'>Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}</div>
-<div class='row ml-3 mt-3 d-flex justify-content-between' >
+<div class='row ml-3 mt-3 d-flex justify-content-between'>
   <div class='d-flex '>
     <div>
       <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
@@ -26,15 +26,14 @@
 <ng-template #payroll>
   <div class='main-profile '>
     <form [formGroup]='formGroup' #header class=' header-profile mt-1 animated fadeIn'>
-      <!--      <div class='border-start title-header default'>-->
-      <!--        <div class='title-profile'>Mã nhân viên</div>-->
-      <!--        <input-->
-      <!--          class='form-control input-profile'-->
-      <!--          type='text'-->
-      <!--          placeholder='PT100001'-->
-      <!--          formControlName='code'-->
-      <!--        >-->
-      <!--      </div>-->
+            <div class='border-start title-header default'>
+              <div class='title-profile'>Mã nhân viên</div>
+              <input
+                class='form-control input-profile'
+                type='text'
+                placeholder='PT100001'
+              >
+            </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
         <input
@@ -155,9 +154,9 @@
            (contextmenu)='child.onContextMenu($event,payroll)'>
         <app-mouse-right #child (addEvent)='addPayroll($event)'
                          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
-        <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
-        <!--          {{payroll.employee.code}}-->
-        <!--        </div>-->
+        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.employee.id}}
+        </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee.firstName}} {{payroll.employee.lastName}}
         </div>
