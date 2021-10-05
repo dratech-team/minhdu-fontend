@@ -26,29 +26,20 @@
 <ng-template #payroll>
   <div class='main-profile '>
     <form [formGroup]='formGroup' #header class=' header-profile mt-1 animated fadeIn'>
-            <div class='border-start title-header default'>
-              <div class='title-profile'>Mã nhân viên</div>
-              <input
-                class='form-control input-profile'
-                type='text'
-                placeholder='PT100001'
-              >
-            </div>
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã nhân viên</div>
+        <input class='form-control input-profile' type='text' placeholder='PT100001'>
+      </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
-        <input
-          class='form-control input-profile '
-          type='search' formControlName='name'
-          placeholder='Trần Gia Hiệu'
-        >
+        <input class='form-control input-profile ' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
         <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
         <mat-autocomplete #position='matAutocomplete'>
-          <mat-option *ngFor='let position of positions$ | async'
-                      [value]='position.name' (click)='onSelectPosition(position.name)'
-                      (onSelectionChange)='onSelectPosition(position.name)'>
+          <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+            (click)='onSelectPosition(position.name)' (onSelectionChange)='onSelectPosition(position.name)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
@@ -58,17 +49,14 @@
         <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-          >
+            (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'>
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Tháng</div>
-        <input
-          class='form-control input-profile '
-          type='date' formControlName='createdAt'>
+        <input class='form-control input-profile ' type='month' formControlName='createdAt' min="2021-01">
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Ngày đi làm thực tế</div>
@@ -139,21 +127,13 @@
         </select>
       </div>
     </form>
-    <div class='outer   animated fadeIn'
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         *ngIf='(payroll$|async) as payrolls'
-         [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
-         'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let payroll of payrolls'
-           (contextmenu)='child.onContextMenu($event,payroll)'>
-        <app-mouse-right #child (addEvent)='addPayroll($event)'
-                         (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+    <div class='outer   animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
+      [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(payroll$|async) as payrolls'
+      [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
+         'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
+      <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
+        <app-mouse-right #child (addEvent)='addPayroll($event)' (readAndUpdateEvent)='readPayroll($event)'>
+        </app-mouse-right>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee.id}}
         </div>
@@ -177,24 +157,14 @@
         </div>
         <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.accConfirmedAt !== null'>
+            style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.accConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"manConfirmedAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.manConfirmedAt !== null'>
+            style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.manConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
@@ -225,19 +195,13 @@
           {{payroll.payslip?.total| number: '1.0-0'}} VND
         </div>
         <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
-          <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'
-               style='width:fit-content;height: fit-content'
-          >
-            <input
-              style='pointer-events: none'
-              disabled
-              type='checkbox'
-              [checked]='payroll.paidAt !== null'>
+          <div (click)='updateConfirmPayroll(payroll.id,"paidAt")' style='width:fit-content;height: fit-content'>
+            <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
           </div>
         </div>
       </div>
       <div *ngIf='!payrolls || payrolls.length === 0 ' style='height:60vh; '
-           class=' d-flex justify-content-center align-content-center'>
+        class=' d-flex justify-content-center align-content-center'>
         <div class='font-xl font-weight-bold d-flex align-items-center'>
           Hiện chưa có phiếu lương nào!
         </div>
@@ -245,5 +209,3 @@
     </div>
   </div>
 </ng-template>
-
-
