@@ -29,7 +29,6 @@ export class AddPayrollComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.added$.subscribe(val => console.log(val))
     this.formGroup = this.formBuilder.group({
       generate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')]
     });

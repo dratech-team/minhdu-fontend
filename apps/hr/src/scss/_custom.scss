@@ -1,6 +1,19 @@
 // Here you can add other styles
+a:link {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+}
 .cdk-overlay-container{
-  z-index: 1020 !important;
+  z-index: 1020 ;
+}
+.ggg.cdk-overlay-backdrop {
+  z-index: 1019;
+}
+.ggg + .cdk-global-overlay-wrapper {
+  z-index: 1019;
 }
 .background-snackbar{
   background:#4dbd74d1;

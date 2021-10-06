@@ -10,7 +10,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { EmployeeAction, selectEmployeeLoaded, selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -26,6 +26,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   @Output() EventSelectAllowance = new EventEmitter<number[]>();
   employees$ = this.store.pipe(select(selectorAllEmployee));
+  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   type = SalaryTypeEnum;
   isSelectEmployee = false;
   isSelectAllowance = false;

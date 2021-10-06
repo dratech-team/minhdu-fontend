@@ -55,7 +55,9 @@ export class HolidayComponent implements OnInit {
   Holiday($event?: any) {
     const dialogRef = this.dialog.open(AddHolidayComponent, {
       width: '35%',
-      data: $event
+      data: $event,
+      panelClass: 'ccc',
+      backdropClass: 'ggg',
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {

@@ -45,7 +45,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         const error =
           err?.error?.message ||
           'Lỗi từ server. Vui lòng liên hệ kỹ thuật để được hỗ trợ';
-        this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng');
+        this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng',{panelClass:'ddd'});
 
         /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook. Tắt vpn để error rơi vào case này
         // this.http
