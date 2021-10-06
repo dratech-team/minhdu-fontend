@@ -53,13 +53,19 @@ export class PickEmployeeOvertimeComponent implements OnInit {
 //check-box-employee
   updateSelectEmployee(id: number) {
     const index = this.employeeIds.indexOf(id);
+    const indexAllowance = this.allowEmpIds.indexOf(id);
     if (index > -1) {
       this.employeeIds.splice(index, 1);
+      if (indexAllowance > -1) {
+        this.allowEmpIds.splice(indexAllowance, 1);
+      }
     } else {
       this.employeeIds.push(id);
     }
     this.isSelectEmployee = this.employees !== null && this.employees.every(e => this.employeeIds.includes(e.id));
+    this.isSelectAllowance = this.employees !== null && this.employees.every(e => this.allowEmpIds.includes(e.id));
     this.EventSelectEmployee.emit(this.employeeIds);
+    this.EventSelectAllowance.emit(this.allowEmpIds);
   }
 
   someCompleteEmployee(): boolean {
@@ -79,13 +85,19 @@ export class PickEmployeeOvertimeComponent implements OnInit {
             this.employeeIds.push(employee.id);
           }
         } else {
+          this.isSelectAllowance = select;
           const index = this.employeeIds.indexOf(employee.id);
+          const indexAllowance = this.allowEmpIds.indexOf(employee.id);
           if (index > -1) {
             this.employeeIds.splice(index, 1);
+            if (indexAllowance > -1) {
+              this.allowEmpIds.splice(indexAllowance, 1);
+            }
           }
         }
       }
     );
+    this.EventSelectAllowance.emit(this.allowEmpIds);
     this.EventSelectEmployee.emit(this.employeeIds);
   }
 
