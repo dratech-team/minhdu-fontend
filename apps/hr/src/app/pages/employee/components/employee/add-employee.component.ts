@@ -78,10 +78,10 @@ export class AddEmployeeComponent implements OnInit {
       phone: [this.data?.employee?.phone],
       note: [this.data?.employee.note],
       workedAt: [
-        this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd')
+        this.datePipe.transform(this.data?.employee?.workedAt || "2010-01-01", 'yyyy-MM-dd')
       ],
       createdAt: [
-        this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd')
+        this.datePipe.transform(this.data?.employee?.createdAt || "2010-01-01", 'yyyy-MM-dd')
       ],
       isFlatSalary: [
         this.data?.employee?.isFlatSalary
@@ -94,7 +94,7 @@ export class AddEmployeeComponent implements OnInit {
       address: [this.data?.employee?.address, Validators.required],
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
-        this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.employee?.birthday || "2010-01-01", 'yyyy-MM-dd'),
         Validators.required
       ],
       ethnicity: [this.data?.employee?.ethnicity],
