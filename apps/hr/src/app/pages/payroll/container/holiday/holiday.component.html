@@ -82,10 +82,10 @@
           <div class='content-profile default pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
           </div>
           <div class='content-profile default pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>có ràng buộc</div>
+            <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
           </div>
           <div class='content-profile default pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
+            <div class='m-auto d-flex align-items-center justify-content-center'>Có ràng buộ</div>
           </div>
           <div class='content-profile  pointer   address' (click)='Holiday(holiday)'>
             <span [style]='{"width":item.name.length+ 1+ "ch"}' class='mr-1 d-inline-block '
