@@ -83,7 +83,8 @@ export class PayrollComponent implements OnInit {
       }else {
         this.monthPayroll = new Date()
       }
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
+      const month  = new Date(val.createdAt)
+      this.store.dispatch(PayrollAction.loadInit(this.Payroll(Object.assign(val,{createdAt: month}))));
     });
 
     this.positions$ = combineLatest([
