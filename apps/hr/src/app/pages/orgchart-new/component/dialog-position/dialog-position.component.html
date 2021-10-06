@@ -1,0 +1,26 @@
+<div class='main-popup px-5 py-3 '>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class='title-popup row'>
+    <span *ngIf='!data.isUpdate else title '>Thêm chức vụ</span>
+    <ng-template #title>
+      <span >Sửa chức vụ</span>
+    </ng-template>
+  </div>
+  <form class='mt-4 ' [formGroup]='formGroup'>
+    <div class='main-popup'>
+      <div class='row mt-2'>
+        <span class='ml-1 title-item'>Tên chức vụ</span>
+        <input type='number' class='form-control mt-1' formControlName='workday'
+               [ngClass]="{ 'is-invalid': submitted && checkValid.workday.errors?.required }">
+        <div *ngIf='submitted && checkValid.workday.errors?.required' class='invalid-feedback'>
+          <div>Chưa nhập Tên chức vụ</div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

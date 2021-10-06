@@ -18,7 +18,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrgchartNewRoutingModule } from './orgchart-new-routing.module';
 import { PositionContainer } from './container/position/position.container';
-import { DialogDeleteComponent } from './component/dialog-delete/dialog-delete.component';
+import { DialogPositionComponent } from './component/dialog-position/dialog-position.component';
 
 @NgModule({
   imports: [
@@ -45,7 +45,7 @@ import { DialogDeleteComponent } from './component/dialog-delete/dialog-delete.c
   ],
   declarations: [
     PositionContainer,
-    DialogDeleteComponent
+    DialogPositionComponent,
   ]
 })
 export class OrgchartNewModule {
