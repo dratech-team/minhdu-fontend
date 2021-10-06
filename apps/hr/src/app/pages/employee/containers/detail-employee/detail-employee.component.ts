@@ -11,7 +11,7 @@ import {
   DegreeStatusEnum,
   DegreeTypeEnum,
   FlatSalary,
-  FormalityEnum,
+  FormalityEnum, RecipeType,
   RelationshipEnum
 } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -26,7 +26,7 @@ import { AddRelativeComponent } from '../../components/relative/add-relative.com
 
 @Component({
   templateUrl: 'detail-employee.component.html',
-  styleUrls: ['detail-employee.component.scss'],
+  styleUrls: ['detail-employee.component.scss']
 })
 export class DetailEmployeeComponent implements OnInit {
   formalityEnum = FormalityEnum;
@@ -34,16 +34,19 @@ export class DetailEmployeeComponent implements OnInit {
   relationship = RelationshipEnum;
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
+  recipeType = RecipeType;
   isNotFlat = FlatSalary.NOT_FLAT_SALARY;
   isFlat = FlatSalary.FLAT_SALARY;
   employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
-  adding$ = this.store.pipe(select(selectEmployeeAdding))
+  adding$ = this.store.pipe(select(selectEmployeeAdding));
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.getEmployee({ id: this.employeeId }));
@@ -56,13 +59,13 @@ export class DetailEmployeeComponent implements OnInit {
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
       width: '60%',
-      data: { employee: employee },
+      data: { employee: employee }
     });
   }
 
   deleteEmployee(employeeId: number): void {
     const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%',
+      minWidth: '30%'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -79,13 +82,13 @@ export class DetailEmployeeComponent implements OnInit {
   ): void {
     this.dialog.open(AddRelativeComponent, {
       width: '60%',
-      data: { employeeId: employeeId, id: id, relative: relative },
+      data: { employeeId: employeeId, id: id, relative: relative }
     });
   }
 
   deleteRelative(id: number, employeeId: number) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '30%',
+      width: '30%'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -99,13 +102,13 @@ export class DetailEmployeeComponent implements OnInit {
   addAndUpdateDegree(employeeId: number, id?: number, degree?: Degree) {
     this.dialog.open(AddDegreeComponent, {
       width: '40%',
-      data: { employeeId: employeeId, id: id, degree: degree },
+      data: { employeeId: employeeId, id: id, degree: degree }
     });
   }
 
   deleteDegree(id: number, employeeId: number) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: '30%',
+      width: '30%'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -128,5 +131,10 @@ export class DetailEmployeeComponent implements OnInit {
 
   updateContract(employee: Employee) {
     this.dialog.open(UpdateContractComponent, { width: '30%', data: employee });
+  }
+
+  historySalary(employee: Employee) {
+    this.router.navigate(['phieu-luong/lich-su-luong', employee.id],
+      { queryParams: { name: employee.firstName + ' ' + employee.lastName } }).then();
   }
 }

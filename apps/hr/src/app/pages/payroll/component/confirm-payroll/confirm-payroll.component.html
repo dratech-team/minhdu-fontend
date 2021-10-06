@@ -1,124 +1,101 @@
-<div class="py-3 main-popup" style='min-width: 550px'>
-  <div mat-dialog-close class="close-popup">
-    <span class="mr-1"> close</span>
-    <div class="x-popup">
-      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel">
+<div class='py-3 main-popup' style='min-width: 550px'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <div >
-    <h2 class='font-weight-bold'>Phiếu lương</h2>
+  <div>
+    <h2 class='font-weight-bold'>Phiếu lương tháng {{data.createAt|date:'MM/yyyy'}}</h2>
     <mat-dialog-content class='mat-typography'>
-        <div class='px-3'>
-          <div class='mt-3'  *ngIf='this.data.recipeType === "CT2" && payslip'>
-            <div class='row'>
-              <div class='col-5 font-weight-bold'>Ngày công chuẩn:</div>
-              <div class=' col-4'>{{payslip.workday}}</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Ngày đi làm thực tế:</div>
-              <div class=' col-4' >{{payslip.actualDay|| 0 }}</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng lương cơ bản:</div>
-              <div class='text-success col-4'>{{payslip.basic |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng phụ cấp ở lại:</div>
-              <div class='text-success col-4'>{{payslip.stay |number: '1.0-0'}} VND</div>
-            </div >
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng phụ cấp khác:</div>
-              <div class='text-success col-4'>{{payslip.allowance||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng tiền tăng ca:</div>
-              <div class='text-success col-4'>{{payslip.overtime ||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng tiền khấu trừ:</div>
-              <div class='text-danger col-4'>{{payslip.deduction ||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng tền thuế:</div>
-              <div class='text-danger col-4'>{{payslip.tax ||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng Lương:</div>
-              <div  class='text-success col-4'>{{payslip.total ||0 |number: '1.0-0'}}VND</div>
-            </div>
+      <div class='px-3'>
+        <div class='mt-3 px-3' style='width: 600px' *ngIf='( payslip$ | async) as payslip'>
+          <div class=' row'>
+            <div class='col-6 font-weight-bold'>Ngày công chuẩn:</div>
+            <div class=' col-6'>{{payslip?.workday}}</div>
           </div>
-          <div class='mt-3 px-3' style='width: 550px'  *ngIf='this.data.recipeType === "CT1" && payslip'>
-            <div class='row'>
-              <div class='col-5 font-weight-bold'>Ngày công chuẩn:</div>
-              <div class=' col-4'>{{payslip?.workday}}</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Ngày công trừ ngày lễ / tết:</div>
-              <div class=' col-7' >{{payslip.workdayNotInHoliday }}</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Ngày lễ đi làm:</div>
-              <div class=' col-7' >
-                <div class='pr-4'  *ngFor='let item of payslip.worksInHoliday' >
-                  {{item.datetime |date:'dd/MM/yyyy'}} (Hệ số: {{item.rate}} - {{item.day === 1 ? 'nguyên ngày': 'nửa ngày' }}),
-                </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Ngày công trừ ngày lễ / tết:</div>
+            <div class=' col-6'>{{payslip.workdayNotInHoliday }}</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Ngày lễ đi làm:</div>
+            <div class=' col-6' *ngIf='payslip?.worksInHoliday?.length; else worksInHoliday'>
+              <div class='pr-4' *ngFor='let item of payslip?.worksInHoliday'>
+                {{item.datetime |date:'dd/MM/yyyy'}} (Hệ số: {{item.rate}}
+                - {{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
               </div>
             </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Ngày lễ không đi làm:</div>
-              <div class=' col-7' >
-                  <span class='pr-4'  *ngFor='let item of payslip.worksNotInHoliday' >
-                  {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày': 'nửa ngày' }}),
-                </span>
-              </div>
+            <ng-template class=' col-6' #worksInHoliday>
+              0 ngày
+            </ng-template>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Ngày lễ không đi làm:</div>
+            <div class=' col-6' *ngIf='payslip?.worksNotInHoliday?.length; else worksNotInHoliday'>
+              <span class='pr-4' *ngFor='let item of payslip?.worksNotInHoliday'>
+                {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
+              </span>
             </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng ngày công thực nhận:</div>
-              <div class=' col-7' >{{payslip.totalWorkday}}</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Lương cơ bản:</div>
-              <div class='text-success col-7'>{{payslip.basic |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng lương:</div>
-              <div class='text-success col-7'>{{payslip.payslipNormalDay |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Lương đi làm ngày lễ:</div>
-              <div class='text-success col-7'>{{payslip.payslipInHoliday |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Lương không đi làm ngày lễ:</div>
-              <div class='text-success col-7'>{{payslip.payslipNotInHoliday |number: '1.0-0'}} VND</div>
-            </div>
+            <ng-template class=' col-6' #worksNotInHoliday>
+              0 ngày
+            </ng-template>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng ngày công thực nhận:</div>
+            <div class=' col-6'>{{payslip.totalWorkday}}</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Lương cơ bản:</div>
+            <div class='text-success col-6'>{{payslip.basic |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng lương ngày đi làm thực tế trừ lễ:</div>
+            <div class='text-success col-6'>{{payslip?.payslipNormalDay |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Lương / Phụ cấp đi làm ngày lễ:</div>
+            <div class='text-success col-6'>{{payslip.payslipInHoliday |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Lương không đi làm ngày lễ:</div>
+            <div class='text-success col-6'>{{payslip.payslipNotInHoliday |number: '1.0-0'}} VND</div>
+          </div>
 
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng phụ cấp ở lại:</div>
-              <div class='text-success col-7'>{{payslip.stay |number: '1.0-0'}} VND</div>
-            </div >
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng lương làm ngoài giờ :</div>
-              <div class='text-success col-7'>{{payslip.payslipOutOfWorkday||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold' >Tổng tiền khấu trừ:</div>
-              <div class='text-danger col-7'>{{payslip.deduction ||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2' >
-              <div class='col-5 font-weight-bold'>Tổng tền thuế:</div>
-              <div class='text-danger col-7'>{{payslip.tax ||0 |number: '1.0-0'}} VND</div>
-            </div>
-            <div class='row mt-2'>
-              <div class='col-5 font-weight-bold'>Tổng Lương:</div>
-              <div  class='text-success col-7'>{{payslip.total ||0 |number: '1.0-0'}}VND</div>
-            </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng phụ cấp ở lại:</div>
+            <div class='text-success col-6'>{{payslip.stay |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng tiền tăng ca:</div>
+            <div class='text-success col-6'>{{payslip.overtime || 0 |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng lương làm ngoài giờ :</div>
+            <div class='text-success col-6'>{{payslip?.payslipOutOfWorkday || 0 |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng phụ cấp khác:</div>
+            <div class='text-success col-6'>{{payslip.allowance || 0 |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng tiền khấu trừ:</div>
+            <div class='text-danger col-6'>{{payslip.deduction || 0 |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng tền thuế:</div>
+            <div class='text-danger col-6'>{{payslip.tax || 0 |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng Lương thực nhận:</div>
+            <div class='text-success col-6'>{{payslip.total || 0 |number: '1.0-0'}}VND</div>
           </div>
         </div>
+      </div>
     </mat-dialog-content>
-    <div class="footer-popup row mt-3 ml-2">
-      <button mat-dialog-close class="btn btn-cancel mr-3 ">Hủy</button>
-      <button mat-dialog-close (click)='onSubmit()' class="btn btn-ok ">Xác nhận</button>
+    <div class='footer-popup row mt-3 ml-2'>
+      <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
+      <button mat-dialog-close (click)='onSubmit()' class='btn btn-ok '>Xác nhận</button>
     </div>
   </div>
 </div>

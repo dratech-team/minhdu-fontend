@@ -1,13 +1,7 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row h3 ml-3'>Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}</div>
+<div class='row h3 ml-3'>Lịch sử lương của nhân viên {{name$|async}}</div>
 <div class='row ml-3 mt-3 d-flex justify-content-between'>
   <div class='d-flex '>
-    <div>
-      <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
-    </div>
-    <div>
-      <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
-    </div>
     <div>
       <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
     </div>
@@ -17,7 +11,7 @@
   </div>
   <div class='mr-2'>
     <div>
-      <button (click)='generate()' class='btn btn-primary mr-2'>Tự động tạo</button>
+      <button (click)='createPayroll()' class='btn btn-primary mr-2'>Tạo</button>
     </div>
   </div>
 
@@ -26,13 +20,18 @@
 <ng-template #payroll>
   <div class='main-profile '>
     <form [formGroup]='formGroup' #header class=' header-profile mt-1 animated fadeIn'>
+      <!--      <div class='border-start title-header default'>-->
+      <!--        <div class='title-profile'>Mã nhân viên</div>-->
+      <!--        <input-->
+      <!--          class='form-control input-profile'-->
+      <!--          type='text'-->
+      <!--          placeholder='PT100001'-->
+      <!--          formControlName='code'-->
+      <!--        >-->
+      <!--      </div>-->
       <div class='border-start title-header default'>
-        <div class='title-profile'>Mã nhân viên</div>
-        <input class='form-control input-profile' type='text' placeholder='PT100001'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên nhân viên</div>
-        <input class='form-control input-profile ' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
+        <div class='title-profile'>Tháng</div>
+        <input class='form-control input-profile ' type='date' formControlName='createdAt'>
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
@@ -53,10 +52,6 @@
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Tháng</div>
-        <input class='form-control input-profile ' type='month' formControlName='createdAt' min="2021-01">
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Ngày đi làm thực tế</div>
@@ -132,22 +127,19 @@
       [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
       <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
-        <app-mouse-right #child (addEvent)='addPayroll($event)' (readAndUpdateEvent)='readPayroll($event)'>
-        </app-mouse-right>
+        <app-mouse-right #child (addEvent)='createPayroll()' [type]='PageTypeEnum.HISTORY_PAYROLL'
+          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+        <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
+        <!--          {{payroll.employee.code}}-->
+        <!--        </div>-->
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.employee.id}}
-        </div>
-        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.employee.firstName}} {{payroll.employee.lastName}}
+          {{payroll.createdAt|date:'MM/yyyy'}}
         </div>
         <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
           {{payroll?.employee?.position?.name}}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.employee?.branch?.name}}
-        </div>
-        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.createdAt|date:'MM/yyyy'}}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}

@@ -1,4 +1,5 @@
 export enum PageTypeEnum {
   CUSTOMER = 'CUSTOMER',
-  ORDER = 'ORDER'
+  ORDER = 'ORDER',
+  HISTORY_PAYROLL = 'HISTORY_PAYROLL'
 }

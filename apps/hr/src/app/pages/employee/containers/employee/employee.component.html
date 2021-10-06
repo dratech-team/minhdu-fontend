@@ -5,10 +5,10 @@
 <ng-template #employees>
   <div class='main-profile'>
     <form [formGroup]='formGroup' #header class='header-profile mt-2 animated fadeIn'>
-      <!--      <div class='border-start title-header default'>-->
-      <!--        <div class='title-profile'>Mã nhân Viên</div>-->
-      <!--        <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>-->
-      <!--      </div>-->
+      <div class='border-start title-header default'>
+        <div class='title-profile'>Mã nhân Viên</div>
+        <input class='form-control input-profile ' type='text' placeholder='PN10001' formControlName='code'>
+      </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Tên nhân viên</div>
         <input class='form-control input-profile' type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
@@ -44,10 +44,10 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch">
-        <mat-autocomplete #branch="matAutocomplete" >
-          <mat-option *ngFor="let branch of branches$ | async" [value]='branch.name'
-          (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
           >
             {{branch.name}}
           </mat-option>
@@ -55,11 +55,11 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Chức vụ</div>
-        <input class='form-control' type="text" matInput [formControl]="positions" [matAutocomplete]="position">
-        <mat-autocomplete #position="matAutocomplete">
-          <mat-option *ngFor="let position of positions$ | async"
-                      [value]="position.name" (click)='onSelectPosition(position)'
-                      (onSelectionChange)='onSelectPosition(position)' >
+        <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+        <mat-autocomplete #position='matAutocomplete'>
+          <mat-option *ngFor='let position of positions$ | async'
+                      [value]='position.name' (click)='onSelectPosition(position.name)'
+                      (onSelectionChange)='onSelectPosition(position.name)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
@@ -89,7 +89,7 @@
            (contextmenu)='child.onContextMenu($event, employee)'>
         <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
                          (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-        <!--        <div class='content-profile default pointer '> {{employee?.code}}</div>-->
+        <div class='content-profile default pointer '> {{employee?.id}}</div>
         <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
         <div class='content-profile default pointer '> {{employee?.birthday | date:'dd/MM/yyyy'}}</div>
         <div class='content-profile gender pointer '> {{
@@ -98,7 +98,8 @@
               'Khác'
           }}</div>
         <div class='content-profile default pointer '>{{employee?.workedAt|date: 'dd/MM/yyyy'}}</div>
-        <div class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
+        <div
+          class='content-profile default pointer '>{{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
         </div>
         <div class='content-profile default pointer '>{{employee?.phone}}</div>
         <div class='content-profile default pointer '>{{employee?.branch?.name}}</div>

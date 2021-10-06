@@ -16,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AddPayrollComponent } from './component/add-payroll/add-payroll.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -48,6 +47,9 @@ import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timek
 import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
 import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
+import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
+import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 
 @NgModule({
   imports: [
@@ -92,7 +94,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     DetailPayrollComponent,
     FilterPipe,
     DialogAllowanceComponent,
-    AddPayrollComponent,
     UpdateConfirmComponent,
     AddHolidayComponent,
     HolidayComponent,
@@ -105,7 +106,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     DialogTimekeepingComponent,
     PickEmployeeOvertimeComponent,
     DialogOvertimeMultipleComponent,
-    ConvertTimePipe
+    ConvertTimePipe,
+    AddPayrollComponent,
+    DialogExportPayrollComponent,
+    HistoryPayrollComponent,
   ],
   providers:[
     MatDatepickerModule

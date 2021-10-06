@@ -29,7 +29,6 @@ export class DialogOvertimeComponent implements OnInit {
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
-  datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
 

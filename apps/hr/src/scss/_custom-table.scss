@@ -140,11 +140,7 @@
 
 
 .content-profile {
-  padding: 5px;
   overflow-wrap: anywhere;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-weight: 400;
   color: #3C3B54;
 }
@@ -153,7 +149,7 @@
   margin-top: 2px;
   display: flex;
   padding: 2px;
-  min-height: 35px;
+  height: fit-content;
   border-bottom: solid 1px #9aaec1;
 }
 

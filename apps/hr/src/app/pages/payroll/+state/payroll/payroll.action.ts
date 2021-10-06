@@ -15,6 +15,7 @@ export const loadInit = createAction(
     createdAt?: Date,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
+    employeeId?: number
   }>()
 );
 
@@ -45,12 +46,15 @@ export const loadMorePayrollsSuccess = createAction(
 
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ payroll: any }>()
+  props<{ generate: any , addOne?:boolean, inHistory?: boolean}>()
 );
 
 export const addPayrollSuccess = createAction(
   '[ADD_PAYROLL] Add Payroll Success',
-  props<{ payroll: Payroll, }>()
+);
+
+export const handlePayrollError = createAction(
+  '[API_PAYROLL]  Payroll Error',
 );
 
 export const addSalary = createAction(
@@ -59,7 +63,7 @@ export const addSalary = createAction(
 );
 
 export const handleSalaryError = createAction(
-  '[API_SALARY] Salary Error ',
+  '[API_SALARY] Salary Error '
 );
 
 export const getPayroll = createAction(
@@ -80,17 +84,17 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number}>()
-)
+  props<{ id: number }>()
+);
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll> }>()
+  props<{ payrollId: number }>()
 );
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{  payrollId: number, salary: any ,id?: number  }>()
+  props<{ payrollId: number, salary: any, id?: number }>()
 );
 
 export const deletePayroll = createAction(
@@ -126,5 +130,6 @@ export const PayrollAction = {
   updateSalary,
   deletePayroll,
   deletePayrollSuccess,
-  deleteSalary
+  deleteSalary,
+  handlePayrollError
 };

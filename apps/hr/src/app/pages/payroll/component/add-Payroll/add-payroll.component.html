@@ -1,0 +1,23 @@
+<mat-spinner *ngIf='(adding$|async)' class='loading'></mat-spinner>
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='./assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class='title-popup'>
+    <span>Chọn tháng</span>
+  </div>
+  <div class='mt-2'>
+    <form [formGroup]='formGroup'>
+      <label class='title-child'>Tháng</label>
+      <input type='month' min="2021-01" class='form-control' formControlName='generate'>
+    </form>
+    <div class='mt-4 ' mat-dialog-actions>
+      <button class='btn btn-dark ml-2'  (click)='submit()'>Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+

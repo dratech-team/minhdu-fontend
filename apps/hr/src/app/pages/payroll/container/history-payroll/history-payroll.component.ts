@@ -3,13 +3,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { selectorAllEmployee } from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
@@ -21,68 +21,60 @@ import {
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
-import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
-import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'history-payroll.component.html'
 })
-export class PayrollComponent implements OnInit {
+export class HistoryPayrollComponent implements OnInit {
+  name$!: Observable<string>;
   formGroup = new FormGroup({
-    // code: new FormControl(''),
     name: new FormControl(''),
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl( this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+    createdAt: new FormControl(),
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  salaryType = SalaryTypeEnum;
-  contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
+  salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
-  payroll$ = this.store.pipe(select(selectorAllPayroll));
+  payroll$ = this.store.pipe(select(selectorAllPayroll))
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
-  employee$ = this.store.pipe(select(selectorAllEmployee));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  monthPayroll = new Date();
+  PageTypeEnum = PageTypeEnum;
+
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe,
+    private readonly activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
+    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name))
     this.store.dispatch(
-      PayrollAction.loadInit(
-        { skip: this.pageIndexInit,
-          take: this.pageSize,
-          createdAt: new Date()
-        }
-      )
+      PayrollAction.loadInit({
+        skip: this.pageIndexInit,
+        take: this.pageSize,
+        employeeId: this.getEmployeeId
+      })
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      if(val.createdAt){
-        this.monthPayroll = val.createdAt
-      }else {
-        this.monthPayroll = new Date()
-      }
       this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
     });
 
@@ -127,7 +119,8 @@ export class PayrollComponent implements OnInit {
       branch: val.branch,
       createdAt: val.createdAt,
       isPaid: val.paidAt,
-      isConfirm: val.accConfirmedAt
+      isConfirm: val.accConfirmedAt,
+      employeeId: this.getEmployeeId
     };
     if (val.createdAt) {
       return payroll;
@@ -137,27 +130,19 @@ export class PayrollComponent implements OnInit {
     }
   }
 
+  get getEmployeeId(): number {
+    return this.activatedRoute.snapshot.params.id;
+  }
+
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
-  }
-
-  addPayroll($event?: any): void {
-    this.dialog.open(AddPayrollComponent,
-      {width:'30%' , data:{employeeId: $event?.employee?.id ,addOne:true} })
   }
 
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
-    });
-  }
-
-  addSalaryOvertime(type: SalaryTypeEnum): any {
-    this.dialog.open(DialogOvertimeMultipleComponent, {
-      width: 'fit-content',
-      data: { type: type }
     });
   }
 
@@ -168,7 +153,10 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent, {width: '30%', data: this.formGroup.value})
+    this.dialog.open(DialogExportPayrollComponent, {
+      width: '30%',
+      data: this.formGroup.value
+    });
   }
 
   exportTimekeeping() {
@@ -181,14 +169,6 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
-    this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content',
-      data: this.employee$
-    });
-  }
-
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);
   }
@@ -197,7 +177,10 @@ export class PayrollComponent implements OnInit {
     this.formGroup.get('branch')!.patchValue(branchName);
   }
 
-  generate() {
-    this.dialog.open(AddPayrollComponent, {width:'30%'})
+  createPayroll() {
+    this.dialog.open(AddPayrollComponent, {
+      width: '30%',
+      data: { employeeId: this.getEmployeeId, addOne: true, inHistory: true }
+    });
   }
 }
