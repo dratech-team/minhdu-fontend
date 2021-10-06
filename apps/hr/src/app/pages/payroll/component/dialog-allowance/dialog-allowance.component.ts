@@ -49,7 +49,7 @@ export class DialogAllowanceComponent implements OnInit {
           price: [this.data.salary.price, Validators.required],
           note: [this.data.salary.note],
           datetime: [this.data.salary.datetime],
-          // times: [this.data.salary.times],
+          times: [this.data.salary.times],
           // start: [this.data.salary.allowance.start],
           // end: [this.data.salary.allowance?.end],
           type: [this.data.type, Validators.required],
@@ -62,7 +62,7 @@ export class DialogAllowanceComponent implements OnInit {
           price: ['', Validators.required],
           note: [],
           datetime: [],
-          // times: [],
+          times: [1],
           // start: [],
           // end: [],
           rate: [1]
@@ -89,7 +89,7 @@ export class DialogAllowanceComponent implements OnInit {
           : value.price,
       type: this.data.type,
       rate: value.rate,
-      // times: value.times ? value.times : undefined,
+      times: value.times,
       datetime: value.unit === 'MONTH' ? value.datetime : undefined,
                     // value.unit === 'DAY' && !this.isAllDay ? {start: value.start, end: value.end}:
                     //     undefined,
