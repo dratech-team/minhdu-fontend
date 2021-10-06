@@ -5,7 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
   selectedAddingPayroll,
-  selectedLoadedPayroll,
+  selectedLoadedPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,12 +34,13 @@ export class DetailPayrollComponent implements OnInit {
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   daysInMonth!: number;
   employeeName!: string;
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly payrollService: PayrollService,
+    private readonly payrollService: PayrollService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -60,10 +61,6 @@ export class DetailPayrollComponent implements OnInit {
 
   get getPayrollId(): number {
     return this.activatedRoute.snapshot.params.id;
-  }
-
-  onDetailEmployee(id: number) {
-    this.router.navigate(['ho-so/chi-tiet-nhan-vien', id]).then();
   }
 
   addSalary(type: SalaryTypeEnum, payroll: Payroll) {
@@ -145,8 +142,8 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   historySalary(payroll: Payroll) {
-    this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id ],
-      {queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName}}).then();
+    this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
+      { queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName } }).then();
   }
 
   nextPayroll(payroll: Payroll) {
@@ -170,7 +167,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.payrollService.scanHoliday(payrollId).subscribe((res:any) => {
+    this.payrollService.scanHoliday(payrollId).subscribe((res: any) => {
       if (res) {
         this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
       }

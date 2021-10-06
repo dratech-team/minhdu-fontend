@@ -1,4 +1,11 @@
 // Here you can add other styles
+a:link {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+}
 .cdk-overlay-container{
   z-index: 1020 !important;
 }
