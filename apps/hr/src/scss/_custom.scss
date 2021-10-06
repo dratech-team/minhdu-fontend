@@ -9,6 +9,9 @@ a:hover {
 .cdk-overlay-container{
   z-index: 1020 !important;
 }
+.z-index-snackbar{
+  z-index: 2000;
+}
 .background-snackbar{
   background:#4dbd74d1;
 }

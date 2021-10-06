@@ -6,7 +6,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
 import { combineLatest } from 'rxjs';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import {
+  EmployeeAction,
+  selectEmployeeAdding,
+  selectEmployeeLoaded,
+  selectorAllEmployee
+} from '@minhdu-fontend/employee';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 
@@ -21,6 +26,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   employees$ = this.store.pipe(select(selectorAllEmployee));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   isSelectAll = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
