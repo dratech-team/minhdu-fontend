@@ -59,18 +59,19 @@ export class DialogOvertimeComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         datetime: [
           this.datePipe.transform(
-            this.data.salary.datetime, 'yyyy-MM-dd')
-          , Validators.required],
+            this.data.salary.datetime, 'yyyy-MM-dd')],
         note: [this.data.salary.note],
         times: [this.data.salary.times],
+        days: [this.data.salary.times],
         priceAllowance: [this.data.salary.allowance?.price],
         titleAllowance: [this.data.salary.allowance?.title]
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: ['', Validators.required],
+        datetime: [],
         note: [''],
         times: [1],
+        days: [1],
         priceAllowance: [],
         titleAllowance: []
       });
@@ -97,6 +98,7 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -107,8 +109,8 @@ export class DialogOvertimeComponent implements OnInit {
       price: this.price || this.data?.salary?.price,
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
-      times: value.times,
-      datetime: value.datetime ? new Date(value.datetime) : undefined,
+      times: this.unit === this.datetimeUnitEnum.DAY ? value.days: value.times,
+      datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
       unit: this.unit || undefined,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId
@@ -135,11 +137,14 @@ export class DialogOvertimeComponent implements OnInit {
         payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
-      if(!this.title){
-       return  this.snackBar.open('Chưa chọn loại tăng ca','',{duration:2000})
+      if (!this.title) {
+        return this.snackBar.open('Chưa chọn loại tăng ca', '', { duration: 2000 });
       }
-      if(this.unit === DatetimeUnitEnum.HOUR && !value.times){
-       return  this.snackBar.open('chưa nhập số giờ tăng ca','',{duration:2000})
+      if (value.days <=1 && !value.datetime) {
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+      }
+      if (this.unit === DatetimeUnitEnum.HOUR && !value.times) {
+        return this.snackBar.open('chưa nhập số giờ tăng ca', '', { duration: 2000 });
       }
       this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
@@ -164,8 +169,8 @@ export class DialogOvertimeComponent implements OnInit {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {
         positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
-        unit: this.unit? this.unit: ''
+        unit: this.unit ? this.unit : ''
       }));
-    this.titleOvertimes.patchValue('')
+    this.titleOvertimes.patchValue('');
   }
 }
