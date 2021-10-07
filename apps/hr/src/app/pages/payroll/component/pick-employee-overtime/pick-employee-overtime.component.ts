@@ -64,12 +64,12 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes)
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
 
     const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
-    const previousCreatedPayroll =
-      changes.search?.previousValue?.createdPayroll;
+    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
 
     if (
       currentTemplateId &&
@@ -78,8 +78,11 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     ) {
       this.store.dispatch(
         EmployeeAction.loadInit({
-         employee:{ templateId: changes.search.currentValue.templateId,
-           createdPayroll: new Date(changes.search.currentValue.createdPayroll)}
+          employee: {
+            templateId: changes.search.currentValue.templateId,
+            createdPayroll: changes.search.currentValue.createdPayroll ?
+              new Date(changes.search.currentValue.createdPayroll): new Date()
+          }
         })
       );
     }

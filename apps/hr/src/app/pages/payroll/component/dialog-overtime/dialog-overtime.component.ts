@@ -68,7 +68,8 @@ export class DialogOvertimeComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: [],
+        datetime: [undefined],
+        month: [undefined],
         note: [''],
         times: [1],
         days: [1],
@@ -98,7 +99,6 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -109,8 +109,8 @@ export class DialogOvertimeComponent implements OnInit {
       price: this.price || this.data?.salary?.price,
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
-      times: this.unit === this.datetimeUnitEnum.DAY ? value.days: value.times,
-      datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) : undefined,
+      times: this.unit === this.datetimeUnitEnum.DAY && value.days > 1 ? value.days : value.times,
+      datetime: value.days <= 1  && value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
       unit: this.unit || undefined,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId

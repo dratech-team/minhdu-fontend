@@ -65,9 +65,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup = this.formBuilder.group({
       datetime: [undefined],
+      month: [undefined],
       note: [''],
       times: [1],
-      days:[1],
+      days: [1],
       priceAllowance: [],
       titleAllowance: []
     });
@@ -113,6 +114,13 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         }
       })
     );
+    this.formGroup.get('days')!.valueChanges.subscribe(days => {
+      if (days > 1) {
+        this.formGroup.get('datetime')!.setValue('');
+      } else {
+        this.formGroup.get('month')!.setValue('');
+      }
+    });
   }
 
   checkAllowanceOvertime() {
@@ -183,19 +191,23 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         duration: 1000
       });
     }
-    if (this.employeeIds.length === 0) {
-      return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
-        duration: 1000
-      });
-    }
     const value = this.formGroup.value;
     if (this.unit && !value.times) {
       return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
         duration: 1000
       });
     }
-    if (value.days <=1 && !value.datetime) {
-      return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+    if (!value.datetime && !value.month ) {
+      if (value.days <= 1) {
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+      } else {
+        return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
+      }
+    }
+    if (this.employeeIds.length === 0) {
+      return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
+        duration: 1000
+      });
     }
     const salary = {
       title: this.title,
@@ -203,7 +215,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
       times: this.unit === this.datetimeUnitEnum.DAY ? value.days : value.times,
-      datetime: value.days <=1 && value.datetime  ? new Date(value.datetime) : undefined,
+      datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) :
+        value.days > 1 && value.month ? new Date(value.month) : undefined,
       note: value.note,
       unit: this.unit || undefined,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,

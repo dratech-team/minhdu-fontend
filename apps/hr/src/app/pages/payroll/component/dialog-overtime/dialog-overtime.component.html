@@ -57,16 +57,16 @@
                 <div class='row form-control' style='background: #e4e7ea '>{{data.salary.title}}</div>
               </div>
             </div>
-            <div *ngIf='formGroup.get("days")?.value  <= 1 ' class='date-or-time col ml-2'>
-              <div class='row title-item mb-1'>
+            <div *ngIf='!(formGroup.get("days")?.value > 1) || unit === datetimeUnitEnum.HOUR  '  class='date-or-time col ml-2'>
+              <div class=' title-item mb-1'>
                 <span>Ngày</span>
+                <span class='star'>*</span>
               </div>
-              <div class='row mb-3' [formGroup]='formGroup'>
+              <div class=' mb-3' [formGroup]='formGroup'>
                 <input type='date' class='form-control' formControlName='datetime'>
               </div>
             </div>
           </div>
-
           <div *ngIf=" unit =='DAY'">
             <div>
               <div  class='row title-item mb-1'>
