@@ -54,7 +54,9 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      datetime: [,Validators.required],
+      datetime: [undefined],
+      start: [undefined],
+      end: [undefined],
       times: [],
       minutes: [],
       rate: [1, Validators.required],
@@ -73,12 +75,25 @@ export class DialogTimekeepingComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+    const value = this.formGroup.value;
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
-      !this.formGroup.value.times && !this.formGroup.value.minutes) {
+      !value.times && !value.minutes) {
       return this.snackBar.open('Chưa nhập thời gian', '', { duration: 2000 });
     }
 
-    const value = this.formGroup.value;
+    if (
+      this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY &&
+      (!value.start || !value.end)
+    ) {
+      return this.snackBar.open('chưa chọn từ ngày đến ngày', '', { duration: 2000 });
+    }
+
+    if (
+      this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE && !value.datetime
+    ) {
+      return this.snackBar.open('chưa chọn ngày', '', { duration: 2000 });
+    }
+
     const salary = {
       title: this.titleAbsents[this.selectedIndex]?.title,
       type: this.titleAbsents[this.selectedIndex]?.type,
@@ -100,7 +115,8 @@ export class DialogTimekeepingComponent implements OnInit {
       Object.assign(
         salary, {
           title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title,
-          times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5
+          times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5,
+          datetime: value.start === value.end ? value.start: { start: value.start, end: value.end }
         }
       );
     } else {
