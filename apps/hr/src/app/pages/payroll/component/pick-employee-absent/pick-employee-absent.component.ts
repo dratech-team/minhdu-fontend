@@ -8,7 +8,6 @@ import { TimekeepingService } from './timekeeping.service';
 import { combineLatest } from 'rxjs';
 import {
   EmployeeAction,
-  selectEmployeeAdding,
   selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
@@ -47,7 +46,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.createdPayroll) {
       this.store.dispatch(EmployeeAction.loadInit(
-        { createdPayroll: new Date(this.createdPayroll) }
+        {employee: { createdPayroll: new Date(this.createdPayroll)} }
       ));
     }
     this.employees$.subscribe(employee => {
@@ -98,7 +97,9 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.createdPayroll.previousValue !== changes.createdPayroll.currentValue) {
-      this.store.dispatch(EmployeeAction.loadInit({ createdPayroll: new Date(changes.createdPayroll.currentValue) }));
+      this.store.dispatch(EmployeeAction.loadInit({
+        employee:{createdPayroll: new Date(changes.createdPayroll.currentValue) }
+      }));
     }
   }
 

@@ -1,6 +1,5 @@
 import { select, Store } from '@ngrx/store';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-import { Employee } from '@minhdu-fontend/data-models';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -11,11 +10,11 @@ export class PickEmployeeService {
   }
 
   onInit(props?: any) {
-    this.store.dispatch(EmployeeAction.loadInit(props));
+    this.store.dispatch(EmployeeAction.loadInit({employee:props}));
   }
 
   searchEmployees(val: any) {
-    this.store.dispatch(EmployeeAction.loadInit(val));
+    this.store.dispatch(EmployeeAction.loadInit({employee:val}));
   }
 
   Employees() {

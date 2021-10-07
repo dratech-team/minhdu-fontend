@@ -1,41 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { Employee } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity/src/models';
-import { Gender } from '@minhdu-fontend/enums';
+import { EmployeeDto } from './employee.dto';
 
-/// FIXME: Optimze code model các tham số này tạo thành model theo nguyên tắc k dùng 2 chỗ lặp lại. lỡ sinh ra 1 trươngf nữa thì fai copy code bỏ qua nhiều chỗ. k clear
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{
-    take?: number,
-    skip?: number,
-    name?: string,
-    workedAt?: Date,
-    code?: string,
-    position?: string,
-    branch?: string,
-    gender?: Gender,
-    isSelect?: boolean,
-    templateId?: number,
-    createdPayroll?: Date
-  }>()
+  props<{employee: EmployeeDto}>()
 );
 
-/// FIXME: Optimze code model các tham số này tạo thành model theo nguyên tắc k dùng 2 chỗ lặp lại. lỡ sinh ra 1 trươngf nữa thì fai copy code bỏ qua nhiều chỗ. k clear
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
-  props<{
-    take: number,
-    skip: number,
-    name?: string,
-    workedAt?: Date,
-    code?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    gender?: Gender,
-    isSelect?: boolean,
-  }>()
+  props<{employee: EmployeeDto}>()
 );
 
 export const LoadEmployeesSuccess = createAction(

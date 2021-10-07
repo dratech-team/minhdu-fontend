@@ -183,7 +183,7 @@ export class PayrollComponent implements OnInit {
   }
 
   Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
+    this.store.dispatch(EmployeeAction.loadInit({employee:{}}));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: this.employee$
