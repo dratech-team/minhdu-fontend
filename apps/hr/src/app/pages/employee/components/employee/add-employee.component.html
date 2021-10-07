@@ -19,34 +19,34 @@
         </app-pick-location>
         <div class='row mt-3 d-flex'>
           <div class='col-sm' [formGroup]='formGroup'>
-            <label >Chức vụ </label><span class='star'>*</span>
-            <input class='form-control' type="text" matInput [formControl]="formPosition" [matAutocomplete]="position"
+            <label>Chức vụ </label><span class='star'>*</span>
+            <input class='form-control' type='text' matInput [formControl]='formPosition' [matAutocomplete]='position'
                    #positionInput>
-            <mat-autocomplete #position="matAutocomplete">
-              <mat-option *ngFor="let position of positions$ | async"
-                          [value]="!position.id ? positionInput.value : position.name " (click)='onSelectPosition(position)'
-                          (onSelectionChange)='onSelectPosition(position)' >
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async'
+                          [value]='position.id ? position.name : positionInput.value '
+                          (onSelectionChange)='onSelectPosition( $event,position)'>
                 {{position.name}}
               </mat-option>
             </mat-autocomplete>
           </div>
-          <div class='col-sm'  [formGroup]='formGroup' >
-            <label >Ngày công chuẩn </label><span class='star'>*</span>
-            <input class='form-control' type="number" formControlName="workday"
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Ngày công chuẩn </label><span class='star'>*</span>
+            <input class='form-control' type='number' formControlName='workday'
                    [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
             >
-            <div *ngIf="submitted && f.workday.errors" class="invalid-feedback">
-              <div *ngIf="f.workday.errors?.required">Chưa nhập ngày công chuẩn</div>
+            <div *ngIf='submitted && f.workday.errors' class='invalid-feedback'>
+              <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
             </div>
           </div>
           <div class='col-sm'>
             <label>Đơn vị </label><span class='star'>*</span>
-            <input class='form-control' type="text" matInput [formControl]="branches" [matAutocomplete]="branch"
-                   #branchInput >
-            <mat-autocomplete #branch="matAutocomplete" >
-              <mat-option *ngFor="let branch of branches$ | async" [value]="!branch.id ? branchInput.value : branch.name"
-                          (click)='onCreateBranch(branch)'
-                          (onSelectionChange)='onCreateBranch(branch)'>
+            <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
+                   #branchInput>
+            <mat-autocomplete #branch='matAutocomplete'>
+              <mat-option *ngFor='let branch of branches$ | async'
+                          [value]='!branch.id ? branchInput.value : branch.name'
+                          (onSelectionChange)='onCreateBranch($event,branch)'>
                 {{branch.name}}
               </mat-option>
             </mat-autocomplete>
@@ -67,8 +67,8 @@
                 Lương không cố định
               </mat-option>
             </mat-select>
-            <div *ngIf="submitted && f.isFlatSalary.errors" class="invalid-feedback">
-              <div *ngIf="f.isFlatSalary.errors?.required">Chưa chọn loại lương</div>
+            <div *ngIf='submitted && f.isFlatSalary.errors' class='invalid-feedback'>
+              <div *ngIf='f.isFlatSalary.errors?.required'>Chưa chọn loại lương</div>
             </div>
           </div>
           <div class='col-sm' [formGroup]='formGroup'>
