@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { Payslip } from '../../+state/payslip/payslip.interface';
 import { PayslipService } from '../../service/payslip.service';
+import { RecipeType } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
 })
 export class ConfirmPayrollComponent implements OnInit {
   payslip$?: Observable<Payslip>;
-
+  recipeType = RecipeType
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly payslipService: PayslipService,

@@ -14,8 +14,12 @@
             <div class='col-6 font-weight-bold'>Ngày công chuẩn:</div>
             <div class=' col-6'>{{payslip?.workday}}</div>
           </div>
-          <div class='row mt-2'>
+          <div class='row mt-2' *ngIf='data.recipeType === recipeType.CT1 ' >
             <div class='col-6 font-weight-bold'>Ngày công trừ ngày lễ / tết:</div>
+            <div class=' col-6'>{{payslip.workdayNotInHoliday }}</div>
+          </div>
+          <div class='row mt-2' *ngIf='data.recipeType === recipeType.CT1 ' >
+            <div class='col-6 font-weight-bold'>Ngày Làm ngoài giờ:</div>
             <div class=' col-6'>{{payslip.workdayNotInHoliday }}</div>
           </div>
           <div class='row mt-2'>
@@ -27,7 +31,9 @@
               </div>
             </div>
             <ng-template class=' col-6' #worksInHoliday>
-              0 ngày
+              <div class='col-6'>
+                <span class='pr-4'>  0 ngày</span>
+              </div>
             </ng-template>
           </div>
           <div class='row mt-2'>
@@ -37,8 +43,11 @@
                 {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
               </span>
             </div>
-            <ng-template class=' col-6' #worksNotInHoliday>
-              0 ngày
+            <ng-template class='col-6' #worksNotInHoliday>
+              <div class='col-6'>
+                <span class='pr-4'>  0 ngày</span>
+              </div>
+
             </ng-template>
           </div>
           <div class='row mt-2'>
