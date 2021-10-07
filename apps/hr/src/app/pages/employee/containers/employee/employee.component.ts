@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { Position } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeAdding,
@@ -65,7 +64,7 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     /// FIXME: Load 2 lần
     this.store.dispatch(
-      EmployeeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+      EmployeeAction.loadInit({ employee: { take: this.pageSize, skip: this.pageIndexInit } })
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -73,7 +72,7 @@ export class EmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1500)
       )
-      .subscribe(val => this.store.dispatch(EmployeeAction.loadInit(this.employee(val))));
+      .subscribe(val => this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) })));
 
     this.positions$ = combineLatest([
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -158,7 +157,7 @@ export class EmployeeComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees(this.employee(val)));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees({employee: this.employee(val)}));
   }
 
   readAndUpdate($event: any): void {

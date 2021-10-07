@@ -71,7 +71,6 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     const previousCreatedPayroll =
       changes.search?.previousValue?.createdPayroll;
 
-    console.log(changes);
     if (
       currentTemplateId &&
       (currentTemplateId !== previousTemplateId ||
@@ -79,8 +78,8 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     ) {
       this.store.dispatch(
         EmployeeAction.loadInit({
-          templateId: changes.search.currentValue.templateId,
-          createdPayroll: new Date(changes.search.currentValue.createdPayroll)
+         employee:{ templateId: changes.search.currentValue.templateId,
+           createdPayroll: new Date(changes.search.currentValue.createdPayroll)}
         })
       );
     }
