@@ -244,8 +244,11 @@
               </div>
             </div>
             <div class='col-md-7 title-child' *ngIf='salary.unit === "DAY"'>
-              <div *ngIf='salary.times'>{{salary.title}}
-                {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }}
+              <div *ngIf='salary.times > 1 '>{{salary.title}}
+                {{salary.times}} ngày {{salary.note ? ' - ' + salary.note : '' }}
+              </div>
+              <div *ngIf='salary.times <= 1 '>{{salary.title}}
+                ngày {{salary.datetime|date:'dd/MM/yyyy'}}{{salary.note ? ' - ' + salary.note : '' }}
               </div>
               <div class='ml-4' *ngIf='salary.allowance'>-  {{salary.allowance.title}}</div>
               <div *ngIf='!salary.times'>
