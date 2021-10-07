@@ -63,7 +63,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data?.employee?.recipeType )
+    console.log(this.data?.employee?.recipeType);
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
@@ -78,10 +78,10 @@ export class AddEmployeeComponent implements OnInit {
       phone: [this.data?.employee?.phone],
       note: [this.data?.employee.note],
       workedAt: [
-        this.datePipe.transform(this.data?.employee?.workedAt || "2010-01-01", 'yyyy-MM-dd')
+        this.datePipe.transform(this.data?.employee?.workedAt || '2010-01-01', 'yyyy-MM-dd')
       ],
       createdAt: [
-        this.datePipe.transform(this.data?.employee?.createdAt || "2010-01-01", 'yyyy-MM-dd')
+        this.datePipe.transform(this.data?.employee?.createdAt || '2010-01-01', 'yyyy-MM-dd')
       ],
       isFlatSalary: [
         this.data?.employee?.isFlatSalary
@@ -94,7 +94,7 @@ export class AddEmployeeComponent implements OnInit {
       address: [this.data?.employee?.address, Validators.required],
       gender: [this.data?.employee?.gender, Validators.required],
       birthday: [
-        this.datePipe.transform(this.data?.employee?.birthday || "2010-01-01", 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.employee?.birthday || '2010-01-01', 'yyyy-MM-dd'),
         Validators.required
       ],
       ethnicity: [this.data?.employee?.ethnicity],
@@ -220,15 +220,18 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  onSelectPosition(position: Position) {
-    if (position.id) {
-      this.positionId = position.id;
-      this.formGroup.patchValue({
-        workday: position.workday,
-        position: position.name
-      });
-    } else {
-      this.onCreatePosition();
+  onSelectPosition(event: any, position: Position) {
+    if (event.isUserInput) {
+      if (position.id) {
+        this.positionId = position.id;
+        this.formGroup.patchValue({
+          workday: position.workday,
+          position: position.name
+        });
+        console.log(this.positionId);
+      } else {
+        this.onCreatePosition();
+      }
     }
   }
 
@@ -243,14 +246,16 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   /// FIXME: Duplicate code
-  onCreateBranch(branch: Branch) {
-    if (branch.id === 0) {
-      this.branchService
-        .addOne({ name: this.branchInput.nativeElement.value })
-        .subscribe((branch) => (this.branchId = branch.id));
-      this.snackbar.open('Đã tạo', '', { duration: 2500 });
-    } else {
-      this.branchId = branch.id;
+  onCreateBranch(event: any, branch: Branch) {
+    if (event.isUserInput) {
+      if (branch.id === 0) {
+        this.branchService
+          .addOne({ name: this.branchInput.nativeElement.value })
+          .subscribe((branch) => (this.branchId = branch.id));
+        this.snackbar.open('Đã tạo', '', { duration: 2500 });
+      } else {
+        this.branchId = branch.id;
+      }
     }
   }
 

@@ -120,24 +120,26 @@ export class AddHolidayComponent implements OnInit {
     });
   }
 
-  onCreatePosition(position: any): any {
-    if (position.id) {
-      if (this.positionSelected.some(item => item.id === position.id)) {
-        this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+  onCreatePosition(event: any, position: any): any {
+    if (event.isUserInput) {
+      if (position.id) {
+        if (this.positionSelected.some(item => item.id === position.id)) {
+          this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+        } else {
+          this.positionSelected.push(position);
+        }
       } else {
-        this.positionSelected.push(position);
+        this.positionService
+          .addOne({
+            name: this.inputPosition.nativeElement.value
+          })
+          .subscribe((position) => (
+            this.positionSelected.push(position)
+          ));
+        this.snackBar.open('Đã tạo', '', { duration: 2500 });
       }
-    } else {
-      this.positionService
-        .addOne({
-          name: this.inputPosition.nativeElement.value
-        })
-        .subscribe((position) => (
-          this.positionSelected.push(position)
-        ));
-      this.snackBar.open('Đã tạo', '', { duration: 2500 });
+      setTimeout(()=>this.positions.setValue(''))
     }
-    this.positions.setValue('');
   }
 
   removePosition(position: Position) {

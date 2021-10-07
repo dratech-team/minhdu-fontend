@@ -1,7 +1,4 @@
 import {
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
   Component,
   ElementRef,
   Inject,
@@ -24,7 +21,6 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
-import { add } from 'ngx-bootstrap/chronos';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -147,34 +143,38 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     });
   }
 
-  onCreatePosition(position: any) {
-    if (position.id) {
-      if (this.positionSelected.some(item => item.id === position.id)) {
-        this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+  onCreatePosition(event: any, position: Position) {
+    if (event.isUserInput) {
+      if (position.id) {
+        if (this.positionSelected.some(item => item.id === position.id)) {
+          this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+        } else {
+          this.positionSelected.push(position);
+        }
       } else {
-        this.positionSelected.push(position);
+        this.positionService
+          .addOne({
+            name: this.inputPosition.nativeElement.value
+          })
+          .subscribe((position) => (
+            this.positionSelected.push(position)
+          ));
+        this.snackbar.open('Đã tạo', '', { duration: 2500 });
       }
-    } else {
-      this.positionService
-        .addOne({
-          name: this.inputPosition.nativeElement.value
-        })
-        .subscribe((position) => (
-          this.positionSelected.push(position)
-        ));
-      this.snackbar.open('Đã tạo', '', { duration: 2500 });
+      setTimeout(()=>this.positions.setValue(''))
     }
-    this.positions.setValue('')
   }
 
-  onCreateBranch(branch?: Branch) {
-    if (branch?.id === 0) {
-      this.branchService
-        .addOne({ name: this.branchInput.nativeElement.value })
-        .subscribe((branch) => (this.branchId = branch.id));
-      this.snackbar.open('Đã tạo', '', { duration: 2500 });
-    } else {
-      this.branchId = branch?.id;
+  onCreateBranch(event: any, branch?: Branch) {
+    if (event.isUserInput) {
+      if (branch?.id === 0) {
+        this.branchService
+          .addOne({ name: this.branchInput.nativeElement.value })
+          .subscribe((branch) => (this.branchId = branch.id));
+        this.snackbar.open('Đã tạo', '', { duration: 2500 });
+      } else {
+        this.branchId = branch?.id;
+      }
     }
   }
 
