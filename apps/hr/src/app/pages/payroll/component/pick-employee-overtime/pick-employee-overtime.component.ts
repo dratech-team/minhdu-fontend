@@ -5,12 +5,16 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
-import { EmployeeAction, selectEmployeeLoaded, selectorAllEmployee } from '@minhdu-fontend/employee';
+import {
+  EmployeeAction,
+  selectEmployeeLoaded,
+  selectorAllEmployee,
+} from '@minhdu-fontend/employee';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -18,7 +22,7 @@ import { PickEmployeeService } from './pick-employee.service';
 
 @Component({
   selector: 'app-pick-employee-overtime',
-  templateUrl: 'pick-employee-overtime.component.html'
+  templateUrl: 'pick-employee-overtime.component.html',
 })
 export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   @Input() checkAllowance = false;
@@ -34,15 +38,14 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
   formGroup = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
   });
 
   constructor(
     private readonly store: Store,
     private readonly service: PickEmployeeService,
     private readonly snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.employees$.subscribe((employee) => {
@@ -55,7 +58,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
           const param = {
             name: val.name,
             templateId: this.search.templateId,
-            createdPayroll: new Date(this.search.createdPayroll)
+            createdPayroll: new Date(this.search.createdPayroll),
           };
           this.service.searchEmployees(param);
         })
@@ -64,12 +67,13 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
+    console.log(changes);
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
 
     const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
-    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
+    const previousCreatedPayroll =
+      changes.search?.previousValue?.createdPayroll;
 
     if (
       currentTemplateId &&
@@ -80,9 +84,10 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
         EmployeeAction.loadInit({
           employee: {
             templateId: changes.search.currentValue.templateId,
-            createdPayroll: changes.search.currentValue.createdPayroll ?
-              new Date(changes.search.currentValue.createdPayroll): new Date()
-          }
+            createdPayroll: changes.search.currentValue.createdPayroll
+              ? new Date(changes.search.currentValue.createdPayroll)
+              : new Date(),
+          },
         })
       );
     }
@@ -103,7 +108,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     this.isSelectEmployee =
       this.employees !== null &&
       this.employees.every((e) => this.employeeIds.includes(e.id));
-    this.isSelectAllowance = this.employees !== null && this.employees.every(e => this.allowEmpIds.includes(e.id));
+    this.isSelectAllowance =
+      this.employees !== null &&
+      this.employees.every((e) => this.allowEmpIds.includes(e.id));
     this.EventSelectEmployee.emit(this.employeeIds);
     this.EventSelectAllowance.emit(this.allowEmpIds);
   }
@@ -111,7 +118,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   someCompleteEmployee(): boolean {
     return (
       this.employees.filter((e) => this.employeeIds.includes(e.id)).length >
-      0 && !this.isSelectEmployee
+        0 && !this.isSelectEmployee
     );
   }
 
@@ -120,7 +127,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     if (this.employees == null) {
       return;
     }
-    this.employees?.forEach(employee => {
+    this.employees?.forEach((employee) => {
       if (select) {
         if (!this.employeeIds.includes(employee.id)) {
           this.employeeIds.push(employee.id);
@@ -165,7 +172,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   someCompleteAllowance(): boolean {
     return (
       this.employees.filter((e) => this.allowEmpIds.includes(e.id)).length >
-      0 && !this.isSelectAllowance
+        0 && !this.isSelectAllowance
     );
   }
 
