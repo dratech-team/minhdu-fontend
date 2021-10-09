@@ -30,7 +30,7 @@ export class AddPayrollComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      generate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')]
+      generate: [this.datePipe.transform(new Date(), 'yyyy-MM')]
     });
   }
 
@@ -53,7 +53,7 @@ export class AddPayrollComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added =>{
       if(added){
-        this.dialogRef.close();
+        this.dialogRef.close(new Date(this.formGroup.value.generate));
       }
     })
   }

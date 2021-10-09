@@ -38,7 +38,7 @@ export class PayrollComponent implements OnInit {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl( this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+    createdAt: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM')),
     position: new FormControl(''),
     branch: new FormControl('')
   });
@@ -56,19 +56,21 @@ export class PayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   monthPayroll = new Date();
+
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe,
+    private readonly datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(
       PayrollAction.loadInit(
-        { skip: this.pageIndexInit,
+        {
+          skip: this.pageIndexInit,
           take: this.pageSize,
           createdAt: new Date()
         }
@@ -78,15 +80,14 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      if(val.createdAt){
-        this.monthPayroll = val.createdAt
-      }else {
-        this.monthPayroll = new Date()
+      if (val.createdAt) {
+        this.monthPayroll = val.createdAt;
+      } else {
+        this.monthPayroll = new Date();
       }
-      const month  = new Date(val.createdAt)
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(Object.assign(val,{createdAt: month}))));
+      const month = new Date(val.createdAt);
+      this.store.dispatch(PayrollAction.loadInit(this.Payroll(Object.assign(val, { createdAt: month }))));
     });
-
     this.positions$ = combineLatest([
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
@@ -144,8 +145,13 @@ export class PayrollComponent implements OnInit {
   }
 
   addPayroll($event?: any): void {
-    this.dialog.open(AddPayrollComponent,
-      {width:'30%' , data:{employeeId: $event?.employee?.id ,addOne:true} })
+    const ref = this.dialog.open(AddPayrollComponent,
+      { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+      }
+    });
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -169,7 +175,7 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent, {width: '30%', data: this.formGroup.value})
+    this.dialog.open(DialogExportPayrollComponent, { width: '30%', data: this.formGroup.value });
   }
 
   exportTimekeeping() {
@@ -183,7 +189,7 @@ export class PayrollComponent implements OnInit {
   }
 
   Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({employee:{}}));
+    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: this.employee$
@@ -199,8 +205,11 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    /// FIXME: Cần được kiểm tra kỹ trước khi đưa vào sử dụng
-    // this.dialog.open(AddPayrollComponent, {width:'30%'})
-    this.snackbar.open("Tính năng đang được bảo trì. Vui lòng tạo phiếu lương trong mục lịch sử nhân viên. Xin cảm ơn.", "Đã hiểu", {duration: 3000})
+    const ref = this.dialog.open(AddPayrollComponent, { width: '30%' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+      }
+    });
   }
 }
