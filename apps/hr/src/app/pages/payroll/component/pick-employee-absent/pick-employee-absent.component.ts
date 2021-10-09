@@ -6,7 +6,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
 import { combineLatest } from 'rxjs';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import {
+  EmployeeAction,
+  selectEmployeeLoaded,
+  selectorAllEmployee
+} from '@minhdu-fontend/employee';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 
@@ -21,6 +25,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   employees$ = this.store.pipe(select(selectorAllEmployee));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   isSelectAll = false;
   employees: Employee[] = [];
   employeeIds: number[] = [];
@@ -41,7 +46,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.createdPayroll) {
       this.store.dispatch(EmployeeAction.loadInit(
-        { createdPayroll: new Date(this.createdPayroll) }
+        {employee: { createdPayroll: new Date(this.createdPayroll)} }
       ));
     }
     this.employees$.subscribe(employee => {
@@ -92,7 +97,9 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.createdPayroll.previousValue !== changes.createdPayroll.currentValue) {
-      this.store.dispatch(EmployeeAction.loadInit({ createdPayroll: new Date(changes.createdPayroll.currentValue) }));
+      this.store.dispatch(EmployeeAction.loadInit({
+        employee:{createdPayroll: new Date(changes.createdPayroll.currentValue) }
+      }));
     }
   }
 

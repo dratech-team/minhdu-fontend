@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, debounceTime, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
 import {
-  EmployeeAction, handleRelativeError,
+  EmployeeAction,
   selectorEmployeeTotal
 } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,7 +20,7 @@ export class EmployeeEffect {
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadInit),
-      switchMap((props) => this.employeeService.pagination(props)),
+      switchMap((props) => this.employeeService.pagination(props.employee)),
       map((responsePagination) => {
         this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
         return EmployeeAction.LoadEmployeesSuccess({
@@ -36,7 +36,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.loadMoreEmployees),
       withLatestFrom(this.store.pipe(select(selectorEmployeeTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.employee)), { skip: skip })
       ),
       switchMap((props) => {
         return this.employeeService.pagination(props);
@@ -136,12 +136,11 @@ export class EmployeeEffect {
               return EmployeeAction.getEmployee({ id: props.id });
             }
           ),
-          catchError((err) =>
-          {
-            this.store.dispatch(EmployeeAction.handleEmployeeError())
-           return  throwError(err)
-          }
-            )
+          catchError((err) => {
+              this.store.dispatch(EmployeeAction.handleEmployeeError());
+              return throwError(err);
+            }
+          )
         )
       )
     )

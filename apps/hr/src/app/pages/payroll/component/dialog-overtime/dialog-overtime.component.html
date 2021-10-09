@@ -7,18 +7,18 @@
   </div>
   <mat-dialog-content class='mat-typography'>
     <form [formGroup]='formGroup' (submit)='onSubmit()' class='px-3'>
-      <div [formGroup]='formGroup' class='tab'>
+      <div [formGroup]='formGroup' class='px-3'>
         <!--Overtime - Tăng ca -->
         <div class='form-group'>
-          <div class='row mb-5 title-popup'>
+          <div class=' mb-5 title-popup'>
             <span>Lương ngoài giờ</span>
           </div>
           <div class='row' *ngIf='!data.isUpdate'>
             <div class='date-or-time col'>
-              <div class=' row title-item mb-1'>
+              <div class='  title-item mb-1'>
                 <span>Đơn vị tăng ca</span>
               </div>
-              <div class=' row mb-3'>
+              <div class=' mb-3'>
                 <mat-select
                   class='form-control col'
                 >
@@ -36,13 +36,12 @@
             </div>
           </div>
           <div class='row datepicker'>
-            <div class='date-or-time col '>
-              <div class='row title-item mb-1'>
-                <span> Loại tăng ca</span>
-                <div class='star'>*</div>
+            <div class='date-or-time col mb-3  '>
+              <div class=' title-item mb-1'>
+                <span> Loại tăng ca</span><span class='star'>*</span>
               </div>
               <div *ngIf='!data.isUpdate'>
-                <input class='form-control row mb-3' type='text' matInput [formControl]='titleOvertimes'
+                <input class='form-control  ' type='text' matInput [formControl]='titleOvertimes'
                        [matAutocomplete]='titleOvertime'>
                 <mat-autocomplete #titleOvertime='matAutocomplete'>
                   <mat-option *ngFor='let templateOvertime of templateOvertime$ | async'
@@ -57,58 +56,65 @@
                 <div class='row form-control' style='background: #e4e7ea '>{{data.salary.title}}</div>
               </div>
             </div>
-            <div class='date-or-time col ml-2'>
-              <div class='row title-item mb-1'>
-                <span>Ngày</span>
-                <div class='star'>*</div>
+          </div>
+          <div class='d-flex row'>
+            <div *ngIf=' unit ==datetimeUnitEnum.DAY' class='col'>
+              <div class=' title-item mb-1 ' >
+                <span>Số ngày tăng ca</span>
               </div>
-              <div class='row mb-3' [formGroup]='formGroup'>
-                <input type='date' class='form-control' formControlName='datetime'
-                       [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
-                <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập ngày</div>
-                </div>
+              <div class=' mb-3' [formGroup]='formGroup'>
+                <input type='number' class='form-control' formControlName='days' min='1'>
               </div>
             </div>
-          </div>
-          <div *ngIf=" unit =='DAY'">
-            <div class='unit-price'>
-              <div class='row title-item mb-1'>
-                <span>Giá tăng ca</span>
-                <div class='star'>*</div>
-              </div>
-              <div class='row mb-3' [formGroup]='formGroup'>
-                <input type='number' class='form-control  px-1' value='{{price}}' disabled>
-              </div>
-            </div>
-          </div>
-          <div *ngIf='unit === datetimeUnitEnum.HOUR'>
-            <div class='work-time'>
-              <div class='row'>
-                <div class='col mr-2'>
-                  <div class='row title-item mb-1'>
+            <div class='work-time col' *ngIf='unit === datetimeUnitEnum.HOUR'>
+              <div >
+                <div class='mr-2'>
+                  <div class=' title-item mb-1'>
                     <span>Giờ làm việc</span>
-                    <div class='star'>*</div>
+                    <span class='star'>*</span>
                   </div>
-                  <div class='row mb-3' [formGroup]='formGroup'>
+                  <div class=' mb-3' [formGroup]='formGroup'>
                     <input type='number' class='form-control px-1' placeholder='Nhập số giờ làm việc'
                            min='0' formControlName='times'>
                   </div>
                 </div>
               </div>
             </div>
+            <div *ngIf='!(formGroup.get("days")?.value > 1) || unit === datetimeUnitEnum.HOUR  '
+                 class='date-or-time col'>
+              <div class=' title-item mb-1'>
+                <span>Ngày</span>
+                <span class='star'>*</span>
+              </div>
+              <div class=' mb-3' [formGroup]='formGroup'>
+                <input type='date' class='form-control ' formControlName='datetime'>
+              </div>
+            </div>
+          </div>
+          <div *ngIf=" unit =='DAY'">
             <div class='unit-price'>
-              <div class='row title-item mb-1'>
-                <span>Đơn giá (1 giờ)</span>
+              <div class=' title-item mb-1'>
+                <span>Giá tăng ca</span>
                 <div class='star'>*</div>
               </div>
-              <div class='row mb-3' [formGroup]='formGroup'>
+              <div class=' mb-3' [formGroup]='formGroup'>
+                <input type='number' class='form-control  px-1' value='{{price}}' disabled>
+              </div>
+            </div>
+          </div>
+          <div *ngIf='unit === datetimeUnitEnum.HOUR'>
+            <div class='unit-price'>
+              <div class=' title-item mb-1'>
+                <span>Đơn giá (1 giờ)</span>
+                <span class='star'>*</span>
+              </div>
+              <div class=' mb-3' [formGroup]='formGroup'>
                 <input type='number' class='form-control  px-1' placeholder='{{data?.salary?.price}}'
                        value='{{price}}' disabled>
               </div>
             </div>
           </div>
-          <div  class='row d-flex align-items-center title-item mb-2'>
+          <div class=' d-flex align-items-center title-item mb-2'>
             <span>Phụ cấp tăng ca:</span>
             <input type='checkbox' [checked]='onAllowanceOvertime' class='ml-2' (click)='checkAllowanceOvertime()'>
           </div>
@@ -131,10 +137,10 @@
             </div>
           </div>
           <div>
-            <div class='row title-item mb-1 mt-3'>
+            <div class=' title-item mb-1 mt-3'>
               <span>Chú thích</span>
             </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
+            <div class=' mb-3' [formGroup]='formGroup'>
               <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
             </div>
           </div>

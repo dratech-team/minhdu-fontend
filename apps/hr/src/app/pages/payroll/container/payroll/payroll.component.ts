@@ -83,7 +83,8 @@ export class PayrollComponent implements OnInit {
       }else {
         this.monthPayroll = new Date()
       }
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
+      const month  = new Date(val.createdAt)
+      this.store.dispatch(PayrollAction.loadInit(this.Payroll(Object.assign(val,{createdAt: month}))));
     });
 
     this.positions$ = combineLatest([
@@ -182,7 +183,7 @@ export class PayrollComponent implements OnInit {
   }
 
   Timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({}));
+    this.store.dispatch(EmployeeAction.loadInit({employee:{}}));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: this.employee$
@@ -198,6 +199,8 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    this.dialog.open(AddPayrollComponent, {width:'30%'})
+    /// FIXME: Cần được kiểm tra kỹ trước khi đưa vào sử dụng
+    // this.dialog.open(AddPayrollComponent, {width:'30%'})
+    this.snackbar.open("Tính năng đang được bảo trì. Vui lòng tạo phiếu lương trong mục lịch sử nhân viên. Xin cảm ơn.", "Đã hiểu", {duration: 3000})
   }
 }

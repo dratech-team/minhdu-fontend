@@ -8,6 +8,6 @@ export class TimekeepingService {
   }
 
   searchEmployees(val: any) {
-    return this.store.dispatch(EmployeeAction.loadInit(val));
+    return this.store.dispatch(EmployeeAction.loadInit({employee: val}));
   }
 }

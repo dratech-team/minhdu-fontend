@@ -68,10 +68,8 @@ export class PayrollEffect {
       ofType(PayrollAction.addPayroll),
       switchMap((props) =>
         this.payrollService.addPayroll(props.generate).pipe(
-          map((_) => {
-            this.snackBar.open('Tạo phiếu lương thành công', '', {
-              duration: 1000,
-            });
+          map((res) => {
+            this.snackBar.open(res.message, 'Đóng');
             if (props.inHistory) {
               this.store.dispatch(
                 PayrollAction.loadInit({
@@ -110,7 +108,7 @@ export class PayrollEffect {
             if (res?.status === 201) {
               this.snackBar.open(res.message, 'Xác nhận');
             } else {
-              this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
+              this.snackBar.open('Thao tác thành công', '', {duration:1000} );
             }
             return props.payrollId
               ? PayrollAction.getPayroll({ id: props.payrollId })
@@ -135,8 +133,9 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.getOne(props.id)),
       map((payroll) => {
         this.snackBar.open('Tải phiếu lương thành công', '', {
-          duration: 1000,
-        });
+          panelClass:['z-index-snackbar'],
+          duration:1000
+      });
         return PayrollAction.getPayrollSuccess({ payroll: payroll });
       }),
       catchError((err) => throwError(err))

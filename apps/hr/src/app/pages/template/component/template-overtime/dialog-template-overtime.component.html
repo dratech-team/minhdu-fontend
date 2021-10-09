@@ -42,7 +42,7 @@
           <mat-autocomplete #position='matAutocomplete'>
             <mat-option *ngFor='let position of positions$ | async'
                         [value]='!position.id ? positionInput.value : position.name '
-                        (onSelectionChange)='onCreatePosition(position)'>
+                        (onSelectionChange)='onCreatePosition($event, position)'>
               {{position.name}}
             </mat-option>
           </mat-autocomplete>
@@ -65,7 +65,7 @@
                  #branchInput>
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async' [value]='!branch.id ? branchInput.value : branch.name'
-                        (click)='onCreateBranch(branch)'>
+                        (onSelectionChange)='onCreateBranch($event, branch)'>
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
