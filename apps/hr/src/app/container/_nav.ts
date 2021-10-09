@@ -29,11 +29,6 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
-    name: 'Tăng ca',
-    url: '/phieu-luong/tang-ca',
-    icon: 'cil-lock-locked'
-  },
-  {
     title: true,
     name: 'Bản Mẫu'
   },
