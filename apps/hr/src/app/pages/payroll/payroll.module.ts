@@ -48,6 +48,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
+import { OvertimeComponent } from './container/overtime/overtime.component';
+import { SalaryReducer } from './+state/payroll/salary.reducer';
 
 @NgModule({
   imports: [
@@ -61,6 +63,7 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+    StoreModule.forFeature(FeatureName.SALARY, SalaryReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
     EffectsModule.forFeature([
@@ -106,6 +109,7 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     AddPayrollComponent,
     DialogExportPayrollComponent,
     HistoryPayrollComponent,
+    OvertimeComponent,
   ],
   providers:[
     MatDatepickerModule
