@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { Holiday } from '../+state/holiday/holiday.interface';
+import { Holiday } from '../../template/+state/holiday/holiday.interface';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 @Injectable({providedIn:'root'})

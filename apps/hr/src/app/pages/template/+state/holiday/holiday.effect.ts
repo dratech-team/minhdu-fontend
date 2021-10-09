@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HolidayAction } from './holiday.action';
-import { HolidayService } from '../../service/holiday.service';
+import { HolidayService } from '../../../payroll/service/holiday.service';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';

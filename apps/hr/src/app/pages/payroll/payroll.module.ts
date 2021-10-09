@@ -22,10 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
-import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
-import { HolidayComponent } from './container/holiday/holiday.component';
-import { HolidayReducer } from './+state/holiday/holiday.reducer';
-import { HolidayEffect } from './+state/holiday/holiday.effect';
+import { HolidayReducer } from '../template/+state/holiday/holiday.reducer';
+import { HolidayEffect } from '../template/+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
@@ -95,8 +93,6 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     FilterPipe,
     DialogAllowanceComponent,
     UpdateConfirmComponent,
-    AddHolidayComponent,
-    HolidayComponent,
     DialogOvertimeComponent,
     DialogBasicComponent,
     DialogAbsentComponent,
