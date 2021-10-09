@@ -145,15 +145,13 @@ export class PayrollComponent implements OnInit {
   }
 
   addPayroll($event?: any): void {
-    /// FIXME: Cần được kiểm tra kỹ trước khi đưa vào sử dụng
-    // const ref = this.dialog.open(AddPayrollComponent,
-    //   { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
-    // ref.afterClosed().subscribe(val => {
-    //   if (val) {
-    //     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
-    //   }
-    // });
-    this.snackbar.open("Tính năng đang được bảo trì. Vui lòng tạo phiếu lương trong mục lịch sử nhân viên. Xin cảm ơn.", "Đã hiểu", {duration: 3000})
+    const ref = this.dialog.open(AddPayrollComponent,
+      { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+      }
+    });
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -207,13 +205,11 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    /// FIXME: Cần được kiểm tra kỹ trước khi đưa vào sử dụng
-    // const ref = this.dialog.open(AddPayrollComponent, { width: '30%' });
-    // ref.afterClosed().subscribe(val => {
-    //   if (val) {
-    //     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
-    //   }
-    // });
-    this.snackbar.open("Tính năng đang được bảo trì. Vui lòng tạo phiếu lương trong mục lịch sử nhân viên. Xin cảm ơn.", "Đã hiểu", {duration: 3000})
+    const ref = this.dialog.open(AddPayrollComponent, { width: '30%' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+      }
+    });
   }
 }
