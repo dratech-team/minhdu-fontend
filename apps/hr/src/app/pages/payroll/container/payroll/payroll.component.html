@@ -64,14 +64,38 @@
         </div>
         <div class='border-start title-header default'>
           <div class='title-profile'>Tháng</div>
-          <input class='form-control input-profile ' type='month' formControlName='createdAt' min="2021-01">
+          <input class='form-control input-profile ' type='month' formControlName='createdAt' min='2021-01'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Ngày công chuẩn</div>
+          <input disabled class='form-control input-profile ' type='search'>
         </div>
         <div class='border-start title-header name'>
           <div class='title-profile'>Ngày đi làm thực tế</div>
           <input disabled class='form-control input-profile ' type='search'>
         </div>
         <div class='border-start title-header name'>
-          <div class='title-profile'>Ngày công chuẩn</div>
+          <div class='title-profile'>Ngày đi làm trừ lễ tết</div>
+          <input disabled class='form-control input-profile ' type='search'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Ngày lễ đi làm</div>
+          <input disabled class='form-control input-profile ' type='search'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Ngày lễ không đi làm</div>
+          <input disabled class='form-control input-profile ' type='search'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Ngày công làm thêm</div>
+          <input disabled class='form-control input-profile ' type='search'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Vắng</div>
+          <input disabled class='form-control input-profile ' type='search'>
+        </div>
+        <div class='border-start title-header name'>
+          <div class='title-profile'>Tổng ngày công thực nhận</div>
           <input disabled class='form-control input-profile ' type='search'>
         </div>
         <div class='border-start title-header default'>
@@ -136,7 +160,8 @@
         </div>
       </form>
       <div class='outer   animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(payroll$|async) as payrolls'
+           [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()'
+           *ngIf='(payroll$|async) as payrolls'
            [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
         <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
@@ -157,12 +182,34 @@
           <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
             {{payroll.createdAt|date:'MM/yyyy'}}
           </div>
+
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+          </div>
           <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
             {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
           </div>
           <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-            {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+            {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
           </div>
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}
+          </div>
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật' }}
+          </div>
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{payroll.payslip?.workdayNotInHoliday &&
+          payroll.payslip?.workday
+            ? payroll.payslip.workdayNotInHoliday -  payroll.payslip.workday  : 'Đang cập nhật' }}
+          </div>
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{'Đang cập nhật' }}
+          </div>
+          <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+            {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
+          </div>
+
           <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
             <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
                  style='width:fit-content;height: fit-content'>
@@ -218,8 +265,10 @@
     </div>
   </ng-template>
 </div>
+
 <div *ngIf='!selectedPayroll'>
-<app-overtime
-  (EventSelectMonth)='selectMonth($event)'
-  [createdAt]='this.formGroup.get("createdAt")!.value'></app-overtime>
+  <app-overtime
+    (EventSelectMonth)='selectMonth($event)'
+    [createdAt]='this.formGroup.get("createdAt")!.value'></app-overtime>
 </div>
+

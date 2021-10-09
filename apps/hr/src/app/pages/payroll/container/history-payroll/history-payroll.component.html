@@ -38,7 +38,7 @@
         <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
         <mat-autocomplete #position='matAutocomplete'>
           <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-            (click)='onSelectPosition(position.name)' (onSelectionChange)='onSelectPosition(position.name)'>
+                      (click)='onSelectPosition(position.name)' (onSelectionChange)='onSelectPosition(position.name)'>
             {{position.name}}
           </mat-option>
         </mat-autocomplete>
@@ -48,17 +48,41 @@
         <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-            (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'>
+                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'>
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày công chuẩn</div>
+        <input disabled class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header name'>
         <div class='title-profile'>Ngày đi làm thực tế</div>
         <input disabled class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header name'>
-        <div class='title-profile'>Ngày công chuẩn</div>
+        <div class='title-profile'>Ngày đi làm trừ lễ tết</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày lễ đi làm</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày lễ không đi làm</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Ngày công làm thêm</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Vắng</div>
+        <input disabled class='form-control input-profile ' type='search'>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tổng ngày công thực nhận</div>
         <input disabled class='form-control input-profile ' type='search'>
       </div>
       <div class='border-start title-header default'>
@@ -123,12 +147,13 @@
       </div>
     </form>
     <div class='outer   animated fadeIn' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-      [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(payroll$|async) as payrolls'
-      [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
+         [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()'
+         *ngIf='(payroll$|async) as payrolls'
+         [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
       <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
         <app-mouse-right #child (addEvent)='createPayroll()' [type]='PageTypeEnum.HISTORY_PAYROLL'
-          (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+                         (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
         <!--        <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>-->
         <!--          {{payroll.employee.code}}-->
         <!--        </div>-->
@@ -142,20 +167,40 @@
           {{payroll.employee?.branch?.name}}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
           {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
-          {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+          {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật' }}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.payslip?.workdayNotInHoliday &&
+        payroll.payslip?.workday
+          ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{'Đang cập nhật' }}
+        </div>
+        <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
+          {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
         </div>
         <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
-            style='width:fit-content;height: fit-content'>
+               style='width:fit-content;height: fit-content'>
             <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.accConfirmedAt !== null'>
           </div>
         </div>
         <div class='content-profile default pointer d-flex justify-content-center align-items-center '>
           <div (click)='updateConfirmPayroll(payroll.id,"manConfirmedAt")'
-            style='width:fit-content;height: fit-content'>
+               style='width:fit-content;height: fit-content'>
             <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.manConfirmedAt !== null'>
           </div>
         </div>
@@ -193,7 +238,7 @@
         </div>
       </div>
       <div *ngIf='!payrolls || payrolls.length === 0 ' style='height:60vh; '
-        class=' d-flex justify-content-center align-content-center'>
+           class=' d-flex justify-content-center align-content-center'>
         <div class='font-xl font-weight-bold d-flex align-items-center'>
           Hiện chưa có phiếu lương nào!
         </div>
