@@ -19,7 +19,6 @@ import {
   TemplateOvertimeAction
 } from '../../../template/+state/template-overtime/template-overtime.action';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-overtime',

@@ -48,12 +48,14 @@ export class DialogAllowanceComponent implements OnInit {
         unit: [this.data.salary.unit, Validators.required],
         price: [this.data.salary.price, Validators.required],
         note: [this.data.salary.note],
-        datetime: [this.data.salary.datetime],
+        datetime: [
+          this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd'),
+        ],
         times: [this.data.salary.times],
         // start: [this.data.salary.allowance.start],
         // end: [this.data.salary.allowance?.end],
         type: [this.data.type, Validators.required],
-        rate: [this.data.salary.rate ? this.data.salary.rate : 1]
+        rate: [this.data.salary.rate ? this.data.salary.rate : 1],
       });
     } else {
       this.formGroup = this.formBuilder.group({
