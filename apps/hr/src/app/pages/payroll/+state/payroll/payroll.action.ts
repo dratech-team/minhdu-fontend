@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
+import { Salary } from '@minhdu-fontend/data-models';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -44,17 +45,47 @@ export const loadMorePayrollsSuccess = createAction(
   props<{ payrolls: Payroll[] }>()
 );
 
+export const loadSalaryInit = createAction(
+  '[LOAD_PAYROLL] Load Salary Init',
+  props<{
+    take?: number,
+    skip?: number,
+    title?: string,
+    createdAt?:Date
+  }>()
+);
+
+export const loadMoreSalary = createAction(
+  '[LOAD_PAYROLL] Load More Salary',
+  props<{
+    take?: number,
+    skip?: number,
+    title?: string,
+    createdAt?:Date
+  }>()
+);
+
+export const loadSalaryInitSuccess = createAction(
+  '[LOAD_SALARY] Load Salary Success',
+  props<{ salary: Salary[] }>()
+);
+
+export const loadMoreSalarySuccess = createAction(
+  '[LOAD_SALARY] Load Salary Success',
+  props<{ salary: Salary[] }>()
+);
+
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ generate: any , addOne?:boolean, inHistory?: boolean}>()
+  props<{ generate: any, addOne?: boolean, inHistory?: boolean }>()
 );
 
 export const addPayrollSuccess = createAction(
-  '[ADD_PAYROLL] Add Payroll Success',
+  '[ADD_PAYROLL] Add Payroll Success'
 );
 
 export const handlePayrollError = createAction(
-  '[API_PAYROLL]  Payroll Error',
+  '[API_PAYROLL]  Payroll Error'
 );
 
 export const addSalary = createAction(
@@ -118,6 +149,10 @@ export const PayrollAction = {
   loadInitSuccess,
   loadMorePayrolls,
   loadMorePayrollsSuccess,
+  loadSalaryInit,
+  loadMoreSalary,
+  loadSalaryInitSuccess,
+  loadMoreSalarySuccess,
   addPayroll,
   addPayrollSuccess,
   handleSalaryError,

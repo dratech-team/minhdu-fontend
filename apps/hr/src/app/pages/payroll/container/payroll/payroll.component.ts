@@ -33,7 +33,6 @@ import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.com
 })
 export class PayrollComponent implements OnInit {
   formGroup = new FormGroup({
-    // code: new FormControl(''),
     name: new FormControl(''),
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
@@ -42,6 +41,7 @@ export class PayrollComponent implements OnInit {
     position: new FormControl(''),
     branch: new FormControl('')
   });
+  selectedPayroll = true
   salaryType = SalaryTypeEnum;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
@@ -78,7 +78,6 @@ export class PayrollComponent implements OnInit {
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
       if (val.createdAt) {
         this.monthPayroll = val.createdAt;
@@ -211,5 +210,15 @@ export class PayrollComponent implements OnInit {
         this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
+  }
+
+  onSelectPayroll() {
+    this.selectedPayroll = !this.selectedPayroll
+  }
+
+  selectMonth(event: any) {
+    console.log( event)
+    this.monthPayroll = event
+    this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'))
   }
 }
