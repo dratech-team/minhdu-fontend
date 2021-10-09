@@ -71,10 +71,10 @@ export class DialogAbsentComponent implements OnInit {
         this.unitAbsent = true;
       }
       //INIT FORM
-      if (this.data.unit === DatetimeUnitEnum.DAY) {
+      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
         this.formGroup = this.formBuilder.group({
-          start: [this.datePipe.transform(this.data.salary.datetime.start, 'yyyy-MM-dd')],
-          end: [this.datePipe.transform(this.data.salary.datetime.end, 'yyyy-MM-dd')],
+          start: [this.datePipe.transform(this.data.salary.datetime?.start, 'yyyy-MM-dd')],
+          end: [this.datePipe.transform(this.data.salary.datetime?.end, 'yyyy-MM-dd')],
           forgot: [this.data.salary?.forgot],
           times: [
             this.data.salary.unit === DatetimeUnitEnum.MINUTE
@@ -191,7 +191,12 @@ export class DialogAbsentComponent implements OnInit {
           Object.assign(salary, {
             title: 'Vắng ' + this.titleSession[value.partialDay]?.title,
             times: this.titleSession[value.partialDay].times,
-            datetime: { start: value.start, end: value.end }
+            datetime: moment(value.start).format('YYYY-MM-DD')  === moment(value.end).format('YYYY-MM-DD')
+              ? value.start :
+              {
+                start: value.start,
+                end: value.end
+              }
           });
         }
         if (
@@ -201,7 +206,12 @@ export class DialogAbsentComponent implements OnInit {
           Object.assign(salary, {
             title: 'Không đi làm ' + this.titleSession[value.partialDay]?.title,
             times: this.titleSession[value.partialDay].times,
-            datetime: { start: value.start, end: value.end }
+            datetime: moment(value.start).format('YYYY-MM-DD')  === moment(value.end).format('YYYY-MM-DD')
+              ? value.start :
+              {
+                start: value.start,
+                end: value.end
+              }
           });
         }
       } else {

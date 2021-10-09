@@ -10,6 +10,7 @@ import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
+import * as moment from 'moment';
 
 
 @Component({
@@ -116,7 +117,12 @@ export class DialogTimekeepingComponent implements OnInit {
         salary, {
           title: this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title,
           times: this.titleSession[value.partialDay]?.type === PartialDayEnum.ALL_DAY ? 1 : 0.5,
-          datetime: value.start === value.end ? value.start: { start: value.start, end: value.end }
+          datetime: moment(value.start).format('YYYY-MM-DD')  === moment(value.end).format('YYYY-MM-DD')
+            ? value.start :
+            {
+              start: value.start,
+              end: value.end
+            }
         }
       );
     } else {

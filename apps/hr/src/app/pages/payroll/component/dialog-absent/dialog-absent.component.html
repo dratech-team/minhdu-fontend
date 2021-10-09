@@ -44,8 +44,8 @@
           <mat-form-field appearance='fill'>
             <mat-label>Chọn từ ngày đến ngày</mat-label>
             <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'>
-              <input matStartDate formControlName='start' placeholder='Start date'>
-              <input matEndDate formControlName='end' placeholder='End date'>
+              <input matStartDate formControlName='start' placeholder='ngày bắt đầu'>
+              <input matEndDate formControlName='end' placeholder='ngày kết thúc'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
