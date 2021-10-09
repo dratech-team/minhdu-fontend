@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
-import { Salary } from '@minhdu-fontend/data-models';
+import { ResponsePaginate, Salary } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { BaseService } from 'libs/service/base.service';
@@ -10,6 +10,9 @@ import { BaseService } from 'libs/service/base.service';
 export class SalaryService extends BaseService<Salary> {
   constructor(public readonly http: HttpClient) {
     super(Api.SALARY, http);
+  }
+  pagination(params?: any): Observable<ResponsePaginate<Salary>> {
+    return super.pagination(params);
   }
 
   addOne(salary: any): Observable<Salary | any> {

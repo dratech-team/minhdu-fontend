@@ -14,7 +14,7 @@ import {
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollAction } from './payroll.action';
-import { selectorPayrollTotal } from './payroll.selector';
+import { selectorPayrollTotal, selectorSalaryTotal } from './payroll.selector';
 
 @Injectable()
 export class PayrollEffect {
@@ -57,6 +57,47 @@ export class PayrollEffect {
         }
         return PayrollAction.loadMorePayrollsSuccess({
           payrolls: ResponsePaginate.data,
+        });
+      }),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  loadSalaryInit$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.loadSalaryInit),
+      concatMap((requestPaginate) => {
+        return this.salaryService.pagination(requestPaginate);
+      }),
+      map((ResponsePaginate) => {
+        return PayrollAction.loadSalaryInitSuccess({
+          salary: ResponsePaginate.data,
+        });
+      }),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  loadMoreSalary$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PayrollAction.loadMoreSalary),
+      withLatestFrom(this.store.pipe(select(selectorSalaryTotal))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+      ),
+      switchMap((props) => {
+        return this.salaryService.pagination(props);
+      }),
+      map((ResponsePaginate) => {
+        if (ResponsePaginate.data.length === 0) {
+          this.snackBar.openFromComponent(SnackBarComponent, {
+            duration: 2500,
+            panelClass: ['background-snackbar'],
+            data: { content: 'Đã lấy hết phiếu tăng ca' },
+          });
+        }
+        return PayrollAction.loadSalaryInitSuccess({
+          salary: ResponsePaginate.data,
         });
       }),
       catchError((err) => throwError(err))

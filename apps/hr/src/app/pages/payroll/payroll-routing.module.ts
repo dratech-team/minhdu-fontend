@@ -4,6 +4,7 @@ import { PayrollComponent } from './container/payroll/payroll.component';
 import { DetailPayrollComponent } from './container/detail-payroll/detail-payroll.component';
 import { HolidayComponent } from '../template/container/holiday/holiday.component';
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
+import { OvertimeComponent } from './container/overtime/overtime.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,14 @@ const routes: Routes = [
     data: {
       title: 'Lịch sử lương nhân viên'
     }
-  }
+  },
+  {
+    path: 'tang-ca',
+    component: OvertimeComponent,
+    data: {
+      title: 'Tăng ca'
+    }
+  },
 ];
 
 @NgModule({

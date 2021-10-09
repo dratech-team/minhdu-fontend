@@ -2,6 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { PayrollAction } from './payroll.action';
 import { Payroll } from './payroll.interface';
+import { Salary } from '@minhdu-fontend/data-models';
 
 export interface PayrollState extends EntityState <Payroll> {
   loaded: boolean,
@@ -9,6 +10,7 @@ export interface PayrollState extends EntityState <Payroll> {
   adding: boolean,
   selectedPayrollId: number
 }
+
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
@@ -27,7 +29,6 @@ export const payrollReducer = createReducer(
     adapter.addMany(action.payrolls, { ...state, loaded: true })),
 
   on(PayrollAction.addPayroll, (state, _) => {
-    console.log('ssss')
     return { ...state, adding: true, added: false };
   }),
 
@@ -50,24 +51,28 @@ export const payrollReducer = createReducer(
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })),
 
-  on(PayrollAction.addSalary, (state, _) => {
-    return { ...state, adding: true, added: false };
-  }),
-  on(PayrollAction.updateSalary, (state, _) => {
-    return { ...state, adding: true, added: false };
-  }),
-  on(PayrollAction.handleSalaryError, (state, _) => {
-    return { ...state, adding: false };
-  }),
   on(PayrollAction.handlePayrollError, (state, _) => {
       return { ...state, adding: false, added: false };
     }
-  )
+  ),
+  on(PayrollAction.addSalary, (state, _) => {
+    return { ...state, adding: true, added: false };
+  }),
+
+  on(PayrollAction.updateSalary, (state, _) => {
+    return { ...state, adding: true, added: false };
+  }),
+
+  on(PayrollAction.handleSalaryError, (state, _) => {
+    return { ...state, adding: false };
+  })
 );
+
 
 export const {
   selectEntities,
   selectAll,
   selectTotal
 } = adapter.getSelectors();
+
 
