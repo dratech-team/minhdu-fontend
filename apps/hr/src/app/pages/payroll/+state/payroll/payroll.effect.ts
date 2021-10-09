@@ -69,21 +69,14 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.addPayroll(props.generate).pipe(
           map((res) => {
-            this.snackBar.open(res.message, 'Đóng');
+            console.log(res)
+            this.snackBar.open( res?.message ? res.message: 'Thao tác thành công ', 'Đóng');
             if (props.inHistory) {
               this.store.dispatch(
                 PayrollAction.loadInit({
                   take: 30,
                   skip: 0,
                   employeeId: props.generate.employeeId,
-                })
-              );
-            } else {
-              this.store.dispatch(
-                PayrollAction.loadInit({
-                  take: 30,
-                  skip: 0,
-                  createdAt: new Date(),
                 })
               );
             }
