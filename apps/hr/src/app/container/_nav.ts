@@ -29,11 +29,6 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
-    name: 'Ngày lễ',
-    url: '/phieu-luong/ngay-le',
-    icon: 'cil-lock-locked'
-  },
-  {
     title: true,
     name: 'Bản Mẫu'
   },
@@ -45,6 +40,11 @@ export const navItems: INavData[] = [
   {
     name: 'Tăng ca',
     url: '/ban-mau/tang-ca',
+    icon: 'cil-lock-locked'
+  },
+  {
+    name: 'Ngày lễ',
+    url: '/ban-mau/ngay-le',
     icon: 'cil-lock-locked'
   },
   {
