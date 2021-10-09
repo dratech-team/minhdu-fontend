@@ -39,35 +39,35 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      if(this.data?.salary?.datetime?.start && this.data?.salary?.datetime?.start){
-        this.isAllDay = false
-      }
-      if(this.data.isUpdate){
-        this.formGroup = this.formBuilder.group({
-          title: [this.data.salary.title, Validators.required],
-          unit: [this.data.salary.unit,Validators.required],
-          price: [this.data.salary.price, Validators.required],
-          note: [this.data.salary.note],
-          datetime: [this.data.salary.datetime],
-          times: [this.data.salary.times],
-          // start: [this.data.salary.allowance.start],
-          // end: [this.data.salary.allowance?.end],
-          type: [this.data.type, Validators.required],
-          rate: [this.data.salary.rate ? this.data.salary.rate : 1]
-        });
-      }else{
-        this.formGroup = this.formBuilder.group({
-          title: ['', Validators.required],
-          unit: ['',Validators.required],
-          price: ['', Validators.required],
-          note: [],
-          datetime: [],
-          times: [1],
-          // start: [],
-          // end: [],
-          rate: [1]
-        });
-      }
+    if (this.data?.salary?.datetime?.start && this.data?.salary?.datetime?.start) {
+      this.isAllDay = false;
+    }
+    if (this.data.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        title: [this.data.salary.title, Validators.required],
+        unit: [this.data.salary.unit, Validators.required],
+        price: [this.data.salary.price, Validators.required],
+        note: [this.data.salary.note],
+        datetime: [this.data.salary.datetime],
+        times: [this.data.salary.times],
+        // start: [this.data.salary.allowance.start],
+        // end: [this.data.salary.allowance?.end],
+        type: [this.data.type, Validators.required],
+        rate: [this.data.salary.rate ? this.data.salary.rate : 1]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        title: ['', Validators.required],
+        unit: ['', Validators.required],
+        price: ['', Validators.required],
+        note: [],
+        datetime: [],
+        times: [1],
+        // start: [],
+        // end: [],
+        rate: [1]
+      });
+    }
   }
 
   get f() {
@@ -75,7 +75,6 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -85,17 +84,18 @@ export class DialogAllowanceComponent implements OnInit {
       title: value.title,
       price:
         typeof value.price === 'string'
-          ? Number(value.price.replace(this.numberChars,''))
+          ? Number(value.price.replace(this.numberChars, ''))
           : value.price,
       type: this.data.type,
       rate: value.rate,
       times: value.times,
-      datetime: value.unit === 'MONTH' ? value.datetime : undefined,
-                    // value.unit === 'DAY' && !this.isAllDay ? {start: value.start, end: value.end}:
-                    //     undefined,
+      datetime: value.unit === 'MONTH' ||
+      (value.unit === DatetimeUnitEnum.DAY && value.datetime) ? new Date(value.datetime) : undefined,
+      // value.unit === 'DAY' && !this.isAllDay ? {start: value.start, end: value.end}:
+      //     undefined,
       note: value.note,
       unit: value.unit ? value.unit : undefined,
-      payrollId: this.data.isUpdate? this.data.salary.id: this.data.payroll.id
+      payrollId: this.data.isUpdate ? this.data.salary.id : this.data.payroll.id
     };
     if (this.data.isUpdate) {
       this.store.dispatch(
@@ -114,10 +114,10 @@ export class DialogAllowanceComponent implements OnInit {
       );
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
-      if(added){
+      if (added) {
         this.dialogRef.close();
       }
-    })
+    });
 
   }
 
