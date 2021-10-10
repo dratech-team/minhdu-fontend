@@ -59,6 +59,10 @@
             <div class='text-success col-6'>{{payslip.basic |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
+            <div class='col-6 font-weight-bold'>Tổng phụ cấp ở lại:</div>
+            <div class='text-success col-6'>{{payslip.stay |number: '1.0-0'}} VND</div>
+          </div>
+          <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng lương ngày đi làm thực tế trừ lễ:</div>
             <div class='text-success col-6'>{{payslip?.payslipNormalDay |number: '1.0-0'}} VND</div>
           </div>
@@ -69,11 +73,6 @@
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Lương không đi làm ngày lễ:</div>
             <div class='text-success col-6'>{{payslip.payslipNotInHoliday |number: '1.0-0'}} VND</div>
-          </div>
-
-          <div class='row mt-2'>
-            <div class='col-6 font-weight-bold'>Tổng phụ cấp ở lại:</div>
-            <div class='text-success col-6'>{{payslip.stay |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Tổng tiền tăng ca:</div>
@@ -92,7 +91,7 @@
             <div class='text-danger col-6'>{{payslip.deduction || 0 |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
-            <div class='col-6 font-weight-bold'>Tổng tền thuế:</div>
+            <div class='col-6 font-weight-bold'>Trừ tiền trích bảo hiểm:</div>
             <div class='text-danger col-6'>{{payslip.tax || 0 |number: '1.0-0'}} VND</div>
           </div>
           <div class='row mt-2'>
