@@ -43,7 +43,7 @@ export class AddPayrollComponent implements OnInit {
       width: 'fit-content',
       disableClose: true,
       data: {
-        content: 'Đang khởi tạo phiếu lương',
+        content: 'Đang khởi tạo phiếu lương...',
         loaded: this.adding$
       }
     });
