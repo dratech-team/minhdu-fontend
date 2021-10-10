@@ -25,7 +25,7 @@ import { UpdateConfirmComponent } from './component/update-comfirm/update-confir
 import { HolidayReducer } from '../template/+state/holiday/holiday.reducer';
 import { HolidayEffect } from '../template/+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
@@ -50,6 +50,7 @@ import { HistoryPayrollComponent } from './container/history-payroll/history-pay
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 import { OvertimeComponent } from './container/overtime/overtime.component';
 import { SalaryReducer } from './+state/payroll/salary.reducer';
+import { LoadingComponent } from './component/popup-loading/loading.component';
 
 @NgModule({
   imports: [
@@ -110,8 +111,9 @@ import { SalaryReducer } from './+state/payroll/salary.reducer';
     DialogExportPayrollComponent,
     HistoryPayrollComponent,
     OvertimeComponent,
+    LoadingComponent
   ],
-  providers:[
+  providers: [
     MatDatepickerModule
   ]
 })

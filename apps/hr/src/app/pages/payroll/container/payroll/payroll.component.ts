@@ -41,7 +41,7 @@ export class PayrollComponent implements OnInit {
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  selectedPayroll = true
+  selectedPayroll = true;
   salaryType = SalaryTypeEnum;
   contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
@@ -54,7 +54,6 @@ export class PayrollComponent implements OnInit {
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  adding$ = this.store.pipe(select(selectedAddingPayroll));
   monthPayroll = new Date();
 
   constructor(
@@ -213,12 +212,12 @@ export class PayrollComponent implements OnInit {
   }
 
   onSelectPayroll() {
-    this.selectedPayroll = !this.selectedPayroll
+    this.selectedPayroll = !this.selectedPayroll;
   }
 
   selectMonth(event: any) {
-    console.log( event)
-    this.monthPayroll = event
-    this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'))
+    console.log(event);
+    this.monthPayroll = event;
+    this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }
 }
