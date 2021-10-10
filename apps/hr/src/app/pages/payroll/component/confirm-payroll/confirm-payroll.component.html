@@ -20,7 +20,7 @@
           </div>
           <div class='row mt-2' *ngIf='data.recipeType === recipeType.CT1 ' >
             <div class='col-6 font-weight-bold'>Ngày công làm thêm:</div>
-            <div class=' col-6'>{{payslip.workdayNotInHoliday - payslip.workday }} Ngày </div>
+            <div class=' col-6'>{{payslip.workdayNotInHoliday - payslip.workday < 0 ? 0 : payslip.workdayNotInHoliday - payslip.workday }} Ngày </div>
           </div>
           <div class='row mt-2'>
             <div class='col-6 font-weight-bold'>Ngày lễ đi làm:</div>
