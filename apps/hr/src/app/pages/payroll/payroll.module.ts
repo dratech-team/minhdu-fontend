@@ -50,6 +50,7 @@ import { HistoryPayrollComponent } from './container/history-payroll/history-pay
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 import { OvertimeComponent } from './container/overtime/overtime.component';
 import { SalaryReducer } from './+state/payroll/salary.reducer';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -88,7 +89,8 @@ import { SalaryReducer } from './+state/payroll/salary.reducer';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatStepperModule
   ],
   declarations: [
     PayrollComponent,

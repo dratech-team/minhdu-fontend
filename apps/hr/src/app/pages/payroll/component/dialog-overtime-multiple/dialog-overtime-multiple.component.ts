@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
-  Validators
+  FormGroup, Validators
 } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -13,7 +12,6 @@ import {
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -23,11 +21,13 @@ import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
 import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
 })
 export class DialogOvertimeMultipleComponent implements OnInit {
+  @ViewChild(MatStepper) stepper!: MatStepper;
   positions = new FormControl();
   positions$ = this.store.pipe(select(getAllPosition));
   titleOvertimes = new FormControl();
@@ -171,14 +171,34 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.titleOvertimes.patchValue('');
   }
 
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
+  check(): any {
+    //Validate
+    const value = this.formGroup.value;
+    if (!this.templateId) {
+      return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
+        duration: 1000
+      });
     }
+    if (!value.datetime && !value.month) {
+      if (value.days <= 1) {
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+      } else {
+        return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
+      }
+    }
+    if (this.unit && !value.times) {
+      return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
+        duration: 1000
+      });
+    }
+    if (!value.datetime && !value.month) {
+      if (value.days <= 1) {
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+      } else {
+        return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
+      }
+    }
+    this.stepper.next();
   }
 
   onSubmit(): any {
@@ -186,24 +206,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (!this.templateId) {
-      return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
-        duration: 1000
-      });
-    }
     const value = this.formGroup.value;
-    if (this.unit && !value.times) {
-      return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
-        duration: 1000
-      });
-    }
-    if (!value.datetime && !value.month ) {
-      if (value.days <= 1) {
-        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
-      } else {
-        return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
-      }
-    }
     if (this.employeeIds.length === 0) {
       return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
         duration: 1000
