@@ -170,10 +170,8 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.payrollService.scanHoliday(payrollId).subscribe((res: any) => {
-      if (res) {
+    this.payrollService.scanHoliday(payrollId).subscribe(() => {
         this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
-      }
     });
   }
 }

@@ -160,9 +160,12 @@
           </div>
           <div class='content-table ' *ngFor="let salary of payroll.salaries | filterTypeSalary:['ALLOWANCE'] ">
             <div class='col-md-7 title-child'>
-              <span *ngIf="salary.unit === 'DAY' ">{{salary.title}} từ ngày {{salary?.datetime|date:'dd/MM/yyyy'}} </span>
-              <span *ngIf="salary.unit === 'MONTH' "> {{salary.title}} theo tháng {{salary.datetime|date: 'MM/yyyy'}}</span>
-              <span *ngIf="salary.unit === 'HOUR' "> {{salary.title + ' ' + salary.times}} giờ, ngày {{salary.datetime|date: 'MM/yyyy'}}</span>
+              <span *ngIf="salary.unit === 'DAY' ">{{salary.title}} từ ngày {{salary?.datetime|date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="salary.unit === 'MONTH' "> {{salary.title}} theo tháng {{salary.datetime|date:
+                'MM/yyyy'}}</span>
+              <span *ngIf="salary.unit === 'HOUR' "> {{salary.title + ' ' + salary.times}} giờ, ngày
+                {{salary.datetime|date: 'MM/yyyy'}}</span>
             </div>
             <div class='col-md-3 salary' style='color: #29CC97'>{{salary.price|number:'1.0'| notEmpty:'0'}}đ
             </div>
@@ -284,11 +287,14 @@
             </div>
           </div>
           <div class='content-table ' *ngFor="let salary of payroll.salaries  | filterTypeSalary:['HOLIDAY'] ">
-            <div class='col-md-7 title-child' *ngIf="salary.unit === 'DAY'">
+            <div class='col-md-7 title-child'>
               {{salary.title}} (ngày {{salary.datetime | date:'dd/MM/yyyy'}})
             </div>
             <div *ngIf='salary.price' class='col-md-3 salary' style='color: #29CC97'>
               {{salary.price}}
+            </div>
+            <div class='col-md-3 salary'>
+              Số ngày {{salary.times}}
             </div>
             <div *ngIf='!salary.price' class='col-md-3 salary' style='color: #29CC97'>
               X {{salary.rate}}
