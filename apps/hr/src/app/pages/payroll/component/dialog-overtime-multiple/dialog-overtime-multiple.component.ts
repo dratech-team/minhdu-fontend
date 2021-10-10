@@ -94,6 +94,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
             return e.title.toLowerCase().includes(titleOvertime?.toLowerCase());
           });
         } else {
+          this.templateId = undefined;
           return TempLateOvertimes;
         }
       })
@@ -186,8 +187,17 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
       }
     }
-    if (this.unit && !value.times) {
-      return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
+    this.stepper.next();
+  }
+
+  onSubmit(): any {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    const value = this.formGroup.value;
+    if (!this.templateId) {
+      return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
         duration: 1000
       });
     }
@@ -198,15 +208,11 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
       }
     }
-    this.stepper.next();
-  }
-
-  onSubmit(): any {
-    this.submitted = true;
-    if (this.formGroup.invalid) {
-      return;
+    if (this.unit && !value.times) {
+      return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
+        duration: 1000
+      });
     }
-    const value = this.formGroup.value;
     if (this.employeeIds.length === 0) {
       return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
         duration: 1000
