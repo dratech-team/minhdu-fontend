@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
   selectedAddingPayroll,
-  selectedLoadedPayroll
+  selectedLoadedPayroll, selectedScannedPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialo
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
 import { PayrollService } from '../../service/payroll.service';
+import { LoadingComponent } from '../../component/popup-loading/loading.component';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DetailPayrollComponent implements OnInit {
   payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
+  scanned$ = this.store.pipe(select(selectedScannedPayroll));
   daysInMonth!: number;
   employeeName!: string;
 
@@ -39,8 +41,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router,
-    private readonly payrollService: PayrollService
+    private readonly router: Router
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -140,7 +141,8 @@ export class DetailPayrollComponent implements OnInit {
       data: {
         id: payroll.id,
         createAt: payroll.createdAt,
-        recipeType: payroll.employee.recipeType }
+        recipeType: payroll.employee.recipeType
+      }
     });
   }
 
@@ -170,10 +172,8 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.payrollService.scanHoliday(payrollId).subscribe((res: any) => {
-      if (res) {
-        this.store.dispatch(PayrollAction.getPayroll({ id: payrollId }));
-      }
-    });
+    this.dialog.open(LoadingComponent, { width: 'fit-content',
+      data: { content:'Đang quét ngày lễ...', loaded: this.scanned$ } });
+    this.store.dispatch(PayrollAction.scanHoliday({ PayrollId: payrollId }));
   }
 }
