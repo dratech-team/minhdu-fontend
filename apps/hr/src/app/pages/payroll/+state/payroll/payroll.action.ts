@@ -51,7 +51,7 @@ export const loadSalaryInit = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    createdAt?:Date
+    createdAt?: Date
   }>()
 );
 
@@ -61,7 +61,7 @@ export const loadMoreSalary = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    createdAt?:Date
+    createdAt?: Date
   }>()
 );
 
@@ -143,6 +143,15 @@ export const deleteSalary = createAction(
   props<{ id: number, PayrollId: number }>()
 );
 
+export const scanHoliday = createAction(
+  '[SCAN_HOLIDAY] Scan Holiday',
+  props<{ PayrollId: number }>()
+);
+
+export const scanHolidayError = createAction(
+  '[SCAN_HOLIDAY] Scan Holiday Error'
+);
+
 
 export const PayrollAction = {
   loadInit,
@@ -166,5 +175,7 @@ export const PayrollAction = {
   deletePayroll,
   deletePayrollSuccess,
   deleteSalary,
-  handlePayrollError
+  handlePayrollError,
+  scanHoliday,
+  scanHolidayError
 };
