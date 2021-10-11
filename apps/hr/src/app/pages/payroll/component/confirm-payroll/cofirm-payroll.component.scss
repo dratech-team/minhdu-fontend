@@ -1,0 +1,37 @@
+.assign-print{
+  display: none;
+}
+@media only print {
+  #content-payroll{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 5px;
+    line-height: 18px;
+  }
+  .border-table{
+    margin-top: 20px;
+  }
+  #table-payroll{
+    font-size: 18px;
+    max-height: max-content !important;
+    overflow: visible;
+  }
+  #btn-close{
+    visibility: hidden;
+  }
+  #footer{
+    visibility: hidden;
+  }
+  .assign-print{
+    font-size: 25px;
+    margin-top: 20px;
+    display: flex !important;
+  }
+  .header-payroll{
+    font-size: 20px;
+  }
+}
