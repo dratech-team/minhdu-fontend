@@ -43,6 +43,13 @@ const routes: Routes = [
           title: 'Lịch sử hệ thống'
         },
       },
+      {
+        path: 'bao-tri',
+        loadChildren: () => import('./pages/develop/develop.module').then(m => m.DevelopModule),
+        data: {
+          title: 'Lịch sử bảo trì'
+        },
+      },
       { path: '**', redirectTo: '' }
     ]
   }

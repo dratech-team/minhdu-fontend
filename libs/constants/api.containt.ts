@@ -51,4 +51,5 @@ export const Api = {
   GENERATE: 'payroll/generate',
   PAYROLL_CREATE: 'payroll/create',
   GENERATE_HOLIDAY: 'generate-holiday',
+  MAINTAIN: 'system',
 };

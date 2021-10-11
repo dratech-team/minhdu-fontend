@@ -1,0 +1,7 @@
+export enum SystemType {
+  EMPLOYEE= 'EMPLOYEE',
+  PAYROLL= 'PAYROLL',
+  TEMPLATE= 'TEMPLATE',
+  ORG_CHART= 'ORG_CHART',
+  HISTORY= 'HISTORY',
+}

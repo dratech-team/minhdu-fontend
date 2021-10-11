@@ -25,5 +25,6 @@ export * from './status-order.enum';
 export * from './sell/status-route';
 export * from './activity-type.enum';
 export * from './hr/recipeType.enum';
+export * from './hr/system-type';
 
 

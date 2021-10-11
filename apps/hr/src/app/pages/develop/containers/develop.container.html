@@ -1,3 +1,101 @@
-<div>
+<div class='px-2 d-flex flex-column justify-content-center '>
+  <h2 class='font-weight-bold'>Quản lý bảo trì</h2>
+  <div class='d-flex justify-content-center' *ngIf='(features$|async) as features'>
+    <div class='mr-4'>
+      <h3>Nhân viên</h3>
+      <table>
+        <tr>
+          <th>Tính năng</th>
+          <th> bảo trì</th>
+        </tr>
+        <tr *ngFor='let feature of features |filterTypeMaintain:systemType.EMPLOYEE'>
+          <td>{{feature.title}}</td>
+          <td class='d-flex justify-content-center align-items-center'>
+              <mat-slide-toggle
+                (click)='maintain(feature.id)'
+                [checked]='!!(feature.datetime)'
+              >
+              </mat-slide-toggle>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class='mr-4'>
+      <h3>Phiếu lương</h3>
+      <table>
+        <tr>
+          <th>Tính năng</th>
+          <th> bảo trì</th>
+        </tr>
+        <tr *ngFor='let feature of features |filterTypeMaintain:systemType.PAYROLL'>
+          <td>{{feature.title}}</td>
+          <td class='d-flex justify-content-center align-items-center'>
+            <mat-slide-toggle
+              (click)='maintain(feature.id)'
+              [checked]='!!(feature.datetime)'
+            >
+            </mat-slide-toggle>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class='mr-4'>
+      <h3>Bản mẫu</h3>
+      <table>
+        <tr>
+          <th>Tính năng</th>
+          <th> bảo trì</th>
+        </tr>
+        <tr *ngFor='let feature of features |filterTypeMaintain:systemType.TEMPLATE'>
+          <td>{{feature.title}}</td>
+          <td class='d-flex justify-content-center align-items-center'>
+            <mat-slide-toggle
+              (click)='maintain(feature.id)'
+              [checked]='!!(feature.datetime)'
+            >
+            </mat-slide-toggle>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class='mr-4'>
+      <h3>Lịch sử hệ thống</h3>
+      <table>
+        <tr>
+          <th>Tính năng</th>
+          <th> bảo trì</th>
+        </tr>
+        <tr *ngFor='let feature of features |filterTypeMaintain:systemType.HISTORY'>
+          <td>{{feature.title}}</td>
+          <td class='d-flex justify-content-center align-items-center'>
+            <mat-slide-toggle
+            (click)='maintain(feature.id)'
+            [checked]='!!(feature.datetime)'
+          >
+          </mat-slide-toggle>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class='mr-4'>
+      <h3>Org chart</h3>
+      <table>
+        <tr>
+          <th>Tính năng</th>
+          <th> bảo trì</th>
+        </tr>
+        <tr *ngFor='let feature of features |filterTypeMaintain:systemType.ORG_CHART'>
+          <td>{{feature.title}}</td>
+          <td class='d-flex justify-content-center align-items-center'>
+            <mat-slide-toggle
+              (click)='maintain(feature.id)'
+              [checked]='!!(feature.datetime)'
+            >
+            </mat-slide-toggle>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 </div>

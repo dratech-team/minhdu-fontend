@@ -12,6 +12,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DevelopRoutingModule } from './develop-routing.module';
 import { DevelopContainer } from './containers/develop.container';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DialogMaintain } from './components/dialog-maintain';
+import { FilterPipe } from './pipe/filter.pipe';
 
 @NgModule({
   imports: [
@@ -23,14 +26,16 @@ import { DevelopContainer } from './containers/develop.container';
     ReactiveFormsModule,
     MatSelectModule,
     MatAutocompleteModule,
-    EmployeeModule,
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
-    DevelopRoutingModule
+    DevelopRoutingModule,
+    MatSlideToggleModule
   ],
   declarations: [
-    DevelopContainer
+    DevelopContainer,
+    DialogMaintain,
+    FilterPipe
   ]
 })
 export class DevelopModule {
