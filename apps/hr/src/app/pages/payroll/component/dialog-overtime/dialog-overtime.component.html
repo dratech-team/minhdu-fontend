@@ -63,7 +63,7 @@
                 <span>Số ngày tăng ca</span>
               </div>
               <div class=' mb-3' [formGroup]='formGroup'>
-                <input type='number' class='form-control' formControlName='days' min='1'>
+                <input style='pointer-events: none; background: #e4e7ea' type='number' class='form-control' formControlName='days' min='1'>
               </div>
             </div>
             <div class='work-time col' *ngIf='unit === datetimeUnitEnum.HOUR'>
@@ -95,7 +95,7 @@
             <div class='unit-price'>
               <div class=' title-item mb-1'>
                 <span>Giá tăng ca</span>
-                <div class='star'>*</div>
+                <span class='star'>*</span>
               </div>
               <div class=' mb-3' [formGroup]='formGroup'>
                 <input type='number' class='form-control  px-1' value='{{price}}' disabled>
