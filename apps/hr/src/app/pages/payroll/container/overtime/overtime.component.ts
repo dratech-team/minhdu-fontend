@@ -11,7 +11,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
   selectedLoadedSalary,
-  selectorAllSalary
+  selectorAllOvertime,
 } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -38,7 +38,7 @@ export class OvertimeComponent implements OnInit {
   pageIndexInit = 0;
   genderType = Gender;
   unit = DatetimeUnitEnum;
-  salary$ = this.store.pipe(select(selectorAllSalary));
+  overtime$ = this.store.pipe(select(selectorAllOvertime));
   loaded$ = this.store.pipe(select(selectedLoadedSalary));
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
@@ -61,7 +61,7 @@ export class OvertimeComponent implements OnInit {
       skip: this.pageIndexInit,
       take: this.pageSize,
       startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),
-      endAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date())
+      endAt: this.createdAt ? getLastDayInMonth(new Date(this.createdAt)) : getLastDayInMonth(new Date())
     }));
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
