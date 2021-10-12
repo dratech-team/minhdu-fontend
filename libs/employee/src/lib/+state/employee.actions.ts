@@ -86,7 +86,7 @@ export const updateDegree = createAction(
 
 export const deleteEmployee = createAction(
   '[DELETE_EMPLOYEE] Delete Employee',
-  props<{ id: number }>()
+  props<{ id: number, params: { leftAt: Date|'' } }>()
 );
 
 export const deleteEmployeeSuccess = createAction(

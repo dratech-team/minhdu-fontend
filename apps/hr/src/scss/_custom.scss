@@ -3,56 +3,72 @@ a:link {
   text-decoration: none;
   color: black;
 }
+
+.not-arrow-input::-webkit-outer-spin-button,
+.not-arrow-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 a:hover {
   text-decoration: none;
 }
-.cdk-overlay-container{
-  z-index: 1020 !important; ;
+
+.cdk-overlay-container {
+  z-index: 1020 !important;;
 }
 
-.background-snackbar{
-  background:#4dbd74d1;
+.background-snackbar {
+  background: #4dbd74d1;
 }
-.loading{
+
+.loading {
   position: fixed !important;
   left: 50%;
-  top:50% ;
+  top: 50%;
   z-index: 2000
 }
-.background-snackbar-validate{
-  background:#f86c6ba6;
+
+.background-snackbar-validate {
+  background: #f86c6ba6;
 }
+
 .main {
   background: white;
   font-family: Roboto, serif;
 }
-.main-title{
+
+.main-title {
   font-weight: 500;
   font-size: 15px;
   line-height: 24px;
 }
 
-.title-table{
+.title-table {
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
 }
-.label-input{
+
+.label-input {
   font-size: 16px;
   line-height: 19px;
   color: #3C3B54;
 }
-.star{
+
+.star {
   margin-left: 5px;
   color: red;
 }
-.title-popup{
+
+.title-popup {
   font-weight: bold;
   font-size: 20px;
   line-height: 35px;
   letter-spacing: 0.2px;
 }
-.btn-cancel{
+
+.btn-cancel {
   display: flex;
   align-items: center;
   padding: 5px 8px;
@@ -64,20 +80,23 @@ a:hover {
   background: #EBEBEB;
   border-radius: 4px;
 }
-.content-table{
+
+.content-table {
   font-weight: 300;
   font-size: 16px;
   line-height: 19px;
   color: #3C3B54;
-  vertical-align: inherit!important;
+  vertical-align: inherit !important;
 }
-.content-popup{
+
+.content-popup {
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
   color: #80828B;
 }
-.btn-ok{
+
+.btn-ok {
   display: flex;
   align-items: center;
   font-style: normal;
@@ -89,22 +108,26 @@ a:hover {
   background: #3C3B54;
   border-radius: 4px;
 }
-.main-popup{
-  position:relative;
+
+.main-popup {
+  position: relative;
 }
-.main-popup .close-popup{
+
+.main-popup .close-popup {
   font-size: 16px;
-  color:#7749F8;
+  color: #7749F8;
   display: flex;
   align-items: center;
   position: absolute;
   right: -10px;
-  top:-10px;
+  top: -10px;
 }
-.main-popup .close-popup .x-popup >img{
+
+.main-popup .close-popup .x-popup > img {
   width: 7px;
 }
-.x-popup{
+
+.x-popup {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -114,52 +137,65 @@ a:hover {
   border-radius: 50%;
   background: #7749F8;
 }
-.color-delete{
-  color:#EB5757 !important;
+
+.color-delete {
+  color: #EB5757 !important;
 }
-.background-delete{
-  background:#EB5757 !important;
+
+.background-delete {
+  background: #EB5757 !important;
 }
-.success{
+
+.success {
   background: #B5EEBB;
 }
-.fail{
+
+.fail {
   background: #EEB5B5;
 }
-.attention{
+
+.attention {
   background: #EDEEB5;
 }
-.btn-print{
-  border:solid 1px #95AAF8;
+
+.btn-print {
+  border: solid 1px #95AAF8;
   background: #95AAF8;
   border-radius: 32px;
 }
-.title-input{
+
+.title-input {
   font-size: 16px;
   line-height: 19px;
   color: #3C3B54;
 }
-.share-table{
+
+.share-table {
   border: solid 1px #c8ced3;
 }
-.title-child{
+
+.title-child {
   padding: 5px 20px 5px 7px;
   font-size: 16px;
   color: #3C3B54;
   line-height: 19px;
 
 }
+
 .context-menu {
   cursor: context-menu;
 }
-.pointer{
+
+.pointer {
   cursor: pointer;
 }
-.btn-edit{
+
+.btn-edit {
   border: solid 1px #80828B;
   border-radius: 20%;
 }
-input[type='checkbox']{
+
+input[type='checkbox'] {
   width: 14px !important;
   height: 14px !important;
   margin: 5px;
@@ -174,10 +210,12 @@ input[type='checkbox']{
   line-height: 1em;
   background: white;
 }
+
 input[type='checkbox']:checked:after {
   content: '✔';
   color: red;
 }
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -193,19 +231,23 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
-.pointer{
+
+.pointer {
   cursor: pointer;
 }
+
 .main-profile {
   width: max-content;
   padding: 1rem;
 }
-.tab{
+
+.tab {
   position: relative;
   margin-top: 10px;
   left: 5%;
   width: 80%;
 }
+
 .edit {
   cursor: pointer;
   display: flex;
@@ -223,7 +265,8 @@ tr:nth-child(even) {
   line-height: 28px;
   color: $base-color
 }
+
 //custom class bootstrap
-.form-control.is-invalid{
+.form-control.is-invalid {
   background-image: none !important;
 }

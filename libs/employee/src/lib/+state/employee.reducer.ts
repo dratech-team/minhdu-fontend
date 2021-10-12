@@ -10,12 +10,13 @@ export interface EmployeeState extends EntityState<Employee> {
   adding: boolean;
   added: boolean;
   error: string;
+  deleted:boolean;
   selectedEmployeeId: number;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
-export const initialEmployee = adapter.getInitialState({ loaded: false, adding: false, added: false });
+export const initialEmployee = adapter.getInitialState({ loaded: false, adding: false, added: false, deleted: false });
 
 export const EmployeeReducer = createReducer(
   initialEmployee,
@@ -59,8 +60,13 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
+  on(EmployeeAction.deleteEmployee, (state, _) => {
+      return { ...state, deleted: false };
+    }
+  ),
+
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true })
+    adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
   ),
 
   on(EmployeeAction.addRelative, (state, _) => {

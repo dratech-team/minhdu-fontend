@@ -29,6 +29,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { checkInputNumber } from '../../../../../../../../libs/untils/checkInputNumber.until';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -261,5 +262,9 @@ export class AddEmployeeComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
+  }
+
+  checkNumberInput(event: any) {
+    return checkInputNumber(event)
   }
 }
