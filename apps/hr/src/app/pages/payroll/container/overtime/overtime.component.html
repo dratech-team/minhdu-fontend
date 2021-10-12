@@ -58,7 +58,7 @@
          infiniteScroll [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
-         [scrollWindow]='false' (scrolled)='onScroll()'
+         [scrollWindow]='false'
          *ngIf='(salary$|async) as salaries'
          [ngStyle]="{'width':salaries.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':salaries.length === 0 ? 'hidden': 'scroll'}">

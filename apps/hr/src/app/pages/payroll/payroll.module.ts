@@ -49,8 +49,8 @@ import { DialogExportPayrollComponent } from './component/dialog-export/dialog-e
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 import { OvertimeComponent } from './container/overtime/overtime.component';
-import { SalaryReducer } from './+state/payroll/salary.reducer';
 import { LoadingComponent } from './component/popup-loading/loading.component';
+import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 
 @NgModule({
   imports: [
@@ -64,7 +64,7 @@ import { LoadingComponent } from './component/popup-loading/loading.component';
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-    StoreModule.forFeature(FeatureName.SALARY, SalaryReducer),
+    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
     EffectsModule.forFeature([
