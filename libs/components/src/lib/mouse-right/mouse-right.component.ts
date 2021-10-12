@@ -8,7 +8,7 @@ import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
   styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
-  @Input() type!: PageTypeEnum;
+  @Input() type?: PageTypeEnum;
    pageType =  PageTypeEnum;
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();

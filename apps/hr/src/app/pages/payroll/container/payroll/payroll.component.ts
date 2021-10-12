@@ -12,7 +12,6 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedAddingPayroll,
   selectedLoadedPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -216,7 +215,6 @@ export class PayrollComponent implements OnInit {
   }
 
   selectMonth(event: any) {
-    console.log(event);
     this.monthPayroll = event;
     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }

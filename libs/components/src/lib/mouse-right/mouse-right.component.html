@@ -1,17 +1,29 @@
 <context-menu>
-  <ng-template  contextMenuItem let-item (execute)="add($event.item)">
+  <ng-template *ngIf='type !== pageType.HISTORY_PAYROLL
+                 && type !== pageType.EMPLOYEE_LEFT_AT '
+               contextMenuItem let-item
+               (execute)='add($event.item)'>
     Thêm
   </ng-template>
-  <ng-template  *ngIf='type !== pageType.HISTORY_PAYROLL && type !== pageType.ORDER ' contextMenuItem let-item (execute)="delete($event.item)">
-    Xóa
+  <ng-template *ngIf='type !== pageType.HISTORY_PAYROLL
+                && type !== pageType.ORDER '
+               contextMenuItem let-item
+               (execute)='delete($event.item)'>
+    {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}
   </ng-template>
-  <ng-template  contextMenuItem let-item (execute)="readAndUpdate($event.item)">
+
+  <ng-template contextMenuItem let-item
+               (execute)='readAndUpdate($event.item)'>
     Xem chi tiết
   </ng-template>
-  <ng-template  *ngIf='type === pageType.CUSTOMER' contextMenuItem let-item (execute)="onPayment($event.item)" >
-   Thanh toán
+  <ng-template *ngIf='type === pageType.CUSTOMER'
+               contextMenuItem let-item
+               (execute)='onPayment($event.item)'>
+    Thanh toán
   </ng-template>
-  <ng-template  *ngIf='type === pageType.ORDER' contextMenuItem let-item (execute)="onDelivered($event.item)" >
+  <ng-template *ngIf='type === pageType.ORDER'
+               contextMenuItem let-item
+               (execute)='onDelivered($event.item)'>
     Ngày nhận hàng
   </ng-template>
 </context-menu>

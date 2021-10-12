@@ -11,5 +11,6 @@ export interface EmployeeDto{
   gender?: Gender,
   isSelect?: boolean,
   templateId?: number,
-  createdPayroll?: Date
+  createdPayroll?: Date,
+  isLeft?: boolean
 }

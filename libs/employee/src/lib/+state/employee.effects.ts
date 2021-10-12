@@ -190,7 +190,7 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.deleteEmployee),
       switchMap((props) =>
-        this.employeeService.delete(props.id).pipe(
+        this.employeeService.delete(props.id,props.params).pipe(
           map(() => {
               this.snackBar.open('Xóa nhân viên thành công', '', { duration: 1000 });
               return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
