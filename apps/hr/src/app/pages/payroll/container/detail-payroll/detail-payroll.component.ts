@@ -138,7 +138,9 @@ export class DetailPayrollComponent implements OnInit {
   confirmPayroll(payroll: Payroll) {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
-      data: payroll
+      data: {
+        payroll: payroll,
+       }
     });
   }
 

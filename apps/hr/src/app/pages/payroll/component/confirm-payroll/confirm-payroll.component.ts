@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
+  styleUrls:['cofirm-payroll.component.scss']
 })
 export class ConfirmPayrollComponent implements OnInit {
   accConfirmedAt = new  FormControl( this.datePipe.transform(new Date(),'yyyy-MM-dd') );
@@ -26,7 +27,8 @@ export class ConfirmPayrollComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.payslip$ = this.payslipService.getOne(this.payroll.id);
+    console.log(this.data.payroll.recipeType)
+    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
   }
 
   confirmPayroll(){
@@ -34,12 +36,16 @@ export class ConfirmPayrollComponent implements OnInit {
       this.store.dispatch(PayrollAction.updatePayroll(
         {id: this.payroll.id, Payroll: {accConfirmedAt : new Date(this.accConfirmedAt.value) }}))
     }else{
-      this.snackbar.open('Chưa chọn ngày xác nhận phiếu lương' , '', {duration: 1500})
+      this.snackbar.open('Chua ch?n ng�y x�c nh?n phi?u luong' , '', {duration: 1500})
     }
 
   }
 
   onSubmit() {
-    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.payroll.id }));
+    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.payroll.id }));
+  }
+
+  printPayroll() {
+    window.print()
   }
 }
