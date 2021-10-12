@@ -4,7 +4,7 @@ export const getDaysInMonth = (datetime: Date) => {
   return new Date(year, month, 0).getDate();
 };
 export const getFirstDayInMonth = (datetime: Date) => {
-  return  new Date(datetime.getFullYear(), datetime.getMonth(), 1)
+  return new Date(datetime.getFullYear(), datetime.getMonth(), 1)
 };
 
 export const getLastDayInMonth = (datetime: Date) => {
