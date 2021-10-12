@@ -1,21 +1,18 @@
-import { DatetimeUnitEnum, SalaryTypeEnum } from '../../../enums';
-import { SalaryHistory } from './salary-history';
-import { Employee } from '../employee/employee';
+import { DatetimeUnitEnum, Gender, SalaryTypeEnum } from '../../../enums';
+import { Salary } from './salary';
+import { Position } from '../orgChart/position';
+import { Branch } from '../orgChart/branch';
 
 export interface Overtime {
   id: number,
+  firstName: string,
+  lastName: string,
   title: string,
   type: SalaryTypeEnum,
-  times: number,
-  price: number,
-  unit: DatetimeUnitEnum,
-  rate: number,
-  datetime: Date,
-  note: string,
-  employeeId: number,
-  PayrollId: number,
-  salaryHistory: SalaryHistory,
-  salaryHistoryId: number,
-  allowance?: any,
-  employee?: Employee
+  gender: Gender
+  payrollId: number,
+  salaries: Salary[],
+  position: Position,
+  branch: Branch,
+  salary?: { times: number, total: number, unit: DatetimeUnitEnum },
 }
