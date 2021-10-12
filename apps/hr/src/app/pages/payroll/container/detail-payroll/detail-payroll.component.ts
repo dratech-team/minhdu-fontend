@@ -138,11 +138,7 @@ export class DetailPayrollComponent implements OnInit {
   confirmPayroll(payroll: Payroll) {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
-      data: {
-        id: payroll.id,
-        createAt: payroll.createdAt,
-        recipeType: payroll.employee.recipeType
-      }
+      data: payroll
     });
   }
 

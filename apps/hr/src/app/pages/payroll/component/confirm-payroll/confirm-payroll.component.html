@@ -1,4 +1,20 @@
-<div class='py-3 main-popup' style='min-width: 550px'>
+<div class='py-3 main-popup' style='min-width: 300px' *ngIf='!payroll.accConfirmedAt'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <h2 class='font-weight-bold'>Xác nhận phiếu lương tháng {{payroll.createAt|date:'MM/yyyy'}}</h2>
+  <mat-dialog-content class='mat-typography mt-2'>
+    <span>Ngày xác nhận</span><span class='star'>*</span>
+    <input class='mt-1 form-control' type='date' [formControl]='accConfirmedAt'>
+  </mat-dialog-content>
+  <div class='footer-popup row mt-3 ml-2'>
+  <button (click)='confirmPayroll()' class='btn btn-ok '>Xác nhận</button>
+  </div>
+</div>
+<div *ngIf='payroll.accConfirmedAt !== null'  class='py-3 main-popup' style='min-width: 550px'>
   <div mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
@@ -6,7 +22,7 @@
     </div>
   </div>
   <div>
-    <h2 class='font-weight-bold'>Phiếu lương tháng {{data.createAt|date:'MM/yyyy'}}</h2>
+    <h2 class='font-weight-bold'>Phiếu lương tháng {{payroll.createAt|date:'MM/yyyy'}}</h2>
     <mat-dialog-content class='mat-typography'>
       <div class='px-3'>
         <div class='mt-3 px-3' style='width: 600px' *ngIf='( payslip$ | async) as payslip'>
@@ -14,11 +30,11 @@
             <div class='col-6 font-weight-bold'>Ngày công chuẩn:</div>
             <div class=' col-6'>{{payslip?.workday}} Ngày</div>
           </div>
-          <div class='row mt-2' *ngIf='data.recipeType === recipeType.CT1 ' >
+          <div class='row mt-2' *ngIf='payroll.recipeType === recipeType.CT1 ' >
             <div class='col-6 font-weight-bold'>Ngày công trừ ngày lễ / tết:</div>
             <div class=' col-6'>{{payslip.workdayNotInHoliday}} Ngày</div>
           </div>
-          <div class='row mt-2' *ngIf='data.recipeType === recipeType.CT1 ' >
+          <div class='row mt-2' *ngIf='payroll.recipeType === recipeType.CT1 ' >
             <div class='col-6 font-weight-bold'>Ngày công làm thêm:</div>
             <div class=' col-6'>{{payslip.workdayNotInHoliday - payslip.workday < 0 ? 0 : payslip.workdayNotInHoliday - payslip.workday }} Ngày </div>
           </div>
