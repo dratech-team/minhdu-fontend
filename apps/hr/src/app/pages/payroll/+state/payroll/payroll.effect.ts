@@ -15,6 +15,7 @@ import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollAction } from './payroll.action';
 import { selectorPayrollTotal, selectorSalaryTotal } from './payroll.selector';
+import { OvertimeService } from '../../service/overtime.service';
 
 @Injectable()
 export class PayrollEffect {
@@ -63,41 +64,16 @@ export class PayrollEffect {
     )
   );
 
-  loadSalaryInit$ = createEffect(() =>
+  loadOvertime$ = createEffect(() =>
     this.action$.pipe(
-      ofType(PayrollAction.loadSalaryInit),
-      concatMap((requestPaginate) => {
-        return this.salaryService.pagination(requestPaginate);
+      ofType(PayrollAction.filterOvertime),
+      concatMap((params) => {
+        return this.overtimeService.getAll(params);
       }),
-      map((ResponsePaginate) => {
-        return PayrollAction.loadSalaryInitSuccess({
-          salary: ResponsePaginate.data
-        });
-      }),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  loadMoreSalary$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(PayrollAction.loadMoreSalary),
-      withLatestFrom(this.store.pipe(select(selectorSalaryTotal))),
-      map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
-      ),
-      switchMap((props) => {
-        return this.salaryService.pagination(props);
-      }),
-      map((ResponsePaginate) => {
-        if (ResponsePaginate.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết phiếu tăng ca' }
-          });
-        }
-        return PayrollAction.loadSalaryInitSuccess({
-          salary: ResponsePaginate.data
+      map((res) => {
+        console.log(res)
+        return PayrollAction.filterOvertimeSuccess({
+          overtimes : res
         });
       }),
       catchError((err) => throwError(err))
@@ -265,6 +241,7 @@ export class PayrollEffect {
     private readonly action$: Actions,
     private readonly payrollService: PayrollService,
     private readonly salaryService: SalaryService,
+    private readonly overtimeService: OvertimeService,
     private readonly snackBar: MatSnackBar,
     private readonly store: Store
   ) {

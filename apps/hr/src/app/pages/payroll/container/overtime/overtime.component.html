@@ -19,9 +19,17 @@
         <input class='form-control' type='text' matInput disabled>
       </div>
 
-      <div class='border-start title-header default'>
+      <div class='border-start title-header name'>
         <div class='title-profile'>Tháng</div>
-        <input class='form-control input-profile ' type='month' formControlName='createdAt'>
+        <div class='d-flex'>
+          <mat-date-range-input [rangePicker]='picker'>
+            <input matStartDate formControlName='startAt' placeholder='Từ ngày'>
+            <input matEndDate formControlName='endAt' placeholder='Đến ngày'>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </div>
+
       </div>
       <div class='border-start title-header note'>
         <div class='title-profile'>Loại tăng ca</div>
@@ -50,7 +58,7 @@
          infiniteScroll [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
-         [scrollWindow]='false' (scrolled)='onScroll()'
+         [scrollWindow]='false'
          *ngIf='(salary$|async) as salaries'
          [ngStyle]="{'width':salaries.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':salaries.length === 0 ? 'hidden': 'scroll'}">
@@ -71,7 +79,7 @@
         <div class='content-profile default pointer ' (click)='readPayroll(salary)'>
           {{salary?.employee?.position?.name}}
         </div>
-        <div class='content-profile default pointer ' (click)='readPayroll(salary)'>
+        <div class='content-profile name pointer ' (click)='readPayroll(salary)'>
           {{salary?.datetime |date: 'MM-yyyy'}}
         </div>
         <div class='content-profile note pointer ' (click)='readPayroll(salary)'>

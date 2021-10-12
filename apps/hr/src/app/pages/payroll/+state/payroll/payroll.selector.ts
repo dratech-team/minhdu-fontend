@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { PayrollState } from './payroll.reducers';
 import * as fromPayroll from './payroll.reducers';
-import * as fromSalary from './salary.reducer';
+import * as fromSalary from './overtime.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Payroll } from './payroll.interface';
-import { SalaryState } from './salary.reducer';
+import { overtimeState } from './overtime.reducer';
 
 export interface State {
   payrolls: fromPayroll.PayrollState;
@@ -16,8 +16,8 @@ export const selectorPayrollState = createFeatureSelector<PayrollState>(
   FeatureName.PAYROLL
 );
 
-export const selectorSalaryState = createFeatureSelector<SalaryState>(
-  FeatureName.SALARY
+export const selectorSalaryState = createFeatureSelector<overtimeState>(
+  FeatureName.OVERTIME
 );
 
 export const selectorPayrollEntities = createSelector(

@@ -10,7 +10,7 @@ import {
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Employee, Salary } from '@minhdu-fontend/data-models';
+import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
@@ -20,7 +20,6 @@ import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.com
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
-import { PayrollService } from '../../service/payroll.service';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 
 
