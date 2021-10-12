@@ -52,8 +52,8 @@ export const filterOvertime = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    startAt?: any,
-    endAt?: any
+    startAt?: Date,
+    endAt?: Date
   }>()
 );
 
@@ -101,12 +101,17 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number }>()
+  props<{ id: number, dataConfirm:{datetime: Date}}>()
 );
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payrollId: number }>()
+  props<{ payroll: Update<Payroll> }>()
+);
+
+export const confirmPayrollSuccess = createAction(
+  '[UPDATE_PAYROLL] Confirm Payroll Success',
+  props<{ payroll: Payroll }>()
 );
 
 export const updateSalary = createAction(
@@ -161,5 +166,6 @@ export const PayrollAction = {
   deleteSalary,
   handlePayrollError,
   scanHoliday,
-  scanHolidayError
+  scanHolidayError,
+  confirmPayrollSuccess
 };
