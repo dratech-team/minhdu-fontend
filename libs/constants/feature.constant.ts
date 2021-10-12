@@ -29,4 +29,5 @@ export const FeatureName = {
   REQUISITE: 'requisite',
   SYSTEM_HISTORY : 'systemHistory',
   SALARY: 'salary',
+  OVERTIME: 'overtime',
 };

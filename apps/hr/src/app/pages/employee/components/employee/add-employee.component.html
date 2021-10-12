@@ -32,7 +32,8 @@
           </div>
           <div class='col-sm' [formGroup]='formGroup'>
             <label>Ngày công chuẩn </label><span class='star'>*</span>
-            <input class='form-control' type='number' formControlName='workday'
+            <input class='form-control' type='number' formControlName='workday' min='0'
+                   (keypress)="checkNumberInput($event)"
                    [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
             >
             <div *ngIf='submitted && f.workday.errors' class='invalid-feedback'>
@@ -124,4 +125,3 @@
     </form>
   </mat-dialog-content>
 </div>
-

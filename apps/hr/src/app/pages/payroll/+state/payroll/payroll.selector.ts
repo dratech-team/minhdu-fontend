@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { PayrollState } from './payroll.reducers';
 import * as fromPayroll from './payroll.reducers';
-import * as fromSalary from './salary.reducer';
+import * as fromOvertime from './overtime.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Payroll } from './payroll.interface';
-import { SalaryState } from './salary.reducer';
+import { overtimeState } from './overtime.reducer';
 
 export interface State {
   payrolls: fromPayroll.PayrollState;
@@ -16,8 +16,8 @@ export const selectorPayrollState = createFeatureSelector<PayrollState>(
   FeatureName.PAYROLL
 );
 
-export const selectorSalaryState = createFeatureSelector<SalaryState>(
-  FeatureName.SALARY
+export const selectorOvertimeState = createFeatureSelector<overtimeState>(
+  FeatureName.OVERTIME
 );
 
 export const selectorPayrollEntities = createSelector(
@@ -30,9 +30,9 @@ export const selectorAllPayroll = createSelector(
   fromPayroll.selectAll
 );
 
-export const selectorAllSalary = createSelector(
-  selectorSalaryState,
-  fromSalary.selectAll
+export const selectorAllOvertime = createSelector(
+  selectorOvertimeState,
+  fromOvertime.selectAll
 );
 
 export const selectCurrentPayroll = (id: number) => createSelector(
@@ -46,7 +46,7 @@ export const selectedLoadedPayroll = createSelector(
 );
 
 export const selectedLoadedSalary = createSelector(
-  selectorSalaryState,
+  selectorOvertimeState,
   (state) => state.loaded
 );
 
@@ -71,6 +71,6 @@ export const selectorPayrollTotal = createSelector(
 );
 
 export const selectorSalaryTotal = createSelector(
-  selectorSalaryState,
-  fromSalary.selectTotal
+  selectorOvertimeState,
+  fromOvertime.selectTotal
 );
