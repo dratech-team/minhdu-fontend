@@ -12,7 +12,6 @@ import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedAddingPayroll,
   selectedLoadedPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
