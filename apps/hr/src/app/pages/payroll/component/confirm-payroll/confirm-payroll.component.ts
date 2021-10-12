@@ -9,6 +9,7 @@ import { RecipeType } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
+  styleUrls:['cofirm-payroll.component.scss']
 })
 export class ConfirmPayrollComponent implements OnInit {
   payslip$?: Observable<Payslip>;
@@ -20,10 +21,15 @@ export class ConfirmPayrollComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.payslip$ = this.payslipService.getOne(this.data.id);
+    console.log(this.data.payroll.recipeType)
+    this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
   }
 
   onSubmit() {
-    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.id }));
+    this.store.dispatch(PayrollAction.confirmPayroll({ id: this.data.payroll.id }));
+  }
+
+  printPayroll() {
+    window.print()
   }
 }
