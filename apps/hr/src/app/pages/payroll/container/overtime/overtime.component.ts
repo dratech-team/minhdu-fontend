@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DatetimeUnitEnum, Gender, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -19,6 +19,7 @@ import {
   TemplateOvertimeAction
 } from '../../../template/+state/template-overtime/template-overtime.action';
 import { DatePipe } from '@angular/common';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/untils/daytime.until';
 
 @Component({
   selector: 'app-overtime',
@@ -29,7 +30,8 @@ export class OvertimeComponent implements OnInit {
   @Output() EventSelectMonth = new EventEmitter<Date>();
   formGroup = new FormGroup({
     title: new FormControl(''),
-    createdAt: new FormControl()
+    startAt: new FormControl(),
+    endAt: new FormControl()
   });
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
@@ -51,20 +53,28 @@ export class OvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(this.createdAt, 'yyyy-MM'));
+    if (this.createdAt) {
+      this.formGroup.get('startAt')!.setValue(this.datePipe.transform(getFirstDayInMonth(new Date(this.createdAt)), 'yyyy-MM-dd'));
+      this.formGroup.get('endAt')!.setValue(this.datePipe.transform(getLastDayInMonth(new Date(this.createdAt)), 'yyyy-MM-dd'));
+    }
     this.store.dispatch(PayrollAction.loadSalaryInit({
       skip: this.pageIndexInit,
       take: this.pageSize,
-      createdAt: this.createdAt ? new Date(this.createdAt) : new Date()
+      startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),
+      endAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date())
     }));
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
-        this.store.dispatch(PayrollAction.loadSalaryInit({
-          take: this.pageSize,
-          skip: this.pageIndexInit,
-          createdAt: new Date(value.createdAt),
-          title: value.title
-        }));
+        if ((value.startAt && value.endAt)) {
+          this.store.dispatch(PayrollAction.loadSalaryInit({
+            take: this.pageSize,
+            skip: this.pageIndexInit,
+            startAt: new Date(value.startAt),
+            endAt: new Date(value.endAt),
+            title: value.title
+          }));
+          this.EventSelectMonth.emit(new Date(value.startAt));
+        }
       }
     );
     this.templateOvertime$ = combineLatest([
@@ -81,16 +91,14 @@ export class OvertimeComponent implements OnInit {
         }
       })
     );
-    this.formGroup.get('createdAt')!.valueChanges.subscribe(value => {
-      this.EventSelectMonth.emit(new Date(value));
-    });
   }
 
   onScroll() {
     this.store.dispatch(PayrollAction.loadMoreSalary({
       take: this.pageSize,
       skip: this.pageIndexInit,
-      createdAt: this.formGroup.get('createdAt')!.value,
+      startAt: this.formGroup.get('startAt')!.value,
+      endAt: this.formGroup.get('endAt')!.value,
       title: this.formGroup.get('title')!.value
     }));
   }

@@ -51,7 +51,8 @@ export const loadSalaryInit = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    createdAt?: Date
+    startAt?: Date,
+    endAt?: Date
   }>()
 );
 
@@ -61,7 +62,8 @@ export const loadMoreSalary = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    createdAt?: Date
+    startAt?: Date,
+    endAt?: Date
   }>()
 );
 
