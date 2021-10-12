@@ -32,8 +32,8 @@ export class PayrollService extends BaseService<Payroll> {
     return super.update(id, body);
   }
 
-  confirmPayroll(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(Api.CONFIRM_PAYROLL + `/${id}`, body);
+  confirmPayroll(id: number, body?: any): Observable<Payroll> {
+    return this.http.patch<Payroll>(Api.CONFIRM_PAYROLL + `/${id}`, body);
   }
 
   delete(id: number): Observable<void> {

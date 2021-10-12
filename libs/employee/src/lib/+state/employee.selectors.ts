@@ -56,6 +56,13 @@ export const selectEmployeeError = createSelector(
   }
 );
 
+export const selectEmployeeDeleted = createSelector(
+  selectorEmployeeState,
+  (state) => {
+    return state.deleted;
+  }
+);
+
 export const selectorEmployeeTotal = createSelector(
   selectorEmployeeState,
   fromEmployee.selectTotal

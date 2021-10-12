@@ -156,25 +156,22 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.updatePayroll),
       switchMap((props) =>
-        this.payrollService.update(props.id, props.Payroll).pipe(
-          map(() => {
-            this.snackBar.open('Cập nhật thành công', '', { duration: 1000 });
-            return PayrollAction.getPayroll({ id: props.id });
-          }),
+        this.payrollService.update(props.id, props.Payroll)),
+          map((payroll) => {
+           return    PayrollAction.updatePayrollSuccess({payroll: payroll})
+          } ),
           catchError((err) => throwError(err))
         )
       )
-    )
-  );
 
   confirmPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.confirmPayroll),
       switchMap((props) =>
-        this.payrollService.confirmPayroll(props.id).pipe(
-          map(() => {
+        this.payrollService.confirmPayroll(props.id, props.dataConfirm).pipe(
+          map((Payroll) => {
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
-            return PayrollAction.updatePayrollSuccess({ payrollId: props.id });
+            return PayrollAction.confirmPayrollSuccess({ payroll: Payroll });
           }),
           catchError((err) => throwError(err))
         )

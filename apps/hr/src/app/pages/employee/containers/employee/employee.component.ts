@@ -18,7 +18,7 @@ import {
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import {
   getAllPosition,
   PositionActions
@@ -26,6 +26,7 @@ import {
 import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -35,6 +36,7 @@ export class EmployeeComponent implements OnInit {
   genderType = Gender;
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
+  pageTypeEnum = PageTypeEnum
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -44,6 +46,7 @@ export class EmployeeComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   pageSize: number = 30;
   pageIndexInit = 0;
+  isLeft = false;
   formGroup = new FormGroup({
     // code: new FormControl(''),
     name: new FormControl(''),
@@ -62,9 +65,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /// FIXME: Load 2 lần
     this.store.dispatch(
-      EmployeeAction.loadInit({ employee: { take: this.pageSize, skip: this.pageIndexInit } })
+      EmployeeAction.loadInit({
+        employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+      })
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -112,13 +116,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   delete($event: any): void {
-    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%'
-    });
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        this.store.dispatch(EmployeeAction.deleteEmployee({ id: $event.id }));
-      }
+    console.log($event);
+    this.dialog.open(DeleteEmployeeComponent, {
+      minWidth: '30%',
+      data: { employeeId: $event.id , leftAt: $event.leftAt }
     });
   }
 
@@ -132,6 +133,7 @@ export class EmployeeComponent implements OnInit {
       position: val.position,
       branch: val.branch,
       workedAt: val.workedAt,
+      isLeft: this.isLeft,
       isFlatSalary:
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
@@ -157,10 +159,17 @@ export class EmployeeComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees({employee: this.employee(val)}));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees({ employee: this.employee(val) }));
   }
 
   readAndUpdate($event: any): void {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id]).then();
+  }
+
+  onSelectEmployee() {
+    this.isLeft = !this.isLeft;
+    this.store.dispatch(EmployeeAction.loadInit({
+      employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+    }));
   }
 }

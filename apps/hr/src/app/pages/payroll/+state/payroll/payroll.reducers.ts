@@ -47,11 +47,24 @@ export const payrollReducer = createReducer(
     adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false, scanned: true })
   ),
 
-  on(PayrollAction.updatePayrollSuccess, (state, { payrollId }) =>
-    adapter.updateOne({ id: payrollId, changes: { manConfirmedAt: new Date() } }, { ...state, loaded: true })),
+  on(PayrollAction.updatePayrollSuccess, (state, action) =>
+    adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })),
+
+  on(PayrollAction.confirmPayrollSuccess, (state, action) =>
+    adapter.updateOne({
+        id: action.payroll.id,
+        changes: {
+          accConfirmedAt: action.payroll.accConfirmedAt,
+          manConfirmedAt: action.payroll.manConfirmedAt,
+          paidAt: action.payroll.paidAt
+        }
+      },
+      {
+        ...state, loaded: true
+      })),
 
   on(PayrollAction.handlePayrollError, (state, _) => {
       return { ...state, adding: false, added: false };

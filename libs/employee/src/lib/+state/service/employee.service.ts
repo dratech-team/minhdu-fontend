@@ -35,7 +35,7 @@ export class EmployeeService extends BaseService<Employee> {
     return super.update(employeeId, props);
   }
 
-  delete(id: number): Observable<void> {
-    return super.delete(id);
+  delete(id: number, params?:any ): Observable<void> {
+    return super.delete(id,params);
   }
 }
