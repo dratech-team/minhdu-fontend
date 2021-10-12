@@ -216,7 +216,6 @@ export class PayrollComponent implements OnInit {
   }
 
   selectMonth(event: any) {
-    console.log(event);
     this.monthPayroll = event;
     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }

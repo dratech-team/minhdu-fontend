@@ -20,9 +20,9 @@
                   Đổi avatar
             </span>
         </button>
-        <button (click)='deleteEmployee(employee.id)' class='row btn shadow-none p-2 mb-3 bg-light rounded'>
+        <button (click)='deleteEmployee(employee.id, employee.leftAt)' class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
-                Xóa nhân viên
+                 {{employee.leftAt?'Khôi phục' : 'Xóa nhân viên' }}
               </span>
         </button>
       </div>
@@ -40,6 +40,7 @@
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
         <button
+          *ngIf='!employee.leftAt'
           data-toggle='tooltip'
           data-placement='top'
           title=' chỉnh sửa '
@@ -201,6 +202,16 @@
             </span>
             </div>
           </div>
+          <div class='row  ml-1 align-items-center'>
+          <div class='col-md-4 py-2 title-employee title-detail'>
+            <span>Ngày nghỉ việc:</span>
+          </div>
+          <div class='col-md-8 py-2 '>
+            <span class='contain-detail' >
+               {{employee.leftAt ? (employee.leftAt |date:'dd/MM/yyyy'): 'Chưa cập nhật' }}
+            </span>
+          </div>
+        </div>
         </div>
         <div class='col-6  form-group'>
           <div class='row align-items-center'>
@@ -359,6 +370,7 @@
       <div class=' d-flex align-items-center'>
         <div class='ml-2 mt-5  d-flex align-items-center main-title'>Thông tin bảo hiểm
           <button
+            *ngIf='!employee.leftAt'
             data-toggle='tooltip'
             data-placement='top'
             title=' chỉnh sửa '
@@ -477,7 +489,7 @@
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>
         <div class=' align-items-center title-table mr-4'>Thành phần gia đình</div>
-        <div class='col-md-4 add' (click)='addAndUpdateRelative(employee.id )'>
+        <div class='col-md-4 add'  *ngIf='!employee.leftAt' (click)='addAndUpdateRelative(employee.id )'>
           <span class='mr-1 font-weight-bold '>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
@@ -543,7 +555,7 @@
     <div class='col-12 mt-5'>
       <div class='row'>
         <div class=' align-items-center title-table mr-4'>Trình độ bằng cấp</div>
-        <div class='col-md-4 add' (click)='addAndUpdateDegree(employee.id)'>
+        <div class='col-md-4 add'  *ngIf='!employee.leftAt' (click)='addAndUpdateDegree(employee.id)'>
           <span class='mr-1 font-weight-bold'>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>

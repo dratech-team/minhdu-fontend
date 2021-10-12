@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { login } from '@minhdu-fontend/auth';
+import { checkInputNumber } from '../../../../../../../../libs/untils/checkInputNumber.until';
 
 
 @Component({
@@ -20,5 +21,8 @@ export class AddProfileComponent implements OnInit  {
 
   ngOnInit(): void {
     this.formGroup = <FormGroup>this.controlContainer.control;
+  }
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

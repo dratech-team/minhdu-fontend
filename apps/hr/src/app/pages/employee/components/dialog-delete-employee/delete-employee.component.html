@@ -6,10 +6,10 @@
     </div>
   </div>
   <div class='title-popup'>
-    <span>Xoá nhân viên</span>
+    <span>{{data.leftAt?'Khôi phục nhân viên': 'Xóa nhân viên'}}</span>
   </div>
   <div class='mt-2'>
-    <form [formGroup]='formGroup'>
+    <form [formGroup]='formGroup' *ngIf='!data.leftAt'>
       <label class='title-child'>Ngày nghỉ việc</label>
       <input type='date' class='form-control' formControlName='leftAt'>
     </form>
