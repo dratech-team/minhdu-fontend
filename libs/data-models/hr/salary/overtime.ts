@@ -4,6 +4,15 @@ import { Position } from '../orgChart/position';
 import { Branch } from '../orgChart/branch';
 
 export interface Overtime {
+  employees: employees[],
+  total: {
+    price: number,
+    unit: DatetimeUnitEnum,
+    times: number
+  }
+}
+
+interface employees {
   id: number,
   firstName: string,
   lastName: string,

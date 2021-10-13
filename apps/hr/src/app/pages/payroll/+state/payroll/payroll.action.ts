@@ -59,7 +59,7 @@ export const filterOvertime = createAction(
 
 export const filterOvertimeSuccess = createAction(
   '[LOAD_SALARY] Filter overtime Success',
-  props<{ overtimes: Overtime[] }>()
+  props<{ overtime: Overtime }>()
 );
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
