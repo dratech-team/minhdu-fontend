@@ -52,8 +52,8 @@ export const filterOvertime = createAction(
     take?: number,
     skip?: number,
     title?: string,
-    startAt?: Date,
-    endAt?: Date
+    startAt?: any,
+    endAt?: any
   }>()
 );
 
