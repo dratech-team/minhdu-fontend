@@ -24,7 +24,6 @@ export class DeleteEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data.leftAt);
     this.formGroup = this.formBuilder.group({
       leftAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')]
     });
@@ -39,11 +38,18 @@ export class DeleteEmployeeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    this.store.dispatch(EmployeeAction.deleteEmployee(
-      {
-        id: this.data.employeeId,
-        params: { leftAt: this.data.leftAt ? '' : new Date(this.formGroup.value.leftAt) }
-      }));
+    if (this.data.permanentlyDeleted) {
+      this.store.dispatch(EmployeeAction.deleteEmployee(
+        {
+          id: this.data.employee.id,
+        }));
+    } else {
+      this.store.dispatch(EmployeeAction.leaveEmployee(
+        {
+          id: this.data.employeeId,
+          body: { leftAt: this.data.leftAt ? '' : new Date(this.formGroup.value.leftAt) }
+        }));
+    }
     this.store.pipe(select(selectEmployeeDeleted)).subscribe(deleted => {
       if (deleted) {
         this.router.navigate(['/ho-so']).then();

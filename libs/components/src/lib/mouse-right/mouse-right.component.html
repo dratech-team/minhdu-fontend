@@ -11,7 +11,11 @@
                (execute)='delete($event.item)'>
     {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}
   </ng-template>
-
+  <ng-template *ngIf='type === pageType.EMPLOYEE_LEFT_AT'
+               contextMenuItem let-item
+               (execute)='permanentlyDeleted($event.item)'>
+    {{ 'Xóa vĩnh viễn'}}
+  </ng-template>
   <ng-template contextMenuItem let-item
                (execute)='readAndUpdate($event.item)'>
     Xem chi tiết

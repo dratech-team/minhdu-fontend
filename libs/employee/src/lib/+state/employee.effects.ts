@@ -190,7 +190,23 @@ export class EmployeeEffect {
     this.action$.pipe(
       ofType(EmployeeAction.deleteEmployee),
       switchMap((props) =>
-        this.employeeService.delete(props.id,props.params).pipe(
+        this.employeeService.delete(props.id).pipe(
+          map(() => {
+              this.snackBar.open('Xóa nhân viên vĩnh viễn thành công', '', { duration: 1000 });
+              return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
+            }
+          ),
+          catchError((err) => throwError(err))
+        )
+      )
+    )
+  );
+
+  LeaveEmployee$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.leaveEmployee),
+      switchMap((props) =>
+        this.employeeService.leaveEmployee(props.id,props.body).pipe(
           map(() => {
               this.snackBar.open('Xóa nhân viên thành công', '', { duration: 1000 });
               return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
@@ -201,6 +217,7 @@ export class EmployeeEffect {
       )
     )
   );
+
 
   deleteRelative$ = createEffect(() =>
     this.action$.pipe(

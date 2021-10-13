@@ -65,6 +65,11 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
+  on(EmployeeAction.leaveEmployee, (state, _) => {
+      return { ...state, deleted: false };
+    }
+  ),
+
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
   ),
