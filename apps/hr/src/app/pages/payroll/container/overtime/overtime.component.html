@@ -21,8 +21,8 @@
             <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
             <input type='text' disabled>
           </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
+          <th style='width: 220px;'>
+            <div class='border-top d-flex justify-content-center align-items-center' >Tháng</div>
             <div class='d-flex border'>
               <mat-date-range-input [rangePicker]='picker'>
                 <input matStartDate formControlName='startAt' placeholder='Từ ngày'>
@@ -32,7 +32,7 @@
               <mat-date-range-picker #picker></mat-date-range-picker>
             </div>
           </th>
-          <th>
+          <th style='min-width: 300px;'>
             <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
             <input class='form-control' type='text' matInput [matAutocomplete]='templateOvertime'
                    formControlName='title'>
@@ -77,13 +77,13 @@
                 'Khác'
             }}</th>
           <th class='pointer'>{{overtime.position?.name}}</th>
-          <th class='pointer'>
-            <div class='border d-flex align-items-center justify-content-center pointer ' *ngFor='let item of overtime.salaries'
+          <th class='pointer' style='width: 220px;'>
+            <div  class='border d-flex align-items-center justify-content-center pointer ' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
-              {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+              {{item.datetime|date:'yyyy-MM-dd'}}
             </div>
           </th>
-          <th class='pointer'>
+          <th class='pointer'  style='min-width: 300px;'>
             <div class='border d-flex align-items-center justify-content-center pointer' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
