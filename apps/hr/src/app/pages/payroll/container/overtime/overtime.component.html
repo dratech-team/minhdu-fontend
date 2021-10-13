@@ -53,49 +53,88 @@
         <div class='title-profile'>Thành tiền</div>
         <input class='form-control input-profile ' type='search' disabled>
       </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tổng đơn vị tính</div>
+        <input class='form-control input-profile ' type='search' disabled>
+      </div>
+      <div class='border-start title-header name'>
+        <div class='title-profile'>Tổng thành tiền</div>
+        <input class='form-control input-profile ' type='search' disabled>
+      </div>
     </form>
     <div class='outer animated fadeIn'
          infiniteScroll [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [infiniteScrollThrottle]='100'
          [scrollWindow]='false'
-         *ngIf='(salary$|async) as salaries'
-         [ngStyle]="{'width':salaries.length === 0 ? header.offsetWidth + 'px': 'fit-content',
-         'overflow-y':salaries.length === 0 ? 'hidden': 'scroll'}">
-      <div class='row-content' *ngFor='let salary of salaries' (contextmenu)='child.onContextMenu($event,salary)'>
+         *ngIf='(overtime$|async) as overtimes'
+         [ngStyle]="{'width':overtimes.length === 0 ? header.offsetWidth + 'px': 'fit-content',
+         'overflow-y':overtimes.length === 0 ? 'hidden': 'scroll'}">
+      <div class='row-content' style='margin-top:0; padding: 0' *ngFor='let overtime of overtimes'
+           (contextmenu)='child.onContextMenu($event,overtime)'
+      [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#80808047" }'
+      >
         <app-mouse-right #child (readAndUpdateEvent)='readPayroll($event)'>
         </app-mouse-right>
-        <div class='content-profile default pointer ' (click)='readPayroll(salary)'>
-          {{salary?.employee?.id}}
+        <div class='border content-profile default pointer d-flex justify-content-center align-items-center '
+             (click)='readPayroll(overtime)'>
+          {{overtime?.id}}
         </div>
-        <div class='content-profile name pointer ' (click)='readPayroll(salary)'>
-          {{salary?.employee?.firstName}} {{salary?.employee?.lastName}}
+        <div class='border content-profile name pointer  d-flex justify-content-center align-items-center '
+             (click)='readPayroll(overtime)'>
+          {{overtime?.firstName}} {{overtime?.lastName}}
         </div>
-        <div class='content-profile gender pointer '> {{
-          salary?.employee?.gender === 'MALE' ? 'Nam' :
-            salary?.employee?.gender === 'FEMALE' ? 'Nữ' :
+        <div class='border content-profile gender pointer  d-flex justify-content-center align-items-center '> {{
+          overtime?.gender === 'MALE' ? 'Nam' :
+            overtime?.gender === 'FEMALE' ? 'Nữ' :
               'Khác'
           }}</div>
-        <div class='content-profile default pointer ' (click)='readPayroll(salary)'>
-          {{salary?.employee?.position?.name}}
+        <div class='border content-profile default pointer  d-flex justify-content-center align-items-center '
+             (click)='readPayroll(overtime)'>
+          {{overtime.position?.name}}
         </div>
-        <div class='content-profile name pointer ' (click)='readPayroll(salary)'>
-          {{salary?.datetime |date: 'MM-yyyy'}}
+        <div class='content-profile name pointer  ' (click)='readPayroll(overtime)'>
+          <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+               (click)='readPayroll(overtime)'>
+            {{item?.datetime |date: 'dd-MM-yyyy'}}
+          </div>
         </div>
-        <div class='content-profile note pointer ' (click)='readPayroll(salary)'>
-          {{salary?.title}}
+        <div class='content-profile note pointer ' (click)='readPayroll(overtime)'>
+          <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+               (click)='readPayroll(overtime)'>
+            {{item.title}}  {{ item.allowance? '+ ' + item.allowance.title: '' }}
+          </div>
         </div>
-        <div class='content-profile default pointer ' (click)='readPayroll(salary)'>
-          {{salary?.times}} {{salary?.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
+        <div class='content-profile default pointer ' (click)='readPayroll(overtime)'>
+          <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+               (click)='readPayroll(overtime)'>
+            {{item?.times}} {{item?.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
+          </div>
         </div>
-        <div class='content-profile name pointer ' (click)='readPayroll(salary)'>
-          {{salary?.price ? salary.price : 0}}VND
+        <div class='content-profile name pointer ' (click)='readPayroll(overtime)'>
+          <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+               (click)='readPayroll(overtime)'>
+            {{item?.price ? item.price : 0}}VND
+          </div>
         </div>
-        <div class='content-profile name pointer ' (click)='readPayroll(salary)'>
-          {{salary?.price && salary?.times ? salary.price * salary.times : 0 }} VND
+        <div class='content-profile name pointer ' (click)='readPayroll(overtime)'>
+          <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+               (click)='readPayroll(overtime)'>
+            {{item.price && item?.times ? item.price * item.times : 0 }} VND  {{ item.allowance? '+ ' + item.allowance.price + 'VND' : '' }}
+          </div>
+        </div>
+        <div  *ngIf='overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
+          {{overtime.salary.times}} {{overtime.salary.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
+        </div>
+        <div  *ngIf='!overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
+        </div>
+        <div *ngIf='overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
+          {{overtime.salary.total}} VND
+        </div>
+        <div  *ngIf='!overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
         </div>
       </div>
-      <div *ngIf='!salaries || salaries.length === 0 ' style='height:60vh; '
+      <div *ngIf='!overtimes || overtimes.length === 0 ' style='height:60vh; '
            class=' d-flex justify-content-center align-content-center'>
         <div class='font-xl font-weight-bold d-flex align-items-center'>
           Hiện chưa có phiếu lương nào!
