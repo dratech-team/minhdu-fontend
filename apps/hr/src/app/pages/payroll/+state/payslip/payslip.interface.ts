@@ -18,6 +18,8 @@ export interface Payslip {
   stay: number;
   payslipOutOfWorkday: number;
   allowance: number;
+  bsc: number,
+  bscSalary: number,
 }
 
 interface workHoliday {

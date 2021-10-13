@@ -14,7 +14,7 @@ import {
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollAction } from './payroll.action';
-import { selectorPayrollTotal, selectorSalaryTotal } from './payroll.selector';
+import { selectorPayrollTotal } from './payroll.selector';
 import { OvertimeService } from '../../service/overtime.service';
 
 @Injectable()
@@ -68,12 +68,11 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.filterOvertime),
       concatMap((params) => {
-        return this.overtimeService.getAll(params);
+        return this.overtimeService.getOvertime(params);
       }),
       map((res) => {
-        console.log(res)
         return PayrollAction.filterOvertimeSuccess({
-          overtimes : res
+          overtime : res
         });
       }),
       catchError((err) => throwError(err))

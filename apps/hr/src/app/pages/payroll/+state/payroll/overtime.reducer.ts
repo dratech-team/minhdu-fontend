@@ -15,7 +15,7 @@ export const initialOvertime = adapterOvertime.getInitialState({ loaded: false, 
 export const OvertimeReducer = createReducer(
   initialOvertime,
   on(PayrollAction.filterOvertimeSuccess, (state, action) =>
-    adapterOvertime.setAll(action.overtimes, { ...state, loaded: true, added: true, adding: false }))
+    adapterOvertime.setOne(action.overtime, { ...state, loaded: true, added: true, adding: false }))
 );
 export const {
   selectEntities,

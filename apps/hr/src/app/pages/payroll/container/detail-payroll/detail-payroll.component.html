@@ -262,6 +262,9 @@
             <div class='col-md-7 title-child' *ngIf="salary.unit === 'MINUTE' ">
               {{salary.title}} ({{salary.times | convertTime }} - ngày {{salary.datetime|date: 'dd/MM/yyyy'}} )
             </div>
+            <div class='col-md-7 title-child' *ngIf="salary.unit === 'TIMES' ">
+              {{salary.title}} {{salary.times + ' Lần'}}
+            </div>
             <div class='col-md-3 salary' style='color: #29CC97'>
             </div>
             <div style='display: flex'>

@@ -30,9 +30,9 @@ export const selectorAllPayroll = createSelector(
   fromPayroll.selectAll
 );
 
-export const selectorAllOvertime = createSelector(
+export const selectorOvertime = createSelector(
   selectorOvertimeState,
-  fromOvertime.selectAll
+  fromOvertime.selectEntities
 );
 
 export const selectCurrentPayroll = (id: number) => createSelector(
