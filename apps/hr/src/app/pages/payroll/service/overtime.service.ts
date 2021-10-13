@@ -11,7 +11,7 @@ export class OvertimeService extends BaseService<Overtime> {
     super(Api.OVERTIME, http);
   }
 
-  getAll(params?: any): Observable<Overtime[]> {
-    return super.getAll(params);
+  getOvertime(params?: any): Observable<Overtime> {
+    return this.http.get<Overtime>(Api.OVERTIME, {params});
   }
 }
