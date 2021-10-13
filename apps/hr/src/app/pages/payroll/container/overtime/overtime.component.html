@@ -114,13 +114,14 @@
         <div class='content-profile name pointer ' (click)='readPayroll(overtime)'>
           <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
                (click)='readPayroll(overtime)'>
-            {{item?.price ? item.price : 0}}VND
+            {{item?.price ? (item.price |number:'1.0-0') : 0}}VND
           </div>
         </div>
         <div class='content-profile name pointer ' (click)='readPayroll(overtime)'>
           <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
                (click)='readPayroll(overtime)'>
-            {{item.price && item?.times ? item.price * item.times : 0 }} VND  {{ item.allowance? '+ ' + item.allowance.price + 'VND' : '' }}
+            {{item.price && item?.times ? (item.price * item.times|number:'1.0-0' ) : 0 }} VND
+            {{ item.allowance? '+ ' + (item.allowance.price|number:'1.0-0' ) + 'VND' : '' }}
           </div>
         </div>
         <div  *ngIf='overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
@@ -129,7 +130,7 @@
         <div  *ngIf='!overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
         </div>
         <div *ngIf='overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
-          {{overtime.salary.total}} VND
+          {{overtime.salary.total|number:'1.0-0'}} VND
         </div>
         <div  *ngIf='!overtime.salary' class='content-profile name pointer border d-flex justify-content-center align-items-center ' (click)='readPayroll(overtime)'>
         </div>
