@@ -69,50 +69,50 @@
         <tr *ngFor='let overtime of overtimes'
             [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#8080801a" }'
         >
-          <th>{{overtime?.id}}</th>
-          <th>{{overtime.firstName}} {{overtime.lastName}}</th>
-          <th> {{
+          <th class='pointer'>{{overtime?.id}}</th>
+          <th class='pointer'>{{overtime.firstName}} {{overtime.lastName}}</th>
+          <th class='pointer'> {{
             overtime?.gender === 'MALE' ? 'Nam' :
               overtime?.gender === 'FEMALE' ? 'Nữ' :
                 'Khác'
             }}</th>
-          <th>{{overtime.position?.name}}</th>
-          <th>
-            <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+          <th class='pointer'>{{overtime.position?.name}}</th>
+          <th class='pointer'>
+            <div class='border d-flex align-items-center justify-content-center pointer ' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
             </div>
           </th>
-          <th>
-            <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+          <th class='pointer'>
+            <div class='border d-flex align-items-center justify-content-center pointer' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
             </div>
           </th>
-          <th>
-            <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+          <th class='pointer'>
+            <div class='border d-flex align-items-center justify-content-center pointer' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item?.times}} {{item?.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
             </div>
           </th>
-          <th>
-            <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+          <th class='pointer'>
+            <div class='border d-flex align-items-center justify-content-center pointer' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
             </div>
           </th>
-          <th>
-            <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
+          <th class='pointer'>
+            <div class='border d-flex align-items-center justify-content-center pointer' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
               {{item.price && item?.times ? (item.price * item.times|number:'1.0-0') : 0 }}
               VND  {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
             </div>
           </th>
-          <th
+          <th class='pointer'
             *ngIf='overtime.salary'> {{overtime.salary.times}} {{overtime.salary.unit === unit.DAY ? 'Ngày' : 'Giờ'}}</th>
-          <th *ngIf='!overtime.salary'></th>
-          <th *ngIf='overtime.salary'> {{overtime.salary.total|number:'1.0-0'}} VND</th>
-          <th *ngIf='!overtime.salary'></th>
+          <th class='pointer' *ngIf='!overtime.salary'></th>
+          <th class='pointer' *ngIf='overtime.salary'> {{overtime.salary.total|number:'1.0-0'}} VND</th>
+          <th class='pointer' *ngIf='!overtime.salary'></th>
         </tr>
         <tr   *ngIf='overtimes.length === 0 ' style='height: 50vh'>
           <td colspan='11' class='text-center check-content font-weight-bold font-xl '>Hiện không có phiếu tăng ca nào </td>
