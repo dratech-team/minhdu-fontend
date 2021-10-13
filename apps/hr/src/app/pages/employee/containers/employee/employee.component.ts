@@ -116,9 +116,8 @@ export class EmployeeComponent implements OnInit {
   }
 
   delete($event: any): void {
-    console.log($event);
     this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%',
+      width: 'fit-content',
       data: { employeeId: $event.id , leftAt: $event.leftAt }
     });
   }
@@ -171,5 +170,12 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadInit({
       employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
     }));
+  }
+
+  permanentlyDeleted($event: any) {
+    this.dialog.open(DeleteEmployeeComponent, {
+      width: 'fit-content',
+      data: { employee:$event , permanentlyDeleted: true }
+    });
   }
 }

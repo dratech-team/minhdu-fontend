@@ -65,7 +65,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   deleteEmployee(employeeId: number, leftAt?: Date): void {
     this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%',
+      width:'fit-content',
       data: { employeeId, leftAt }
     });
   }
