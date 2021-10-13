@@ -59,7 +59,8 @@ export const payrollReducer = createReducer(
         changes: {
           accConfirmedAt: action.payroll.accConfirmedAt,
           manConfirmedAt: action.payroll.manConfirmedAt,
-          paidAt: action.payroll.paidAt
+          paidAt: action.payroll.paidAt,
+          totalWorkday: action.payroll.totalWorkday
         }
       },
       {
