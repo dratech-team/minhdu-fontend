@@ -98,20 +98,20 @@
           <th>
             <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
-              {{item?.price ? item.price : 0}}VND
+              {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
             </div>
           </th>
           <th>
             <div class='border d-flex align-items-center justify-content-center' *ngFor='let item of overtime.salaries'
                  (click)='readPayroll(overtime)'>
-              {{item.price && item?.times ? item.price * item.times : 0 }}
-              VND  {{ item.allowance ? '+ ' + item.allowance.price + 'VND' : '' }}
+              {{item.price && item?.times ? (item.price * item.times|number:'1.0-0') : 0 }}
+              VND  {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
             </div>
           </th>
           <th
             *ngIf='overtime.salary'> {{overtime.salary.times}} {{overtime.salary.unit === unit.DAY ? 'Ngày' : 'Giờ'}}</th>
           <th *ngIf='!overtime.salary'></th>
-          <th *ngIf='overtime.salary'> {{overtime.salary.total}} VND</th>
+          <th *ngIf='overtime.salary'> {{overtime.salary.total|number:'1.0-0'}} VND</th>
           <th *ngIf='!overtime.salary'></th>
         </tr>
         <tr   *ngIf='overtimes.length === 0 ' style='height: 50vh'>
