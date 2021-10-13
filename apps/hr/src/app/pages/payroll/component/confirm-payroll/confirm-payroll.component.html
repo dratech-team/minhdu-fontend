@@ -1,4 +1,4 @@
-<div class='py-3 main-popup' style='min-width: 300px' *ngIf='!data.payroll.accConfirmedAt'>
+<div class='py-3 main-popup' style='min-width: 300px' *ngIf='!data.payroll.accConfirmedAt|| !changeDate '>
   <div  mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div class='py-3 main-popup' style='min-width: 1165px' *ngIf='!!data.payroll.accConfirmedAt'>
+<div class='py-3 main-popup' style='min-width: 1165px' *ngIf='!!data.payroll.accConfirmedAt && changeDate '>
   <div id='btn-close' mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
@@ -261,7 +261,9 @@
     </div>
   </div>
   <div id='footer' class='footer-popup row mt-3 ml-2 d-flex justify-content-end'>
+    <button class='btn btn-primary mr-3 col-1 ' (click)='changeDateConfirm()'>Đổi ngày</button>
     <button class='btn btn-primary mr-3 col-1 ' (click)='printPayroll()'>in</button>
   </div>
+
 </div>
 
