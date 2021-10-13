@@ -14,7 +14,7 @@ import {
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollAction } from './payroll.action';
-import { selectorPayrollTotal, selectorSalaryTotal } from './payroll.selector';
+import { selectorPayrollTotal } from './payroll.selector';
 import { OvertimeService } from '../../service/overtime.service';
 
 @Injectable()

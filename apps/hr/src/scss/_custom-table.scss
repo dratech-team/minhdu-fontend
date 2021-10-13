@@ -129,14 +129,12 @@
   height: 35px;
 }
 
-.select >option {
+.select > option {
   font-size: 15px;
   border: none;
   text-align: center;
   height: 35px;
 }
-
-
 
 
 .content-profile {
@@ -167,4 +165,36 @@
   padding: 6px 10px;
   border: solid 1px $base-color;
   border-radius: 4px;
+}
+
+.fixTableHead thead th {
+  background: white;
+  position: sticky;
+  top: -1px;
+}
+
+.fixTableHead {
+  width: fit-content;
+  overflow-y: auto;
+  max-height: 63vh;
+}
+
+.fixTableHead > table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.fixTableHead > table th {
+  text-align: center;
+  padding: 0;
+}
+
+.fixTableHead > table th > div {
+  height: 40px;
+  width: 100%;
+}
+
+.fixTableHead > table th > input {
+  height: 40px;
+  width: 100%;
 }
