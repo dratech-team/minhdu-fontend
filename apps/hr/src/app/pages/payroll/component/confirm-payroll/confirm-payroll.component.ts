@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
-  styleUrls: ['cofirm-payroll.component.scss']
+  styleUrls: ['confirm-payroll.component.scss']
 })
 export class ConfirmPayrollComponent implements OnInit {
   accConfirmedAt = new FormControl(this.datePipe.transform(
