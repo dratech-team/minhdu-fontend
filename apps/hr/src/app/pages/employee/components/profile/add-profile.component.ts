@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { login } from '@minhdu-fontend/auth';
-import { checkInputNumber } from '../../../../../../../../libs/untils/checkInputNumber.until';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 
 @Component({

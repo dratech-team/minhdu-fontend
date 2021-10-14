@@ -19,7 +19,7 @@ import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-abse
 import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
-import { getDaysInMonth } from '../../../../../../../../libs/untils/daytime.until';
+import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 
 
