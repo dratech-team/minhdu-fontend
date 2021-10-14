@@ -77,7 +77,6 @@
 }
 
 .table {
-  max-width: 540px;
   margin-right: 60px;
   border: solid 1px #EBEBEB;
   border-radius: 10px;
@@ -89,6 +88,22 @@
   line-height: 24px;
   font-weight: 600
 }
+.header-table-detail-payroll{
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.body-table-detail-payroll{
+  min-height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
 
 .title-table {
   height: 50px;
@@ -97,9 +112,7 @@
 }
 
 .content-table {
-  width: 100%;
   border-top: solid 1px #EBEBEB;
-  min-height: 50px;
   display: flex;
   align-items: center
 }
@@ -135,10 +148,38 @@
   padding: 25px;
   border-radius: 15px;
 }
-
-
-
-
-
+.sticky-scroll{
+  border-radius: 5px;
+  position: fixed;
+  top: 200px;
+  right: 0;
+  background-color: #c8ced3;
+  padding: 10px;
+  font-size: 15px;
+  height:fit-content
+}
+tbody > tr > th {
+  font-weight: 300;
+}
+.hide-sticky{
+  animation: hide-sticky .5s forwards;
+}
+@keyframes hide-sticky {
+  0%{ right: 0;
+  }
+  100%{
+    right: -215px;
+  }
+}
+.show-sticky{
+  animation: showSticky .5s forwards !important;
+}
+@keyframes showSticky {
+  0%{ right: -215px;
+  }
+  100%{
+    right: 0;
+  }
+}
 
 

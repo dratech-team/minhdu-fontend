@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
+import { ShowAlertComponent } from '../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'
@@ -26,7 +27,7 @@ export class DialogAllowanceComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   isAllDay = true;
-
+  isApprentice = false
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -125,5 +126,13 @@ export class DialogAllowanceComponent implements OnInit {
 
   changeDatePicker() {
     this.isAllDay = !this.isAllDay;
+  }
+
+  showAlert() {
+    if(!this.isApprentice){
+     this.dialog.open(ShowAlertComponent, {width:'fit-content', disableClose: true,
+        data:{content:'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc'}})
+      this.isApprentice = true
+    }
   }
 }
