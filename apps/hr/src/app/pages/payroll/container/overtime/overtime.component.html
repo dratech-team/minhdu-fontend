@@ -1,10 +1,10 @@
 <ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>
 <div *ngIf='loaded' style='width: 100%; overflow-x: scroll'>
   <div class='fixTableHead mt-5'>
-    <table [formGroup]='formGroup' style='width: 2300px;'>
+    <table [formGroup]='formGroup' style='width: 2000px;'>
       <thead>
       <tr>
-        <th>
+        <th style='width: 100px'>
           <div class='border-top d-flex justify-content-center align-items-center'>Mã nhân viên</div>
           <input type='text' disabled>
         </th>
@@ -12,11 +12,11 @@
           <div class='border-top d-flex justify-content-center align-items-center'>Tên nhân viên</div>
           <input class='form-control text-center' placeholder='Nhập tên nhân viên'  type='text' formControlName='name'>
         </th>
-        <th>
+        <th  style='width: 100px'>
           <div class='border-top d-flex justify-content-center align-items-center'>Giới tính</div>
           <input type='text' disabled>
         </th>
-        <th>
+        <th style='width: 200px'>
           <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
           <input type='text' disabled>
         </th>
@@ -50,27 +50,27 @@
           <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá</div>
           <input type='text' disabled>
         </th>
-        <th>
+        <th >
           <div class='border-top d-flex justify-content-center align-items-center'>Tổng đơn vị tính</div>
           <input type='text' disabled>
         </th>
-        <th>
+        <th >
           <div class='border-top d-flex justify-content-center align-items-center'>Tổng thành tiền</div>
           <input type='text' disabled>
         </th>
       </tr>
       <tr style=' color: red ; position: relative ; top:-1px'>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40; width: 100px'>
           <div class='border-top d-flex justify-content-center align-items-center'></div>
         </th>
         <th style='background: #b8935c40;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Tổng cộng</div>
 
         </th>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40; width: 100px'>
           <div class='border-top d-flex justify-content-center align-items-center'></div>
         </th>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40; width: 200px;'>
           <div class='border-top d-flex justify-content-center align-items-center'></div>
         </th>
         <th style='width: 220px; background:#b8935c40 '>
@@ -79,19 +79,21 @@
         <th style='min-width: 300px;  background:#b8935c40 '>
           <div class='border-top d-flex justify-content-center align-items-center'></div>
         </th>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40 '>
+
           <div *ngIf='overtime?.total' class='border-top d-flex justify-content-center align-items-center'>
             {{overtime.total.times}} - {{overtime.total.unit === 'DAY' ? 'Ngày' : 'Giờ'}}
           </div>
         </th>
-        <th style='background: #b8935c40;'>
-          <div class='border-top d-flex justify-content-center align-items-center'>
+        <th style='background: #b8935c40 '>
+
+        <div class='border-top d-flex justify-content-center align-items-center'>
           </div>
         </th>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40'>
           <div class='border-top d-flex justify-content-center align-items-center'></div>
         </th>
-        <th style='background: #b8935c40;'>
+        <th style='background: #b8935c40'>
           <div *ngIf='overtime?.total' class='border-top d-flex justify-content-center align-items-center'>
             {{(overtime.total.price |number: '1.0-0') + 'VND' }}
           </div>
@@ -102,14 +104,14 @@
       <tr *ngFor='let overtime of overtime?.employees'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#8080801a" }'
       >
-        <th class='pointer'>{{overtime?.id}}</th>
+        <th style='width: 100px' class='pointer'>{{overtime?.id}}</th>
         <th class='pointer'>{{overtime.firstName}} {{overtime.lastName}}</th>
-        <th class='pointer'> {{
+        <th  style='width: 100px' class='pointer' > {{
           overtime?.gender === 'MALE' ? 'Nam' :
             overtime?.gender === 'FEMALE' ? 'Nữ' :
               'Khác'
           }}</th>
-        <th class='pointer'>{{overtime.position?.name}}</th>
+        <th style='width: 200px' class='pointer'>{{overtime.position?.name}}</th>
         <th class='pointer' style='width: 220px;'>
           <div class='border d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of overtime.salaries'
@@ -124,14 +126,14 @@
             {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
           </div>
         </th>
-        <th class='pointer'>
+        <th  class='pointer'>
           <div class='border d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of overtime.salaries'
                (click)='readPayroll(overtime)'>
             {{item?.times}} {{item?.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
           </div>
         </th>
-        <th class='pointer'>
+        <th  class='pointer'>
           <div class='border d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of overtime.salaries'
                (click)='readPayroll(overtime)'>

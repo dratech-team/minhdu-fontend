@@ -5,13 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DatetimeUnitEnum, Gender, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
-  selectedLoadedSalary,
-  selectorOvertime
 } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
