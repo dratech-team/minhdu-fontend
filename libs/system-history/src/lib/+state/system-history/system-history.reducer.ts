@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { SystemHistory } from './system-history.model';
 import { SystemHistoryActions } from './system-history.actions';
 

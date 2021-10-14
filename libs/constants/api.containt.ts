@@ -1,5 +1,5 @@
 export const Api = {
-  AUTH: 'auth/signin',
+  AUTH_SIGN_IN: 'auth/signin',
   ORG_CHART: 'org-chart',
   BRANCH: 'branch',
   DEPARTMENT: 'department',
@@ -52,4 +52,5 @@ export const Api = {
   PAYROLL_CREATE: 'payroll/create',
   GENERATE_HOLIDAY: 'generate-holiday',
   OVERTIME: 'payroll/overtime/filter',
+  AUTH: 'auth',
 };

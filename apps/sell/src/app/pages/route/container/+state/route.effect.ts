@@ -8,7 +8,7 @@ import { SnackBarComponent } from '../../../../../../../../libs/components/src/l
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { selectorAllRoute, selectorRouteTotal } from './Route.selector';
-import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history.selectors';
+import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history/system-history.selectors';
 
 @Injectable()
 export class RouteEffect {

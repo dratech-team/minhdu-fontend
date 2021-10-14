@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate,  } from '@minhdu-fontend/data-models';
-import { SystemHistory } from '../+state/system-history.model';
+import { SystemHistory } from '../+state/system-history/system-history.model';
+
 
 @Injectable({providedIn:'root'})
 export class SystemHistoryService extends BaseService<SystemHistory>{
