@@ -27,7 +27,9 @@ export class DialogAllowanceComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   isAllDay = true;
-  isApprentice = false
+  isApprentice = false;
+  formDay = false;
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -40,6 +42,14 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (new Date(this.data?.payroll?.createdAt).getMonth() === new Date().getMonth()
+      || (this.data?.salary?.unit === DatetimeUnitEnum.DAY)
+    ) {
+      if ((this.data?.salary?.unit === DatetimeUnitEnum.DAY && this.data?.salary?.datetime)) {
+        this.isApprentice = true;
+      }
+      this.formDay = true;
+    }
     if (this.data?.salary?.datetime?.start && this.data?.salary?.datetime?.start) {
       this.isAllDay = false;
     }
@@ -50,13 +60,15 @@ export class DialogAllowanceComponent implements OnInit {
         price: [this.data.salary.price, Validators.required],
         note: [this.data.salary.note],
         datetime: [
-          this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd'),
+          this.data.salary.unit === DatetimeUnitEnum.DAY ?
+            this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd')
+            : this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM')
         ],
         times: [this.data.salary.times],
         // start: [this.data.salary.allowance.start],
         // end: [this.data.salary.allowance?.end],
         type: [this.data.type, Validators.required],
-        rate: [this.data.salary.rate ? this.data.salary.rate : 1],
+        rate: [this.data.salary.rate ? this.data.salary.rate : 1]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -129,10 +141,12 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   showAlert() {
-    if(!this.isApprentice){
-     this.dialog.open(ShowAlertComponent, {width:'fit-content', disableClose: true,
-        data:{content:'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc'}})
-      this.isApprentice = true
+    if (!this.isApprentice) {
+      this.dialog.open(ShowAlertComponent, {
+        width: 'fit-content', disableClose: true,
+        data: { content: 'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc' }
+      });
+      this.isApprentice = true;
     }
   }
 }
