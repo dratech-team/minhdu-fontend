@@ -51,6 +51,7 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
 import { OvertimeComponent } from './container/overtime/overtime.component';
 import { LoadingComponent } from './component/popup-loading/loading.component';
 import { OvertimeReducer } from './+state/payroll/overtime.reducer';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -89,7 +90,8 @@ import { OvertimeReducer } from './+state/payroll/overtime.reducer';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatStepperModule
   ],
   declarations: [
     PayrollComponent,
