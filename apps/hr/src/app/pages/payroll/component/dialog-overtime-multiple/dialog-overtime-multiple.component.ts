@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
-  FormGroup, Validators
+  FormGroup
 } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
