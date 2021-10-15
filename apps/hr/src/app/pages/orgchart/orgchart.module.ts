@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { OrgchartRoutingModule } from './orgchart-routing.module';
 import { DialogOrgChartComponent } from './components/dialog/dialog-org-chart.component';
-import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -26,13 +25,10 @@ const CONTAINERS = [OrgchartContainer];
     ReactiveFormsModule,
     MatDialogModule,
     NgxSkeletonLoaderModule.forRoot(),
-    MatDialogModule,
-    MatDialogModule
   ],
   declarations: [
     CONTAINERS,
     DialogOrgChartComponent,
-    DialogDeleteComponent
   ]
 })
 export class OrgchartPageModule {

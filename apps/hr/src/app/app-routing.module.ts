@@ -43,6 +43,13 @@ const routes: Routes = [
           title: 'Lịch sử hệ thống'
         },
       },
+      {
+        path: 'to-chuc',
+        loadChildren: () => import('./pages/orgchart-new/orgchart-new.module').then(m => m.OrgchartNewModule),
+        data: {
+          title: 'to-chuc'
+        },
+      },
       { path: '**', redirectTo: '' }
     ]
   }
