@@ -1,0 +1,63 @@
+<!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
+
+<div  style='width: 100%; overflow-x: auto'>
+  <div class='d-flex justify-content-center mb-2 '>
+    <div>
+      <div style='width: 1000px;' class=''>
+        <div class='row h3 '>Đơn vị</div>
+        <div class='row'>
+          <button (click)='addBranch()' class='btn btn-primary mt-3 '>Tạo Đơn vị</button>
+        </div>
+      </div>
+      <ngx-skeleton-loader *ngIf='!(branchLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
+      <div class='fixTableHead mt-5 '*ngIf='(branchLoaded$|async)'>
+        <table style='width: 1000px;'>
+          <thead>
+          <tr>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Mã đơn vị</div>
+              <input
+                class='form-control  '
+                disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tên đơn vị</div>
+              <input class='form-control border text-center' type='text' matInput [formControl]='branch'>
+
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
+              <input class='form-control border text-center' type='text' disabled >
+            </th>
+          </tr>
+          </thead>
+          <tbody *ngIf='(branches$| async) as branches'>
+          <tr *ngFor='let branch of branches' (contextmenu)='childBranch.onContextMenu($event,branch)'>
+            <th class='pointer' (click)='updateBranch(branch)'>
+              {{branch.id}}
+            </th>
+            <th class='pointer' (click)='updateBranch(branch)'>
+              {{branch.name}}
+            </th>
+            <th class='pointer' (click)='updateBranch(branch)'>
+              {{branch.id}}
+            </th>
+          </tr>
+          <tr *ngIf=' branches.length === 0 ' style='height: 50vh'>
+            <td colspan='2' class='text-center check-content font-weight-bold font-xl '>Hiện không có đơn vị nào
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-mouse-right #childPosition (addEvent)='addPosition()'
+                 (readAndUpdateEvent)='updatePosition($event)'
+                 (deleteEvent)='deletePosition($event)'
+></app-mouse-right>
+<app-mouse-right #childBranch (addEvent)='addBranch()'
+                 (readAndUpdateEvent)='updatePosition($event)'
+                 (deleteEvent)='deleteBranch($event)'
+></app-mouse-right>

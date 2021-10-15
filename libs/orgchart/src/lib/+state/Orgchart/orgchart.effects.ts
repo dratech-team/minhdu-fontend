@@ -5,6 +5,7 @@ import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BranchService } from '../../services/branch.service';
 import { throwError } from 'rxjs';
 import { OrgchartService } from '../../services/orgchart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class OrgchartEffects {
@@ -12,7 +13,22 @@ export class OrgchartEffects {
     this.actions$.pipe(
       ofType(OrgchartActions.init),
       mergeMap(() => this.orgchartService.getAll()),
-      map(branches => OrgchartActions.loadOrgchartSuccess({ branches })),
+      map(branches => {
+        this.snackBar.open('Tải đơn vị thành công', '', { duration: 1500 });
+        return OrgchartActions.loadOrgchartSuccess({ branches });
+      }),
+      catchError(err => throwError(err))
+    )
+  );
+
+  searchBranch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrgchartActions.searchBranch),
+      mergeMap((params) => this.orgchartService.getAll(params)),
+      map(branches => {
+        this.snackBar.open('Tải đơn vị thành công', '', { duration: 1500 });
+        return OrgchartActions.loadOrgchartSuccess({ branches });
+      }),
       catchError(err => throwError(err))
     )
   );
@@ -21,7 +37,11 @@ export class OrgchartEffects {
     this.actions$.pipe(
       ofType(OrgchartActions.addBranch),
       switchMap(param => this.branchService.addOne(param.branch)),
-      map(branch => OrgchartActions.addBranchSuccess({ branch })),
+      map(branch => {
+          this.snackBar.open('Thêm đơn vị thành công', '', { duration: 1500 });
+          return OrgchartActions.addBranchSuccess({ branch });
+        }
+      ),
       catchError(err => throwError(err))
     ), { dispatch: true }
   );
@@ -40,7 +60,10 @@ export class OrgchartEffects {
     this.actions$.pipe(
       ofType(OrgchartActions.updateBranch),
       switchMap(param => this.branchService.update(param.id, { name: param.name }).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ => {
+          this.snackBar.open('Cập nhật đơn vị thành công', '', { duration: 1500 });
+          return OrgchartActions.init();
+        }),
         catchError(err => throwError(err))
       ))
     ), { dispatch: true }
@@ -50,13 +73,17 @@ export class OrgchartEffects {
     this.actions$.pipe(
       ofType(OrgchartActions.deleteBranch),
       switchMap(param => this.branchService.delete(param.id).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ => {
+          this.snackBar.open('Xóa đơn vị thành công', '', { duration: 1500 });
+          return OrgchartActions.init();
+        }),
         catchError(err => throwError(err))
       ))
     ), { dispatch: true }
   );
 
   constructor(
+    private snackBar: MatSnackBar,
     private actions$: Actions,
     private branchService: BranchService,
     private orgchartService: OrgchartService
