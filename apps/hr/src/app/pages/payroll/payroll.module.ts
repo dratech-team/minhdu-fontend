@@ -25,7 +25,7 @@ import { UpdateConfirmComponent } from './component/update-comfirm/update-confir
 import { HolidayReducer } from '../template/+state/holiday/holiday.reducer';
 import { HolidayEffect } from '../template/+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
@@ -49,7 +49,8 @@ import { DialogExportPayrollComponent } from './component/dialog-export/dialog-e
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 import { OvertimeComponent } from './container/overtime/overtime.component';
-import { SalaryReducer } from './+state/payroll/salary.reducer';
+import { LoadingComponent } from './component/popup-loading/loading.component';
+import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
@@ -64,7 +65,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-    StoreModule.forFeature(FeatureName.SALARY, SalaryReducer),
+    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
     EffectsModule.forFeature([
@@ -112,8 +113,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     DialogExportPayrollComponent,
     HistoryPayrollComponent,
     OvertimeComponent,
+    LoadingComponent
   ],
-  providers:[
+  providers: [
     MatDatepickerModule
   ]
 })

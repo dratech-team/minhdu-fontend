@@ -249,7 +249,7 @@ tr:nth-child(even) {
 .add {
   display: flex;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 12px !important;
   line-height: 28px;
   color: #7749F8
 }

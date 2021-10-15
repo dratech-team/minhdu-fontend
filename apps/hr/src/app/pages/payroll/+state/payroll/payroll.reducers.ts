@@ -2,19 +2,21 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { PayrollAction } from './payroll.action';
 import { Payroll } from './payroll.interface';
-import { Salary } from '@minhdu-fontend/data-models';
 
 export interface PayrollState extends EntityState <Payroll> {
   loaded: boolean,
   added: boolean,
   adding: boolean,
+  scanned: boolean,
   selectedPayrollId: number
 }
 
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
-export const initialPayroll = adapter.getInitialState({ loaded: false, added: false, adding: false });
+export const initialPayroll = adapter.getInitialState({
+  loaded: false, added: false, adding: false, scanned: false
+});
 
 export const payrollReducer = createReducer(
   initialPayroll,
@@ -42,14 +44,28 @@ export const payrollReducer = createReducer(
   }),
 
   on(PayrollAction.getPayrollSuccess, (state, action) =>
-    adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false })
+    adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false, scanned: true })
   ),
 
-  on(PayrollAction.updatePayrollSuccess, (state, { payrollId }) =>
-    adapter.updateOne({ id: payrollId, changes: { manConfirmedAt: new Date() } }, { ...state, loaded: true })),
+  on(PayrollAction.updatePayrollSuccess, (state, action) =>
+    adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true })),
+
+  on(PayrollAction.confirmPayrollSuccess, (state, action) =>
+    adapter.updateOne({
+        id: action.payroll.id,
+        changes: {
+          accConfirmedAt: action.payroll.accConfirmedAt,
+          manConfirmedAt: action.payroll.manConfirmedAt,
+          paidAt: action.payroll.paidAt,
+          totalWorkday: action.payroll.totalWorkday
+        }
+      },
+      {
+        ...state, loaded: true
+      })),
 
   on(PayrollAction.handlePayrollError, (state, _) => {
       return { ...state, adding: false, added: false };
@@ -65,6 +81,14 @@ export const payrollReducer = createReducer(
 
   on(PayrollAction.handleSalaryError, (state, _) => {
     return { ...state, adding: false };
+  }),
+
+  on(PayrollAction.scanHoliday, (state, _) => {
+    return { ...state, scanned: false };
+  }),
+
+  on(PayrollAction.scanHolidayError, (state, _) => {
+    return { ...state, scanned: true };
   })
 );
 

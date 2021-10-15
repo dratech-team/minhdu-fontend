@@ -1,6 +1,15 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
-<button (click)='add()' class='ml-3 mt-3 btn btn-primary'>Thêm nhân viên</button>
+<div class='d-flex align-items-center '>
+  <button (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên</button>
+  <div style='width: fit-content'>
+    <select class='select ml-3 border px-2  ' matNativeControl required  (change)='onSelectEmployee()'>
+      <option  [value]='true'>Nhân viên còn làm</option>
+      <option  [value]='false'>Nhân viên đã nghỉ</option>
+    </select>
+  </div>
+</div>
+
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #employees>
   <div class='main-profile'>
@@ -87,9 +96,13 @@
          'overflow-y':employees.length === 0 ? 'hidden': 'scroll'}">
       <div class='row-content' *ngFor='let employee of employees' (click)='readAndUpdate(employee)'
            (contextmenu)='child.onContextMenu($event, employee)'>
-        <app-mouse-right #child (addEvent)='add()' (deleteEvent)='delete($event)'
-                         (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-        <div class='content-profile default pointer '> {{employee?.id}}</div>
+        <app-mouse-right  [type]='isLeft? pageTypeEnum.EMPLOYEE_LEFT_AT : undefined '
+                          #child (addEvent)='add()'
+                         (deleteEvent)='delete($event)'
+                         (permanentlyDeletedEvent)='permanentlyDeleted($event)'
+                         (readAndUpdateEvent)='readAndUpdate($event)'>
+        </app-mouse-right>
+        <div class='content-profile default pointer'> {{employee?.id}}</div>
         <div class='content-profile name  pointer'>{{employee?.firstName}} {{employee?.lastName}}</div>
         <div class='content-profile default pointer '> {{employee?.birthday | date:'dd/MM/yyyy'}}</div>
         <div class='content-profile gender pointer '> {{

@@ -35,7 +35,11 @@ export class EmployeeService extends BaseService<Employee> {
     return super.update(employeeId, props);
   }
 
-  delete(id: number): Observable<void> {
-    return super.delete(id);
+  leaveEmployee(id: number, body?:any ): Observable<void> {
+    return this.http.patch<void>(Api.EMPLOYEE + `/${id}/leave`,body);
   }
+
+ delete(id: number, params?: any): Observable<void> {
+   return super.delete(id, params);
+ }
 }

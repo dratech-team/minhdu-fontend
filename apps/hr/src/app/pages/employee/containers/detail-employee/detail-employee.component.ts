@@ -63,15 +63,10 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteEmployee(employeeId: number): void {
-    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      minWidth: '30%'
-    });
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        this.store.dispatch(EmployeeAction.deleteEmployee({ id: employeeId }));
-        this.router.navigate(['/ho-so']).then();
-      }
+  deleteEmployee(employeeId: number, leftAt?: Date): void {
+    this.dialog.open(DeleteEmployeeComponent, {
+      width:'fit-content',
+      data: { employeeId, leftAt }
     });
   }
 

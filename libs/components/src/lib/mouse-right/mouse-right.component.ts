@@ -8,10 +8,11 @@ import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
   styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
-  @Input() type!: PageTypeEnum;
+  @Input() type?: PageTypeEnum;
    pageType =  PageTypeEnum;
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
+  @Output() permanentlyDeletedEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
   @Output() payment = new EventEmitter();
   @Output() delivered = new EventEmitter();
@@ -36,6 +37,10 @@ export class MouseRightComponent {
 
   delete(item: any): void {
     this.deleteEvent.emit(item);
+  }
+
+  permanentlyDeleted(item: any): void {
+    this.permanentlyDeletedEvent.emit(item);
   }
 
   readAndUpdate(item: any): void {
