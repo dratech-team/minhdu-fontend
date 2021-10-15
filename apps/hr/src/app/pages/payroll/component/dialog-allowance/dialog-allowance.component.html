@@ -1,5 +1,4 @@
 <div>
-
 </div>
 <div class='main-popup'>
   <div mat-dialog-close class='close-popup'>
@@ -89,11 +88,14 @@
                 <div>Chưa chọn từ ngày đến ngày</div>
               </div>
             </mat-form-field>
-            <div class='col'>
+            <div class='col' *ngIf='isShowDatePicker()'>
               <div class='title-item mb-1'>
                 <span>Tính từ ngày</span>
               </div>
-              <input  type='date' class='form-control' formControlName='datetime'>
+              <div (click)='showAlert()'>
+                <input [ngStyle]='{"pointer-events": isApprentice ?  "auto": "none" }' type='date' class='form-control'
+                  formControlName='datetime'>
+              </div>
             </div>
           </div>
           <div *ngIf="formGroup.value.unit === 'HOUR'">

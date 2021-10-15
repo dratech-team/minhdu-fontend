@@ -16,7 +16,7 @@ import {
   TemplateOvertimeAction
 } from '../../../template/+state/template-overtime/template-overtime.action';
 import { DatePipe } from '@angular/common';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/untils/daytime.until';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 

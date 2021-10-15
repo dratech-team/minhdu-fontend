@@ -23,6 +23,7 @@ import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { ShowAlertComponent } from './show-alert/show-alert.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { MatInputModule } from '@angular/material/input';
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,
+    ShowAlertComponent
   ],
   providers: [DecimalPipe],
   exports: [
@@ -67,6 +69,7 @@ import { MatInputModule } from '@angular/material/input';
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,
+    ShowAlertComponent
   ],
 })
 export class ComponentsModule {}
