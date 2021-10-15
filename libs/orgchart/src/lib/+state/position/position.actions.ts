@@ -21,7 +21,7 @@ export const addPosition = createAction(
 
 export const addPositionSuccess = createAction(
   '[Position/API] Add Position Success',
-  props<{ position: Position }>()
+  props<{ position: Position}>()
 );
 
 export const updatePosition = createAction(

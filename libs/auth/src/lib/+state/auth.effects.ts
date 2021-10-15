@@ -31,28 +31,14 @@ export class AuthEffects {
       ),
       map((user) => {
           this.snackbar.open('Tọa tài khoản thành công', '', { duration: 1500 });
-          return AuthActions.signUpSuccess({ user: user });
+           this.store.dispatch(AccountManagementActions.loadInit({}))
+        return AuthActions.signUpSuccess({user})
         }
       ),
       catchError((err) => throwError(err))
     )
   );
 
-  signUpSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.signUpSuccess),
-        map((_) => {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Đăng kí tài khoản thành công' }
-          });
-        }),
-        catchError((err) => throwError(err))
-      ),
-    { dispatch: false }
-  );
 
 
   updateAccount$ = createEffect(() =>

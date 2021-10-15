@@ -1,8 +1,8 @@
 <div style='width: 500px'>
-  <h2 *ngIf='!data.isUpdate' mat-dialog-title>Tạo tài khoản</h2>
-  <h2 *ngIf='data.isUpdate' mat-dialog-title>Cập nhật tài khoản</h2>
+  <h2 *ngIf='!data?.isUpdate' mat-dialog-title>Tạo tài khoản</h2>
+  <h2 *ngIf='data?.isUpdate' mat-dialog-title>Cập nhật tài khoản</h2>
   <mat-dialog-content class='mat-typography'>
-    <form [formGroup]='formGroup' *ngIf='!data.isUpdate'>
+    <form [formGroup]='formGroup' *ngIf='!data?.isUpdate'>
       <div class='row'>
         <div class='col-sm'>
           <label for='userName'>Tên tài khoản<span class='star'>*</span>
@@ -98,7 +98,7 @@
         <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </form>
-    <form [formGroup]='formGroup' *ngIf='data.isUpdate'>
+    <form [formGroup]='formGroup' *ngIf='data?.isUpdate'>
       <div class='row mt-3'>
         <div class='col-sm'>
           <label>Đơn vị </label><span class='star'>*</span>
