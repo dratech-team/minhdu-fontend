@@ -40,7 +40,7 @@
               {{branch.name}}
             </th>
             <th class='pointer' (click)='updateBranch(branch)'>
-              {{branch.id}}
+              {{branch._count.employees}}
             </th>
           </tr>
           <tr *ngIf=' branches.length === 0 ' style='height: 50vh'>
