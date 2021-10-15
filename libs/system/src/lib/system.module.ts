@@ -6,7 +6,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../auth/src/lib/services/auth.service';
-import { SystemHistoryRoutingModule } from './system-history-routing.module';
 import { SystemHistoryReducer } from './+state/system-history/system-history.reducer';
 import { SystemHistoryEffects } from './+state/system-history/system-history.effects';
 import { MatInputModule } from '@angular/material/input';
@@ -19,11 +18,12 @@ import { AccountManagementReducer } from './+state/account-management/account-ma
 import { AccountManagementEffects } from './+state/account-management/account-management.effects';
 import { AuthEffects } from '../../../auth/src/lib/+state/auth.effects';
 import { ComponentsModule } from '@minhdu-fontend/components';
+import { SystemRoutingModule } from './system-routing.module';
 
 @NgModule({
   imports: [
     ComponentsModule,
-    SystemHistoryRoutingModule,
+    SystemRoutingModule,
     CommonModule,
     StoreModule.forFeature('systemHistory', SystemHistoryReducer),
     StoreModule.forFeature(FeatureName.ACCOUNT, AccountManagementReducer),
@@ -59,5 +59,5 @@ import { ComponentsModule } from '@minhdu-fontend/components';
   ]
 
 })
-export class SystemHistoryModule {
+export class SystemModule {
 }

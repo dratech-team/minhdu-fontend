@@ -52,4 +52,8 @@ export class DefaultLayoutComponent implements OnInit {
   signUp() {
     this.dialog.open(RegisterComponent, { width: '40%' });
   }
+
+  detailAccount() {
+    console.log('detail-account')
+  }
 }
