@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { MatDialogModule } from '@angular/material/dialog';
+import {  MatDialogModule } from '@angular/material/dialog';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -27,6 +27,8 @@ import { DialogTemplateOvertimeComponent } from './component/template-overtime/d
 import { TemplateBasicSalaryEffect } from './+state/teamlate-salary-basic/template-basic-salary.effect';
 import { templateBasicReducer } from './+state/teamlate-salary-basic/template-basic-salary.reducer';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HolidayComponent } from './container/holiday/holiday.component';
+import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
 
 @NgModule({
   imports: [
@@ -61,6 +63,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     SalaryBasicComponent,
     TemplateSalaryBasicComponent,
     DialogTemplateOvertimeComponent,
+    HolidayComponent,
+    AddHolidayComponent,
   ]
 })
 export class TemplateModule {

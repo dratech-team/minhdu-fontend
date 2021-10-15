@@ -83,7 +83,9 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='identify'>CMND/CCCD</label>
-        <input type='number' class='form-control' id='identify'
+        <input type='number' class='form-control not-arrow-input' id='identify'
+               (keypress)="checkInputNumber($event)"
+               min='0'
                placeholder='215421236' formControlName='identify'>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
@@ -105,7 +107,13 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='phone'>Số điện thoại </label>
-        <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'>
+        <input type='tel'
+               class='form-control not-arrow-input'
+               id='phone'
+               placeholder='0337552146'
+               formControlName='phone'
+               (keypress)='checkInputNumber($event)'
+        >
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='birthday'>Ngày sinh </label><span class='star'>*</span>

@@ -22,12 +22,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { EmployeeModule } from '../employee/employee.module';
 import { UpdateConfirmComponent } from './component/update-comfirm/update-confirm.component';
-import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
-import { HolidayComponent } from './container/holiday/holiday.component';
-import { HolidayReducer } from './+state/holiday/holiday.reducer';
-import { HolidayEffect } from './+state/holiday/holiday.effect';
+import { HolidayReducer } from '../template/+state/holiday/holiday.reducer';
+import { HolidayEffect } from '../template/+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
 import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
 import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
@@ -50,6 +48,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
+import { OvertimeComponent } from './container/overtime/overtime.component';
+import { LoadingComponent } from './component/popup-loading/loading.component';
+import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
     EffectsModule.forFeature([
@@ -95,8 +97,6 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     FilterPipe,
     DialogAllowanceComponent,
     UpdateConfirmComponent,
-    AddHolidayComponent,
-    HolidayComponent,
     DialogOvertimeComponent,
     DialogBasicComponent,
     DialogAbsentComponent,
@@ -110,8 +110,10 @@ import { AddPayrollComponent } from './component/add-Payroll/add-payroll.compone
     AddPayrollComponent,
     DialogExportPayrollComponent,
     HistoryPayrollComponent,
+    OvertimeComponent,
+    LoadingComponent
   ],
-  providers:[
+  providers: [
     MatDatepickerModule
   ]
 })

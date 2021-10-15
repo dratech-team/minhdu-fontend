@@ -29,6 +29,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -172,13 +173,13 @@ export class AddEmployeeComponent implements OnInit {
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
-      workedAt: value.workedAt,
+      workedAt: value.workedAt ? new Date(value.workedAt): undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone ? value.phone.toString() : undefined,
-      birthday: value.birthday,
+      birthday: value.birthday ? new Date(value.birthday): undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt,
@@ -261,5 +262,9 @@ export class AddEmployeeComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
+  }
+
+  checkNumberInput(event: any) {
+    return checkInputNumber(event)
   }
 }

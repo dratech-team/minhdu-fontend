@@ -89,6 +89,11 @@ export const deleteEmployee = createAction(
   props<{ id: number }>()
 );
 
+export const leaveEmployee = createAction(
+  '[LEAVE_EMPLOYEE] Leave Employee',
+  props<{ id: number, body: { leftAt: Date|''} }>()
+);
+
 export const deleteEmployeeSuccess = createAction(
   '[DELETE_EMPLOYEE] Delete Employee Success',
   props<{ id: number }>()
@@ -131,5 +136,6 @@ export const EmployeeAction = {
   deleteEmployeeSuccess,
   deleteRelative,
   deleteDegree,
-  setLoaded
+  setLoaded,
+  leaveEmployee
 };

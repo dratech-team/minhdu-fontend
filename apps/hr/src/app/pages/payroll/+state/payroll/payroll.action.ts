@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
+import { Salary } from '@minhdu-fontend/data-models';
+import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -44,17 +46,32 @@ export const loadMorePayrollsSuccess = createAction(
   props<{ payrolls: Payroll[] }>()
 );
 
+export const filterOvertime = createAction(
+  '[LOAD_PAYROLL] Filter overtime Init',
+  props<{
+    take?: number,
+    skip?: number,
+    title?: string,
+    startAt?: any,
+    endAt?: any
+  }>()
+);
+
+export const filterOvertimeSuccess = createAction(
+  '[LOAD_SALARY] Filter overtime Success',
+  props<{ overtime: Overtime }>()
+);
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
-  props<{ generate: any , addOne?:boolean, inHistory?: boolean}>()
+  props<{ generate: any, addOne?: boolean, inHistory?: boolean }>()
 );
 
 export const addPayrollSuccess = createAction(
-  '[ADD_PAYROLL] Add Payroll Success',
+  '[ADD_PAYROLL] Add Payroll Success'
 );
 
 export const handlePayrollError = createAction(
-  '[API_PAYROLL]  Payroll Error',
+  '[API_PAYROLL]  Payroll Error'
 );
 
 export const addSalary = createAction(
@@ -84,12 +101,17 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number }>()
+  props<{ id: number, dataConfirm:{datetime: Date}}>()
 );
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payrollId: number }>()
+  props<{ payroll: Update<Payroll> }>()
+);
+
+export const confirmPayrollSuccess = createAction(
+  '[UPDATE_PAYROLL] Confirm Payroll Success',
+  props<{ payroll: Payroll }>()
 );
 
 export const updateSalary = createAction(
@@ -112,12 +134,23 @@ export const deleteSalary = createAction(
   props<{ id: number, PayrollId: number }>()
 );
 
+export const scanHoliday = createAction(
+  '[SCAN_HOLIDAY] Scan Holiday',
+  props<{ PayrollId: number }>()
+);
+
+export const scanHolidayError = createAction(
+  '[SCAN_HOLIDAY] Scan Holiday Error'
+);
+
 
 export const PayrollAction = {
   loadInit,
   loadInitSuccess,
   loadMorePayrolls,
   loadMorePayrollsSuccess,
+  filterOvertime,
+  filterOvertimeSuccess,
   addPayroll,
   addPayrollSuccess,
   handleSalaryError,
@@ -131,5 +164,8 @@ export const PayrollAction = {
   deletePayroll,
   deletePayrollSuccess,
   deleteSalary,
-  handlePayrollError
+  handlePayrollError,
+  scanHoliday,
+  scanHolidayError,
+  confirmPayrollSuccess
 };
