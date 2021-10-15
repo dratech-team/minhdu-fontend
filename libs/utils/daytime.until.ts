@@ -19,5 +19,5 @@ export function isEqualDatetime(
   datetime2: Date,
   type?: 'month' | 'year'
 ): boolean {
-  return moment(datetime1).isSame(datetime2.toISOString(), type);
+  return moment(datetime1).isSame(datetime2, type);
 }

@@ -80,7 +80,7 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   isShowDatePicker() {
-    return isEqualDatetime(this.data?.payroll?.employee?.workedAt, new Date(), 'month');
+    return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
   }
 
   get f() {
