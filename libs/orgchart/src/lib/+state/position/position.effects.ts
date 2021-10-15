@@ -38,7 +38,10 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
       switchMap(param => this.positionService.addOne(param)),
-      map(position => PositionActions.addPositionSuccess({ position })),
+      map(position => {
+        this.snackBar.open('Tạo mới chức vụ thành công', '', { duration: 1500 });
+        return PositionActions.addPositionSuccess({ position });
+      }),
       catchError(err => throwError(err))
     )
   );
@@ -49,7 +52,10 @@ export class PositionEffects {
       ofType(PositionActions.updatePosition),
       switchMap(param => this.positionService.update(param.id,
         { name: param.name, workday: param.workday }).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ =>{
+          this.snackBar.open('Cập nhật chức vụ thành công', '', { duration: 1500 });
+          return PositionActions.loadPosition()
+        } ),
         catchError(err => throwError(err))
       ))
     )
@@ -59,7 +65,11 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.deletePosition),
       switchMap(param => this.positionService.delete(param.id).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ => {
+            this.snackBar.open('Xóa chức vụ thành công', '', { duration: 1500 });
+            return PositionActions.loadPosition();
+          }
+        ),
         catchError(err => throwError(err))
       ))
     )

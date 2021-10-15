@@ -13,7 +13,7 @@ export class OrgchartService extends BaseService<Branch> {
     super(Api.ORG_CHART, http);
   }
 
-  getAll(): Observable<Branch[]> {
-    return super.getAll();
+  getAll(params?: any): Observable<Branch[]> {
+    return super.getAll(params);
   }
 }

@@ -14,11 +14,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrgchartNewRoutingModule } from './orgchart-new-routing.module';
-import { PositionContainer } from './container/position/position.container';
 import { DialogPositionComponent } from './component/dialog-position/dialog-position.component';
+import { PositionContainer } from './container/position/position.container';
+import { BranchContainer } from './container/branch/branch.container';
+import { DialogBranchComponent } from './component/dialog-branch/dialog-branch.component';
 
 @NgModule({
   imports: [
@@ -44,8 +46,10 @@ import { DialogPositionComponent } from './component/dialog-position/dialog-posi
     MatDialogModule
   ],
   declarations: [
-    PositionContainer,
     DialogPositionComponent,
+    PositionContainer,
+    BranchContainer,
+    DialogBranchComponent
   ]
 })
 export class OrgchartNewModule {

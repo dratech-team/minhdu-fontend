@@ -10,18 +10,19 @@ import {
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogPositionComponent } from '../../component/dialog-position/dialog-position.component';
+import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 
 @Component({
-  templateUrl: 'position.container.html'
+  templateUrl: 'branch.container.html'
 })
-export class PositionContainer implements OnInit {
-  positions$ = this.store.pipe(select(getAllPosition));
-  positionLoaded$ = this.store.pipe(select(selectPositionLoaded));
+export class BranchContainer implements OnInit {
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  positions = new FormControl();
+  branch = new FormControl();
 
   constructor(
     private readonly dialog: MatDialog,
@@ -29,20 +30,37 @@ export class PositionContainer implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(PositionActions.loadPosition());
-    this.positions.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
-      this.store.dispatch(PositionActions.searchPosition({ position: val }));
+    this.store.dispatch(OrgchartActions.init());
+    this.branch.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
+      this.store.dispatch(OrgchartActions.searchBranch({ branch: val }));
+    });
+  }
+
+  addBranch() {
+    this.dialog.open(DialogBranchComponent, { width: 'fit-content' });
+  }
+
+  updateBranch($event: any) {
+    this.dialog.open(DialogBranchComponent,
+      { width: 'fit-content', data: { branch: $event, isUpdate: true } });
+  }
+
+  deleteBranch($event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(OrgchartActions.deleteBranch({ id: $event.id }));
+      }
     });
   }
 
 
   addPosition() {
-    this.dialog.open(DialogPositionComponent, { width: 'fit-content' });
+
   }
 
   updatePosition($event: any) {
-    console.log($event);
-    this.dialog.open(DialogPositionComponent, { width: 'fit-content', data: { position: $event, isUpdate: true } });
+
   }
 
 

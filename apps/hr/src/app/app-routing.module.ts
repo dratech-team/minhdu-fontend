@@ -47,7 +47,7 @@ const routes: Routes = [
         path: 'to-chuc',
         loadChildren: () => import('./pages/orgchart-new/orgchart-new.module').then(m => m.OrgchartNewModule),
         data: {
-          title: 'Đơn vị - Chức vụ'
+          title: 'to-chuc'
         },
       },
       { path: '**', redirectTo: '' }

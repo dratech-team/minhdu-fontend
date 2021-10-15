@@ -3,16 +3,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { PositionActions, selectPositionAdded } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getBranchAdded, OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Component({
-  templateUrl: 'dialog-position.component.html'
+  templateUrl: 'dialog-branch.component.html'
 })
-export class DialogPositionComponent implements OnInit {
+export class DialogBranchComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
 
   constructor(
-    private readonly dialogRef: MatDialogRef<DialogPositionComponent>,
+    private readonly dialogRef: MatDialogRef<DialogBranchComponent>,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -22,13 +23,11 @@ export class DialogPositionComponent implements OnInit {
   ngOnInit() {
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
-        position: [this.data.position.name],
-        workday: [this.data.position.workday]
+        branch: [this.data.branch.name]
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        position: [undefined, Validators.required],
-        workday: [undefined, Validators.required]
+        branch: [undefined, Validators.required]
       });
     }
   }
@@ -42,16 +41,16 @@ export class DialogPositionComponent implements OnInit {
     if (this.formGroup.valid) {
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
-        this.store.dispatch(PositionActions.updatePosition(
-          { id: this.data.position.id, name: val.position, workday: val.workday }));
+        this.store.dispatch(OrgchartActions.updateBranch(
+          { id: this.data.branch.id, name: val.branch }));
       } else {
-        this.store.dispatch(PositionActions.addPosition({ name: val.position, workday: val.workday }));
+        this.store.dispatch(OrgchartActions.addBranch(
+          { branch: { name: val.branch } }));
       }
-
     } else {
       return;
     }
-    this.store.pipe(select(selectPositionAdded)).subscribe(added => {
+    this.store.pipe(select(getBranchAdded)).subscribe(added => {
       if (added) {
         this.dialogRef.close();
       }

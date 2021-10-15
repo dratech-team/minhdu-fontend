@@ -1,48 +1,67 @@
 <!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
-<div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
-  <div class='row h3 ml-3'>Đơn vị</div>
-  <div class='row ml-3'>
-    <button (click)='addPosition()' class='btn btn-primary mt-3 '>Tạo chức vụ</button>
-  </div>
-  <div class='main-profile'>
-    <form #header class='header-profile mt-3 animated fadeIn'>
 
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Chức vụ</div>
-        <input class='form-control text-center' type="text" matInput [formControl]="positions" >
-      </div>
-      <div class='border-start title-header note'>
-        <div class='title-profile'>Ngày công chuẩn</div>
-        <input
-          class='form-control input-profile '
-          type='search'>
-      </div>
-    </form>
-    <div class='outer animated fadeIn d-flex'
-         *ngIf='(positions$| async) as positions'
-         [ngStyle]="{'width':positions?.length === 0 ? header.offsetWidth + 'px': 'fit-content',
-         'overflow-y':positions?.length === 0 ? 'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let position of positions'
-           (contextmenu)='child.onContextMenu($event,position)'>
-        <app-mouse-right #child (addEvent)='addPosition()'
-                         (readAndUpdateEvent)='updatePosition($event)'
-                         (deleteEvent)='deletePosition($event)'
-        ></app-mouse-right>
-        <div class='content-profile name pointer ' (click)='updatePosition(position)'>
-          {{position.name}}
-        </div>
-        <div class='content-profile note pointer '
-             (click)='updatePosition(position)'>
-          {{position.workday}}
+<div  style='width: 100%; overflow-x: auto'>
+  <div class='d-flex justify-content-center mb-2 '>
+    <div >
+      <div style='width: 1000px;' class=''>
+        <div class=' h3 '>Chức vụ</div>
+        <div >
+          <button (click)='addPosition()' class='btn btn-primary mt-3 '>Tạo chức vụ</button>
         </div>
       </div>
-      <div *ngIf='!positions' style='height:60vh; '
-           class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl font-weight-bold d-flex align-items-center'>
-          Hiện chưa có bản mẫu tăng ca nào!
-        </div>
+      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
+      <div class='fixTableHead mt-5 ' *ngIf='(positionLoaded$|async)'>
+        <table style='width: 1000px;'>
+          <thead>
+          <tr>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Mã chức vụ</div>
+              <input class='form-control border text-center' type='text' matInput disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+              <input class='form-control border text-center' type='text' matInput [formControl]='positions'>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
+              <input
+                class='form-control  '
+                disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
+              <input
+                class='form-control  '
+                disabled>
+            </th>
+          </tr>
+          </thead>
+          <tbody *ngIf='(positions$| async) as positions'>
+          <tr *ngFor='let position of positions' (contextmenu)='childPosition.onContextMenu($event,position)'>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.id}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.name}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.workday}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.workday}}
+            </th>
+          </tr>
+          <tr *ngIf=' positions.length === 0 ' style='height: 50vh'>
+            <td colspan='2' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
+<app-mouse-right #childPosition (addEvent)='addPosition()'
+                 (readAndUpdateEvent)='updatePosition($event)'
+                 (deleteEvent)='deletePosition($event)'
+></app-mouse-right>
