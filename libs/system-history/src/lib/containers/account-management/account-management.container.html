@@ -1,9 +1,11 @@
-
 <ngx-skeleton-loader *ngIf='!(loaded$ | async)' count='10' appearance='line'></ngx-skeleton-loader>
 <div *ngIf='(loaded$ | async)' style='width: 100%;'>
 
   <div class='fixTableHead mt-5 mx-auto'>
     <div class='h3  mt-3'>Quản lý tài khoản</div>
+    <div>
+      <button (click)='addAccount()' class='btn btn-primary'>Tạo tài khoản</button>
+    </div>
     <table [formGroup]='formGroup' class='mt-3'>
       <thead>
       <tr>
@@ -39,14 +41,29 @@
       </tr>
       </thead>
       <tbody *ngIf='(Accounts$|async) as accounts'>
-      <tr *ngFor='let account of accounts'>
-        <th class='pointer'>{{account?.id}}</th>
-        <th class='pointer'>{{account.username}} </th>
-        <th class='pointer'>{{account.branch?.name ?account.branch.name: 'Chưa cập nhật' }}</th>
-        <th class='pointer'>{{account.role}}</th>
-        <th class='pointer'>{{account.loggedAt|date:'dd-MM-yyyy'}}</th>
-        <th class='pointer'>{{account.ip}}</th>
-        <th class='pointer'>{{account.createdAt|date:'dd-MM-yyyy'}} </th>
+      <tr *ngFor='let account of accounts'
+          (contextmenu)='child.onContextMenu($event,account)'>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account?.id}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.username}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.branch?.name ? account.branch.name : 'Chưa cập nhật' }}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.role}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.loggedAt|date:'dd-MM-yyyy'}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.ip}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.createdAt|date:'dd-MM-yyyy'}}
+        </th>
       </tr>
       <tr *ngIf='accounts.length === 0' style='height: 50vh'>
         <td colspan='7' class='text-center check-content font-weight-bold font-xl '>Hiện không có tài khoản nào
@@ -56,3 +73,6 @@
     </table>
   </div>
 </div>
+<app-mouse-right #child (addEvent)='addAccount()'
+                 (readAndUpdateEvent)='updateAccount($event)'
+></app-mouse-right>

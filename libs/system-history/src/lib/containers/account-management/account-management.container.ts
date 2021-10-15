@@ -8,6 +8,8 @@ import {
   selectorAllAccount
 } from '../../+state/account-management/account-management.selectors';
 import { AccountManagementActions } from '../../+state/account-management/account-management.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { RegisterComponent } from '../../../../../auth/src/lib/components/dialog-register.component/register.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +30,8 @@ export class AccountManagementContainer implements OnInit {
   });
 
   constructor(
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly dialog: MatDialog
   ) {
   }
 
@@ -70,7 +73,15 @@ export class AccountManagementContainer implements OnInit {
       role: val.role,
       loggedAt: val.loggedAt,
       ip: val.ip,
-      createdAt: val.createdAt,
+      createdAt: val.createdAt
     };
+  }
+
+  addAccount() {
+    this.dialog.open(RegisterComponent, { width: 'fit-content' });
+  }
+
+  updateAccount($event: any) {
+    this.dialog.open(RegisterComponent, { width: 'fit-content', data: { account: $event, isUpdate: true } });
   }
 }

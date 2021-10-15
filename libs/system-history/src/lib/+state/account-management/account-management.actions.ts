@@ -4,7 +4,7 @@ import { AccountDTO, Account } from './account.model';
 
 export const loadInit = createAction(
   '[LOAD_ACCOUNT_MANAGEMENT] Load Account Management',
-  props<{ accountDTO: AccountDTO }>()
+  props<{ accountDTO?: AccountDTO }>()
 );
 
 export const loadInitSuccess = createAction(

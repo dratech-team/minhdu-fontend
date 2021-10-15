@@ -15,6 +15,8 @@ import { LogoutComponent } from './components/dialog-logout.component/logout.com
 import { MatDialogModule } from '@angular/material/dialog';
 import { RegisterComponent } from './components/dialog-register.component/register.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -28,6 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
     EffectsModule.forFeature([AuthEffects]),
     MatDialogModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule
   ],
   declarations: [RegisterComponent, LogoutComponent, AuthComponent],
   providers: [
