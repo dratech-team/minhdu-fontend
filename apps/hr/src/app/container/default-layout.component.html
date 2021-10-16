@@ -4,7 +4,8 @@
             [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
   <ul class='nav navbar-nav ml-auto'>
     <li class='nav-item dropdown'>
-      <a (click)='detailAccount()' class='nav-link' data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false'>
+      <a (click)='detailAccount()' class='nav-link' data-toggle='dropdown' role='button' aria-haspopup='true'
+         aria-expanded='false'>
         <img src='assets/img/uranus.png' class='img-avatar' alt='contact@uranus-solutions.com' />
       </a>
     </li>
@@ -16,7 +17,8 @@
     <app-sidebar-nav [navItems]='navItems' [perfectScrollbar] [disabled]='appSidebar.minimized'>
     </app-sidebar-nav>
     <app-sidebar-footer>
-      <a *ngIf='role === roleEnum.ADMIN ' (click)='signUp()' class=' pointer text-left dropdown-item settings' style='color: white'> Tạo tài khoản</a>
+      <a *ngIf='role === roleEnum.ADMIN ' (click)='signUp()' class=' pointer text-left dropdown-item settings'
+         style='color: white'> Tạo tài khoản</a>
       <a (click)='logout()' class='pointer text-left dropdown-item' style='color: red'> Logout</a>
     </app-sidebar-footer>
   </app-sidebar>

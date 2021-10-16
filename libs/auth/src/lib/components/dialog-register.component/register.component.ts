@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    if (this.data.isUpdate) {
+    if (this.data?.isUpdate) {
       this.branchId = this.data.account?.branch?.id;
       this.formGroup = this.formBuilder.group(
         {
@@ -128,6 +128,7 @@ export class RegisterComponent implements OnInit {
         this.snackbar.open('Đã tạo', '', { duration: 2500 });
       } else {
         this.branchId = branch.id;
+        console.log( this.branchId)
       }
     }
   }

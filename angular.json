@@ -561,8 +561,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/system-history/src/**/*.ts",
-              "libs/system-history/src/**/*.html"
+              "libs/system/src/**/*.ts",
+              "libs/system/src/**/*.html"
             ]
           }
         }

@@ -12,7 +12,7 @@ export class OrgchartEffects {
   init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.init),
-      mergeMap(() => this.orgchartService.getAll()),
+      switchMap(() => this.orgchartService.getAll()),
       map(branches => {
         this.snackBar.open('Tải đơn vị thành công', '', { duration: 1500 });
         return OrgchartActions.loadOrgchartSuccess({ branches });

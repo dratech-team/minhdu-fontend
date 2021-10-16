@@ -10,6 +10,8 @@ import {
 import { AccountManagementActions } from '../../+state/account-management/account-management.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from '../../../../../auth/src/lib/components/dialog-register.component/register.component';
+import { roleAppHR } from '@minhdu-fontend/constants';
+import { PageTypeEnum } from '../../../../../enums/sell/page-type.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +30,8 @@ export class AccountManagementContainer implements OnInit {
     ip: new FormControl(''),
     createdAt: new FormControl('')
   });
-
+  roleHr = roleAppHR;
+  pageTypeEnum = PageTypeEnum;
   constructor(
     private readonly store: Store,
     private readonly dialog: MatDialog

@@ -48,7 +48,7 @@
               {{position.workday}}
             </th>
             <th class='pointer' (click)='updatePosition(position)'>
-              {{position.workday}}
+              {{position._count.employees}}
             </th>
           </tr>
           <tr *ngIf=' positions.length === 0 ' style='height: 50vh'>
