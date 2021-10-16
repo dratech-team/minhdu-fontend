@@ -45,7 +45,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.updateAccount),
       switchMap((props) => {
-          return this.authService.updateAccount(props);
+          return this.authService.updateAccount(props.id, props);
         }
       ),
       map((user) => {

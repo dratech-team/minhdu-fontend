@@ -128,6 +128,7 @@ export class RegisterComponent implements OnInit {
         this.snackbar.open('Đã tạo', '', { duration: 2500 });
       } else {
         this.branchId = branch.id;
+        console.log( this.branchId)
       }
     }
   }
