@@ -68,7 +68,8 @@ export class DialogOvertimeComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: [undefined],
+        datetime: [  this.datePipe.transform(
+          this.data.payroll.createdAt, 'yyyy-MM-dd')],
         month: [undefined],
         note: [''],
         times: [1],

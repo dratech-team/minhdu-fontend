@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class='row mb-3 '
-           *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY || data?.salary?.unit === datetimeUnit.DAY  '>
+           *ngIf='( (selectedIndex || selectedIndex === 0) && titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY) || data?.salary?.unit === datetimeUnit.DAY  '>
         <div class='col-6'>
           <span class=' title-item mb-1'>Buổi </span>
           <mat-select class='form-control' formControlName='partialDay'>
@@ -37,7 +37,8 @@
           </mat-select>
         </div>
       </div>
-      <div class='row my-2 d-flex align-items-center'   *ngIf='selectedIndex  !== 4 && data?.salary?.unit !== datetimeUnit.TIMES '>
+      <div class='row my-2 d-flex align-items-center'
+           *ngIf='selectedIndex  !== 4 && data?.salary?.unit !== datetimeUnit.TIMES '>
         <div class=' title-item col-6'>
           <span>Ngày</span>
           <span class='star'>*</span>
@@ -57,7 +58,8 @@
           </mat-checkbox>
         </div>
       </div>
-      <div class='row mb-3 d-flex' *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
+      <div class='row mb-3 d-flex'
+           *ngIf='(selectedIndex|| selectedIndex === 0 ) && titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
         <div [formGroup]='formGroup' class='col-6'>
           <span class='title-item mb-1'>số giờ </span>
           <input class='form-control' type='number' formControlName='times'>
@@ -68,7 +70,7 @@
         </div>
       </div>
       <div class='row mb-3'
-           *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.TIMES
+           *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.TIMES)
             || data?.salary?.unit === datetimeUnit.TIMES '>
         <div [formGroup]='formGroup' class='col-12'>
           <span class='title-item'>Số lần</span>
