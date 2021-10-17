@@ -179,12 +179,10 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scroll(target: HTMLElement) {
-    console.log(target);
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   onSticky(sticky: HTMLElement) {
-    console.log(sticky);
     if (sticky.classList.contains('hide-sticky')) {
       sticky.classList?.remove('hide-sticky');
       sticky.classList?.add('show-sticky');

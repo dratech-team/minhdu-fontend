@@ -145,12 +145,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
 
   pickAllowance(allowEmpIds: number[]) {
     this.allowEmpIds = allowEmpIds;
-    console.log(this.allowEmpIds, 'allowance');
   }
 
   pickEmployees(employeeIds: number[]): any {
     this.employeeIds = employeeIds;
-    console.log(this.employeeIds, 'employeeIds');
   }
 
   pickOverTime(data: TemplateOvertime) {

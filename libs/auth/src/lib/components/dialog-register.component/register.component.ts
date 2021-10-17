@@ -1,7 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { Role } from '../../../../../enums/hr/role.enum';
 import { Localhost } from '../../../../../enums/localhost.enum';
 import { App } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,10 +8,10 @@ import { AuthActions } from '@minhdu-fontend/auth';
 import { Branch } from '@minhdu-fontend/data-models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { roleAppHR, roleAppSell } from '@minhdu-fontend/constants';
 import * as lodash from 'lodash';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   templateUrl: 'register.component.html'
@@ -20,7 +19,6 @@ import * as lodash from 'lodash';
 export class RegisterComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
   localhost = `${window.location.host}`;
-  role = Role;
   app = App;
   isHidden = false;
   localhostEnum = Localhost;
@@ -29,13 +27,14 @@ export class RegisterComponent implements OnInit {
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
-  roleAppHR = roleAppHR;
-  roleAppSell = roleAppSell;
+  role$!: Observable<any[]>;
+  appName!: string;
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
     private readonly snackbar: MatSnackBar,
+    private readonly roleService: RoleService,
     private dialogRef: MatDialogRef<RegisterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -43,6 +42,7 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit() {
+    this.role$ = this.roleService.getAll();
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
       this.branchesSelected = [...this.data.account?.branches];
@@ -102,10 +102,8 @@ export class RegisterComponent implements OnInit {
       branchIds: this.branchesSelected.map(item => {
         return item.id;
       }),
-      role: val.role,
-      appName: this.localhost === this.localhostEnum.APP_HR ? this.app.HR :
-        this.localhost === this.localhostEnum.APP_SELL ? this.app.SELL :
-          this.localhost === this.localhostEnum.APP_WAREHOUSE ? this.app.WAREHOUSE : ''
+      roleId: val.role.id,
+      appName: val.role.appName
     };
     if (this.data?.isUpdate) {
       this.store.dispatch(AuthActions.updateAccount(
@@ -133,7 +131,7 @@ export class RegisterComponent implements OnInit {
       }
       setTimeout(() => {
           this.branches.setValue('');
-          branchInput.blur()
+          branchInput.blur();
         }
       );
     }
@@ -141,5 +139,9 @@ export class RegisterComponent implements OnInit {
 
   removeBranches(branch: Branch) {
     lodash.remove(this.branchesSelected, branch);
+  }
+
+  selectedAppName(event: any, appName: any) {
+    this.appName = appName;
   }
 }

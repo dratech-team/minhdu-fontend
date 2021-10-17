@@ -54,7 +54,7 @@
                  *ngFor='let item of account.branches'> {{item.name}},</span>
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
-          {{account.role|transformRole:roleHr}}
+          {{account.role?.name}}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
           {{account.loggedAt|date:'h:mm , dd-MM-yyyy'}}
