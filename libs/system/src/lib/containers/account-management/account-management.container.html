@@ -50,7 +50,8 @@
           {{account.username}}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
-          {{account.branch?.name ? account.branch.name : 'Chưa cập nhật' }}
+           <span  class='mr-1  d-inline-block'
+                 *ngFor='let item of account.branches'> {{item.name}},</span>
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
           {{account.role|transformRole:roleHr}}

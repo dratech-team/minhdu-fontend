@@ -7,7 +7,7 @@
         <div class='col-sm'>
           <label for='userName'>Tên tài khoản<span class='star'>*</span>
           </label>
-          <input  type='text' class='form-control' id='userName' formControlName='userName'
+          <input type='text' class='form-control' id='userName' formControlName='userName'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.userName.errors }">
           <div *ngIf='submitted && checkValid.userName.errors' class='invalid-feedback'>
             <div *ngIf='checkValid.userName.errors?.required'>Chưa nhập tên tài khoản</div>
@@ -17,7 +17,7 @@
       <div class='row mt-3'>
         <div class='col-sm'>
           <label>Mật khẩu<span class='star'>*</span></label>
-          <input  type='password' class='form-control' id='password' formControlName='password'
+          <input type='password' class='form-control' id='password' formControlName='password'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.password.errors }">
           <div *ngIf='submitted && checkValid.password.errors' class='invalid-feedback'>
             <div *ngIf='checkValid.password.errors?.required'>Chưa nhập mật khẩu</div>
@@ -30,7 +30,7 @@
             <span *ngIf='isHidden' style='color: red; font-size: 10px'>Nhập lại mật khẩu chưa đúng</span>
             <label>Nhập lại Mật khẩu<span class='star'>*</span></label>
           </div>
-          <input  type='password' class='form-control' id='password2' formControlName='password2'
+          <input type='password' class='form-control' id='password2' formControlName='password2'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.password2.errors }">
           <div *ngIf='submitted && checkValid.password2.errors' class='invalid-feedback'>
             <div *ngIf='checkValid.password2.errors?.required'>Chưa nhập lại mật khẩu</div>
@@ -39,10 +39,10 @@
       </div>
       <div class='row mt-3'>
         <div class='col-sm'>
-          <label>Đơn vị </label><span class='star'>*</span>
+          <label>Đơn vị quản lý</label><span class='star'>*</span>
           <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
                  #branchInput
-                 [ngClass]="{ 'is-invalid': submitted && !branchId }">
+                 [ngClass]="{ 'is-invalid': submitted && branchesSelected.length === 0 }">
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async'
                         [value]='!branch.id ? branchInput.value : branch.name'
@@ -50,14 +50,23 @@
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf='submitted && !branchId' class='invalid-feedback'>
+          <div *ngIf='submitted && branchesSelected.length === 0' class='invalid-feedback'>
             <div>Chưa chọn đơn vị</div>
           </div>
         </div>
       </div>
+      <div class='mt-2 '>
+            <span class='mr-3 position-relative d-inline-block'
+               style='width: fit-content;'
+                  *ngFor='let branch of branchesSelected'>{{branch.name}}
+              <label class='position-absolute text-danger pointer' style='top:-7px ; right: -10px'
+                     (click)='removeBranches(branch)'>x</label>
+            </span>
+      </div>
+      <!--      quyền 1-->
       <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label>Phân quyền<span class='star'>*</span></label>
+          <label>Quyền 1<span class='star'>*</span></label>
           <mat-select class='form-control' formControlName='role'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.role.errors }">
             <mat-option *ngFor='let item of roleAppHR' [value]='item.role'>
@@ -68,7 +77,7 @@
       </div>
       <div *ngIf='localhost === localhostEnum.APP_SELL ' class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label>Phân quyền<span class='star'>*</span></label>
+          <label>Quyền 1<span class='star'>*</span></label>
           <mat-select class='form-control' formControlName='role'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.role.errors }">
             <mat-option *ngFor='let item of roleAppSell' [value]='item.role'>
@@ -79,7 +88,7 @@
       </div>
       <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label>Phân quyền<span class='star'>*</span></label>
+          <label>quyền 1<span class='star'>*</span></label>
           <mat-select class='form-control' formControlName='role'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.role.errors }">
             <mat-option value='{{role.ADMIN}}'>
@@ -94,6 +103,137 @@
       <div *ngIf='submitted && checkValid.role.errors' class='invalid-feedback' style='display: block'>
         <div>Chưa chọn phân quyền</div>
       </div>
+      <!--      quyền 2-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 2</label>-->
+      <!--          <mat-select class='form-control' formControlName='role2'-->
+      <!--                      [ngClass]="{ 'is-invalid': submitted && checkValid.role.errors }">-->
+      <!--            <mat-option *ngFor='let item of roleAppHR' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_SELL ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 2</label>-->
+      <!--          <mat-select class='form-control' formControlName='role2'>-->
+      <!--            <mat-option *ngFor='let item of roleAppSell' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 2</label>-->
+      <!--          <mat-select class='form-control' formControlName='role2'>-->
+      <!--            <mat-option value='{{role.ADMIN}}'>-->
+      <!--              Quản trị viên-->
+      <!--            </mat-option>-->
+      <!--            <mat-option value='{{role.NONE}}'>-->
+      <!--              none-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      &lt;!&ndash;      quyền 3&ndash;&gt;-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 3</label>-->
+      <!--          <mat-select class='form-control' formControlName='role3'>-->
+      <!--            <mat-option *ngFor='let item of roleAppHR' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_SELL ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 3</label>-->
+      <!--          <mat-select class='form-control' formControlName='role3'>-->
+      <!--            <mat-option *ngFor='let item of roleAppSell' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 3</label>-->
+      <!--          <mat-select class='form-control' formControlName='role'>-->
+      <!--            <mat-option value='{{role.ADMIN}}'>-->
+      <!--              Quản trị viên-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <!--      &lt;!&ndash;      quyền 4&ndash;&gt;-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 4</label>-->
+      <!--          <mat-select class='form-control' formControlName='role4'>-->
+      <!--            <mat-option *ngFor='let item of roleAppHR' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_SELL ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 4</label>-->
+      <!--          <mat-select class='form-control' formControlName='role'>-->
+      <!--            <mat-option *ngFor='let item of roleAppSell' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Phân quyền</label>-->
+      <!--          <mat-select class='form-control' formControlName='role4'>-->
+      <!--            <mat-option value='{{role.ADMIN}}'>-->
+      <!--              Quản trị viên-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <!--      &lt;!&ndash;      quyền 5&ndash;&gt;-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 5</label>-->
+      <!--          <mat-select class='form-control' formControlName='role'>-->
+      <!--            <mat-option *ngFor='let item of roleAppHR' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_SELL ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 5</label>-->
+      <!--          <mat-select class='form-control' formControlName='role5'>-->
+      <!--            <mat-option *ngFor='let item of roleAppSell' [value]='item.role'>-->
+      <!--              {{item.name}}-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div *ngIf='localhost === localhostEnum.APP_WAREHOUSE ' class='row mt-3'>-->
+      <!--        <div class='col-sm' [formGroup]='formGroup'>-->
+      <!--          <label>Quyền 5</label>-->
+      <!--          <mat-select class='form-control' formControlName='role'>-->
+      <!--            <mat-option value='{{role.ADMIN}}'>-->
+      <!--              Quản trị viên-->
+      <!--            </mat-option>-->
+      <!--          </mat-select>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
       <div class='row d-flex mt-3 justify-content-center'>
         <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
@@ -101,10 +241,10 @@
     <form [formGroup]='formGroup' *ngIf='data?.isUpdate'>
       <div class='row mt-3'>
         <div class='col-sm'>
-          <label>Đơn vị </label><span class='star'>*</span>
+          <label>Đơn vị quản lý </label><span class='star'>*</span>
           <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
                  #branchInput
-                 [ngClass]="{ 'is-invalid': submitted && !branchId }">
+                 [ngClass]="{ 'is-invalid': submitted && branchesSelected.length === 0 }">
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async'
                         [value]='!branch.id ? branchInput.value : branch.name'
@@ -112,10 +252,18 @@
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
-          <div *ngIf='submitted && !branchId' class='invalid-feedback'>
-            <div>Chưa chọn đơn vị</div>
+          <div *ngIf='submitted && branchesSelected.length === 0' class='invalid-feedback'>
+            <div>Chưa chọn đơn vị quản lý</div>
           </div>
         </div>
+      </div>
+      <div class='mt-2 '>
+            <span class='mr-3 position-relative d-inline-block'
+                  style='width: fit-content'
+                  *ngFor='let branch of branchesSelected'>{{branch.name}}
+              <label class='position-absolute text-danger pointer' style='top:-7px ; right: -8px'
+                     (click)='removeBranches(branch)'>x</label>
+            </span>
       </div>
       <div *ngIf='localhost === localhostEnum.APP_HR' class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>

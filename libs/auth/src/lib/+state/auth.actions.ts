@@ -9,7 +9,7 @@ export const signUp = createAction(
 
 export const updateAccount = createAction(
   '[Auth/API] Update Account',
-  props<{ id: number, branchId?: number, role?: Role }>()
+  props<{ id: number, branchIds?: number[], role?: Role }>()
 );
 
 export const signUpSuccess = createAction(

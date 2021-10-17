@@ -11,5 +11,5 @@ export  interface  AccountDTO {
   appName: string;
   role: string;
   employeeId?: number,
-  branchId: number
+  branchIds: number[]
 }
