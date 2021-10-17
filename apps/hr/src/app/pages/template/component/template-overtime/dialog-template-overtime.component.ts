@@ -143,7 +143,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     });
   }
 
-  onCreatePosition(event: any, position: Position) {
+  onCreatePosition(event: any, position: Position, positionInput: HTMLElement) {
     if (event.isUserInput) {
       if (position.id) {
         if (this.positionSelected.some(item => item.id === position.id)) {
@@ -161,7 +161,11 @@ export class DialogTemplateOvertimeComponent implements OnInit {
           ));
         this.snackbar.open('Đã tạo', '', { duration: 2500 });
       }
-      setTimeout(()=>this.positions.setValue(''))
+      setTimeout(() => {
+        this.positions.setValue('');
+        positionInput.blur();
+      });
+
     }
   }
 

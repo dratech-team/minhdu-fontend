@@ -120,7 +120,7 @@ export class AddHolidayComponent implements OnInit {
     });
   }
 
-  onCreatePosition(event: any, position: any): any {
+  onCreatePosition(event: any, position: any, positionInput: HTMLElement): any {
     if (event.isUserInput) {
       if (position.id) {
         if (this.positionSelected.some(item => item.id === position.id)) {
@@ -138,7 +138,11 @@ export class AddHolidayComponent implements OnInit {
           ));
         this.snackBar.open('Đã tạo', '', { duration: 2500 });
       }
-      setTimeout(()=>this.positions.setValue(''))
+      setTimeout(() => {
+          this.positions.setValue('');
+          positionInput.blur();
+        }
+      );
     }
   }
 

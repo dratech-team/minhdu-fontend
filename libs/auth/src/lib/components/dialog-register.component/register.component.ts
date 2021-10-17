@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
-      this.branchesSelected = [...this.data.account?.branches] ;
+      this.branchesSelected = [...this.data.account?.branches];
       this.formGroup = this.formBuilder.group(
         {
           role: [this.data.account.role, Validators.required]
@@ -124,14 +124,18 @@ export class RegisterComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onCreateBranch(event: any, branch: Branch) {
+  onSelectBranch(event: any, branch: Branch, branchInput: HTMLElement) {
     if (event.isUserInput) {
       if (this.branchesSelected.find(item => item.id === branch.id)) {
         this.snackbar.open('Đơn vị đã được chọn', '', { duration: 1500 });
       } else {
         this.branchesSelected.push(branch);
       }
-      setTimeout(() => this.branches.setValue(''));
+      setTimeout(() => {
+          this.branches.setValue('');
+          branchInput.blur()
+        }
+      );
     }
   }
 
