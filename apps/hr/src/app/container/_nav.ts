@@ -49,31 +49,11 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Tổ chức'
-  },
-  {
-    name: 'Chức vụ',
-    url: '/to-chuc/chuc-vu',
-    icon: 'cil-lock-locked'
-  },
-  {
-    name: 'Đơn vị',
-    url: '/to-chuc/don-vi',
-    icon: 'cil-lock-locked'
-  },
-  {
-    title: true,
     name: 'Hệ thống'
   },
   {
     name: 'Lịch sử hệ thống',
-    url: '/he-thong/lich-su-he-thong',
+    url: '/lich-su-he-thong',
     icon: 'cil-lock-locked'
   },
-  {
-    name: 'Quản lý tài khoản',
-    url: '/he-thong/quan-ly-tai-khoan',
-    icon: 'cil-lock-locked'
-  }
-
 ];

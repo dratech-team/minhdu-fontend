@@ -3,5 +3,4 @@ import { Department } from './department';
 
 export interface Branch extends BaseOrgChart{
   code?:string,
-  _count?:any
 }

@@ -5,7 +5,7 @@ import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-font
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOrgChartComponent } from '../../components/dialog/dialog-org-chart.component';
-import { DialogDeleteComponent } from '../../../orgchart-new/component/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent } from '../../components/dialog-delete/dialog-delete.component';
 import { DepartmentActions } from 'libs/orgchart/src/lib/+state/department';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
 

@@ -37,17 +37,10 @@ const routes: Routes = [
         },
       },
       {
-        path: 'he-thong',
-        loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
+        path: 'lich-su-he-thong',
+        loadChildren: () => import('@minhdu-fontend/system-history').then(m => m.SystemHistoryModule),
         data: {
           title: 'Lịch sử hệ thống'
-        },
-      },
-      {
-        path: 'to-chuc',
-        loadChildren: () => import('./pages/orgchart-new/orgchart-new.module').then(m => m.OrgchartNewModule),
-        data: {
-          title: 'to-chuc'
         },
       },
       { path: '**', redirectTo: '' }

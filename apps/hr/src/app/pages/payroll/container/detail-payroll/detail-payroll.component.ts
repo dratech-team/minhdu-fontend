@@ -35,7 +35,7 @@ export class DetailPayrollComponent implements OnInit {
   scanned$ = this.store.pipe(select(selectedScannedPayroll));
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
-  isSticky = false;
+  isSticky = false
   employeeName!: string;
 
   constructor(
@@ -96,10 +96,10 @@ export class DetailPayrollComponent implements OnInit {
     }
   }
 
-  updateSalary(type: SalaryTypeEnum, salary: Salary, payroll?: Payroll) {
+  updateSalary(type: SalaryTypeEnum, salary: Salary) {
     const config = {
       width: '40%',
-      data: { type, salary, isUpdate: true, payroll: payroll }
+      data: { type, salary, isUpdate: true }
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
@@ -179,19 +179,19 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scroll(target: HTMLElement) {
-    console.log(target);
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    console.log(target)
+    target.scrollIntoView({behavior:'smooth',block:'center'})
   }
 
   onSticky(sticky: HTMLElement) {
-    console.log(sticky);
-    if (sticky.classList.contains('hide-sticky')) {
+    console.log(sticky)
+    if(sticky.classList.contains('hide-sticky')){
       sticky.classList?.remove('hide-sticky');
       sticky.classList?.add('show-sticky');
-    } else {
+    }else {
       sticky.classList?.add('hide-sticky');
       sticky.classList?.remove('show-sticky');
     }
-    this.isSticky = !this.isSticky;
+    this.isSticky = !this.isSticky
   }
 }

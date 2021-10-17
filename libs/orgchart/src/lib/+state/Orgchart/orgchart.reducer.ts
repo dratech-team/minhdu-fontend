@@ -10,7 +10,6 @@ export const ORGCHART_FEATURE_KEY = 'orgchart';
 export interface State extends EntityState<Branch> {
   selectedId?: string | number; // which Orgchart record has been selected
   loaded: boolean; // has the Orgchart list been loaded
-  added: boolean;
   error?: string | null; // last known error (if any)
 }
 
@@ -23,47 +22,27 @@ export const orgchartAdapter: EntityAdapter<Branch> = createEntityAdapter<Branch
 
 export const initialState: State = orgchartAdapter.getInitialState({
   // set initial required properties
-  loaded: false, added: false
+  loaded: false
 });
 const orgchartReducer = createReducer(
   initialState,
-  on(OrgchartActions.loadOrgchartSuccess, (state, { branches }) =>
-    orgchartAdapter.setAll(branches, { ...state, loaded: true, added: true })
-  ),
-
-  on(OrgchartActions.addBranchSuccess, (state, { branch }) =>
-    orgchartAdapter.addOne(branch, { ...state, loaded: true, added: true })
-  ),
-
   on(OrgchartActions.init, (state) => ({
     ...state,
     loaded: false,
     error: null
   })),
+  on(OrgchartActions.loadOrgchartSuccess, (state, { branches }) =>
+    orgchartAdapter.setAll(branches, { ...state, loaded: true })
+  ),
 
-  on(OrgchartActions.searchBranch, (state) => ({
-    ...state,
-    loaded: false,
-    error: null
-  })),
-
-  on(OrgchartActions.addBranch, (state) => ({
-    ...state,
-    added: false,
-    error: null
-  })),
-
-  on(OrgchartActions.updateBranch, (state) => ({
-    ...state,
-    added: false,
-    error: null
-  })),
+  on(OrgchartActions.addBranchSuccess, (state, { branch }) =>
+    orgchartAdapter.addOne(branch, { ...state, loaded: true })
+  ),
   on(OrgchartActions.loadOrgchartFailure, (state, { error }) => ({
     ...state,
     error
-  }))
-  )
-;
+  })),
+);
 
 export function reducer(state: State | undefined, action: Action) {
   return orgchartReducer(state, action);

@@ -22,7 +22,7 @@
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control px-1' placeholder='Nhập tên phụ cấp' formControlName='title'
-                     [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
               <div *ngIf='submitted && f.title.errors?.required' class='invalid-feedback'>
                 <div>Chưa nhập tên phụ cấp khác</div>
               </div>
@@ -36,30 +36,29 @@
               </div>
               <div class='row mb-3' *ngIf='!data.isUpdate' [formGroup]='formGroup'>
                 <mat-select class='form-control col' formControlName='unit'
-                            [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
+                  [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
                   <mat-option value='MONTH'>Tháng</mat-option>
                   <mat-option value='DAY'>Ngày</mat-option>
                   <!--                  <mat-option value='HOUR'>Giờ</mat-option>-->
                 </mat-select>
               </div>
               <div class='row mb-3 form-control ' style='background: #80808059'
-                   *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.MONTH' [formGroup]='formGroup'>Tháng
+                *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.MONTH' [formGroup]='formGroup'>Tháng
               </div>
               <div class='row mb-3 form-control' style='background: #80808059'
-                   *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.DAY'> Ngày
-              </div>
+                *ngIf='data.isUpdate && data.salary.unit === datetimeEnum.DAY'> Ngày</div>
               <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn đơn vị</div>
               </div>
             </div>
             <div *ngIf="formGroup.value.unit === 'MONTH'" class='date-or-time col ml-2'>
               <div class='row title-item mb-1'>
-                <span>Tháng</span><span class='star'>*</span>
+                <span>Tháng</span>
+                <div class='star'>*</div>
               </div>
               <div class='row mb-3' [formGroup]='formGroup'>
-                <input style='pointer-events: none; background:#80808059'
-                       type='month' min='2021-01' class='form-control' formControlName='datetime'
-                       [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+                <input type='month' min="2021-01" class='form-control' formControlName='datetime'
+                  [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
                 <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
                   <div>Chưa nhập tháng</div>
                 </div>
@@ -76,7 +75,7 @@
             <mat-form-field *ngIf='!isAllDay' appearance='fill' class='row'>
               <mat-label>Chọn từ ngày đến ngày</mat-label>
               <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'
-                                    [ngClass]="{ 'is-invalid': submitted && f.start.errors  && f.end.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.start.errors  && f.end.errors }">
                 <input matStartDate formControlName='start' placeholder='Start date'>
                 <input matEndDate formControlName='end' placeholder='End date'>
               </mat-date-range-input>
@@ -95,7 +94,7 @@
               </div>
               <div (click)='showAlert()'>
                 <input [ngStyle]='{"pointer-events": isApprentice ?  "auto": "none" }' type='date' class='form-control'
-                       formControlName='datetime'>
+                  formControlName='datetime'>
               </div>
             </div>
           </div>
@@ -106,7 +105,7 @@
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
               <input type='number' class='form-control px-1' placeholder='Nhập số giờ' formControlName='times' min='0'
-                     [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
               <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
                 <div>Chưa nhập số giờ</div>
               </div>
@@ -119,9 +118,9 @@
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price' inputCurrency
-                     [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
               <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-                <div>Chưa nhập mức phụ cấp</div>
+                <div>Chưa nhập mức phụ cấp </div>
               </div>
             </div>
           </div>
