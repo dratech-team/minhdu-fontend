@@ -41,7 +41,6 @@ export class PositionContainer implements OnInit {
   }
 
   updatePosition($event: any) {
-    console.log($event);
     this.dialog.open(DialogPositionComponent, { width: 'fit-content', data: { position: $event, isUpdate: true } });
   }
 

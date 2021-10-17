@@ -33,7 +33,6 @@ export class DialogChangePassword implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.fromGroup);
     if (this.fromGroup.valid) {
       const val = this.fromGroup.value;
       if (val.password === val.password2) {

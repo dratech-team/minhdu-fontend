@@ -9,7 +9,7 @@ export  interface  AccountDTO {
   username: string;
   password: string ;
   appName: string;
-  role: string;
+  roleId: string;
   employeeId?: number,
   branchIds: number[]
 }

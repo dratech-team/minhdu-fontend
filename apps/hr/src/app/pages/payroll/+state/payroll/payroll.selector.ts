@@ -64,7 +64,10 @@ export const selectedScannedPayroll = createSelector(
   selectorPayrollState,
   (state) => state.scanned
 );
-
+export const selectedConfirmedPayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.confirmed
+);
 export const selectorPayrollTotal = createSelector(
   selectorPayrollState,
   fromPayroll.selectTotal

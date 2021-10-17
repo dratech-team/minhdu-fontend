@@ -22,7 +22,7 @@ export const roleAppHR = [
     role: Role.HUMAN_RESOURCE
   },
   {
-    name: 'Kế toán',
+    name: 'Kế toán trại',
     role: Role.CAMP_ACCOUNTING
   },
   {

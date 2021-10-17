@@ -67,7 +67,6 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
 

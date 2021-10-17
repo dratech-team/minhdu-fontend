@@ -1,5 +1,6 @@
 import { Branch } from '@minhdu-fontend/data-models';
-import { Role } from '../../../../../enums/hr/role.enum';
+
+import { App } from '@minhdu-fontend/enums';
 
 export interface Account {
   id: number,
@@ -10,6 +11,12 @@ export interface Account {
   ip: string,
   timestamp: Date,
   createdAt: Date
+}
+
+interface Role {
+  name: string,
+  appName: App,
+  role: string
 }
 
 export interface AccountDTO extends Partial<Account> {
