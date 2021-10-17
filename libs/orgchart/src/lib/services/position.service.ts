@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { Position, ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Position } from '@minhdu-fontend/data-models';
 import { BaseService } from '@minhdu-fontend/service';
 import { Update } from '@ngrx/entity';
 
@@ -13,17 +13,13 @@ export class PositionService extends BaseService<Position> {
   ) {
     super(Api.POSITION, http);
   }
-  pagination(params?: any): Observable<ResponsePaginate<Position>> {
-    return super.pagination(params);
-  }
 
   addOne(props: any): Observable<Position> {
     return super.addOne(props);
   }
 
-
-  getAll(prams?:any): Observable<any[]> {
-    return super.getAll(prams);
+  getAll(): Observable<any[]> {
+    return super.getAll();
   }
 
   update(id: any, body: any): Observable<Update<Position>> {

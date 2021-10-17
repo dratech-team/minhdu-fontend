@@ -12,7 +12,6 @@ export const initAuthState: AuthState = {
 
 export const authReducer = createReducer(
   initAuthState,
-
   on(AuthActions.login, (state) => {
     return {
       ...state,
@@ -27,10 +26,10 @@ export const authReducer = createReducer(
     };
   }),
 
-  on(AuthActions.loginFail, (state) => {
-    return {
-      ...state,
-      loading: false
-    };
-  })
+on(AuthActions.loginFail, (state) => {
+  return {
+    ...state,
+    loading: false
+  };
+})
 );

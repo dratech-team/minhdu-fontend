@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { AccountManagementActions } from '../../../../system/src/lib/+state/account-management/account-management.actions';
+import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 
 @Injectable()
 export class AuthEffects {
@@ -15,45 +15,43 @@ export class AuthEffects {
     private readonly actions$: Actions,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar,
     private readonly authService: AuthService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   signUp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.signUp),
-      switchMap((props) => {
-          return this.authService.signUp(props.accountDTO);
-        }
-      ),
-      map((user) => {
-          this.snackbar.open('Tọa tài khoản thành công', '', { duration: 1500 });
-           this.store.dispatch(AccountManagementActions.loadInit({}))
-        return AuthActions.signUpSuccess({user})
-        }
+      map((actions) => actions),
+      switchMap((payload) =>
+        this.authService
+          .signUp(
+            payload.username,
+            payload.password,
+            payload.app,
+            payload.role,
+            payload?.employeeId
+          )
+          .pipe(map((user) => AuthActions.signUpSuccess({ user: user })))
       ),
       catchError((err) => throwError(err))
     )
   );
 
-
-
-  updateAccount$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.updateAccount),
-      switchMap((props) => {
-          return this.authService.updateAccount(props.id, props);
-        }
+  signUpSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.signUpSuccess),
+        map((_) => {
+          this.snackBar.openFromComponent(SnackBarComponent, {
+            duration: 2500,
+            panelClass: ['background-snackbar'],
+            data: {content: 'Đăng kí tài khoản thành công'}
+          });
+        }),
+        catchError((err) => throwError(err))
       ),
-      map((user) => {
-          this.snackbar.open('Cập nhật tài khoản thành công', '', { duration: 1500 });
-          return AccountManagementActions.loadInit({});
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
+    { dispatch: false }
   );
 
   login$ = createEffect(() =>

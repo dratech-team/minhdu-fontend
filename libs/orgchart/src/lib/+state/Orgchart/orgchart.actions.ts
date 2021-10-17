@@ -3,11 +3,6 @@ import { createAction, props } from '@ngrx/store';
 
 export const init = createAction('[Orgchart Page] Init');
 
-export const searchBranch = createAction(
-  '[Orgchart/API] Search branch',
-  props<{ branch: string }>()
-);
-
 export const loadOrgchartSuccess = createAction(
   '[Orgchart/API] Load Orgchart Success',
   props<{ branches: Branch[] }>()
@@ -24,24 +19,30 @@ export const getBranch = createAction(
 
 export const addBranch = createAction(
   '[Orgchart/API] Add Branch',
-  props<{ branch: { name: string } }>()
+  props<{ branch: {name: string} }>()
 );
 
 export const addBranchSuccess = createAction(
   '[Orgchart/API] Add Branch success',
-  props<{ branch: Branch }>()
+  props<{ branch:Branch }>()
 );
-
+/**
+ * @deprecated
+ * */
 export const updateBranch = createAction(
   '[Orgchart/API] Update Branch',
   props<{ id: number, name: string }>()
 );
-
+/**
+ * @deprecated
+ * */
 export const deleteBranch = createAction(
   '[Orgchart/API] Delete Branch',
   props<{ id: number }>()
 );
-
+/**
+ * @deprecated
+ * */
 export const loadOrgchartFailure = createAction(
   '[Orgchart/API] Load Orgchart Failure',
   props<{ error: any }>()
@@ -51,7 +52,6 @@ export const loadOrgchartFailure = createAction(
 export const OrgchartActions = {
   getBranch,
   init,
-  searchBranch,
   loadOrgchartSuccess,
   addBranch,
   addBranchSuccess,

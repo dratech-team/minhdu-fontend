@@ -15,9 +15,6 @@ import { LogoutComponent } from './components/dialog-logout.component/logout.com
 import { MatDialogModule } from '@angular/material/dialog';
 import { RegisterComponent } from './components/dialog-register.component/register.component';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { DialogChangePassword } from './components/dialog-change-password/dialog-change-password';
 
 @NgModule({
   imports: [
@@ -31,28 +28,20 @@ import { DialogChangePassword } from './components/dialog-change-password/dialog
     EffectsModule.forFeature([AuthEffects]),
     MatDialogModule,
     MatSelectModule,
-    MatAutocompleteModule,
-    MatInputModule
   ],
-  declarations: [
-    RegisterComponent,
-    LogoutComponent,
-    AuthComponent,
-    DialogChangePassword
-  ],
+  declarations: [RegisterComponent, LogoutComponent, AuthComponent],
   providers: [
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class AuthModule {
-}
+export class AuthModule {}

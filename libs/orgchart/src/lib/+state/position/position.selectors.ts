@@ -22,15 +22,7 @@ export const getAllPosition = createSelector(
   (state: positionState) => selectAll(state)
 );
 
-export const selectPositionLoaded = createSelector(
-  getPositionState,
-  (state: positionState) => state.loaded
-);
 
-export const selectPositionAdded = createSelector(
-  getPositionState,
-  (state: positionState) => state.added
-);
 /**
  * @deprecated
  * */
