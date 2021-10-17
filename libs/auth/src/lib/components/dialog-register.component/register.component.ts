@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
   localhost = `${window.location.host}`;
   app = App;
   isHidden = false;
-  localhostEnum = Localhost;
   formGroup!: FormGroup;
   branchesSelected: Branch[] = [];
   branches = new FormControl();
