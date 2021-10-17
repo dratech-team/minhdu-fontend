@@ -1,0 +1,67 @@
+<!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
+
+<div  style='width: 100%; overflow-x: auto'>
+  <div class='d-flex justify-content-center mb-2 '>
+    <div >
+      <div style='width: 1000px;' class=''>
+        <div class=' h3 '>Chức vụ</div>
+        <div >
+          <button (click)='addPosition()' class='btn btn-primary mt-3 '>Tạo chức vụ</button>
+        </div>
+      </div>
+      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
+      <div class='fixTableHead mt-5 ' *ngIf='(positionLoaded$|async)'>
+        <table style='width: 1000px;'>
+          <thead>
+          <tr>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Mã chức vụ</div>
+              <input class='form-control border text-center' type='text' matInput disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+              <input class='form-control border text-center' type='text' matInput [formControl]='positions'>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
+              <input
+                class='form-control  '
+                disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
+              <input
+                class='form-control  '
+                disabled>
+            </th>
+          </tr>
+          </thead>
+          <tbody *ngIf='(positions$| async) as positions'>
+          <tr *ngFor='let position of positions' (contextmenu)='childPosition.onContextMenu($event,position)'>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.id}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.name}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position.workday}}
+            </th>
+            <th class='pointer' (click)='updatePosition(position)'>
+              {{position._count.employees}}
+            </th>
+          </tr>
+          <tr *ngIf=' positions.length === 0 ' style='height: 50vh'>
+            <td colspan='2' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-mouse-right #childPosition (addEvent)='addPosition()'
+                 (readAndUpdateEvent)='updatePosition($event)'
+                 (deleteEvent)='deletePosition($event)'
+></app-mouse-right>

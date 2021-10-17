@@ -2,27 +2,45 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { OrgchartActions } from '@minhdu-fontend/orgchart';
 import { PositionActions } from './position.actions';
 import { PositionService } from '../../services/position.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PositionEffects {
-  loadPosition$ = createEffect(() =>
+  loadAllPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.loadPosition),
-      mergeMap(() => this.positionService.getAll()),
-      map(position => PositionActions.loadPositionSuccess({ position })),
+      mergeMap((prams) => this.positionService.getAll(prams)),
+      map(position => {
+          this.snackBar.open('Tải chức vụ thành công', '', { duration: 1000 });
+          return PositionActions.loadPositionSuccess({ position });
+        }
+      ),
       catchError(err => throwError(err))
     )
   );
 
+  searchPosition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PositionActions.searchPosition),
+      mergeMap((props) => this.positionService.getAll(props)),
+      map(position => {
+        this.snackBar.open('Tải chức vụ thành công', '', { duration: 1000 });
+        return PositionActions.loadPositionSuccess({ position });
+      }),
+      catchError(err => throwError(err))
+    )
+  );
 
   addPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
       switchMap(param => this.positionService.addOne(param)),
-      map(position => PositionActions.addPositionSuccess({ position })),
+      map(position => {
+        this.snackBar.open('Tạo mới chức vụ thành công', '', { duration: 1500 });
+        return PositionActions.addPositionSuccess({ position });
+      }),
       catchError(err => throwError(err))
     )
   );
@@ -33,7 +51,10 @@ export class PositionEffects {
       ofType(PositionActions.updatePosition),
       switchMap(param => this.positionService.update(param.id,
         { name: param.name, workday: param.workday }).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ =>{
+          this.snackBar.open('Cập nhật chức vụ thành công', '', { duration: 1500 });
+          return PositionActions.loadPosition()
+        } ),
         catchError(err => throwError(err))
       ))
     )
@@ -43,7 +64,11 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.deletePosition),
       switchMap(param => this.positionService.delete(param.id).pipe(
-        map(_ => OrgchartActions.init()),
+        map(_ => {
+            this.snackBar.open('Xóa chức vụ thành công', '', { duration: 1500 });
+            return PositionActions.loadPosition();
+          }
+        ),
         catchError(err => throwError(err))
       ))
     )
@@ -51,6 +76,7 @@ export class PositionEffects {
 
   constructor(
     private actions$: Actions,
+    private snackBar: MatSnackBar,
     private positionService: PositionService
   ) {
   }

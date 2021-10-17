@@ -1,0 +1,79 @@
+<ngx-skeleton-loader *ngIf='!(loaded$ | async)' count='10' appearance='line'></ngx-skeleton-loader>
+<div *ngIf='(loaded$ | async)' style='width: 100%;'>
+
+  <div class='fixTableHead mt-5 mx-auto'>
+    <div class='h3  mt-3'>Quản lý tài khoản</div>
+    <div>
+      <button (click)='addAccount()' class='btn btn-primary'>Tạo tài khoản</button>
+    </div>
+    <table [formGroup]='formGroup' class='mt-3' style='width: 1300px'>
+      <thead>
+      <tr>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Mã tài khoản</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Tên đăng nhập</div>
+          <input class='form-control text-center' placeholder='Nhập tên đăng nhập' type='text'
+                 formControlName='username'>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Phân quyền</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Đăng nhập gần nhất</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Địa chỉ ip</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo</div>
+          <input type='text' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(Accounts$|async) as accounts'>
+      <tr *ngFor='let account of accounts'
+          (contextmenu)='child.onContextMenu($event,account)'>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account?.id}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.username}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.branch?.name ? account.branch.name : 'Chưa cập nhật' }}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.role|transformRole:roleHr}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.loggedAt|date:'dd-MM-yyyy'}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.ip}}
+        </th>
+        <th class='pointer' (click)='updateAccount(account)'>
+          {{account.createdAt|date:'dd-MM-yyyy'}}
+        </th>
+      </tr>
+      <tr *ngIf='accounts.length === 0' style='height: 50vh'>
+        <td colspan='7' class='text-center check-content font-weight-bold font-xl '>Hiện không có tài khoản nào
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-mouse-right #child (addEvent)='addAccount()'
+                 (readAndUpdateEvent)='updateAccount($event)'
+                 [type]='pageTypeEnum.ACCOUNT'
+></app-mouse-right>

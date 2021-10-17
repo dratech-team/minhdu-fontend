@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -17,7 +17,7 @@ import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 
 @Component({
-  templateUrl: 'dialog-allowance.component.html',
+  templateUrl: 'dialog-allowance.component.html'
 })
 export class DialogAllowanceComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
@@ -38,7 +38,8 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     if (
@@ -46,6 +47,12 @@ export class DialogAllowanceComponent implements OnInit {
       this.data?.salary?.datetime?.start
     ) {
       this.isAllDay = false;
+    }
+
+    if (this.data?.salary?.unit === DatetimeUnitEnum.DAY
+      && this.data?.salary?.datetime) {
+      console.log(this.data?.salary?.datetime);
+      this.isApprentice = true;
     }
     if (this.data.isUpdate) {
       this.formGroup = this.formBuilder.group({
@@ -56,13 +63,13 @@ export class DialogAllowanceComponent implements OnInit {
         datetime: [
           this.data.salary.unit === DatetimeUnitEnum.DAY
             ? this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd')
-            : this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM'),
+            : this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM')
         ],
         times: [this.data.salary.times],
         // start: [this.data.salary.allowance.start],
         // end: [this.data.salary.allowance?.end],
         type: [this.data.type, Validators.required],
-        rate: [this.data.salary.rate ? this.data.salary.rate : 1],
+        rate: [this.data.salary.rate ? this.data.salary.rate : 1]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -70,13 +77,22 @@ export class DialogAllowanceComponent implements OnInit {
         unit: ['', Validators.required],
         price: ['', Validators.required],
         note: [],
-        datetime: [],
+        datetime: [this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM')],
         times: [1],
         // start: [],
         // end: [],
-        rate: [1],
+        rate: [1]
       });
     }
+    this.formGroup.get('unit')!.valueChanges.subscribe(unit => {
+      if (unit === DatetimeUnitEnum.DAY) {
+        this.formGroup.get('datetime')!.setValue('');
+      } else if (unit === DatetimeUnitEnum.MONTH) {
+        console.log(unit);
+        this.formGroup.get('datetime')!.patchValue(
+          this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM'));
+      }
+    });
   }
 
   isShowDatePicker() {
@@ -113,21 +129,21 @@ export class DialogAllowanceComponent implements OnInit {
       unit: value.unit ? value.unit : undefined,
       payrollId: this.data.isUpdate
         ? this.data.salary.id
-        : this.data.payroll.id,
+        : this.data.payroll.id
     };
     if (this.data.isUpdate) {
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,
           payrollId: this.data.salary.payrollId,
-          salary: salary,
+          salary: salary
         })
       );
     } else {
       this.store.dispatch(
         PayrollAction.addSalary({
           payrollId: this.data.payroll.id,
-          salary: salary,
+          salary: salary
         })
       );
     }
@@ -148,10 +164,14 @@ export class DialogAllowanceComponent implements OnInit {
         width: 'fit-content',
         disableClose: true,
         data: {
-          content: 'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc',
-        },
+          content: 'Tính từ ngày chỉ được sử dụng cho phụ cấp sau khi thử việc'
+        }
       });
       this.isApprentice = true;
+        this.formGroup.get('datetime')!.setValue(
+          this.datePipe.transform(
+            this.data?.payroll?.createdAt, 'yyyy-MM-dd'
+          ));
     }
   }
 }

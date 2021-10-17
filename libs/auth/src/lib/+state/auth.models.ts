@@ -5,3 +5,11 @@ export interface AuthEntity {
   id: string | number; // Primary ID
   name: string;
 }
+export  interface  AccountDTO {
+  username: string;
+  password: string ;
+  appName: string;
+  role: string;
+  employeeId?: number,
+  branchId: number
+}
