@@ -543,7 +543,7 @@
         }
       }
     },
-    "system-history": {
+    "system": {
       "projectType": "library",
       "root": "libs/system-history",
       "sourceRoot": "libs/system-history/src",
@@ -561,8 +561,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/system-history/src/**/*.ts",
-              "libs/system-history/src/**/*.html"
+              "libs/system/src/**/*.ts",
+              "libs/system/src/**/*.html"
             ]
           }
         }

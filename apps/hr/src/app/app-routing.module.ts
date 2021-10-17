@@ -38,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: 'he-thong',
-        loadChildren: () => import('@minhdu-fontend/system-history').then(m => m.SystemHistoryModule),
+        loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
         data: {
           title: 'Lịch sử hệ thống'
         },

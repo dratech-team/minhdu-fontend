@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
-import { AccountManagementActions } from '../../../../system-history/src/lib/+state/account-management/account-management.actions';
+import { AccountManagementActions } from '../../../../system/src/lib/+state/account-management/account-management.actions';
 
 @Injectable()
 export class AuthEffects {

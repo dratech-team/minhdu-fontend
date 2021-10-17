@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivityType, App } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { selectedSystemHistoryLoaded, selectorAllSystemHistory } from '../../+state/system-history/system-history.selectors';
-import { SystemHistoryActions } from '../../+state/system-history/system-history.actions';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
+import { selectedSystemHistoryLoaded, selectorAllSystemHistory } from '../../../+state/system-history/system-history/system-history.selectors';
+import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 
 @Component({
   selector: 'app-dashboard',
