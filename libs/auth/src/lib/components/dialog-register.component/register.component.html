@@ -66,7 +66,7 @@
       <!--      quyền 1-->
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label>Quyền 1<span class='star'>*</span></label>
+          <label>Phân quyền<span class='star'>*</span></label>
           <mat-select class='form-control' formControlName='role'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.role.errors }">
             <mat-option *ngFor='let item of (role$|async)' [value]='item'>
