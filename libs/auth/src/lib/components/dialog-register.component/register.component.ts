@@ -108,9 +108,11 @@ export class RegisterComponent implements OnInit {
     if (this.data?.isUpdate) {
       this.store.dispatch(AuthActions.updateAccount(
         {
-          id: this.data.account.id, branchIds: this.branchesSelected.map(item => {
+          id: this.data.account.id,
+          branchIds: this.branchesSelected.map(item => {
             return item.id;
-          }), role: val.role
+          }),
+          roleId: val.role.id
         }));
     } else {
       if (val.password2 === val.password) {
@@ -139,9 +141,5 @@ export class RegisterComponent implements OnInit {
 
   removeBranches(branch: Branch) {
     lodash.remove(this.branchesSelected, branch);
-  }
-
-  selectedAppName(event: any, appName: any) {
-    this.appName = appName;
   }
 }
