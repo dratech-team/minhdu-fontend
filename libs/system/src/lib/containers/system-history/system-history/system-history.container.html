@@ -72,7 +72,7 @@
           <div class='content-profile note pointer '>{{systemHistory.description}}</div>
           <div class='content-profile name pointer ' *ngIf='systemHistory?.ip'>{{systemHistory?.ip}}</div>
           <div class='content-profile name pointer ' *ngIf='!systemHistory?.ip'>Chưa xác định</div>
-          <div class='content-profile  name '> {{systemHistory?.createdAt| date:'dd/MM/yyyy'}}</div>
+          <div class='content-profile  name '> {{systemHistory?.createdAt| date:'h:mm , dd/MM/yyyy'}}</div>
         </div>
         <div *ngIf='!systemHistories || systemHistories.length === 0 ' style='height:60vh; '
              class=' d-flex justify-content-center align-content-center'>

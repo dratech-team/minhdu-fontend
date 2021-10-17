@@ -65,7 +65,7 @@
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async'
                           [value]='!position.id ? positionInput.value : position.name '
-                          (onSelectionChange)='onCreatePosition($event, position)'
+                          (onSelectionChange)='onCreatePosition($event, position,positionInput)'
               >
                 {{position.name}}
               </mat-option>

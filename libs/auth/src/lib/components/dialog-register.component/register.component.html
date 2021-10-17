@@ -46,7 +46,7 @@
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async'
                         [value]='!branch.id ? branchInput.value : branch.name'
-                        (onSelectionChange)='onCreateBranch($event,branch)'>
+                        (onSelectionChange)='onSelectBranch($event,branch,branchInput)'>
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
@@ -57,7 +57,7 @@
       </div>
       <div class='mt-2 '>
             <span class='mr-3 position-relative d-inline-block'
-               style='width: fit-content;'
+                  style='width: fit-content;'
                   *ngFor='let branch of branchesSelected'>{{branch.name}}
               <label class='position-absolute text-danger pointer' style='top:-7px ; right: -10px'
                      (click)='removeBranches(branch)'>x</label>
@@ -248,7 +248,7 @@
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async'
                         [value]='!branch.id ? branchInput.value : branch.name'
-                        (onSelectionChange)='onCreateBranch($event,branch)'>
+                        (onSelectionChange)='onSelectBranch($event,branch,branchInput)'>
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>

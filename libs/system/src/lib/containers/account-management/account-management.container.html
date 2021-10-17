@@ -57,7 +57,7 @@
           {{account.role|transformRole:roleHr}}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
-          {{account.loggedAt|date:'dd-MM-yyyy'}}
+          {{account.loggedAt|date:'h:mm , dd-MM-yyyy'}}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
           {{account.ip}}
