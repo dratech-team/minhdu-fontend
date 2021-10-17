@@ -3,24 +3,37 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from '../../../auth/src/lib/+state/auth.effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../auth/src/lib/services/auth.service';
 import { SystemHistoryRoutingModule } from './system-history-routing.module';
-import { SystemHistoryContainer } from './containers/system-history.container';
-import { SystemHistoryReducer } from './+state/system-history.reducer';
-import { SystemHistoryEffects } from './+state/system-history.effects';
+import { SystemHistoryReducer } from './+state/system-history/system-history.reducer';
+import { SystemHistoryEffects } from './+state/system-history/system-history.effects';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SystemHistoryContainer } from './containers/system-history/system-history.container';
+import { AccountManagementContainer } from './containers/account-management/account-management.container';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { AccountManagementReducer } from './+state/account-management/account-management.reducer';
+import { AccountManagementEffects } from './+state/account-management/account-management.effects';
+import { AuthEffects } from '../../../auth/src/lib/+state/auth.effects';
+import { ComponentsModule } from '@minhdu-fontend/components';
+import { TransformRolePipe } from './pipes/filter-role.pipe';
 
 @NgModule({
   imports: [
+    ComponentsModule,
     SystemHistoryRoutingModule,
     CommonModule,
     StoreModule.forFeature('systemHistory', SystemHistoryReducer),
-    EffectsModule.forFeature([SystemHistoryEffects]),
+    StoreModule.forFeature(FeatureName.ACCOUNT, AccountManagementReducer),
+    EffectsModule.forFeature(
+      [
+        SystemHistoryEffects,
+        AccountManagementEffects,
+        AuthEffects
+      ]),
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
@@ -29,7 +42,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
-    SystemHistoryContainer
+    SystemHistoryContainer,
+    AccountManagementContainer,
+    TransformRolePipe
   ],
   providers: [
     AuthService,

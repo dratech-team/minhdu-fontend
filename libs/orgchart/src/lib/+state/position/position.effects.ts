@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { OrgchartActions } from '@minhdu-fontend/orgchart';
 import { PositionActions } from './position.actions';
 import { PositionService } from '../../services/position.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
