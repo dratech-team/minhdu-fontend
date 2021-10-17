@@ -7,6 +7,7 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.comp
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
 import { Router } from '@angular/router';
+import { DialogChangePassword } from '../../../../../libs/auth/src/lib/components/dialog-change-password/dialog-change-password';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,5 +52,9 @@ export class DefaultLayoutComponent implements OnInit {
 
   signUp() {
     this.dialog.open(RegisterComponent, { width: '40%' });
+  }
+
+  detailAccount() {
+    this.dialog.open(DialogChangePassword, {width:'fit-content',})
   }
 }

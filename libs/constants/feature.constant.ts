@@ -30,4 +30,5 @@ export const FeatureName = {
   SYSTEM_HISTORY : 'systemHistory',
   SALARY: 'salary',
   OVERTIME: 'overtime',
+  ACCOUNT: 'account',
 };
