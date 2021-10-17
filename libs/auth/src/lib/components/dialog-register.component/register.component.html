@@ -40,8 +40,7 @@
       <div class='row mt-3'>
         <div class='col-sm'>
           <label>Đơn vị quản lý</label><span class='star'>*</span>
-          <input id='branchInput' class='form-control' type='text' matInput [formControl]='branches'
-                 [matAutocomplete]='branch'
+          <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
                  #branchInput
                  [ngClass]="{ 'is-invalid': submitted && branchesSelected.length === 0 }">
           <mat-autocomplete #branch='matAutocomplete'>
