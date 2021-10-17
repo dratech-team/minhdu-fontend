@@ -51,7 +51,6 @@ export class DialogAllowanceComponent implements OnInit {
 
     if (this.data?.salary?.unit === DatetimeUnitEnum.DAY
       && this.data?.salary?.datetime) {
-      console.log(this.data?.salary?.datetime);
       this.isApprentice = true;
     }
     if (this.data.isUpdate) {
@@ -88,7 +87,6 @@ export class DialogAllowanceComponent implements OnInit {
       if (unit === DatetimeUnitEnum.DAY) {
         this.formGroup.get('datetime')!.setValue('');
       } else if (unit === DatetimeUnitEnum.MONTH) {
-        console.log(unit);
         this.formGroup.get('datetime')!.patchValue(
           this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM'));
       }

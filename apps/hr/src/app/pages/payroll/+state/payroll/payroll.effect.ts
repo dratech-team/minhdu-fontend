@@ -85,7 +85,6 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.addPayroll(props.generate).pipe(
           map((res) => {
-            console.log(res);
             this.snackBar.open(res?.message ? res.message : 'Thao tác thành công ', 'Đóng');
             if (props.inHistory) {
               this.store.dispatch(

@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { AccountDTO } from './auth.models';
-import { Role } from '../../../../enums/hr/role.enum';
 
 export const signUp = createAction(
   '[Auth/API] Sign Up Account',
@@ -9,7 +8,7 @@ export const signUp = createAction(
 
 export const updateAccount = createAction(
   '[Auth/API] Update Account',
-  props<{ id: number, branchIds?: number[], role?: Role }>()
+  props<{ id: number, branchIds?: number[], roleId?: number }>()
 );
 
 export const signUpSuccess = createAction(
