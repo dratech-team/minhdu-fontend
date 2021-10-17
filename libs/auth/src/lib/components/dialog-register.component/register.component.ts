@@ -7,12 +7,12 @@ import { App } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthActions } from '@minhdu-fontend/auth';
 import { Branch } from '@minhdu-fontend/data-models';
-import { BranchService } from '../../../../../orgchart/src/lib/services/branch.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { roleAppHR, roleAppSell } from '@minhdu-fontend/constants';
+import * as lodash from 'lodash';
 
 @Component({
   templateUrl: 'register.component.html'
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   isHidden = false;
   localhostEnum = Localhost;
   formGroup!: FormGroup;
-  branchId?: number;
+  branchesSelected: Branch[] = [];
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
@@ -37,7 +37,6 @@ export class RegisterComponent implements OnInit {
     private readonly store: Store,
     private readonly snackbar: MatSnackBar,
     private dialogRef: MatDialogRef<RegisterComponent>,
-    private readonly branchService: BranchService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -46,7 +45,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
-      this.branchId = this.data.account?.branch?.id;
+      this.branchesSelected = [...this.data.account?.branches] ;
       this.formGroup = this.formBuilder.group(
         {
           role: [this.data.account.role, Validators.required]
@@ -59,6 +58,10 @@ export class RegisterComponent implements OnInit {
           password: ['', Validators.required],
           password2: ['', Validators.required],
           role: ['', Validators.required]
+          // role2: [],
+          // role3: [],
+          // role4: [],
+          // role5: []
         }
       );
     }
@@ -70,13 +73,9 @@ export class RegisterComponent implements OnInit {
     ]).pipe(
       map(([branch, branches]) => {
         if (branch) {
-          const result = branches.filter((e) => {
+          return branches.filter((e) => {
             return e.name.toLowerCase().includes(branch?.toLowerCase());
           });
-          if (result.length === 0) {
-            result.push({ id: 0, name: 'Tạo mới đơn vị' });
-          }
-          return result;
         } else {
           return branches;
         }
@@ -93,14 +92,16 @@ export class RegisterComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (!this.branchId) {
+    if (this.branchesSelected.length === 0) {
       return this.snackbar.open('Chưa chọn đơn vị', '', { duration: 1500 });
     }
     const val = this.formGroup.value;
     const account = {
       username: val.userName,
       password: val.password,
-      branchId: this.branchId,
+      branchIds: this.branchesSelected.map(item => {
+        return item.id;
+      }),
       role: val.role,
       appName: this.localhost === this.localhostEnum.APP_HR ? this.app.HR :
         this.localhost === this.localhostEnum.APP_SELL ? this.app.SELL :
@@ -108,7 +109,11 @@ export class RegisterComponent implements OnInit {
     };
     if (this.data?.isUpdate) {
       this.store.dispatch(AuthActions.updateAccount(
-        { id: this.data.account.id, branchId: this.branchId, role: val.role }));
+        {
+          id: this.data.account.id, branchIds: this.branchesSelected.map(item => {
+            return item.id;
+          }), role: val.role
+        }));
     } else {
       if (val.password2 === val.password) {
         this.store.dispatch(AuthActions.signUp({ accountDTO: account }));
@@ -121,15 +126,16 @@ export class RegisterComponent implements OnInit {
 
   onCreateBranch(event: any, branch: Branch) {
     if (event.isUserInput) {
-      if (branch.id === 0) {
-        this.branchService
-          .addOne({ name: this.branchInput.nativeElement.value })
-          .subscribe((branch) => (this.branchId = branch.id));
-        this.snackbar.open('Đã tạo', '', { duration: 2500 });
+      if (this.branchesSelected.find(item => item.id === branch.id)) {
+        this.snackbar.open('Đơn vị đã được chọn', '', { duration: 1500 });
       } else {
-        this.branchId = branch.id;
-        console.log( this.branchId)
+        this.branchesSelected.push(branch);
       }
+      setTimeout(() => this.branches.setValue(''));
     }
+  }
+
+  removeBranches(branch: Branch) {
+    lodash.remove(this.branchesSelected, branch);
   }
 }

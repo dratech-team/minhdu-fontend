@@ -4,7 +4,7 @@ import { Role } from '../../../../../enums/hr/role.enum';
 export interface Account {
   id: number,
   username: string,
-  branch: Branch,
+  branches: Branch[],
   role: Role,
   loggedAt: Date,
   ip: string,
