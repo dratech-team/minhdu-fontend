@@ -6,9 +6,7 @@ import { Role } from '../../../../enums/hr/role.enum';
   pure: false
 })
 export class TransformRolePipe implements PipeTransform {
-  transform(role: Role, roles: any []): any {
-    return roles.find((item: any) => {
-      return item.role === role;
-    }).name;
+  transform(role: Role, roles: any[]): string {
+    return roles.find((item: any) => item.role === role).name;
   }
 }
