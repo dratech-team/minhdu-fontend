@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { SystemHistoryContainer } from './containers/system-history/system-history.container';
 import { AccountManagementContainer } from './containers/account-management/account-management.container';
+import { SystemHistoryContainer } from './containers/system-history/system-history/system-history.container';
 
 const routes: Routes = [
   {
@@ -18,5 +18,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SystemHistoryRoutingModule {
+export class SystemRoutingModule {
 }

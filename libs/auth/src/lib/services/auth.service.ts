@@ -18,4 +18,8 @@ export class AuthService {
   updateAccount( id:number, body: any): Observable<any> {
     return this.http.patch<any>('auth' +`/${id}`+ '/change-role' , body);
   }
+
+  updatePassword( id:number, body: any): Observable<any> {
+    return this.http.patch<any>('auth' +`/${id}`+ '/change-password' , body);
+  }
 }
