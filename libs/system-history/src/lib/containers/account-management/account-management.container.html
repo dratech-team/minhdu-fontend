@@ -53,7 +53,7 @@
           {{account.branch?.name ? account.branch.name : 'Chưa cập nhật' }}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
-          {{account.role|filterRole:roleHr}}
+          {{account.role|transformRole:roleHr}}
         </th>
         <th class='pointer' (click)='updateAccount(account)'>
           {{account.loggedAt|date:'dd-MM-yyyy'}}

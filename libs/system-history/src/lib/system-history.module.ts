@@ -19,7 +19,7 @@ import { AccountManagementReducer } from './+state/account-management/account-ma
 import { AccountManagementEffects } from './+state/account-management/account-management.effects';
 import { AuthEffects } from '../../../auth/src/lib/+state/auth.effects';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import { FilterRolePipe } from './pipes/filter-role.pipe';
+import { TransformRolePipe } from './pipes/filter-role.pipe';
 
 @NgModule({
   imports: [
@@ -44,7 +44,7 @@ import { FilterRolePipe } from './pipes/filter-role.pipe';
   declarations: [
     SystemHistoryContainer,
     AccountManagementContainer,
-    FilterRolePipe
+    TransformRolePipe
   ],
   providers: [
     AuthService,

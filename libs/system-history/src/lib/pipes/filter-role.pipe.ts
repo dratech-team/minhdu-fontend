@@ -2,17 +2,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Role } from '../../../../enums/hr/role.enum';
 
 @Pipe({
-  name: 'filterRole',
+  name: 'transformRole',
   pure: false
 })
-export class FilterRolePipe implements PipeTransform {
+export class TransformRolePipe implements PipeTransform {
   transform(role: Role, roles: any []): any {
-    let result = '';
-    roles.forEach((item: any) => {
-      if (role === item.role) {
-        result = item.name;
-      }
-    });
-    return result;
+    return roles.find((item: any) => {
+      return item.role === role;
+    }).name;
   }
 }
