@@ -1,6 +1,6 @@
 import { App } from '../enums';
 
-export const appContain = [
+export const appConstant = [
   {
     name: 'Bán hàng',
     app: App.SELL

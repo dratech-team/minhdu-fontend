@@ -1,7 +1,7 @@
 import { ActivityType } from '../enums';
 
 
-export const MethodContain = [
+export const MethodConstant = [
   {
     name: 'Thêm',
     method: ActivityType.POST
