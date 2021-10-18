@@ -30,4 +30,9 @@
                (execute)='onDelivered($event.item)'>
     Ngày nhận hàng
   </ng-template>
+  <ng-template *ngIf='type === pageType.PAYROLL'
+               contextMenuItem let-item
+               (execute)='onRestore($event.item)'>
+    khôi phục
+  </ng-template>
 </context-menu>

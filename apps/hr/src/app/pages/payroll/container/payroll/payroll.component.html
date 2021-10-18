@@ -1,8 +1,8 @@
 <div class='row h3 ml-3'>Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}</div>
 <div style='width: fit-content'>
-  <select class='select ml-3 border px-2  ' matNativeControl required  (change)='onSelectPayroll()'>
-    <option  [value]='true'>Phiếu lương</option>
-    <option  [value]='false'>Phiếu tăng ca</option>
+  <select class='select ml-3 border px-2  ' matNativeControl required (change)='onSelectPayroll()'>
+    <option [value]='true'>Phiếu lương</option>
+    <option [value]='false'>Phiếu tăng ca</option>
   </select>
 </div>
 <div class='row ml-3 mt-3 d-flex justify-content-between'>
@@ -163,8 +163,6 @@
            [ngStyle]="{'width':payrolls.length === 0 ? header.offsetWidth + 'px': 'fit-content',
          'overflow-y':payrolls.length === 0 ? 'hidden': 'scroll'}">
         <div class='row-content' *ngFor='let payroll of payrolls' (contextmenu)='child.onContextMenu($event,payroll)'>
-          <app-mouse-right #child (addEvent)='addPayroll($event)' (readAndUpdateEvent)='readPayroll($event)'>
-          </app-mouse-right>
           <div class='content-profile default pointer ' (click)='readPayroll(payroll)'>
             {{payroll.employee.id}}
           </div>
@@ -199,7 +197,7 @@
           <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
             {{payroll.payslip?.workdayNotInHoliday &&
           payroll.payslip?.workday
-            ? payroll.payslip.workdayNotInHoliday -  payroll.payslip.workday  : 'Đang cập nhật' }}
+            ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}
           </div>
           <div class='content-profile name pointer ' (click)='readPayroll(payroll)'>
             {{'Đang cập nhật' }}
@@ -268,4 +266,8 @@
     (EventSelectMonth)='selectMonth($event)'
     [createdAt]='this.formGroup.get("createdAt")!.value'></app-overtime>
 </div>
-
+<app-mouse-right [type]='pageType.PAYROLL'  #child
+                 (addEvent)='addPayroll($event)'
+                 (restore)='restorePayroll($event)'
+                 (readAndUpdateEvent)='readPayroll($event)'>
+</app-mouse-right>

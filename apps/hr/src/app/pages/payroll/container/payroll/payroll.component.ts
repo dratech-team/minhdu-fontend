@@ -26,6 +26,7 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -54,7 +55,7 @@ export class PayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   monthPayroll = new Date();
-
+  pageType = PageTypeEnum
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -217,5 +218,9 @@ export class PayrollComponent implements OnInit {
   selectMonth(event: any) {
     this.monthPayroll = event;
     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
+  }
+
+  restorePayroll(event: any) {
+
   }
 }
