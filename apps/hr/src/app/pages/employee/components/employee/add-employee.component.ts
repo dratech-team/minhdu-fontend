@@ -64,7 +64,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data?.employee?.recipeType);
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
@@ -229,7 +228,6 @@ export class AddEmployeeComponent implements OnInit {
           workday: position.workday,
           position: position.name
         });
-        console.log(this.positionId);
       } else {
         this.onCreatePosition();
       }
