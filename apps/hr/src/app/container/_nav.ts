@@ -75,5 +75,4 @@ export const navItems: INavData[] = [
     url: '/he-thong/quan-ly-tai-khoan',
     icon: 'cil-lock-locked'
   }
-
 ];

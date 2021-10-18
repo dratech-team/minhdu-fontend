@@ -7,8 +7,8 @@
           <label for='firstName'>Họ<span class='star'>*</span>
           </label>
           <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'
-                 [ngClass]="{ 'is-invalid': submitted && f.firstName.errors?.required }">
-          <div *ngIf='submitted && f.firstName.errors?.required' class='invalid-feedback'>
+                 [ngClass]="{ 'is-invalid': submitted && checkValid.firstName.errors?.required }">
+          <div *ngIf='submitted && checkValid.firstName.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập họ khác hàng</div>
           </div>
         </div>
@@ -21,9 +21,9 @@
             id='lastname'
             placeholder='Hiệu'
             type='text'
-            [ngClass]="{ 'is-invalid': submitted && f.lastName.errors?.required }"
+            [ngClass]="{ 'is-invalid': submitted && checkValid.lastName.errors?.required }"
           >
-          <div *ngIf='submitted && f.lastName.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.lastName.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập tên khác hàng</div>
           </div>
         </div>
@@ -55,9 +55,9 @@
             id='birthplace'
             placeholder='Phước Sơn - Tuy Phước - Bình Định '
             type='text'
-            [ngClass]="{ 'is-invalid': submitted && f.birthplace.errors?.required }"
+            [ngClass]="{ 'is-invalid': submitted && checkValid.birthplace.errors?.required }"
           >
-          <div *ngIf='submitted && f.birthplace.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.birthplace.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập nguyên quán</div>
           </div>
         </div>
@@ -71,9 +71,9 @@
             id='address'
             placeholder='Số nhà / thôn xóm'
             type='text'
-            [ngClass]="{ 'is-invalid': submitted && f.address.errors?.required }"
+            [ngClass]="{ 'is-invalid': submitted && checkValid.address.errors?.required }"
           >
-          <div *ngIf='submitted && f.address.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.address.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập địa chỉ</div>
           </div>
         </div>
@@ -87,14 +87,20 @@
           >
         </div>
       </div>
-      <app-pick-location [ward]='data?.ward' [formGroup]='formGroup' [submitted]='submitted'
-                         [form]='f'></app-pick-location>
+      <app-pick-location [ward]='data?.ward'
+                         [formGroup]='formGroup'
+                         [submitted]='submitted'
+                         [form]='checkValid'
+                         (eventSelectWard)='onSelectWard($event)'
+      >
+
+      </app-pick-location>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='cmnd'>CMND/CCCD</label>
           <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
-                 [ngClass]="{ 'is-invalid': submitted && f.identify.errors?.required }">
-          <div *ngIf='submitted && f.identify.errors?.required' class='invalid-feedback'>
+                 [ngClass]="{ 'is-invalid': submitted && checkValid.identify.errors?.required }">
+          <div *ngIf='submitted && checkValid.identify.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập CMND/CCCD</div>
           </div>
         </div>
@@ -106,17 +112,17 @@
             class='form-control'
             id='idCardAt'
             formControlName='idCardAt'
-            [ngClass]="{ 'is-invalid': submitted && f.idCardAt.errors?.required }"
+            [ngClass]="{ 'is-invalid': submitted && checkValid.idCardAt.errors?.required }"
           >
-          <div *ngIf='submitted && f.idCardAt.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.idCardAt.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập ngày cấp</div>
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='issuedBy'>Nơi cấp <span class='star'>*</span></label>
           <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
-                 [ngClass]="{ 'is-invalid': submitted && f.issuedBy.errors?.required }">
-          <div *ngIf='submitted && f.issuedBy.errors?.required' class='invalid-feedback'>
+                 [ngClass]="{ 'is-invalid': submitted && checkValid.issuedBy.errors?.required }">
+          <div *ngIf='submitted && checkValid.issuedBy.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập nơi cấp</div>
           </div>
         </div>
@@ -125,16 +131,16 @@
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='phone'>Số điện thoại <span class='star'>*</span></label>
           <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'
-                 [ngClass]="{ 'is-invalid': submitted && f.phone.errors?.required }">
-          <div *ngIf='submitted && f.phone.errors?.required' class='invalid-feedback'>
+                 [ngClass]="{ 'is-invalid': submitted && checkValid.phone.errors?.required }">
+          <div *ngIf='submitted && checkValid.phone.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập số điện thoại</div>
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='birthday'>Ngày sinh <span class='star'>*</span></label>
           <input type='date' id='birthday' class='form-control' formControlName='birthday'
-                 [ngClass]="{ 'is-invalid': submitted && f.birthday.errors?.required }">
-          <div *ngIf='submitted && f.birthday.errors?.required' class='invalid-feedback'>
+                 [ngClass]="{ 'is-invalid': submitted && checkValid.birthday.errors?.required }">
+          <div *ngIf='submitted && checkValid.birthday.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập ngày sinh</div>
           </div>
         </div>
@@ -146,7 +152,7 @@
               <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
               <mat-radio-button value='OTHER'>Khác</mat-radio-button>
             </mat-radio-group>
-            <div *ngIf='submitted && f.gender.errors?.required'
+            <div *ngIf='submitted && checkValid.gender.errors?.required'
                  style='width: 100%;
                   margin-top: 0.25rem;
                   font-size: 80%;
@@ -160,7 +166,7 @@
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='type'>Loại Khách hàng<span class='star'>*</span></label>
           <mat-select id='type' class='form-control' formControlName='type'
-                      [ngClass]="{ 'is-invalid': submitted && f.type.errors?.required }">
+                      [ngClass]="{ 'is-invalid': submitted && checkValid.type.errors?.required }">
             <mat-option value='{{customerType.RETAIL}}'>
               Khách lẻ
             </mat-option>
@@ -168,14 +174,14 @@
               Đại lí
             </mat-option>
           </mat-select>
-          <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
             <div>Chưa chọn loại khách hàng</div>
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='resource'>Nguồn khác hàng<span class='star'>*</span></label>
           <mat-select id='resource' class='form-control' formControlName='resource'
-                      [ngClass]="{ 'is-invalid': submitted && f.resource.errors?.required }">
+                      [ngClass]="{ 'is-invalid': submitted && checkValid.resource.errors?.required }">
             <mat-option value='{{resourceType.SELF_FIND}}'>
               Tự tìm
             </mat-option>
@@ -189,7 +195,7 @@
               Khác
             </mat-option>
           </mat-select>
-          <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
+          <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
             <div>Chưa chọn nguồn khách hàng</div>
           </div>
         </div>

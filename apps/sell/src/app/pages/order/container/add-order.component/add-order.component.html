@@ -26,8 +26,8 @@
             <label for='createdAt' class='h5'>Ngày tạo đơn hàng<span class='star'>*</span>
             </label>
             <input type='date' class='form-control' id='createdAt' formControlName='createdAt'
-                   [ngClass]="{ 'is-invalid': submitted && f.createdAt.errors?.required }">
-            <div *ngIf='submitted && f.createdAt.errors?.required' class='invalid-feedback'>
+                   [ngClass]="{ 'is-invalid': submitted && checkValid.createdAt.errors?.required }">
+            <div *ngIf='submitted && checkValid.createdAt.errors?.required' class='invalid-feedback'>
               <div>Chưa nhập ngày tạo đơn hàng</div>
             </div>
           </div>
@@ -40,7 +40,13 @@
           <div class='ml-3 h5'>Nơi nhận hàng<span class='star'>*</span>
           </div>
           <div class='d-flex'>
-            <app-pick-location  class='col-9' [reload$]='reload' [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-pick-location>
+            <app-pick-location  class='col-9'
+                                [reload$]='reload'
+                                [formGroup]='formGroup'
+                                [form]='checkValid'
+                                [submitted]='submitted'
+                                (eventSelectWard)='onSelectWard($event)'
+            ></app-pick-location>
           </div>
         </div>
         <div  *ngIf='customerPicked' class='animated fadeIn'>

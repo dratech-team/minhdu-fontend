@@ -6,7 +6,7 @@
     Thêm
   </ng-template>
   <ng-template *ngIf='type !== pageType.HISTORY_PAYROLL
-                && type !== pageType.ORDER && type !== pageType.ACCOUNT '
+                && type !== pageType.ORDER '
                contextMenuItem let-item
                (execute)='delete($event.item)'>
     {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}
@@ -29,5 +29,10 @@
                contextMenuItem let-item
                (execute)='onDelivered($event.item)'>
     Ngày nhận hàng
+  </ng-template>
+  <ng-template *ngIf='type === pageType.RESTORE'
+               contextMenuItem let-item
+               (execute)='onRestore($event.item)'>
+    khôi phục
   </ng-template>
 </context-menu>

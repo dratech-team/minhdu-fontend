@@ -50,6 +50,20 @@ export class AccountManagementEffects {
     )
   );
 
+  deleteAccount$ = createEffect(() =>
+    this.actions.pipe(
+      ofType(AccountManagementActions.deleteAccount),
+      switchMap((props) => this.accountManagementService.delete(props.id)),
+      map((_) =>
+        AccountManagementActions.loadInit({
+         accountDTO: {take:30, skip: 0}
+        })
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
+
   constructor(
     private readonly actions: Actions,
     private readonly store: Store,

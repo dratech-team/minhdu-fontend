@@ -15,8 +15,8 @@
                 <label for='createdAt'>Ngày tạo đơn hàng<span class='star'>*</span>
                 </label>
                 <input type='date' class='form-control' id='createdAt' readonly='readonly' formControlName='createdAt'
-                       [ngClass]="{ 'is-invalid': submitted && f.createdAt.errors?.required }">
-                <div *ngIf='submitted && f.createdAt.errors?.required' class='invalid-feedback'>
+                       [ngClass]="{ 'is-invalid': submitted && checkValid.createdAt.errors?.required }">
+                <div *ngIf='submitted && checkValid.createdAt.errors?.required' class='invalid-feedback'>
                   <div>Chưa nhập ngày tạo đơn hàng</div>
                 </div>
               </div>
@@ -30,7 +30,15 @@
                 <input type='date' class='form-control' id='deliveredAt' formControlName='deliveredAt'>
               </div>
             </div>
-            <app-pick-location [ward]='data?.order?.destination' [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-pick-location>
+            <app-pick-location
+              [ward]='data?.order?.destination'
+              [formGroup]='formGroup'
+              [form]='checkValid'
+              [submitted]='submitted'
+              (eventSelectWard)='onSelectWard($event)'
+            >
+
+            </app-pick-location>
           </div>
         </div>
       </mat-tab>
@@ -42,7 +50,7 @@
     </mat-tab-group>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button  (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
       <button type='button' class='btn award' data-toggle='tooltip'
               data-placement='left'
               title='xóa'>

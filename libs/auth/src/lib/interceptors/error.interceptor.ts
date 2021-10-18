@@ -38,9 +38,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           /// FIXME: action not working
           this.store.dispatch(AuthActions.logout());
         } else if ([403].indexOf(err.status) !== -1) {
-          throw this.snackBar.open('Bạn không có quyền truy cập vào mục này', 'Đã hiểu', {
-            duration: 2000,
-          });
+          this.router.navigate(['/he-thong/han-che-truy-cap']).then()
         }
         const error =
           err?.error?.message ||
