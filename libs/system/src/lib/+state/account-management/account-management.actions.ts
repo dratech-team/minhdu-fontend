@@ -22,9 +22,15 @@ export const loadMoreAccountSuccess = createAction(
   props<{ accounts: Account[] }>()
 );
 
+export const deleteAccount = createAction(
+  '[DELETE_ACCOUNT_MANAGEMENT] delete Account',
+  props<{ id: number }>()
+);
+
 export const AccountManagementActions = {
   loadInit,
   loadInitSuccess,
   loadMoreAccount,
-  loadMoreAccountSuccess
+  loadMoreAccountSuccess,
+  deleteAccount
 };

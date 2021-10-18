@@ -1,5 +1,5 @@
 <ngx-skeleton-loader *ngIf='!(loaded$ | async)' count='10' appearance='line'></ngx-skeleton-loader>
-<div  *ngIf='(loaded$ | async)' style='width: 100%;'>
+<div *ngIf='(loaded$ | async)' style='width: 100%;'>
   <div class='mx-auto' style='width: 1300px'>
     <div class='h3  mt-3'>Quản lý tài khoản</div>
     <div>
@@ -77,5 +77,5 @@
 </div>
 <app-mouse-right #child (addEvent)='addAccount()'
                  (readAndUpdateEvent)='updateAccount($event)'
-                 [type]='pageTypeEnum.ACCOUNT'
+                 (deleteEvent)='deleteAccount($event)'
 ></app-mouse-right>

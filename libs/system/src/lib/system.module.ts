@@ -22,6 +22,8 @@ import { SystemHistoryEffects } from './+state/system-history/system-history/sys
 import { SystemHistoryReducer } from './+state/system-history/system-history/system-history.reducer';
 import { TransformAppPipe } from './pipes/transform-app.pipe';
 import { TransformMethodPipe } from './pipes/transform-method.pipe';
+import { LimitedAccessContainer } from './containers/limited-access/limited-access.container';
+
 
 @NgModule({
   imports: [
@@ -48,7 +50,8 @@ import { TransformMethodPipe } from './pipes/transform-method.pipe';
     AccountManagementContainer,
     TransformRolePipe,
     TransformAppPipe,
-    TransformMethodPipe
+    TransformMethodPipe,
+    LimitedAccessContainer
   ],
   providers: [
     AuthService,

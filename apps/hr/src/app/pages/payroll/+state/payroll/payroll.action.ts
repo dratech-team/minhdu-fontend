@@ -101,7 +101,7 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, dataConfirm:{datetime: Date}}>()
+  props<{ id: number, dataConfirm:{datetime?: Date}}>()
 );
 
 export const updatePayrollSuccess = createAction(

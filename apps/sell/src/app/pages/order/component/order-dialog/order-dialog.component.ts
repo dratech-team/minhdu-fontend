@@ -27,6 +27,7 @@ export class OrderDialogComponent implements OnInit {
   customers: Customer[] = [];
   commodities: Commodity[] = [];
   commodityIds: number[] = [];
+  wardId!: number;
 
   constructor(
     private readonly store: Store<AppState>,
@@ -55,7 +56,7 @@ export class OrderDialogComponent implements OnInit {
     });
   }
 
-  get f() {
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -68,7 +69,7 @@ export class OrderDialogComponent implements OnInit {
     const order = {
       customerId: this.data.order.customerId,
       commodityIds: this.commodityIds,
-      wardId: val.ward,
+      wardId: this.wardId|| this.data.order.destination.id,
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
@@ -76,10 +77,14 @@ export class OrderDialogComponent implements OnInit {
       delete order.deliveredAt;
     }
     this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id, typeUpdate: this.data.type }));
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   pickCommodity(commodityIds: number[]) {
     this.commodityIds = commodityIds;
+  }
+
+  onSelectWard($event: number) {
+    this.wardId = $event;
   }
 }

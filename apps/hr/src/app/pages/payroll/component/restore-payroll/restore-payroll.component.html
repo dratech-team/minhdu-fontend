@@ -1,0 +1,23 @@
+
+<mat-progress-bar *ngIf='loading' class='mt-2' mode="indeterminate"></mat-progress-bar>
+<div class='py-1 main-popup' style='min-width: 300px'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <h2 class='font-weight-bold'>
+    Khôi phục phiếu lương
+  </h2>
+  <div class='mt-3 ml-2'>
+     <span class=' font-lg '>
+    Khôi phục phiếu lương tháng {{data.payroll.createdAt|date:'MM/yyyy'}} <br>
+    cho nhân viên {{data.payroll.employee.firstName}} {{data.payroll.employee.lastName}}
+  </span>
+  </div >
+  <div class=' mt-3'>
+    <button (click)='restorePayroll()' class='btn btn-primary '>Xác nhận</button>
+  </div>
+</div>
+

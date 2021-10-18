@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from '../../../../../auth/src/lib/components/dialog-register.component/register.component';
 import { roleAppHR } from '@minhdu-fontend/constants';
 import { PageTypeEnum } from '../../../../../enums/sell/page-type.enum';
+import { DialogDeleteComponent } from '../../../../../components/src/lib/dialog-delete/dialog-delete.component';
+import { AuthActions } from '@minhdu-fontend/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +34,7 @@ export class AccountManagementContainer implements OnInit {
   });
   roleHr = roleAppHR;
   pageTypeEnum = PageTypeEnum;
+
   constructor(
     private readonly store: Store,
     private readonly dialog: MatDialog
@@ -86,5 +89,14 @@ export class AccountManagementContainer implements OnInit {
 
   updateAccount($event: any) {
     this.dialog.open(RegisterComponent, { width: 'fit-content', data: { account: $event, isUpdate: true } });
+  }
+
+  deleteAccount($event: any) {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    dialogRef.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(AccountManagementActions.deleteAccount({ id: $event.id }));
+      }
+    });
   }
 }
