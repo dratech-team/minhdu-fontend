@@ -63,7 +63,7 @@
           {{systemHistory.ip}}
         </th>
         <th class='pointer'>
-          {{systemHistory.createdAt|date:'h-mm, dd-MM-yyyy'}}
+          {{systemHistory.createdAt|date:'h:mm:ss a, dd-MM-yyyy'}}
         </th>
       </tr>
       <tr *ngIf='systemHistories.length === 0' style='height: 50vh'>
