@@ -26,6 +26,9 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
+import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -54,6 +57,7 @@ export class PayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   monthPayroll = new Date();
+  pageType = PageTypeEnum;
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -217,5 +221,9 @@ export class PayrollComponent implements OnInit {
   selectMonth(event: any) {
     this.monthPayroll = event;
     this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
+  }
+
+  restorePayroll(event: any) {
+    this.dialog.open(RestorePayrollComponent, { width: 'fit-content', data: { payroll: event } });
   }
 }

@@ -9,13 +9,14 @@ import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
 })
 export class MouseRightComponent {
   @Input() type?: PageTypeEnum;
-   pageType =  PageTypeEnum;
+  pageType = PageTypeEnum;
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() permanentlyDeletedEvent = new EventEmitter();
   @Output() readAndUpdateEvent = new EventEmitter();
   @Output() payment = new EventEmitter();
   @Output() delivered = new EventEmitter();
+  @Output() restore = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -46,11 +47,16 @@ export class MouseRightComponent {
   readAndUpdate(item: any): void {
     this.readAndUpdateEvent.emit(item);
   }
-  onPayment(item: any): void{
+
+  onPayment(item: any): void {
     this.payment.emit(item);
   }
 
-  onDelivered(item: any){
+  onDelivered(item: any) {
     this.delivered.emit(item);
+  }
+
+  onRestore(item: any) {
+    this.restore.emit(item);
   }
 }
