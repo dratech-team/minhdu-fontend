@@ -65,8 +65,8 @@ export class PickLocationComponent implements OnInit {
             return e.name.toLowerCase().includes(province?.toLowerCase());
           });
         } else {
-          this.lstDistrict = []
-          this.formDistrict.patchValue('')
+          this.lstDistrict = [];
+          this.formDistrict.patchValue('');
           return provinces;
         }
       })
@@ -78,8 +78,8 @@ export class PickLocationComponent implements OnInit {
           if (district) {
             return this.lstDistrict.filter(item => item.name.toLowerCase().includes(district.toLowerCase()));
           } else {
-            this.lstWard = []
-            this.formWard.patchValue('')
+            this.lstWard = [];
+            this.formWard.patchValue('');
             return this.lstDistrict;
           }
         }
@@ -99,12 +99,12 @@ export class PickLocationComponent implements OnInit {
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
-    this.formDistrict.patchValue('')
+    this.formDistrict.patchValue('');
   }
 
   onDistrict(district: District) {
     this.lstWard = district.wards;
-    this.formWard.patchValue('')
+    this.formWard.patchValue('');
   }
 
   onWard(ward: Ward) {
