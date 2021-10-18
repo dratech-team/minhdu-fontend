@@ -15,11 +15,11 @@ export class AuthService {
     return this.http.post<any>('auth/signin', { username, password, app });
   }
 
-  updateAccount( id:number, body: any): Observable<any> {
-    return this.http.patch<any>('auth' +`/${id}` , body);
+  updateAccount(id: number, body: any): Observable<any> {
+    return this.http.patch<any>('auth' + `/${id}`, body);
   }
 
-  updatePassword( id:number, body: any): Observable<any> {
-    return this.http.patch<any>('auth' +`/${id}`+ '/change-password' , body);
+  updatePassword(id: number, body: any): Observable<any> {
+    return this.http.patch<any>('auth' + `/${id}` + '/change-password', body);
   }
 }

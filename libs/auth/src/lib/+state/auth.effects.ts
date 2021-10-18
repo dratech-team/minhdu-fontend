@@ -30,14 +30,13 @@ export class AuthEffects {
       ),
       map((user) => {
           this.snackbar.open('Tọa tài khoản thành công', '', { duration: 1500 });
-           this.store.dispatch(AccountManagementActions.loadInit({}))
-        return AuthActions.signUpSuccess({user})
+          this.store.dispatch(AccountManagementActions.loadInit({}));
+          return AuthActions.signUpSuccess({ user });
         }
       ),
       catchError((err) => throwError(err))
     )
   );
-
 
 
   updateAccount$ = createEffect(() =>
