@@ -6,6 +6,8 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
 import { selectedSystemHistoryLoaded, selectorAllSystemHistory } from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
+import { appContain } from '@minhdu-fontend/constants';
+import { MethodContain } from '../../../../../../constants/method.contain';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +15,8 @@ import { SystemHistoryActions } from '../../../+state/system-history/system-hist
 })
 export class SystemHistoryContainer implements OnInit {
   app = App;
+  apps = appContain;
+  methods = MethodContain;
   pageSize = 30;
   pageIndexInit = 0;
   activityType = ActivityType;

@@ -20,6 +20,8 @@ import { TransformRolePipe } from './pipes/transform-role.pipe';
 import { SystemHistoryContainer } from './containers/system-history/system-history/system-history.container';
 import { SystemHistoryEffects } from './+state/system-history/system-history/system-history.effects';
 import { SystemHistoryReducer } from './+state/system-history/system-history/system-history.reducer';
+import { TransformAppPipe } from './pipes/transform-app.pipe';
+import { TransformMethodPipe } from './pipes/transform-method.pipe';
 
 @NgModule({
   imports: [
@@ -44,7 +46,9 @@ import { SystemHistoryReducer } from './+state/system-history/system-history/sys
   declarations: [
     SystemHistoryContainer,
     AccountManagementContainer,
-    TransformRolePipe
+    TransformRolePipe,
+    TransformAppPipe,
+    TransformMethodPipe
   ],
   providers: [
     AuthService,
