@@ -266,7 +266,8 @@
     (EventSelectMonth)='selectMonth($event)'
     [createdAt]='this.formGroup.get("createdAt")!.value'></app-overtime>
 </div>
-<app-mouse-right [type]='pageType.PAYROLL'  #child
+<app-mouse-right [type]='pageType.RESTORE'
+                 #child
                  (addEvent)='addPayroll($event)'
                  (restore)='restorePayroll($event)'
                  (readAndUpdateEvent)='readPayroll($event)'>

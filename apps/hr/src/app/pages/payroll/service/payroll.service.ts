@@ -47,4 +47,8 @@ export class PayrollService extends BaseService<Payroll> {
   scanHoliday(PayrollId: number):Observable<any>{
     return this.http.get<any>(Api.PAYROLL + `/${PayrollId}/` + Api.GENERATE_HOLIDAY);
   }
+
+  restorePayroll(id: number, body?: any): Observable<any> {
+    return this.http.patch<any>(Api.RESTORE_PAYROLL + `/${id}`, body);
+  }
 }

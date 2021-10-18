@@ -27,6 +27,8 @@ import { DialogExportPayrollComponent } from '../../component/dialog-export/dial
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
+import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -55,7 +57,8 @@ export class PayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   monthPayroll = new Date();
-  pageType = PageTypeEnum
+  pageType = PageTypeEnum;
+
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -221,6 +224,6 @@ export class PayrollComponent implements OnInit {
   }
 
   restorePayroll(event: any) {
-
+    this.dialog.open(RestorePayrollComponent, { width: 'fit-content', data: { payroll: event } });
   }
 }
