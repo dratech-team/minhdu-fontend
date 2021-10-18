@@ -7,8 +7,7 @@ import { throwError } from 'rxjs';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { selectorAllRoute, selectorRouteTotal } from './Route.selector';
-import { selectorSystemHistoryTotal } from '../../../../../../../../libs/system-history/src/lib/+state/system-history/system-history.selectors';
+import { selectorRouteTotal } from './Route.selector';
 
 @Injectable()
 export class RouteEffect {

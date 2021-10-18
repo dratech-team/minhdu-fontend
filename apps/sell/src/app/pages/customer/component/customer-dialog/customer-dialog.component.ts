@@ -15,6 +15,7 @@ export class CustomerDialogComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
+  wardId!: number;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -48,10 +49,6 @@ export class CustomerDialogComponent implements OnInit {
           this?.data?.birthday, 'yyyy-MM-dd'
         )
         , Validators.required],
-      ward: [this.data?.ward?.id, Validators.required],
-      district: [this.data?.ward?.district?.id, Validators.required],
-      province: [this.data?.ward?.district?.province?.id, Validators.required],
-      // nation: [this?.data?.ward?.district?.province?.nation?.id, Validators.required],
       ethnicity: [this.data?.ethnicity],
       religion: [this.data?.religion],
       type: [this.data?.type, Validators.required],
@@ -60,7 +57,7 @@ export class CustomerDialogComponent implements OnInit {
     });
   }
 
-  get f() {
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -83,7 +80,7 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: value.ward ? value.ward : undefined,
+      wardId: this.wardId || this.data.ward.id,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -96,6 +93,10 @@ export class CustomerDialogComponent implements OnInit {
       this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
     }
     this.dialogRef.close();
+  }
+
+  onSelectWard($event: number) {
+    this.wardId = $event;
   }
 }
 

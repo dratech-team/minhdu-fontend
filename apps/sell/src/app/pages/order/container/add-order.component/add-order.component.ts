@@ -41,6 +41,7 @@ export class AddOrderComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
+  wardId!: number;
 
   observer = new MutationObserver((mutations) => {
     if (document.contains(document.getElementById('success'))) {
@@ -78,10 +79,7 @@ export class AddOrderComponent implements OnInit {
     document.getElementById('customer').classList.remove('btn-border');
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
-      explain: [''],
-      ward: ['', Validators.required],
-      district: ['', Validators.required],
-      province: ['', Validators.required]
+      explain: ['']
     });
 
   }
@@ -148,7 +146,7 @@ export class AddOrderComponent implements OnInit {
     });
   }
 
-  get f() {
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -169,11 +167,16 @@ export class AddOrderComponent implements OnInit {
     const order = {
       createdAt: val.createdAt,
       explain: val.explain,
-      wardId: val.ward,
+      wardId: this.wardId,
       customerId: this.customerId,
       commodityIds: this.commodityIds
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
     this.observer.observe(document, { childList: true, subtree: true });
   }
+
+  onSelectWard($event: number) {
+    this.wardId = $event;
+  }
+
 }
