@@ -23,6 +23,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
+        console.log(requestPaginate)
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
@@ -168,6 +169,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.confirmPayroll(props.id, props.dataConfirm).pipe(
           map((Payroll) => {
+            console.log(Payroll)
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
             return PayrollAction.confirmPayrollSuccess({ payroll: Payroll });
           }),

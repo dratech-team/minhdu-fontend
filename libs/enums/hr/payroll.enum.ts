@@ -1,0 +1,5 @@
+export enum PayrollEnum {
+  PAYROLL = 'PAYROLL',
+  PAYROLL_OVERTIME = 'PAYROLL_OVERTIME',
+  TIME_SHEET = 'TIME_SHEET'
+}

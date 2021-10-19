@@ -1,0 +1,18 @@
+<div class='px-3 py-3 main-popup' style='width: 300px'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div>
+    <h2 class='font-weight-bold'>Phiếu chấm công</h2>
+      <div class=' mp-5 font-lg '>
+        <span *ngIf='!this.data.manConfirmedAt'>xác nhận phiếu chấm công </span>
+        <span *ngIf='this.data.manConfirmedAt'>Hủy xác phiếu chấm công</span>
+      </div>
+    <div class='footer-popup row mt-3 ml-1'>
+      <button mat-dialog-close (click)='onSubmit()' class='btn btn-ok '>Đồng ý</button>
+    </div>
+  </div>
+</div>

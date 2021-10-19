@@ -27,7 +27,7 @@ export const roleAppHR = [
   },
   {
     name: 'Quản lý trại',
-    role: Role.CAMP_MANAGEMENT
+    role: Role.CAMP_MANAGER
   },
   {
     name: 'Giám đốc trại',

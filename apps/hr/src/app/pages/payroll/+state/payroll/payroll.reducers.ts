@@ -9,7 +9,7 @@ export interface PayrollState extends EntityState <Payroll> {
   adding: boolean,
   scanned: boolean,
   confirmed: boolean,
-  selectedPayrollId: number
+  selectedPayrollId: number,
 }
 
 
@@ -26,10 +26,11 @@ export const payrollReducer = createReducer(
   }),
 
   on(PayrollAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.payrolls, { ...state, loaded: true, added: true, adding: false })),
+    adapter.setAll(action.payrolls,
+      { ...state, loaded: true, added: true, adding: false })),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) =>
-    adapter.addMany(action.payrolls, { ...state, loaded: true })),
+    adapter.addMany(action.payrolls, { ...state, loaded: true})),
 
   on(PayrollAction.addPayroll, (state, _) => {
     return { ...state, adding: true, added: false };

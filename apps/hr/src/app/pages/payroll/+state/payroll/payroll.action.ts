@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
-import { Salary } from '@minhdu-fontend/data-models';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 
 export const loadInit = createAction(
@@ -17,13 +16,14 @@ export const loadInit = createAction(
     createdAt?: Date,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
-    employeeId?: number
+    employeeId?: number,
+    isTimeSheet?: boolean,
   }>()
 );
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[] }>()
+  props<{ payrolls: Payroll[]}>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
@@ -38,12 +38,13 @@ export const loadMorePayrolls = createAction(
     branch?: string,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
+    isTimeSheet?: boolean,
   }>()
 );
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[] }>()
+  props<{ payrolls: Payroll[]}>()
 );
 
 export const filterOvertime = createAction(
@@ -101,7 +102,7 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, dataConfirm:{datetime?: Date}}>()
+  props<{ id: number, dataConfirm:{datetime?: Date|null}}>()
 );
 
 export const updatePayrollSuccess = createAction(

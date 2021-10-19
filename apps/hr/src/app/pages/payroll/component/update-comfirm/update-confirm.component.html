@@ -1,35 +1,29 @@
-<div class="px-3 py-3 main-popup" >
-  <div mat-dialog-close class="close-popup">
-    <span class="mr-1"> close</span>
-    <div class="x-popup">
-      <img src="../../../../../assets/img/share/x2-lg.svg" alt="cancel">
+<div class='px-3 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <div >
-        <div>
-          <div class='form-group ' *ngIf='data.type === "paidAt"' >
-            <div class='row mp-5 title-popup'>
-              <span > Xác nhận thanh toán</span>
-            </div>
-          </div>
-          <div class='form-group'  *ngIf='data.type === "accConfirmedAt"' >
-            <div class='row mp-5 title-popup'>
-              <span> Xác nhận phiếu lương</span>
-            </div>
-          </div>
-          <div class='form-group'  *ngIf='data.type === "manConfirmedAt"' >
-            <div class='row mp-5 title-popup'>
-              <span>Quản lý xác nhận phiếu lương</span>
-            </div>
-          </div>
-
+  <div>
+    <div>
+      <div class='form-group ' *ngIf='data.type === "paidAt"'>
+        <div class='row mp-5 title-popup'>
+          <span> Xác nhận thanh toán</span>
         </div>
+      </div>
+      <div class='form-group' *ngIf='data.type === "accConfirmedAt"'>
+        <div class='row mp-5 title-popup'>
+          <span> Xác nhận phiếu lương</span>
+        </div>
+      </div>
+    </div>
     <div class='mt-2'>
-      <span class='font-weight-bold' >Chọn ngày xác nhận</span><span class='star'>*</span>
+      <span class='font-weight-bold'>Chọn ngày xác nhận</span><span class='star'>*</span>
       <input class='form-control mt-1' type='date' [formControl]='dayConfirm'>
     </div>
-    <div class="footer-popup row mt-3 ml-2">
-      <button mat-dialog-close (click)='onSubmit()' class="btn btn-ok ">Xác nhận</button>
+    <div class='footer-popup row mt-3 ml-2'>
+      <button mat-dialog-close (click)='onSubmit()' class='btn btn-ok '>Xác nhận</button>
     </div>
   </div>
 </div>

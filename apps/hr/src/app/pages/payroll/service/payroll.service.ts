@@ -24,16 +24,16 @@ export class PayrollService extends BaseService<Payroll> {
     return super.getOne(id);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<Payroll>> {
-    return super.pagination(params);
-  }
+ pagination(params?: any): Observable<ResponsePaginate<Payroll>> {
+   return super.pagination(params);
+ }
 
   update(id: any, body: any): Observable<Update<Payroll>> {
     return super.update(id, body);
   }
 
   confirmPayroll(id: number, body?: any): Observable<Payroll> {
-    return this.http.patch<Payroll>(Api.CONFIRM_PAYROLL + `/${id}`, body);
+    return this.http.patch<Payroll>(Api.CONFIRM_PAYROLL + `/${id}`, body)
   }
 
   delete(id: number): Observable<void> {
@@ -44,7 +44,7 @@ export class PayrollService extends BaseService<Payroll> {
     return this.http.get<any>(Api.GENERATE, { params });
   }
 
-  scanHoliday(PayrollId: number):Observable<any>{
+  scanHoliday(PayrollId: number): Observable<any> {
     return this.http.get<any>(Api.PAYROLL + `/${PayrollId}/` + Api.GENERATE_HOLIDAY);
   }
 

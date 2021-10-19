@@ -5,30 +5,27 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
-import {
-  selectedLoadedPayroll,
-  selectorAllPayroll
-} from '../../+state/payroll/payroll.selector';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/timekeeping/dialog-timekeeping.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
+import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
+import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
+import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { PayrollConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -43,9 +40,9 @@ export class PayrollComponent implements OnInit {
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  selectedPayroll = true;
+  selectPayroll = new FormControl(PayrollEnum.TIME_SHEET);
+  selectedPayroll: PayrollEnum = PayrollEnum.TIME_SHEET;
   salaryType = SalaryTypeEnum;
-  contextMenuPosition = { x: '0px', y: '0px' };
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   pageSize: number = 30;
@@ -58,6 +55,9 @@ export class PayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   monthPayroll = new Date();
   pageType = PageTypeEnum;
+  daysInMonth: any [] = [];
+  payrollConstant = PayrollConstant;
+  payrollEnum = PayrollEnum;
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -69,25 +69,50 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.daysInMonth = rageDaysInMonth(this.monthPayroll);
     this.store.dispatch(
       PayrollAction.loadInit(
         {
           skip: this.pageIndexInit,
           take: this.pageSize,
-          createdAt: new Date()
+          createdAt: new Date(),
+          isTimeSheet: true
         }
       )
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
+    this.selectPayroll.valueChanges.subscribe(val => {
+      this.selectedPayroll = val;
+      if (val === PayrollEnum.TIME_SHEET) {
+        this.store.dispatch(
+          PayrollAction.loadInit(
+            {
+              skip: this.pageIndexInit,
+              take: this.pageSize,
+              createdAt: new Date(),
+              isTimeSheet: true
+            }
+          )
+        );
+      }
+    });
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
       if (val.createdAt) {
         this.monthPayroll = val.createdAt;
+        this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
       } else {
         this.monthPayroll = new Date();
       }
       const month = new Date(val.createdAt);
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(Object.assign(val, { createdAt: month }))));
+      console.log( this.selectedPayroll)
+      this.store.dispatch(PayrollAction.loadInit(this.Payroll(
+        Object.assign(val,
+          {
+            createdAt: month,
+          })
+        )
+      ));
     });
     this.positions$ = combineLatest([
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -124,13 +149,13 @@ export class PayrollComponent implements OnInit {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      // code: val.code,
       name: val.name,
       position: val.position,
       branch: val.branch,
       createdAt: val.createdAt,
       isPaid: val.paidAt,
-      isConfirm: val.accConfirmedAt
+      isConfirm: val.accConfirmedAt,
+      isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
     };
     if (val.createdAt) {
       return payroll;
@@ -162,6 +187,14 @@ export class PayrollComponent implements OnInit {
     });
   }
 
+  updateManConfirm(id: number, createdAt?: Date, manConfirmedAt?: any) {
+    console.log(!!manConfirmedAt);
+    this.dialog.open(DialogManConfirmedAtComponent, {
+      width: 'fit-content',
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+    });
+  }
+
   addSalaryOvertime(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
@@ -176,17 +209,15 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent, { width: '30%', data: this.formGroup.value });
+    this.dialog.open(DialogExportPayrollComponent,
+      { width: 'fit-content', data: this.formGroup.value });
   }
 
   exportTimekeeping() {
-    // this.exportService.print(Api.TIMEKEEPING_EXPORT);
-    /// FIXME: Hard code to release
-    this.snackbar.open(
-      'Tính năng sẽ được phát triển. Xin lỗi vì sự bất tiện',
-      '',
-      { duration: 3000 }
-    );
+    this.dialog.open(DialogExportTimekeepingComponent, {
+      width: 'fit-content',
+      data: { datetime: this.monthPayroll }
+    });
   }
 
   Timekeeping() {
@@ -212,10 +243,6 @@ export class PayrollComponent implements OnInit {
         this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
-  }
-
-  onSelectPayroll() {
-    this.selectedPayroll = !this.selectedPayroll;
   }
 
   selectMonth(event: any) {
