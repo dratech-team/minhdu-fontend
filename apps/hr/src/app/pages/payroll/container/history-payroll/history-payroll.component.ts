@@ -22,9 +22,9 @@ import {
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { DialogExportPayrollComponent } from '../../component/dialog-export/dialog-export-payroll.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
 
 @Component({
   templateUrl: 'history-payroll.component.html'

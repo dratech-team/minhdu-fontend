@@ -23,6 +23,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
+        console.log(requestPaginate)
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
@@ -31,7 +32,7 @@ export class PayrollEffect {
         //   duration: 1000,
         // });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data, isTimeSheet: ResponsePaginate.isTimeSheet
         });
       }),
       catchError((err) => throwError(err))
@@ -57,7 +58,7 @@ export class PayrollEffect {
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data, isTimeSheet: ResponsePaginate.isTimeSheet
         });
       }),
       catchError((err) => throwError(err))
@@ -168,6 +169,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.confirmPayroll(props.id, props.dataConfirm).pipe(
           map((Payroll) => {
+            console.log(Payroll)
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
             return PayrollAction.confirmPayrollSuccess({ payroll: Payroll });
           }),

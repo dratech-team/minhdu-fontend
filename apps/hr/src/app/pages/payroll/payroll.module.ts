@@ -45,7 +45,6 @@ import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timek
 import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
 import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DialogExportPayrollComponent } from './component/dialog-export/dialog-export-payroll.component';
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
 import { OvertimeComponent } from './container/overtime/overtime.component';
@@ -53,6 +52,9 @@ import { LoadingComponent } from './component/popup-loading/loading.component';
 import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RestorePayrollComponent } from './component/restore-payroll/restore-payroll.component';
+import { DialogExportTimekeepingComponent } from './component/dialog-export-timekeeping/dialog-export-timekeeping.component';
+import { DialogExportPayrollComponent } from './component/dialog-export-payroll/dialog-export-payroll.component';
+import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 
 @NgModule({
   imports: [
@@ -115,7 +117,9 @@ import { RestorePayrollComponent } from './component/restore-payroll/restore-pay
     HistoryPayrollComponent,
     OvertimeComponent,
     LoadingComponent,
-    RestorePayrollComponent
+    RestorePayrollComponent,
+    DialogExportTimekeepingComponent,
+    DialogManConfirmedAtComponent
   ],
   providers: [
     MatDatepickerModule

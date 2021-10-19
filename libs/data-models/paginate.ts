@@ -5,6 +5,9 @@ export interface ResponsePaginate<T> {
   data: T[],
 }
 
+export interface ResponsePaginatePayroll<T> extends ResponsePaginate<T> {
+  isTimeSheet: boolean
+}
 export interface RequestPaginate {
   take?: number,
   skip?: number,

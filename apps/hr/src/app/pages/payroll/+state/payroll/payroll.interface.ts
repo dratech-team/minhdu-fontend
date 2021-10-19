@@ -12,5 +12,6 @@ export interface Payroll {
   accConfirmedAt: Date,
   totalWorkday: number,
   payrollIds: number[]
-  payslip:  Payslip
+  payslip:  Payslip,
+  timesheet: any []
 }

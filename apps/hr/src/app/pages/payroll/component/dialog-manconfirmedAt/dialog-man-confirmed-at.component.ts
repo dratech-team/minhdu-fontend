@@ -7,16 +7,14 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  templateUrl: 'update-confirm.component.html'
+  templateUrl: 'dialog-man-confirmed-at.component.html'
 })
-export class UpdateConfirmComponent {
-  dayConfirm = new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+export class DialogManConfirmedAtComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store<AppState>,
-    private readonly datePipe: DatePipe
   ) {
   }
 
@@ -25,7 +23,7 @@ export class UpdateConfirmComponent {
       {
         id: this.data.id,
         dataConfirm:
-          { datetime: new Date(this.dayConfirm.value) }
+          { datetime: this.data.manConfirmedAt ? null: new Date(this.data.createdAt)}
       }));
   }
 }
