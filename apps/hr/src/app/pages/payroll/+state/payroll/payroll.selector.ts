@@ -72,10 +72,6 @@ export const selectorPayrollTotal = createSelector(
   selectorPayrollState,
   fromPayroll.selectTotal
 );
-export const selectorIsTimeSheet= createSelector(
-  selectorPayrollState,
-  (state) => state.isTimeSheet
-);
 
 export const selectorSalaryTotal = createSelector(
   selectorOvertimeState,

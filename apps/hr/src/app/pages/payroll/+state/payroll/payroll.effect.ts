@@ -32,7 +32,7 @@ export class PayrollEffect {
         //   duration: 1000,
         // });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data, isTimeSheet: ResponsePaginate.isTimeSheet
+          payrolls: ResponsePaginate.data
         });
       }),
       catchError((err) => throwError(err))
@@ -58,7 +58,7 @@ export class PayrollEffect {
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data, isTimeSheet: ResponsePaginate.isTimeSheet
+          payrolls: ResponsePaginate.data
         });
       }),
       catchError((err) => throwError(err))

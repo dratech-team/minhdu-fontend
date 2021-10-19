@@ -10,14 +10,13 @@ export interface PayrollState extends EntityState <Payroll> {
   scanned: boolean,
   confirmed: boolean,
   selectedPayrollId: number,
-  isTimeSheet: boolean
 }
 
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
-  loaded: false, added: false, adding: false, scanned: false, confirmed: false, isTimeSheet: false
+  loaded: false, added: false, adding: false, scanned: false, confirmed: false
 });
 
 export const payrollReducer = createReducer(
@@ -28,10 +27,10 @@ export const payrollReducer = createReducer(
 
   on(PayrollAction.loadInitSuccess, (state, action) =>
     adapter.setAll(action.payrolls,
-      { ...state, loaded: true, added: true, adding: false ,isTimeSheet:action.isTimeSheet })),
+      { ...state, loaded: true, added: true, adding: false })),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) =>
-    adapter.addMany(action.payrolls, { ...state, loaded: true,isTimeSheet:action.isTimeSheet })),
+    adapter.addMany(action.payrolls, { ...state, loaded: true})),
 
   on(PayrollAction.addPayroll, (state, _) => {
     return { ...state, adding: true, added: false };

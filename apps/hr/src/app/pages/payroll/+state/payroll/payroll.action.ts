@@ -23,7 +23,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[], isTimeSheet: boolean}>()
+  props<{ payrolls: Payroll[]}>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
@@ -44,7 +44,7 @@ export const loadMorePayrolls = createAction(
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[]  ,isTimeSheet: boolean }>()
+  props<{ payrolls: Payroll[]}>()
 );
 
 export const filterOvertime = createAction(

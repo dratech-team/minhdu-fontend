@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Payroll } from '../+state/payroll/payroll.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
-import { ResponsePaginate, ResponsePaginatePayroll } from '@minhdu-fontend/data-models';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { BaseService } from 'libs/service/base.service';
-import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService extends BaseService<Payroll> {
@@ -25,9 +24,9 @@ export class PayrollService extends BaseService<Payroll> {
     return super.getOne(id);
   }
 
-  pagination(params: any): Observable<ResponsePaginatePayroll<Payroll>> {
-    return this.http.get<ResponsePaginatePayroll<Payroll>>(Api.PAYROLL, { params });
-  }
+ pagination(params?: any): Observable<ResponsePaginate<Payroll>> {
+   return super.pagination(params);
+ }
 
   update(id: any, body: any): Observable<Update<Payroll>> {
     return super.update(id, body);
