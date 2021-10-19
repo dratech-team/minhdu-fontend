@@ -317,11 +317,11 @@
               </mat-option>
             </mat-autocomplete>
           </th>
-          <th>
+          <!-- <th>
             <div class='title-profile'>Tháng</div>
             <input class='form-control input-profile ' type='month' formControlName='createdAt' min='2021-01'>
-          </th>
-          <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE MM-dd'}}</th>
+          </th> -->
+          <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
           <th>
             <div class='title-profile font-weight-bold'>Quản lý xác nhận</div>
             <select style='width: 100%' class='select' matNativeControl required formControlName='manConfirmedAt'>
@@ -344,9 +344,9 @@
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll.employee?.position?.name}}
           </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
+          <!-- <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll.createdAt|date:'yyyy-MM'}}
-          </th>
+          </th> -->
           <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
               [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet[i]["color"] : "black" }'>
             {{payroll?.timesheet ? payroll.timesheet[i][item.key] : ''}}

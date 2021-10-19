@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,14 +10,14 @@ import {
   AppBreadcrumbModule,
   AppFooterModule,
   AppHeaderModule,
-  AppSidebarModule
+  AppSidebarModule,
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { HashLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NxModule } from '@nrwl/angular';
 import { DefaultLayoutComponent } from './container/default-layout.component';
@@ -34,6 +34,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PayrollModule } from './pages/payroll/payroll.module';
+import localeVi from '@angular/common/locales/vi';
+registerLocaleData(localeVi);
 
 @NgModule({
   imports: [
@@ -54,7 +56,7 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true // Pauses recording actions and state changes when the extension window is not open
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([]),
     NxModule.forRoot(),
@@ -70,24 +72,21 @@ import { PayrollModule } from './pages/payroll/payroll.module';
     MatCheckboxModule,
     InfiniteScrollModule,
   ],
-  declarations: [
-    AppComponent,
-    DefaultLayoutComponent,
-  ],
+  declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
-    HashLocationStrategy
-  ]
+    { provide: LOCALE_ID, useValue: 'vi-VN' },
+    HashLocationStrategy,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}
