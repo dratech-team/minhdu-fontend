@@ -9,4 +9,5 @@ export enum SalaryTypeEnum {
   LATE = 'LATE',
   BASIC_TRUST = 'BASIC_TRUST',
   DAY_OFF = 'DAY_OFF',
+  ALL = '',
 }

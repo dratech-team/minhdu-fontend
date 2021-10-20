@@ -33,6 +33,7 @@ export const loadInit = createAction(
     position?: string,
     department?: string,
     branch?: string,
+    salaryType?: SalaryTypeEnum
   }>()
 );
 export const loadInitTempLateSuccess = createAction(
@@ -51,7 +52,8 @@ export const loadMoreTemplateBasic = createAction(
     note?: string,
     position?: string,
     department?: string,
-    branch?: string
+    branch?: string,
+    salaryType?: SalaryTypeEnum
   }>()
 );
 export const loadMoreTempLateSuccess = createAction(

@@ -1,11 +1,11 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
   <div class=' h3 '>Bản mẫu lương</div>
-  <div >
-    <button (click)='templateBasicSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+  <div>
+    <button (click)='addTemplateSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
   </div>
   <div class='fixTableHead mt-5'>
-    <table [formGroup]='formGroup' style='width: 1000px;'>
+    <table [formGroup]='formGroup' style='width: 1200px;'>
       <thead>
       <tr>
         <th style='width: 100px'>
@@ -14,9 +14,9 @@
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Tên bản mẫu</div>
-          <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' >
+          <input class='form-control text-center' placeholder='Nhập tên bản mẫu' type='text'>
         </th>
-        <th style='width: 100px'>
+        <th style='width: 200px'>
           <div class='border-top d-flex justify-content-center align-items-center'>Giá</div>
           <input type='text' disabled>
         </th>
@@ -26,7 +26,9 @@
         </th>
         <th style='width: 220px;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
-          <input type='text' disabled>
+          <mat-select class='form-control border-top' formControlName='type'>
+            <mat-option *ngFor='let item of blockSalaries' [value]='item.type'> {{item.title}}</mat-option>
+          </mat-select>
         </th>
       </tr>
       </thead>
@@ -34,11 +36,21 @@
       <tr *ngFor='let templateSalary of templateSalaries '
           (contextmenu)='child.onContextMenu($event,templateSalary)'
       >
-        <th style='width: 100px' class='pointer'>{{templateSalary?.id}}</th>
-        <th class='pointer'>{{templateSalary?.title}}</th>
-        <th style='width: 100px' class='pointer'> {{templateSalary?.price}}</th>
-        <th style='width: 200px' class='pointer'>{{templateSalary.unit}}</th>
-        <th class='pointer'>{{templateSalary.type}}</th>
+        <th style='width: 100px' class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+          {{templateSalary?.id}}
+        </th>
+        <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+          {{templateSalary?.title}}
+        </th>
+        <th style='width: 100px' class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+          {{templateSalary?.price ? (templateSalary?.price |number: '1.0-0') + 'VND' :'-' }}
+        </th>
+        <th style='width: 200px' class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+          {{templateSalary.unit|transformApp : unitsConstant }}
+        </th>
+        <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
+          {{templateSalary.type|transformUBlockSalary: blockSalaries }}
+        </th>
       </tr>
       <tr *ngIf='templateSalaries.length === 0 ' style='height: 50vh'>
         <td colspan='11' class='text-center check-content font-weight-bold font-xl '>Hiện không có phiếu tăng ca nào
@@ -48,9 +60,8 @@
     </table>
   </div>
 </div>
-
-
-<app-mouse-right #child (addEvent)='templateBasicSalary($event)'
+<app-mouse-right #child (addEvent)='addTemplateSalary()'
+                 (readAndUpdateEvent)='updateTemplateSalary($event)'
                  (deleteEvent)='deleteBasicSalary($event)'
 ></app-mouse-right>
 

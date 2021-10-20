@@ -24,6 +24,7 @@ import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
+import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { ShowAlertComponent } from './show-alert/show-alert.component';
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,
-    ShowAlertComponent
+    ShowAlertComponent,
+    TransformUnitPipe
   ],
   providers: [DecimalPipe],
   exports: [
@@ -69,7 +71,8 @@ import { ShowAlertComponent } from './show-alert/show-alert.component';
     PieChartComponent,
     StakedVerticalChartComponent,
     PickLocationComponent,
-    ShowAlertComponent
+    ShowAlertComponent,
+    TransformUnitPipe
   ],
 })
 export class ComponentsModule {}

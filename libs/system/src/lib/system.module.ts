@@ -53,6 +53,9 @@ import { LimitedAccessContainer } from './containers/limited-access/limited-acce
     TransformMethodPipe,
     LimitedAccessContainer
   ],
+  exports: [
+    TransformAppPipe
+  ],
   providers: [
     AuthService,
     {

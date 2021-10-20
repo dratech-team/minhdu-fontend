@@ -4,13 +4,11 @@ import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-
-import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { TemplateSalary } from '../../+state/teamlate-salary/template-salary';
 import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
-import { TemplateSalaryBasicComponent } from '../../component/template-salary/template-salary-basic.component';
+import { TemplateSalaryComponent } from '../../component/template-salary/template-salary.component';
 import { selectorAllTemplate, selectTemplateAdding } from '../../+state/teamlate-salary/template-salary.selector';
+import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants';
 
 
 @Component({
@@ -21,13 +19,15 @@ export class SalaryComponent implements OnInit {
   templateSalaries$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
+  unitsConstant = UnitsConstant;
+  blockSalaries =  BlockSalariesConstant.concat({title:'Tất cả', type: SalaryTypeEnum.ALL });
   pageSize = 30;
   pageIndexInit = 0;
-  salaryBasic!: TemplateSalary [];
   formGroup = new FormGroup(
     {
-      title: new FormControl(''),
-      price: new FormControl('')
+      title: new FormControl(),
+      unit: new FormControl(''),
+      type: new FormControl('')
     }
   );
 
@@ -44,7 +44,7 @@ export class SalaryComponent implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            TemplateOvertimeAction.loadInit(
+            TemplateSalaryAction.loadInit(
               this.template(val))
           );
         })
@@ -53,20 +53,26 @@ export class SalaryComponent implements OnInit {
   }
 
 
-  templateBasicSalary(template?: any) {
-    this.dialog.open(TemplateSalaryBasicComponent, {
-      width: 'fit-content',
-      data: template
+  addTemplateSalary() {
+    this.dialog.open(TemplateSalaryComponent, {
+      width: 'fit-content'
     });
   }
 
+  updateTemplateSalary(template: any) {
+    this.dialog.open(TemplateSalaryComponent, {
+      width: 'fit-content',
+      data: { isUpdate: true, template }
+    });
+  }
 
   template(val: any) {
     return {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
-      price: val.price
+      salaryType: val.type,
+      unit: val.unit
     };
   }
 

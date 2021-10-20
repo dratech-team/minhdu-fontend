@@ -17,7 +17,10 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.loadALlTemplate),
       switchMap((props: any) => {
         console.log(props.SalaryType);
-        return this.templateSalaryService.pagination(Object.assign(JSON.parse(JSON.stringify(props)), { type: props.SalaryType }));
+        return this.templateSalaryService.pagination(
+          Object.assign(JSON.parse(JSON.stringify(props)),
+            { type: props.SalaryType ? props.salaryType : '' })
+        );
       }),
       map((responsePagination) =>
         TemplateSalaryAction.loadInitTempLateSuccess({ templateSalary: responsePagination.data })),
@@ -27,7 +30,10 @@ export class TemplateSalaryEffect {
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(TemplateSalaryAction.loadInit),
-      switchMap(props => this.templateSalaryService.pagination(props)),
+      switchMap((props: any) => this.templateSalaryService.pagination(
+        Object.assign(JSON.parse(JSON.stringify(props)),
+          { type: props.salaryType ? props.salaryType : '' })
+      )),
       map((responsePagination) => {
           console.log(responsePagination);
           return TemplateSalaryAction.loadInitTempLateSuccess({ templateSalary: responsePagination.data });
@@ -41,7 +47,8 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.loadMoreTemplateBasic),
       withLatestFrom(this.store.pipe(select(selectorTemplateTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props)),
+          { skip: skip, type: props.salaryType ? props.salaryType : '' })
       ),
       switchMap((props) => {
         return this.templateSalaryService.pagination(props);

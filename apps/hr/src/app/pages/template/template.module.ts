@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ComponentsModule } from '@minhdu-fontend/components';
-import {  MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -19,8 +19,8 @@ import { TemplateOvertimeEffect } from './+state/template-overtime/template-over
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
 import { EmployeeModule } from '../employee/employee.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { TemplateSalaryBasicComponent } from './component/template-salary/template-salary-basic.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TemplateSalaryComponent } from './component/template-salary/template-salary.component';
 import { TemplateOvertimeComponent } from './container/overtime-template/template-overtime.component';
 import { DialogTemplateOvertimeComponent } from './component/template-overtime/dialog-template-overtime.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -29,7 +29,10 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
 import { templateSalaryReducer } from './+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from './+state/teamlate-salary/template-salary.effect';
 import { SalaryComponent } from './container/salary/salary.component';
-import { TransformUnitPipe } from './pipes/transform-unit.pipe';
+import { SystemModule } from '@minhdu-fontend/system';
+import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
+
+
 
 @NgModule({
   imports: [
@@ -57,16 +60,17 @@ import { TransformUnitPipe } from './pipes/transform-unit.pipe';
     FormsModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SystemModule
   ],
   declarations: [
     TemplateOvertimeComponent,
     SalaryComponent,
-    TemplateSalaryBasicComponent,
+    TemplateSalaryComponent,
     DialogTemplateOvertimeComponent,
     HolidayComponent,
     AddHolidayComponent,
-    TransformUnitPipe,
+    TransformBlockSalaryPipe
   ]
 })
 export class TemplateModule {
