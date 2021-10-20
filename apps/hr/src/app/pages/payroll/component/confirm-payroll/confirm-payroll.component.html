@@ -128,9 +128,9 @@
               <div class='col-4 font-weight-bold py-1 border-right'>Ngày lễ không đi làm</div>
               <div class=' col-2 py-1 border-right text-center'
                 *ngIf='payslip?.worksNotInHoliday?.length; else worksNotInHoliday'>
-                <span class='pr-4' *ngFor='let item of payslip?.worksNotInHoliday'>
+                <div class='pr-4' *ngFor='let item of payslip?.worksNotInHoliday'>
                   {{item.datetime |date:'dd/MM/yyyy'}} ({{item.day === 1 ? 'nguyên ngày' : 'nửa ngày' }}),
-                </span>
+                </div>
               </div>
               <ng-template class='col-2 border-right ' #worksNotInHoliday>
                 <div class='col-2 py-1 border-right text-center'>0</div>
