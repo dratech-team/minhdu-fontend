@@ -10,6 +10,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import * as moment from 'moment';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -24,7 +25,8 @@ export class DialogAbsentComponent implements OnInit {
   selectedIndex?: number;
   unitMinute = false;
   unitAbsent = false;
-
+  firstDayInMonth!: string|null
+  lastDayInMonth!: string|null
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -56,6 +58,10 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.firstDayInMonth = this.datePipe.transform(
+      getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd')
+    this.lastDayInMonth = this.datePipe.transform(
+      getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd')
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;

@@ -49,8 +49,10 @@
             appearance='fill'>
             <mat-label>Chọn từ ngày đến ngày</mat-label>
             <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'>
-              <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'>
-              <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'>
+              <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'
+                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
+              <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'
+                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -69,6 +71,7 @@
             <span class='star'>*</span>
             <div class=' mb-3 mt-1' [formGroup]='formGroup'>
               <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'
                      [ngClass]="{ 'is-invalid': submitted && checkValid.datetime.errors }">
               <div *ngIf='submitted && checkValid.datetime.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn ngày</div>
@@ -80,7 +83,8 @@
             <span>Ngày</span>
             <span class='star'>*</span>
             <div class=' mb-3 mt-1' [formGroup]='formGroup'>
-              <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+              <input type='date'  class='form-control' formControlName='datetime'
+                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'
                      [ngClass]="{ 'is-invalid': submitted && checkValid.datetime.errors }">
               <div *ngIf='submitted && checkValid.datetime.errors?.required' class='invalid-feedback'>
                 <div>Chưa chọn ngày</div>
