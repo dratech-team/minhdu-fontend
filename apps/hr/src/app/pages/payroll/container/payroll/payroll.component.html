@@ -351,11 +351,11 @@
             {{payroll.createdAt|date:'yyyy-MM'}}
           </th>
           <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
-              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet[i]["color"] : "black" }'>
-            {{payroll?.timesheet ? payroll.timesheet[i][item.key] : ''}}
+              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
+            {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
           </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            {{payroll?.totalTimesheet}}
+            {{payroll?.timesheet?.total}}
           </th>
           <th class='pointer text-center'>
             <div (click)='updateManConfirm(payroll.id, payroll.createdAt,payroll.manConfirmedAt)'
