@@ -5,8 +5,9 @@ import { select, Store } from '@ngrx/store';
 import { OrgchartActions } from '@minhdu-fontend/orgchart';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
-import { selectTemplateLoaded } from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
+import { BlockSalaryConstant } from '@minhdu-fontend/constants';
+import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
+import { selectTemplateLoaded } from '../../+state/template-overtime/template-overtime.selector';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class TemplateSalaryBasicComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   type = SalaryTypeEnum;
+  blockSalary = BlockSalaryConstant;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,8 +33,9 @@ export class TemplateSalaryBasicComponent implements OnInit {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
-      price: [this.data?.price, Validators.required],
-      title: ['Lương cơ bản trích BH', Validators.required]
+      type: [this.data?.price, Validators.required],
+      price: [this.data?.price],
+      title: [this.data?.title]
     });
   }
 
@@ -52,13 +55,13 @@ export class TemplateSalaryBasicComponent implements OnInit {
       type: this.type.BASIC
     };
     if (this.data) {
-      this.store.dispatch(TemplateBasicAction.updateTemplate(
+      this.store.dispatch(TemplateSalaryAction.updateTemplate(
         {
           id: this.data.id,
-          templateBasic: template
+          template: template
         }));
     } else {
-      this.store.dispatch(TemplateBasicAction.AddTemplate(
+      this.store.dispatch(TemplateSalaryAction.AddTemplate(
         { template: template }));
     }
     this.store.pipe(select(selectTemplateLoaded)).subscribe(added => {

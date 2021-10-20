@@ -1,0 +1,62 @@
+<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
+<div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
+  <div class=' h3 '>Bản mẫu lương</div>
+  <div >
+    <button (click)='templateBasicSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+  </div>
+  <div class='fixTableHead mt-5'>
+    <table [formGroup]='formGroup' style='width: 1000px;'>
+      <thead>
+      <tr>
+        <th style='width: 100px'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Mã bản mẫu</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Tên bản mẫu</div>
+          <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' >
+        </th>
+        <th style='width: 100px'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Giá</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 200px'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 220px;'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
+          <input type='text' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(templateSalaries$|async) as templateSalaries '>
+      <tr *ngFor='let templateSalary of templateSalaries '
+          (contextmenu)='child.onContextMenu($event,templateSalary)'
+      >
+        <th style='width: 100px' class='pointer'>{{templateSalary?.id}}</th>
+        <th class='pointer'>{{templateSalary?.title}}</th>
+        <th style='width: 100px' class='pointer'> {{templateSalary?.price}}</th>
+        <th style='width: 200px' class='pointer'>{{templateSalary.unit}}</th>
+        <th class='pointer'>{{templateSalary.type}}</th>
+      </tr>
+      <tr *ngIf='templateSalaries.length === 0 ' style='height: 50vh'>
+        <td colspan='11' class='text-center check-content font-weight-bold font-xl '>Hiện không có phiếu tăng ca nào
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<app-mouse-right #child (addEvent)='templateBasicSalary($event)'
+                 (deleteEvent)='deleteBasicSalary($event)'
+></app-mouse-right>
+
+
+
+
+
+
+

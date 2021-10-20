@@ -17,18 +17,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TemplateOvertimeEffect } from './+state/template-overtime/template-overtime.effect';
 import { templateOvertimeReducer } from './+state/template-overtime/template-overtime.reducer';
-import { SalaryBasicComponent } from './container/salary-basic/salary-basic.component';
 import { EmployeeModule } from '../employee/employee.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { TemplateSalaryBasicComponent } from './component/template-salary-basic/template-salary-basic.component';
+import { TemplateSalaryBasicComponent } from './component/template-salary/template-salary-basic.component';
 import { TemplateOvertimeComponent } from './container/overtime-template/template-overtime.component';
 import { DialogTemplateOvertimeComponent } from './component/template-overtime/dialog-template-overtime.component';
-import { TemplateBasicSalaryEffect } from './+state/teamlate-salary-basic/template-basic-salary.effect';
-import { templateBasicReducer } from './+state/teamlate-salary-basic/template-basic-salary.reducer';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HolidayComponent } from './container/holiday/holiday.component';
 import { AddHolidayComponent } from './component/add-holiday/add-holiday.component';
+import { templateSalaryReducer } from './+state/teamlate-salary/template-salary.reducer';
+import { TemplateSalaryEffect } from './+state/teamlate-salary/template-salary.effect';
+import { SalaryComponent } from './container/salary/salary.component';
+import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 
 @NgModule({
   imports: [
@@ -41,8 +42,8 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
-    EffectsModule.forFeature([TemplateOvertimeEffect, TemplateBasicSalaryEffect]),
+    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateSalaryReducer),
+    EffectsModule.forFeature([TemplateOvertimeEffect, TemplateSalaryEffect]),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -60,11 +61,12 @@ import { AddHolidayComponent } from './component/add-holiday/add-holiday.compone
   ],
   declarations: [
     TemplateOvertimeComponent,
-    SalaryBasicComponent,
+    SalaryComponent,
     TemplateSalaryBasicComponent,
     DialogTemplateOvertimeComponent,
     HolidayComponent,
     AddHolidayComponent,
+    TransformUnitPipe,
   ]
 })
 export class TemplateModule {

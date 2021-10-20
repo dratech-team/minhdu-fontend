@@ -1,18 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { AppState } from '../../../../reducers';
-import { TemplateBasicAction } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.action';
-import { selectorAllTemplate } from '../../../template/+state/teamlate-salary-basic/template-basic-salary.selector';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
+import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
+import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 
 @Component({
   templateUrl: 'dialog-basic.component.html',
@@ -44,7 +40,7 @@ export class DialogBasicComponent implements OnInit {
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
-    this.store.dispatch(TemplateBasicAction.loadALlTemplate());
+    this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.BASIC}));
 
    if(this.data.isUpdate) {
      this.formGroup = this.formBuilder.group({

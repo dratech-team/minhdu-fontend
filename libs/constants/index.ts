@@ -4,3 +4,4 @@ export * from './app.constant';
 export * from './role.constant';
 export * from './method.constant';
 export * from './payroll.constant';
+export * from './block-salary.constant';

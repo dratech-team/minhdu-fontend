@@ -33,8 +33,6 @@ import { DialogStayComponent } from './component/dialog-stay/dialog-stay.compone
 import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
 import { templateOvertimeReducer } from '../template/+state/template-overtime/template-overtime.reducer';
 import { TemplateOvertimeEffect } from '../template/+state/template-overtime/template-overtime.effect';
-import { templateBasicReducer } from '../template/+state/teamlate-salary-basic/template-basic-salary.reducer';
-import { TemplateBasicSalaryEffect } from '../template/+state/teamlate-salary-basic/template-basic-salary.effect';
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -55,6 +53,8 @@ import { RestorePayrollComponent } from './component/restore-payroll/restore-pay
 import { DialogExportTimekeepingComponent } from './component/dialog-export-timekeeping/dialog-export-timekeeping.component';
 import { DialogExportPayrollComponent } from './component/dialog-export-payroll/dialog-export-payroll.component';
 import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
+import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
 
 @NgModule({
   imports: [
@@ -66,7 +66,7 @@ import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt
     MatDialogModule,
     EffectsModule,
     InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateBasicReducer),
+    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateSalaryReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
@@ -75,7 +75,7 @@ import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt
       PayrollEffect,
       HolidayEffect,
       TemplateOvertimeEffect,
-      TemplateBasicSalaryEffect
+      TemplateSalaryEffect
     ]),
     CommonModule,
     MatInputModule,
