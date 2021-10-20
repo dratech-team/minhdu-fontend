@@ -296,14 +296,18 @@
       <table [formGroup]='formGroup' class='main-table' style='width: 4000px'>
         <thead>
         <tr>
-          <th class='fixed-side'>
-            <div class='border-top d-flex justify-content-center align-items-center'>Mã phiếu lương</div>
+          <th style='width: 150px'>
+            <div class='border-top text-center' >Mã phiếu lương</div>
             <input type='text' disabled>
           </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tên nhân viên</div>
-            <input class='form-control text-center' placeholder='Nhập tên đăng nhập' type='text'
+          <th style='width: 250px'>
+            <div class='border-top text-center'>Tên nhân viên</div>
+            <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text'
                    formControlName='name'>
+          </th>
+          <th  style='width: 200px'>
+            <div class='border-top text-center'>Ngày công chuẩn</div>
+            <input class='form-control text-center' type='number'>
           </th>
           <th>
             <div class=' text-center'>Chức vụ</div>
@@ -323,7 +327,7 @@
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
           <th width='3%' >
-            <div class='text-center'>Tổng ngày vắng</div>
+            <div class='text-center'>Tổng công</div>
           </th>
           <th  width='4%'>
             <div class='text-center'>Quản lý xác nhận</div>
@@ -343,6 +347,9 @@
           </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll?.employee?.firstName}}  {{payroll?.employee?.lastName}}
+          </th>
+          <th class='pointer fixed-side text-center '>
+            {{payroll?.employee?.workday}}
           </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll.employee?.position?.name}}
@@ -388,14 +395,25 @@
                  (readAndUpdateEvent)='readPayroll($event)'>
 </app-mouse-right>
 <style>
-  .table-scroll th:nth-child(2) {
+  .table-scroll th:nth-child(2)
+  {
     position: -webkit-sticky;
     position: sticky;
     left: 150px;
     z-index: 2;
   }
 
-  .table-scroll thead th:nth-child(2) {
+  .table-scroll th:nth-child(3)
+  {
+    position: -webkit-sticky;
+    position: sticky;
+    left:  400px;
+    z-index: 2;
+  }
+
+  .table-scroll thead th:nth-child(2),
+  .table-scroll thead th:nth-child(3)
+  {
     z-index: 5;
   }
 </style>
