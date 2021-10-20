@@ -32,7 +32,13 @@ export const templateOvertimeReducer = createReducer(
   ),
   on(TemplateOvertimeAction.AddTemplateSuccess, (state, action) =>
     adapter.setOne(action.templateOvertime, { ...state, added: true, adding: false })
-  )
+  ),
+
+  on(TemplateOvertimeAction.HandleTemplateError, (state, _) => {
+    console.log(state)
+      return { ...state, added: false, adding: false };
+    }
+  ),
 );
 
 export const { selectAll, selectTotal } = adapter.getSelectors();

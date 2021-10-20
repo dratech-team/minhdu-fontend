@@ -26,5 +26,6 @@ export * from './sell/status-route';
 export * from './activity-type.enum';
 export * from './hr/recipeType.enum';
 export * from './hr/payroll.enum';
+export * from './partial-day.enum';
 
 

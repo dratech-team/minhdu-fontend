@@ -1,26 +1,28 @@
 import { createAction, props } from '@ngrx/store';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
-import { TemplateBasicSalary } from './template-basic-salary';
+import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { TemplateSalary } from './template-salary';
 
 export const AddTemplate = createAction(
-  '[Add_Template_Basic] Add Template Basic',
-  props<{ template: {price: number, title: string} }>()
+  '[Add_Template_Salary] Add Template Salary',
+  props<{ template: Partial<TemplateSalary> }>()
 );
 
+
 export const HandelTemplateError = createAction(
-  '[API_Template_Basic] Template Basic  Error',
+  '[API_Template_Salary] Template Salary  Error'
 );
 
 export const AddTemplateSuccess = createAction(
-  '[Add_Template_Basic] Add Template Basic success',
-  props<{ template: TemplateBasicSalary }>()
+  '[Add_Template_Salary] Add Template Salary success',
+  props<{ template: TemplateSalary }>()
 );
 export const loadALlTemplate = createAction(
-  '[LOAD_Template_Basic] Load All Template Basic',
+  '[LOAD_Template_Salary] Load All Template Salary',
+  props<{ salaryType?: SalaryTypeEnum }>()
 );
 
 export const loadInit = createAction(
-  '[Load_Template_Basic] Load init',
+  '[Load_Template_Salary] Load init',
   props<{
     take: number,
     skip: number,
@@ -30,17 +32,18 @@ export const loadInit = createAction(
     note?: string,
     position?: string,
     department?: string,
-    branch?: string
+    branch?: string,
+    salaryType?: SalaryTypeEnum
   }>()
 );
 export const loadInitTempLateSuccess = createAction(
-  '[Load_Template_Basic] Load Template Basic Success',
-  props<{ templateBasics: TemplateBasicSalary[] }>()
+  '[Load_Template_Salary] Load Template Salary Success',
+  props<{ templateSalary: TemplateSalary[] }>()
 );
 
 
 export const loadMoreTemplateBasic = createAction(
-  '[Load_Template_Basic] Load More Template Basic',
+  '[Load_Template_Salary] Load More Salary Basic',
   props<{
     take: number,
     title?: string,
@@ -49,26 +52,27 @@ export const loadMoreTemplateBasic = createAction(
     note?: string,
     position?: string,
     department?: string,
-    branch?: string
+    branch?: string,
+    salaryType?: SalaryTypeEnum
   }>()
 );
 export const loadMoreTempLateSuccess = createAction(
-  '[Load_Template_Basic] Load More Template Basic Success',
-  props<{ templateBasics: TemplateBasicSalary[] }>()
+  '[Load_Template_Salary] Load More Template Salary Success',
+  props<{ templateSalary: TemplateSalary[] }>()
 );
 
 export const updateTemplate = createAction(
-  '[UPDATE_Template_Basic] Update Template Basic',
-  props<{ id: number, templateBasic: Partial<TemplateBasicSalary> }>()
+  '[UPDATE_Template_Salary] Update Template Salary',
+  props<{ id: number, template: Partial<TemplateSalary> }>()
 );
 
 export const deleteTemplate = createAction(
-  '[DELETE_Template_Basic] Delete Template Basic',
+  '[DELETE_Template_Salary] Delete Template Salary',
   props<{ id: number }>()
 );
 
 
-export const TemplateBasicAction = {
+export const TemplateSalaryAction = {
   loadALlTemplate,
   loadInit,
   AddTemplate,

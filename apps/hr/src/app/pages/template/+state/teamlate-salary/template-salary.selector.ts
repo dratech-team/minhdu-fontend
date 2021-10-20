@@ -1,23 +1,23 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import * as fromTemplateBasic from '../teamlate-salary-basic/template-basic-salary.reducer';
-import { templateBasicState } from './template-basic-salary.reducer';
+import * as TemplateSalary from '../teamlate-salary/template-salary.reducer';
+import { templateSalaryState } from './template-salary.reducer';
 
 export interface state {
-  templateBasic: templateBasicState;
+  templateBasic: templateSalaryState;
 }
 
-export const selectorTemplateState = createFeatureSelector<templateBasicState>(
+export const selectorTemplateState = createFeatureSelector<templateSalaryState>(
   FeatureName.TEMPLATE_BASIC
 );
 
 export const selectorAllTemplate = createSelector(
   selectorTemplateState,
-  fromTemplateBasic.selectAll
+  TemplateSalary.selectAll
 );
 export const selectorTemplateTotal = createSelector(
   selectorTemplateState,
-  fromTemplateBasic.selectTotal
+  TemplateSalary.selectTotal
 );
 export const selectTemplateLoaded = createSelector(
   selectorTemplateState,

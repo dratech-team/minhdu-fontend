@@ -2,38 +2,44 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { OrgchartActions } from '@minhdu-fontend/orgchart';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { TemplateBasicAction } from '../../+state/teamlate-salary-basic/template-basic-salary.action';
-import { selectTemplateLoaded } from '../../+state/teamlate-salary-basic/template-basic-salary.selector';
+import { BlockSalariesConstant } from '@minhdu-fontend/constants';
+import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
+import { selectTemplateLoaded } from '../../+state/teamlate-salary/template-salary.selector';
 
 
 @Component({
-  templateUrl: 'template-salary-basic.component.html'
+  templateUrl: 'template-salary.component.html'
 })
-export class TemplateSalaryBasicComponent implements OnInit {
+export class TemplateSalaryComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   formGroup!: FormGroup;
   submitted = false;
   type = SalaryTypeEnum;
+  blockSalary = BlockSalariesConstant;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly dialogRef: MatDialogRef<TemplateSalaryBasicComponent>
+    private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>
   ) {
   }
 
-//TODO
   ngOnInit() {
-    this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
-    this.formGroup = this.formBuilder.group({
-      price: [this.data?.price, Validators.required],
-      title: ['Lương cơ bản trích BH', Validators.required]
-    });
+    if (this.data?.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        type: [this.data.template.type, Validators.required],
+        price: [this.data.template.price],
+        title: [this.data.template.title]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        type: [SalaryTypeEnum.BASIC, Validators.required],
+        price: [],
+        title: ['Lương cơ bản trích BH']
+      });
+    }
   }
 
   get f() {
@@ -49,16 +55,16 @@ export class TemplateSalaryBasicComponent implements OnInit {
     const template = {
       title: value.title,
       price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
-      type: this.type.BASIC
+      type: value.type
     };
     if (this.data) {
-      this.store.dispatch(TemplateBasicAction.updateTemplate(
+      this.store.dispatch(TemplateSalaryAction.updateTemplate(
         {
-          id: this.data.id,
-          templateBasic: template
+          id: this.data.template.id,
+          template: template
         }));
     } else {
-      this.store.dispatch(TemplateBasicAction.AddTemplate(
+      this.store.dispatch(TemplateSalaryAction.AddTemplate(
         { template: template }));
     }
     this.store.pipe(select(selectTemplateLoaded)).subscribe(added => {

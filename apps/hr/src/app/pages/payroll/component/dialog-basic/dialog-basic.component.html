@@ -52,6 +52,7 @@
     </div>
     <div class='footer-popup row'>
       <button class='btn btn-ok '>Lưu</button>
+      <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 '  routerLink='/ban-mau' target='_blank' >Tạo mới</a>
       <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>

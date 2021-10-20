@@ -33,7 +33,7 @@ export const navItems: INavData[] = [
     name: 'Bản Mẫu'
   },
   {
-    name: 'Lương cơ bản',
+    name: 'Lương',
     url: '/ban-mau',
     icon: 'cil-lock-locked'
   },
