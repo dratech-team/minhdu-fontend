@@ -14,8 +14,6 @@ export interface Salary {
   unit: DatetimeUnitEnum,
   rate: number,
   datetime: Date,
-  startedAt: Date,
-  endedAt: Date,
   forgot: boolean,
   note: string,
   employeeId: number,
