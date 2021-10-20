@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -48,11 +49,10 @@ export class DialogAbsentComponent implements OnInit {
     { title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT }
   ];
   //Dummy data select các buổi trong ngày
-  /// FIXME: Chuyển các giá trị t0.5 và 1 vào constant PARTIAL_DAY = 0.5, ALL_DAY = 1
   titleSession = [
-    { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: 0.5 },
-    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: 0.5 },
-    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: 1 }
+    { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL },
+    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL },
+    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY }
   ];
 
   ngOnInit(): void {
@@ -67,8 +67,10 @@ export class DialogAbsentComponent implements OnInit {
       }
       this.formGroup = this.formBuilder.group({
         datetime: [
-          this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd')
+          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
         ],
+        startedAt: [this.datePipe.transform(this.data.salary?.startedAt, 'yyyy-MM-dd')],
+        endedAt: [this.datePipe.transform(this.data.salary?.endedAt, 'yyyy-MM-dd')],
         forgot: [this.data.salary?.forgot],
         times: [
           this.data.salary.unit === DatetimeUnitEnum.MINUTE
@@ -92,6 +94,8 @@ export class DialogAbsentComponent implements OnInit {
           this.datePipe.transform(
             this.data.payroll.createdAt, 'yyyy-MM-dd')
         ],
+        startedAt: [],
+        endedAt: [],
         times: [],
         minutes: [],
         type: [this.data.type, Validators.required],
@@ -103,7 +107,7 @@ export class DialogAbsentComponent implements OnInit {
     }
   }
 
-  get f() {
+  get checkValid() {
     return this.formGroup.controls;
   }
 
@@ -127,9 +131,6 @@ export class DialogAbsentComponent implements OnInit {
       type: this.data?.salary?.type ? this.data.salary.type :
         typeof this.selectedIndex === 'number' ? this.titleAbsents[this.selectedIndex]?.type : undefined,
       rate: value.rate,
-      datetime: (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit !== DatetimeUnitEnum.TIMES) ||
-      (this.data?.salary && this.data?.salary?.unit !== DatetimeUnitEnum.TIMES)
-        ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
       unit: value.unit ? value.unit :
@@ -154,31 +155,34 @@ export class DialogAbsentComponent implements OnInit {
     ) {
       return this.snackBar.open('chưa nhập thời gian', '', { duration: 2000 });
     }
+
     if (
       value.unit === DatetimeUnitEnum.MINUTE ||
       (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)) {
       Object.assign(salary, {
+        datetime: value.datetime,
         times: value.times ? value.times * 60 + value.minutes : value.minutes
       });
     }
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
-        if (
-          this.data.salary.type === this.type.ABSENT &&
-          typeof value.partialDay === 'number'
-        ) {
+        if (this.data.salary?.startedAt) {
+          if (moment(value.startedAt).format('YYYY-MM-DD')
+            === moment(value.endedAt).format('YYYY-MM-DD')) {
+            Object.assign(salary, {
+              times: value.times,
+              datetime: new Date(value.startedAt)
+            });
+          } else {
+            Object.assign(salary, {
+              times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
+              startedAt: new Date(value.startedAt),
+              endedAt: new Date(value.endedAt)
+            });
+          }
+        } else {
           Object.assign(salary, {
-            title: 'Vắng ' + this.titleSession[value.partialDay]?.title,
-            times: this.titleSession[value.partialDay].times
-          });
-        }
-        if (
-          this.data.salary.type === this.type.DAY_OFF &&
-          typeof value.partialDay === 'number'
-        ) {
-          Object.assign(salary, {
-            title: 'Không đi làm ' + this.titleSession[value.partialDay]?.title,
-            times: this.titleSession[value.partialDay].times
+            datetime: new Date(value.datetime)
           });
         }
       }
@@ -190,7 +194,6 @@ export class DialogAbsentComponent implements OnInit {
         })
       );
     } else {
-
       if (typeof this.selectedIndex !== 'number') {
         return this.snackBar.open('Chưa chọn Loại', '', { duration: 2000 });
       }
@@ -202,16 +205,22 @@ export class DialogAbsentComponent implements OnInit {
       }
 
       if (
-        this.titleAbsents[this.selectedIndex].unit !== DatetimeUnitEnum.TIMES &&
+        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.MINUTE &&
         !value.datetime
       ) {
         return this.snackBar.open('Chưa chọn ngày ', '', { duration: 2000 });
       }
+      if (
+        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
+        && value.partialDay === 2
+        && (!value.startedAt || !value.endedAt)
+      ) {
+        return this.snackBar.open('Chưa chọn từ ngày đến ngày ', '', { duration: 2000 });
+      }
 
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
         Object.assign(salary, {
-          title:
-          this.titleAbsents[this.selectedIndex]?.title
+          title: this.titleAbsents[this.selectedIndex]?.title
         });
       }
 
@@ -225,16 +234,40 @@ export class DialogAbsentComponent implements OnInit {
         ) {
           return this.snackBar.open('chưa chọn buổi', '', { duration: 2000 });
         }
-        Object.assign(salary, {
-          title:
-            this.titleAbsents[this.selectedIndex]?.title +
-            ' ' +
-            this.titleSession[value.partialDay]?.title,
-
-          times: this.titleSession[value.partialDay].times
-        });
+        if (value.partialDay === 2) {
+          if (moment(value.startedAt).format('YYYY-MM-DD')
+            === moment(value.endedAt).format('YYYY-MM-DD')) {
+            Object.assign(salary, {
+              title:
+                this.titleAbsents[this.selectedIndex]?.title +
+                ' ' +
+                this.titleSession[value.partialDay]?.title,
+              times: this.titleSession[value.partialDay].times,
+              datetime: new Date(value.startedAt)
+            });
+          } else {
+            Object.assign(salary, {
+              title:
+                this.titleAbsents[this.selectedIndex]?.title +
+                ' ' +
+                this.titleSession[value.partialDay]?.title,
+              times: this.titleSession[value.partialDay].times *
+                (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
+              startedAt: new Date(value.startedAt),
+              endedAt: new Date(value.endedAt)
+            });
+          }
+        } else {
+          Object.assign(salary, {
+            title:
+              this.titleAbsents[this.selectedIndex]?.title +
+              ' ' +
+              this.titleSession[value.partialDay]?.title,
+            times: this.titleSession[value.partialDay].times,
+            datetime: new Date(value.datetime)
+          });
+        }
       }
-
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE) {
         Object.assign(salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
