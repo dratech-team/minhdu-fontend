@@ -293,7 +293,7 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'>
 
-      <table [formGroup]='formGroup' class='main-table' style='width: 3700px'>
+      <table [formGroup]='formGroup' class='main-table' style='width: 4000px'>
         <thead>
         <tr>
           <th class='fixed-side'>
@@ -306,7 +306,7 @@
                    formControlName='name'>
           </th>
           <th>
-            <div class='title-profile'>Chức vụ</div>
+            <div class=' text-center'>Chức vụ</div>
             <input class='form-control' type='text' matInput [matAutocomplete]='position'
                    formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
@@ -317,14 +317,17 @@
               </mat-option>
             </mat-autocomplete>
           </th>
-          <th>
-            <div class='title-profile'>Tháng</div>
-            <input class='form-control input-profile ' type='month' formControlName='createdAt' min='2021-01'>
+          <th  width='3%' >
+            <div class='text-center'>Tháng</div>
+            <input class='form-control' type='month' formControlName='createdAt' min='2021-01'>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
-          <th>
-            <div class='title-profile font-weight-bold'>Quản lý xác nhận</div>
-            <select style='width: 100%' class='select' matNativeControl required formControlName='manConfirmedAt'>
+          <th width='3%' >
+            <div class='text-center'>Tổng ngày vắng</div>
+          </th>
+          <th  width='4%'>
+            <div class='text-center'>Quản lý xác nhận</div>
+            <select style='width: 100%' class='select border-top' matNativeControl required formControlName='manConfirmedAt'>
               <option value='TRUE'>Đã xác nhận</option>
               <option value='FALSE'>chưa xác nhận</option>
               <option value=''>Mặc định</option>
@@ -348,8 +351,11 @@
             {{payroll.createdAt|date:'yyyy-MM'}}
           </th>
           <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
-              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet[i]["color"] : "black" }'>
-            {{payroll?.timesheet ? payroll.timesheet[i][item.key] : ''}}
+              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
+            {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+          </th>
+          <th class='pointer text-center' (click)='readPayroll(payroll)'>
+            {{payroll?.timesheet?.total}}
           </th>
           <th class='pointer text-center'>
             <div (click)='updateManConfirm(payroll.id, payroll.createdAt,payroll.manConfirmedAt)'
