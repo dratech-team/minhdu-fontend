@@ -175,10 +175,8 @@ export class DialogAbsentComponent implements OnInit {
         if (this.data.salary?.startedAt) {
           if (moment(value.startedAt).format('YYYY-MM-DD')
             === moment(value.endedAt).format('YYYY-MM-DD')) {
-            Object.assign(salary, {
-              times: value.times,
-              datetime: new Date(value.startedAt)
-            });
+            return  this.snackBar.open('Không được sửa vắng từ ngày đến ngày thành một ngày', '',
+              {duration: 1500 })
           } else {
             Object.assign(salary, {
               times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
