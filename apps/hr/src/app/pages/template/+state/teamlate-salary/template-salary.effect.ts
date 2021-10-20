@@ -19,7 +19,7 @@ export class TemplateSalaryEffect {
         console.log(props.SalaryType);
         return this.templateSalaryService.pagination(
           Object.assign(JSON.parse(JSON.stringify(props)),
-            { type: props.SalaryType ? props.salaryType : '' })
+            { type: props.salaryType ? props.salaryType : '' })
         );
       }),
       map((responsePagination) =>
