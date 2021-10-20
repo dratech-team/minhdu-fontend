@@ -13,5 +13,6 @@ export interface Payroll {
   totalWorkday: number,
   payrollIds: number[]
   payslip:  Payslip,
-  timesheet: any []
+  timesheet: any [],
+  totalTimesheet?: number
 }
