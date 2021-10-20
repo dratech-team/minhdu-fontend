@@ -293,24 +293,20 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'>
 
-      <table [formGroup]='formGroup' class='main-table' style='width: 4000px'>
+      <table [formGroup]='formGroup' class='main-table' style='width: 3700px'>
         <thead>
         <tr>
-          <th style='width: 150px'>
-            <div class='border-top text-center' >Mã phiếu lương</div>
+          <th class='fixed-side'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Mã phiếu lương</div>
             <input type='text' disabled>
           </th>
-          <th style='width: 250px'>
-            <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text'
+          <th>
+            <div class='border-top d-flex justify-content-center align-items-center'>Tên nhân viên</div>
+            <input class='form-control text-center' placeholder='Nhập tên đăng nhập' type='text'
                    formControlName='name'>
           </th>
-          <th  style='width: 200px'>
-            <div class='border-top text-center'>Ngày công chuẩn</div>
-            <input class='form-control text-center' type='number'>
-          </th>
           <th>
-            <div class=' text-center'>Chức vụ</div>
+            <div class='title-profile'>Chức vụ</div>
             <input class='form-control' type='text' matInput [matAutocomplete]='position'
                    formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
@@ -321,17 +317,14 @@
               </mat-option>
             </mat-autocomplete>
           </th>
-          <th  width='3%' >
-            <div class='text-center'>Tháng</div>
-            <input class='form-control' type='month' formControlName='createdAt' min='2021-01'>
+          <th>
+            <div class='title-profile'>Tháng</div>
+            <input class='form-control input-profile ' type='month' formControlName='createdAt' min='2021-01'>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
-          <th width='3%' >
-            <div class='text-center'>Tổng công</div>
-          </th>
-          <th  width='4%'>
-            <div class='text-center'>Quản lý xác nhận</div>
-            <select style='width: 100%' class='select border-top' matNativeControl required formControlName='manConfirmedAt'>
+          <th>
+            <div class='title-profile font-weight-bold'>Quản lý xác nhận</div>
+            <select style='width: 100%' class='select' matNativeControl required formControlName='manConfirmedAt'>
               <option value='TRUE'>Đã xác nhận</option>
               <option value='FALSE'>chưa xác nhận</option>
               <option value=''>Mặc định</option>
@@ -348,9 +341,6 @@
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll?.employee?.firstName}}  {{payroll?.employee?.lastName}}
           </th>
-          <th class='pointer fixed-side text-center '>
-            {{payroll?.employee?.workday}}
-          </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
             {{payroll.employee?.position?.name}}
           </th>
@@ -358,11 +348,8 @@
             {{payroll.createdAt|date:'yyyy-MM'}}
           </th>
           <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
-              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
-            {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
-          </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            {{payroll?.timesheet?.total}}
+              [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet[i]["color"] : "black" }'>
+            {{payroll?.timesheet ? payroll.timesheet[i][item.key] : ''}}
           </th>
           <th class='pointer text-center'>
             <div (click)='updateManConfirm(payroll.id, payroll.createdAt,payroll.manConfirmedAt)'
@@ -395,25 +382,14 @@
                  (readAndUpdateEvent)='readPayroll($event)'>
 </app-mouse-right>
 <style>
-  .table-scroll th:nth-child(2)
-  {
+  .table-scroll th:nth-child(2) {
     position: -webkit-sticky;
     position: sticky;
     left: 150px;
     z-index: 2;
   }
 
-  .table-scroll th:nth-child(3)
-  {
-    position: -webkit-sticky;
-    position: sticky;
-    left:  400px;
-    z-index: 2;
-  }
-
-  .table-scroll thead th:nth-child(2),
-  .table-scroll thead th:nth-child(3)
-  {
+  .table-scroll thead th:nth-child(2) {
     z-index: 5;
   }
 </style>

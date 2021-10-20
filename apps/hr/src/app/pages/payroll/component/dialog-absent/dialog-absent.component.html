@@ -29,8 +29,7 @@
         </div>
       </div>
       <div class='row mb-3 '
-           *ngIf='( (selectedIndex || selectedIndex === 0)
-            && titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY)'>
+           *ngIf='( (selectedIndex || selectedIndex === 0) && titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY) || data?.salary?.unit === datetimeUnit.DAY  '>
         <div class='col-6'>
           <span class=' title-item mb-1'>Buổi </span>
           <mat-select class='form-control' formControlName='partialDay'>
@@ -41,59 +40,18 @@
       <div class='row my-2 d-flex align-items-center'
            *ngIf='selectedIndex  !== 4 && data?.salary?.unit !== datetimeUnit.TIMES '>
         <div class=' title-item col-6'>
-          <mat-form-field
-            *ngIf='((selectedIndex || selectedIndex === 0)
-            && titleAbsents[selectedIndex].unit ===datetimeUnit.DAY
-            && formGroup.value.partialDay === 2 )
-            ||data?.salary?.startedAt'
-            appearance='fill'>
-            <mat-label>Chọn từ ngày đến ngày</mat-label>
-            <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'>
-              <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
-              <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-            <div *ngIf='submitted && checkValid.startedAt.errors?.required && checkValid.endedAt.errors?.required ' style='width: 100%;
-                   margin-top: 0.25rem;
-                   font-size: 80%;
-                   color: #f86c6b'>
-              <div>Chưa chọn từ ngày đến ngày</div>
-            </div>
-          </mat-form-field>
-          <div *ngIf='((selectedIndex || selectedIndex === 0)
-            && titleAbsents[selectedIndex].unit ===datetimeUnit.DAY
-            && formGroup.value.partialDay !== 2 )
-            ||(data?.salary?.unit === datetimeUnit.DAY && !data?.salary?.startedAt)'>
-            <span>Ngày</span>
-            <span class='star'>*</span>
-            <div class=' mb-3 mt-1' [formGroup]='formGroup'>
-              <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'
-                     [ngClass]="{ 'is-invalid': submitted && checkValid.datetime.errors }">
-              <div *ngIf='submitted && checkValid.datetime.errors?.required' class='invalid-feedback'>
-                <div>Chưa chọn ngày</div>
-              </div>
-            </div>
-          </div>
-          <div   *ngIf='((selectedIndex || selectedIndex === 0) && titleAbsents[selectedIndex].unit === datetimeUnit.MINUTE)
-            ||data?.salary?.unit === datetimeUnit.MINUTE' >
-            <span>Ngày</span>
-            <span class='star'>*</span>
-            <div class=' mb-3 mt-1' [formGroup]='formGroup'>
-              <input type='date'  class='form-control' formControlName='datetime'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'
-                     [ngClass]="{ 'is-invalid': submitted && checkValid.datetime.errors }">
-              <div *ngIf='submitted && checkValid.datetime.errors?.required' class='invalid-feedback'>
-                <div>Chưa chọn ngày</div>
-              </div>
+          <span>Ngày</span>
+          <span class='star'>*</span>
+          <div class=' mb-3 mt-1' [formGroup]='formGroup'>
+            <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+                   [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+            <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn ngày</div>
             </div>
           </div>
         </div>
         <div [formGroup]='formGroup'
-             *ngIf='selectedIndex  === 0 ||unitAbsent' class='col-5 ml-3'>
+             *ngIf='selectedIndex  === 0 ||unitAbsent' class='col-5 ml-1'>
           <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
                         style='font-size: 12px'>
             Quên giấy phép và bsc
