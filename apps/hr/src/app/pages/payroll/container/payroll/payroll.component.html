@@ -296,16 +296,16 @@
       <table [formGroup]='formGroup' class='main-table' style='width: 4000px'>
         <thead>
         <tr>
-          <th style='width: 150px'>
-            <div class='border-top text-center' >Mã phiếu lương</div>
+          <th style='width: 150px; background: white'>
+            <div class='border-top text-center'>Mã phiếu lương</div>
             <input type='text' disabled>
           </th>
-          <th style='width: 250px'>
+          <th style='width: 250px; background: white'>
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text'
                    formControlName='name'>
           </th>
-          <th  style='width: 200px'>
+          <th style='width: 200px; background: white'>
             <div class='border-top text-center'>Ngày công chuẩn</div>
             <input class='form-control text-center' type='number'>
           </th>
@@ -321,17 +321,18 @@
               </mat-option>
             </mat-autocomplete>
           </th>
-          <th  width='3%' >
+          <th width='3%'>
             <div class='text-center'>Tháng</div>
             <input class='form-control' type='month' formControlName='createdAt' min='2021-01'>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
-          <th width='3%' >
+          <th width='3%'>
             <div class='text-center'>Tổng công</div>
           </th>
-          <th  width='4%'>
+          <th width='4%'>
             <div class='text-center'>Quản lý xác nhận</div>
-            <select style='width: 100%' class='select border-top' matNativeControl required formControlName='manConfirmedAt'>
+            <select style='width: 100%' class='select border-top' matNativeControl required
+                    formControlName='manConfirmedAt'>
               <option value='TRUE'>Đã xác nhận</option>
               <option value='FALSE'>chưa xác nhận</option>
               <option value=''>Mặc định</option>
@@ -340,15 +341,18 @@
         </tr>
         </thead>
         <tbody *ngIf='(payroll$|async) as payrolls'>
-        <tr *ngFor='let payroll of payrolls'
+        <tr *ngFor='let payroll of payrolls; let i = index'
             (contextmenu)='child.onContextMenu($event,payroll)' (click)='readPayroll(payroll.id)'>
-          <th class='pointer fixed-side text-center '>
+          <th class='pointer fixed-side text-center'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll.id}}
           </th>
-          <th class='pointer text-center' (click)='readPayroll(payroll)'>
+          <th class='pointer text-center' (click)='readPayroll(payroll)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll?.employee?.firstName}}  {{payroll?.employee?.lastName}}
           </th>
-          <th class='pointer fixed-side text-center '>
+          <th class='pointer fixed-side text-center '
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll?.employee?.workday}}
           </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
@@ -395,25 +399,24 @@
                  (readAndUpdateEvent)='readPayroll($event)'>
 </app-mouse-right>
 <style>
-  .table-scroll th:nth-child(2)
-  {
+
+  .table-scroll th:nth-child(2) {
     position: -webkit-sticky;
     position: sticky;
     left: 150px;
     z-index: 2;
   }
 
-  .table-scroll th:nth-child(3)
-  {
+  .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
-    left:  400px;
+    left: 400px;
     z-index: 2;
   }
 
+
   .table-scroll thead th:nth-child(2),
-  .table-scroll thead th:nth-child(3)
-  {
+  .table-scroll thead th:nth-child(3) {
     z-index: 5;
   }
 </style>
