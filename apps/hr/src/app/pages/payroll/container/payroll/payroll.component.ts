@@ -49,7 +49,6 @@ export class PayrollComponent implements OnInit {
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
-  employee$ = this.store.pipe(select(selectorAllEmployee));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -105,11 +104,10 @@ export class PayrollComponent implements OnInit {
         this.monthPayroll = new Date();
       }
       const month = new Date(val.createdAt);
-      console.log( this.selectedPayroll)
       this.store.dispatch(PayrollAction.loadInit(this.Payroll(
         Object.assign(val,
           {
-            createdAt: month,
+            createdAt: month
           })
         )
       ));
@@ -198,7 +196,7 @@ export class PayrollComponent implements OnInit {
   addSalaryOvertime(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
-      data: { type: type }
+      data: { type: type, isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
     });
   }
 
@@ -224,7 +222,7 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data: this.employee$
+      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
     });
   }
 
