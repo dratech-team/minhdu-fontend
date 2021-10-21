@@ -221,7 +221,6 @@
 .table-scroll td {
   padding: 0;
   border: 1px solid #c8ced3;
-  background: #fff;
   vertical-align: top;
 }
 
@@ -252,4 +251,12 @@
 .table-scroll > table th > input {
   height: 35px;
   width: 100%;
+}
+
+.table-scroll .odd {
+  background: white;
+}
+
+.table-scroll .even {
+  background: #dddddd;
 }
