@@ -44,7 +44,7 @@ export class EmployeeComponent implements OnInit {
   adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  pageSize: number = 30;
+  pageSize: number = 35;
   pageIndexInit = 0;
   isLeft = false;
   formGroup = new FormGroup({

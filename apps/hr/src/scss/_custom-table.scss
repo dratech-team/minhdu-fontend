@@ -210,6 +210,10 @@
   height: 63vh;
 }
 
+.table-scroll thead th {
+  background: white;
+}
+
 .table-scroll table {
   width: 100%;
   margin: auto;
@@ -222,6 +226,7 @@
   padding: 0;
   border: 1px solid #c8ced3;
   vertical-align: top;
+  text-align: center;
 }
 
 .table-scroll thead th {
