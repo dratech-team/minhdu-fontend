@@ -210,6 +210,10 @@
   height: 63vh;
 }
 
+.table-scroll thead th {
+  background: white;
+}
+
 .table-scroll table {
   width: 100%;
   margin: auto;
@@ -221,8 +225,8 @@
 .table-scroll td {
   padding: 0;
   border: 1px solid #c8ced3;
-  background: #fff;
   vertical-align: top;
+  text-align: center;
 }
 
 .table-scroll thead th {
@@ -252,4 +256,12 @@
 .table-scroll > table th > input {
   height: 35px;
   width: 100%;
+}
+
+.table-scroll .odd {
+  background: white;
+}
+
+.table-scroll .even {
+  background: #dddddd;
 }
