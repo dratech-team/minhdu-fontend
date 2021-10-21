@@ -23,7 +23,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        console.log(requestPaginate)
+        console.log(requestPaginate);
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
@@ -73,7 +73,7 @@ export class PayrollEffect {
       }),
       map((res) => {
         return PayrollAction.filterOvertimeSuccess({
-          overtime : res
+          overtime: res
         });
       }),
       catchError((err) => throwError(err))
@@ -124,7 +124,8 @@ export class PayrollEffect {
               : PayrollAction.loadInit({
                 take: 30,
                 skip: 0,
-                createdAt: new Date()
+                createdAt: new Date(),
+                isTimeSheet: !!props.isTimesheet
               });
           }),
           catchError((err) => {
@@ -157,11 +158,11 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.update(props.id, props.Payroll)),
       map((payroll) => {
-        return    PayrollAction.updatePayrollSuccess({payroll: payroll})
-      } ),
+        return PayrollAction.updatePayrollSuccess({ payroll: payroll });
+      }),
       catchError((err) => throwError(err))
     )
-  )
+  );
 
   confirmPayroll$ = createEffect(() =>
     this.action$.pipe(
@@ -169,7 +170,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.confirmPayroll(props.id, props.dataConfirm).pipe(
           map((Payroll) => {
-            console.log(Payroll)
+            console.log(Payroll);
             this.snackBar.open('Xác nhận thành công', '', { duration: 1000 });
             return PayrollAction.confirmPayrollSuccess({ payroll: Payroll });
           }),
@@ -230,7 +231,7 @@ export class PayrollEffect {
             return PayrollAction.getPayroll({ id: props.PayrollId });
           }),
           catchError((err) => {
-            this.store.dispatch(PayrollAction.scanHolidayError())
+            this.store.dispatch(PayrollAction.scanHolidayError());
             return throwError(err);
           })
         ))

@@ -77,7 +77,7 @@ export const handlePayrollError = createAction(
 
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
-  props<{ salary: any, payrollId?: number }>()
+  props<{ salary: any, payrollId?: number, isTimesheet?: boolean }>()
 );
 
 export const handleSalaryError = createAction(
