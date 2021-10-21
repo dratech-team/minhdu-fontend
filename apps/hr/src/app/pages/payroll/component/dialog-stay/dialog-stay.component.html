@@ -16,11 +16,15 @@
           <div class='star'>*</div>
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
-          <mat-select class='form-control col' [(value)]='indexTitle' #title (change)='setValueTitle(title.value)'>
-            <mat-option *ngFor='let item of salariesStay; let i = index' [value]='i'>
-              {{item}}
+          <mat-select class='form-control col' [(value)]='indexTitle' formControlName='title'
+                      [ngClass]="{ 'is-invalid': submitted && checkValid.title.errors }">
+            <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title' (click)='setPrice(item.price)'>
+              {{item.title}}
             </mat-option>
           </mat-select>
+          <div *ngIf='submitted && checkValid.title.errors?.required' class='invalid-feedback'>
+            <div>Chưa chọn loại phụ cấp ở lại</div>
+          </div>
         </div>
       </div>
       <div class='level-allowance'>
@@ -30,8 +34,8 @@
         </div>
         <div class='row mb-3' [formGroup]='formGroup'>
           <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price' inputCurrency
-            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
-          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            [ngClass]="{ 'is-invalid': submitted && checkValid.price.errors }">
+          <div *ngIf='submitted && checkValid.price.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập mức phụ cấp</div>
           </div>
         </div>

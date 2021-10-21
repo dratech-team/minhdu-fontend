@@ -8,7 +8,8 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { skipUntil } from 'rxjs/operators';
+import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
+import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -19,6 +20,7 @@ export class DialogStayComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   indexTitle = 0;
+  salariesStay$ = this.store.pipe(select(selectorAllTemplate));
 
   constructor(
     public datePipe: DatePipe,
@@ -33,23 +35,25 @@ export class DialogStayComponent implements OnInit {
 
 
   ngOnInit(): void {
-    //FIXME
-    if (this.data.salary)
-      this.indexTitle = this.salariesStay.indexOf(this.data?.salary?.title);
-    this.formGroup = this.formBuilder.group({
-      price: [this.data?.salary?.price, Validators.required],
-      rate: [1, Validators.required]
-    });
-
+    console.log(this.data.salary);
+    this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
+   if(this.data.isUpdate) {
+     this.formGroup = this.formBuilder.group({
+       title: [this.data?.salary?.title ],
+       price: [this.data?.salary?.price, Validators.required],
+       rate: [1, Validators.required]
+     });
+   }else{
+     this.formGroup = this.formBuilder.group({
+       title: [undefined, Validators.required],
+       price: [undefined, Validators.required],
+       rate: [1, Validators.required]
+     });
+   }
   }
 
-  get f() {
+  get checkValid() {
     return this.formGroup.controls;
-  }
-
-//FIXME
-  get salariesStay() {
-    return ['Phụ cấp ở lại', 'Phụ cấp điện thoại', 'Phụ cấp khác', 'Phụ cấp tín nhiệm'];
   }
 
   onSubmit(): any {
@@ -59,7 +63,7 @@ export class DialogStayComponent implements OnInit {
     }
     const value = this.formGroup.value;
     const salary = {
-      title: this.salariesStay[this.indexTitle],
+      title: value.title? value.title: this.data?.salary?.title,
       price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
       type: this.data.type,
       rate: value.rate,
@@ -72,14 +76,14 @@ export class DialogStayComponent implements OnInit {
     } else {
       this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
     }
-    this.store.pipe(select(selectedAddedPayroll)).subscribe(added=>{
-      if(added){
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+      if (added) {
         this.dialogRef.close();
       }
-    })
+    });
   }
 
-  setValueTitle(value: number) {
-    this.indexTitle = value;
+  setPrice(price: number) {
+    this.formGroup.get('price')!.setValue(price)
   }
 }
