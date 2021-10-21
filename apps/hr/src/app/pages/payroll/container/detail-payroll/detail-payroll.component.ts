@@ -107,7 +107,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, config);
+        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: '400px' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
