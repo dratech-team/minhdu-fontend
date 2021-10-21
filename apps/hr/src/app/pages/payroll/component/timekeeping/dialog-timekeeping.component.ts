@@ -23,7 +23,6 @@ export class DialogTimekeepingComponent implements OnInit {
   submitted = false;
   selectedIndex = 0;
   unitMinute = false;
-  unitHour = false;
   employeeIds: number[] = [];
   isManyPeople = false;
 
@@ -54,7 +53,7 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      datetime: [,Validators.required],
+      datetime: [, Validators.required],
       times: [],
       minutes: [],
       rate: [1, Validators.required],
@@ -112,7 +111,7 @@ export class DialogTimekeepingComponent implements OnInit {
       );
     }
     this.store.dispatch(PayrollAction.addSalary({
-      salary: salary
+      salary: salary, isTimesheet: this.data?.isTimesheet
     }));
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
       if (added) {

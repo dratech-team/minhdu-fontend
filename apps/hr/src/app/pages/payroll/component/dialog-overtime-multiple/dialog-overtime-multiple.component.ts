@@ -239,7 +239,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
           }
           : undefined
     };
-    this.store.dispatch(PayrollAction.addSalary({ salary: salary }));
+    this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
     this.dialogRef.close();
   }
 }
