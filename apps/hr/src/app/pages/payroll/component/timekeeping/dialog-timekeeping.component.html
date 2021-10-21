@@ -18,7 +18,7 @@
                 <span>Khoảng khấu trừ </span>
                 <span class='star'>*</span>
               </div>
-              <div class=' my-2 col-12 ' *ngIf='!data.isUpdate'>
+              <div class=' my-2 col-12 '>
                 <mat-select class='form-control' [value]='selectedIndex'>
                   <mat-option *ngFor='let item of titleAbsents; let i = index'
                               [value]='i'
@@ -27,12 +27,9 @@
                   >{{item.title}}</mat-option>
                 </mat-select>
               </div>
-              <div *ngIf='data.isUpdate' class='col-12'>
-                <div class='form-control ' style='background: #e4e7ea'> {{data.salary.title}}</div>
-              </div>
             </div>
             <div class=' mb-2 '
-                 *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY || data?.salary?.unit === datetimeUnit.DAY  '>
+                 *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY '>
               <div class='col-6'>
                 <span class=' title-item mb-1'>Buổi </span><span class='star'>*</span>
                 <mat-select class='form-control' formControlName='partialDay'>
