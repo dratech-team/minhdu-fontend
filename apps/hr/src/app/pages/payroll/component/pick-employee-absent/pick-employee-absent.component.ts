@@ -19,6 +19,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
   templateUrl: './pick-employee-absent.component.html'
 })
 export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
+  @Input() employeeIdInit?: number;
   @Input() createdPayroll!: Date;
   @Output() EventSelectEmployee = new EventEmitter<number[]>();
   type = SalaryTypeEnum;
@@ -44,6 +45,9 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    if(this.employeeIdInit){
+      this.employeeIds.push(this.employeeIdInit)
+    }
     if (this.createdPayroll) {
       this.store.dispatch(EmployeeAction.loadInit(
         {employee: { createdPayroll: new Date(this.createdPayroll)} }

@@ -5,47 +5,61 @@
       <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <div *ngIf='data.type === type.STAY ' class='form-group' [formGroup]='formGroup'>
-      <div class='row mb-5 title-popup'>
-        <span> Tiền phụ cấp ở lại</span>
-      </div>
-      <div class='name-allowance'>
-        <div class='row title-item mb-1'>
-          <span>Loại phụ cấp ở lại</span>
-          <div class='star'>*</div>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
-          <mat-select class='form-control col' [(value)]='indexTitle' formControlName='title'
-                      [ngClass]="{ 'is-invalid': submitted && checkValid.title.errors }">
-            <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title' (click)='setPrice(item.price)'>
-              {{item.title}}
-            </mat-option>
-          </mat-select>
-          <div *ngIf='submitted && checkValid.title.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn loại phụ cấp ở lại</div>
+  <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+    <mat-tab label='Phụ cấp ở lại'>
+      <form [formGroup]='formGroup' (submit)='onSubmit()' style='min-width: 400px'>
+        <div *ngIf='data.type === type.STAY ' class='form-group' [formGroup]='formGroup'>
+          <div class=' mb-5 title-popup' *ngIf='false'>
+            <span> Tiền phụ cấp ở lại</span>
+          </div>
+          <div class='name-allowance mt-2'>
+            <div class=' title-item mb-1'>
+              <span>Loại phụ cấp ở lại</span>
+              <span class='star'>*</span>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup'>
+              <mat-select class='form-control col' [(value)]='indexTitle' formControlName='title'
+                          [ngClass]="{ 'is-invalid': submitted && checkValid.title.errors }">
+                <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title'
+                            (click)='setPrice(item.price)'>
+                  {{item.title}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf='submitted && checkValid.title.errors?.required' class='invalid-feedback'>
+                <div>Chưa chọn loại phụ cấp ở lại</div>
+              </div>
+            </div>
+          </div>
+          <div class='level-allowance'>
+            <div class=' title-item mb-1'>
+              <span>Mức phụ cấp</span>
+              <span class='star'>*</span>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup'>
+              <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price'
+                     inputCurrency
+                     [ngClass]="{ 'is-invalid': submitted && checkValid.price.errors }">
+              <div *ngIf='submitted && checkValid.price.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập mức phụ cấp</div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class='level-allowance'>
-        <div class='row title-item mb-1'>
-          <span>Mức phụ cấp</span>
-          <div class='star'>*</div>
+        <div class='footer-popup  '>
+          <button class='btn btn-ok '>Lưu</button>
+          <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+            ?
+          </button>
         </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
-          <input type='text' class='form-control' placeholder='Nhập mức phụ cấp' formControlName='price' inputCurrency
-            [ngClass]="{ 'is-invalid': submitted && checkValid.price.errors }">
-          <div *ngIf='submitted && checkValid.price.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập mức phụ cấp</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class='footer-popup row '>
-      <button class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-        ?
-      </button>
-    </div>
-  </form>
+      </form>
+    </mat-tab>
+    <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
+      <app-pick-employee-absent
+        [employeeIdInit]='this.data?.payroll?.employee?.id'
+        [createdPayroll]='data?.payroll?.createdAt'
+        (EventSelectEmployee)='pickEmployees($event)'
+      >
+      </app-pick-employee-absent>
+    </mat-tab>
+  </mat-tab-group>
 </div>
