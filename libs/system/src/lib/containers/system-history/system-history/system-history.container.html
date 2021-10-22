@@ -1,7 +1,6 @@
-<div class='main-customer mx-auto' style='width: auto'>
-    <ngx-skeleton-loader *ngIf='!(loaded$ | async)' count='10' appearance='line'></ngx-skeleton-loader>
-</div>
+
 <div class='mx-auto' style='width: 1300px'>
+  <ngx-skeleton-loader *ngIf='!(loaded$ | async)' count='10' appearance='line'></ngx-skeleton-loader>
   <div class='row h3 mt-3'>Lịch sử hệ thống</div>
   <div class='fixTableHead mt-5 mx-auto'
        infiniteScroll
