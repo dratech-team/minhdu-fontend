@@ -11,6 +11,7 @@ import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/t
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { map } from 'rxjs/operators';
 import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -21,9 +22,11 @@ export class DialogBasicComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   checkSalary = true;
-  roleEnum = Role
-  role = localStorage.getItem('role')
+  roleEnum = Role;
+  role = localStorage.getItem('role');
   templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate));
+  isManyPeople = false;
+  employeeIds: number[] = [];
   /// FIXME: Dummy data
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
@@ -90,7 +93,7 @@ export class DialogBasicComponent implements OnInit {
       rate: value.rate,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
       type:
-        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
+        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC,
     };
     if (this.data.isUpdate) {
       this.store.dispatch(
@@ -101,12 +104,17 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(
-        PayrollAction.addSalary({
-          payrollId: this.data.payroll.id,
-          salary: salary
-        })
-      );
+      if(this.employeeIds.length > 0 ){
+          Object.assign(salary, {employeeIds: this.employeeIds})
+        console.log(salary)
+      }else{
+        this.store.dispatch(
+          PayrollAction.addSalary({
+            payrollId: this.data.payroll.id,
+            salary: salary
+          })
+        );
+      }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
       if (val) {
@@ -119,5 +127,20 @@ export class DialogBasicComponent implements OnInit {
   //TODO
   onCheckValue(val: boolean) {
     this.checkSalary = val;
+  }
+
+  tabChanged($event: MatTabChangeEvent) {
+    switch ($event.index) {
+      case 2:
+        this.isManyPeople = true;
+        break;
+      default:
+        this.isManyPeople = false;
+    }
+  }
+
+  pickEmployees(employeeIds: number[]) {
+    this.employeeIds = employeeIds;
+    console.log(this.employeeIds )
   }
 }
