@@ -270,7 +270,7 @@
         </tr>
         <tr *ngIf='payrolls.length === 0' style='height: 50vh'>
           <td colspan='100' class='text-center check-content font-weight-bold font-xl '>
-         <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có Phiếu lương nào !</span>
+            <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có Phiếu lương nào !</span>
           </td>
         </tr>
         </tbody>
@@ -282,7 +282,6 @@
 <div *ngIf='selectedPayroll === payrollEnum.TIME_SHEET'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                        count='18' appearance='line'></ngx-skeleton-loader>
-
   <ng-template #payroll>
     <div class='table-scroll mt-2'
          infiniteScroll
