@@ -13,43 +13,43 @@
       </div>
       <mat-dialog-content style='max-height: 50vh'>
         <div [formGroup]='formGroup' style='min-width: 800px'>
-          <div>
-            <div class=' d-flex justify-content-center '>
-              <div class='date-or-time col '>
-                <div class=' title-item mb-1'>
-                  <span> Chức vụ</span>
-                </div>
-                <div>
-                  <input class='form-control row mb-3' type='text' matInput [formControl]='positions'
-                         [matAutocomplete]='position'>
-                  <mat-autocomplete #position='matAutocomplete'>
-                    <mat-option *ngFor='let position of positions$ | async'
-                                [value]='position.name' (click)='onSelectPosition(position.id)'
-                                (onSelectionChange)='onSelectPosition(position.id)'>
-                      {{position.name}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </div>
+          <div class=' d-flex  justify-content-center row '>
+            <div class='date-or-time col  '>
+              <div class=' title-item mb-2'>
+                <span class='mr-2'> Chức vụ</span>
               </div>
-              <div class='date-or-time col  ml-2'>
-                <div class='row title-item mb-1'>
-                  <span>Đơn vị tăng ca</span>
-                </div>
-                <div class='row mb-3'>
-                  <mat-select
-                    class='form-control col'
-                  >
-                    <mat-option [value]='datetimeUnitEnum.DAY'
-                                (click)='selectUnitOvertime(datetimeUnitEnum.DAY)'>Ngày
-                    </mat-option>
-                    <mat-option [value]='datetimeUnitEnum.HOUR'
-                                (click)='selectUnitOvertime(datetimeUnitEnum.HOUR)'>Giờ
-                    </mat-option>
-                    <!-- <mat-option
-                      (click)='selectUnitOvertime()'>Tất cả
-                    </mat-option> -->
-                  </mat-select>
-                </div>
+              <div>
+                <input class='form-control row mt-1 mb-3' type='text' matInput [formControl]='positions'
+                       style='width: 100%; margin: 0'
+                       [matChipInputFor]='chipList'
+                       [matAutocomplete]='position'>
+                <mat-autocomplete #position='matAutocomplete'>
+                  <mat-option *ngFor='let position of positions$ | async'
+                              [value]='position.name'
+                              (onSelectionChange)='onSelectPosition(position.id)'>
+                    {{position.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+            </div>
+            <div class='date-or-time  col ml-2'>
+              <div class=' title-item mb-1'>
+                <span>Đơn vị tăng ca</span>
+              </div>
+              <div class=' mb-3'>
+                <mat-select
+                  class='form-control col'
+                >
+                  <mat-option [value]='datetimeUnitEnum.DAY'
+                              (click)='selectUnitOvertime(datetimeUnitEnum.DAY)'>Ngày
+                  </mat-option>
+                  <mat-option [value]='datetimeUnitEnum.HOUR'
+                              (click)='selectUnitOvertime(datetimeUnitEnum.HOUR)'>Giờ
+                  </mat-option>
+                  <!-- <mat-option
+                    (click)='selectUnitOvertime()'>Tất cả
+                  </mat-option> -->
+                </mat-select>
               </div>
             </div>
           </div>
@@ -61,7 +61,14 @@
                   <span class='star'>*</span>
                 </div>
                 <div>
-                  <input class='form-control mb-3' type='text' matInput [formControl]='titleOvertimes'
+                  <mat-chip-list #chipList >
+                    <mat-chip
+                      *ngFor='let item of positionOfTempOver'
+                      [selectable]='true'>
+                      {{item.name}}
+                    </mat-chip>
+                  </mat-chip-list>
+                  <input class='form-control mt-2 mb-3' type='text' matInput [formControl]='titleOvertimes'
                          [matAutocomplete]='titleOvertime'>
                   <mat-autocomplete #titleOvertime='matAutocomplete'>
                     <mat-option *ngFor='let templateOvertime of templateOvertime$ | async'
@@ -83,8 +90,9 @@
               <div class=' title-item mb-1'>
                 <span>Số ngày tăng ca</span>
               </div>
-              <div  class=' mb-3' [formGroup]='formGroup'>
-                <input style='pointer-events: none; background: #e4e7ea' type='number' class='form-control' formControlName='days' min='1'>
+              <div class=' mb-3' [formGroup]='formGroup'>
+                <input style='pointer-events: none; background: #e4e7ea' type='number' class='form-control'
+                       formControlName='days' min='1'>
               </div>
             </div>
             <div class='work-time col' *ngIf="unit === 'HOUR'">
