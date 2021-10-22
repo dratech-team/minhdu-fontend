@@ -34,7 +34,6 @@ export class SellLayoutComponent implements OnInit {
   }
 
   pickMenuMobile() {
-
     this.dialog.open(PickMenuComponent, { width: '100%' });
   }
 

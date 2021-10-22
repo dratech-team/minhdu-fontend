@@ -38,8 +38,9 @@ export class SystemHistoryContainer implements OnInit {
   loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
 
   ngOnInit(): void {
-    const btnRoute = document.getElementById('systemHistory');
-    btnRoute?.classList.add('btn-border');
+    const btnSystem = document.getElementById('systemHistory');
+    btnSystem?.classList.add('btn-border');
+
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
       { take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
