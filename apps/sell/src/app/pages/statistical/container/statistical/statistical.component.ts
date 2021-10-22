@@ -12,6 +12,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { getMonth } from 'ngx-bootstrap/chronos';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
 import { StatisticalService } from '../../service/statistical/statistical.service';
+import { document } from 'ngx-bootstrap/utils';
 
 @Component({
   templateUrl: 'statistical.component.html',
@@ -43,6 +44,7 @@ export class StatisticalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    document.getElementById('systemHistory').classList.remove('btn-border');
     this.statisticalService
       .getAll(Api.STATISTICAL_PROVINCE, {
         type: this.statisticalYType.ORDER,

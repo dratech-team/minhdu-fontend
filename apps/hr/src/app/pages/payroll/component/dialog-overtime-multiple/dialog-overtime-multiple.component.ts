@@ -22,6 +22,7 @@ import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
 import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { MatStepper } from '@angular/material/stepper';
+import { Position } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -49,6 +50,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   positionId?: number;
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
+  positionOfTempOver: Position[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -94,6 +96,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
             return e.title.toLowerCase().includes(titleOvertime?.toLowerCase());
           });
         } else {
+          this.positionOfTempOver = []
           this.templateId = undefined;
           return TempLateOvertimes;
         }
@@ -133,6 +136,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   }
 
   onSelectPosition(positionId: number) {
+    this.positionOfTempOver = []
     this.positionId = positionId;
     this.store.dispatch(
       TemplateOvertimeAction.loadALlTemplate({
@@ -157,6 +161,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.rate = data.rate;
     this.unit = data.unit;
     this.templateId = data.id;
+    this.positionOfTempOver = data.positions ? data.positions : []
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
