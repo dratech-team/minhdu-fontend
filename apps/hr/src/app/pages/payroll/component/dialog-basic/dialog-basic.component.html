@@ -15,7 +15,7 @@
           <div class='contract-salary mt-1'>
             <div class=' title-item mb-1'>
               <span>Loại lương</span>
-              <div class='star'>*</div>
+              <span class='star'>*</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup'>
               <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
@@ -33,7 +33,7 @@
           <div class='basic-salary'>
             <div class=' title-item mb-1'>
               <span>Mức lương</span>
-              <div class='star'>*</div>
+              <span class='star'>*</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup' *ngIf='checkSalary'>
               <input class='form-control' type='text' placeholder='Nhập mức lương' formControlName='price' inputCurrency
