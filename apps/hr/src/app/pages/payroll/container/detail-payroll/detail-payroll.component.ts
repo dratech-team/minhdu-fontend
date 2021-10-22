@@ -72,11 +72,11 @@ export class DetailPayrollComponent implements OnInit {
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: '400px' }));
+        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, Object.assign(config, { width: '400px' }));
+        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
@@ -103,11 +103,11 @@ export class DetailPayrollComponent implements OnInit {
     };
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: '400px' }));
+        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: '400px' }));
+        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {

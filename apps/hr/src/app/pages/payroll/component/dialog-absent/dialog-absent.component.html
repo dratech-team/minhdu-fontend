@@ -48,11 +48,10 @@
             ||data?.salary?.startedAt'
             appearance='fill'>
             <mat-label>Chọn từ ngày đến ngày</mat-label>
-            <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'>
-              <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
-              <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'
-                     min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
+            <mat-date-range-input [formGroup]='formGroup' [rangePicker]='picker'
+             [min]='firstDayInMonth' [max]='lastDayInMonth'>
+              <input matStartDate formControlName='startedAt' placeholder='ngày bắt đầu'>
+              <input matEndDate formControlName='endedAt' placeholder='ngày kết thúc'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>

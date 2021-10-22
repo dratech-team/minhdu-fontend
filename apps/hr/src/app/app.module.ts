@@ -10,7 +10,7 @@ import {
   AppBreadcrumbModule,
   AppFooterModule,
   AppHeaderModule,
-  AppSidebarModule,
+  AppSidebarModule
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { StoreModule } from '@ngrx/store';
@@ -35,6 +35,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PayrollModule } from './pages/payroll/payroll.module';
 import localeVi from '@angular/common/locales/vi';
+import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+
 registerLocaleData(localeVi);
 
 @NgModule({
@@ -56,9 +58,9 @@ registerLocaleData(localeVi);
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     NxModule.forRoot(),
     MatSnackBarModule,
     ReactiveFormsModule,
@@ -70,7 +72,7 @@ registerLocaleData(localeVi);
     MatSidenavModule,
     MatButtonModule,
     MatCheckboxModule,
-    InfiniteScrollModule,
+    InfiniteScrollModule
   ],
   declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],
@@ -78,15 +80,16 @@ registerLocaleData(localeVi);
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true,
+      multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true,
+      multi: true
     },
     { provide: LOCALE_ID, useValue: 'vi-VN' },
-    HashLocationStrategy,
-  ],
+    HashLocationStrategy
+  ]
 })
-export class AppModule {}
+export class AppModule {
+}

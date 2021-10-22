@@ -6,53 +6,66 @@
     </div>
   </div>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
-    <div *ngIf='data.type === type.BASIC ' class='form-group'>
-      <div class='row mb-5 title-popup'>
-        <span> Lương cơ bản</span>
-      </div>
-      <div class='contract-salary'>
-        <div class='row title-item mb-1'>
-          <span>Loại lương</span>
-          <div class='star'>*</div>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup'>
-          <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
-            [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-            <mat-option *ngFor="let salary of salaries" value='{{salary.type}}'
-              (click)='onCheckValue(salary.type !== type.BASIC_INSURANCE)'>
-              {{salary.title}}
-            </mat-option>
-          </mat-select>
-          <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn loại lương</div>
+    <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+      <mat-tab label='Lương cơ bản'>
+        <div *ngIf='data.type === type.BASIC ' class='form-group' style='min-width: 400px'>
+          <div *ngIf='false' class=' mb-5 title-popup'>
+            <span> Lương cơ bản</span>
+          </div>
+          <div class='contract-salary mt-1'>
+            <div class=' title-item mb-1'>
+              <span>Loại lương</span>
+              <span class='star'>*</span>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup'>
+              <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
+                          [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                <mat-option *ngFor='let salary of salaries' value='{{salary.type}}'
+                            (click)='onCheckValue(salary.type !== type.BASIC_INSURANCE)'>
+                  {{salary.title}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf='submitted && f.type.errors?.required' class='invalid-feedback'>
+                <div>Chưa chọn loại lương</div>
+              </div>
+            </div>
+          </div>
+          <div class='basic-salary'>
+            <div class=' title-item mb-1'>
+              <span>Mức lương</span>
+              <span class='star'>*</span>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup' *ngIf='checkSalary'>
+              <input class='form-control' type='text' placeholder='Nhập mức lương' formControlName='price' inputCurrency
+                     [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+              <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập mức lương</div>
+              </div>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup' *ngIf='!checkSalary'>
+              <mat-select class='form-control col' formControlName='price'
+                          [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+                <mat-option *ngFor='let item of templateBasicSalary$ | async' [value]='item.price'>
+                  {{item.price|number:'1.0-0'}}đ
+                </mat-option>
+              </mat-select>
+            </div>
           </div>
         </div>
-      </div>
-      <div class='basic-salary'>
-        <div class='row title-item mb-1'>
-          <span>Mức lương</span>
-          <div class='star'>*</div>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup' *ngIf='checkSalary'>
-          <input class='form-control' type='text' placeholder='Nhập mức lương' formControlName='price' inputCurrency
-            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
-          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập mức lương</div>
-          </div>
-        </div>
-        <div class='row mb-3' [formGroup]='formGroup' *ngIf='!checkSalary'>
-          <mat-select class='form-control col' formControlName='price'
-            [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
-            <mat-option *ngFor='let item of templateBasicSalary$ | async' [value]='item.price'>
-              {{item.price|number:'1.0-0'}}đ
-            </mat-option>
-          </mat-select>
-        </div>
-      </div>
-    </div>
-    <div class='footer-popup row'>
+      </mat-tab>
+      <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee-absent
+          [employeeIdInit]='this.data?.payroll?.employee?.id'
+          [createdPayroll]='data?.payroll?.createdAt'
+          (EventSelectEmployee)='pickEmployees($event)'
+        >
+        </app-pick-employee-absent>
+      </mat-tab>
+    </mat-tab-group>
+    <div class='mt-2 row'>
       <button class='btn btn-ok '>Lưu</button>
-      <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 '  routerLink='/ban-mau' target='_blank' >Tạo mới</a>
+      <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
+        mới</a>
       <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
         ?
       </button>

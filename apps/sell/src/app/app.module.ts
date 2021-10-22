@@ -29,6 +29,7 @@ import { LocationModule } from '@minhdu-fontend/location';
 import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 
 @NgModule({
   imports: [
@@ -40,7 +41,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSnackBarModule,
     HttpClientModule,
     AppRoutingModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

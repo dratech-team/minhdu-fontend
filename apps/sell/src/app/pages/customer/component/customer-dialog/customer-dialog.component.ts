@@ -29,14 +29,13 @@ export class CustomerDialogComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      identify: [this.data?.identify, Validators.required],
-      issuedBy: [this.data?.issuedBy, Validators.required],
-      birthplace: [this.data?.birthplace, Validators.required],
+      identify: [this.data?.identify],
+      issuedBy: [this.data?.issuedBy],
+      birthplace: [this.data?.birthplace],
       idCardAt: [
         this.datePipe.transform(
           this?.data?.idCardAt, 'yyyy-MM-dd'
-        )
-        , Validators.required],
+        )],
       email: [this.data?.email],
       phone: [this.data?.phone, Validators.required],
       note: [this.data?.note],
@@ -51,8 +50,8 @@ export class CustomerDialogComponent implements OnInit {
         , Validators.required],
       ethnicity: [this.data?.ethnicity],
       religion: [this.data?.religion],
-      type: [this.data?.type, Validators.required],
-      resource: [this.data?.resource, Validators.required],
+      type: [this.data?.type],
+      resource: [this.data?.resource],
       isPotential: [this.data?.isPotential]
     });
   }
@@ -70,7 +69,7 @@ export class CustomerDialogComponent implements OnInit {
     const customer = {
       firstName: value.firstName ? value.firstName : undefined,
       lastName: value.lastName ? value.lastName : undefined,
-      identify: value.identify.toString(),
+      identify: value.identify? value.identify.toString() : undefined,
       gender: value.gender,
       phone: value.phone,
       issuedBy: value.issuedBy,
