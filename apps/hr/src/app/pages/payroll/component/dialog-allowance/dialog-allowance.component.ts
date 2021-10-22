@@ -30,6 +30,7 @@ export class DialogAllowanceComponent implements OnInit {
   isAllDay = true;
   isApprentice = false;
 
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -166,10 +167,10 @@ export class DialogAllowanceComponent implements OnInit {
         }
       });
       this.isApprentice = true;
-        this.formGroup.get('datetime')!.setValue(
-          this.datePipe.transform(
-            this.data?.payroll?.createdAt, 'yyyy-MM-dd'
-          ));
+      this.formGroup.get('datetime')!.setValue(
+        this.datePipe.transform(
+          this.data?.payroll?.createdAt, 'yyyy-MM-dd'
+        ));
     }
   }
 }
