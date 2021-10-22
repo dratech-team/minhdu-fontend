@@ -11,6 +11,7 @@ import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { SalaryMultipleEmployeeService } from '../../service/salary-multiple-employee.service';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -27,6 +28,7 @@ export class DialogStayComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
@@ -79,7 +81,13 @@ export class DialogStayComponent implements OnInit {
     } else {
       if (this.employeeIds.length > 0) {
         Object.assign(salary, { employeeIds: this.employeeIds });
-        console.log(salary);
+        this.multipleEmployeeService.addOne({salary: salary, employeeIds: this.employeeIds})
+          .subscribe(val => {
+          if (val) {
+            location.reload()
+            this.dialogRef.close();
+          }
+        });
       } else {
         this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
       }
