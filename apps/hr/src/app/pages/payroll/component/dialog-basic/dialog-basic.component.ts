@@ -12,6 +12,8 @@ import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/te
 import { map } from 'rxjs/operators';
 import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { SalaryMultipleEmployeeService } from '../../service/salary-multiple-employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -36,7 +38,9 @@ export class DialogBasicComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
+    private readonly snackbar: MatSnackBar,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
@@ -77,7 +81,6 @@ export class DialogBasicComponent implements OnInit {
 
   onSubmit(): any {
     this.submitted = true;
-
     if (this.formGroup.invalid) {
       return;
     }
@@ -93,7 +96,7 @@ export class DialogBasicComponent implements OnInit {
       rate: value.rate,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
       type:
-        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC,
+        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
     };
     if (this.data.isUpdate) {
       this.store.dispatch(
@@ -104,10 +107,16 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      if(this.employeeIds.length > 0 ){
-          Object.assign(salary, {employeeIds: this.employeeIds})
-        console.log(salary)
-      }else{
+      if (this.employeeIds.length > 0) {
+        Object.assign(salary);
+        const data = { salary: salary, employeeIds: this.employeeIds };
+        this.multipleEmployeeService.addOne(data).subscribe(val => {
+          if (val) {
+            location.reload()
+            this.dialogRef.close();
+          }
+        });
+      } else {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
@@ -141,6 +150,6 @@ export class DialogBasicComponent implements OnInit {
 
   pickEmployees(employeeIds: number[]) {
     this.employeeIds = employeeIds;
-    console.log(this.employeeIds )
+    console.log(this.employeeIds);
   }
 }
