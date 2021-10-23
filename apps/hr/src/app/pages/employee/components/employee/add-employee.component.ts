@@ -181,7 +181,7 @@ export class AddEmployeeComponent implements OnInit {
       birthday: value.birthday ? new Date(value.birthday): undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
-      idCardAt: value.idCardAt,
+      idCardAt: value.idCardAt?  new Date(value.idCardAt): undefined ,
       issuedBy: value.issuedBy,
       wardId: this.wardId || this.data.employee.wardId,
       address: value.address,
