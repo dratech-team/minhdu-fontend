@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import {
-  selectedAddingPayroll,
+  selectedAddingPayroll
 } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -31,7 +31,7 @@ export class OvertimeComponent implements OnInit {
     title: new FormControl(''),
     name: new FormControl(''),
     startAt: new FormControl(),
-    endAt: new FormControl(),
+    endAt: new FormControl()
   });
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
@@ -84,7 +84,7 @@ export class OvertimeComponent implements OnInit {
               startAt: new Date(value.startAt),
               endAt: new Date(value.endAt),
               title: value.title,
-              name: value.name,
+              name: value.name
             }
           ).subscribe(val => {
             this.loaded = true;
