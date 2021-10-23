@@ -12,6 +12,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 
 @Component({
   templateUrl: 'dialog-overtime.component.html'
@@ -31,6 +32,8 @@ export class DialogOvertimeComponent implements OnInit {
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
 
   constructor(
     public datePipe: DatePipe,
@@ -44,6 +47,10 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstDayInMonth = this.datePipe.transform(
+      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd')
+    this.lastDayInMonth = this.datePipe.transform(
+      getLastDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd')
     if (this.data.isUpdate && this.data.salary.allowance) {
       this.onAllowanceOvertime = true;
     }
@@ -68,7 +75,7 @@ export class DialogOvertimeComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: [  this.datePipe.transform(
+        datetime: [this.datePipe.transform(
           this.data.payroll.createdAt, 'yyyy-MM-dd')],
         month: [undefined],
         note: [''],
@@ -111,7 +118,7 @@ export class DialogOvertimeComponent implements OnInit {
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
       times: this.unit === this.datetimeUnitEnum.DAY && value.days > 1 ? value.days : value.times,
-      datetime: value.days <= 1  && value.datetime ? new Date(value.datetime) : undefined,
+      datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
       unit: this.unit || undefined,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId
@@ -141,7 +148,7 @@ export class DialogOvertimeComponent implements OnInit {
       if (!this.title) {
         return this.snackBar.open('Chưa chọn loại tăng ca', '', { duration: 2000 });
       }
-      if (value.days <=1 && !value.datetime) {
+      if (value.days <= 1 && !value.datetime) {
         return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
       }
       if (this.unit === DatetimeUnitEnum.HOUR && !value.times) {

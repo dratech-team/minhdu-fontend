@@ -48,7 +48,7 @@
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='birthplace'>Nguyên quán</label><span class='star'>*</span>
+          <label for='birthplace'>Nguyên quán</label>
           <input
             class='form-control'
             formControlName='birthplace'
@@ -105,7 +105,7 @@
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='idCardAt'>Ngày cấp<span class='star'>*</span></label>
+          <label for='idCardAt'>Ngày cấp</label>
           <input
             type='date'
             placeholder='06/05/1997'
@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='issuedBy'>Nơi cấp <span class='star'>*</span></label>
+          <label for='issuedBy'>Nơi cấp</label>
           <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.issuedBy.errors?.required }">
           <div *ngIf='submitted && checkValid.issuedBy.errors?.required' class='invalid-feedback'>
@@ -164,7 +164,7 @@
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='type'>Loại Khách hàng<span class='star'>*</span></label>
+          <label for='type'>Loại Khách hàng</label>
           <mat-select id='type' class='form-control' formControlName='type'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.type.errors?.required }">
             <mat-option value='{{customerType.RETAIL}}'>
@@ -179,7 +179,7 @@
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='resource'>Nguồn khác hàng<span class='star'>*</span></label>
+          <label for='resource'>Nguồn khác hàng</label>
           <mat-select id='resource' class='form-control' formControlName='resource'
                       [ngClass]="{ 'is-invalid': submitted && checkValid.resource.errors?.required }">
             <mat-option value='{{resourceType.SELF_FIND}}'>
@@ -210,7 +210,7 @@
       </div>
       <div class='row mt-3' [formGroup]='formGroup'>
         <div class='col-sm'>
-          <label for='facebook'>Tìm năng</label><span class='star'>*</span>
+          <label for='facebook'>Tìm năng</label>
           <input
             id='facebook'
             type='checkbox'

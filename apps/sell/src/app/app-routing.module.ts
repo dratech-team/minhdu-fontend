@@ -61,7 +61,7 @@ const routes: Routes = [
           import('./pages/bill/bill.module').then((m) => m.BillModule)
       },
       {
-        path: 'hệ thống',
+        path: 'he-thong',
         loadChildren: () =>
           import('@minhdu-fontend/system').then((m) => m.SystemModule)
       },

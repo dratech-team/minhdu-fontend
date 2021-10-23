@@ -11,6 +11,9 @@ import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/t
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { map } from 'rxjs/operators';
 import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { SalaryMultipleEmployeeService } from '../../service/salary-multiple-employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -21,9 +24,11 @@ export class DialogBasicComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   checkSalary = true;
-  roleEnum = Role
-  role = localStorage.getItem('role')
+  roleEnum = Role;
+  role = localStorage.getItem('role');
   templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate));
+  isManyPeople = false;
+  employeeIds: number[] = [];
   /// FIXME: Dummy data
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
@@ -33,7 +38,9 @@ export class DialogBasicComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
+    private readonly snackbar: MatSnackBar,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
@@ -74,7 +81,6 @@ export class DialogBasicComponent implements OnInit {
 
   onSubmit(): any {
     this.submitted = true;
-
     if (this.formGroup.invalid) {
       return;
     }
@@ -101,12 +107,23 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(
-        PayrollAction.addSalary({
-          payrollId: this.data.payroll.id,
-          salary: salary
-        })
-      );
+      if (this.employeeIds.length > 0) {
+        Object.assign(salary);
+        const data = { salary: salary, employeeIds: this.employeeIds };
+        this.multipleEmployeeService.addOne(data).subscribe(val => {
+          if (val) {
+            location.reload()
+            this.dialogRef.close();
+          }
+        });
+      } else {
+        this.store.dispatch(
+          PayrollAction.addSalary({
+            payrollId: this.data.payroll.id,
+            salary: salary
+          })
+        );
+      }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
       if (val) {
@@ -119,5 +136,20 @@ export class DialogBasicComponent implements OnInit {
   //TODO
   onCheckValue(val: boolean) {
     this.checkSalary = val;
+  }
+
+  tabChanged($event: MatTabChangeEvent) {
+    switch ($event.index) {
+      case 2:
+        this.isManyPeople = true;
+        break;
+      default:
+        this.isManyPeople = false;
+    }
+  }
+
+  pickEmployees(employeeIds: number[]) {
+    this.employeeIds = employeeIds;
+    console.log(this.employeeIds);
   }
 }

@@ -1,68 +1,68 @@
-<div style='min-width:700px'>
-  <ngx-skeleton-loader  *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
+<div style='min-width: 800px'>
+  <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
   <ng-template #employee>
-    <div class='container'>
-      <div class=' animated fadeIn'>
-        <form [formGroup]='formGroup' class='header-profile mt-3 '>
-          <div class='border-start title-header name'>
-            <div class='title-profile'>Tên nhân viên</div>
-            <input class='form-control input-profile '
+    <div class='fixTableHead' style='height: 50vh'
+         infiniteScroll
+         [alwaysCallback]='true'
+         [infiniteScrollDistance]='1'
+         [scrollWindow]='false'>
+      <table [formGroup]='formGroup' style='width: 800px'>
+        <thead>
+        <tr >
+          <th>
+            <div class='border-top text-center'>Tên nhân viên</div>
+            <input class='form-control  '
                    type='text'
                    placeholder='Trần Gia Hiệu'
                    formControlName='name'
             >
-          </div>
-          <div class='border-start title-header default'>
-            <div class='title-profile'>Chức vụ</div>
-            <input class='form-control' type="text" matInput [matAutocomplete]="position" formControlName='position'>
-            <mat-autocomplete #position="matAutocomplete">
-              <mat-option *ngFor="let position of positions$ | async"
-                          [value]="position.name" (click)='onSelectPosition(position.name)'
-                          (onSelectionChange)='onSelectPosition(position.name)' >
+          </th>
+          <th>
+            <div class=' text-center'>Chức vụ</div>
+            <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async'
+                          [value]='position.name' (click)='onSelectPosition(position.name)'
+                          (onSelectionChange)='onSelectPosition(position.name)'>
                 {{position.name}}
               </mat-option>
             </mat-autocomplete>
-          </div>
-          <div class='border-start title-header name'>
-            <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type="text" matInput [matAutocomplete]="branch" formControlName='branch'>
-            <mat-autocomplete #branch="matAutocomplete" >
-              <mat-option *ngFor="let branch of branches$ | async" [value]='branch.name'
+          </th>
+          <th>
+            <div class=' text-center'>Đơn vị</div>
+            <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+            <mat-autocomplete #branch='matAutocomplete'>
+              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                           (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
               >
                 {{branch.name}}
               </mat-option>
             </mat-autocomplete>
-          </div>
-          <div class='border-start title-header default  '>
-            <div class='title-profile'>Tất cả</div>
-            <mat-checkbox  class='example-margin mt-2 mx-auto'
-                           [checked]='isSelectAll'
-                           [indeterminate]="someComplete()"
-                           (change)='setAll($event.checked)'>
+          </th>
+          <th style='width: 100px' >
+            <div class='border-bottom text-center'>Tất cả</div>
+            <mat-checkbox class='example-margin mt-2 mx-auto'
+                          [checked]='isSelectAll'
+                          [indeterminate]='someComplete()'
+                          (change)='setAll($event.checked)'>
             </mat-checkbox>
-          </div>
-        </form>
-        <div class='outer '
-             style='height: 50vh; max-height: 35vh'
-             infiniteScroll
-             [alwaysCallback]='true'
-             [infiniteScrollDistance]='1'
-             [scrollWindow]='false'
-        >
-          <div class='row-content' *ngFor='let employee of employees'>
-            <div class='content-profile name  pointer'>{{employee.firstName}} {{employee.lastName}}</div>
-            <div class='content-profile default  pointer'>{{employee.position?.name}}</div>
-            <div class='content-profile name  pointer'>{{employee.branch?.name}}</div>
-            <div class='content-profile default  pointer'>
-              <mat-checkbox
-                (change)='updateSelect(employee.id)'
-                [checked]='employeeIds.includes(employee.id)'>
-              </mat-checkbox>
-            </div>
-          </div>
-        </div>
-      </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let employee of employees'>
+          <th class='content-profile   pointer'>{{employee.firstName}} {{employee.lastName}}</th>
+          <th class='content-profile   pointer'>{{employee.position?.name}}</th>
+          <th class='content-profile   pointer'>{{employee.branch?.name}}</th>
+          <th class='content-profile   pointer'>
+            <mat-checkbox
+              (change)='updateSelect(employee.id)'
+              [checked]='employeeIds.includes(employee.id)'>
+            </mat-checkbox>
+          </th>
+        </tr>
+        </tbody>
+      </table>
     </div>
     <div class='col-6 my-2'>
       <div class='ml-2 font-lg'>Tổng nhân viên được chọn : {{employeeIds.length}}</div>

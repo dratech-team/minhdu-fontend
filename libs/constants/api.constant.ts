@@ -12,6 +12,7 @@ export const Api = {
   PAYROLL_EXPORT: 'payroll/export/print',
   TIMEKEEPING_EXPORT: 'payroll/timekeeping/export/print',
   SALARY: 'salary',
+  SALARY_EMPLOYEES: 'salary/employees',
   RELATIVE: 'relative',
   DEGREE: 'degree',
   CONTRACT: 'contract',

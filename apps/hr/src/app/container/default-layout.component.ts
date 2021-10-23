@@ -41,10 +41,6 @@ export class DefaultLayoutComponent implements OnInit {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        localStorage.removeItem('role');
-        localStorage.removeItem('token');
-        this.router.navigate(['/auth/login']).then();
-        /// FIXME: action not working
         return this.store.dispatch(AuthActions.logout());
       }
     });
