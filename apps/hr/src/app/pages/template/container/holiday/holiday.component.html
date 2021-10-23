@@ -60,7 +60,7 @@
            [ngStyle]="{'width':holidays.length === 0 ? header.offsetWidth + 'px': 'auto',
          'overflow-y':holidays.length === 0 ? 'hidden': 'scroll'}"
       >
-        <div class='row-content' *ngFor='let holiday of holidays'
+        <div class='row-content' *ngFor='let holiday of holidays ; let i = index'
              (contextmenu)='child.onContextMenu($event,holiday)'>
           <app-mouse-right #child (addEvent)='Holiday($event)'
                            (readAndUpdateEvent)='Holiday($event)'
@@ -88,8 +88,13 @@
             <div class='m-auto d-flex align-items-center justify-content-center'>Có ràng buộc</div>
           </div>
           <div class='content-profile  pointer   address' (click)='Holiday(holiday)'>
-            <span [style]='{"width":item.name.length+ 1+ "ch"}' class='mr-1 d-inline-block '
-                  *ngFor='let item of holiday.positions'> {{item.name}},</span>
+            <mat-chip-list>
+              <mat-chip
+                [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+                *ngFor='let position of holiday.positions'>
+                {{position.name}}
+              </mat-chip>
+            </mat-chip-list>
           </div>
         </div>
         <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '
