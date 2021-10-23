@@ -1,114 +1,101 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='main-customer mx-auto' style='width: fit-content; min-width: 100vh'>
-  <div class='row h3 ml-3'>Ngày lễ</div>
-  <div class='row ml-3'>
-    <button (click)='Holiday()' class='btn btn-primary mt-3 '>Tạo ngày lễ</button>
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
+<ng-template #holiday>
+  <div >
+    <div class=' h3 ml-3'>Ngày lễ</div>
+    <div class=' ml-3'>
+      <button (click)='Holiday()' class='btn btn-primary mt-3  '>Tạo ngày lễ</button>
+    </div>
   </div>
-  <ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
-  <ng-template #holiday>
-    <div class='main-profile'>
-      <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Tên ngày lễ</div>
-          <input
-            class='form-control input-profile'
-            type='text'
-            formControlName='name'
+  <div class='fixTableHead mx-auto mt-5'
+       style='width: 100%'
+       infiniteScroll
+       [infiniteScrollDistance]='0.5'
+       [scrollWindow]='false'
+       [alwaysCallback]='true'
+       (scrolled)='onScroll()'>
+    <table [formGroup]='formGroup' >
+      <thead>
+      <tr>
+        <th>
+          <div class='border-top text-center'>Tên ngày lễ</div>
+          <input class='form-control ' type='text' formControlName='name'
           >
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Ngày</div>
+        </th>
+        <th>
+          <div class='border-top text-center'>Ngày</div>
+          <input class='form-control  ' type='date' formControlName='datetime'>
+        </th>
+        <th style='width: 150px' >
+          <div class='border-top text-center'>Hệ số</div>
           <input
-            class='form-control input-profile '
-            type='date' formControlName='datetime'>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Hệ số</div>
-          <input
-            class='form-control input-profile '
+            class='form-control  '
             type='number' formControlName='rate'>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Giá</div>
-          <input
-            class='form-control input-profile '
-            type='number' disabled>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Ràng buộc ngày lễ</div>
-          <select class='select'>
+        </th>
+        <th style='width: 170px' >
+          <div class='border-top text-center'>Giá</div>
+          <input type='number' disabled>
+        </th>
+        <th style='width: 170px' >
+          <div class='border-top text-center'>Ràng buộc ngày lễ</div>
+          <select class='select border-top' style='width:100%'>
             <option value=''>Mặc định</option>
             <option value='{{false}}'>Có</option>
             <option value='{{true}}'>Không</option>
-
           </select>
-        </div>
-        <div class='border-start title-header address'>
-          <div class='title-profile'>Chúc vụ</div>
-          <input
-            class='form-control input-profile '
-            type='text' formControlName='position'>
-        </div>
-      </form>
-      <div class='outer animated fadeIn d-flex'
-           infiniteScroll
-           [infiniteScrollDistance]='0.5'
-           [scrollWindow]='false'
-           [alwaysCallback]='true'
-           (scrolled)='onScroll()'
-           *ngIf='(holidays$| async) as holidays'
-           [ngStyle]="{'width':holidays.length === 0 ? header.offsetWidth + 'px': 'auto',
-         'overflow-y':holidays.length === 0 ? 'hidden': 'scroll'}"
-      >
-        <div class='row-content' *ngFor='let holiday of holidays ; let i = index'
-             (contextmenu)='child.onContextMenu($event,holiday)'>
-          <app-mouse-right #child (addEvent)='Holiday($event)'
-                           (readAndUpdateEvent)='Holiday($event)'
-                           (deleteEvent)='deleteHoliday($event)'
-          ></app-mouse-right>
-          <div class=' content-profile name pointer ' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.name}}</div>
-          </div>
-          <div class='content-profile name pointer ' (click)='Holiday(holiday)'>
-            <div
-              class='m-auto d-flex align-items-center justify-content-center'> {{holiday.datetime |date: 'dd/MM/yyyy'}}</div>
-          </div>
-          <div class='content-profile default pointer ' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.rate}}</div>
-          </div>
-          <div class='content-profile default pointer '  *ngIf='holiday.price' (click)='Holiday(holiday)'>
-            {{holiday.price | number :'1.0-0'}}đ
-          </div>
-          <div class='content-profile default pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
-          </div>
-          <div class='content-profile default pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
-          </div>
-          <div class='content-profile default pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
-            <div class='m-auto d-flex align-items-center justify-content-center'>Có ràng buộc</div>
-          </div>
-          <div class='content-profile  pointer   address' (click)='Holiday(holiday)'>
-            <mat-chip-list>
-              <mat-chip
-                [style]='{"background": i%2  === 0? "#dddddd":"white"}'
-                *ngFor='let position of holiday.positions'>
-                {{position.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-        </div>
-        <div *ngIf='!holidays || holidays.length === 0 ' style='height:60vh; '
-             class=' d-flex justify-content-center align-content-center'>
-          <span class='font-xl font-weight-bold d-flex align-items-center'>
-            Hiện chưa có ngày lễ nào!
-          </span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-</div>
-
-
+        </th>
+        <th >
+          <div class='border-top text-center'>Chúc vụ</div>
+          <input class='form-control ' type='text' formControlName='position'>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(holidays$| async) as holidays'>
+      <tr  *ngFor='let holiday of holidays ; let i = index'
+           (contextmenu)='child.onContextMenu($event,holiday)'>
+        <th class=' pointer ' (click)='Holiday(holiday)'>
+         {{holiday.name}}
+        </th>
+        <th class='  pointer ' (click)='Holiday(holiday)'>
+          {{holiday.datetime |date: 'dd/MM/yyyy'}}
+        </th>
+        <th class='  pointer ' (click)='Holiday(holiday)'>
+         {{holiday.rate}}
+        </th>
+        <th class='  pointer ' *ngIf='holiday.price' (click)='Holiday(holiday)'>
+          {{holiday.price | number :'1.0-0'}}đ
+        </th>
+        <th class='  pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
+        </th>
+        <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
+        Không ràng buộc
+        </th>
+        <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
+          Có ràng buộc
+        </th>
+        <th class=' pointer p-1' (click)='Holiday(holiday)'>
+          <mat-chip-list>
+            <mat-chip
+              (click)='Holiday(holiday)'
+              [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+              *ngFor='let position of holiday.positions'>
+              {{position.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </th>
+      </tr>
+      <tr *ngIf='!holidays || holidays.length === 0 '  class='position-relative'>
+        <td colspan='6' class='font-xl font-weight-bold' style='height:50vh '>
+          <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có ngày lễ nào !</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+<app-mouse-right #child (addEvent)='Holiday($event)'
+                 (readAndUpdateEvent)='Holiday($event)'
+                 (deleteEvent)='deleteHoliday($event)'
+></app-mouse-right>
 
 
