@@ -166,7 +166,7 @@ export class DialogAbsentComponent implements OnInit {
       value.unit === DatetimeUnitEnum.MINUTE ||
       (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)) {
       Object.assign(salary, {
-        datetime: value.datetime,
+        datetime: new Date(value.datetime) ,
         times: value.times ? value.times * 60 + value.minutes : value.minutes
       });
     }
@@ -180,8 +180,8 @@ export class DialogAbsentComponent implements OnInit {
           } else {
             Object.assign(salary, {
               times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
-              startedAt: new Date(value.startedAt),
-              endedAt: new Date(value.endedAt)
+              startedAt: new Date(value.startedAt + '-00'),
+              endedAt:new Date(value.endedAt + '-00'),
             });
           }
         } else {
@@ -257,8 +257,8 @@ export class DialogAbsentComponent implements OnInit {
                 this.titleSession[value.partialDay]?.title,
               times: this.titleSession[value.partialDay].times *
                 (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
-              startedAt: new Date(value.startedAt),
-              endedAt: new Date(value.endedAt)
+              startedAt: new Date(value.startedAt + '-00'),
+              endedAt:new Date(value.endedAt + '-00'),
             });
           }
         } else {
