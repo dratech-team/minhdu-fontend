@@ -187,7 +187,7 @@ export class DialogAbsentComponent implements OnInit {
           }
         } else {
           Object.assign(salary, {
-            datetime: new Date(value.datetime + '-00')
+            datetime: new Date(value.datetime)
           });
         }
       }
