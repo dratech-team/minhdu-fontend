@@ -57,7 +57,7 @@
          [ngStyle]="{'width':templates.length === 0 ? header.offsetWidth + 'px': 'auto',
          'overflow-y':templates.length === 0 ? 'hidden': 'scroll'}"
     >
-      <div class='row-content' *ngFor='let template of templates'
+      <div class='row-content' *ngFor='let template of templates; let i = index'
            (contextmenu)='child.onContextMenu($event,template)'>
         <app-mouse-right #child (addEvent)='templateOvertime($event)'
                          (readAndUpdateEvent)='templateOvertime($event)'
@@ -99,8 +99,16 @@
         </div>
         <div class='content-profile address pointer '
              (click)='templateOvertime(template)'>
-          <span class='mr-2 d-inline-block' [style]='{"width":item.name.length+1 + "ch"}'
-                *ngFor='let item of template.positions'> {{item.name}},</span>
+
+          <mat-chip-list>
+            <mat-chip
+              [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+              *ngFor='let position of template.positions'
+              [selectable]='false'
+              [removable]='false'>
+              {{position.name}}
+            </mat-chip>
+          </mat-chip-list>
         </div>
         <div class='content-profile name pointer '
              (click)='templateOvertime(template)'>

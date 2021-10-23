@@ -11,11 +11,11 @@
       <div>
         <div class='form-group '>
           <div>
-            <div class='row title-item mb-2'>
+            <div class=' title-item mb-2'>
               <span>Tên ngày lễ</span>
               <div class='star'>*</div>
             </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
+            <div class=' mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control  px-1' formControlName='name'
                      [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }">
               <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
@@ -25,11 +25,11 @@
 
           </div>
           <div class='mt-3'>
-            <div class='row title-item mb-2'>
+            <div class=' title-item mb-2'>
               <span>Chọn ngày</span>
               <div class='star'>*</div>
             </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
+            <div class=' mb-3' [formGroup]='formGroup'>
               <input type='date' class='form-control  px-1' formControlName='datetime'
                      [ngClass]="{ 'is-invalid': submitted && f.datetime.errors?.required }">
               <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
@@ -38,11 +38,11 @@
             </div>
           </div>
           <div class='mt-3'>
-            <div class='row title-item mb-2'>
+            <div class=' title-item mb-2'>
               <span>Hệ số</span>
               <div class='star'>*</div>
             </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
+            <div class=' mb-3' [formGroup]='formGroup'>
               <input type='number' class='form-control  px-1' formControlName='rate' min='1'
                      [ngClass]="{ 'is-invalid': submitted && f.rate.errors?.required }">
               <div *ngIf='submitted && f.rate.errors?.required' class='invalid-feedback'>
@@ -51,16 +51,18 @@
             </div>
           </div>
           <div class='mt-3' *ngIf='hidePrice'>
-            <div class='row title-item mb-2'>
+            <div class=' title-item mb-2'>
               <span>Giá</span>
             </div>
-            <div class='row mb-3' [formGroup]='formGroup'>
+            <div class=' mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control  px-1' formControlName='price' inputCurrency>
             </div>
           </div>
-          <div class=' row mt-2' [formGroup]='formGroup'>
-            <div><span class='main-title'>Chức vụ</span><span class='star'>*</span></div>
-            <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
+          <div class='mt-2' [formGroup]='formGroup'>
+            <div class=''><span class='main-title'>Chức vụ</span><span class='star'>*</span></div>
+            <input class='form-control ' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
+                   style='width: 100%'
+                   [matChipInputFor]='chipList'
                    #positionInput>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async'
@@ -70,20 +72,23 @@
                 {{position.name}}
               </mat-option>
             </mat-autocomplete>
-            <div class='mt-2'>
-            <span class='mr-3 position-relative'
-                  [style]='{"width":position.name.length+1 + "ch"}'
-                  *ngFor='let position of positionSelected'>{{position.name}}
-              <label class='position-absolute text-danger pointer' style='top:-7px ; right: -10px'
-                     (click)='removePosition(position)'>x</label>
-            </span>
-            </div>
-
+            <mat-chip-list #chipList >
+              <mat-chip
+                *ngFor='let position of positionSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removePosition(position)'>
+                {{position.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
             <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
               <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
             </div> -->
           </div>
-          <div class='mt-4 d-flex row'>
+          <div class='mt-4 d-flex '>
             <div class=' title-item mb-2'>
               <span>Ràng buộc bởi ngày công chuẩn</span>
             </div>
