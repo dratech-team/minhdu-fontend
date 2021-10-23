@@ -54,13 +54,13 @@
       <tr  *ngFor='let holiday of holidays ; let i = index'
            (contextmenu)='child.onContextMenu($event,holiday)'>
         <th class=' pointer ' (click)='Holiday(holiday)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.name}}</div>
+         {{holiday.name}}
         </th>
         <th class='  pointer ' (click)='Holiday(holiday)'>
-          <div class='m-auto '> {{holiday.datetime |date: 'dd/MM/yyyy'}}</div>
+          {{holiday.datetime |date: 'dd/MM/yyyy'}}
         </th>
         <th class='  pointer ' (click)='Holiday(holiday)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>{{holiday.rate}}</div>
+         {{holiday.rate}}
         </th>
         <th class='  pointer ' *ngIf='holiday.price' (click)='Holiday(holiday)'>
           {{holiday.price | number :'1.0-0'}}đ
@@ -68,10 +68,10 @@
         <th class='  pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
         </th>
         <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>Không ràng buộc</div>
+        Không ràng buộc
         </th>
         <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>Có ràng buộc</div>
+          Có ràng buộc
         </th>
         <th class=' pointer p-1' (click)='Holiday(holiday)'>
           <mat-chip-list>

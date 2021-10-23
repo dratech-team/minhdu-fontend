@@ -1,126 +1,121 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
-  <div class='row h3 ml-3'>Bản mẫu tăng ca</div>
-  <div class='row ml-3'>
+<div>
+  <div class=' h3 '>Bản mẫu tăng ca</div>
+  <div>
     <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
   </div>
-  <div class='main-profile'>
-    <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên bản mẫu</div>
+</div>
+<div class='fixTableHead mt-5' style='width: 100%'
+     infiniteScroll
+     [infiniteScrollDistance]='0.5'
+     [scrollWindow]='false'
+     [alwaysCallback]='true'
+     (scrolled)='onScroll()'>
+
+  <table [formGroup]='formGroup'>
+    <thead>
+    <tr>
+      <th>
+        <div class='border-top text-center'>Tên bản mẫu</div>
         <input
-          class='form-control input-profile'
+          class='form-control '
           type='text'
           formControlName='title'
         >
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Giá</div>
+      </th>
+      <th>
+        <div class='border-top text-center'>Giá</div>
         <input
-          class='form-control input-profile '
+          class='form-control  '
           type='text' formControlName='price'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Đơn vị tính</div>
-        <select class='select' matNativeControl required formControlName='unit'>
+      </th>
+      <th>
+        <div class='border-top text-center'>Đơn vị tính</div>
+        <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
           <option value='{{unit.DAY}}'>Ngày</option>
           <option value='{{unit.HOUR}}'>Giờ</option>
           <option value=''>Tất cả</option>
         </select>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Đơn vị</div>
+      </th>
+      <th>
+        <div class='border-top text-center'>Đơn vị</div>
+        <input class='form-control ' type='text' formControlName='branch'>
+      </th>
+      <th>
+        <div class='border-top text-center'>Chức vụ</div>
         <input
-          class='form-control input-profile '
-          type='text' formControlName='branch'>
-      </div>
-      <div class='border-start title-header address'>
-        <div class='title-profile'>Chức vụ</div>
-        <input
-          class='form-control input-profile '
+          class='form-control '
           type='text' formControlName='position'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Chú ý</div>
+      </th>
+      <th>
+        <div class='border-top text-center'>Chú ý</div>
         <input
-          class='form-control input-profile '
+          class='form-control '
           type='search' formControlName='note'>
-      </div>
-    </form>
-    <div class='outer animated fadeIn d-flex'
-         infiniteScroll
-         [infiniteScrollDistance]='0.5'
-         [scrollWindow]='false'
-         [alwaysCallback]='true'
-         (scrolled)='onScroll()'
-         *ngIf='(templates$| async) as templates'
-         [ngStyle]="{'width':templates.length === 0 ? header.offsetWidth + 'px': 'auto',
-         'overflow-y':templates.length === 0 ? 'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let template of templates; let i = index'
-           (contextmenu)='child.onContextMenu($event,template)'>
-        <app-mouse-right #child (addEvent)='templateOvertime($event)'
-                         (readAndUpdateEvent)='templateOvertime($event)'
-                         (deleteEvent)='deleteOvertime($event)'
-        ></app-mouse-right>
-        <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>
-            {{template.title}}
-          </div>
-        </div>
-        <div class='content-profile name pointer ' (click)='templateOvertime(template)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>
-            {{template.price| number: '1.0-0'}} VND
-          </div>
-        </div>
-        <div class='content-profile default pointer' *ngIf='template.unit === unit.DAY'
-             (click)='templateOvertime(template)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>Ngày</div>
-        </div>
-        <div class='content-profile default pointer'
-             *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-             (click)='templateOvertime(template)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>Giờ</div>
-        </div>
-        <div class='content-profile default pointer' *ngIf='template.unit === unit.MONTH'
-             (click)='templateOvertime(template)'>
-          <div class='m-auto d-flex align-items-center justify-content-center'>Tháng</div>
-        </div>
-        <div class='content-profile name pointer '
-             (click)='templateOvertime(template)'
-             *ngIf='template?.branch'
-        >
-          <div class='m-auto d-flex align-items-center justify-content-center'> {{template?.branch?.name}}</div>
-        </div>
-        <div class='content-profile name pointer '
-             (click)='templateOvertime(template)'
-             *ngIf='!template?.branch'
-        >
-        </div>
-        <div class='content-profile address pointer '
-             (click)='templateOvertime(template)'>
+      </th>
+    </tr>
+    </thead>
+    <tbody *ngIf='(templates$| async) as templates'>
+    <tr *ngFor='let template of templates; let i = index'
+        (contextmenu)='child.onContextMenu($event,template)'>
 
-          <mat-chip-list>
-            <mat-chip
-              [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-              *ngFor='let position of template.positions'
-              [selectable]='false'
-              [removable]='false'>
-              {{position.name}}
-            </mat-chip>
-          </mat-chip-list>
-        </div>
-        <div class='content-profile name pointer '
-             (click)='templateOvertime(template)'>
-          {{template.note}}
-        </div>
-      </div>
-      <div *ngIf='!templates || templates.length === 0 ' style='height:60vh; '
-           class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl font-weight-bold d-flex align-items-center'>
-          Hiện chưa có bản mẫu tăng ca nào!
-        </div>
-      </div>
-    </div>
-  </div>
+      <th class='  pointer ' (click)='templateOvertime(template)'>
+          {{template.title}}
+      </th>
+      <th class='  pointer ' (click)='templateOvertime(template)'>
+        {{template.price| number: '1.0-0'}} VND
+      </th>
+      <th class='  pointer' *ngIf='template.unit === unit.DAY'
+          (click)='templateOvertime(template)'>
+       Ngày
+      </th>
+      <th class='  pointer'
+          *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
+          (click)='templateOvertime(template)'>
+       Giờ
+      </th>
+      <th class='  pointer' *ngIf='template.unit === unit.MONTH'
+          (click)='templateOvertime(template)'>
+       Tháng
+      </th>
+      <th class='  pointer '
+          (click)='templateOvertime(template)'
+          *ngIf='template?.branch'
+      >
+        <div> {{template?.branch?.name}}</div>
+      </th>
+      <th class='  pointer '
+          (click)='templateOvertime(template)'
+          *ngIf='!template?.branch'
+      >
+      </th>
+      <th class='  pointer p-1 '
+          (click)='templateOvertime(template)'>
+        <mat-chip-list>
+          <mat-chip (click)='templateOvertime(template)'
+            [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+            *ngFor='let position of template.positions'
+            [selectable]='false'
+            [removable]='false'>
+            {{position.name}}
+          </mat-chip>
+        </mat-chip-list>
+      </th>
+      <th class=' pointer '
+          (click)='templateOvertime(template)'>
+        {{template.note}}
+      </th>
+    </tr>
+    <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh; '
+        class=' d-flex justify-content-center align-content-center'>
+      <td colspan='6' class='font-xl font-weight-bold d-flex align-items-center'>
+        Hiện chưa có bản mẫu tăng ca nào!
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
+<app-mouse-right #child (addEvent)='templateOvertime($event)'
+                 (readAndUpdateEvent)='templateOvertime($event)'
+                 (deleteEvent)='deleteOvertime($event)'
+></app-mouse-right>
