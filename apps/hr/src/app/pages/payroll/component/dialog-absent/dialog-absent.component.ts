@@ -25,8 +25,9 @@ export class DialogAbsentComponent implements OnInit {
   selectedIndex?: number;
   unitMinute = false;
   unitAbsent = false;
-  firstDayInMonth!: string|null
-  lastDayInMonth!: string|null
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
+
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
@@ -59,9 +60,9 @@ export class DialogAbsentComponent implements OnInit {
 
   ngOnInit(): void {
     this.firstDayInMonth = this.datePipe.transform(
-      getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd')
+      getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
     this.lastDayInMonth = this.datePipe.transform(
-      getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd')
+      getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
     if (this.data.isUpdate) {
       if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
@@ -166,7 +167,7 @@ export class DialogAbsentComponent implements OnInit {
       value.unit === DatetimeUnitEnum.MINUTE ||
       (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE)) {
       Object.assign(salary, {
-        datetime: new Date(value.datetime) ,
+        datetime: new Date(value.datetime),
         times: value.times ? value.times * 60 + value.minutes : value.minutes
       });
     }
@@ -175,18 +176,18 @@ export class DialogAbsentComponent implements OnInit {
         if (this.data.salary?.startedAt) {
           if (moment(value.startedAt).format('YYYY-MM-DD')
             === moment(value.endedAt).format('YYYY-MM-DD')) {
-            return  this.snackBar.open('Không được sửa vắng từ ngày đến ngày thành một ngày', '',
-              {duration: 1500 })
+            return this.snackBar.open('Không được sửa vắng từ ngày đến ngày thành một ngày', '',
+              { duration: 1500 });
           } else {
             Object.assign(salary, {
               times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
               startedAt: new Date(value.startedAt + '-00'),
-              endedAt:new Date(value.endedAt + '-00'),
+              endedAt: new Date(value.endedAt + '-00')
             });
           }
         } else {
           Object.assign(salary, {
-            datetime: new Date(value.datetime)
+            datetime: new Date(value.datetime + '-00')
           });
         }
       }
@@ -247,7 +248,7 @@ export class DialogAbsentComponent implements OnInit {
                 ' ' +
                 this.titleSession[value.partialDay]?.title,
               times: this.titleSession[value.partialDay].times,
-              datetime: new Date(value.startedAt)
+              datetime: new Date(value.startedAt + '-00')
             });
           } else {
             Object.assign(salary, {
@@ -258,7 +259,7 @@ export class DialogAbsentComponent implements OnInit {
               times: this.titleSession[value.partialDay].times *
                 (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
               startedAt: new Date(value.startedAt + '-00'),
-              endedAt:new Date(value.endedAt + '-00'),
+              endedAt: new Date(value.endedAt + '-00')
             });
           }
         } else {
