@@ -13,6 +13,7 @@ import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/s
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 
 @Component({
@@ -60,24 +61,12 @@ export class AddHolidayComponent implements OnInit {
       isConstraint: [this.data ? this.data?.isConstraint : true],
       price: [this.data?.price]
     });
-    this.positions$ = combineLatest([
+
+    this.positions$ = searchAndAddAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
       this.positions$
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          const result = positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-          if (!result.length) {
-            result.push({ id: 0, name: 'Tạo mới chức vụ' });
-          }
-          return result;
-        } else {
-          return positions;
-        }
-      })
     );
+
     this.formGroup.get('rate')!.valueChanges.subscribe(
       rate => this.hidePrice = rate <= 1
     );

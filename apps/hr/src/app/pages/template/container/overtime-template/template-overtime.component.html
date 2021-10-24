@@ -39,13 +39,25 @@
       </th>
       <th>
         <div class='border-top text-center'>Đơn vị</div>
-        <input class='form-control ' type='text' formControlName='branch'>
+        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                      (onSelectionChange)='onSelectBranch(branch.name)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </th>
       <th>
-        <div class='border-top text-center'>Chức vụ</div>
-        <input
-          class='form-control '
-          type='text' formControlName='position'>
+        <div class='border-top text-center'>Chức vụ </div>
+        <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+        <mat-autocomplete #position='matAutocomplete'>
+          <mat-option *ngFor='let position of positions$ | async'
+                      [value]='position.name' (click)='onSelectPosition(position.name)'
+                      (onSelectionChange)='onSelectPosition(position.name)'>
+            {{position.name}}
+          </mat-option>
+        </mat-autocomplete>
       </th>
       <th>
         <div class='border-top text-center'>Chú ý</div>
@@ -60,29 +72,29 @@
         (contextmenu)='child.onContextMenu($event,template)'>
 
       <th class='  pointer ' (click)='templateOvertime(template)'>
-          {{template.title}}
+        {{template.title}}
       </th>
       <th class='  pointer ' (click)='templateOvertime(template)'>
         {{template.price| number: '1.0-0'}} VND
       </th>
       <th class='  pointer' *ngIf='template.unit === unit.DAY'
           (click)='templateOvertime(template)'>
-       Ngày
+        Ngày
       </th>
       <th class='  pointer'
           *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
           (click)='templateOvertime(template)'>
-       Giờ
+        Giờ
       </th>
       <th class='  pointer' *ngIf='template.unit === unit.MONTH'
           (click)='templateOvertime(template)'>
-       Tháng
+        Tháng
       </th>
       <th class='  pointer '
           (click)='templateOvertime(template)'
           *ngIf='template?.branch'
       >
-        <div> {{template?.branch?.name}}</div>
+      {{template?.branch?.name}}
       </th>
       <th class='  pointer '
           (click)='templateOvertime(template)'
@@ -93,10 +105,10 @@
           (click)='templateOvertime(template)'>
         <mat-chip-list>
           <mat-chip (click)='templateOvertime(template)'
-            [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-            *ngFor='let position of template.positions'
-            [selectable]='false'
-            [removable]='false'>
+                    [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                    *ngFor='let position of template.positions'
+                    [selectable]='false'
+                    [removable]='false'>
             {{position.name}}
           </mat-chip>
         </mat-chip-list>

@@ -23,6 +23,7 @@ import { TemplateOvertime } from '../../../template/+state/template-overtime/tem
 import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { MatStepper } from '@angular/material/stepper';
 import { Position } from '@minhdu-fontend/data-models';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -86,38 +87,16 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         })
       )
       .subscribe();
-    this.templateOvertime$ = combineLatest([
+    this.templateOvertime$ = searchAutocomplete(
       this.titleOvertimes.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectorAllTemplate))
-    ]).pipe(
-      map(([titleOvertime, TempLateOvertimes]) => {
-        if (titleOvertime) {
-          return TempLateOvertimes.filter((e) => {
-            return e.title.toLowerCase().includes(titleOvertime?.toLowerCase());
-          });
-        } else {
-          this.positionOfTempOver = []
-          this.templateId = undefined;
-          return TempLateOvertimes;
-        }
-      })
     );
-    this.positions$ = combineLatest([
+
+    this.positions$ = searchAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          return positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-        } else {
-          this.positionId = undefined;
-          this.titleOvertimes.patchValue('');
-          return positions;
-        }
-      })
     );
+
     this.formGroup.get('days')!.valueChanges.subscribe(days => {
       if (days > 1) {
         this.formGroup.get('datetime')!.setValue('');
@@ -136,7 +115,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   }
 
   onSelectPosition(positionId: number) {
-    this.positionOfTempOver = []
+    this.positionOfTempOver = [];
     this.positionId = positionId;
     this.store.dispatch(
       TemplateOvertimeAction.loadALlTemplate({
@@ -161,7 +140,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.rate = data.rate;
     this.unit = data.unit;
     this.templateId = data.id;
-    this.positionOfTempOver = data.positions ? data.positions : []
+    this.positionOfTempOver = data.positions ? data.positions : [];
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
