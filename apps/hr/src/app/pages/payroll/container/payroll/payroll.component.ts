@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { EmployeeAction, selectorAllEmployee } from '@minhdu-fontend/employee';
+import { EmployeeAction } from '@minhdu-fontend/employee';
 import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -68,32 +68,14 @@ export class PayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadInitPayroll();
     this.daysInMonth = rageDaysInMonth(this.monthPayroll);
-    this.store.dispatch(
-      PayrollAction.loadInit(
-        {
-          skip: this.pageIndexInit,
-          take: this.pageSize,
-          createdAt: new Date(),
-          isTimeSheet: true
-        }
-      )
-    );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.selectPayroll.valueChanges.subscribe(val => {
       this.selectedPayroll = val;
       if (val === PayrollEnum.TIME_SHEET) {
-        this.store.dispatch(
-          PayrollAction.loadInit(
-            {
-              skip: this.pageIndexInit,
-              take: this.pageSize,
-              createdAt: new Date(),
-              isTimeSheet: true
-            }
-          )
-        );
+        this.loadInitPayroll();
       }
     });
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
@@ -104,13 +86,7 @@ export class PayrollComponent implements OnInit {
         this.monthPayroll = new Date();
       }
       const month = new Date(val.createdAt);
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(
-        Object.assign(val,
-          {
-            createdAt: month
-          })
-        )
-      ));
+      this.loadInitPayroll(month);
     });
     this.positions$ = combineLatest([
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -140,6 +116,18 @@ export class PayrollComponent implements OnInit {
           return branches;
         }
       })
+    );
+  }
+
+  loadInitPayroll(month?: Date) {
+    this.store.dispatch(
+      PayrollAction.loadInit(
+        this.Payroll(
+          month ?
+            Object.assign(this.formGroup.value, { createdAt: month })
+            : this.formGroup.value
+        )
+      )
     );
   }
 
@@ -251,4 +239,5 @@ export class PayrollComponent implements OnInit {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, { width: 'fit-content', data: { payroll: event } });
   }
+
 }
