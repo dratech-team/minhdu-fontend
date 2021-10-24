@@ -48,7 +48,6 @@ export class EmployeeComponent implements OnInit {
   pageIndexInit = 0;
   isLeft = false;
   formGroup = new FormGroup({
-    // code: new FormControl(''),
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),

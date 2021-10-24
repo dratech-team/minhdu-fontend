@@ -44,6 +44,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'xep-hang',
+        loadChildren: () => import('./pages/rank/rank.module').then(m => m.RankModule),
+        data: {
+          title: 'Xếp hạng cuối năm'
+        },
+      },
+      {
         path: 'to-chuc',
         loadChildren: () => import('./pages/orgchart-new/orgchart-new.module').then(m => m.OrgchartNewModule),
         data: {

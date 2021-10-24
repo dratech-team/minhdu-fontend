@@ -74,5 +74,14 @@ export const navItems: INavData[] = [
     name: 'Quản lý tài khoản',
     url: '/he-thong/quan-ly-tai-khoan',
     icon: 'cil-lock-locked'
+  },
+  {
+    title: true,
+    name: 'Xếp hạng'
+  },
+  {
+    name: 'Xếp hạng cuối năm',
+    url: '/xep-hang',
+    icon: 'cil-lock-locked'
   }
 ];
