@@ -27,6 +27,7 @@ import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -36,7 +37,7 @@ export class EmployeeComponent implements OnInit {
   genderType = Gender;
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
-  pageTypeEnum = PageTypeEnum
+  pageTypeEnum = PageTypeEnum;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -78,34 +79,14 @@ export class EmployeeComponent implements OnInit {
       )
       .subscribe(val => this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) })));
 
-    this.positions$ = combineLatest([
+    this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          return positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-        } else {
-          return positions;
-        }
-      })
+      this.positions$
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          return branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-        } else {
-          return branches;
-        }
-      })
     );
   }
 
@@ -118,7 +99,7 @@ export class EmployeeComponent implements OnInit {
   delete($event: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employeeId: $event.id , leftAt: $event.leftAt }
+      data: { employeeId: $event.id, leftAt: $event.leftAt }
     });
   }
 
@@ -175,7 +156,7 @@ export class EmployeeComponent implements OnInit {
   permanentlyDeleted($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employee:$event , permanentlyDeleted: true }
+      data: { employee: $event, permanentlyDeleted: true }
     });
   }
 }

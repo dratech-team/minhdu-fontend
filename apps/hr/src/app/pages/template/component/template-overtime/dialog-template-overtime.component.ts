@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
+import { Branch, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { combineLatest } from 'rxjs';
@@ -21,6 +21,7 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -64,43 +65,14 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       rate: [this.data?.rate ? this.data.rate : 1, Validators.required],
       note: [this.data?.note]
     });
-    this.positions$ = combineLatest([
+    this.positions$ = searchAndAddAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
       this.positions$
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          const result = positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-          if (!result.length) {
-            result.push({ id: 0, name: 'Tạo mới chức vụ' });
-          }
-          return result;
-        } else {
-          return positions;
-        }
-      })
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAndAddAutocomplete(
       this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          const result = branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-          if (!result.length) {
-            result.push({ id: 0, name: 'Tạo mới đơn vị' });
-          }
-          return result;
-        } else {
-          this.branchId = undefined;
-          return branches;
-        }
-      })
     );
     if (this.data?.branch) {
       this.branches.patchValue(this.data?.branch.name);
