@@ -71,7 +71,6 @@
                    formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-                          (click)='onSelectPosition(position.name)'
                           (onSelectionChange)='onSelectPosition(position.name)'>
                 {{position.name}}
               </mat-option>
@@ -82,8 +81,7 @@
             <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
             <mat-autocomplete #branch='matAutocomplete'>
               <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (click)='onSelectPosition(branch.name)'
-                          (onSelectionChange)='onSelectPosition(branch.name)'>
+                          (onSelectionChange)='onSelectBranch(branch.name)'>
                 {{branch.name}}
               </mat-option>
             </mat-autocomplete>

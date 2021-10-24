@@ -26,6 +26,7 @@ import { DialogExportTimekeepingComponent } from '../../component/dialog-export-
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { PayrollConstant } from '@minhdu-fontend/constants';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -88,35 +89,17 @@ export class PayrollComponent implements OnInit {
       const month = new Date(val.createdAt);
       this.loadInitPayroll(month);
     });
-    this.positions$ = combineLatest([
+
+    this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          return positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-        } else {
-          return positions;
-        }
-      })
+      this.positions$
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          return branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-        } else {
-          return branches;
-        }
-      })
     );
+
   }
 
   loadInitPayroll(month?: Date) {

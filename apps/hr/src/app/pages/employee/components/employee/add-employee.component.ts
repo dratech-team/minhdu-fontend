@@ -30,6 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -105,43 +106,14 @@ export class AddEmployeeComponent implements OnInit {
       expiredAtContract: [''],
       recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2]
     });
-
-    this.positions$ = combineLatest([
+    this.positions$ = searchAndAddAutocomplete(
       this.formPosition.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          const result = positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-          if (result.length === 0) {
-            result.push({ id: 0, name: 'Tạo mới chức vụ' });
-          }
-          return result;
-        } else {
-          return positions;
-        }
-      })
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAndAddAutocomplete(
       this.branches.valueChanges.pipe(startWith('')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          const result = branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-          if (result.length === 0) {
-            result.push({ id: 0, name: 'Tạo mới đơn vị' });
-          }
-          return result;
-        } else {
-          return branches;
-        }
-      })
     );
   }
 
@@ -172,16 +144,16 @@ export class AddEmployeeComponent implements OnInit {
       isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
-      workedAt: value.workedAt ? new Date(value.workedAt): undefined,
+      workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone ? value.phone.toString() : undefined,
-      birthday: value.birthday ? new Date(value.birthday): undefined,
+      birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
-      idCardAt: value.idCardAt?  new Date(value.idCardAt): undefined ,
+      idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
       wardId: this.wardId || this.data.employee.wardId,
       address: value.address,
@@ -263,6 +235,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   checkNumberInput(event: any) {
-    return checkInputNumber(event)
+    return checkInputNumber(event);
   }
 }

@@ -9,10 +9,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import {  startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'dialog-overtime.component.html'
@@ -48,9 +48,9 @@ export class DialogOvertimeComponent implements OnInit {
 
   ngOnInit(): void {
     this.firstDayInMonth = this.datePipe.transform(
-      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd')
+      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
     this.lastDayInMonth = this.datePipe.transform(
-      getLastDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd')
+      getLastDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
     if (this.data.isUpdate && this.data.salary.allowance) {
       this.onAllowanceOvertime = true;
     }
@@ -86,19 +86,9 @@ export class DialogOvertimeComponent implements OnInit {
       });
     }
 
-    this.templateOvertime$ = combineLatest([
+    this.templateOvertime$ = searchAutocomplete(
       this.titleOvertimes.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectorAllTemplate))
-    ]).pipe(
-      map(([titleOvertime, TempLateOvertimes]) => {
-        if (titleOvertime) {
-          return TempLateOvertimes.filter((e) => {
-            return e.title.toLowerCase().includes(titleOvertime?.toLowerCase());
-          });
-        } else {
-          return TempLateOvertimes;
-        }
-      })
     );
   }
 
