@@ -7,15 +7,18 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 
 
 @Component({
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
-  adding$ = this.store.pipe(select(selectTemplateAdding))
+  adding$ = this.store.pipe(select(selectTemplateAdding));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   pageSize = 30;
@@ -27,9 +30,11 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: new FormControl(''),
       note: new FormControl(''),
       position: new FormControl(''),
-      branch: new FormControl(''),
+      branch: new FormControl('')
     }
   );
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
 
   constructor(
     private readonly dialog: MatDialog,
@@ -40,7 +45,9 @@ export class TemplateOvertimeComponent implements OnInit {
   templates$ = this.store.pipe(select(selectorAllTemplate));
 
   ngOnInit() {
-    this.store.dispatch(TemplateOvertimeAction.loadInit({take:this.pageSize, skip: this.pageIndexInit}));
+    this.store.dispatch(PositionActions.loadPosition());
+    this.store.dispatch(OrgchartActions.init());
+    this.store.dispatch(TemplateOvertimeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -52,6 +59,17 @@ export class TemplateOvertimeComponent implements OnInit {
         })
       )
       .subscribe();
+
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
+    this.branches$ = searchAutocomplete(
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.branches$
+    );
   }
 
   templateOvertime($event?: any) {
@@ -65,7 +83,7 @@ export class TemplateOvertimeComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
-          this.store.dispatch(TemplateOvertimeAction.deleteTemplate({id: $event.id}));
+          this.store.dispatch(TemplateOvertimeAction.deleteTemplate({ id: $event.id }));
         }
       }
     );
@@ -89,8 +107,15 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: val.unit,
       note: val.note,
       position: val.position,
-      department: val.department,
       branch: val.branch
     };
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
   }
 }
