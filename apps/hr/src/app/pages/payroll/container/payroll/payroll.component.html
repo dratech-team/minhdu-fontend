@@ -337,8 +337,8 @@
         </thead>
         <tbody *ngIf='(payroll$|async) as payrolls'>
         <tr *ngFor='let payroll of payrolls; let i = index'
-            (contextmenu)='child.onContextMenu($event,payroll)' (click)='readPayroll(payroll)'>
-          <th class='pointer fixed-side text-center'
+            (contextmenu)='child.onContextMenu($event,payroll)'>
+          <th class='pointer fixed-side text-center' (click)='readPayroll(payroll)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll.id}}
           </th>
@@ -346,7 +346,7 @@
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll?.employee?.firstName}}  {{payroll?.employee?.lastName}}
           </th>
-          <th class='pointer fixed-side text-center '
+          <th class='pointer fixed-side text-center ' (click)='readPayroll(payroll)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{payroll?.employee?.workday}}
           </th>
