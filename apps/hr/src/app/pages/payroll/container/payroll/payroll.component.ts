@@ -114,17 +114,6 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  loadInitPayroll(month?: Date) {
-    this.store.dispatch(
-      PayrollAction.loadInit(
-        this.Payroll(
-          month ?
-            Object.assign(this.formGroup.value, { createdAt: month })
-            : this.formGroup.value
-        )
-      )
-    );
-  }
 
   Payroll(val: any) {
     const payroll = {
