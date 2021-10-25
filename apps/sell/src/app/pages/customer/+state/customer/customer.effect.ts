@@ -50,10 +50,13 @@ export class CustomerEffect {
   addCustomer$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.addCustomer),
-      switchMap((props) => this.customerService.addOne(props.customer).pipe(
-        map(() => CustomerAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
-      ))
+      switchMap((props) => this.customerService.addOne(props.customer)),
+      map((res) => {
+        console.log(res)
+          return CustomerAction.addCustomerSuccess({ customer: res });
+        }
+      ),
+      catchError((err) => throwError(err))
     )
   );
 
