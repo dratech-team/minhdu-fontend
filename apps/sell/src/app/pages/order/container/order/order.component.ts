@@ -25,7 +25,7 @@ export class OrderComponent implements OnInit {
   currencyUnit = CurrencyUnit;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  pageSize = 30;
+  pageSize = 40;
   pageIndexInit = 0;
   formGroup = new FormGroup({
     paidType: new FormControl(''),
