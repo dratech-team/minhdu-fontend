@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { selectorAllOrders } from '../../../order/+state/order.selector';
 import { Order } from '../../../order/+state/order.interface';
 import { OrderAction } from '../../../order/+state/order.action';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'route-dialog.component.html'
@@ -25,6 +26,7 @@ export class RouteDialogComponent implements OnInit {
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
+    private readonly snackbar: MatSnackBar
   ) {
   }
 
@@ -51,10 +53,14 @@ export class RouteDialogComponent implements OnInit {
   get f() {
     return this.formGroup.controls;
   }
-  onSubmit() {
+
+  onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
+    }
+    if (this.orderIdsOfRoute.length === 0) {
+      return this.snackbar.open('Chưa chọn đơn hàng', '', { duration: 1500 });
     }
     const val = this.formGroup.value;
     const route = {
@@ -71,6 +77,6 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

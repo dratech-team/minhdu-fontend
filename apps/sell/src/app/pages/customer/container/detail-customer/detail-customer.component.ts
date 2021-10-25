@@ -41,8 +41,9 @@ export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
   ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
   ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
-  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded))
-  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded))
+  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded));
+  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded));
+
   ngOnInit() {
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
@@ -60,7 +61,7 @@ export class DetailCustomerComponent implements OnInit {
 
   updateCustomer(customer: Customer) {
     this.dialog.open(CustomerDialogComponent, {
-      data: customer,
+      data: { customer, isUpdate: true },
       width: '50%'
     });
   }
