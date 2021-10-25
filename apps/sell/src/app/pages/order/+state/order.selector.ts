@@ -98,6 +98,10 @@ export const selectedOrderLoaded = createSelector(
   (state) => state.loaded
 )
 
+export const selectedOrderAdded = createSelector(
+  selectorOrderState,
+  (state) => state.added
+)
 export const selectedNotOrderLoaded = createSelector(
   selectorOrderAssignedState,
   (state) => state.loaded

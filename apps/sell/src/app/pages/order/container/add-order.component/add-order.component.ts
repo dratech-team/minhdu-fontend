@@ -13,11 +13,12 @@ import { selectorAllCustomer, selectorCurrentCustomer } from '../../../customer/
 import { document } from 'ngx-bootstrap/utils';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { selectedOrderAdded } from '../../+state/order.selector';
 
 
 @Component({
@@ -59,6 +60,7 @@ export class AddOrderComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly snackbar: MatSnackBar
   ) {
   }
@@ -81,7 +83,6 @@ export class AddOrderComponent implements OnInit {
       createdAt: ['', Validators.required],
       explain: ['']
     });
-
   }
 
   getCustomerId() {
@@ -172,7 +173,12 @@ export class AddOrderComponent implements OnInit {
       commodityIds: this.commodityIds
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
-    this.observer.observe(document, { childList: true, subtree: true });
+    this.store.pipe(select(selectedOrderAdded)).subscribe(added =>{
+      if(added){
+        this.router.navigate(['/don-hang']).then()
+      }
+    })
+    // this.observer.observe(document, { childList: true, subtree: true });
   }
 
   onSelectWard($event: number) {
