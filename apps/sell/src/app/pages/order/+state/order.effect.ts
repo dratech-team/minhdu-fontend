@@ -19,20 +19,14 @@ export class OrderEffect {
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
-      switchMap((props) => this.orderService.addOne(props.order).pipe(
-        map(order => {
-          return OrderAction.addOrderSuccess({ order: order });
-        }),
-        tap(_ => {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Thao tác thành công' }
-          });
-        }),
-        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
-      ))
+      switchMap((props) => this.orderService.addOne(props.order)),
+      map(res => {
+        this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
+        return OrderAction.addOrderSuccess({ order: res });
+      }),
+      catchError((err) => {
+        return throwError(err);
+      })
     ));
 
   loadAllOrder$ = createEffect(() =>
