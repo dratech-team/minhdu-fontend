@@ -6,101 +6,101 @@
     </div>
   </div>
   <form [formGroup]='formGroup'>
-    <mat-tab-group dynamicHeight>
-      <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
-        <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll'>
-          <div class='form-group'>
-            <div class='row mt-2'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='name'>Tên tuyến đường<span class='star'>*</span>
-                </label>
-                <input
-                  type='text'
-                  class='form-control'
-                  id='name'
-                  formControlName='name'
-                  placeholder='Tuyến Bình Định - Hà Nội'
-                  [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }"
-                >
-                <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập tên tuyến đường</div>
-                </div>
-              </div>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='driver'>Tên tài xế<span class='star'>*</span>
-                </label>
-                <input
-                  type='text'
-                  class='form-control'
-                  id='driver'
-                  formControlName='driver'
-                  placeholder='Trần Văn A'
-                  [ngClass]="{ 'is-invalid': submitted && f.driver.errors?.required }"
-                >
-                <div *ngIf='submitted && f.driver.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập tên tài xế</div>
-                </div>
+    <mat-tab-group dynamicHeight selectedIndex='{{data.selectOrder? 1: 0}}'>
+    <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
+      <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll'>
+        <div class='form-group'>
+          <div class='row mt-2'>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='name'>Tên tuyến đường<span class='star'>*</span>
+              </label>
+              <input
+                type='text'
+                class='form-control'
+                id='name'
+                formControlName='name'
+                placeholder='Tuyến Bình Định - Hà Nội'
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors?.required }"
+              >
+              <div *ngIf='submitted && f.name.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập tên tuyến đường</div>
               </div>
             </div>
-
-            <div class='row mt-2'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='driver'>Tên nhà xe
-                </label>
-                <input
-                  type='text'
-                  class='form-control'
-                  id='garage'
-                  formControlName='garage'
-                  placeholder='nhà xe Phước Sơn'
-                >
-              </div>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='bsx'
-                  id='bsx'
-                  type='text'
-                  placeholder='77c-55555'
-                  [ngClass]="{ 'is-invalid': submitted && f.bsx.errors?.required }"
-                >
-                <div *ngIf='submitted && f.bsx.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập biển số xe</div>
-                </div>
-              </div>
-            </div>
-            <div class='row mt-3'>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='startedAt'>Ngày bắt đầu</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='startedAt'
-                  id='startedAt'
-                  type='date'
-                  [ngClass]="{ 'is-invalid': submitted && f.startedAt.errors?.required }"
-                >
-                <div *ngIf='submitted && f.startedAt.errors?.required' class='invalid-feedback'>
-                  <div>Chưa nhập ngày bắt đầu</div>
-                </div>
-              </div>
-              <div class='col-sm' [formGroup]='formGroup'>
-                <label for='endedAt'>Ngày Kết thúc</label><span class='star'>*</span>
-                <input
-                  class='form-control'
-                  formControlName='endedAt'
-                  id='endedAt'
-                  type='date'
-                >
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='driver'>Tên tài xế<span class='star'>*</span>
+              </label>
+              <input
+                type='text'
+                class='form-control'
+                id='driver'
+                formControlName='driver'
+                placeholder='Trần Văn A'
+                [ngClass]="{ 'is-invalid': submitted && f.driver.errors?.required }"
+              >
+              <div *ngIf='submitted && f.driver.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập tên tài xế</div>
               </div>
             </div>
           </div>
+
+          <div class='row mt-2'>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='driver'>Tên nhà xe
+              </label>
+              <input
+                type='text'
+                class='form-control'
+                id='garage'
+                formControlName='garage'
+                placeholder='nhà xe Phước Sơn'
+              >
+            </div>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='endedAt'>Biển số xe</label><span class='star'>*</span>
+              <input
+                class='form-control'
+                formControlName='bsx'
+                id='bsx'
+                type='text'
+                placeholder='77c-55555'
+                [ngClass]="{ 'is-invalid': submitted && f.bsx.errors?.required }"
+              >
+              <div *ngIf='submitted && f.bsx.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập biển số xe</div>
+              </div>
+            </div>
+          </div>
+          <div class='row mt-3'>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='startedAt'>Ngày bắt đầu</label><span class='star'>*</span>
+              <input
+                class='form-control'
+                formControlName='startedAt'
+                id='startedAt'
+                type='date'
+                [ngClass]="{ 'is-invalid': submitted && f.startedAt.errors?.required }"
+              >
+              <div *ngIf='submitted && f.startedAt.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập ngày bắt đầu</div>
+              </div>
+            </div>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='endedAt'>Ngày Kết thúc</label><span class='star'>*</span>
+              <input
+                class='form-control'
+                formControlName='endedAt'
+                id='endedAt'
+                type='date'
+              >
+            </div>
+          </div>
         </div>
-      </mat-tab>
-      <mat-tab class='col-12 ' label='Chọn đơn hàng'>
-        <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute' [orders$]='orders$'
-                        (checkEvent)='pickOrders($event)'></app-pick-order>
-      </mat-tab>
+      </div>
+    </mat-tab>
+    <mat-tab class='col-12 ' label='Chọn đơn hàng'>
+      <app-pick-order [orderIdsOfRoute]='orderIdsOfRoute' [orders$]='orders$'
+                      (checkEvent)='pickOrders($event)'></app-pick-order>
+    </mat-tab>
     </mat-tab-group>
     <div class='footer-popup row ml-4 mt-3'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>

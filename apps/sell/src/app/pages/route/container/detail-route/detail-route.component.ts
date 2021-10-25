@@ -32,10 +32,10 @@ export class DetailRouteComponent implements OnInit {
     this.store.dispatch(RouteAction.getRoute({ id: this.routeId }));
   }
 
-  updateRoute(route: Route) {
+  updateRoute(route: Route, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: '60%',
-      data: { route: route }
+      data: { route: route, selectOrder: selectOrder }
     });
   }
 
