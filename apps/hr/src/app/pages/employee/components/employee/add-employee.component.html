@@ -6,7 +6,7 @@
     </div>
   </div>
   <h2 mat-dialog-title>Thông tin nhân viên</h2>
-  <mat-dialog-content class='mat-typography'>
+  <mat-dialog-content class='mat-typography' style='max-height: 45vh'>
     <form [formGroup]='formGroup'>
       <div class='form-group'>
         <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
@@ -118,10 +118,11 @@
             </mat-select>
           </div>
         </div>
-        <div class='row d-flex mt-3 justify-content-center'>
-          <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
-        </div>
+
       </div>
     </form>
   </mat-dialog-content>
+  <div class='row d-flex mt-3 justify-content-center'>
+    <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
+  </div>
 </div>
