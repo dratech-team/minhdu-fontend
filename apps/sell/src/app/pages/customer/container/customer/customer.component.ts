@@ -16,6 +16,7 @@ import { AppState } from '../../../../reducers';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
+import { CustomerResourcesConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -24,6 +25,7 @@ export class CustomerComponent implements OnInit {
   customerType = CustomerType;
   boolean = ConvertBoolean;
   resourceType = CustomerResource;
+  resourceTypes = CustomerResourcesConstant;
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
@@ -86,7 +88,6 @@ export class CustomerComponent implements OnInit {
   }
 
   customer(val: any) {
-
     return {
       skip: 0,
       take: this.pageSize,
