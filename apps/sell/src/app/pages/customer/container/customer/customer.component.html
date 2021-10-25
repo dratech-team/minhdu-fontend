@@ -14,7 +14,7 @@
     <table [formGroup]='formGroup' style='width: 2400px'>
       <thead>
       <tr>
-        <th>
+        <th style='min-width: 300px'>
           <div class=''>Tên khách hàng</div>
           <input
             formControlName='name'
@@ -119,8 +119,10 @@
         <th> {{customer.note}}</th>
       </tr>
       <tr *ngIf='!customers || customers.length === 0 ' style='height:60vh; '>
-        <td colspan='15'>
-          Hiện chưa có Khách hàng nào!
+        <td colspan='15' class='position-relative font-weight-bold'>
+          <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
+             Hiện chưa có Khách hàng nào!
+          </span>
         </td>
       </tr>
       </tbody>
