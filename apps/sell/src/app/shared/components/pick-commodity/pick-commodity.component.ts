@@ -30,7 +30,6 @@ export class PickCommodityComponent implements OnInit {
       code: new FormControl(''),
       name: new FormControl(''),
       unit: new FormControl(''),
-      price: new FormControl('')
     }
   );
 

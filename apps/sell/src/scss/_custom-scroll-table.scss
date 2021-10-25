@@ -1,17 +1,19 @@
-.main-customer{
+.main-customer {
   min-height: 73vh;
-  width:98%;
+  width: 98%;
   overflow-x: scroll;
   overflow-y: hidden;
   margin: 0 auto;
 }
+
 .head-body {
   display: flex;
   align-items: center;
   background: #e2e4e9;
   height: 50px;
 }
-.search{
+
+.search {
   min-width: 300px;
 }
 
@@ -94,6 +96,7 @@
 .payment > input {
   width: 100px;
 }
+
 .gender {
   width: 100px;
   text-align: center;
@@ -118,13 +121,15 @@
   border-bottom: solid 1px #9aaec1;
   font-size: 16px;
 }
-.select{
+
+.select {
   font-size: 15px;
   border: none;
   text-align: center;
   height: 35px;
 }
-.select > option{
+
+.select > option {
   font-size: 15px;
   border: none;
   text-align: center;
@@ -153,7 +158,6 @@
 }
 
 
-
 .content-profile {
   padding: 5px;
   overflow-wrap: anywhere;
@@ -169,12 +173,14 @@
 .row-content:nth-child(even) {
   background-color: #dddddd;
 }
+
 .row-content {
   margin-top: 2px;
   display: flex;
   padding: 2px;
   border-bottom: solid 1px #9aaec1;
 }
+
 .name {
   width: 250px;
   text-align: center;
@@ -189,6 +195,7 @@
 .name > input {
   width: 250px;
 }
+
 .note {
   width: 350px;
   text-align: center;
@@ -203,6 +210,7 @@
 .note > input {
   width: 350px;
 }
+
 .address-customer {
   width: 320px;
   text-align: center;
@@ -217,6 +225,7 @@
 .address-customer > input {
   width: 320px;
 }
+
 .explain {
   width: 300px;
   text-align: center;
@@ -231,6 +240,7 @@
 .explain > input {
   width: 300px;
 }
+
 .explain-order {
   width: 230px;
   text-align: center;
@@ -260,15 +270,18 @@
 .address > input {
   width: 450px;
 }
-.title-pick{
-  height:35px !important;
+
+.title-pick {
+  height: 35px !important;
   font-size: 16px !important;
 }
-.check-content{
+
+.check-content {
   height: 200px;
   font-size: 16px;
   font-weight: bold
 }
+
 .fixTableHead thead {
   background: white;
   position: sticky;
@@ -366,4 +379,8 @@
 
 .table-scroll .even {
   background: #dddddd;
+}
+
+.table-scroll table tbody th {
+  padding: 5px;
 }

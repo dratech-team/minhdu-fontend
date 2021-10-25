@@ -77,8 +77,8 @@
         <th *ngIf='route.endedAt.getTime() < today '>Hoàn thành</th>
         <th *ngIf='route.endedAt.getTime() >= today '>Đang chạy</th>
       </tr>
-      <tr *ngIf='!routes || routes.length === 0'>
-        <td colspan='10' class='position-relative'>
+      <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
+        <td colspan='10' class='position-relative font-weight-bold font-lg'>
             <span style='position: absolute; top:40%; left: 40% '>
                 Hiện tại chưa có đơn Tuyến đường nào
             </span>
@@ -94,10 +94,6 @@
   (readAndUpdateEvent)='detailRoute($event)'
 >
 </app-mouse-right>
-<style>
-  table tbody th {
-    padding: 5px;
-  }
-</style>
+
 
 
