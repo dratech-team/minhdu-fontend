@@ -1,101 +1,103 @@
-<div style='margin:0 5% ' class='row h3 mt-3 '>
+<div class=' h3 mt-3 ml-5 '>
   <span>Danh sách Tuyến đường</span>
 </div>
-<div style='margin:0 4% 0 5% ' class='d-flex justify-content-between mt-3 row'>
+<div class='d-flex justify-content-between mt-3  ml-5'>
   <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
   <a (click)='printRouter()' target='_blank' download='data.xlsx'
      class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
 </div>
-<div class='main-customer'>
-  <ngx-skeleton-loader *ngIf='!(loaded$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
-  <ng-template #route>
-    <div class='main-profile mx-auto'>
-      <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Tên Tuyến đường</div>
-          <input formControlName='name' class='form-control input-profile ' type='text' placeholder=''>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Ngày bắt đầu</div>
-          <input formControlName='startedAt' class='form-control input-profile ' type='date'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Ngày Kết thúc</div>
-          <input formControlName='endedAt' class='form-control input-profile ' type='date'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Tên Tài xế</div>
-          <input formControlName='driver' class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Biển số xe</div>
-          <input formControlName='bsx' class='form-control input-profile ' type='text' placeholder='77G1-55555'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Nhà xe</div>
-          <input class='form-control input-profile ' type='text'
+<ngx-skeleton-loader *ngIf='!(loaded$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
+<ng-template #route>
+  <div class='table-scroll mx-auto border-top my-5' style='width: 96%'
+       infiniteScroll
+       [alwaysCallback]='true'
+       [infiniteScrollDistance]='1'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'>
+    <table [formGroup]='formGroup'>
+      <thead>
+      <tr>
+        <th style='min-width: 200px'>
+          <div>Tên Tuyến đường</div>
+          <input formControlName='name' class='form-control' type='text' placeholder=''>
+        </th>
+        <th>
+          <div class=''>Ngày bắt đầu</div>
+          <input formControlName='startedAt' class=' form-control' type='date'>
+        </th>
+        <th>
+          <div class=''>Ngày Kết thúc</div>
+          <input formControlName='endedAt' class='form-control' type='date'>
+        </th>
+        <th>
+          <div class=''>Tên Tài xế</div>
+          <input formControlName='driver' class=' form-control' type='text' placeholder='Trần Gia Hiệu'>
+        </th>
+        <th>
+          <div class=''>Biển số xe</div>
+          <input formControlName='bsx' class='form-control' type='text' placeholder='77G1-55555'>
+        </th>
+        <th>
+          <div>Nhà xe</div>
+          <input type='text' class='form-control'
                  placeholder='Nhập nhà xe' formControlName='garage'>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile '>Trạng thái chuyến xe</div>
-          <select class='select' matNativeControl required formControlName='statusRoute'>
+        </th>
+        <th>
+          <div class=' '>Trạng thái chuyến xe</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='statusRoute'>
             <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
             <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
             <option value=''>Tất cả</option>
           </select>
-        </div>
-      </form>
-      <div class='outer  animated fadeIn d-flex '
-           infiniteScroll
-           [alwaysCallback]='true'
-           [infiniteScrollDistance]='1'
-           [scrollWindow]='false'
-           (scrolled)='onScroll()'
-           [ngStyle]="{
-         'width':routes.length === 0 ? header.offsetWidth + 'px': 'auto',
-         'overflow-y':routes.length === 0 ? 'hidden':'scroll'
-         }"
-      >
-        <div class='row-content' *ngFor='let route of routes'
-             (click)='detailRoute(route.id)'
-             (contextmenu)='child.onContextMenu($event,route)'>
-          <app-mouse-right
-            #child (addEvent)='add()'
-            (deleteEvent)='deleteRoute($event)'
-            (readAndUpdateEvent)='detailRoute($event)'
-          >
-          </app-mouse-right>
-          <div class='content-profile name pointer '>{{route?.name}}</div>
-          <div class='content-profile name pointer ' *ngIf='route.startedAt !== null'>
-            {{route?.startedAt|date:'dd/MM/yyyy'}}
-          </div>
-          <div class='content-profile name pointer ' *ngIf='route.startedAt === null'>
-            Chưa cập nhật
-          </div>
-          <div class='content-profile name pointer ' *ngIf='route.endedAt !== null'>
-            {{route?.endedAt|date:'dd/MM/yyyy'}}
-          </div>
-          <div class='content-profile name pointer ' *ngIf='route.endedAt === null'>
-            Chưa cập nhật
-          </div>
-          <div class='content-profile name pointer' *ngIf='route.driver'>{{route?.driver}}</div>
-          <div class='content-profile name pointer' *ngIf='!route.driver'>
-            {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
-          <div class='content-profile name pointer '>{{route?.bsx}}</div>
-          <div class='content-profile name pointer '>{{route?.garage}}</div>
-          <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() < today '>Hoàn thành</div>
-          <div class='content-profile name pointer ' *ngIf='route.endedAt.getTime() >= today '>Đang chạy</div>
-        </div>
-        <div *ngIf='!routes || routes.length === 0'
-             class='d-flex justify-content-center align-items-center font-2xl '
-             style='height: 65vh'
-        >
-          Hiện tại chưa có đơn Tuyến đường nào
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-</div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let route of routes'
+          (click)='detailRoute(route.id)'
+          (contextmenu)='child.onContextMenu($event,route)' class='pointer'>
+        <th>{{route?.name}}</th>
+        <th *ngIf='route.startedAt !== null'>
+          {{route?.startedAt|date:'dd/MM/yyyy'}}
+        </th>
+        <th *ngIf='route.startedAt === null'>
+          Chưa cập nhật
+        </th>
+        <th *ngIf='route.endedAt !== null'>
+          {{route?.endedAt|date:'dd/MM/yyyy'}}
+        </th>
+        <th *ngIf='route.endedAt === null'>
+          Chưa cập nhật
+        </th>
+        <th *ngIf='route.driver'>{{route?.driver}}</th>
+        <th *ngIf='!route.driver'>
+          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</th>
+        <th>{{route?.bsx}}</th>
+        <th>{{route?.garage}}</th>
+        <th *ngIf='route.endedAt.getTime() < today '>Hoàn thành</th>
+        <th *ngIf='route.endedAt.getTime() >= today '>Đang chạy</th>
+      </tr>
+      <tr *ngIf='!routes || routes.length === 0'>
+        <td colspan='10' class='position-relative'>
+            <span style='position: absolute; top:40%; left: 40% '>
+                Hiện tại chưa có đơn Tuyến đường nào
+            </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+<app-mouse-right
+  #child (addEvent)='add()'
+  (deleteEvent)='deleteRoute($event)'
+  (readAndUpdateEvent)='detailRoute($event)'
+>
+</app-mouse-right>
+<style>
+  table tbody th {
+    padding: 5px;
+  }
+</style>
 
 

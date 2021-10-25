@@ -29,7 +29,10 @@ $spinkit-spinner-color: $body-color;
 .background-snackbar-validate {
   background: #f86c6ba6;
 }
-
+app-dashboard {
+  height: fit-content !important;
+  min-height: auto !important;
+}
 .chart-legend {
   position: absolute;
   bottom: 0px;
