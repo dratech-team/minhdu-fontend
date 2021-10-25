@@ -1,7 +1,7 @@
 <div>
-  <button (click)='addCustomer()' class='btn border ml-3 mt-2 d-flex align-items-center'>
+  <button (click)='addCustomer()' class='btn border  mt-2 d-flex align-items-center'>
     <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
-    <span class='ml-1 font-xl' style='color:#20a8d8;'> Thêm khách hàng</span>
+    <span class=' font-xl ml-1' style='color:#20a8d8;'> Thêm khách hàng</span>
   </button>
   <div class='fixTableHead mt-2 border-top' style='width: 100%; max-height: 40vh'
        infiniteScroll
@@ -11,19 +11,19 @@
        (scrolled)='onScroll()'>
     <table [formGroup]='formGroup'>
       <thead>
-      <tr >
-        <th >
-          <div >Tất cả</div>
+      <tr>
+        <th style='width: 150px'>
+          <div>Tất cả</div>
           <mat-checkbox *ngIf='data.pickMore'
                         class='example-margin m-auto '
                         [checked]='isSelectAll'
                         [indeterminate]='someComplete()'
                         (change)='setAll($event.checked)'>
           </mat-checkbox>
-          <input  disabled *ngIf='data.pickOne||pickOne'>
+          <input disabled *ngIf='data.pickOne||pickOne'>
         </th>
         <th>
-          <div >Tên Khách hàng</div>
+          <div>Tên Khách hàng</div>
           <input class='form-control input-profile'
                  type='text'
                  placeholder='PN10001'
@@ -31,8 +31,9 @@
           >
         </th>
         <th>
-          <div >Loại khách hàng</div>
-          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required formControlName='type'>
+          <div>Loại khách hàng</div>
+          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
+                  formControlName='type'>
             <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
             <option value='{{customerType.AGENCY}}'>Đại lý</option>
             <option value=''>Tất cả</option>
@@ -40,12 +41,9 @@
         </th>
         <th>
           <div class=' border-top'>Nguồn khách hàng</div>
-          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required formControlName='resource'>
-            <option value='{{resourceType.RESEARCH}}'>Tra cứu</option>
-            <option value='{{resourceType.INTRODUCED}}'>Giới thiệu</option>
-            <option value='{{resourceType.SELF_FIND}}'>Tự tìm</option>
-            <option value='{{resourceType.OTHER}}'>Khác</option>
-            <option value=''>Tất cả</option>
+          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
+                  formControlName='resource'>
+            <option *ngFor='let item of resourceTypes' [value]='item.type'>{{item.name}}</option>
           </select>
         </th>
       </tr>
@@ -70,11 +68,7 @@
         <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
         <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
         <th *ngIf='customer?.type === undefined'> Chưa cập nhật</th>
-        <th *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</th>
-        <th *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</th>
-        <th *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</th>
-        <th *ngIf='customer?.resource === resourceType.OTHER'> Khác</th>
-        <th *ngIf='!customer?.resource'>Chưa cập nhật</th>
+        <th> {{customer?.resource|transform:resourceTypes}}</th>
       </tr>
       <tr *ngIf='!customers || customers.length === 0 ' style='height: 150px'
           class=' d-flex justify-content-center align-content-center'>

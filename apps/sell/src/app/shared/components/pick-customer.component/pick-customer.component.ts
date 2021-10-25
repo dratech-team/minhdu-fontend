@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
 import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
+import { CustomerResourcesConstant } from '@minhdu-fontend/constants';
 
 @Component({
   selector: 'app-pick-customer',
@@ -20,6 +21,7 @@ export class PickCustomerComponent implements OnInit {
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
+  resourceTypes = CustomerResourcesConstant;
   customerType = CustomerType;
   pageSize = 30;
   pageIndexInit = 0;
