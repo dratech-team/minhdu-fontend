@@ -1,9 +1,9 @@
 .main-customer{
   min-height: 73vh;
-  width:99%;
+  width:98%;
   overflow-x: scroll;
   overflow-y: hidden;
-  margin-bottom: 30px;
+  margin: 0 auto;
 }
 .head-body {
   display: flex;
@@ -309,7 +309,7 @@
   z-index: 1;
   margin: auto;
   overflow: auto;
-  height: 63vh;
+  max-height: 150px;
 }
 
 .table-scroll thead th {
