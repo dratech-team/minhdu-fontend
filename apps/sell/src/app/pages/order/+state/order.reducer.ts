@@ -5,15 +5,18 @@ import { OrderAction } from './order.action';
 
 export interface OrderState extends EntityState<Order> {
   loaded: boolean,
+  added: boolean,
   selectedOrderId: number,
 }
+
 export interface OrderAssignedState extends EntityState<Order> {
   loaded: boolean,
   selectedBillId: number,
 }
+
 export const adapter: EntityAdapter<Order> = createEntityAdapter<Order>();
 
-export const initialOrder= adapter.getInitialState({ loaded: false });
+export const initialOrder = adapter.getInitialState({ loaded: false, added: false });
 
 export const OrderReducer = createReducer(
   initialOrder,
@@ -26,21 +29,27 @@ export const OrderReducer = createReducer(
   on(OrderAction.getOrderSuccess, (state, action) =>
     adapter.upsertOne(action.order, { ...state, loaded: true })
   ),
-  on(OrderAction.addOrderSuccess, (state, action) =>
-    adapter.addOne(action.order, {...state,loaded: true}),
+  on(OrderAction.addOrder, (state, _) => {
+      return { ...state, added: false };
+    }
+  ),
+  on(OrderAction.addOrderSuccess, (state, action) =>{
+    console.log(state)
+   return adapter.addOne(action.order, { ...state, loaded: true, added: true })
+  }
   )
 );
 
-export const initialOrderAssigned= adapter.getInitialState({ loaded: false });
+export const initialOrderAssigned = adapter.getInitialState({ loaded: false });
 
 export const OrderAssignedReducer = createReducer(
   initialOrderAssigned,
-  on(OrderAction.loadOrdersAssignedSuccess,(state, action)=>
-    adapter.setAll(action.orders,{...state,loaded: true})
+  on(OrderAction.loadOrdersAssignedSuccess, (state, action) =>
+    adapter.setAll(action.orders, { ...state, loaded: true })
   ),
-  on(OrderAction.loadMoreOrdersAssignedSuccess,(state, action)=>
-    adapter.addMany(action.orders,{...state,loaded: true})
+  on(OrderAction.loadMoreOrdersAssignedSuccess, (state, action) =>
+    adapter.addMany(action.orders, { ...state, loaded: true })
   )
-)
+);
 
-export const {selectAll,selectEntities,selectTotal} = adapter.getSelectors()
+export const { selectAll, selectEntities, selectTotal } = adapter.getSelectors();

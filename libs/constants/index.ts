@@ -6,3 +6,5 @@ export * from './method.constant';
 export * from './payroll.constant';
 export * from './block-salary.constant';
 export * from './unit.constant';
+export * from './customerResources.constant';
+export * from './currencies.constant';

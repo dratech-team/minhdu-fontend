@@ -1,125 +1,141 @@
-<div class='container'>
-  <div class=' animated fadeIn' style='width: 102%'>
-    <form [formGroup]='formGroup' class='header-profile mt-3 '>
-      <div class='border-start title-header col-3 ' *ngIf='!payment'>
-        <div class='title-profile title-pick'>Khách hàng</div>
-        <input class='form-control input-profile'
+<div class='table-scroll' style='height: 35vh' >
+  <table
+         infiniteScroll
+         [alwaysCallback]='true'
+         [infiniteScrollDistance]='1'
+         [scrollWindow]='false'>
+    <thead [formGroup]='formGroup'>
+    <tr>
+      <th *ngIf='!payment'>
+        <div class=' '>Khách hàng</div>
+        <input class='form-control '
                type='text'
-               placeholder='PN10001'
                formControlName='name'
         >
-      </div>
-      <div class='border-start title-header col-2 '>
-        <div class='title-profile title-pick'>Ngày tạo</div>
-        <input class='form-control input-profile'
+      </th>
+      <th>
+        <div class=' '>Ngày tạo</div>
+        <input class='form-control '
                type='text' formControlName='createdAt'
         >
-      </div>
-      <div class='border-start title-header col-2 '>
-        <div class='title-profile title-pick'>Tiền hàng</div>
+      </th>
+      <th>
+        <div class=' '>Tiền hàng</div>
         <input formControlName='commodityTotal'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header col-2 '>
-        <div class='title-profile title-pick'>Thanh toán</div>
-        <select class='select'  formControlName='paidType'>
+               class='form-control  '
+               type='number'>
+      </th>
+      <th>
+        <div class=' '>Thanh toán</div>
+        <select class='select border-top' style='width: 100%' formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
         </select>
-      </div>
-      <div class='border-start title-header col-2 ' style='overflow: hidden'>
-        <div class='title-profile title-pick'>lần thanh toán</div>
+      </th>
+      <th>
+        <div class=' '>lần thanh toán</div>
         <input
           disabled
-          class='form-control input-profile '
+          class='form-control  '
           type='number'>
-      </div>
-      <div class='border-start title-header col-3 '  *ngIf='payment'>
-        <div class='title-profile title-pick'>Diễn giải</div>
-        <input class='form-control input-profile'
+      </th>
+      <th *ngIf='payment'>
+        <div class=' '>Diễn giải</div>
+        <input class='form-control '
                type='text' formControlName='explain'
         >
-      </div>
-      <div class='border-start title-header col-1 '>
-        <div class='title-profile d-flex justify-content-center align-items-center title-pick'>Tất cả</div>
-        <div class=' d-flex justify-content-center mt-2 '  >
+      </th>
+      <th style='z-index: 2;width: 100px'>
+        <div>Tất cả</div>
+        <div class='border-top p-1'>
           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                         style='margin-right: 2%'
                         class='example-margin checkID  '
                         [checked]='isSelectAll'
-                        [indeterminate]="someComplete()"
+                        [indeterminate]='someComplete()'
                         (change)='setAll($event.checked)'>
           </mat-checkbox>
         </div>
-
-      </div>
-
-    </form>
-    <div class='outer example'
-         style='width: 100%; height: 30vh'
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [scrollWindow]='false'
-    >
-      <div class='row-content d-flex align-items-center' *ngFor='let order of orders'>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor='let order of orders'>
+      <th *ngIf='!payment'>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-3 pointer no-underline '  *ngIf='!payment' >
-         {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
+           style='color: black'
+           target='_blank' class='  pointer no-underline '>
+          {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
         </a>
+      </th>
+      <th>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt!== null'>
-          {{order?.createdAt | date: 'dd/MM/yyyy'}}
+           style='color: black'
+           target='_blank' class='  pointer no-underline '>
+          {{order?.createdAt ? (order?.createdAt| date: 'dd/MM/yyyy') : 'Đang cập nhật'}}
         </a>
+      </th>
+      <th>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline ' *ngIf='order?.createdAt=== null' >
-          Đang cập nhật
-        </a>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #f86c6b'>
+           target='_blank' class='  pointer no-underline ' style='color: #f86c6b'>
           {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
         </a>
+      </th>
+      <th>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='content-profile col-2 pointer no-underline '  style='color: #20c997'>
+           target='_blank' class='  pointer no-underline ' style='color: #20c997'>
           {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
         </a>
-        <a  routerLink="/don-hang/lich-su-thanh-toan"
+      </th>
+      <th>
+        <a routerLink='/don-hang/lich-su-thanh-toan'
+           style='color: black'
            [queryParams]='{data:order.paymentHistories|json}'
-           target="_blank" class='btn content-profile col-2 pointer hover-link '  >
+           target='_blank' class='   pointer hover-link '>
           {{order?.paymentHistories?.length}}
         </a>
+      </th>
+      <th *ngIf='payment'>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank'  class='content-profile col-3 pointer no-underline '  *ngIf='payment'>
+           style='color: black'
+           target='_blank' class='  pointer no-underline '>
           {{order.explain}}
         </a>
-        <input class='col-1'
-               (change)='pickOneOrder()'
-               *ngIf='data?.pickOne||pickOne'
-               type="radio"
-               name="pick-one" value="{{order.id}}"
-        >
-        <div class=' col-1  pointer mt-2 d-flex justify-content-center'  >
+      </th>
+      <th>
+        <div>
+          <input (change)='pickOneOrder()'
+                 *ngIf='data?.pickOne||pickOne'
+                 type='radio'
+                 name='pick-one' value='{{order.id}}'
+          >
+        </div>
+        <div>
           <mat-checkbox
-                         *ngIf='!pickOne||data?.pickMore'
-                         class='checkID'
-                         [checked]='order.isSelect ? order.isSelect: false'
-                         [(ngModel)]='order.isSelect'
-                         (ngModelChange)='updateAllSelect(order.id)'>
-
+            *ngIf='!pickOne||data?.pickMore'
+            class='checkID'
+            [checked]='orderIds.includes(order.id)'
+            (change)='updateAllSelect(order.id)'>
           </mat-checkbox>
         </div>
-      </div>
-      <div *ngIf='!orders || orders.length === 0'
-           class='d-flex justify-content-center align-items-center font-2xl '
-           style='height: 150px'
-      >
-        Hiện tại chưa có đơn hàng  nào
-      </div>
-    </div>
-    <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()'  mat-dialog-close > xác nhận</button>
-  </div>
+      </th>
+    </tr>
+    <tr *ngIf='!orders || orders.length === 0'>
+      <td colspan='6' class='position-relative' style='height: 30vh'>
+        <span style='position: absolute; top:40%; left: 40%'>
+           Hiện tại chưa có đơn hàng nào!
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
+<button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận</button>
+<style>
+  ::ng-deep .mat-step-header[aria-selected="true"]  {
+    height: 30px !important;
+  }
+</style>
 
 

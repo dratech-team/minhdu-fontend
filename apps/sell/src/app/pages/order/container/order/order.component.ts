@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
-import { ConvertBoolean, CurrencyUnit, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
+import { ConvertBoolean, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -14,6 +14,7 @@ import { OrderAction } from '../../+state/order.action';
 import { selectorAllOrders ,selectedOrderLoaded} from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
+import { CurrenciesConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'order.component.html'
@@ -22,10 +23,10 @@ export class OrderComponent implements OnInit {
   pageTypeEnum = PageTypeEnum;
   paidType = PaidType;
   statusOrder = StatusOrder;
-  currencyUnit = CurrencyUnit;
+  currenciesConstant = CurrenciesConstant;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  pageSize = 30;
+  pageSize = 40;
   pageIndexInit = 0;
   formGroup = new FormGroup({
     paidType: new FormControl(''),

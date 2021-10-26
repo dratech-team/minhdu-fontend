@@ -11,7 +11,7 @@
       <div class=' mb-3 title-popup'>
         <span>Lương ngoài giờ</span>
       </div>
-      <mat-dialog-content style='max-height: 50vh'>
+      <mat-dialog-content style='max-height: 40vh'>
         <div [formGroup]='formGroup' style='min-width: 800px'>
           <div class=' d-flex  justify-content-center row '>
             <div class='date-or-time col  '>
@@ -138,7 +138,7 @@
             <div class='unit-price'>
               <div class=' title-item mb-1'>
                 <span>Giá tăng ca</span>
-                <div class='star'>*</div>
+                <span class='star'>*</span>
               </div>
               <div class=' mb-3' [formGroup]='formGroup'>
                 <input type='number' class='form-control  px-1' value='{{price}}' disabled>
@@ -215,3 +215,8 @@
     </mat-step>
   </mat-stepper>
 </div>
+<style>
+  ::ng-deep .mat-step-header[aria-selected="true"]  {
+    height: 30px !important;
+  }
+</style>

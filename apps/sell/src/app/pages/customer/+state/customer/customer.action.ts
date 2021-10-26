@@ -8,6 +8,11 @@ export const addCustomer = createAction(
   props<{ customer: any }>()
 );
 
+export const addCustomerSuccess = createAction(
+  '[ADD_CUSTOMER] Add Customer Success',
+  props<{ customer: Customer }>()
+);
+
 export const loadInit = createAction(
   '[LOAD_CUSTOMER] Load Init',
   props<{
@@ -19,11 +24,11 @@ export const loadInit = createAction(
     phone?: number,
     nationId?: number,
     gender?: Gender,
-    birthDay?:Date,
-    email?:string,
-    note?:string,
-    customerType?:CustomerType,
-    customer?:string,
+    birthDay?: Date,
+    email?: string,
+    note?: string,
+    customerType?: CustomerType,
+    customer?: string,
 
   }>()
 );
@@ -45,11 +50,11 @@ export const loadMoreCustomers = createAction(
     phone?: number,
     nationId?: number,
     gender?: Gender,
-    birthDay?:Date,
-    email?:string,
-    note?:string,
-    customerType?:CustomerType,
-    customer?:string,
+    birthDay?: Date,
+    email?: string,
+    note?: string,
+    customerType?: CustomerType,
+    customer?: string,
   }>()
 );
 
@@ -81,6 +86,7 @@ export const deleteCustomer = createAction(
 
 export const CustomerAction = {
   addCustomer,
+  addCustomerSuccess,
   loadInit,
   loadInitSuccess,
   loadMoreCustomers,

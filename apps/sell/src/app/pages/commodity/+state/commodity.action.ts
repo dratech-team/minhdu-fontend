@@ -13,11 +13,18 @@ export const addCommoditySuccess = createAction(
 
 export const loadAllCommodities = createAction(
   '[LOAD_COMMODITY] load All Commodity'
-)
+);
 
 export const loadInit = createAction(
   '[LOAD_COMMODITY] Load Commodity',
-  props<{ take?: number, skip?: number , orderId?: number}>()
+  props<{
+    take?: number,
+    skip?: number,
+    orderId?: number,
+    code?: string,
+    name?: string,
+    unit?: string
+  }>()
 );
 export const loadInitSuccess = createAction(
   '[LOAD_COMMODITY] Load Commodity Success',
@@ -26,7 +33,14 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreCommodity = createAction(
   '[LOAD_MORE_COMMODITY] Load Commodity',
-  props<{ take: number, skip: number, orderId?: number }>()
+  props<{
+    take: number,
+    skip: number,
+    orderId?: number,
+    code?: string,
+    name?: string,
+    unit?: string
+  }>()
 );
 export const loadMoreCommoditySuccess = createAction(
   '[LOAD_MORE_COMMODITY] Load More Commodity Success',

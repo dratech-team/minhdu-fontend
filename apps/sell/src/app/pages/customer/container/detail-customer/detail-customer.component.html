@@ -309,12 +309,12 @@
       </div>
     </div>
     <div class='col-12 mt-5 ' >
-      <div class='row d-flex align-items-center '>
+      <div class='row d-flex align-items-center justify-content-between mb-2 '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đang giao</div>
+        <div routerLink="/don-hang/them-don-hang"
+             [queryParams]='{data:customer.id|json}'
+             class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
       </div>
-      <div routerLink="/don-hang/them-don-hang"
-           [queryParams]='{data:customer.id|json}'
-        class='ml-3 mt-3 btn btn-primary font-lg'>Thêm đơn hàng</div>
       <ngx-skeleton-loader *ngIf='!(loadedOrdersAssigned$ | async); else orderNotAssigned' count='7' appearance='line'></ngx-skeleton-loader>
       <ng-template #orderNotAssigned>
         <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'></app-table-order>
@@ -322,7 +322,7 @@
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
-        <div class='row align-items-center title-table ml-1'>Đơn hàng đã giao</div>
+        <div class='row align-items-center title-table ml-1 mb-2'>Đơn hàng đã giao</div>
       </div>
       <ngx-skeleton-loader *ngIf='!(loadedOrdersNotAssigned$ | async); else orderAssigned' count='7' appearance='line'></ngx-skeleton-loader>
       <ng-template #orderAssigned>

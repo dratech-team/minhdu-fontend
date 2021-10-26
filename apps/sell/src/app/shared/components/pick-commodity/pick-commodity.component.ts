@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommodityUnit, CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
@@ -8,6 +8,7 @@ import { PickCommodityService } from './pick-commodity.service';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { selectAllCommodity } from '../../../pages/commodity/+state/commodity.selector';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -24,13 +25,12 @@ export class PickCommodityComponent implements OnInit {
   pageSize = 30;
   isSelectAll = false;
   commodityIds: number[] = [];
-
+  commodities$ = this.store.pipe(select(selectAllCommodity));
   formGroup = new FormGroup(
     {
       code: new FormControl(''),
       name: new FormControl(''),
-      unit: new FormControl(''),
-      price: new FormControl('')
+      unit: new FormControl('')
     }
   );
 
@@ -44,14 +44,10 @@ export class PickCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.commodities$) {
-      this.data.commodities$.subscribe(
-        (val: any) => {
-          this.commodities = JSON.parse(JSON.stringify(val));
-          this.assignIsSelect();
-        }
-      );
-    }
+    this.store.dispatch(CommodityAction.loadAllCommodities());
+    this.commodities$.subscribe(commodities => {
+      this.commodities = JSON.parse(JSON.stringify(commodities));
+    });
   }
 
   // onScroll() {
@@ -62,19 +58,12 @@ export class PickCommodityComponent implements OnInit {
   //   this.pageIndex++;
   //   this.service.scrollCommodities(val);
   // }
-
-  assignIsSelect() {
-    if (this.isSelectAll) {
-      this.commodityIds = [];
-      this.commodities.forEach(commodity => {
-        commodity.isSelect = this.isSelectAll;
-        this.commodityIds.push(commodity.id);
-      });
-    } else {
-      this.commodities.forEach(e => {
-        e.isSelect = this.commodityIds.includes(e.id);
-      });
-    }
+  commodity(val: any) {
+    return {
+      name: val.name,
+      code: val.code,
+      unit: val.unit
+    };
   }
 
   addCommodity() {
@@ -101,26 +90,28 @@ export class PickCommodityComponent implements OnInit {
     } else {
       this.commodityIds.push(id);
     }
-    this.isSelectAll = this.commodities !== null && this.commodities.every(e => e.isSelect);
+    this.isSelectAll = this.commodities !== null && this.commodities.every(e => this.commodityIds.includes(e.id));
     this.checkEvent.emit(this.commodityIds);
   }
 
   someComplete(): boolean {
-    if (this.commodities == null) {
-      return false;
-    }
     return (
-      this.commodities.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.commodities.filter(e => this.commodityIds.includes(e.id)).length > 0 && !this.isSelectAll
     );
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    this.commodityIds = [];
     this.commodities?.forEach(commodity => {
-        commodity.isSelect = select;
         if (select) {
-          this.commodityIds.push(commodity.id);
+          if (!this.commodityIds.includes(commodity.id)) {
+            this.commodityIds.push(commodity.id);
+          }
+        } else {
+          const index = this.commodityIds.indexOf(commodity.id);
+          if (index > -1) {
+            this.commodityIds.splice(index, 1);
+          }
         }
       }
     );

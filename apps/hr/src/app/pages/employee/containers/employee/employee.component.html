@@ -37,7 +37,7 @@
             </th>
             <th>
               <div class='border-top text-center'>Giới tính</div>
-              <select class='select' matNativeControl required formControlName='gender'>
+              <select class='select border-top' style='width: 100%' matNativeControl required formControlName='gender'>
                 <option value='{{genderType.MALE}}'>Nam</option>
                 <option value='{{genderType.FEMALE}}'>Nữ</option>
                 <option value='{{genderType.OTHER}}'>Khác</option>
@@ -116,7 +116,7 @@
               }}
             </th>
             <th class='pointer'>
-              {{employee?.workedAt|date: 'dd/MM/yyyy'}}
+              {{employee?.createdAt|date: 'dd/MM/yyyy'}}
             </th>
             <th class='pointer'>
               {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}

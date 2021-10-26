@@ -118,6 +118,10 @@ export const loadMoreOrdersAssignedSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
+export const handleOrderError = createAction(
+  '[ORDER_ERROR] Order error',
+);
+
 export const OrderAction = {
   addOrder,
   addOrderSuccess,

@@ -13,24 +13,22 @@ import { selectorAllCustomer, selectorCurrentCustomer } from '../../../customer/
 import { document } from 'ngx-bootstrap/utils';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { selectedOrderAdded } from '../../+state/order.selector';
 
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  commodities$ = this.store.pipe(select(selectAllCommodity));
-  customers$ = this.store.pipe(select(selectorAllCustomer));
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
   customers: Customer [] = [];
   customerPicked: Customer | undefined;
   commodityUnit = CommodityUnit;
-  Commodities: Commodity [] = [];
   CommoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerId: number | undefined;
@@ -59,20 +57,17 @@ export class AddOrderComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly snackbar: MatSnackBar
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    this.store.dispatch(CommodityAction.loadAllCommodities());
     this.customerPicked$.subscribe(val => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
-    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
-    this.commodities$.subscribe(val => this.Commodities = JSON.parse(JSON.stringify(val)));
     const btnOrder = document.getElementById('order');
     btnOrder?.classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border');
@@ -81,7 +76,6 @@ export class AddOrderComponent implements OnInit {
       createdAt: ['', Validators.required],
       explain: ['']
     });
-
   }
 
   getCustomerId() {
@@ -97,7 +91,6 @@ export class AddOrderComponent implements OnInit {
     const ref = this.dialog.open(PickCustomerComponent, {
       width: '50%',
       data: {
-        customers$: this.customers$,
         pickOne: true
       }
     });
@@ -121,7 +114,6 @@ export class AddOrderComponent implements OnInit {
     const ref = this.dialog.open(PickCommodityComponent, {
       width: '65%',
       data: {
-        commodities$: this.commodities$,
         pickMore: true,
         type: 'DIALOG'
       }
@@ -172,7 +164,12 @@ export class AddOrderComponent implements OnInit {
       commodityIds: this.commodityIds
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
-    this.observer.observe(document, { childList: true, subtree: true });
+    this.store.pipe(select(selectedOrderAdded)).subscribe(added =>{
+      if(added){
+        this.router.navigate(['/don-hang']).then()
+      }
+    })
+    // this.observer.observe(document, { childList: true, subtree: true });
   }
 
   onSelectWard($event: number) {

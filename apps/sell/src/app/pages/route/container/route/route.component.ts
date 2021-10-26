@@ -68,7 +68,7 @@ export class RouteComponent implements OnInit {
 
   add() {
     this.dialog.open(RouteDialogComponent, {
-      width: '55%'
+      width: 'fit-content'
     });
   }
 
