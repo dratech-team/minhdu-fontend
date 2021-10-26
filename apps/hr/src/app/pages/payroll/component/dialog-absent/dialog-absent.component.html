@@ -96,7 +96,7 @@
              *ngIf='selectedIndex  === 0 ||unitAbsent' class='col-5 ml-3'>
           <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
                         style='font-size: 12px'>
-            Quên giấy phép và bsc
+            Quên giấy phép
           </mat-checkbox>
         </div>
       </div>
@@ -113,7 +113,7 @@
       </div>
       <div class='row mb-3'
            *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.TIMES)
-            || data?.salary?.unit === datetimeUnit.TIMES '>
+            || data?.salary?.unit === datetimeUnit.TIMES'>
         <div [formGroup]='formGroup' class='col-12'>
           <span class='title-item'>Số lần</span>
           <input class='form-control' type='number' formControlName='times'>
