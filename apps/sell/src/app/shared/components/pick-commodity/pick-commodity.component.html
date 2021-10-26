@@ -82,9 +82,9 @@
         <th *ngIf='commodity?.unit === commodityUnit.KG'> Kilogam</th>
         <th c *ngIf='commodity?.unit === commodityUnit.CON'> Con</th>
       </tr>
-      <tr *ngIf='!commodities || commodities.length === 0 '>
-        <td class='font-xl m-auto'>
-          <span>Hiện chưa có hàng hóa nào!</span>
+      <tr *ngIf='!commodities || commodities.length === 0 ' style='height: 30vh'>
+        <td class='position-relative font-lg font-weight-bold ' colspan='11' >
+          <span  style='position: absolute ;top:40% ;left:40%; '>Hiện chưa có hàng hóa nào!</span>
         </td>
       </tr>
       </tbody>
