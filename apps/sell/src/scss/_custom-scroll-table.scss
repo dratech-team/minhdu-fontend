@@ -363,12 +363,12 @@
   z-index: 5;
 }
 
-.table-scroll > table th > div {
+.table-scroll  > table thead th > div {
   height: 35px;
   width: 100%;
 }
 
-.table-scroll > table th > input {
+.table-scroll > table thead th > input {
   height: 35px;
   width: 100%;
 }

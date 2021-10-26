@@ -6,9 +6,9 @@
     </div>
   </div>
   <form [formGroup]='formGroup'>
-    <mat-tab-group dynamicHeight selectedIndex='{{data.selectOrder? 1: 0}}'>
+    <mat-tab-group dynamicHeight selectedIndex='{{data?.selectOrder? 1: 0}}'>
     <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
-      <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: scroll'>
+      <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: auto'>
         <div class='form-group'>
           <div class='row mt-2'>
             <div class='col-sm' [formGroup]='formGroup'>
@@ -108,3 +108,4 @@
     </div>
   </form>
 </div>
+
