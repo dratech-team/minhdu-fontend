@@ -115,9 +115,8 @@
           <mat-checkbox
             *ngIf='!pickOne||data?.pickMore'
             class='checkID'
-            [checked]='order.isSelect ? order.isSelect: false'
-            [(ngModel)]='order.isSelect'
-            (ngModelChange)='updateAllSelect(order.id)'>
+            [checked]='orderIds.includes(order.id)'
+            (change)='updateAllSelect(order.id)'>
           </mat-checkbox>
         </div>
       </th>

@@ -56,13 +56,11 @@ export class PickOrderComponent implements OnInit {
       this.data.orders$.subscribe(
         (val: Order[]) => {
           this.orders = JSON.parse(JSON.stringify(val));
-          this.assignIsSelect();
         }
       );
     } else {
       this.orders$.subscribe((order: Order) => {
           this.orders = JSON.parse(JSON.stringify(order));
-          this.assignIsSelect();
         }
       );
     }
@@ -80,23 +78,6 @@ export class PickOrderComponent implements OnInit {
   //   this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
   // }
 
-
-  assignIsSelect() {
-    if (this.isSelectAll && this.orderIdsOfRoute.length >= this.orders.length) {
-      this.orders.forEach(val => {
-        val.isSelect = true;
-        if (!this.orderIdsOfRoute.includes(val.id)) {
-          this.orderIdsOfRoute.push(val.id);
-        }
-      });
-    } else {
-      this.isSelectAll = false;
-      this.orders.forEach(order => {
-        order.isSelect = this.orderIdsOfRoute?.includes(order.id);
-      });
-    }
-    this.checkEvent.emit(this.orderIdsOfRoute);
-  }
 
   order(val: any) {
     // pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
@@ -117,7 +98,7 @@ export class PickOrderComponent implements OnInit {
     } else {
       this.orderIds.push(id);
     }
-    this.isSelectAll = this.orders !== null && this.orders.every(e => e.isSelect);
+    this.isSelectAll = this.orders !== null && this.orders.every(e => this.orderIds.includes(e.id));
     this.checkEvent.emit(this.orderIds);
   }
 
@@ -126,17 +107,22 @@ export class PickOrderComponent implements OnInit {
       return false;
     }
     return (
-      this.orders.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.orders.filter(e => this.orderIds.includes(e.id)).length > 0 && !this.isSelectAll
     );
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    this.orderIds = [];
     this.orders?.forEach(order => {
-        order.isSelect = select;
         if (select) {
-          this.orderIds.push(order.id);
+          if (!this.orderIds.includes(order.id)) {
+            this.orderIds.push(order.id);
+          }
+        } else {
+          const index = this.orderIds.indexOf(order.id);
+          if (index > -1) {
+            this.orderIds.splice(index, 1);
+          }
         }
       }
     );
