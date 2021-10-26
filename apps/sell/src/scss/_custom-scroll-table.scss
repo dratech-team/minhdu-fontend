@@ -314,6 +314,9 @@
   height: 35px;
   width: 100%;
 }
+.fixTableHead table tbody th {
+  padding: 5px;
+}
 
 //fixed Header and first column
 .table-scroll {
