@@ -1,110 +1,108 @@
-<form [formGroup]='formGroup' class='main-profile'>
-  <div class='header-profile mt-3 animated fadeIn'>
-    <div class='border-start title-header default'>
-      <div class='title-profile'>Ngày tạo</div>
-      <input
-        formControlName='createdAt'
-        class='form-control input-profile '
-        type='date'>
-    </div>
-    <div class='border-start title-header address-customer'>
-      <div class='title-profile'>Điểm đến</div>
-      <input
-        formControlName='destination'
-        class='form-control input-profile '
-        type='text'>
-    </div>
-    <div class='border-start title-header default'>
-      <div class='title-profile'> Tiền đơn hàng</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='number'>
-    </div>
-    <div class='border-start title-header  default'>
-      <div class='title-profile'> Tiền thanh toán</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='number'>
-    </div>
-    <div *ngIf='delivered' class='border-start title-header  default'>
-      <div class='title-profile'>Ngày giao hàng</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='date'>
-    </div>
-    <div *ngIf='!delivered' class='border-start title-header  explain-order'>
-      <div class='title-profile'>Diễn giải</div>
-      <input
-        formControlName='explain'
-        class='form-control input-profile '
-        type='text'>
-    </div>
-    <div *ngIf='delivered' class='border-start title-header  default '>
-      <div class='title-profile'>Ẩn nợ</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='number'>
-    </div>
-    <div *ngIf='!delivered' class='border-start title-header  cancel'>
-      <div class='title-profile'>Hủy</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='number'>
-    </div>
-  </div>
-  <div class='  animated fadeIn '
-       style=' max-height: 32vh;'
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='1'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'
-       *ngIf='(orders$| async) as orders'
-       [ngStyle]="{'overflow-y':orders.length===0?'hidden':'scroll'}"
-  >
-    <div class='row-content' *ngFor='let order of orders'>
-      <div class='content-profile default pointer ' *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
+<div class='fixTableHead border-top'
+     style=' max-height: 32vh ; width: 100%'
+     infiniteScroll
+     [alwaysCallback]='true'
+     [infiniteScrollDistance]='0.2'
+     [scrollWindow]='false'
+     (scrolled)='onScroll()'>
+  <table>
+    <thead [formGroup]='formGroup'>
+    <tr>
+      <th>
+        <div >Ngày tạo</div>
+        <input
+          formControlName='createdAt'
+          class='form-control  '
+          type='date'>
+      </th>
+      <th>
+        <div class=''>Điểm đến</div>
+        <input
+          formControlName='destination'
+          class='form-control  '
+          type='text'>
+      </th>
+      <th>
+        <div class=''> Tiền đơn hàng</div>
+        <input
+          [disabled]='true'
+          type='number'>
+      </th>
+      <th>
+        <div class=''> Tiền thanh toán</div>
+        <input
+          [disabled]='true'
+          type='number'>
+      </th>
+      <th *ngIf='delivered'>
+        <div class=''>Ngày giao hàng</div>
+        <input
+          [disabled]='true'
+          type='date'>
+      </th>
+      <th *ngIf='!delivered'>
+        <div class=''>Diễn giải</div>
+        <input
+          formControlName='explain'
+          class='form-control  '
+          type='text'>
+      </th>
+      <th *ngIf='delivered'>
+        <div class=''>Ẩn nợ</div>
+        <input
+          [disabled]='true'
+          type='number'>
+      </th>
+      <th *ngIf='!delivered'>
+        <div class=''>Hủy</div>
+        <input
+          [disabled]='true'
+          type='number'>
+      </th>
+    </tr>
+    </thead>
+    <tbody *ngIf='(orders$| async) as orders'>
+    <tr *ngFor='let order of orders'>
+      <th *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
         {{order?.createdAt | date: 'dd/MM/yyyy'}}
-      </div>
-      <div class='content-profile default pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
+      </th>
+      <th *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
         Đang cập nhật
-      </div>
-      <div class='content-profile address-customer pointer ' (click)='detailOrder(order.id)'>
+      </th>
+      <th  (click)='detailOrder(order.id)'>
         {{order?.destination?.name}} -
         {{order?.destination?.district?.name}} -
         {{order?.destination?.district?.province?.name}}
-      </div>
-      <div class='content-profile default pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>
+      </th>
+      <th  (click)='detailOrder(order.id)' style='color: #f86c6b'>
         {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
-      </div>
-      <div class='content-profile default pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>
+      </th>
+      <th  (click)='detailOrder(order.id)' style='color: #20c997'>
         {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
-      </div>
-      <div *ngIf='delivered' class='content-profile default pointer ' (click)='detailOrder(order.id)'>
+      </th>
+      <th *ngIf='delivered'  (click)='detailOrder(order.id)'>
         {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
-      </div>
-      <div *ngIf='!delivered' class='content-profile explain-order pointer ' (click)='detailOrder(order.id)'>
+      </th>
+      <th *ngIf='!delivered'  (click)='detailOrder(order.id)'>
         {{order?.explain}}
-      </div>
-      <div *ngIf='delivered' class='content-profile default pointer '>
+      </th>
+      <th *ngIf='delivered'>
         <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
-      </div>
-      <div *ngIf='!delivered' class='content-profile cancel pointer'>
+      </th>
+      <th *ngIf='!delivered' >
         <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order)'>Hủy</button>
-      </div>
-    </div>
-    <div *ngIf='!orders || orders.length === 0 ' style='height: 150px'
-         class=' d-flex justify-content-center align-content-center'>
-      <div class='font-xl d-flex align-items-center'>
-        Hiện chưa có đơn hàng nào!
-      </div>
-    </div>
-  </div>
-</form>
+    </tr>
+    <tr *ngIf='!orders || orders.length === 0 '
+        style='height: 20vh'>
+      <td colspan='7' class='font-xl font-weight-bold position-relative'>
+        <span style='position: absolute;top: 40%;left: 40%'>
+            Hiện chưa có đơn hàng nào!
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
 
 

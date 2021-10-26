@@ -288,6 +288,10 @@
   top: -1px;
 }
 
+.fixTableHead thead th {
+  padding: 0;
+}
+
 .fixTableHead {
   font-size: 12px;
   width: fit-content;
@@ -314,6 +318,7 @@
   height: 35px;
   width: 100%;
 }
+
 .fixTableHead table tbody th {
   padding: 5px;
 }
@@ -366,7 +371,7 @@
   z-index: 5;
 }
 
-.table-scroll  > table thead th > div {
+.table-scroll > table thead th > div {
   height: 35px;
   width: 100%;
 }
