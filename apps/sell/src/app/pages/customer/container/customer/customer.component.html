@@ -104,13 +104,13 @@
         <th *ngIf='customer?.gender === genderType.FEMALE'> Nữ</th>
         <th *ngIf='customer?.gender === genderType.OTHER'> Khác</th>
         <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
-        <th><input type='checkbox' disabled
-                   [checked]='customer.isPotential'></th>
+        <th>
+          <input type='checkbox' disabled [checked]='customer.isPotential'>
+        </th>
         <th>
           {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
         </th>
         <th>{{ customer.resource|transform: resourceTypes}}</th>
-
         <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
         <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
         <th *ngIf='!customer?.type'> Chưa cập nhật</th>

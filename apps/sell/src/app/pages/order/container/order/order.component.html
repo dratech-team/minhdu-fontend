@@ -65,15 +65,9 @@
         <th>
           <div>Đơn vị tiền</div>
           <input class='form-control  ' disabled>
-          <!--          <select  class='select'  matNativeControl required [disabled]='true'>-->
-          <!--            <option value='{{currencyUnit.VND}}'>VND</option>-->
-          <!--            <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>-->
-          <!--            <option value='{{currencyUnit.EUR}}'>Euro</option>-->
-          <!--            <option value='{{currencyUnit.GBP}}'>Bảng anh</option>-->
-          <!--            <option value='{{currencyUnit.MMK}}'>Kyat</option>-->
-          <!--            <option value='{{currencyUnit.MYR}}'>Ringgit</option>-->
-          <!--            <option value='{{currencyUnit.USD}}'>Đô la</option>-->
-          <!--          </select>-->
+<!--                    <select  class='select border-top' style='width: 100%'  matNativeControl required >-->
+<!--                      <option *ngFor='let item of currenciesConstant' [value]='item.type'>{{item.name}}</option>-->
+<!--                    </select>-->
         </th>
         <th>
           <div class=''> Trạng thái đơn hàng</div>
@@ -106,47 +100,11 @@
           {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
         </th>
         <th (click)='detailOrder(order.id)' style='color: #20c997'>
-          {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
+          {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}}
         </th>
         <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.VND || !order?.currency '>
-          VND
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.USD'>
-          Đô la mỹ
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.MYR'>
-          Ringgit
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.MMK'>
-          Kyat
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.JPY'>
-          Yên Nhật
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.GBP'>
-          Bảng anh
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.EUR'>
-          Euro
-        </th>
-        <th
-          (click)='detailOrder(order.id)'
-          *ngIf='order?.currency=== currencyUnit.CNY'>
-          Nhân dân tệ
+          (click)='detailOrder(order.id)'>
+          {{order.currency|transform:currenciesConstant}}
         </th>
         <th (click)='detailOrder(order.id)' *ngIf='order.deliveredAt'>
           Đã giao
@@ -156,7 +114,7 @@
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
-        <td colspan='20' class='font-weight-bold position-relative' >
+        <td colspan='20' class='font-weight-bold position-relative'>
          <span style='position: absolute; top: 40%; left: 40%; font-size: 23px'>
            Hiện tại chưa có đơn hàng nào!
          </span>
