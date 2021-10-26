@@ -22,32 +22,32 @@
           </div>
         </th>
         <th>
-          <div >Mã hàng</div>
-          <input class='form-control'  type='text' formControlName='code'
+          <div>Mã hàng</div>
+          <input class='form-control' type='text' formControlName='code'
           >
         </th>
         <th>
-          <div >Tên Hàng hóa</div>
-          <input  class='form-control'  type='text' formControlName='name'>
+          <div>Tên Hàng hóa</div>
+          <input class='form-control' type='text' formControlName='name'>
         </th>
         <th>
-          <div >Giá trước KM</div>
-          <input disabled type='number' >
+          <div>Giá trước KM</div>
+          <input disabled type='number'>
         </th>
         <th>
-          <div >Số lượng</div>
+          <div>Số lượng</div>
           <input type='number' disabled>
         </th>
         <th>
-          <div >Khuyến mãi</div>
+          <div>Khuyến mãi</div>
           <input type='number' disabled>
         </th>
         <th>
-          <div >Mua thêm</div>
+          <div>Mua thêm</div>
           <input type='number' disabled>
         </th>
         <th>
-          <div >Giá sau KM</div>
+          <div>Giá sau KM</div>
           <input type='number'
                  disabled
           >
@@ -63,9 +63,8 @@
           (contextmenu)='child.onContextMenu($event,commodity)'>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <mat-checkbox class='checkID'
-                        [checked]='commodity.isSelect ? commodity.isSelect: false'
-                        [(ngModel)]='commodity.isSelect'
-                        (ngModelChange)='updateAllSelect(commodity.id)'>
+                        [checked]='commodityIds.includes(commodity.id)'
+                        (change)='updateAllSelect(commodity.id)'>
           </mat-checkbox>
         </th>
         <th>{{commodity.code}} </th>
@@ -83,8 +82,8 @@
         <th c *ngIf='commodity?.unit === commodityUnit.CON'> Con</th>
       </tr>
       <tr *ngIf='!commodities || commodities.length === 0 ' style='height: 30vh'>
-        <td class='position-relative font-lg font-weight-bold ' colspan='11' >
-          <span  style='position: absolute ;top:40% ;left:40%; '>Hiện chưa có hàng hóa nào!</span>
+        <td class='position-relative font-lg font-weight-bold ' colspan='11'>
+          <span style='position: absolute ;top:40% ;left:40%; '>Hiện chưa có hàng hóa nào!</span>
         </td>
       </tr>
       </tbody>

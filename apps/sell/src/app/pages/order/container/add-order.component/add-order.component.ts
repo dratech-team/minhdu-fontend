@@ -25,13 +25,10 @@ import { selectedOrderAdded } from '../../+state/order.selector';
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  commodities$ = this.store.pipe(select(selectAllCommodity));
-  customers$ = this.store.pipe(select(selectorAllCustomer));
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
   customers: Customer [] = [];
   customerPicked: Customer | undefined;
   commodityUnit = CommodityUnit;
-  Commodities: Commodity [] = [];
   CommoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerId: number | undefined;
@@ -66,15 +63,11 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    this.store.dispatch(CommodityAction.loadAllCommodities());
     this.customerPicked$.subscribe(val => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
-    this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
-    this.commodities$.subscribe(val => this.Commodities = JSON.parse(JSON.stringify(val)));
     const btnOrder = document.getElementById('order');
     btnOrder?.classList.add('btn-border');
     document.getElementById('route').classList.remove('btn-border');
@@ -98,7 +91,6 @@ export class AddOrderComponent implements OnInit {
     const ref = this.dialog.open(PickCustomerComponent, {
       width: '50%',
       data: {
-        customers$: this.customers$,
         pickOne: true
       }
     });
@@ -122,7 +114,6 @@ export class AddOrderComponent implements OnInit {
     const ref = this.dialog.open(PickCommodityComponent, {
       width: '65%',
       data: {
-        commodities$: this.commodities$,
         pickMore: true,
         type: 'DIALOG'
       }

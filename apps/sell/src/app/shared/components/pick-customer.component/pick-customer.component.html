@@ -53,13 +53,13 @@
         <th class='py-2'>
           <mat-checkbox *ngIf='data.pickMore'
                         class='checkID'
-                        [checked]='customer.isSelect ? customer.isSelect: false'
-                        [(ngModel)]='customer.isSelect'
-                        (ngModelChange)='updateAllSelect(customer.id)'>
+                        [checked]='customerIds.includes(customer.id)'
+                        (change)='updateAllSelect(customer.id)'>
           </mat-checkbox>
           <input
             style='height: 12px ; margin: auto'
             (change)='pickOneCustomer()'
+            [checked]='customer.id === customerId'
             *ngIf='data.pickOne||pickOne'
             type='radio' name='pick-one'
             value='{{customer.id}}'>
