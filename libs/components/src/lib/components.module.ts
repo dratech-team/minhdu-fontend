@@ -26,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 import { TransformPipe } from './pipes/transform.pipe';
+import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { TransformPipe } from './pipes/transform.pipe';
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe
+    TransformPipe,
+    DialogSharedComponent
   ],
   providers: [DecimalPipe],
   exports: [
@@ -75,7 +77,8 @@ import { TransformPipe } from './pipes/transform.pipe';
     PickLocationComponent,
     ShowAlertComponent,
     TransformUnitPipe,
-    TransformPipe
+    TransformPipe,
+    DialogSharedComponent
   ],
 })
 export class ComponentsModule {}
