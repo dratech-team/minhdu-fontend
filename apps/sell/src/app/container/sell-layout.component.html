@@ -22,10 +22,6 @@
         <button type='button' data-toggle="tooltip" data-placement="bottom" title="Facebook" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh' target="_blank" > <img  height='20px btn' src='../../assets/icon/sell-layout/facebook.svg' alt='facebook' ></a>
         </button>
-<!--        todo-->
-<!--        <button type='button' data-toggle="tooltip" data-placement="bottom" title="Thông báo" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>-->
-<!--          <img height='20px' src='../../assets/icon/sell-layout/bell.svg' alt='notification'>-->
-<!--        </button>-->
         <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle="tooltip" data-placement="bottom" title="Tạo tài khoản" class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <img height='20px' src='./assets/icon/sell-layout/person-plus.svg' alt='create'>
         </button>
@@ -38,28 +34,21 @@
       </div>
     </div>
     <div class=' mt-2 ml-2 row hide-on-mobile '>
-      <button routerLink="/" id='home' (click)='changeTab($event.target)'  class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
-        <img class='m-1' src='../../assets/icon/sell-layout/house-door.svg' alt='home'>
-        Bàn làm việc </button>
-      <button  id='customer' (click)='changeTab($event.target)'  routerLink="/khach-hang" class='button btn-header font-lg overflow-hidden d-flex align-items-center '>
-        <img  class='m-1' src='../../assets/icon/sell-layout/building.svg' alt='home'>
-        Khách hàng </button>
-      <!--      <button routerLink="/commodity"  class='btn font-lg overflow-hidden d-flex align-items-center '>-->
-      <!--        <img class='mr-1' src='../../assets/icon/sell-layout/box.svg' alt='home'>-->
-      <!--        Hàng hóa </button>-->
-      <button id='order' (click)='changeTab($event.target)'  routerLink="/don-hang" class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
-        <img class='m-1' src='../../assets/icon/sell-layout/cart.svg' alt='home'>
-        Đơn hàng</button>
-      <button  (click)='changeTab($event.target)' id='route'  routerLink="/tuyen-duong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>
-        <img class='m-1' src='../../assets/icon/sell-layout/car.svg' alt='home'>
-        Tuyến đường </button>
-
-      <button  (click)='changeTab($event.target)' id='systemHistory'  routerLink="/he-thong/lich-su-he-thong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>
-        <img class='m-1' src='../../assets/icon/sell-layout/card-list.svg' alt='home'>
-        Lịch sử hệ thống </button>
-<!--      <button routerLink="/bill"  class='btn  font-lg overflow-hidden d-flex align-items-center '>-->
-<!--        <img class='m-1' src='../../assets/icon/sell-layout/file-text.svg' alt='home'>-->
-<!--        Hóa đơn </button>-->
+      <button *ngFor='let item of menuSell' routerLink="{{item.href}}" id='{{item.id}}' (click)='changeTab($event.target)'  class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>
+        <img class='m-1' src='{{item.icon}}' alt='{{item.id}}'>
+        {{item.name}} </button>
+<!--      <button  id='customer' (click)='changeTab($event.target)'  routerLink="/khach-hang" class='button btn-header font-lg overflow-hidden d-flex align-items-center '>-->
+<!--        <img  class='m-1' src='../../assets/icon/sell-layout/building.svg' alt='home'>-->
+<!--        Khách hàng </button>-->
+<!--      <button id='order' (click)='changeTab($event.target)'  routerLink="/don-hang" class='button  btn-header font-lg overflow-hidden d-flex align-items-center '>-->
+<!--        <img class='m-1' src='../../assets/icon/sell-layout/cart.svg' alt='home'>-->
+<!--        Đơn hàng</button>-->
+<!--      <button  (click)='changeTab($event.target)' id='route'  routerLink="/tuyen-duong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>-->
+<!--        <img class='m-1' src='../../assets/icon/sell-layout/car.svg' alt='home'>-->
+<!--        Tuyến đường </button>-->
+<!--      <button  (click)='changeTab($event.target)' id='systemHistory'  routerLink="/he-thong/lich-su-he-thong" class='button btn-header  font-lg overflow-hidden d-flex align-items-center '>-->
+<!--        <img class='m-1' src='../../assets/icon/sell-layout/card-list.svg' alt='home'>-->
+<!--        Lịch sử hệ thống </button>-->
     </div>
     <div class='row hide-on-pc menu-mobile'>
       <button class='btn font-lg overflow-hidden d-flex align-items-center '>

@@ -9,6 +9,7 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.comp
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
+import { menuSell } from '@minhdu-fontend/constants';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { Role } from 'libs/enums/hr/role.enum';
 export class SellLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
   roleEnum = Role;
-
+  menuSell = menuSell
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
