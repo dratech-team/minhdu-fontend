@@ -290,7 +290,7 @@
             <th width='25%' class=' title text-center '>Khấu trừ</th>
             <th width='15%' class=' title text-center '>Thời gian</th>
             <th width='13%' class=' title text-center '>Đơn vị</th>
-            <th width='15%' class=' title text-center '>Thành tiền</th>
+            <th width='15%' class=' title text-center '>Quên giấy phép</th>
             <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -312,9 +312,9 @@
                  <span *ngIf='salary.datetime'>
                   {{salary.datetime|date:'dd-MM-yyyy'}}
                 </span>
-                <span *ngIf='salary.startedAt && salary.endedAt'>
+              <span *ngIf='salary.startedAt && salary.endedAt'>
                    từ ngày {{salary.startedAt|date:'dd-MM-yyyy'}}
-                  đến ngày {{salary.endedAt|date:'dd-MM-yyyy'}}
+                đến ngày {{salary.endedAt|date:'dd-MM-yyyy'}}
                 </span>
               <span *ngIf='!salary.startedAt && !salary.endedAt &&!salary.datetime  '>
                    _
@@ -328,7 +328,7 @@
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
             <th width='15%' class=' text-center '>
-              _
+              {{salary.forgot ? 'Có' : 'Không'}}
             </th>
             <th width='22%' class=' text-center '>
               <span>{{salary.note}}</span>
