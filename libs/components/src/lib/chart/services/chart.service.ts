@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class ChartService {
 
   fixWithChartColumn(data: stakedChart[]): number {
-   return  this.check(0,5,data.length, 400)
+   return  this.check(0,5,data.length, 600)
   };
 
 
@@ -13,7 +13,7 @@ export class ChartService {
         if(min <= length && length < max){
             return width
         }else{
-          min = max ; max = max + 5 ; width = width + 400;
+          min = max ; max = max + 5 ; width = width + 600;
           return  this.check(min , max , length, width)
         }
   }

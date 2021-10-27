@@ -63,7 +63,7 @@
                alt='setting'>
         </div>
         <span class=' ml-3 mb-1 title-chart'>Thống kê theo tỉnh</span>
-        <div [ngStyle]='{"overflow-x":statisticalProvince.length === 0 ? "hidden":"scroll" }'>
+        <div [ngStyle]='{"overflow-x":statisticalProvince.length === 0 ? "hidden":"auto" }'>
           <app-swim-lane-chart
             [data]='statisticalProvince'
             [labelX]='"Tỉnh thành"'
@@ -94,7 +94,7 @@
                alt='setting'>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê khách tiềm năng theo tỉnh</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalPotential.length === 0? "hidden":"scroll" }'
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalPotential.length === 0? "hidden":"auto" }'
         >
           <app-staked-vertical-chart
             [data]='statisticalPotential'
@@ -142,7 +142,7 @@
           </div>
         </div>
         <span class='ml-3 mb-3 mt-3 title-chart'>Thống kê theo khách hàng</span>
-        <div class='chart' [ngStyle]='{"overflow-x":statisticalCustomerData.length === 0? "hidden":"scroll" }'>
+        <div class='chart' [ngStyle]='{"overflow-x":statisticalCustomerData.length === 0? "hidden":"auto" }'>
           <app-staked-vertical-chart
             [data]='statisticalCustomerData'
             [legend]='true'
