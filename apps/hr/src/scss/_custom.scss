@@ -13,7 +13,13 @@ a:link {
 a:hover {
   text-decoration: none;
 }
+app-dashboard{
+  min-height: auto;
+}
 
+.main-content{
+  min-height: 80vh;
+}
 .cdk-overlay-container {
   z-index: 1020 !important;;
 }

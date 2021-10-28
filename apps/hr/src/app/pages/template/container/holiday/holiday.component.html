@@ -1,3 +1,4 @@
+<div class='main-content'>
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #holiday>
@@ -104,5 +105,5 @@
                  (readAndUpdateEvent)='Holiday($event)'
                  (deleteEvent)='deleteHoliday($event)'
 ></app-mouse-right>
-
+</div>
 

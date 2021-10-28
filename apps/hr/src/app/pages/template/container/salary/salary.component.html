@@ -1,3 +1,4 @@
+<div class='main-content'>
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div class='main-customer mx-auto' style='width: fit-content;min-width: 100vh'>
   <div class=' h3 '>Bản mẫu lương</div>
@@ -64,7 +65,7 @@
                  (readAndUpdateEvent)='updateTemplateSalary($event)'
                  (deleteEvent)='deleteBasicSalary($event)'
 ></app-mouse-right>
-
+</div>
 
 
 

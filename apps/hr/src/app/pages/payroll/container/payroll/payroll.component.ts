@@ -8,7 +8,6 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
