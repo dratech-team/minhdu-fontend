@@ -23,8 +23,9 @@ export const CustomerReducer = createReducer(
     adapter.addMany(action.customers, { ...state, loaded: true })
   ),
 
-  on(CustomerAction.getCustomerSuccess, (state, action) =>
-    adapter.upsertOne(action.customer, { ...state, loaded: true, added: true })
+  on(CustomerAction.getCustomerSuccess, (state, action) =>{
+      return  adapter.upsertOne(action.customer, { ...state, loaded: true, added: true })
+  }
   ),
   on(CustomerAction.updateCustomer, (state, _) => {
       return { ...state, added: false };

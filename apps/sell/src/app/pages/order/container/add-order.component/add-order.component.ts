@@ -3,13 +3,11 @@ import { AppState } from '../../../../reducers';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../../customer/+state/customer/customer.action';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderAction } from '../../+state/order.action';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { selectAllCommodity, selectorCommodityByIds } from '../../../commodity/+state/commodity.selector';
-import { CommodityAction } from '../../../commodity/+state/commodity.action';
-import { selectorAllCustomer, selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
+import { selectorCommodityByIds } from '../../../commodity/+state/commodity.selector';
+import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
 import { document } from 'ngx-bootstrap/utils';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
@@ -27,10 +25,10 @@ import { selectedOrderAdded } from '../../+state/order.selector';
 export class AddOrderComponent implements OnInit {
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
   customers: Customer [] = [];
-  customerPicked: Customer | undefined;
   commodityUnit = CommodityUnit;
   CommoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
+  customerPicked: Customer | undefined;
   customerId: number | undefined;
   commodityIds: number[] = [];
   payType = PaymentType;
@@ -99,7 +97,7 @@ export class AddOrderComponent implements OnInit {
           this.customerId = val;
           this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val => {
             this.customerPicked = JSON.parse(JSON.stringify(val));
-          });
+          }).unsubscribe();
         }
       }
     );
@@ -164,11 +162,11 @@ export class AddOrderComponent implements OnInit {
       commodityIds: this.commodityIds
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
-    this.store.pipe(select(selectedOrderAdded)).subscribe(added =>{
-      if(added){
-        this.router.navigate(['/don-hang']).then()
+    this.store.pipe(select(selectedOrderAdded)).subscribe(added => {
+      if (added) {
+        this.router.navigate(['/don-hang']).then();
       }
-    })
+    });
     // this.observer.observe(document, { childList: true, subtree: true });
   }
 
