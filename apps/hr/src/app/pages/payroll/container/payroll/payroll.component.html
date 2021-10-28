@@ -1,3 +1,4 @@
+<div class='main-content'>
 <div *ngIf='selectedPayroll === payrollEnum.PAYROLL ' class='row h3 ml-3'>
   Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}
 </div>
@@ -7,7 +8,6 @@
 <div class='row h3 ml-3' *ngIf='selectedPayroll === payrollEnum.TIME_SHEET '>
   Bảng chấm công nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}
 </div>
-
 <div style='width: fit-content'>
   <select class='select ml-3 border px-2 ' [formControl]='selectPayroll'>
     <option *ngFor='let item of payrollConstant' [value]='item.value'>
@@ -15,8 +15,6 @@
     </option>
   </select>
 </div>
-
-
 <div class='row ml-3 mt-3 d-flex justify-content-between'>
   <div class='d-flex '>
     <div>
@@ -39,8 +37,6 @@
   </div>
 
 </div>
-
-
 <div *ngIf='selectedPayroll === payrollEnum.PAYROLL'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                        count='18' appearance='line'></ngx-skeleton-loader>
@@ -276,7 +272,6 @@
     </div>
   </ng-template>
 </div>
-
 <div *ngIf='selectedPayroll === payrollEnum.TIME_SHEET'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                        count='18' appearance='line'></ngx-skeleton-loader>
@@ -381,18 +376,19 @@
     </div>
   </ng-template>
 </div>
-
 <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
   <app-overtime
     (EventSelectMonth)='selectMonth($event)'
     [createdAt]='this.formGroup.get("createdAt")!.value'></app-overtime>
 </div>
+
 <app-mouse-right [type]='pageType.RESTORE'
                  #child
                  (addEvent)='addPayroll($event)'
                  (restore)='restorePayroll($event)'
                  (readAndUpdateEvent)='readPayroll($event)'>
 </app-mouse-right>
+</div>
 <style>
 
   .table-scroll th:nth-child(2) {
