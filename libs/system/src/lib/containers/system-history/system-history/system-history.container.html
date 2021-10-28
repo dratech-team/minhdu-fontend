@@ -6,6 +6,7 @@
     <div class='fixTableHead my-5 mx-auto '
          infiniteScroll
          [infiniteScrollDistance]='0.1'
+         [infiniteScrollThrottle]='10'
          [scrollWindow]='false'
          [alwaysCallback]='true'
          (scrolled)='onScroll()'
