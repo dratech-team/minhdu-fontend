@@ -13,4 +13,8 @@ export const PayrollConstant = [
     name: 'PHIẾU CHẤM CÔNG',
     value: PayrollEnum.TIME_SHEET
   },
+  {
+    name: 'Phiếu lương công nhật',
+    value: PayrollEnum.PAYROLL_SEASONAL
+  },
 ]

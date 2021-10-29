@@ -3,15 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
-import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
+import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SalaryMultipleEmployeeService } from '../../service/salary-multiple-employee.service';
+import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'

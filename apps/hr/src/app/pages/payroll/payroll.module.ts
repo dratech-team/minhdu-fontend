@@ -26,11 +26,11 @@ import { HolidayReducer } from '../template/+state/holiday/holiday.reducer';
 import { HolidayEffect } from '../template/+state/holiday/holiday.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { DialogOvertimeComponent } from './component/dialog-overtime/dialog-overtime.component';
-import { DialogBasicComponent } from './component/dialog-basic/dialog-basic.component';
-import { DialogAbsentComponent } from './component/dialog-absent/dialog-absent.component';
-import { DialogStayComponent } from './component/dialog-stay/dialog-stay.component';
-import { DialogAllowanceComponent } from './component/dialog-allowance/dialog-allowance.component';
+import { DialogOvertimeComponent } from './component/dialog-salary/dialog-overtime/dialog-overtime.component';
+import { DialogBasicComponent } from './component/dialog-salary/dialog-basic/dialog-basic.component';
+import { DialogAbsentComponent } from './component/dialog-salary/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from './component/dialog-salary/dialog-stay/dialog-stay.component';
+import { DialogAllowanceComponent } from './component/dialog-salary/dialog-allowance/dialog-allowance.component';
 import { templateOvertimeReducer } from '../template/+state/template-overtime/template-overtime.reducer';
 import { TemplateOvertimeEffect } from '../template/+state/template-overtime/template-overtime.effect';
 import { ConfirmPayrollComponent } from './component/confirm-payroll/confirm-payroll.component';
@@ -39,13 +39,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ConvertTimePipe } from './pipes/convert-time.pipe';
 import { PickEmployeeAbsentComponent } from './component/pick-employee-absent/pick-employee-absent.component';
-import { DialogTimekeepingComponent } from './component/timekeeping/dialog-timekeeping.component';
+import { DialogTimekeepingComponent } from './component/dialog-salary/timekeeping/dialog-timekeeping.component';
 import { PickEmployeeOvertimeComponent } from './component/pick-employee-overtime/pick-employee-overtime.component';
-import { DialogOvertimeMultipleComponent } from './component/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { DialogOvertimeMultipleComponent } from './component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HistoryPayrollComponent } from './container/history-payroll/history-payroll.component';
 import { AddPayrollComponent } from './component/add-Payroll/add-payroll.component';
-import { OvertimeComponent } from './container/overtime/overtime.component';
 import { LoadingComponent } from './component/popup-loading/loading.component';
 import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -55,6 +54,7 @@ import { DialogExportPayrollComponent } from './component/dialog-export-payroll/
 import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
+import { OvertimeComponent } from './component/payroll-overtime/overtime.component';
 
 @NgModule({
   imports: [
