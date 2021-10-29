@@ -11,19 +11,19 @@ import {
 } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
+import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
+import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { TemplateOvertime } from '../../../template/+state/template-overtime/template-overtime.interface';
-import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
+import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { MatStepper } from '@angular/material/stepper';
 import { Position } from '@minhdu-fontend/data-models';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'

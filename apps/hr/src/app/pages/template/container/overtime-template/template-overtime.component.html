@@ -1,4 +1,4 @@
-<div class='main-content'>
+<div class='main-content mx-auto' style='width: 98%'>
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div>
   <div class=' h3 '>Bản mẫu tăng ca</div>
@@ -6,6 +6,7 @@
     <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
   </div>
 </div>
+
 <div class='fixTableHead mt-5' style='width: 100%'
      infiniteScroll
      [infiniteScrollDistance]='0.5'

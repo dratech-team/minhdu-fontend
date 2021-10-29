@@ -63,7 +63,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AddProfileComponent,
     DeleteEmployeeComponent,
     BHYTComponent,
-    UpdateContractComponent
+    UpdateContractComponent,
   ],
   providers: [DatePipe]
 })
