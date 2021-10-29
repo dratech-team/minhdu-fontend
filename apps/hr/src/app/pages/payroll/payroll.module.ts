@@ -55,6 +55,7 @@ import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt
 import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
 import { OvertimeComponent } from './component/payroll-overtime/overtime.component';
+import { PayrollTimeSheetComponent } from './component/payroll-time-sheet/payroll-time-sheet.component';
 
 @NgModule({
   imports: [
@@ -119,7 +120,8 @@ import { OvertimeComponent } from './component/payroll-overtime/overtime.compone
     LoadingComponent,
     RestorePayrollComponent,
     DialogExportTimekeepingComponent,
-    DialogManConfirmedAtComponent
+    DialogManConfirmedAtComponent,
+    PayrollTimeSheetComponent
   ],
   providers: [
     MatDatepickerModule

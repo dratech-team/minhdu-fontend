@@ -156,14 +156,6 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  updateManConfirm(id: number, createdAt?: Date, manConfirmedAt?: any) {
-    console.log(!!manConfirmedAt);
-    this.dialog.open(DialogManConfirmedAtComponent, {
-      width: 'fit-content',
-      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
-    });
-  }
-
   addSalaryOvertime(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',

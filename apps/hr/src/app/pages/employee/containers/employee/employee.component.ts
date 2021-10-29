@@ -39,8 +39,8 @@ export class EmployeeComponent implements OnInit {
   convertBoolean = ConvertBoolean;
   pageTypeEnum = PageTypeEnum;
   employeeContain = EmployeeConstant;
-  employeeControl = new FormControl(TypeEmployee.EMPLOYEE);
-  typeEmployee = TypeEmployee
+  employeeControl = new FormControl(TypeEmployee.EMPLOYEE_FULL_TIME);
+  typeEmployee = TypeEmployee;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -57,7 +57,8 @@ export class EmployeeComponent implements OnInit {
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
     position: new FormControl(''),
-    branch: new FormControl('')
+    branch: new FormControl(''),
+    employeeType: new FormControl('')
   });
 
   constructor(
@@ -83,7 +84,7 @@ export class EmployeeComponent implements OnInit {
       .subscribe(val => this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) })));
 
     this.employeeControl.valueChanges.subscribe(val => {
-      console.log(val)
+      console.log(val);
       switch (val) {
         case TypeEmployee.EMPLOYEE_LEFT_AT:
           this.isLeft = true;
@@ -118,8 +119,7 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '60%',
-      data: {type: this.employeeControl.value}
+      width: '60%'
     });
   }
 
@@ -141,6 +141,7 @@ export class EmployeeComponent implements OnInit {
       branch: val.branch,
       workedAt: val.workedAt,
       isLeft: this.isLeft,
+      employeeType: val.employeeType,
       isFlatSalary:
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
