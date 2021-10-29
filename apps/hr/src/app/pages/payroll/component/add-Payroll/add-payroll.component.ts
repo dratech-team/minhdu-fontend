@@ -50,7 +50,8 @@ export class AddPayrollComponent implements OnInit {
     if (this.data?.addOne) {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
-        employeeId: +this.data.employeeId
+        employeeId: +this.data.employeeId,
+        employeeType: this.data?.employeeType
       };
       this.store.dispatch(PayrollAction.addPayroll({
         generate: generate,
@@ -59,7 +60,8 @@ export class AddPayrollComponent implements OnInit {
       }));
     } else {
       const generate = {
-        createdAt: new Date(this.formGroup.value.generate)
+        createdAt: new Date(this.formGroup.value.generate),
+        employeeType: this.data?.employeeType
       };
       this.store.dispatch(PayrollAction.addPayroll({ generate: generate }));
     }

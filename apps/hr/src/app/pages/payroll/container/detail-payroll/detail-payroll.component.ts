@@ -9,7 +9,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -21,6 +21,8 @@ import { DialogAllowanceComponent } from '../../component/dialog-salary/dialog-a
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -37,6 +39,8 @@ export class DetailPayrollComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
   employeeName!: string;
+  employeeTypeEnum = TypeEmployee;
+  employeeType?: TypeEmployee;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -50,6 +54,12 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(map(param => param.employeeType)).subscribe(val => {
+      if (val) {
+        this.employeeType = val;
+      }
+    });
+    console.log(this.employeeType)
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
     this.payroll$.subscribe(val => {
         if (val) {
@@ -107,7 +117,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {

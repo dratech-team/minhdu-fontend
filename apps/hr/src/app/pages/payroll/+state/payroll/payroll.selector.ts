@@ -1,10 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PayrollState } from './payroll.reducers';
 import * as fromPayroll from './payroll.reducers';
+import { PayrollState } from './payroll.reducers';
 import * as fromOvertime from './overtime.reducer';
+import { overtimeState } from './overtime.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Payroll } from './payroll.interface';
-import { overtimeState } from './overtime.reducer';
+import { TypeEmployee } from '@minhdu-fontend/enums';
 
 export interface State {
   payrolls: fromPayroll.PayrollState;
@@ -28,6 +29,15 @@ export const selectorPayrollEntities = createSelector(
 export const selectorAllPayroll = createSelector(
   selectorPayrollState,
   fromPayroll.selectAll
+);
+
+export const selectorAllPayrollSeasonal = createSelector(
+  selectorAllPayroll,
+  (payrolls) =>{
+   return   payrolls.filter(payroll =>
+     payroll.employee.type === TypeEmployee.EMPLOYEE_SEASONAL
+    )
+  }
 );
 
 export const selectorOvertime = createSelector(

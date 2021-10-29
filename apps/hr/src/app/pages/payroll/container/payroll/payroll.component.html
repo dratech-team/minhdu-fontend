@@ -44,7 +44,6 @@
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL'>
       <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                            count='18' appearance='line'></ngx-skeleton-loader>
-
       <ng-template #payroll>
         <div class='table-scroll mt-5 mx-auto'
              infiniteScroll
@@ -276,6 +275,7 @@
         </div>
       </ng-template>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.TIME_SHEET'>
       <app-payroll-time-sheet
         [loaded$]='loaded$'
@@ -291,13 +291,21 @@
       >
       </app-payroll-time-sheet>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         (EventSelectMonth)='selectMonth($event)'
         [createdAt]='this.formGroup.get("createdAt")!.value'></app-payroll-overtime>
     </div>
-  </div>
 
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
+      <app-payroll-seasonal></app-payroll-seasonal>
+    </div>
+
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL'>
+
+    </div>
+  </div>
 
   <app-mouse-right [type]='pageType.RESTORE'
                    #child
@@ -306,6 +314,8 @@
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
+
+
 <style>
 
   .table-scroll th:nth-child(2) {
