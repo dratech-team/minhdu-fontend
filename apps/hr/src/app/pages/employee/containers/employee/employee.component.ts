@@ -13,12 +13,11 @@ import {
   ConvertBoolean,
   FlatSalary,
   Gender,
-  SearchEmployeeType
+  SearchEmployeeType, TypeEmployee
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import {
   getAllPosition,
   PositionActions
@@ -28,6 +27,7 @@ import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { EmployeeConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -38,6 +38,9 @@ export class EmployeeComponent implements OnInit {
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
   pageTypeEnum = PageTypeEnum;
+  employeeContain = EmployeeConstant;
+  employeeControl = new FormControl(TypeEmployee.EMPLOYEE);
+  typeEmployee = TypeEmployee
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -49,7 +52,6 @@ export class EmployeeComponent implements OnInit {
   pageIndexInit = 0;
   isLeft = false;
   formGroup = new FormGroup({
-    // code: new FormControl(''),
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
@@ -66,6 +68,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.store.dispatch(
       EmployeeAction.loadInit({
         employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
@@ -78,6 +81,29 @@ export class EmployeeComponent implements OnInit {
         debounceTime(1500)
       )
       .subscribe(val => this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) })));
+
+    this.employeeControl.valueChanges.subscribe(val => {
+      console.log(val)
+      switch (val) {
+        case TypeEmployee.EMPLOYEE_LEFT_AT:
+          this.isLeft = true;
+          this.store.dispatch(EmployeeAction.loadInit({
+            employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+          }));
+          break;
+        case TypeEmployee.EMPLOYEE_SEASONAL:
+          this.isLeft = false;
+          this.store.dispatch(EmployeeAction.loadInit({
+            employee: { take: this.pageSize, skip: this.pageIndexInit }
+          }));
+          break;
+        default:
+          this.isLeft = false;
+          this.store.dispatch(EmployeeAction.loadInit({
+            employee: { take: this.pageSize, skip: this.pageIndexInit }
+          }));
+      }
+    });
 
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -92,7 +118,8 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
-      width: '60%'
+      width: '60%',
+      data: {type: this.employeeControl.value}
     });
   }
 
@@ -144,13 +171,6 @@ export class EmployeeComponent implements OnInit {
 
   readAndUpdate($event: any): void {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id]).then();
-  }
-
-  onSelectEmployee() {
-    this.isLeft = !this.isLeft;
-    this.store.dispatch(EmployeeAction.loadInit({
-      employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
-    }));
   }
 
   permanentlyDeleted($event: any) {

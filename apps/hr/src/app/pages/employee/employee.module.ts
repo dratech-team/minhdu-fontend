@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UpdateContractComponent } from './components/dialog-update-contract/update-contract.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { EmployeeSeasonalComponent } from './components/employee-seasonal/employee-seasonal.component';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AddProfileComponent,
     DeleteEmployeeComponent,
     BHYTComponent,
-    UpdateContractComponent
+    UpdateContractComponent,
+    EmployeeSeasonalComponent
   ],
   providers: [DatePipe]
 })

@@ -2,11 +2,11 @@
 <div class='main-content'>
   <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
   <div class='d-flex align-items-center '>
-    <button (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên</button>
+    <button *ngIf='employeeControl.value !== typeEmployee.EMPLOYEE_LEFT_AT'
+            (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên</button>
     <div style='width: fit-content'>
-      <select class='select ml-3 border px-2  ' matNativeControl required (change)='onSelectEmployee()'>
-        <option [value]='true'>Nhân viên còn làm</option>
-        <option [value]='false'>Nhân viên đã nghỉ</option>
+      <select class='select ml-3 border px-2  ' [formControl]='employeeControl'>
+        <option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</option>
       </select>
     </div>
   </div>

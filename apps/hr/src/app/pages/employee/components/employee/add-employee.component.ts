@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FlatSalary, RecipeType } from '@minhdu-fontend/enums';
+import { FlatSalary, RecipeType, TypeEmployee } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
 import {
@@ -49,7 +49,8 @@ export class AddEmployeeComponent implements OnInit {
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
-
+  typeEmployee = TypeEmployee;
+  EmployeeControl = new FormControl(this.data.type)
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -67,54 +68,59 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    this.formGroup = this.formBuilder.group({
-      identify: [this.data?.employee?.identify],
-      issuedBy: [this.data?.employee?.issuedBy],
-      birthplace: [this.data?.employee?.birthplace],
-      idCardAt: [
-        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
-      ],
-      email: [this.data?.employee?.email],
-      workday: [this.data?.employee?.workday, Validators.required],
-      phone: [this.data?.employee?.phone],
-      note: [this.data?.employee.note],
-      workedAt: [
-        this.datePipe.transform(this.data?.employee?.workedAt || '2010-01-01', 'yyyy-MM-dd')
-      ],
-      createdAt: [
-        this.datePipe.transform(this.data?.employee?.createdAt || '2010-01-01', 'yyyy-MM-dd')
-      ],
-      isFlatSalary: [
-        this.data?.employee?.isFlatSalary
-          ? this.flatSalary.FLAT_SALARY
-          : this.flatSalary.NOT_FLAT_SALARY,
-        Validators.required
-      ],
-      firstName: [this.data?.employee?.firstName, Validators.required],
-      lastName: [this.data?.employee?.lastName, Validators.required],
-      address: [this.data?.employee?.address, Validators.required],
-      gender: [this.data?.employee?.gender, Validators.required],
-      birthday: [
-        this.datePipe.transform(this.data?.employee?.birthday || '2010-01-01', 'yyyy-MM-dd'),
-        Validators.required
-      ],
-      ethnicity: [this.data?.employee?.ethnicity],
-      religion: [this.data?.employee?.religion],
-      facebook: [this.data?.employee?.facebook],
-      zalo: [this.data?.employee?.zalo],
-      createAtContract: [''],
-      expiredAtContract: [''],
-      recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2]
-    });
-    this.positions$ = searchAndAddAutocomplete(
-      this.formPosition.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    );
 
-    this.branches$ = searchAndAddAutocomplete(
-      this.branches.valueChanges.pipe(startWith('')),
-      this.branches$
-    );
+    if (this.data.type === TypeEmployee.EMPLOYEE || TypeEmployee.EMPLOYEE_LEFT_AT) {
+      this.formGroup = this.formBuilder.group({
+        identify: [this.data?.employee?.identify],
+        issuedBy: [this.data?.employee?.issuedBy],
+        birthplace: [this.data?.employee?.birthplace],
+        idCardAt: [
+          this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
+        ],
+        email: [this.data?.employee?.email],
+        workday: [this.data?.employee?.workday, Validators.required],
+        phone: [this.data?.employee?.phone],
+        note: [this.data?.employee?.note],
+        workedAt: [
+          this.datePipe.transform(this.data?.employee?.workedAt || '2010-01-01', 'yyyy-MM-dd')
+        ],
+        createdAt: [
+          this.datePipe.transform(this.data?.employee?.createdAt || '2010-01-01', 'yyyy-MM-dd')
+        ],
+        isFlatSalary: [
+          this.data?.employee?.isFlatSalary
+            ? this.flatSalary.FLAT_SALARY
+            : this.flatSalary.NOT_FLAT_SALARY,
+          Validators.required
+        ],
+        firstName: [this.data?.employee?.firstName, Validators.required],
+        lastName: [this.data?.employee?.lastName, Validators.required],
+        address: [this.data?.employee?.address, Validators.required],
+        gender: [this.data?.employee?.gender, Validators.required],
+        birthday: [
+          this.datePipe.transform(this.data?.employee?.birthday || '2010-01-01', 'yyyy-MM-dd'),
+          Validators.required
+        ],
+        ethnicity: [this.data?.employee?.ethnicity],
+        religion: [this.data?.employee?.religion],
+        facebook: [this.data?.employee?.facebook],
+        zalo: [this.data?.employee?.zalo],
+        createAtContract: [''],
+        expiredAtContract: [''],
+        recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2]
+      });
+      this.positions$ = searchAndAddAutocomplete(
+        this.formPosition.valueChanges.pipe(startWith('')),
+        this.store.pipe(select(getAllPosition))
+      );
+
+      this.branches$ = searchAndAddAutocomplete(
+        this.branches.valueChanges.pipe(startWith('')),
+        this.branches$
+      );
+    }
+
+
   }
 
   get f() {
