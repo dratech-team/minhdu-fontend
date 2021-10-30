@@ -54,6 +54,12 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(map(param => param.employeeType)).subscribe(val => {
+      if (val) {
+        this.employeeType = val;
+      }
+    });
+    console.log(this.employeeType)
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
     this.payroll$.subscribe(val => {
         if (val) {
