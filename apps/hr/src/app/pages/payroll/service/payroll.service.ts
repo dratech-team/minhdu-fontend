@@ -23,7 +23,7 @@ export class PayrollService extends BaseService<Payroll> {
     super(Api.PAYROLL, http);
   }
 
-  addPayroll(body: any, params?: Params): Observable<any> {
+  addPayroll<R>(body: any, params?: Params): Observable<any> {
     return this.http.post<any>(this.url, body, { params: params });
   }
 

@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FlatSalary, RecipeType, TypeEmployee } from '@minhdu-fontend/enums';
+import { FlatSalary, RecipeType, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
 import {
@@ -49,7 +49,7 @@ export class AddEmployeeComponent implements OnInit {
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
-  typeEmployee = TypeEmployee;
+  typeEmployee = EmployeeType;
 
   constructor(
     public datePipe: DatePipe,
@@ -107,7 +107,7 @@ export class AddEmployeeComponent implements OnInit {
         expiredAtContract: [''],
         recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
         employeeType: [this.data?.employee ?
-          this.data.employee.type : TypeEmployee.EMPLOYEE_FULL_TIME, Validators.required]
+          this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required]
       });
       this.positions$ = searchAndAddAutocomplete(
         this.formPosition.valueChanges.pipe(startWith('')),
@@ -120,7 +120,7 @@ export class AddEmployeeComponent implements OnInit {
       );
 
     this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
-      if (val === TypeEmployee.EMPLOYEE_SEASONAL) {
+      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('recipeType')!.setValue(RecipeType.CT3);
       }
     });
@@ -149,14 +149,14 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
-    if(value.typeEmployee === TypeEmployee.EMPLOYEE_FULL_TIME
+    if(value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
       && !value.workday
     ){
       return  this.snackbar.open('Chưa nhập ngày công chuẩn', '', {duration:1500})
     }
     const employee = {
       id: this?.data?.employee?.id,
-      isFlatSalary: value.typeEmployee === TypeEmployee.EMPLOYEE_FULL_TIME ?
+      isFlatSalary: value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME ?
         value.isFlatSalary === this.flatSalary.FLAT_SALARY : undefined,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,

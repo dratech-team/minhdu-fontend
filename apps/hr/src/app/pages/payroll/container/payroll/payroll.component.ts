@@ -10,7 +10,7 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 import {
   PayrollEnum,
   SalaryTypeEnum,
-  TypeEmployee
+  EmployeeType
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -137,8 +137,8 @@ export class PayrollComponent implements OnInit {
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
-          ? TypeEmployee.EMPLOYEE_SEASONAL
-          : TypeEmployee.EMPLOYEE_FULL_TIME,
+          ? EmployeeType.EMPLOYEE_SEASONAL
+          : EmployeeType.EMPLOYEE_FULL_TIME,
     };
   }
 
@@ -220,7 +220,7 @@ export class PayrollComponent implements OnInit {
       data: {
         employeeType:
           this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
-            ? TypeEmployee.EMPLOYEE_SEASONAL
+            ? EmployeeType.EMPLOYEE_SEASONAL
             : '',
       },
     });

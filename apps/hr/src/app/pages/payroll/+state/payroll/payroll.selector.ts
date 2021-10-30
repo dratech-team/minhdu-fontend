@@ -5,7 +5,7 @@ import * as fromOvertime from './overtime.reducer';
 import { overtimeState } from './overtime.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Payroll } from './payroll.interface';
-import { TypeEmployee } from '@minhdu-fontend/enums';
+import { EmployeeType } from '@minhdu-fontend/enums';
 
 export interface State {
   payrolls: fromPayroll.PayrollState;
@@ -35,7 +35,7 @@ export const selectorAllPayrollSeasonal = createSelector(
   selectorAllPayroll,
   (payrolls) =>{
    return   payrolls.filter(payroll =>
-     payroll.employee.type === TypeEmployee.EMPLOYEE_SEASONAL
+     payroll.employee.type === EmployeeType.EMPLOYEE_SEASONAL
     )
   }
 );

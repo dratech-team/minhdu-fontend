@@ -13,7 +13,7 @@ import {
   ConvertBoolean,
   FlatSalary,
   Gender,
-  SearchEmployeeType, TypeEmployee
+  SearchEmployeeType, EmployeeType
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -39,8 +39,8 @@ export class EmployeeComponent implements OnInit {
   convertBoolean = ConvertBoolean;
   pageTypeEnum = PageTypeEnum;
   employeeContain = EmployeeConstant;
-  employeeControl = new FormControl(TypeEmployee.EMPLOYEE_FULL_TIME);
-  typeEmployee = TypeEmployee;
+  employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
+  employeeType = EmployeeType;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -86,13 +86,13 @@ export class EmployeeComponent implements OnInit {
     this.employeeControl.valueChanges.subscribe(val => {
       console.log(val);
       switch (val) {
-        case TypeEmployee.EMPLOYEE_LEFT_AT:
+        case EmployeeType.EMPLOYEE_LEFT_AT:
           this.isLeft = true;
           this.store.dispatch(EmployeeAction.loadInit({
             employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
           }));
           break;
-        case TypeEmployee.EMPLOYEE_SEASONAL:
+        case EmployeeType.EMPLOYEE_SEASONAL:
           this.isLeft = false;
           this.store.dispatch(EmployeeAction.loadInit({
             employee: { take: this.pageSize, skip: this.pageIndexInit }

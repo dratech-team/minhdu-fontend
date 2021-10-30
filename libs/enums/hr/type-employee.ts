@@ -1,4 +1,4 @@
-export enum TypeEmployee {
+export enum EmployeeType {
   EMPLOYEE_FULL_TIME = 'FULL_TIME',
   EMPLOYEE_LEFT_AT = 'LEFT_AT',
   EMPLOYEE_SEASONAL = 'SEASONAL',

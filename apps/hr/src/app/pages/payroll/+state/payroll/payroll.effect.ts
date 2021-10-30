@@ -9,13 +9,14 @@ import {
   concatMap,
   map,
   switchMap,
-  withLatestFrom,
+  withLatestFrom
 } from 'rxjs/operators';
+import { OvertimeService } from '../../service/overtime.service';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollAction } from './payroll.action';
+import { AddPayroll } from './payroll.interface';
 import { selectorPayrollTotal } from './payroll.selector';
-import { OvertimeService } from '../../service/overtime.service';
 
 @Injectable()
 export class PayrollEffect {
@@ -87,7 +88,7 @@ export class PayrollEffect {
       ofType(PayrollAction.addPayroll),
       switchMap((props) =>
         this.payrollService
-          .addPayroll(
+          .addPayroll<AddPayroll>(
             {
               createdAt: props.generate.createdAt,
               employeeId: props.generate.employeeId,

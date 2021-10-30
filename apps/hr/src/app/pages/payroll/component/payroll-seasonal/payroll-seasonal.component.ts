@@ -2,7 +2,7 @@ import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, TypeEmployee } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
@@ -103,7 +103,7 @@ export class PayrollSeasonalComponent implements OnInit {
       createdAt: val.createdAt,
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      employeeType: TypeEmployee.EMPLOYEE_SEASONAL
+      employeeType: EmployeeType.EMPLOYEE_SEASONAL
     };
     if (val.createdAt) {
       return payroll;
@@ -134,7 +134,7 @@ export class PayrollSeasonalComponent implements OnInit {
   readPayroll($event: any) {
     this.router
       .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id],
-        { queryParams: { employeeType: TypeEmployee.EMPLOYEE_SEASONAL } })
+        { queryParams: { employeeType: EmployeeType.EMPLOYEE_SEASONAL } })
       .then();
   }
 

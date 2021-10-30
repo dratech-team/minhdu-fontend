@@ -9,7 +9,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -39,7 +39,7 @@ export class DetailPayrollComponent implements OnInit {
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
-  employeeTypeEnum = TypeEmployee;
+  employeeTypeEnum = EmployeeType;
 
   constructor(
     private readonly dialog: MatDialog,

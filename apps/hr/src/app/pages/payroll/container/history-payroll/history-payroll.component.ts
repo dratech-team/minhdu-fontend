@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { selectorAllEmployee } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
