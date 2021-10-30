@@ -151,7 +151,7 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
       data: {
-        payroll: payroll
+        payroll: payroll,
       }
     });
   }
