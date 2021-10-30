@@ -21,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DialogSeasonalComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   type = SalaryTypeEnum;
+  datetime = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
   roleEnum = Role;
@@ -49,7 +50,7 @@ export class DialogSeasonalComponent implements OnInit {
     } else {
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
-        unit: ['DAY', Validators.required],
+        unit: [DatetimeUnitEnum.DAY, Validators.required],
         times: ['', Validators.required]
       });
     }

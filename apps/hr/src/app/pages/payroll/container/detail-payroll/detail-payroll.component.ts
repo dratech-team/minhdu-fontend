@@ -129,6 +129,10 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }

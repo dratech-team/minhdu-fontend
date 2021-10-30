@@ -19,8 +19,8 @@
         <div class=' mb-3' [formGroup]='formGroup'>
           <mat-select class='form-control'  formControlName='unit'
                   [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
-            <mat-option value='DAY'> Ngày</mat-option>
-            <mat-option value='HOUR'> Giờ</mat-option>
+            <mat-option value='{{datetime.DAY}}'> Ngày</mat-option>
+            <mat-option value='{{datetime.HOUR}}'> Giờ</mat-option>
           </mat-select>
           <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
             <div>Chưa chọn loại lương</div>
@@ -30,9 +30,9 @@
       <div>
         <div class=' title-item mb-1'>
           <span>
-            {{this.formGroup.value.unit === 'DAY'
-            ? 'Tổng giờ làm'
-            : 'Tổng ngày làm'
+            {{this.formGroup.value.unit === datetime.DAY
+            ? 'Tổng ngày làm'
+            : 'Tổng giờ làm'
             }}
           </span>
           <span class='star'>*</span>
@@ -42,9 +42,9 @@
                  [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
           <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
             <div>
-              {{this.formGroup.value.unit === 'DAY'
-              ? 'Chưa nhập số giờ'
-              : 'Chưa nhập số ngày'
+              {{this.formGroup.value.unit === datetime.DAY
+              ? 'Chưa nhập số ngày'
+              : 'Chưa nhập số giờ'
               }}
             </div>
           </div>
