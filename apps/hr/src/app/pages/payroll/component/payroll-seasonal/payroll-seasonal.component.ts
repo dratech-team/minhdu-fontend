@@ -92,7 +92,7 @@ export class PayrollSeasonalComponent implements OnInit {
     );
   }
 
-  Payroll(val: any) {
+  payroll(val: any) {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
