@@ -1,8 +1,8 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, EventEmitter, Output, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, TypeEmployee } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
@@ -10,14 +10,14 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { Observable } from 'rxjs';
 import { Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-payroll-time-sheet',
   templateUrl: 'payroll-time-sheet.component.html'
 })
-export class PayrollTimeSheetComponent implements OnInit {
+export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() loaded$?: Observable<boolean>;
-  @Input() formGroup!: FormGroup;
   @Input() daysInMonth: any[] = [];
   @Input() positions$!: Observable<Position[]>;
   @Input() payroll$!: Observable<Payroll[]>;
@@ -30,16 +30,21 @@ export class PayrollTimeSheetComponent implements OnInit {
   unit = DatetimeUnitEnum;
   overtime!: Overtime;
   pageType = PageTypeEnum;
+  @Input() formGroup!: FormGroup;
 
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly overtimeService: OvertimeService,
     private readonly dialog: MatDialog,
+    private readonly datePipe: DatePipe,
+    private ref: ChangeDetectorRef
   ) {
   }
 
-  ngOnInit() {
+  ngAfterContentChecked() {
+    this.ref.detectChanges();
   }
+
 
   onScroll() {
     this.EventScroll.emit();

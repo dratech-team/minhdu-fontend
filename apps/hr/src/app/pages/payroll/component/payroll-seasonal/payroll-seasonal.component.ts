@@ -15,7 +15,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { debounceTime } from 'rxjs/operators';
-import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { getFirstDayInMonth, rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { DatePipe } from '@angular/common';
 import { RestorePayrollComponent } from '../restore-payroll/restore-payroll.component';
@@ -29,6 +29,7 @@ import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-m
   templateUrl: 'payroll-seasonal.component.html'
 })
 export class PayrollSeasonalComponent implements OnInit {
+  @Input() monthPayroll!: Date;
   payroll$ = this.store.pipe(select(selectorAllPayrollSeasonal));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   formGroup = new FormGroup({
@@ -36,7 +37,7 @@ export class PayrollSeasonalComponent implements OnInit {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM')),
+    createdAt: new FormControl(''),
     position: new FormControl(''),
     branch: new FormControl('')
   });
@@ -45,7 +46,6 @@ export class PayrollSeasonalComponent implements OnInit {
   unit = DatetimeUnitEnum;
   overtime!: Overtime;
   loaded = false;
-  monthPayroll = new Date();
   pageType = PageTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
@@ -62,7 +62,7 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadInitPayroll();
+    this.loadInitPayroll(this.monthPayroll);
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {

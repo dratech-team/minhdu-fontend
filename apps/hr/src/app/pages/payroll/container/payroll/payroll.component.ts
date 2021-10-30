@@ -116,13 +116,15 @@ export class PayrollComponent implements OnInit {
 
 
   Payroll(val: any) {
-    const payroll = {
+    return {
       skip: this.pageIndexInit,
       take: this.pageSize,
       name: val.name,
       position: val.position,
       branch: val.branch,
-      createdAt: val.createdAt,
+      createdAt: val.createdAt
+        ? val.createdAt :
+        this.datePipe.transform(new Date(), 'yyyy-MM'),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
@@ -130,12 +132,6 @@ export class PayrollComponent implements OnInit {
         ? TypeEmployee.EMPLOYEE_SEASONAL
         : TypeEmployee.EMPLOYEE_FULL_TIME
     };
-    if (val.createdAt) {
-      return payroll;
-    } else {
-      delete payroll.createdAt;
-      return payroll;
-    }
   }
 
   onScroll() {

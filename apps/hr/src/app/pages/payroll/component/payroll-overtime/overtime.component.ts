@@ -56,6 +56,7 @@ export class OvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.createdAt)
     this.overtimeService.getOvertime(
       {
         startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),

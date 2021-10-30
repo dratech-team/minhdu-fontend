@@ -300,7 +300,7 @@
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
-      <app-payroll-seasonal></app-payroll-seasonal>
+      <app-payroll-seasonal [monthPayroll]='this.formGroup.get("createdAt")!.value'></app-payroll-seasonal>
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL'>
