@@ -1,6 +1,6 @@
-<ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
-                     count='18' appearance='line'></ngx-skeleton-loader>
-<ng-template #payroll>
+<!--<ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'-->
+<!--                     count='18' appearance='line'></ngx-skeleton-loader>-->
+
 <div class='table-scroll mt-2'
      infiniteScroll
      [alwaysCallback]='true'
@@ -105,4 +105,4 @@
                    (restore)='restorePayroll($event)'
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>
-</ng-template>
+

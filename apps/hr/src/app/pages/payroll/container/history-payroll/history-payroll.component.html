@@ -296,6 +296,10 @@
                 <input class='form-control text-center ' type='number' disabled>
               </th>
               <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Thành tiền</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
                 <select class='select border-top' matNativeControl required formControlName='accConfirmedAt'>
                   <option value='TRUE'>Đã xác nhận</option>
@@ -303,7 +307,7 @@
                   <option value=''>Mặc định</option>
                 </select>
               </th>
-              <th >
+              <th>
                 <div class='text-center'>Quản lý xác nhận</div>
                 <select style='width: 100%' class='select border-top' matNativeControl required
                         formControlName='manConfirmedAt'>
@@ -344,16 +348,25 @@
                 {{payroll.createdAt|date:'yyyy-MM'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+                {{payroll.payslip?.workdays ? payroll.payslip?.workdays : 'Đang cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                Đang cập nhật
+                {{payroll?.payslip?.totalSalaryWorkday ?
+                (payroll?.payslip?.totalSalaryWorkday |number:'1.0-0') + 'đ'
+                : 'Đanbg cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                Đang cập nhật
+                {{payroll.payslip?.times ? payroll.payslip?.times : 'Đang cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                Đang cập nhật
+                {{payroll?.payslip?.totalSalaryTimes ?
+                (payroll?.payslip?.totalSalaryTimes |number:'1.0-0') + 'đ'
+                : 'Đanbg cập nhật'}}
+              </th>
+              <th class='pointer' (click)='readPayroll(payroll)'>
+                {{payroll?.payslip?.total ?
+                (payroll?.payslip?.total |number:'1.0-0') + 'đ'
+                : 'Đanbg cập nhật'}}
               </th>
               <th class='pointer'>
                 <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'

@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
@@ -10,6 +10,7 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { Observable } from 'rxjs';
 import { Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-payroll-time-sheet',
@@ -18,7 +19,16 @@ import { Payroll } from '../../+state/payroll/payroll.interface';
 export class PayrollTimeSheetComponent implements OnInit{
   @Input() loaded$?: Observable<boolean>;
   @Input() daysInMonth: any[] = [];
-  @Input() formGroup!: FormGroup;
+  // @Input() formGroup!: FormGroup;
+  formGroup = new FormGroup({
+    name: new FormControl(''),
+    paidAt: new FormControl(''),
+    accConfirmedAt: new FormControl(''),
+    manConfirmedAt: new FormControl(''),
+    createdAt: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM')),
+    position: new FormControl(''),
+    branch: new FormControl('')
+  });
   @Input() positions$!: Observable<Position[]>;
   @Input() payroll$!: Observable<Payroll[]>;
   @Output() EventScroll = new EventEmitter<any>();
@@ -35,7 +45,8 @@ export class PayrollTimeSheetComponent implements OnInit{
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly overtimeService: OvertimeService,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly datePipe: DatePipe
   ) {
   }
   ngOnInit() {

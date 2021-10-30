@@ -20,6 +20,10 @@ export interface Payslip {
   allowance: number;
   bsc: number,
   bscSalary: number,
+  workdays: number,
+  totalSalaryWorkday: number,
+  times: number,
+  totalSalaryTimes: number,
 }
 
 interface workHoliday {
