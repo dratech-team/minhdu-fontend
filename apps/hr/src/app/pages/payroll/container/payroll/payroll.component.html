@@ -278,8 +278,9 @@
 
     <div *ngIf='selectedPayroll === payrollEnum.TIME_SHEET'>
       <app-payroll-time-sheet
-        [loaded$]='loaded$'
+        [formGroup]='formGroup'
         [daysInMonth]='daysInMonth'
+        [loaded$]='loaded$'
         [positions$]='positions$'
         [payroll$]='payroll$'
         (EventScroll)='onScroll()'
@@ -287,6 +288,7 @@
         (EventAddPayroll)='addPayroll($event)'
         (EventReadPayroll)='readPayroll($event)'
         (EventRestorePayroll)='restorePayroll($event)'
+        (EventSearchMonth)='selectMonth($event)'
       >
       </app-payroll-time-sheet>
     </div>

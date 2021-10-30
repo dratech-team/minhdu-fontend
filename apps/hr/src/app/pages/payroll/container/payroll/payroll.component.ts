@@ -126,7 +126,9 @@ export class PayrollComponent implements OnInit {
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL ? TypeEmployee.EMPLOYEE_SEASONAL : ''
+      employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
+        ? TypeEmployee.EMPLOYEE_SEASONAL
+        : TypeEmployee.EMPLOYEE_FULL_TIME
     };
     if (val.createdAt) {
       return payroll;

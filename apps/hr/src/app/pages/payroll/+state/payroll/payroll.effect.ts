@@ -23,7 +23,6 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        console.log(requestPaginate);
         return this.payrollService.pagination(requestPaginate);
       }),
       map((ResponsePaginate) => {
