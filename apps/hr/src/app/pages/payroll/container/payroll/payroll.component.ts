@@ -5,10 +5,10 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PayrollEnum, SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
@@ -23,7 +23,6 @@ import { RestorePayrollComponent } from '../../component/restore-payroll/restore
 import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
 import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { PayrollConstant } from '@minhdu-fontend/constants';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
@@ -76,6 +75,8 @@ export class PayrollComponent implements OnInit {
       this.selectedPayroll = val;
       if (val === PayrollEnum.TIME_SHEET) {
         this.loadInitPayroll();
+      } else if (val === PayrollEnum.PAYROLL) {
+        this.loadInitPayroll();
       }
     });
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
@@ -124,7 +125,8 @@ export class PayrollComponent implements OnInit {
       createdAt: val.createdAt,
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL ? TypeEmployee.EMPLOYEE_SEASONAL : ''
     };
     if (val.createdAt) {
       return payroll;
@@ -198,7 +200,12 @@ export class PayrollComponent implements OnInit {
   }
 
   generate() {
-    const ref = this.dialog.open(AddPayrollComponent, { width: '30%' });
+    const ref = this.dialog.open(AddPayrollComponent, {
+      width: '30%',
+      data: {
+        employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL ? TypeEmployee.EMPLOYEE_SEASONAL : ''
+      }
+    });
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
