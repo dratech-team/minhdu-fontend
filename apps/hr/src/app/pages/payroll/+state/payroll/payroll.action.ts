@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
+import { TypeEmployee } from '@minhdu-fontend/enums';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -18,7 +19,7 @@ export const loadInit = createAction(
     accConfirmedAt?: boolean,
     employeeId?: number,
     isTimeSheet?: boolean,
-    employeeType?: string
+    employeeType?: TypeEmployee
   }>()
 );
 

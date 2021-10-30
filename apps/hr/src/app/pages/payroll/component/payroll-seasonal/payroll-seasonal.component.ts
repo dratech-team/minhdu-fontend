@@ -84,7 +84,7 @@ export class PayrollSeasonalComponent implements OnInit {
   loadInitPayroll(month?: Date) {
     this.store.dispatch(
       PayrollAction.loadInit(
-        this.Payroll(
+        this.payroll(
           month ?
             Object.assign(this.formGroup.value, { createdAt: month })
             : this.formGroup.value
@@ -93,7 +93,7 @@ export class PayrollSeasonalComponent implements OnInit {
     );
   }
 
-  Payroll(val: any) {
+  payroll(val: any) {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,

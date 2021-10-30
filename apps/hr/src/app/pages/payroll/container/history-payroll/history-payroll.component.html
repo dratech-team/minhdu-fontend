@@ -348,7 +348,7 @@
                 {{payroll.createdAt|date:'yyyy-MM'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                {{payroll.payslip?.workdays ? payroll.payslip?.workdays : 'Đang cập nhật'}}
+                {{ payroll.payslip?.workdays|| 'Đang cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
                 {{payroll?.payslip?.totalSalaryWorkday ?
@@ -356,7 +356,7 @@
                 : 'Đanbg cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
-                {{payroll.payslip?.times ? payroll.payslip?.times : 'Đang cập nhật'}}
+                {{ payroll.payslip?.times || 'Đang cập nhật'}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'>
                 {{payroll?.payslip?.totalSalaryTimes ?
