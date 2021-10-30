@@ -23,6 +23,7 @@ import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 
 
 @Component({
@@ -38,9 +39,7 @@ export class DetailPayrollComponent implements OnInit {
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
-  employeeName!: string;
   employeeTypeEnum = TypeEmployee;
-  employeeType?: TypeEmployee;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -54,12 +53,6 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.pipe(map(param => param.employeeType)).subscribe(val => {
-      if (val) {
-        this.employeeType = val;
-      }
-    });
-    console.log(this.employeeType)
     this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
     this.payroll$.subscribe(val => {
         if (val) {
@@ -101,6 +94,10 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }
@@ -132,6 +129,10 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }
@@ -157,7 +158,12 @@ export class DetailPayrollComponent implements OnInit {
 
   historySalary(payroll: Payroll) {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
-      { queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName } }).then();
+      {
+        queryParams: {
+          name: payroll.employee.firstName + ' ' + payroll.employee.lastName,
+          employeeType: payroll.employee.type
+        }
+      }).then();
   }
 
   nextPayroll(payroll: Payroll) {

@@ -1,0 +1,76 @@
+<div class='px-5  main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+    <div class='form-group' style='min-width: 400px'>
+      <div class=' mb-5 title-popup'>
+        <span> Lương công nhật</span>
+      </div>
+
+      <div>
+        <div class=' title-item mb-1'>
+          <span>Loại lương</span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup'>
+          <mat-select class='form-control'  formControlName='unit'
+                  [ngClass]="{ 'is-invalid': submitted && f.unit.errors }">
+            <mat-option value='{{datetime.DAY}}'> Ngày</mat-option>
+            <mat-option value='{{datetime.HOUR}}'> Giờ</mat-option>
+          </mat-select>
+          <div *ngIf='submitted && f.unit.errors?.required' class='invalid-feedback'>
+            <div>Chưa chọn loại lương</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class=' title-item mb-1'>
+          <span>
+            {{this.formGroup.value.unit === datetime.DAY
+            ? 'Tổng ngày làm'
+            : 'Tổng giờ làm'
+            }}
+          </span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup'>
+          <input class='form-control' type='text' formControlName='times'
+                 [ngClass]="{ 'is-invalid': submitted && f.times.errors }">
+          <div *ngIf='submitted && f.times.errors?.required' class='invalid-feedback'>
+            <div>
+              {{this.formGroup.value.unit === datetime.DAY
+              ? 'Chưa nhập số ngày'
+              : 'Chưa nhập số giờ'
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class=' title-item mb-1'>
+          <span>Mức lương</span>
+          <span class='star'>*</span>
+        </div>
+        <div class=' mb-3' [formGroup]='formGroup'>
+          <input class='form-control' type='text' placeholder='Nhập mức lương' formControlName='price' inputCurrency
+                 [ngClass]="{ 'is-invalid': submitted && f.price.errors }">
+          <div *ngIf='submitted && f.price.errors?.required' class='invalid-feedback'>
+            <div>Chưa nhập mức lương</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='mt-2 row'>
+      <button class='btn btn-ok '>Lưu</button>
+      <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
+        mới</a>
+      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+        ?
+      </button>
+    </div>
+  </form>
+</div>

@@ -5,9 +5,9 @@
     <button *ngIf='employeeControl.value !== typeEmployee.EMPLOYEE_LEFT_AT'
             (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên</button>
     <div style='width: fit-content'>
-      <select class='select ml-3 border px-2  ' [formControl]='employeeControl'>
-        <option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</option>
-      </select>
+      <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='employeeControl'>
+        <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
+      </mat-select>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>

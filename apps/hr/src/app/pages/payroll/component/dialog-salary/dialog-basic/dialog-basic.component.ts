@@ -9,7 +9,6 @@ import { AppState } from '../../../../../reducers';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
 import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
-import { map } from 'rxjs/operators';
 import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';

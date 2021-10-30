@@ -57,6 +57,7 @@ import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/templat
 import { OvertimeComponent } from './component/payroll-overtime/overtime.component';
 import { PayrollTimeSheetComponent } from './component/payroll-time-sheet/payroll-time-sheet.component';
 import { PayrollSeasonalComponent } from './component/payroll-seasonal/payroll-seasonal.component';
+import { DialogSeasonalComponent } from './component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 
 @NgModule({
   imports: [
@@ -123,7 +124,8 @@ import { PayrollSeasonalComponent } from './component/payroll-seasonal/payroll-s
     DialogExportTimekeepingComponent,
     DialogManConfirmedAtComponent,
     PayrollTimeSheetComponent,
-    PayrollSeasonalComponent
+    PayrollSeasonalComponent,
+    DialogSeasonalComponent
   ],
   providers: [
     MatDatepickerModule

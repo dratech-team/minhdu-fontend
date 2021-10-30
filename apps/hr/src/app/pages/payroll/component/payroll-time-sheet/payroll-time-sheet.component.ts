@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,15 +10,15 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { Observable } from 'rxjs';
 import { Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-payroll-time-sheet',
   templateUrl: 'payroll-time-sheet.component.html'
 })
-export class PayrollTimeSheetComponent implements OnInit{
+export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() loaded$?: Observable<boolean>;
   @Input() daysInMonth: any[] = [];
-  @Input() formGroup!: FormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() payroll$!: Observable<Payroll[]>;
   @Output() EventScroll = new EventEmitter<any>();
@@ -26,20 +26,25 @@ export class PayrollTimeSheetComponent implements OnInit{
   @Output() EventAddPayroll = new EventEmitter<any>();
   @Output() EventReadPayroll = new EventEmitter<any>();
   @Output() EventRestorePayroll = new EventEmitter<any>();
+  @Output() EventSearchMonth = new EventEmitter<Date>();
   unit = DatetimeUnitEnum;
   overtime!: Overtime;
-  loaded = false;
-
   pageType = PageTypeEnum;
+  @Input() formGroup!: FormGroup;
 
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly overtimeService: OvertimeService,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly datePipe: DatePipe,
+    private ref: ChangeDetectorRef
   ) {
   }
-  ngOnInit() {
+
+  ngAfterContentChecked() {
+    this.ref.detectChanges();
   }
+
 
   onScroll() {
     this.EventScroll.emit();
