@@ -161,6 +161,7 @@ export class DetailPayrollComponent implements OnInit {
       {
         queryParams: {
           name: payroll.employee.firstName + ' ' + payroll.employee.lastName,
+          employeeType: payroll.employee.type
         }
       }).then();
   }

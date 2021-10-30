@@ -22,6 +22,7 @@ import { RestorePayrollComponent } from '../restore-payroll/restore-payroll.comp
 import { Router } from '@angular/router';
 import { UpdateConfirmComponent } from '../update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
+import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 
 @Component({
   selector: 'app-payroll-seasonal',
@@ -145,6 +146,13 @@ export class PayrollSeasonalComponent implements OnInit {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
+    });
+  }
+
+  updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
+    this.dialog.open(DialogManConfirmedAtComponent, {
+      width: 'fit-content',
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
     });
   }
 }

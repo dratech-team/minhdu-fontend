@@ -12,11 +12,11 @@
     Bảng lương nhân viên công nhật tháng {{monthPayroll| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
-    <select class='select ml-3 border px-2 ' [formControl]='selectPayroll'>
-      <option *ngFor='let item of payrollConstant' [value]='item.value'>
+    <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
+      <mat-option *ngFor='let item of payrollConstant' [value]='item.value'>
         {{item.name}}
-      </option>
-    </select>
+      </mat-option>
+    </mat-select>
   </div>
   <div class='row ml-3 mt-3 d-flex justify-content-between'>
     <div class='d-flex '>
@@ -179,7 +179,7 @@
             </thead>
             <tbody *ngIf='(payroll$|async) as payrolls'>
             <tr *ngFor='let payroll of payrolls; let i = index'
-                (contextmenu)='child.onContextMenu($event,payroll)' (click)='readPayroll(payroll.id)'>
+                (contextmenu)='child.onContextMenu($event,payroll)'>
               <th class='pointer' (click)='readPayroll(payroll)'
                   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 {{payroll.employee.id}}
@@ -224,7 +224,7 @@
               <th class='pointer' (click)='readPayroll(payroll)'>
                 {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
               </th>
-              <th class='pointer' (click)='readPayroll(payroll)'>
+              <th class='pointer'>
                 <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'
                      style='height: fit-content'>
                   <input style='pointer-events: none' disabled type='checkbox'
@@ -259,7 +259,7 @@
               <th class='pointer' (click)='readPayroll(payroll)'>
                 {{payroll.payslip?.total| number: '1.0-0'}} VND
               </th>
-              <th class='pointer' (click)='readPayroll(payroll)'>
+              <th class='pointer'>
                 <div (click)='updateConfirmPayroll(payroll.id,"paidAt")' style='height: fit-content'>
                   <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
                 </div>
