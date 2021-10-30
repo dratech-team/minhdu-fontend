@@ -1,33 +1,43 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { PayrollEnum, SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
+import {
+  PayrollEnum,
+  SalaryTypeEnum,
+  TypeEmployee
+} from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { selectedLoadedPayroll, selectorAllPayroll } from '../../+state/payroll/payroll.selector';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { AppState } from '../../../../reducers';
-import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
-import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { DatePipe } from '@angular/common';
-import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import {
+  selectedLoadedPayroll,
+  selectorAllPayroll
+} from '../../+state/payroll/payroll.selector';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
+import {
+  getAllPosition,
+  PositionActions
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { AppState } from '../../../../reducers';
+import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
 import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
-import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { PayrollConstant } from '@minhdu-fontend/constants';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
+import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'payroll.component.html',
 })
 export class PayrollComponent implements OnInit {
   formGroup = new FormGroup({
@@ -37,7 +47,7 @@ export class PayrollComponent implements OnInit {
     manConfirmedAt: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM')),
     position: new FormControl(''),
-    branch: new FormControl('')
+    branch: new FormControl(''),
   });
   selectPayroll = new FormControl(PayrollEnum.TIME_SHEET);
   selectedPayroll: PayrollEnum = PayrollEnum.TIME_SHEET;
@@ -53,7 +63,7 @@ export class PayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   monthPayroll = new Date();
   pageType = PageTypeEnum;
-  daysInMonth: any [] = [];
+  daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   payrollEnum = PayrollEnum;
 
@@ -63,15 +73,14 @@ export class PayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.loadInitPayroll();
     this.daysInMonth = rageDaysInMonth(this.monthPayroll);
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-    this.selectPayroll.valueChanges.subscribe(val => {
+    this.selectPayroll.valueChanges.subscribe((val) => {
       this.selectedPayroll = val;
       if (val === PayrollEnum.TIME_SHEET) {
         this.loadInitPayroll();
@@ -99,23 +108,21 @@ export class PayrollComponent implements OnInit {
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
     );
-
   }
 
   loadInitPayroll(month?: Date) {
     this.store.dispatch(
       PayrollAction.loadInit(
-        this.Payroll(
-          month ?
-            Object.assign(this.formGroup.value, { createdAt: month })
+        this.mapPayroll(
+          month
+            ? Object.assign(this.formGroup.value, { createdAt: month })
             : this.formGroup.value
         )
       )
     );
   }
 
-
-  Payroll(val: any) {
+  mapPayroll(val: any) {
     return {
       skip: this.pageIndexInit,
       take: this.pageSize,
@@ -123,28 +130,33 @@ export class PayrollComponent implements OnInit {
       position: val.position,
       branch: val.branch,
       createdAt: val.createdAt
-        ? val.createdAt :
-        this.datePipe.transform(new Date(), 'yyyy-MM'),
+        ? val.createdAt
+        : this.datePipe.transform(new Date(), 'yyyy-MM'),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
-        ? TypeEmployee.EMPLOYEE_SEASONAL
-        : TypeEmployee.EMPLOYEE_FULL_TIME
+      employeeType:
+        this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
+          ? TypeEmployee.EMPLOYEE_SEASONAL
+          : TypeEmployee.EMPLOYEE_FULL_TIME,
     };
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayroll(val)));
   }
 
   addPayroll($event?: any): void {
-    const ref = this.dialog.open(AddPayrollComponent,
-      { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
-    ref.afterClosed().subscribe(val => {
+    const ref = this.dialog.open(AddPayrollComponent, {
+      width: '30%',
+      data: { employeeId: $event?.employee?.id, addOne: true },
+    });
+    ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formGroup
+          .get('createdAt')!
+          .patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
   }
@@ -152,14 +164,17 @@ export class PayrollComponent implements OnInit {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type }
+      data: { id, type },
     });
   }
 
   addSalaryOvertime(type: SalaryTypeEnum): any {
     this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
-      data: { type: type, isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      data: {
+        type: type,
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      },
     });
   }
 
@@ -170,14 +185,16 @@ export class PayrollComponent implements OnInit {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent,
-      { width: 'fit-content', data: this.formGroup.value });
+    this.dialog.open(DialogExportPayrollComponent, {
+      width: 'fit-content',
+      data: this.formGroup.value,
+    });
   }
 
   exportTimekeeping() {
     this.dialog.open(DialogExportTimekeepingComponent, {
       width: 'fit-content',
-      data: { datetime: this.monthPayroll }
+      data: { datetime: this.monthPayroll },
     });
   }
 
@@ -185,7 +202,7 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET },
     });
   }
 
@@ -201,23 +218,32 @@ export class PayrollComponent implements OnInit {
     const ref = this.dialog.open(AddPayrollComponent, {
       width: '30%',
       data: {
-        employeeType: this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL ? TypeEmployee.EMPLOYEE_SEASONAL : ''
-      }
+        employeeType:
+          this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
+            ? TypeEmployee.EMPLOYEE_SEASONAL
+            : '',
+      },
     });
-    ref.afterClosed().subscribe(val => {
+    ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formGroup
+          .get('createdAt')!
+          .patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
   }
 
   selectMonth(event: any) {
     this.monthPayroll = event;
-    this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
+    this.formGroup
+      .get('createdAt')!
+      .patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }
 
   restorePayroll(event: any) {
-    this.dialog.open(RestorePayrollComponent, { width: 'fit-content', data: { payroll: event } });
+    this.dialog.open(RestorePayrollComponent, {
+      width: 'fit-content',
+      data: { payroll: event },
+    });
   }
-
 }

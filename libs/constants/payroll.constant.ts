@@ -6,11 +6,11 @@ export const PayrollConstant = [
     value: PayrollEnum.PAYROLL
   },
   {
-    name: 'PHIẾU TĂNG CA',
+    name: 'Phiếu tăng ca',
     value: PayrollEnum.PAYROLL_OVERTIME
   },
   {
-    name: 'PHIẾU CHẤM CÔNG',
+    name: 'Phiếu chấm công',
     value: PayrollEnum.TIME_SHEET
   },
   {
