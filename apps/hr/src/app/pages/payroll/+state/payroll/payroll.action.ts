@@ -18,6 +18,7 @@ export const loadInit = createAction(
     accConfirmedAt?: boolean,
     employeeId?: number,
     isTimeSheet?: boolean,
+    employeeType?: string
   }>()
 );
 

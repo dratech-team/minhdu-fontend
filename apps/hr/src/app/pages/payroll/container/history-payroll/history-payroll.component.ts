@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { selectorAllEmployee } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum, TypeEmployee } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
@@ -31,6 +31,7 @@ import { DialogExportPayrollComponent } from '../../component/dialog-export-payr
 })
 export class HistoryPayrollComponent implements OnInit {
   name$!: Observable<string>;
+  employeeType?: string;
   formGroup = new FormGroup({
     name: new FormControl(''),
     paidAt: new FormControl(''),
@@ -45,7 +46,7 @@ export class HistoryPayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
-  payroll$ = this.store.pipe(select(selectorAllPayroll))
+  payroll$ = this.store.pipe(select(selectorAllPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
@@ -63,12 +64,19 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name))
+    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name));
+    this.activatedRoute.queryParams.pipe(map(param =>
+    {
+      console.log(param.employeeType)
+      this.employeeType = JSON.parse(JSON.stringify(param.employeeType))
+    }
+     )).subscribe()
     this.store.dispatch(
       PayrollAction.loadInit({
         skip: this.pageIndexInit,
         take: this.pageSize,
-        employeeId: this.getEmployeeId
+        employeeId: this.getEmployeeId,
+        employeeType: this.employeeType ?  this.employeeType: ''
       })
     );
     this.store.dispatch(PositionActions.loadPosition());
