@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,16 +13,16 @@ import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
-  selectorAllEmployee,
+  selectorAllEmployee
 } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
 
 @Component({
   selector: 'app-pick-employee-overtime',
-  templateUrl: 'pick-employee-overtime.component.html',
+  templateUrl: 'pick-employee-overtime.component.html'
 })
 export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   @Input() checkAllowance = false;
@@ -38,14 +38,15 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
   formGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('')
   });
 
   constructor(
     private readonly store: Store,
     private readonly service: PickEmployeeService,
     private readonly snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.employees$.subscribe((employee) => {
@@ -55,10 +56,12 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          console.log(val);
           const param = {
             name: val.name,
             templateId: this.search.templateId,
             createdPayroll: new Date(this.search.createdPayroll),
+            employeeType: this.search.employeeType
           };
           this.service.searchEmployees(param);
         })
@@ -69,15 +72,15 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
-
     const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
-    const previousCreatedPayroll =
-      changes.search?.previousValue?.createdPayroll;
-
+    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
+    const currentEmployeeType = changes.search?.currentValue?.templateId;
+    const previousEmployeeType = changes.search?.previousValue?.templateId;
     if (
       currentTemplateId &&
-      (currentTemplateId !== previousTemplateId ||
-        currentCreatedPayroll !== previousCreatedPayroll)
+      (currentTemplateId !== previousTemplateId
+        || currentCreatedPayroll !== previousCreatedPayroll
+        ||currentEmployeeType !== previousEmployeeType )
     ) {
       this.store.dispatch(
         EmployeeAction.loadInit({
@@ -86,7 +89,8 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
             createdPayroll: changes.search.currentValue.createdPayroll
               ? new Date(changes.search.currentValue.createdPayroll)
               : new Date(),
-          },
+            employeeType:changes.search.currentValue.employeeType,
+          }
         })
       );
     }
@@ -117,7 +121,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   someCompleteEmployee(): boolean {
     return (
       this.employees.filter((e) => this.employeeIds.includes(e.id)).length >
-        0 && !this.isSelectEmployee
+      0 && !this.isSelectEmployee
     );
   }
 
@@ -171,7 +175,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   someCompleteAllowance(): boolean {
     return (
       this.employees.filter((e) => this.allowEmpIds.includes(e.id)).length >
-        0 && !this.isSelectAllowance
+      0 && !this.isSelectAllowance
     );
   }
 

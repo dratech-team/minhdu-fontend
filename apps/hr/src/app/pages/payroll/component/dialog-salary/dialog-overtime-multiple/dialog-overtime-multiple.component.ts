@@ -66,6 +66,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup = this.formBuilder.group({
+      employeeType:[EmployeeType.EMPLOYEE_SEASONAL],
       datetime: [undefined],
       month: [undefined],
       note: [''],

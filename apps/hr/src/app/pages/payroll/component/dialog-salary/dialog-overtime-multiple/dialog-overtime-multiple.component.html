@@ -204,8 +204,10 @@
       </ng-template>
       <app-pick-employee-overtime [checkAllowance]='onAllowanceOvertime'
                                   [search]='{templateId: templateId ,
-                                                  createdPayroll: formGroup.get("days")?.value > 1 ?
-                                                   formGroup.get("month")?.value : formGroup.get("datetime")?.value  }'
+                                             createdPayroll: formGroup.get("days")?.value > 1 ?
+                                                             formGroup.get("month")?.value : formGroup.get("datetime")?.value,
+                                             employeeType: formGroup.get("employeeType")!.value
+                                             }'
                                   (EventSelectAllowance)='pickAllowance($event)'
                                   (EventSelectEmployee)='pickEmployees($event)'
       >
