@@ -2,14 +2,14 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
-  FormGroup
+  FormGroup, Validators
 } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef
 } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
@@ -17,7 +17,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
 import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
@@ -135,6 +134,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   }
 
   pickOverTime(data: TemplateOvertime) {
+    console.log(data)
     this.price = data.price;
     this.title = data.title;
     this.rate = data.rate;
