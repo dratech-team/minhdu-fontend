@@ -151,7 +151,7 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
       data: {
-        payroll: payroll,
+        payroll: payroll
       }
     });
   }
@@ -187,9 +187,14 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.dialog.open(LoadingComponent, {
+    const ref = this.dialog.open(LoadingComponent, {
       width: 'fit-content',
-      data: { content: 'Đang quét ngày lễ...', loaded: this.scanned$ }
+      data: { content: 'Đang quét ngày lễ...' }
+    });
+    this.scanned$.subscribe(val => {
+      if (val) {
+        ref.close();
+      }
     });
     this.store.dispatch(PayrollAction.scanHoliday({ PayrollId: payrollId }));
   }
