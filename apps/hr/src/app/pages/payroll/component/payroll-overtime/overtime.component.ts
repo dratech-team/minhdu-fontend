@@ -21,7 +21,7 @@ import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/ove
 import { OvertimeService } from '../../service/overtime.service';
 
 @Component({
-  selector: 'app-overtime',
+  selector: 'app-payroll-overtime',
   templateUrl: 'overtime.component.html'
 })
 export class OvertimeComponent implements OnInit {
@@ -56,6 +56,7 @@ export class OvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.createdAt)
     this.overtimeService.getOvertime(
       {
         startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),

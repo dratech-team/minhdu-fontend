@@ -90,7 +90,7 @@
       <div class='outer  animated fadeIn'
            infiniteScroll
            [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='100'
+           [infiniteScrollThrottle]='10'
            [scrollWindow]='false'
            (scrolled)='onScroll()'
            *ngIf='(medicines$| async) as medicines'

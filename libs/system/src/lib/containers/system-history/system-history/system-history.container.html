@@ -1,12 +1,12 @@
+<div style='min-height: 80vh'>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async) else systemHistory' count='10' appearance='line'></ngx-skeleton-loader>
-
-
 <ng-template #systemHistory>
   <div style='width: 96%; min-width: 1300px' class='mx-auto'>
     <div class='row h3 mt-3'>Lịch sử hệ thống</div>
-    <div class='fixTableHead mt-5 mx-auto '
+    <div class='fixTableHead my-5 mx-auto '
          infiniteScroll
          [infiniteScrollDistance]='0.1'
+         [infiniteScrollThrottle]='10'
          [scrollWindow]='false'
          [alwaysCallback]='true'
          (scrolled)='onScroll()'
@@ -75,4 +75,4 @@
     </div>
   </div>
 </ng-template>
-
+</div>

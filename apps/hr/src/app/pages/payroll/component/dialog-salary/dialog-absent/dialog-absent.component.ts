@@ -6,11 +6,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { AppState } from '../../../../reducers';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'

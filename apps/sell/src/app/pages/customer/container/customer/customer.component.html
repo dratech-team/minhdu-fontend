@@ -8,6 +8,7 @@
   <div class='table-scroll mx-auto my-5' style='width: 96%;'
        infiniteScroll
        [infiniteScrollDistance]='0.1'
+       [infiniteScrollThrottle]='10'
        [scrollWindow]='false'
        [alwaysCallback]='true'
        (scrolled)='onScroll()'>

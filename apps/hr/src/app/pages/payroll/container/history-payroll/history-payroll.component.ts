@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { selectorAllEmployee } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
@@ -25,12 +25,15 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
+import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 
 @Component({
   templateUrl: 'history-payroll.component.html'
 })
 export class HistoryPayrollComponent implements OnInit {
   name$!: Observable<string>;
+  employeeType$!: Observable<string>;
   formGroup = new FormGroup({
     name: new FormControl(''),
     paidAt: new FormControl(''),
@@ -45,7 +48,7 @@ export class HistoryPayrollComponent implements OnInit {
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
-  payroll$ = this.store.pipe(select(selectorAllPayroll))
+  payroll$ = this.store.pipe(select(selectorAllPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
@@ -63,7 +66,8 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name))
+    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name));
+    this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => param.employeeType));
     this.store.dispatch(
       PayrollAction.loadInit({
         skip: this.pageIndexInit,
@@ -77,35 +81,14 @@ export class HistoryPayrollComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
       this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
     });
-
-    this.positions$ = combineLatest([
+    this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
       this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          return positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-        } else {
-          return positions;
-        }
-      })
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          return branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-        } else {
-          return branches;
-        }
-      })
     );
   }
 
@@ -113,7 +96,6 @@ export class HistoryPayrollComponent implements OnInit {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      // code: val.code,
       name: val.name,
       position: val.position,
       branch: val.branch,
@@ -181,6 +163,13 @@ export class HistoryPayrollComponent implements OnInit {
     this.dialog.open(AddPayrollComponent, {
       width: '30%',
       data: { employeeId: this.getEmployeeId, addOne: true, inHistory: true }
+    });
+  }
+
+  updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
+    this.dialog.open(DialogManConfirmedAtComponent, {
+      width: 'fit-content',
+      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
     });
   }
 }

@@ -9,18 +9,21 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
-import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
-import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
-import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
-import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
+import { DialogOvertimeComponent } from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
+import { DialogBasicComponent } from '../../component/dialog-salary/dialog-basic/dialog-basic.component';
+import { DialogAbsentComponent } from '../../component/dialog-salary/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from '../../component/dialog-salary/dialog-stay/dialog-stay.component';
+import { DialogAllowanceComponent } from '../../component/dialog-salary/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 
 
 @Component({
@@ -36,7 +39,7 @@ export class DetailPayrollComponent implements OnInit {
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
-  employeeName!: string;
+  employeeTypeEnum = EmployeeType;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -91,6 +94,10 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }
@@ -107,7 +114,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
@@ -120,6 +127,10 @@ export class DetailPayrollComponent implements OnInit {
         break;
       case SalaryTypeEnum.ABSENT: {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
+      }
+        break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       default :
@@ -140,14 +151,19 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
       data: {
-        payroll: payroll
+        payroll: payroll,
       }
     });
   }
 
   historySalary(payroll: Payroll) {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
-      { queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName } }).then();
+      {
+        queryParams: {
+          name: payroll.employee.firstName + ' ' + payroll.employee.lastName,
+          employeeType: payroll.employee.type
+        }
+      }).then();
   }
 
   nextPayroll(payroll: Payroll) {

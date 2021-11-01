@@ -1,7 +1,6 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 
 <div class='row animated fadeIn   ' *ngIf='(payroll$ | async) as payroll'>
-
   <div class='container'>
     <div class='row' style='display: flex; justify-content: space-between'>
       <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
@@ -55,7 +54,7 @@
             </div>
           </div>
         </a>
-        <div class='employee row col mt-3'>
+        <div *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL' class='employee row col mt-3'>
           <div class='col' style='min-width: 170px'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
@@ -88,7 +87,8 @@
     <div class='row' style='display: flex ; align-items: center'>
       <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
     </div>
-    <div class='row d-flex flex-column'>
+    <div class='row d-flex flex-column'
+         *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL; else seasonal'>
       <div #basic class='d-flex'>
         <!--Lương cơ bản-->
         <div class='col-6'>
@@ -391,7 +391,69 @@
           </tbody>
         </table>
       </div>
+      <div class='sticky-scroll' #sticky>
+        <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
+        <div class='pointer ' (click)='scroll(basic)'>Lương cơ bản</div>
+        <div class='pointer' (click)='scroll(basic)'>Phụ cấp ở lại</div>
+        <div class='pointer' (click)='scroll(allowance)'>Phụ cấp</div>
+        <div class='pointer' (click)='scroll(overtime)'>Tăng ca</div>
+        <div class='pointer' (click)='scroll(absent)'>Khấu trừ</div>
+        <div class='pointer' (click)='scroll(holiday)'>Đi làm ngày lễ</div>
+        <div class='pointer' (click)='scroll(footer)'>Lịch sử và xác nhận lương</div>
+      </div>
+      <div class='sticky-scroll' *ngIf='isSticky'>
+        <div class='pointer' (click)='onSticky(sticky)'>
+          << Hiện
+        </div>
+      </div>
     </div>
+    <ng-template #seasonal>
+      <div class='row d-flex flex-column'>
+        <div class='d-flex'>
+          <div class='col-12'>
+            <table>
+              <thead>
+              <tr style='background-color: #dddddd66;'>
+                <th class=' text-center '>Lương công nhật</th>
+                <th class=' text-center '>Thời gian</th>
+                <th class=' text-center '>Đơn giá</th>
+                <th class=' text-center '>Thành tiền</th>
+                <th width='12%' class=' text-center ' (click)='addSalary(type.PART_TIME,payroll)'>
+                  <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
+                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                       alt='add icon'>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr style='background: white'
+                  *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME'] ">
+                <th> {{salary.title}}</th>
+                <th class='text-center'> {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }} </th>
+                <th class=' text-center '>    {{salary.price|number:'1.0'|notEmpty:'0'}} đ</th>
+                <th class=' text-center ' style='color: #4B3880'>
+                  {{salary.price * salary.times|number:'1.0'|notEmpty:'0'}} đ
+                </th>
+                <th>
+                  <div class='d-flex justify-content-around'>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
+                            (click)='updateSalary(type.PART_TIME,salary)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salary.id, payroll.id)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
     <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
     </div>
     <div #footer>
@@ -408,22 +470,6 @@
           Xác nhận phiếu lương
         </button>
       </div>
-    </div>
-
-  </div>
-  <div class='sticky-scroll' #sticky>
-    <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
-    <div class='pointer ' (click)='scroll(basic)'>Lương cơ bản</div>
-    <div class='pointer' (click)='scroll(basic)'>Phụ cấp ở lại</div>
-    <div class='pointer' (click)='scroll(allowance)'>Phụ cấp</div>
-    <div class='pointer' (click)='scroll(overtime)'>Tăng ca</div>
-    <div class='pointer' (click)='scroll(absent)'>Khấu trừ</div>
-    <div class='pointer' (click)='scroll(holiday)'>Đi làm ngày lễ</div>
-    <div class='pointer' (click)='scroll(footer)'>Lịch sử và xác nhận lương</div>
-  </div>
-  <div class='sticky-scroll' *ngIf='isSticky'>
-    <div class='pointer' (click)='onSticky(sticky)'>
-      << Hiện
     </div>
   </div>
 </div>

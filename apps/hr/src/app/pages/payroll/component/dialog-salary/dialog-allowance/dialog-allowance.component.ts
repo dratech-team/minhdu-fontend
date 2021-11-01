@@ -10,11 +10,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { isEqualDatetime } from 'libs/utils/daytime.until';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { ShowAlertComponent } from '../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
-import { AppState } from '../../../../reducers';
-import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { ShowAlertComponent } from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
+import { AppState } from '../../../../../reducers';
+import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'

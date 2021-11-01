@@ -4,15 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { AppState } from '../../../../reducers';
-import { selectedAddedPayroll } from '../../+state/payroll/payroll.selector';
-import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
-import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
-import { map } from 'rxjs/operators';
-import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
+import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import { AppState } from '../../../../../reducers';
+import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
+import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
+import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SalaryMultipleEmployeeService } from '../../service/salary-multiple-employee.service';
+import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

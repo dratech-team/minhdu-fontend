@@ -1,3 +1,4 @@
+<div class='main-content'>
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #holiday>
@@ -7,102 +8,105 @@
       <button (click)='Holiday()' class='btn btn-primary mt-3  '>Tạo ngày lễ</button>
     </div>
   </div>
-  <div class='fixTableHead mx-auto mt-5'
-       style='width: 100%'
-       infiniteScroll
-       [infiniteScrollDistance]='0.5'
-       [scrollWindow]='false'
-       [alwaysCallback]='true'
-       (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' >
-      <thead>
-      <tr>
-        <th>
-          <div class='border-top text-center'>Tên ngày lễ</div>
-          <input class='form-control ' type='text' formControlName='name'
-          >
-        </th>
-        <th>
-          <div class='border-top text-center'>Ngày</div>
-          <input class='form-control  ' type='date' formControlName='datetime'>
-        </th>
-        <th style='width: 150px' >
-          <div class='border-top text-center'>Hệ số</div>
-          <input
-            class='form-control  '
-            type='number' formControlName='rate'>
-        </th>
-        <th style='width: 170px' >
-          <div class='border-top text-center'>Giá</div>
-          <input type='number' disabled>
-        </th>
-        <th style='width: 170px' >
-          <div class='border-top text-center'>Ràng buộc ngày lễ</div>
-          <select class='select border-top' style='width:100%'>
-            <option value=''>Mặc định</option>
-            <option value='{{false}}'>Có</option>
-            <option value='{{true}}'>Không</option>
-          </select>
-        </th>
-        <th >
-          <div class='border-top text-center'>Chức vụ </div>
-          <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
-          <mat-autocomplete #position='matAutocomplete'>
-            <mat-option *ngFor='let position of positions$ | async'
-                        [value]='position.name' (click)='onSelectPosition(position.name)'
-                        (onSelectionChange)='onSelectPosition(position.name)'>
-              {{position.name}}
-            </mat-option>
-          </mat-autocomplete>
-        </th>
-      </tr>
-      </thead>
-      <tbody *ngIf='(holidays$| async) as holidays'>
-      <tr  *ngFor='let holiday of holidays ; let i = index'
-           (contextmenu)='child.onContextMenu($event,holiday)'>
-        <th class=' pointer ' (click)='Holiday(holiday)'>
-         {{holiday.name}}
-        </th>
-        <th class='  pointer ' (click)='Holiday(holiday)'>
-          {{holiday.datetime |date: 'dd/MM/yyyy'}}
-        </th>
-        <th class='  pointer ' (click)='Holiday(holiday)'>
-         {{holiday.rate}}
-        </th>
-        <th class='  pointer ' *ngIf='holiday.price' (click)='Holiday(holiday)'>
-          {{holiday.price | number :'1.0-0'}}đ
-        </th>
-        <th class='  pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
-        </th>
-        <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
-        Không ràng buộc
-        </th>
-        <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
-          Có ràng buộc
-        </th>
-        <th class=' pointer p-1' (click)='Holiday(holiday)'>
-          <mat-chip-list>
-            <mat-chip
-              (click)='Holiday(holiday)'
-              [style]='{"background": i%2  === 0? "#dddddd":"white"}'
-              *ngFor='let position of holiday.positions'>
-              {{position.name}}
-            </mat-chip>
-          </mat-chip-list>
-        </th>
-      </tr>
-      <tr *ngIf='!holidays || holidays.length === 0 '  class='position-relative'>
-        <td colspan='6' class='font-xl font-weight-bold' style='height:50vh '>
-          <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có ngày lễ nào !</span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div class='mx-auto' style='width: 98%'>
+    <div class='fixTableHead mx-auto mt-5'
+         style='width: 100%'
+         infiniteScroll
+         [infiniteScrollDistance]='0.5'
+         [scrollWindow]='false'
+         [alwaysCallback]='true'
+         (scrolled)='onScroll()'>
+      <table [formGroup]='formGroup' >
+        <thead>
+        <tr>
+          <th>
+            <div class='border-top text-center'>Tên ngày lễ</div>
+            <input class='form-control ' type='text' formControlName='name'
+            >
+          </th>
+          <th>
+            <div class='border-top text-center'>Ngày</div>
+            <input class='form-control  ' type='date' formControlName='datetime'>
+          </th>
+          <th style='width: 150px' >
+            <div class='border-top text-center'>Hệ số</div>
+            <input
+              class='form-control  '
+              type='number' formControlName='rate'>
+          </th>
+          <th style='width: 170px' >
+            <div class='border-top text-center'>Giá</div>
+            <input type='number' disabled>
+          </th>
+          <th style='width: 170px' >
+            <div class='border-top text-center'>Ràng buộc ngày lễ</div>
+            <select class='select border-top' style='width:100%'>
+              <option value=''>Mặc định</option>
+              <option value='{{false}}'>Có</option>
+              <option value='{{true}}'>Không</option>
+            </select>
+          </th>
+          <th >
+            <div class='border-top text-center'>Chức vụ </div>
+            <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async'
+                          [value]='position.name' (click)='onSelectPosition(position.name)'
+                          (onSelectionChange)='onSelectPosition(position.name)'>
+                {{position.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </th>
+        </tr>
+        </thead>
+        <tbody *ngIf='(holidays$| async) as holidays'>
+        <tr  *ngFor='let holiday of holidays ; let i = index'
+             (contextmenu)='child.onContextMenu($event,holiday)'>
+          <th class=' pointer ' (click)='Holiday(holiday)'>
+            {{holiday.name}}
+          </th>
+          <th class='  pointer ' (click)='Holiday(holiday)'>
+            {{holiday.datetime |date: 'dd/MM/yyyy'}}
+          </th>
+          <th class='  pointer ' (click)='Holiday(holiday)'>
+            {{holiday.rate}}
+          </th>
+          <th class='  pointer ' *ngIf='holiday.price' (click)='Holiday(holiday)'>
+            {{holiday.price | number :'1.0-0'}}đ
+          </th>
+          <th class='  pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
+          </th>
+          <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
+            Không ràng buộc
+          </th>
+          <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
+            Có ràng buộc
+          </th>
+          <th class=' pointer p-1' (click)='Holiday(holiday)'>
+            <mat-chip-list>
+              <mat-chip
+                (click)='Holiday(holiday)'
+                [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+                *ngFor='let position of holiday.positions'>
+                {{position.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </th>
+        </tr>
+        <tr *ngIf='!holidays || holidays.length === 0 '  class='position-relative'>
+          <td colspan='6' class='font-xl font-weight-bold' style='height:50vh '>
+            <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có ngày lễ nào !</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </ng-template>
 <app-mouse-right #child (addEvent)='Holiday($event)'
                  (readAndUpdateEvent)='Holiday($event)'
                  (deleteEvent)='deleteHoliday($event)'
 ></app-mouse-right>
-
+</div>
 

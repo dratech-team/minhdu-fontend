@@ -9,3 +9,4 @@ export * from './unit.constant';
 export * from './customerResources.constant';
 export * from './currencies.constant';
 export * from './menu-sell.constant';
+export * from './employee.constant';
