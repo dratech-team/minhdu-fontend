@@ -428,11 +428,14 @@
               <tbody>
               <tr style='background: white'
                   *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME'] ">
-                <th> {{salary.title}} {{salary?.allowance? '+ ' + salary.allowance.title:''}}</th>
-                <th class='text-center'> {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }} </th>
+                <th> {{salary.title}} {{salary?.allowance ? '+ ' + salary.allowance.title : ''}}</th>
+                <th class='text-center'>
+                  {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }}
+                  {{salary?.datetime ? ' ngày ' + (salary.datetime|date:'dd/MM/yyyy') : ''}}
+                </th>
                 <th class=' text-center '>
                   {{salary.price|number:'1.0'|notEmpty:'0'}} đ
-                  {{salary.allowance ? '+ ' + (salary.allowance.price|number:'1.0'|notEmpty:'0' )+' đ':''}}
+                  {{salary.allowance ? '+ ' + (salary.allowance.price|number:'1.0'|notEmpty:'0') + ' đ' : ''}}
                 </th>
                 <th class=' text-center ' style='color: #4B3880'>
                   <span *ngIf='!salary.allowance; else total'>

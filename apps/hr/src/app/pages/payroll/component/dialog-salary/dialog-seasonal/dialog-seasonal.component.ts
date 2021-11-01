@@ -14,6 +14,7 @@ import { TemplateOvertime } from '../../../../template/+state/template-overtime/
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/autocomplete.ultil';
 import { startWith } from 'rxjs/operators';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 
 @Component({
   templateUrl: 'dialog-seasonal.component.html'
@@ -31,6 +32,8 @@ export class DialogSeasonalComponent implements OnInit {
   titleOvertimes = new FormControl();
   checkTemplate = false;
   onAllowanceOvertime = false;
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
 
   constructor(
     public datePipe: DatePipe,
@@ -44,6 +47,10 @@ export class DialogSeasonalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstDayInMonth = this.datePipe.transform(
+      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
+    this.lastDayInMonth = this.datePipe.transform(
+      getLastDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
     if (this.data.isUpdate && this.data.salary.allowance) {
       this.onAllowanceOvertime = true;
     }
@@ -54,7 +61,10 @@ export class DialogSeasonalComponent implements OnInit {
         unit: DatetimeUnitEnum.HOUR
       }));
     if (this.data.isUpdate) {
+      this.checkTemplate = true
       this.formGroup = this.formBuilder.group({
+        datetime: [this.datePipe.transform(
+          this.data.salary.datetime, 'yyyy-MM-dd')],
         price: [this.data.salary.price, Validators.required],
         unit: [this.data.salary.unit, Validators.required],
         times: [this.data.salary.times, Validators.required],
@@ -64,6 +74,8 @@ export class DialogSeasonalComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
+        datetime: [this.datePipe.transform(
+          this.data.payroll.createdAt, 'yyyy-MM-dd')],
         price: ['', Validators.required],
         unit: [DatetimeUnitEnum.DAY, Validators.required],
         times: ['', Validators.required],
@@ -79,9 +91,15 @@ export class DialogSeasonalComponent implements OnInit {
   }
 
   onSubmit(): any {
-    if (this.formGroup.value.unit === DatetimeUnitEnum.HOUR && !this.checkTemplate) {
-      this.snackbar.open('Chưa chọn loại tăng ca', '', { duration: 1500 });
+    if (this.formGroup.value.unit === DatetimeUnitEnum.HOUR) {
+      if (!this.checkTemplate) {
+        return this.snackbar.open('Chưa chọn loại tăng ca', '', { duration: 1500 });
+      }
+      if (!this.datetime) {
+        return this.snackbar.open('Chưa nhập ngày tăng ca', '', { duration: 1500 });
+      }
     }
+
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -89,6 +107,7 @@ export class DialogSeasonalComponent implements OnInit {
     const value = this.formGroup.value;
 
     const salary = {
+      datetime: value.unit === DatetimeUnitEnum.HOUR ? value.datetime : undefined,
       title: value.unit === DatetimeUnitEnum.DAY
         ? 'Lương công nhật theo ngày'
         : this.title,
@@ -99,7 +118,7 @@ export class DialogSeasonalComponent implements OnInit {
       times: value.times,
       unit: value.unit,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
-      type: SalaryTypeEnum.PART_TIME,
+      type: SalaryTypeEnum.PART_TIME
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {

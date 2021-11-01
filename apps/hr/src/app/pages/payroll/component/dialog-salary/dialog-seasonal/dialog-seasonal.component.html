@@ -81,6 +81,16 @@
         </div>
         <div *ngIf='this.formGroup.value.unit === datetime.HOUR'>
           <div class=' title-item mb-1'>
+            <span>Ngày</span>
+            <span class='star'>*</span>
+          </div>
+          <div  class=' mb-3' [formGroup]='formGroup' >
+            <input  class='form-control' type='date'   formControlName='datetime'
+                    min='{{firstDayInMonth}}' max='{{lastDayInMonth}}'>
+          </div>
+        </div>
+        <div *ngIf='this.formGroup.value.unit === datetime.HOUR'>
+          <div class=' title-item mb-1'>
             <span>Hệ số</span>
             <span class='star'>*</span>
           </div>
