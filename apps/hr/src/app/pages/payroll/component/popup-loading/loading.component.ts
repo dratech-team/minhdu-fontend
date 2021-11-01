@@ -1,14 +1,7 @@
 import {
-  AfterContentChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnChanges,
-  OnInit,
-  SimpleChanges
+  Component, Inject
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   templateUrl: 'laoding.component.html'
