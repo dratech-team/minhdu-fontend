@@ -32,6 +32,14 @@
           type='text' formControlName='price'>
       </th>
       <th>
+        <div class='border-top text-center'>Loại nhân viên</div>
+        <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
+          <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+          <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+          <mat-option value=''>Tất cả</mat-option>
+        </mat-select>
+      </th>
+      <th>
         <div class='border-top text-center'>Đơn vị tính</div>
         <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
           <option value='{{unit.DAY}}'>Ngày</option>
@@ -78,6 +86,9 @@
       </th>
       <th class='  pointer ' (click)='templateOvertime(template)'>
         {{template.price| number: '1.0-0'}} VND
+      </th>
+      <th class='  pointer ' (click)='templateOvertime(template)'>
+        {{template.employeeType === employeeTypeEnum.EMPLOYEE_SEASONAL? "Nhân viên thời vụ": "Nhân viên chính thức"}}
       </th>
       <th class='  pointer' *ngIf='template.unit === unit.DAY'
           (click)='templateOvertime(template)'>
