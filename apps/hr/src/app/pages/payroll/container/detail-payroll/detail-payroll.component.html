@@ -428,16 +428,26 @@
               <tbody>
               <tr style='background: white'
                   *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME'] ">
-                <th> {{salary.title}}</th>
+                <th> {{salary.title}} {{salary?.allowance? '+ ' + salary.allowance.title:''}}</th>
                 <th class='text-center'> {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }} </th>
-                <th class=' text-center '>    {{salary.price|number:'1.0'|notEmpty:'0'}} đ</th>
+                <th class=' text-center '>
+                  {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                  {{salary.allowance ? '+ ' + (salary.allowance.price|number:'1.0'|notEmpty:'0' )+' đ':''}}
+                </th>
                 <th class=' text-center ' style='color: #4B3880'>
-                  {{salary.price * salary.times|number:'1.0'|notEmpty:'0'}} đ
+                  <span *ngIf='!salary.allowance; else total'>
+                     {{salary.price * salary.times|number:'1.0'|notEmpty:'0'}} đ
+                  </span>
+                  <ng-template #total>
+                      <span>
+                     {{salary.price * salary.times + salary.allowance.price|number:'1.0'|notEmpty:'0'}} đ
+                  </span>
+                  </ng-template>
                 </th>
                 <th>
                   <div class='d-flex justify-content-around'>
                     <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
-                            (click)='updateSalary(type.PART_TIME,salary)'>
+                            (click)='updateSalary(type.PART_TIME,salary,payroll)'>
                       <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
                     </button>
                     <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'

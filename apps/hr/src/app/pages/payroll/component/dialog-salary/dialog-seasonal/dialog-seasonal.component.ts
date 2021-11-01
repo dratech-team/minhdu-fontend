@@ -1,19 +1,19 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { AppState } from '../../../../../reducers';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
-import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
-import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
-import { map } from 'rxjs/operators';
 import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
+import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
+import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
+import { searchAutocomplete } from '../../../../../../../../../libs/utils/autocomplete.ultil';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'dialog-seasonal.component.html'
@@ -26,7 +26,11 @@ export class DialogSeasonalComponent implements OnInit {
   submitted = false;
   roleEnum = Role;
   role = localStorage.getItem('role');
-
+  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  title!: string;
+  titleOvertimes = new FormControl();
+  checkTemplate = false;
+  onAllowanceOvertime = false;
 
   constructor(
     public datePipe: DatePipe,
@@ -40,18 +44,32 @@ export class DialogSeasonalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data.isUpdate && this.data.salary.allowance) {
+      this.onAllowanceOvertime = true;
+    }
 
+    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
+      {
+        positionId: this.data?.payroll.employee?.position?.id,
+        unit: DatetimeUnitEnum.HOUR
+      }));
     if (this.data.isUpdate) {
       this.formGroup = this.formBuilder.group({
         price: [this.data.salary.price, Validators.required],
         unit: [this.data.salary.unit, Validators.required],
-        times: [this.data.salary.times, Validators.required]
+        times: [this.data.salary.times, Validators.required],
+        rate: [this.data.salary.rate],
+        priceAllowance: [this.data.salary.allowance?.price],
+        titleAllowance: [this.data.salary.allowance?.title]
       });
     } else {
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
         unit: [DatetimeUnitEnum.DAY, Validators.required],
-        times: ['', Validators.required]
+        times: ['', Validators.required],
+        rate: [1],
+        priceAllowance: [],
+        titleAllowance: []
       });
     }
   }
@@ -61,23 +79,39 @@ export class DialogSeasonalComponent implements OnInit {
   }
 
   onSubmit(): any {
+    if (this.formGroup.value.unit === DatetimeUnitEnum.HOUR && !this.checkTemplate) {
+      this.snackbar.open('Chưa chọn loại tăng ca', '', { duration: 1500 });
+    }
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
     const value = this.formGroup.value;
+
     const salary = {
       title: value.unit === DatetimeUnitEnum.DAY
         ? 'Lương công nhật theo ngày'
-        : 'Lương công nhật theo giờ',
+        : this.title,
       price: typeof value.price === 'string'
         ? Number(value.price.replace(this.numberChars, ''))
         : value.price,
+      rate: value.rate,
       times: value.times,
       unit: value.unit,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
-      type: SalaryTypeEnum.PART_TIME
+      type: SalaryTypeEnum.PART_TIME,
     };
+    if (this.onAllowanceOvertime) {
+      Object.assign(salary, {
+        allowance:
+          {
+            title: value.titleAllowance,
+            price: typeof value.priceAllowance === 'string'
+              ? Number(value.priceAllowance.replace(this.numberChars, ''))
+              : value.priceAllowance
+          }
+      });
+    }
     if (this.data.isUpdate) {
       this.store.dispatch(
         PayrollAction.updateSalary({
@@ -100,5 +134,20 @@ export class DialogSeasonalComponent implements OnInit {
       }
     });
 
+    this.templateOvertime$ = searchAutocomplete(
+      this.titleOvertimes.valueChanges.pipe(startWith('')),
+      this.store.pipe(select(selectorAllTemplate))
+    );
+  }
+
+  pickOverTime(data: TemplateOvertime) {
+    this.checkTemplate = !!data;
+    this.formGroup.get('price')!.setValue(data.price);
+    this.title = data.title;
+    this.formGroup.get('rate')!.setValue(data.rate);
+  }
+
+  checkAllowanceOvertime() {
+    this.onAllowanceOvertime = !this.onAllowanceOvertime;
   }
 }
