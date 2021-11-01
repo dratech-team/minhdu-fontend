@@ -34,10 +34,10 @@
             </th>
             <th>
               <div class='border-top text-center'>Loại nhân viên</div>
-             <select class='select border-top' style='width: 100%;'  formControlName='employeeType'>
-               <option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</option>
-               <option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</option>
-             </select>
+             <mat-select class='select border-top' style='width: 100%;'  formControlName='employeeType'>
+               <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+               <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+             </mat-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Ngày sinh</div>
@@ -45,12 +45,12 @@
             </th>
             <th>
               <div class='border-top text-center'>Giới tính</div>
-              <select class='select border-top' style='width: 100%' matNativeControl required formControlName='gender'>
-                <option value='{{genderType.MALE}}'>Nam</option>
-                <option value='{{genderType.FEMALE}}'>Nữ</option>
-                <option value='{{genderType.OTHER}}'>Khác</option>
-                <option value=''>Mặc định</option>
-              </select>
+              <mat-select class='select border-top' style='min-width:100px'  required formControlName='gender'>
+                <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
+                <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
+                <mat-option value='{{genderType.OTHER}}'>Khác</mat-option>
+                <mat-option value=''>Mặc định</mat-option>
+              </mat-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Ngày vào làm</div>
@@ -58,11 +58,11 @@
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Loại lương</div>
-              <select class='select border-top' matNativeControl required formControlName='flatSalary'>
-                <option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</option>
-                <option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</option>
-                <option value=''>Mặc định</option>
-              </select>
+              <mat-select class='select border-top' style='min-width: 170px'  required formControlName='flatSalary'>
+                <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
+                <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
+                <mat-option value=''>Mặc định</mat-option>
+              </mat-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Số điện thoại</div>

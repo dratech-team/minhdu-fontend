@@ -8,7 +8,7 @@
   <mat-stepper linear>
     <mat-step [editable]='true'>
       <ng-template matStepLabel> Thông tin tăng ca</ng-template>
-      <div class=' mb-3 title-popup'>
+        <div class=' mb-3 title-popup'>
         <span>Lương ngoài giờ</span>
       </div>
       <mat-dialog-content style='max-height: 40vh'>
@@ -204,8 +204,10 @@
       </ng-template>
       <app-pick-employee-overtime [checkAllowance]='onAllowanceOvertime'
                                   [search]='{templateId: templateId ,
-                                                  createdPayroll: formGroup.get("days")?.value > 1 ?
-                                                   formGroup.get("month")?.value : formGroup.get("datetime")?.value  }'
+                                             createdPayroll: formGroup.get("days")?.value > 1 ?
+                                                             formGroup.get("month")?.value : formGroup.get("datetime")?.value,
+                                             employeeType: this.employeeType
+                                             }'
                                   (EventSelectAllowance)='pickAllowance($event)'
                                   (EventSelectEmployee)='pickEmployees($event)'
       >

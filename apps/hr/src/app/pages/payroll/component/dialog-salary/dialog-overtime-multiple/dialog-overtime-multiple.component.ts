@@ -1,15 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef
-} from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
@@ -17,7 +9,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
 import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
@@ -52,6 +43,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
   positionOfTempOver: Position[] = [];
+  employeeType!: EmployeeType;
 
   constructor(
     public datePipe: DatePipe,
@@ -141,6 +133,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.unit = data.unit;
     this.templateId = data.id;
     this.positionOfTempOver = data.positions ? data.positions : [];
+    this.employeeType = data.employeeType;
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
@@ -203,7 +196,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     const salary = {
       title: this.title,
       price: this.price,
-      type: this.data.type,
+      type: SalaryTypeEnum.OVERTIME,
       rate: this.rate || this.data?.salary?.rate,
       times: this.unit === this.datetimeUnitEnum.DAY ? value.days : value.times,
       datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) :

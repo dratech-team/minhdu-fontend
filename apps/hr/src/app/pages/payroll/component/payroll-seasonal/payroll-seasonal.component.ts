@@ -10,12 +10,11 @@ import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import {
   selectedLoadedPayroll,
-  selectorAllPayroll,
   selectorAllPayrollSeasonal
 } from '../../+state/payroll/payroll.selector';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { debounceTime } from 'rxjs/operators';
-import { getFirstDayInMonth, rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { DatePipe } from '@angular/common';
 import { RestorePayrollComponent } from '../restore-payroll/restore-payroll.component';
@@ -37,7 +36,7 @@ export class PayrollSeasonalComponent implements OnInit {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(''),
+    createdAt: new FormControl(this.monthPayroll),
     position: new FormControl(''),
     branch: new FormControl('')
   });

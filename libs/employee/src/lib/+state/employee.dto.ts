@@ -1,6 +1,6 @@
-import { Gender } from '@minhdu-fontend/enums';
+import { EmployeeType, Gender } from '@minhdu-fontend/enums';
 
-export interface EmployeeDto{
+export interface EmployeeDto {
   take?: number,
   skip?: number,
   name?: string,
@@ -12,5 +12,6 @@ export interface EmployeeDto{
   isSelect?: boolean,
   templateId?: number,
   createdPayroll?: Date,
-  isLeft?: boolean
+  isLeft?: boolean,
+  employeeType?: EmployeeType,
 }

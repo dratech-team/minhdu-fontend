@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate, selectTemplateAdding } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class TemplateOvertimeComponent implements OnInit {
   unit = DatetimeUnitEnum;
   pageSize = 30;
   pageIndexInit = 0;
+  employeeTypeEnum= EmployeeType;
   formGroup = new FormGroup(
     {
       title: new FormControl(''),
@@ -30,7 +31,8 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: new FormControl(''),
       note: new FormControl(''),
       position: new FormControl(''),
-      branch: new FormControl('')
+      branch: new FormControl(''),
+      employeeType: new FormControl('')
     }
   );
   positions$ = this.store.pipe(select(getAllPosition));

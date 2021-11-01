@@ -37,7 +37,7 @@ import { RestorePayrollComponent } from '../../component/restore-payroll/restore
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
-  templateUrl: 'payroll.component.html',
+  templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit {
   formGroup = new FormGroup({
@@ -47,7 +47,7 @@ export class PayrollComponent implements OnInit {
     manConfirmedAt: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(new Date(), 'yyyy-MM')),
     position: new FormControl(''),
-    branch: new FormControl(''),
+    branch: new FormControl('')
   });
   selectPayroll = new FormControl(PayrollEnum.TIME_SHEET);
   selectedPayroll: PayrollEnum = PayrollEnum.TIME_SHEET;
@@ -73,7 +73,8 @@ export class PayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loadInitPayroll();
@@ -110,6 +111,7 @@ export class PayrollComponent implements OnInit {
     );
   }
 
+
   loadInitPayroll(month?: Date) {
     this.store.dispatch(
       PayrollAction.loadInit(
@@ -138,7 +140,7 @@ export class PayrollComponent implements OnInit {
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME,
+          : EmployeeType.EMPLOYEE_FULL_TIME
     };
   }
 
@@ -150,7 +152,7 @@ export class PayrollComponent implements OnInit {
   addPayroll($event?: any): void {
     const ref = this.dialog.open(AddPayrollComponent, {
       width: '30%',
-      data: { employeeId: $event?.employee?.id, addOne: true },
+      data: { employeeId: $event?.employee?.id, addOne: true }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -164,7 +166,7 @@ export class PayrollComponent implements OnInit {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type },
+      data: { id, type }
     });
   }
 
@@ -173,8 +175,8 @@ export class PayrollComponent implements OnInit {
       width: 'fit-content',
       data: {
         type: type,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
     });
   }
 
@@ -187,14 +189,14 @@ export class PayrollComponent implements OnInit {
   exportPayroll() {
     this.dialog.open(DialogExportPayrollComponent, {
       width: 'fit-content',
-      data: this.formGroup.value,
+      data: this.formGroup.value
     });
   }
 
   exportTimekeeping() {
     this.dialog.open(DialogExportTimekeepingComponent, {
       width: 'fit-content',
-      data: { datetime: this.monthPayroll },
+      data: { datetime: this.monthPayroll }
     });
   }
 
@@ -202,7 +204,7 @@ export class PayrollComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET },
+      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
     });
   }
 
@@ -221,8 +223,8 @@ export class PayrollComponent implements OnInit {
         employeeType:
           this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
             ? EmployeeType.EMPLOYEE_SEASONAL
-            : '',
-      },
+            : ''
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -243,7 +245,7 @@ export class PayrollComponent implements OnInit {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { payroll: event },
+      data: { payroll: event }
     });
   }
 }
