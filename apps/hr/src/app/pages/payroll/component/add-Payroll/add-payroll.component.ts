@@ -39,12 +39,16 @@ export class AddPayrollComponent implements OnInit {
   }
 
   submit(): any {
-    this.dialog.open(LoadingComponent, {
+    const ref = this.dialog.open(LoadingComponent, {
       width: 'fit-content',
       disableClose: true,
       data: {
-        content: 'Đang khởi tạo phiếu lương...',
-        loaded: this.adding$
+        content: 'Đang khởi tạo phiếu lương...'
+      }
+    });
+    this.adding$.subscribe(val => {
+      if (val) {
+        ref.close();
       }
     });
     if (this.data?.addOne) {
