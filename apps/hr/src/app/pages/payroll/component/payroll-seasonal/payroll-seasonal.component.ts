@@ -37,7 +37,7 @@ export class PayrollSeasonalComponent implements OnInit {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(''),
+    createdAt: new FormControl(this.monthPayroll),
     position: new FormControl(''),
     branch: new FormControl('')
   });
