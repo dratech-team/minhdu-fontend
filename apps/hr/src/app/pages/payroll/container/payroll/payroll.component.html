@@ -124,11 +124,12 @@
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-                <select class='select border-top' matNativeControl required formControlName='accConfirmedAt'>
-                  <option value='TRUE'>Đã xác nhận</option>
-                  <option value='FALSE'>chưa xác nhận</option>
-                  <option value=''>Mặc định</option>
-                </select>
+                <mat-select class='select border-top' style='min-width: 100px' required
+                            formControlName='accConfirmedAt'>
+                  <mat-option value='TRUE'>Đã xác nhận</mat-option>
+                  <mat-option value='FALSE'>chưa xác nhận</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
               </th>
               <th width='3.5%'>
                 <div class='border-top d-flex justify-content-center align-items-center'>lương cơ bản</div>
@@ -169,11 +170,11 @@
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Thanh toán</div>
-                <select class='select border-top ' matNativeControl required formControlName='paidAt'>
-                  <option value='TRUE'>Đã Thanh toán</option>
-                  <option value='FALSE'>Chưa thanh toán</option>
-                  <option value=''>Mặc định</option>
-                </select>
+                <mat-select class='select border-top ' style='min-width: 100px' required formControlName='paidAt'>
+                  <mat-option value='TRUE'>Đã Thanh toán</mat-option>
+                  <mat-option value='FALSE'>Chưa thanh toán</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
               </th>
             </tr>
             </thead>
@@ -318,7 +319,6 @@
 
 
 <style>
-
   .table-scroll th:nth-child(2) {
     position: -webkit-sticky;
     position: sticky;

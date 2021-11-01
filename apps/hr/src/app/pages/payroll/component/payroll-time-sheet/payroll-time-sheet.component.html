@@ -108,3 +108,24 @@
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>
 
+<style>
+  .table-scroll th:nth-child(2) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 150px;
+    z-index: 2;
+  }
+
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 400px;
+    z-index: 2;
+  }
+
+
+  .table-scroll thead th:nth-child(2),
+  .table-scroll thead th:nth-child(3) {
+    z-index: 5;
+  }
+</style>
