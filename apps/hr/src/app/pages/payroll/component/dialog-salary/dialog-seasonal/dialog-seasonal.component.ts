@@ -118,7 +118,7 @@ export class DialogSeasonalComponent implements OnInit {
       times: value.times,
       unit: value.unit,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
-      type: SalaryTypeEnum.PART_TIME
+      type: value.unit === DatetimeUnitEnum.HOUR?  SalaryTypeEnum.OVERTIME: SalaryTypeEnum.PART_TIME
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
@@ -132,6 +132,10 @@ export class DialogSeasonalComponent implements OnInit {
       });
     }
     if (this.data.isUpdate) {
+      if (!this.onAllowanceOvertime && this.data.salary.allowance) {
+        this.store.dispatch(PayrollAction.deleteSalary(
+          { id: this.data.salary.allowance.id, PayrollId: this.data.salary.payrollId }));
+      }
       this.store.dispatch(
         PayrollAction.updateSalary({
           id: this.data.salary.id,

@@ -18,12 +18,31 @@
             <div>Chưa nhập tiêu đề</div>
           </div>
         </div>
-        <div class='main-popup mt-2 '>
+        <div>
+          <div class='main-title mt-3'>
+            <span> Loại nhân viên</span><span class='star'>*</span>
+          </div>
+          <div class='mt-1'>
+            <mat-select class='form-control' formControlName='employeeType'
+                        [ngClass]="{ 'is-invalid': submitted && f.employeeType.errors?.required }">
+              <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+              <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+            </mat-select>
+            <div *ngIf='submitted && f.employeeType.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn loại tăng ca</div>
+            </div>
+          </div>
+        </div>
+        <div class='main-popup mt-2'>
           <div class=' main-title mb-1'>
             <label class='main-title'>Loại tăng ca <span class='star'>*</span></label>
           </div>
           <div class=' mt-1'>
             <mat-select
+              [ngStyle]='{
+              "background":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
+               "pointer-events":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              }'
               class='form-control col'
               formControlName='unit'
               [ngClass]="{ 'is-invalid': submitted && f.unit.errors?.required }"

@@ -1,14 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup, Validators
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef
-} from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
@@ -51,6 +43,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   unitOvertime?: DatetimeUnitEnum;
   datetimeUnitEnum = DatetimeUnitEnum;
   positionOfTempOver: Position[] = [];
+  employeeType!: EmployeeType;
 
   constructor(
     public datePipe: DatePipe,
@@ -66,7 +59,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup = this.formBuilder.group({
-      employeeType:[EmployeeType.EMPLOYEE_SEASONAL],
       datetime: [undefined],
       month: [undefined],
       note: [''],
@@ -135,13 +127,13 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   }
 
   pickOverTime(data: TemplateOvertime) {
-    console.log(data)
     this.price = data.price;
     this.title = data.title;
     this.rate = data.rate;
     this.unit = data.unit;
     this.templateId = data.id;
     this.positionOfTempOver = data.positions ? data.positions : [];
+    this.employeeType = data.employeeType;
   }
 
   selectUnitOvertime(unit?: DatetimeUnitEnum) {
@@ -204,7 +196,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     const salary = {
       title: this.title,
       price: this.price,
-      type: this.data.type,
+      type: SalaryTypeEnum.OVERTIME,
       rate: this.rate || this.data?.salary?.rate,
       times: this.unit === this.datetimeUnitEnum.DAY ? value.days : value.times,
       datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) :

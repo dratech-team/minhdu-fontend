@@ -427,7 +427,7 @@
               </thead>
               <tbody>
               <tr style='background: white'
-                  *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME'] ">
+                  *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME','OVERTIME'] ">
                 <th> {{salary.title}} {{salary?.allowance ? '+ ' + salary.allowance.title : ''}}</th>
                 <th class='text-center'>
                   {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }}

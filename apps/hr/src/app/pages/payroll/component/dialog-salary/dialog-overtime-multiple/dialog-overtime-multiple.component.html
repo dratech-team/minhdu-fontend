@@ -206,7 +206,7 @@
                                   [search]='{templateId: templateId ,
                                              createdPayroll: formGroup.get("days")?.value > 1 ?
                                                              formGroup.get("month")?.value : formGroup.get("datetime")?.value,
-                                             employeeType: formGroup.get("employeeType")!.value
+                                             employeeType: this.employeeType
                                              }'
                                   (EventSelectAllowance)='pickAllowance($event)'
                                   (EventSelectEmployee)='pickEmployees($event)'

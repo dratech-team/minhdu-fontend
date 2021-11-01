@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch, Position } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
 import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -35,6 +35,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   positions = new FormControl();
   branches = new FormControl();
   typeUnit = DatetimeUnitEnum;
+  employeeTypeEnum = EmployeeType;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -60,11 +61,21 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
       title: [this.data?.title, Validators.required],
+      employeeType: [this.data?.employeeType ?
+        this.data?.employeeType
+        : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
       rate: [this.data?.rate ? this.data.rate : 1, Validators.required],
       note: [this.data?.note]
     });
+
+    this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
+      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+        this.formGroup.get('unit')!.patchValue(DatetimeUnitEnum.HOUR);
+      }
+    });
+
     this.positions$ = searchAndAddAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
       this.positions$
@@ -95,6 +106,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       id: this.data?.id,
       data: {
         title: value.title,
+        employeeType: value.employeeType,
         positionIds: this.positionSelected.map(val => val.id),
         branchId: this.branchId,
         price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
