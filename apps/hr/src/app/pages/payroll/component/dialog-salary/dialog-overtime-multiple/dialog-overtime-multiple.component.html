@@ -73,7 +73,6 @@
                   <mat-autocomplete #titleOvertime='matAutocomplete'>
                     <mat-option *ngFor='let templateOvertime of templateOvertime$ | async'
                                 [value]='templateOvertime.title'
-                                (click)='pickOverTime(templateOvertime)'
                                 (onSelectionChange)='pickOverTime(templateOvertime)'>
                       {{templateOvertime.title}}
                     </mat-option>
