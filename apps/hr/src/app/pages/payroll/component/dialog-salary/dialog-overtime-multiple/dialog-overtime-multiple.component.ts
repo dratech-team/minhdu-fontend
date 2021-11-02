@@ -203,11 +203,11 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         value.days > 1 && value.month ? new Date(value.month) : undefined,
       note: value.note,
       unit: this.unit || undefined,
-      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
+      employeeIds: this.employeeIds
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
-        allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
+        allowEmpIds: this.allowEmpIds,
         allowance:
           {
             title: value.titleAllowance,
