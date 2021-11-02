@@ -127,11 +127,8 @@
                 "pointer-events": this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL ? "none":"auto"
                 }'
                 id='recipeType' class='form-control' formControlName='recipeType'>
-                <mat-option value='{{recipeType.CT1}}'>Công thức 1
-                </mat-option>
-                <mat-option value='{{recipeType.CT2}}'>Công thức 2
-                </mat-option>
-                <mat-option value='{{recipeType.CT3}}'>Công thức 3
+                <mat-option *ngFor='let item of recipeTypesConstant' [value]='item.value' >
+                  {{item.name}}
                 </mat-option>
               </mat-select>
             </div>
