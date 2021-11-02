@@ -25,7 +25,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[]}>()
+  props<{ payrolls: Payroll[] }>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
@@ -46,7 +46,7 @@ export const loadMorePayrolls = createAction(
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[]}>()
+  props<{ payrolls: Payroll[] }>()
 );
 
 export const filterOvertime = createAction(
@@ -79,7 +79,7 @@ export const handlePayrollError = createAction(
 
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
-  props<{ salary: any, payrollId?: number, isTimesheet?: boolean }>()
+  props<{ salary: any, payrollId?: number, isTimesheet?: boolean, branchId?: number }>()
 );
 
 export const handleSalaryError = createAction(
@@ -104,7 +104,7 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, dataConfirm:{datetime?: Date|null}}>()
+  props<{ id: number, dataConfirm: { datetime?: Date | null } }>()
 );
 
 export const updatePayrollSuccess = createAction(
@@ -119,7 +119,7 @@ export const confirmPayrollSuccess = createAction(
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{ payrollId: number, salary: any, id?: number }>()
+  props<{ salary: any, payrollId?: number, id?: number, branchId?: number }>()
 );
 
 export const deletePayroll = createAction(

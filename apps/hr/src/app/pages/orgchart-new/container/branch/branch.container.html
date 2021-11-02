@@ -5,7 +5,7 @@
     <div>
       <div style='width: 1000px;' class=''>
         <div class='row h3 '>Đơn vị</div>
-        <div class='row'>
+        <div class='row' *ngIf='(branches$|async) as branch'>
           <button (click)='addBranch()' class='btn btn-primary mt-3 '>Tạo Đơn vị</button>
         </div>
       </div>
@@ -32,13 +32,13 @@
           </thead>
           <tbody *ngIf='(branches$| async) as branches'>
           <tr *ngFor='let branch of branches' (contextmenu)='childBranch.onContextMenu($event,branch)'>
-            <th class='pointer' (click)='updateBranch(branch)'>
+            <th class='pointer' (click)='detailBranch(branch)'>
               {{branch.id}}
             </th>
-            <th class='pointer' (click)='updateBranch(branch)'>
+            <th class='pointer' (click)='detailBranch(branch)'>
               {{branch.name}}
             </th>
-            <th class='pointer' (click)='updateBranch(branch)'>
+            <th class='pointer' (click)='detailBranch(branch)'>
               {{branch?._count?.employees}}
             </th>
           </tr>
@@ -54,6 +54,6 @@
 </div>
 
 <app-mouse-right #childBranch (addEvent)='addBranch()'
-                 (readAndUpdateEvent)='updatePosition($event)'
+                 (readAndUpdateEvent)='detailBranch($event)'
                  (deleteEvent)='deleteBranch($event)'
 ></app-mouse-right>
