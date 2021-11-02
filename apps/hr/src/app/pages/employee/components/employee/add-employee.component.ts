@@ -31,6 +31,7 @@ import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/s
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -50,7 +51,7 @@ export class AddEmployeeComponent implements OnInit {
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
-
+  recipeTypesConstant = RecipeTypesConstant
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,

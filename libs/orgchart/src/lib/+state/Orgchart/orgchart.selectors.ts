@@ -28,16 +28,12 @@ export const getAllOrgchart = createSelector(
   (state: State) => selectAll(state)
 );
 
-/**
- * @deprecated
- * */
+
 export const getOrgchartEntities = createSelector(
   getOrgchartState,
   selectEntities
 );
-/**
- * @deprecated
- * */
+
 export const getBranchById = (id: number) => createSelector(
   getOrgchartEntities,
   (branchEntities) => branchEntities[id]

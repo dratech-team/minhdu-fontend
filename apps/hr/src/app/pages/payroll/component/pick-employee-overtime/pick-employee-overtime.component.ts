@@ -76,11 +76,21 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
     const currentEmployeeType = changes.search?.currentValue?.templateId;
     const previousEmployeeType = changes.search?.previousValue?.templateId;
+
+    if (currentTemplateId && currentTemplateId !== previousTemplateId) {
+      this.employeeIds = [];
+      this.allowEmpIds = [];
+      this.isSelectAllowance = false;
+      this.isSelectEmployee = false;
+      this.EventSelectAllowance.emit(this.allowEmpIds);
+      this.EventSelectEmployee.emit(this.employeeIds);
+    }
+
     if (
       currentTemplateId &&
       (currentTemplateId !== previousTemplateId
         || currentCreatedPayroll !== previousCreatedPayroll
-        ||currentEmployeeType !== previousEmployeeType )
+        || currentEmployeeType !== previousEmployeeType)
     ) {
       this.store.dispatch(
         EmployeeAction.loadInit({
@@ -89,7 +99,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
             createdPayroll: changes.search.currentValue.createdPayroll
               ? new Date(changes.search.currentValue.createdPayroll)
               : new Date(),
-            employeeType:changes.search.currentValue.employeeType,
+            employeeType: changes.search.currentValue.employeeType
           }
         })
       );

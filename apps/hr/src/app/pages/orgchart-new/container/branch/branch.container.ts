@@ -3,15 +3,12 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  getAllPosition,
-  PositionActions, selectPositionLoaded
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -26,6 +23,7 @@ export class BranchContainer implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly router: Router,
     private readonly store: Store<AppState>) {
   }
 
@@ -40,9 +38,8 @@ export class BranchContainer implements OnInit {
     this.dialog.open(DialogBranchComponent, { width: 'fit-content' });
   }
 
-  updateBranch($event: any) {
-    this.dialog.open(DialogBranchComponent,
-      { width: 'fit-content', data: { branch: $event, isUpdate: true } });
+  detailBranch($event: any) {
+    this.router.navigate(['to-chuc/chi-tiet-don-vi/', $event.id]).then();
   }
 
   deleteBranch($event: any) {
@@ -50,25 +47,6 @@ export class BranchContainer implements OnInit {
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrgchartActions.deleteBranch({ id: $event.id }));
-      }
-    });
-  }
-
-
-  addPosition() {
-
-  }
-
-  updatePosition($event: any) {
-
-  }
-
-
-  deletePosition($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(PositionActions.deletePosition({ id: $event.id }));
       }
     });
   }

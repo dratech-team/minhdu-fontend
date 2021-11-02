@@ -14,12 +14,14 @@ export const loadOrgchartSuccess = createAction(
 );
 
 
-/**
- * @deprecated
- * */
+
 export const getBranch = createAction(
   '[Orgchart/API] get Branch',
   props<{ id: number }>()
+);
+export const getBranchSuccess = createAction(
+  '[Orgchart/API] get Branch Success',
+  props<{ branch: Branch }>()
 );
 
 export const addBranch = createAction(
