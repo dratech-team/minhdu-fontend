@@ -203,19 +203,21 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         value.days > 1 && value.month ? new Date(value.month) : undefined,
       note: value.note,
       unit: this.unit || undefined,
-      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined,
-      allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
-      allowance:
-        value.titleAllowance && value.priceAllowance
-          ? {
+      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
+    };
+    if (this.onAllowanceOvertime) {
+      Object.assign(salary, {
+        allowEmpIds: this.allowEmpIds.length > 0 ? this.allowEmpIds : undefined,
+        allowance:
+          {
             title: value.titleAllowance,
             price:
               typeof value.priceAllowance === 'string'
                 ? Number(value.priceAllowance.replace(this.numberChars, ''))
                 : value.priceAllowance
           }
-          : undefined
-    };
+      });
+    }
     this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
     this.dialogRef.close();
   }
