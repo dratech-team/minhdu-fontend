@@ -21,6 +21,8 @@ import { DialogPositionComponent } from './component/dialog-position/dialog-posi
 import { PositionContainer } from './container/position/position.container';
 import { BranchContainer } from './container/branch/branch.container';
 import { DialogBranchComponent } from './component/dialog-branch/dialog-branch.component';
+import { AllowanceBranchComponent } from './component/dialog-allowance-branch/allowance-branch.component';
+import { DetailBranchContainer } from './container/detail-branch/detail-branch.container';
 
 @NgModule({
   imports: [
@@ -49,7 +51,9 @@ import { DialogBranchComponent } from './component/dialog-branch/dialog-branch.c
     DialogPositionComponent,
     PositionContainer,
     BranchContainer,
-    DialogBranchComponent
+    DialogBranchComponent,
+    AllowanceBranchComponent,
+    DetailBranchContainer
   ]
 })
 export class OrgchartNewModule {

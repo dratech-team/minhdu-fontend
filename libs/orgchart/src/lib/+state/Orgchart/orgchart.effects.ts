@@ -49,10 +49,10 @@ export class OrgchartEffects {
   getBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.getBranch),
-      switchMap(param => this.branchService.getOne(param.id).pipe(
-        map(_ => OrgchartActions.init()),
+      switchMap(param => this.branchService.getOne(param.id)),
+      map((branch) => OrgchartActions.getBranchSuccess({ branch: branch }),
         catchError(err => throwError(err))
-      ))
+      )
     ), { dispatch: true }
   );
 
