@@ -62,7 +62,7 @@ export class OrgchartEffects {
       switchMap(param => this.branchService.update(param.id, { name: param.name })),
       map(res => {
         this.snackBar.open('Cập nhật đơn vị thành công', '', { duration: 1500 });
-        return OrgchartActions.updateBranchSuccess({ branch: res });
+        return OrgchartActions.init();
       }),
       catchError(err => throwError(err))
     ), { dispatch: true }

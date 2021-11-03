@@ -1,6 +1,7 @@
 import { Branch } from '@minhdu-fontend/data-models';
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 export const init = createAction('[Orgchart Page] Init');
 
@@ -41,7 +42,7 @@ export const updateBranch = createAction(
 
 export const updateBranchSuccess = createAction(
   '[Orgchart/API] Update Branch Success',
-  props<{ branch:Update<Branch>}>()
+  props<{ branch:UpdateNum<Branch>}>()
 );
 
 export const deleteBranch = createAction(
