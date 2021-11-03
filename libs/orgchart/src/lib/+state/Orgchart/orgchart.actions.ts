@@ -13,8 +13,6 @@ export const loadOrgchartSuccess = createAction(
   props<{ branches: Branch[] }>()
 );
 
-
-
 export const getBranch = createAction(
   '[Orgchart/API] get Branch',
   props<{ id: number }>()
