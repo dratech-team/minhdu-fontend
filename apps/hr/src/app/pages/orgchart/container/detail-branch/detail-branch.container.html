@@ -11,7 +11,6 @@
             <div class='btn btn-primary mr-2' (click)='updateBranch(branch)'>Sửa đơn vị</div>
             <div class='btn btn-danger' (click)='deleteBranch(branch)'>Xóa đon vị</div>
           </div>
-
         </div>
       </div>
       <ngx-skeleton-loader *ngIf='!(branchLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
@@ -52,29 +51,39 @@
               <div class='border-top d-flex justify-content-center align-items-center'>Mức phụ cấp</div>
               <input disabled>
             </th>
+            <th style='width: 100px'>
+              <div class='border-top d-flex justify-content-center align-items-center'>Xóa</div>
+              <input disabled>
+            </th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor='let allowance of branch.allowances let i = index'
-              (click)='updateAllowanceBranch(allowance, branch.id)'>
-            <th class='pointer'>
+          >
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{i + 1}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance.id}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance?.datetime|date:'dd/MM/yyyy'}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance.title}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance?.price|number:'1.0-0'}} đ
+            </th>
+            <th class='pointer'>
+              <button (click)='deleteAllowance(allowance.id, branch.id)' style='height: 25px'
+                      class='btn btn-danger mx-auto d-flex justify-content-center align-items-center'>
+                Xóa
+              </button>
             </th>
           </tr>
           <tr *ngIf=' branch?.allowances?.length === 0 ' style='height: 45vh'>
-            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có phụ cấp nào
+            <td colspan='6' class='text-center check-content font-weight-bold font-xl '>Hiện không có phụ cấp nào
             </td>
           </tr>
           </tbody>
