@@ -1,10 +1,14 @@
 <ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>
 
 <div class='table-scroll mt-5 position-relative '>
-  <table [formGroup]='formGroup' class='main-table' style='width: 2000px;'>
+  <table [formGroup]='formGroup' class='main-table' style='width: 2050px;'>
     <thead>
     <tr>
-      <th style='width: 150px'>
+      <th>
+        <div class='border-top text-center'>stt</div>
+        <input type='text' disabled>
+      </th>
+      <th>
         <div class='border-top text-center'>Mã nhân viên</div>
         <input type='text' disabled>
       </th>
@@ -12,12 +16,12 @@
         <div class='border-top text-center'>Tên nhân viên</div>
         <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
       </th>
-      <th style='width: 100px'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Giới tính</div>
-        <input type='text' disabled>
-      </th>
       <th style='width: 200px'>
         <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+        <input type='text' disabled>
+      </th>
+      <th style='width: 100px'>
+        <div class='border-top d-flex justify-content-center align-items-center'>Giới tính</div>
         <input type='text' disabled>
       </th>
       <th style='width: 220px;'>
@@ -59,41 +63,42 @@
         <input type='text' disabled>
       </th>
     </tr>
-    <tr style=' color: red ; position: relative ; top:-1px'>
-      <th style='background: #b8935c40; width: 100px'>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+    <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
+      <th style='background:white'>
+        <div class=''></div>
       </th>
-      <th style='background: #b8935c40;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Tổng cộng</div>
+      <th style='background:white'>
+        <div class=''></div>
       </th>
-      <th style='background: #b8935c40; width: 100px'>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+      <th style='background:white'>
+        <div class='text-center'>Tổng cộng</div>
       </th>
-      <th style='background: #b8935c40; width: 200px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+      <th style=' width: 200px;'>
+        <div class='text-center'></div>
       </th>
-      <th style='width: 220px; background:#b8935c40 '>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+      <th style=' width: 100px'>
+        <div class='text-center'></div>
       </th>
-      <th style='min-width: 300px;  background:#b8935c40 '>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+      <th style='width: 220px'>
+        <div class='text-center'></div>
       </th>
-      <th style='background: #b8935c40 '>
-
-        <div *ngIf='overtime?.total' class='border-top d-flex justify-content-center align-items-center'>
+      <th style='min-width: 300px'>
+        <div class='text-center'></div>
+      </th>
+      <th>
+        <div *ngIf='overtime?.total' class='text-center'>
           {{overtime.total.times}} - {{overtime.total.unit === 'DAY' ? 'Ngày' : 'Giờ'}}
         </div>
       </th>
-      <th style='background: #b8935c40 '>
-
-        <div class='border-top d-flex justify-content-center align-items-center'>
+      <th>
+        <div class='text-center'>
         </div>
       </th>
-      <th style='background: #b8935c40'>
-        <div class='border-top d-flex justify-content-center align-items-center'></div>
+      <th>
+        <div class='text-center'></div>
       </th>
-      <th style='background: #b8935c40'>
-        <div *ngIf='overtime?.total' class='border-top d-flex justify-content-center align-items-center'>
+      <th>
+        <div *ngIf='overtime?.total' class='text-center'>
           {{(overtime.total.price |number: '1.0-0') + 'VND' }}
         </div>
       </th>
@@ -103,7 +108,11 @@
     <tr *ngFor='let overtime of overtime?.employees; let i = index'
         [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'
     >
-      <th style='width: 100px' class='pointer'
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{i + 1}}
+      </th>
+      <th class='pointer'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime?.id}}
       </th>
@@ -111,12 +120,14 @@
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime.firstName}} {{overtime.lastName}}
       </th>
+      <th style='width: 200px' class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime.position?.name}}</th>
       <th style='width: 100px' class='pointer'> {{
         overtime?.gender === 'MALE' ? 'Nam' :
           overtime?.gender === 'FEMALE' ? 'Nữ' :
             'Khác'
         }}</th>
-      <th style='width: 200px' class='pointer'>{{overtime.position?.name}}</th>
       <th class='pointer' style='width: 220px;'>
         <div class='border d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'
@@ -162,11 +173,23 @@
 </div>
 <style>
 
-  .table-scroll th:nth-child(2) {
+  .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
-    left: 150px;
+    left: 170px;
     z-index: 2;
+  }
+  .table-scroll th:nth-child(4) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 420px;
+    z-index: 2;
+  }
+
+  .table-scroll thead th:nth-child(3),
+  .table-scroll thead th:nth-child(4)
+  {
+    z-index: 5;
   }
 
   .table-scroll tr:nth-child(odd) {
@@ -177,8 +200,10 @@
     background: #dddddd;
   }
 
-  .table-scroll thead th:nth-child(2) {
-    z-index: 5;
+  .table-scroll thead tr:nth-child(2) th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70px;
   }
 </style>
 
