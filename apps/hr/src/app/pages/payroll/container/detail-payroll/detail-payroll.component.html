@@ -252,7 +252,6 @@
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
               </div>
-
             </th>
             <th width='15%' class=' text-center '>
                 <span>
@@ -264,8 +263,8 @@
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
             <th width='15%' class=' text-center ' style='color: #29CC97'>
-                <span>
-                  {{ (salary.times * salary.price)|number:'1.0'| notEmpty:'0'}}đ
+                <span >
+                  {{ salary.price ? ((salary.times * salary.price)|number:'1.0')+ 'đ' : ''}}
                 </span>
               <span *ngIf='salary.allowance'>
                   + {{salary.allowance.price}}
