@@ -32,28 +32,34 @@
         <table>
           <thead>
           <tr>
+            <th style='width: 50px'>
+              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
+              <input disabled>
+            </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Mã phụ cấp</div>
-              <input
-                class='form-control  '
-                disabled>
+              <input disabled>
             </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Ngày</div>
-              <input class='form-control border text-center' type='text' disabled>
+              <input disabled>
             </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Tên phụ cấp</div>
-              <input class='form-control border text-center' type='text' disabled>
+              <input disabled>
             </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Mức phụ cấp</div>
-              <input class='form-control border text-center' type='text' disabled>
+              <input disabled>
             </th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor='let allowance of branch.allowances' (click)='updateAllowanceBranch(allowance, branch.id)'>
+          <tr *ngFor='let allowance of branch.allowances let i = index'
+              (click)='updateAllowanceBranch(allowance, branch.id)'>
+            <th class='pointer'>
+              {{i + 1}}
+            </th>
             <th class='pointer'>
               {{allowance.id}}
             </th>
@@ -68,7 +74,7 @@
             </th>
           </tr>
           <tr *ngIf=' branch?.allowances?.length === 0 ' style='height: 45vh'>
-            <td colspan='4' class='text-center check-content font-weight-bold font-xl '>Hiện không có phụ cấp nào
+            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có phụ cấp nào
             </td>
           </tr>
           </tbody>

@@ -8,10 +8,14 @@
        [infiniteScrollThrottle]='10'
        [scrollWindow]='false'
        (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' class='mt-3' style='width: 2500px '>
+    <table [formGroup]='formGroup' class='mt-3' style='width: 2600px '>
       <thead>
       <tr>
-        <th style='width: 150px'>
+        <th>
+          <div class='border-top text-center'>stt</div>
+          <input class='form-control text-center' type='text'>
+        </th>
+        <th>
           <div class='border-top text-center'>Mã nhân viên</div>
           <input class='form-control text-center' type='text'>
         </th>
@@ -97,6 +101,10 @@
           (contextmenu)='child.onContextMenu($event,payroll)'>
         <th class='pointer' (click)='readPayroll(payroll)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          {{i + 1}}
+        </th>
+        <th class='pointer' (click)='readPayroll(payroll)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payroll.employee.id}}
         </th>
         <th class='pointer' (click)='readPayroll(payroll)'
@@ -171,15 +179,22 @@
 </ng-template>
 <style>
 
-  .table-scroll th:nth-child(2) {
+  .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
-    left: 150px;
+    left: 170px;
+    z-index: 2;
+  }
+  .table-scroll th:nth-child(4) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 420px;
     z-index: 2;
   }
 
-
-  .table-scroll thead th:nth-child(2) {
+  .table-scroll thead th:nth-child(3),
+  .table-scroll thead th:nth-child(4)
+  {
     z-index: 5;
   }
 </style>
