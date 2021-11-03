@@ -227,11 +227,7 @@ export class PayrollEffect {
         this.payrollService.delete(props.id).pipe(
           map(() => {
             this.snackBar.open('xóa phiếu lương thành công', '',{duration:1500})
-            if (props.searchPayroll) {
-              return PayrollAction.loadInit(props.searchPayroll);
-            } else {
-              return PayrollAction.deletePayrollSuccess({ id: props.id });
-            }
+            return PayrollAction.deletePayrollSuccess({ id: props.id });
           }),
           catchError((err) => throwError(err))
         )

@@ -256,8 +256,7 @@ export class PayrollComponent implements OnInit {
       if (val) {
         this.store.dispatch(PayrollAction.deletePayroll(
           {
-            id: event.id,
-            searchPayroll: this.mapPayroll(this.formGroup.value)
+            id: event.id
           }));
       }
     });
