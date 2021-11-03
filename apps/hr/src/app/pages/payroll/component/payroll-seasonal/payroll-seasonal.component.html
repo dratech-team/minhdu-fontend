@@ -173,6 +173,7 @@
   <app-mouse-right [type]='pageType.RESTORE'
                    #child
                    (addEvent)='addPayroll($event)'
+                   (deleteEvent)='deletePayroll($event)'
                    (restore)='restorePayroll($event)'
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>

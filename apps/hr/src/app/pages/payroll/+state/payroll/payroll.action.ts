@@ -124,7 +124,7 @@ export const updateSalary = createAction(
 
 export const deletePayroll = createAction(
   '[DELETE_PAYROLL] Delete Payroll',
-  props<{ id: number }>()
+  props<{ id: number, searchPayroll?: any }>()
 );
 
 export const deletePayrollSuccess = createAction(

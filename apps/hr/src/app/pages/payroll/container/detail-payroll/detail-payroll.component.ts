@@ -4,7 +4,7 @@ import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
-  selectedAddingPayroll,
+  selectedAddingPayroll, selectedDeletedPayroll,
   selectedLoadedPayroll, selectedScannedPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
@@ -212,5 +212,22 @@ export class DetailPayrollComponent implements OnInit {
       sticky.classList?.remove('show-sticky');
     }
     this.isSticky = !this.isSticky;
+  }
+
+  deletePayroll(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deletePayroll(
+          {
+            id: event.id
+          }));
+        this.store.pipe(select(selectedDeletedPayroll)).subscribe(deleted => {
+          if (deleted) {
+            this.router.navigate(['phieu-luong']).then();
+          }
+        });
+      }
+    });
   }
 }

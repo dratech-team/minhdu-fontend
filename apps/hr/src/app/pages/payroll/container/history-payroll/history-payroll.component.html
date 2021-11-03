@@ -399,5 +399,9 @@
       </div>
     </ng-template>
 </ng-template>
-<app-mouse-right #child (addEvent)='createPayroll()' [type]='PageTypeEnum.HISTORY_PAYROLL'
-                 (readAndUpdateEvent)='readPayroll($event)'></app-mouse-right>
+<app-mouse-right #child (addEvent)='createPayroll()'
+                 [type]='PageTypeEnum.HISTORY_PAYROLL'
+                 (deleteEvent)='deletePayroll($event)'
+                 (readAndUpdateEvent)='readPayroll($event)'>
+
+</app-mouse-right>

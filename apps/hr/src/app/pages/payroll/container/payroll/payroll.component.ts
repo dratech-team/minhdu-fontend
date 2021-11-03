@@ -35,6 +35,7 @@ import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/d
 import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -246,6 +247,19 @@ export class PayrollComponent implements OnInit {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
       data: { payroll: event }
+    });
+  }
+
+  deletePayroll(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deletePayroll(
+          {
+            id: event.id,
+            searchPayroll: this.mapPayroll(this.formGroup.value)
+          }));
+      }
     });
   }
 }

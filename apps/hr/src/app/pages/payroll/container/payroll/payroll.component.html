@@ -296,6 +296,7 @@
         (EventReadPayroll)='readPayroll($event)'
         (EventRestorePayroll)='restorePayroll($event)'
         (EventSearchMonth)='selectMonth($event)'
+        (EventDeletePayroll)='deletePayroll($event)'
       >
       </app-payroll-time-sheet>
     </div>
@@ -316,6 +317,7 @@
 
   <app-mouse-right [type]='pageType.RESTORE'
                    #child
+                   (deleteEvent)='deletePayroll($event)'
                    (addEvent)='addPayroll($event)'
                    (restore)='restorePayroll($event)'
                    (readAndUpdateEvent)='readPayroll($event)'>
