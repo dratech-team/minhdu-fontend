@@ -9,6 +9,7 @@ export interface PayrollState extends EntityState <Payroll> {
   adding: boolean,
   scanned: boolean,
   confirmed: boolean,
+  deleted: boolean
   selectedPayrollId: number,
 }
 
@@ -16,7 +17,7 @@ export interface PayrollState extends EntityState <Payroll> {
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
-  loaded: false, added: false, adding: false, scanned: false, confirmed: false
+  loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false
 });
 
 export const payrollReducer = createReducer(
@@ -53,7 +54,7 @@ export const payrollReducer = createReducer(
     adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true })),
+    adapter.removeOne(action.id, { ...state, deleted: true })),
 
   on(PayrollAction.confirmPayroll, (state, _) => {
     return { ...state, confirmed: false };
@@ -95,6 +96,9 @@ export const payrollReducer = createReducer(
 
   on(PayrollAction.scanHolidayError, (state, _) => {
     return { ...state, scanned: true };
+  }),
+  on(PayrollAction.deletePayroll, (state, _) => {
+    return { ...state, adding: true, deleted: false };
   })
 );
 

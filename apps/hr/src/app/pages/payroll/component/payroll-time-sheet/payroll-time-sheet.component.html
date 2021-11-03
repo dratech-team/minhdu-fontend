@@ -111,6 +111,7 @@
 
 <app-mouse-right [type]='pageType.RESTORE'
                  #child
+                 (deleteEvent)='deletePayroll($event)'
                  (addEvent)='addPayroll($event)'
                  (restore)='restorePayroll($event)'
                  (readAndUpdateEvent)='readPayroll($event)'>

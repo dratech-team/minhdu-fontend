@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 import { UpdateConfirmComponent } from '../update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   selector: 'app-payroll-seasonal',
@@ -152,6 +153,15 @@ export class PayrollSeasonalComponent implements OnInit {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
       data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+    });
+  }
+
+  deletePayroll(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deletePayroll({ id: event.id }));
+      }
     });
   }
 }

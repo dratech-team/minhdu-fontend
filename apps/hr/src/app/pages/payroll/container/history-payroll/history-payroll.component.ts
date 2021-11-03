@@ -3,13 +3,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { selectorAllEmployee } from '@minhdu-fontend/employee';
-import { SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
@@ -25,8 +24,9 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
-import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'history-payroll.component.html'
@@ -79,7 +79,7 @@ export class HistoryPayrollComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      this.store.dispatch(PayrollAction.loadInit(this.Payroll(val)));
+      this.store.dispatch(PayrollAction.loadInit(this.payroll(val)));
     });
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -92,7 +92,7 @@ export class HistoryPayrollComponent implements OnInit {
     );
   }
 
-  Payroll(val: any) {
+  payroll(val: any) {
     const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
@@ -118,7 +118,7 @@ export class HistoryPayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.Payroll(val)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.payroll(val)));
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -170,6 +170,18 @@ export class HistoryPayrollComponent implements OnInit {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
       data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+    });
+  }
+
+  deletePayroll(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deletePayroll(
+          {
+            id: event.id
+          }));
+      }
     });
   }
 }

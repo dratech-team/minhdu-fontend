@@ -225,7 +225,10 @@ export class PayrollEffect {
       ofType(PayrollAction.deletePayroll),
       switchMap((props) =>
         this.payrollService.delete(props.id).pipe(
-          map(() => PayrollAction.getPayroll({ id: props.id })),
+          map(() => {
+            this.snackBar.open('xóa phiếu lương thành công', '',{duration:1500})
+            return PayrollAction.deletePayrollSuccess({ id: props.id });
+          }),
           catchError((err) => throwError(err))
         )
       )
