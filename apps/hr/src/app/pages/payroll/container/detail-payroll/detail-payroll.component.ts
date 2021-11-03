@@ -21,8 +21,6 @@ import { DialogAllowanceComponent } from '../../component/dialog-salary/dialog-a
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 
 
@@ -40,7 +38,6 @@ export class DetailPayrollComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
-
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
