@@ -179,8 +179,7 @@ export class HistoryPayrollComponent implements OnInit {
       if (val) {
         this.store.dispatch(PayrollAction.deletePayroll(
           {
-            id: event.id,
-            searchPayroll: this.payroll(this.formGroup.value)
+            id: event.id
           }));
       }
     });
