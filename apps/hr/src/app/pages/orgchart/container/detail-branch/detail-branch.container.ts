@@ -3,17 +3,15 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  getAllPosition,
-  PositionActions, selectPositionLoaded
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { getAllOrgchart, getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { AllowanceBranchComponent } from '../../component/dialog-allowance-branch/allowance-branch.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'detail-branch.container.html'
@@ -69,6 +67,15 @@ export class DetailBranchContainer implements OnInit {
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrgchartActions.deleteBranch({ id: $event.id }));
+      }
+    });
+  }
+
+  deleteAllowance(allowanceId: number, branchId: number) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deleteSalary({ id: allowanceId, branchId: branchId }));
       }
     });
   }

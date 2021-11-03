@@ -52,31 +52,34 @@
               <input disabled>
             </th>
             <th style='width: 100px'>
-              <div class='border-top d-flex justify-content-center align-items-center'></div>
+              <div class='border-top d-flex justify-content-center align-items-center'>Xóa</div>
               <input disabled>
             </th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor='let allowance of branch.allowances let i = index'
-              (click)='updateAllowanceBranch(allowance, branch.id)'>
-            <th class='pointer'>
+          >
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{i + 1}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance.id}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance?.datetime|date:'dd/MM/yyyy'}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance.title}}
             </th>
-            <th class='pointer'>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
               {{allowance?.price|number:'1.0-0'}} đ
             </th>
             <th class='pointer'>
-              <button style='height: 25px' class='btn btn-danger'>Xóa</button>
+              <button (click)='deleteAllowance(allowance.id, branch.id)' style='height: 25px'
+                      class='btn btn-danger mx-auto d-flex justify-content-center align-items-center'>
+                Xóa
+              </button>
             </th>
           </tr>
           <tr *ngIf=' branch?.allowances?.length === 0 ' style='height: 45vh'>

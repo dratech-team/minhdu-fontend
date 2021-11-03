@@ -226,7 +226,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.delete(props.id).pipe(
           map(() => {
-            this.snackBar.open('xóa phiếu lương thành công', '',{duration:1500})
+            this.snackBar.open('xóa phiếu lương thành công', '', { duration: 1500 });
             return PayrollAction.deletePayrollSuccess({ id: props.id });
           }),
           catchError((err) => throwError(err))
@@ -240,7 +240,13 @@ export class PayrollEffect {
       ofType(PayrollAction.deleteSalary),
       switchMap((props) =>
         this.salaryService.delete(props.id).pipe(
-          map(() => PayrollAction.getPayroll({ id: props.PayrollId })),
+          map(() => {
+            if (props.branchId) {
+              return OrgchartActions.getBranch({ id: props.branchId });
+            } else {
+              return PayrollAction.getPayroll({ id: props.PayrollId });
+            }
+          }),
           catchError((err) => throwError(err))
         )
       )
