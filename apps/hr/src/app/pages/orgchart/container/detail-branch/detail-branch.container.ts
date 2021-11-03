@@ -11,7 +11,6 @@ import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fonte
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { AllowanceBranchComponent } from '../../component/dialog-allowance-branch/allowance-branch.component';
 import { ActivatedRoute } from '@angular/router';
-import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'detail-branch.container.html'
@@ -75,7 +74,10 @@ export class DetailBranchContainer implements OnInit {
     const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(PayrollAction.deleteSalary({ id: allowanceId, branchId: branchId }));
+        this.store.dispatch(OrgchartActions.deleteAllowanceInBranch(
+          {
+            salaryId: allowanceId
+          }));
       }
     });
   }

@@ -35,6 +35,11 @@ const orgchartReducer = createReducer(
     orgchartAdapter.addOne(branch, { ...state, loaded: true, added: true })
   ),
 
+  on(OrgchartActions.updateBranchSuccess, (state, action) => {
+      return orgchartAdapter.updateOne(action.branch, { ...state, added: true });
+    }
+  ),
+
   on(OrgchartActions.getBranch, (state) => ({
     ...state,
     loaded: false,

@@ -34,4 +34,8 @@ export class BranchService extends BaseService<Branch> {
   delete(id: number): Observable<any> {
     return super.delete(id);
   }
+
+  deleteAllowanceInBranch(salaryId: number): Observable<Update<Branch>> {
+    return this.http.delete<Update<Branch>>(Api.BRANCH_ALLOWANCE + `/${salaryId}`);
+  }
 }

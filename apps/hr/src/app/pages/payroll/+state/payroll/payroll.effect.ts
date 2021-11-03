@@ -241,11 +241,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.salaryService.delete(props.id).pipe(
           map(() => {
-            if (props.branchId) {
-              return OrgchartActions.getBranch({ id: props.branchId });
-            } else {
-              return PayrollAction.getPayroll({ id: props.PayrollId });
-            }
+            return PayrollAction.getPayroll({ id: props.PayrollId });
           }),
           catchError((err) => throwError(err))
         )

@@ -55,4 +55,5 @@ export const Api = {
   GENERATE_HOLIDAY: 'generate-holiday',
   OVERTIME: 'payroll/overtime/filter',
   AUTH: 'auth',
+  BRANCH_ALLOWANCE: 'branch/allowance',
 };
