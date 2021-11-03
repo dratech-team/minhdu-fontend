@@ -1,147 +1,157 @@
 <div class='main-content mx-auto' style='width: 98%'>
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div>
-  <div class=' h3 '>Bản mẫu tăng ca</div>
+  <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
   <div>
-    <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+    <div class=' h3 '>Bản mẫu tăng ca</div>
+    <div>
+      <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
+    </div>
   </div>
-</div>
 
-<div class='fixTableHead mt-5' style='width: 100%'
-     infiniteScroll
-     [infiniteScrollDistance]='0.5'
-     [scrollWindow]='false'
-     [alwaysCallback]='true'
-     (scrolled)='onScroll()'>
+  <div class='fixTableHead mt-5' style='width: 100%'
+       infiniteScroll
+       [infiniteScrollDistance]='0.5'
+       [scrollWindow]='false'
+       [alwaysCallback]='true'
+       (scrolled)='onScroll()'>
 
-  <table [formGroup]='formGroup'>
-    <thead>
-    <tr>
-      <th>
-        <div class='border-top text-center'>Tên bản mẫu</div>
-        <input
-          class='form-control '
-          type='text'
-          formControlName='title'
-        >
-      </th>
-      <th>
-        <div class='border-top text-center'>Giá</div>
-        <input
-          class='form-control  '
-          type='text' formControlName='price'>
-      </th>
-      <th>
-        <div class='border-top text-center'>Loại nhân viên</div>
-        <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
-          <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-          <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
-          <mat-option value=''>Tất cả</mat-option>
-        </mat-select>
-      </th>
-      <th>
-        <div class='border-top text-center'>Đơn vị tính</div>
-        <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
-          <option value='{{unit.DAY}}'>Ngày</option>
-          <option value='{{unit.HOUR}}'>Giờ</option>
-          <option value=''>Tất cả</option>
-        </select>
-      </th>
-      <th>
-        <div class='border-top text-center'>Đơn vị</div>
-        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
-        <mat-autocomplete #branch='matAutocomplete'>
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (onSelectionChange)='onSelectBranch(branch.name)'
+    <table [formGroup]='formGroup'>
+      <thead>
+      <tr>
+        <th style='width: 50px'>
+          <div class='border-top text-center'>stt</div>
+          <input
+            type='text'
+            disabled
           >
-            {{branch.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </th>
-      <th>
-        <div class='border-top text-center'>Chức vụ </div>
-        <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
-        <mat-autocomplete #position='matAutocomplete'>
-          <mat-option *ngFor='let position of positions$ | async'
-                      [value]='position.name' (click)='onSelectPosition(position.name)'
-                      (onSelectionChange)='onSelectPosition(position.name)'>
-            {{position.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </th>
-      <th>
-        <div class='border-top text-center'>Chú ý</div>
-        <input
-          class='form-control '
-          type='search' formControlName='note'>
-      </th>
-    </tr>
-    </thead>
-    <tbody *ngIf='(templates$| async) as templates'>
-    <tr *ngFor='let template of templates; let i = index'
-        (contextmenu)='child.onContextMenu($event,template)'>
-
-      <th class='  pointer ' (click)='templateOvertime(template)'>
-        {{template.title}}
-      </th>
-      <th class='  pointer ' (click)='templateOvertime(template)'>
-        {{template.price| number: '1.0-0'}} VND
-      </th>
-      <th class='  pointer ' (click)='templateOvertime(template)'>
-        {{template.employeeType === employeeTypeEnum.EMPLOYEE_SEASONAL? "Nhân viên thời vụ": "Nhân viên chính thức"}}
-      </th>
-      <th class='  pointer' *ngIf='template.unit === unit.DAY'
-          (click)='templateOvertime(template)'>
-        Ngày
-      </th>
-      <th class='  pointer'
-          *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-          (click)='templateOvertime(template)'>
-        Giờ
-      </th>
-      <th class='  pointer' *ngIf='template.unit === unit.MONTH'
-          (click)='templateOvertime(template)'>
-        Tháng
-      </th>
-      <th class='  pointer '
-          (click)='templateOvertime(template)'
-          *ngIf='template?.branch'
-      >
-      {{template?.branch?.name}}
-      </th>
-      <th class='  pointer '
-          (click)='templateOvertime(template)'
-          *ngIf='!template?.branch'
-      >
-      </th>
-      <th class='  pointer p-1 '
-          (click)='templateOvertime(template)'>
-        <mat-chip-list>
-          <mat-chip (click)='templateOvertime(template)'
-                    [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-                    *ngFor='let position of template.positions'
-                    [selectable]='false'
-                    [removable]='false'>
-            {{position.name}}
-          </mat-chip>
-        </mat-chip-list>
-      </th>
-      <th class=' pointer '
-          (click)='templateOvertime(template)'>
-        {{template.note}}
-      </th>
-    </tr>
-    <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh; '
-        class=' d-flex justify-content-center align-content-center'>
-      <td colspan='6' class='font-xl font-weight-bold d-flex align-items-center'>
-        Hiện chưa có bản mẫu tăng ca nào!
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<app-mouse-right #child (addEvent)='templateOvertime($event)'
-                 (readAndUpdateEvent)='templateOvertime($event)'
-                 (deleteEvent)='deleteOvertime($event)'
-></app-mouse-right>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tên bản mẫu</div>
+          <input
+            class='form-control '
+            type='text'
+            formControlName='title'
+          >
+        </th>
+        <th>
+          <div class='border-top text-center'>Giá</div>
+          <input
+            class='form-control  '
+            type='text' formControlName='price'>
+        </th>
+        <th>
+          <div class='border-top text-center'>Loại nhân viên</div>
+          <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
+            <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+            <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+            <mat-option value=''>Tất cả</mat-option>
+          </mat-select>
+        </th>
+        <th>
+          <div class='border-top text-center'>Đơn vị tính</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
+            <option value='{{unit.DAY}}'>Ngày</option>
+            <option value='{{unit.HOUR}}'>Giờ</option>
+            <option value=''>Tất cả</option>
+          </select>
+        </th>
+        <th>
+          <div class='border-top text-center'>Đơn vị</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (onSelectionChange)='onSelectBranch(branch.name)'
+            >
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='border-top text-center'>Chức vụ</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async'
+                        [value]='position.name' (click)='onSelectPosition(position.name)'
+                        (onSelectionChange)='onSelectPosition(position.name)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='border-top text-center'>Chú ý</div>
+          <input
+            class='form-control '
+            type='search' formControlName='note'>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(templates$| async) as templates'>
+      <tr *ngFor='let template of templates; let i = index'
+          (contextmenu)='child.onContextMenu($event,template)'>
+        <th class='  pointer ' (click)='templateOvertime(template)'>
+          {{i + 1}}
+        </th>
+        <th class='  pointer ' (click)='templateOvertime(template)'>
+          {{template.title}}
+        </th>
+        <th class='  pointer ' (click)='templateOvertime(template)'>
+          {{template.price| number: '1.0-0'}} VND
+        </th>
+        <th class='  pointer ' (click)='templateOvertime(template)'>
+          {{template.employeeType === employeeTypeEnum.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
+        </th>
+        <th class='  pointer' *ngIf='template.unit === unit.DAY'
+            (click)='templateOvertime(template)'>
+          Ngày
+        </th>
+        <th class='  pointer'
+            *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
+            (click)='templateOvertime(template)'>
+          Giờ
+        </th>
+        <th class='  pointer' *ngIf='template.unit === unit.MONTH'
+            (click)='templateOvertime(template)'>
+          Tháng
+        </th>
+        <th class='  pointer '
+            (click)='templateOvertime(template)'
+            *ngIf='template?.branch'
+        >
+          {{template?.branch?.name}}
+        </th>
+        <th class='  pointer '
+            (click)='templateOvertime(template)'
+            *ngIf='!template?.branch'
+        >
+        </th>
+        <th class='  pointer p-1 '
+            (click)='templateOvertime(template)'>
+          <mat-chip-list>
+            <mat-chip (click)='templateOvertime(template)'
+                      [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                      *ngFor='let position of template.positions'
+                      [selectable]='false'
+                      [removable]='false'>
+              {{position.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </th>
+        <th class=' pointer '
+            (click)='templateOvertime(template)'>
+          {{template.note}}
+        </th>
+      </tr>
+      <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh;'>
+        <td colspan='8' class='font-xl font-weight-bold'>
+          <span class='m-auto d-block' style='width: fit-content'>
+            Hiện chưa có bản mẫu tăng ca nào!
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-mouse-right #child (addEvent)='templateOvertime($event)'
+                   (readAndUpdateEvent)='templateOvertime($event)'
+                   (deleteEvent)='deleteOvertime($event)'
+  ></app-mouse-right>
 </div>

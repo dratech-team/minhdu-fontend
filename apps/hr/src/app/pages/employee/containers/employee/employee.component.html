@@ -3,7 +3,8 @@
   <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
   <div class='d-flex align-items-center '>
     <button *ngIf='employeeControl.value !== employeeType.EMPLOYEE_LEFT_AT'
-            (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên</button>
+            (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên
+    </button>
     <div style='width: fit-content'>
       <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='employeeControl'>
         <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
@@ -20,10 +21,14 @@
            [infiniteScrollThrottle]='10'
            [scrollWindow]='false'
            (scrolled)='onScroll()'>
-        <table [formGroup]='formGroup' class='mt-3 main-table' style='width: 2400px '>
+        <table [formGroup]='formGroup' class='main-table' style='width: 2400px '>
           <thead>
           <tr>
-            <th style='width: 150px; background:white'>
+            <th style='background:white'>
+              <div class='border-top text-center'>stt</div>
+              <input class=' text-center' type='text' disabled>
+            </th>
+            <th style='background:white'>
               <div class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='text'>
             </th>
@@ -34,10 +39,10 @@
             </th>
             <th>
               <div class='border-top text-center'>Loại nhân viên</div>
-             <mat-select class='select border-top' style='width: 100%;'  formControlName='employeeType'>
-               <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-               <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
-             </mat-select>
+              <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
+                <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+                <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+              </mat-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Ngày sinh</div>
@@ -45,7 +50,7 @@
             </th>
             <th>
               <div class='border-top text-center'>Giới tính</div>
-              <mat-select class='select border-top' style='min-width:100px'  required formControlName='gender'>
+              <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
                 <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
                 <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
                 <mat-option value='{{genderType.OTHER}}'>Khác</mat-option>
@@ -58,7 +63,7 @@
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Loại lương</div>
-              <mat-select class='select border-top' style='min-width: 170px'  required formControlName='flatSalary'>
+              <mat-select class='select border-top' style='min-width: 170px' required formControlName='flatSalary'>
                 <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
                 <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
                 <mat-option value=''>Mặc định</mat-option>
@@ -108,13 +113,16 @@
           <tr *ngFor='let employee of employees; let i = index'
               (contextmenu)='child.onContextMenu($event,employee)' (click)='readAndUpdate(employee)'>
             <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{i + 1}}
+            </th>
+            <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
               {{employee?.id}}
             </th>
             <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
               {{employee?.firstName}} {{employee?.lastName}}
             </th>
             <th class='pointer'>
-              {{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức': 'Nhân viên thời vụ' }}
+              {{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
             </th>
             <th class='pointer'>
               {{employee?.birthday | date:'dd/MM/yyyy'}}
@@ -177,14 +185,16 @@
 </app-mouse-right>
 
 <style>
-  .table-scroll th:nth-child(2) {
+
+  .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
-    left: 150px;
+    left: 170px;
     z-index: 2;
   }
 
-  .table-scroll thead th:nth-child(2) {
+  .table-scroll thead th:nth-child(3) {
     z-index: 5;
   }
+
 </style>

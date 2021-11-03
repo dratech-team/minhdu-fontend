@@ -1,6 +1,6 @@
 <!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
 
-<div  style='width: 100%; overflow-x: auto'>
+<div style='width: 100%; overflow-x: auto'>
   <div class='d-flex justify-content-center mb-2 '>
     <div>
       <div style='width: 1000px;' class=''>
@@ -14,11 +14,13 @@
         <table style='width: 1000px;'>
           <thead>
           <tr>
+            <th style='width: 50px'>
+              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
+              <input disabled>
+            </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Mã đơn vị</div>
-              <input
-                class='form-control  '
-                disabled>
+              <input disabled>
             </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Tên đơn vị</div>
@@ -26,12 +28,15 @@
             </th>
             <th>
               <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
-              <input class='form-control border text-center' type='text' disabled >
+              <input class='form-control border text-center' type='text' disabled>
             </th>
           </tr>
           </thead>
           <tbody *ngIf='(branches$| async) as branches'>
-          <tr *ngFor='let branch of branches' (contextmenu)='childBranch.onContextMenu($event,branch)'>
+          <tr *ngFor='let branch of branches ; let i = index' (contextmenu)='childBranch.onContextMenu($event,branch)'>
+            <th class='pointer' (click)='detailBranch(branch)'>
+              {{i + 1}}
+            </th>
             <th class='pointer' (click)='detailBranch(branch)'>
               {{branch.id}}
             </th>
