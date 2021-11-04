@@ -3,10 +3,9 @@ import { BaseService } from '@minhdu-fontend/service';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { TemplateSalary } from '../+state/teamlate-salary/template-salary';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 
 @Injectable({ providedIn: 'root' })
 export class TemplateSalaryService extends BaseService<TemplateSalary> {
@@ -28,7 +27,7 @@ export class TemplateSalaryService extends BaseService<TemplateSalary> {
     return super.getAll();
   }
 
-  update(id: any, body: any): Observable<Update<TemplateSalary>> {
+  update(id: any, body: any): Observable<UpdateNum<TemplateSalary>> {
     return super.update(id, body);
   }
 

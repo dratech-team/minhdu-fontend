@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
 import { Degree } from '@minhdu-fontend/data-models';
 import { BaseService } from 'libs/service/base.service';
@@ -18,7 +18,7 @@ export class DegreeService extends BaseService<Degree> {
     return super.addOne(relative);
   }
 
-  update(id: number, props: any): Observable<Update<Degree>> {
+  update(id: number, props: any): Observable<UpdateNum<Degree>> {
     return super.update(id, props);
   }
 

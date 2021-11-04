@@ -131,9 +131,9 @@ export class EmployeeEffect {
       ofType(EmployeeAction.updateEmployee),
       switchMap((props) =>
         this.employeeService.update(props.id, props.employee).pipe(
-          map(() => {
+          map((res) => {
               this.snackBar.open('Cập nhật nhân viên thành công', '', { duration: 1000 });
-              return EmployeeAction.getEmployee({ id: props.id });
+              return EmployeeAction.updateEmployeeSuccess({employee: res});
             }
           ),
           catchError((err) => {

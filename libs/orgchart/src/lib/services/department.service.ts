@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Api } from '@minhdu-fontend/constants';
 import { Branch, Department } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity';
 import { BaseService } from '@minhdu-fontend/service';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable()
 export class DepartmentService extends BaseService<Department> {
@@ -27,7 +27,7 @@ export class DepartmentService extends BaseService<Department> {
     return super.getOne(id);
   }
 
-  update(id: number, body: any): Observable<Update<Branch>> {
+  update(id: number, body: any): Observable<UpdateNum<Branch>> {
     return super.update(id, body);
   }
 

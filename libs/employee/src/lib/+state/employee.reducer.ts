@@ -10,7 +10,7 @@ export interface EmployeeState extends EntityState<Employee> {
   adding: boolean;
   added: boolean;
   error: string;
-  deleted:boolean;
+  deleted: boolean;
   selectedEmployeeId: number;
 }
 
@@ -55,8 +55,11 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
-  on(EmployeeAction.updateEmployeeSuccess, (state, action) => {
-      return adapter.updateOne(action.employee, { ...state, adding: false, added: true });
+  on(EmployeeAction.updateEmployeeSuccess, (state, { employee }) => {
+    console.log(employee)
+      return adapter.updateOne(
+        { id: employee.id, changes: employee },
+        { ...state, adding: false, added: true});
     }
   ),
 

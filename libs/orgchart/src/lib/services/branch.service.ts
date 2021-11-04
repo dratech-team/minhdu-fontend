@@ -28,7 +28,7 @@ export class BranchService extends BaseService<Branch> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Branch>> {
+  update(id: any, body: any): Observable<UpdateNum<Branch>> {
     return super.update(id, body);
   }
 

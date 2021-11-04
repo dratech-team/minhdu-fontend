@@ -4,7 +4,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { Position, ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseService } from '@minhdu-fontend/service';
-import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable()
 export class PositionService extends BaseService<Position> {
@@ -26,7 +26,7 @@ export class PositionService extends BaseService<Position> {
     return super.getAll(prams);
   }
 
-  update(id: any, body: any): Observable<Update<Position>> {
+  update(id: any, body: any): Observable<UpdateNum<Position>> {
     return super.update(id, body);
   }
 
