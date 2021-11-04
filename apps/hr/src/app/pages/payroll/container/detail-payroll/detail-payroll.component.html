@@ -52,13 +52,6 @@
                 </div>
               </div>
             </div>
-            <div class='mt-2 w-100'>
-              <button
-                (click)='deletePayroll(payroll)'
-                style='height: 24px ; border-radius: 20px; width: 120px'
-                class='btn btn-danger d-flex justify-content-center align-items-center ml-3 position'>
-                Xóa phiếu lương</button>
-            </div>
           </div>
 
         </div>
@@ -478,6 +471,12 @@
     </div>
     <div #footer>
       <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
+
+          <button
+            (click)='deletePayroll(payroll)'
+            class='btn btn-danger mr-3' style='height: 35px'>
+            Xóa phiếu lương
+          </button>
         <button (click)='historySalary(payroll)'
                 class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
                 style='border: solid 1px #4B3880'>
