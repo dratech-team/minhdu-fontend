@@ -15,7 +15,7 @@ import {
   selectEmployeeLoaded,
   selectorAllEmployee
 } from '@minhdu-fontend/employee';
-import { EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { EmployeeType, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
@@ -59,9 +59,10 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
           console.log(val);
           const param = {
             name: val.name,
-            templateId: this.search.templateId,
+            templateId: this.search.templateId || '',
             createdPayroll: new Date(this.search.createdPayroll),
-            employeeType: this.search.employeeType
+            employeeType: this.search.employeeType || '',
+            recipeType: this.search.recipeType || ''
           };
           this.service.searchEmployees(param);
         })
@@ -76,30 +77,28 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
     const currentEmployeeType = changes.search?.currentValue?.templateId;
     const previousEmployeeType = changes.search?.previousValue?.templateId;
-
-    if (currentTemplateId && currentTemplateId !== previousTemplateId) {
+    const currentRecipeType = changes.search?.currentValue?.templateId;
+    if (currentCreatedPayroll &&
+      (currentTemplateId !== previousTemplateId
+        || currentCreatedPayroll !== previousCreatedPayroll
+        || currentEmployeeType !== previousEmployeeType
+        || currentRecipeType)
+    ) {
       this.employeeIds = [];
       this.allowEmpIds = [];
       this.isSelectAllowance = false;
       this.isSelectEmployee = false;
       this.EventSelectAllowance.emit(this.allowEmpIds);
       this.EventSelectEmployee.emit(this.employeeIds);
-    }
-
-    if (
-      currentTemplateId &&
-      (currentTemplateId !== previousTemplateId
-        || currentCreatedPayroll !== previousCreatedPayroll
-        || currentEmployeeType !== previousEmployeeType)
-    ) {
       this.store.dispatch(
         EmployeeAction.loadInit({
           employee: {
-            templateId: changes.search.currentValue.templateId,
+            templateId: changes.search.currentValue.templateId || '',
             createdPayroll: changes.search.currentValue.createdPayroll
               ? new Date(changes.search.currentValue.createdPayroll)
               : new Date(),
-            employeeType: changes.search.currentValue.employeeType
+            employeeType: changes.search.currentValue.employeeType || '',
+            recipeType: changes.search.currentValue.recipeType || ''
           }
         })
       );
