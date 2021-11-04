@@ -150,6 +150,7 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
+    console.log(value.recipeType)
     if(value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
       && !value.workday
     ){

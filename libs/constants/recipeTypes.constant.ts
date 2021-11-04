@@ -18,4 +18,8 @@ export const RecipeTypesConstant = [
     name: 'Công thức 4',
     value: RecipeType.CT4
   },
+  {
+    name: 'Công thức 5',
+    value: RecipeType.CT5
+  },
 ]
