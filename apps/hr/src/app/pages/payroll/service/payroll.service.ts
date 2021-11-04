@@ -6,6 +6,7 @@ import { Update } from '@ngrx/entity';
 import { BaseService } from 'libs/service/base.service';
 import { Observable } from 'rxjs';
 import { Payroll } from '../+state/payroll/payroll.interface';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 type Params =
   | HttpParams
@@ -35,7 +36,7 @@ export class PayrollService extends BaseService<Payroll> {
     return super.pagination(params);
   }
 
-  update(id: any, body: any): Observable<Update<Payroll>> {
+  update(id: any, body: any): Observable<UpdateNum<Payroll>> {
     return super.update(id, body);
   }
 

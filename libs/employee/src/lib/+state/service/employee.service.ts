@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { Api } from '@minhdu-fontend/constants';
 import { Employee, ResponsePaginate } from '@minhdu-fontend/data-models';
 import { BaseService } from 'libs/service/base.service';
@@ -27,19 +27,22 @@ export class EmployeeService extends BaseService<Employee> {
     return super.pagination(params);
   }
 
-  update(id: number, props: any): Observable<Update<Employee>> {
-    return super.update(id, props);
+  update(id: number, props: any): Observable<UpdateNum<Employee>> {
+    return super.update(id, props).pipe(val => {
+      console.log(val);
+      return val;
+    });
   }
 
-  updateRelative(employeeId: number, props: any): Observable<Update<Employee>> {
+  updateRelative(employeeId: number, props: any): Observable<UpdateNum<Employee>> {
     return super.update(employeeId, props);
   }
 
-  leaveEmployee(id: number, body?:any ): Observable<void> {
-    return this.http.patch<void>(Api.EMPLOYEE + `/${id}/leave`,body);
+  leaveEmployee(id: number, body?: any): Observable<void> {
+    return this.http.patch<void>(Api.EMPLOYEE + `/${id}/leave`, body);
   }
 
- delete(id: number, params?: any): Observable<void> {
-   return super.delete(id, params);
- }
+  delete(id: number, params?: any): Observable<void> {
+    return super.delete(id, params);
+  }
 }

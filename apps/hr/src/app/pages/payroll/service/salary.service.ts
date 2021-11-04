@@ -5,6 +5,7 @@ import { Salary } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { BaseService } from 'libs/service/base.service';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
@@ -20,7 +21,7 @@ export class SalaryService extends BaseService<Salary> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Salary>> {
+  update(id: any, body: any): Observable<UpdateNum<Salary>> {
     return super.update(id, body);
   }
 

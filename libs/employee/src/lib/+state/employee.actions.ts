@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Employee } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
@@ -71,7 +71,7 @@ export const updateEmployee = createAction(
 
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: Update<Employee> }>()
+  props<{ employee: UpdateNum<Employee> }>()
 );
 
 export const updateRelative = createAction(
