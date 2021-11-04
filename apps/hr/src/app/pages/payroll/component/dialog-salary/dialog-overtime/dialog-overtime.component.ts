@@ -53,6 +53,7 @@ export class DialogOvertimeComponent implements OnInit {
   titleSession = [
     { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL },
     { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL },
+    { title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL },
     { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY }
   ];
 
@@ -70,6 +71,8 @@ export class DialogOvertimeComponent implements OnInit {
         unit: this.data?.salary?.unit ? this.data?.salary.unit : ''
       }));
     if (this.data.isUpdate) {
+      if(!this.data.salary?.unit)
+      this.partialDay  = this.titleSession.find(e => e.type === this.data.salary.partial)
       this.price = this.data.salary.price;
       this.times = this.data.salary.times;
       this.unit = this.data.payroll.employee.recipeType === RecipeType.CT4
@@ -81,10 +84,14 @@ export class DialogOvertimeComponent implements OnInit {
           this.datePipe.transform(
             this.data.salary.datetime, 'yyyy-MM-dd')],
         note: [this.data.salary.note],
-        times: [this.data.salary.times],
+        times: [!this.data.salary?.unit && this.data.salary.partial !== PartialDayEnum.ALL_DAY ?
+          this.data.salary.times * 2
+          : this.data.salary.times
+        ],
         days: [this.data.salary.times],
         priceAllowance: [this.data.salary.allowance?.price],
-        titleAllowance: [this.data.salary.allowance?.title]
+        titleAllowance: [this.data.salary.allowance?.title],
+        partial: [this.data.salary.partial]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -95,7 +102,8 @@ export class DialogOvertimeComponent implements OnInit {
         times: [1],
         days: [1],
         priceAllowance: [],
-        titleAllowance: []
+        titleAllowance: [],
+        partial: []
       });
     }
 
@@ -121,7 +129,7 @@ export class DialogOvertimeComponent implements OnInit {
       type: this.data.type,
       rate: this.rate || this.data?.salary?.rate,
       times: this.unit === this.datetimeUnitEnum.DAY && value.days > 1 ? value.days : value.times,
-      datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) : undefined,
+      datetime:value.datetime ? new Date(value.datetime) : undefined,
       note: value.note,
       unit: this.unit || undefined,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId
@@ -138,12 +146,12 @@ export class DialogOvertimeComponent implements OnInit {
       });
     }
     if (this.unit === DatetimeUnitEnum.OPTION) {
-      if (this.partialDay) {
-        Object.assign(salary, {
-          times: this.partialDay.times
-        });
-      }
+      Object.assign(salary, {
+        times: this.partialDay.times * value.times,
+        partial: value.partial
+      });
       delete salary.unit;
+      delete salary.datetime;
     }
     if (this.data.isUpdate) {
       if (!this.onAllowanceOvertime && this.data.salary.allowance) {
