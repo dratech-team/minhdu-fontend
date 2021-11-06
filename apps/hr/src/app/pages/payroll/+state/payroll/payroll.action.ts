@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
-import { EmployeeType } from '@minhdu-fontend/enums';
+import { EmployeeType, PayrollEnum } from '@minhdu-fontend/enums';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -146,6 +146,10 @@ export const scanHolidayError = createAction(
   '[SCAN_HOLIDAY] Scan Holiday Error'
 );
 
+export const updateStatePayroll = createAction(
+  '[SELECT_PAYROLL] Select Payroll',
+  props<{ filter?: PayrollEnum, createdAt?: Date }>()
+);
 
 export const PayrollAction = {
   loadInit,
@@ -170,5 +174,6 @@ export const PayrollAction = {
   handlePayrollError,
   scanHoliday,
   scanHolidayError,
-  confirmPayrollSuccess
+  confirmPayrollSuccess,
+  updateStatePayroll
 };
