@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -55,7 +55,7 @@ export class HistoryPayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   PageTypeEnum = PageTypeEnum;
-
+  payrollEnum = PayrollEnum
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -67,7 +67,11 @@ export class HistoryPayrollComponent implements OnInit {
 
   ngOnInit() {
     this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name));
-    this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => param.employeeType));
+    this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => {
+        console.log(param.employeeType);
+        return param.employeeType;
+      }
+    ));
     this.store.dispatch(
       PayrollAction.loadInit({
         skip: this.pageIndexInit,
