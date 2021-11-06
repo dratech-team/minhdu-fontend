@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity/src/models';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { ResponsePaginate } from '../data-models';
 
 export class BaseService<T> {
@@ -26,8 +26,8 @@ export class BaseService<T> {
     return this.http.post<T>(this.url, props);
   }
 
-  update(id: any, body: any): Observable<Update<T>> {
-    return this.http.patch<Update<T>>(this.url + `/${id}`, body);
+  update(id: any, body: any): Observable<UpdateNum<T>> {
+    return this.http.patch<UpdateNum<T>>(this.url + `/${id}`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {

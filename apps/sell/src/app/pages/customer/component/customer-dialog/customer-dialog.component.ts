@@ -102,7 +102,7 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: this.wardId || this.data.ward.id,
+      wardId: this.wardId || this.data.customer.ward.id,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -110,7 +110,7 @@ export class CustomerDialogComponent implements OnInit {
       isPotential: value.isPotential ? value.isPotential : undefined
     };
     if (this.data) {
-      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.id }));
+      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {
       this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
     }

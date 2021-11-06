@@ -3,4 +3,5 @@ export enum PartialDayEnum {
   AFTERNOON = 'AFTERNOON',
   NIGHT = 'NIGHT',
   ALL_DAY = 'ALL_DAY',
+  NIGHT = 'NIGHT'
 }

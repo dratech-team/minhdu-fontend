@@ -1,4 +1,4 @@
-import { EmployeeType, Gender } from '@minhdu-fontend/enums';
+import { EmployeeType, Gender, RecipeType } from '@minhdu-fontend/enums';
 
 export interface EmployeeDto {
   take?: number,
@@ -14,4 +14,5 @@ export interface EmployeeDto {
   createdPayroll?: Date,
   isLeft?: boolean,
   employeeType?: EmployeeType,
+  recipeType?: RecipeType
 }

@@ -170,11 +170,12 @@
       </tbody>
     </table>
   </div>
-  <app-mouse-right [type]='pageType.RESTORE'
+  <app-mouse-right [type]='pageType.PAYROLL'
                    #child
                    (addEvent)='addPayroll($event)'
                    (deleteEvent)='deletePayroll($event)'
                    (restore)='restorePayroll($event)'
+                   (HistoryPayroll)='historyPayroll($event)'
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>
 </ng-template>

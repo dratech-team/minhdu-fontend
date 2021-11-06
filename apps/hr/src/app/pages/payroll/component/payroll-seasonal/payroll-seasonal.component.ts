@@ -50,6 +50,11 @@ export class PayrollSeasonalComponent implements OnInit {
   pageSize: number = 30;
   pageIndexInit = 0;
   daysInMonth: any [] = [];
+  @Output() EventHistoryPayroll = new EventEmitter<any>();
+  @Output() EventRestorePayroll = new EventEmitter<any>();
+  @Output() EventReadPayroll = new EventEmitter<any>();
+  @Output() EventUpdateConfirm = new EventEmitter<any>();
+  @Output() EventDeletePayroll = new EventEmitter<any>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -57,7 +62,6 @@ export class PayrollSeasonalComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
-    private readonly router: Router
   ) {
   }
 
@@ -132,21 +136,15 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   readPayroll($event: any) {
-    this.router
-      .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id],
-        { queryParams: { employeeType: EmployeeType.EMPLOYEE_SEASONAL } })
-      .then();
+   this.EventReadPayroll.emit($event)
   }
 
   restorePayroll(event: any) {
-    this.dialog.open(RestorePayrollComponent, { width: 'fit-content', data: { payroll: event } });
+    this.EventRestorePayroll.emit(event)
   }
 
   updateConfirmPayroll(id: number, type: string) {
-    this.dialog.open(UpdateConfirmComponent, {
-      width: '25%',
-      data: { id, type }
-    });
+    this.EventUpdateConfirm.emit({id,type})
   }
 
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
@@ -157,11 +155,10 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   deletePayroll(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(PayrollAction.deletePayroll({ id: event.id }));
-      }
-    });
+   this.EventDeletePayroll.emit(event)
+  }
+
+  historyPayroll(event: any) {
+    this.EventHistoryPayroll.emit(event)
   }
 }
