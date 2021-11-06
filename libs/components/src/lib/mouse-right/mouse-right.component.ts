@@ -17,6 +17,7 @@ export class MouseRightComponent {
   @Output() payment = new EventEmitter();
   @Output() delivered = new EventEmitter();
   @Output() restore = new EventEmitter();
+  @Output() HistoryPayroll = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -58,5 +59,8 @@ export class MouseRightComponent {
 
   onRestore(item: any) {
     this.restore.emit(item);
+  }
+  onHistoryPayroll(item: any) {
+    this.HistoryPayroll.emit(item);
   }
 }

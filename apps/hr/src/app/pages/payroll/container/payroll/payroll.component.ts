@@ -165,6 +165,7 @@ export class PayrollComponent implements OnInit {
   }
 
   updateConfirmPayroll(id: number, type: string) {
+    console.log(id, type)
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
       data: { id, type }
@@ -260,5 +261,15 @@ export class PayrollComponent implements OnInit {
           }));
       }
     });
+  }
+
+  historyPayroll(event: any){
+    this.router.navigate(['phieu-luong/lich-su-luong', event.employee.id],
+      {
+        queryParams: {
+          name: event.employee.firstName + ' ' + event.employee.lastName,
+          employeeType: event.employee.type
+        }
+      }).then();
   }
 }

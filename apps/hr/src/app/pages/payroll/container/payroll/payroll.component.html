@@ -297,6 +297,7 @@
         (EventRestorePayroll)='restorePayroll($event)'
         (EventSearchMonth)='selectMonth($event)'
         (EventDeletePayroll)='deletePayroll($event)'
+        (EventHistoryPayroll)='historyPayroll($event)'
       >
       </app-payroll-time-sheet>
     </div>
@@ -307,7 +308,13 @@
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
-      <app-payroll-seasonal [monthPayroll]='this.formGroup.get("createdAt")!.value'></app-payroll-seasonal>
+      <app-payroll-seasonal
+        (EventDeletePayroll)='deletePayroll($event)'
+        (EventUpdateConfirm)='updateConfirmPayroll($event.id, $event.type)'
+        (EventReadPayroll)='readPayroll($event)'
+        (EventHistoryPayroll)='historyPayroll($event)'
+        (EventRestorePayroll)='restorePayroll($event)'
+        [monthPayroll]='this.formGroup.get("createdAt")!.value'></app-payroll-seasonal>
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL'>
@@ -315,11 +322,12 @@
     </div>
   </div>
 
-  <app-mouse-right [type]='pageType.RESTORE'
+  <app-mouse-right [type]='pageType.PAYROLL'
                    #child
                    (deleteEvent)='deletePayroll($event)'
                    (addEvent)='addPayroll($event)'
                    (restore)='restorePayroll($event)'
+                   (HistoryPayroll)='historyPayroll($event)'
                    (readAndUpdateEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
