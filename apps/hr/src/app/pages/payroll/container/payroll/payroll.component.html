@@ -1,15 +1,15 @@
 <div class='main-content'>
   <div *ngIf='selectedPayroll === payrollEnum.PAYROLL ' class='row h3 ml-3'>
-    Bảng lương nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}
+    Bảng lương nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME ' class='row h3 ml-3'>
-    Bảng tăng ca tháng {{monthPayroll| date: 'MM/yyyy'}}
+    Bảng tăng ca tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div class='row h3 ml-3' *ngIf='selectedPayroll === payrollEnum.TIME_SHEET '>
-    Bảng chấm công nhân viên tháng {{monthPayroll| date: 'MM/yyyy'}}
+    Bảng chấm công nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL ' class='row h3 ml-3'>
-    Bảng lương nhân viên công nhật tháng {{monthPayroll| date: 'MM/yyyy'}}
+    Bảng lương nhân viên công nhật tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -24,7 +24,7 @@
         <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
       </div>
       <div>
-        <button (click)='Timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
+        <button (click)='timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
       </div>
       <div>
         <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>

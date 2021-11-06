@@ -1,9 +1,10 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { PayrollAction } from './payroll.action';
+import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
+import { PayrollEnum } from '@minhdu-fontend/enums';
 
-export interface PayrollState extends EntityState <Payroll> {
+export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
   added: boolean,
   adding: boolean,
@@ -11,13 +12,16 @@ export interface PayrollState extends EntityState <Payroll> {
   confirmed: boolean,
   deleted: boolean
   selectedPayrollId: number,
+  createdAt: Date,
+  filter: PayrollEnum,
 }
 
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
-  loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false
+  loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET
 });
 
 export const payrollReducer = createReducer(
@@ -25,6 +29,7 @@ export const payrollReducer = createReducer(
   on(PayrollAction.loadInit, (state, _) => {
     return { ...state, loaded: false };
   }),
+
 
   on(PayrollAction.loadInitSuccess, (state, action) =>
     adapter.setAll(action.payrolls,
@@ -99,6 +104,13 @@ export const payrollReducer = createReducer(
   }),
   on(PayrollAction.deletePayroll, (state, _) => {
     return { ...state, adding: true, deleted: false };
+  }),
+  on(PayrollAction.updateStatePayroll, (state, { filter,createdAt }) => {
+    return { ...state,
+      adding: true,
+      deleted: false,
+      filter: filter? filter:state.filter,
+      createdAt: createdAt ? createdAt: state.createdAt };
   })
 );
 

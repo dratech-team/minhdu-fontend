@@ -87,6 +87,10 @@ export const selectedDeletedPayroll = createSelector(
   selectorPayrollState,
   (state) => state.deleted
 );
+export const selectedTypePayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.filter
+);
 
 export const selectorSalaryTotal = createSelector(
   selectorOvertimeState,
