@@ -109,11 +109,12 @@
   </div>
 </ng-template>
 
-<app-mouse-right [type]='pageType.RESTORE'
+<app-mouse-right [type]='pageType.PAYROLL'
                  #child
                  (deleteEvent)='deletePayroll($event)'
                  (addEvent)='addPayroll($event)'
                  (restore)='restorePayroll($event)'
+                 (HistoryPayroll)='historyPayroll($event)'
                  (readAndUpdateEvent)='readPayroll($event)'>
 </app-mouse-right>
 

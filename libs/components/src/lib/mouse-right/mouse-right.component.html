@@ -29,9 +29,14 @@
                (execute)='onDelivered($event.item)'>
     Ngày nhận hàng
   </ng-template>
-  <ng-template *ngIf='type === pageType.RESTORE'
+  <ng-template *ngIf='type === pageType.PAYROLL'
                contextMenuItem let-item
                (execute)='onRestore($event.item)'>
     khôi phục
+  </ng-template>
+  <ng-template *ngIf='type === pageType.PAYROLL'
+               contextMenuItem let-item
+               (execute)='onHistoryPayroll($event.item)'>
+    Lịch sử lương
   </ng-template>
 </context-menu>

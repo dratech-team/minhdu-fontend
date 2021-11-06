@@ -26,6 +26,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventAddPayroll = new EventEmitter<any>();
   @Output() EventReadPayroll = new EventEmitter<any>();
   @Output() EventRestorePayroll = new EventEmitter<any>();
+  @Output() EventHistoryPayroll = new EventEmitter<any>();
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
   unit = DatetimeUnitEnum;
@@ -73,6 +74,9 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
 
   restorePayroll(event: any) {
     this.EventRestorePayroll.emit(event);
+  }
+  historyPayroll(event: any) {
+    this.EventHistoryPayroll.emit(event);
   }
 
   deletePayroll(event: any){
