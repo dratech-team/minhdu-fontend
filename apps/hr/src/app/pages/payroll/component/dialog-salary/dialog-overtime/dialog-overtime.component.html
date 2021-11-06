@@ -59,7 +59,7 @@
           </div>
           <div *ngIf='unit !== datetimeUnitEnum.OPTION'>
             <div class='d-flex row'>
-              <div *ngIf=' unit ==datetimeUnitEnum.DAY' class='col'>
+              <div *ngIf=' unit === datetimeUnitEnum.DAY' class='col'>
                 <div class=' title-item mb-1 '>
                   <span>Số ngày tăng ca</span>
                 </div>
@@ -94,7 +94,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf=" unit =='DAY'">
+            <div *ngIf=" unit === 'DAY'">
               <div class='unit-price'>
                 <div class=' title-item mb-1'>
                   <span>Giá tăng ca</span>
