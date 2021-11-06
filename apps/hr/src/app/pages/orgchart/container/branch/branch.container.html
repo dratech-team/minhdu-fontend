@@ -30,6 +30,10 @@
               <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
               <input class='form-control border text-center' type='text' disabled>
             </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên nghỉ việc</div>
+              <input class='form-control border text-center' type='text' disabled>
+            </th>
           </tr>
           </thead>
           <tbody *ngIf='(branches$| async) as branches'>
@@ -46,9 +50,12 @@
             <th class='pointer' (click)='detailBranch(branch)'>
               {{branch?._count?.employees}}
             </th>
+            <th class='pointer' (click)='detailBranch(branch)'>
+            {{branch?._count?.employeeLeft }}
+          </th>
           </tr>
           <tr *ngIf=' branches.length === 0 ' style='height: 50vh'>
-            <td colspan='3' class='text-center check-content font-weight-bold font-xl '>Hiện không có đơn vị nào
+            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có đơn vị nào
             </td>
           </tr>
           </tbody>
