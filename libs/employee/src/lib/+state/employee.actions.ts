@@ -114,6 +114,17 @@ export const setLoaded = createAction(
   props<{ loaded: boolean }>()
 );
 
+
+export const deleteContract = createAction(
+  '[DELETE_CONTRACT] Delete contracts ',
+  props<{ id: number, employeeId: number }>()
+);
+
+export const deleteContractSuccess = createAction(
+  '[DELETE_CONTRACT] Delete contracts Success ',
+  props<{ employeeId: number }>()
+);
+
 export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
@@ -137,5 +148,7 @@ export const EmployeeAction = {
   deleteRelative,
   deleteDegree,
   setLoaded,
-  leaveEmployee
+  leaveEmployee,
+  deleteContract,
+  deleteContractSuccess
 };

@@ -239,6 +239,22 @@ export class EmployeeEffect {
     )
   );
 
+  deleteContract$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.deleteContract),
+      switchMap((props) =>
+        this.degreeService.deleteContracts(props.id).pipe(
+          map((_) => {
+              this.snackBar.open('Xóa bằng hợp đồng thành công', '', { duration: 1000 });
+              return EmployeeAction.deleteContractSuccess({ employeeId: props.employeeId });
+            }
+          ),
+        )
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
   constructor(
     private readonly action$: Actions,
     private readonly employeeService: EmployeeService,
