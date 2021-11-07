@@ -9,6 +9,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { Router } from '@angular/router';
+import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -20,6 +21,7 @@ export class BranchContainer implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   branch = new FormControl();
+  pageType = PageTypeEnum;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -49,5 +51,13 @@ export class BranchContainer implements OnInit {
         this.store.dispatch(OrgchartActions.deleteBranch({ id: $event.id }));
       }
     });
+  }
+
+  onEmployee(event: any){
+    this.router.navigate(['ho-so'], {
+      queryParams:{
+        branch: event.name
+      }
+    }).then()
   }
 }

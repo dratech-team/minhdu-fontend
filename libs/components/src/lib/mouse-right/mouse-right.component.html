@@ -39,4 +39,9 @@
                (execute)='onHistoryPayroll($event.item)'>
     Lịch sử lương
   </ng-template>
+  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.POSITION'
+               contextMenuItem let-item
+               (execute)='onEmployee($event.item)'>
+    Nhân viên
+  </ng-template>
 </context-menu>

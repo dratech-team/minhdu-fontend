@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   EmployeeAction,
   selectEmployeeAdding,
@@ -16,13 +16,12 @@ import {
   SearchEmployeeType, EmployeeType
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
+import { select, State, Store } from '@ngrx/store';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
   getAllPosition,
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { AppState } from '../../../../reducers';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
@@ -51,28 +50,46 @@ export class EmployeeComponent implements OnInit {
   pageSize: number = 35;
   pageIndexInit = 0;
   isLeft = false;
+  branchName = '';
+  positionName = '';
   formGroup = new FormGroup({
     name: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
-    position: new FormControl(''),
-    branch: new FormControl(''),
+    position: new FormControl(this.positionName),
+    branch: new FormControl(this.branchName),
     employeeType: new FormControl('')
   });
 
   constructor(
     private readonly dialog: MatDialog,
-    private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly store: Store,
+    private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
-
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val.branch) {
+        this.formGroup.get('branch')!.setValue(val.branch);
+        this.branchName = val.branch;
+      }
+      if (val.position) {
+        this.formGroup.get('position')!.setValue(val.position);
+        this.positionName = val.position;
+      }
+    });
     this.store.dispatch(
       EmployeeAction.loadInit({
-        employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+        employee: {
+          take: this.pageSize,
+          skip: this.pageIndexInit,
+          isLeft: this.isLeft,
+          branch: this.branchName,
+          position: this.positionName
+        }
       })
     );
     this.store.dispatch(PositionActions.loadPosition());
@@ -80,11 +97,11 @@ export class EmployeeComponent implements OnInit {
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1500)
-      )
-      .subscribe(val => this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) })));
+      ).subscribe(val => {
+      this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) }));
+    });
 
     this.employeeControl.valueChanges.subscribe(val => {
-      console.log(val);
       switch (val) {
         case EmployeeType.EMPLOYEE_LEFT_AT:
           this.isLeft = true;

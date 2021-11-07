@@ -65,7 +65,10 @@
   </div>
 </div>
 
-<app-mouse-right #childBranch (addEvent)='addBranch()'
+<app-mouse-right #childBranch
+                 [type]='pageType.BRANCH'
+                 (addEvent)='addBranch()'
                  (readAndUpdateEvent)='detailBranch($event)'
                  (deleteEvent)='deleteBranch($event)'
+                 (Employee)='onEmployee($event)'
 ></app-mouse-right>
