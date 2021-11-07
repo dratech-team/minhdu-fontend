@@ -77,6 +77,14 @@ export const EmployeeReducer = createReducer(
     adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
   ),
 
+  on(EmployeeAction.deleteContractSuccess, (state, {employeeId}) =>
+    adapter.updateOne({id: employeeId ,
+      changes:{
+      contracts: []
+      }},
+      { ...state, loaded: true, deleted: true })
+  ),
+
   on(EmployeeAction.addRelative, (state, _) => {
       return { ...state, adding: true, added: false };
     }
