@@ -4,13 +4,14 @@ import { AppState } from '../../../../reducers';
 import { selectorCurrentOrder } from '../../+state/order.selector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '../../+state/order.interface';
-import { CommodityUnit, PaymentType } from '@minhdu-fontend/enums';
+import { CommodityUnit, MenuSellEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl:'detail-order.component.html',
@@ -28,10 +29,7 @@ export class DetailOrderComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    const btnOrder = document.getElementById('order');
-    btnOrder?.classList.add('btn-border');
-    document.getElementById('route').classList.remove('btn-border')
-    document.getElementById('customer').classList.remove('btn-border')
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ORDER}))
     this.store.dispatch(OrderAction.getOrder({id:this.getOrderId}))
   }
   get getOrderId():number{

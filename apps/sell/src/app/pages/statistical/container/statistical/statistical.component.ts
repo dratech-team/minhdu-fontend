@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Api } from '@minhdu-fontend/constants';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 import {
-  DatetimeUnitEnum,
+  DatetimeUnitEnum, MenuSellEnum,
   StatisticalXType,
-  StatisticalYType,
+  StatisticalYType
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { getMonth } from 'ngx-bootstrap/chronos';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
 import { StatisticalService } from '../../service/statistical/statistical.service';
 import { document } from 'ngx-bootstrap/utils';
+import { Store } from '@ngrx/store';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'statistical.component.html',
   styleUrls: ['statistical.component.scss'],
 })
-export class StatisticalComponent implements OnInit {
+export class StatisticalComponent implements OnInit{
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
@@ -38,13 +40,14 @@ export class StatisticalComponent implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly statisticalService: StatisticalService,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
   ) {}
 
   ngOnInit() {
-    document.getElementById('systemHistory').classList.remove('btn-border');
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.HOME}))
     this.statisticalService
       .getAll(Api.STATISTICAL_PROVINCE, {
         type: this.statisticalYType.ORDER,
@@ -68,7 +71,6 @@ export class StatisticalComponent implements OnInit {
       endedAt: [Validators.required],
     });
   }
-
   onStatistical(type: StatisticalXType) {
     const ref = this.dialog.open(PickStatisticalTypeComponent, {
       width: '30%',

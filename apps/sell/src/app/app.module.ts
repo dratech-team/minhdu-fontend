@@ -30,6 +30,7 @@ import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
     MatIconModule,
     MatButtonModule,
     LocationModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ],
   declarations: [
     PickMenuComponent,
