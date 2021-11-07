@@ -5,4 +5,6 @@ export enum PageTypeEnum {
   EMPLOYEE_LEFT_AT = 'EMPLOYEE_LEFT_AT',
   ACCOUNT = 'ACCOUNT',
   PAYROLL = 'PAYROLL',
+  BRANCH = 'BRANCH',
+  POSITION = 'POSITION'
 }
