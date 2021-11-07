@@ -1,37 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
 import { document } from 'ngx-bootstrap/utils';
 import { AuthActions } from '@minhdu-fontend/auth';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
 import { menuSell } from '@minhdu-fontend/constants';
-
+import { selectedTab } from '../states/main.selector';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './sell-layout.component.html',
   styleUrls: ['./sell-layout.component.scss']
 })
-export class SellLayoutComponent implements OnInit {
+export class SellLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
-  menuSell = menuSell
+  menuSell = menuSell;
+  tab$ = this.store.pipe(select(selectedTab));
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
-    private readonly router: Router
+    private readonly router: Router,
+    private ref: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
+
     // if (!this.role) {
     //   this.router.navigate(['/']).then();
     // }
+  }
+  ngAfterContentChecked() {
+    this.ref.detectChanges()
   }
 
   pickMenuMobile() {

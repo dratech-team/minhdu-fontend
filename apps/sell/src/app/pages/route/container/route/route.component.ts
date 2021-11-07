@@ -11,8 +11,9 @@ import { RouteAction } from '../+state/route.action';
 import { selectorAllRoute, selectedRouteLoaded } from '../+state/Route.selector';
 import { AppState } from '../../../../reducers';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { StatusRoute } from '@minhdu-fontend/enums';
+import { MenuSellEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -45,16 +46,13 @@ export class RouteComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedRouteLoaded));
 
   ngOnInit() {
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ROUTE}))
     this.routes$.subscribe(val => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach(item => {
         item.endedAt = new Date(item.endedAt);
       });
     });
-    const btnRoute = document.getElementById('route');
-    btnRoute?.classList.add('btn-border');
-    document.getElementById('customer').classList.remove('btn-border');
-    document.getElementById('order').classList.remove('btn-border');
     this.store.dispatch(RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(

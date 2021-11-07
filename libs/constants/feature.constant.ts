@@ -28,6 +28,7 @@ export const FeatureName = {
   POULTRY_FOOD: 'poultryFood',
   REQUISITE: 'requisite',
   SYSTEM_HISTORY : 'systemHistory',
+  MAIN: 'main',
   SALARY: 'salary',
   OVERTIME: 'overtime',
   ACCOUNT: 'account',
