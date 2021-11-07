@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { environmentAppSell } from '../environments/environment';
+import { environment } from '../environments/environment';
 import { SellLayoutComponent } from './container/sell-layout.component';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
@@ -45,7 +45,7 @@ import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-      logOnly: environmentAppSell.production, // Restrict extension to log-only mode
+      logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
     NxModule.forRoot(),
