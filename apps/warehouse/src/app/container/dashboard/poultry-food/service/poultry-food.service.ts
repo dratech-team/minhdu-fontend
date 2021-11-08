@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { PoultryFood } from '../+state/poultry-food.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +27,7 @@ export class PoultryFoodService extends BaseService<PoultryFood> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<PoultryFood>> {
+  update(id: any, body: any): Observable<UpdateNum<PoultryFood>> {
     return super.update(id, body);
   }
 

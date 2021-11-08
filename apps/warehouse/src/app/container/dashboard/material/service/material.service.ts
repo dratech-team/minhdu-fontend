@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { Material } from '../+state/material.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +27,7 @@ export class MaterialService extends BaseService<Material> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Material>> {
+  update(id: any, body: any): Observable<UpdateNum<Material>> {
     return super.update(id, body);
   }
 
