@@ -14,9 +14,10 @@ import {
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, State, Store } from '@ngrx/store';
-import { debounceTime, startWith } from 'rxjs/operators';
+import { debounceTime, startWith, take } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
+  selectedCreateAtPayroll,
   selectedLoadedPayroll, selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -27,7 +28,6 @@ import {
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { AppState } from '../../../../reducers';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
 import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
@@ -36,8 +36,9 @@ import { DialogTimekeepingComponent } from '../../component/dialog-salary/timeke
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { Payroll } from '../../+state/payroll/payroll.interface';
 import { PayrollState } from '../../+state/payroll/payroll.reducers';
+import { AppState } from '../../../../reducers';
+import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -49,12 +50,12 @@ export class PayrollComponent implements OnInit {
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(
-      this.state.getValue().payroll.createdAt, 'yyyy-MM')),
+      getState(selectedCreateAtPayroll, this.store), 'yyyy-MM')),
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  selectPayroll = new FormControl(this.state.getValue().payroll.filter);
-  selectedPayroll: PayrollEnum = this.state.getValue().payroll.filter;
+  selectPayroll = new FormControl(getState(selectedTypePayroll, this.store));
+  selectedPayroll: PayrollEnum = getState(selectedTypePayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -65,7 +66,7 @@ export class PayrollComponent implements OnInit {
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  createdAt = this.state.getValue().payroll.createdAt;
+  createdAt = getState(selectedCreateAtPayroll, this.store);
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
@@ -75,7 +76,6 @@ export class PayrollComponent implements OnInit {
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
-    private readonly state: State<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe
   ) {
@@ -119,7 +119,6 @@ export class PayrollComponent implements OnInit {
       this.branches$
     );
   }
-
 
   loadInitPayroll(month?: Date) {
     this.store.dispatch(

@@ -126,32 +126,34 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
       switchMap((props) =>
-        this.salaryService.addOne(props.salary).pipe(
-          map((res) => {
-            /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
-            if (res?.status === 201) {
-              this.snackBar.open(res.message, 'Xác nhận');
-            } else {
-              this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
-            }
-            if (props.branchId) {
-              return OrgchartActions.getBranch({ id: props.branchId });
-            } else {
-              return props.payrollId
-                ? PayrollAction.getPayroll({ id: props.payrollId })
-                : PayrollAction.loadInit({
-                  take: 30,
-                  skip: 0,
-                  createdAt: new Date(),
-                  isTimeSheet: !!props.isTimesheet
-                });
-            }
-          }),
-          catchError((err) => {
-            this.store.dispatch(PayrollAction.handleSalaryError());
-            return throwError(err);
-          })
-        )
+        {
+          return    this.salaryService.addOne(props.salary).pipe(
+            map((res) => {
+              /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
+              if (res?.status === 201) {
+                this.snackBar.open(res.message, 'Xác nhận');
+              } else {
+                this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
+              }
+              if (props.branchId) {
+                return OrgchartActions.getBranch({ id: props.branchId });
+              } else {
+                return props.payrollId
+                  ? PayrollAction.getPayroll({ id: props.payrollId })
+                  : PayrollAction.loadInit({
+                    take: 30,
+                    skip: 0,
+                    createdAt: new Date(),
+                    isTimeSheet: !!props.isTimesheet
+                  });
+              }
+            }),
+            catchError((err) => {
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError(err);
+            })
+          )
+        }
       )
     )
   );

@@ -33,10 +33,10 @@ export const selectorAllPayroll = createSelector(
 
 export const selectorAllPayrollSeasonal = createSelector(
   selectorAllPayroll,
-  (payrolls) =>{
-   return   payrolls.filter(payroll =>
-     payroll.employee.type === EmployeeType.EMPLOYEE_SEASONAL
-    )
+  (payrolls) => {
+    return payrolls.filter(payroll =>
+      payroll.employee.type === EmployeeType.EMPLOYEE_SEASONAL
+    );
   }
 );
 
@@ -89,7 +89,15 @@ export const selectedDeletedPayroll = createSelector(
 );
 export const selectedTypePayroll = createSelector(
   selectorPayrollState,
-  (state) => state.filter
+  (state) => {
+    return state.filter;
+  }
+);
+export const selectedCreateAtPayroll = createSelector(
+  selectorPayrollState,
+  (state) => {
+    return state.createdAt;
+  }
 );
 
 export const selectorSalaryTotal = createSelector(
