@@ -19,9 +19,9 @@ export  class  AdminLayoutComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-    if (!this.role){
-      this.router.navigate(['/']).then();
-    }
+    // if (!this.role){
+    //   this.router.navigate(['/']).then();
+    // }
   }
 
   changeTab(event: any) {

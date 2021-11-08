@@ -62,7 +62,11 @@ export class AuthEffects {
       switchMap((payload) =>
         this.authService
           .signIn(payload.username, payload.password, payload.app)
-          .pipe(map((user) => AuthActions.loginSuccess({ user })))
+          .pipe(map((user) => {
+              this.snackbar.open('Đăng nhập thành công', '', { duration: 1500})
+              return AuthActions.loginSuccess({ user });
+            }
+          ))
       ),
       catchError((err) => {
         this.store.dispatch(AuthActions.loginFail());
@@ -91,7 +95,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap((_) => {
-          console.log('sssss')
+          console.log('sssss');
           localStorage.removeItem('role');
           localStorage.removeItem('token');
           this.router.navigate(['auth/login']).then();
