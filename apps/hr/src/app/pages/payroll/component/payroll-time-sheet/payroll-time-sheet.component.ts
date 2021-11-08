@@ -8,7 +8,7 @@ import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Observable } from 'rxjs';
-import { Position } from '@minhdu-fontend/data-models';
+import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DatePipe } from '@angular/common';
 
@@ -20,9 +20,11 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() loaded$?: Observable<boolean>;
   @Input() daysInMonth: any[] = [];
   @Input() positions$!: Observable<Position[]>;
+  @Input() branches$!: Observable<Branch[]>;
   @Input() payroll$!: Observable<Payroll[]>;
   @Output() EventScroll = new EventEmitter<any>();
   @Output() EventSelectPosition = new EventEmitter<string>();
+  @Output() EventSelectBranch = new EventEmitter<string>();
   @Output() EventAddPayroll = new EventEmitter<any>();
   @Output() EventReadPayroll = new EventEmitter<any>();
   @Output() EventRestorePayroll = new EventEmitter<any>();
@@ -75,11 +77,16 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   restorePayroll(event: any) {
     this.EventRestorePayroll.emit(event);
   }
+
   historyPayroll(event: any) {
     this.EventHistoryPayroll.emit(event);
   }
 
-  deletePayroll(event: any){
+  deletePayroll(event: any) {
     this.EventDeletePayroll.emit(event);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.EventSelectBranch.emit(branchName);
   }
 }

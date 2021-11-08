@@ -8,7 +8,7 @@
        [infiniteScrollThrottle]='10'
        [scrollWindow]='false'
        (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' class='main-table' style='width: 4100px'>
+    <table [formGroup]='formGroup' class='main-table' style='width: 4300px'>
       <thead>
       <tr>
         <th>
@@ -37,6 +37,17 @@
                         (click)='onSelectPosition(position.name)'
                         (onSelectionChange)='onSelectPosition(position.name)'>
               {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='title-profile'>Đơn vị</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='branch'
+                 formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (onSelectionChange)='onSelectBranch(branch.name)'>
+              {{branch.name}}
             </mat-option>
           </mat-autocomplete>
         </th>
@@ -80,6 +91,9 @@
         </th>
         <th class='pointer text-center' (click)='readPayroll(payroll)'>
           {{payroll.employee?.position?.name}}
+        </th>
+        <th class='pointer text-center' (click)='readPayroll(payroll)'>
+          {{payroll.employee?.branch?.name}}
         </th>
         <th class='pointer text-center' (click)='readPayroll(payroll)'>
           {{payroll.createdAt|date:'yyyy-MM'}}

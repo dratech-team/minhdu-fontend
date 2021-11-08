@@ -100,6 +100,13 @@ export const selectedCreateAtPayroll = createSelector(
   }
 );
 
+export const selectedBranchPayroll = createSelector(
+  selectorPayrollState,
+  (state) => {
+    return state.branch;
+  }
+);
+
 export const selectorSalaryTotal = createSelector(
   selectorOvertimeState,
   fromOvertime.selectTotal
