@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityType, App, MenuSellEnum } from '@minhdu-fontend/enums';
+import { ActivityType, App, MenuEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class SystemHistoryContainer implements OnInit {
   loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
 
   ngOnInit(): void {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.SYSTEM_HISTORY}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.SYSTEM_HISTORY}))
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
       { take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges

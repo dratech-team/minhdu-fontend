@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
-import { ConvertBoolean, MenuSellEnum, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
+import { ConvertBoolean, MenuEnum, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { PaidType } from 'libs/enums/paidType.enum';
@@ -51,7 +51,7 @@ export class OrderComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuSellEnum.ORDER }));
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(

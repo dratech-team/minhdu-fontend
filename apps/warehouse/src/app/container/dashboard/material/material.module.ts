@@ -12,12 +12,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommonModule } from '@angular/common';
+import { MainReducer } from '../../../states/main.reducer';
 
 
 @NgModule({
   imports: [
     ComponentsModule,
     StoreModule.forFeature(FeatureName.MATERIAL, MaterialReducer),
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     EffectsModule.forFeature([MaterialEffect]),
     ReactiveFormsModule,
     MatSelectModule,

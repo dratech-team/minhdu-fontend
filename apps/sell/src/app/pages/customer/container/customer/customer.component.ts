@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { ConvertBoolean, CustomerResource, CustomerType, Gender, MenuSellEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, CustomerResource, CustomerType, Gender, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -56,7 +56,7 @@ export class CustomerComponent implements OnInit{
   loaded$ = this.store.pipe(select(selectedCustomerLoaded));
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.CUSTOMER}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(

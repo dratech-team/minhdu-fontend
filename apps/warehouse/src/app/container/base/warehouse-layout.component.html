@@ -10,28 +10,29 @@
         </div>
       </div>
       <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
-        <button type='button' data-toggle="tooltip" data-placement="bottom" title="Facebook"
-          class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
-          <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh' target="_blank">
+        <button type='button' data-toggle='tooltip' data-placement='bottom' title='Facebook'
+                class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
+          <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh' target='_blank'>
             <img height='20px btn' src='/assets/icon/warehouse-layout/facebook.svg' alt='facebook'></a>
         </button>
-        <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle="tooltip"
-          data-placement="bottom" title="Tạo tài khoản"
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
+        <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle='tooltip'
+                data-placement='bottom' title='Tạo tài khoản'
+                class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <img height='20px' src='./assets/icon/warehouse-layout/person-plus.svg' alt='create'>
         </button>
-        <button (click)='logout()' type='button' data-toggle="tooltip" data-placement="bottom" title="Đăng xuất"
-          class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
+        <button (click)='logout()' type='button' data-toggle='tooltip' data-placement='bottom' title='Đăng xuất'
+                class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <img height='20px' src='./assets/icon/warehouse-layout/box-arrow-right.svg' alt='setting'>
         </button>
       </div>
     </div>
   </div>
   <div class='flex justify-content-start my-1'>
-    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
-      (click)='changeTab($event.target)' id='main-warehouse' routerLink='' mat-menu-item>Tổng kho vật tư</button>
-    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
-            (click)='changeTab($event.target)' id='systemHistory' routerLink='/lich-su-he-thong' mat-menu-item>Lịch sử hệ thống</button>
+    <button *ngFor='let item of menuWarehouses'
+            [ngClass]='{"btn-border": item.state ===(tab$|async)}'
+            class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+            routerLink='{{item.href}}' mat-menu-item>{{item.name}}
+    </button>
   </div>
 
 </div>

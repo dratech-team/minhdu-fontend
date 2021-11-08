@@ -3,13 +3,14 @@ import { select, Store } from '@ngrx/store';
 import { selectorAllMedicines } from '../../+state/medicine.selector';
 import { MedicineAction } from '../../+state/medicine.action';
 import { Router } from '@angular/router';
-import { MedicineUnit, WarehouseTypeEnum } from '@minhdu-fontend/enums';
+import { MedicineUnit, MenuEnum, WarehouseTypeEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Medicine } from '../../+state/medicine.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { MedicineDialogComponent } from '../../components/medicine-dialog/medicine-dialog.component';
-import { debounce, debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
+import { MainAction } from '../../../../../states/main.action';
 
 @Component({
   selector: 'app-medicine',
@@ -35,6 +36,7 @@ export class MedicineComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
     this.store.dispatch(MedicineAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
         debounceTime(1000),
