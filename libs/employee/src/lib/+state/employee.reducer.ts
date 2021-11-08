@@ -11,12 +11,21 @@ export interface EmployeeState extends EntityState<Employee> {
   added: boolean;
   error: string;
   deleted: boolean;
+  branch: string;
+  position: string
   selectedEmployeeId: number;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
-export const initialEmployee = adapter.getInitialState({ loaded: false, adding: false, added: false, deleted: false });
+export const initialEmployee = adapter.getInitialState({
+  loaded: false,
+  adding: false,
+  added: false,
+  deleted: false ,
+  position: '',
+  branch: '',
+});
 
 export const EmployeeReducer = createReducer(
   initialEmployee,

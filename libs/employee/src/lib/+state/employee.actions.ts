@@ -5,12 +5,12 @@ import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{employee: EmployeeDto}>()
+  props<{ employee: EmployeeDto }>()
 );
 
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
-  props<{employee: EmployeeDto}>()
+  props<{ employee: EmployeeDto }>()
 );
 
 export const LoadEmployeesSuccess = createAction(
@@ -91,7 +91,7 @@ export const deleteEmployee = createAction(
 
 export const leaveEmployee = createAction(
   '[LEAVE_EMPLOYEE] Leave Employee',
-  props<{ id: number, body: { leftAt: Date|''} }>()
+  props<{ id: number, body: { leftAt: Date | '' } }>()
 );
 
 export const deleteEmployeeSuccess = createAction(

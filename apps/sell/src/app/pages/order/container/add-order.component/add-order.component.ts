@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommodityUnit, CustomerResource, CustomerType, PaymentType } from '@minhdu-fontend/enums';
+import { CommodityUnit, CustomerResource, CustomerType, MenuSellEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderAction } from '../../+state/order.action';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { selectedOrderAdded } from '../../+state/order.selector';
+import { MainAction } from '../../../../states/main.action';
 
 
 @Component({
@@ -61,15 +62,12 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ORDER}))
     this.customerPicked$.subscribe(val => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
-    const btnOrder = document.getElementById('order');
-    btnOrder?.classList.add('btn-border');
-    document.getElementById('route').classList.remove('btn-border');
-    document.getElementById('customer').classList.remove('btn-border');
     this.formGroup = this.formBuilder.group({
       createdAt: ['', Validators.required],
       explain: ['']

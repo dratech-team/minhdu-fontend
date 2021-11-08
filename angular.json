@@ -223,6 +223,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/sell/src/styles.scss"
             ],
+            "optimization": false,
             "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
           },
           "configurations": {
@@ -372,6 +373,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/warehouse/src/styles.scss"
             ],
+            "optimization": false,
             "scripts": []
           },
           "configurations": {
@@ -468,6 +470,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/admin/src/styles.scss"
             ],
+            "optimization": false,
             "scripts": []
           },
           "configurations": {

@@ -7,8 +7,8 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 import { selectorCurrentRoute } from '../+state/Route.selector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteAction } from '../+state/route.action';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { document } from 'ngx-bootstrap/utils';
+import { MenuSellEnum, PaymentType } from '@minhdu-fontend/enums';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -27,8 +27,7 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById('route').classList.add('btn-border')
-    document.getElementById('order').classList.remove('btn-border')
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ROUTE}))
     this.store.dispatch(RouteAction.getRoute({ id: this.routeId }));
   }
 

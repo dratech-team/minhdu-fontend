@@ -1,34 +1,35 @@
+import { MenuSellEnum } from '../enums';
 
 
 export const menuSell = [
   {
     name: ' Bàn làm việc',
     icon: '../../assets/icon/sell-layout/house-door.svg',
-    id:'home',
+    state:MenuSellEnum.HOME,
     href: '/'
   },
   {
     name: 'Khách hàng',
     icon: '../../assets/icon/sell-layout/building.svg',
-    id:'customer',
+    state:MenuSellEnum.CUSTOMER,
     href: '/khach-hang'
   },
   {
     name: 'Đơn hàng',
     icon: '../../assets/icon/sell-layout/cart.svg',
-    id:'order',
+    state:MenuSellEnum.ORDER,
     href:'/don-hang'
   },
   {
     name: 'Tuyến đường',
     icon: '../../assets/icon/sell-layout/car.svg',
-    id:'route',
+    state:MenuSellEnum.ROUTE,
     href:'/tuyen-duong'
   },
   {
     name: 'Lịch sử hệ thống',
     icon: '../../assets/icon/sell-layout/card-list.svg',
-    id:'systemHistory',
+    state:MenuSellEnum.SYSTEM_HISTORY,
     href:'/he-thong/lich-su-he-thong'
   },
 ]

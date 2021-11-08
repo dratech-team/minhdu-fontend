@@ -11,10 +11,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-day.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { StoreModule } from '@ngrx/store';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { MainReducer } from '../../states/main.reducer';
 
 @NgModule({
   imports: [
-
     ComponentsModule,
     StatisticalRoutingModule,
     CommonModule,
@@ -24,7 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatDialogModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
   ],
   declarations: [
     PickDayToDayComponent,

@@ -1,0 +1,7 @@
+export enum MenuSellEnum {
+  HOME = 'HOME',
+  ORDER = 'ORDER',
+  CUSTOMER = 'CUSTOMER',
+  ROUTE = 'ROUTE',
+  SYSTEM_HISTORY = 'SYSTEM_HISTORY'
+}

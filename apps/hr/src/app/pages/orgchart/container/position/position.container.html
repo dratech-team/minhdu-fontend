@@ -67,5 +67,13 @@
     </div>
   </div>
 </div>
-<app-mouse-right #childPosition (addEvent)='addPosition()' (readAndUpdateEvent)='updatePosition($event)'
-                 (deleteEvent)='deletePosition($event)'></app-mouse-right>
+<app-mouse-right
+  #childPosition
+  [type]='pageType.POSITION'
+  (addEvent)='addPosition()'
+  (readAndUpdateEvent)='updatePosition($event)'
+  (deleteEvent)='deletePosition($event)'
+  (Employee)='onEmployee($event)'
+>
+
+</app-mouse-right>
