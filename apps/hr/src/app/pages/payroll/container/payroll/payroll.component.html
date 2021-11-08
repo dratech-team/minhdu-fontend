@@ -314,6 +314,7 @@
         [formGroup]='formGroup'
         [positions$]='positions$'
         [branches$]='branches$'
+        (EventScroll)='onScroll()'
         (EventDeletePayroll)='deletePayroll($event)'
         (EventUpdateConfirm)='updateConfirmPayroll($event.id, $event.type)'
         (EventReadPayroll)='readPayroll($event)'

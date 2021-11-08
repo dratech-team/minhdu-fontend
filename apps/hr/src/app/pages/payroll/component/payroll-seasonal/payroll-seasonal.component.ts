@@ -41,6 +41,7 @@ export class PayrollSeasonalComponent implements OnInit {
   @Output() EventDeletePayroll = new EventEmitter<any>();
   @Output() EventSelectPosition = new EventEmitter<string>();
   @Output() EventSelectBranch = new EventEmitter<string>();
+  @Output() EventScroll = new EventEmitter<any>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -54,8 +55,9 @@ export class PayrollSeasonalComponent implements OnInit {
   ngOnInit() {
   }
 
-  onScroll() {
 
+  onScroll() {
+    this.EventScroll.emit();
   }
 
   addPayroll($event?: any): void {
