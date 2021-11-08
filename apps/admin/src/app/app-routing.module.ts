@@ -4,11 +4,11 @@ import { AdminLayoutComponent } from './container/admin-layout.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'auth/login',
     loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
   },
   {
-    path:'quan-tri',
+    path:'',
     component: AdminLayoutComponent ,
     children:[
       {
