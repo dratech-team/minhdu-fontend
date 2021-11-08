@@ -108,7 +108,6 @@ export const payrollReducer = createReducer(
     return { ...state, adding: true, deleted: false };
   }),
   on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch }) => {
-    console.log(branch)
     return {
       ...state,
       adding: true,

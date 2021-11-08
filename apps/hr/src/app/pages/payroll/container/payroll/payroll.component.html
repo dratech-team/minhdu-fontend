@@ -310,12 +310,17 @@
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal
+        [payroll$]='payroll$'
+        [formGroup]='formGroup'
+        [positions$]='positions$'
+        [branches$]='branches$'
         (EventDeletePayroll)='deletePayroll($event)'
         (EventUpdateConfirm)='updateConfirmPayroll($event.id, $event.type)'
         (EventReadPayroll)='readPayroll($event)'
         (EventHistoryPayroll)='historyPayroll($event)'
         (EventRestorePayroll)='restorePayroll($event)'
-        [monthPayroll]='this.formGroup.get("createdAt")!.value'></app-payroll-seasonal>
+        (EventSelectBranch)='onSelectBranch($event)'
+        (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
     </div>
   </div>
 

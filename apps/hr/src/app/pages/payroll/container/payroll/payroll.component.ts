@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -7,26 +7,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import {
-  PayrollEnum,
-  SalaryTypeEnum,
-  EmployeeType
-} from '@minhdu-fontend/enums';
+import { EmployeeType, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, State, Store } from '@ngrx/store';
-import { debounceTime, startWith, take } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll, selectedTypePayroll,
+  selectedLoadedPayroll,
+  selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
@@ -39,11 +33,12 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from '../../../../reducers';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
+import { Subject } from 'rxjs';
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
-export class PayrollComponent implements OnInit {
+export class PayrollComponent implements OnInit, AfterContentChecked {
   formGroup = new FormGroup({
     name: new FormControl(''),
     paidAt: new FormControl(''),
@@ -72,13 +67,15 @@ export class PayrollComponent implements OnInit {
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   payrollEnum = PayrollEnum;
+  private stop$ = new Subject<void>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -87,29 +84,42 @@ export class PayrollComponent implements OnInit {
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-    this.selectPayroll.valueChanges.subscribe((val) => {
-      this.selectedPayroll = val;
-      this.store.dispatch(PayrollAction.updateStatePayroll(
-        { filter: val }));
-
-      this.loadInitPayroll();
-    });
-    this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      if (val.branch) {
-        this.branchName = val.branch;
-        this.store.dispatch(PayrollAction.updateStatePayroll(
-          { branch: val.branch }));
-      }
-      if (val.createdAt) {
-        this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(val.createdAt) }));
-        this.createdAt = val.createdAt;
-        this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
-      } else {
+    this.selectPayroll.valueChanges.pipe().subscribe((val) => {
+      if (val === PayrollEnum.TIME_SHEET && !this.createdAt) {
+        this.selectedPayroll = val;
+        this.formGroup.get('createdAt')!.reset()
         this.createdAt = new Date();
+        this.daysInMonth = rageDaysInMonth(new Date());
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          { filter: val, createdAt: new Date() }));
+      } else {
+        this.selectedPayroll = val;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          { filter: val }));
       }
-      const month = new Date(val.createdAt);
-      this.loadInitPayroll(month);
+      return this.loadInitPayroll();
+    });
+
+    this.formGroup.valueChanges.pipe(
+      map(val => {
+        if ((!val.createdAt) && (this.selectedPayroll === PayrollEnum.TIME_SHEET)) {
+          this.snackbar.open('Phiếu chấm công phải chọn tháng', 'Đóng');
+          this.formGroup.get('createdAt')!.patchValue(
+            this.datePipe.transform(new Date(), 'yyyy-MM'));
+          takeUntil(this.stop$);
+        } else {
+          return val;
+        }
+      })
+    ).pipe(debounceTime(1500)).subscribe((val) => {
+      if (val) {
+        this.branchName = val?.branch;
+        this.createdAt = val?.createdAt;
+        this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          { createdAt: new Date(this.createdAt), branch: val.branch }));
+        return this.loadInitPayroll();
+      }
     });
 
     this.positions$ = searchAutocomplete(
@@ -123,14 +133,14 @@ export class PayrollComponent implements OnInit {
     );
   }
 
-  loadInitPayroll(month?: Date) {
+  ngAfterContentChecked() {
+    this.ref.detectChanges();
+  }
+
+  loadInitPayroll() {
     this.store.dispatch(
       PayrollAction.loadInit(
-        this.mapPayroll(
-          month
-            ? Object.assign(this.formGroup.value, { createdAt: month })
-            : this.formGroup.value
-        )
+        this.mapPayroll(this.formGroup.value)
       )
     );
   }
@@ -142,9 +152,7 @@ export class PayrollComponent implements OnInit {
       name: val.name,
       position: val.position,
       branch: this.branchName,
-      createdAt: val.createdAt
-        ? val.createdAt
-        : this.datePipe.transform(new Date(), 'yyyy-MM'),
+      createdAt: this.createdAt,
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
