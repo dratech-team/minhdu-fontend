@@ -289,9 +289,11 @@
         [daysInMonth]='daysInMonth'
         [loaded$]='loaded$'
         [positions$]='positions$'
+        [branches$]='branches$'
         [payroll$]='payroll$'
         (EventScroll)='onScroll()'
         (EventSelectPosition)='onSelectPosition($event)'
+        (EventSelectBranch)='onSelectBranch($event)'
         (EventAddPayroll)='addPayroll($event)'
         (EventReadPayroll)='readPayroll($event)'
         (EventRestorePayroll)='restorePayroll($event)'
@@ -306,7 +308,6 @@
         (EventSelectMonth)='selectMonth($event)'
         [createdAt]='this.formGroup.get("createdAt")!.value'></app-payroll-overtime>
     </div>
-
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal
         (EventDeletePayroll)='deletePayroll($event)'
@@ -315,10 +316,6 @@
         (EventHistoryPayroll)='historyPayroll($event)'
         (EventRestorePayroll)='restorePayroll($event)'
         [monthPayroll]='this.formGroup.get("createdAt")!.value'></app-payroll-seasonal>
-    </div>
-
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL'>
-
     </div>
   </div>
 

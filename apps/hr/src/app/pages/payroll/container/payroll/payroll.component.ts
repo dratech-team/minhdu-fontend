@@ -17,6 +17,7 @@ import { select, State, Store } from '@ngrx/store';
 import { debounceTime, startWith, take } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
+  selectedBranchPayroll,
   selectedCreateAtPayroll,
   selectedLoadedPayroll, selectedTypePayroll,
   selectorAllPayroll
@@ -36,7 +37,6 @@ import { DialogTimekeepingComponent } from '../../component/dialog-salary/timeke
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PayrollState } from '../../+state/payroll/payroll.reducers';
 import { AppState } from '../../../../reducers';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
@@ -52,10 +52,11 @@ export class PayrollComponent implements OnInit {
     createdAt: new FormControl(this.datePipe.transform(
       getState(selectedCreateAtPayroll, this.store), 'yyyy-MM')),
     position: new FormControl(''),
-    branch: new FormControl('')
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   selectPayroll = new FormControl(getState(selectedTypePayroll, this.store));
   selectedPayroll: PayrollEnum = getState(selectedTypePayroll, this.store);
+  branchName = getState(selectedBranchPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -90,13 +91,15 @@ export class PayrollComponent implements OnInit {
       this.selectedPayroll = val;
       this.store.dispatch(PayrollAction.updateStatePayroll(
         { filter: val }));
-      if (val === PayrollEnum.TIME_SHEET) {
-        this.loadInitPayroll();
-      } else if (val === PayrollEnum.PAYROLL) {
-        this.loadInitPayroll();
-      }
+
+      this.loadInitPayroll();
     });
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
+      if (val.branch) {
+        this.branchName = val.branch;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          { branch: val.branch }));
+      }
       if (val.createdAt) {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(val.createdAt) }));
@@ -138,7 +141,7 @@ export class PayrollComponent implements OnInit {
       take: this.pageSize,
       name: val.name,
       position: val.position,
-      branch: val.branch,
+      branch: this.branchName,
       createdAt: val.createdAt
         ? val.createdAt
         : this.datePipe.transform(new Date(), 'yyyy-MM'),

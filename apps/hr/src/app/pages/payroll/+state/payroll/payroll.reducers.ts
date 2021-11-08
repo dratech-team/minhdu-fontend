@@ -14,6 +14,7 @@ export interface PayrollState extends EntityState<Payroll> {
   selectedPayrollId: number,
   createdAt: Date,
   filter: PayrollEnum,
+  branch: string
 }
 
 
@@ -22,7 +23,7 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: ''
 });
 
 export const payrollReducer = createReducer(
@@ -106,12 +107,16 @@ export const payrollReducer = createReducer(
   on(PayrollAction.deletePayroll, (state, _) => {
     return { ...state, adding: true, deleted: false };
   }),
-  on(PayrollAction.updateStatePayroll, (state, { filter,createdAt }) => {
-    return { ...state,
+  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch }) => {
+    console.log(branch)
+    return {
+      ...state,
       adding: true,
       deleted: false,
-      filter: filter? filter:state.filter,
-      createdAt: createdAt ? createdAt: state.createdAt };
+      filter: filter ? filter : state.filter,
+      createdAt: createdAt ? createdAt : state.createdAt,
+      branch: branch ? branch : state.branch
+    };
   })
 );
 

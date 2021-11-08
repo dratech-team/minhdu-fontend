@@ -9,6 +9,8 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import {
+  selectedBranchPayroll,
+  selectedCreateAtPayroll,
   selectedLoadedPayroll,
   selectorAllPayrollSeasonal
 } from '../../+state/payroll/payroll.selector';
@@ -17,12 +19,9 @@ import { debounceTime } from 'rxjs/operators';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { DatePipe } from '@angular/common';
-import { RestorePayrollComponent } from '../restore-payroll/restore-payroll.component';
-import { Router } from '@angular/router';
-import { UpdateConfirmComponent } from '../update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Component({
   selector: 'app-payroll-seasonal',
@@ -37,9 +36,10 @@ export class PayrollSeasonalComponent implements OnInit {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(this.monthPayroll),
+    createdAt: new FormControl(this.datePipe.transform(
+      getState(selectedCreateAtPayroll, this.store), 'yyyy-MM')),
     position: new FormControl(''),
-    branch: new FormControl('')
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -61,7 +61,7 @@ export class PayrollSeasonalComponent implements OnInit {
     private readonly overtimeService: OvertimeService,
     private readonly dialog: MatDialog,
     private readonly store: Store,
-    private readonly datePipe: DatePipe,
+    private readonly datePipe: DatePipe
   ) {
   }
 
@@ -70,7 +70,11 @@ export class PayrollSeasonalComponent implements OnInit {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
+      if (val.branch) {
+        this.store.dispatch(PayrollAction.updateStatePayroll({ branch: val.branch }));
+      }
       if (val.createdAt) {
+        this.store.dispatch(PayrollAction.updateStatePayroll({ createdAt: val.createdAt }));
         this.monthPayroll = val.createdAt;
         this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
       } else {
@@ -136,15 +140,15 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   readPayroll($event: any) {
-   this.EventReadPayroll.emit($event)
+    this.EventReadPayroll.emit($event);
   }
 
   restorePayroll(event: any) {
-    this.EventRestorePayroll.emit(event)
+    this.EventRestorePayroll.emit(event);
   }
 
   updateConfirmPayroll(id: number, type: string) {
-    this.EventUpdateConfirm.emit({id,type})
+    this.EventUpdateConfirm.emit({ id, type });
   }
 
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
@@ -155,10 +159,10 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   deletePayroll(event: any) {
-   this.EventDeletePayroll.emit(event)
+    this.EventDeletePayroll.emit(event);
   }
 
   historyPayroll(event: any) {
-    this.EventHistoryPayroll.emit(event)
+    this.EventHistoryPayroll.emit(event);
   }
 }
