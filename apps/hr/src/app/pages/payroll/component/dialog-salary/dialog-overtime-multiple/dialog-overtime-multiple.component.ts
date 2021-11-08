@@ -234,7 +234,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       }
       delete salary.unit;
     }
-
     this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
     this.dialogRef.close();
   }
