@@ -19,6 +19,7 @@ export interface PayrollState extends EntityState<Payroll> {
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
+
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
   createdAt: new Date(), filter: PayrollEnum.TIME_SHEET
