@@ -4,7 +4,6 @@ import { Order } from '../../../order/+state/order.interface';
 
 export interface Customer {
   id: number,
-  firstName: string,
   lastName: string,
   avt?: string,
   gender: Gender,

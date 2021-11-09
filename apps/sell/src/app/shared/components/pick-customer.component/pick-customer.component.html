@@ -65,7 +65,7 @@
             type='radio' name='pick-one'
             value='{{customer.id}}'>
         </th>
-        <th class='pointer'>{{customer.firstName}} {{customer.lastName}}</th>
+        <th class='pointer'>{{customer.lastName}}</th>
         <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
         <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
         <th *ngIf='customer?.type === undefined'> Chưa cập nhật</th>

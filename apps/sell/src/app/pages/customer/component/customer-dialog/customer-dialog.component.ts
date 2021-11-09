@@ -64,7 +64,6 @@ export class CustomerDialogComponent implements OnInit {
         email: [],
         phone: [undefined, Validators.required],
         note: [],
-        firstName: [undefined, Validators.required],
         lastName: [undefined, Validators.required],
         address: [undefined, Validators.required],
         gender: [undefined, Validators.required],

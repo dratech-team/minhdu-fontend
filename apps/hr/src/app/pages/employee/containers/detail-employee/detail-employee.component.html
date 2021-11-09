@@ -64,11 +64,11 @@
           <!--          </div>-->
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Tên :</span>
+              <span>Họ và tên :</span>
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{employee.firstName}} {{employee.lastName}}
+             {{employee.lastName}}
             </span>
             </div>
           </div>
@@ -509,7 +509,7 @@
           </tr>
           <tr *ngFor='let relative of employee.relatives'>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
-                class='text-center pointer'>{{relative.firstName}} {{relative.lastName}}</td>
+                class='text-center pointer'>{{relative.lastName}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center pointer'
                 *ngIf='relative.relationship === relationship.FATHER'>Cha
             </td>

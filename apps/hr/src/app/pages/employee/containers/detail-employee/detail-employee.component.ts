@@ -130,6 +130,6 @@ export class DetailEmployeeComponent implements OnInit {
 
   historySalary(employee: Employee) {
     this.router.navigate(['phieu-luong/lich-su-luong', employee.id],
-      { queryParams: { name: employee.firstName + ' ' + employee.lastName } }).then();
+      { queryParams: { name: employee.lastName } }).then();
   }
 }

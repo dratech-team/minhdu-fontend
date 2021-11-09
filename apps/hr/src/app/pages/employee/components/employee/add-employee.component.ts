@@ -92,7 +92,6 @@ export class AddEmployeeComponent implements OnInit {
             ? this.flatSalary.FLAT_SALARY
             : this.flatSalary.NOT_FLAT_SALARY
         ],
-        firstName: [this.data?.employee?.firstName, Validators.required],
         lastName: [this.data?.employee?.lastName, Validators.required],
         address: [this.data?.employee?.address, Validators.required],
         gender: [this.data?.employee?.gender, Validators.required],
@@ -164,7 +163,6 @@ export class AddEmployeeComponent implements OnInit {
       branchId: this.branchId || this.data?.employee.branchId,
       workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
-      firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone ? value.phone.toString() : undefined,
