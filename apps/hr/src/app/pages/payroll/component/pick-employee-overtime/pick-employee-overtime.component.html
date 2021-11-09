@@ -55,7 +55,7 @@
         <tr *ngFor='let employee of employees;let i = index'>
           <th class='content-profile pointer '> {{i + 1}}</th>
           <th class='content-profile pointer '> {{employee.id}}</th>
-          <th class='content-profile  pointer'>{{employee.firstName}} {{employee.lastName}}</th>
+          <th class='content-profile  pointer'>{{employee.lastName}}</th>
           <th class='content-profile pointer'>{{employee.position?.name}}</th>
           <th class='content-profile  pointer'>
             <mat-checkbox class='checkID'
