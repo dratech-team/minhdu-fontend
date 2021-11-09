@@ -17,7 +17,6 @@ import { Salary } from '../salary/salary';
 export interface Employee {
   id: number,
   code: string,
-  firstName: string,
   lastName: string,
   avt?: string,
   gender: Gender,
