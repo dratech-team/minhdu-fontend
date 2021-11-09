@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
+import { SearchTypeConstant } from '@minhdu-fontend/constants';
 
 @Component({
   selector: 'app-payroll-overtime',
@@ -31,8 +32,10 @@ export class OvertimeComponent implements OnInit {
     title: new FormControl(''),
     name: new FormControl(''),
     startAt: new FormControl(),
-    endAt: new FormControl()
+    endAt: new FormControl(),
+    searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
+
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
@@ -44,7 +47,7 @@ export class OvertimeComponent implements OnInit {
   loaded = false;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-
+  searchTypeConstant = SearchTypeConstant
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly overtimeService: OvertimeService,
@@ -56,9 +59,10 @@ export class OvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.createdAt)
+    console.log(this.createdAt);
     this.overtimeService.getOvertime(
       {
+        searchType: SearchTypeEnum.CONTAINS,
         startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),
         endAt: this.createdAt ? getLastDayInMonth(new Date(this.createdAt)) : getLastDayInMonth(new Date())
       }
@@ -82,6 +86,7 @@ export class OvertimeComponent implements OnInit {
           this.loaded = false;
           this.overtimeService.getOvertime(
             {
+              searchType: value.searchType,
               startAt: new Date(value.startAt),
               endAt: new Date(value.endAt),
               title: value.title,
