@@ -157,7 +157,7 @@ export class DetailPayrollComponent implements OnInit {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
       {
         queryParams: {
-          name: payroll.employee.firstName + ' ' + payroll.employee.lastName,
+          name:payroll.employee.lastName,
           employeeType: payroll.employee.type
         }
       }).then();

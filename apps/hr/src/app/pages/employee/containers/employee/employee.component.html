@@ -119,7 +119,7 @@
               {{employee?.id}}
             </th>
             <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{employee?.firstName}} {{employee?.lastName}}
+              {{employee?.lastName}}
             </th>
             <th class='pointer'>
               {{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}

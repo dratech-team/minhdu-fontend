@@ -26,7 +26,6 @@ export class AddRelativeComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      firstName: [this.data?.relative?.firstName, Validators.required],
       lastName: [this.data?.relative?.lastName, Validators.required],
       issuedBy: [this.data?.relative?.issuedBy],
       religion: [this.data?.relative?.religion],
@@ -64,7 +63,6 @@ export class AddRelativeComponent implements OnInit {
     const value = this.formGroup.value;
     const relative = {
       relationship: value.relationship,
-      firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone? value.phone.toString(): undefined,
