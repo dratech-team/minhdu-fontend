@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
   },
   {
-    path:'',
+    path:'admin',
     component: AdminLayoutComponent ,
     children:[
       {

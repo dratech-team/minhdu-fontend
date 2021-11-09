@@ -17,7 +17,4 @@ export class AppContainer implements OnInit{
   ngOnInit() {
   }
 
-  selectApp(port: string) {
-    this.router.navigate([port]).then()
-  }
 }
