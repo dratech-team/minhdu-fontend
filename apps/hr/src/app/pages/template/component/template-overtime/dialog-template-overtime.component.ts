@@ -12,7 +12,6 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
@@ -116,6 +115,10 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       } as ReqOvertime
     };
     if (template.isUpdate) {
+      if(!this.branchInput.nativeElement.value){
+        Object.assign(template.data,
+          {branchId: null })
+      }
       this.store.dispatch(TemplateOvertimeAction.updateTemplate({ id: template.id, templateOvertime: template.data }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));
