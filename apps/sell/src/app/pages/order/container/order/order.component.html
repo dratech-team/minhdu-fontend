@@ -66,9 +66,9 @@
         <th>
           <div>Đơn vị tiền</div>
           <input class='form-control  ' disabled>
-<!--                    <select  class='select border-top' style='width: 100%'  matNativeControl required >-->
-<!--                      <option *ngFor='let item of currenciesConstant' [value]='item.type'>{{item.name}}</option>-->
-<!--                    </select>-->
+          <!--                    <select  class='select border-top' style='width: 100%'  matNativeControl required >-->
+          <!--                      <option *ngFor='let item of currenciesConstant' [value]='item.type'>{{item.name}}</option>-->
+          <!--                    </select>-->
         </th>
         <th>
           <div class=''> Trạng thái đơn hàng</div>
@@ -83,7 +83,7 @@
       <tbody *ngIf='(orders$| async) as orders'>
       <tr class='pointer' *ngFor='let order of orders; let i = index' (contextmenu)='child.onContextMenu($event,order)'>
         <th (click)='detailOrder(order.id)' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{order?.customer?.firstName}} {{order?.customer?.lastName}}
+          {{order?.customer?.lastName}}
         </th>
         <th *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>
           {{order?.createdAt | date: 'dd/MM/yyyy'}}
