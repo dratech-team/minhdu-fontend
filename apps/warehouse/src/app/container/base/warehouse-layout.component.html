@@ -1,5 +1,5 @@
 <div class='px-3 pt-1 grid_on header  shadow-sm'>
-  <div class=' py-3'>
+  <div class=' py-2'>
     <div class='row'>
       <div class='d-flex col-md-7 col-xm-12 '>
         <div class='col-md-4   d-flex align-items-center'>
@@ -28,15 +28,14 @@
     </div>
   </div>
   <div class='flex justify-content-start my-1'>
-    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+    <button class=' button  font-weight-bold btn-header font-sm overflow-hidden d-flex align-items-center '
       (click)='changeTab($event.target)' id='main-warehouse' routerLink='' mat-menu-item>Tổng kho vật tư</button>
-    <button class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+    <button class=' button  btn-header font-sm overflow-hidden font-weight-bold d-flex align-items-center '
             (click)='changeTab($event.target)' id='systemHistory' routerLink='/lich-su-he-thong' mat-menu-item>Lịch sử hệ thống</button>
   </div>
 
 </div>
-
-<div class='px-5' style='margin: 124px 0 50px; overflow: auto'>
+<div style='margin: 100px 0 0; overflow: auto'>
   <router-outlet>
   </router-outlet>
 </div>

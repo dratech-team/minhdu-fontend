@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommonModule } from '@angular/common';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CommonModule } from '@angular/common';
     MatSelectModule,
     MatDialogModule,
     InfiniteScrollModule,
-    CommonModule
+    CommonModule,
+    NgxSkeletonLoaderModule
   ],
   declarations: [
     MaterialComponent,

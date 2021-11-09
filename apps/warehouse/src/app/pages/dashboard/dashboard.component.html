@@ -1,19 +1,20 @@
 
-  <div class='row d-flex align-items-center justify-content-between '
-       style=' padding: 5px 15px;position: fixed; left: 0; right: 0; background: white '>
-    <div class='h2 ml-4'>Tổng kho vật tư </div>
-    <div>
-      <div class='mr-5' >
-        <label for='type'  class='h5'>Loại hàng</label>
-        <mat-select [(value)]="warehouseType" id='type' class='form-control'>
-          <mat-option [value]='warehouseTypeEnum.MEDICINE'>Thuốc</mat-option>
-          <mat-option [value]='warehouseTypeEnum.POULTRY_FOOD'>Thực phẩm</mat-option>
-          <mat-option  [value]='warehouseTypeEnum.MATERIAL'>Thiết bị</mat-option>
-        </mat-select>
+  <div class='row '
+       style=' padding: 0 15px;position: fixed; left: 0; right: 0; background: white; z-index: 10'>
+    <div class='mt-2 d-flex' style='margin-left: 22px'>
+      <div class='h3' >Tổng kho vật tư </div>
+      <div>
+        <div class='ml-3'>
+          <mat-select style='min-width: 150px' [(value)]="warehouseType" id='type' class='form-control'>
+            <mat-option [value]='warehouseTypeEnum.MEDICINE'>Thuốc</mat-option>
+            <mat-option [value]='warehouseTypeEnum.POULTRY_FOOD'>Thực phẩm</mat-option>
+            <mat-option  [value]='warehouseTypeEnum.MATERIAL'>Thiết bị</mat-option>
+          </mat-select>
+        </div>
       </div>
     </div>
   </div>
-  <div style='margin: 100px auto 50px;'>
+  <div style='margin: 55px auto 50px;'>
     <app-medicine *ngIf='warehouseType === warehouseTypeEnum.MEDICINE'></app-medicine>
     <app-poultry-food *ngIf='warehouseType === warehouseTypeEnum.POULTRY_FOOD'></app-poultry-food>
     <app-material *ngIf='warehouseType === warehouseTypeEnum.MATERIAL'></app-material>
