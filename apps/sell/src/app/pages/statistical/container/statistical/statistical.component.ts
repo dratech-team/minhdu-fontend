@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Api } from '@minhdu-fontend/constants';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 import {
-  DatetimeUnitEnum, MenuSellEnum,
+  DatetimeUnitEnum, MenuEnum,
   StatisticalXType,
   StatisticalYType
 } from '@minhdu-fontend/enums';
@@ -47,7 +47,7 @@ export class StatisticalComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.HOME}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.HOME}))
     this.statisticalService
       .getAll(Api.STATISTICAL_PROVINCE, {
         type: this.statisticalYType.ORDER,

@@ -11,7 +11,7 @@ import { RouteAction } from '../+state/route.action';
 import { selectorAllRoute, selectedRouteLoaded } from '../+state/Route.selector';
 import { AppState } from '../../../../reducers';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { MenuSellEnum, StatusRoute } from '@minhdu-fontend/enums';
+import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
 import { MainAction } from '../../../../states/main.action';
 
@@ -46,7 +46,7 @@ export class RouteComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedRouteLoaded));
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ROUTE}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}))
     this.routes$.subscribe(val => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach(item => {

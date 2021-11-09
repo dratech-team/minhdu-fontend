@@ -4,7 +4,7 @@ import { AppState } from '../../../../reducers';
 import { selectorCurrentOrder } from '../../+state/order.selector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '../../+state/order.interface';
-import { CommodityUnit, MenuSellEnum, PaymentType } from '@minhdu-fontend/enums';
+import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,7 +29,7 @@ export class DetailOrderComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ORDER}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}))
     this.store.dispatch(OrderAction.getOrder({id:this.getOrderId}))
   }
   get getOrderId():number{

@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommonModule } from '@angular/common';
+import { MainReducer } from '../../../states/main.reducer';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
@@ -19,6 +20,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   imports: [
     ComponentsModule,
     StoreModule.forFeature(FeatureName.MATERIAL, MaterialReducer),
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     EffectsModule.forFeature([MaterialEffect]),
     ReactiveFormsModule,
     MatSelectModule,
