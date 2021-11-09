@@ -31,7 +31,7 @@ import { DialogTimekeepingComponent } from '../../component/dialog-salary/timeke
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { AppState } from '../../../../reducers';
+import { AppState } from '../../../../reducers'; 
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { Subject } from 'rxjs';
 
