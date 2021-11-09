@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AdminLayoutComponent } from './container/admin-layout.component';
+import { AdminLayoutComponent } from './containers/layout-admin/admin-layout.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,6 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+import { AppContainer } from './containers/app/app.container';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
   ],
   declarations: [
     AdminLayoutComponent,
-    AppComponent
+    AppComponent,
+    AppContainer
   ],
   bootstrap: [AppComponent],
   providers: [
