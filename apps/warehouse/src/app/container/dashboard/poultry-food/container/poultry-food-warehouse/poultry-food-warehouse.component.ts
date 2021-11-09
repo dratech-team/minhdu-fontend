@@ -31,7 +31,7 @@ export class PoultryFoodWarehouseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
+    this.store.dispatch(MainAction.updateState({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
     this.store.dispatch(PoultryFoodAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

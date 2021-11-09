@@ -11,6 +11,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { MedicineDialogComponent } from '../../components/medicine-dialog/medicine-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { MainAction } from '../../../../../states/main.action';
+import { UnitMedicineConstant } from '../../../../../../../../../libs/constants/unit-medicine.constant';
 
 @Component({
   selector: 'app-medicine',
@@ -20,7 +21,7 @@ import { MainAction } from '../../../../../states/main.action';
 export class MedicineComponent implements OnInit {
   medicines$ = this.store.pipe(select(selectorAllMedicines));
   medicineWarehouse = WarehouseTypeEnum.MEDICINE;
-  medicineUnit = MedicineUnit;
+  medicineConstant = UnitMedicineConstant
   formGroup = new FormGroup(
     {
       name: new FormControl('')
@@ -36,7 +37,7 @@ export class MedicineComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
+    this.store.dispatch(MainAction.updateState({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
     this.store.dispatch(MedicineAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
         debounceTime(1000),

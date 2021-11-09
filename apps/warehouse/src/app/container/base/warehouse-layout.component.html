@@ -28,10 +28,11 @@
     </div>
   </div>
   <div class='flex justify-content-start my-1'>
-    <button class=' button  font-weight-bold btn-header font-sm overflow-hidden d-flex align-items-center '
-      (click)='changeTab($event.target)' id='main-warehouse' routerLink='' mat-menu-item>Tổng kho vật tư</button>
-    <button class=' button  btn-header font-sm overflow-hidden font-weight-bold d-flex align-items-center '
-            (click)='changeTab($event.target)' id='systemHistory' routerLink='/lich-su-he-thong' mat-menu-item>Lịch sử hệ thống</button>
+    <button *ngFor='let item of menuWarehouses'
+            [ngClass]='{"btn-border": item.state ===(tab$|async)}'
+            class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
+            routerLink='{{item.href}}' mat-menu-item>{{item.name}}
+    </button>
   </div>
 
 </div>

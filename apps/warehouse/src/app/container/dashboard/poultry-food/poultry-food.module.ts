@@ -10,6 +10,9 @@ import { PoultryFoodDialogComponent } from './components/poultry-food-dialog/pou
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CommonModule } from '@angular/common';
+import { ComponentsModule } from '@minhdu-fontend/components';
 
 @NgModule({
   imports: [
@@ -18,7 +21,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ReactiveFormsModule,
     MatSelectModule,
     MatDialogModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxSkeletonLoaderModule,
+    CommonModule,
+    ComponentsModule,
   ],
   declarations: [
     PoultryFoodDialogComponent,

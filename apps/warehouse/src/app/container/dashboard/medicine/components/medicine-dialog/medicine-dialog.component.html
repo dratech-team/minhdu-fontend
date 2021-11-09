@@ -51,20 +51,8 @@
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='unit'>Đơn vị<span class='star'>*</span></label>
           <mat-select id='unit' class='form-control' formControlName='unit'>
-            <mat-option value='{{medicineUnit.KG}}'>
-              kilogam
-            </mat-option>
-            <mat-option value='{{medicineUnit.VIEN}}'>
-              Viên
-            </mat-option>
-            <mat-option value='{{medicineUnit.LO}}'>
-              Lọ
-            </mat-option>
-            <mat-option value='{{medicineUnit.LIT}}'>
-              Lít
-            </mat-option>
-            <mat-option value='{{medicineUnit.BI}}'>
-              Bi
+            <mat-option *ngFor='let item of medicineConstant' [value]='item.value'>
+              {{item.name}}
             </mat-option>
           </mat-select>
         </div>

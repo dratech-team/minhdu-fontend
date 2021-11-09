@@ -1,114 +1,145 @@
-<div class='ml-4 ' >
-  <div class='h4 mt-2'>Danh sách Thiết bị</div>
-  <button style='margin-top: 0 !important;' (click)='importMaterial()' class='btn btn-primary font-lg mt-2'>Nhập thiết bị</button>
-  <button style='margin-top: 0 !important;' (click)='exportMaterial()' class='btn btn-primary font-lg mt-2 ml-2'>Xuất xuất bị</button>
+<div class='mx-auto' style='width: 98%'>
+  <button (click)='importMaterial()' class='btn btn-primary font-sm mt-2'>Nhập thiết bị
+  </button>
+  <button (click)='exportMaterial()' class='btn btn-primary font-sm mt-2 ml-2'>Xuất thiết bị
+  </button>
 </div>
 <div class='mx-auto' style='width: 98%'>
-
-  <form [formGroup]='formGroup' class='main-profile'  >
-    <div class='header-profile mt-2 animated fadeIn'>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Tên thiết bị</div>
-        <input
-          formControlName='name'
-          class='form-control input-profile '
-          type='search'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Mã thiết bị</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-        >
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Nhà cung cấp</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='text'>
-      </div>
-      <div class='border-start title-header name'>
-        <div class='title-profile'>Hạn sử dụng</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='date'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Giá</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Chiếc khấu</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Đơn vị</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Số lượng</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Ngày nhập</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
-      <div class='border-start title-header default'>
-        <div class='title-profile'>Hóa đơn</div>
-        <input
-          [disabled]='true'
-          class='form-control input-profile '
-          type='number'>
-      </div>
+  <ngx-skeleton-loader *ngIf='!(material$ | async)  ; else material'
+                       count='18' appearance='line'></ngx-skeleton-loader>
+  <ng-template #material>
+    <div class='table-scroll mt-2 animated fadeIn'
+         infiniteScroll
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='10'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'
+    >
+      <table [formGroup]='formGroup' style='width: 2500px'>
+        <thead>
+        <tr>
+          <th>
+            <div class='border-top text-center'>stt</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Mã thiết bị</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Tên Tên thiết bị</div>
+            <input
+              formControlName='name'
+              class='form-control input-profile '
+              type='search'>
+          </th>
+          <th>
+            <div class='border-top text-center'>Nhà cung cấp</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Hạn sử dụng</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Giá</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Chiếc khấu</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Hóa đơn</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Đơn vị</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Số lượng</div>
+            <input disabled>
+          </th>
+          <th>
+            <div class='border-top text-center'>Ngày nhập</div>
+            <input disabled>
+          </th>
+        </tr>
+        </thead>
+        <tbody *ngIf='(material$| async) as materials'>
+        <tr *ngFor='let material of materials; let i = index'
+            (contextmenu)='child.onContextMenu($event,material)'
+            (click)='updateMaterial(material)'>
+          <th class='pointer'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{i + 1}}
+          </th>
+          <th class='pointer'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{material?.code}}
+          </th>
+          <th class='pointer'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{material?.name}}
+          </th>
+          <th class='pointer'>
+            {{material?.provider}}
+          </th>
+          <th class='pointer' *ngIf='material?.expire !== null'>
+            {{material?.expire | date: 'dd/MM/yyyy'}}
+          </th>
+          <th class='pointer' *ngIf='material?.expire === null'>
+            Đang cập nhật
+          </th>
+          <th class='pointer' style='color: #4dbd74'>
+            {{material.price|number:'1.0'|notEmpty:'0'}} đ
+          </th>
+          <th class='pointer' *ngIf='material.discount' style='color: #4dbd74'>
+            {{material.discount * 100}}%
+          </th>
+          <th class='pointer' *ngIf='!material.discount' style='color: #4dbd74'>
+            0%
+          </th>
+          <th class='pointer'>
+            {{material?.invoice}}
+          </th>
+          <th class='pointer'>
+            {{material.unit}}
+          </th>
+          <th class='pointer'>
+            {{material?.amount}}
+          </th>
+          <th class='pointer' *ngIf='material?.createdAt !== null'>
+            {{material?.createdAt | date: 'dd/MM/yyyy'}}
+          </th>
+          <th class='pointer' *ngIf='material?.createdAt === null'>
+            Đang cập nhật
+          </th>
+        </tr>
+        <tr *ngIf='materials.length === 0'>
+          <td colspan='20' style='height: 48vh'>
+            <span class='d-block font-lg font-weight-bold'
+                  style='position: absolute; top: 45%; left: 45%'>Chưa có thiết bị nào!</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-        <div class='outer   animated fadeIn'
-             infiniteScroll
-             [infiniteScrollDistance]='1'
-             [infiniteScrollThrottle]='10'
-             [scrollWindow]='false'
-             (scrolled)='onScroll()'
-        >
-          <!--             *ngIf='(orders$| async) as orders'-->
-<!--          <div class='row-content' *ngFor='let order of orders'>-->
-<!--            <div class='content-profile col-2 pointer ' (click)='detailOrder(order.id)'>-->
-<!--              {{order?.customer?.firstName}} {{order?.customer?.lastName}}-->
-<!--            </div>-->
-<!--            <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt!== null' (click)='detailOrder(order.id)'>-->
-<!--              {{order?.createdAt | date: 'dd/MM/yyyy'}}-->
-<!--            </div>-->
-<!--            <div class='content-profile col-1 pointer ' *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>-->
-<!--              Đang cập nhật-->
-<!--            </div>-->
-<!--            <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>-->
-<!--              {{order?.destination?.name}} - -->
-<!--              {{order?.destination?.district?.name}} - -->
-<!--              {{order?.destination?.district?.province?.name}}-->
-<!--            </div>-->
-<!--            <div class='content-profile col-3 pointer ' (click)='detailOrder(order.id)'>{{order?.explain}} </div>-->
-<!--            <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #f86c6b'>-->
-<!--              {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ-->
-<!--            </div>-->
-<!--            <div class='content-profile col-1 pointer ' (click)='detailOrder(order.id)' style='color: #20c997'>-->
-<!--              {{order?.paymentTotal|number:'1.0'|notEmpty:'0'}} đ-->
-<!--            </div>-->
-<!--          </div>-->
-        </div>
-  </form>
+  </ng-template>
 </div>
+<app-mouse-right #child
+                 (addEvent)='importMaterial()'
+                 (readAndUpdateEvent)='updateMaterial($event)'></app-mouse-right>
+<style>
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 170px;
+    z-index: 2;
+  }
+
+  .table-scroll thead th:nth-child(3) {
+    z-index: 5;
+  }
+</style>

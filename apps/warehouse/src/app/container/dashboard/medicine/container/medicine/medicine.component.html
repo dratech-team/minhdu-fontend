@@ -1,4 +1,4 @@
-<div class='mx-auto' style='width: 98%' >
+<div class='mx-auto' style='width: 98%'>
   <button (click)='importMedicine()' class='btn btn-primary font-sm mt-2'>Nhập thuốc
   </button>
   <button (click)='exportMedicine()' class='btn btn-primary font-sm mt-2 ml-2'>Xuất
@@ -16,7 +16,7 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'
     >
-      <table [formGroup]='formGroup'>
+      <table [formGroup]='formGroup' style='width: 2500px'>
         <thead>
         <tr>
           <th>
@@ -88,58 +88,47 @@
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{medicine?.name}}
           </th>
-          <th class='pointer' >
+          <th class='pointer'>
             {{medicine?.barcode}}
           </th>
-          <th class='pointer' >
+          <th class='pointer'>
             {{medicine?.provider}}
           </th>
-          <th class='pointer'  *ngIf='medicine?.expire !== null'>
+          <th class='pointer' *ngIf='medicine?.expire !== null'>
             {{medicine?.expire | date: 'dd/MM/yyyy'}}
           </th>
-          <th class='pointer'  *ngIf='medicine?.expire === null'>
+          <th class='pointer' *ngIf='medicine?.expire === null'>
             Đang cập nhật
           </th>
-          <th class='pointer'  style='color: #4dbd74'>
+          <th class='pointer' style='color: #4dbd74'>
             {{medicine.price|number:'1.0'|notEmpty:'0'}} đ
           </th>
-          <th class='pointer'  *ngIf='medicine.discount' style='color: #4dbd74'>
+          <th class='pointer' *ngIf='medicine.discount' style='color: #4dbd74'>
             {{medicine.discount * 100}}%
           </th>
-          <th class='pointer'  *ngIf='!medicine.discount' style='color: #4dbd74'>
+          <th class='pointer' *ngIf='!medicine.discount' style='color: #4dbd74'>
             0%
           </th>
-          <th class='pointer' >
+          <th class='pointer'>
             {{medicine?.invoice}}
           </th>
-          <th class='pointer'  *ngIf='medicine.unit === medicineUnit.BI'>
-            Bi
+          <th class='pointer'>
+            {{medicine.unit|transform:medicineConstant}}
           </th>
-          <th class='pointer'  *ngIf='medicine.unit === medicineUnit.KG'>
-            Kilogam
-          </th>
-          <th class='pointer'  *ngIf='medicine.unit === medicineUnit.LIT'>
-            Lít
-          </th>
-          <th class='pointer'  *ngIf='medicine.unit === medicineUnit.LO'>
-            Lọ
-          </th>
-          <th class='pointer' *ngIf='medicine.unit === medicineUnit.VIEN'>
-            Viên
-          </th>
-          <th class='pointer' >
+          <th class='pointer'>
             {{medicine?.amount}}
           </th>
-          <th class='pointer'  *ngIf='medicine?.createdAt !== null'>
+          <th class='pointer' *ngIf='medicine?.createdAt !== null'>
             {{medicine?.createdAt | date: 'dd/MM/yyyy'}}
           </th>
-          <th class='pointer'  *ngIf='medicine?.createdAt === null'>
+          <th class='pointer' *ngIf='medicine?.createdAt === null'>
             Đang cập nhật
           </th>
         </tr>
         <tr *ngIf='medicines.length === 0'>
-          <td colspan='20' style='height: 50vh'>
-            <span class='d-block font-lg font-weight-bold' style='margin-top: 12%'>Chưa có loại thuốc nào!</span>
+          <td colspan='20' style='height: 48vh'>
+            <span class='d-block font-lg font-weight-bold'
+                  style='position: absolute; top: 45%; left: 45%'>Chưa có loại thuốc nào!</span>
           </td>
         </tr>
         </tbody>
@@ -151,7 +140,6 @@
                  (addEvent)='importMedicine()'
                  (deleteEvent)='deleteMedicine($event)'
                  (readAndUpdateEvent)='updateMedicine($event)'></app-mouse-right>
-
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
