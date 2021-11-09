@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommodityUnit, CustomerResource, CustomerType, MenuSellEnum, PaymentType } from '@minhdu-fontend/enums';
+import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderAction } from '../../+state/order.action';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
@@ -62,7 +62,7 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.ORDER}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}))
     this.customerPicked$.subscribe(val => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));

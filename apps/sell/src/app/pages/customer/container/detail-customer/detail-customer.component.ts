@@ -19,7 +19,7 @@ import {
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { ConvertBoolean, MenuSellEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, MenuEnum } from '@minhdu-fontend/enums';
 import { MainAction } from '../../../../states/main.action';
 
 @Component({
@@ -46,7 +46,7 @@ export class DetailCustomerComponent implements OnInit {
   loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded));
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuSellEnum.CUSTOMER}))
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
       OrderAction.loadInit({ take: 10, skip: 0, customerId: this.getId })

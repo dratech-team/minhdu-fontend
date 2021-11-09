@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MedicineDialogComponent } from './components/medicine-dialog/medicine-dialog.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { MedicineDialogComponent } from './components/medicine-dialog/medicine-d
     StoreModule.forFeature(FeatureName.MEDICINE, MedicineReducer),
     EffectsModule.forFeature([MedicineEffect]),
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxSkeletonLoaderModule
   ],
   declarations: [
     MedicineDialogComponent,

@@ -4,14 +4,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { MedicineAction } from '../../+state/medicine.action';
-import { MedicineUnit } from '@minhdu-fontend/enums';
+import { UnitMedicineConstant } from '../../../../../../../../../libs/constants/unit-medicine.constant';
 
 @Component({
   templateUrl: 'medicine-dialog.component.html'
 })
 export class MedicineDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  medicineUnit = MedicineUnit;
+  medicineConstant = UnitMedicineConstant
   numberChars = new RegExp('[^0-9]', 'g');
   constructor(
     @Inject(LOCALE_ID) private locale: string,
