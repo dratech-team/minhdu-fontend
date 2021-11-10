@@ -101,6 +101,9 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.createdPayroll.previousValue !== changes.createdPayroll.currentValue) {
+      this.isSelectAll = false
+      this.employeeIds = []
+      this.EventSelectEmployee.emit(this.employeeIds)
       this.store.dispatch(EmployeeAction.loadInit({
         employee:{createdPayroll: new Date(changes.createdPayroll.currentValue) }
       }));

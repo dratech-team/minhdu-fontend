@@ -31,9 +31,10 @@ import { DialogTimekeepingComponent } from '../../component/dialog-salary/timeke
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { AppState } from '../../../../reducers'; 
+import { AppState } from '../../../../reducers';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { Subject } from 'rxjs';
+import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -87,7 +88,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
       if (val === PayrollEnum.TIME_SHEET && !this.createdAt) {
         this.selectedPayroll = val;
-        this.formGroup.get('createdAt')!.reset()
+        this.formGroup.get('createdAt')!.reset();
         this.createdAt = new Date();
         this.daysInMonth = rageDaysInMonth(new Date());
         this.store.dispatch(PayrollAction.updateStatePayroll(
@@ -288,5 +289,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           employeeType: event.employee.type
         }
       }).then();
+  }
+
+  addSalaryAllowance() {
+    this.dialog.open(DialogAllowanceMultipleComponent,
+      {
+        width: 'fit-content',
+        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      }
+    );
   }
 }
