@@ -30,6 +30,7 @@
   background: white;
   position: sticky;
   top: -1px;
+  z-index: 2;
 }
 
 .fixTableHead {
@@ -47,6 +48,7 @@
 .fixTableHead > table th {
   text-align: center;
   padding: 0;
+
 }
 
 .fixTableHead > table thead th > div {
