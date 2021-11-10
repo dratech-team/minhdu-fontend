@@ -90,12 +90,7 @@ export class DialogOvertimeComponent implements OnInit {
         partial: [this.data.salary.partial]
       });
     } else {
-      this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
-        {
-          branchId: this.data.payroll.employee?.branch?.id,
-          positionId: this.data.payroll.employee?.position?.id,
-          unit: this.data?.salary?.unit ? this.data?.salary.unit : ''
-        }));
+      this.loadTemplateOvertime()
       this.formGroup = this.formBuilder.group({
         datetime: [this.datePipe.transform(
           this.data.payroll.createdAt, 'yyyy-MM-dd')],
@@ -196,11 +191,7 @@ export class DialogOvertimeComponent implements OnInit {
     this.title = '';
     this.price = 0;
     if (unit !== DatetimeUnitEnum.OPTION) {
-      this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
-        {
-          positionId: this.data?.payroll ? this.data?.payroll.employee?.position?.id : '',
-          unit: this.unit ? this.unit : ''
-        }));
+    this.loadTemplateOvertime(unit)
       this.titleOvertimes.patchValue('');
     }
   }
@@ -209,5 +200,15 @@ export class DialogOvertimeComponent implements OnInit {
     console.log(partialDay);
     this.title = 'Tăng ca ' + partialDay.title;
     this.partialDay = partialDay;
+  }
+
+  loadTemplateOvertime(unit?:DatetimeUnitEnum ){
+    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
+      {
+        branchId: this.data.payroll.employee.branch.id,
+        positionId: this.data?.payroll.employee.position.id,
+        unit: unit ? this.unit : ''
+      }));
+    this.titleOvertimes.patchValue('');
   }
 }
