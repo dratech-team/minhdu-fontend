@@ -5,10 +5,12 @@
   >
   </div>
   <div style='z-index: 2 ; min-width: 500px' class=' grid-container '>
-    <a href='{{item.link}}'  class='app-icon d-flex flex-column justify-content-center align-items-center' *ngFor='let item of appMinhDuConstant'>
-      <img style='width: 100px ; height: 100px' alt='ban-hang' src='{{item.icon}}'/>
+    <a   *ngFor='let item of(appMinhDuConstant$|async) '
+       class='app-icon d-flex flex-column justify-content-center align-items-center'
+         href='{{item.link}}'
+      >
+      <img alt='' style='width: 100px ; height: 100px' src="{{item.icon}}"/>
       <span class='text-white font-weight-bold font-lg'>{{item.name}}</span>
     </a>
   </div>
 </div>
-
