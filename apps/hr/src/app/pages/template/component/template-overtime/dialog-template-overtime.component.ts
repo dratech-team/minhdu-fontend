@@ -99,6 +99,9 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+    if(this.positionSelected.length === 0){
+      return this.snackbar.open('Chưa chọn chức vụ', '', {duration:1500})
+    }
     const value = this.formGroup.value;
     const template = {
       isUpdate: !!this.data,
