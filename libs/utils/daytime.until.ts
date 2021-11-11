@@ -26,12 +26,22 @@ export const rageDaysInMonth = (datetime: Date) => {
   const range = [];
   const fromDate = moment(getFirstDayInMonth(datetime));
   const toDate = moment(getLastDayInMonth(datetime));
-  const diff = toDate.diff(fromDate, "days") + 1;
+  const diff = toDate.diff(fromDate, 'days') + 1;
   for (let i = 0; i < diff; i++) {
     range.push({
-      title: moment(getFirstDayInMonth(datetime)).add(i, "days"),
-      key: moment(getFirstDayInMonth(datetime)).add(i, "days").format("DD-MM")
-    })
+      title: moment(getFirstDayInMonth(datetime)).add(i, 'days'),
+      key: moment(getFirstDayInMonth(datetime)).add(i, 'days').format('DD-MM')
+    });
   }
   return range;
-}
+};
+
+export const sortDatetime = (array: any[]) => {
+  if (array.every(e => e.datetime)) {
+    return array.sort(function(a, b) {
+      return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
+    });
+  } else {
+    return array;
+  }
+};
