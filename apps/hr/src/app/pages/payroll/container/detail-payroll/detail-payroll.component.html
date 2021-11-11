@@ -394,17 +394,17 @@
           </tbody>
         </table>
       </div>
-      <div class='sticky-scroll' #sticky>
-        <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
-        <div class='pointer ' (click)='scroll(basic)'>Lương cơ bản</div>
-        <div class='pointer' (click)='scroll(basic)'>Phụ cấp ở lại</div>
-        <div class='pointer' (click)='scroll(allowance)'>Phụ cấp</div>
-        <div class='pointer' (click)='scroll(overtime)'>Tăng ca</div>
-        <div class='pointer' (click)='scroll(absent)'>Khấu trừ</div>
-        <div class='pointer' (click)='scroll(holiday)'>Đi làm ngày lễ</div>
-        <div class='pointer' (click)='scroll(footer)'>Lịch sử và xác nhận lương</div>
-      </div>
       <div class='sticky-scroll' *ngIf='isSticky'>
+        <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
+        <div class='pointer ' (click)='scroll(basic,sticky)'>Lương cơ bản</div>
+        <div class='pointer' (click)='scroll(basic,sticky)'>Phụ cấp ở lại</div>
+        <div class='pointer' (click)='scroll(allowance,sticky)'>Phụ cấp</div>
+        <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
+        <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
+        <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
+        <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
+      </div>
+      <div class='sticky-scroll' #sticky >
         <div class='pointer' (click)='onSticky(sticky)'>
           << Hiện
         </div>
