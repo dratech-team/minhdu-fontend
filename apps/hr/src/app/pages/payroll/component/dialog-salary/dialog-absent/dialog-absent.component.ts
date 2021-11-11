@@ -248,7 +248,8 @@ export class DialogAbsentComponent implements OnInit {
                 ' ' +
                 this.titleSession[value.partialDay]?.title,
               times: this.titleSession[value.partialDay].times,
-              datetime: new Date(value.startedAt + '-00')
+              datetime: new Date(value.startedAt + '-00'),
+              partial : this.titleSession[value.partialDay].type,
             });
           } else {
             Object.assign(salary, {
@@ -259,7 +260,8 @@ export class DialogAbsentComponent implements OnInit {
               times: this.titleSession[value.partialDay].times *
                 (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
               startedAt: new Date(value.startedAt + '-00'),
-              endedAt: new Date(value.endedAt + '-00')
+              endedAt: new Date(value.endedAt + '-00'),
+              partial : this.titleSession[value.partialDay].type,
             });
           }
         } else {
@@ -269,7 +271,8 @@ export class DialogAbsentComponent implements OnInit {
               ' ' +
               this.titleSession[value.partialDay]?.title,
             times: this.titleSession[value.partialDay].times,
-            datetime: new Date(value.datetime)
+            datetime: new Date(value.datetime),
+            partial : this.titleSession[value.partialDay].type,
           });
         }
       }

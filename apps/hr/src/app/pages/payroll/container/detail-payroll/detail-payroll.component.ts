@@ -196,8 +196,9 @@ export class DetailPayrollComponent implements OnInit {
     this.store.dispatch(PayrollAction.scanHoliday({ PayrollId: payrollId }));
   }
 
-  scroll(target: HTMLElement) {
+  scroll(target: HTMLElement, sticky: HTMLElement) {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    this.onSticky(sticky)
   }
 
   onSticky(sticky: HTMLElement) {

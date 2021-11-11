@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Salary } from '@minhdu-fontend/data-models';
+import { sortDatetime } from '../../../../../../../libs/utils/daytime.until';
 
 @Pipe({
   name: 'filterTypeSalary',
@@ -7,6 +8,7 @@ import { Salary } from '@minhdu-fontend/data-models';
 })
 export class FilterPipe implements PipeTransform {
   transform(salaries: Salary[], type: string[]): any {
-    return salaries?.filter((salary) => type.includes(salary.type));
+    const salariesFilter = salaries?.filter((salary) => type.includes(salary.type));
+    return sortDatetime(salariesFilter)
   }
 }
