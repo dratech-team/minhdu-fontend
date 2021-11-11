@@ -71,8 +71,7 @@
           Chưa cập nhật
         </th>
         <th *ngIf='route.driver'>{{route?.driver}}</th>
-        <th *ngIf='!route.driver'>
-          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</th>
+        <th *ngIf='!route.driver'>{{route?.employee?.lastName}}</th>
         <th>{{route?.bsx}}</th>
         <th>{{route?.garage}}</th>
         <th *ngIf='route.endedAt.getTime() < today '>Hoàn thành</th>

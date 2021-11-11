@@ -58,8 +58,7 @@
           Chưa cập nhật
         </div>
         <div class='content-profile col-2 pointer' *ngIf='route.driver'>{{route?.driver}}</div>
-        <div class='content-profile col-2 pointer' *ngIf='!route.driver'>
-          {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
+        <div class='content-profile col-2 pointer' *ngIf='!route.driver'>{{route?.employee?.lastName}}</div>
         <div class='content-profile col-2 pointer '>{{route?.bsx}}</div>
         <div class='content-profile col-1  pointer'>
           <mat-checkbox class='checkID'
