@@ -111,7 +111,7 @@ export class DialogBasicComponent implements OnInit {
         const data = { salary: salary, employeeIds: this.employeeIds };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
           if (val) {
-            location.reload()
+            this.store.dispatch(PayrollAction.getPayroll({ id: this.data.payroll.id }));
             this.dialogRef.close();
           }
         });
@@ -149,6 +149,5 @@ export class DialogBasicComponent implements OnInit {
 
   pickEmployees(employeeIds: number[]) {
     this.employeeIds = employeeIds;
-    console.log(this.employeeIds);
   }
 }
