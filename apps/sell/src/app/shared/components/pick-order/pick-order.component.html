@@ -66,8 +66,7 @@
       <th *ngIf='!payment'>
         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
            style='color: black'
-           target='_blank' class='  pointer no-underline '>
-          {{order?.customer?.firstName}} {{ order?.customer?.lastName}}
+           target='_blank' class='  pointer no-underline '>{{ order?.customer?.lastName}}
         </a>
       </th>
       <th>

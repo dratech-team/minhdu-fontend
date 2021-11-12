@@ -106,22 +106,22 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      if (this.employeeIds.length > 0) {
-        Object.assign(salary);
-        const data = { salary: salary, employeeIds: this.employeeIds };
-        this.multipleEmployeeService.addOne(data).subscribe(val => {
-          if (val) {
-            location.reload()
-            this.dialogRef.close();
-          }
-        });
-      } else {
+      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id  ) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
             salary: salary
           })
         );
+      } else {
+        Object.assign(salary);
+        const data = { salary: salary, employeeIds: this.employeeIds };
+        this.multipleEmployeeService.addOne(data).subscribe(val => {
+          if (val) {
+            this.store.dispatch(PayrollAction.getPayroll({ id: this.data.payroll.id }));
+            this.dialogRef.close();
+          }
+        });
       }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
@@ -149,6 +149,5 @@ export class DialogBasicComponent implements OnInit {
 
   pickEmployees(employeeIds: number[]) {
     this.employeeIds = employeeIds;
-    console.log(this.employeeIds);
   }
 }

@@ -2,62 +2,35 @@
   <div class='header-profile mt-3 animated fadeIn'>
     <div class='border-start title-header col-2 '>
       <div class='title-profile'>Tên tuyến đường</div>
-      <input
-        formControlName='name'
-        class='form-control input-profile '
-        type='search'>
+      <input formControlName='name' class='form-control input-profile ' type='search'>
     </div>
     <div class='border-start title-header col-2'>
       <div class='title-profile'>Ngày bắt đầu</div>
-      <input
-        formControlName='startedAt'
-        [disabled]='true'
-        class='form-control input-profile '
-        type='date'>
+      <input formControlName='startedAt' [disabled]='true' class='form-control input-profile ' type='date'>
     </div>
     <div class='border-start title-header col-2'>
       <div class='title-profile'>Ngày kết thúc</div>
-      <input
-        formControlName='endedAt'
-        [disabled]='true'
-        class='form-control input-profile '
-        type='date'>
+      <input formControlName='endedAt' [disabled]='true' class='form-control input-profile ' type='date'>
     </div>
     <div class='border-start title-header col-2'>
       <div class='title-profile'>tên tài xế</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='text'>
+      <input [disabled]='true' class='form-control input-profile ' type='text'>
     </div>
     <div class='border-start title-header col-2'>
       <div class='title-profile'>Biển số xe</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='text'>
+      <input [disabled]='true' class='form-control input-profile ' type='text'>
     </div>
     <div class='border-start title-header col-2'>
       <div class='title-profile'>Nhà xe</div>
-      <input
-        [disabled]='true'
-        class='form-control input-profile '
-        type='text'>
+      <input [disabled]='true' class='form-control input-profile ' type='text'>
     </div>
   </div>
 
-  <div class='  animated fadeIn '
-       style='width: 101.5%;
+  <div class='  animated fadeIn ' style='width: 101.5%;
           max-height: 32vh;
           overflow-y: scroll;
-          '
-       infiniteScroll
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'
-       *ngIf='(routes$| async) as routes'
-  >
+          ' infiniteScroll [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'
+    (scrolled)='onScroll()' *ngIf='(routes$| async) as routes'>
     <div class='row-content' *ngFor='let route of routes' (click)='detailRoutes(route.id)'>
       <div class='content-profile col-2 pointer '>{{route?.name}}</div>
       <div class='content-profile col-2 pointer ' *ngIf='route.startedAt !== null'>
@@ -73,12 +46,9 @@
         Chưa cập nhật
       </div>
       <div class='content-profile col-2 pointer' *ngIf='route.driver'>{{route?.driver}}</div>
-      <div class='content-profile col-2 pointer' *ngIf='!route.driver'>
-        {{route?.employee?.firstName}} {{route?.employee?.lastName}}</div>
+      <div class='content-profile col-2 pointer' *ngIf='!route.driver'> {{route?.employee?.lastName}}</div>
       <div class='content-profile col-2 pointer '>{{route?.bsx}}</div>
       <div class='content-profile col-2 pointer '>{{route?.garage}}</div>
     </div>
   </div>
 </form>
-
-

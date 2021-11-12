@@ -40,7 +40,6 @@ export class DialogStayComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.data.salary);
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     if (this.data.isUpdate) {
       this.formGroup = this.formBuilder.group({
@@ -79,17 +78,20 @@ export class DialogStayComponent implements OnInit {
         payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
       }));
     } else {
-      if (this.employeeIds.length > 0) {
+      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id ) {
+        this.store.dispatch(PayrollAction.addSalary({
+          payrollId: this.data.payroll.id,
+          salary: salary })
+        );
+      } else {
         Object.assign(salary, { employeeIds: this.employeeIds });
         this.multipleEmployeeService.addOne({salary: salary, employeeIds: this.employeeIds})
           .subscribe(val => {
-          if (val) {
-            location.reload()
-            this.dialogRef.close();
-          }
-        });
-      } else {
-        this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
+            if (val) {
+              this.store.dispatch(PayrollAction.getPayroll({ id: this.data.payroll.id }));
+              this.dialogRef.close();
+            }
+          });
       }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
