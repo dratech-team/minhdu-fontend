@@ -115,11 +115,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     ).pipe(debounceTime(1500)).subscribe((val) => {
       if (val) {
         this.branchName = val?.branch;
-
         this.createdAt = val?.createdAt;
         this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: val.createdAt || new Date(val.createdAt), branch: val.branch }));
+          { createdAt: new Date(val.createdAt) || new Date(val.createdAt), branch: val.branch }));
         return this.loadInitPayroll();
 
       }
