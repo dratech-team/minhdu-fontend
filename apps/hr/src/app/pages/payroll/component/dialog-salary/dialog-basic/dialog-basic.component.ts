@@ -106,7 +106,14 @@ export class DialogBasicComponent implements OnInit {
         })
       );
     } else {
-      if (this.employeeIds.length > 0) {
+      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id  ) {
+        this.store.dispatch(
+          PayrollAction.addSalary({
+            payrollId: this.data.payroll.id,
+            salary: salary
+          })
+        );
+      } else {
         Object.assign(salary);
         const data = { salary: salary, employeeIds: this.employeeIds };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
@@ -115,13 +122,6 @@ export class DialogBasicComponent implements OnInit {
             this.dialogRef.close();
           }
         });
-      } else {
-        this.store.dispatch(
-          PayrollAction.addSalary({
-            payrollId: this.data.payroll.id,
-            salary: salary
-          })
-        );
       }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
