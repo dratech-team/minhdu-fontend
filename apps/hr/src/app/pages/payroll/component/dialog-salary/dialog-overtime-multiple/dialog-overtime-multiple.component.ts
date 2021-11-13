@@ -78,7 +78,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     });
     this.titleOvertimes.valueChanges
       .pipe(
-        map((_) => {
+        map((val) => {
+          if(!val){
+            this.positionOfTempOver = []
+          }
           this.store.dispatch(
             TemplateOvertimeAction.loadALlTemplate({
               positionId: this.positionId || '',

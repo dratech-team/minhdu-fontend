@@ -41,7 +41,6 @@
               <div>
                 <input class='form-control row mt-1 mb-3' type='text' matInput [formControl]='positions'
                        style='width: 100%; margin: 0'
-                       [matChipInputFor]='chipList'
                        [matAutocomplete]='position'>
                 <mat-autocomplete #position='matAutocomplete'>
                   <mat-option *ngFor='let position of positions$ | async'
@@ -60,7 +59,7 @@
                     <span class='star'>*</span>
                   </div>
                   <div>
-                    <mat-chip-list #chipList>
+                    <mat-chip-list>
                       <mat-chip
                         *ngFor='let item of positionOfTempOver'
                         [selectable]='true'>
