@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { BlockSalariesConstant } from '@minhdu-fontend/constants';
 import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
-import { selectTemplateLoaded } from '../../+state/teamlate-salary/template-salary.selector';
+import { selectTemplateAdded, selectTemplateLoaded } from '../../+state/teamlate-salary/template-salary.selector';
 
 
 @Component({
@@ -67,7 +67,7 @@ export class TemplateSalaryComponent implements OnInit {
       this.store.dispatch(TemplateSalaryAction.AddTemplate(
         { template: template }));
     }
-    this.store.pipe(select(selectTemplateLoaded)).subscribe(added => {
+    this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
       if (added) {
         this.dialogRef.close(template);
       }
