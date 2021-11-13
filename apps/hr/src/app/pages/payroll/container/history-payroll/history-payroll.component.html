@@ -422,7 +422,7 @@
 <app-mouse-right #child (addEvent)='createPayroll()'
                  [type]='PageTypeEnum.HISTORY_PAYROLL'
                  (deleteEvent)='deletePayroll($event)'
-                 (readAndUpdateEvent)='readPayroll($event)'>
+                 (readEvent)='readPayroll($event)'>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {

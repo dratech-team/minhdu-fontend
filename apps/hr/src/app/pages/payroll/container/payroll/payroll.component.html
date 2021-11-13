@@ -198,7 +198,7 @@
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'
                   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-               {{payroll?.employee?.lastName}}
+                {{payroll?.employee?.lastName}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'
                   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
@@ -309,6 +309,7 @@
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         [overtimeTitle]='overtimeTitle'
+        [eventAddOvertime]='eventAddOvertime'
         (EventSelectMonth)='selectMonth($event)'
         [createdAt]='this.createdAt'></app-payroll-overtime>
     </div>
@@ -335,7 +336,7 @@
                    (addEvent)='addPayroll($event)'
                    (restore)='restorePayroll($event)'
                    (HistoryPayroll)='historyPayroll($event)'
-                   (readAndUpdateEvent)='readPayroll($event)'>
+                   (readEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
 

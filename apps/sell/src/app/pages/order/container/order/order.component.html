@@ -128,7 +128,7 @@
 
 <app-mouse-right #child [type]='pageTypeEnum.ORDER'
                  (addEvent)='addOrder()'
-                 (readAndUpdateEvent)='detailOrder($event.id)'
+                 (readEvent)='detailOrder($event.id)'
                  (delivered)='UpdateOrder($event)'
 ></app-mouse-right>
 
