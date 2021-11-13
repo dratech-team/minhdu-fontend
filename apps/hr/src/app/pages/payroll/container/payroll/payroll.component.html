@@ -308,8 +308,9 @@
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
+        [overtimeTitle]='overtimeTitle'
         (EventSelectMonth)='selectMonth($event)'
-        [createdAt]='this.formGroup.get("createdAt")!.value'></app-payroll-overtime>
+        [createdAt]='this.createdAt'></app-payroll-overtime>
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal

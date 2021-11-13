@@ -5,7 +5,7 @@
                (execute)='add($event.item)'>
     Thêm
   </ng-template>
-  <ng-template *ngIf=' type !== pageType.ORDER '
+  <ng-template *ngIf=' type !== pageType.ORDER && type !== pageType.PAYROLL_OVERTIME '
                contextMenuItem let-item
                (execute)='delete($event.item)'>
     {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}

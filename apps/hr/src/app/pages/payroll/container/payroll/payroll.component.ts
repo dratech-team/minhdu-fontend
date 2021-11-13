@@ -64,6 +64,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   createdAt = getState(selectedCreateAtPayroll, this.store);
+  overtimeTitle?: string
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
@@ -192,11 +193,22 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addSalaryOvertime(type: SalaryTypeEnum): any {
-    this.dialog.open(DialogOvertimeMultipleComponent, {
+    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
         type: type,
         isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.createdAt = new Date(val.datetime);
+        this.overtimeTitle = val.title
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(val.datetime)
+          }));
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
       }
     });
   }

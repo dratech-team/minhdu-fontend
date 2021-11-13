@@ -28,4 +28,8 @@ export class SalaryService extends BaseService<Salary> {
   delete(id: number): Observable<void> {
     return super.delete(id);
   }
+
+  updateMultipleSalaryOvertime(body: any): Observable<any>{
+    return this.http.patch<Observable<any>>('salary/overtime/employees', body);
+  }
 }
