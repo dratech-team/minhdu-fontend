@@ -56,7 +56,6 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          console.log(val);
           const param = {
             name: val.name,
             templateId: this.search.templateId || '',

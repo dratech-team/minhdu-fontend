@@ -15,10 +15,11 @@
       <th style='width: 270px'>
         <div class='border-top text-center'>
           <div class='d-flex justify-content-center' style='height: 100%'>
-            <span >Tên nhân viên</span>
-            <mat-select  style='width: 100px; margin-left: 3px ' formControlName='searchType'>
+            <span>Tên nhân viên</span>
+            <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
               <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
-            </mat-select></div>
+            </mat-select>
+          </div>
         </div>
         <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
       </th>
@@ -124,7 +125,7 @@
       </th>
       <th class='pointer'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
-      {{overtime.lastName}}
+        {{overtime.lastName}}
       </th>
       <th style='width: 200px' class='pointer'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
@@ -137,6 +138,7 @@
       <th class='pointer' style='width: 220px;'>
         <div class='border d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
              (click)='readPayroll(overtime)'>
           {{item.datetime|date:'yyyy-MM-dd'}}
         </div>
@@ -144,6 +146,7 @@
       <th class='pointer' style='min-width: 300px;'>
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
              (click)='readPayroll(overtime)'>
           {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
         </div>
@@ -151,13 +154,18 @@
       <th class='pointer'>
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
              (click)='readPayroll(overtime)'>
-          {{item?.times}} {{item?.unit === unit.DAY ? 'Ngày' : 'Giờ'}}
+          {{item?.times}}
+          {{
+          item.unit === "HOUR" ? "Giờ" : "Ngày"
+          }}
         </div>
       </th>
       <th class='pointer'>
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
              (click)='readPayroll(overtime)'>
           {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
           {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
@@ -177,6 +185,11 @@
     </tbody>
   </table>
 </div>
+<app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
+                 (addEvent)='addSalaryOvertime()'
+                 (readAndUpdateEvent)='updateSalaryOvertime($event)'
+                 #child>
+</app-mouse-right>
 <style>
 
   .table-scroll th:nth-child(3) {
@@ -185,6 +198,7 @@
     left: 170px;
     z-index: 2;
   }
+
   .table-scroll th:nth-child(4) {
     position: -webkit-sticky;
     position: sticky;
@@ -193,8 +207,7 @@
   }
 
   .table-scroll thead th:nth-child(3),
-  .table-scroll thead th:nth-child(4)
-  {
+  .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
 

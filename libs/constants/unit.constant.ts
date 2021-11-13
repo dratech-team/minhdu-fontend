@@ -24,6 +24,5 @@ export const UnitsConstant = [
   {
     name: 'Giờ',
     type: DatetimeUnitEnum.MINUTE
-  }
-
+  },
 ];
