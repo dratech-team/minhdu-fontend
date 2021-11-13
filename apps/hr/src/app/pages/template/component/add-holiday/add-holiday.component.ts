@@ -10,8 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Position } from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import { combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
 import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 

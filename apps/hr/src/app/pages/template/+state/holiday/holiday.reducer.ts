@@ -16,7 +16,7 @@ export const initialHoliday = adapter.getInitialState({ loaded: false, added: fa
 export const HolidayReducer = createReducer(
   initialHoliday,
   on(HolidayAction.LoadInitHolidaySuccess, (state, action) =>
-    adapter.setAll(action.holidays, { ...state, loaded: true, adding:false, added: true })),
+    adapter.setAll(action.holidays, { ...state, loaded: true, adding: false, added: true })),
 
   on(HolidayAction.LoadMoreHolidaySuccess, (state, action) =>
     adapter.addMany(action.holidays, { ...state, loaded: true })),
@@ -34,7 +34,7 @@ export const HolidayReducer = createReducer(
     adapter.setOne(action.holiday, { ...state, loaded: true, adding: false, added: true })
   ),
   on(HolidayAction.handleHolidayError, (state, _) => {
-      return { ...state, added: true, adding: false };
+      return { ...state, added: false, adding: false };
     }
   )
 );
