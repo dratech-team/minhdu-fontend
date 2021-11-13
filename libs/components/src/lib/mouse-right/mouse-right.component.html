@@ -5,7 +5,7 @@
                (execute)='add($event.item)'>
     Thêm
   </ng-template>
-  <ng-template *ngIf=' type !== pageType.ORDER && type !== pageType.PAYROLL_OVERTIME '
+  <ng-template *ngIf=' type !== pageType.ORDER '
                contextMenuItem let-item
                (execute)='delete($event.item)'>
     {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}
@@ -43,5 +43,10 @@
                contextMenuItem let-item
                (execute)='onEmployee($event.item)'>
     Nhân viên
+  </ng-template>
+  <ng-template *ngIf='type === pageType.PAYROLL_OVERTIME'
+               contextMenuItem let-item
+               (execute)='onUpdate($event.item)'>
+   sửa
   </ng-template>
 </context-menu>

@@ -186,8 +186,10 @@
   </table>
 </div>
 <app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
+                 (Update)='updateSalaryOvertime($event)'
                  (addEvent)='addSalaryOvertime()'
-                 (readAndUpdateEvent)='updateSalaryOvertime($event)'
+                 (readEvent)='readPayroll($event)'
+                 (deleteEvent)='deleteSalaryOvertime($event)'
                  #child>
 </app-mouse-right>
 <style>

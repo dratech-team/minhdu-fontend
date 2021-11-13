@@ -1,11 +1,11 @@
-import { Component, Input, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, EventEmitter, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DatetimeUnitEnum, Gender, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import {
   selectedAddingPayroll, selectedBranchPayroll
@@ -23,13 +23,17 @@ import { SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { DialogOvertimeMultipleComponent } from '../dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
+import { SalaryService } from '../../service/salary.service';
 
 @Component({
   selector: 'app-payroll-overtime',
   templateUrl: 'overtime.component.html'
 })
 export class OvertimeComponent implements OnInit {
-  @Input() createdAt?: Date;
+  @Input() createdAt!: Date;
+  @Input() eventAddOvertime?: Subject<any>;
   @Input() overtimeTitle?: string;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   formGroup = new FormGroup({
@@ -60,7 +64,8 @@ export class OvertimeComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly salaryService: SalaryService
   ) {
   }
 
@@ -69,20 +74,26 @@ export class OvertimeComponent implements OnInit {
       {
         title: this.overtimeTitle ? this.overtimeTitle : '',
         searchType: SearchTypeEnum.CONTAINS,
-        startAt: this.createdAt ? getFirstDayInMonth(this.createdAt) : getFirstDayInMonth(new Date()),
-        endAt: this.createdAt ? getLastDayInMonth(new Date(this.createdAt)) : getLastDayInMonth(new Date())
+        startAt: this.overtimeTitle ? new Date(this.createdAt) : getFirstDayInMonth(new Date(this.createdAt)),
+        endAt: this.overtimeTitle ? new Date(this.createdAt) : getLastDayInMonth(new Date(this.createdAt))
       }
     ).subscribe(val => {
       this.loaded = true;
       return this.overtime = val;
     });
-    if(this.overtimeTitle){
+    if (this.overtimeTitle) {
       this.formGroup.get('title')!.setValue(this.overtimeTitle);
     }
-    if (this.createdAt) {
-      this.formGroup.get('startAt')!.setValue(this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd'));
-      this.formGroup.get('endAt')!.setValue(this.datePipe.transform(getLastDayInMonth(this.createdAt), 'yyyy-MM-dd'));
-    }
+    this.formGroup.get('startAt')!.setValue(this.datePipe.transform(
+      !this.eventAddOvertime ?
+        getFirstDayInMonth(this.createdAt)
+        : new Date(this.createdAt), 'yyyy-MM-dd'));
+    this.formGroup.get('endAt')!.setValue(this.datePipe.transform(
+      !this.eventAddOvertime ?
+        getLastDayInMonth(this.createdAt)
+        : new Date(this.createdAt)
+      , 'yyyy-MM-dd'));
+
     // this.store.dispatch(PayrollAction.filterOvertime({
     //   skip: this.pageIndexInit,
     //   take: this.pageSize,
@@ -93,32 +104,21 @@ export class OvertimeComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         if ((value.startAt && value.endAt)) {
           this.loaded = false;
-          if(value.name){
-            this.overtimeService.getOvertime(
-              {
-                searchType: value.searchType,
-                startAt: new Date(value.startAt),
-                endAt: new Date(value.endAt),
-                title: value.title,
-                name: value.name
-              }
-            ).subscribe(val => {
-              this.loaded = true;
-              return this.overtime = val;
-            });
-          }else{
-            this.overtimeService.getOvertime(
-              {
-                searchType: value.searchType,
-                startAt: new Date(value.startAt),
-                endAt: new Date(value.endAt),
-                title: value.title,
-              }
-            ).subscribe(val => {
-              this.loaded = true;
-              return this.overtime = val;
-            });
+          const params = {
+            searchType: value.searchType,
+            startAt: new Date(value.startAt),
+            endAt: new Date(value.endAt),
+            title: value.title,
+            name: value.name
+          };
+          if (!value.name) {
+            delete params.name;
           }
+          this.overtimeService.getOvertime(params).subscribe(val => {
+            this.loaded = true;
+            return this.overtime = val;
+          });
+
 
           // this.store.dispatch(PayrollAction.filterOvertime({
           //   take: this.pageSize,
@@ -145,7 +145,21 @@ export class OvertimeComponent implements OnInit {
         }
       })
     );
+    this.eventAddOvertime?.subscribe(val => {
+      if (this.overtimeTitle) {
+        this.formGroup.get('title')!.setValue(val.overtimeTitle);
+      }
+      this.formGroup.get('startAt')!.setValue(this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd'));
+      this.formGroup.get('endAt')!.setValue(this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd'));
+      this.overtimeService.getOvertime(
+        {
+          title: val.overtimeTitle ? val.overtimeTitle : '',
+          startAt: new Date(val.createdAt),
+          endAt: new Date(val.createdAt)
+        });
+    });
   }
+
 
   readPayroll($event: any) {
     this.router
@@ -160,16 +174,23 @@ export class OvertimeComponent implements OnInit {
   }
 
   addSalaryOvertime() {
-    this.dialog.open(DialogOvertimeMultipleComponent, {
+    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
         type: SalaryTypeEnum.OVERTIME
       }
     });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('startAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('endAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('title')!.setValue(val.title);
+      }
+    });
   }
 
   updateSalaryOvertime(event: any) {
-  const ref =  this.dialog.open(DialogOvertimeMultipleComponent, {
+    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
         salary: event,
@@ -177,11 +198,40 @@ export class OvertimeComponent implements OnInit {
         isUpdate: true
       }
     });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        console.log(val);
+        this.formGroup.get('startAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('endAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('title')!.setValue(val.title);
+      }
+    });
+  }
 
-  ref.afterClosed().subscribe(val => {
-    if(val){
-      this.formGroup.get('title')!.setValue(val.title);
-    }
-  })
+  deleteSalaryOvertime(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        const value = this.formGroup.value;
+        const payrollOvertime = {
+          searchType: value.searchType,
+          startAt: new Date(value.startAt),
+          endAt: new Date(value.endAt),
+          title: value.title,
+          name: value.name
+        };
+        if (!value.name) {
+          delete payrollOvertime.name;
+        }
+        this.salaryService.delete(event.id).subscribe((val: any) => {
+          if (val) {
+            this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
+            this.overtimeService.getOvertime(payrollOvertime).subscribe(val => {
+              this.overtime = val;
+            });
+          }
+        });
+      }
+    });
   }
 }

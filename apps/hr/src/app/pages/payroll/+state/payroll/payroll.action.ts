@@ -151,6 +151,9 @@ export const updateStatePayroll = createAction(
   props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string }>()
 );
 
+export const deleteSalarySuccess = createAction(
+  '[Delete_Salary] Delete Salary Success',
+);
 export const PayrollAction = {
   loadInit,
   loadInitSuccess,
@@ -175,5 +178,6 @@ export const PayrollAction = {
   scanHoliday,
   scanHolidayError,
   confirmPayrollSuccess,
-  updateStatePayroll
+  updateStatePayroll,
+  deleteSalarySuccess
 };
