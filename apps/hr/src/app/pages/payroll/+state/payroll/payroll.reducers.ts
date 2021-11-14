@@ -61,7 +61,7 @@ export const payrollReducer = createReducer(
     adapter.updateOne(action.payroll, { ...state, loaded: true })),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, deleted: true })),
+    adapter.removeOne(action.id, { ...state, deleted: true, adding: false })),
 
   on(PayrollAction.confirmPayroll, (state, _) => {
     return { ...state, confirmed: false };
@@ -94,7 +94,7 @@ export const payrollReducer = createReducer(
   }),
 
   on(PayrollAction.handleSalaryError, (state, _) => {
-    return { ...state, adding: false };
+    return { ...state, adding: false, deleted: false };
   }),
 
   on(PayrollAction.scanHoliday, (state, _) => {
@@ -106,6 +106,10 @@ export const payrollReducer = createReducer(
   }),
   on(PayrollAction.deletePayroll, (state, _) => {
     return { ...state, adding: true, deleted: false };
+  }),
+
+  on(PayrollAction.deleteSalarySuccess, (state, _) => {
+    return { ...state };
   }),
   on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch }) => {
     return {

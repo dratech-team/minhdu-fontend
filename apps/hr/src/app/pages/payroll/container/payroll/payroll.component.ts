@@ -33,7 +33,7 @@ import { UpdateConfirmComponent } from '../../component/update-comfirm/update-co
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from '../../../../reducers';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 
 @Component({
@@ -64,11 +64,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   createdAt = getState(selectedCreateAtPayroll, this.store);
+  overtimeTitle?: string;
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   payrollEnum = PayrollEnum;
   private stop$ = new Subject<void>();
+  eventAddOvertime = new Subject<any>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -192,11 +194,26 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addSalaryOvertime(type: SalaryTypeEnum): any {
-    this.dialog.open(DialogOvertimeMultipleComponent, {
+    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
         type: type,
         isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.createdAt = new Date(val.datetime);
+        this.overtimeTitle = val.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(val.datetime)
+          }));
+        this.eventAddOvertime.next({
+          createdAt: new Date(val.datetime),
+          overtimeTitle: val.title
+        });
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
       }
     });
   }

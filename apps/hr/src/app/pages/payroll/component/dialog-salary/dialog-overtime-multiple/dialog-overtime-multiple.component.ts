@@ -15,6 +15,8 @@ import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib
 import { MatStepper } from '@angular/material/stepper';
 import { PartialDayEnum, Position } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/autocomplete.ultil';
+import { SalaryService } from '../../../service/salary.service';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -28,6 +30,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
+  salaryIds: number[] = [];
+  allowSalaryIds: number[] = [];
   price!: number;
   title!: string;
   unit?: DatetimeUnitEnum;
@@ -45,6 +49,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   employeeType!: EmployeeType;
   recipeType?: RecipeType;
   partialDay: any;
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
 
   constructor(
     public datePipe: DatePipe,
@@ -52,6 +58,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
+    private readonly salaryService: SalaryService,
     private readonly dialogRef: MatDialogRef<DialogOvertimeMultipleComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
@@ -67,18 +74,43 @@ export class DialogOvertimeMultipleComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
-    this.formGroup = this.formBuilder.group({
-      datetime: [undefined],
-      month: [undefined],
-      note: [''],
-      times: [1],
-      days: [1],
-      priceAllowance: [],
-      titleAllowance: []
-    });
+    if (this.data.isUpdate) {
+      this.firstDayInMonth = this.datePipe.transform(
+        getFirstDayInMonth(new Date(this.data.salary?.datetime)), 'yyyy-MM-dd');
+      this.lastDayInMonth = this.datePipe.transform(
+        getLastDayInMonth(new Date(this.data.salary?.datetime)), 'yyyy-MM-dd');
+      this.title = this.data.salary.title;
+      this.price = this.data.salary.price;
+      this.unit = this.data.salary?.unit ? this.data.salary?.unit : DatetimeUnitEnum.OPTION;
+      this.formGroup = this.formBuilder.group({
+        datetime: [
+          this.datePipe.transform(
+            this.data.salary.datetime, 'yyyy-MM-dd'
+          )],
+        month: [undefined],
+        note: [''],
+        times: [this.data.salary?.times ? this.data.salary.times : 1],
+        days: [1],
+        priceAllowance: [this.data.salary?.allowance?.price],
+        titleAllowance: [this.data.salary?.allowance?.title]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        datetime: [undefined],
+        month: [undefined],
+        note: [''],
+        times: [1],
+        days: [1],
+        priceAllowance: [],
+        titleAllowance: []
+      });
+    }
     this.titleOvertimes.valueChanges
       .pipe(
-        map((_) => {
+        map((val) => {
+          if (!val) {
+            this.positionOfTempOver = [];
+          }
           this.store.dispatch(
             TemplateOvertimeAction.loadALlTemplate({
               positionId: this.positionId || '',
@@ -130,6 +162,16 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.employeeIds = employeeIds;
   }
 
+
+  pickAllowanceUpdate(allowSalaryIds: number[]) {
+    this.allowSalaryIds = allowSalaryIds;
+  }
+
+  pickSalaries(salaryIds: number[]): any {
+    this.salaryIds = salaryIds;
+    console.log(this.salaryIds);
+  }
+
   pickOverTime(data: TemplateOvertime) {
     this.price = data.price;
     this.title = data.title;
@@ -155,7 +197,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     //Validate
     const value = this.formGroup.value;
     if (this.unit !== DatetimeUnitEnum.OPTION) {
-      if (!this.templateId) {
+      if (!this.data?.isUpdate && !this.templateId) {
         return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
           duration: 1000
         });
@@ -177,7 +219,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    if (!this.templateId && this.unit!== DatetimeUnitEnum.OPTION) {
+    if (!this.data?.isUpdate && !this.templateId && this.unit !== DatetimeUnitEnum.OPTION) {
       return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
         duration: 1000
       });
@@ -194,11 +236,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         duration: 1000
       });
     }
-    if (this.employeeIds.length === 0) {
-      return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
-        duration: 1000
-      });
-    }
     const salary = {
       title: this.title,
       price: this.price,
@@ -208,8 +245,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) :
         value.days > 1 && value.month ? new Date(value.month) : undefined,
       note: value.note,
-      unit: this.unit || undefined,
-      employeeIds: this.employeeIds
+      unit: this.unit || undefined
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
@@ -234,8 +270,38 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       }
       delete salary.unit;
     }
-    this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
-    this.dialogRef.close();
+    if (this.data?.isUpdate) {
+      if (this.salaryIds.length === 0) {
+        return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
+          duration: 1000
+        });
+      }
+      Object.assign(salary, { salaryIds: this.salaryIds });
+      this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
+        if (val) {
+          this.snackBar.open(val.message, '', { duration: 1500 });
+          this.dialogRef.close(
+            {
+              title: this.title,
+              datetime: value.datetime,
+            });
+        }
+      });
+    } else {
+      if (this.employeeIds.length === 0) {
+        return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
+          duration: 1000
+        });
+      }
+      Object.assign(salary, { employeeIds: this.employeeIds });
+      this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
+      this.dialogRef.close(
+        {
+          datetime: value.datetime,
+          title: this.title,
+        });
+    }
+
   }
 
   selectPartialDay(partialDay: any) {

@@ -14,7 +14,7 @@ import {
 import { OvertimeService } from '../../service/overtime.service';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { PayrollAction } from './payroll.action';
+import { deleteSalarySuccess, PayrollAction } from './payroll.action';
 import { AddPayroll } from './payroll.interface';
 import { selectorPayrollTotal } from './payroll.selector';
 import { OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -125,9 +125,8 @@ export class PayrollEffect {
   addSalary$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
-      switchMap((props) =>
-        {
-          return    this.salaryService.addOne(props.salary).pipe(
+      switchMap((props) => {
+          return this.salaryService.addOne(props.salary).pipe(
             map((res) => {
               /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
               if (res?.status === 201) {
@@ -152,7 +151,7 @@ export class PayrollEffect {
               this.store.dispatch(PayrollAction.handleSalaryError());
               return throwError(err);
             })
-          )
+          );
         }
       )
     )
@@ -231,7 +230,11 @@ export class PayrollEffect {
             this.snackBar.open('xóa phiếu lương thành công', '', { duration: 1500 });
             return PayrollAction.deletePayrollSuccess({ id: props.id });
           }),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+              this.store.dispatch(PayrollAction.handlePayrollError());
+              return throwError(err);
+            }
+          )
         )
       )
     )
@@ -244,10 +247,10 @@ export class PayrollEffect {
         this.salaryService.delete(props.id).pipe(
           map(() => {
             return PayrollAction.getPayroll({ id: props.PayrollId });
-          }),
-          catchError((err) => throwError(err))
+          })
         )
-      )
+      ),
+      catchError((err) => throwError(err))
     )
   );
 

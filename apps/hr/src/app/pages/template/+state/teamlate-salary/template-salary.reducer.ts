@@ -33,6 +33,10 @@ export const templateSalaryReducer = createReducer(
   on(TemplateSalaryAction.updateTemplate, (state, _) => {
       return { ...state, adding: true, added: false };
     }
+  ),
+  on(TemplateSalaryAction.HandelTemplateError, (state, _) => {
+      return { ...state, adding: false, added: false };
+    }
   )
 );
 

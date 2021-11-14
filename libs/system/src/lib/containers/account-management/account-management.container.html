@@ -84,7 +84,7 @@
     </div>
   </div>
   <app-mouse-right #child (addEvent)='addAccount()'
-                   (readAndUpdateEvent)='updateAccount($event)'
+                   (readEvent)='updateAccount($event)'
                    (deleteEvent)='deleteAccount($event)'
   ></app-mouse-right>
 </div>

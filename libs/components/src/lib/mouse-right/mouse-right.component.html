@@ -15,6 +15,11 @@
                (execute)='permanentlyDeleted($event.item)'>
     {{ 'Xóa vĩnh viễn'}}
   </ng-template>
+  <ng-template *ngIf='type === pageType.PAYROLL_OVERTIME'
+               contextMenuItem let-item
+               (execute)='onUpdate($event.item)'>
+   Sửa
+  </ng-template>
   <ng-template contextMenuItem let-item
                (execute)='readAndUpdate($event.item)'>
     Xem chi tiết

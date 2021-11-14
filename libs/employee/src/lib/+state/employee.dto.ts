@@ -14,5 +14,6 @@ export interface EmployeeDto {
   createdPayroll?: Date,
   isLeft?: boolean,
   employeeType?: EmployeeType,
-  recipeType?: RecipeType
+  recipeType?: RecipeType,
+  overtimeTitle?: string,
 }

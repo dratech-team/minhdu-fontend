@@ -174,14 +174,14 @@
                    #child (addEvent)='add()'
                    (deleteEvent)='delete($event)'
                    (permanentlyDeletedEvent)='permanentlyDeleted($event)'
-                   (readAndUpdateEvent)='readAndUpdate($event)'>
+                   (readEvent)='readAndUpdate($event)'>
   </app-mouse-right>
 </div>
 <app-mouse-right [type]='isLeft? pageTypeEnum.EMPLOYEE_LEFT_AT : undefined '
                  #child (addEvent)='add()'
                  (deleteEvent)='delete($event)'
                  (permanentlyDeletedEvent)='permanentlyDeleted($event)'
-                 (readAndUpdateEvent)='readAndUpdate($event)'>
+                 (readEvent)='readAndUpdate($event)'>
 </app-mouse-right>
 
 <style>
