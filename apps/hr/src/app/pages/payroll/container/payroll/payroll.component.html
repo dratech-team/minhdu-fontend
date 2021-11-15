@@ -1,15 +1,6 @@
 <div class='main-content'>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL ' class='row h3 ml-3'>
-    Bảng lương nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME ' class='row h3 ml-3'>
-    Bảng tăng ca tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div class='row h3 ml-3' *ngIf='selectedPayroll === payrollEnum.TIME_SHEET '>
-    Bảng chấm công nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL ' class='row h3 ml-3'>
-    Bảng lương nhân viên công nhật tháng {{createdAt| date: 'MM/yyyy'}}
+  <div  class='row h3 ml-3'>
+    {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -48,7 +39,7 @@
       <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                            count='18' appearance='line'></ngx-skeleton-loader>
       <ng-template #payroll>
-        <div class='table-scroll mt-5 mx-auto'
+        <div class='table-scroll mt-3 mx-auto'
              infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1'
@@ -327,6 +318,12 @@
         (EventRestorePayroll)='restorePayroll($event)'
         (EventSelectBranch)='onSelectBranch($event)'
         (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
+      <app-payroll-basic
+        [basicTitle]='overtimeTitle'
+        (EventSelectMonth)='selectMonth($event)'
+        [createdAt]='this.createdAt'></app-payroll-basic>
     </div>
   </div>
 

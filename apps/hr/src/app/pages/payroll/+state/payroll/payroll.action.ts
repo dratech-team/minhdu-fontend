@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { EmployeeType, PayrollEnum } from '@minhdu-fontend/enums';
+import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -62,7 +62,7 @@ export const filterOvertime = createAction(
 
 export const filterOvertimeSuccess = createAction(
   '[LOAD_SALARY] Filter overtime Success',
-  props<{ overtime: Overtime }>()
+  props<{ overtime: PayrollSalary }>()
 );
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',

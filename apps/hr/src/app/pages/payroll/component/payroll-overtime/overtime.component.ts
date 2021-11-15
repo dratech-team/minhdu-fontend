@@ -17,7 +17,6 @@ import {
 } from '../../../template/+state/template-overtime/template-overtime.action';
 import { DatePipe } from '@angular/common';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 import { SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
@@ -26,6 +25,10 @@ import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryService } from '../../service/salary.service';
+import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
+import { Salary } from '@minhdu-fontend/data-models';
+import { setAllSalary, someCompleteSalary, updateSelectSalary } from '../../utils/pick-salary';
+import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overtime-multiple';
 
 @Component({
   selector: 'app-payroll-overtime',
@@ -43,13 +46,15 @@ export class OvertimeComponent implements OnInit {
     endAt: new FormControl(),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
+  salaryIds: number[] = [];
   pageType = PageTypeEnum;
   salaryType = SalaryTypeEnum;
   pageSize: number = 30;
   pageIndexInit = 0;
   genderType = Gender;
   unit = DatetimeUnitEnum;
-  overtime!: Overtime;
+  overtime!: PayrollSalary;
+  salariesSelected: Salary[] = [];
   // overtime$ = this.store.pipe(select(selectorOvertime));
   // loaded$ = this.store.pipe(select(selectedLoadedSalary));
   loaded = false;
@@ -57,6 +62,8 @@ export class OvertimeComponent implements OnInit {
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   searchTypeConstant = SearchTypeConstant;
   unitsConstant = UnitsConstant;
+  isSelectSalary = false;
+  salaries: Salary[] = [];
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -79,27 +86,21 @@ export class OvertimeComponent implements OnInit {
       }
     ).subscribe(val => {
       this.loaded = true;
-      return this.overtime = val;
+      val.employees.forEach(employee => this.salaries = this.salaries.concat(employee.salaries));
+      this.overtime = val;
     });
-    if (this.overtimeTitle) {
-      this.formGroup.get('title')!.setValue(this.overtimeTitle);
-    }
     this.formGroup.get('startAt')!.setValue(this.datePipe.transform(
-      !this.eventAddOvertime ?
+      !this.overtimeTitle ?
         getFirstDayInMonth(this.createdAt)
         : new Date(this.createdAt), 'yyyy-MM-dd'));
     this.formGroup.get('endAt')!.setValue(this.datePipe.transform(
-      !this.eventAddOvertime ?
+      !this.overtimeTitle ?
         getLastDayInMonth(this.createdAt)
         : new Date(this.createdAt)
       , 'yyyy-MM-dd'));
-
-    // this.store.dispatch(PayrollAction.filterOvertime({
-    //   skip: this.pageIndexInit,
-    //   take: this.pageSize,
-    //   startAt: this.createdAt ? getFirstDayInMonth(new Date(this.createdAt)) : getFirstDayInMonth(new Date()),
-    //   endAt: this.createdAt ? getLastDayInMonth(new Date(this.createdAt)) : getLastDayInMonth(new Date())
-    // }));
+    if (this.overtimeTitle) {
+      this.formGroup.get('title')!.setValue(this.overtimeTitle);
+    }
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         if ((value.startAt && value.endAt)) {
@@ -114,19 +115,14 @@ export class OvertimeComponent implements OnInit {
           if (!value.name) {
             delete params.name;
           }
+          this.isSelectSalary = false;
+          this.salaryIds = [];
+          this.salaries = [];
           this.overtimeService.getOvertime(params).subscribe(val => {
             this.loaded = true;
+            val.employees.forEach(employee => this.salaries = this.salaries.concat(employee.salaries));
             return this.overtime = val;
           });
-
-
-          // this.store.dispatch(PayrollAction.filterOvertime({
-          //   take: this.pageSize,
-          //   skip: this.pageIndexInit,
-          //   startAt: new Date(value.startAt),
-          //   endAt: new Date(value.endAt),
-          //   title: value.title
-          // }));
           this.EventSelectMonth.emit(new Date(value.startAt));
         }
       }
@@ -189,23 +185,34 @@ export class OvertimeComponent implements OnInit {
     });
   }
 
-  updateSalaryOvertime(event: any) {
-    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
-      width: 'fit-content',
-      data: {
-        salary: event,
-        type: SalaryTypeEnum.OVERTIME,
-        isUpdate: true
+  updateSalaryOvertime() {
+    let salariesSelected: Salary[] = [];
+    this.salaries.forEach(salary => {
+      if (this.salaryIds.includes(salary.id)) {
+        salariesSelected.push(salary);
       }
     });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        console.log(val);
-        this.formGroup.get('startAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('endAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('title')!.setValue(val.title);
-      }
-    });
+    if (salariesSelected.every(function(value, index, array) {
+      return value.title === array[0].title;
+    })) {
+      const ref = this.dialog.open(UpdateOvertimeMultiple, {
+        width: 'fit-content',
+        data: {
+          unit: salariesSelected[0].unit,
+          createdAt: this.formGroup.get('startAt')!.value,
+          salaryIds: this.salaryIds
+        }
+      });
+      ref.afterClosed().subscribe(val => {
+        if (val) {
+          this.salaryIds = [];
+          this.formGroup.get('startAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+          this.formGroup.get('endAt')!.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        }
+      });
+    } else {
+      this.snackbar.open('chưa chọn cùng loại  tăng ca', 'Đóng');
+    }
   }
 
   deleteSalaryOvertime(event: any) {
@@ -233,5 +240,25 @@ export class OvertimeComponent implements OnInit {
         });
       }
     });
+  }
+
+  updateSelectSalary(id: number) {
+    if (this.overtime) {
+      updateSelectSalary(id, this.salaryIds, this.isSelectSalary, this.salaries);
+    }
+  }
+
+  someCompleteSalary(): boolean {
+    if (!this.salaries) {
+      return false;
+    } else {
+      return someCompleteSalary(this.salaries, this.salaryIds, this.isSelectSalary);
+    }
+  }
+
+  setAllSalary(select: boolean) {
+    if (this.overtime) {
+      setAllSalary(select, this.isSelectSalary, this.salaries, this.salaryIds);
+    }
   }
 }

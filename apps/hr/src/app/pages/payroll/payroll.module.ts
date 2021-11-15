@@ -60,6 +60,8 @@ import { PayrollSeasonalComponent } from './component/payroll-seasonal/payroll-s
 import { DialogSeasonalComponent } from './component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 import { DialogAllowanceMultipleComponent } from './component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { UpdateEmployeeOvertimeComponent } from './component/update-employee-overtime/update-employee-overtime.component';
+import { PayrollBasicComponent } from './component/payroll-basic/payroll-basic.component';
+import { UpdateOvertimeMultiple } from './component/update-overtime-multiple/update-overtime-multiple';
 
 @NgModule({
   imports: [
@@ -129,7 +131,9 @@ import { UpdateEmployeeOvertimeComponent } from './component/update-employee-ove
     PayrollSeasonalComponent,
     DialogSeasonalComponent,
     DialogAllowanceMultipleComponent,
-    UpdateEmployeeOvertimeComponent
+    UpdateEmployeeOvertimeComponent,
+    PayrollBasicComponent,
+    UpdateOvertimeMultiple
   ],
   providers: [
     MatDatepickerModule

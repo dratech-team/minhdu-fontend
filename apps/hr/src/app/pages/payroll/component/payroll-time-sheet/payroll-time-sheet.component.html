@@ -1,7 +1,7 @@
 <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                      count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #payroll>
-  <div class='table-scroll mt-2'
+  <div class='table-scroll mt-3'
        infiniteScroll
        [alwaysCallback]='true'
        [infiniteScrollDistance]='1'
