@@ -6,7 +6,7 @@ export const BlockSalariesConstant = [
     type: SalaryTypeEnum.BASIC
   },
   {
-    title: 'Phụ cấp ở lại',
+    title: 'Phụ cấp lương',
     type: SalaryTypeEnum.STAY
   },
   // {

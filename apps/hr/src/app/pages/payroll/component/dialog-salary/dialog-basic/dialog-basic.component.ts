@@ -32,7 +32,8 @@ export class DialogBasicComponent implements OnInit {
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
     { title: 'Lương theo PL.HD', type: SalaryTypeEnum.BASIC },
-    { title: 'Lương Tín nhiệm', type: SalaryTypeEnum.BASIC_TRUST }
+    { title: 'Lương Tín nhiệm', type: SalaryTypeEnum.BASIC_TRUST },
+    { title: 'LƯƠNG TN QUẢN LÝ THÊM', type: SalaryTypeEnum.BASIC_TRUST_MANAGER },
   ];
 
   constructor(
