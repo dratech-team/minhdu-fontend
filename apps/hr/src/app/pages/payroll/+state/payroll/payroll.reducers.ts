@@ -2,7 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
-import { PayrollEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, PayrollEnum } from '@minhdu-fontend/enums';
 
 export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
@@ -59,8 +59,11 @@ export const payrollReducer = createReducer(
     adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false, scanned: true })
   ),
 
-  on(PayrollAction.updatePayrollSuccess, (state, action) =>
-    adapter.updateOne(action.payroll, { ...state, loaded: true })),
+  on(PayrollAction.updatePayrollSuccess, (state, { payroll }) => {
+      console.log(payroll);
+      return adapter.updateOne({ id: payroll.id, changes: payroll }, { ...state, loaded: true });
+    }
+  ),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, deleted: true, adding: false })),
@@ -113,14 +116,16 @@ export const payrollReducer = createReducer(
   on(PayrollAction.deleteSalarySuccess, (state, _) => {
     return { ...state };
   }),
-  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch }) => {
+  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch, added }) => {
     return {
       ...state,
       adding: true,
       deleted: false,
       filter: filter ? filter : state.filter,
       createdAt: createdAt ? createdAt : state.createdAt,
-      branch: branch ? branch : state.branch
+      branch: branch ? branch : state.branch,
+      added: added && added === ConvertBooleanFrontEnd.TRUE ? true :
+        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added
     };
   }),
   on(PayrollAction.updateSalaryMultipleSuccess, (state, _) => {

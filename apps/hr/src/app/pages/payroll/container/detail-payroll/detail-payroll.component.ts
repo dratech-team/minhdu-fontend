@@ -22,6 +22,8 @@ import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -38,11 +40,14 @@ export class DetailPayrollComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly datePipe: DatePipe,
+
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -157,7 +162,7 @@ export class DetailPayrollComponent implements OnInit {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
       {
         queryParams: {
-          name:payroll.employee.lastName,
+          name: payroll.employee.lastName,
           employeeType: payroll.employee.type
         }
       }).then();
@@ -198,7 +203,7 @@ export class DetailPayrollComponent implements OnInit {
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    this.onSticky(sticky)
+    this.onSticky(sticky);
   }
 
   onSticky(sticky: HTMLElement) {
@@ -225,6 +230,25 @@ export class DetailPayrollComponent implements OnInit {
             this.router.navigate(['phieu-luong']).then();
           }
         });
+      }
+    });
+  }
+
+  updateTaxed(payroll: Payroll) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Cập nhật tính thuế',
+        description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
+        ${ this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM' ) }`
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.updatePayroll({
+          id: payroll.id,
+          Payroll: { taxed: !payroll.taxed }
+        }));
       }
     });
   }

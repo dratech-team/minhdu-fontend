@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
@@ -42,6 +42,7 @@ export class DialogStayComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     if (this.data.isUpdate) {
       this.formGroup = this.formBuilder.group({
@@ -76,32 +77,34 @@ export class DialogStayComponent implements OnInit {
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
     };
     if (this.data.salary) {
-      if(this.data.multiple){
+      if (this.data.multiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
             salaryIds: this.data.salaryIds,
             title: value.title ? value.title : this.data?.salary?.title,
-            price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
+            price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price
           }).subscribe(val => {
-          if(val){
-            this.snackBar.open(val.message,'',{duration:1500})
-            this.dialogRef.close(true);
+          if (val) {
+            this.snackBar.open(val.message, '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+            this.dialogRef.close();
           }
-        })
-      }else{
+        });
+      } else {
         this.store.dispatch(PayrollAction.updateSalary({
           payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
         }));
       }
     } else {
-      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id ) {
+      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id) {
         this.store.dispatch(PayrollAction.addSalary({
-          payrollId: this.data.payroll.id,
-          salary: salary })
+            payrollId: this.data.payroll.id,
+            salary: salary
+          })
         );
       } else {
         Object.assign(salary, { employeeIds: this.employeeIds });
-        this.multipleEmployeeService.addOne({salary: salary, employeeIds: this.employeeIds})
+        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeIds })
           .subscribe(val => {
             if (val) {
               this.store.dispatch(PayrollAction.getPayroll({ id: this.data.payroll.id }));
@@ -112,7 +115,7 @@ export class DialogStayComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
       if (added) {
-        this.dialogRef.close(true);
+        this.dialogRef.close();
       }
     });
   }

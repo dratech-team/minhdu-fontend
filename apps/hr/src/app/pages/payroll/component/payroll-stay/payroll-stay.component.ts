@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -21,9 +20,10 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { Router } from '@angular/router';
-import { SalaryBasicMultipleComponent } from '../dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
+import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
+import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -47,6 +47,7 @@ export class PayrollStayComponent implements OnInit {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollStay$ = this.store.pipe(select(selectorAllPayroll));
+  salariesStay$ = this.store.pipe(select(selectorAllTemplate));
   salaryIds: number[] = [];
   isSelectSalary = false;
   salaries: Salary[] = [];
@@ -70,6 +71,7 @@ export class PayrollStayComponent implements OnInit {
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt)
     }));
+    this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
@@ -126,7 +128,17 @@ export class PayrollStayComponent implements OnInit {
           if (val) {
             this.isSelectSalary = false;
             this.salaryIds = [];
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollStay()));
+            const value = this.formGroup.value;
+            this.formGroup.get('title')!.setValue(salariesSelected[0].title,
+              { emitEvent: false });
+            this.store.dispatch(PayrollAction.loadInit({
+              take: this.pageSize,
+              skip: this.pageIndex,
+              searchType: value.searchType,
+              createdAt: new Date(value.createdAt),
+              salaryTitle: salariesSelected[0].title,
+              name: value.name
+            }));
           }
         }
       );
@@ -147,9 +159,6 @@ export class PayrollStayComponent implements OnInit {
         });
       }
     });
-  }
-
-  onSelectTemplateBasic($event: any, title: string) {
   }
 
   onScroll() {

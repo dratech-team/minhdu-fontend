@@ -65,12 +65,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   branches$ = this.store.pipe(select(getAllOrgchart));
   createdAt = getState(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
+  allowanceTitle?: string;
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   payrollEnum = PayrollEnum;
   private stop$ = new Subject<void>();
   eventAddOvertime = new Subject<any>();
+  eventAddAllowance = new Subject<any>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -104,7 +106,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         && val !== PayrollEnum.PAYROLL_BASIC
         && val !== PayrollEnum.PAYROLL_ALLOWANCE) {
         this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(
-          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'),{emitEvent: false});
+          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'), { emitEvent: false });
         return this.loadInitPayroll();
       }
     });
@@ -315,11 +317,25 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addSalaryAllowance() {
-    this.dialog.open(DialogAllowanceMultipleComponent,
+    const ref = this.dialog.open(DialogAllowanceMultipleComponent,
       {
         width: 'fit-content',
         data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
       }
     );
+    ref.afterClosed().subscribe(value => {
+      if (value) {
+        this.createdAt = new Date(value.datetime);
+        this.allowanceTitle = value.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(value.datetime)
+          }));
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
+        this.eventAddAllowance.next({
+          allowanceTitle: value.title
+        });
+      }
+    });
   }
 }

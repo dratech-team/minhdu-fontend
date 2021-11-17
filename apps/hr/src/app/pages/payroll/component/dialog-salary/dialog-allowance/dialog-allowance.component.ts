@@ -1,13 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { isEqualDatetime } from 'libs/utils/daytime.until';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
@@ -39,12 +35,14 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly salaryService: SalaryService,
+    private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (
       this.data?.salary?.datetime?.start &&
       this.data?.salary?.datetime?.start
@@ -97,7 +95,13 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   isShowDatePicker() {
-    return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
+    if (this.data.multiple) {
+      return false;
+    }
+    {
+      return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
+    }
+
   }
 
   get f() {
@@ -150,7 +154,9 @@ export class DialogAllowanceComponent implements OnInit {
                 : undefined
           }).subscribe(val => {
           if (val) {
-            this.dialogRef.close(true);
+            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+            this.dialogRef.close({ title: value.title });
           }
         });
       } else {
@@ -172,7 +178,7 @@ export class DialogAllowanceComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
       if (added) {
-        this.dialogRef.close(true);
+        this.dialogRef.close();
       }
     });
   }

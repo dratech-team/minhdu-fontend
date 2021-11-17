@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { AppState } from '../../../../../reducers';
@@ -34,7 +34,7 @@ export class DialogBasicComponent implements OnInit {
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
     { title: 'Lương theo PL.HD', type: SalaryTypeEnum.BASIC },
     { title: 'Lương Tín nhiệm', type: SalaryTypeEnum.BASIC_TRUST },
-    { title: 'Lương TN quản lý thêm', type: SalaryTypeEnum.BASIC_TRUST_MANAGER },
+    { title: 'Lương TN quản lý thêm', type: SalaryTypeEnum.BASIC_TRUST_MANAGER }
   ];
 
   constructor(
@@ -101,7 +101,7 @@ export class DialogBasicComponent implements OnInit {
         value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
     };
     if (this.data.isUpdate) {
-      if(this.data.multiple){
+      if (this.data.multiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
             salaryIds: this.data.salaryIds,
@@ -110,14 +110,15 @@ export class DialogBasicComponent implements OnInit {
               ? typeof value.price === 'string'
                 ? Number(value.price.replace(this.numberChars, ''))
                 : value.price
-              : value.price,
+              : value.price
           }).subscribe(val => {
-          if(val){
-            this.snackbar.open(val.message,'',{duration:1500})
-            this.dialogRef.close(val)
+          if (val) {
+            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+            this.dialogRef.close();
           }
-        })
-      }else{
+        });
+      } else {
         this.store.dispatch(
           PayrollAction.updateSalary({
             id: this.data.salary.id,
@@ -127,7 +128,7 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id  ) {
+      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,

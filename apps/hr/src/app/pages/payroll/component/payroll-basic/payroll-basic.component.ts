@@ -63,13 +63,14 @@ export class PayrollBasicComponent implements OnInit {
     private readonly router: Router
   ) {
   }
+
   //dummy
   salaryBasic = [
-    { title: 'Lương cơ bản trích BH', value:'Lương cơ bản trích BH' },
-    { title: 'Lương theo PL.HD', value:'Lương theo PL.HD' },
-    { title: 'Lương Tín nhiệm', value:'Lương Tín nhiệm'},
-    { title: 'Lương TN quản lý thêm', value:'Lương TN quản lý thêm' },
-    { title: 'Tất cả', value: '' },
+    { title: 'Lương cơ bản trích BH', value: 'Lương cơ bản trích BH' },
+    { title: 'Lương theo PL.HD', value: 'Lương theo PL.HD' },
+    { title: 'Lương Tín nhiệm', value: 'Lương Tín nhiệm' },
+    { title: 'Lương TN quản lý thêm', value: 'Lương TN quản lý thêm' },
+    { title: 'Tất cả', value: '' }
   ];
 
   ngOnInit() {
@@ -135,8 +136,17 @@ export class PayrollBasicComponent implements OnInit {
           if (val) {
             this.isSelectSalary = false;
             this.salaryIds = [];
+            const value = this.formGroup.value;
+            this.formGroup.get('title')!.setValue(salariesSelected[0].title, { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit(
-              this.mapPayrollBasic()
+              {
+                take: this.pageSize,
+                skip: this.pageIndex,
+                searchType: value.searchType,
+                createdAt: new Date(value.createdAt),
+                salaryTitle: salariesSelected[0].title,
+                name: value.name
+              }
             ));
           }
         }

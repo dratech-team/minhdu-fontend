@@ -48,15 +48,15 @@
         <input type='month' class='form-control' formControlName='createdAt'>
       </th>
       <th style='min-width: 300px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
-        <input class='form-control' type='text' matInput
-               formControlName='title'>
-        <mat-autocomplete #templateOvertime='matAutocomplete'>
-<!--          <mat-option *ngFor='let template of te| async' [value]='template.title'-->
-<!--                      (onSelectionChange)='onSelectTemplateBasic($event, template.title)'>-->
-<!--            {{template.title}}-->
-<!--          </mat-option>-->
-        </mat-autocomplete>
+        <div class='border-top d-flex justify-content-center align-items-center'>Loại phụ cấp lương</div>
+        <mat-select class='form-control col'  formControlName='title'>
+          <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title'>
+            {{item.title}}
+          </mat-option>
+          <mat-option value=''>
+            Tất cả
+          </mat-option>
+        </mat-select>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>

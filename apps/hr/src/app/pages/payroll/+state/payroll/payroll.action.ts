@@ -1,7 +1,14 @@
 import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity/src/models';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
-import { EmployeeType, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import {
+  ConvertBoolean,
+  ConvertBooleanFrontEnd,
+  EmployeeType,
+  PayrollEnum,
+  SalaryTypeEnum,
+  SearchTypeEnum
+} from '@minhdu-fontend/enums';
 import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 
 export const loadInit = createAction(
@@ -52,7 +59,7 @@ export const loadMorePayrolls = createAction(
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[],total: number }>()
+  props<{ payrolls: Payroll[], total: number }>()
 );
 
 export const filterOvertime = createAction(
@@ -115,7 +122,7 @@ export const confirmPayroll = createAction(
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll> }>()
+  props<{ payroll: UpdateNum<Payroll> }>()
 );
 
 export const confirmPayrollSuccess = createAction(
@@ -129,7 +136,7 @@ export const updateSalary = createAction(
 );
 
 export const updateSalaryMultipleSuccess = createAction(
-  '[UPDATE_SALARY] Update Salary Multiple Success ',
+  '[UPDATE_SALARY] Update Salary Multiple Success '
 );
 
 export const deletePayroll = createAction(
@@ -158,7 +165,7 @@ export const scanHolidayError = createAction(
 
 export const updateStatePayroll = createAction(
   '[SELECT_PAYROLL] Select Payroll',
-  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string }>()
+  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string, added?: ConvertBooleanFrontEnd }>()
 );
 
 export const deleteSalarySuccess = createAction(

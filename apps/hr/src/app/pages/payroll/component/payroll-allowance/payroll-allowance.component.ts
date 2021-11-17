@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, Gender, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -26,12 +26,16 @@ import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 
 @Component({
   selector: 'app-payroll-allowance',
   templateUrl: 'payroll-allowance.component.html'
 })
 export class PayrollAllowanceComponent implements OnInit {
+  @Input() eventAddAllowance?: Subject<any>;
+  @Input() allowanceTitle?: string;
   pageType = PageTypeEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   createdAt = getState(selectedCreateAtPayroll, this.store);
@@ -68,11 +72,27 @@ export class PayrollAllowanceComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
-      createdAt: new Date(this.createdAt)
+      createdAt: new Date(this.createdAt),
+      salaryTitle: this.allowanceTitle? this.allowanceTitle:''
     }));
+    if (this.allowanceTitle) {
+      this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
+    }
+    this.eventAddAllowance?.subscribe(val => {
+      this.formGroup.get('title')!.setValue(val.allowanceTitle, { emitEvent: false });
+      this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(getState(selectedCreateAtPayroll, this.store)), 'yyyy-MM'), { emitEvent: false });
+      this.store.dispatch(PayrollAction.loadInit({
+        take: this.pageSize,
+        skip: this.pageIndex,
+        createdAt: new Date(getState(selectedCreateAtPayroll,this.store)),
+        salaryTitle: val.allowanceTitle ? val.allowanceTitle : ''
+      }));
+    });
+
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
@@ -102,10 +122,16 @@ export class PayrollAllowanceComponent implements OnInit {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
   }
 
-  addSalaryBasic() {
+  addSalaryAllowance() {
+    this.dialog.open(DialogAllowanceMultipleComponent,
+      {
+        width: 'fit-content'
+      }
+    );
   }
 
   updateSalaryAllowance() {
+    const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
       if (this.salaryIds.includes(salary.id)) {
@@ -125,6 +151,7 @@ export class PayrollAllowanceComponent implements OnInit {
           salaryIds: this.salaryIds,
           totalPayroll: this.totalPayroll,
           multiple: true,
+          payroll: value.createdAt,
           type: SalaryTypeEnum.ALLOWANCE
         }
       });
@@ -133,7 +160,15 @@ export class PayrollAllowanceComponent implements OnInit {
           if (val) {
             this.isSelectSalary = false;
             this.salaryIds = [];
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
+            this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+            this.store.dispatch(PayrollAction.loadInit({
+              take: this.pageSize,
+              skip: this.pageIndex,
+              searchType: value.searchType,
+              createdAt: new Date(value.createdAt),
+              salaryTitle: val.title,
+              name: value.name
+            }));
           }
         }
       );

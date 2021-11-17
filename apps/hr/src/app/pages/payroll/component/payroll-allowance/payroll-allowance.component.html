@@ -48,15 +48,10 @@
         <input type='month' class='form-control' formControlName='createdAt'>
       </th>
       <th style='min-width: 300px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
-        <input class='form-control' type='text' matInput
+        <div class='border-top d-flex justify-content-center align-items-center'>Loại phụ cấp</div>
+        <input class='form-control' type='text'
+               placeholder='Nhập têm phụ cấp'
                formControlName='title'>
-        <!--        <mat-autocomplete #templateOvertime='matAutocomplete'>-->
-        <!--          <mat-option *ngFor='let template of templateBasic$ | async' [value]='template.title'-->
-        <!--                      (onSelectionChange)='onSelectTemplateBasic($event, template.title)'>-->
-        <!--            {{template.title}}-->
-        <!--          </mat-option>-->
-        <!--        </mat-autocomplete>-->
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
@@ -181,7 +176,7 @@
   </table>
 </div>
 <app-mouse-right [type]='pageType.PAYROLL_BASIC'
-                 (addEvent)='addSalaryBasic()'
+                 (addEvent)='addSalaryAllowance()'
                  (readEvent)='readPayroll($event)'
                  (deleteEvent)='deleteSalaryAllowance($event)'
                  #child>

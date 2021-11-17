@@ -328,7 +328,10 @@
       <app-payroll-stay></app-payroll-stay>
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
-      <app-payroll-allowance></app-payroll-allowance>
+      <app-payroll-allowance
+        [allowanceTitle]='allowanceTitle'
+        [eventAddAllowance]='eventAddAllowance'
+      ></app-payroll-allowance>
     </div>
   </div>
   <app-mouse-right [type]='pageType.PAYROLL'
