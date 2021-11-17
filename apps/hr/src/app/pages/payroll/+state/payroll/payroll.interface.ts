@@ -18,6 +18,6 @@ export interface Payroll {
   totalWorkday: number;
   payrollIds: number[];
   payslip: Payslip;
-  contracted: boolean;
+  taxed: boolean;
   timesheet: { datetime: any[]; total: number };
 }

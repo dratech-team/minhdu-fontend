@@ -234,12 +234,12 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  updateContracted(payroll: Payroll) {
+  updateTaxed(payroll: Payroll) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
         title: 'Cập nhật tính thuế',
-        description: `Bạn muốn ${payroll.contracted ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
+        description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
         ${ this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM' ) }`
       }
     });
@@ -247,7 +247,7 @@ export class DetailPayrollComponent implements OnInit {
       if (val) {
         this.store.dispatch(PayrollAction.updatePayroll({
           id: payroll.id,
-          Payroll: { contracted: !payroll.contracted }
+          Payroll: { taxed: !payroll.taxed }
         }));
       }
     });
