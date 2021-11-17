@@ -83,6 +83,12 @@
                 [src]=" payroll.employee.contracts.length === 0 ?'../../../../../assets/img/share/x-lg.svg': ' ../../../../../assets/img/payroll/check.svg' "
                 [alt]="payroll.employee.contracts.length === 0 ? 'contract' : 'not contract' ">
             </div>
+            <div class='row d-flex justify-content-center align-items-center'>
+              <div class='pointer' (click)='updateTaxed(payroll)' >
+                <mat-slide-toggle style='pointer-events: none' [checked]='payroll.taxed'>
+                </mat-slide-toggle>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -404,7 +410,7 @@
         <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
         <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
       </div>
-      <div class='sticky-scroll' #sticky >
+      <div class='sticky-scroll' #sticky>
         <div class='pointer' (click)='onSticky(sticky)'>
           << Hiện
         </div>

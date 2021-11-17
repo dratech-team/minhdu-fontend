@@ -57,8 +57,11 @@ export const payrollReducer = createReducer(
     adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false, scanned: true })
   ),
 
-  on(PayrollAction.updatePayrollSuccess, (state, action) =>
-    adapter.updateOne(action.payroll, { ...state, loaded: true })),
+  on(PayrollAction.updatePayrollSuccess, (state, {payroll}) => {
+    console.log(payroll)
+      return adapter.updateOne({id: payroll.id, changes: payroll}, { ...state, loaded: true });
+    }
+  ),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, deleted: true, adding: false })),
