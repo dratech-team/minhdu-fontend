@@ -22,6 +22,7 @@ import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class DetailPayrollComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -157,7 +159,7 @@ export class DetailPayrollComponent implements OnInit {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
       {
         queryParams: {
-          name:payroll.employee.lastName,
+          name: payroll.employee.lastName,
           employeeType: payroll.employee.type
         }
       }).then();
@@ -198,7 +200,7 @@ export class DetailPayrollComponent implements OnInit {
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    this.onSticky(sticky)
+    this.onSticky(sticky);
   }
 
   onSticky(sticky: HTMLElement) {
@@ -225,6 +227,21 @@ export class DetailPayrollComponent implements OnInit {
             this.router.navigate(['phieu-luong']).then();
           }
         });
+      }
+    });
+  }
+
+  updateContracted(payrollId: number, contracted: boolean) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Cập nhật Phiếu lương',
+        description: 'Thay đổi thuộc diện hợp đồng cho phiếu lương'
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.updatePayroll({ id: payrollId, Payroll: { contracted: !contracted } }));
       }
     });
   }

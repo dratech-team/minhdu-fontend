@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity/src/models';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
 import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { EmployeeType, PayrollEnum } from '@minhdu-fontend/enums';
@@ -109,7 +109,7 @@ export const confirmPayroll = createAction(
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll> }>()
+  props<{ payroll: UpdateNum<Payroll> }>()
 );
 
 export const confirmPayrollSuccess = createAction(

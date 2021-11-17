@@ -6,6 +6,7 @@ export type AddPayroll = Pick<Payroll, 'createdAt'> & {
   employeeId: number;
   employeeType: EmployeeType;
 };
+
 export interface Payroll {
   id: number;
   employee: Employee;
@@ -17,5 +18,6 @@ export interface Payroll {
   totalWorkday: number;
   payrollIds: number[];
   payslip: Payslip;
+  contracted: boolean;
   timesheet: { datetime: any[]; total: number };
 }
