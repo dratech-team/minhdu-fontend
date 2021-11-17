@@ -84,7 +84,7 @@
                 [alt]="payroll.employee.contracts.length === 0 ? 'contract' : 'not contract' ">
             </div>
             <div class='row d-flex justify-content-center align-items-center'>
-              <div class='pointer' (click)='updateContracted(payroll.id, payroll.contracted)' >
+              <div class='pointer' (click)='updateContracted(payroll)' >
                 <mat-slide-toggle style='pointer-events: none' [checked]='payroll.contracted'>
                 </mat-slide-toggle>
               </div>

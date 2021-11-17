@@ -23,6 +23,7 @@ import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
 import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -44,7 +45,9 @@ export class DetailPayrollComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly datePipe: DatePipe,
+
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -231,17 +234,21 @@ export class DetailPayrollComponent implements OnInit {
     });
   }
 
-  updateContracted(payrollId: number, contracted: boolean) {
+  updateContracted(payroll: Payroll) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
-        title: 'Cập nhật Phiếu lương',
-        description: 'Thay đổi thuộc diện hợp đồng cho phiếu lương'
+        title: 'Cập nhật tính thuế',
+        description: `Bạn muốn ${payroll.contracted ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
+        ${ this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM' ) }`
       }
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(PayrollAction.updatePayroll({ id: payrollId, Payroll: { contracted: !contracted } }));
+        this.store.dispatch(PayrollAction.updatePayroll({
+          id: payroll.id,
+          Payroll: { contracted: !payroll.contracted }
+        }));
       }
     });
   }
