@@ -100,9 +100,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { filter: val }));
       }
-      return this.loadInitPayroll();
+      if (val !== PayrollEnum.PAYROLL_STAY
+        && val !== PayrollEnum.PAYROLL_BASIC
+        && val !== PayrollEnum.PAYROLL_ALLOWANCE) {
+        this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(
+          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'),{emitEvent: false});
+        return this.loadInitPayroll();
+      }
     });
-
     this.formGroup.valueChanges.pipe(
       map(val => {
         if ((!val.createdAt) && (this.selectedPayroll === PayrollEnum.TIME_SHEET)) {
@@ -156,7 +161,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: val.name,
       position: val.position,
       branch: this.branchName,
-      createdAt: this.createdAt,
+      createdAt: getState(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,

@@ -13,6 +13,7 @@ import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SalaryService } from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -44,6 +45,7 @@ export class DialogBasicComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
+    private readonly salaryService: SalaryService,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
@@ -99,13 +101,31 @@ export class DialogBasicComponent implements OnInit {
         value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
     };
     if (this.data.isUpdate) {
-      this.store.dispatch(
-        PayrollAction.updateSalary({
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId,
-          salary: salary
+      if(this.data.multiple){
+        this.salaryService.updateMultipleSalaryOvertime(
+          {
+            salaryIds: this.data.salaryIds,
+            title: this.data.salary.title,
+            price: this.checkSalary
+              ? typeof value.price === 'string'
+                ? Number(value.price.replace(this.numberChars, ''))
+                : value.price
+              : value.price,
+          }).subscribe(val => {
+          if(val){
+            this.snackbar.open(val.message,'',{duration:1500})
+            this.dialogRef.close(val)
+          }
         })
-      );
+      }else{
+        this.store.dispatch(
+          PayrollAction.updateSalary({
+            id: this.data.salary.id,
+            payrollId: this.data.salary.payrollId,
+            salary: salary
+          })
+        );
+      }
     } else {
       if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id  ) {
         this.store.dispatch(
@@ -127,10 +147,9 @@ export class DialogBasicComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
       if (val) {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }
     });
-
   }
 
   //TODO

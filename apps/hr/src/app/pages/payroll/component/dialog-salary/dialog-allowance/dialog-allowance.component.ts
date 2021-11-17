@@ -15,6 +15,7 @@ import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 import { ShowAlertComponent } from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
 import { AppState } from '../../../../../reducers';
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
+import { SalaryService } from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'
@@ -37,6 +38,7 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
+    private readonly salaryService: SalaryService,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
@@ -131,13 +133,35 @@ export class DialogAllowanceComponent implements OnInit {
         : this.data.payroll.id
     };
     if (this.data.isUpdate) {
-      this.store.dispatch(
-        PayrollAction.updateSalary({
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId,
-          salary: salary
-        })
-      );
+      if (this.data.multiple) {
+        this.salaryService.updateMultipleSalaryOvertime(
+          {
+            salaryIds: this.data.salaryIds,
+            title: value.title,
+            price:
+              typeof value.price === 'string'
+                ? Number(value.price.replace(this.numberChars, ''))
+                : value.price,
+            times: value.times,
+            datetime:
+              value.unit === 'MONTH' ||
+              (value.unit === DatetimeUnitEnum.DAY && value.datetime)
+                ? new Date(value.datetime)
+                : undefined
+          }).subscribe(val => {
+          if (val) {
+            this.dialogRef.close(true);
+          }
+        });
+      } else {
+        this.store.dispatch(
+          PayrollAction.updateSalary({
+            id: this.data.salary.id,
+            payrollId: this.data.salary.payrollId,
+            salary: salary
+          })
+        );
+      }
     } else {
       this.store.dispatch(
         PayrollAction.addSalary({
@@ -148,7 +172,7 @@ export class DialogAllowanceComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
       if (added) {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }
     });
   }

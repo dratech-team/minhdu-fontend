@@ -1,34 +1,28 @@
 import { Salary } from '@minhdu-fontend/data-models';
 
-export const someCompleteSalary = (salaries: Salary[], salaryIds: number[], isSelectSalary: boolean) => {
+export const someComplete = (salaries: Salary[], salaryIds: number[], isSelectSalary: boolean) => {
   return (
-    salaries.filter(e => {
-      return salaryIds.includes(e.id);
-    }).length > 0
-    && !isSelectSalary
+    salaries.filter(e => salaryIds.includes(e.id)).length > 0 && !isSelectSalary
   );
 };
 
 
-export const updateSelectSalary = (id: number, salaryIds: number[], isSelectSalary: boolean, salaries: Salary[]) => {
+export const updateSelect = (id: number, salaryIds: number[], isSelectSalary: boolean, salaries: Salary[]) => {
   const index = salaryIds.indexOf(id);
   if (index > -1) {
     salaryIds.splice(index, 1);
   } else {
     salaryIds.push(id);
   }
-  isSelectSalary = salaries.every(e => {
-    salaryIds.includes(e.id);
-  });
+  return  isSelectSalary = salaries !== null && salaries.every(e => salaryIds.includes(e.id))
 };
 
-export const setAllSalary = (
+export const setAll = (
   select: boolean,
-  isSelectSalary: boolean,
   salaries: Salary[],
   salaryIds: number[]
 ) => {
-  isSelectSalary = select;
+
   salaries?.forEach((salary) => {
     if (select) {
       if (!salaryIds.includes(salary.id)) {
@@ -41,4 +35,5 @@ export const setAllSalary = (
       }
     }
   });
+  return select
 };

@@ -12,6 +12,7 @@ import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary
 import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
+import { SalaryService } from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -34,6 +35,7 @@ export class DialogStayComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogStayComponent>,
+    private readonly salaryService: SalaryService,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
@@ -74,9 +76,23 @@ export class DialogStayComponent implements OnInit {
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
     };
     if (this.data.salary) {
-      this.store.dispatch(PayrollAction.updateSalary({
-        payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
-      }));
+      if(this.data.multiple){
+        this.salaryService.updateMultipleSalaryOvertime(
+          {
+            salaryIds: this.data.salaryIds,
+            title: value.title ? value.title : this.data?.salary?.title,
+            price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
+          }).subscribe(val => {
+          if(val){
+            this.snackBar.open(val.message,'',{duration:1500})
+            this.dialogRef.close(true);
+          }
+        })
+      }else{
+        this.store.dispatch(PayrollAction.updateSalary({
+          payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
+        }));
+      }
     } else {
       if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll.employee.id ) {
         this.store.dispatch(PayrollAction.addSalary({
@@ -96,7 +112,7 @@ export class DialogStayComponent implements OnInit {
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
       if (added) {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }
     });
   }

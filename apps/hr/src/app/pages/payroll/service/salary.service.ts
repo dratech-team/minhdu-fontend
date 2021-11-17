@@ -30,6 +30,6 @@ export class SalaryService extends BaseService<Salary> {
   }
 
   updateMultipleSalaryOvertime(body: any): Observable<any>{
-    return this.http.patch<Observable<any>>('salary/overtime/employees', body);
+    return this.http.patch<Observable<any>>('salary/salaries/ids', body);
   }
 }

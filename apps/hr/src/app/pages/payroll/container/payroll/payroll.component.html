@@ -1,5 +1,5 @@
 <div class='main-content'>
-  <div  class='row h3 ml-3'>
+  <div class='row h3 ml-3'>
     {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
@@ -297,13 +297,13 @@
       >
       </app-payroll-time-sheet>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         [overtimeTitle]='overtimeTitle'
-        [eventAddOvertime]='eventAddOvertime'
-        (EventSelectMonth)='selectMonth($event)'
-        [createdAt]='this.createdAt'></app-payroll-overtime>
+        [eventAddOvertime]='eventAddOvertime'></app-payroll-overtime>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal
         [payroll$]='payroll$'
@@ -319,14 +319,18 @@
         (EventSelectBranch)='onSelectBranch($event)'
         (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
-      <app-payroll-basic
-        [basicTitle]='overtimeTitle'
-        (EventSelectMonth)='selectMonth($event)'
-        [createdAt]='this.createdAt'></app-payroll-basic>
+      <app-payroll-basic></app-payroll-basic>
+    </div>
+
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY '>
+      <app-payroll-stay></app-payroll-stay>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
+      <app-payroll-allowance></app-payroll-allowance>
     </div>
   </div>
-
   <app-mouse-right [type]='pageType.PAYROLL'
                    #child
                    (deleteEvent)='deletePayroll($event)'
@@ -336,8 +340,6 @@
                    (readEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
-
-
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;

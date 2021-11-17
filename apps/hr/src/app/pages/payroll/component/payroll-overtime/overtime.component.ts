@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import {
-  selectedAddingPayroll, selectedBranchPayroll
+  selectedAddingPayroll, selectedBranchPayroll, selectedCreateAtPayroll
 } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -27,7 +27,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 import { Salary } from '@minhdu-fontend/data-models';
-import { setAllSalary, someCompleteSalary, updateSelectSalary } from '../../utils/pick-salary';
+import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overtime-multiple';
 
 @Component({
@@ -35,10 +35,9 @@ import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overt
   templateUrl: 'overtime.component.html'
 })
 export class OvertimeComponent implements OnInit {
-  @Input() createdAt!: Date;
   @Input() eventAddOvertime?: Subject<any>;
   @Input() overtimeTitle?: string;
-  @Output() EventSelectMonth = new EventEmitter<Date>();
+  createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
     name: new FormControl(''),
@@ -46,6 +45,7 @@ export class OvertimeComponent implements OnInit {
     endAt: new FormControl(),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
+
   salaryIds: number[] = [];
   pageType = PageTypeEnum;
   salaryType = SalaryTypeEnum;
@@ -89,6 +89,7 @@ export class OvertimeComponent implements OnInit {
       val.employees.forEach(employee => this.salaries = this.salaries.concat(employee.salaries));
       this.overtime = val;
     });
+
     this.formGroup.get('startAt')!.setValue(this.datePipe.transform(
       !this.overtimeTitle ?
         getFirstDayInMonth(this.createdAt)
@@ -104,6 +105,7 @@ export class OvertimeComponent implements OnInit {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         if ((value.startAt && value.endAt)) {
+          this.store.dispatch(PayrollAction.updateStatePayroll({ createdAt: new Date(value.startAt) }));
           this.loaded = false;
           const params = {
             searchType: value.searchType,
@@ -123,7 +125,6 @@ export class OvertimeComponent implements OnInit {
             val.employees.forEach(employee => this.salaries = this.salaries.concat(employee.salaries));
             return this.overtime = val;
           });
-          this.EventSelectMonth.emit(new Date(value.startAt));
         }
       }
     );
@@ -155,7 +156,6 @@ export class OvertimeComponent implements OnInit {
         });
     });
   }
-
 
   readPayroll($event: any) {
     this.router
@@ -244,7 +244,7 @@ export class OvertimeComponent implements OnInit {
 
   updateSelectSalary(id: number) {
     if (this.overtime) {
-      updateSelectSalary(id, this.salaryIds, this.isSelectSalary, this.salaries);
+      this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
     }
   }
 
@@ -252,13 +252,13 @@ export class OvertimeComponent implements OnInit {
     if (!this.salaries) {
       return false;
     } else {
-      return someCompleteSalary(this.salaries, this.salaryIds, this.isSelectSalary);
+      return someComplete(this.salaries, this.salaryIds, this.isSelectSalary);
     }
   }
 
   setAllSalary(select: boolean) {
     if (this.overtime) {
-      setAllSalary(select, this.isSelectSalary, this.salaries, this.salaryIds);
+      this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
     }
   }
 }
