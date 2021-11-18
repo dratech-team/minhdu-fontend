@@ -89,12 +89,15 @@ export class DialogTimekeepingComponent implements OnInit {
       times: value.times,
       employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
     };
+
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY && typeof value.partialDay !== 'number') {
       return this.snackBar.open('Chưa chọn buổi', '', { duration: 2000 });
     }
+
     if (this.employeeIds.length === 0) {
       return this.snackBar.open('Chưa chọn nhân viên', '', { duration: 2000 });
     }
+
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY) {
       Object.assign(
         salary, {
@@ -113,17 +116,27 @@ export class DialogTimekeepingComponent implements OnInit {
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary, isTimesheet: this.data?.isTimesheet
     }));
-    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
-      if (added) {
-        this.dialogRef.close({
+    if (this.data?.multiple) {
+      this.dialogRef.close(
+        {
           datetime: value.datetime,
           title: this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
             ? this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title
             : this.titleAbsents[this.selectedIndex]?.title
-        });
-      }
-    });
-
+        }
+      );
+    } else {
+      this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+        if (added) {
+          this.dialogRef.close({
+            datetime: value.datetime,
+            title: this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
+              ? this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title
+              : this.titleAbsents[this.selectedIndex]?.title
+          });
+        }
+      });
+    }
   }
 
   onSelectAbsent(index: number) {

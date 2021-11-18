@@ -141,12 +141,7 @@ export class PayrollEffect {
               } else {
                 return props.payrollId
                   ? PayrollAction.getPayroll({ id: props.payrollId })
-                  : PayrollAction.loadInit({
-                    take: 30,
-                    skip: 0,
-                    createdAt: new Date(),
-                    isTimeSheet: !!props.isTimesheet
-                  });
+                  : PayrollAction.addSalaryMultipleSuccess();
               }
             }),
             catchError((err) => {

@@ -130,6 +130,9 @@ export const payrollReducer = createReducer(
   }),
   on(PayrollAction.updateSalaryMultipleSuccess, (state, _) => {
     return { ...state };
+  }),
+  on(PayrollAction.addSalaryMultipleSuccess, (state, _) => {
+    return { ...state, added: true, adding: false };
   })
 );
 

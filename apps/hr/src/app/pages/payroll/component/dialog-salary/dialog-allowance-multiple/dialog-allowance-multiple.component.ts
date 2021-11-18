@@ -85,7 +85,6 @@ export class DialogAllowanceMultipleComponent implements OnInit {
         });
       }
     });
-
   }
 
 

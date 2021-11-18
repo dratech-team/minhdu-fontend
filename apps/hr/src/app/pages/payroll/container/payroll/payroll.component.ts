@@ -221,9 +221,55 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           }));
         this.eventAddOvertime.next({
           createdAt: new Date(val.datetime),
-          overtimeTitle: val.title
+          absentTitle: val.title
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
+      }
+    });
+  }
+
+  addSalaryAllowance() {
+    const ref = this.dialog.open(DialogAllowanceMultipleComponent,
+      {
+        width: 'fit-content',
+        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      }
+    );
+    ref.afterClosed().subscribe(value => {
+      if (value) {
+        this.createdAt = new Date(value.datetime);
+        this.allowanceTitle = value.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(value.datetime)
+          }));
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
+        this.eventAddAllowance.next({
+          allowanceTitle: value.title
+        });
+      }
+    });
+  }
+
+  timekeeping() {
+    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
+    const ref = this.dialog.open(DialogTimekeepingComponent, {
+      width: 'fit-content',
+      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.createdAt = new Date(val.datetime);
+        this.absentTitle = val.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(val.datetime)
+          }));
+        this.eventAddAbsent.next({
+          datetime: val.datetime,
+          absentTitle: val.title
+        });
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
       }
     });
   }
@@ -245,28 +291,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportTimekeepingComponent, {
       width: 'fit-content',
       data: { datetime: this.createdAt }
-    });
-  }
-
-  timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
-    const ref = this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content',
-      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
-    });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.createdAt = new Date(val.datetime);
-        this.absentTitle = val.title;
-        this.store.dispatch(PayrollAction.updateStatePayroll(
-          {
-            createdAt: new Date(val.datetime)
-          }));
-        this.eventAddAbsent.next({
-          overtimeTitle: val.title
-        });
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
-      }
     });
   }
 
@@ -331,28 +355,5 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           employeeType: event.employee.type
         }
       }).then();
-  }
-
-  addSalaryAllowance() {
-    const ref = this.dialog.open(DialogAllowanceMultipleComponent,
-      {
-        width: 'fit-content',
-        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
-      }
-    );
-    ref.afterClosed().subscribe(value => {
-      if (value) {
-        this.createdAt = new Date(value.datetime);
-        this.allowanceTitle = value.title;
-        this.store.dispatch(PayrollAction.updateStatePayroll(
-          {
-            createdAt: new Date(value.datetime)
-          }));
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
-        this.eventAddAllowance.next({
-          allowanceTitle: value.title
-        });
-      }
-    });
   }
 }

@@ -95,6 +95,10 @@ export const addSalary = createAction(
   props<{ salary: any, payrollId?: number, isTimesheet?: boolean, branchId?: number }>()
 );
 
+export const addSalaryMultipleSuccess = createAction(
+  '[UPDATE_SALARY] Add Salary Multiple Success '
+);
+
 export const handleSalaryError = createAction(
   '[API_SALARY] Salary Error '
 );
@@ -197,5 +201,6 @@ export const PayrollAction = {
   confirmPayrollSuccess,
   updateStatePayroll,
   deleteSalarySuccess,
-  updateSalaryMultipleSuccess
+  updateSalaryMultipleSuccess,
+  addSalaryMultipleSuccess
 };

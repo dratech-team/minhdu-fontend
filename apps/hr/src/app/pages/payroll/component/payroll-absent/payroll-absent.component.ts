@@ -28,6 +28,8 @@ import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.co
 import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
+import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 
 @Component({
   selector: 'app-payroll-absent',
@@ -54,7 +56,7 @@ export class PayrollAbsentComponent implements OnInit {
   loaded = false;
   genderType = Gender;
   unit = DatetimeUnitEnum;
-  payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
+  payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
   salaryIds: number[] = [];
   isSelectSalary = false;
   salaries: Salary[] = [];
@@ -73,41 +75,49 @@ export class PayrollAbsentComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryTitle: this.absentTitle? this.absentTitle:''
+      salaryTitle: this.absentTitle ? this.absentTitle : ''
     }));
+
     if (this.absentTitle) {
       this.formGroup.get('title')!.setValue(this.absentTitle, { emitEvent: false });
     }
+
     this.eventAddAbsent?.subscribe(val => {
-      this.formGroup.get('title')!.setValue(val.allowanceTitle, { emitEvent: false });
-      this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(getState(selectedCreateAtPayroll, this.store)), 'yyyy-MM'), { emitEvent: false });
+      console.log(val);
+      this.formGroup.get('title')!.setValue(val.absentTitle, { emitEvent: false });
+      this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(
+        val.datetime ?
+          val.datetime :
+          getState(selectedCreateAtPayroll, this.store)
+      ), 'yyyy-MM'), { emitEvent: false });
       this.store.dispatch(PayrollAction.loadInit({
         take: this.pageSize,
         skip: this.pageIndex,
-        createdAt: new Date(getState(selectedCreateAtPayroll,this.store)),
-        salaryTitle: val.allowanceTitle ? val.allowanceTitle : ''
+        createdAt: new Date(
+          val.datetime
+            ? val.datetime
+            : getState(selectedCreateAtPayroll, this.store)),
+        salaryTitle: val.absentTitle ? val.absentTitle : ''
       }));
     });
-
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
         this.loaded = false;
-        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
+        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAbsent()));
       }
     );
 
-    this.payrollAllowance$.subscribe(payrolls => {
+    this.payrollAbsent$.subscribe(payrolls => {
       this.salaries = [];
       payrolls.forEach(payroll => {
         payroll.salaries.forEach(salary => {
-          if (salary.type === SalaryTypeEnum.ALLOWANCE) {
+          if (salary.type === SalaryTypeEnum.ABSENT || salary.type === SalaryTypeEnum.DAY_OFF) {
             if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
               && !this.salaries.find(e => e.id === salary.id)) {
               this.salaryIds.push(salary.id);
@@ -123,15 +133,30 @@ export class PayrollAbsentComponent implements OnInit {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
   }
 
-  addSalaryAllowance() {
-    this.dialog.open(DialogAllowanceMultipleComponent,
+  addSalaryAbsent() {
+    const ref = this.dialog.open(DialogTimekeepingComponent,
       {
         width: 'fit-content'
       }
     );
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('createdAt')!.setValue(
+          this.datePipe.transform(new Date(val.datetime ? val.datetime : this.formGroup.get('createdAt')!.value),
+            'yyyy-MM'),
+          { emitEvent: false });
+        this.store.dispatch(PayrollAction.loadInit({
+          take: this.pageSize,
+          skip: this.pageIndex,
+          createdAt: new Date(val.datetime ? val.datetime : this.formGroup.get('createdAt')!.value),
+          salaryTitle: val.title
+        }));
+      }
+    });
   }
 
-  updateSalaryAllowance() {
+  updateSalaryAbsent() {
     const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
@@ -140,11 +165,9 @@ export class PayrollAbsentComponent implements OnInit {
       }
     });
     if (salariesSelected.every((value, index, array) => {
-      return value.title === array[0].title
-        && value.datetime === array[0].datetime
-        && value.unit === array[0].unit;
+      return value.title === array[0].title;
     })) {
-      const ref = this.dialog.open(DialogAllowanceComponent, {
+      const ref = this.dialog.open(DialogAbsentComponent, {
         width: '600px',
         data: {
           isUpdate: true,
@@ -152,22 +175,23 @@ export class PayrollAbsentComponent implements OnInit {
           salaryIds: this.salaryIds,
           totalPayroll: this.totalPayroll,
           multiple: true,
-          payroll: value.createdAt,
+          createdAt: value.createdAt,
           type: SalaryTypeEnum.ALLOWANCE
         }
       });
+      console.log(salariesSelected[0]);
       ref.afterClosed().subscribe(
         val => {
           if (val) {
             this.isSelectSalary = false;
             this.salaryIds = [];
-            this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+            this.formGroup.get('title')!.setValue(salariesSelected[0].title, { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit({
               take: this.pageSize,
               skip: this.pageIndex,
               searchType: value.searchType,
-              createdAt: new Date(value.createdAt),
-              salaryTitle: val.title,
+              createdAt: new Date(value.datetime ? value.datetime : value.createdAt),
+              salaryTitle: salariesSelected[0].title,
               name: value.name
             }));
           }
@@ -178,13 +202,13 @@ export class PayrollAbsentComponent implements OnInit {
     }
   }
 
-  deleteSalaryAllowance(event: any) {
+  deleteSalaryAbsent(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
+            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAbsent()));
             this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
           }
         });
@@ -197,10 +221,11 @@ export class PayrollAbsentComponent implements OnInit {
 
   onScroll() {
     const value = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAllowance()));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAbsent()));
   }
 
   updateSelectSalary(id: number) {
+
     updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
     // this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
 
@@ -215,7 +240,7 @@ export class PayrollAbsentComponent implements OnInit {
     console.log(this.isSelectSalary);
   }
 
-  mapPayrollAllowance() {
+  mapPayrollAbsent() {
     const value = this.formGroup.value;
     const params = {
       take: this.pageSize,

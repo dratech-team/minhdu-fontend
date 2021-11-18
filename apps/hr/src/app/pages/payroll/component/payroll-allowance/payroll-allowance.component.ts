@@ -149,7 +149,6 @@ export class PayrollAllowanceComponent implements OnInit {
           salaryIds: this.salaryIds,
           totalPayroll: this.totalPayroll,
           multiple: true,
-          payroll: value.createdAt,
           type: SalaryTypeEnum.ALLOWANCE
         }
       });

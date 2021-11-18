@@ -37,7 +37,7 @@
       <th style='width: 50px ; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
         <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                (click)='updateSalaryAllowance()'
+                (click)='updateSalaryAbsent()'
                 *ngIf='salaryIds.length > 0'
                 class=' btn btn-primary d-flex justify-content-center align-items-center '>
           Sửa
@@ -97,32 +97,32 @@
       </th>
     </tr>
     </thead>
-    <tbody *ngIf='(payrollAllowance$|async) as payrollsAllowance'>
-    <tr *ngFor='let payrollAllowance of payrollsAllowance; let i = index'
-        [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'
+    <tbody *ngIf='(payrollAbsent$|async) as payrollsAbsent'>
+    <tr *ngFor='let payrollAbsent of payrollsAbsent; let i = index'
+        [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'
     >
       <th class='pointer'
-          [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'>
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
         {{i + 1}}
       </th>
       <th class='pointer'
-          (click)='readPayroll(payrollAllowance)'
-          [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAllowance?.id}}
+          (click)='readPayroll(payrollAbsent)'
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+        {{payrollAbsent?.id}}
       </th>
       <th class='pointer'
-          (click)='readPayroll(payrollAllowance)'
-          [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAllowance.employee.lastName}}
+          (click)='readPayroll(payrollAbsent)'
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+        {{payrollAbsent.employee.lastName}}
       </th>
       <th style='width: 200px' class='pointer'
-          (click)='readPayroll(payrollAllowance)'
-          [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAllowance.employee.position?.name}}</th>
+          (click)='readPayroll(payrollAbsent)'
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+        {{payrollAbsent.employee.position?.name}}</th>
       <th class='pointer'
-          [ngStyle]='{"background":payrollsAllowance.length > 0 ? "white" : "#dddddd" }'>
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
         <div class=' d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ABSENT"]'>
+             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'>
           <mat-checkbox
             [checked]='salaryIds.includes(item.id)'
             (change)='updateSelectSalary(item.id)'>
@@ -131,9 +131,9 @@
       </th>
       <th class='pointer' style='width: 220px;'>
         <div class='border d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ABSENT"]'
+             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAllowance)'>
+             (click)='readPayroll(payrollAbsent)'>
                 <span *ngIf='item.datetime'>
                   {{item.datetime|date:'dd-MM-yyyy'}}
                 </span>
@@ -148,17 +148,17 @@
       </th>
       <th class='pointer' style='min-width: 300px;'>
         <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ABSENT"]'
+             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAllowance)'>
+             (click)='readPayroll(payrollAbsent)'>
           {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
         </div>
       </th>
       <th class='pointer'>
         <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ABSENT"]'
+             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAllowance)'>
+             (click)='readPayroll(payrollAbsent)'>
            <span *ngIf='item.unit === datetimeUnit.MINUTE'>
                   ({{item.times | convertTime }} )
                 </span>
@@ -168,14 +168,14 @@
       </th>
       <th class='pointer'>
         <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ABSENT"]'
+             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAllowance)'>
-             {{item.forgot ? 'Có' : 'Không'}}
+             (click)='readPayroll(payrollAbsent)'>
+          {{item.forgot ? 'Có' : 'Không'}}
         </div>
       </th>
     </tr>
-    <tr *ngIf='!payrollsAllowance || payrollsAllowance.length === 0  ' style='height: 50vh'>
+    <tr *ngIf='!payrollsAbsent || payrollsAbsent.length === 0  ' style='height: 50vh'>
       <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
         <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
       </td>
@@ -184,9 +184,9 @@
   </table>
 </div>
 <app-mouse-right [type]='pageType.PAYROLL_SALARY'
-                 (addEvent)='addSalaryAllowance()'
+                 (addEvent)='addSalaryAbsent()'
                  (readEvent)='readPayroll($event)'
-                 (deleteEvent)='deleteSalaryAllowance($event)'
+                 (deleteEvent)='deleteSalaryAbsent($event)'
                  #child>
 </app-mouse-right>
 <style>
