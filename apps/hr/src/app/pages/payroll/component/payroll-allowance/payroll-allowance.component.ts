@@ -76,7 +76,7 @@ export class PayrollAllowanceComponent implements OnInit {
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryTitle: this.allowanceTitle? this.allowanceTitle:''
+      salaryTitle: this.allowanceTitle ? this.allowanceTitle : ''
     }));
     if (this.allowanceTitle) {
       this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
@@ -87,7 +87,7 @@ export class PayrollAllowanceComponent implements OnInit {
       this.store.dispatch(PayrollAction.loadInit({
         take: this.pageSize,
         skip: this.pageIndex,
-        createdAt: new Date(getState(selectedCreateAtPayroll,this.store)),
+        createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
         salaryTitle: val.allowanceTitle ? val.allowanceTitle : ''
       }));
     });
@@ -121,11 +121,23 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   addSalaryAllowance() {
-    this.dialog.open(DialogAllowanceMultipleComponent,
+    const ref = this.dialog.open(DialogAllowanceMultipleComponent,
       {
         width: 'fit-content'
       }
     );
+    ref.afterClosed().subscribe(val => {
+      if( val){
+        this.formGroup.get('title')!.setValue(val.title,{emitEvent: false})
+        this.formGroup.get('createdAt')!.setValue(val.datetime,{emitEvent: false})
+        this.store.dispatch(PayrollAction.loadInit({
+          take: this.pageSize,
+          skip:this.pageIndex,
+          createdAt: new Date(val.datetime),
+          salaryTitle: val.title
+        }))
+      }
+    })
   }
 
   updateSalaryAllowance() {

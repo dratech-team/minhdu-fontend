@@ -51,7 +51,6 @@ export class DialogBasicComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}))
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
@@ -104,7 +103,7 @@ export class DialogBasicComponent implements OnInit {
       type:
         value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
     };
-
+    this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}))
     if (this.data?.isUpdate) {
       if (this.data?.multiple) {
         this.salaryService.updateMultipleSalaryOvertime(
@@ -120,7 +119,7 @@ export class DialogBasicComponent implements OnInit {
           if (val) {
             this.snackbar.open(val.message, '', { duration: 1500 });
             this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
-            this.dialogRef.close();
+            this.dialogRef.close(true);
           }
         });
       } else {

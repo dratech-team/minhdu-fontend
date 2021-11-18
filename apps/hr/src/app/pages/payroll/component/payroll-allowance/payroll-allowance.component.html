@@ -62,40 +62,40 @@
           <input type='text' disabled>
         </th>
       </tr>
-      <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
-        <th style='background:white'>
-          <div class=''></div>
-        </th>
-        <th style='background:white'>
-          <div class=''></div>
-        </th>
-        <th style='background:white'>
-          <div class='text-center'>Tổng cộng</div>
-        </th>
-        <th style=' width: 200px;'>
-          <div class='text-center'></div>
-        </th>
-        <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
-          <!--        <mat-checkbox class='example-margin mt-2 mx-auto'-->
-          <!--                      [checked]='isSelectSalary'-->
-          <!--                      [indeterminate]='someCompleteSalary()'-->
-          <!--                      (change)='setAllSalary($event.checked)'>-->
-          <!--        </mat-checkbox>-->
-        </th>
-        <th style='width: 220px'>
-          <div class='text-center'></div>
-        </th>
-        <th style='min-width: 300px'>
-          <div class='text-center'></div>
-        </th>
-        <th>
-          <div class='text-center'></div>
-        </th>
-        <th>
-          <div class='text-center'>
-          </div>
-        </th>
-      </tr>
+<!--      <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>-->
+<!--        <th style='background:white'>-->
+<!--          <div class=''></div>-->
+<!--        </th>-->
+<!--        <th style='background:white'>-->
+<!--          <div class=''></div>-->
+<!--        </th>-->
+<!--        <th style='background:white'>-->
+<!--          <div class='text-center'>Tổng cộng</div>-->
+<!--        </th>-->
+<!--        <th style=' width: 200px;'>-->
+<!--          <div class='text-center'></div>-->
+<!--        </th>-->
+<!--        <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>-->
+<!--          &lt;!&ndash;        <mat-checkbox class='example-margin mt-2 mx-auto'&ndash;&gt;-->
+<!--          &lt;!&ndash;                      [checked]='isSelectSalary'&ndash;&gt;-->
+<!--          &lt;!&ndash;                      [indeterminate]='someCompleteSalary()'&ndash;&gt;-->
+<!--          &lt;!&ndash;                      (change)='setAllSalary($event.checked)'>&ndash;&gt;-->
+<!--          &lt;!&ndash;        </mat-checkbox>&ndash;&gt;-->
+<!--        </th>-->
+<!--        <th style='width: 220px'>-->
+<!--          <div class='text-center'></div>-->
+<!--        </th>-->
+<!--        <th style='min-width: 300px'>-->
+<!--          <div class='text-center'></div>-->
+<!--        </th>-->
+<!--        <th>-->
+<!--          <div class='text-center'></div>-->
+<!--        </th>-->
+<!--        <th>-->
+<!--          <div class='text-center'>-->
+<!--          </div>-->
+<!--        </th>-->
+<!--      </tr>-->
       </thead>
       <tbody *ngIf='(payrollAllowance$|async) as payrollsAllowance'>
       <tr *ngFor='let payrollAllowance of payrollsAllowance; let i = index'

@@ -42,7 +42,6 @@ export class DialogStayComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
@@ -79,8 +78,9 @@ export class DialogStayComponent implements OnInit {
       rate: value.rate,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined
     };
+    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data?.isUpdate) {
-      if (this.data?.multiple) {
+      if (this.data?.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
             salaryIds: this.data.salaryIds,
@@ -90,7 +90,7 @@ export class DialogStayComponent implements OnInit {
           if (val) {
             this.snackBar.open(val.message, '', { duration: 1500 });
             this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
-            this.dialogRef.close();
+            this.dialogRef.close({title: value.title? value.title: this.data.salary.title});
           }
         });
       } else {
@@ -106,7 +106,6 @@ export class DialogStayComponent implements OnInit {
           })
         );
       } else {
-
         this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeIds })
           .subscribe(val => {
             if (val) {

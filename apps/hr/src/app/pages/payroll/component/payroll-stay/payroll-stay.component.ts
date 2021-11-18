@@ -99,7 +99,7 @@ export class PayrollStayComponent implements OnInit {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
   }
 
-  addSalaryBasic() {
+  addSalaryStay() {
     const ref = this.dialog.open(DialogStayComponent, {
       width: 'fit-content',
       data: {
@@ -138,7 +138,7 @@ export class PayrollStayComponent implements OnInit {
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
           totalPayroll: this.totalPayroll,
-          multiple: true
+          updateMultiple: true
         }
       });
       ref.afterClosed().subscribe(
@@ -147,14 +147,14 @@ export class PayrollStayComponent implements OnInit {
             this.isSelectSalary = false;
             this.salaryIds = [];
             const value = this.formGroup.value;
-            this.formGroup.get('title')!.setValue(salariesSelected[0].title,
+            this.formGroup.get('title')!.setValue(val.title,
               { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit({
               take: this.pageSize,
               skip: this.pageIndex,
               searchType: value.searchType,
               createdAt: new Date(value.createdAt),
-              salaryTitle: salariesSelected[0].title,
+              salaryTitle: val.title,
               name: value.name
             }));
           }
