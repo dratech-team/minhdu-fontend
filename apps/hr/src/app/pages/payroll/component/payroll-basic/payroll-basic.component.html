@@ -1,188 +1,190 @@
-<!--<ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>-->
-
-<div class='table-scroll mt-5 position-relative'
-     infiniteScroll
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [infiniteScrollThrottle]='10'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'
->
-  <table [formGroup]='formGroup' class='main-table' style='width: 1800px;'>
-    <thead>
-    <tr>
-      <th>
-        <div class='border-top text-center'>stt</div>
-        <input type='text' disabled>
-      </th>
-      <th>
-        <div class='border-top text-center'>Mã nhân viên</div>
-        <input type='text' disabled>
-      </th>
-      <th style='width: 270px'>
-        <div class='border-top text-center'>
-          <div class='d-flex justify-content-center' style='height: 100%'>
-            <span>Tên nhân viên</span>
-            <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
-              <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
-            </mat-select>
+<ngx-skeleton-loader *ngIf='!(loaded$|async) else payrollBasic' count='18' appearance='line'></ngx-skeleton-loader>
+<ng-template #payrollBasic>
+  <div class='table-scroll mt-5 position-relative'
+       infiniteScroll
+       [alwaysCallback]='true'
+       [infiniteScrollDistance]='1'
+       [infiniteScrollThrottle]='10'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'
+  >
+    <table [formGroup]='formGroup' class='main-table' style='width: 1800px;'>
+      <thead>
+      <tr>
+        <th>
+          <div class='border-top text-center'>stt</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Mã nhân viên</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 270px'>
+          <div class='border-top text-center'>
+            <div class='d-flex justify-content-center' style='height: 100%'>
+              <span>Tên nhân viên</span>
+              <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
+                <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
+              </mat-select>
+            </div>
           </div>
-        </div>
-        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
-      </th>
-      <th style='width: 200px'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-        <input type='text' disabled>
-      </th>
-      <th style='width: 50px ; z-index: 3'>
-        <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
-        <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                (click)='updateSalaryBasic()'
-                *ngIf='salaryIds.length > 0'
-                class=' btn btn-primary d-flex justify-content-center align-items-center '>
-          Sửa
-        </button>
-      </th>
-      <th style='width: 220px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <input type='month' class='form-control' formControlName='createdAt'>
-      </th>
-      <th style='min-width: 300px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
-        <mat-select class='border-top' formControlName='title'>
-          <mat-option *ngFor='let item of salaryBasic' [value]='item.value'> {{item.title}}</mat-option>
-        </mat-select>
-        <!--        <input class='form-control' type='text' matInput-->
-        <!--               formControlName='title'>-->
-        <!--        <mat-autocomplete #templateOvertime='matAutocomplete'>-->
-        <!--          <mat-option *ngFor='let template of templateBasic$ | async' [value]='template.title'-->
-        <!--                      (onSelectionChange)='onSelectTemplateBasic($event, template.title)'>-->
-        <!--            {{template.title}}-->
-        <!--          </mat-option>-->
-        <!--        </mat-autocomplete>-->
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
-        <input type='text' disabled>
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá</div>
-        <input type='text' disabled>
-      </th>
-    </tr>
-    <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
-      <th style='background:white'>
-        <div class=''></div>
-      </th>
-      <th style='background:white'>
-        <div class=''></div>
-      </th>
-      <th style='background:white'>
-        <div class='text-center'>Tổng cộng</div>
-      </th>
-      <th style=' width: 200px;'>
-        <div class='text-center'></div>
-      </th>
-      <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
-        <!--        <mat-checkbox class='example-margin mt-2 mx-auto'-->
-        <!--                      [checked]='isSelectSalary'-->
-        <!--                      [indeterminate]='someCompleteSalary()'-->
-        <!--                      (change)='setAllSalary($event.checked)'>-->
-        <!--        </mat-checkbox>-->
-      </th>
-      <th style='width: 220px'>
-        <div class='text-center'></div>
-      </th>
-      <th style='min-width: 300px'>
-        <div class='text-center'></div>
-      </th>
-      <th>
-        <div class='text-center'></div>
-      </th>
-      <th>
-        <div class='text-center'>
-        </div>
-      </th>
-    </tr>
-    </thead>
-    <tbody *ngIf='(payrollBasic$|async) as payrollsBasic'>
-    <tr *ngFor='let payrollBasic of payrollsBasic; let i = index'
-        [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'
-    >
-      <th class='pointer'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-        {{i + 1}}
-      </th>
-      <th class='pointer'
-          (click)='readPayroll(payrollBasic)'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollBasic?.id}}
-      </th>
-      <th class='pointer'
-          (click)='readPayroll(payrollBasic)'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollBasic.employee.lastName}}
-      </th>
-      <th style='width: 200px' class='pointer'
-          (click)='readPayroll(payrollBasic)'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollBasic.employee.position?.name}}</th>
-      <th class='pointer'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-        <div class=' d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'>
-          <mat-checkbox
-            [checked]='salaryIds.includes(item.id)'
-            (change)='updateSelectSalary(item.id)'>
-          </mat-checkbox>
-        </div>
-      </th>
-      <th class='pointer' style='width: 220px;'>
-        <div class='border d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollBasic)'>
-          {{this.createdAt|date:'yyyy-MM'}}
-        </div>
-      </th>
-      <th class='pointer' style='min-width: 300px;'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollBasic)'>
-          {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
-        </div>
-      </th>
-      <th class='pointer'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollBasic)'>
-          {{item?.times}}
-          {{
-          item.unit === "HOUR" ? "Giờ" : "Ngày"
-          }}
-        </div>
-      </th>
-      <th class='pointer'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollBasic)'>
-          {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
-          {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
-        </div>
-      </th>
-    </tr>
-    <tr *ngIf='!payrollsBasic || payrollsBasic.length === 0  ' style='height: 50vh'>
-      <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
-        <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<app-mouse-right [type]='pageType.PAYROLL_BASIC'
+          <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
+        </th>
+        <th style='width: 200px'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 50px ; z-index: 3'>
+          <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
+          <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                  (click)='updateSalaryBasic()'
+                  *ngIf='salaryIds.length > 0'
+                  class=' btn btn-primary d-flex justify-content-center align-items-center '>
+            Sửa
+          </button>
+        </th>
+        <th style='width: 220px;'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
+          <input type='month' class='form-control' formControlName='createdAt'>
+        </th>
+        <th style='min-width: 300px;'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
+          <mat-select class='border-top' formControlName='title'>
+            <mat-option *ngFor='let item of salaryBasic' [value]='item.value'> {{item.title}}</mat-option>
+          </mat-select>
+          <!--        <input class='form-control' type='text' matInput-->
+          <!--               formControlName='title'>-->
+          <!--        <mat-autocomplete #templateOvertime='matAutocomplete'>-->
+          <!--          <mat-option *ngFor='let template of templateBasic$ | async' [value]='template.title'-->
+          <!--                      (onSelectionChange)='onSelectTemplateBasic($event, template.title)'>-->
+          <!--            {{template.title}}-->
+          <!--          </mat-option>-->
+          <!--        </mat-autocomplete>-->
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Thành tiền</div>
+          <input type='text' disabled>
+        </th>
+      </tr>
+      <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
+        <th style='background:white'>
+          <div class=''></div>
+        </th>
+        <th style='background:white'>
+          <div class=''></div>
+        </th>
+        <th style='background:white'>
+          <div class='text-center'>Tổng cộng</div>
+        </th>
+        <th style=' width: 200px;'>
+          <div class='text-center'></div>
+        </th>
+        <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
+          <!--        <mat-checkbox class='example-margin mt-2 mx-auto'-->
+          <!--                      [checked]='isSelectSalary'-->
+          <!--                      [indeterminate]='someCompleteSalary()'-->
+          <!--                      (change)='setAllSalary($event.checked)'>-->
+          <!--        </mat-checkbox>-->
+        </th>
+        <th style='width: 220px'>
+          <div class='text-center'></div>
+        </th>
+        <th style='min-width: 300px'>
+          <div class='text-center'></div>
+        </th>
+        <th>
+          <div class='text-center'></div>
+        </th>
+        <th>
+          <div class='text-center'>
+          </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(payrollBasic$|async) as payrollsBasic'>
+      <tr *ngFor='let payrollBasic of payrollsBasic; let i = index'
+          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'
+      >
+        <th class='pointer'
+            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+          {{i + 1}}
+        </th>
+        <th class='pointer'
+            (click)='readPayroll(payrollBasic)'
+            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollBasic?.id}}
+        </th>
+        <th class='pointer'
+            (click)='readPayroll(payrollBasic)'
+            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollBasic.employee.lastName}}
+        </th>
+        <th style='width: 200px' class='pointer'
+            (click)='readPayroll(payrollBasic)'
+            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollBasic.employee.position?.name}}</th>
+        <th class='pointer'
+            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+          <div class=' d-flex align-items-center justify-content-center pointer '
+               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'>
+            <mat-checkbox
+              [checked]='salaryIds.includes(item.id)'
+              (change)='updateSelectSalary(item.id)'>
+            </mat-checkbox>
+          </div>
+        </th>
+        <th class='pointer' style='width: 220px;'>
+          <div class='border d-flex align-items-center justify-content-center pointer '
+               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollBasic)'>
+            {{this.createdAt|date:'yyyy-MM'}}
+          </div>
+        </th>
+        <th class='pointer' style='min-width: 300px;'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollBasic)'>
+            {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+          </div>
+        </th>
+        <th class='pointer'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollBasic)'>
+            {{item?.times}}
+            {{
+            item.unit === "HOUR" ? "Giờ" : "Ngày"
+            }}
+          </div>
+        </th>
+        <th class='pointer'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollBasic)'>
+            {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
+            {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
+          </div>
+        </th>
+      </tr>
+      <tr *ngIf='!payrollsBasic || payrollsBasic.length === 0  ' style='height: 50vh'>
+        <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
+          <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<app-mouse-right [type]='pageType.PAYROLL_SALARY'
                  (addEvent)='addSalaryBasic()'
                  (readEvent)='readPayroll($event)'
                  (deleteEvent)='deleteSalaryBasic($event)'

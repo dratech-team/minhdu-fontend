@@ -18,7 +18,7 @@
               <span class='star'>*</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup'>
-              <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
+              <mat-select [disabled]='data?.salary' class='form-control col' formControlName='type'
                           [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
                 <mat-option *ngFor='let salary of salaries' value='{{salary.type}}'
                             (click)='onCheckValue(salary.type !== type.BASIC_INSURANCE)'>
@@ -56,7 +56,7 @@
       <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
         <app-pick-employee-absent
           [employeeIdInit]='this.data?.payroll?.employee?.id'
-          [createdPayroll]='data?.payroll?.createdAt'
+          [createdPayroll]='data?.payroll?.createdAt?data?.payroll?.createdAt: data.createdAt '
           (EventSelectEmployee)='pickEmployees($event)'
         >
         </app-pick-employee-absent>

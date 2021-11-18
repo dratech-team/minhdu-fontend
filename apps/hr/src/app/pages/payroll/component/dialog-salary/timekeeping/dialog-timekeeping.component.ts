@@ -115,7 +115,12 @@ export class DialogTimekeepingComponent implements OnInit {
     }));
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
       if (added) {
-        this.dialogRef.close();
+        this.dialogRef.close({
+          datetime: value.datetime,
+          title: this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
+            ? this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title
+            : this.titleAbsents[this.selectedIndex]?.title
+        });
       }
     });
 

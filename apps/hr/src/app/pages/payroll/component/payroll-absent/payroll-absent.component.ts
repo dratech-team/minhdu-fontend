@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll, selectedLoadedPayroll,
+  selectedCreateAtPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -30,13 +30,14 @@ import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 
 @Component({
-  selector: 'app-payroll-allowance',
-  templateUrl: 'payroll-allowance.component.html'
+  selector: 'app-payroll-absent',
+  templateUrl: 'payroll-absent.component.html'
 })
-export class PayrollAllowanceComponent implements OnInit {
-  @Input() eventAddAllowance?: Subject<any>;
-  @Input() allowanceTitle?: string;
+export class PayrollAbsentComponent implements OnInit {
+  @Input() eventAddAbsent?: Subject<any>;
+  @Input() absentTitle?: string;
   pageType = PageTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
@@ -50,7 +51,7 @@ export class PayrollAllowanceComponent implements OnInit {
   totalPayroll = getState(selectedTotalPayroll, this.store);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
-  loaded$ = this.store.select(selectedLoadedPayroll);
+  loaded = false;
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
@@ -72,16 +73,17 @@ export class PayrollAllowanceComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryTitle: this.allowanceTitle? this.allowanceTitle:''
+      salaryTitle: this.absentTitle? this.absentTitle:''
     }));
-    if (this.allowanceTitle) {
-      this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
+    if (this.absentTitle) {
+      this.formGroup.get('title')!.setValue(this.absentTitle, { emitEvent: false });
     }
-    this.eventAddAllowance?.subscribe(val => {
+    this.eventAddAbsent?.subscribe(val => {
       this.formGroup.get('title')!.setValue(val.allowanceTitle, { emitEvent: false });
       this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(getState(selectedCreateAtPayroll, this.store)), 'yyyy-MM'), { emitEvent: false });
       this.store.dispatch(PayrollAction.loadInit({
@@ -96,6 +98,7 @@ export class PayrollAllowanceComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
+        this.loaded = false;
         this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
       }
     );

@@ -333,6 +333,12 @@
         [eventAddAllowance]='eventAddAllowance'
       ></app-payroll-allowance>
     </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT '>
+      <app-payroll-absent
+        [absentTitle]='absentTitle'
+        [eventAddAbsent]='eventAddAllowance'
+      ></app-payroll-absent>
+    </div>
   </div>
   <app-mouse-right [type]='pageType.PAYROLL'
                    #child

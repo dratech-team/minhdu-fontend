@@ -29,4 +29,8 @@ export const PayrollConstant = [
     name: 'Bảng phụ cấp khác',
     value: PayrollEnum.PAYROLL_ALLOWANCE
   },
+  {
+    name: 'Bảng khấu trừ',
+    value: PayrollEnum.PAYROLL_ABSENT
+  },
 ]

@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll,
+  selectedCreateAtPayroll, selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -43,7 +43,7 @@ export class PayrollStayComponent implements OnInit {
   });
   totalPayroll = getState(selectedTotalPayroll, this.store);
   searchTypeConstant = SearchTypeConstant;
-  loaded = false;
+  loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollStay$ = this.store.pipe(select(selectorAllPayroll));
@@ -75,7 +75,6 @@ export class PayrollStayComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.loaded = false;
         this.store.dispatch(PayrollAction.loadInit(this.mapPayrollStay()));
       }
     );
@@ -101,6 +100,25 @@ export class PayrollStayComponent implements OnInit {
   }
 
   addSalaryBasic() {
+    const ref = this.dialog.open(DialogStayComponent, {
+      width: 'fit-content',
+      data: {
+        addMultiple: true,
+        createdAt: this.formGroup.get('createdAt')!.value,
+        type: SalaryTypeEnum.STAY
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        this.store.dispatch((PayrollAction.loadInit({
+          take: this.pageSize,
+          skip: this.pageIndex,
+          createdAt: this.formGroup.get('createdAt')!.value,
+          salaryTitle: val.title
+        })));
+      }
+    });
   }
 
   updateSalaryStay() {

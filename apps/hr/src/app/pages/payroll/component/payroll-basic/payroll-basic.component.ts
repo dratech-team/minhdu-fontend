@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll,
+  selectedCreateAtPayroll, selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { SalaryBasicMultipleComponent } from '../dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
+import { Payroll } from '../../+state/payroll/payroll.interface';
 
 @Component({
   selector: 'app-payroll-basic',
@@ -44,7 +45,7 @@ export class PayrollBasicComponent implements OnInit {
   totalPayroll = getState(selectedTotalPayroll, this.store);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
-  loaded = false;
+  loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
@@ -83,7 +84,6 @@ export class PayrollBasicComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.loaded = false;
         this.store.dispatch(PayrollAction.loadInit(this.mapPayrollBasic()));
       }
     );
@@ -109,6 +109,25 @@ export class PayrollBasicComponent implements OnInit {
   }
 
   addSalaryBasic() {
+    const ref = this.dialog.open(DialogBasicComponent, {
+      width: 'fit-content',
+      data: {
+        createdAt: this.formGroup.get('createdAt')!.value,
+        addMultiple: true,
+        type: SalaryTypeEnum.BASIC
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.formGroup.get('title')!.setValue(val.title, {emitEvent: false});
+        this.store.dispatch(PayrollAction.loadInit({
+          take: this.pageIndex,
+          skip: this.pageSize,
+          createdAt: this.formGroup.get('createdAt')!.value,
+          salaryTitle: val.title
+        }));
+      }
+    });
   }
 
   updateSalaryBasic() {

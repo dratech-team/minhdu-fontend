@@ -66,6 +66,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
   allowanceTitle?: string;
+  absentTitle?: string;
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
@@ -73,6 +74,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   private stop$ = new Subject<void>();
   eventAddOvertime = new Subject<any>();
   eventAddAllowance = new Subject<any>();
+  eventAddAbsent = new Subject<any>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -104,7 +106,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
       if (val !== PayrollEnum.PAYROLL_STAY
         && val !== PayrollEnum.PAYROLL_BASIC
-        && val !== PayrollEnum.PAYROLL_ALLOWANCE) {
+        && val !== PayrollEnum.PAYROLL_ALLOWANCE
+        && val !== PayrollEnum.PAYROLL_ABSENT) {
         this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(
           getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'), { emitEvent: false });
         return this.loadInitPayroll();
@@ -247,9 +250,23 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   timekeeping() {
     this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
-    this.dialog.open(DialogTimekeepingComponent, {
+    const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.createdAt = new Date(val.datetime);
+        this.absentTitle = val.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(val.datetime)
+          }));
+        this.eventAddAbsent.next({
+          overtimeTitle: val.title
+        });
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
+      }
     });
   }
 

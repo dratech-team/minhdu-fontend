@@ -66,6 +66,7 @@ import { UpdateOvertimeMultiple } from './component/update-overtime-multiple/upd
 import { SalaryBasicMultipleComponent } from './component/dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
 import { PayrollStayComponent } from './component/payroll-stay/payroll-stay.component';
 import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll-allowance.component';
+import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
 
 @NgModule({
   imports: [
@@ -142,6 +143,7 @@ import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll
     SalaryBasicMultipleComponent,
     PayrollStayComponent,
     PayrollAllowanceComponent,
+    PayrollAbsentComponent
   ],
   providers: [
     MatDatepickerModule
