@@ -42,7 +42,6 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (
       this.data?.salary?.datetime?.start &&
       this.data?.salary?.datetime?.start
@@ -136,6 +135,7 @@ export class DialogAllowanceComponent implements OnInit {
         ? this.data.salary.id
         : this.data.payroll.id
     };
+    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data.isUpdate) {
       if (this.data.multiple) {
         this.salaryService.updateMultipleSalaryOvertime(

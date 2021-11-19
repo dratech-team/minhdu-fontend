@@ -140,7 +140,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   removeSalary(id: number, payrollId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     dialogRef.afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));

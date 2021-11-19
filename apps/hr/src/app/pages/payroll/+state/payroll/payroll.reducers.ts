@@ -119,13 +119,11 @@ export const payrollReducer = createReducer(
   on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch, added }) => {
     return {
       ...state,
-      adding: true,
-      deleted: false,
       filter: filter ? filter : state.filter,
       createdAt: createdAt ? createdAt : state.createdAt,
       branch: branch ? branch : state.branch,
       added: added && added === ConvertBooleanFrontEnd.TRUE ? true :
-        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added
+        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added,
     };
   }),
   on(PayrollAction.updateSalaryMultipleSuccess, (state, _) => {
