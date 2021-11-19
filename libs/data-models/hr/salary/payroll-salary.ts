@@ -3,8 +3,8 @@ import { Salary } from './salary';
 import { Position } from '../orgChart/position';
 import { Branch } from '../orgChart/branch';
 
-export interface Overtime {
-  employees: employees[],
+export interface PayrollSalary {
+  employees: employee[],
   total: {
     price: number,
     unit: DatetimeUnitEnum,
@@ -12,7 +12,7 @@ export interface Overtime {
   }
 }
 
-interface employees {
+interface employee {
   id: number,
   firstName: string,
   lastName: string,

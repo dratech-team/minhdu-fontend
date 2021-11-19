@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { select, Store } from '@ngrx/store';
@@ -29,7 +28,6 @@ export class PayrollSeasonalComponent implements OnInit {
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
   unit = DatetimeUnitEnum;
-  overtime!: Overtime;
   loaded = false;
   pageType = PageTypeEnum;
   pageSize: number = 30;

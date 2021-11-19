@@ -61,6 +61,12 @@ import { DialogSeasonalComponent } from './component/dialog-salary/dialog-season
 import { DialogAllowanceMultipleComponent } from './component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { UpdateEmployeeOvertimeComponent } from './component/update-employee-overtime/update-employee-overtime.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PayrollBasicComponent } from './component/payroll-basic/payroll-basic.component';
+import { UpdateOvertimeMultiple } from './component/update-overtime-multiple/update-overtime-multiple';
+import { SalaryBasicMultipleComponent } from './component/dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
+import { PayrollStayComponent } from './component/payroll-stay/payroll-stay.component';
+import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll-allowance.component';
+import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
 
 @NgModule({
   imports: [
@@ -72,7 +78,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDialogModule,
     EffectsModule,
     InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateSalaryReducer),
+    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
@@ -131,7 +137,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     PayrollSeasonalComponent,
     DialogSeasonalComponent,
     DialogAllowanceMultipleComponent,
-    UpdateEmployeeOvertimeComponent
+    UpdateEmployeeOvertimeComponent,
+    PayrollBasicComponent,
+    UpdateOvertimeMultiple,
+    SalaryBasicMultipleComponent,
+    PayrollStayComponent,
+    PayrollAllowanceComponent,
+    PayrollAbsentComponent
   ],
   providers: [
     MatDatepickerModule

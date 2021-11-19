@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +47,6 @@ export class DetailPayrollComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
-
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -141,7 +140,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   removeSalary(id: number, payrollId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     dialogRef.afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));

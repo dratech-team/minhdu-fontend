@@ -245,8 +245,8 @@
           </div>
         </div>
       </mat-dialog-content>
-      <button *ngIf='employeeIds.length === 0' class='btn btn-primary mt-2' (click)='check()'>Tiếp theo</button>
-      <button *ngIf='employeeIds.length > 0'
+      <button *ngIf='employeeIds.length === 0 && !data.isUpdate' class='btn btn-primary mt-2' (click)='check()'>Tiếp theo</button>
+      <button *ngIf='employeeIds.length > 0 || data.isUpdate'
               class='btn btn-primary mt-2'
               (click)='onSubmit()'>Lưu
       </button>
@@ -258,7 +258,7 @@
         <span
           (click)='check()'>Chọn nhân viên</span>
       </ng-template>
-      <app-pick-employee-overtime *ngIf='!data?.isUpdate; else updateTemplateOvertime '
+      <app-pick-employee-overtime *ngIf='!data?.isUpdate'
                                   [checkAllowance]='onAllowanceOvertime'
                                   [search]='{templateId: templateId ,
                                              createdPayroll:  formGroup.get("month")?.value?
@@ -270,21 +270,6 @@
                                   (EventSelectEmployee)='pickEmployees($event)'
       >
       </app-pick-employee-overtime>
-      <ng-template #updateTemplateOvertime>
-        <app-update-employee-overtime
-          [checkAllowance]='onAllowanceOvertime'
-          [search]='{overtimeTitle: data.salary.title ,
-                       createdPayroll:  formGroup.get("month")?.value?
-                                        formGroup.get("month")?.value : formGroup.get("datetime")?.value,
-                       times: data.salary.times,
-                       unit: unit
-            }'
-          (EventSelectAllowance)='pickAllowanceUpdate($event)'
-          (EventSelectSalary)='pickSalaries($event)'
-        >
-
-        </app-update-employee-overtime>
-      </ng-template>
       <button class='btn btn-primary' (click)='onSubmit()'>Lưu
       </button>
     </mat-step>

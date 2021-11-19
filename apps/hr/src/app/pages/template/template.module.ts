@@ -45,7 +45,7 @@ import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
     EffectsModule,
     InfiniteScrollModule,
     StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
-    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateSalaryReducer),
+    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
     EffectsModule.forFeature([TemplateOvertimeEffect, TemplateSalaryEffect]),
     CommonModule,
     MatInputModule,

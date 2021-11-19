@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
 import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
@@ -32,7 +31,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
   unit = DatetimeUnitEnum;
-  overtime!: Overtime;
   pageType = PageTypeEnum;
   @Input() formGroup!: FormGroup;
 

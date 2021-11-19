@@ -30,7 +30,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
-  salaryIds: number[] = [];
   allowSalaryIds: number[] = [];
   price!: number;
   title!: string;
@@ -162,16 +161,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     this.employeeIds = employeeIds;
   }
 
-
-  pickAllowanceUpdate(allowSalaryIds: number[]) {
-    this.allowSalaryIds = allowSalaryIds;
-  }
-
-  pickSalaries(salaryIds: number[]): any {
-    this.salaryIds = salaryIds;
-    console.log(this.salaryIds);
-  }
-
   pickOverTime(data: TemplateOvertime) {
     this.price = data.price;
     this.title = data.title;
@@ -271,12 +260,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       delete salary.unit;
     }
     if (this.data?.isUpdate) {
-      if (this.salaryIds.length === 0) {
-        return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
-          duration: 1000
-        });
-      }
-      Object.assign(salary, { salaryIds: this.salaryIds });
+
+      Object.assign(salary, { salaryIds: this.data.salaryIds });
       this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
         if (val) {
           this.snackBar.open(val.message, '', { duration: 1500 });

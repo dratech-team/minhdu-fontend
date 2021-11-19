@@ -93,6 +93,12 @@ export const selectedTypePayroll = createSelector(
     return state.filter;
   }
 );
+
+export const selectedTotalPayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.total
+);
+
 export const selectedCreateAtPayroll = createSelector(
   selectorPayrollState,
   (state) => {

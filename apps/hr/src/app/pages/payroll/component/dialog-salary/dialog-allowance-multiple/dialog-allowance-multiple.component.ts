@@ -54,8 +54,8 @@ export class DialogAllowanceMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.employeeIds.length === 0){
-      this.snackBar.open('Chưa chọn nhân viên', '', {duration: 1500})
+    if (this.employeeIds.length === 0) {
+      this.snackBar.open('Chưa chọn nhân viên', '', { duration: 1500 });
     }
     const value = this.formGroup.value;
     const salary = {
@@ -79,10 +79,12 @@ export class DialogAllowanceMultipleComponent implements OnInit {
     );
     this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
       if (added) {
-        this.dialogRef.close();
+        this.dialogRef.close({
+          datetime: value.month,
+          title: value.title
+        });
       }
     });
-
   }
 
 

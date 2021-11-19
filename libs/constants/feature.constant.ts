@@ -9,7 +9,7 @@ export const FeatureName = {
   DEPARTMENT: 'department',
   POSITION: 'position',
   TEMPLATE_OVERTIME :'template_overtime',
-  TEMPLATE_BASIC :'template_basic',
+  TEMPLATE_SALARY :'template_salary',
   HOLIDAY :'holiday',
   CUSTOMER: 'customer',
   PAYMENT: 'payment',

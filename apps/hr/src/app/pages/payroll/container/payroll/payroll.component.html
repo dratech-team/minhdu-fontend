@@ -1,15 +1,6 @@
 <div class='main-content'>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL ' class='row h3 ml-3'>
-    Bảng lương nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME ' class='row h3 ml-3'>
-    Bảng tăng ca tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div class='row h3 ml-3' *ngIf='selectedPayroll === payrollEnum.TIME_SHEET '>
-    Bảng chấm công nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL ' class='row h3 ml-3'>
-    Bảng lương nhân viên công nhật tháng {{createdAt| date: 'MM/yyyy'}}
+  <div class='row h3 ml-3'>
+    {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -48,7 +39,7 @@
       <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                            count='18' appearance='line'></ngx-skeleton-loader>
       <ng-template #payroll>
-        <div class='table-scroll mt-5 mx-auto'
+        <div class='table-scroll mt-3 mx-auto'
              infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1'
@@ -306,13 +297,13 @@
       >
       </app-payroll-time-sheet>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         [overtimeTitle]='overtimeTitle'
-        [eventAddOvertime]='eventAddOvertime'
-        (EventSelectMonth)='selectMonth($event)'
-        [createdAt]='this.createdAt'></app-payroll-overtime>
+        [eventAddOvertime]='eventAddOvertime'></app-payroll-overtime>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal
         [payroll$]='payroll$'
@@ -328,8 +319,27 @@
         (EventSelectBranch)='onSelectBranch($event)'
         (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
     </div>
-  </div>
 
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
+      <app-payroll-basic></app-payroll-basic>
+    </div>
+
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY '>
+      <app-payroll-stay></app-payroll-stay>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
+      <app-payroll-allowance
+        [allowanceTitle]='allowanceTitle'
+        [eventAddAllowance]='eventAddAllowance'
+      ></app-payroll-allowance>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT '>
+      <app-payroll-absent
+        [absentTitle]='absentTitle'
+        [eventAddAbsent]='eventAddAbsent'
+      ></app-payroll-absent>
+    </div>
+  </div>
   <app-mouse-right [type]='pageType.PAYROLL'
                    #child
                    (deleteEvent)='deletePayroll($event)'
@@ -339,8 +349,6 @@
                    (readEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
-
-
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
