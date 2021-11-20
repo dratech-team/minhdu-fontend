@@ -22,7 +22,7 @@ export class DialogExportPayrollComponent {
     }
     const fileName = this.name.value;
     const payroll = {
-      code: this.data.code,
+      code: this.data.code||'',
       name: this.data.name,
       position: this.data.position,
       branch: this.data.branch,
@@ -31,7 +31,7 @@ export class DialogExportPayrollComponent {
     };
     this.exportService.print(
       Api.PAYROLL_EXPORT, Object.assign(payroll,
-        this.data?.createdAt ? { createdAt: this.data.createdAt, fileName: fileName } : { fileName: fileName })
+        this.data?.createdAt ? { createdAt: new Date(this.data.createdAt), filename: fileName } : { filename: fileName })
     );
   }
 }

@@ -29,7 +29,7 @@ export class DialogExportTimekeepingComponent {
       Api.TIMEKEEPING_EXPORT,
       {
         datetime: datetime ? new Date(datetime) : new Date(),
-        fileName: this.name.value
+        filename: this.name.value
       }
     );
     this.dialogRef.close();
