@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -21,13 +21,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { Router } from '@angular/router';
-import { SalaryBasicMultipleComponent } from '../dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
-import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
-import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
-import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
-import { Payroll } from '../../+state/payroll/payroll.interface';
-import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 
@@ -50,8 +44,7 @@ export class PayrollAbsentComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalPayroll = getState(selectedTotalPayroll, this.store);
-  templateBasic$ = new Subject<any>();
+  totalSalaryAbsent = getState(selectedTotalPayroll, this.store);
   searchTypeConstant = SearchTypeConstant;
   loaded = false;
   genderType = Gender;
@@ -80,6 +73,7 @@ export class PayrollAbsentComponent implements OnInit {
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
       salaryTitle: this.absentTitle ? this.absentTitle : ''
+      // salaryType: SalaryTypeEnum.ABSENT
     }));
 
     if (this.absentTitle) {
@@ -87,7 +81,6 @@ export class PayrollAbsentComponent implements OnInit {
     }
 
     this.eventAddAbsent?.subscribe(val => {
-      console.log(val);
       this.formGroup.get('title')!.setValue(val.absentTitle, { emitEvent: false });
       this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(
         val.datetime ?
@@ -101,7 +94,8 @@ export class PayrollAbsentComponent implements OnInit {
           val.datetime
             ? val.datetime
             : getState(selectedCreateAtPayroll, this.store)),
-        salaryTitle: val.absentTitle ? val.absentTitle : ''
+        salaryTitle: val.absentTitle ? val.absentTitle : '',
+        salaryType: SalaryTypeEnum.ABSENT
       }));
     });
 
@@ -114,18 +108,21 @@ export class PayrollAbsentComponent implements OnInit {
     );
 
     this.payrollAbsent$.subscribe(payrolls => {
-      this.salaries = [];
-      payrolls.forEach(payroll => {
-        payroll.salaries.forEach(salary => {
-          if (salary.type === SalaryTypeEnum.ABSENT || salary.type === SalaryTypeEnum.DAY_OFF) {
-            if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
-              && !this.salaries.find(e => e.id === salary.id)) {
-              this.salaryIds.push(salary.id);
-            }
-            this.salaries.push(salary);
+      if (payrolls) {
+        payrolls.forEach(payroll => {
+          if (payroll.salaries) {
+            payroll.salaries.forEach(salary => {
+              if (salary.type === SalaryTypeEnum.ABSENT || salary.type === SalaryTypeEnum.DAY_OFF) {
+                if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
+                  && !this.salaries.find(e => e.id === salary.id)) {
+                  this.salaryIds.push(salary.id);
+                }
+                this.salaries.push(salary);
+              }
+            });
           }
         });
-      });
+      }
     });
   }
 
@@ -150,7 +147,8 @@ export class PayrollAbsentComponent implements OnInit {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: new Date(val.datetime ? val.datetime : this.formGroup.get('createdAt')!.value),
-          salaryTitle: val.title
+          salaryTitle: val.title,
+          salaryType: SalaryTypeEnum.ABSENT
         }));
       }
     });
@@ -173,10 +171,11 @@ export class PayrollAbsentComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalPayroll: this.totalPayroll,
-          multiple: true,
+          totalSalary: this.totalSalaryAbsent,
+          updateMultiple: true,
           createdAt: value.createdAt,
-          type: SalaryTypeEnum.ALLOWANCE
+          type: SalaryTypeEnum.ABSENT
+
         }
       });
       console.log(salariesSelected[0]);
@@ -192,7 +191,8 @@ export class PayrollAbsentComponent implements OnInit {
               searchType: value.searchType,
               createdAt: new Date(value.datetime ? value.datetime : value.createdAt),
               salaryTitle: salariesSelected[0].title,
-              name: value.name
+              name: value.name,
+              salaryType: SalaryTypeEnum.ABSENT
             }));
           }
         }
@@ -216,19 +216,13 @@ export class PayrollAbsentComponent implements OnInit {
     });
   }
 
-  onSelectTemplateBasic($event: any, title: string) {
-  }
-
   onScroll() {
     const value = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAbsent()));
   }
 
   updateSelectSalary(id: number) {
-
-    updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-    // this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-
+    this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
   }
 
   someCompleteSalary(): boolean {
@@ -237,7 +231,6 @@ export class PayrollAbsentComponent implements OnInit {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
-    console.log(this.isSelectSalary);
   }
 
   mapPayrollAbsent() {

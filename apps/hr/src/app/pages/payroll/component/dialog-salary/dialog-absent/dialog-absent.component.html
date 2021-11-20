@@ -15,6 +15,7 @@
         <div class='title-item col-12 '>
           <span>Khoảng khấu trừ </span>
           <span class='star'>*</span>
+          <span *ngIf='data?.updateMultiple' class='ml-2'>({{data.salaryIds.length}}/{{data.totalSalary}})</span>
         </div>
         <div class=' my-2 col-12 ' *ngIf='!data.isUpdate'>
           <mat-select class='form-control' [value]='selectedIndex'>

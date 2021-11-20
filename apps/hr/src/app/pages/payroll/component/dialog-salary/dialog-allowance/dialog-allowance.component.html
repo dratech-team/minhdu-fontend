@@ -18,7 +18,8 @@
           <div>
             <div class='row title-item mb-1'>
               <span>Tên phụ cấp</span>
-              <div class='star'>*</div>
+              <span class='star'>*</span>
+              <span class='ml-2' *ngIf='data?.updateMultiple'>({{data.salaryIds.length}}/{{data.totalSalary}})</span>
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control px-1' placeholder='Nhập tên phụ cấp' formControlName='title'

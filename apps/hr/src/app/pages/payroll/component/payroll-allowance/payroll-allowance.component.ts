@@ -47,7 +47,7 @@ export class PayrollAllowanceComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalPayroll = getState(selectedTotalPayroll, this.store);
+  totalSalaryAllowance = getState(selectedTotalPayroll, this.store);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -103,15 +103,19 @@ export class PayrollAllowanceComponent implements OnInit {
     this.payrollAllowance$.subscribe(payrolls => {
       this.salaries = [];
       payrolls.forEach(payroll => {
-        payroll.salaries.forEach(salary => {
-          if (salary.type === SalaryTypeEnum.ALLOWANCE) {
-            if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
-              && !this.salaries.find(e => e.id === salary.id)) {
-              this.salaryIds.push(salary.id);
+        if (payroll) {
+          payroll.salaries.forEach(salary => {
+            if (payroll.salaries) {
+              if (salary.type === SalaryTypeEnum.ALLOWANCE) {
+                if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
+                  && !this.salaries.find(e => e.id === salary.id)) {
+                  this.salaryIds.push(salary.id);
+                }
+                this.salaries.push(salary);
+              }
             }
-            this.salaries.push(salary);
-          }
-        });
+          });
+        }
       });
     });
   }
@@ -127,17 +131,17 @@ export class PayrollAllowanceComponent implements OnInit {
       }
     );
     ref.afterClosed().subscribe(val => {
-      if( val){
-        this.formGroup.get('title')!.setValue(val.title,{emitEvent: false})
-        this.formGroup.get('createdAt')!.setValue(val.datetime,{emitEvent: false})
+      if (val) {
+        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('createdAt')!.setValue(val.datetime, { emitEvent: false });
         this.store.dispatch(PayrollAction.loadInit({
           take: this.pageSize,
-          skip:this.pageIndex,
+          skip: this.pageIndex,
           createdAt: new Date(val.datetime),
           salaryTitle: val.title
-        }))
+        }));
       }
-    })
+    });
   }
 
   updateSalaryAllowance() {
@@ -159,8 +163,8 @@ export class PayrollAllowanceComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalPayroll: this.totalPayroll,
-          multiple: true,
+          totalSalary: this.totalSalaryAllowance,
+          updateMultiple: true,
           type: SalaryTypeEnum.ALLOWANCE
         }
       });
@@ -200,18 +204,13 @@ export class PayrollAllowanceComponent implements OnInit {
     });
   }
 
-  onSelectTemplateBasic($event: any, title: string) {
-  }
-
   onScroll() {
     const value = this.formGroup.value;
     this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAllowance()));
   }
 
   updateSelectSalary(id: number) {
-    updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-    // this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-
+    this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
   }
 
   someCompleteSalary(): boolean {
@@ -220,7 +219,6 @@ export class PayrollAllowanceComponent implements OnInit {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
-    console.log(this.isSelectSalary);
   }
 
   mapPayrollAllowance() {

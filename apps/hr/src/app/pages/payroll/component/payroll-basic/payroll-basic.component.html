@@ -35,13 +35,20 @@
           <input type='text' disabled>
         </th>
         <th style='width: 50px ; z-index: 3'>
-          <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
-          <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                  (click)='updateSalaryBasic()'
-                  *ngIf='salaryIds.length > 0'
-                  class=' btn btn-primary d-flex justify-content-center align-items-center '>
-            Sửa
-          </button>
+          <div class='border-top border-bottom d-flex justify-content-center align-items-center p-1'>
+            <span *ngIf='salaryIds.length === 0' class='mr-2'>Chọn</span>
+            <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                    (click)='updateSalaryBasic()'
+                    *ngIf='salaryIds.length > 0'
+                    class=' btn btn-primary d-flex justify-content-center align-items-center '>
+              Sửa
+            </button>
+          </div>
+          <mat-checkbox class='example-margin mt-2 mx-auto'
+                        [checked]='isSelectSalary'
+                        [indeterminate]='someCompleteSalary()'
+                        (change)='setAllSalary($event.checked)'>
+          </mat-checkbox>
         </th>
         <th style='width: 220px;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -68,40 +75,6 @@
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Thành tiền</div>
           <input type='text' disabled>
-        </th>
-      </tr>
-      <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
-        <th style='background:white'>
-          <div class=''></div>
-        </th>
-        <th style='background:white'>
-          <div class=''></div>
-        </th>
-        <th style='background:white'>
-          <div class='text-center'>Tổng cộng</div>
-        </th>
-        <th style=' width: 200px;'>
-          <div class='text-center'></div>
-        </th>
-        <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
-          <!--        <mat-checkbox class='example-margin mt-2 mx-auto'-->
-          <!--                      [checked]='isSelectSalary'-->
-          <!--                      [indeterminate]='someCompleteSalary()'-->
-          <!--                      (change)='setAllSalary($event.checked)'>-->
-          <!--        </mat-checkbox>-->
-        </th>
-        <th style='width: 220px'>
-          <div class='text-center'></div>
-        </th>
-        <th style='min-width: 300px'>
-          <div class='text-center'></div>
-        </th>
-        <th>
-          <div class='text-center'></div>
-        </th>
-        <th>
-          <div class='text-center'>
-          </div>
         </th>
       </tr>
       </thead>

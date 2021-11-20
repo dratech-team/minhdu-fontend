@@ -34,8 +34,11 @@ export const payrollReducer = createReducer(
 
 
   on(PayrollAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.payrolls,
-      { ...state, loaded: true, added: true, adding: false, total: action.total })),
+  {
+   return  adapter.setAll(action.payrolls,
+      { ...state, loaded: true, added: true, adding: false, total: action.total })
+  }
+    ),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) => {
       return adapter.addMany(action.payrolls, { ...state, loaded: true, total: action.total });

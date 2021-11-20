@@ -101,11 +101,12 @@ export class DialogBasicComponent implements OnInit {
       rate: value.rate,
       payrollId: this.data?.isUpdate ? this.data.salary.payrollId : this.data?.payroll?.id,
       type:
-        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC
+        value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC,
+      datetime: new Date(this.data?.payroll?.createdAt|| this.data?.createdAt)
     };
     this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}))
     if (this.data?.isUpdate) {
-      if (this.data?.multiple) {
+      if (this.data?.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
             salaryIds: this.data.salaryIds,

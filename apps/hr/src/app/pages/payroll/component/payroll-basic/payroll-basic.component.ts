@@ -42,7 +42,7 @@ export class PayrollBasicComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalPayroll = getState(selectedTotalPayroll, this.store);
+  totalSalaryBasic = getState(selectedTotalPayroll, this.store);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -90,17 +90,21 @@ export class PayrollBasicComponent implements OnInit {
 
     this.payrollBasic$.subscribe(payrolls => {
       this.salaries = [];
-      payrolls.forEach(payroll => {
-        payroll.salaries.forEach(salary => {
-          if ((salary.type === SalaryTypeEnum.BASIC_INSURANCE || salary.type === SalaryTypeEnum.BASIC)) {
-            if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
-              && !this.salaries.find(e => e.id === salary.id)) {
-              this.salaryIds.push(salary.id);
-            }
-            this.salaries.push(salary);
+      if(payrolls.length){
+        payrolls.forEach(payroll => {
+          if(payroll.salaries){
+            payroll.salaries.forEach(salary => {
+              if ((salary.type === SalaryTypeEnum.BASIC_INSURANCE || salary.type === SalaryTypeEnum.BASIC)) {
+                if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
+                  && !this.salaries.find(e => e.id === salary.id)) {
+                  this.salaryIds.push(salary.id);
+                }
+                this.salaries.push(salary);
+              }
+            });
           }
         });
-      });
+      }
     });
   }
 
@@ -119,7 +123,7 @@ export class PayrollBasicComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.formGroup.get('title')!.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
         this.store.dispatch(PayrollAction.loadInit({
           take: this.pageIndex,
           skip: this.pageSize,
@@ -146,8 +150,8 @@ export class PayrollBasicComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalPayroll: this.totalPayroll,
-          multiple: true
+          totalSalary: this.totalSalaryBasic,
+          updateMultiple: true
         }
       });
       ref.afterClosed().subscribe(
@@ -157,15 +161,22 @@ export class PayrollBasicComponent implements OnInit {
             this.salaryIds = [];
             const value = this.formGroup.value;
             this.formGroup.get('title')!.setValue(salariesSelected[0].title, { emitEvent: false });
+            console.log(value)
+            console.log(salariesSelected[0].title)
+            const params = {
+              take: this.pageSize,
+              skip: this.pageIndex,
+              searchType: value.searchType,
+              createdAt: value.createdAt,
+              salaryTitle: salariesSelected[0].title,
+              name: this.formGroup.get('name')!.value
+            };
+            if (this.formGroup.get('name')!.value === '') {
+              delete params.name;
+            }
+            console.log(params)
             this.store.dispatch(PayrollAction.loadInit(
-              {
-                take: this.pageSize,
-                skip: this.pageIndex,
-                searchType: value.searchType,
-                createdAt: new Date(value.createdAt),
-                salaryTitle: salariesSelected[0].title,
-                name: value.name
-              }
+              params
             ));
           }
         }
@@ -215,10 +226,7 @@ export class PayrollBasicComponent implements OnInit {
   }
 
   updateSelectSalary(id: number) {
-    // this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-    updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-    console.log(this.salaryIds);
-    console.log(this.isSelectSalary);
+    this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
   }
 
   someCompleteSalary(): boolean {
@@ -227,6 +235,5 @@ export class PayrollBasicComponent implements OnInit {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
-    console.log(this.isSelectSalary);
   }
 }

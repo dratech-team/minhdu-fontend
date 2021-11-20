@@ -41,7 +41,7 @@ export class PayrollStayComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalPayroll = getState(selectedTotalPayroll, this.store);
+  totalSalaryStay = getState(selectedTotalPayroll, this.store);
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
@@ -82,15 +82,19 @@ export class PayrollStayComponent implements OnInit {
     this.payrollStay$.subscribe(payrolls => {
       this.salaries = [];
       payrolls.forEach(payroll => {
-        payroll.salaries.forEach(salary => {
-          if ((salary.type === SalaryTypeEnum.STAY)) {
-            if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
-              && !this.salaries.find(e => e.id === salary.id)) {
-              this.salaryIds.push(salary.id);
-            }
-            this.salaries.push(salary);
+        if (payroll) {
+          if (payroll.salaries) {
+            payroll.salaries.forEach(salary => {
+              if ((salary.type === SalaryTypeEnum.STAY)) {
+                if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
+                  && !this.salaries.find(e => e.id === salary.id)) {
+                  this.salaryIds.push(salary.id);
+                }
+                this.salaries.push(salary);
+              }
+            });
           }
-        });
+        }
       });
     });
   }
@@ -137,7 +141,7 @@ export class PayrollStayComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalPayroll: this.totalPayroll,
+          totalSalary: this.totalSalaryStay,
           updateMultiple: true
         }
       });
@@ -185,8 +189,7 @@ export class PayrollStayComponent implements OnInit {
   }
 
   updateSelectSalary(id: number) {
-    // this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
-    updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
+    this.isSelectSalary = updateSelect(id, this.salaryIds, this.isSelectSalary, this.salaries);
   }
 
   someCompleteSalary(): boolean {

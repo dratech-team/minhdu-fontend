@@ -137,7 +137,7 @@ export class DialogAllowanceComponent implements OnInit {
     };
     this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data.isUpdate) {
-      if (this.data.multiple) {
+      if (this.data.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
             salaryIds: this.data.salaryIds,

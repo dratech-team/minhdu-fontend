@@ -70,6 +70,7 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    console.log(this.data)
     this.firstDayInMonth = this.datePipe.transform(
       getFirstDayInMonth(new Date(this.data?.payroll?.createdAt
         ? this.data.payroll.createdAt
@@ -206,8 +207,7 @@ export class DialogAbsentComponent implements OnInit {
           });
         }
       }
-
-      if (this.data.multiple) {
+      if (this.data?.updateMultiple) {
         delete salary.payrollId;
         Object.assign(salary, { salaryIds: this.data.salaryIds });
         this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
