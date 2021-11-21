@@ -1,7 +1,7 @@
 <ngx-skeleton-loader *ngIf='!(loaded$|async) else payrollAllowance ' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #payrollAllowance>
   <div class='font-lg font-weight-bold my-2'>
-    Đã chọn:{{salaryIds.length}}/{{totalSalaryAllowance$|async}}
+    Đã chọn: {{salaryIds.length}}/{{totalSalaryAllowance$|async}}
   </div>
   <div class='table-scroll mt-2 position-relative'
        infiniteScroll
