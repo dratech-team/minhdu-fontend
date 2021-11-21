@@ -4,7 +4,7 @@ import { Payroll } from './payroll.interface';
 import {
   ConvertBoolean,
   ConvertBooleanFrontEnd,
-  EmployeeType,
+  EmployeeType, FilterTypeEnum,
   PayrollEnum,
   SalaryTypeEnum,
   SearchTypeEnum
@@ -25,7 +25,7 @@ export const loadInit = createAction(
     paidAt?: boolean,
     accConfirmedAt?: boolean,
     employeeId?: number,
-    isTimeSheet?: boolean,
+    filterType?: FilterTypeEnum,
     employeeType?: EmployeeType,
     salaryType?: SalaryTypeEnum,
     salaryTitle?: string,
@@ -50,7 +50,7 @@ export const loadMorePayrolls = createAction(
     branch?: string,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
-    isTimeSheet?: boolean,
+    filterType?: FilterTypeEnum,
     salaryType?: SalaryTypeEnum,
     salaryTitle?: string,
     searchType?: SearchTypeEnum

@@ -21,10 +21,30 @@
         <button (click)='timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
       </div>
       <div>
-        <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
+        <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất bảng lương</button>
       </div>
       <div>
-        <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
+        <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất bảng chấm công</button>
+      </div>
+      <div>
+        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME'
+                (click)='exportOvertime()' class='btn btn-primary mr-2'>Xuất bảng tăng ca</button>
+      </div>
+      <div>
+        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT'
+                (click)='exportAbsent()' class='btn btn-primary mr-2'>Xuất bảng khấu trừ</button>
+      </div>
+      <div>
+        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE'
+                (click)='exportAllowance()' class='btn btn-primary mr-2'>Xuất bảng phụ cấp khác</button>
+      </div>
+      <div>
+        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY'
+                (click)='exportStay()' class='btn btn-primary mr-2'>Xuất bảng phụ cấp lương</button>
+      </div>
+      <div>
+        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC'
+                (click)='exportBasic()' class='btn btn-primary mr-2'>Xuất bảng lương cơ bản</button>
       </div>
     </div>
     <div class='mr-2 d-flex'>
@@ -32,7 +52,6 @@
         <button (click)='generate()' class='btn btn-primary mr-2'>Tự động tạo</button>
       </div>
     </div>
-
   </div>
   <div class='mx-auto' style='width: 98%'>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL'>
@@ -301,7 +320,8 @@
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         [overtimeTitle]='overtimeTitle'
-        [eventAddOvertime]='eventAddOvertime'></app-payroll-overtime>
+        [eventAddOvertime]='eventAddOvertime'
+        [eventExportOvertime]='eventExportOvertime'></app-payroll-overtime>
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
@@ -321,22 +341,28 @@
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
-      <app-payroll-basic></app-payroll-basic>
+      <app-payroll-basic
+        [eventExportBasic]='eventExportBasic'
+      ></app-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY '>
-      <app-payroll-stay></app-payroll-stay>
+      <app-payroll-stay
+      [eventExportStay]='eventExportStay'
+      ></app-payroll-stay>
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
       <app-payroll-allowance
         [allowanceTitle]='allowanceTitle'
         [eventAddAllowance]='eventAddAllowance'
+        [eventExportAllowance]='eventExportAllowance'
       ></app-payroll-allowance>
     </div>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT '>
       <app-payroll-absent
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
+        [eventExportAbsent]='eventExportAbsent'
       ></app-payroll-absent>
     </div>
   </div>

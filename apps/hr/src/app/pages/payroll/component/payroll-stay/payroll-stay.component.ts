@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -25,6 +25,7 @@ import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -32,6 +33,7 @@ import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/t
 })
 export class PayrollStayComponent implements OnInit {
   pageType = PageTypeEnum;
+  @Input() eventExportStay?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
@@ -42,7 +44,7 @@ export class PayrollStayComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryStay$ = this.store.select(selectedTotalPayroll)
+  totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
@@ -71,7 +73,8 @@ export class PayrollStayComponent implements OnInit {
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryType: SalaryTypeEnum.STAY
+      salaryType: SalaryTypeEnum.STAY,
+      filterType: FilterTypeEnum.SALARY
     }));
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
@@ -102,7 +105,7 @@ export class PayrollStayComponent implements OnInit {
   }
 
   readPayroll(event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.payrollId]).then();
   }
 
   addSalaryStay() {
@@ -121,7 +124,9 @@ export class PayrollStayComponent implements OnInit {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: this.formGroup.get('createdAt')!.value,
-          salaryTitle: val.title
+          salaryTitle: val.title,
+          salaryType: SalaryTypeEnum.STAY,
+          filterType: FilterTypeEnum.SALARY
         })));
       }
     });
@@ -160,7 +165,9 @@ export class PayrollStayComponent implements OnInit {
               searchType: value.searchType,
               createdAt: new Date(value.createdAt),
               salaryTitle: val.title,
-              name: value.name
+              name: value.name,
+              salaryType: SalaryTypeEnum.STAY,
+              filterType: FilterTypeEnum.SALARY
             }));
           }
         }
@@ -209,7 +216,9 @@ export class PayrollStayComponent implements OnInit {
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
-      name: value.name
+      name: value.name,
+      salaryType: SalaryTypeEnum.STAY,
+      filterType: FilterTypeEnum.SALARY
     };
     if (!value.name) {
       delete params.name;

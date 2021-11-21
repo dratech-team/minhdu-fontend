@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -32,6 +32,7 @@ import { Payroll } from '../../+state/payroll/payroll.interface';
 })
 export class PayrollBasicComponent implements OnInit {
   pageType = PageTypeEnum;
+  @Input() eventExportBasic?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
@@ -78,8 +79,9 @@ export class PayrollBasicComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
+      salaryType: SalaryTypeEnum.BASIC,
+      filterType: FilterTypeEnum.SALARY,
       createdAt: new Date(this.createdAt),
-      salaryType: SalaryTypeEnum.BASIC
     }));
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
@@ -107,10 +109,16 @@ export class PayrollBasicComponent implements OnInit {
         });
       }
     });
+
+    this.eventExportBasic?.subscribe( val => {
+      if(val){
+        //export basic
+      }
+    })
   }
 
   readPayroll(event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.payrollId]).then();
   }
 
   addSalaryBasic() {

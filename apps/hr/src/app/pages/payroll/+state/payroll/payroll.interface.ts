@@ -9,6 +9,7 @@ export type AddPayroll = Pick<Payroll, 'createdAt'> & {
 
 export interface Payroll {
   id: number;
+  payrollId: number,
   employee: Employee;
   createdAt: Date;
   salaries: Salary[];

@@ -94,13 +94,12 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   isShowDatePicker() {
-    if (this.data.multiple) {
+    if (this.data.updateMultiple) {
       return false;
     }
     {
       return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
     }
-
   }
 
   get f() {
@@ -108,6 +107,7 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;

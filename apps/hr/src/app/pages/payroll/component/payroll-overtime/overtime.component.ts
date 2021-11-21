@@ -18,7 +18,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { OvertimeService } from '../../service/overtime.service';
-import { SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { DialogOvertimeMultipleComponent } from '../dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
@@ -29,6 +29,8 @@ import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salar
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overtime-multiple';
+import { DialogExportComponent } from '../dialog-export/dialog-export.component';
+import { ExportService } from '@minhdu-fontend/service';
 
 @Component({
   selector: 'app-payroll-overtime',
@@ -36,6 +38,7 @@ import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overt
 })
 export class OvertimeComponent implements OnInit {
   @Input() eventAddOvertime?: Subject<any>;
+  @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
@@ -72,7 +75,8 @@ export class OvertimeComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
-    private readonly salaryService: SalaryService
+    private readonly salaryService: SalaryService,
+    private readonly exportService: ExportService
   ) {
   }
 
@@ -99,10 +103,13 @@ export class OvertimeComponent implements OnInit {
         getLastDayInMonth(this.createdAt)
         : new Date(this.createdAt)
       , 'yyyy-MM-dd'));
+
     if (this.overtimeTitle) {
       this.formGroup.get('title')!.setValue(this.overtimeTitle, { emitEvent: false });
     }
+
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
+
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         if ((value.startAt && value.endAt)) {
           this.store.dispatch(PayrollAction.updateStatePayroll({ createdAt: new Date(value.startAt) }));
@@ -128,6 +135,7 @@ export class OvertimeComponent implements OnInit {
         }
       }
     );
+
     this.templateOvertime$ = combineLatest([
       this.formGroup.get('title')!.valueChanges.pipe(startWith('')),
       this.store.pipe(select(selectorAllTemplate))
@@ -142,6 +150,7 @@ export class OvertimeComponent implements OnInit {
         }
       })
     );
+
     this.eventAddOvertime?.subscribe(val => {
       if (this.overtimeTitle) {
         this.formGroup.get('title')!.setValue(val.overtimeTitle);
@@ -154,6 +163,28 @@ export class OvertimeComponent implements OnInit {
           startAt: new Date(val.createdAt),
           endAt: new Date(val.createdAt)
         });
+    });
+
+    this.eventExportOvertime?.subscribe(val => {
+      if (val) {
+        const ref = this.dialog.open(DialogExportComponent, { width: 'fit-content' });
+        ref.afterClosed().subscribe(val =>{
+          if(val){
+            const value = this.formGroup.value;
+            const overtime = {
+              searchType: value.searchType,
+              startedAt: new Date(value.startAt),
+              endedAt: new Date(value.endAt),
+              title: value.title||'',
+              name: value.name|| '',
+              filename: val
+            };
+            this.exportService.print(
+              Api.PAYROLL_EXPORT_OVERTIME, overtime
+            );
+          }
+        })
+      }
     });
   }
 

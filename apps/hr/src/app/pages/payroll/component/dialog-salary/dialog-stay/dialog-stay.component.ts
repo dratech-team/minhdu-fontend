@@ -77,7 +77,7 @@ export class DialogStayComponent implements OnInit {
       type: this.data.type,
       rate: value.rate,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : undefined,
-      datetime: new Date(this.data?.payroll.createdAt|| this.data?.createdAt)
+      datetime: new Date(this.data?.payroll?.createdAt|| this.data?.createdAt)
     };
     this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data?.isUpdate) {

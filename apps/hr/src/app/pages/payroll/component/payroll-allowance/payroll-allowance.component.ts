@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -32,6 +32,7 @@ import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowa
 })
 export class PayrollAllowanceComponent implements OnInit {
   @Input() eventAddAllowance?: Subject<any>;
+  @Input() eventExportAllowance?: Subject<any>;
   @Input() allowanceTitle?: string;
   pageType = PageTypeEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
@@ -74,7 +75,8 @@ export class PayrollAllowanceComponent implements OnInit {
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
       salaryTitle: this.allowanceTitle ? this.allowanceTitle : '',
-      salaryType: SalaryTypeEnum.ALLOWANCE
+      salaryType: SalaryTypeEnum.ALLOWANCE,
+      filterType: FilterTypeEnum.SALARY
     }));
     if (this.allowanceTitle) {
       this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
@@ -87,7 +89,8 @@ export class PayrollAllowanceComponent implements OnInit {
         skip: this.pageIndex,
         createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
         salaryTitle: val.allowanceTitle ? val.allowanceTitle : '',
-        salaryType: SalaryTypeEnum.ALLOWANCE
+        salaryType: SalaryTypeEnum.ALLOWANCE,
+        filterType: FilterTypeEnum.SALARY
       }));
     });
 
@@ -117,10 +120,16 @@ export class PayrollAllowanceComponent implements OnInit {
         }
       });
     });
+
+    this.eventExportAllowance?.subscribe(val => {
+      if (val) {
+        //export allowance
+      }
+    });
   }
 
   readPayroll(event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.payrollId]).then();
   }
 
   addSalaryAllowance() {
@@ -138,7 +147,8 @@ export class PayrollAllowanceComponent implements OnInit {
           skip: this.pageIndex,
           createdAt: new Date(val.datetime),
           salaryTitle: val.title,
-          salaryType: SalaryTypeEnum.ALLOWANCE
+          salaryType: SalaryTypeEnum.ALLOWANCE,
+          filterType: FilterTypeEnum.SALARY
         }));
       }
     });
@@ -180,7 +190,8 @@ export class PayrollAllowanceComponent implements OnInit {
               createdAt: new Date(value.createdAt),
               salaryTitle: val.title,
               name: value.name,
-              salaryType: SalaryTypeEnum.ALLOWANCE
+              salaryType: SalaryTypeEnum.ALLOWANCE,
+              filterType: FilterTypeEnum.SALARY
             }));
           }
         }
@@ -229,7 +240,9 @@ export class PayrollAllowanceComponent implements OnInit {
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
-      name: value.name
+      name: value.name,
+      salaryType: SalaryTypeEnum.ALLOWANCE,
+      filterType: FilterTypeEnum.SALARY
     };
     if (!value.name) {
       delete params.name;

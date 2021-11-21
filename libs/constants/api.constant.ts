@@ -10,6 +10,7 @@ export const Api = {
   CONFIRM_PAYROLL: 'payroll/confirm',
   RESTORE_PAYROLL: 'payroll/restore',
   PAYROLL_EXPORT: 'payroll/export/print',
+  PAYROLL_EXPORT_OVERTIME: 'payroll/export-overtime/print',
   TIMEKEEPING_EXPORT: 'payroll/timekeeping/export/print',
   SALARY: 'salary',
   SALARY_EMPLOYEES: 'salary/employees',

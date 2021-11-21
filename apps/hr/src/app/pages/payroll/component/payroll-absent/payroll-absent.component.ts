@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -16,7 +16,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll, selectedLoadedPayroll,
+  selectedCreateAtPayroll,
+  selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -31,6 +32,7 @@ import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-
 })
 export class PayrollAbsentComponent implements OnInit {
   @Input() eventAddAbsent?: Subject<any>;
+  @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
   pageType = PageTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
@@ -68,12 +70,14 @@ export class PayrollAbsentComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
       salaryTitle: this.absentTitle ? this.absentTitle : '',
-      salaryType: SalaryTypeEnum.ABSENT
+      salaryType: SalaryTypeEnum.ABSENT,
+      filterType: FilterTypeEnum.SALARY
     }));
 
     if (this.absentTitle) {
@@ -95,7 +99,8 @@ export class PayrollAbsentComponent implements OnInit {
             ? val.datetime
             : getState(selectedCreateAtPayroll, this.store)),
         salaryTitle: val.absentTitle ? val.absentTitle : '',
-        salaryType: SalaryTypeEnum.ABSENT
+        salaryType: SalaryTypeEnum.ABSENT,
+        filterType: FilterTypeEnum.SALARY
       }));
     });
 
@@ -123,10 +128,16 @@ export class PayrollAbsentComponent implements OnInit {
         });
       }
     });
+
+    this.eventExportAbsent?.subscribe(val => {
+      if(val){
+        //export Absent
+      }
+    })
   }
 
   readPayroll(event: any) {
-    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.id]).then();
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', event.payrollId]).then();
   }
 
   addSalaryAbsent() {
@@ -190,7 +201,8 @@ export class PayrollAbsentComponent implements OnInit {
               createdAt: new Date(value.datetime ? value.datetime : value.createdAt),
               salaryTitle: salariesSelected[0].title,
               name: value.name,
-              salaryType: SalaryTypeEnum.ABSENT
+              salaryType: SalaryTypeEnum.ABSENT,
+              filterType: FilterTypeEnum.SALARY
             }));
           }
         }
