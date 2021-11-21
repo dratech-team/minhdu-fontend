@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DatetimeUnitEnum, Gender, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
@@ -16,17 +16,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll, selectedLoadedPayroll,
+  selectedCreateAtPayroll,
+  selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { Router } from '@angular/router';
-import { SalaryBasicMultipleComponent } from '../dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
-import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
-import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
 import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
-import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 
 @Component({
@@ -47,7 +44,7 @@ export class PayrollAllowanceComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryAllowance = getState(selectedTotalPayroll, this.store);
+  totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -76,7 +73,8 @@ export class PayrollAllowanceComponent implements OnInit {
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryTitle: this.allowanceTitle ? this.allowanceTitle : ''
+      salaryTitle: this.allowanceTitle ? this.allowanceTitle : '',
+      salaryType: SalaryTypeEnum.ALLOWANCE
     }));
     if (this.allowanceTitle) {
       this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
@@ -88,7 +86,8 @@ export class PayrollAllowanceComponent implements OnInit {
         take: this.pageSize,
         skip: this.pageIndex,
         createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
-        salaryTitle: val.allowanceTitle ? val.allowanceTitle : ''
+        salaryTitle: val.allowanceTitle ? val.allowanceTitle : '',
+        salaryType: SalaryTypeEnum.ALLOWANCE
       }));
     });
 
@@ -138,7 +137,8 @@ export class PayrollAllowanceComponent implements OnInit {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: new Date(val.datetime),
-          salaryTitle: val.title
+          salaryTitle: val.title,
+          salaryType: SalaryTypeEnum.ALLOWANCE
         }));
       }
     });
@@ -163,7 +163,6 @@ export class PayrollAllowanceComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalSalary: this.totalSalaryAllowance,
           updateMultiple: true,
           type: SalaryTypeEnum.ALLOWANCE
         }
@@ -180,7 +179,8 @@ export class PayrollAllowanceComponent implements OnInit {
               searchType: value.searchType,
               createdAt: new Date(value.createdAt),
               salaryTitle: val.title,
-              name: value.name
+              name: value.name,
+              salaryType: SalaryTypeEnum.ALLOWANCE
             }));
           }
         }

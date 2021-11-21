@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll,
+  selectedCreateAtPayroll, selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -44,9 +44,9 @@ export class PayrollAbsentComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryAbsent = getState(selectedTotalPayroll, this.store);
+  totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
-  loaded = false;
+  loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
@@ -72,8 +72,8 @@ export class PayrollAbsentComponent implements OnInit {
       take: this.pageSize,
       skip: this.pageIndex,
       createdAt: new Date(this.createdAt),
-      salaryTitle: this.absentTitle ? this.absentTitle : ''
-      // salaryType: SalaryTypeEnum.ABSENT
+      salaryTitle: this.absentTitle ? this.absentTitle : '',
+      salaryType: SalaryTypeEnum.ABSENT
     }));
 
     if (this.absentTitle) {
@@ -102,7 +102,6 @@ export class PayrollAbsentComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.loaded = false;
         this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAbsent()));
       }
     );
@@ -171,7 +170,6 @@ export class PayrollAbsentComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalSalary: this.totalSalaryAbsent,
           updateMultiple: true,
           createdAt: value.createdAt,
           type: SalaryTypeEnum.ABSENT

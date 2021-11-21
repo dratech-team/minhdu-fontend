@@ -42,7 +42,7 @@ export class PayrollBasicComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryBasic = getState(selectedTotalPayroll, this.store);
+  totalSalaryBasic$ = this.store.select(selectedTotalPayroll) ;
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -78,7 +78,8 @@ export class PayrollBasicComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
-      createdAt: new Date(this.createdAt)
+      createdAt: new Date(this.createdAt),
+      salaryType: SalaryTypeEnum.BASIC
     }));
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
@@ -150,7 +151,6 @@ export class PayrollBasicComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalSalary: this.totalSalaryBasic,
           updateMultiple: true
         }
       });
@@ -169,7 +169,8 @@ export class PayrollBasicComponent implements OnInit {
               searchType: value.searchType,
               createdAt: value.createdAt,
               salaryTitle: salariesSelected[0].title,
-              name: this.formGroup.get('name')!.value
+              name: this.formGroup.get('name')!.value,
+              salaryType: SalaryTypeEnum.BASIC,
             };
             if (this.formGroup.get('name')!.value === '') {
               delete params.name;

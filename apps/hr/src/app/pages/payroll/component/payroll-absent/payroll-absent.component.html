@@ -1,161 +1,166 @@
-<!--<ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>-->
-
-<div class='table-scroll mt-5 position-relative'
-     infiniteScroll
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [infiniteScrollThrottle]='10'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'
->
-  <table [formGroup]='formGroup' class='main-table' style='width: 1800px;'>
-    <thead>
-    <tr>
-      <th>
-        <div class='border-top text-center'>stt</div>
-        <input type='text' disabled>
-      </th>
-      <th>
-        <div class='border-top text-center'>Mã nhân viên</div>
-        <input type='text' disabled>
-      </th>
-      <th style='width: 270px'>
-        <div class='border-top text-center'>
-          <div class='d-flex justify-content-center' style='height: 100%'>
-            <span>Tên nhân viên</span>
-            <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
-              <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
-            </mat-select>
+<ngx-skeleton-loader *ngIf='!(loaded$|async) else payrollAbsent' count='18' appearance='line'></ngx-skeleton-loader>
+<ng-template #payrollAbsent>
+  <div class='font-lg font-weight-bold my-2'>
+    Đã chọn:{{salaryIds.length}}/{{totalSalaryAbsent$|async}}
+  </div>
+  <div class='table-scroll mt-2 position-relative'
+       infiniteScroll
+       [alwaysCallback]='true'
+       [infiniteScrollDistance]='1'
+       [infiniteScrollThrottle]='10'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'
+  >
+    <table [formGroup]='formGroup' class='main-table' style='width: 1800px;'>
+      <thead>
+      <tr>
+        <th>
+          <div class='border-top text-center'>stt</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Mã nhân viên</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 270px'>
+          <div class='border-top text-center'>
+            <div class='d-flex justify-content-center' style='height: 100%'>
+              <span>Tên nhân viên</span>
+              <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
+                <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
+              </mat-select>
+            </div>
           </div>
-        </div>
-        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
-      </th>
-      <th style='width: 200px'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-        <input type='text' disabled>
-      </th>
-      <th style='width: 50px ; z-index: 3'>
-        <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
-          <span *ngIf='salaryIds.length === 0'>Chọn</span>
-          <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                  (click)='updateSalaryAbsent()'
-                  *ngIf='salaryIds.length > 0'
-                  class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
-            Sửa
-          </button>
-        </div>
-        <mat-checkbox class='example-margin mt-2 mx-auto'
-                      [checked]='isSelectSalary'
-                      [indeterminate]='someCompleteSalary()'
-                      (change)='setAllSalary($event.checked)'>
-        </mat-checkbox>
-      </th>
-      <th style='width: 220px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <input type='month' class='form-control' formControlName='createdAt'>
-      </th>
-      <th style='min-width: 300px;'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Loại khấu trừ</div>
-        <input class='form-control' type='text'
-               placeholder='Nhập têm phụ cấp'
-               formControlName='title'>
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
-        <input type='text' disabled>
-      </th>
-      <th>
-        <div class='border-top d-flex justify-content-center align-items-center'>Quên giấy phép</div>
-        <input type='text' disabled>
-      </th>
-    </tr>
-    </thead>
-    <tbody *ngIf='(payrollAbsent$|async) as payrollsAbsent'>
-    <tr *ngFor='let payrollAbsent of payrollsAbsent; let i = index'
-        [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'
-    >
-      <th class='pointer'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-        {{i + 1}}
-      </th>
-      <th class='pointer'
-          (click)='readPayroll(payrollAbsent)'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAbsent?.id}}
-      </th>
-      <th class='pointer'
-          (click)='readPayroll(payrollAbsent)'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAbsent.employee.lastName}}
-      </th>
-      <th style='width: 200px' class='pointer'
-          (click)='readPayroll(payrollAbsent)'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-        {{payrollAbsent.employee.position?.name}}</th>
-      <th class='pointer'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-        <div class=' d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'>
-          <mat-checkbox
-            [checked]='salaryIds.includes(item.id)'
-            (change)='updateSelectSalary(item.id)'>
+          <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
+        </th>
+        <th style='width: 200px'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+          <input type='text' disabled>
+        </th>
+        <th style='width: 50px ; z-index: 3'>
+          <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
+            <span *ngIf='salaryIds.length === 0'>Chọn</span>
+            <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                    (click)='updateSalaryAbsent()'
+                    *ngIf='salaryIds.length > 0'
+                    class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
+              Sửa
+            </button>
+          </div>
+          <mat-checkbox class='example-margin mt-2 mx-auto'
+                        [checked]='isSelectSalary'
+                        [indeterminate]='someCompleteSalary()'
+                        (change)='setAllSalary($event.checked)'>
           </mat-checkbox>
-        </div>
-      </th>
-      <th class='pointer' style='width: 220px;'>
-        <div class='border d-flex align-items-center justify-content-center pointer '
-             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAbsent)'>
+        </th>
+        <th style='width: 220px;'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
+          <input type='month' class='form-control' formControlName='createdAt'>
+        </th>
+        <th style='min-width: 300px;'>
+          <div class='border-top d-flex justify-content-center align-items-center'>Loại khấu trừ</div>
+          <input class='form-control' type='text'
+                 placeholder='Nhập têm phụ cấp'
+                 formControlName='title'>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
+          <input type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top d-flex justify-content-center align-items-center'>Quên giấy phép</div>
+          <input type='text' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(payrollAbsent$|async) as payrollsAbsent'>
+      <tr *ngFor='let payrollAbsent of payrollsAbsent; let i = index'
+          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'
+      >
+        <th class='pointer'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{i + 1}}
+        </th>
+        <th class='pointer'
+            (click)='readPayroll(payrollAbsent)'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollAbsent?.id}}
+        </th>
+        <th class='pointer'
+            (click)='readPayroll(payrollAbsent)'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollAbsent.employee.lastName}}
+        </th>
+        <th style='width: 200px' class='pointer'
+            (click)='readPayroll(payrollAbsent)'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollAbsent.employee.position?.name}}</th>
+        <th class='pointer'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          <div class=' d-flex align-items-center justify-content-center pointer '
+               *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'>
+            <mat-checkbox
+              [checked]='salaryIds.includes(item.id)'
+              (change)='updateSelectSalary(item.id)'>
+            </mat-checkbox>
+          </div>
+        </th>
+        <th class='pointer' style='width: 220px;'>
+          <div class='border d-flex align-items-center justify-content-center pointer '
+               *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollAbsent)'>
                 <span *ngIf='item.datetime'>
                   {{item.datetime|date:'dd-MM-yyyy'}}
                 </span>
-          <span *ngIf='item.startedAt && item.endedAt'>
+            <span *ngIf='item.startedAt && item.endedAt'>
                    từ ngày {{item.startedAt|date:'dd-MM-yyyy'}}
-            đến ngày {{item.endedAt|date:'dd-MM-yyyy'}}
+              đến ngày {{item.endedAt|date:'dd-MM-yyyy'}}
                 </span>
-          <span *ngIf='!item.startedAt && !item.endedAt &&!item.datetime  '>
+            <span *ngIf='!item.startedAt && !item.endedAt &&!item.datetime  '>
                   {{this.createdAt|date:'yyyy-MM'}}
               </span>
-        </div>
-      </th>
-      <th class='pointer' style='min-width: 300px;'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAbsent)'>
-          {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
-        </div>
-      </th>
-      <th class='pointer'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAbsent)'>
+          </div>
+        </th>
+        <th class='pointer' style='min-width: 300px;'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollAbsent)'>
+            {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+          </div>
+        </th>
+        <th class='pointer'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollAbsent)'>
            <span *ngIf='item.unit === datetimeUnit.MINUTE'>
                   ({{item.times | convertTime }} )
                 </span>
-          <span *ngIf='item.unit === datetimeUnit.TIMES'> {{item.times}} Lần </span>
-          <span *ngIf='item.unit === datetimeUnit.DAY'>Ngày</span>
-        </div>
-      </th>
-      <th class='pointer'>
-        <div class='border d-flex align-items-center justify-content-center pointer'
-             *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
-             (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(payrollAbsent)'>
-          {{item.forgot ? 'Có' : 'Không'}}
-        </div>
-      </th>
-    </tr>
-    <tr *ngIf='!payrollsAbsent || payrollsAbsent.length === 0  ' style='height: 50vh'>
-      <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
-        <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+            <span *ngIf='item.unit === datetimeUnit.TIMES'> {{item.times}} Lần </span>
+            <span *ngIf='item.unit === datetimeUnit.DAY'>Ngày</span>
+          </div>
+        </th>
+        <th class='pointer'>
+          <div class='border d-flex align-items-center justify-content-center pointer'
+               *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
+               (contextmenu)='child.onContextMenu($event,item)'
+               (click)='readPayroll(payrollAbsent)'>
+            {{item.forgot ? 'Có' : 'Không'}}
+          </div>
+        </th>
+      </tr>
+      <tr *ngIf='!payrollsAbsent || payrollsAbsent.length === 0  ' style='height: 50vh'>
+        <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
+          <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
 <app-mouse-right [type]='pageType.PAYROLL_SALARY'
                  (addEvent)='addSalaryAbsent()'
                  (readEvent)='readPayroll($event)'

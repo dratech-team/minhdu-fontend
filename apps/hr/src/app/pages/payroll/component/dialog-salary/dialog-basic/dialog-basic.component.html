@@ -16,7 +16,6 @@
             <div class=' title-item mb-1'>
               <span>Loại lương</span>
               <span class='star'>*</span>
-              <span class='ml-2' *ngIf='data?.updateMultiple'> ({{data.salaryIds.length}}/{{data.totalSalary}})</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup'>
               <mat-select [disabled]='data?.salary' class='form-control col' formControlName='type'

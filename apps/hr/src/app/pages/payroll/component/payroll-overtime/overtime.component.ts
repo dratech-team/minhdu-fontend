@@ -100,7 +100,7 @@ export class OvertimeComponent implements OnInit {
         : new Date(this.createdAt)
       , 'yyyy-MM-dd'));
     if (this.overtimeTitle) {
-      this.formGroup.get('title')!.setValue(this.overtimeTitle, {emitEvent: false});
+      this.formGroup.get('title')!.setValue(this.overtimeTitle, { emitEvent: false });
     }
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {

@@ -5,7 +5,7 @@ import { DatetimeUnitEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhd
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -15,7 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll, selectedLoadedPayroll,
+  selectedCreateAtPayroll,
+  selectedLoadedPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -41,7 +42,7 @@ export class PayrollStayComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryStay = getState(selectedTotalPayroll, this.store);
+  totalSalaryStay$ = this.store.select(selectedTotalPayroll)
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
   genderType = Gender;
@@ -69,7 +70,8 @@ export class PayrollStayComponent implements OnInit {
     this.store.dispatch(PayrollAction.loadInit({
       take: this.pageSize,
       skip: this.pageIndex,
-      createdAt: new Date(this.createdAt)
+      createdAt: new Date(this.createdAt),
+      salaryType: SalaryTypeEnum.STAY
     }));
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
@@ -141,7 +143,6 @@ export class PayrollStayComponent implements OnInit {
           isUpdate: true,
           salary: salariesSelected[0],
           salaryIds: this.salaryIds,
-          totalSalary: this.totalSalaryStay,
           updateMultiple: true
         }
       });
