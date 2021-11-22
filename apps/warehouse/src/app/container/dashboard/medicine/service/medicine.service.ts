@@ -12,7 +12,7 @@ export class MedicineService extends BaseService<Medicine> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.MEDICINE, http);
+    super(Api.WAREHOUSE.MEDICINE, http);
   }
 
   addOne(props: Medicine): Observable<Medicine> {

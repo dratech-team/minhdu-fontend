@@ -49,7 +49,7 @@ export class StatisticalComponent implements OnInit{
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.HOME}))
     this.statisticalService
-      .getAll(Api.STATISTICAL_PROVINCE, {
+      .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, {
         type: this.statisticalYType.ORDER,
         startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),
         endedAt: new Date(),
@@ -85,38 +85,38 @@ export class StatisticalComponent implements OnInit{
         switch (type) {
           case this.statisticalXType.AGENCY:
             this.statisticalService
-              .getAll(Api.STATISTICAL_AGENCY, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_AGENCY, value)
               .subscribe((value) => {
                 if (val) {
                   this.statisticalAgency = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_AGENCY_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT, value);
             }
             break;
           case this.statisticalXType.CHICKEN_TYPE:
             this.statisticalService
-              .getAll(Api.STATISTICAL_CHICKEN, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN, value)
               .subscribe((value) => {
                 if (val) {
                   this.statisticalChicken = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_CHICKEN_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN_PRINT, value);
             }
             break;
           case this.statisticalXType.PROVINCE:
             this.statisticalService
-              .getAll(Api.STATISTICAL_PROVINCE, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, value)
               .subscribe((value) => {
                 if (value) {
                   this.statisticalProvince = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_PROVINCE_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT, value);
             }
         }
         switch (val.type) {
@@ -135,12 +135,12 @@ export class StatisticalComponent implements OnInit{
   }
 
   printCustomer(type: StatisticalYType) {
-    this.exportService.print(Api.STATISTICAL_CUSTOMER_PRINT, type);
+    this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER_PRINT, type);
   }
 
   statisticalCustomer(param: any) {
     this.statisticalService
-      .getAll(Api.STATISTICAL_CUSTOMER, param)
+      .getAll(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER, param)
       .subscribe((value) => {
         if (value) {
           switch (param.type) {

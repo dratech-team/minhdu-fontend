@@ -12,7 +12,7 @@ export  class RouteService extends BaseService<Route>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.ROUTE , http);
+    super(Api.SELL.ROUTE.ROUTE , http);
   }
   addOne(props: Route): Observable<Route> {
     return super.addOne(props);

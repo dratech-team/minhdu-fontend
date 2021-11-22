@@ -10,7 +10,7 @@ export class StatisticalProvinceService extends BaseService<stakedChart>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.STATISTICAL_PROVINCE, http)
+    super(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, http)
   }
   getAll(param: any): Observable<stakedChart[]> {
     return super.getAll(param);

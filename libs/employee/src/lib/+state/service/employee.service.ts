@@ -12,7 +12,7 @@ export class EmployeeService extends BaseService<Employee> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.EMPLOYEE, http);
+    super(Api.HR.EMPLOYEE.EMPLOYEE, http);
   }
 
   addOne(employee: any): Observable<Employee> {
@@ -39,7 +39,7 @@ export class EmployeeService extends BaseService<Employee> {
   }
 
   leaveEmployee(id: number, body?: any): Observable<void> {
-    return this.http.patch<void>(Api.EMPLOYEE + `/${id}/leave`, body);
+    return this.http.patch<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/leave`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {

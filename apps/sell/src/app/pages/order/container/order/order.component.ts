@@ -118,6 +118,6 @@ export class OrderComponent implements OnInit {
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE
     };
-    this.exportService.print(Api.ORDER_EXPORT, order);
+    this.exportService.print(Api.SELL.ORDER.ORDER_EXPORT, order);
   }
 }

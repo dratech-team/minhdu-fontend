@@ -10,7 +10,7 @@ import { UpdateNum } from '@ngrx/entity/src/models';
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
   constructor(public readonly http: HttpClient) {
-    super(Api.SALARY, http);
+    super(Api.HR.PAYROLL.SALARY, http);
   }
 
   addOne(salary: any): Observable<Salary | any> {

@@ -10,7 +10,7 @@ export class WardService extends BaseService<Ward> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.WARD, http);
+    super(Api.LOCATION.WARD, http);
   }
 
   getAll(params?: any): Observable<Ward[]> {

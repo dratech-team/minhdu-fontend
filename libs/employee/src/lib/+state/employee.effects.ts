@@ -65,7 +65,7 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.addOne(props.employee)),
       map((employee) => {
           this.snackBar.open('Thêm nhân viên thành công', '', { duration: 1000 });
-          return EmployeeAction.addEmployeeSuccess({ employee });
+          return EmployeeAction.addEmployeeSuccess({ employee: employee });
         }
       ),
       catchError((err) => {
@@ -117,7 +117,7 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.getOne(props.id)),
       map((employee) => {
         this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
-        return EmployeeAction.getEmployeeSuccess({ employee });
+        return EmployeeAction.getEmployeeSuccess({ employee: employee });
       }),
       catchError((err) => throwError(err))
     )

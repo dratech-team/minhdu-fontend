@@ -8,10 +8,10 @@ import { PayrollSalary } from '../../../../../../../libs/data-models/hr/salary/p
 @Injectable({ providedIn: 'root' })
 export class OvertimeService extends BaseService<PayrollSalary> {
   constructor(public readonly http: HttpClient) {
-    super(Api.OVERTIME, http);
+    super(Api.HR.PAYROLL.OVERTIME, http);
   }
 
   getOvertime(params?: any): Observable<PayrollSalary> {
-    return this.http.get<PayrollSalary>(Api.OVERTIME, {params});
+    return this.http.get<PayrollSalary>(Api.HR.PAYROLL.OVERTIME, {params});
   }
 }

@@ -12,6 +12,6 @@ export class PayslipService  {
   }
 
  getOne(id: any): Observable<Payslip> {
-   return this.http.get<Payslip>(Api.PAYROLL + `/${id}/` + Api.PAYSLIP);
+   return this.http.get<Payslip>(Api.HR.PAYROLL.PAYROLL + `/${id}/` + Api.HR.PAYROLL.PAYSLIP);
  }
 }

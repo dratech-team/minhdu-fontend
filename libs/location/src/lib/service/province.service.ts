@@ -10,7 +10,7 @@ export class ProvinceService extends BaseService<Province> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.PROVINCE, http);
+    super(Api.LOCATION.PROVINCE, http);
   }
 
   getAll(): Observable<Province[]> {

@@ -11,7 +11,7 @@ export class StatisticalAgencyService extends BaseService<stakedChart>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.STATISTICAL_AGENCY, http)
+    super(Api.SELL.STATISTICAL.STATISTICAL_AGENCY, http)
   }
   getAll(param: any): Observable<stakedChart[]> {
     return super.getAll(param);
