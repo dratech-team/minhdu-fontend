@@ -180,7 +180,7 @@ export class OvertimeComponent implements OnInit {
               filename: val
             };
             this.exportService.print(
-              Api.PAYROLL_EXPORT_OVERTIME, overtime
+              Api.HR.PAYROLL.PAYROLL_EXPORT_OVERTIME, overtime
             );
           }
         })

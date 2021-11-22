@@ -12,7 +12,7 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
   constructor(
     public readonly http: HttpClient,
   ) {
-    super(Api.OVERTIME_TEMPLATE,http)
+    super(Api.HR.TEMPLATE.OVERTIME_TEMPLATE,http)
   }
   pagination(params?: any): Observable<ResponsePaginate<TemplateOvertime>> {
     return super.pagination(params);

@@ -11,7 +11,7 @@ export class DepartmentService extends BaseService<Department> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.DEPARTMENT, http);
+    super(Api.HR.EMPLOYEE.DEPARTMENT, http);
   }
 
 

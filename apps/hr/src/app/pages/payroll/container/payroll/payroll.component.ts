@@ -305,7 +305,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           accConfirmedAt: value.accConfirmedAt
         };
         this.exportService.print(
-          Api.PAYROLL_EXPORT, Object.assign(payroll,
+          Api.HR.PAYROLL.PAYROLL_EXPORT, Object.assign(payroll,
             value?.createdAt ? {
               createdAt: new Date(value.createdAt),
               filename: val
@@ -359,7 +359,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { payroll: event }
+      data: { PAYROLL: event }
     });
   }
 

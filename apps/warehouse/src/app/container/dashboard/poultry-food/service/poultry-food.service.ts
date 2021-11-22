@@ -12,7 +12,7 @@ export class PoultryFoodService extends BaseService<PoultryFood> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.POULTRY_FOOD, http);
+    super(Api.WAREHOUSE.POULTRY_FOOD, http);
   }
 
   addOne(props: PoultryFood): Observable<PoultryFood> {

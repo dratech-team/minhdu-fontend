@@ -11,7 +11,7 @@ export class RelativeService extends BaseService<Employee> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.RELATIVE, http);
+    super(Api.HR.EMPLOYEE.RELATIVE, http);
   }
 
   addOneRelative(relative: any): Observable<UpdateNum<Employee>> {
@@ -23,7 +23,7 @@ export class RelativeService extends BaseService<Employee> {
   }
 
   deleteRelative(id: number): Observable<UpdateNum<Employee>> {
-    return this.http.delete<UpdateNum<Employee>>(Api.RELATIVE + `/${id}`);
+    return this.http.delete<UpdateNum<Employee>>(Api.HR.EMPLOYEE.RELATIVE + `/${id}`);
   }
 
 }

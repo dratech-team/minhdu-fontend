@@ -21,7 +21,7 @@ type Params =
 @Injectable({ providedIn: 'root' })
 export class PayrollService extends BaseService<Payroll> {
   constructor(public readonly http: HttpClient) {
-    super(Api.PAYROLL, http);
+    super(Api.HR.PAYROLL.PAYROLL, http);
   }
 
   addPayroll<R>(body: any, params?: Params): Observable<any> {
@@ -41,7 +41,7 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   confirmPayroll(id: number, body?: any): Observable<Payroll> {
-    return this.http.patch<Payroll>(Api.CONFIRM_PAYROLL + `/${id}`, body);
+    return this.http.patch<Payroll>(Api.HR.PAYROLL.CONFIRM_PAYROLL + `/${id}`, body);
   }
 
   delete(id: number): Observable<void> {
@@ -49,16 +49,16 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   generate(params?: any): Observable<any> {
-    return this.http.get<any>(Api.GENERATE, { params });
+    return this.http.get<any>(Api.HR.PAYROLL.GENERATE, { params });
   }
 
   scanHoliday(PayrollId: number): Observable<any> {
     return this.http.get<any>(
-      Api.PAYROLL + `/${PayrollId}/` + Api.GENERATE_HOLIDAY
+      Api.HR.PAYROLL.PAYROLL + `/${PayrollId}/` + Api.HR.PAYROLL.GENERATE_HOLIDAY
     );
   }
 
   restorePayroll(id: number, body?: any): Observable<any> {
-    return this.http.patch<any>(Api.RESTORE_PAYROLL + `/${id}`, body);
+    return this.http.patch<any>(Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
 }

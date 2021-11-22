@@ -110,6 +110,6 @@ export class RouteComponent implements OnInit {
       bsx: val.bsx.trim(),
       garage: val.garage.trim()
     };
-    this.exportService.print(Api.ROUTE_EXPORT, route);
+    this.exportService.print(Api.SELL.ROUTE.ROUTE_EXPORT, route);
   }
 }

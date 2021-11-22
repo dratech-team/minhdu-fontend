@@ -11,7 +11,7 @@ export class PositionService extends BaseService<Position> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.POSITION, http);
+    super(Api.HR.EMPLOYEE.POSITION, http);
   }
   pagination(params?: any): Observable<ResponsePaginate<Position>> {
     return super.pagination(params);

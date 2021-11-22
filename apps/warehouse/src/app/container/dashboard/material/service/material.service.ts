@@ -12,7 +12,7 @@ export class MaterialService extends BaseService<Material> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.MATERIAL, http);
+    super(Api.WAREHOUSE.MATERIAL, http);
   }
 
   addOne(props: Material): Observable<Material> {

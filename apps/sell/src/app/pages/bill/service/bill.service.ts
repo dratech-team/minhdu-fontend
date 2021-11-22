@@ -11,7 +11,7 @@ export class BillService extends BaseService<Bill>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.BILL , http);
+    super(Api.SELL.BILL , http);
   }
   pagination(params: any): Observable<ResponsePaginate<Bill>> {
     return super.pagination(params);

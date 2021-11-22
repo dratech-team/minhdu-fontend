@@ -226,7 +226,8 @@ export class PayrollBasicComponent implements OnInit {
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
-      name: value.name
+      name: value.name,
+      filterType: FilterTypeEnum.SALARY
     };
     if (!value.name) {
       delete params.name;

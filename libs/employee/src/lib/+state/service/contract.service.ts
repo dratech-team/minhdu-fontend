@@ -9,7 +9,7 @@ export class ContractService extends BaseService<any> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.CONTRACT, http);
+    super(Api.HR.EMPLOYEE.CONTRACT, http);
   }
   addOne(props: any): Observable<any> {
   return super.addOne(props);

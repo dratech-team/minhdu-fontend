@@ -13,7 +13,7 @@ export class OrderService extends BaseService<Order> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.ORDER, http);
+    super(Api.SELL.ORDER.ORDER, http);
   }
 
   addOne(props: Order): Observable<Order> {
@@ -25,7 +25,7 @@ export class OrderService extends BaseService<Order> {
   }
 
   payment(id: number, body: any): Observable<Update<Order>> {
-    return this.http.patch<Update<Order>>(Api.ORDER + `/${id}/paid`, body);
+    return this.http.patch<Update<Order>>(Api.SELL.ORDER.ORDER + `/${id}/paid`, body);
   }
 
   getOne(id: any): Observable<Order> {
