@@ -15,3 +15,4 @@ export * from './menu-warehouse.constant';
 export * from './warehouse.constant';
 export * from './unit-medicine.constant';
 export * from './searchType.constant';
+export * from './typePayrollExport.constant';

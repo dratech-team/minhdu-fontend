@@ -6,7 +6,6 @@ import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
 })
 export class TransformPipe implements PipeTransform {
   transform(name: string | undefined, data: any[]): any {
-    console.log(name)
     if (name) {
       return data.find((item: any) => (item.type || item.value) === name).name;
     } else {

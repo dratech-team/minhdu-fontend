@@ -167,7 +167,7 @@ export class OvertimeComponent implements OnInit {
 
     this.eventExportOvertime?.subscribe(val => {
       if (val) {
-        const ref = this.dialog.open(DialogExportComponent, { width: 'fit-content' });
+        const ref = this.dialog.open(DialogExportComponent, { width: 'fit-content', data: {title: 'Xuất Bảng tăng ca'} });
         ref.afterClosed().subscribe(val =>{
           if(val){
             const value = this.formGroup.value;
