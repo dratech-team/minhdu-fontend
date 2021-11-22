@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -36,6 +36,8 @@ import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { Observable, Subject } from 'rxjs';
 import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { ExportService } from '@minhdu-fontend/service';
+import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -291,7 +293,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   exportPayroll() {
     const ref = this.dialog.open(DialogExportComponent, {
-      width: 'fit-content'
+      width: 'fit-content', data: {title: 'Xuât bảng lương'}
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
@@ -403,5 +405,58 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   exportAbsent() {
     this.eventExportAbsent.next(true);
+  }
+
+  openDialogAddMultiple() {
+  const ref =  this.dialog.open(SelectAddMultiple, {width: 'fit-content'})
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        switch(val) {
+          case SalaryTypeEnum.OVERTIME:
+            this.addSalaryOvertime(val)
+            break;
+          case SalaryTypeEnum.ALLOWANCE:
+            this.addSalaryAllowance()
+            break;
+          case SalaryTypeEnum.ABSENT:
+           this.timekeeping()
+            break;
+        }
+      }
+    })
+  }
+
+  openDialogUpdateMultiple(){
+  const ref = this.dialog.open(SelectUpdateMultiple,
+      {
+        width: 'fit-content',
+        data:{
+          pageType: this.selectedPayroll
+        }
+      })
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        switch(val) {
+          case PayrollEnum.PAYROLL:
+            this.exportPayroll()
+            break;
+          case PayrollEnum.TIME_SHEET:
+            this.exportTimekeeping()
+            break;
+          case PayrollEnum.PAYROLL_OVERTIME:
+            this.exportOvertime()
+            break;
+          case PayrollEnum.PAYROLL_ABSENT:
+            this.exportAbsent()
+            break;
+          case PayrollEnum.PAYROLL_ALLOWANCE:
+            this.exportAllowance()
+            break;
+          case PayrollEnum.PAYROLL_STAY:
+            this.exportStay()
+            break;
+        }
+      }
+    })
   }
 }

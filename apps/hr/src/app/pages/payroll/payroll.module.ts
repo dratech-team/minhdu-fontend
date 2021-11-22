@@ -67,6 +67,8 @@ import { SalaryBasicMultipleComponent } from './component/dialog-salary/update-s
 import { PayrollStayComponent } from './component/payroll-stay/payroll-stay.component';
 import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll-allowance.component';
 import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
+import { SelectAddMultiple } from './component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/select-update-multiple';
 
 @NgModule({
   imports: [
@@ -143,7 +145,9 @@ import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absen
     SalaryBasicMultipleComponent,
     PayrollStayComponent,
     PayrollAllowanceComponent,
-    PayrollAbsentComponent
+    PayrollAbsentComponent,
+    SelectAddMultiple,
+    SelectUpdateMultiple
   ],
   providers: [
     MatDatepickerModule
