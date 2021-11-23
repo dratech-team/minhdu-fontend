@@ -10,7 +10,7 @@ import { UpdateNum } from '@ngrx/entity/src/models';
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
   constructor(public readonly http: HttpClient) {
-    super(Api.SALARY, http);
+    super(Api.HR.PAYROLL.SALARY, http);
   }
 
   addOne(salary: any): Observable<Salary | any> {
@@ -30,6 +30,6 @@ export class SalaryService extends BaseService<Salary> {
   }
 
   updateMultipleSalaryOvertime(body: any): Observable<any>{
-    return this.http.patch<Observable<any>>('salary/overtime/employees', body);
+    return this.http.patch<Observable<any>>('salary/salaries/ids', body);
   }
 }

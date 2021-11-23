@@ -9,7 +9,7 @@ import { BaseService } from 'libs/service/base.service';
 @Injectable({ providedIn: 'root' })
 export class SalaryMultipleEmployeeService extends BaseService<Salary> {
   constructor(public readonly http: HttpClient) {
-    super(Api.SALARY_EMPLOYEES, http);
+    super(Api.HR.PAYROLL.SALARY_EMPLOYEES, http);
   }
 
   addOne(salary: any): Observable<Salary | any> {

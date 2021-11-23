@@ -1,7 +1,9 @@
 <ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>
-
-<div class='table-scroll mt-5 position-relative '>
-  <table [formGroup]='formGroup' class='main-table' style='width: 2050px;'>
+<div class='font-lg font-weight-bold mb-2'>
+  Đã chọn: {{salaryIds.length}}/{{salaries.length}}
+</div>
+<div class='table-scroll mt-3 position-relative '>
+  <table [formGroup]='formGroup' class='main-table' style='width: 2300px;'>
     <thead>
     <tr>
       <th>
@@ -27,9 +29,14 @@
         <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
         <input type='text' disabled>
       </th>
-      <th style='width: 100px'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Giới tính</div>
-        <input type='text' disabled>
+      <th style='width: 50px ; z-index: 3'>
+        <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
+        <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                (click)='updateSalaryOvertime()'
+                *ngIf='salaryIds.length > 0'
+                class=' btn btn-primary d-flex justify-content-center align-items-center '>
+          Sửa
+        </button>
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -83,8 +90,12 @@
       <th style=' width: 200px;'>
         <div class='text-center'></div>
       </th>
-      <th style=' width: 100px'>
-        <div class='text-center'></div>
+      <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
+        <mat-checkbox class='example-margin mt-2 mx-auto'
+                      [checked]='isSelectSalary'
+                      [indeterminate]='someCompleteSalary()'
+                      (change)='setAllSalary($event.checked)'>
+        </mat-checkbox>
       </th>
       <th style='width: 220px'>
         <div class='text-center'></div>
@@ -130,11 +141,16 @@
       <th style='width: 200px' class='pointer'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime.position?.name}}</th>
-      <th style='width: 100px' class='pointer'> {{
-        overtime?.gender === 'MALE' ? 'Nam' :
-          overtime?.gender === 'FEMALE' ? 'Nữ' :
-            'Khác'
-        }}</th>
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        <div class=' d-flex align-items-center justify-content-center pointer '
+             *ngFor='let item of overtime.salaries'>
+          <mat-checkbox
+            [checked]='salaryIds.includes(item.id)'
+            (change)='updateSelectSalary(item.id)'>
+          </mat-checkbox>
+        </div>
+      </th>
       <th class='pointer' style='width: 220px;'>
         <div class='border d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'
@@ -186,14 +202,12 @@
   </table>
 </div>
 <app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
-                 (Update)='updateSalaryOvertime($event)'
                  (addEvent)='addSalaryOvertime()'
                  (readEvent)='readPayroll($event)'
                  (deleteEvent)='deleteSalaryOvertime($event)'
                  #child>
 </app-mouse-right>
 <style>
-
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
@@ -201,15 +215,28 @@
     z-index: 2;
   }
 
+  .table-scroll tbody th > div {
+    height: 30px;
+    line-height: 1;
+  }
+
   .table-scroll th:nth-child(4) {
     position: -webkit-sticky;
     position: sticky;
-    left: 420px;
+    left: 440px;
+    z-index: 2;
+  }
+  .table-scroll th:nth-child(5) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 640px;
     z-index: 2;
   }
 
+
   .table-scroll thead th:nth-child(3),
-  .table-scroll thead th:nth-child(4) {
+  .table-scroll thead th:nth-child(4) ,
+  .table-scroll thead th:nth-child(5){
     z-index: 5;
   }
 

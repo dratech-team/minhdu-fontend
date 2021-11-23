@@ -1,15 +1,6 @@
 <div class='main-content'>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL ' class='row h3 ml-3'>
-    Bảng lương nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME ' class='row h3 ml-3'>
-    Bảng tăng ca tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div class='row h3 ml-3' *ngIf='selectedPayroll === payrollEnum.TIME_SHEET '>
-    Bảng chấm công nhân viên tháng {{createdAt| date: 'MM/yyyy'}}
-  </div>
-  <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL ' class='row h3 ml-3'>
-    Bảng lương nhân viên công nhật tháng {{createdAt| date: 'MM/yyyy'}}
+  <div class='row h3 ml-3'>
+    {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
   <div style='width: fit-content'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -19,36 +10,61 @@
     </mat-select>
   </div>
   <div class='row ml-3 mt-3 d-flex justify-content-between'>
-    <div class='d-flex '>
-      <div>
-        <button (click)='addSalaryOvertime(salaryType.OVERTIME)' class='btn btn-primary mr-2'>Thêm tăng ca</button>
+    <div class='d-flex'>
+      <div class='p-1 d-flex justify-content-center align-items-center border border-primary rounded pointer '
+           (click)='openDialogAddMultiple()'>
+        <span style='color: #1b8eb7' class='title-item'>Thêm Hàng loạt</span>
+        <img class='ml-2' height='20' width='20' src='assets/icon/plus-circle.svg' alt='Add'>
       </div>
-      <div>
-        <button (click)='addSalaryAllowance()' class='btn btn-primary mr-2'>Thêm Phụ cấp</button>
+      <div class='p-1 ml-2 d-flex justify-content-center align-items-center border border-primary rounded  pointer'
+           (click)='openDialogUpdateMultiple()'>
+        <span style='color: #1b8eb7' class='title-item'>Xuât Excel</span>
+        <img class='ml-2' height='20' width='20' src='assets/icon/printer.svg' alt='print'>
       </div>
-      <div>
-        <button (click)='timekeeping()' class='btn btn-primary mr-2'>Báo vắng</button>
-      </div>
-      <div>
-        <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất phiếu lương</button>
-      </div>
-      <div>
-        <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất Phiếu chấm công</button>
-      </div>
+<!--      <div>-->
+<!--        <button (click)='exportPayroll()' class='btn btn-primary mr-2'>Xuất bảng lương</button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button (click)='exportTimekeeping()' class='btn btn-primary mr-2'>Xuất bảng chấm công</button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME'-->
+<!--                (click)='exportOvertime()' class='btn btn-primary mr-2'>Xuất bảng tăng ca-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT'-->
+<!--                (click)='exportAbsent()' class='btn btn-primary mr-2'>Xuất bảng khấu trừ-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE'-->
+<!--                (click)='exportAllowance()' class='btn btn-primary mr-2'>Xuất bảng phụ cấp khác-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY'-->
+<!--                (click)='exportStay()' class='btn btn-primary mr-2'>Xuất bảng phụ cấp lương-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC'-->
+<!--                (click)='exportBasic()' class='btn btn-primary mr-2'>Xuất bảng lương cơ bản-->
+<!--        </button>-->
+<!--      </div>-->
     </div>
     <div class='mr-2 d-flex'>
       <div>
         <button (click)='generate()' class='btn btn-primary mr-2'>Tự động tạo</button>
       </div>
     </div>
-
   </div>
   <div class='mx-auto' style='width: 98%'>
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL'>
       <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                            count='18' appearance='line'></ngx-skeleton-loader>
       <ng-template #payroll>
-        <div class='table-scroll mt-5 mx-auto'
+        <div class='table-scroll mt-3 mx-auto'
              infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1'
@@ -306,13 +322,14 @@
       >
       </app-payroll-time-sheet>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
         [overtimeTitle]='overtimeTitle'
         [eventAddOvertime]='eventAddOvertime'
-        (EventSelectMonth)='selectMonth($event)'
-        [createdAt]='this.createdAt'></app-payroll-overtime>
+        [eventExportOvertime]='eventExportOvertime'></app-payroll-overtime>
     </div>
+
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
       <app-payroll-seasonal
         [payroll$]='payroll$'
@@ -328,8 +345,33 @@
         (EventSelectBranch)='onSelectBranch($event)'
         (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
     </div>
-  </div>
 
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
+      <app-payroll-basic
+        [eventExportBasic]='eventExportBasic'
+      ></app-payroll-basic>
+    </div>
+
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY '>
+      <app-payroll-stay
+        [eventExportStay]='eventExportStay'
+      ></app-payroll-stay>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
+      <app-payroll-allowance
+        [allowanceTitle]='allowanceTitle'
+        [eventAddAllowance]='eventAddAllowance'
+        [eventExportAllowance]='eventExportAllowance'
+      ></app-payroll-allowance>
+    </div>
+    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT '>
+      <app-payroll-absent
+        [absentTitle]='absentTitle'
+        [eventAddAbsent]='eventAddAbsent'
+        [eventExportAbsent]='eventExportAbsent'
+      ></app-payroll-absent>
+    </div>
+  </div>
   <app-mouse-right [type]='pageType.PAYROLL'
                    #child
                    (deleteEvent)='deletePayroll($event)'
@@ -339,8 +381,6 @@
                    (readEvent)='readPayroll($event)'>
   </app-mouse-right>
 </div>
-
-
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;

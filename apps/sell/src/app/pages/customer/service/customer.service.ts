@@ -12,7 +12,7 @@ export class CustomerService extends BaseService<Customer> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.CUSTOMER, http);
+    super(Api.SELL.CUSTOMER.CUSTOMER, http);
   }
 
   addOne(props: Customer): Observable<Customer> {

@@ -12,7 +12,7 @@ export class TemplateSalaryService extends BaseService<TemplateSalary> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.BASIC_TEMPLATE, http);
+    super(Api.HR.TEMPLATE.BASIC_TEMPLATE, http);
   }
 
   pagination(params?: any): Observable<ResponsePaginate<TemplateSalary>> {

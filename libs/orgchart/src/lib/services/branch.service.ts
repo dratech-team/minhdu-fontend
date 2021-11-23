@@ -12,7 +12,7 @@ export class BranchService extends BaseService<Branch> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.BRANCH, http);
+    super(Api.HR.EMPLOYEE.BRANCH, http);
   }
 
 
@@ -38,6 +38,6 @@ export class BranchService extends BaseService<Branch> {
   }
 
   deleteAllowanceInBranch(salaryId: number): Observable<UpdateNum<Branch>> {
-    return this.http.delete<UpdateNum<Branch>>(Api.BRANCH_ALLOWANCE + `/${salaryId}`);
+    return this.http.delete<UpdateNum<Branch>>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
   }
 }

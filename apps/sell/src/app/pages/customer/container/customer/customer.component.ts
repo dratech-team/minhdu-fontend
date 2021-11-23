@@ -151,6 +151,6 @@ export class CustomerComponent implements OnInit{
       address: val.address.trim(),
       note: val.note.trim()
     };
-    this.exportService.print(Api.CUSTOMER_EXPORT, customers);
+    this.exportService.print(Api.SELL.CUSTOMER.CUSTOMER_EXPORT, customers);
   }
 }

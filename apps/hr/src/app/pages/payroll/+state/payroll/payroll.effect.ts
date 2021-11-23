@@ -33,7 +33,8 @@ export class PayrollEffect {
         //   duration: 1000,
         // });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
+          total: ResponsePaginate.total
         });
       }),
       catchError((err) => throwError(err))
@@ -59,7 +60,8 @@ export class PayrollEffect {
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
+          total: ResponsePaginate.total
         });
       }),
       catchError((err) => throwError(err))
@@ -139,12 +141,7 @@ export class PayrollEffect {
               } else {
                 return props.payrollId
                   ? PayrollAction.getPayroll({ id: props.payrollId })
-                  : PayrollAction.loadInit({
-                    take: 30,
-                    skip: 0,
-                    createdAt: new Date(),
-                    isTimeSheet: !!props.isTimesheet
-                  });
+                  : PayrollAction.addSalaryMultipleSuccess();
               }
             }),
             catchError((err) => {
@@ -209,7 +206,11 @@ export class PayrollEffect {
             if (props.branchId) {
               return OrgchartActions.getBranch({ id: props.branchId });
             } else {
-              return PayrollAction.getPayroll({ id: props.payrollId });
+              if (props.multiple) {
+                return PayrollAction.updateSalaryMultipleSuccess();
+              } else {
+                return PayrollAction.getPayroll({ id: props.payrollId });
+              }
             }
           })
         );

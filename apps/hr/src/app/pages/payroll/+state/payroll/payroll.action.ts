@@ -1,8 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { Payroll } from './payroll.interface';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
-import { EmployeeType, PayrollEnum } from '@minhdu-fontend/enums';
+import {
+  ConvertBoolean,
+  ConvertBooleanFrontEnd,
+  EmployeeType, FilterTypeEnum,
+  PayrollEnum,
+  SalaryTypeEnum,
+  SearchTypeEnum
+} from '@minhdu-fontend/enums';
+import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -18,20 +25,23 @@ export const loadInit = createAction(
     paidAt?: boolean,
     accConfirmedAt?: boolean,
     employeeId?: number,
-    isTimeSheet?: boolean,
-    employeeType?: EmployeeType
+    filterType?: FilterTypeEnum,
+    employeeType?: EmployeeType,
+    salaryType?: SalaryTypeEnum,
+    salaryTitle?: string,
+    searchType?: SearchTypeEnum
   }>()
 );
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[] }>()
+  props<{ payrolls: Payroll[], total: number }>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
   props<{
-    take: number,
-    skip: number,
+    take?: number,
+    skip?: number,
     createdAt?: Date,
     name?: string,
     code?: string,
@@ -40,13 +50,16 @@ export const loadMorePayrolls = createAction(
     branch?: string,
     paidAt?: boolean,
     accConfirmedAt?: boolean,
-    isTimeSheet?: boolean,
+    filterType?: FilterTypeEnum,
+    salaryType?: SalaryTypeEnum,
+    salaryTitle?: string,
+    searchType?: SearchTypeEnum
   }>()
 );
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[] }>()
+  props<{ payrolls: Payroll[], total: number }>()
 );
 
 export const filterOvertime = createAction(
@@ -62,7 +75,7 @@ export const filterOvertime = createAction(
 
 export const filterOvertimeSuccess = createAction(
   '[LOAD_SALARY] Filter overtime Success',
-  props<{ overtime: Overtime }>()
+  props<{ overtime: PayrollSalary }>()
 );
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
@@ -80,6 +93,10 @@ export const handlePayrollError = createAction(
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
   props<{ salary: any, payrollId?: number, isTimesheet?: boolean, branchId?: number }>()
+);
+
+export const addSalaryMultipleSuccess = createAction(
+  '[UPDATE_SALARY] Add Salary Multiple Success '
 );
 
 export const handleSalaryError = createAction(
@@ -119,7 +136,11 @@ export const confirmPayrollSuccess = createAction(
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{ salary: any, payrollId?: number, id?: number, branchId?: number }>()
+  props<{ salary: any, payrollId?: number, id?: number, branchId?: number, multiple?: boolean }>()
+);
+
+export const updateSalaryMultipleSuccess = createAction(
+  '[UPDATE_SALARY] Update Salary Multiple Success '
 );
 
 export const deletePayroll = createAction(
@@ -148,11 +169,11 @@ export const scanHolidayError = createAction(
 
 export const updateStatePayroll = createAction(
   '[SELECT_PAYROLL] Select Payroll',
-  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string }>()
+  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string, added?: ConvertBooleanFrontEnd }>()
 );
 
 export const deleteSalarySuccess = createAction(
-  '[Delete_Salary] Delete Salary Success',
+  '[Delete_Salary] Delete Salary Success'
 );
 export const PayrollAction = {
   loadInit,
@@ -179,5 +200,7 @@ export const PayrollAction = {
   scanHolidayError,
   confirmPayrollSuccess,
   updateStatePayroll,
-  deleteSalarySuccess
+  deleteSalarySuccess,
+  updateSalaryMultipleSuccess,
+  addSalaryMultipleSuccess
 };

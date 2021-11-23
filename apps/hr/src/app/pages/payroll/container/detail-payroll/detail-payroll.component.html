@@ -80,11 +80,15 @@
             <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
             <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
               <img
-                [src]=" payroll.employee.contracts.length === 0 ?'../../../../../assets/img/share/x-lg.svg': ' ../../../../../assets/img/payroll/check.svg' "
-                [alt]="payroll.employee.contracts.length === 0 ? 'contract' : 'not contract' ">
+                [src]=" payroll.employee.contracts && payroll.employee.contracts.length === 0 ?
+                '../../../../../assets/img/share/x-lg.svg'
+                : ' ../../../../../assets/img/payroll/check.svg' "
+                [alt]=" payroll.employee.contracts &&payroll.employee.contracts.length === 0 ?
+                 'contract'
+                 : 'not contract' ">
             </div>
             <div class='row d-flex justify-content-center align-items-center'>
-              <div class='pointer' (click)='updateTaxed(payroll)' >
+              <div class='pointer' (click)='updateTaxed(payroll)'>
                 <mat-slide-toggle style='pointer-events: none' [checked]='payroll.taxed'>
                 </mat-slide-toggle>
               </div>

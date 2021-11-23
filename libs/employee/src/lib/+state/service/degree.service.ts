@@ -11,11 +11,11 @@ export class DegreeService extends BaseService<Employee> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.DEGREE, http);
+    super(Api.HR.EMPLOYEE.DEGREE, http);
   }
 
   addOneDegree(relative: any): Observable<UpdateNum<Employee>> {
-    return this.http.post<UpdateNum<Employee>>(Api.DEGREE, relative);
+    return this.http.post<UpdateNum<Employee>>(Api.HR.EMPLOYEE.DEGREE, relative);
   }
 
   update(id: number, props: any): Observable<UpdateNum<Employee>> {
@@ -23,10 +23,10 @@ export class DegreeService extends BaseService<Employee> {
   }
 
   deleteDegree(id: number): Observable<UpdateNum<Employee>>{
-    return this.http.delete<UpdateNum<Employee>>(Api.DEGREE + `/${id}`);
+    return this.http.delete<UpdateNum<Employee>>(Api.HR.EMPLOYEE.DEGREE + `/${id}`);
   }
 
   deleteContracts(id: number): Observable<void>{
-    return this.http.delete<void>(Api.CONTRACT + `/${id}`);
+    return this.http.delete<void>(Api.HR.EMPLOYEE.CONTRACT + `/${id}`);
   }
 }

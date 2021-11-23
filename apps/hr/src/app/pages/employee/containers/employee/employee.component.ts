@@ -194,7 +194,7 @@ export class EmployeeComponent implements OnInit {
   permanentlyDeleted($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employee: $event, permanentlyDeleted: true }
+      data: { EMPLOYEE: $event, permanentlyDeleted: true }
     });
   }
 }

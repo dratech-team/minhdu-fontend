@@ -50,7 +50,7 @@ import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RestorePayrollComponent } from './component/restore-payroll/restore-payroll.component';
 import { DialogExportTimekeepingComponent } from './component/dialog-export-timekeeping/dialog-export-timekeeping.component';
-import { DialogExportPayrollComponent } from './component/dialog-export-payroll/dialog-export-payroll.component';
+import { DialogExportComponent } from './component/dialog-export/dialog-export.component';
 import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
@@ -61,6 +61,14 @@ import { DialogSeasonalComponent } from './component/dialog-salary/dialog-season
 import { DialogAllowanceMultipleComponent } from './component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { UpdateEmployeeOvertimeComponent } from './component/update-employee-overtime/update-employee-overtime.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PayrollBasicComponent } from './component/payroll-basic/payroll-basic.component';
+import { UpdateOvertimeMultiple } from './component/update-overtime-multiple/update-overtime-multiple';
+import { SalaryBasicMultipleComponent } from './component/dialog-salary/update-salary-basic-multiple/salary-basic-multiple.component';
+import { PayrollStayComponent } from './component/payroll-stay/payroll-stay.component';
+import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll-allowance.component';
+import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
+import { SelectAddMultiple } from './component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/select-update-multiple';
 
 @NgModule({
   imports: [
@@ -72,7 +80,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDialogModule,
     EffectsModule,
     InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_BASIC, templateSalaryReducer),
+    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
@@ -120,7 +128,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     DialogOvertimeMultipleComponent,
     ConvertTimePipe,
     AddPayrollComponent,
-    DialogExportPayrollComponent,
+    DialogExportComponent,
     HistoryPayrollComponent,
     OvertimeComponent,
     LoadingComponent,
@@ -131,7 +139,15 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     PayrollSeasonalComponent,
     DialogSeasonalComponent,
     DialogAllowanceMultipleComponent,
-    UpdateEmployeeOvertimeComponent
+    UpdateEmployeeOvertimeComponent,
+    PayrollBasicComponent,
+    UpdateOvertimeMultiple,
+    SalaryBasicMultipleComponent,
+    PayrollStayComponent,
+    PayrollAllowanceComponent,
+    PayrollAbsentComponent,
+    SelectAddMultiple,
+    SelectUpdateMultiple
   ],
   providers: [
     MatDatepickerModule

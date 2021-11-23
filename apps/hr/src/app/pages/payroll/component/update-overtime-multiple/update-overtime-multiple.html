@@ -1,0 +1,29 @@
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='./assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class=' mb-3 title-popup'>
+    <span>Sửa lương ngoài giờ</span>
+  </div>
+  <mat-dialog-content style='max-height: 45vh; width: 500px'>
+    <div class='mb-2'>
+      <div class='title-item mb-1'>Ngày <span class='star'>*</span></div>
+      <input class='form-control' type='date' [formControl]='datetimeControl'
+             min='{{firstDayInMonth}}'
+             max='{{lastDayInMonth}}'>
+    </div>
+    <div class='mb-2' *ngIf='data.unit === "HOUR"' >
+      <div class='title-item mb-1'>giờ <span class='star'>*</span></div>
+      <input class='form-control' type='number' [formControl]='timesControl'>
+    </div>
+  </mat-dialog-content>
+  <div class='mt-2 row ml-3 '>
+    <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+    <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+      ?
+    </button>
+  </div>
+</div>

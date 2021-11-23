@@ -1,13 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { PayrollConstant } from '@minhdu-fontend/constants';
+import { Api, PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { EmployeeType, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { EmployeeType, FilterTypeEnum, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { getAllPosition, PositionActions } from '../../../../../../../../libs/or
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { DialogExportPayrollComponent } from '../../component/dialog-export-payroll/dialog-export-payroll.component';
+import { DialogExportComponent } from '../../component/dialog-export/dialog-export.component';
 import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
@@ -35,6 +35,9 @@ import { AppState } from '../../../../reducers';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { Observable, Subject } from 'rxjs';
 import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import { ExportService } from '@minhdu-fontend/service';
+import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -65,12 +68,21 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   branches$ = this.store.pipe(select(getAllOrgchart));
   createdAt = getState(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
+  allowanceTitle?: string;
+  absentTitle?: string;
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   payrollEnum = PayrollEnum;
   private stop$ = new Subject<void>();
   eventAddOvertime = new Subject<any>();
+  eventAddAllowance = new Subject<any>();
+  eventAddAbsent = new Subject<any>();
+  eventExportOvertime = new Subject<boolean>();
+  eventExportAbsent = new Subject<boolean>();
+  eventExportBasic = new Subject<boolean>();
+  eventExportStay = new Subject<boolean>();
+  eventExportAllowance = new Subject<boolean>();
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -78,7 +90,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private readonly exportService: ExportService
   ) {
   }
 
@@ -100,9 +113,15 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { filter: val }));
       }
-      return this.loadInitPayroll();
+      if (val !== PayrollEnum.PAYROLL_STAY
+        && val !== PayrollEnum.PAYROLL_BASIC
+        && val !== PayrollEnum.PAYROLL_ALLOWANCE
+        && val !== PayrollEnum.PAYROLL_ABSENT) {
+        this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(
+          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'), { emitEvent: false });
+        return this.loadInitPayroll();
+      }
     });
-
     this.formGroup.valueChanges.pipe(
       map(val => {
         if ((!val.createdAt) && (this.selectedPayroll === PayrollEnum.TIME_SHEET)) {
@@ -156,10 +175,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: val.name,
       position: val.position,
       branch: this.branchName,
-      createdAt: this.createdAt,
+      createdAt: getState(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      isTimeSheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      filterType: this.selectedPayroll === PayrollEnum.TIME_SHEET ? FilterTypeEnum.TIME_SHEET:
+        this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL? FilterTypeEnum.SEASONAL:
+        this.selectedPayroll === PayrollEnum.PAYROLL? FilterTypeEnum.PAYROLL: FilterTypeEnum.SALARY ,
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
@@ -211,9 +232,55 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           }));
         this.eventAddOvertime.next({
           createdAt: new Date(val.datetime),
-          overtimeTitle: val.title
+          absentTitle: val.title
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
+      }
+    });
+  }
+
+  addSalaryAllowance() {
+    const ref = this.dialog.open(DialogAllowanceMultipleComponent,
+      {
+        width: 'fit-content',
+        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      }
+    );
+    ref.afterClosed().subscribe(value => {
+      if (value) {
+        this.createdAt = new Date(value.datetime);
+        this.allowanceTitle = value.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(value.datetime)
+          }));
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
+        this.eventAddAllowance.next({
+          allowanceTitle: value.title
+        });
+      }
+    });
+  }
+
+  timekeeping() {
+    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
+    const ref = this.dialog.open(DialogTimekeepingComponent, {
+      width: 'fit-content',
+      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.createdAt = new Date(val.datetime);
+        this.absentTitle = val.title;
+        this.store.dispatch(PayrollAction.updateStatePayroll(
+          {
+            createdAt: new Date(val.datetime)
+          }));
+        this.eventAddAbsent.next({
+          datetime: val.datetime,
+          absentTitle: val.title
+        });
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
       }
     });
   }
@@ -225,9 +292,28 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   exportPayroll() {
-    this.dialog.open(DialogExportPayrollComponent, {
-      width: 'fit-content',
-      data: this.formGroup.value
+    const ref = this.dialog.open(DialogExportComponent, {
+      width: 'fit-content', data: {title: 'Xuât bảng lương'}
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        const value = this.formGroup.value;
+        const payroll = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          paidAt: value.paidAt,
+          accConfirmedAt: value.accConfirmedAt
+        };
+        this.exportService.print(
+          Api.HR.PAYROLL.PAYROLL_EXPORT, Object.assign(payroll,
+            value?.createdAt ? {
+              createdAt: new Date(value.createdAt),
+              filename: val
+            } : { filename: val })
+        );
+      }
     });
   }
 
@@ -235,14 +321,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportTimekeepingComponent, {
       width: 'fit-content',
       data: { datetime: this.createdAt }
-    });
-  }
-
-  timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
-    this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content',
-      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
     });
   }
 
@@ -283,7 +361,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { payroll: event }
+      data: { PAYROLL: event }
     });
   }
 
@@ -309,12 +387,76 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }).then();
   }
 
-  addSalaryAllowance() {
-    this.dialog.open(DialogAllowanceMultipleComponent,
+  exportOvertime() {
+    this.eventExportOvertime.next(true);
+  }
+
+  exportBasic() {
+    this.eventExportBasic.next(true);
+  }
+
+  exportStay() {
+    this.eventExportStay.next(true);
+  }
+
+  exportAllowance() {
+    this.eventExportAllowance.next(true);
+  }
+
+  exportAbsent() {
+    this.eventExportAbsent.next(true);
+  }
+
+  openDialogAddMultiple() {
+  const ref =  this.dialog.open(SelectAddMultiple, {width: 'fit-content'})
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        switch(val) {
+          case SalaryTypeEnum.OVERTIME:
+            this.addSalaryOvertime(val)
+            break;
+          case SalaryTypeEnum.ALLOWANCE:
+            this.addSalaryAllowance()
+            break;
+          case SalaryTypeEnum.ABSENT:
+           this.timekeeping()
+            break;
+        }
+      }
+    })
+  }
+
+  openDialogUpdateMultiple(){
+  const ref = this.dialog.open(SelectUpdateMultiple,
       {
         width: 'fit-content',
-        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+        data:{
+          pageType: this.selectedPayroll
+        }
+      })
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        switch(val) {
+          case PayrollEnum.PAYROLL:
+            this.exportPayroll()
+            break;
+          case PayrollEnum.TIME_SHEET:
+            this.exportTimekeeping()
+            break;
+          case PayrollEnum.PAYROLL_OVERTIME:
+            this.exportOvertime()
+            break;
+          case PayrollEnum.PAYROLL_ABSENT:
+            this.exportAbsent()
+            break;
+          case PayrollEnum.PAYROLL_ALLOWANCE:
+            this.exportAllowance()
+            break;
+          case PayrollEnum.PAYROLL_STAY:
+            this.exportStay()
+            break;
+        }
       }
-    );
+    })
   }
 }

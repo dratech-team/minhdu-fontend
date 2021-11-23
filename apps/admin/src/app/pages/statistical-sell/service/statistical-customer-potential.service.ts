@@ -11,7 +11,7 @@ export class StatisticalCustomerPotentialService extends BaseService<stakedChart
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.STATISTICAL_CUSTOMER, http)
+    super(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER, http)
   }
 
   getAll(param: any): Observable<stakedChart[]> {

@@ -1,13 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { isEqualDatetime } from 'libs/utils/daytime.until';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
@@ -15,6 +11,7 @@ import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 import { ShowAlertComponent } from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
 import { AppState } from '../../../../../reducers';
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
+import { SalaryService } from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'
@@ -37,6 +34,8 @@ export class DialogAllowanceComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
+    private readonly salaryService: SalaryService,
+    private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAllowanceComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
@@ -95,7 +94,12 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   isShowDatePicker() {
-    return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
+    if (this.data.updateMultiple) {
+      return false;
+    }
+    {
+      return isEqualDatetime(this.data?.payroll?.employee?.workedAt, this.data?.payroll?.createdAt, 'month');
+    }
   }
 
   get f() {
@@ -103,6 +107,7 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -130,14 +135,39 @@ export class DialogAllowanceComponent implements OnInit {
         ? this.data.salary.id
         : this.data.payroll.id
     };
+    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data.isUpdate) {
-      this.store.dispatch(
-        PayrollAction.updateSalary({
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId,
-          salary: salary
-        })
-      );
+      if (this.data.updateMultiple) {
+        this.salaryService.updateMultipleSalaryOvertime(
+          {
+            salaryIds: this.data.salaryIds,
+            title: value.title,
+            price:
+              typeof value.price === 'string'
+                ? Number(value.price.replace(this.numberChars, ''))
+                : value.price,
+            times: value.times,
+            datetime:
+              value.unit === 'MONTH' ||
+              (value.unit === DatetimeUnitEnum.DAY && value.datetime)
+                ? new Date(value.datetime)
+                : undefined
+          }).subscribe(val => {
+          if (val) {
+            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+            this.dialogRef.close({ title: value.title });
+          }
+        });
+      } else {
+        this.store.dispatch(
+          PayrollAction.updateSalary({
+            id: this.data.salary.id,
+            payrollId: this.data.salary.payrollId,
+            salary: salary
+          })
+        );
+      }
     } else {
       this.store.dispatch(
         PayrollAction.addSalary({

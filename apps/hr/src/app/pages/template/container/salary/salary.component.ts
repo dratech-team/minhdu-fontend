@@ -62,7 +62,7 @@ export class SalaryComponent implements OnInit {
   updateTemplateSalary(template: any) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
-      data: { isUpdate: true, template }
+      data: { isUpdate: true, template: template }
     });
   }
 

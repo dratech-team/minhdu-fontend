@@ -1,16 +1,25 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
+import { SalaryService } from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -35,6 +44,8 @@ export class DialogAbsentComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAbsentComponent>,
+    private readonly salaryService: SalaryService,
+    private readonly snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
@@ -59,15 +70,20 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    console.log(this.data)
     this.firstDayInMonth = this.datePipe.transform(
-      getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt
+        ? this.data.payroll.createdAt
+        : this.data.createdAt)), 'yyyy-MM-dd');
     this.lastDayInMonth = this.datePipe.transform(
-      getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
-    if (this.data.isUpdate) {
-      if (this.data.salary.unit === DatetimeUnitEnum.MINUTE) {
+      getLastDayInMonth(new Date(this.data?.payroll?.createdAt
+        ? this.data.payroll.createdAt
+        : this.data.createdAt)), 'yyyy-MM-dd');
+    if (this.data?.isUpdate) {
+      if (this.data.salary?.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
       } else if (
-        this.data.salary.unit === DatetimeUnitEnum.DAY &&
+        this.data.salary?.unit === DatetimeUnitEnum.DAY &&
         this.data.salary.type === this.type.ABSENT
       ) {
         this.unitAbsent = true;
@@ -80,17 +96,17 @@ export class DialogAbsentComponent implements OnInit {
         endedAt: [this.datePipe.transform(this.data.salary?.endedAt, 'yyyy-MM-dd')],
         forgot: [this.data.salary?.forgot],
         times: [
-          this.data.salary.unit === DatetimeUnitEnum.MINUTE
+          this.data.salary?.unit === DatetimeUnitEnum.MINUTE
             ? Math.floor(this.data.salary.times / 60)
-            : this.data.salary.times
+            : this.data.salary?.times
         ],
-        unit: [this.data.salary.unit],
+        unit: [this.data.salary?.unit],
         minutes: [
-          this.data.salary.unit === DatetimeUnitEnum.MINUTE
+          this.data.salary?.unit === DatetimeUnitEnum.MINUTE
             ? this.data.salary.times % 60
             : undefined
         ],
-        note: [this.data.salary.note],
+        note: [this.data.salary?.note],
         type: [this.data.type],
         rate: [1],
         partialDay: []
@@ -191,13 +207,28 @@ export class DialogAbsentComponent implements OnInit {
           });
         }
       }
-      this.store.dispatch(
-        PayrollAction.updateSalary({
-          id: this.data.salary.id,
-          payrollId: this.data.salary.payrollId,
-          salary: salary
-        })
-      );
+      if (this.data?.updateMultiple) {
+        delete salary.payrollId;
+        Object.assign(salary, { salaryIds: this.data.salaryIds });
+        this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+        this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
+          if (val) {
+            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.dialogRef.close({
+              datetime: value.datetime
+            });
+          }
+        });
+      } else {
+        this.store.dispatch(
+          PayrollAction.updateSalary({
+            id: this.data.salary.id,
+            payrollId: this.data.salary.payrollId,
+            salary: salary
+          })
+        );
+      }
+
     } else {
       if (typeof this.selectedIndex !== 'number') {
         return this.snackBar.open('Chưa chọn Loại', '', { duration: 2000 });
@@ -249,7 +280,7 @@ export class DialogAbsentComponent implements OnInit {
                 this.titleSession[value.partialDay]?.title,
               times: this.titleSession[value.partialDay].times,
               datetime: new Date(value.startedAt + '-00'),
-              partial : this.titleSession[value.partialDay].type,
+              partial: this.titleSession[value.partialDay].type
             });
           } else {
             Object.assign(salary, {
@@ -261,7 +292,7 @@ export class DialogAbsentComponent implements OnInit {
                 (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
               startedAt: new Date(value.startedAt + '-00'),
               endedAt: new Date(value.endedAt + '-00'),
-              partial : this.titleSession[value.partialDay].type,
+              partial: this.titleSession[value.partialDay].type
             });
           }
         } else {
@@ -272,7 +303,7 @@ export class DialogAbsentComponent implements OnInit {
               this.titleSession[value.partialDay]?.title,
             times: this.titleSession[value.partialDay].times,
             datetime: new Date(value.datetime),
-            partial : this.titleSession[value.partialDay].type,
+            partial: this.titleSession[value.partialDay].type
           });
         }
       }

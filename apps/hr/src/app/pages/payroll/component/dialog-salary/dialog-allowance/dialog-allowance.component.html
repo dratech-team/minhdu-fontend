@@ -8,9 +8,9 @@
     </div>
   </div>
   <mat-dialog-content class='mat-typography '>
-    <form [formGroup]='formGroup' (submit)='onSubmit()' class='mx-3'>
+    <form [formGroup]='formGroup'  class='mx-3'>
       <!--Allowance - Phụ cáp không ảnh hưởng tới các khoảng trừ / cộng-->
-      <div *ngIf='data.type === type.ALLOWANCE ' class='form-group'>
+      <div class='form-group'>
         <div class='row mb-5 title-popup'>
           <span> Phụ cấp khác</span>
         </div>
@@ -18,7 +18,7 @@
           <div>
             <div class='row title-item mb-1'>
               <span>Tên phụ cấp</span>
-              <div class='star'>*</div>
+              <span class='star'>*</span>
             </div>
             <div class='row mb-3' [formGroup]='formGroup'>
               <input type='text' class='form-control px-1' placeholder='Nhập tên phụ cấp' formControlName='title'
@@ -141,7 +141,7 @@
         </div>
       </div>
       <div class='mt-2 row '>
-        <button class='btn btn-ok '>Lưu</button>
+        <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
         <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
           ?
         </button>

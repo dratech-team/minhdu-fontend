@@ -15,7 +15,7 @@ export class CommodityService extends BaseService<Commodity> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.COMMODITY, http);
+    super(Api.SELL.COMMODITY, http);
   }
 
   addOne(props: Commodity): Observable<Commodity> {

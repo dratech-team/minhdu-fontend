@@ -26,10 +26,10 @@ export class DialogExportTimekeepingComponent {
     }
     const datetime = this.datePipe.transform(this.data.datetime, 'yyyy-MM');
     this.exportService.print(
-      Api.TIMEKEEPING_EXPORT,
+      Api.HR.PAYROLL.TIMEKEEPING_EXPORT,
       {
         datetime: datetime ? new Date(datetime) : new Date(),
-        fileName: this.name.value
+        filename: this.name.value
       }
     );
     this.dialogRef.close();

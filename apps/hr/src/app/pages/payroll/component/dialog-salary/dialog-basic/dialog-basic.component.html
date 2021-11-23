@@ -5,10 +5,10 @@
       <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <form [formGroup]='formGroup' (submit)='onSubmit()'>
+  <form [formGroup]='formGroup'>
     <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
       <mat-tab label='Lương cơ bản'>
-        <div *ngIf='data.type === type.BASIC ' class='form-group' style='min-width: 400px'>
+        <div class='form-group' style='min-width: 400px'>
           <div *ngIf='false' class=' mb-5 title-popup'>
             <span> Lương cơ bản</span>
           </div>
@@ -18,7 +18,7 @@
               <span class='star'>*</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup'>
-              <mat-select [disabled]='data.salary' class='form-control col' formControlName='type'
+              <mat-select [disabled]='data?.salary' class='form-control col' formControlName='type'
                           [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
                 <mat-option *ngFor='let salary of salaries' value='{{salary.type}}'
                             (click)='onCheckValue(salary.type !== type.BASIC_INSURANCE)'>
@@ -56,14 +56,14 @@
       <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
         <app-pick-employee-absent
           [employeeIdInit]='this.data?.payroll?.employee?.id'
-          [createdPayroll]='data?.payroll?.createdAt'
+          [createdPayroll]='data?.payroll?.createdAt?data?.payroll?.createdAt: data.createdAt '
           (EventSelectEmployee)='pickEmployees($event)'
         >
         </app-pick-employee-absent>
       </mat-tab>
     </mat-tab-group>
     <div class='mt-2 row'>
-      <button class='btn btn-ok '>Lưu</button>
+      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
       <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
         mới</a>
       <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>

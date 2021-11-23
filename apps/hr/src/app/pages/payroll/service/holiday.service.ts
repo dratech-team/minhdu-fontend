@@ -13,7 +13,7 @@ export class HolidayService extends BaseService<Holiday>{
   constructor(
     public readonly http: HttpClient,
   ) {
-    super(Api.holiday,http)
+    super(Api.HR.PAYROLL.holiday,http)
   }
 
   addOne(props: Holiday): Observable<Holiday> {

@@ -13,6 +13,6 @@ export const initialMain = adapter.getInitialState({
 export const MainReducer = createReducer(
   initialMain,
   on(MainAction.updateState, (state, { tab, warehouse }) => {
-    return { ...state, tab: tab ? tab : state.tab, warehouse: warehouse ? warehouse : state.warehouse };
+    return { ...state, tab: tab ? tab : state.tab, WAREHOUSE: warehouse ? warehouse : state.warehouse };
   })
 );
