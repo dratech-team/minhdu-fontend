@@ -97,9 +97,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.loadInitPayroll();
+
     this.daysInMonth = rageDaysInMonth(this.createdAt);
+
     this.store.dispatch(PositionActions.loadPosition());
+
     this.store.dispatch(OrgchartActions.init());
+
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
       if (val === PayrollEnum.TIME_SHEET && !this.createdAt) {
         this.selectedPayroll = val;
@@ -122,6 +126,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         return this.loadInitPayroll();
       }
     });
+
     this.formGroup.valueChanges.pipe(
       map(val => {
         if ((!val.createdAt) && (this.selectedPayroll === PayrollEnum.TIME_SHEET)) {
