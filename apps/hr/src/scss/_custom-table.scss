@@ -1,5 +1,4 @@
 
-
 .select {
   font-size: 15px;
   border: none;
@@ -48,16 +47,17 @@
 .fixTableHead > table th {
   text-align: center;
   padding: 0;
-
 }
 
 .fixTableHead > table thead th > div {
   height: 35px;
   width: 100%;
 }
+
 .fixTableHead tbody th {
   padding: 5px;
 }
+
 .fixTableHead > table thead th > input {
   height: 35px;
   width: 100%;
@@ -121,9 +121,8 @@
 }
 
 
-.table-scroll thead th:first-child ,
-.table-scroll thead th:nth-child(2)
-{
+.table-scroll thead th:first-child,
+.table-scroll thead th:nth-child(2) {
   z-index: 5;
 }
 
