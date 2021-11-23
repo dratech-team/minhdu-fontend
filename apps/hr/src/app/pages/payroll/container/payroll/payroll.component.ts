@@ -399,6 +399,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.eventExportStay.next(true);
   }
 
+  exportPayrollSeasonal() {
+   //Export Payroll Seasonal
+  }
+
   exportAllowance() {
     this.eventExportAllowance.next(true);
   }
@@ -454,6 +458,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             break;
           case PayrollEnum.PAYROLL_STAY:
             this.exportStay()
+            break;
+          case PayrollEnum.PAYROLL_BASIC:
+            this.exportBasic()
+            break;
+          case PayrollEnum.PAYROLL_SEASONAL:
+            this.exportPayrollSeasonal()
             break;
         }
       }
