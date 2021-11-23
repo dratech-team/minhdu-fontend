@@ -10,7 +10,7 @@ export class DistrictService extends BaseService<District> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.DISTRICT, http);
+    super(Api.LOCATION.DISTRICT, http);
   }
 
   getAll(params?: any): Observable<District[]> {

@@ -9,10 +9,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Branch, Department, Position } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
@@ -21,6 +20,7 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -34,6 +34,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   positions = new FormControl();
   branches = new FormControl();
   typeUnit = DatetimeUnitEnum;
+  employeeTypeEnum = EmployeeType;
   formGroup!: FormGroup;
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -59,48 +60,29 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
       title: [this.data?.title, Validators.required],
+      employeeType: [this.data?.employeeType ?
+        this.data?.employeeType
+        : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
       price: [this.data?.price, Validators.required],
       unit: [this.data?.unit, Validators.required],
       rate: [this.data?.rate ? this.data.rate : 1, Validators.required],
       note: [this.data?.note]
     });
-    this.positions$ = combineLatest([
+
+    this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
+      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+        this.formGroup.get('unit')!.patchValue(DatetimeUnitEnum.HOUR);
+      }
+    });
+
+    this.positions$ = searchAndAddAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
       this.positions$
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          const result = positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-          if (!result.length) {
-            result.push({ id: 0, name: 'Tạo mới chức vụ' });
-          }
-          return result;
-        } else {
-          return positions;
-        }
-      })
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAndAddAutocomplete(
       this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
       this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          const result = branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-          if (!result.length) {
-            result.push({ id: 0, name: 'Tạo mới đơn vị' });
-          }
-          return result;
-        } else {
-          this.branchId = undefined;
-          return branches;
-        }
-      })
     );
     if (this.data?.branch) {
       this.branches.patchValue(this.data?.branch.name);
@@ -117,12 +99,16 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+    if(this.positionSelected.length === 0){
+      return this.snackbar.open('Chưa chọn chức vụ', '', {duration:1500})
+    }
     const value = this.formGroup.value;
     const template = {
       isUpdate: !!this.data,
       id: this.data?.id,
       data: {
         title: value.title,
+        employeeType: value.employeeType,
         positionIds: this.positionSelected.map(val => val.id),
         branchId: this.branchId,
         price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
@@ -132,6 +118,10 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       } as ReqOvertime
     };
     if (template.isUpdate) {
+      if(!this.branchInput.nativeElement.value){
+        Object.assign(template.data,
+          {branchId: null })
+      }
       this.store.dispatch(TemplateOvertimeAction.updateTemplate({ id: template.id, templateOvertime: template.data }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));

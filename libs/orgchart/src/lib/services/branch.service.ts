@@ -5,13 +5,14 @@ import { Injectable } from '@angular/core';
 import { Branch } from '@minhdu-fontend/data-models';
 import { BaseService } from '@minhdu-fontend/service';
 import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable()
 export class BranchService extends BaseService<Branch> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.BRANCH, http);
+    super(Api.HR.EMPLOYEE.BRANCH, http);
   }
 
 
@@ -27,11 +28,16 @@ export class BranchService extends BaseService<Branch> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Branch>> {
+  update(id: any, body: any): Observable<UpdateNum<Branch>> {
     return super.update(id, body);
   }
 
+
   delete(id: number): Observable<any> {
     return super.delete(id);
+  }
+
+  deleteAllowanceInBranch(salaryId: number): Observable<UpdateNum<Branch>> {
+    return this.http.delete<UpdateNum<Branch>>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
   }
 }

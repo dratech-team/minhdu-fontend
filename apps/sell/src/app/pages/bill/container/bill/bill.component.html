@@ -24,7 +24,7 @@
       </div>
       <div class='border-start title-header default'>
         <div class='title-profile'>Đơn vị tiền</div>
-        <select class='select' matNativeControl required  [disabled]='true'>
+        <select class='select' matNativeControl required [disabled]='true'>
           <option value='{{currencyUnit.VND}}'>VND</option>
           <option value='{{currencyUnit.CNY}}'>Nhân dân tệ</option>
           <option value='{{currencyUnit.EUR}}'>Euro</option>
@@ -48,18 +48,11 @@
       </div>
     </div>
 
-    <div class='outer   animated fadeIn'
-         infiniteScroll
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         *ngIf='(Bills$| async) as bills'
-    >
-      <div class='row-content' *ngFor='let bill of bills'
-           (click)='detailOrder()'>
+    <div class='outer   animated fadeIn' infiniteScroll [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10'
+      [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(Bills$| async) as bills'>
+      <div class='row-content' *ngFor='let bill of bills' (click)='detailOrder()'>
 
-        <div class='content-profile name pointer '>{{bill?.customer?.firstName}} {{bill?.customer?.lastName}}</div>
+        <div class='content-profile name pointer '> {{bill?.customer?.lastName}}</div>
         <div class='content-profile default pointer '>
           <input type='checkbox' [checked]='bill.paidAt !== null'>
         </div>
@@ -92,5 +85,3 @@
   </div>
 
 </div>
-
-

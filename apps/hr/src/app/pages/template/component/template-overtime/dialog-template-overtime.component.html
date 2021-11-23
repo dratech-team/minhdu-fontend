@@ -7,9 +7,9 @@
     </div>
   </div>
   <h2 mat-dialog-title>Mẫu tăng ca</h2>
-  <mat-dialog-content class='mat-typography'>
+  <mat-dialog-content class='mat-typography' style='max-height: 45vh'>
     <form [formGroup]='formGroup'>
-      <div class='m-4'>
+      <div class='my-4 mx-2'>
         <div class=' main-popup'>
           <div><span class='main-title'>Tiêu đề tăng ca</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title' placeholder='Nhập tiêu đề'
@@ -18,12 +18,31 @@
             <div>Chưa nhập tiêu đề</div>
           </div>
         </div>
-        <div class='main-popup mt-2 '>
+        <div>
+          <div class='main-title mt-3'>
+            <span> Loại nhân viên</span><span class='star'>*</span>
+          </div>
+          <div class='mt-1'>
+            <mat-select class='form-control' formControlName='employeeType'
+                        [ngClass]="{ 'is-invalid': submitted && f.employeeType.errors?.required }">
+              <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+              <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+            </mat-select>
+            <div *ngIf='submitted && f.employeeType.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn loại tăng ca</div>
+            </div>
+          </div>
+        </div>
+        <div class='main-popup mt-2'>
           <div class=' main-title mb-1'>
             <label class='main-title'>Loại tăng ca <span class='star'>*</span></label>
           </div>
           <div class=' mt-1'>
             <mat-select
+              [ngStyle]='{
+              "background":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL?"#dddddd":"white",
+               "pointer-events":this.formGroup.value.employeeType ===employeeTypeEnum.EMPLOYEE_SEASONAL ?"none":"auto"
+              }'
               class='form-control col'
               formControlName='unit'
               [ngClass]="{ 'is-invalid': submitted && f.unit.errors?.required }"
@@ -37,7 +56,7 @@
           </div>
         </div>
         <div class=' mt-2' [formGroup]='formGroup'>
-          <div><span class='main-title'>Chức vụ</span></div>
+          <div><span class='main-title'>Chức vụ</span><span class='star'>*</span></div>
           <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
                  style='width: 100%'
                  [matChipInputFor]='chipList'
@@ -104,11 +123,11 @@
           </div>
         </div>
       </div>
-      <div class='footer-popup row ml-2'>
-        <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
-      </div>
     </form>
   </mat-dialog-content>
+  <div class=' row ml-2'>
+    <button (click)='onSubmit()' class=' btn btn-ok ml-2'>Lưu</button>
+  </div>
 </div>
 
 

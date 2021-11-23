@@ -5,8 +5,7 @@
                (execute)='add($event.item)'>
     Thêm
   </ng-template>
-  <ng-template *ngIf='type !== pageType.HISTORY_PAYROLL
-                && type !== pageType.ORDER '
+  <ng-template *ngIf=' type !== pageType.ORDER '
                contextMenuItem let-item
                (execute)='delete($event.item)'>
     {{type === pageType.EMPLOYEE_LEFT_AT ? 'Khôi phục' : 'Xóa'}}
@@ -30,9 +29,19 @@
                (execute)='onDelivered($event.item)'>
     Ngày nhận hàng
   </ng-template>
-  <ng-template *ngIf='type === pageType.RESTORE'
+  <ng-template *ngIf='type === pageType.PAYROLL'
                contextMenuItem let-item
                (execute)='onRestore($event.item)'>
     khôi phục
+  </ng-template>
+  <ng-template *ngIf='type === pageType.PAYROLL'
+               contextMenuItem let-item
+               (execute)='onHistoryPayroll($event.item)'>
+    Lịch sử lương
+  </ng-template>
+  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.POSITION'
+               contextMenuItem let-item
+               (execute)='onEmployee($event.item)'>
+    Nhân viên
   </ng-template>
 </context-menu>

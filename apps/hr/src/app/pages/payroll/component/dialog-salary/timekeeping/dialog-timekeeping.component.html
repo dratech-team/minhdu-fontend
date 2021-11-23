@@ -1,0 +1,95 @@
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <mat-dialog-content class='mat-typography'>
+    <form [formGroup]='formGroup'>
+      <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+        <mat-tab label='Khấu trừ'>
+          <div style='min-width: 600px'>
+            <div class=' mb-3 title-popup'>
+              <span>Tiền khấu trừ</span>
+            </div>
+            <div class=' mb-2 d-flex flex-column '>
+              <div class='title-item col-12 '>
+                <span>Khoảng khấu trừ </span>
+                <span class='star'>*</span>
+              </div>
+              <div class=' my-2 col-12 '>
+                <mat-select class='form-control' [value]='selectedIndex'>
+                  <mat-option *ngFor='let item of titleAbsents; let i = index'
+                              [value]='i'
+                              (onSelectionChange)='onSelectAbsent(i)'
+                              (click)='onSelectAbsent(i)'
+                  >{{item.title}}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class=' mb-2 '
+                 *ngIf='titleAbsents[selectedIndex]?.unit === datetimeUnit.DAY '>
+              <div class='col-6'>
+                <span class=' title-item mb-1'>Buổi </span><span class='star'>*</span>
+                <mat-select class='form-control' formControlName='partialDay'>
+                  <mat-option *ngFor='let item of titleSession ; let i = index' [value]='i'>{{item.title}}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class=' my-2 d-flex align-items-center'>
+              <div class=' title-item col-6'>
+                <span>Ngày</span>
+                <span class='star'>*</span>
+                <div class=' mb-3 mt-1' [formGroup]='formGroup'>
+                  <input type='date' placeholder='06/05/1997' class='form-control' formControlName='datetime'
+                         [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+                  <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                    <div>Chưa chọn ngày</div>
+                  </div>
+                </div>
+              </div>
+              <div [formGroup]='formGroup'
+                   *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.HOUR' class='col-5 ml-1'>
+                <mat-checkbox formControlName='forgot' labelPosition='before' class='example-margin'
+                              style='font-size: 12px'>
+                  Quên giấy phép và bsc
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class=' mb-2 d-flex'
+                 *ngIf='titleAbsents[selectedIndex]?.unit  === datetimeUnit.MINUTE||unitMinute '>
+              <div [formGroup]='formGroup' class='col-6'>
+                <span class='title-item mb-1'>số giờ </span>
+                <input class='form-control' type='number' formControlName='times'>
+              </div>
+              <div [formGroup]='formGroup' class='col-5 ml-1'>
+                <span class='title-item'>số phút</span>
+                <input class='form-control' type='number' formControlName='minutes'>
+              </div>
+            </div>
+            <div class=' mb-2'>
+              <div [formGroup]='formGroup' class='col-12'>
+                <span class='title-item'>Chú thích</span>
+                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
+          <app-pick-employee-absent
+            [createdPayroll]='formGroup.get("datetime")?.value'
+            (EventSelectEmployee)='pickEmployees($event)'
+          >
+          </app-pick-employee-absent>
+        </mat-tab>
+      </mat-tab-group>
+      <div class='row  mt-2 ml-2'>
+        <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
+        <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+          ?
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -1,50 +1,33 @@
 import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity/src/models';
-import { Payroll } from './payroll.interface';
-import { Overtime } from '../../../../../../../../libs/data-models/hr/salary/overtime';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
+import { Payroll, PayrollDTO } from './payroll.interface';
+import {
+  ConvertBoolean,
+  ConvertBooleanFrontEnd,
+  EmployeeType, FilterTypeEnum,
+  PayrollEnum,
+  SalaryTypeEnum,
+  SearchTypeEnum
+} from '@minhdu-fontend/enums';
+import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
-  props<{
-    take?: number,
-    skip?: number,
-    name?: string,
-    code?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    createdAt?: Date,
-    paidAt?: boolean,
-    accConfirmedAt?: boolean,
-    employeeId?: number,
-    isTimeSheet?: boolean,
-  }>()
+  props<{payrollDTO: PayrollDTO}>()
 );
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[]}>()
+  props<{ payrolls: Payroll[], total: number }>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
-  props<{
-    take: number,
-    skip: number,
-    createdAt?: Date,
-    name?: string,
-    code?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    paidAt?: boolean,
-    accConfirmedAt?: boolean,
-    isTimeSheet?: boolean,
-  }>()
+  props<{payrollDTO: PayrollDTO}>()
 );
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[]}>()
+  props<{ payrolls: Payroll[], total: number }>()
 );
 
 export const filterOvertime = createAction(
@@ -60,7 +43,7 @@ export const filterOvertime = createAction(
 
 export const filterOvertimeSuccess = createAction(
   '[LOAD_SALARY] Filter overtime Success',
-  props<{ overtime: Overtime }>()
+  props<{ overtime: PayrollSalary }>()
 );
 export const addPayroll = createAction(
   '[ADD_PAYROLL] Add Payroll',
@@ -77,7 +60,11 @@ export const handlePayrollError = createAction(
 
 export const addSalary = createAction(
   '[ADD_SALARY] Add Salary',
-  props<{ salary: any, payrollId?: number, isTimesheet?: boolean }>()
+  props<{ salary: any, payrollId?: number, isTimesheet?: boolean, branchId?: number }>()
+);
+
+export const addSalaryMultipleSuccess = createAction(
+  '[UPDATE_SALARY] Add Salary Multiple Success '
 );
 
 export const handleSalaryError = createAction(
@@ -102,12 +89,12 @@ export const updatePayroll = createAction(
 
 export const confirmPayroll = createAction(
   '[CONFIRM_PAYROLL] Confirm Payroll',
-  props<{ id: number, dataConfirm:{datetime?: Date|null}}>()
+  props<{ id: number, dataConfirm: { datetime?: Date | null } }>()
 );
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: Update<Payroll> }>()
+  props<{ payroll: UpdateNum<Payroll> }>()
 );
 
 export const confirmPayrollSuccess = createAction(
@@ -117,7 +104,11 @@ export const confirmPayrollSuccess = createAction(
 
 export const updateSalary = createAction(
   '[UPDATE_SALARY] Update Salary ',
-  props<{ payrollId: number, salary: any, id?: number }>()
+  props<{ salary: any, payrollId?: number, id?: number, branchId?: number, multiple?: boolean }>()
+);
+
+export const updateSalaryMultipleSuccess = createAction(
+  '[UPDATE_SALARY] Update Salary Multiple Success '
 );
 
 export const deletePayroll = createAction(
@@ -132,7 +123,7 @@ export const deletePayrollSuccess = createAction(
 
 export const deleteSalary = createAction(
   '[DELETE_SALARY] Delete Salary',
-  props<{ id: number, PayrollId: number }>()
+  props<{ id: number, PayrollId?: number }>()
 );
 
 export const scanHoliday = createAction(
@@ -144,7 +135,14 @@ export const scanHolidayError = createAction(
   '[SCAN_HOLIDAY] Scan Holiday Error'
 );
 
+export const updateStatePayroll = createAction(
+  '[SELECT_PAYROLL] Select Payroll',
+  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string, added?: ConvertBooleanFrontEnd }>()
+);
 
+export const deleteSalarySuccess = createAction(
+  '[Delete_Salary] Delete Salary Success'
+);
 export const PayrollAction = {
   loadInit,
   loadInitSuccess,
@@ -168,5 +166,9 @@ export const PayrollAction = {
   handlePayrollError,
   scanHoliday,
   scanHolidayError,
-  confirmPayrollSuccess
+  confirmPayrollSuccess,
+  updateStatePayroll,
+  deleteSalarySuccess,
+  updateSalaryMultipleSuccess,
+  addSalaryMultipleSuccess
 };

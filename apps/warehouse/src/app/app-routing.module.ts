@@ -20,10 +20,10 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'lich-su-he-thong',
+        path: 'he-thong',
         loadChildren: () =>
-          import('@minhdu-fontend/system-history').then(
-            (m) => m.SystemHistoryModule
+          import('@minhdu-fontend/system').then(
+            (m) => m.SystemModule
           ),
       },
     ],

@@ -6,6 +6,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class CommodityService extends BaseService<Commodity> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.COMMODITY, http);
+    super(Api.SELL.COMMODITY, http);
   }
 
   addOne(props: Commodity): Observable<Commodity> {
@@ -33,7 +34,7 @@ export class CommodityService extends BaseService<Commodity> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Commodity>> {
+  update(id: any, body: any): Observable<UpdateNum<Commodity>> {
     return super.update(id, body);
   }
 

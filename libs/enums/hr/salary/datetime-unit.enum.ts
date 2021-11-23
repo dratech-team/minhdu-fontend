@@ -4,5 +4,6 @@ export enum DatetimeUnitEnum {
   DAY = 'DAY',
   MONTH = 'MONTH',
   YEAR = 'YEAR',
-  TIMES = 'TIMES'
+  TIMES = 'TIMES',
+  OPTION = 'OPTION',
 }

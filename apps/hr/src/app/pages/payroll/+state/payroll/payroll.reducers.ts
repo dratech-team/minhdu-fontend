@@ -1,22 +1,29 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { PayrollAction } from './payroll.action';
+import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
+import { ConvertBoolean, ConvertBooleanFrontEnd, PayrollEnum } from '@minhdu-fontend/enums';
 
-export interface PayrollState extends EntityState <Payroll> {
+export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
   added: boolean,
   adding: boolean,
   scanned: boolean,
   confirmed: boolean,
+  deleted: boolean
   selectedPayrollId: number,
+  createdAt: Date,
+  filter: PayrollEnum,
+  branch: string,
+  total: number
 }
-
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
+
 export const initialPayroll = adapter.getInitialState({
-  loaded: false, added: false, adding: false, scanned: false, confirmed: false
+  loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: ''
 });
 
 export const payrollReducer = createReducer(
@@ -25,12 +32,17 @@ export const payrollReducer = createReducer(
     return { ...state, loaded: false };
   }),
 
-  on(PayrollAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.payrolls,
-      { ...state, loaded: true, added: true, adding: false })),
 
-  on(PayrollAction.loadMorePayrollsSuccess, (state, action) =>
-    adapter.addMany(action.payrolls, { ...state, loaded: true})),
+  on(PayrollAction.loadInitSuccess, (state, action) =>
+  {
+   return  adapter.setAll(action.payrolls,
+      { ...state, loaded: true, added: true, adding: false, total: action.total })
+  }),
+
+  on(PayrollAction.loadMorePayrollsSuccess, (state, action) => {
+      return adapter.addMany(action.payrolls, { ...state, loaded: true, total: action.total });
+    }
+  ),
 
   on(PayrollAction.addPayroll, (state, _) => {
     return { ...state, adding: true, added: false };
@@ -49,11 +61,14 @@ export const payrollReducer = createReducer(
     adapter.upsertOne(action.payroll, { ...state, loaded: true, added: true, adding: false, scanned: true })
   ),
 
-  on(PayrollAction.updatePayrollSuccess, (state, action) =>
-    adapter.updateOne(action.payroll, { ...state, loaded: true })),
+  on(PayrollAction.updatePayrollSuccess, (state, { payroll }) => {
+      console.log(payroll);
+      return adapter.updateOne({ id: payroll.id, changes: payroll }, { ...state, loaded: true });
+    }
+  ),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true })),
+    adapter.removeOne(action.id, { ...state, deleted: true, adding: false })),
 
   on(PayrollAction.confirmPayroll, (state, _) => {
     return { ...state, confirmed: false };
@@ -86,7 +101,7 @@ export const payrollReducer = createReducer(
   }),
 
   on(PayrollAction.handleSalaryError, (state, _) => {
-    return { ...state, adding: false };
+    return { ...state, adding: false, deleted: false };
   }),
 
   on(PayrollAction.scanHoliday, (state, _) => {
@@ -95,6 +110,29 @@ export const payrollReducer = createReducer(
 
   on(PayrollAction.scanHolidayError, (state, _) => {
     return { ...state, scanned: true };
+  }),
+  on(PayrollAction.deletePayroll, (state, _) => {
+    return { ...state, adding: true, deleted: false };
+  }),
+
+  on(PayrollAction.deleteSalarySuccess, (state, _) => {
+    return { ...state };
+  }),
+  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch, added }) => {
+    return {
+      ...state,
+      filter: filter ? filter : state.filter,
+      createdAt: createdAt ? createdAt : state.createdAt,
+      branch: branch ? branch : state.branch,
+      added: added && added === ConvertBooleanFrontEnd.TRUE ? true :
+        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added,
+    };
+  }),
+  on(PayrollAction.updateSalaryMultipleSuccess, (state, _) => {
+    return { ...state };
+  }),
+  on(PayrollAction.addSalaryMultipleSuccess, (state, _) => {
+    return { ...state, added: true, adding: false };
   })
 );
 

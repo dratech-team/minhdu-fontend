@@ -4,15 +4,15 @@ import { ReqOvertime, TemplateOvertime } from '../+state/template-overtime/templ
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { Update } from '@ngrx/entity';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({providedIn:'root'})
 export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
   constructor(
     public readonly http: HttpClient,
   ) {
-    super(Api.OVERTIME_TEMPLATE,http)
+    super(Api.HR.TEMPLATE.OVERTIME_TEMPLATE,http)
   }
   pagination(params?: any): Observable<ResponsePaginate<TemplateOvertime>> {
     return super.pagination(params);
@@ -25,7 +25,7 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
   getAll(): Observable<TemplateOvertime[]> {
     return super.getAll();
   }
-  update(id: any, body: any): Observable<Update<TemplateOvertime>> {
+  update(id: any, body: any): Observable<UpdateNum<TemplateOvertime>> {
     return super.update(id, body);
   }
 

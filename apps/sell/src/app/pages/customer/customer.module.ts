@@ -29,20 +29,21 @@ import { TablePaymentComponent } from './component/table-payment/table-payment.c
 import { PaymentReducer } from './+state/payment/payment.reducer';
 import { PaymentEffect } from './+state/payment/payment.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MainReducer } from '../../states/main.reducer';
 @NgModule({
   imports: [
     LocationModule,
     ComponentsModule,
     MatSnackBarModule,
     HttpClientModule,
-    ComponentsModule,
     CustomerRoutingModule,
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
     StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     StoreModule.forFeature(FeatureName.CUSTOMER, CustomerReducer),
-    EffectsModule.forFeature([CustomerEffect,PaymentEffect]),
+    EffectsModule.forFeature([CustomerEffect, PaymentEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -52,7 +53,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatTabsModule,
     MatStepperModule,
     SharedModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
   ],
   declarations: [
     TablePaymentComponent,

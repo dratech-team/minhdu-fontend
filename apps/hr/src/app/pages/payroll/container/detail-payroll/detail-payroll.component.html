@@ -1,7 +1,6 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 
 <div class='row animated fadeIn   ' *ngIf='(payroll$ | async) as payroll'>
-
   <div class='container'>
     <div class='row' style='display: flex; justify-content: space-between'>
       <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
@@ -18,7 +17,7 @@
         Phiếu lương tháng {{payroll.createdAt|date: 'MM/yyyy'}}
       </div>
       <div class='row col-md-12'>
-        <a routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class=' col-4 pointer '>
+        <div class=' col-4 pointer '>
           <div class='employee row col-md-12 mt-3 d-flex flex-column align-items-center justify-content-center '
                style='min-height: 116px; padding: 10px '>
             <!--            <div class='row col-md-3 mr-1 info-employee'>-->
@@ -30,23 +29,25 @@
             <!--                height='64px'-->
             <!--              />-->
             <!--            </div>-->
-            <div class='row d-flex flex-column ' style='width: 100%; color: black'>
+            <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='row d-flex flex-column '
+                 style='width: 100%; color: black'>
               <div class='col-12 d-flex justify-content-start font-weight-bold'>
-                {{payroll.employee.firstName}} {{payroll.employee.lastName}}
+                {{payroll.employee.lastName}}
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
                 <span class='d-inline-block font-weight-bold'>Ngày vào làm: </span>
                 <span class='ml-1'>{{payroll.employee.createdAt|date: 'dd/MM/yyyy'}}</span>
               </div>
             </div>
-            <div class='col-12 d-flex align-items-center mt-2'>
+            <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
+                 class='col-12 d-flex align-items-center mt-2'>
               <div class='row' style='width: 100%;'>
                 <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                  <div class='col-md position'>{{payroll.employee.position.name}}</div>
+                  <div class='col-md position btn btn-primary'>{{payroll.employee.position.name}}</div>
                 </div>
               </div>
               <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                <div class='col-md position'>
+                <div class='col-md position btn btn-primary'>
                   <span class='mr-2'>{{payroll.employee.recipeType}}</span>
                   |
                   <span class='ml-2'>{{payroll.employee.id}}</span>
@@ -54,8 +55,9 @@
               </div>
             </div>
           </div>
-        </a>
-        <div class='employee row col mt-3'>
+
+        </div>
+        <div *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL' class='employee row col mt-3'>
           <div class='col' style='min-width: 170px'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
@@ -78,8 +80,18 @@
             <div class='row justify-content-center'> Thuộc diện hợp đồng</div>
             <div class='row' style='display: flex;justify-content: center;align-items: center;height: 43px;'>
               <img
-                [src]=" payroll.employee.contracts.length === 0 ?'../../../../../assets/img/share/x-lg.svg': ' ../../../../../assets/img/payroll/check.svg' "
-                [alt]="payroll.employee.contracts.length === 0 ? 'contract' : 'not contract' ">
+                [src]=" payroll.employee.contracts && payroll.employee.contracts.length === 0 ?
+                '../../../../../assets/img/share/x-lg.svg'
+                : ' ../../../../../assets/img/payroll/check.svg' "
+                [alt]=" payroll.employee.contracts &&payroll.employee.contracts.length === 0 ?
+                 'contract'
+                 : 'not contract' ">
+            </div>
+            <div class='row d-flex justify-content-center align-items-center'>
+              <div class='pointer' (click)='updateTaxed(payroll)'>
+                <mat-slide-toggle style='pointer-events: none' [checked]='payroll.taxed'>
+                </mat-slide-toggle>
+              </div>
             </div>
           </div>
         </div>
@@ -88,7 +100,8 @@
     <div class='row' style='display: flex ; align-items: center'>
       <div class='col' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'></div>
     </div>
-    <div class='row d-flex flex-column'>
+    <div class='row d-flex flex-column'
+         *ngIf='payroll.employee.type !== employeeTypeEnum.EMPLOYEE_SEASONAL; else seasonal'>
       <div #basic class='d-flex'>
         <!--Lương cơ bản-->
         <div class='col-6'>
@@ -132,7 +145,7 @@
           <table>
             <thead>
             <tr style='background-color: #dddddd66;'>
-              <th width='50%' class=' text-center '>Phụ cấp ở lại</th>
+              <th width='50%' class=' text-center '>Phụ cấp lương</th>
               <th width='28%' class=' text-center '>Thành tiền</th>
               <th width='22%' class=' text-center ' (click)='addSalary(type.STAY,payroll)'>
                 <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
@@ -190,9 +203,7 @@
               <span>{{salary.title}}</span>
             </th>
             <th width='15%' class=' text-center '>
-              <span *ngIf='salary.unit === datetimeUnit.MONTH'>{{salary.datetime|date:'MM-yyyy'}} </span>
-              <span *ngIf='salary.unit === datetimeUnit.DAY'>{{salary.datetime ? (salary.datetime|date:'dd-MM-yyyy') :
-                '-'}} </span>
+              -
             </th>
             <th width='10%' class=' text-center '>
               <span *ngIf='salary.unit === datetimeUnit.MONTH'>Tháng</span>
@@ -244,20 +255,22 @@
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'> + {{salary.allowance.title}}</span>
               </div>
-
             </th>
             <th width='15%' class=' text-center '>
-                <span>
+                <span *ngIf='salary.unit'>
                   {{salary.datetime ? (salary.datetime|date:'dd-MM-yyyy') : '-'}}
                 </span>
             </th>
             <th width='10%' class=' text-center '>
               <span *ngIf='salary.unit === datetimeUnit.HOUR'> {{salary.times}} Giờ </span>
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
+              <span *ngIf='!salary.unit'>{{
+                salary.partial === "ALL_DAY" ? (salary.times) + " Ngày" : (salary.times * 2) + " buổi"
+                }}</span>
             </th>
             <th width='15%' class=' text-center ' style='color: #29CC97'>
                 <span>
-                  {{ (salary.times * salary.price)|number:'1.0'| notEmpty:'0'}}đ
+                  {{ salary.price ? ((salary.times * salary.price)|number:'1.0') + 'đ' : ''}}
                 </span>
               <span *ngIf='salary.allowance'>
                   + {{salary.allowance.price}}
@@ -290,7 +303,7 @@
             <th width='25%' class=' title text-center '>Khấu trừ</th>
             <th width='15%' class=' title text-center '>Thời gian</th>
             <th width='13%' class=' title text-center '>Đơn vị</th>
-            <th width='15%' class=' title text-center '>Thành tiền</th>
+            <th width='15%' class=' title text-center '>Quên giấy phép</th>
             <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -312,9 +325,9 @@
                  <span *ngIf='salary.datetime'>
                   {{salary.datetime|date:'dd-MM-yyyy'}}
                 </span>
-                <span *ngIf='salary.startedAt && salary.endedAt'>
+              <span *ngIf='salary.startedAt && salary.endedAt'>
                    từ ngày {{salary.startedAt|date:'dd-MM-yyyy'}}
-                  đến ngày {{salary.endedAt|date:'dd-MM-yyyy'}}
+                đến ngày {{salary.endedAt|date:'dd-MM-yyyy'}}
                 </span>
               <span *ngIf='!salary.startedAt && !salary.endedAt &&!salary.datetime  '>
                    _
@@ -328,7 +341,7 @@
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
             <th width='15%' class=' text-center '>
-              _
+              {{salary.forgot ? 'Có' : 'Không'}}
             </th>
             <th width='22%' class=' text-center '>
               <span>{{salary.note}}</span>
@@ -391,11 +404,92 @@
           </tbody>
         </table>
       </div>
+      <div class='sticky-scroll' *ngIf='isSticky'>
+        <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
+        <div class='pointer ' (click)='scroll(basic,sticky)'>Lương cơ bản</div>
+        <div class='pointer' (click)='scroll(basic,sticky)'>Phụ cấp ở lại</div>
+        <div class='pointer' (click)='scroll(allowance,sticky)'>Phụ cấp</div>
+        <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
+        <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
+        <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
+        <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
+      </div>
+      <div class='sticky-scroll' #sticky>
+        <div class='pointer' (click)='onSticky(sticky)'>
+          << Hiện
+        </div>
+      </div>
     </div>
+    <ng-template #seasonal>
+      <div class='row d-flex flex-column'>
+        <div class='d-flex'>
+          <div class='col-12'>
+            <table>
+              <thead>
+              <tr style='background-color: #dddddd66;'>
+                <th class=' text-center '>Lương công nhật</th>
+                <th class=' text-center '>Thời gian</th>
+                <th class=' text-center '>Đơn giá</th>
+                <th class=' text-center '>Thành tiền</th>
+                <th width='12%' class=' text-center ' (click)='addSalary(type.PART_TIME,payroll)'>
+                  <span class='mr-1 pointer' style='color: #1b8eb7'>Thêm mục</span>
+                  <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+                       alt='add icon'>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr style='background: white'
+                  *ngFor="let salary of payroll.salaries | filterTypeSalary:['PART_TIME','OVERTIME'] ">
+                <th> {{salary.title}} {{salary?.allowance ? '+ ' + salary.allowance.title : ''}}</th>
+                <th class='text-center'>
+                  {{salary.times}} {{salary.unit === 'DAY' ? 'ngày' : 'giờ' }}
+                  {{salary?.datetime ? ' ngày ' + (salary.datetime|date:'dd/MM/yyyy') : ''}}
+                </th>
+                <th class=' text-center '>
+                  {{salary.price|number:'1.0'|notEmpty:'0'}} đ
+                  {{salary.allowance ? '+ ' + (salary.allowance.price|number:'1.0'|notEmpty:'0') + ' đ' : ''}}
+                </th>
+                <th class=' text-center ' style='color: #4B3880'>
+                  <span *ngIf='!salary.allowance; else total'>
+                     {{salary.price * salary.times|number:'1.0'|notEmpty:'0'}} đ
+                  </span>
+                  <ng-template #total>
+                      <span>
+                     {{salary.price * salary.times + salary.allowance.price|number:'1.0'|notEmpty:'0'}} đ
+                  </span>
+                  </ng-template>
+                </th>
+                <th>
+                  <div class='d-flex justify-content-around'>
+                    <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated mr-2'
+                            (click)='updateSalary(type.PART_TIME,salary,payroll)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/share/pencil-fill.svg' alt='edit icon'>
+                    </button>
+                    <button data-toggle='tooltip' data-placement='top' title='xóa' class='trash animated'
+                            (click)='removeSalary(salary.id, payroll.id)'>
+                      <img style='height: 9px;' src='../../../../../assets/img/payroll/trash.svg' alt='delete icon'>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
     <div class='col-md-12' style='border-top: 2px dashed #9FA2B4; margin: 50px 0;'>
     </div>
     <div #footer>
       <div class='col-md-12' *ngIf='(payroll$ | async) as payroll' style='display: flex; justify-content: flex-end'>
+
+        <button
+          (click)='deletePayroll(payroll)'
+          class='btn btn-danger mr-3' style='height: 35px'>
+          Xóa phiếu lương
+        </button>
         <button (click)='historySalary(payroll)'
                 class='mb-5 btn d-flex d-flex justify-content-center  align-items-center mr-3'
                 style='border: solid 1px #4B3880'>
@@ -408,22 +502,6 @@
           Xác nhận phiếu lương
         </button>
       </div>
-    </div>
-
-  </div>
-  <div class='sticky-scroll' #sticky>
-    <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
-    <div class='pointer ' (click)='scroll(basic)'>Lương cơ bản</div>
-    <div class='pointer' (click)='scroll(basic)'>Phụ cấp ở lại</div>
-    <div class='pointer' (click)='scroll(allowance)'>Phụ cấp</div>
-    <div class='pointer' (click)='scroll(overtime)'>Tăng ca</div>
-    <div class='pointer' (click)='scroll(absent)'>Khấu trừ</div>
-    <div class='pointer' (click)='scroll(holiday)'>Đi làm ngày lễ</div>
-    <div class='pointer' (click)='scroll(footer)'>Lịch sử và xác nhận lương</div>
-  </div>
-  <div class='sticky-scroll' *ngIf='isSticky'>
-    <div class='pointer' (click)='onSticky(sticky)'>
-      << Hiện
     </div>
   </div>
 </div>

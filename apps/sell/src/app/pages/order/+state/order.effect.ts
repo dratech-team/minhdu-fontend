@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
-import { OrderAction } from './order.action';
+import { OrderAction, updateHideOrder } from './order.action';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CommodityAction } from '../../commodity/+state/commodity.action';
-import { CustomerAction } from '../../customer/+state/customer/customer.action';
+import { CustomerAction, getCustomer } from '../../customer/+state/customer/customer.action';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
 
@@ -19,20 +19,14 @@ export class OrderEffect {
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
-      switchMap((props) => this.orderService.addOne(props.order).pipe(
-        map(order => {
-          return OrderAction.addOrderSuccess({ order: order });
-        }),
-        tap(_ => {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Thao tác thành công' }
-          });
-        }),
-        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
-        catchError((err) => throwError(err))
-      ))
+      switchMap((props) => this.orderService.addOne(props.order)),
+      map(res => {
+        this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
+        return OrderAction.addOrderSuccess({ order: res });
+      }),
+      catchError((err) => {
+        return throwError(err);
+      })
     ));
 
   loadAllOrder$ = createEffect(() =>
@@ -143,9 +137,15 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.updateHideOrder),
       switchMap((props) =>
-        this.orderService.updateHide(props.id, props.order).pipe(
-          map((_) =>
-            OrderAction.loadOrdersAssigned({ take: 30, skip: 0, delivered: this.convertBoolean.TRUE })
+        this.orderService.updateHide(props.id, props.hide).pipe(
+          map((_) => {
+              this.store.dispatch(OrderAction.loadOrdersAssigned({
+                take: 30,
+                skip: 0,
+                delivered: this.convertBoolean.TRUE
+              }));
+              return CustomerAction.getCustomer({ id: props.customerId });
+            }
           ),
           catchError((err) => {
               this.store.dispatch(OrderAction.loadOrdersAssigned({
@@ -159,6 +159,7 @@ export class OrderEffect {
         )
       )
     ));
+
   paymentBill$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.payment),

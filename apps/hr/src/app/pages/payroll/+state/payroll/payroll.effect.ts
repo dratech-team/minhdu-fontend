@@ -11,11 +11,13 @@ import {
   switchMap,
   withLatestFrom
 } from 'rxjs/operators';
+import { OvertimeService } from '../../service/overtime.service';
 import { PayrollService } from '../../service/payroll.service';
 import { SalaryService } from '../../service/salary.service';
-import { PayrollAction } from './payroll.action';
+import { deleteSalarySuccess, PayrollAction } from './payroll.action';
+import { AddPayroll } from './payroll.interface';
 import { selectorPayrollTotal } from './payroll.selector';
-import { OvertimeService } from '../../service/overtime.service';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Injectable()
 export class PayrollEffect {
@@ -23,8 +25,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        console.log(requestPaginate);
-        return this.payrollService.pagination(requestPaginate);
+        return this.payrollService.pagination(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
         /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
@@ -32,7 +33,8 @@ export class PayrollEffect {
         //   duration: 1000,
         // });
         return PayrollAction.loadInitSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
+          total: ResponsePaginate.total
         });
       }),
       catchError((err) => throwError(err))
@@ -44,7 +46,7 @@ export class PayrollEffect {
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), { skip: skip })
       ),
       switchMap((props) => {
         return this.payrollService.pagination(props);
@@ -58,7 +60,8 @@ export class PayrollEffect {
           });
         }
         return PayrollAction.loadMorePayrollsSuccess({
-          payrolls: ResponsePaginate.data
+          payrolls: ResponsePaginate.data,
+          total: ResponsePaginate.total
         });
       }),
       catchError((err) => throwError(err))
@@ -80,25 +83,39 @@ export class PayrollEffect {
     )
   );
 
+  //  createdAt: new Date(this.formGroup.value.generate),
+  // employeeId: +this.data.employeeId,
+  // employeeType: this.data?.employeeType
   addPayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addPayroll),
       switchMap((props) =>
-        this.payrollService.addPayroll(props.generate).pipe(
-          map((res) => {
-            this.snackBar.open(res?.message ? res.message : 'Thao tác thành công ', 'Đóng');
-            if (props.inHistory) {
-              this.store.dispatch(
-                PayrollAction.loadInit({
-                  take: 30,
-                  skip: 0,
-                  employeeId: props.generate.employeeId
-                })
+        this.payrollService
+          .addPayroll<AddPayroll>(
+            {
+              createdAt: props.generate.createdAt,
+              employeeId: props.generate.employeeId
+            },
+            { employeeType: props.generate.employeeType }
+          )
+          .pipe(
+            map((res) => {
+              this.snackBar.open(
+                res?.message ? res.message : 'Thao tác thành công ',
+                'Đóng'
               );
-            }
-            return PayrollAction.addPayrollSuccess();
-          })
-        )
+              if (props.inHistory) {
+                this.store.dispatch(
+                  PayrollAction.loadInit({payrollDTO: {
+                      take: 30,
+                      skip: 0,
+                      employeeId: props.generate.employeeId
+                    } })
+                );
+              }
+              return PayrollAction.addPayrollSuccess();
+            })
+          )
       ),
       catchError((err) => {
         this.store.dispatch(PayrollAction.handlePayrollError());
@@ -110,29 +127,29 @@ export class PayrollEffect {
   addSalary$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.addSalary),
-      switchMap((props) =>
-        this.salaryService.addOne(props.salary).pipe(
-          map((res) => {
-            /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
-            if (res?.status === 201) {
-              this.snackBar.open(res.message, 'Xác nhận');
-            } else {
-              this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
-            }
-            return props.payrollId
-              ? PayrollAction.getPayroll({ id: props.payrollId })
-              : PayrollAction.loadInit({
-                take: 30,
-                skip: 0,
-                createdAt: new Date(),
-                isTimeSheet: !!props.isTimesheet
-              });
-          }),
-          catchError((err) => {
-            this.store.dispatch(PayrollAction.handleSalaryError());
-            return throwError(err);
-          })
-        )
+      switchMap((props) => {
+          return this.salaryService.addOne(props.salary).pipe(
+            map((res) => {
+              /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
+              if (res?.status === 201) {
+                this.snackBar.open(res.message, 'Xác nhận');
+              } else {
+                this.snackBar.open('Thao tác thành công', '', { duration: 1000 });
+              }
+              if (props.branchId) {
+                return OrgchartActions.getBranch({ id: props.branchId });
+              } else {
+                return props.payrollId
+                  ? PayrollAction.getPayroll({ id: props.payrollId })
+                  : PayrollAction.addSalaryMultipleSuccess();
+              }
+            }),
+            catchError((err) => {
+              this.store.dispatch(PayrollAction.handleSalaryError());
+              return throwError(err);
+            })
+          );
+        }
       )
     )
   );
@@ -155,8 +172,7 @@ export class PayrollEffect {
   updatePayroll$ = createEffect(() =>
     this.action$.pipe(
       ofType(PayrollAction.updatePayroll),
-      switchMap((props) =>
-        this.payrollService.update(props.id, props.Payroll)),
+      switchMap((props) => this.payrollService.update(props.id, props.Payroll)),
       map((payroll) => {
         return PayrollAction.updatePayrollSuccess({ payroll: payroll });
       }),
@@ -187,7 +203,15 @@ export class PayrollEffect {
         return this.salaryService.update(props.id, props.salary).pipe(
           map((_) => {
             this.snackBar.open('Cập nhật thành công', '', { duration: 1000 });
-            return PayrollAction.getPayroll({ id: props.payrollId });
+            if (props.branchId) {
+              return OrgchartActions.getBranch({ id: props.branchId });
+            } else {
+              if (props.multiple) {
+                return PayrollAction.updateSalaryMultipleSuccess();
+              } else {
+                return PayrollAction.getPayroll({ id: props.payrollId });
+              }
+            }
           })
         );
       }),
@@ -203,8 +227,15 @@ export class PayrollEffect {
       ofType(PayrollAction.deletePayroll),
       switchMap((props) =>
         this.payrollService.delete(props.id).pipe(
-          map(() => PayrollAction.getPayroll({ id: props.id })),
-          catchError((err) => throwError(err))
+          map(() => {
+            this.snackBar.open('xóa phiếu lương thành công', '', { duration: 1500 });
+            return PayrollAction.deletePayrollSuccess({ id: props.id });
+          }),
+          catchError((err) => {
+              this.store.dispatch(PayrollAction.handlePayrollError());
+              return throwError(err);
+            }
+          )
         )
       )
     )
@@ -215,10 +246,12 @@ export class PayrollEffect {
       ofType(PayrollAction.deleteSalary),
       switchMap((props) =>
         this.salaryService.delete(props.id).pipe(
-          map(() => PayrollAction.getPayroll({ id: props.PayrollId })),
-          catchError((err) => throwError(err))
+          map(() => {
+            return PayrollAction.getPayroll({ id: props.PayrollId });
+          })
         )
-      )
+      ),
+      catchError((err) => throwError(err))
     )
   );
 
@@ -227,14 +260,15 @@ export class PayrollEffect {
       ofType(PayrollAction.scanHoliday),
       switchMap((props) =>
         this.payrollService.scanHoliday(props.PayrollId).pipe(
-          map(_ => {
+          map((_) => {
             return PayrollAction.getPayroll({ id: props.PayrollId });
           }),
           catchError((err) => {
             this.store.dispatch(PayrollAction.scanHolidayError());
             return throwError(err);
           })
-        ))
+        )
+      )
     )
   );
 

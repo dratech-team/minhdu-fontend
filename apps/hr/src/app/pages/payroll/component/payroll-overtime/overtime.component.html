@@ -1,0 +1,259 @@
+<ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>
+<div class='font-lg font-weight-bold mb-2'>
+  Đã chọn: {{salaryIds.length}}/{{salaries.length}}
+</div>
+<div class='table-scroll mt-3 position-relative '>
+  <table [formGroup]='formGroup' class='main-table' style='width: 2300px;'>
+    <thead>
+    <tr>
+      <th>
+        <div class='border-top text-center'>stt</div>
+        <input type='text' disabled>
+      </th>
+      <th>
+        <div class='border-top text-center'>Mã nhân viên</div>
+        <input type='text' disabled>
+      </th>
+      <th style='width: 270px'>
+        <div class='border-top text-center'>
+          <div class='d-flex justify-content-center' style='height: 100%'>
+            <span>Tên nhân viên</span>
+            <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
+              <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
+      </th>
+      <th style='width: 200px'>
+        <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+        <input type='text' disabled>
+      </th>
+      <th style='width: 50px ; z-index: 3'>
+        <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
+        <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                (click)='updateSalaryOvertime()'
+                *ngIf='salaryIds.length > 0'
+                class=' btn btn-primary d-flex justify-content-center align-items-center '>
+          Sửa
+        </button>
+      </th>
+      <th style='width: 220px;'>
+        <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
+        <div class='d-flex border'>
+          <mat-date-range-input [rangePicker]='picker'>
+            <input matStartDate formControlName='startAt' placeholder='Từ ngày'>
+            <input matEndDate formControlName='endAt' placeholder='Đến ngày'>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </div>
+      </th>
+      <th style='min-width: 300px;'>
+        <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
+        <input class='form-control' type='text' matInput [matAutocomplete]='templateOvertime'
+               formControlName='title'>
+        <mat-autocomplete #templateOvertime='matAutocomplete'>
+          <mat-option *ngFor='let template of templateOvertime$ | async' [value]='template.title'
+                      (onSelectionChange)='onSelectTemplateOvertime($event, template.title)'>
+            {{template.title}}
+          </mat-option>
+        </mat-autocomplete>
+      </th>
+      <th>
+        <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
+        <input type='text' disabled>
+      </th>
+      <th>
+        <div class='border-top d-flex justify-content-center align-items-center'>Đơn giá</div>
+        <input type='text' disabled>
+      </th>
+      <th>
+        <div class='border-top d-flex justify-content-center align-items-center'>Tổng đơn vị tính</div>
+        <input type='text' disabled>
+      </th>
+      <th>
+        <div class='border-top d-flex justify-content-center align-items-center'>Tổng thành tiền</div>
+        <input type='text' disabled>
+      </th>
+    </tr>
+    <tr style=' color: red ; position: relative ; top:-1px' style='background:white'>
+      <th style='background:white'>
+        <div class=''></div>
+      </th>
+      <th style='background:white'>
+        <div class=''></div>
+      </th>
+      <th style='background:white'>
+        <div class='text-center'>Tổng cộng</div>
+      </th>
+      <th style=' width: 200px;'>
+        <div class='text-center'></div>
+      </th>
+      <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
+        <mat-checkbox class='example-margin mt-2 mx-auto'
+                      [checked]='isSelectSalary'
+                      [indeterminate]='someCompleteSalary()'
+                      (change)='setAllSalary($event.checked)'>
+        </mat-checkbox>
+      </th>
+      <th style='width: 220px'>
+        <div class='text-center'></div>
+      </th>
+      <th style='min-width: 300px'>
+        <div class='text-center'></div>
+      </th>
+      <th>
+        <div *ngIf='overtime?.total' class='text-center'>
+          {{overtime.total.times}} - {{overtime.total.unit === 'DAY' ? 'Ngày' : 'Giờ'}}
+        </div>
+      </th>
+      <th>
+        <div class='text-center'>
+        </div>
+      </th>
+      <th>
+        <div class='text-center'></div>
+      </th>
+      <th>
+        <div *ngIf='overtime?.total' class='text-center'>
+          {{(overtime.total.price |number: '1.0-0') + 'VND' }}
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor='let overtime of overtime?.employees; let i = index'
+        [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'
+    >
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{i + 1}}
+      </th>
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime?.id}}
+      </th>
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime.lastName}}
+      </th>
+      <th style='width: 200px' class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime.position?.name}}</th>
+      <th class='pointer'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        <div class=' d-flex align-items-center justify-content-center pointer '
+             *ngFor='let item of overtime.salaries'>
+          <mat-checkbox
+            [checked]='salaryIds.includes(item.id)'
+            (change)='updateSelectSalary(item.id)'>
+          </mat-checkbox>
+        </div>
+      </th>
+      <th class='pointer' style='width: 220px;'>
+        <div class='border d-flex align-items-center justify-content-center pointer '
+             *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
+             (click)='readPayroll(overtime)'>
+          {{item.datetime|date:'yyyy-MM-dd'}}
+        </div>
+      </th>
+      <th class='pointer' style='min-width: 300px;'>
+        <div class='border d-flex align-items-center justify-content-center pointer'
+             *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
+             (click)='readPayroll(overtime)'>
+          {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+        </div>
+      </th>
+      <th class='pointer'>
+        <div class='border d-flex align-items-center justify-content-center pointer'
+             *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
+             (click)='readPayroll(overtime)'>
+          {{item?.times}}
+          {{
+          item.unit === "HOUR" ? "Giờ" : "Ngày"
+          }}
+        </div>
+      </th>
+      <th class='pointer'>
+        <div class='border d-flex align-items-center justify-content-center pointer'
+             *ngFor='let item of overtime.salaries'
+             (contextmenu)='child.onContextMenu($event,item)'
+             (click)='readPayroll(overtime)'>
+          {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
+          {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
+        </div>
+      </th>
+      <th class='pointer'
+          *ngIf='overtime.salary'> {{overtime.salary.times}} {{overtime.salary.unit === unit.DAY ? 'Ngày' : 'Giờ'}}</th>
+      <th class='pointer' *ngIf='!overtime.salary'></th>
+      <th class='pointer' *ngIf='overtime.salary'> {{overtime.salary.total|number:'1.0-0'}} VND</th>
+      <th class='pointer' *ngIf='!overtime.salary'></th>
+    </tr>
+    <tr *ngIf='!overtime?.employees || overtime?.employees?.length === 0  ' style='height: 50vh'>
+      <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
+        <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
+                 (addEvent)='addSalaryOvertime()'
+                 (readEvent)='readPayroll($event)'
+                 (deleteEvent)='deleteSalaryOvertime($event)'
+                 #child>
+</app-mouse-right>
+<style>
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 170px;
+    z-index: 2;
+  }
+
+  .table-scroll tbody th > div {
+    height: 30px;
+    line-height: 1;
+  }
+
+  .table-scroll th:nth-child(4) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 440px;
+    z-index: 2;
+  }
+  .table-scroll th:nth-child(5) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 640px;
+    z-index: 2;
+  }
+
+
+  .table-scroll thead th:nth-child(3),
+  .table-scroll thead th:nth-child(4) ,
+  .table-scroll thead th:nth-child(5){
+    z-index: 5;
+  }
+
+  .table-scroll tr:nth-child(odd) {
+    background: white;
+  }
+
+  .table-scroll tr:nth-child(even) {
+    background: #dddddd;
+  }
+
+  .table-scroll thead tr:nth-child(2) th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70px;
+  }
+</style>
+
+
+

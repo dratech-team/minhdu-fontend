@@ -61,7 +61,7 @@
               <th class='text-center'>Bỏ chọn</th>
             </tr>
             <tr>
-              <td class='text-center'> {{customerPicked?.lastName}}  {{customerPicked.firstName}}</td>
+              <td class='text-center'>{{customerPicked.lastName}}</td>
               <td class='text-center' *ngIf='customerPicked?.type === customerType.AGENCY'> Đại lý</td>
               <td class='text-center' *ngIf='customerPicked?.type === customerType.RETAIL'> Khách lẻ</td>
               <td class='text-center' *ngIf='customerPicked?.resource === resourceType.OTHER'>Khác</td>

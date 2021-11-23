@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../container/dashboard/material/material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule,
     MaterialModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DashboardComponent

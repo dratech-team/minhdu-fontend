@@ -2,15 +2,7 @@
   <div class='form-group'>
     <div class='row'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='firstName'>Họ</label><span class='star'>*</span>
-        <input type='text' class='form-control' id='firstName' placeholder='Trần' formControlName='firstName'
-               [ngClass]="{ 'is-invalid': submitted && form.firstName.errors?.required  }">
-        <div *ngIf='submitted && form.firstName.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập tên</div>
-        </div>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='lastName'>Tên</label><span class='star'>*</span>
+        <label for='lastName'>Họ và tên</label><span class='star'>*</span>
         <input
           class='form-control'
           formControlName='lastName'
@@ -20,8 +12,18 @@
           [ngClass]="{ 'is-invalid': submitted && form.lastName.errors?.required }"
         >
         <div *ngIf='submitted && form.lastName.errors?.required ' class='invalid-feedback'>
-          <div>Chưa nhập họ</div>
+          <div>Chưa nhập họ và tên</div>
         </div>
+      </div>
+      <div class='col-sm' [formGroup]='formGroup'>
+        <label for='birthplace'>Nguyên quán</label>
+        <input
+          class='form-control'
+          formControlName='birthplace'
+          id='birthplace'
+          placeholder='Phước Sơn - Tuy Phước - Bình Định '
+          type='text'
+        >
       </div>
     </div>
     <div class='row mt-3'>
@@ -38,18 +40,6 @@
           formControlName='ethnicity'
           id='ethnicity'
           placeholder='Kinh'
-          type='text'
-        >
-      </div>
-    </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='birthplace'>Nguyên quán</label>
-        <input
-          class='form-control'
-          formControlName='birthplace'
-          id='birthplace'
-          placeholder='Phước Sơn - Tuy Phước - Bình Định '
           type='text'
         >
       </div>

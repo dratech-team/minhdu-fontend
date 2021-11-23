@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthActions } from '@minhdu-fontend/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -6,6 +6,8 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.comp
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
 import { Router } from '@angular/router';
+import { MenuWarehouseConstant } from '@minhdu-fontend/constants';
+import { selectedTab } from '../../states/main.selector';
 
 
 @Component({
@@ -13,14 +15,16 @@ import { Router } from '@angular/router';
   templateUrl: './warehouse-layout.component.html',
   styleUrls: ['./warehouse-layout.component.scss']
 })
-export class WarehouseLayoutComponent implements OnInit {
+export class WarehouseLayoutComponent implements OnInit,AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
-
+  menuWarehouses = MenuWarehouseConstant;
+  tab$ = this.store.select(selectedTab)
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly ref: ChangeDetectorRef,
   ) {
   }
 
@@ -30,12 +34,8 @@ export class WarehouseLayoutComponent implements OnInit {
     }
   }
 
-  changeTab(event: any) {
-    const btnHeader = document.getElementsByClassName('btn-header');
-    for (let i = 0; i < btnHeader.length; i++) {
-      btnHeader[i].classList.remove('btn-border');
-    }
-    event.classList.add('btn-border');
+  ngAfterContentChecked() {
+    this.ref.detectChanges()
   }
 
   logout() {

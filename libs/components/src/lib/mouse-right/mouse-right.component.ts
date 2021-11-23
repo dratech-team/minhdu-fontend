@@ -13,10 +13,13 @@ export class MouseRightComponent {
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() permanentlyDeletedEvent = new EventEmitter();
-  @Output() readAndUpdateEvent = new EventEmitter();
+  @Output() readEvent = new EventEmitter();
   @Output() payment = new EventEmitter();
   @Output() delivered = new EventEmitter();
   @Output() restore = new EventEmitter();
+  @Output() HistoryPayroll = new EventEmitter();
+  @Output() Employee = new EventEmitter();
+  @Output() Update = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -45,7 +48,7 @@ export class MouseRightComponent {
   }
 
   readAndUpdate(item: any): void {
-    this.readAndUpdateEvent.emit(item);
+    this.readEvent.emit(item);
   }
 
   onPayment(item: any): void {
@@ -58,5 +61,14 @@ export class MouseRightComponent {
 
   onRestore(item: any) {
     this.restore.emit(item);
+  }
+  onHistoryPayroll(item: any) {
+    this.HistoryPayroll.emit(item);
+  }
+  onEmployee(item: any) {
+    this.Employee.emit(item);
+  }
+  onUpdate(item: any) {
+    this.Update.emit(item);
   }
 }

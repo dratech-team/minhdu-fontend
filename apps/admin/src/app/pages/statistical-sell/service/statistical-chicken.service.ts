@@ -10,7 +10,7 @@ export class StatisticalChickenService extends BaseService<Statistical>{
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.STATISTICAL_CHICKEN, http)
+    super(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN, http)
   }
   getAll(param: any): Observable<Statistical[]> {
     return super.getAll(param);

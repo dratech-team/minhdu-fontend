@@ -20,7 +20,7 @@ export class SalaryComponent implements OnInit {
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   unitsConstant = UnitsConstant;
-  blockSalaries =  BlockSalariesConstant.concat({title:'Tất cả', type: SalaryTypeEnum.ALL });
+  blockSalaries = BlockSalariesConstant.concat({ title: 'Tất cả', type: SalaryTypeEnum.ALL });
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
@@ -38,14 +38,21 @@ export class SalaryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(TemplateSalaryAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(TemplateSalaryAction.loadInit({
+      templateSalaryDTO: {
+        take: this.pageSize, skip: this.pageIndexInit
+      }
+    }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
             TemplateSalaryAction.loadInit(
-              this.template(val))
+              {
+                templateSalaryDTO: this.template(val)
+              }
+            )
           );
         })
       )
@@ -62,7 +69,7 @@ export class SalaryComponent implements OnInit {
   updateTemplateSalary(template: any) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
-      data: { isUpdate: true, template }
+      data: { isUpdate: true, template: template }
     });
   }
 
@@ -88,7 +95,11 @@ export class SalaryComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      TemplateSalaryAction.loadMoreTemplateBasic(this.template(val))
+      TemplateSalaryAction.loadMoreTemplateBasic(
+        {
+          templateSalaryDTO: this.template(val)
+        }
+      )
     );
   }
 }

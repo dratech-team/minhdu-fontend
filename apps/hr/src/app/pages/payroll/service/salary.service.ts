@@ -5,11 +5,12 @@ import { Salary } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { BaseService } from 'libs/service/base.service';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({ providedIn: 'root' })
 export class SalaryService extends BaseService<Salary> {
   constructor(public readonly http: HttpClient) {
-    super(Api.SALARY, http);
+    super(Api.HR.PAYROLL.SALARY, http);
   }
 
   addOne(salary: any): Observable<Salary | any> {
@@ -20,11 +21,15 @@ export class SalaryService extends BaseService<Salary> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Salary>> {
+  update(id: any, body: any): Observable<UpdateNum<Salary>> {
     return super.update(id, body);
   }
 
   delete(id: number): Observable<void> {
     return super.delete(id);
+  }
+
+  updateMultipleSalaryOvertime(body: any): Observable<any>{
+    return this.http.patch<Observable<any>>('salary/salaries/ids', body);
   }
 }

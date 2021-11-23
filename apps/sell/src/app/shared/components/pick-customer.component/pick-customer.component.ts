@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { Customer } from '../../../pages/customer/+state/customer/customer.interface';
@@ -8,18 +8,23 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
 import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
+import { CustomerResourcesConstant } from '@minhdu-fontend/constants';
+import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
+import { selectorAllCustomer } from '../../../pages/customer/+state/customer/customer.selector';
 
 @Component({
   selector: 'app-pick-customer',
   templateUrl: 'pick-customer.component.html'
 })
 export class PickCustomerComponent implements OnInit {
+  customers$ = this.store.pipe(select(selectorAllCustomer));
   @Input() customers: Customer[] = [];
   @Input() pickOne = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
+  resourceTypes = CustomerResourcesConstant;
   customerType = CustomerType;
   pageSize = 30;
   pageIndexInit = 0;
@@ -42,18 +47,16 @@ export class PickCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.customers$) {
-      this.data.customers$.subscribe(
-        (val: Customer[]) =>
-          this.customers = JSON.parse(JSON.stringify(val))
-      );
+    if (this.customers.length === 0) {
+      this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+      this.customers$.subscribe(customers => {
+        this.customers = JSON.parse(JSON.stringify(customers));
+      });
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        const val = this.formGroup.value;
-        this.service.searchCustomer(this.customer(val));
-        this.assignIsSelect();
+        this.service.searchCustomer(this.customer(value));
       })
     ).subscribe();
   }
@@ -73,19 +76,6 @@ export class PickCustomerComponent implements OnInit {
     };
   }
 
-  assignIsSelect() {
-    this.service.getCustomers().subscribe(val => {
-      this.customers = JSON.parse(JSON.stringify(val));
-      this.customers.forEach(e => {
-        if (this.customerId === e.id || this.customerIds.includes(e.id)) {
-          Object.assign(val, { isSelect: true });
-        } else {
-          Object.assign(val, { isSelect: this.isSelectAll });
-        }
-      });
-    });
-  }
-
   updateAllSelect(id: number) {
     const index = this.customerIds.indexOf(id);
     if (index > -1) {
@@ -93,7 +83,7 @@ export class PickCustomerComponent implements OnInit {
     } else {
       this.customerIds.push(id);
     }
-    this.isSelectAll = this.customers !== null && this.customers.every(e => e.isSelect);
+    this.isSelectAll = this.customers !== null && this.customers.every(e => this.customerIds.includes(e.id));
     this.checkEvent.emit(this.customerIds);
   }
 
@@ -102,7 +92,7 @@ export class PickCustomerComponent implements OnInit {
       return false;
     }
     return (
-      this.customers.filter(e => e.isSelect).length > 0 && !this.isSelectAll
+      this.customers.filter(e => this.customerIds.includes(e.id)).length > 0 && !this.isSelectAll
     );
   }
 
@@ -111,11 +101,16 @@ export class PickCustomerComponent implements OnInit {
     if (this.customers == null) {
       return;
     }
-    this.customerIds = [];
     this.customers?.forEach(customer => {
-        customer.isSelect = select;
         if (select) {
-          this.customerIds.push(customer.id);
+          if (!this.customerIds.includes(customer.id)) {
+            this.customerIds.push(customer.id);
+          }
+        } else {
+          const index = this.customerIds.indexOf(customer.id);
+          if (index > -1) {
+            this.customerIds.splice(index, 1);
+          }
         }
       }
     );

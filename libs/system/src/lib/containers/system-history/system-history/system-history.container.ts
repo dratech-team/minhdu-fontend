@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityType, App } from '@minhdu-fontend/enums';
+import { ActivityType, App, MenuEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
-import { document } from 'ngx-bootstrap/utils';
-import { selectedSystemHistoryLoaded, selectorAllSystemHistory } from '../../../+state/system-history/system-history/system-history.selectors';
+import {
+  selectedSystemHistoryLoaded,
+  selectorAllSystemHistory
+} from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
+import { MainAction } from '../../../../../../../apps/sell/src/app/states/main.action';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,9 +41,7 @@ export class SystemHistoryContainer implements OnInit {
   loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
 
   ngOnInit(): void {
-    const btnSystem = document.getElementById('systemHistory');
-    btnSystem?.classList.add('btn-border');
-
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.SYSTEM_HISTORY}))
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
       { take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges

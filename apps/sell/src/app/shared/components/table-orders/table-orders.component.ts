@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 
 
 @Component({
@@ -83,17 +84,20 @@ export class TableOrdersComponent implements OnInit {
   }
 
   updateOrder(order: Order) {
-    const val = {
-      hide: !order.hide
-    };
     this.store.dispatch(OrderAction.updateHideOrder({
       id: order.id,
-      order: val,
+      hide: { hide: !order.hide },
+      customerId: order.customerId
     }));
   }
 
   deleteOrder(order: Order) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogSharedComponent,
+      { width: 'fit-content',
+        data: {
+        title:'Đơn hàng đang giao',
+          description:`hủy đơn hàng đang giao ${order?.destination?.name} ${order?.destination?.district?.name} ${order?.destination?.district?.province?.name}`
+      } });
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrderAction.deleteOrder({ id: order.id, customerId: order.customerId }));

@@ -12,7 +12,7 @@ export class PaymentService extends BaseService<PaymentHistory> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.PAYMENT, http);
+    super(Api.SELL.CUSTOMER.PAYMENT, http);
   }
 
   pagination(params: any): Observable<ResponsePaginate<PaymentHistory>> {
@@ -20,7 +20,7 @@ export class PaymentService extends BaseService<PaymentHistory> {
   }
 
   payment(id: any, body: any): Observable<any> {
-    return this.http.patch<Update<any>>(Api.CUSTOMER + `/${id}/payment`, body);
+    return this.http.patch<Update<any>>(Api.SELL.CUSTOMER.CUSTOMER + `/${id}/payment`, body);
   }
 
 }

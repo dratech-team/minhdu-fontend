@@ -30,6 +30,7 @@ import { PaymentHistoryComponent } from './container/payment-history/payment-his
 import { TableRouteComponent } from './component/table-route/table-route.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MainReducer } from '../../states/main.reducer';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ComponentsModule,
     OrderRoutingModule,
     StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     EffectsModule.forFeature([OrderEffect, RouteEffect]),

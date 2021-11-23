@@ -24,7 +24,7 @@ export class HolidayEffect {
   loadInit$ = createEffect(() =>
     this.action$.pipe(
       ofType(HolidayAction.LoadInit),
-      switchMap(props => this.holidayService.pagination(props)),
+      switchMap(props => this.holidayService.pagination(props.holidayDTO)),
       map((responsePagination) =>
         HolidayAction.LoadInitHolidaySuccess({ holidays: responsePagination.data })),
       catchError((err) => throwError(err))
@@ -35,7 +35,7 @@ export class HolidayEffect {
       ofType(HolidayAction.LoadMoreHoliday),
       withLatestFrom(this.store.pipe(select(selectorHolidayTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.holidayDTO)), { skip: skip })
       ),
       switchMap(props => this.holidayService.pagination(props)),
       map((responsePagination) => {
@@ -83,7 +83,7 @@ export class HolidayEffect {
       ofType(HolidayAction.DeleteHoliday),
       switchMap((pram) => {
           return this.holidayService.delete(pram.id).pipe(
-            map(_ => HolidayAction.LoadInit({ take: 30, skip: 0 }))
+            map(_ => HolidayAction.LoadInit({ holidayDTO: { take: 30, skip: 0 } }))
           );
         }
       )

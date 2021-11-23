@@ -49,23 +49,22 @@ export class OrgchartEffects {
   getBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.getBranch),
-      switchMap(param => this.branchService.getOne(param.id).pipe(
-        map(_ => OrgchartActions.init()),
+      switchMap(param => this.branchService.getOne(param.id)),
+      map((branch) => OrgchartActions.getBranchSuccess({ branch: branch }),
         catchError(err => throwError(err))
-      ))
+      )
     ), { dispatch: true }
   );
 
   updateBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.updateBranch),
-      switchMap(param => this.branchService.update(param.id, { name: param.name }).pipe(
-        map(_ => {
-          this.snackBar.open('Cập nhật đơn vị thành công', '', { duration: 1500 });
-          return OrgchartActions.init();
-        }),
-        catchError(err => throwError(err))
-      ))
+      switchMap(param => this.branchService.update(param.id, { name: param.name })),
+      map(res => {
+        this.snackBar.open('Cập nhật đơn vị thành công', '', { duration: 1500 });
+        return OrgchartActions.updateBranchSuccess({ branch: res });
+      }),
+      catchError(err => throwError(err))
     ), { dispatch: true }
   );
 
@@ -76,6 +75,19 @@ export class OrgchartEffects {
         map(_ => {
           this.snackBar.open('Xóa đơn vị thành công', '', { duration: 1500 });
           return OrgchartActions.init();
+        }),
+        catchError(err => throwError(err))
+      ))
+    ), { dispatch: true }
+  );
+
+  deleteAllowanceInBranch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrgchartActions.deleteAllowanceInBranch),
+      switchMap(param => this.branchService.deleteAllowanceInBranch(param.salaryId).pipe(
+        map(res => {
+          this.snackBar.open('Xóa phụ cấp thành công', '', { duration: 1500 });
+          return OrgchartActions.updateBranchSuccess({ branch: res });
         }),
         catchError(err => throwError(err))
       ))

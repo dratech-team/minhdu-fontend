@@ -1,78 +1,79 @@
-<form [formGroup]='formGroup' class='main-profile col-12' style='width: 100%'>
-    <div class='header-profile mt-3 animated fadeIn'>
-
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Ngày Thanh toán</div>
+<div class='fixTableHead mt-3'
+     style='width: 100%;
+         max-height: 32vh;'
+     infiniteScroll
+     [alwaysCallback]='true'
+     [infiniteScrollDistance]='1'
+     [infiniteScrollThrottle]='100'
+     [scrollWindow]='false'
+     (scrolled)='onScroll()'>
+  <table>
+    <thead [formGroup]='formGroup'>
+    <tr>
+      <th>
+        <div >Ngày Thanh toán</div>
         <input
           formControlName='paidAt'
-          class='form-control input-profile '
+          class='form-control '
           type='date'>
-      </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Số thanh toán</div>
+      </th>
+      <th>
+        <div >Số tiền thanh toán</div>
         <input
           [disabled]='true'
-          class='form-control input-profile '
           type='number'>
-      </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Đơn vị</div>
+      </th>
+      <th>
+        <div>Đơn vị</div>
         <input
           [disabled]='true'
-          class='form-control input-profile '
           type='number'>
-      </div>
-      <div class='border-start title-header col-2'>
-        <div class='title-profile'>Loại thanh toán</div>
+      </th>
+      <th>
+        <div >Loại thanh toán</div>
         <input
           [disabled]='true'
-          class='form-control input-profile '
           type='number'>
-      </div>
-      <div class='border-start title-header col-4'>
-        <div class='title-profile'>Chú thích</div>
+      </th>
+      <th>
+        <div >Chú thích</div>
         <input
           [disabled]='true'
-          class='form-control input-profile '
           type='number'>
-      </div>
-    </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr  *ngFor='let paymentHistory of paymentHistories' >
+      <th>
+        {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
+      </th>
+      <th >
+        {{paymentHistory.total|number:'1.0-0'|notEmpty:'0'}}
+      </th>
+      <th>
+       Việt nam đồng
+      </th>
+      <th  *ngIf='paymentHistory?.payType === payType.CASH'>
+        Tiền mặt
+      </th>
+      <th  *ngIf='paymentHistory?.payType === payType.TRANSFER'>
+        Chuyển khoản
+      </th>
+      <th>
+        {{paymentHistory?.note }}
+      </th>
+    </tr>
+    <tr *ngIf='!paymentHistories || paymentHistories.length === 0 ' style='height: 20vh'>
+      <td colspan='5' class='font-xl font-weight-bold position-relative '>
+        <span style='position: absolute; top: 40%; left: 40%'>
+           Hiện chưa có lịch sử thanh toán nào!
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-    <div class='  animated fadeIn'
-         style='width: 101.5%;
-         max-height: 32vh;'
-         infiniteScroll
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='100'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-         [ngStyle]="{'overflow':!paymentHistories ||paymentHistories.length === 0?'hidden': 'scroll'}"
-    >
-      <div class='row-content' *ngFor='let paymentHistory of paymentHistories'>
-        <div class='content-profile col-2 pointer ' >
-          {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
-        </div>
-        <div class='content-profile col-2 pointer ' *ngIf='paymentHistory?.payType === payType.CASH' >
-          Tiền mặt
-        </div>
-        <div class='content-profile col-2 pointer ' *ngIf='paymentHistory?.payType === payType.TRANSFER' >
-          Chuyển khoản
-        </div>
-        <div class='content-profile col-2 pointer ' >
-          {{paymentHistory.total|number:'1.0'|notEmpty:'0'}} đ
-        </div>
-        <div class='content-profile col-2 pointer ' >
-          {{paymentHistory.note}}
-        </div>
-      </div>
-      <div *ngIf='!paymentHistories || paymentHistories.length === 0 ' style='height: 150px'
-           class=' d-flex justify-content-center align-content-center'>
-        <div class='font-xl d-flex align-items-center'>
-          Hiện chưa có lịch sử thanh toán nào!
-        </div>
-      </div>
-    </div>
-  </form>
 
 

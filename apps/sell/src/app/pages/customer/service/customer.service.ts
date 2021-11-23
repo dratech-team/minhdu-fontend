@@ -5,14 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<Customer> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.CUSTOMER, http);
+    super(Api.SELL.CUSTOMER.CUSTOMER, http);
   }
 
   addOne(props: Customer): Observable<Customer> {
@@ -27,7 +27,7 @@ export class CustomerService extends BaseService<Customer> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Customer>> {
+  update(id: any, body: any): Observable<UpdateNum<Customer>> {
     return super.update(id, body);
   }
 

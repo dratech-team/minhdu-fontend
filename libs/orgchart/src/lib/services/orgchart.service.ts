@@ -10,7 +10,7 @@ export class OrgchartService extends BaseService<Branch> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.BRANCH, http);
+    super(Api.HR.EMPLOYEE.BRANCH, http);
   }
 
   getAll(params?: any): Observable<Branch[]> {

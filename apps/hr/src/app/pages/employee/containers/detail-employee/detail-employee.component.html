@@ -20,9 +20,10 @@
                   Đổi avatar
             </span>
         </button>
-        <button (click)='deleteEmployee(employee.id, employee.leftAt)' class='row btn shadow-none p-2 mb-3 bg-light rounded'>
+        <button (click)='deleteEmployee(employee.id, employee.leftAt)'
+                class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
-                 {{employee.leftAt?'Khôi phục' : 'Xóa nhân viên' }}
+                 {{employee.leftAt ? 'Khôi phục' : 'Xóa nhân viên' }}
               </span>
         </button>
       </div>
@@ -51,23 +52,23 @@
       </div>
       <div class='row mt-3'>
         <div class='col-6  form-group'>
-<!--          <div class=' ml-1 row align-items-center'>-->
-<!--            <div class='col-md-4 py-2 title-employee title-detail'>-->
-<!--              <span>Mã số :</span>-->
-<!--            </div>-->
-<!--            <div class='col-md-8 py-2'>-->
-<!--            <span class='contain-detail' style='font-weight: 600 ;color: #3C3B54'>-->
-<!--              {{employee.code}}-->
-<!--            </span>-->
-<!--            </div>-->
-<!--          </div>-->
+          <!--          <div class=' ml-1 row align-items-center'>-->
+          <!--            <div class='col-md-4 py-2 title-employee title-detail'>-->
+          <!--              <span>Mã số :</span>-->
+          <!--            </div>-->
+          <!--            <div class='col-md-8 py-2'>-->
+          <!--            <span class='contain-detail' style='font-weight: 600 ;color: #3C3B54'>-->
+          <!--              {{employee.code}}-->
+          <!--            </span>-->
+          <!--            </div>-->
+          <!--          </div>-->
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Tên :</span>
+              <span>Họ và tên :</span>
             </div>
             <div class='col-md-8 py-2 '>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{employee.firstName}} {{employee.lastName}}
+             {{employee.lastName}}
             </span>
             </div>
           </div>
@@ -203,15 +204,15 @@
             </div>
           </div>
           <div class='row  ml-1 align-items-center'>
-          <div class='col-md-4 py-2 title-employee title-detail'>
-            <span>Ngày nghỉ việc:</span>
-          </div>
-          <div class='col-md-8 py-2 '>
-            <span class='contain-detail' >
-               {{employee.leftAt ? (employee.leftAt |date:'dd/MM/yyyy'): 'Chưa cập nhật' }}
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày nghỉ việc:</span>
+            </div>
+            <div class='col-md-8 py-2 '>
+            <span class='contain-detail'>
+               {{employee.leftAt ? (employee.leftAt |date:'dd/MM/yyyy') : 'Chưa cập nhật' }}
             </span>
+            </div>
           </div>
-        </div>
         </div>
         <div class='col-6  form-group'>
           <div class='row align-items-center'>
@@ -489,7 +490,7 @@
     <div class='col-12 mt-5'>
       <div class='row d-flex align-items-center '>
         <div class=' align-items-center title-table mr-4'>Thành phần gia đình</div>
-        <div class='col-md-4 add'  *ngIf='!employee.leftAt' (click)='addAndUpdateRelative(employee.id )'>
+        <div class='col-md-4 add' *ngIf='!employee.leftAt' (click)='addAndUpdateRelative(employee.id )'>
           <span class='mr-1 font-weight-bold '>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>
@@ -508,7 +509,7 @@
           </tr>
           <tr *ngFor='let relative of employee.relatives'>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)'
-                class='text-center pointer'>{{relative.firstName}} {{relative.lastName}}</td>
+                class='text-center pointer'>{{relative.lastName}}</td>
             <td (click)='addAndUpdateRelative(employee.id, relative.id, relative)' class='text-center pointer'
                 *ngIf='relative.relationship === relationship.FATHER'>Cha
             </td>
@@ -555,7 +556,7 @@
     <div class='col-12 mt-5'>
       <div class='row'>
         <div class=' align-items-center title-table mr-4'>Trình độ bằng cấp</div>
-        <div class='col-md-4 add'  *ngIf='!employee.leftAt' (click)='addAndUpdateDegree(employee.id)'>
+        <div class='col-md-4 add' *ngIf='!employee.leftAt' (click)='addAndUpdateDegree(employee.id)'>
           <span class='mr-1 font-weight-bold'>Thêm mục</span>
           <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
                alt='add icon'>

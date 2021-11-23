@@ -1,29 +1,30 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { ConvertBoolean, CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
+import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
+import { ConvertBoolean, CustomerResource, CustomerType, Gender, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
-import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectorAllCustomer, selectedCustomerLoaded } from '../../+state/customer/customer.selector';
+import { selectedCustomerLoaded, selectorAllCustomer } from '../../+state/customer/customer.selector';
 import { AppState } from '../../../../reducers';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit{
   customerType = CustomerType;
   boolean = ConvertBoolean;
   resourceType = CustomerResource;
+  resourceTypes = CustomerResourcesConstant;
   pageType = PageTypeEnum;
   genderType = Gender;
   orders?: Order;
@@ -47,7 +48,7 @@ export class CustomerComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -55,7 +56,7 @@ export class CustomerComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedCustomerLoaded));
 
   ngOnInit() {
-    document.getElementById('customer').classList.add('btn-border');
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
@@ -86,7 +87,6 @@ export class CustomerComponent implements OnInit {
   }
 
   customer(val: any) {
-
     return {
       skip: 0,
       take: this.pageSize,
@@ -151,6 +151,6 @@ export class CustomerComponent implements OnInit {
       address: val.address.trim(),
       note: val.note.trim()
     };
-    this.exportService.print(Api.CUSTOMER_EXPORT, customers);
+    this.exportService.print(Api.SELL.CUSTOMER.CUSTOMER_EXPORT, customers);
   }
 }

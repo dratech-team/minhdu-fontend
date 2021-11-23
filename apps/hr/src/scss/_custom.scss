@@ -13,7 +13,14 @@ a:link {
 a:hover {
   text-decoration: none;
 }
+app-dashboard{
+  min-height: auto;
+}
 
+.main-content{
+  min-height: 79vh;
+  overflow-x: hidden;
+}
 .cdk-overlay-container {
   z-index: 1020 !important;;
 }
@@ -235,10 +242,6 @@ tr:nth-child(even) {
   cursor: pointer;
 }
 
-.main-profile {
-  width: max-content;
-  padding: 1rem;
-}
 
 .tab {
   position: relative;

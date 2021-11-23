@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { Payslip } from '../../+state/payslip/payslip.interface';
 import { PayslipService } from '../../service/payslip.service';
-import { RecipeType } from '@minhdu-fontend/enums';
+import { RecipeType, EmployeeType } from '@minhdu-fontend/enums';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,6 +24,7 @@ export class ConfirmPayrollComponent implements OnInit {
   payslip$?: Observable<Payslip>;
   recipeType = RecipeType;
   isConfirmed = false;
+  typeEmployee = EmployeeType;
   firstDayInMonth = this.datePipe.transform(
     getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   lastDayInMonth = this.datePipe.transform(

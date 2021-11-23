@@ -29,7 +29,7 @@
             </div>
             <div class='col-md-8 py-2 border-bottom'>
             <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.customer?.firstName}}  {{order?.customer?.lastName}}
+           {{order?.customer?.lastName}}
             </span>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <span class='contain-detail' style=' color: #3C3B54'>
              {{order?.explain}}
             </span>
-              <span  *ngIf='!order?.explain' >
+              <span *ngIf='!order?.explain'>
              Chưa cập nhật
               </span>
             </div>
@@ -83,7 +83,7 @@
             <div class='col-md-8 py-2 border-bottom  '
                  *ngIf='order?.destination'
             >
-            <span class='title-detail' >
+            <span class='title-detail'>
               {{order?.destination?.name}} -
               {{order?.destination?.district?.name}} -
               {{order?.destination?.district?.province?.name}}
@@ -92,7 +92,7 @@
             <div class='col-md-8 py-2 border-bottom  '
                  *ngIf='!order?.destination'
             >
-            <span class='title-detail' >
+            <span class='title-detail'>
               Chưa cập nhật
             </span>
             </div>
@@ -130,7 +130,7 @@
                 <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
               </th>
             </tr>
-            <tr *ngIf='order.commodities.length === 0'  class='font-lg my-4' >
+            <tr *ngIf='order.commodities.length === 0' class='font-lg my-4'>
               <td colspan='8' class='text-center check-content'> Hiện chưa có hàng hóa nào!</td>
             </tr>
           </table>
@@ -149,19 +149,19 @@
             <th class='text-center'>Tên nhà xe</th>
             <th class='text-center'>Biển số xe</th>
           </tr>
-          <tr *ngFor='let route of order.routes'  (click)='detailRoute(route.id)'>
-            <th  class='text-center pointer'> {{route.name}} </th>
+          <tr *ngFor='let route of order.routes' (click)='detailRoute(route.id)'>
+            <th class='text-center pointer'> {{route.name}} </th>
             <th class='text-center pointer'> {{route.startedAt|date: 'dd/MM/yyyy'}} </th>
             <th class='text-center pointer'> {{route.endedAt|date: 'dd/MM/yyyy'}} </th>
             <th class='text-center pointer'> {{route.driver}} </th>
             <th class='text-center pointer'> {{route.garage}} </th>
             <th class='text-center pointer'> {{route.bsx}}</th>
           </tr>
-          <tr *ngIf='!order.routes||order.routes.length === 0'  class='font-lg my-4' >
+          <tr *ngIf='!order.routes||order.routes.length === 0' class='font-lg my-4'>
             <td colspan='6' class='text-center check-content'> Hiện chưa có tuyến đường nào!</td>
           </tr>
         </table>
-<!--       <app-route-order ></app-route-order>-->
+        <!--       <app-route-order ></app-route-order>-->
       </div>
     </div>
   </div>

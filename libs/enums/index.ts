@@ -27,5 +27,10 @@ export * from './activity-type.enum';
 export * from './hr/recipeType.enum';
 export * from './hr/payroll.enum';
 export * from './partial-day.enum';
+export * from './hr/type-employee';
+export * from './sell/menuEnum';
+export * from './searchType.enum';
+export * from './hr/filterType.enum';
+
 
 

@@ -1,0 +1,30 @@
+<div class="animated main-popup p-3" >
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"></span>
+  </div>
+  <div class="title-popup">
+    <span style='color: #1b8eb7'>Xuất excel</span>
+  </div>
+  <div class="row mt-4 content-popup" style='width: 400px'>
+     <div (click)='selectTypeUpdateMultiple(typePayroll.PAYROLL)'
+          class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
+       <span style='color: #1b8eb7' class='title-item col'>Xuất bảng lương</span>
+       <img width='25' height='25' src='../../../../../assets/icon/printer.svg' alt='Xuất phiếu lương'>
+     </div>
+    <div (click)='selectTypeUpdateMultiple(typePayroll.TIME_SHEET)'
+         class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
+      <span style='color: #1b8eb7' class='title-item col'>Xuất bảng chấm công</span>
+      <img width='25' height='25' src='../../../../../assets/icon/printer.svg' alt='Xuất bảng tăng ca'>
+    </div>
+    <div *ngIf='data.pageType !== typePayroll.TIME_SHEET &&
+     data.pageType !== typePayroll.PAYROLL '
+         (click)='selectTypeUpdateMultiple(data.pageType)'
+         class='pointer border rounded  border-primary p-1 my-1 w-100 d-flex align-items-center justify-content-between'>
+      <span style='color: #1b8eb7' class='title-item col'>
+        {{data.pageType|transform: typePayrollExportConstant}}
+      </span>
+      <img width='25' height='25' src='../../../../../assets/icon/printer.svg' alt='Xuất bảng tăng ca'>
+    </div>
+  </div>
+</div>
+

@@ -7,16 +7,18 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { AppState } from 'apps/hr/src/app/reducers';
 import { selectHolidayAdding, selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 
 
 @Component({
   templateUrl: 'holiday.component.html'
 })
 export class HolidayComponent implements OnInit {
-  adding$ = this.store.pipe(select(selectHolidayAdding))
-  convertBoolean = ConvertBoolean
+  adding$ = this.store.pipe(select(selectHolidayAdding));
+  convertBoolean = ConvertBoolean;
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
@@ -25,9 +27,12 @@ export class HolidayComponent implements OnInit {
       datetime: new FormControl(''),
       rate: new FormControl(''),
       position: new FormControl(''),
-      isConstraint: new FormControl(''),
+      isConstraint: new FormControl('')
     }
   );
+  positions$ = this.store.pipe(select(getAllPosition));
+  holidays$ = this.store.pipe(select(selectorAllHoliday));
+  loaded$ = this.store.pipe(select(selectHolidayLoaded));
 
   constructor(
     private readonly dialog: MatDialog,
@@ -35,21 +40,31 @@ export class HolidayComponent implements OnInit {
   ) {
   }
 
-  holidays$ = this.store.pipe(select(selectorAllHoliday));
-  loaded$ = this.store.pipe(select(selectHolidayLoaded));
 
   ngOnInit() {
-    this.store.dispatch(HolidayAction.LoadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(PositionActions.loadPosition());
+    this.store.dispatch(HolidayAction.LoadInit({
+      holidayDTO: { take: this.pageSize, skip: this.pageIndexInit }
+    }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            HolidayAction.LoadInit(this.template(val))
+            HolidayAction.LoadInit(
+              {
+                holidayDTO: this.template(val)
+              }
+            )
           );
         })
       )
       .subscribe();
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
   }
 
   Holiday($event?: any) {
@@ -57,7 +72,7 @@ export class HolidayComponent implements OnInit {
       width: '35%',
       data: $event,
       panelClass: 'ccc',
-      backdropClass: 'ggg',
+      backdropClass: 'ggg'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -84,7 +99,9 @@ export class HolidayComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       HolidayAction.LoadMoreHoliday(
-        this.template(val)
+        {
+          holidayDTO: this.template(val)
+        }
       )
     );
   }
@@ -98,5 +115,9 @@ export class HolidayComponent implements OnInit {
       position: val.position,
       datetime: val.datetime
     };
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
   }
 }

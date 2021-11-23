@@ -8,7 +8,7 @@ export interface state {
 }
 
 export const selectorTemplateState = createFeatureSelector<templateSalaryState>(
-  FeatureName.TEMPLATE_BASIC
+  FeatureName.TEMPLATE_SALARY
 );
 
 export const selectorAllTemplate = createSelector(

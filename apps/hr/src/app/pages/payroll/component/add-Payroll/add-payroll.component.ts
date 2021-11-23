@@ -6,8 +6,13 @@ import { PayrollService } from '../../service/payroll.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
-import { selectedAddedPayroll, selectedAddingPayroll } from '../../+state/payroll/payroll.selector';
+import {
+  selectedAddedPayroll,
+  selectedAddingPayroll,
+  selectedCreateAtPayroll
+} from '../../+state/payroll/payroll.selector';
 import { LoadingComponent } from '../popup-loading/loading.component';
+import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Component({
   templateUrl: 'add-payroll.component.html'
@@ -15,6 +20,7 @@ import { LoadingComponent } from '../popup-loading/loading.component';
 export class AddPayrollComponent implements OnInit {
   formGroup!: FormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
+  createdAt = getState(selectedCreateAtPayroll, this.store)
 
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
@@ -24,13 +30,13 @@ export class AddPayrollComponent implements OnInit {
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data?: any
+    @Inject(MAT_DIALOG_DATA) public data?: any,
   ) {
   }
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      generate: [this.datePipe.transform(new Date(), 'yyyy-MM')]
+      generate: [this.datePipe.transform( this.createdAt, 'yyyy-MM')]
     });
   }
 
@@ -39,18 +45,23 @@ export class AddPayrollComponent implements OnInit {
   }
 
   submit(): any {
-    this.dialog.open(LoadingComponent, {
+    const ref = this.dialog.open(LoadingComponent, {
       width: 'fit-content',
       disableClose: true,
       data: {
-        content: 'Đang khởi tạo phiếu lương...',
-        loaded: this.adding$
+        content: 'Đang khởi tạo phiếu lương...'
+      }
+    });
+    this.adding$.subscribe(val => {
+      if (val) {
+        ref.close();
       }
     });
     if (this.data?.addOne) {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
-        employeeId: +this.data.employeeId
+        employeeId: +this.data.employeeId,
+        employeeType: this.data?.employeeType
       };
       this.store.dispatch(PayrollAction.addPayroll({
         generate: generate,
@@ -59,7 +70,8 @@ export class AddPayrollComponent implements OnInit {
       }));
     } else {
       const generate = {
-        createdAt: new Date(this.formGroup.value.generate)
+        createdAt: new Date(this.formGroup.value.generate),
+        employeeType: this.data?.employeeType
       };
       this.store.dispatch(PayrollAction.addPayroll({ generate: generate }));
     }

@@ -2,10 +2,11 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from 'apps/sell/src/app/reducers';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer/customer.action';
+import { selectedCustomerAdded } from '../../+state/customer/customer.selector';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -28,32 +29,53 @@ export class CustomerDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      identify: [this.data?.identify],
-      issuedBy: [this.data?.issuedBy],
-      birthplace: [this.data?.birthplace],
-      idCardAt: [
-        this.datePipe.transform(
-          this?.data?.idCardAt, 'yyyy-MM-dd'
-        )],
-      email: [this.data?.email],
-      phone: [this.data?.phone, Validators.required],
-      note: [this.data?.note],
-      firstName: [this.data?.firstName, Validators.required],
-      lastName: [this.data?.lastName, Validators.required],
-      address: [this.data?.address, Validators.required],
-      gender: [this.data?.gender, Validators.required],
-      birthday: [
-        this.datePipe.transform(
-          this?.data?.birthday, 'yyyy-MM-dd'
-        )
-        , Validators.required],
-      ethnicity: [this.data?.ethnicity],
-      religion: [this.data?.religion],
-      type: [this.data?.type],
-      resource: [this.data?.resource],
-      isPotential: [this.data?.isPotential]
-    });
+    if (this.data?.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        identify: [this.data.customer?.identify],
+        issuedBy: [this.data.customer?.issuedBy],
+        birthplace: [this.data.customer?.birthplace],
+        idCardAt: [
+          this.datePipe.transform(
+            this.data.customer?.idCardAt, 'yyyy-MM-dd'
+          )],
+        email: [this.data.customer?.email],
+        phone: [this.data.customer?.phone],
+        note: [this.data.customer?.note],
+        firstName: [this.data.customer.firstName],
+        lastName: [this.data.customer.lastName],
+        address: [this.data.customer.address],
+        gender: [this.data.customer.gender],
+        birthday: [
+          this.datePipe.transform(
+            this.data.customer.birthday, 'yyyy-MM-dd'
+          )],
+        ethnicity: [this.data.customer?.ethnicity],
+        religion: [this.data.customer?.religion],
+        type: [this.data.customer?.type],
+        resource: [this.data.customer?.resource],
+        isPotential: [this.data.customer?.isPotential]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        identify: [],
+        issuedBy: [],
+        birthplace: [],
+        idCardAt: [],
+        email: [],
+        phone: [undefined, Validators.required],
+        note: [],
+        lastName: [undefined, Validators.required],
+        address: [undefined, Validators.required],
+        gender: [undefined, Validators.required],
+        birthday: [undefined, Validators.required],
+        ethnicity: [],
+        religion: [],
+        type: [],
+        resource: [],
+        isPotential: []
+      });
+    }
+
   }
 
   get checkValid() {
@@ -69,7 +91,7 @@ export class CustomerDialogComponent implements OnInit {
     const customer = {
       firstName: value.firstName ? value.firstName : undefined,
       lastName: value.lastName ? value.lastName : undefined,
-      identify: value.identify? value.identify.toString() : undefined,
+      identify: value.identify ? value.identify.toString() : undefined,
       gender: value.gender,
       phone: value.phone,
       issuedBy: value.issuedBy,
@@ -79,7 +101,7 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: this.wardId || this.data.ward.id,
+      wardId: this.wardId || this.data.customer.ward.id,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -87,11 +109,15 @@ export class CustomerDialogComponent implements OnInit {
       isPotential: value.isPotential ? value.isPotential : undefined
     };
     if (this.data) {
-      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.id }));
+      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {
       this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
     }
-    this.dialogRef.close();
+    this.store.pipe(select(selectedCustomerAdded)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    });
   }
 
   onSelectWard($event: number) {

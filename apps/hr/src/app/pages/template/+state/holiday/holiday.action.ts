@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Holiday } from './holiday.interface';
+import { Holiday, HolidayDTO } from './holiday.interface';
 
 
 export const AddHoliday = createAction(
@@ -22,14 +22,7 @@ export const LoadAllHoliday = createAction(
 
 export const LoadInit = createAction(
   '[Load_HOLIDAY] Load Init holiday',
-  props<{
-    take: number,
-    skip: number,
-    name?: string,
-    datetime?: Date,
-    department?: string,
-    rate?: number,
-  }>()
+  props<{ holidayDTO: HolidayDTO }>()
 );
 
 export const LoadInitHolidaySuccess = createAction(
@@ -39,13 +32,7 @@ export const LoadInitHolidaySuccess = createAction(
 
 export const LoadMoreHoliday = createAction(
   '[Load_HOLIDAY] Load More holiday',
-  props<{
-    take: number,
-    name?: string,
-    datetime?: Date,
-    department?: string,
-    rate?: number,
-  }>()
+  props<{holidayDTO: HolidayDTO }>()
 );
 
 export const LoadMoreHolidaySuccess = createAction(

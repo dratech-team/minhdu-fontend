@@ -1,0 +1,14 @@
+<div  style='  width: 100vw;height: 100vh;' class='main-app d-flex justify-content-center align-items-center'>
+  <div
+    style='background-image: url("/assets/img/signin_bg.jpg")'
+    class='back-ground-app w-100 h-100 d-flex justify-content-center align-items-center'
+  >
+  </div>
+  <div style='z-index: 2 ; min-width: 500px' class=' grid-container '>
+    <a href='{{item.link}}'  class='app-icon d-flex flex-column justify-content-center align-items-center' *ngFor='let item of appMinhDuConstant'>
+      <img style='width: 100px ; height: 100px' alt='ban-hang' src='{{item.icon}}'/>
+      <span class='text-white font-weight-bold font-lg'>{{item.name}}</span>
+    </a>
+  </div>
+</div>
+

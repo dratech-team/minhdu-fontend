@@ -22,7 +22,6 @@ export interface OrgchartPartialState {
 export const orgchartAdapter: EntityAdapter<Branch> = createEntityAdapter<Branch>();
 
 export const initialState: State = orgchartAdapter.getInitialState({
-  // set initial required properties
   loaded: false, added: false
 });
 const orgchartReducer = createReducer(
@@ -35,6 +34,21 @@ const orgchartReducer = createReducer(
     orgchartAdapter.addOne(branch, { ...state, loaded: true, added: true })
   ),
 
+  on(OrgchartActions.updateBranchSuccess, (state, { branch }) => {
+      return orgchartAdapter.updateOne({ id:branch.id, changes: branch },
+        { ...state, added: true });
+    }
+  ),
+
+  on(OrgchartActions.getBranch, (state) => ({
+    ...state,
+    loaded: false,
+    error: null
+  })),
+
+  on(OrgchartActions.getBranchSuccess, (state, action) =>
+    orgchartAdapter.upsertOne(action.branch, { ...state, loaded: true, added: true })
+  ),
   on(OrgchartActions.init, (state) => ({
     ...state,
     loaded: false,

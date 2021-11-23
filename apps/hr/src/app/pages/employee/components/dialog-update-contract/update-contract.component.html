@@ -21,6 +21,10 @@
     </form>
     <div class='footer-popup row mt-3 ml-2'>
       <button mat-dialog-close (click)='onSubmit()' class='btn btn-ok '>Xác nhận</button>
+      <button *ngIf='data?.contracts.length >0' (click)='deleteContracts()' class='btn btn-ok ml-2 '>
+        Xóa hợp
+        đồng
+      </button>
     </div>
   </div>
 </div>

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { selectorAllMaterial } from '../../+state/material.selector';
 import { MaterialAction } from '../../+state/material.action';
-import { WarehouseTypeEnum } from '@minhdu-fontend/enums';
+import { MenuEnum, WarehouseTypeEnum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialDialogComponent } from '../../components/material-dialog/material-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
+import { MainAction } from '../../../../../states/main.action';
 
 @Component({
   selector: 'app-material',
@@ -30,6 +31,7 @@ export class MaterialComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(MainAction.updateState({tab: MenuEnum.WAREHOUSE_SUPPLIES}))
     this.store.dispatch(MaterialAction.loadInit({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

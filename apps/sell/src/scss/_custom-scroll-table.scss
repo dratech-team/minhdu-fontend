@@ -1,285 +1,56 @@
-.main-customer{
-  min-height: 73vh;
-  width:99%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  margin-bottom: 30px;
-}
+
 .head-body {
   display: flex;
   align-items: center;
   background: #e2e4e9;
   height: 50px;
 }
-.search{
-  min-width: 300px;
-}
 
-.main-profile {
-  padding: 1rem;
-}
-
-.header-profile {
-  display: flex;
-}
-
-.outer {
-  flex-direction: column;
-  max-height: 58vh;
-  width: fit-content;
-  overflow-y: scroll;
-}
-
-.default {
-  width: 150px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.default > div {
-  height: 35px;
-  overflow: hidden;
-  width: 150px;
-}
-
-.default > input {
-  width: 150px;
-}
-
-
-.cancel {
-  width: 70px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.cancel > div {
-  height: 35px;
-  overflow: hidden;
-  width: 70px;
-}
-
-.cancel > input {
-  width: 70px;
-}
-
-.pick {
-  width: 100px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.pick > div {
-  height: 35px;
-  overflow: hidden;
-  width: 100px;
-}
-
-.pick > input {
-  width: 100px;
-}
-
-.payment {
-  width: 100px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.payment > div {
-  height: 35px;
-  overflow: hidden;
-  width: 100px;
-}
-
-.payment > input {
-  width: 100px;
-}
-.gender {
-  width: 100px;
-  text-align: center;
-}
-
-.gender > div {
-  height: 35px;
-  overflow: hidden;
-  width: 100px;
-}
-
-.gender > input {
-  width: 100px;
-}
-
-.title-header {
-  padding: 0 !important;
-  display: flex;
-  flex-direction: column;
-  border-top: solid 1px #9aaec1;
-  border-right: solid 1px #9aaec1;
-  border-bottom: solid 1px #9aaec1;
-  font-size: 16px;
-}
-.select{
-  font-size: 15px;
-  border: none;
-  text-align: center;
-  height: 35px;
-}
-.select > option{
+.select {
   font-size: 15px;
   border: none;
   text-align: center;
   height: 35px;
 }
 
-.border-start {
-  border-left: solid 1px #9aaec1;
-}
-
-.title-profile {
-  background: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #3C3B54;
-
-}
-
-.input-profile {
-  border-radius: 0;
+.select > option {
+  font-size: 15px;
+  border: none;
   text-align: center;
   height: 35px;
 }
-
-
-
-.content-profile {
-  padding: 5px;
-  overflow-wrap: anywhere;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 400;
-  color: #3C3B54;
-  min-height: 35px;
-}
-
 
 .row-content:nth-child(even) {
   background-color: #dddddd;
 }
-.row-content {
-  margin-top: 2px;
-  display: flex;
-  padding: 2px;
-  border-bottom: solid 1px #9aaec1;
-}
-.name {
-  width: 250px;
-  text-align: center;
-}
 
-.name > div {
-  height: 35px;
-  overflow: hidden;
-  width: 250px;
-}
 
-.name > input {
-  width: 250px;
-}
-.note {
-  width: 350px;
-  text-align: center;
-}
-
-.note > div {
-  height: 35px;
-  overflow: hidden;
-  width: 350px;
-}
-
-.note > input {
-  width: 350px;
-}
-.address-customer {
-  width: 320px;
-  text-align: center;
-}
-
-.address-customer > div {
-  height: 35px;
-  overflow: hidden;
-  width: 320px;
-}
-
-.address-customer > input {
-  width: 320px;
-}
-.explain {
-  width: 300px;
-  text-align: center;
-}
-
-.explain > div {
-  height: 35px;
-  overflow: hidden;
-  width: 300px;
-}
-
-.explain > input {
-  width: 300px;
-}
-.explain-order {
-  width: 230px;
-  text-align: center;
-}
-
-.explain-order > div {
-  height: 35px;
-  overflow: hidden;
-  width: 230px;
-}
-
-.explain-order > input {
-  width: 230px;
-}
-
-.address {
-  width: 450px;
-  text-align: center;
-}
-
-.address > div {
-  height: 35px;
-  overflow: hidden;
-  width: 450px;
-}
-
-.address > input {
-  width: 450px;
-}
-.title-pick{
-  height:35px !important;
+.title-pick {
+  height: 35px !important;
   font-size: 16px !important;
 }
-.check-content{
+
+.check-content {
   height: 200px;
   font-size: 16px;
   font-weight: bold
 }
+
 .fixTableHead thead {
   background: white;
   position: sticky;
   top: -1px;
 }
 
+.fixTableHead thead th {
+  padding: 0;
+}
+
 .fixTableHead {
   font-size: 12px;
   width: fit-content;
   overflow-y: auto;
-  max-height: 63vh;
+  max-height: 60vh;
 }
 
 .fixTableHead > table {
@@ -302,6 +73,10 @@
   width: 100%;
 }
 
+.fixTableHead table tbody th {
+  padding: 5px;
+}
+
 //fixed Header and first column
 .table-scroll {
   position: relative;
@@ -309,7 +84,7 @@
   z-index: 1;
   margin: auto;
   overflow: auto;
-  height: 63vh;
+  max-height: 60vh;
 }
 
 .table-scroll thead th {
@@ -350,12 +125,12 @@
   z-index: 5;
 }
 
-.table-scroll > table th > div {
+.table-scroll > table thead th > div {
   height: 35px;
   width: 100%;
 }
 
-.table-scroll > table th > input {
+.table-scroll > table thead th > input {
   height: 35px;
   width: 100%;
 }
@@ -366,4 +141,8 @@
 
 .table-scroll .even {
   background: #dddddd;
+}
+
+.table-scroll table tbody th {
+  padding: 5px;
 }

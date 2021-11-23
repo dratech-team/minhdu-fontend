@@ -1,16 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { Employee } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity/src/models';
+import { Update, UpdateNum } from '@ngrx/entity/src/models';
 import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{employee: EmployeeDto}>()
+  props<{ employee: EmployeeDto }>()
 );
 
 export const loadMoreEmployees = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee',
-  props<{employee: EmployeeDto}>()
+  props<{ employee: EmployeeDto }>()
 );
 
 export const LoadEmployeesSuccess = createAction(
@@ -71,7 +71,7 @@ export const updateEmployee = createAction(
 
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: Update<Employee> }>()
+  props<{ employee: UpdateNum<Employee> }>()
 );
 
 export const updateRelative = createAction(
@@ -91,7 +91,7 @@ export const deleteEmployee = createAction(
 
 export const leaveEmployee = createAction(
   '[LEAVE_EMPLOYEE] Leave Employee',
-  props<{ id: number, body: { leftAt: Date|''} }>()
+  props<{ id: number, body: { leftAt: Date | '' } }>()
 );
 
 export const deleteEmployeeSuccess = createAction(
@@ -112,6 +112,17 @@ export const deleteDegree = createAction(
 export const setLoaded = createAction(
   '[SET_STATE] Update state loaded ',
   props<{ loaded: boolean }>()
+);
+
+
+export const deleteContract = createAction(
+  '[DELETE_CONTRACT] Delete contracts ',
+  props<{ id: number, employeeId: number }>()
+);
+
+export const deleteContractSuccess = createAction(
+  '[DELETE_CONTRACT] Delete contracts Success ',
+  props<{ employeeId: number }>()
 );
 
 export const EmployeeAction = {
@@ -137,5 +148,7 @@ export const EmployeeAction = {
   deleteRelative,
   deleteDegree,
   setLoaded,
-  leaveEmployee
+  leaveEmployee,
+  deleteContract,
+  deleteContractSuccess
 };

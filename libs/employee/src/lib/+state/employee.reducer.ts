@@ -10,13 +10,22 @@ export interface EmployeeState extends EntityState<Employee> {
   adding: boolean;
   added: boolean;
   error: string;
-  deleted:boolean;
+  deleted: boolean;
+  branch: string;
+  position: string
   selectedEmployeeId: number;
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
-export const initialEmployee = adapter.getInitialState({ loaded: false, adding: false, added: false, deleted: false });
+export const initialEmployee = adapter.getInitialState({
+  loaded: false,
+  adding: false,
+  added: false,
+  deleted: false ,
+  position: '',
+  branch: '',
+});
 
 export const EmployeeReducer = createReducer(
   initialEmployee,
@@ -55,8 +64,11 @@ export const EmployeeReducer = createReducer(
     }
   ),
 
-  on(EmployeeAction.updateEmployeeSuccess, (state, action) => {
-      return adapter.updateOne(action.employee, { ...state, adding: false, added: true });
+  on(EmployeeAction.updateEmployeeSuccess, (state, { employee }) => {
+    console.log(employee)
+      return adapter.updateOne(
+        { id: employee.id, changes: employee },
+        { ...state, adding: false, added: true});
     }
   ),
 
@@ -72,6 +84,14 @@ export const EmployeeReducer = createReducer(
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
     adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
+  ),
+
+  on(EmployeeAction.deleteContractSuccess, (state, {employeeId}) =>
+    adapter.updateOne({id: employeeId ,
+      changes:{
+      contracts: []
+      }},
+      { ...state, loaded: true, deleted: true })
   ),
 
   on(EmployeeAction.addRelative, (state, _) => {

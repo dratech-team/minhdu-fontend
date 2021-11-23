@@ -19,7 +19,8 @@ import {
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { ConvertBoolean, MenuEnum } from '@minhdu-fontend/enums';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -41,9 +42,11 @@ export class DetailCustomerComponent implements OnInit {
   customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
   ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
   ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
-  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded))
-  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded))
+  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded));
+  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded));
+
   ngOnInit() {
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
       OrderAction.loadInit({ take: 10, skip: 0, customerId: this.getId })
@@ -60,7 +63,7 @@ export class DetailCustomerComponent implements OnInit {
 
   updateCustomer(customer: Customer) {
     this.dialog.open(CustomerDialogComponent, {
-      data: customer,
+      data: { customer, isUpdate: true },
       width: '50%'
     });
   }
@@ -82,7 +85,7 @@ export class DetailCustomerComponent implements OnInit {
 
   payment(id: number) {
     this.dialog.open(PaymentDialogComponent, {
-      width: '55%',
+      width: 'fit-content',
       data: { id: id }
     });
   }

@@ -11,9 +11,9 @@ export const addOrderSuccess = createAction(
   props<{ order: Order }>()
 );
 
-export  const loadAllOrder = createAction(
+export const loadAllOrder = createAction(
   '[LOAD_ORDERS] Load All Order'
-)
+);
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
@@ -74,7 +74,7 @@ export const updateOrder = createAction(
 
 export const updateHideOrder = createAction(
   '[UPDATE_ORDER] Update Hide Order',
-  props<{ order: any; id: number}>()
+  props<{ hide: any; id: number, customerId: number }>()
 );
 
 export const payment = createAction(
@@ -118,6 +118,10 @@ export const loadMoreOrdersAssignedSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
+export const handleOrderError = createAction(
+  '[ORDER_ERROR] Order error'
+);
+
 export const OrderAction = {
   addOrder,
   addOrderSuccess,
@@ -135,5 +139,5 @@ export const OrderAction = {
   loadOrdersAssigned,
   loadOrdersAssignedSuccess,
   loadMoreOrdersAssigned,
-  loadMoreOrdersAssignedSuccess,
+  loadMoreOrdersAssignedSuccess
 };

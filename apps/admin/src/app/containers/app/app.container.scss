@@ -1,0 +1,22 @@
+.main-app{
+
+}
+.back-ground-app {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  filter:brightness(60%) blur(5px);
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+.app-icon:hover{
+  opacity: 0.5;
+  cursor: pointer;
+}

@@ -52,7 +52,7 @@ const routes: Routes = [
       },
       {
         path: 'to-chuc',
-        loadChildren: () => import('./pages/orgchart-new/orgchart-new.module').then(m => m.OrgchartNewModule),
+        loadChildren: () => import('./pages/orgchart/orgchart.module').then(m => m.OrgchartModule),
         data: {
           title: 'to-chuc'
         },

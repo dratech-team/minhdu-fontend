@@ -1,26 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
-  selectedAddingPayroll,
+  selectedAddingPayroll, selectedDeletedPayroll,
   selectedLoadedPayroll, selectedScannedPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogOvertimeComponent } from '../../component/dialog-overtime/dialog-overtime.component';
-import { DialogBasicComponent } from '../../component/dialog-basic/dialog-basic.component';
-import { DialogAbsentComponent } from '../../component/dialog-absent/dialog-absent.component';
-import { DialogStayComponent } from '../../component/dialog-stay/dialog-stay.component';
-import { DialogAllowanceComponent } from '../../component/dialog-allowance/dialog-allowance.component';
+import { DialogOvertimeComponent } from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
+import { DialogBasicComponent } from '../../component/dialog-salary/dialog-basic/dialog-basic.component';
+import { DialogAbsentComponent } from '../../component/dialog-salary/dialog-absent/dialog-absent.component';
+import { DialogStayComponent } from '../../component/dialog-salary/dialog-stay/dialog-stay.component';
+import { DialogAllowanceComponent } from '../../component/dialog-salary/dialog-allowance/dialog-allowance.component';
 import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
 import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { LoadingComponent } from '../../component/popup-loading/loading.component';
+import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -36,13 +39,14 @@ export class DetailPayrollComponent implements OnInit {
   daysInMonth!: number;
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
-  employeeName!: string;
+  employeeTypeEnum = EmployeeType;
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly datePipe: DatePipe,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -91,6 +95,10 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }
@@ -107,7 +115,7 @@ export class DetailPayrollComponent implements OnInit {
       }
         break;
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent,  Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
       }
         break;
       case SalaryTypeEnum.ALLOWANCE: {
@@ -122,13 +130,17 @@ export class DetailPayrollComponent implements OnInit {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
       }
         break;
+      case SalaryTypeEnum.PART_TIME: {
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+      }
+        break;
       default :
         console.error('error add salary in detail payroll');
     }
   }
 
   removeSalary(id: number, payrollId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     dialogRef.afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
@@ -140,14 +152,19 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(ConfirmPayrollComponent, {
       width: 'fit-content',
       data: {
-        payroll: payroll
+        PAYROLL: payroll
       }
     });
   }
 
   historySalary(payroll: Payroll) {
     this.router.navigate(['phieu-luong/lich-su-luong', payroll.employee.id],
-      { queryParams: { name: payroll.employee.firstName + ' ' + payroll.employee.lastName } }).then();
+      {
+        queryParams: {
+          name: payroll.employee.lastName,
+          employeeType: payroll.employee.type
+        }
+      }).then();
   }
 
   nextPayroll(payroll: Payroll) {
@@ -171,15 +188,21 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   scanHoliday(payrollId: number) {
-    this.dialog.open(LoadingComponent, {
+    const ref = this.dialog.open(LoadingComponent, {
       width: 'fit-content',
-      data: { content: 'Đang quét ngày lễ...', loaded: this.scanned$ }
+      data: { content: 'Đang quét ngày lễ...' }
+    });
+    this.scanned$.subscribe(val => {
+      if (val) {
+        ref.close();
+      }
     });
     this.store.dispatch(PayrollAction.scanHoliday({ PayrollId: payrollId }));
   }
 
-  scroll(target: HTMLElement) {
+  scroll(target: HTMLElement, sticky: HTMLElement) {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    this.onSticky(sticky);
   }
 
   onSticky(sticky: HTMLElement) {
@@ -191,5 +214,41 @@ export class DetailPayrollComponent implements OnInit {
       sticky.classList?.remove('show-sticky');
     }
     this.isSticky = !this.isSticky;
+  }
+
+  deletePayroll(event: any) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.deletePayroll(
+          {
+            id: event.id
+          }));
+        this.store.pipe(select(selectedDeletedPayroll)).subscribe(deleted => {
+          if (deleted) {
+            this.router.navigate(['phieu-luong']).then();
+          }
+        });
+      }
+    });
+  }
+
+  updateTaxed(payroll: Payroll) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Cập nhật tính thuế',
+        description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
+        ${ this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM' ) }`
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.updatePayroll({
+          id: payroll.id,
+          Payroll: { taxed: !payroll.taxed }
+        }));
+      }
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { TemplateSalary } from './template-salary';
+import { TemplateSalary, TemplateSalaryDTO } from './template-salary';
 
 export const AddTemplate = createAction(
   '[Add_Template_Salary] Add Template Salary',
@@ -23,18 +23,7 @@ export const loadALlTemplate = createAction(
 
 export const loadInit = createAction(
   '[Load_Template_Salary] Load init',
-  props<{
-    take: number,
-    skip: number,
-    title?: string,
-    price?: number,
-    unit?: DatetimeUnitEnum,
-    note?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    salaryType?: SalaryTypeEnum
-  }>()
+  props<{ templateSalaryDTO: TemplateSalaryDTO }>()
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Salary] Load Template Salary Success',
@@ -44,17 +33,7 @@ export const loadInitTempLateSuccess = createAction(
 
 export const loadMoreTemplateBasic = createAction(
   '[Load_Template_Salary] Load More Salary Basic',
-  props<{
-    take: number,
-    title?: string,
-    price?: number,
-    unit?: DatetimeUnitEnum,
-    note?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    salaryType?: SalaryTypeEnum
-  }>()
+  props<{ templateSalaryDTO: TemplateSalaryDTO }>()
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Salary] Load More Template Salary Success',

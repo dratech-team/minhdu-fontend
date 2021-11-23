@@ -1,14 +1,22 @@
-<div style='min-width: 900px;'>
+<div style='min-width: 950px;'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
   <ng-template #employee>
     <div class='fixTableHead ' style='height: 50vh'>
-      <table [formGroup]='formGroup' class='main-table' style='width: 900px;'
+      <table [formGroup]='formGroup' class='main-table' style='width: 950px;'
              infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1'
+             [infiniteScrollThrottle]='10'
              [scrollWindow]='false'>
         <thead>
         <tr>
+          <th style='width: 50px'>
+            <div class='border-top text-center'>stt</div>
+            <input class='form-control input-profile'
+                   type='text'
+                   disabled
+            >
+          </th>
           <th style='width: 120px'>
             <div class='border-top text-center'>Mã nhân Viên</div>
             <input class='form-control input-profile'
@@ -20,7 +28,7 @@
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu' formControlName='name'>
           </th>
-          <th >
+          <th>
             <div class='border-top text-center'>Chức vụ</div>
             <input class='form-control input-profile ' type='text' disabled>
           </th>
@@ -32,7 +40,7 @@
                           (change)='setAllEmployee($event.checked)'>
             </mat-checkbox>
           </th>
-          <th style='width: 120px'  *ngIf='checkAllowance'>
+          <th style='width: 120px' *ngIf='checkAllowance'>
             <div class='border-bottom text-center'>Phụ cấp thêm</div>
             <mat-checkbox class='example-margin mt-2 mx-auto'
                           [checked]='isSelectAllowance'
@@ -44,9 +52,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let employee of employees'>
+        <tr *ngFor='let employee of employees;let i = index'>
+          <th class='content-profile pointer '> {{i + 1}}</th>
           <th class='content-profile pointer '> {{employee.id}}</th>
-          <th class='content-profile  pointer'>{{employee.firstName}} {{employee.lastName}}</th>
+          <th class='content-profile  pointer'>{{employee.lastName}}</th>
           <th class='content-profile pointer'>{{employee.position?.name}}</th>
           <th class='content-profile  pointer'>
             <mat-checkbox class='checkID'

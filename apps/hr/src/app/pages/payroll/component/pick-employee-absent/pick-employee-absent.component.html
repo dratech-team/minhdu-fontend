@@ -1,14 +1,22 @@
-<div style='min-width: 800px'>
+<div style='min-width: 850px'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
   <ng-template #employee>
-    <div class='fixTableHead' style='height: 50vh'
+    <div class='fixTableHead' style='height: 40vh'
          infiniteScroll
+         [infiniteScrollThrottle]='10'
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
          [scrollWindow]='false'>
-      <table [formGroup]='formGroup' style='width: 800px'>
-        <thead>
-        <tr >
+      <table [formGroup]='formGroup' style='width: 850px'>
+        <thead style='z-index: 2'>
+        <tr>
+          <th style='width: 50px'>
+            <div class='border-top text-center'>stt</div>
+            <input class='form-control  '
+                   type='text'
+                   formControlName='name'
+            >
+          </th>
           <th>
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control  '
@@ -39,26 +47,31 @@
               </mat-option>
             </mat-autocomplete>
           </th>
-          <th style='width: 100px' >
-            <div class='border-bottom text-center'>Tất cả</div>
-            <mat-checkbox class='example-margin mt-2 mx-auto'
-                          [checked]='isSelectAll'
-                          [indeterminate]='someComplete()'
-                          (change)='setAll($event.checked)'>
-            </mat-checkbox>
+          <th style='width: 100px;'>
+            <div class=' text-center' style='background: white'>Tất cả</div>
+            <div class='border-top border-bottom'>
+              <mat-checkbox class='example-margin  mt-2 mx-auto'
+                            [checked]='isSelectAll'
+                            [indeterminate]='someComplete()'
+                            (change)='setAll($event.checked)'>
+              </mat-checkbox>
+            </div>
           </th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let employee of employees'>
-          <th class='content-profile   pointer'>{{employee.firstName}} {{employee.lastName}}</th>
-          <th class='content-profile   pointer'>{{employee.position?.name}}</th>
-          <th class='content-profile   pointer'>{{employee.branch?.name}}</th>
-          <th class='content-profile   pointer'>
-            <mat-checkbox
-              (change)='updateSelect(employee.id)'
-              [checked]='employeeIds.includes(employee.id)'>
-            </mat-checkbox>
+        <tr *ngFor='let employee of employees; let i = index'>
+          <th class='   pointer'>{{i + 1}}</th>
+          <th class='   pointer'>{{employee.lastName}}</th>
+          <th class='   pointer'>{{employee.position?.name}}</th>
+          <th class='   pointer'>{{employee.branch?.name}}</th>
+          <th class='   pointer'>
+            <div class='mt-2'>
+              <mat-checkbox
+                (change)='updateSelect(employee.id)'
+                [checked]='employeeIds.includes(employee.id)'>
+              </mat-checkbox>
+            </div>
           </th>
         </tr>
         </tbody>

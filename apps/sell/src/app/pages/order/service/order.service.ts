@@ -6,13 +6,14 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<Order> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.ORDER, http);
+    super(Api.SELL.ORDER.ORDER, http);
   }
 
   addOne(props: Order): Observable<Order> {
@@ -24,14 +25,14 @@ export class OrderService extends BaseService<Order> {
   }
 
   payment(id: number, body: any): Observable<Update<Order>> {
-    return this.http.patch<Update<Order>>(Api.ORDER + `/${id}/paid`, body);
+    return this.http.patch<Update<Order>>(Api.SELL.ORDER.ORDER + `/${id}/paid`, body);
   }
 
   getOne(id: any): Observable<Order> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<Update<Order>> {
+  update(id: any, body: any): Observable<UpdateNum<Order>> {
     return super.update(id, body);
   }
   updateHide(id: any, body: any): Observable<Update<Order>> {

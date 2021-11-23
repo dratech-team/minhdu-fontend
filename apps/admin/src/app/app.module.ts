@@ -2,44 +2,47 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AdminLayoutComponent } from './container/admin-layout.component';
+import { AdminLayoutComponent } from './containers/layout-admin/admin-layout.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environmentAppSell } from '../../../sell/src/environments/environment';
+import { environment } from '../../../sell/src/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { AppFooterModule } from '@coreui/angular';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+import { AppContainer } from './containers/app/app.container';
 
 @NgModule({
-  declarations: [
-    AdminLayoutComponent,
-    AppComponent
-  ],
   imports: [
     MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
     HttpClientModule,
-    AppRoutingModule,
     CommonModule,
     BrowserAnimationsModule,
     BrowserModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-      logOnly: environmentAppSell.production, // Restrict extension to log-only mode
+      logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
     AppFooterModule,
     MatMenuModule
   ],
+  declarations: [
+    AdminLayoutComponent,
+    AppComponent,
+    AppContainer
+  ],
+  bootstrap: [AppComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -52,7 +55,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
       multi: true
     },
     HashLocationStrategy
-  ],
-  bootstrap: [AppComponent],
+  ]
 })
-export class AppModule {}
+export class AppModule {
+}

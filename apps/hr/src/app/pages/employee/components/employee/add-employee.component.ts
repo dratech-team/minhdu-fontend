@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FlatSalary, RecipeType } from '@minhdu-fontend/enums';
+import { FlatSalary, RecipeType, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DatePipe } from '@angular/common';
 import {
@@ -30,6 +30,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -48,12 +50,12 @@ export class AddEmployeeComponent implements OnInit {
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
-
+  typeEmployee = EmployeeType;
+  recipeTypesConstant = RecipeTypesConstant
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
-    private readonly snakbar: MatSnackBar,
     private readonly formBuilder: FormBuilder,
     private readonly snackbar: MatSnackBar,
     private readonly positionService: PositionService,
@@ -66,83 +68,62 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    this.formGroup = this.formBuilder.group({
-      identify: [this.data?.employee?.identify],
-      issuedBy: [this.data?.employee?.issuedBy],
-      birthplace: [this.data?.employee?.birthplace],
-      idCardAt: [
-        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
-      ],
-      email: [this.data?.employee?.email],
-      workday: [this.data?.employee?.workday, Validators.required],
-      phone: [this.data?.employee?.phone],
-      note: [this.data?.employee.note],
-      workedAt: [
-        this.datePipe.transform(this.data?.employee?.workedAt || '2010-01-01', 'yyyy-MM-dd')
-      ],
-      createdAt: [
-        this.datePipe.transform(this.data?.employee?.createdAt || '2010-01-01', 'yyyy-MM-dd')
-      ],
-      isFlatSalary: [
-        this.data?.employee?.isFlatSalary
-          ? this.flatSalary.FLAT_SALARY
-          : this.flatSalary.NOT_FLAT_SALARY,
-        Validators.required
-      ],
-      firstName: [this.data?.employee?.firstName, Validators.required],
-      lastName: [this.data?.employee?.lastName, Validators.required],
-      address: [this.data?.employee?.address, Validators.required],
-      gender: [this.data?.employee?.gender, Validators.required],
-      birthday: [
-        this.datePipe.transform(this.data?.employee?.birthday || '2010-01-01', 'yyyy-MM-dd'),
-        Validators.required
-      ],
-      ethnicity: [this.data?.employee?.ethnicity],
-      religion: [this.data?.employee?.religion],
-      facebook: [this.data?.employee?.facebook],
-      zalo: [this.data?.employee?.zalo],
-      createAtContract: [''],
-      expiredAtContract: [''],
-      recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2]
+
+
+      this.formGroup = this.formBuilder.group({
+        identify: [this.data?.employee?.identify],
+        issuedBy: [this.data?.employee?.issuedBy],
+        birthplace: [this.data?.employee?.birthplace],
+        idCardAt: [
+          this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
+        ],
+        email: [this.data?.employee?.email],
+        workday: [this.data?.employee.workday],
+        phone: [this.data?.employee?.phone],
+        note: [this.data?.employee?.note],
+        workedAt: [
+          this.datePipe.transform(this.data?.employee?.workedAt || '2010-01-01', 'yyyy-MM-dd')
+        ],
+        createdAt: [
+          this.datePipe.transform(this.data?.employee?.createdAt || '2010-01-01', 'yyyy-MM-dd')
+        ],
+        isFlatSalary: [
+          this.data?.employee?.isFlatSalary
+            ? this.flatSalary.FLAT_SALARY
+            : this.flatSalary.NOT_FLAT_SALARY
+        ],
+        lastName: [this.data?.employee?.lastName, Validators.required],
+        address: [this.data?.employee?.address, Validators.required],
+        gender: [this.data?.employee?.gender, Validators.required],
+        birthday: [
+          this.datePipe.transform(this.data?.employee?.birthday || '2010-01-01', 'yyyy-MM-dd'),
+          Validators.required
+        ],
+        ethnicity: [this.data?.employee?.ethnicity],
+        religion: [this.data?.employee?.religion],
+        facebook: [this.data?.employee?.facebook],
+        zalo: [this.data?.employee?.zalo],
+        createAtContract: [''],
+        expiredAtContract: [''],
+        recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
+        employeeType: [this.data?.employee ?
+          this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required]
+      });
+      this.positions$ = searchAndAddAutocomplete(
+        this.formPosition.valueChanges.pipe(startWith('')),
+        this.store.pipe(select(getAllPosition))
+      );
+
+      this.branches$ = searchAndAddAutocomplete(
+        this.branches.valueChanges.pipe(startWith('')),
+        this.branches$
+      );
+
+    this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
+      if (val === EmployeeType.EMPLOYEE_SEASONAL) {
+        this.formGroup.get('recipeType')!.setValue(RecipeType.CT3);
+      }
     });
-
-    this.positions$ = combineLatest([
-      this.formPosition.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          const result = positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-          if (result.length === 0) {
-            result.push({ id: 0, name: 'Tạo mới chức vụ' });
-          }
-          return result;
-        } else {
-          return positions;
-        }
-      })
-    );
-
-    this.branches$ = combineLatest([
-      this.branches.valueChanges.pipe(startWith('')),
-      this.branches$
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          const result = branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-          if (result.length === 0) {
-            result.push({ id: 0, name: 'Tạo mới đơn vị' });
-          }
-          return result;
-        } else {
-          return branches;
-        }
-      })
-    );
   }
 
   get f() {
@@ -150,6 +131,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit(): any {
+
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -158,7 +140,7 @@ export class AddEmployeeComponent implements OnInit {
     /// FIXME: dummy tạm
     if (!this.data) {
       if (!this.wardId || !this.branchId || !this.positionId) {
-        return this.snakbar.open(
+        return this.snackbar.open(
           'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
           'Đóng',
           { duration: 3000 }
@@ -167,21 +149,27 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
+    console.log(value.recipeType)
+    if(value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
+      && !value.workday
+    ){
+      return  this.snackbar.open('Chưa nhập ngày công chuẩn', '', {duration:1500})
+    }
     const employee = {
       id: this?.data?.employee?.id,
-      isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY,
+      isFlatSalary: value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME ?
+        value.isFlatSalary === this.flatSalary.FLAT_SALARY : undefined,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
-      workedAt: value.workedAt ? new Date(value.workedAt): undefined,
+      workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
-      firstName: value.firstName,
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone ? value.phone.toString() : undefined,
-      birthday: value.birthday ? new Date(value.birthday): undefined,
+      birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
-      idCardAt: value.idCardAt?  new Date(value.idCardAt): undefined ,
+      idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
       wardId: this.wardId || this.data.employee.wardId,
       address: value.address,
@@ -191,7 +179,8 @@ export class AddEmployeeComponent implements OnInit {
       facebook: value?.facebook ? value.facebook : undefined,
       zalo: value?.zalo ? value?.zalo?.toString() : undefined,
       note: value.note ? value.note : undefined,
-      workday: value.workday,
+      workday: value.workday? value.workday: 0,
+      type: value.employeeType,
       contract: {
         createdAt: value.createAtContract
           ? new Date(value.createAtContract)
@@ -263,6 +252,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   checkNumberInput(event: any) {
-    return checkInputNumber(event)
+    return checkInputNumber(event);
   }
 }

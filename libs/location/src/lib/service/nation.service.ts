@@ -10,7 +10,7 @@ export class NationService extends BaseService<Nation> {
   constructor(
     public readonly http: HttpClient
   ) {
-    super(Api.NATION, http);
+    super(Api.LOCATION.NATION, http);
   }
 
   getAll(): Observable<Nation[]> {

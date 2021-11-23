@@ -11,7 +11,7 @@ button:hover{
   justify-content: center;
   width: 150px;
   border: none;
-  height: 45px;
+  height: 35px;
   outline: #5bc0de;
   border-radius: 4px;
   background: white;
@@ -29,6 +29,7 @@ button:hover{
   bottom:0;
   right: 0;
   left: 0;
+  z-index: 100;
 }
 
 :host {

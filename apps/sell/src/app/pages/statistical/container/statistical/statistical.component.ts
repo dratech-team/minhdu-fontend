@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Api } from '@minhdu-fontend/constants';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 import {
-  DatetimeUnitEnum,
+  DatetimeUnitEnum, MenuEnum,
   StatisticalXType,
-  StatisticalYType,
+  StatisticalYType
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { getMonth } from 'ngx-bootstrap/chronos';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
 import { StatisticalService } from '../../service/statistical/statistical.service';
 import { document } from 'ngx-bootstrap/utils';
+import { Store } from '@ngrx/store';
+import { MainAction } from '../../../../states/main.action';
 
 @Component({
   templateUrl: 'statistical.component.html',
   styleUrls: ['statistical.component.scss'],
 })
-export class StatisticalComponent implements OnInit {
+export class StatisticalComponent implements OnInit{
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
@@ -38,15 +40,16 @@ export class StatisticalComponent implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly statisticalService: StatisticalService,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
   ) {}
 
   ngOnInit() {
-    document.getElementById('systemHistory').classList.remove('btn-border');
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.HOME}))
     this.statisticalService
-      .getAll(Api.STATISTICAL_PROVINCE, {
+      .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, {
         type: this.statisticalYType.ORDER,
         startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),
         endedAt: new Date(),
@@ -68,7 +71,6 @@ export class StatisticalComponent implements OnInit {
       endedAt: [Validators.required],
     });
   }
-
   onStatistical(type: StatisticalXType) {
     const ref = this.dialog.open(PickStatisticalTypeComponent, {
       width: '30%',
@@ -83,38 +85,38 @@ export class StatisticalComponent implements OnInit {
         switch (type) {
           case this.statisticalXType.AGENCY:
             this.statisticalService
-              .getAll(Api.STATISTICAL_AGENCY, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_AGENCY, value)
               .subscribe((value) => {
                 if (val) {
                   this.statisticalAgency = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_AGENCY_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT, value);
             }
             break;
           case this.statisticalXType.CHICKEN_TYPE:
             this.statisticalService
-              .getAll(Api.STATISTICAL_CHICKEN, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN, value)
               .subscribe((value) => {
                 if (val) {
                   this.statisticalChicken = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_CHICKEN_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN_PRINT, value);
             }
             break;
           case this.statisticalXType.PROVINCE:
             this.statisticalService
-              .getAll(Api.STATISTICAL_PROVINCE, value)
+              .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, value)
               .subscribe((value) => {
                 if (value) {
                   this.statisticalProvince = value;
                 }
               });
             if (val.print) {
-              this.exportService.print(Api.STATISTICAL_PROVINCE_PRINT, value);
+              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT, value);
             }
         }
         switch (val.type) {
@@ -133,12 +135,12 @@ export class StatisticalComponent implements OnInit {
   }
 
   printCustomer(type: StatisticalYType) {
-    this.exportService.print(Api.STATISTICAL_CUSTOMER_PRINT, type);
+    this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER_PRINT, type);
   }
 
   statisticalCustomer(param: any) {
     this.statisticalService
-      .getAll(Api.STATISTICAL_CUSTOMER, param)
+      .getAll(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER, param)
       .subscribe((value) => {
         if (value) {
           switch (param.type) {

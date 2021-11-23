@@ -5,140 +5,136 @@
 </div>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else customer' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #customer>
-  <div class='main-customer '>
-    <div class='main-profile'>
-      <form [formGroup]='formGroup' #header class='header-profile mt-3 animated fadeIn'>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Tên khách hàng</div>
+  <div class='table-scroll mx-auto my-5' style='width: 96%;'
+       infiniteScroll
+       [infiniteScrollDistance]='0.1'
+       [infiniteScrollThrottle]='10'
+       [scrollWindow]='false'
+       [alwaysCallback]='true'
+       (scrolled)='onScroll()'>
+    <table [formGroup]='formGroup' style='width: 2400px'>
+      <thead>
+      <tr>
+        <th style='min-width: 300px'>
+          <div class=''>Tên khách hàng</div>
           <input
             formControlName='name'
-            class='form-control input-profile '
+            class='form-control  '
             type='text'
             placeholder='Trần Gia Hiệu'
           >
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Ngày sinh</div>
-          <input  formControlName='birthDay'
-                  class='form-control input-profile '
-                  type='date'
+        </th>
+        <th style='width: 150px'>
+          <div class=''>Ngày sinh</div>
+          <input formControlName='birthDay'
+                 class='form-control  '
+                 type='date'
           >
-        </div>
-        <div class='border-start title-header gender'>
-          <div class='title-profile'>Giới tính</div>
-          <select class='select' matNativeControl required  formControlName='gender'>
+        </th>
+        <th>
+          <div class=''>Giới tính</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='gender'>
             <option value='MALE'>Nam</option>
             <option value='FEMALE'>Nữ</option>
             <option value='OTHER'>Khác</option>
             <option value=''>Tất cả</option>
           </select>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Số điện thoại</div>
+        </th>
+        <th style='width: 150px'>
+          <div class=''>Số điện thoại</div>
           <input formControlName='phone'
-                 class='form-control input-profile '
+                 class='form-control  '
                  type='tel'
                  pattern='[0-9]{3} [0-9]{3} [0-9]{4}' maxlength='12'>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Tiềmm năng</div>
-          <select class='select' matNativeControl required formControlName='isPotential'>
+        </th>
+        <th style='width: 150px'>
+          <div>Tiềm năng</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='isPotential'>
             <option value='{{true}}'>Tìm năng</option>
             <option value='{{false}}'>Không tìm năng</option>
             <option value=''>Tất cả</option>
           </select>
-        </div>
-        <div class='border-start title-header name'>
-          <div class='title-profile'>Quốc gia</div>
+        </th>
+        <th style='width: 200px'>
+          <div class=''>Quốc gia</div>
           <input formControlName='nationId'
-                 class='form-control input-profile '
+                 class='form-control  '
                  type='text'>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Nguồn khách hàng</div>
-          <select class='select' matNativeControl required formControlName='resource'>
-            <option value='{{resourceType.RESEARCH}}'>Tra cứu</option>
-            <option value='{{resourceType.INTRODUCED}}'>Giới thiệu</option>
-            <option value='{{resourceType.SELF_FIND}}'>Tự tìm</option>
-            <option value='{{resourceType.OTHER}}'>Khác</option>
-            <option value=''>Tất cả</option>
+        </th>
+        <th>
+          <div class=''>Nguồn khách hàng</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='resource'>
+            <option *ngFor='let item of resourceTypes ' [value]='item.type'>{{item.name}}</option>
           </select>
-        </div>
-        <div class='border-start title-header default'>
-          <div class='title-profile'>Loại khách hàng</div>
-          <select class='select' matNativeControl required formControlName='customerType'>
+        </th>
+        <th>
+          <div class=''>Loại khách hàng</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required
+                  formControlName='customerType'>
             <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
             <option value='{{customerType.AGENCY}}'>Đại lý</option>
             <option value=''>Tất cả</option>
           </select>
-        </div>
-        <div class='border-start title-header address'>
-          <div class='title-profile'>Email</div>
-          <input  formControlName='email'
-                  class='form-control input-profile '
-                  type='text'>
-        </div>
-        <div class='border-start title-header address'>
-          <div class='title-profile'>Địa chỉ</div>
+        </th>
+        <th>
+          <div class=''>Email</div>
+          <input formControlName='email'
+                 class='form-control  '
+                 type='text'>
+        </th>
+        <th>
+          <div class=''>Địa chỉ</div>
           <input formControlName='address'
-                 class='form-control input-profile '
+                 class='form-control  '
                  type='search'>
-        </div>
-        <div class='border-start title-header note'>
-          <div class='title-profile'>Chú thích</div>
+        </th>
+        <th>
+          <div class=''>Chú thích</div>
           <input formControlName='note'
-                 class='form-control input-profile '
+                 class='form-control '
                  type='search'>
-        </div>
-      </form>
-      <div class='outer animated fadeIn d-flex'
-           infiniteScroll
-           [infiniteScrollDistance]='0.5'
-           [scrollWindow]='false'
-           [alwaysCallback]='true'
-           (scrolled)='onScroll()'
-           *ngIf='(customers$| async) as customers'
-           [ngStyle]="{'width':customers.length ===0 ? header.offsetWidth + 'px': 'auto'}"
-      >
-        <div class='row-content' *ngFor='let customer of customers' (click)='readAndUpdate(customer)'
-             (contextmenu)='child.onContextMenu($event,customer)'>
-          <app-mouse-right [type]='pageType.CUSTOMER'
-                           #child (addEvent)='add()'
-                           (deleteEvent)='deleteCustomer($event)'
-                           (payment)='payment($event)'
-                           (readAndUpdateEvent)='readAndUpdate($event)'></app-mouse-right>
-          <div class='content-profile name pointer '>{{customer?.firstName}} {{customer?.lastName}} </div>
-          <div class='content-profile default pointer '>{{customer?.birthday| date:'dd/MM/yyyy'}}</div>
-          <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.MALE'> Nam</div>
-          <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.FEMALE'> Nữ</div>
-          <div class='content-profile  gender ' *ngIf='customer?.gender === genderType.OTHER'> Khác</div>
-          <div class='content-profile default pointer '>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</div>
-          <div class='content-profile default pointer '><input type='checkbox' disabled
-                                                               [checked]='customer.isPotential'></div>
-          <div class='content-profile name pointer '>
-            {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
-          </div>
-          <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.RESEARCH'> Tra cứu</div>
-          <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.INTRODUCED'> Giới thiệu</div>
-          <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.SELF_FIND'>Tự tìm</div>
-          <div class='content-profile  default ' *ngIf='!customer?.resource'>Chưa cập nhật</div>
-          <div class='content-profile  default ' *ngIf='customer?.resource === resourceType.OTHER'> Khác</div>
-          <div class='content-profile  default ' *ngIf='customer?.type === customerType.AGENCY'> Đại lý</div>
-          <div class='content-profile  default ' *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</div>
-          <div class='content-profile address pointer '>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</div>
-          <div class='content-profile address pointer '>{{customer?.address}}</div>
-          <div class='content-profile  note '> {{customer.note}}</div>
-        </div>
-        <div *ngIf='!customers || customers.length === 0 ' style='height:60vh; '
-             class=' d-flex justify-content-center align-content-center'>
-          <div class='font-xl font-weight-bold d-flex align-items-center'>
-            Hiện chưa có Khách hàng nào!
-          </div>
-        </div>
-      </div>
-    </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody *ngIf='(customers$| async) as customers'>
+      <tr class='pointer' *ngFor='let customer of customers; let i = index' (click)='readAndUpdate(customer)'
+          (contextmenu)='child.onContextMenu($event,customer)'>
+        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
+        <th>{{customer?.birthday| date:'dd/MM/yyyy'}}</th>
+        <th *ngIf='customer?.gender === genderType.MALE'> Nam</th>
+        <th *ngIf='customer?.gender === genderType.FEMALE'> Nữ</th>
+        <th *ngIf='customer?.gender === genderType.OTHER'> Khác</th>
+        <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
+        <th>
+          <input type='checkbox' disabled [checked]='customer.isPotential'>
+        </th>
+        <th>
+          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
+        </th>
+        <th>{{ customer.resource|transform: resourceTypes}}</th>
+        <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
+        <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
+        <th *ngIf='!customer?.type'> Chưa cập nhật</th>
+        <th>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</th>
+        <th>{{customer?.address}}</th>
+        <th> {{customer.note}}</th>
+      </tr>
+      <tr *ngIf='!customers || customers.length === 0 ' style='height:60vh; '>
+        <td colspan='15' class='position-relative font-weight-bold'>
+          <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
+             Hiện chưa có Khách hàng nào!
+          </span>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
   </div>
 </ng-template>
 
-
-
+<app-mouse-right [type]='pageType.CUSTOMER'
+                 #child (addEvent)='add()'
+                 (deleteEvent)='deleteCustomer($event)'
+                 (payment)='payment($event)'
+                 (readEvent)='readAndUpdate($event)'>
+</app-mouse-right>

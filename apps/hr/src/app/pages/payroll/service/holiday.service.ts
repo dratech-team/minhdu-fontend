@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { Holiday } from '../../template/+state/holiday/holiday.interface';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({providedIn:'root'})
 export class HolidayService extends BaseService<Holiday>{
   constructor(
     public readonly http: HttpClient,
   ) {
-    super(Api.holiday,http)
+    super(Api.HR.PAYROLL.holiday,http)
   }
 
   addOne(props: Holiday): Observable<Holiday> {
@@ -26,7 +27,7 @@ export class HolidayService extends BaseService<Holiday>{
   getAll(): Observable<Holiday[]> {
     return super.getAll();
   }
-  update(id: any, body: any): Observable<Update<Holiday>> {
+  update(id: any, body: any): Observable<UpdateNum<Holiday>> {
     return super.update(id, body);
   }
 

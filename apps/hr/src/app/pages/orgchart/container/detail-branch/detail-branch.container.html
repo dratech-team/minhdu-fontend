@@ -1,0 +1,94 @@
+<div style='max-width: 1300px; overflow-x: auto' class='w-100 mx-auto' *ngIf='(branch$|async) as branch'>
+  <div class='w-100 d-flex justify-content-center mb-2 '>
+    <div class='w-100 px-5'>
+      <div class='w-100'>
+        <div class='rounded px-3  py-2  shadow-sm main-popup' style='max-width: 500px'>
+          <div class=' h5 '>Đơn vị {{branch.name}}</div>
+          <div class='mt-2'><span class='font-sm font-weight-bold'>Mã đơn vị</span>: {{branch.id}}</div>
+          <div class='mt-2'><span
+            class='font-sm font-weight-bold'>Tổng số nhân viên</span>: {{branch?._count?.employees}}</div>
+          <div class='mt-2'>
+            <div class='btn btn-primary mr-2' (click)='updateBranch(branch)'>Sửa đơn vị</div>
+            <div class='btn btn-danger' (click)='deleteBranch(branch)'>Xóa đon vị</div>
+          </div>
+        </div>
+      </div>
+      <ngx-skeleton-loader *ngIf='!(branchLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
+      <div class='d-flex mt-5'>
+        <div class='font-weight-bold font-lg d-flex align-items-center'>
+          <span>
+           Bảng dach sách phụ cấp
+        </span>
+        </div>
+        <div class='ml-3 border rounded border-primary p-2 add d-flex align-items-center'
+             (click)='addAllowanceBranch(branch.id)'>
+          <span class='mr-1 font-weight-bold '>Thêm mục</span>
+          <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
+               alt='add icon'>
+        </div>
+      </div>
+      <div class='fixTableHead mt-2 w-100 ' *ngIf='(branchLoaded$|async)'>
+        <table>
+          <thead>
+          <tr>
+            <th style='width: 50px'>
+              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
+              <input disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Mã phụ cấp</div>
+              <input disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Ngày</div>
+              <input disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Tên phụ cấp</div>
+              <input disabled>
+            </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Mức phụ cấp</div>
+              <input disabled>
+            </th>
+            <th style='width: 100px'>
+              <div class='border-top d-flex justify-content-center align-items-center'>Xóa</div>
+              <input disabled>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor='let allowance of branch.allowances let i = index'
+          >
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
+              {{i + 1}}
+            </th>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
+              {{allowance.id}}
+            </th>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
+              {{allowance?.datetime|date:'dd/MM/yyyy'}}
+            </th>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
+              {{allowance.title}}
+            </th>
+            <th class='pointer' (click)='updateAllowanceBranch(allowance, branch.id)'>
+              {{allowance?.price|number:'1.0-0'}} đ
+            </th>
+            <th class='pointer'>
+              <button (click)='deleteAllowance(allowance.id, branch.id)' style='height: 25px'
+                      class='btn btn-danger mx-auto d-flex justify-content-center align-items-center'>
+                Xóa
+              </button>
+            </th>
+          </tr>
+          <tr *ngIf=' branch?.allowances?.length === 0 ' style='height: 45vh'>
+            <td colspan='6' class='text-center check-content font-weight-bold font-xl '>Hiện không có phụ cấp nào
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

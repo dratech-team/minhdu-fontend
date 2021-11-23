@@ -1,5 +1,7 @@
 import { Branch } from '@minhdu-fontend/data-models';
 import { createAction, props } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
 
 export const init = createAction('[Orgchart Page] Init');
 
@@ -13,13 +15,13 @@ export const loadOrgchartSuccess = createAction(
   props<{ branches: Branch[] }>()
 );
 
-
-/**
- * @deprecated
- * */
 export const getBranch = createAction(
   '[Orgchart/API] get Branch',
   props<{ id: number }>()
+);
+export const getBranchSuccess = createAction(
+  '[Orgchart/API] get Branch Success',
+  props<{ branch: Branch }>()
 );
 
 export const addBranch = createAction(
@@ -37,10 +39,22 @@ export const updateBranch = createAction(
   props<{ id: number, name: string }>()
 );
 
+
+export const updateBranchSuccess = createAction(
+  '[Orgchart/API] Update Branch Success',
+  props<{ branch:UpdateNum<Branch>}>()
+);
+
 export const deleteBranch = createAction(
   '[Orgchart/API] Delete Branch',
   props<{ id: number }>()
 );
+
+export const deleteAllowanceInBranch = createAction(
+  '[Orgchart/API] Delete Allowance in Branch',
+  props<{ salaryId: number }>()
+);
+
 
 export const loadOrgchartFailure = createAction(
   '[Orgchart/API] Load Orgchart Failure',
@@ -56,6 +70,8 @@ export const OrgchartActions = {
   addBranch,
   addBranchSuccess,
   updateBranch,
+  updateBranchSuccess,
   deleteBranch,
-  loadOrgchartFailure
+  loadOrgchartFailure,
+  deleteAllowanceInBranch
 };
