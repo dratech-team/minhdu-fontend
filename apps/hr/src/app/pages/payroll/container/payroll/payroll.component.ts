@@ -163,7 +163,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loadInitPayroll() {
     this.store.dispatch(
       PayrollAction.loadInit(
-        this.mapPayroll(this.formGroup.value)
+        {
+          payrollDTO: this.mapPayroll(this.formGroup.value)
+        }
       )
     );
   }
@@ -178,9 +180,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       createdAt: getState(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      filterType: this.selectedPayroll === PayrollEnum.TIME_SHEET ? FilterTypeEnum.TIME_SHEET:
-        this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL? FilterTypeEnum.SEASONAL:
-        this.selectedPayroll === PayrollEnum.PAYROLL? FilterTypeEnum.PAYROLL: FilterTypeEnum.SALARY ,
+      filterType: this.selectedPayroll === PayrollEnum.TIME_SHEET ? FilterTypeEnum.TIME_SHEET :
+        this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL ? FilterTypeEnum.SEASONAL :
+          this.selectedPayroll === PayrollEnum.PAYROLL ? FilterTypeEnum.PAYROLL : FilterTypeEnum.SALARY,
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
@@ -190,7 +192,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayroll(val)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.mapPayroll(val)
+      }
+    ));
   }
 
   addPayroll($event?: any): void {
@@ -293,7 +299,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   exportPayroll() {
     const ref = this.dialog.open(DialogExportComponent, {
-      width: 'fit-content', data: {title: 'Xuât bảng lương'}
+      width: 'fit-content', data: { title: 'Xuât bảng lương' }
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
@@ -400,7 +406,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   exportPayrollSeasonal() {
-   //Export Payroll Seasonal
+    //Export Payroll Seasonal
   }
 
   exportAllowance() {
@@ -412,61 +418,61 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   openDialogAddMultiple() {
-  const ref =  this.dialog.open(SelectAddMultiple, {width: 'fit-content'})
+    const ref = this.dialog.open(SelectAddMultiple, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
-      if(val){
-        switch(val) {
+      if (val) {
+        switch (val) {
           case SalaryTypeEnum.OVERTIME:
-            this.addSalaryOvertime(val)
+            this.addSalaryOvertime(val);
             break;
           case SalaryTypeEnum.ALLOWANCE:
-            this.addSalaryAllowance()
+            this.addSalaryAllowance();
             break;
           case SalaryTypeEnum.ABSENT:
-           this.timekeeping()
+            this.timekeeping();
             break;
         }
       }
-    })
+    });
   }
 
-  openDialogUpdateMultiple(){
-  const ref = this.dialog.open(SelectUpdateMultiple,
+  openDialogUpdateMultiple() {
+    const ref = this.dialog.open(SelectUpdateMultiple,
       {
         width: 'fit-content',
-        data:{
+        data: {
           pageType: this.selectedPayroll
         }
-      })
+      });
     ref.afterClosed().subscribe(val => {
-      if(val){
-        switch(val) {
+      if (val) {
+        switch (val) {
           case PayrollEnum.PAYROLL:
-            this.exportPayroll()
+            this.exportPayroll();
             break;
           case PayrollEnum.TIME_SHEET:
-            this.exportTimekeeping()
+            this.exportTimekeeping();
             break;
           case PayrollEnum.PAYROLL_OVERTIME:
-            this.exportOvertime()
+            this.exportOvertime();
             break;
           case PayrollEnum.PAYROLL_ABSENT:
-            this.exportAbsent()
+            this.exportAbsent();
             break;
           case PayrollEnum.PAYROLL_ALLOWANCE:
-            this.exportAllowance()
+            this.exportAllowance();
             break;
           case PayrollEnum.PAYROLL_STAY:
-            this.exportStay()
+            this.exportStay();
             break;
           case PayrollEnum.PAYROLL_BASIC:
-            this.exportBasic()
+            this.exportBasic();
             break;
           case PayrollEnum.PAYROLL_SEASONAL:
-            this.exportPayrollSeasonal()
+            this.exportPayrollSeasonal();
             break;
         }
       }
-    })
+    });
   }
 }

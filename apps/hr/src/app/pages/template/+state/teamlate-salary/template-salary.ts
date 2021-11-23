@@ -10,3 +10,15 @@ export interface TemplateSalary {
   partialDay: PartialDayEnum,
   unit: DatetimeUnitEnum
 }
+export interface TemplateSalaryDTO {
+  take?: number,
+  skip?: number,
+  title?: string,
+  price?: number,
+  unit?: DatetimeUnitEnum,
+  note?: string,
+  position?: string,
+  department?: string,
+  branch?: string,
+  salaryType?: SalaryTypeEnum,
+}

@@ -5,7 +5,13 @@
     <div>
       <button (click)='addTemplateSalary()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
     </div>
-    <div class='fixTableHead mt-5'>
+    <div class='fixTableHead mt-5'
+         infiniteScroll
+         [infiniteScrollDistance]='0.5'
+         [scrollWindow]='false'
+         [alwaysCallback]='true'
+         (scrolled)='onScroll()'
+    >
       <table [formGroup]='formGroup' style='width: 1200px;'>
         <thead>
         <tr>

@@ -16,7 +16,7 @@ import {
   SearchEmployeeType, EmployeeType
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, State, Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
   getAllPosition,
@@ -151,7 +151,6 @@ export class EmployeeComponent implements OnInit {
     const employee = {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      // code: val.code,
       name: val.name,
       gender: val.gender,
       position: val.position,

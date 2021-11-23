@@ -18,3 +18,15 @@ export interface ReqOvertime extends Omit<TemplateOvertime, "position" | "branch
   branchId: number;
 
 }
+
+export interface TemplateOvertimeDTO {
+  take?: number,
+  skip?: number,
+  title?: string,
+  price?: number,
+  unit?: DatetimeUnitEnum,
+  note?: string,
+  position?: string,
+  department?: string,
+  branch?: string
+}

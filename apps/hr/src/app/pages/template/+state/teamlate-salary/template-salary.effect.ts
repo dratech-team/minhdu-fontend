@@ -31,8 +31,8 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.loadInit),
       switchMap((props: any) => this.templateSalaryService.pagination(
-        Object.assign(JSON.parse(JSON.stringify(props)),
-          { type: props.salaryType ? props.salaryType : '' })
+        Object.assign(JSON.parse(JSON.stringify(props.templateSalaryDTO)),
+          { type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : '' })
       )),
       map((responsePagination) => {
           console.log(responsePagination);
@@ -47,8 +47,8 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.loadMoreTemplateBasic),
       withLatestFrom(this.store.pipe(select(selectorTemplateTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)),
-          { skip: skip, type: props.salaryType ? props.salaryType : '' })
+        Object.assign(JSON.parse(JSON.stringify(props.templateSalaryDTO)),
+          { skip: skip, type: props.templateSalaryDTO.salaryType ? props.templateSalaryDTO.salaryType : '' })
       ),
       switchMap((props) => {
         return this.templateSalaryService.pagination(props);
@@ -73,7 +73,7 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.AddTemplate),
       switchMap((pram) => this.templateSalaryService.addOne(pram.template).pipe(
-        map(_ => TemplateSalaryAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } })),
         catchError((err) => {
             this.store.dispatch(TemplateSalaryAction.HandelTemplateError());
             return throwError(err);
@@ -86,7 +86,7 @@ export class TemplateSalaryEffect {
     this.action$.pipe(
       ofType(TemplateSalaryAction.updateTemplate),
       switchMap((pram) => this.templateSalaryService.update(pram.id, pram.template).pipe(
-        map(_ => TemplateSalaryAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } })),
         catchError((err) => {
             this.store.dispatch(TemplateSalaryAction.HandelTemplateError());
             return throwError(err);
@@ -100,7 +100,7 @@ export class TemplateSalaryEffect {
       ofType(TemplateSalaryAction.deleteTemplate),
       switchMap((pram) => {
           return this.templateSalaryService.delete(pram.id).pipe(
-            map(_ => TemplateSalaryAction.loadInit({ take: 30, skip: 0 }))
+            map(_ => TemplateSalaryAction.loadInit({ templateSalaryDTO: { take: 30, skip: 0 } }))
           );
         }
       )

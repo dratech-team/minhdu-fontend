@@ -55,7 +55,8 @@ export class HistoryPayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   PageTypeEnum = PageTypeEnum;
-  payrollEnum = PayrollEnum
+  payrollEnum = PayrollEnum;
+
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -74,16 +75,22 @@ export class HistoryPayrollComponent implements OnInit {
     ));
     this.store.dispatch(
       PayrollAction.loadInit({
-        skip: this.pageIndexInit,
-        take: this.pageSize,
-        employeeId: this.getEmployeeId
+        payrollDTO: {
+          skip: this.pageIndexInit,
+          take: this.pageSize,
+          employeeId: this.getEmployeeId
+        }
       })
     );
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe((val) => {
-      this.store.dispatch(PayrollAction.loadInit(this.payroll(val)));
+      this.store.dispatch(PayrollAction.loadInit(
+        {
+          payrollDTO: this.payroll(val)
+        }
+      ));
     });
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -122,7 +129,11 @@ export class HistoryPayrollComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.payroll(val)));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.payroll(val)
+      }
+    ));
   }
 
   updateConfirmPayroll(id: number, type: string) {
