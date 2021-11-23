@@ -72,12 +72,14 @@ export class PayrollAbsentComponent implements OnInit {
   ngOnInit() {
 
     this.store.dispatch(PayrollAction.loadInit({
-      take: this.pageSize,
-      skip: this.pageIndex,
-      createdAt: new Date(this.createdAt),
-      salaryTitle: this.absentTitle ? this.absentTitle : '',
-      salaryType: SalaryTypeEnum.ABSENT,
-      filterType: FilterTypeEnum.SALARY
+      payrollDTO: {
+        take: this.pageSize,
+        skip: this.pageIndex,
+        createdAt: new Date(this.createdAt),
+        salaryTitle: this.absentTitle ? this.absentTitle : '',
+        salaryType: SalaryTypeEnum.ABSENT,
+        filterType: FilterTypeEnum.SALARY
+      }
     }));
 
     if (this.absentTitle) {
@@ -92,22 +94,28 @@ export class PayrollAbsentComponent implements OnInit {
           getState(selectedCreateAtPayroll, this.store)
       ), 'yyyy-MM'), { emitEvent: false });
       this.store.dispatch(PayrollAction.loadInit({
-        take: this.pageSize,
-        skip: this.pageIndex,
-        createdAt: new Date(
-          val.datetime
-            ? val.datetime
-            : getState(selectedCreateAtPayroll, this.store)),
-        salaryTitle: val.absentTitle ? val.absentTitle : '',
-        salaryType: SalaryTypeEnum.ABSENT,
-        filterType: FilterTypeEnum.SALARY
+        payrollDTO: {
+          take: this.pageSize,
+          skip: this.pageIndex,
+          createdAt: new Date(
+            val.datetime
+              ? val.datetime
+              : getState(selectedCreateAtPayroll, this.store)),
+          salaryTitle: val.absentTitle ? val.absentTitle : '',
+          salaryType: SalaryTypeEnum.ABSENT,
+          filterType: FilterTypeEnum.SALARY
+        }
       }));
     });
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAbsent()));
+        this.store.dispatch(PayrollAction.loadInit(
+          {
+            payrollDTO: this.mapPayrollAbsent()
+          }
+        ));
       }
     );
 
@@ -130,10 +138,10 @@ export class PayrollAbsentComponent implements OnInit {
     });
 
     this.eventExportAbsent?.subscribe(val => {
-      if(val){
+      if (val) {
         //export Absent
       }
-    })
+    });
   }
 
   readPayroll(event: any) {
@@ -154,11 +162,13 @@ export class PayrollAbsentComponent implements OnInit {
             'yyyy-MM'),
           { emitEvent: false });
         this.store.dispatch(PayrollAction.loadInit({
-          take: this.pageSize,
-          skip: this.pageIndex,
-          createdAt: new Date(val.datetime ? val.datetime : this.formGroup.get('createdAt')!.value),
-          salaryTitle: val.title,
-          salaryType: SalaryTypeEnum.ABSENT
+          payrollDTO: {
+            take: this.pageSize,
+            skip: this.pageIndex,
+            createdAt: new Date(val.datetime ? val.datetime : this.formGroup.get('createdAt')!.value),
+            salaryTitle: val.title,
+            salaryType: SalaryTypeEnum.ABSENT
+          }
         }));
       }
     });
@@ -195,14 +205,16 @@ export class PayrollAbsentComponent implements OnInit {
             this.salaryIds = [];
             this.formGroup.get('title')!.setValue(salariesSelected[0].title, { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit({
-              take: this.pageSize,
-              skip: this.pageIndex,
-              searchType: value.searchType,
-              createdAt: new Date(value.datetime ? value.datetime : value.createdAt),
-              salaryTitle: salariesSelected[0].title,
-              name: value.name,
-              salaryType: SalaryTypeEnum.ABSENT,
-              filterType: FilterTypeEnum.SALARY
+              payrollDTO: {
+                take: this.pageSize,
+                skip: this.pageIndex,
+                searchType: value.searchType,
+                createdAt: new Date(value.datetime ? value.datetime : value.createdAt),
+                salaryTitle: salariesSelected[0].title,
+                name: value.name,
+                salaryType: SalaryTypeEnum.ABSENT,
+                filterType: FilterTypeEnum.SALARY
+              }
             }));
           }
         }
@@ -218,7 +230,11 @@ export class PayrollAbsentComponent implements OnInit {
       if (val) {
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAbsent()));
+            this.store.dispatch(PayrollAction.loadInit(
+              {
+                payrollDTO: this.mapPayrollAbsent()
+              }
+            ));
             this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
           }
         });
@@ -228,7 +244,11 @@ export class PayrollAbsentComponent implements OnInit {
 
   onScroll() {
     const value = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAbsent()));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.mapPayrollAbsent()
+      }
+    ));
   }
 
   updateSelectSalary(id: number) {

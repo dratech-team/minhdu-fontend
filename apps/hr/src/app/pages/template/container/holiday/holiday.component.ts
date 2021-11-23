@@ -43,13 +43,19 @@ export class HolidayComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(HolidayAction.LoadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(HolidayAction.LoadInit({
+      holidayDTO: { take: this.pageSize, skip: this.pageIndexInit }
+    }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            HolidayAction.LoadInit(this.template(val))
+            HolidayAction.LoadInit(
+              {
+                holidayDTO: this.template(val)
+              }
+            )
           );
         })
       )
@@ -93,7 +99,9 @@ export class HolidayComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       HolidayAction.LoadMoreHoliday(
-        this.template(val)
+        {
+          holidayDTO: this.template(val)
+        }
       )
     );
   }

@@ -28,7 +28,7 @@ export class TemplateOvertimeEffect {
     this.action$.pipe(
       ofType(TemplateOvertimeAction.loadInit),
       switchMap(props => {
-        return this.templateOvertimeService.pagination(props);
+        return this.templateOvertimeService.pagination(props.templateOvertimeDTO);
       }),
       map((responsePagination) => {
           return TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data });
@@ -42,7 +42,7 @@ export class TemplateOvertimeEffect {
       ofType(TemplateOvertimeAction.loadMoreTemplateOverTime),
       withLatestFrom(this.store.pipe(select(selectorTemplateTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.templateOvertimeDTO)), { skip: skip })
       ),
       switchMap((props) => {
         return this.templateOvertimeService.pagination(props);
@@ -67,7 +67,7 @@ export class TemplateOvertimeEffect {
     this.action$.pipe(
       ofType(TemplateOvertimeAction.AddTemplate),
       switchMap((pram) => this.templateOvertimeService.addOne(pram.template).pipe(
-        map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => TemplateOvertimeAction.loadInit({ templateOvertimeDTO: { take: 30, skip: 0 } })),
         catchError((err) => {
             this.store.dispatch(TemplateOvertimeAction.HandleTemplateError());
             return throwError(err);
@@ -80,7 +80,7 @@ export class TemplateOvertimeEffect {
     this.action$.pipe(
       ofType(TemplateOvertimeAction.updateTemplate),
       switchMap((pram) => this.templateOvertimeService.update(pram.id, pram.templateOvertime).pipe(
-        map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => TemplateOvertimeAction.loadInit({ templateOvertimeDTO: { take: 30, skip: 0 } })),
         catchError((err) => {
             this.store.dispatch(TemplateOvertimeAction.HandleTemplateError());
             return throwError(err);
@@ -94,7 +94,7 @@ export class TemplateOvertimeEffect {
       ofType(TemplateOvertimeAction.deleteTemplate),
       switchMap((pram) => {
           return this.templateOvertimeService.delete(pram.id).pipe(
-            map(_ => TemplateOvertimeAction.loadInit({ take: 30, skip: 0 }))
+            map(_ => TemplateOvertimeAction.loadInit({ templateOvertimeDTO: { take: 30, skip: 0 } }))
           );
         }
       )

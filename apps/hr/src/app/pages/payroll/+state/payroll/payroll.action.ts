@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Update, UpdateNum } from '@ngrx/entity/src/models';
-import { Payroll } from './payroll.interface';
+import { Payroll, PayrollDTO } from './payroll.interface';
 import {
   ConvertBoolean,
   ConvertBooleanFrontEnd,
@@ -13,24 +13,7 @@ import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salar
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
-  props<{
-    take?: number,
-    skip?: number,
-    name?: string,
-    code?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    createdAt?: Date,
-    paidAt?: boolean,
-    accConfirmedAt?: boolean,
-    employeeId?: number,
-    filterType?: FilterTypeEnum,
-    employeeType?: EmployeeType,
-    salaryType?: SalaryTypeEnum,
-    salaryTitle?: string,
-    searchType?: SearchTypeEnum
-  }>()
+  props<{payrollDTO: PayrollDTO}>()
 );
 
 export const loadInitSuccess = createAction(
@@ -39,22 +22,7 @@ export const loadInitSuccess = createAction(
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
-  props<{
-    take?: number,
-    skip?: number,
-    createdAt?: Date,
-    name?: string,
-    code?: string,
-    position?: string,
-    department?: string,
-    branch?: string,
-    paidAt?: boolean,
-    accConfirmedAt?: boolean,
-    filterType?: FilterTypeEnum,
-    salaryType?: SalaryTypeEnum,
-    salaryTitle?: string,
-    searchType?: SearchTypeEnum
-  }>()
+  props<{payrollDTO: PayrollDTO}>()
 );
 
 export const loadMorePayrollsSuccess = createAction(

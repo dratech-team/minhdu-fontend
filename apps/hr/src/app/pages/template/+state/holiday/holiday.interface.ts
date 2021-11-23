@@ -10,3 +10,12 @@ export interface Holiday {
   isConstraint?: boolean,
   price?: number
 }
+
+export interface HolidayDTO {
+  take?: number,
+  skip?: number,
+  name?: string,
+  datetime?: Date,
+  department?: string,
+  rate?: number,
+}

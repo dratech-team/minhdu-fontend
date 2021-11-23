@@ -43,7 +43,7 @@ export class PayrollBasicComponent implements OnInit {
     )),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  totalSalaryBasic$ = this.store.select(selectedTotalPayroll) ;
+  totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -77,25 +77,31 @@ export class PayrollBasicComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadInit({
-      take: this.pageSize,
-      skip: this.pageIndex,
-      salaryType: SalaryTypeEnum.BASIC,
-      filterType: FilterTypeEnum.SALARY,
-      createdAt: new Date(this.createdAt),
+      payrollDTO: {
+        take: this.pageSize,
+        skip: this.pageIndex,
+        salaryType: SalaryTypeEnum.BASIC,
+        filterType: FilterTypeEnum.SALARY,
+        createdAt: new Date(this.createdAt)
+      }
     }));
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollBasic()));
+        this.store.dispatch(PayrollAction.loadInit(
+          {
+            payrollDTO: this.mapPayrollBasic()
+          }
+        ));
       }
     );
 
     this.payrollBasic$.subscribe(payrolls => {
       this.salaries = [];
-      if(payrolls.length){
+      if (payrolls.length) {
         payrolls.forEach(payroll => {
-          if(payroll.salaries){
+          if (payroll.salaries) {
             payroll.salaries.forEach(salary => {
               if ((salary.type === SalaryTypeEnum.BASIC_INSURANCE || salary.type === SalaryTypeEnum.BASIC)) {
                 if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
@@ -110,11 +116,11 @@ export class PayrollBasicComponent implements OnInit {
       }
     });
 
-    this.eventExportBasic?.subscribe( val => {
-      if(val){
+    this.eventExportBasic?.subscribe(val => {
+      if (val) {
         //export basic
       }
-    })
+    });
   }
 
   readPayroll(event: any) {
@@ -134,10 +140,12 @@ export class PayrollBasicComponent implements OnInit {
       if (val) {
         this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
         this.store.dispatch(PayrollAction.loadInit({
-          take: this.pageIndex,
-          skip: this.pageSize,
-          createdAt: this.formGroup.get('createdAt')!.value,
-          salaryTitle: val.title
+          payrollDTO: {
+            take: this.pageIndex,
+            skip: this.pageSize,
+            createdAt: this.formGroup.get('createdAt')!.value,
+            salaryTitle: val.title
+          }
         }));
       }
     });
@@ -169,8 +177,8 @@ export class PayrollBasicComponent implements OnInit {
             this.salaryIds = [];
             const value = this.formGroup.value;
             this.formGroup.get('title')!.setValue(salariesSelected[0].title, { emitEvent: false });
-            console.log(value)
-            console.log(salariesSelected[0].title)
+            console.log(value);
+            console.log(salariesSelected[0].title);
             const params = {
               take: this.pageSize,
               skip: this.pageIndex,
@@ -178,14 +186,16 @@ export class PayrollBasicComponent implements OnInit {
               createdAt: value.createdAt,
               salaryTitle: salariesSelected[0].title,
               name: this.formGroup.get('name')!.value,
-              salaryType: SalaryTypeEnum.BASIC,
+              salaryType: SalaryTypeEnum.BASIC
             };
             if (this.formGroup.get('name')!.value === '') {
               delete params.name;
             }
-            console.log(params)
+            console.log(params);
             this.store.dispatch(PayrollAction.loadInit(
-              params
+              {
+                payrollDTO: params
+              }
             ));
           }
         }
@@ -202,7 +212,11 @@ export class PayrollBasicComponent implements OnInit {
         this.snackbar.open(val.message, '', { duration: 1500 });
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollBasic()));
+            this.store.dispatch(PayrollAction.loadInit(
+              {
+                payrollDTO: this.mapPayrollBasic()
+              }
+            ));
             this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
           }
         });
@@ -215,7 +229,11 @@ export class PayrollBasicComponent implements OnInit {
 
   onScroll() {
     const value = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollBasic()));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.mapPayrollBasic()
+      }
+    ));
   }
 
   mapPayrollBasic() {

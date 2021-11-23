@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ReqOvertime, TemplateOvertime } from './template-overtime.interface';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { ReqOvertime, TemplateOvertime, TemplateOvertimeDTO } from './template-overtime.interface';
 
 export const AddTemplate = createAction(
   '[Add_Template_Overtime] Add Template Overtime',
@@ -17,21 +16,13 @@ export const HandleTemplateError = createAction(
 );
 export const loadALlTemplate = createAction(
   '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
-  props<{ positionId?: number|'', unit?: string, branchId?: number }>()
+  props<{ positionId?: number | '', unit?: string, branchId?: number }>()
 );
 
 export const loadInit = createAction(
   '[Load_Template_Overtime] Load init',
   props<{
-    take: number,
-    skip: number,
-    title?: string,
-    price?: number,
-    unit?: DatetimeUnitEnum,
-    note?: string,
-    position?: string,
-    department?: string,
-    branch?: string
+    templateOvertimeDTO: TemplateOvertimeDTO
   }>()
 );
 export const loadInitTempLateSuccess = createAction(
@@ -43,14 +34,7 @@ export const loadInitTempLateSuccess = createAction(
 export const loadMoreTemplateOverTime = createAction(
   '[Load_Template_Overtime] Load More Template OverTime',
   props<{
-    take: number,
-    title?: string,
-    price?: number,
-    unit?: DatetimeUnitEnum,
-    note?: string,
-    position?: string,
-    department?: string,
-    branch?: string
+    templateOvertimeDTO: TemplateOvertimeDTO
   }>()
 );
 export const loadMoreTempLateSuccess = createAction(

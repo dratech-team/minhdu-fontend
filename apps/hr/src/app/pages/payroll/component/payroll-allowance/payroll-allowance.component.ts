@@ -71,12 +71,14 @@ export class PayrollAllowanceComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadInit({
-      take: this.pageSize,
-      skip: this.pageIndex,
-      createdAt: new Date(this.createdAt),
-      salaryTitle: this.allowanceTitle ? this.allowanceTitle : '',
-      salaryType: SalaryTypeEnum.ALLOWANCE,
-      filterType: FilterTypeEnum.SALARY
+      payrollDTO: {
+        take: this.pageSize,
+        skip: this.pageIndex,
+        createdAt: new Date(this.createdAt),
+        salaryTitle: this.allowanceTitle ? this.allowanceTitle : '',
+        salaryType: SalaryTypeEnum.ALLOWANCE,
+        filterType: FilterTypeEnum.SALARY
+      }
     }));
     if (this.allowanceTitle) {
       this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
@@ -85,12 +87,14 @@ export class PayrollAllowanceComponent implements OnInit {
       this.formGroup.get('title')!.setValue(val.allowanceTitle, { emitEvent: false });
       this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(new Date(getState(selectedCreateAtPayroll, this.store)), 'yyyy-MM'), { emitEvent: false });
       this.store.dispatch(PayrollAction.loadInit({
-        take: this.pageSize,
-        skip: this.pageIndex,
-        createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
-        salaryTitle: val.allowanceTitle ? val.allowanceTitle : '',
-        salaryType: SalaryTypeEnum.ALLOWANCE,
-        filterType: FilterTypeEnum.SALARY
+        payrollDTO: {
+          take: this.pageSize,
+          skip: this.pageIndex,
+          createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
+          salaryTitle: val.allowanceTitle ? val.allowanceTitle : '',
+          salaryType: SalaryTypeEnum.ALLOWANCE,
+          filterType: FilterTypeEnum.SALARY
+        }
       }));
     });
 
@@ -98,7 +102,11 @@ export class PayrollAllowanceComponent implements OnInit {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
+        this.store.dispatch(PayrollAction.loadInit(
+          {
+            payrollDTO: this.mapPayrollAllowance()
+          }
+        ));
       }
     );
 
@@ -143,12 +151,14 @@ export class PayrollAllowanceComponent implements OnInit {
         this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
         this.formGroup.get('createdAt')!.setValue(val.datetime, { emitEvent: false });
         this.store.dispatch(PayrollAction.loadInit({
-          take: this.pageSize,
-          skip: this.pageIndex,
-          createdAt: new Date(val.datetime),
-          salaryTitle: val.title,
-          salaryType: SalaryTypeEnum.ALLOWANCE,
-          filterType: FilterTypeEnum.SALARY
+          payrollDTO: {
+            take: this.pageSize,
+            skip: this.pageIndex,
+            createdAt: new Date(val.datetime),
+            salaryTitle: val.title,
+            salaryType: SalaryTypeEnum.ALLOWANCE,
+            filterType: FilterTypeEnum.SALARY
+          }
         }));
       }
     });
@@ -184,14 +194,16 @@ export class PayrollAllowanceComponent implements OnInit {
             this.salaryIds = [];
             this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit({
-              take: this.pageSize,
-              skip: this.pageIndex,
-              searchType: value.searchType,
-              createdAt: new Date(value.createdAt),
-              salaryTitle: val.title,
-              name: value.name,
-              salaryType: SalaryTypeEnum.ALLOWANCE,
-              filterType: FilterTypeEnum.SALARY
+              payrollDTO: {
+                take: this.pageSize,
+                skip: this.pageIndex,
+                searchType: value.searchType,
+                createdAt: new Date(value.createdAt),
+                salaryTitle: val.title,
+                name: value.name,
+                salaryType: SalaryTypeEnum.ALLOWANCE,
+                filterType: FilterTypeEnum.SALARY
+              }
             }));
           }
         }
@@ -207,7 +219,11 @@ export class PayrollAllowanceComponent implements OnInit {
       if (val) {
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollAllowance()));
+            this.store.dispatch(PayrollAction.loadInit(
+              {
+                payrollDTO: this.mapPayrollAllowance()
+              }
+            ));
             this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
           }
         });
@@ -217,7 +233,11 @@ export class PayrollAllowanceComponent implements OnInit {
 
   onScroll() {
     const value = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollAllowance()));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.mapPayrollAllowance()
+      }
+    ));
   }
 
   updateSelectSalary(id: number) {

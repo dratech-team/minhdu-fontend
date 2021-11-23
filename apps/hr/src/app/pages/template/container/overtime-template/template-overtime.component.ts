@@ -23,7 +23,7 @@ export class TemplateOvertimeComponent implements OnInit {
   unit = DatetimeUnitEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  employeeTypeEnum= EmployeeType;
+  employeeTypeEnum = EmployeeType;
   formGroup = new FormGroup(
     {
       title: new FormControl(''),
@@ -49,14 +49,21 @@ export class TemplateOvertimeComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-    this.store.dispatch(TemplateOvertimeAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(TemplateOvertimeAction.loadInit({
+      templateOvertimeDTO: {
+        take: this.pageSize,
+        skip: this.pageIndexInit
+      }
+    }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
             TemplateOvertimeAction.loadInit(
-              this.template(val))
+              {
+                templateOvertimeDTO: this.template(val)
+              })
           );
         })
       )
@@ -95,7 +102,9 @@ export class TemplateOvertimeComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       TemplateOvertimeAction.loadMoreTemplateOverTime(
-        this.template(val)
+        {
+          templateOvertimeDTO: this.template(val)
+        }
       )
     );
   }

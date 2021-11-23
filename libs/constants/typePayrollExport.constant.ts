@@ -21,4 +21,8 @@ export const TypePayrollExportConstant = [
     name: 'Xuất bảng lương cơ bản',
     value: PayrollEnum.PAYROLL_BASIC
   },
+  {
+    name: 'Xuất bảng lương công nhật',
+    value: PayrollEnum.PAYROLL_SEASONAL
+  },
 ];

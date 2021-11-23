@@ -70,17 +70,23 @@ export class PayrollStayComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PayrollAction.loadInit({
-      take: this.pageSize,
-      skip: this.pageIndex,
-      createdAt: new Date(this.createdAt),
-      salaryType: SalaryTypeEnum.STAY,
-      filterType: FilterTypeEnum.SALARY
+      payrollDTO: {
+        take: this.pageSize,
+        skip: this.pageIndex,
+        createdAt: new Date(this.createdAt),
+        salaryType: SalaryTypeEnum.STAY,
+        filterType: FilterTypeEnum.SALARY
+      }
     }));
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { createdAt: new Date(value.createdAt) }));
-        this.store.dispatch(PayrollAction.loadInit(this.mapPayrollStay()));
+        this.store.dispatch(PayrollAction.loadInit(
+          {
+            payrollDTO: this.mapPayrollStay()
+          }
+        ));
       }
     );
 
@@ -121,12 +127,14 @@ export class PayrollStayComponent implements OnInit {
       if (val) {
         this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
         this.store.dispatch((PayrollAction.loadInit({
-          take: this.pageSize,
-          skip: this.pageIndex,
-          createdAt: this.formGroup.get('createdAt')!.value,
-          salaryTitle: val.title,
-          salaryType: SalaryTypeEnum.STAY,
-          filterType: FilterTypeEnum.SALARY
+          payrollDTO: {
+            take: this.pageSize,
+            skip: this.pageIndex,
+            createdAt: this.formGroup.get('createdAt')!.value,
+            salaryTitle: val.title,
+            salaryType: SalaryTypeEnum.STAY,
+            filterType: FilterTypeEnum.SALARY
+          }
         })));
       }
     });
@@ -160,14 +168,16 @@ export class PayrollStayComponent implements OnInit {
             this.formGroup.get('title')!.setValue(val.title,
               { emitEvent: false });
             this.store.dispatch(PayrollAction.loadInit({
-              take: this.pageSize,
-              skip: this.pageIndex,
-              searchType: value.searchType,
-              createdAt: new Date(value.createdAt),
-              salaryTitle: val.title,
-              name: value.name,
-              salaryType: SalaryTypeEnum.STAY,
-              filterType: FilterTypeEnum.SALARY
+              payrollDTO: {
+                take: this.pageSize,
+                skip: this.pageIndex,
+                searchType: value.searchType,
+                createdAt: new Date(value.createdAt),
+                salaryTitle: val.title,
+                name: value.name,
+                salaryType: SalaryTypeEnum.STAY,
+                filterType: FilterTypeEnum.SALARY
+              }
             }));
           }
         }
@@ -184,7 +194,11 @@ export class PayrollStayComponent implements OnInit {
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
             this.snackbar.open('Xóa phiếu lương thành công', '', { duration: 1500 });
-            this.store.dispatch(PayrollAction.loadInit(this.mapPayrollStay()));
+            this.store.dispatch(PayrollAction.loadInit(
+              {
+                payrollDTO: this.mapPayrollStay()
+              }
+            ));
           }
         });
       }
@@ -193,7 +207,11 @@ export class PayrollStayComponent implements OnInit {
 
   onScroll() {
     const value = this.formGroup.value;
-    this.store.dispatch(PayrollAction.loadMorePayrolls(this.mapPayrollStay()));
+    this.store.dispatch(PayrollAction.loadMorePayrolls(
+      {
+        payrollDTO: this.mapPayrollStay()
+      }
+    ));
   }
 
   updateSelectSalary(id: number) {

@@ -25,7 +25,7 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        return this.payrollService.pagination(requestPaginate);
+        return this.payrollService.pagination(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
         /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
@@ -46,7 +46,7 @@ export class PayrollEffect {
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), { skip: skip })
       ),
       switchMap((props) => {
         return this.payrollService.pagination(props);
@@ -106,11 +106,11 @@ export class PayrollEffect {
               );
               if (props.inHistory) {
                 this.store.dispatch(
-                  PayrollAction.loadInit({
-                    take: 30,
-                    skip: 0,
-                    employeeId: props.generate.employeeId
-                  })
+                  PayrollAction.loadInit({payrollDTO: {
+                      take: 30,
+                      skip: 0,
+                      employeeId: props.generate.employeeId
+                    } })
                 );
               }
               return PayrollAction.addPayrollSuccess();
