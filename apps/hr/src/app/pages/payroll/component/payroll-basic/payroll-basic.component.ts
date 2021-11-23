@@ -98,8 +98,8 @@ export class PayrollBasicComponent implements OnInit {
     );
 
     this.payrollBasic$.subscribe(payrolls => {
-      this.salaries = [];
-      if (payrolls.length) {
+      if (payrolls) {
+        this.salaries = [];
         payrolls.forEach(payroll => {
           if (payroll.salaries) {
             payroll.salaries.forEach(salary => {

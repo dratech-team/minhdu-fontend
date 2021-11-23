@@ -111,9 +111,9 @@ export class PayrollAllowanceComponent implements OnInit {
     );
 
     this.payrollAllowance$.subscribe(payrolls => {
-      this.salaries = [];
       payrolls.forEach(payroll => {
         if (payroll) {
+          this.salaries = [];
           payroll.salaries.forEach(salary => {
             if (payroll.salaries) {
               if (salary.type === SalaryTypeEnum.ALLOWANCE) {

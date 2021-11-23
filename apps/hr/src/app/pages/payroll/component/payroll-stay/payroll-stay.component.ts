@@ -91,9 +91,9 @@ export class PayrollStayComponent implements OnInit {
     );
 
     this.payrollStay$.subscribe(payrolls => {
-      this.salaries = [];
       payrolls.forEach(payroll => {
         if (payroll) {
+          this.salaries = [];
           if (payroll.salaries) {
             payroll.salaries.forEach(salary => {
               if ((salary.type === SalaryTypeEnum.STAY)) {
