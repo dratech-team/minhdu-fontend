@@ -13,10 +13,9 @@ export class StakedVerticalChartComponent implements OnChanges {
   @Input() labelX!: string;
   @Input() labelY!: string;
   @Input() legend = false;
+  @Input() height = 315;
   legendPosition = LegendPosition.Below;
   width = 0;
-  height = 315;
-
   ngOnChanges() {
     this.data = this.chartService.editNameChart(this.data);
     this.width = this.chartService.fixWithChartColumn(this.data)
