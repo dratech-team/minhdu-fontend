@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
 
@@ -6,7 +6,10 @@ import { LegendPosition } from '@swimlane/ngx-charts';
   selector:'app-pie-chart',
   templateUrl:'pie-chart-component.html'
 })
-export class PieChartComponent {
+export class PieChartComponent implements  OnInit{
   @Input() data!: any
+  @Input() view!: any
   legendPosition = LegendPosition.Below;
+  ngOnInit() {
+  }
 }

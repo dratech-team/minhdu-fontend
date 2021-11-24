@@ -16,6 +16,13 @@ const routes: Routes = [
     },
     children: [
       {
+        path: '',
+        loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverviewModule),
+        data: {
+          title: ''
+        }
+      },
+      {
         path: 'ho-so',
         loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
         data: {
