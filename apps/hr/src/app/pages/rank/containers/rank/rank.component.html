@@ -1,0 +1,63 @@
+<div class='mx-3'>
+  <div class='h3'>Xếp hạng cuối năm</div>
+  <div class='fixTableHead mt-5' style='width: 100%'>
+    <table>
+      <thead>
+      <tr>
+        <th style='width: 100px '>
+          <div class='border-top text-center'>stt</div>
+          <input class='border' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Mã nhân viên</div>
+          <input class='border' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tên nhân viên</div>
+          <input class='border' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Đơn vị</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                         (onSelectionChange)='onSelectBranch(branch.name)'>
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='border-top text-center'>Chức vụ</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async'
+                        [value]='position.name' (click)='onSelectPosition(position.name)'
+                        (onSelectionChange)='onSelectPosition(position.name)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='border-top text-center'>Ngày nghỉ</div>
+          <input class='border' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Mức lương</div>
+          <input class='border' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>1</th>
+        <th>s</th>
+        <th>s</th>
+        <th>s</th>
+        <th>s</th>
+        <th>s</th>
+        <th>s</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
