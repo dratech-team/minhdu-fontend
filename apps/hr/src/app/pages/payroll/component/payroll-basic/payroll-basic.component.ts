@@ -151,7 +151,7 @@ export class PayrollBasicComponent implements OnInit {
     });
   }
 
-  updateSalaryBasic() {
+  updateMultipleSalaryBasic() {
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
       if (this.salaryIds.includes(salary.id)) {
@@ -205,6 +205,33 @@ export class PayrollBasicComponent implements OnInit {
     }
   }
 
+  deleteMultipleSalaryBasic(){
+   const ref = this.dialog.open(DialogDeleteComponent, {width:'fit-content'})
+    ref.afterClosed().subscribe(val => {
+      if(val){
+        let deleteSuccess = new Subject<number>()
+        this.salaryIds.forEach((id, index) => {
+          this.salaryService.delete(id).subscribe(
+            (val: any) => {
+              if(val){
+                deleteSuccess.next(index)
+              }
+            }
+          )
+        })
+       deleteSuccess.subscribe(val => {
+         console.log(val)
+         if(val === this.salaryIds.length -1){
+           this.isSelectSalary = false
+           this.salaryIds = []
+           this.snackbar.open('Xóa lương cơ bản thành công', '', {duration:1500})
+           this.store.dispatch(PayrollAction.loadInit({payrollDTO:this.mapPayrollBasic()}))
+         }
+       })
+      }
+    })
+  }
+
   deleteSalaryBasic(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
@@ -222,9 +249,6 @@ export class PayrollBasicComponent implements OnInit {
         });
       }
     });
-  }
-
-  onSelectTemplateBasic($event: any, title: string) {
   }
 
   onScroll() {
@@ -245,7 +269,8 @@ export class PayrollBasicComponent implements OnInit {
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
-      filterType: FilterTypeEnum.SALARY
+      filterType: FilterTypeEnum.SALARY,
+      salaryType: SalaryTypeEnum.BASIC,
     };
     if (!value.name) {
       delete params.name;

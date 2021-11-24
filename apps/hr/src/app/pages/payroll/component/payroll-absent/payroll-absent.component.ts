@@ -163,8 +163,7 @@ export class PayrollAbsentComponent implements OnInit {
     });
   }
 
-  updateSalaryAbsent() {
-
+  updateMultipleSalaryAbsent() {
     const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
@@ -203,6 +202,32 @@ export class PayrollAbsentComponent implements OnInit {
     } else {
       this.snackbar.open('chưa chọn cùng loại  lương', 'Đóng');
     }
+  }
+
+  deleteMultipleSalaryAbsent() {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        let deleteSuccess = new Subject<number>();
+        this.salaryIds.forEach((id, index) => {
+          this.salaryService.delete(id).subscribe(
+            (val: any) => {
+              if (val) {
+                deleteSuccess.next(index);
+              }
+            }
+          );
+        });
+        deleteSuccess.subscribe(val => {
+          if (val === this.salaryIds.length - 1) {
+            this.isSelectSalary = false
+            this.salaryIds = []
+            this.snackbar.open('Xóa khấu trừ thành công', '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollAbsent() }));
+          }
+        });
+      }
+    });
   }
 
   deleteSalaryAbsent(event: any) {

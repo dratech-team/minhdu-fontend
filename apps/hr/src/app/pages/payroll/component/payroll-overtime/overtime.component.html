@@ -29,14 +29,22 @@
         <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
         <input type='text' disabled>
       </th>
-      <th style='width: 50px ; z-index: 3'>
+      <th style=' width: 150px; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
-        <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                (click)='updateSalaryOvertime()'
-                *ngIf='salaryIds.length > 0'
-                class=' btn btn-primary d-flex justify-content-center align-items-center '>
-          Sửa
-        </button>
+        <div class='d-flex'>
+          <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                  (click)='updateMultipleSalaryOvertime()'
+                  *ngIf='salaryIds.length > 0'
+                  class=' btn btn-primary d-flex justify-content-center align-items-center '>
+            Sửa
+          </button>
+          <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                  (click)='deleteMultipleSalaryOvertime()'
+                  *ngIf='salaryIds.length > 0'
+                  class='btn btn-danger d-flex justify-content-center align-items-center '>
+            Xóa
+          </button>
+        </div>
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>

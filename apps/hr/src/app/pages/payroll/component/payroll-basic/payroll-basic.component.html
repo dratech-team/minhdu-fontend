@@ -37,15 +37,22 @@
           <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
           <input type='text' disabled>
         </th>
-        <th style='width: 50px ; z-index: 3'>
+        <th style='width: 150px ; z-index: 3'>
           <div class='border-top border-bottom d-flex justify-content-center align-items-center p-1'>
             <span *ngIf='salaryIds.length === 0' class='mr-2'>Chọn</span>
-            <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
-                    (click)='updateSalaryBasic()'
-                    *ngIf='salaryIds.length > 0'
-                    class=' btn btn-primary d-flex justify-content-center align-items-center '>
-              Sửa
-            </button>
+            <div *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
+              <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                      (click)='updateMultipleSalaryBasic()'
+                      class=' btn btn-primary d-flex justify-content-center align-items-center '>
+                Sửa
+              </button>
+              <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
+                      (click)='deleteMultipleSalaryBasic()'
+                      class=' btn btn-danger d-flex justify-content-center align-items-center '>
+                Xóa
+              </button>
+            </div>
+
           </div>
           <mat-checkbox class='example-margin mt-2 mx-auto'
                         [checked]='isSelectSalary'
