@@ -68,8 +68,7 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-
-
+    console.log(this.data)
       this.formGroup = this.formBuilder.group({
         identify: [this.data?.employee?.identify],
         issuedBy: [this.data?.employee?.issuedBy],
@@ -78,7 +77,7 @@ export class AddEmployeeComponent implements OnInit {
           this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd')
         ],
         email: [this.data?.employee?.email],
-        workday: [this.data?.employee.workday],
+        workday: [this.data?.employee?.workday],
         phone: [this.data?.employee?.phone],
         note: [this.data?.employee?.note],
         workedAt: [

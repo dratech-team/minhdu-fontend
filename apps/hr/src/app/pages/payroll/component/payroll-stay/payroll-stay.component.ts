@@ -91,9 +91,9 @@ export class PayrollStayComponent implements OnInit {
     );
 
     this.payrollStay$.subscribe(payrolls => {
-      this.salaries = [];
-      payrolls.forEach(payroll => {
-        if (payroll) {
+      if (payrolls) {
+        this.salaries = [];
+        payrolls.forEach(payroll => {
           if (payroll.salaries) {
             payroll.salaries.forEach(salary => {
               if ((salary.type === SalaryTypeEnum.STAY)) {
@@ -105,8 +105,8 @@ export class PayrollStayComponent implements OnInit {
               }
             });
           }
-        }
-      });
+        });
+      }
     });
   }
 
@@ -140,7 +140,7 @@ export class PayrollStayComponent implements OnInit {
     });
   }
 
-  updateSalaryStay() {
+  updateMultipleSalaryStay() {
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
       if (this.salaryIds.includes(salary.id)) {
@@ -185,6 +185,32 @@ export class PayrollStayComponent implements OnInit {
     } else {
       this.snackbar.open('chưa chọn cùng loại  lương', 'Đóng');
     }
+  }
+
+  deleteMultipleSalaryStay() {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        let deleteSuccess = new Subject<number>();
+        this.salaryIds.forEach((id, index) => {
+          this.salaryService.delete(id).subscribe(
+            (val: any) => {
+              if (val) {
+                deleteSuccess.next(index);
+              }
+            }
+          );
+        });
+        deleteSuccess.subscribe(val => {
+          if (val === this.salaryIds.length - 1) {
+            this.isSelectSalary = false;
+            this.salaryIds = [];
+            this.snackbar.open('Xóa phụ cấp lương thành công', '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollStay() }));
+          }
+        });
+      }
+    });
   }
 
   deleteSalaryStay(event: any) {

@@ -16,6 +16,13 @@ const routes: Routes = [
     },
     children: [
       {
+        path: '',
+        loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverviewModule),
+        data: {
+          title: ''
+        }
+      },
+      {
         path: 'ho-so',
         loadChildren: () => import('./pages/employee/employee.module').then(m => m.EmployeeModule),
         data: {
@@ -41,6 +48,13 @@ const routes: Routes = [
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
         data: {
           title: 'Lịch sử hệ thống'
+        },
+      },
+      {
+        path: 'xep-hang',
+        loadChildren: () => import('./pages/rank/rank.module').then(m => m.RankModule),
+        data: {
+          title: 'Xếp hạng cuối năm'
         },
       },
       {

@@ -111,11 +111,11 @@ export class PayrollAllowanceComponent implements OnInit {
     );
 
     this.payrollAllowance$.subscribe(payrolls => {
-      this.salaries = [];
-      payrolls.forEach(payroll => {
-        if (payroll) {
-          payroll.salaries.forEach(salary => {
-            if (payroll.salaries) {
+      if (payrolls) {
+        this.salaries = [];
+        payrolls.forEach(payroll => {
+          if (payroll.salaries) {
+            payroll.salaries.forEach(salary => {
               if (salary.type === SalaryTypeEnum.ALLOWANCE) {
                 if (this.isSelectSalary && !this.salaryIds.includes(salary.id)
                   && !this.salaries.find(e => e.id === salary.id)) {
@@ -123,10 +123,10 @@ export class PayrollAllowanceComponent implements OnInit {
                 }
                 this.salaries.push(salary);
               }
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      }
     });
 
     this.eventExportAllowance?.subscribe(val => {
@@ -164,7 +164,7 @@ export class PayrollAllowanceComponent implements OnInit {
     });
   }
 
-  updateSalaryAllowance() {
+  updateMultipleSalaryAllowance() {
     const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach(salary => {
@@ -213,6 +213,33 @@ export class PayrollAllowanceComponent implements OnInit {
     }
   }
 
+
+  deleteMultipleSalaryAllowance() {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        let deleteSuccess = new Subject<number>();
+        this.salaryIds.forEach((id, index) => {
+          this.salaryService.delete(id).subscribe(
+            (val: any) => {
+              if (val) {
+                deleteSuccess.next(index);
+              }
+            }
+          );
+        });
+        deleteSuccess.subscribe(val => {
+          if (val === this.salaryIds.length - 1) {
+            this.isSelectSalary = false
+            this.salaryIds = []
+            this.snackbar.open('Xóa lương cơ bản thành công', '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollAllowance() }));
+          }
+        });
+      }
+    });
+  }
+
   deleteSalaryAllowance(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
@@ -249,6 +276,9 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   setAllSalary(select: boolean) {
+    console.log(this.salaries);
+    console.log(this.salaryIds);
+
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
   }
 
