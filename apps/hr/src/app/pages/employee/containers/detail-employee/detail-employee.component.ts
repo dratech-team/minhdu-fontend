@@ -59,7 +59,7 @@ export class DetailEmployeeComponent implements OnInit {
   updateEmployee(employee: Employee): void {
     this.dialog.open(AddEmployeeComponent, {
       width: '60%',
-      data: { EMPLOYEE: employee }
+      data: { employee: employee }
     });
   }
 
