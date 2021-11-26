@@ -32,4 +32,5 @@ export const FeatureName = {
   SALARY: 'salary',
   OVERTIME: 'overtime',
   ACCOUNT: 'account',
+  ADMIN: 'ADMIN',
 };
