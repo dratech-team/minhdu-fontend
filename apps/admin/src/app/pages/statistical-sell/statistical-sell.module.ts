@@ -14,6 +14,9 @@ import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { StoreModule } from '@ngrx/store';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { AdminReducer } from '../../../../../sell/src/app/states/adminReducer';
 
 @NgModule({
   imports: [
@@ -29,6 +32,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatDialogModule,
     ReactiveFormsModule,
     FormsModule,
+    StoreModule.forFeature(FeatureName.ADMIN, AdminReducer),
   ],
   declarations: [
     PickDayToDayComponent,

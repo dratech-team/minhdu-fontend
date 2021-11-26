@@ -21,12 +21,12 @@ import { EmployeeEffect, EmployeeReducer } from '@minhdu-fontend/employee';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MainReducer } from '../../states/main.reducer';
+import { AdminReducer } from '../../states/adminReducer';
 
 @NgModule({
   imports: [
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+    StoreModule.forFeature(FeatureName.MAIN, AdminReducer),
     StoreModule.forFeature(FeatureName.EMPLOYEE, EmployeeReducer),
     EffectsModule.forFeature([RouteEffect, EmployeeEffect]),
     ComponentsModule,

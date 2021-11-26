@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { MainReducer } from '../../states/main.reducer';
+import { AdminReducer } from '../../states/adminReducer';
 
 @NgModule({
   imports: [
@@ -27,7 +27,7 @@ import { MainReducer } from '../../states/main.reducer';
     MatDialogModule,
     MatMenuModule,
     MatButtonModule,
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+    StoreModule.forFeature(FeatureName.MAIN, AdminReducer),
   ],
   declarations: [
     PickDayToDayComponent,

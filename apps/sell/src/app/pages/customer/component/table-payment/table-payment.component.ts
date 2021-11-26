@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { debounceTime, tap } from 'rxjs/operators';
 import { TablePaymentRouteService } from './table-payment-route.service';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
+import { selectorAllPayment } from '../../+state/payment/payment.selector';
+import { PaymentAction } from '../../+state/payment/payment.action';
 
 @Component({
   selector: 'app-table-payment',
@@ -13,7 +15,6 @@ import { PaymentHistory } from '@minhdu-fontend/data-models';
 })
 
 export class TablePaymentComponent implements OnInit {
-  @Input() paymentHistories?: PaymentHistory[];
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
@@ -25,6 +26,7 @@ export class TablePaymentComponent implements OnInit {
   pageSize = 10;
   pageIndex = 1;
   pageIndexInit = 0;
+  paymentHistories$ = this.store.pipe(select(selectorAllPayment));
 
   constructor(
     private readonly store: Store,
@@ -34,18 +36,17 @@ export class TablePaymentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(PaymentAction.loadInit({ take: 10, skip: 0, customerId: this.customerId }));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.paymentService.searchOrders(this.paymentHistory(this.pageSize, this.pageIndexInit, value));
-        this.paymentService.getPayment().subscribe(val => this.paymentHistories = JSON.parse(JSON.stringify(val)));
+        this.paymentService.searchPayments(this.paymentHistory(this.pageSize, this.pageIndexInit, value));
       })).subscribe();
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize,this.pageIndex, val));
-    this.paymentService.getPayment().subscribe(val => this.paymentHistories = val);
+    this.paymentService.scrollPayments(this.paymentHistory(this.pageSize, this.pageIndex, val));
   }
 
   paymentHistory(pageSize: number, pageIndex: number, val?: any): any {

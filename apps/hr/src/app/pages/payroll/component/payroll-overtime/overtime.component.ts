@@ -154,17 +154,17 @@ export class OvertimeComponent implements OnInit {
     );
 
     this.eventAddOvertime?.subscribe(val => {
-      if (this.overtimeTitle) {
+      if (val.overtimeTitle) {
         this.formGroup.get('title')!.setValue(val.overtimeTitle);
       }
       this.formGroup.get('startAt')!.setValue(this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd'));
       this.formGroup.get('endAt')!.setValue(this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd'));
-      this.overtimeService.getOvertime(
-        {
-          title: val.overtimeTitle ? val.overtimeTitle : '',
-          startAt: new Date(val.createdAt),
-          endAt: new Date(val.createdAt)
-        });
+      // this.overtimeService.getOvertime(
+      //   {
+      //     title: val.overtimeTitle ? val.overtimeTitle : '',
+      //     startAt: new Date(val.createdAt),
+      //     endAt: new Date(val.createdAt)
+      //   });
     });
 
     this.eventExportOvertime?.subscribe(val => {

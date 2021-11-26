@@ -260,7 +260,6 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       delete salary.unit;
     }
     if (this.data?.isUpdate) {
-
       Object.assign(salary, { salaryIds: this.data.salaryIds });
       this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
         if (val) {

@@ -235,6 +235,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
+        console.log(val)
         this.createdAt = new Date(val.datetime);
         this.overtimeTitle = val.title;
         this.store.dispatch(PayrollAction.updateStatePayroll(
@@ -243,7 +244,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           }));
         this.eventAddOvertime.next({
           createdAt: new Date(val.datetime),
-          absentTitle: val.title
+          overtimeTitle: val.title
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
       }

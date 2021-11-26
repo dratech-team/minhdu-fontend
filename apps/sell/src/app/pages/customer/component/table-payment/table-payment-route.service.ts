@@ -13,7 +13,7 @@ export class TablePaymentRouteService {
   scrollPayments(val: any){
     this.store.dispatch(PaymentAction.loadMorePayment(val));
   }
-  searchOrders(val: any){
+  searchPayments(val: any){
     this.store.dispatch(PaymentAction.loadInit(val))
   }
   getPayment() {

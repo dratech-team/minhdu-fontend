@@ -7,7 +7,7 @@ import { MainAction } from './main.action';
 export const adapter: EntityAdapter<any> = createEntityAdapter<any>();
 
 export const initialMain = adapter.getInitialState({ tab: MenuEnum.HOME,});
-export  const  MainReducer = createReducer(
+export  const  AdminReducer = createReducer(
   initialMain,
   on(MainAction.updateStateMenu, (state, {tab}) => {
     return {...state, tab: tab }
