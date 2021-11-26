@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 import { getMonth } from 'ngx-bootstrap/chronos';
-import { DatetimeUnitEnum, StatisticalXType, StatisticalYType } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, MenuEnum, StatisticalXType, StatisticalYType } from '@minhdu-fontend/enums';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { StatisticalAgencyService } from '../../service/statistical-Agency.service';
@@ -9,6 +9,8 @@ import { StatisticalChickenService } from '../../service/statistical-chicken.ser
 import { StatisticalProvinceService } from '../../service/statistical-province.service';
 import { StatisticalCustomerPotentialService } from '../../service/statistical-customer-potential.service';
 import { PickStatisticalTypeComponent } from '../../component/pick-statistical-type/pick-statistical-type.component';
+import { AdminAction } from '../../../../states/admin.action';
+import { Store } from '@ngrx/store';
 
 
 @Component({
@@ -34,6 +36,7 @@ export class StatisticalSellComponent implements OnInit{
 
   constructor(
     private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly statisticalAgencyService: StatisticalAgencyService,
     private readonly statisticalChickenService: StatisticalChickenService,
@@ -43,6 +46,7 @@ export class StatisticalSellComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.store.dispatch(AdminAction.updateStateMenu({tab: MenuEnum.OVERVIEW_SELL}))
     this.statisticalProvinceService.getAll({
       type: this.statisticalYType.ORDER,
       startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),

@@ -44,6 +44,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDialogModule,
     MatDatepickerModule
   ],
+  exports: [
+    OverviewComponent
+  ],
   declarations: [
     OverviewComponent,
     StatisticalEmployeeComponent
