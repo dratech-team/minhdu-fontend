@@ -17,9 +17,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { AppContainer } from './containers/app/app.container';
+import { FeatureName } from '@minhdu-fontend/constants';
+import { NxModule } from '@nrwl/angular';
+import { AdminReducer } from './states/admin.reducer';
+import { OrgchartModule } from '@minhdu-fontend/orgchart';
 
 @NgModule({
   imports: [
+    OrgchartModule,
     MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
@@ -27,13 +32,15 @@ import { AppContainer } from './containers/app/app.container';
     CommonModule,
     BrowserAnimationsModule,
     BrowserModule,
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    EffectsModule.forRoot([AuthEffects]),
-    StoreModule.forRoot({}, {}),
+    StoreModule.forFeature(FeatureName.ADMIN, AdminReducer),
+    NxModule.forRoot(),
     AppFooterModule,
     MatMenuModule
   ],

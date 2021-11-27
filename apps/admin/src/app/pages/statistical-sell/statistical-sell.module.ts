@@ -16,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { AdminReducer } from '../../../../../sell/src/app/states/adminReducer';
+import { MainReducer } from '../../../../../sell/src/app/states/mainReducer';
+import { AdminReducer } from '../../states/admin.reducer';
 
 @NgModule({
   imports: [

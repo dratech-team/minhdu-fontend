@@ -1,0 +1,46 @@
+<div class='mt-2'>
+  <div class='table-scroll'>
+    <table [formGroup]='formGroup' style='min-width: 1800px'>
+      <thead>
+      <tr>
+        <th>
+          <div class='border text-center'> stt</div>
+          <input class=' text-center' disabled>
+        </th>
+        <th>
+          <div class='border text-center'> Mã khoản nợ</div>
+          <input class=' text-center' disabled>
+        </th>
+        <th>
+          <div class='border text-center'>Tên khoản nợ</div>
+          <input class='form-control text-center' formControlName='name'>
+        </th>
+        <th>
+          <div class='border text-center'>Nợ ngày</div>
+          <input type='date' class='form-control text-center' formControlName='createdAt' >
+        </th>
+        <th>
+          <div class='border text-center'>chủ nợ</div>
+          <input class='form-control text-center' formControlName='income'>
+        </th>
+        <th>
+          <div class='border text-center'>Hạn trả nợ</div>
+          <input class='form-control text-center' type='date' formControlName='repayment' >
+        </th>
+        <th>
+          <div class='border text-center'>Tiền nợ</div>
+          <input class=' text-center' disabled>
+        </th>
+        <th>
+          <div class='border text-center'>Chú thích</div>
+          <input class=' text-center' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
