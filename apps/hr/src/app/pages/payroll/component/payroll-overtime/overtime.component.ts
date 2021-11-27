@@ -193,11 +193,6 @@ export class OvertimeComponent implements OnInit {
     });
   }
 
-  readPayroll($event: any) {
-    this.router
-      .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.payrollId])
-      .then();
-  }
 
   onSelectTemplateOvertime(event: any, title: string) {
     if (event.isUserInput) {
@@ -342,5 +337,9 @@ export class OvertimeComponent implements OnInit {
     if (this.overtime) {
       this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
     }
+  }
+
+  detailPayroll(id: number){
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', id]).then()
   }
 }

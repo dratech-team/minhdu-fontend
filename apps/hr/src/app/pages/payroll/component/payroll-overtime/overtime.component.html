@@ -135,18 +135,22 @@
         [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'
     >
       <th class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{i + 1}}
       </th>
       <th class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime?.id}}
       </th>
       <th class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime.lastName}}
       </th>
       <th style='width: 200px' class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime.position?.name}}</th>
       <th class='pointer'
@@ -163,7 +167,7 @@
         <div class='border d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(overtime)'>
+             (click)='detailPayroll(overtime.payrollId)'>
           {{item.datetime|date:'yyyy-MM-dd'}}
         </div>
       </th>
@@ -171,7 +175,7 @@
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(overtime)'>
+             (click)='detailPayroll(overtime.payrollId)'>
           {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
         </div>
       </th>
@@ -179,7 +183,7 @@
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(overtime)'>
+             (click)='detailPayroll(overtime.payrollId)'>
           {{item?.times}}
           {{
           item.unit === "HOUR" ? "Giờ" : "Ngày"
@@ -190,7 +194,7 @@
         <div class='border d-flex align-items-center justify-content-center pointer'
              *ngFor='let item of overtime.salaries'
              (contextmenu)='child.onContextMenu($event,item)'
-             (click)='readPayroll(overtime)'>
+             (click)='detailPayroll(overtime.payrollId)'>
           {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
           {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
         </div>
@@ -211,7 +215,7 @@
 </div>
 <app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
                  (addEvent)='addSalaryOvertime()'
-                 (readEvent)='readPayroll($event)'
+                 (readEvent)='detailPayroll($event.payrollId)'
                  (deleteEvent)='deleteSalaryOvertime($event)'
                  #child>
 </app-mouse-right>
