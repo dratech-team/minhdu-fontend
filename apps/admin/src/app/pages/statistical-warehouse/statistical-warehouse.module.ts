@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { StatisticalWarehouseComponent } from './statistical-warehouse.component';
+import { StatisticalWarehouseComponent } from './container/statistical-warehouse/statistical-warehouse.component';
 
 @NgModule({
   imports: [

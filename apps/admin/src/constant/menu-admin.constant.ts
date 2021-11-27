@@ -4,21 +4,21 @@ export const MenuAdminConstant = [
   {
     name: 'Tổng quan bán hàng',
     state:MenuEnum.OVERVIEW_SELL,
-    href: '/'
+    href: '/admin'
   },
   {
     name: 'Tổng quan kho',
     state:MenuEnum.OVERVIEW_WAREHOUSE,
-    href: '/kho'
+    href: 'kho'
   },
   {
     name: 'Tổng quan nhân sự',
-    state:MenuEnum.OVERVIEW_WAREHOUSE,
-    href: '/kho'
+    state:MenuEnum.OVERVIEW_PERSONNEL,
+    href: 'nhan-su'
   },
   {
     name: 'Tài chính',
     state:MenuEnum.OVERVIEW_FINANCE,
-    href: '/tai-chinh'
+    href: 'tai-chinh'
   },
 ];

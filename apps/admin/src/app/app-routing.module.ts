@@ -24,7 +24,17 @@ const routes: Routes = [
       {
         path:'kho',
         loadChildren:() =>
-          import('./pages/statistical-warehosue/statistical-warehouse.module').then(m => m.StatisticalWarehouseModule)
+          import('./pages/statistical-warehouse/statistical-warehouse.module').then(m => m.StatisticalWarehouseModule)
+      },
+      {
+        path:'nhan-su',
+        loadChildren:() =>
+          import('./pages/statistical-personnel/statistical-personnel.module').then(m => m.StatisticalPersonnelModule)
+      },
+      {
+        path:'tai-chinh',
+        loadChildren:() =>
+          import('./pages/statistical-finance/statistical-finance.module').then(m => m.StatisticalFinanceModule)
       },
     ]
   }

@@ -124,7 +124,7 @@
               <th class='text-center' *ngIf='commodity.unit === commodityUnit.CON'> Con</th>
               <th class='text-center'>{{commodity.price|number:'1.0'|notEmpty:'0'}} đ</th>
               <th class='text-center'> {{commodity.gift}} </th>
-              <th class='text-center'>{{commodity.more.price|number:'1.0'|notEmpty:'0'}} đ</th>
+              <th class='text-center'>{{commodity?.more ? commodity.more.price: ''|number:'1.0'|notEmpty:'0'}} đ</th>
               <th class='text-center'> {{commodity.amount}}</th>
               <th class='text-center'>
                 <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
