@@ -4,10 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import {
-  DatetimeUnitEnum,
-  ExportPayrollEnum,
+  DatetimeUnitEnum, FilterTypeEnum,
   Gender,
-  PayrollEnum,
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
@@ -190,7 +188,7 @@ export class OvertimeComponent implements OnInit {
               title: value.title || '',
               name: value.name || '',
               filename: val,
-              exportType: ExportPayrollEnum.OVERTIME
+              exportType: FilterTypeEnum.OVERTIME
             };
             this.exportService.print(
               Api.HR.PAYROLL.EXPORT, overtime

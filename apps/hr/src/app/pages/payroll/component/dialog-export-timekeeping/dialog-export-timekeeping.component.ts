@@ -4,7 +4,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
 import { FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ExportPayrollEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'dialog-export-timekeeping.component.html'
@@ -31,7 +31,7 @@ export class DialogExportTimekeepingComponent {
       {
         datetime: datetime ? new Date(datetime) : new Date(),
         filename: this.name.value,
-        exportType: ExportPayrollEnum.TIME_SHEET
+        exportType: FilterTypeEnum.TIME_SHEET
       }
     );
     this.dialogRef.close();
