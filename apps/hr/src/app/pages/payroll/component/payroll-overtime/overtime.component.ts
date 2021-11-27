@@ -3,7 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { DatetimeUnitEnum, Gender, PayrollEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
+import {
+  DatetimeUnitEnum, FilterTypeEnum,
+  Gender,
+  SalaryTypeEnum,
+  SearchTypeEnum
+} from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -182,10 +187,11 @@ export class OvertimeComponent implements OnInit {
               endedAt: new Date(value.endAt),
               title: value.title || '',
               name: value.name || '',
-              filename: val
+              filename: val,
+              exportType: FilterTypeEnum.OVERTIME
             };
             this.exportService.print(
-              Api.HR.PAYROLL.PAYROLL_EXPORT_OVERTIME, overtime
+              Api.HR.PAYROLL.EXPORT, overtime
             );
           }
         });

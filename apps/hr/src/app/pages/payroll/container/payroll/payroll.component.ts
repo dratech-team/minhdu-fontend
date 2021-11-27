@@ -316,10 +316,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           position: value.position,
           branch: value.branch,
           paidAt: value.paidAt,
-          accConfirmedAt: value.accConfirmedAt
+          accConfirmedAt: value.accConfirmedAt,
+          exportType:FilterTypeEnum.PAYROLL
         };
         this.exportService.print(
-          Api.HR.PAYROLL.PAYROLL_EXPORT, Object.assign(payroll,
+          Api.HR.PAYROLL.EXPORT, Object.assign(payroll,
             value?.createdAt ? {
               createdAt: new Date(value.createdAt),
               filename: val

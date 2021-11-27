@@ -4,6 +4,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
 import { FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'dialog-export-timekeeping.component.html'
@@ -26,10 +27,11 @@ export class DialogExportTimekeepingComponent {
     }
     const datetime = this.datePipe.transform(this.data.datetime, 'yyyy-MM');
     this.exportService.print(
-      Api.HR.PAYROLL.TIMEKEEPING_EXPORT,
+      Api.HR.PAYROLL.EXPORT,
       {
         datetime: datetime ? new Date(datetime) : new Date(),
-        filename: this.name.value
+        filename: this.name.value,
+        exportType: FilterTypeEnum.TIME_SHEET
       }
     );
     this.dialogRef.close();

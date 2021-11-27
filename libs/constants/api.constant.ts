@@ -4,7 +4,7 @@ export const Api = {
       PAYROLL: 'payroll',
       CONFIRM_PAYROLL: 'payroll/confirm',
       RESTORE_PAYROLL: 'payroll/restore',
-      PAYROLL_EXPORT: 'payroll/export/payroll',
+      EXPORT: 'payroll/export',
       PAYROLL_EXPORT_OVERTIME: 'payroll/export/overtime',
       TIMEKEEPING_EXPORT: 'payroll/export/timekeeping',
       PAYROLL_CREATE: 'payroll/create',
