@@ -246,7 +246,7 @@ export class DetailPayrollComponent implements OnInit {
       if (val) {
         this.store.dispatch(PayrollAction.updatePayroll({
           id: payroll.id,
-          Payroll: { taxed: !payroll.taxed }
+          payroll: { taxed: !payroll.taxed }
         }));
       }
     });

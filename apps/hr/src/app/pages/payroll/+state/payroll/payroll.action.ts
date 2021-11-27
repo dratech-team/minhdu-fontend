@@ -83,7 +83,7 @@ export const getPayrollSuccess = createAction(
 
 export const updatePayroll = createAction(
   '[UPDATE_PAYROLL] Update Payroll ',
-  props<{ id: number, Payroll: any }>()
+  props<{ id: number, payroll: any }>()
 );
 
 
