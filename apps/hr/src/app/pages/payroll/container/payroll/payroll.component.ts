@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Api, PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { EmployeeType, FilterTypeEnum, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { EmployeeType, ExportPayrollEnum, FilterTypeEnum, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
@@ -316,10 +316,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           position: value.position,
           branch: value.branch,
           paidAt: value.paidAt,
-          accConfirmedAt: value.accConfirmedAt
+          accConfirmedAt: value.accConfirmedAt,
+          exportType:ExportPayrollEnum.PAYROLL
         };
         this.exportService.print(
-          Api.HR.PAYROLL.PAYROLL_EXPORT, Object.assign(payroll,
+          Api.HR.PAYROLL.EXPORT, Object.assign(payroll,
             value?.createdAt ? {
               createdAt: new Date(value.createdAt),
               filename: val
