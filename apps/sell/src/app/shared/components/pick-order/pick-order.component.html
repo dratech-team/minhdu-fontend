@@ -108,6 +108,7 @@
           <input (change)='pickOneOrder()'
                  *ngIf='data?.pickOne||pickOne'
                  type='radio'
+                 [checked]='orderId === order.id'
                  name='pick-one' value='{{order.id}}'
           >
         </div>

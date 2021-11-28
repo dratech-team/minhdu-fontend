@@ -44,7 +44,8 @@
     </tr>
     </thead>
     <tbody *ngIf='(paymentHistories$|async) as paymentHistories'>
-    <tr  *ngFor='let paymentHistory of paymentHistories' >
+    <tr  *ngFor='let paymentHistory of paymentHistories'  (click)='updatePayment(paymentHistory)'
+         (contextmenu)='child.onContextMenu($event,paymentHistory)'>
       <th>
         {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
       </th>
@@ -74,6 +75,13 @@
     </tbody>
   </table>
 </div>
+<app-mouse-right
+  (deleteEvent)='deletePayment($event.id)'
+  (readEvent)='updatePayment($event)'
+  #child [type]='pageTypeEnum.PAYMENT_HISTORY'
+>
+
+</app-mouse-right>
 
 
 

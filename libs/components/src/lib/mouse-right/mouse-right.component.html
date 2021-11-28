@@ -1,5 +1,6 @@
 <context-menu>
   <ng-template *ngIf='type !== pageType.HISTORY_PAYROLL
+                  && type !== pageType.PAYMENT_HISTORY
                  && type !== pageType.EMPLOYEE_LEFT_AT '
                contextMenuItem let-item
                (execute)='add($event.item)'>
@@ -17,7 +18,7 @@
   </ng-template>
   <ng-template contextMenuItem let-item
                (execute)='readAndUpdate($event.item)'>
-    Xem chi tiết
+     {{type === pageType.PAYMENT_HISTORY? 'Sửa': 'Xem chi tiết'}}
   </ng-template>
   <ng-template *ngIf='type === pageType.CUSTOMER'
                contextMenuItem let-item

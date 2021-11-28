@@ -34,7 +34,6 @@ export const OrderReducer = createReducer(
     }
   ),
   on(OrderAction.addOrderSuccess, (state, action) =>{
-    console.log(state)
    return adapter.addOne(action.order, { ...state, loaded: true, added: true })
   }
   )

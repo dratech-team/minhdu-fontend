@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AppState } from '../../../../reducers';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
@@ -14,6 +14,7 @@ import {
   selectorOrdersByCustomerId
 } from '../../../order/+state/order.selector';
 import { tap } from 'rxjs/operators';
+import { selectedAdded } from '../../+state/payment/payment.selector';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class PaymentDialogComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
+    public dialogRef: MatDialogRef<PaymentDialogComponent>,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -43,14 +45,27 @@ export class PaymentDialogComponent implements OnInit {
     this.secondFormGroup = this.formBuilder.group({
       pick: ['', Validators.required]
     });
-    this.formGroup = this.formBuilder.group({
-      payType: [Validators.required],
-      paidTotal: ['', Validators.required],
-      paidAt: [this.datePipe.transform(
-        new Date(), 'yyyy-MM-dd'
-      ), Validators.required],
-      note: ['Không', Validators.required]
-    });
+    if (this.data?.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        payType: [this.data.paymentHistory.payType, Validators.required],
+        paidTotal: [this.data.paymentHistory.total, Validators.required],
+        paidAt: [this.datePipe.transform(
+          new Date(this.data.paymentHistory.paidAt), 'yyyy-MM-dd'
+        ), Validators.required],
+        note: [this.data.paymentHistory.note, Validators.required]
+      });
+      console.log(this.data.paymentHistory.orderId)
+      this.pickOrders(this.data.paymentHistory.orderId)
+    } else {
+      this.formGroup = this.formBuilder.group({
+        payType: [Validators.required],
+        paidTotal: ['', Validators.required],
+        paidAt: [this.datePipe.transform(
+          new Date(), 'yyyy-MM-dd'
+        ), Validators.required],
+        note: ['Không', Validators.required]
+      });
+    }
     this.formGroup.valueChanges.pipe(
       tap(val => {
         this.paidTotal = typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) :
@@ -67,7 +82,22 @@ export class PaymentDialogComponent implements OnInit {
       orderId: this.orderId,
       note: val.note
     };
-    this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment, id: this.data.id }));
+    if (this.data?.isUpdate) {
+      this.store.dispatch(PaymentAction.updatePayment(
+        {
+          id: this.data.paymentHistory.id,
+          infoPayment: infoPayment
+        })
+      );
+    } else {
+      this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment }));
+    }
+
+    this.store.select(selectedAdded).subscribe(val => {
+      if (val) {
+        this.dialogRef.close();
+      }
+    });
   }
 
   check() {
@@ -90,13 +120,14 @@ export class PaymentDialogComponent implements OnInit {
     );
     if (this.orderId) {
       this.secondFormGroup = this.formBuilder.group({
-        pick: [Validators.required]
+        pick: [true,Validators.required]
       });
     } else {
       this.secondFormGroup = this.formBuilder.group({
         pick: ['', Validators.required]
       });
     }
+
   }
 
 }

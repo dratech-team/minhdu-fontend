@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
 import { PaymentService } from '../../service/payment.Service';
 import { CustomerAction } from '../customer/customer.action';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PaymentEffect {
@@ -15,9 +16,10 @@ export class PaymentEffect {
       switchMap((props) => {
         return this.paymentService.pagination(props);
       }),
-      map((ResponsePaginate) => PaymentAction.loadInitSuccess({
-        payments: ResponsePaginate.data
-      })),
+      map((ResponsePaginate) =>
+        PaymentAction.loadInitSuccess({
+          payments: ResponsePaginate.data
+        })),
       catchError((err) => throwError(err))
     )
   );
@@ -34,14 +36,47 @@ export class PaymentEffect {
   payment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.payment),
-      switchMap((props) => this.paymentService.payment(props.id, props.infoPayment).pipe(
-        map(_=> CustomerAction.getCustomer({id: props.id}))
-      )),
-        catchError((err) => throwError(err))
+      switchMap((props) => this.paymentService.payment(props.infoPayment)),
+      map(res => {
+          this.snackbar.open('Thanh toán thành công', '', { duration: 1500 });
+          return PaymentAction.paymentSuccess({ payment: res });
+        }
+      ),
+      catchError((err) => throwError(err))
     )
   );
+
+  UpdatePayment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PaymentAction.updatePayment),
+      switchMap((props) => this.paymentService.update(props.id, props.infoPayment)),
+      map(res => {
+          this.snackbar.open('Cập nhật thành công', '', { duration: 1500 });
+          return PaymentAction.updatePaymentSuccess({ payment: res });
+        }
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
+
+  deletePayment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(PaymentAction.deletePayment),
+      switchMap((props) => this.paymentService.delete(props.id).pipe(
+        map(res => {
+          this.snackbar.open('Xóa thành công', '', {duration: 1500})
+            return PaymentAction.deletePaymentSuccess({ id: props.id });
+          }
+        )
+      )),
+      catchError((err) => throwError(err))
+    )
+  );
+
   constructor(
     private readonly action$: Actions,
+    private readonly snackbar: MatSnackBar,
     private readonly paymentService: PaymentService
   ) {
   }

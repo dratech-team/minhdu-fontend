@@ -8,6 +8,10 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
 import { selectorAllPayment } from '../../+state/payment/payment.selector';
 import { PaymentAction } from '../../+state/payment/payment.action';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
 
 @Component({
   selector: 'app-table-payment',
@@ -15,6 +19,7 @@ import { PaymentAction } from '../../+state/payment/payment.action';
 })
 
 export class TablePaymentComponent implements OnInit {
+  pageTypeEnum = PageTypeEnum;
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
@@ -30,6 +35,7 @@ export class TablePaymentComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
+    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly paymentService: TablePaymentRouteService
   ) {
@@ -56,5 +62,26 @@ export class TablePaymentComponent implements OnInit {
       skip: pageSize * pageIndex,
       customerId: this.customerId
     };
+  }
+
+  deletePayment(id: number) {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PaymentAction.deletePayment({ id: id }));
+      }
+    });
+  }
+
+  updatePayment(paymentHistory: PaymentHistory) {
+    console.log(paymentHistory)
+    this.dialog.open(PaymentDialogComponent, {
+      width: 'fit-content',
+      data: {
+        isUpdate: true,
+        paymentHistory,
+        id: this.customerId
+      }
+    });
   }
 }

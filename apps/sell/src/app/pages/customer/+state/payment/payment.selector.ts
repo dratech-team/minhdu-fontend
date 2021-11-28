@@ -36,4 +36,9 @@ export const selectedLoaded = createSelector(
   (state) => state.loaded
 );
 
+export const selectedAdded = createSelector(
+  selectorPaymentState,
+  (state) => state.added
+);
+
 

@@ -16,6 +16,7 @@ import { PaidType } from 'libs/enums/paidType.enum';
 })
 export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
+  @Input() orderIdDefault?: number;
   @Input() payment = false;
   @Input() orders$: any;
   @Input() orderIdsOfRoute!: number[];
@@ -47,7 +48,11 @@ export class PickOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //case: update set value default
+    //case: update set one order value default
+    if(this.orderIdDefault){
+      this.orderId = this.orderIdDefault
+    }
+    //case: update  set more order value default
     if (this.orderIdsOfRoute) {
       this.orderIds = this.orderIdsOfRoute;
     }
