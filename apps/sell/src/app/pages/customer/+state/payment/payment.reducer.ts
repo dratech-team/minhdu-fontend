@@ -42,7 +42,6 @@ export const PaymentReducer = createReducer(
       return adapter.removeOne(id, { ...state });
     }
   )
-
 );
 export const {
   selectEntities,

@@ -7,7 +7,7 @@ import { PaymentHistory, ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PaymentService extends BaseService<PaymentHistory> {
   constructor(
     public readonly http: HttpClient
@@ -19,12 +19,15 @@ export class PaymentService extends BaseService<PaymentHistory> {
     return super.pagination(params);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<PaymentHistory>> {
-    return super.update(id, body);
+  updatePayment(id: any, body: any): Observable<PaymentHistory> {
+    return this.http.patch<PaymentHistory>(Api.SELL.CUSTOMER.PAYMENT + `/${id}`, body);
   }
 
   payment(body: any): Observable<PaymentHistory> {
     return this.http.post<PaymentHistory>(Api.SELL.CUSTOMER.PAYMENT, body);
   }
 
+  delete(id: number, params?: any): Observable<void> {
+    return super.delete(id, params);
+  }
 }

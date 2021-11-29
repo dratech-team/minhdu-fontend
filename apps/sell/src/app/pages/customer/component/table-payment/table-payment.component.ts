@@ -68,13 +68,13 @@ export class TablePaymentComponent implements OnInit {
     const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(PaymentAction.deletePayment({ id: id }));
+        this.store.dispatch(PaymentAction.deletePayment({ id: id, customerId: this.customerId }));
       }
     });
   }
 
   updatePayment(paymentHistory: PaymentHistory) {
-    console.log(paymentHistory)
+    console.log(paymentHistory);
     this.dialog.open(PaymentDialogComponent, {
       width: 'fit-content',
       data: {

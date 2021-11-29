@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, last, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
 import { PaymentService } from '../../service/payment.Service';
 import { CustomerAction } from '../customer/customer.action';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
+import { OrderAction } from '../../../order/+state/order.action';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Injectable()
 export class PaymentEffect {
@@ -38,6 +41,21 @@ export class PaymentEffect {
       ofType(PaymentAction.payment),
       switchMap((props) => this.paymentService.payment(props.infoPayment)),
       map(res => {
+        this.store.dispatch(OrderAction.loadOrdersAssigned({
+          take: 30,
+          skip:0,
+          customerId: res.customerId,
+          delivered: ConvertBoolean.TRUE
+        }))
+        this.store.dispatch(OrderAction.loadInit({
+          take: 30,
+          skip:0,
+          customerId: res.customerId
+        }))
+        this.store.dispatch(CustomerAction.getCustomer({id: res.customerId}))
+        return res;
+      }),
+      map(res => {
           this.snackbar.open('Thanh toán thành công', '', { duration: 1500 });
           return PaymentAction.paymentSuccess({ payment: res });
         }
@@ -49,7 +67,22 @@ export class PaymentEffect {
   UpdatePayment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.updatePayment),
-      switchMap((props) => this.paymentService.update(props.id, props.infoPayment)),
+      switchMap((props) => this.paymentService.updatePayment(props.id, props.infoPayment)),
+      map(res =>{
+        this.store.dispatch(OrderAction.loadOrdersAssigned({
+          take: 30,
+          skip:0,
+          customerId: res.customerId,
+          delivered: ConvertBoolean.TRUE
+        }))
+        this.store.dispatch(OrderAction.loadInit({
+          take: 30,
+          skip:0,
+          customerId: res.customerId,
+        }))
+        this.store.dispatch(CustomerAction.getCustomer({id:res.customerId}))
+        return res
+      }),
       map(res => {
           this.snackbar.open('Cập nhật thành công', '', { duration: 1500 });
           return PaymentAction.updatePaymentSuccess({ payment: res });
@@ -63,19 +96,35 @@ export class PaymentEffect {
   deletePayment$ = createEffect(() =>
     this.action$.pipe(
       ofType(PaymentAction.deletePayment),
-      switchMap((props) => this.paymentService.delete(props.id).pipe(
-        map(res => {
-          this.snackbar.open('Xóa thành công', '', {duration: 1500})
-            return PaymentAction.deletePaymentSuccess({ id: props.id });
-          }
+      switchMap((props) =>
+        this.paymentService.delete(props.id).pipe(
+          map(_ => {
+            this.snackbar.open('Xóa lịch sử thanh toán thành công', '', { duration: 1500 });
+            this.store.dispatch(PaymentAction.deletePaymentSuccess({id:props.id}))
+          }),
+          map(_ => {
+            this.store.dispatch(OrderAction.loadOrdersAssigned({
+              take: 30,
+              skip:0,
+              customerId: props.customerId,
+              delivered: ConvertBoolean.TRUE
+            }))
+            this.store.dispatch(OrderAction.loadInit({
+              take: 30,
+              skip:0,
+              customerId: props.customerId
+            }))
+            return CustomerAction.getCustomer({ id: props.customerId });
+          })
         )
-      )),
+      ),
       catchError((err) => throwError(err))
     )
   );
 
   constructor(
     private readonly action$: Actions,
+    private readonly store: Store,
     private readonly snackbar: MatSnackBar,
     private readonly paymentService: PaymentService
   ) {

@@ -49,17 +49,20 @@ export const updatePayment = createAction(
 
 export const updatePaymentSuccess = createAction(
   '[PAYMENT] Update Payment Success',
-  props<{ payment: UpdateNum<PaymentHistory>}>()
+  props<{ payment: PaymentHistory}>()
 );
 
 export const deletePayment = createAction(
   '[PAYMENT] Delete Payment',
-  props<{ id: number }>()
+  props<{ id: number, customerId: number }>()
 );
 
 export const deletePaymentSuccess = createAction(
   '[PAYMENT] Delete Payment Success',
   props<{ id: number }>()
+);
+export const handlePaymentError = createAction(
+  '[PAYMENT] Handle Payment Error',
 );
 export const PaymentAction = {
   loadMorePayment,
@@ -71,6 +74,7 @@ export const PaymentAction = {
   updatePayment,
   updatePaymentSuccess,
   deletePayment,
-  deletePaymentSuccess
+  deletePaymentSuccess,
+  handlePaymentError
 };
 
