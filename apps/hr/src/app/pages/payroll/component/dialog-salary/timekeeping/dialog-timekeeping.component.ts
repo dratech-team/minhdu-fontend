@@ -53,7 +53,7 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      datetime: [, Validators.required],
+      datetime: [this.datePipe.transform(this.data.createdAt,'yyyy-MM-dd'), Validators.required],
       times: [],
       minutes: [],
       rate: [1, Validators.required],

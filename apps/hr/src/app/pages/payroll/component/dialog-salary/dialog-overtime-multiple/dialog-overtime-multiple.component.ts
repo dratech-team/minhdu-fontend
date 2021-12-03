@@ -95,7 +95,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: [undefined],
+        datetime: [this.datePipe.transform(this.data.createdAt,'yyyy-MM-dd'),undefined],
         month: [undefined],
         note: [''],
         times: [1],

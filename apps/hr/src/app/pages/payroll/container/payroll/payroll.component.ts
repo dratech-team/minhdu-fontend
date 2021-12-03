@@ -229,13 +229,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
+        createdAt: this.createdAt,
         type: type,
         isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
       }
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        console.log(val)
+        console.log(val);
         this.createdAt = new Date(val.datetime);
         this.overtimeTitle = val.title;
         this.store.dispatch(PayrollAction.updateStatePayroll(
@@ -255,7 +256,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(DialogAllowanceMultipleComponent,
       {
         width: 'fit-content',
-        data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+        data: {
+          createdAt: this.createdAt,
+          isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+        }
       }
     );
     ref.afterClosed().subscribe(value => {
@@ -278,7 +282,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
-      data: { isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET }
+      data: {
+        createdAt: this.createdAt,
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
@@ -317,7 +324,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           branch: value.branch,
           paidAt: value.paidAt,
           accConfirmedAt: value.accConfirmedAt,
-          exportType:FilterTypeEnum.PAYROLL
+          exportType: FilterTypeEnum.PAYROLL
         };
         this.exportService.print(
           Api.HR.PAYROLL.EXPORT, Object.assign(payroll,

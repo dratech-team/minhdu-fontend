@@ -41,7 +41,8 @@ export class DialogAllowanceMultipleComponent implements OnInit {
       price: ['', Validators.required],
       unit: ['', Validators.required],
       note: [],
-      month: []
+      month: [this.datePipe.transform(
+        this.data.createdAt, 'yyyy-MM'), Validators.required]
     });
   }
 
