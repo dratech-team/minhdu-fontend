@@ -42,7 +42,7 @@
             <span *ngIf='salaryIds.length === 0'>
                 Chọn
             </span>
-            <div  *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
+            <div *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
               <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                       (click)='updateMultipleSalaryAllowance()'
                       class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
@@ -118,7 +118,7 @@
                *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAllowance)'>
-            {{this.createdAt|date:'yyyy-MM'}}
+            {{this.createdAt |date:'yyyy-MM'}}
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>

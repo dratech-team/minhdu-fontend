@@ -89,8 +89,11 @@
                   <span class='star'>*</span>
                 </div>
                 <div class=' mb-3' [formGroup]='formGroup'>
-                  <input type='date' class='form-control ' formControlName='datetime' min='{{firstDayInMonth}}'
+                  <input *ngIf='!data.updateMultiple else datetimeMultiple' type='date' class='form-control ' formControlName='datetime' min='{{firstDayInMonth}}'
                     max='{{lastDayInMonth}}'>
+                  <ng-template #datetimeMultiple>
+                    <input type='date' class='form-control ' formControlName='datetime'>
+                  </ng-template>
                 </div>
               </div>
             </div>

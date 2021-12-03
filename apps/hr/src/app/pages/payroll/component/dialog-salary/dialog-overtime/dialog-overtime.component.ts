@@ -67,18 +67,15 @@ export class DialogOvertimeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.firstDayInMonth = this.datePipe.transform(
-      getFirstDayInMonth(new Date(this.data?.updateMultiple ?
-        this.data.createdAt
-        : this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
-    this.lastDayInMonth = this.datePipe.transform(
-      getLastDayInMonth(new Date(this.data?.updateMultiple ?
-        this.data.createdAt
-        : this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
-    if ((this.data?.isUpdate && this.data.salary.allowance)) {
-      this.onAllowanceOvertime = true;
+    if (!this.data?.updateMultiple) {
+      this.firstDayInMonth = this.datePipe.transform(
+        getFirstDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
+      this.lastDayInMonth = this.datePipe.transform(
+        getLastDayInMonth(new Date(this.data?.payroll?.createdAt)), 'yyyy-MM-dd');
+      if ((this.data?.isUpdate && this.data.salary.allowance)) {
+        this.onAllowanceOvertime = true;
+      }
     }
-
     if (this.data?.isUpdate) {
       if (!this.data.salary?.unit)
         this.partialDay = this.titleSession.find(e => e.type === this.data.salary.partial);
