@@ -143,7 +143,7 @@
                *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAllowance)'>
-            {{this.createdAt|date:'yyyy-MM'}}
+            {{this.createdAt |date:'yyyy-MM'}}
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>

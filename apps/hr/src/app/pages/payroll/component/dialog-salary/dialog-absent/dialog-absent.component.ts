@@ -71,14 +71,12 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.firstDayInMonth = this.datePipe.transform(
-      getFirstDayInMonth(new Date(this.data?.payroll?.createdAt
-        ? this.data.payroll.createdAt
-        : this.data.createdAt)), 'yyyy-MM-dd');
-    this.lastDayInMonth = this.datePipe.transform(
-      getLastDayInMonth(new Date(this.data?.payroll?.createdAt
-        ? this.data.payroll.createdAt
-        : this.data.createdAt)), 'yyyy-MM-dd');
+    if (!this.data?.updateMultiple) {
+      this.firstDayInMonth = this.datePipe.transform(
+        getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+      this.lastDayInMonth = this.datePipe.transform(
+        getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+    }
     if (this.data?.isUpdate) {
       if (this.data.salary?.unit === DatetimeUnitEnum.MINUTE) {
         this.unitMinute = true;
