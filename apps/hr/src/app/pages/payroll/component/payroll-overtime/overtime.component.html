@@ -225,7 +225,7 @@
         </div>
       </th>
       <th class='pointer'
-          *ngIf='overtime.salary'> {{overtime.salary.times}} {{overtime.salary.unit === unit.DAY ? 'Ngày' : 'Giờ'}}</th>
+          *ngIf='overtime.salary'> {{overtime.salary.unit}} </th>
       <th class='pointer' *ngIf='!overtime.salary'></th>
       <th class='pointer' *ngIf='overtime.salary'> {{overtime.salary.total|number:'1.0-0'}} VND</th>
       <th class='pointer' *ngIf='!overtime.salary'></th>
