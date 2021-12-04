@@ -60,7 +60,8 @@ export class DialogAbsentComponent implements OnInit {
     },
     { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
     { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
-    { title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT }
+    { title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT },
+    { title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION }
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
@@ -70,7 +71,6 @@ export class DialogAbsentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    console.log(this.data)
     this.firstDayInMonth = this.datePipe.transform(
       getFirstDayInMonth(new Date(this.data?.payroll?.createdAt
         ? this.data.payroll.createdAt
@@ -92,6 +92,7 @@ export class DialogAbsentComponent implements OnInit {
         datetime: [
           this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
         ],
+        price: [this.data?.salary?.price],
         startedAt: [this.datePipe.transform(this.data.salary?.startedAt, 'yyyy-MM-dd')],
         endedAt: [this.datePipe.transform(this.data.salary?.endedAt, 'yyyy-MM-dd')],
         forgot: [this.data.salary?.forgot],
@@ -113,6 +114,8 @@ export class DialogAbsentComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
+        title: [],
+        price: [],
         datetime: [
           this.datePipe.transform(
             this.data.payroll.createdAt, 'yyyy-MM-dd')
@@ -165,6 +168,21 @@ export class DialogAbsentComponent implements OnInit {
     };
 
     if (
+      (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER)
+      && !value.title
+    ) {
+      return this.snackbar.open('Chưa nhập tên khấu trừ', '', { duration: 1500 });
+    }
+
+    if (
+      (typeof this.selectedIndex === 'number' &&
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary.type === 'DEDUCTION')
+      && (!value.price)
+    ) {
+      return this.snackbar.open('Chưa nhập tiền khấu trừ', '', { duration: 1500 });
+    }
+
+    if (
       (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES
         || this.data?.salary?.unit === DatetimeUnitEnum.TIMES)
       && !value.times
@@ -206,6 +224,14 @@ export class DialogAbsentComponent implements OnInit {
             datetime: new Date(value.datetime)
           });
         }
+      }
+      if (this.data.salary.type === 'DEDUCTION') {
+        Object.assign(salary, {
+          price: typeof value.price === 'string'
+            ? Number(value.price.replace(this.numberChars, ''))
+            : value.price,
+          datetime: value.datetime ? new Date(value.datetime) : undefined
+        });
       }
       if (this.data?.updateMultiple) {
         delete salary.payrollId;
@@ -259,7 +285,6 @@ export class DialogAbsentComponent implements OnInit {
           title: this.titleAbsents[this.selectedIndex]?.title
         });
       }
-
       if (
         this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
       ) {
@@ -311,6 +336,17 @@ export class DialogAbsentComponent implements OnInit {
         Object.assign(salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
           times: value.times ? value.times * 60 + value.minutes : value.minutes
+        });
+      }
+
+      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER) {
+        delete salary.unit;
+        Object.assign(salary, {
+          title: value.title,
+          price: typeof value.price === 'string'
+            ? Number(value.price.replace(this.numberChars, ''))
+            : value.price,
+          datetime: value.datetime ? new Date(value.datetime) : undefined
         });
       }
       this.store.dispatch(
