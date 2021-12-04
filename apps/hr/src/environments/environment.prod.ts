@@ -2,7 +2,7 @@ import { envProd } from '@minhdu-fontend/environment';
 
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.1.19:3000/v2/',
+  apiUrl: envProd,
   apiKey: 'pWPfDJ72krAmNy4g',
   version: '1.7.7',
 };

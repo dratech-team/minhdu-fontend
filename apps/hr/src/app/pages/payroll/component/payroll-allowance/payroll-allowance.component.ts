@@ -6,7 +6,7 @@ import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnu
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,8 +16,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
+  selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll,
+  selectedLoadedPayroll, selectedPositionPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -25,6 +26,11 @@ import { Router } from '@angular/router';
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
+import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/unitAllowance.constant';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -39,11 +45,15 @@ export class PayrollAllowanceComponent implements OnInit {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
+    code: new FormControl(''),
+    unit: new FormControl(''),
     name: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(
       new Date(this.createdAt), 'yyyy-MM'
     )),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS)
+    searchType: new FormControl(SearchTypeEnum.CONTAINS),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   templateBasic$ = new Subject<any>();
@@ -57,7 +67,9 @@ export class PayrollAllowanceComponent implements OnInit {
   salaries: Salary[] = [];
   pageSize = 30;
   pageIndex = 0;
-
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  unitAllowance = UnitAllowanceConstant;
   constructor(
     private readonly dialog: MatDialog,
     private readonly datePipe: DatePipe,
@@ -77,9 +89,16 @@ export class PayrollAllowanceComponent implements OnInit {
         createdAt: new Date(this.createdAt),
         salaryTitle: this.allowanceTitle ? this.allowanceTitle : '',
         salaryType: SalaryTypeEnum.ALLOWANCE,
-        filterType: FilterTypeEnum.SALARY
+        filterType: FilterTypeEnum.SALARY,
+        position: getState(selectedPositionPayroll, this.store),
+        branch: getState(selectedBranchPayroll, this.store)
       }
     }));
+
+    this.store.dispatch(PositionActions.loadPosition());
+
+    this.store.dispatch(OrgchartActions.init());
+
     if (this.allowanceTitle) {
       this.formGroup.get('title')!.setValue(this.allowanceTitle, { emitEvent: false });
     }
@@ -93,7 +112,9 @@ export class PayrollAllowanceComponent implements OnInit {
           createdAt: new Date(getState(selectedCreateAtPayroll, this.store)),
           salaryTitle: val.allowanceTitle ? val.allowanceTitle : '',
           salaryType: SalaryTypeEnum.ALLOWANCE,
-          filterType: FilterTypeEnum.SALARY
+          filterType: FilterTypeEnum.SALARY,
+          position: getState(selectedPositionPayroll, this.store),
+          branch: getState(selectedBranchPayroll, this.store)
         }
       }));
     });
@@ -101,13 +122,23 @@ export class PayrollAllowanceComponent implements OnInit {
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(value.createdAt) }));
+          { createdAt: new Date(value.createdAt), position: value.position, branch: value.branch }));
         this.store.dispatch(PayrollAction.loadInit(
           {
             payrollDTO: this.mapPayrollAllowance()
           }
         ));
       }
+    );
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
+    this.branches$ = searchAutocomplete(
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.branches$
     );
 
     this.payrollAllowance$.subscribe(payrolls => {
@@ -150,14 +181,19 @@ export class PayrollAllowanceComponent implements OnInit {
       if (val) {
         this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
         this.formGroup.get('createdAt')!.setValue(val.datetime, { emitEvent: false });
+        const value = this.formGroup.value
         this.store.dispatch(PayrollAction.loadInit({
           payrollDTO: {
             take: this.pageSize,
             skip: this.pageIndex,
+            code: value.code,
+            unit: value.unit,
             createdAt: new Date(val.datetime),
             salaryTitle: val.title,
             salaryType: SalaryTypeEnum.ALLOWANCE,
-            filterType: FilterTypeEnum.SALARY
+            filterType: FilterTypeEnum.SALARY,
+            position: val.position,
+            branch: val.branch
           }
         }));
       }
@@ -197,12 +233,16 @@ export class PayrollAllowanceComponent implements OnInit {
               payrollDTO: {
                 take: this.pageSize,
                 skip: this.pageIndex,
+                code: this.formGroup.get('code')!.value,
+                unit: this.formGroup.get('unit')!.value,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
                 salaryTitle: val.title,
                 name: value.name,
                 salaryType: SalaryTypeEnum.ALLOWANCE,
-                filterType: FilterTypeEnum.SALARY
+                filterType: FilterTypeEnum.SALARY,
+                position: val.position,
+                branch: val.branch
               }
             }));
           }
@@ -230,8 +270,8 @@ export class PayrollAllowanceComponent implements OnInit {
         });
         deleteSuccess.subscribe(val => {
           if (val === this.salaryIds.length - 1) {
-            this.isSelectSalary = false
-            this.salaryIds = []
+            this.isSelectSalary = false;
+            this.salaryIds = [];
             this.snackbar.open('Xóa lương cơ bản thành công', '', { duration: 1500 });
             this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollAllowance() }));
           }
@@ -276,9 +316,6 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   setAllSalary(select: boolean) {
-    console.log(this.salaries);
-    console.log(this.salaryIds);
-
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
   }
 
@@ -287,16 +324,28 @@ export class PayrollAllowanceComponent implements OnInit {
     const params = {
       take: this.pageSize,
       skip: this.pageIndex,
+      code: value.code,
+      unit: value.unit,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       salaryType: SalaryTypeEnum.ALLOWANCE,
-      filterType: FilterTypeEnum.SALARY
+      filterType: FilterTypeEnum.SALARY,
+      position: value.position,
+      branch: value.branch
     };
     if (!value.name) {
       delete params.name;
     }
     return params;
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
   }
 }

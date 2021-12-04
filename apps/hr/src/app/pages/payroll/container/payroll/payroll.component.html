@@ -79,8 +79,8 @@
                 <input class='form-control text-center' type='text'>
               </th>
               <th>
-                <div class='border-top text-center'>Mã nhân viên</div>
-                <input class='form-control text-center' type='text'>
+                <div class='border-top text-center'>Mã phiếu lương</div>
+                <input class='form-control text-center' type='text' formControlName='code'>
               </th>
               <th style='width: 250px'>
                 <div class='border-top text-center'>Tên nhân viên</div>
@@ -210,7 +210,7 @@
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'
                   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                {{payroll.employee.id}}
+                {{payroll.id}}
               </th>
               <th class='pointer' (click)='readPayroll(payroll)'
                   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>

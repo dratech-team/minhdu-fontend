@@ -300,8 +300,9 @@
           <thead>
           <tr style='background-color: #dddddd66;'>
             <th width='25%' class=' title text-center '>Khấu trừ</th>
-            <th width='15%' class=' title text-center '>Thời gian</th>
-            <th width='13%' class=' title text-center '>Đơn vị</th>
+            <th width='10%' class=' title text-center '>Thời gian</th>
+            <th width='8%' class=' title text-center '>Đơn vị</th>
+            <th width='10%' class=' title text-center '>Thành tiền</th>
             <th width='15%' class=' title text-center '>Quên giấy phép</th>
             <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
@@ -312,15 +313,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF'] "
+          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'] "
               style='background: white !important;'>
-            <th width='25%'>
+            <th >
               <div>
                 <span>{{salary.title}}</span>
                 <span class='ml-2' *ngIf='salary.allowance'></span>
               </div>
             </th>
-            <th width='15%' class=' text-center '>
+            <th class='text-center '>
                  <span *ngIf='salary.datetime'>
                   {{salary.datetime|date:'dd-MM-yyyy'}}
                 </span>
@@ -332,20 +333,23 @@
                    _
               </span>
             </th>
-            <th width='13%' class=' text-center '>
+            <th class=' text-center '>
                 <span *ngIf='salary.unit === datetimeUnit.MINUTE'>
                   ({{salary.times | convertTime }} )
                 </span>
               <span *ngIf='salary.unit === datetimeUnit.TIMES'> {{salary.times}} Lần </span>
               <span *ngIf='salary.unit === datetimeUnit.DAY'>Ngày</span>
             </th>
-            <th width='15%' class=' text-center '>
+            <th class=' text-center '>
+              <span style='color: red'>{{salary.type === "DEDUCTION" ? salary.price: '-'}} </span>
+            </th>
+            <th  class=' text-center '>
               {{salary.forgot ? 'Có' : 'Không'}}
             </th>
-            <th width='22%' class=' text-center '>
+            <th class=' text-center '>
               <span>{{salary.note}}</span>
             </th>
-            <th width='10%'>
+            <th>
               <div class='d-flex justify-content-around '>
                 <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
                         (click)='updateSalary(type.ABSENT, salary, payroll)'>

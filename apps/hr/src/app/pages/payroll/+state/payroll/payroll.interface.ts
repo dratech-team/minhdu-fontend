@@ -29,6 +29,7 @@ export interface PayrollDTO{
   createdAt?: Date,
   name?: string,
   code?: string,
+  unit?: string,
   position?: string,
   department?: string,
   branch?: string,

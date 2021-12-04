@@ -7,7 +7,7 @@ export interface PayrollSalary {
   employees: employee[],
   total: {
     price: number,
-    unit: DatetimeUnitEnum,
+    unit: string,
     times: number
   }
 }
@@ -23,5 +23,5 @@ interface employee {
   salaries: Salary[],
   position: Position,
   branch: Branch,
-  salary?: { times: number, total: number, unit: DatetimeUnitEnum },
+  salary?: { times: number, total: number, unit: string },
 }

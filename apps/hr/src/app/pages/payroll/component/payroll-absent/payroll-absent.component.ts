@@ -3,10 +3,10 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
-import { SearchTypeConstant } from '@minhdu-fontend/constants';
+import { SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,8 +16,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
+  selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll,
+  selectedLoadedPayroll, selectedPositionPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -27,6 +28,10 @@ import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-abs
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import * as moment from 'moment';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
 
 @Component({
   selector: 'app-payroll-absent',
@@ -42,12 +47,16 @@ export class PayrollAbsentComponent implements OnInit {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
+    code: new FormControl(''),
     name: new FormControl(''),
+    unit: new FormControl(''),
     startedAt: new FormControl(this.datePipe.transform(
       getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd')),
     endedAt: new FormControl(this.datePipe.transform(
       getLastDayInMonth(this.createdAt), 'yyyy-MM-dd')),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS)
+    searchType: new FormControl(SearchTypeEnum.CONTAINS),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -60,7 +69,9 @@ export class PayrollAbsentComponent implements OnInit {
   salaries: Salary[] = [];
   pageSize = 30;
   pageIndex = 0;
-
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  unitAbsent = UnitAbsentConstant;
   constructor(
     private readonly dialog: MatDialog,
     private readonly datePipe: DatePipe,
@@ -78,8 +89,25 @@ export class PayrollAbsentComponent implements OnInit {
       skip: this.pageIndex,
       salaryTitle: this.absentTitle ? this.absentTitle : '',
       salaryType: SalaryTypeEnum.ABSENT,
-      filterType: FilterTypeEnum.SALARY
+      filterType: FilterTypeEnum.SALARY,
+      position: getState(selectedPositionPayroll, this.store),
+      branch: getState(selectedBranchPayroll, this.store)
     };
+
+    this.store.dispatch(PositionActions.loadPosition());
+
+    this.store.dispatch(OrgchartActions.init());
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
+    this.branches$ = searchAutocomplete(
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.branches$
+    );
+
     if (this.absentTitle) {
       Object.assign(paramLoadInit, { createdAt: new Date(this.createdAt) });
     } else {
@@ -106,7 +134,7 @@ export class PayrollAbsentComponent implements OnInit {
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(value.startedAt) }));
+          { createdAt: new Date(value.startedAt), position: value.position, branch: value.branch }));
         this.store.dispatch(PayrollAction.loadInit(
           {
             payrollDTO: this.mapPayrollAbsent()
@@ -139,7 +167,7 @@ export class PayrollAbsentComponent implements OnInit {
         //export Absent
       }
     });
-    console.log(this.salaries)
+    console.log(this.salaries);
   }
 
   readPayroll(event: any) {
@@ -183,7 +211,6 @@ export class PayrollAbsentComponent implements OnInit {
           updateMultiple: true,
           createdAt: value.startedAt,
           type: SalaryTypeEnum.ABSENT
-
         }
       });
       ref.afterClosed().subscribe(
@@ -220,8 +247,8 @@ export class PayrollAbsentComponent implements OnInit {
         });
         deleteSuccess.subscribe(val => {
           if (val === this.salaryIds.length - 1) {
-            this.isSelectSalary = false
-            this.salaryIds = []
+            this.isSelectSalary = false;
+            this.salaryIds = [];
             this.snackbar.open('Xóa khấu trừ thành công', '', { duration: 1500 });
             this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollAbsent() }));
           }
@@ -275,11 +302,15 @@ export class PayrollAbsentComponent implements OnInit {
     const params = {
       take: this.pageSize,
       skip: this.pageIndex,
+      code: value.code,
       searchType: value.searchType,
       salaryTitle: value.title ? value.title : '',
       name: value.name,
+      unit: value.unit,
       salaryType: SalaryTypeEnum.ABSENT,
-      filterType: FilterTypeEnum.SALARY
+      filterType: FilterTypeEnum.SALARY,
+      position: value.position,
+      branch: value.branch
     };
     if (moment(value.startedAt).format('YYYY-MM-DD')
       === moment(value.endedAt).format('YYYY-MM-DD')) {
@@ -295,5 +326,13 @@ export class PayrollAbsentComponent implements OnInit {
       delete params.name;
     }
     return params;
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
   }
 }
