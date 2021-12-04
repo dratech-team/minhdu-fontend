@@ -6,4 +6,5 @@ export enum DatetimeUnitEnum {
   YEAR = 'YEAR',
   TIMES = 'TIMES',
   OPTION = 'OPTION',
+  OTHER = 'OTHER',
 }

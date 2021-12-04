@@ -5,6 +5,7 @@ export enum SalaryTypeEnum {
   ALLOWANCE = 'ALLOWANCE',
   OVERTIME = 'OVERTIME',
   ABSENT = 'ABSENT',
+  DEDUCTION = 'DEDUCTION',
   EARLY = 'EARLY',
   LATE = 'LATE',
   BASIC_TRUST = 'BASIC_TRUST',

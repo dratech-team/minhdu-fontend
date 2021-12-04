@@ -119,6 +119,28 @@
           <input class='form-control' type='number' formControlName='times'>
         </div>
       </div>
+      <div  *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.OTHER)
+            || data?.salary?.type === "DEDUCTION" '>
+        <div class='row mb-3' *ngIf='!data.isUpdate'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Tên khấu trừ</span> <span class='star'>*</span>
+            <input class='form-control' type='text' formControlName='title'>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Giá tiền</span><span class='star'>*</span>
+            <input type='text' class='form-control  px-1' placeholder='200,000' formControlName='price'
+                   inputCurrency>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div [formGroup]='formGroup' class='col-12'>
+            <span class='title-item'>Ngày</span>
+            <input type='date' class='form-control' formControlName='datetime'>
+          </div>
+        </div>
+      </div>
       <div class='row mb-3'>
         <div [formGroup]='formGroup' class='col-12'>
           <span class='title-item'>Chú thích</span>
