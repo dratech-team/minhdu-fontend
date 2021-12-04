@@ -106,6 +106,13 @@ export const selectedCreateAtPayroll = createSelector(
   }
 );
 
+export const selectedPositionPayroll = createSelector(
+  selectorPayrollState,
+  (state) => {
+    return state.position;
+  }
+);
+
 export const selectedBranchPayroll = createSelector(
   selectorPayrollState,
   (state) => {

@@ -3,7 +3,7 @@
   Đã chọn: {{salaryIds.length}}/{{salaries.length}}
 </div>
 <div class='table-scroll mt-3 position-relative '>
-  <table [formGroup]='formGroup' class='main-table' style='width: 2300px;'>
+  <table [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
     <thead>
     <tr>
       <th>
@@ -14,7 +14,7 @@
         <div class='border-top text-center'>Mã nhân viên</div>
         <input type='text' disabled>
       </th>
-      <th style='width: 270px'>
+      <th style='width: 250px'>
         <div class='border-top text-center'>
           <div class='d-flex justify-content-center' style='height: 100%'>
             <span>Tên nhân viên</span>
@@ -24,10 +24,6 @@
           </div>
         </div>
         <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
-      </th>
-      <th style='width: 200px'>
-        <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-        <input type='text' disabled>
       </th>
       <th style=' width: 150px; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
@@ -45,6 +41,27 @@
             Xóa
           </button>
         </div>
+      </th>
+      <th style='width: 200px'>
+        <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+        <input class='form-control' type='text' matInput [matAutocomplete]='position'
+               formControlName='position'>
+        <mat-autocomplete #position='matAutocomplete'>
+          <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+                      (onSelectionChange)='onSelectPosition(position.name)'>
+            {{position.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </th>
+      <th style='width: 200px'>
+        <div class='title-profile'>Đơn vị</div>
+        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                      (onSelectionChange)='onSelectBranch(branch.name)'>
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -95,9 +112,6 @@
       <th style='background:white'>
         <div class='text-center'>Tổng cộng</div>
       </th>
-      <th style=' width: 200px;'>
-        <div class='text-center'></div>
-      </th>
       <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
         <mat-checkbox class='example-margin mt-2 mx-auto'
                       [checked]='isSelectSalary'
@@ -105,6 +119,13 @@
                       (change)='setAllSalary($event.checked)'>
         </mat-checkbox>
       </th>
+      <th style=' width: 200px;'>
+        <div class='text-center'></div>
+      </th>
+      <th style=' width: 200px;'>
+        <div class='text-center'></div>
+      </th>
+
       <th style='width: 220px'>
         <div class='text-center'></div>
       </th>
@@ -149,10 +170,6 @@
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         {{overtime.lastName}}
       </th>
-      <th style='width: 200px' class='pointer'
-          (click)='detailPayroll(overtime.payrollId)'
-          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
-        {{overtime.position?.name}}</th>
       <th class='pointer'
           [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
         <div class=' d-flex align-items-center justify-content-center pointer '
@@ -163,6 +180,14 @@
           </mat-checkbox>
         </div>
       </th>
+      <th style='width: 200px' class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime.position?.name}}</th>
+      <th style='width: 200px' class='pointer'
+          (click)='detailPayroll(overtime.payrollId)'
+          [ngStyle]='{"background":overtime.salaries.length > 0 ? "white" : "#dddddd" }'>
+        {{overtime.branch?.name}}</th>
       <th class='pointer' style='width: 220px;'>
         <div class='border d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'
@@ -235,20 +260,20 @@
   .table-scroll th:nth-child(4) {
     position: -webkit-sticky;
     position: sticky;
-    left: 440px;
+    left: 420px;
     z-index: 2;
   }
   .table-scroll th:nth-child(5) {
     position: -webkit-sticky;
     position: sticky;
-    left: 640px;
+    left: 570px;
     z-index: 2;
   }
 
-
   .table-scroll thead th:nth-child(3),
   .table-scroll thead th:nth-child(4) ,
-  .table-scroll thead th:nth-child(5){
+  .table-scroll thead th:nth-child(5)
+  {
     z-index: 5;
   }
 

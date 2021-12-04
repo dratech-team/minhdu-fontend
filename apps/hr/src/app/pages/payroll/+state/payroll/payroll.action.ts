@@ -137,7 +137,12 @@ export const scanHolidayError = createAction(
 
 export const updateStatePayroll = createAction(
   '[SELECT_PAYROLL] Select Payroll',
-  props<{ filter?: PayrollEnum, createdAt?: Date, branch?: string, added?: ConvertBooleanFrontEnd }>()
+  props<{
+    filter?: PayrollEnum,
+    createdAt?: Date,
+    branch?: string,
+    position?: string,
+    added?: ConvertBooleanFrontEnd }>()
 );
 
 export const deleteSalarySuccess = createAction(

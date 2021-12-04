@@ -6,7 +6,7 @@ import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnu
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,7 +16,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
-  selectedCreateAtPayroll, selectedLoadedPayroll,
+  selectedBranchPayroll,
+  selectedCreateAtPayroll, selectedLoadedPayroll, selectedPositionPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -25,6 +26,9 @@ import { SalaryBasicMultipleComponent } from '../dialog-salary/update-salary-bas
 import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
 import { Payroll } from '../../+state/payroll/payroll.interface';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   selector: 'app-payroll-basic',
@@ -37,12 +41,17 @@ export class PayrollBasicComponent implements OnInit {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
+    code: new FormControl(''),
     name: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(
       new Date(this.createdAt), 'yyyy-MM'
     )),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS)
+    searchType: new FormControl(SearchTypeEnum.CONTAINS),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   templateBasic$ = new Subject<any>();
   searchTypeConstant = SearchTypeConstant;
@@ -82,19 +91,35 @@ export class PayrollBasicComponent implements OnInit {
         skip: this.pageIndex,
         salaryType: SalaryTypeEnum.BASIC,
         filterType: FilterTypeEnum.SALARY,
-        createdAt: new Date(this.createdAt)
+        createdAt: new Date(this.createdAt),
+        position: getState(selectedPositionPayroll, this.store),
+        branch: getState(selectedBranchPayroll, this.store)
       }
     }));
 
+    this.store.dispatch(PositionActions.loadPosition());
+
+    this.store.dispatch(OrgchartActions.init());
+
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(value.createdAt) }));
+          { createdAt: new Date(value.createdAt), branch: value.branch, position: value.position }));
         this.store.dispatch(PayrollAction.loadInit(
           {
             payrollDTO: this.mapPayrollBasic()
           }
         ));
       }
+    );
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
+    this.branches$ = searchAutocomplete(
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.branches$
     );
 
     this.payrollBasic$.subscribe(payrolls => {
@@ -143,8 +168,11 @@ export class PayrollBasicComponent implements OnInit {
           payrollDTO: {
             take: this.pageIndex,
             skip: this.pageSize,
+            code: this.formGroup.get('code')!.value,
             createdAt: this.formGroup.get('createdAt')!.value,
-            salaryTitle: val.title
+            salaryTitle: val.title,
+            position: val.position,
+            branch: val.branch
           }
         }));
       }
@@ -182,11 +210,14 @@ export class PayrollBasicComponent implements OnInit {
             const params = {
               take: this.pageSize,
               skip: this.pageIndex,
+              code: this.formGroup.get('code')!.value,
               searchType: value.searchType,
               createdAt: value.createdAt,
               salaryTitle: salariesSelected[0].title,
               name: this.formGroup.get('name')!.value,
-              salaryType: SalaryTypeEnum.BASIC
+              salaryType: SalaryTypeEnum.BASIC,
+              position: value.position,
+              branch: value.branch
             };
             if (this.formGroup.get('name')!.value === '') {
               delete params.name;
@@ -205,31 +236,31 @@ export class PayrollBasicComponent implements OnInit {
     }
   }
 
-  deleteMultipleSalaryBasic(){
-   const ref = this.dialog.open(DialogDeleteComponent, {width:'fit-content'})
+  deleteMultipleSalaryBasic() {
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     ref.afterClosed().subscribe(val => {
-      if(val){
-        let deleteSuccess = new Subject<number>()
+      if (val) {
+        let deleteSuccess = new Subject<number>();
         this.salaryIds.forEach((id, index) => {
           this.salaryService.delete(id).subscribe(
             (val: any) => {
-              if(val){
-                deleteSuccess.next(index)
+              if (val) {
+                deleteSuccess.next(index);
               }
             }
-          )
-        })
-       deleteSuccess.subscribe(val => {
-         console.log(val)
-         if(val === this.salaryIds.length -1){
-           this.isSelectSalary = false
-           this.salaryIds = []
-           this.snackbar.open('Xóa lương cơ bản thành công', '', {duration:1500})
-           this.store.dispatch(PayrollAction.loadInit({payrollDTO:this.mapPayrollBasic()}))
-         }
-       })
+          );
+        });
+        deleteSuccess.subscribe(val => {
+          console.log(val);
+          if (val === this.salaryIds.length - 1) {
+            this.isSelectSalary = false;
+            this.salaryIds = [];
+            this.snackbar.open('Xóa lương cơ bản thành công', '', { duration: 1500 });
+            this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayrollBasic() }));
+          }
+        });
       }
-    })
+    });
   }
 
   deleteSalaryBasic(event: any) {
@@ -265,12 +296,15 @@ export class PayrollBasicComponent implements OnInit {
     const params = {
       take: this.pageSize,
       skip: this.pageIndex,
+      code: value.code,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.SALARY,
       salaryType: SalaryTypeEnum.BASIC,
+      position: value.position,
+      branch: value.branch
     };
     if (!value.name) {
       delete params.name;
@@ -288,5 +322,13 @@ export class PayrollBasicComponent implements OnInit {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
   }
 }

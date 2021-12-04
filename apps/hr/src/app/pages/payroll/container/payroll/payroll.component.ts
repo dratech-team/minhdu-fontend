@@ -15,7 +15,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll,
+  selectedLoadedPayroll, selectedPositionPayroll,
   selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -45,17 +45,19 @@ import { SelectUpdateMultiple } from '../../component/dialog-select-update-multi
 export class PayrollComponent implements OnInit, AfterContentChecked {
   formGroup = new FormGroup({
     name: new FormControl(''),
+    code: new FormControl(''),
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(
       getState(selectedCreateAtPayroll, this.store), 'yyyy-MM')),
-    position: new FormControl(''),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
     branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   selectPayroll = new FormControl(getState(selectedTypePayroll, this.store));
   selectedPayroll: PayrollEnum = getState(selectedTypePayroll, this.store);
   branchName = getState(selectedBranchPayroll, this.store);
+  positionName = getState(selectedPositionPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -113,6 +115,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { filter: val, createdAt: new Date() }));
       } else {
+        if (val === PayrollEnum.PAYROLL || val === PayrollEnum.TIME_SHEET) {
+          this.positionName = getState(selectedPositionPayroll, this.store);
+          this.branchName = getState(selectedBranchPayroll, this.store);
+          this.formGroup.get('position')!.setValue(this.positionName,
+            { eventEmit: false });
+          this.formGroup.get('branch')!.setValue(this.branchName,
+            { eventEmit: false });
+        }
         this.selectedPayroll = val;
         this.store.dispatch(PayrollAction.updateStatePayroll(
           { filter: val }));
@@ -122,7 +132,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         && val !== PayrollEnum.PAYROLL_ALLOWANCE
         && val !== PayrollEnum.PAYROLL_ABSENT) {
         this.formGroup.get('createdAt')!.setValue(this.datePipe.transform(
-          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'), { emitEvent: false });
+          getState(selectedCreateAtPayroll, this.store), 'yyyy-MM'),
+          { emitEvent: false });
         return this.loadInitPayroll();
       }
     });
@@ -141,12 +152,16 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     ).pipe(debounceTime(1500)).subscribe((val) => {
       if (val) {
         this.branchName = val?.branch;
+        this.positionName = val?.position;
         this.createdAt = val?.createdAt;
         this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(val.createdAt) || new Date(val.createdAt), branch: val.branch }));
+          {
+            createdAt: new Date(val.createdAt) || new Date(val.createdAt),
+            branch: val.branch,
+            position: val.position
+          }));
         return this.loadInitPayroll();
-
       }
     });
 
@@ -179,8 +194,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     return {
       skip: this.pageIndexInit,
       take: this.pageSize,
+      code: val.code,
       name: val.name,
-      position: val.position,
+      position: this.positionName,
       branch: this.branchName,
       createdAt: getState(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
@@ -236,7 +252,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        console.log(val);
         this.createdAt = new Date(val.datetime);
         this.overtimeTitle = val.title;
         this.store.dispatch(PayrollAction.updateStatePayroll(
