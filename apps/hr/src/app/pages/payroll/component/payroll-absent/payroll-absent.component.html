@@ -11,7 +11,7 @@
        [scrollWindow]='false'
        (scrolled)='onScroll()'
   >
-    <table [formGroup]='formGroup' class='main-table' style='width: 1800px;'>
+    <table [formGroup]='formGroup' class='main-table' style='width: 2000px;'>
       <thead>
       <tr>
         <th>
@@ -20,7 +20,7 @@
         </th>
         <th>
           <div class='border-top text-center'>Mã nhân viên</div>
-          <input type='text' disabled>
+          <input type='number' class='form-control text-center' formControlName='code'>
         </th>
         <th style='width: 270px'>
           <div class='border-top text-center'>
@@ -33,14 +33,10 @@
           </div>
           <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
         </th>
-        <th style='width: 200px'>
-          <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-          <input type='text' disabled>
-        </th>
-        <th style='width: 50px ; z-index: 3'>
+        <th style='width: 150px ; z-index: 3'>
           <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
             <span *ngIf='salaryIds.length === 0'>Chọn</span>
-            <div  *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
+            <div *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
               <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                       (click)='updateMultipleSalaryAbsent()'
 
@@ -59,6 +55,27 @@
                         [indeterminate]='someCompleteSalary()'
                         (change)='setAllSalary($event.checked)'>
           </mat-checkbox>
+        </th>
+        <th style='width: 200px'>
+          <div class='title-profile'>Chức vụ</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='position'
+                 formControlName='position'>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+                        (onSelectionChange)='onSelectPosition(position.name)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th style='width: 200px'>
+          <div class='title-profile'>Đơn vị</div>
+          <input class='form-control' type='text' matInput [matAutocomplete]='branchInput' formControlName='branch'>
+          <mat-autocomplete #branchInput='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (onSelectionChange)='onSelectBranch(branch.name)'>
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
         </th>
         <th style='width: 220px;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -79,7 +96,11 @@
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
-          <input type='text' disabled>
+        <mat-select class='select w-100 border-top'  formControlName='unit'>
+          <mat-option *ngFor='let item of unitAbsent' [value]='item.type'>
+            {{item.name}}
+          </mat-option>
+        </mat-select>
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Quên giấy phép</div>
@@ -105,10 +126,6 @@
             [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
           {{payrollAbsent.employee.lastName}}
         </th>
-        <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollAbsent)'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollAbsent.employee.position?.name}}</th>
         <th class='pointer'
             [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
           <div class=' d-flex align-items-center justify-content-center pointer '
@@ -119,6 +136,14 @@
             </mat-checkbox>
           </div>
         </th>
+        <th class='pointer'
+            (click)='readPayroll(payrollAbsent)'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollAbsent.employee.position?.name}}</th>
+        <th class='pointer'
+            (click)='readPayroll(payrollAbsent)'
+            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+          {{payrollAbsent.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
           <div class='border d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
@@ -204,7 +229,7 @@
   .table-scroll th:nth-child(5) {
     position: -webkit-sticky;
     position: sticky;
-    left: 640px;
+    left: 590px;
     z-index: 2;
   }
 

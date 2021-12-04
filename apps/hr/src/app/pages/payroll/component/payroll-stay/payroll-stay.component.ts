@@ -5,7 +5,7 @@ import { DatetimeUnitEnum, FilterTypeEnum, Gender, SalaryTypeEnum, SearchTypeEnu
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { Salary } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -15,8 +15,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
+  selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll,
+  selectedLoadedPayroll, selectedPositionPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -26,6 +27,9 @@ import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.co
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
 import { Subject } from 'rxjs';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -38,11 +42,14 @@ export class PayrollStayComponent implements OnInit {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
+    code: new FormControl(''),
     name: new FormControl(''),
     createdAt: new FormControl(this.datePipe.transform(
       new Date(this.createdAt), 'yyyy-MM'
     )),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS)
+    searchType: new FormControl(SearchTypeEnum.CONTAINS),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getState(selectedBranchPayroll, this.store))
   });
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -56,7 +63,8 @@ export class PayrollStayComponent implements OnInit {
   salaries: Salary[] = [];
   pageSize = 30;
   pageIndex = 0;
-
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
   constructor(
     private readonly dialog: MatDialog,
     private readonly datePipe: DatePipe,
@@ -75,19 +83,36 @@ export class PayrollStayComponent implements OnInit {
         skip: this.pageIndex,
         createdAt: new Date(this.createdAt),
         salaryType: SalaryTypeEnum.STAY,
-        filterType: FilterTypeEnum.SALARY
+        filterType: FilterTypeEnum.SALARY,
+        position: getState(selectedPositionPayroll, this.store),
+        branch: getState(selectedBranchPayroll, this.store)
       }
     }));
+
+    this.store.dispatch(PositionActions.loadPosition());
+
+    this.store.dispatch(OrgchartActions.init());
+
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(value => {
         this.store.dispatch(PayrollAction.updateStatePayroll(
-          { createdAt: new Date(value.createdAt) }));
+          { createdAt: new Date(value.createdAt), branch: value.branch, position: value.position }));
         this.store.dispatch(PayrollAction.loadInit(
           {
             payrollDTO: this.mapPayrollStay()
           }
         ));
       }
+    );
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
+    this.branches$ = searchAutocomplete(
+      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.branches$
     );
 
     this.payrollStay$.subscribe(payrolls => {
@@ -126,14 +151,18 @@ export class PayrollStayComponent implements OnInit {
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        const value = this.formGroup.value;
         this.store.dispatch((PayrollAction.loadInit({
           payrollDTO: {
             take: this.pageSize,
             skip: this.pageIndex,
+            code: value.code,
             createdAt: this.formGroup.get('createdAt')!.value,
             salaryTitle: val.title,
             salaryType: SalaryTypeEnum.STAY,
-            filterType: FilterTypeEnum.SALARY
+            filterType: FilterTypeEnum.SALARY,
+            position: val.position,
+            branch: val.branch
           }
         })));
       }
@@ -171,12 +200,15 @@ export class PayrollStayComponent implements OnInit {
               payrollDTO: {
                 take: this.pageSize,
                 skip: this.pageIndex,
+                code: value.code,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
                 salaryTitle: val.title,
                 name: value.name,
                 salaryType: SalaryTypeEnum.STAY,
-                filterType: FilterTypeEnum.SALARY
+                filterType: FilterTypeEnum.SALARY,
+                position: val.position,
+                branch: val.branch
               }
             }));
           }
@@ -257,16 +289,27 @@ export class PayrollStayComponent implements OnInit {
     const params = {
       take: this.pageSize,
       skip: this.pageIndex,
+      code: value.code,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       salaryType: SalaryTypeEnum.STAY,
-      filterType: FilterTypeEnum.SALARY
+      filterType: FilterTypeEnum.SALARY,
+      position: value.position,
+      branch: value.branch
     };
     if (!value.name) {
       delete params.name;
     }
     return params;
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onSelectBranch(branchName: string) {
+    this.formGroup.get('branch')!.patchValue(branchName);
   }
 }

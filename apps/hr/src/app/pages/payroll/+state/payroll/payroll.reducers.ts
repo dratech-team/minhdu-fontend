@@ -15,6 +15,7 @@ export interface PayrollState extends EntityState<Payroll> {
   createdAt: Date,
   filter: PayrollEnum,
   branch: string,
+  position: string,
   total: number
 }
 
@@ -23,7 +24,7 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: ''
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: ''
 });
 
 export const payrollReducer = createReducer(
@@ -33,10 +34,9 @@ export const payrollReducer = createReducer(
   }),
 
 
-  on(PayrollAction.loadInitSuccess, (state, action) =>
-  {
-   return  adapter.setAll(action.payrolls,
-      { ...state, loaded: true, added: true, adding: false, total: action.total })
+  on(PayrollAction.loadInitSuccess, (state, action) => {
+    return adapter.setAll(action.payrolls,
+      { ...state, loaded: true, added: true, adding: false, total: action.total });
   }),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) => {
@@ -118,14 +118,15 @@ export const payrollReducer = createReducer(
   on(PayrollAction.deleteSalarySuccess, (state, _) => {
     return { ...state };
   }),
-  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch, added }) => {
+  on(PayrollAction.updateStatePayroll, (state, { filter, createdAt, branch, added, position }) => {
     return {
       ...state,
       filter: filter ? filter : state.filter,
       createdAt: createdAt ? createdAt : state.createdAt,
       branch: branch ? branch : state.branch,
+      position: position ? position : state.position,
       added: added && added === ConvertBooleanFrontEnd.TRUE ? true :
-        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added,
+        added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added
     };
   }),
   on(PayrollAction.updateSalaryMultipleSuccess, (state, _) => {
