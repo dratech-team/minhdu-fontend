@@ -14,6 +14,7 @@ import { DialogPositionComponent } from '../../component/dialog-position/dialog-
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { EmployeeAction } from '@minhdu-fontend/employee';
 import { Router } from '@angular/router';
+import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'position.container.html'
@@ -58,10 +59,26 @@ export class PositionContainer implements OnInit {
       }
     });
   }
+
   onEmployee(event: any){
     this.router.navigate(['ho-so'], {
       queryParams:{
         position: event.name
+      }
+    }).then()
+  }
+
+  onPayroll(event: any){
+    console.log('sss')
+    this.store.dispatch(PayrollAction.updateStatePayroll({position: event.name}))
+    this.router.navigate(['phieu-luong']).then()
+  }
+
+  onOvertime(event: any){
+    this.store.dispatch(PayrollAction.updateStatePayroll({position: event.name}))
+    this.router.navigate(['phieu-luong'], {
+      queryParams:{
+        type:'overtime'
       }
     }).then()
   }

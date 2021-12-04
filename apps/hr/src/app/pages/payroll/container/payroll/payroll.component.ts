@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Api, PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
 import { EmployeeType, FilterTypeEnum, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -93,11 +93,17 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe(val => {
+      if(val?.type === 'overtime'){
+        this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME)
+      }
+    });
     this.loadInitPayroll();
 
     this.daysInMonth = rageDaysInMonth(this.createdAt);

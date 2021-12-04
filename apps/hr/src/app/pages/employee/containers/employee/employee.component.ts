@@ -73,11 +73,11 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
-        this.formGroup.get('branch')!.setValue(val.branch);
+        this.formGroup.get('branch')!.setValue(val.branch,{emitEvent: false});
         this.branchName = val.branch;
       }
       if (val.position) {
-        this.formGroup.get('position')!.setValue(val.position);
+        this.formGroup.get('position')!.setValue(val.position,{emitEvent: false});
         this.positionName = val.position;
       }
     });

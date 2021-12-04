@@ -10,6 +10,7 @@ import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-font
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { Router } from '@angular/router';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
+import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -57,6 +58,18 @@ export class BranchContainer implements OnInit {
     this.router.navigate(['ho-so'], {
       queryParams:{
         branch: event.name
+      }
+    }).then()
+  }
+  onPayroll(event: any){
+    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name}))
+    this.router.navigate(['phieu-luong']).then()
+  }
+  onOvertime(event: any){
+    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name}))
+    this.router.navigate(['phieu-luong'], {
+      queryParams:{
+        type:'overtime'
       }
     }).then()
   }

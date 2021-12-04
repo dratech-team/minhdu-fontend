@@ -19,6 +19,8 @@ export class MouseRightComponent {
   @Output() restore = new EventEmitter();
   @Output() HistoryPayroll = new EventEmitter();
   @Output() Employee = new EventEmitter();
+  @Output() payroll = new EventEmitter();
+  @Output() overtime = new EventEmitter();
   @Output() Update = new EventEmitter();
 
   constructor(
@@ -68,6 +70,14 @@ export class MouseRightComponent {
   onEmployee(item: any) {
     this.Employee.emit(item);
   }
+
+  onPayroll(item: any) {
+    this.payroll.emit(item);
+  }
+  onOvertime(item: any) {
+    this.overtime.emit(item);
+  }
+
   onUpdate(item: any) {
     this.Update.emit(item);
   }
