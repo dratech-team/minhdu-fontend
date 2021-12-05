@@ -87,16 +87,16 @@
       <tbody *ngIf='(templates$| async) as templates'>
       <tr *ngFor='let template of templates; let i = index'
           (contextmenu)='child.onContextMenu($event,template)'>
-        <th class='  pointer ' (click)='templateOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'>
           {{i + 1}}
         </th>
-        <th class='  pointer ' (click)='templateOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'>
           {{template.title}}
         </th>
-        <th class='  pointer ' (click)='templateOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'>
           {{template.price| number: '1.0-0'}} VND
         </th>
-        <th class='  pointer ' (click)='templateOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'>
           {{template.employeeType === employeeTypeEnum.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
         </th>
         <th class='  pointer' *ngIf='template.unit === unit.DAY'
@@ -105,28 +105,28 @@
         </th>
         <th class='  pointer'
             *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-            (click)='templateOvertime(template)'>
+            (click)='onOvertime(template)'>
           Giờ
         </th>
         <th class='  pointer' *ngIf='template.unit === unit.MONTH'
-            (click)='templateOvertime(template)'>
+            (click)='onOvertime(template)'>
           Tháng
         </th>
         <th class='  pointer '
-            (click)='templateOvertime(template)'
+            (click)='onOvertime(template)'
             *ngIf='template?.branch'
         >
           {{template?.branch?.name}}
         </th>
         <th class='  pointer '
-            (click)='templateOvertime(template)'
+            (click)='onOvertime(template)'
             *ngIf='!template?.branch'
         >
         </th>
         <th class='  pointer p-1 '
-            (click)='templateOvertime(template)'>
+            (click)='onOvertime(template)'>
           <mat-chip-list>
-            <mat-chip (click)='templateOvertime(template)'
+            <mat-chip (click)='onOvertime(template, position)'
                       [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
                       *ngFor='let position of template.positions'
                       [selectable]='false'
@@ -136,7 +136,7 @@
           </mat-chip-list>
         </th>
         <th class=' pointer '
-            (click)='templateOvertime(template)'>
+            (click)='onOvertime(template)'>
           {{template.note}}
         </th>
       </tr>
@@ -150,7 +150,8 @@
       </tbody>
     </table>
   </div>
-  <app-mouse-right #child (addEvent)='templateOvertime($event)'
+  <app-mouse-right #child
+                   (addEvent)='templateOvertime($event)'
                    (readEvent)='templateOvertime($event)'
                    (deleteEvent)='deleteOvertime($event)'
   ></app-mouse-right>

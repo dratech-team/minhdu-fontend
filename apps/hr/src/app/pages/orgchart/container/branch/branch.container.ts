@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { OrgchartEnum } from '@minhdu-fontend/enums';
+import { OrgchartEnum, PayrollEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith } from 'rxjs/operators';
@@ -77,12 +77,8 @@ export class BranchContainer implements OnInit {
     this.router.navigate(['phieu-luong']).then()
   }
   onOvertime(event: any){
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name}))
-    this.router.navigate(['phieu-luong'], {
-      queryParams:{
-        type:'overtime'
-      }
-    }).then()
+    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name, filter: PayrollEnum.PAYROLL_OVERTIME}))
+    this.router.navigate(['phieu-luong'] ).then()
   }
 
   onSelectPosition(positionName: string) {

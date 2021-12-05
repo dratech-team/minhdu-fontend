@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate, selectTemplateAdding } from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
-import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
@@ -12,12 +12,17 @@ import { DialogTemplateOvertimeComponent } from '../../component/template-overti
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { Router } from '@angular/router';
+import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
+import { Position } from '@minhdu-fontend/data-models';
 
 
 @Component({
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
+  pageTypeEnum = PageTypeEnum
   adding$ = this.store.pipe(select(selectTemplateAdding));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
@@ -40,6 +45,7 @@ export class TemplateOvertimeComponent implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly router: Router,
     private readonly store: Store<AppState>
   ) {
   }
@@ -128,5 +134,23 @@ export class TemplateOvertimeComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  onOvertime(template: any, position?: Position) {
+    if(position){
+      this.store.dispatch(PayrollAction.updateStatePayroll({
+        position: position.name,
+        filter: PayrollEnum.PAYROLL_OVERTIME
+      }))
+    }else{
+      this.store.dispatch(PayrollAction.updateStatePayroll({
+        filter: PayrollEnum.PAYROLL_OVERTIME
+      }))
+    }
+    this.router.navigate(['phieu-luong'], {
+      queryParams:{
+        titleOvertime: template.title
+      }
+    }).then()
   }
 }

@@ -45,17 +45,17 @@
                (execute)='onHistoryPayroll($event.item)'>
     Lịch sử lương
   </ng-template>
-  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.POSITION'
+  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.LINK'
                contextMenuItem let-item
                (execute)='onEmployee($event.item)'>
     Hồ sơ
   </ng-template>
-  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.POSITION'
+  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.LINK'
                contextMenuItem let-item
                (execute)='onPayroll($event.item)'>
    Bảng lương
   </ng-template>
-  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.POSITION'
+  <ng-template *ngIf='type === pageType.BRANCH||type === pageType.LINK'
                contextMenuItem let-item
                (execute)='onOvertime($event.item)'>
    Tăng ca

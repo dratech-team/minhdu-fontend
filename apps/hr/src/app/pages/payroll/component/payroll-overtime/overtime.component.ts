@@ -51,15 +51,13 @@ export class OvertimeComponent implements OnInit {
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   createdAt = getState(selectedCreateAtPayroll, this.store);
-  positionName = getState(selectedPositionPayroll, this.store);
-  branchName = getState(selectedBranchPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
     name: new FormControl(''),
     startAt: new FormControl(),
     endAt: new FormControl(),
-    position: new FormControl(this.positionName),
-    branch: new FormControl(this.branchName),
+    position: new FormControl(getState(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getState(selectedBranchPayroll, this.store)),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
   positions$ = this.store.pipe(select(getAllPosition));
@@ -102,8 +100,8 @@ export class OvertimeComponent implements OnInit {
         searchType: SearchTypeEnum.CONTAINS,
         startAt: this.overtimeTitle ? new Date(this.createdAt) : getFirstDayInMonth(new Date(this.createdAt)),
         endAt: this.overtimeTitle ? new Date(this.createdAt) : getLastDayInMonth(new Date(this.createdAt)),
-        position: this.positionName,
-        branch: this.branchName
+        position: getState(selectedPositionPayroll, this.store),
+        branch: getState(selectedBranchPayroll, this.store)
       }
     ).subscribe(val => {
       this.loaded = true;
@@ -149,16 +147,14 @@ export class OvertimeComponent implements OnInit {
             branch: value.branch
           }));
           this.loaded = false;
-          this.positionName = value.position;
-          this.branchName = value.branch;
           const params = {
             searchType: value.searchType,
             startAt: new Date(value.startAt),
             endAt: new Date(value.endAt),
             title: value.title,
             name: value.name,
-            position: this.positionName,
-            branch: this.branchName
+            position: getState(selectedPositionPayroll, this.store),
+            branch: getState(selectedBranchPayroll, this.store)
           };
           if (!value.name) {
             delete params.name;

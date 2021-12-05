@@ -99,12 +99,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.loadInitPayroll();
+
     this.activeRouter.queryParams.subscribe(val => {
-      if(val?.type === 'overtime'){
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME)
+      if(val.titleOvertime){
+        this.overtimeTitle = JSON.parse(JSON.stringify( val.titleOvertime))
       }
     });
-    this.loadInitPayroll();
 
     this.daysInMonth = rageDaysInMonth(this.createdAt);
 
