@@ -54,6 +54,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
       ));
     }
     this.employees$.subscribe(employee => {
+      this.employeeIds = [];
+      this.isSelectAll = false;
       this.employees = JSON.parse(JSON.stringify(employee));
     });
     this.store.dispatch(PositionActions.loadPosition());

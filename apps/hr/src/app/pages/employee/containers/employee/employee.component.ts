@@ -54,6 +54,10 @@ export class EmployeeComponent implements OnInit {
   positionName = '';
   formGroup = new FormGroup({
     name: new FormControl(''),
+    birthday: new FormControl(''),
+    phone: new FormControl(''),
+    identity: new FormControl(''),
+    address: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
@@ -73,11 +77,11 @@ export class EmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
-        this.formGroup.get('branch')!.setValue(val.branch,{emitEvent: false});
+        this.formGroup.get('branch')!.setValue(val.branch, { emitEvent: false });
         this.branchName = val.branch;
       }
       if (val.position) {
-        this.formGroup.get('position')!.setValue(val.position,{emitEvent: false});
+        this.formGroup.get('position')!.setValue(val.position, { emitEvent: false });
         this.positionName = val.position;
       }
     });
@@ -152,6 +156,10 @@ export class EmployeeComponent implements OnInit {
       skip: this.pageIndexInit,
       take: this.pageSize,
       name: val.name,
+      birthday: val.birthday,
+      phone: val.phone,
+      identity: val.identity,
+      address: val.address,
       gender: val.gender,
       position: val.position,
       branch: val.branch,

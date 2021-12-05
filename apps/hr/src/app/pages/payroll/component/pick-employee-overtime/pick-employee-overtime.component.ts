@@ -17,8 +17,10 @@ import {
 } from '@minhdu-fontend/employee';
 import { EmployeeType, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 
 @Component({
   selector: 'app-pick-employee-overtime',
@@ -38,8 +40,11 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   employeeIds: number[] = [];
   allowEmpIds: number[] = [];
   formGroup = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
+    position: new FormControl(''),
+    code: new FormControl('')
   });
+  positions$ = this.store.pipe(select(getAllPosition));
 
   constructor(
     private readonly store: Store,
@@ -50,14 +55,28 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.employees$.subscribe((employee) => {
+      this.employeeIds = [];
+      this.allowEmpIds = [];
+      this.isSelectEmployee = false;
+      this.isSelectAllowance = false;
       this.employees = JSON.parse(JSON.stringify(employee));
     });
+
+    this.store.dispatch(PositionActions.loadPosition());
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           const param = {
             name: val.name,
+            code: val.code,
+            position: val.position,
             templateId: this.search.templateId || '',
             createdPayroll: new Date(this.search.createdPayroll),
             employeeType: this.search.employeeType || '',
@@ -205,5 +224,9 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
       }
     });
     this.EventSelectAllowance.emit(this.allowEmpIds);
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
   }
 }

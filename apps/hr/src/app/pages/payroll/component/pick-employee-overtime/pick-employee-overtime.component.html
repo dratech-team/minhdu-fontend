@@ -21,7 +21,7 @@
             <div class='border-top text-center'>Mã nhân Viên</div>
             <input class='form-control input-profile'
                    type='text'
-                   disabled
+                   formControlName='code'
             >
           </th>
           <th>
@@ -29,8 +29,15 @@
             <input class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu' formControlName='name'>
           </th>
           <th>
-            <div class='border-top text-center'>Chức vụ</div>
-            <input class='form-control input-profile ' type='text' disabled>
+            <div class='title-profile'>Chức vụ</div>
+            <input class='form-control' type='text' matInput [matAutocomplete]='position'
+                   formControlName='position'>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+                          (onSelectionChange)='onSelectPosition(position.name)'>
+                {{position.name}}
+              </mat-option>
+            </mat-autocomplete>
           </th>
           <th style='width: 120px'>
             <div class=' border-bottom text-center'>Tất cả</div>
