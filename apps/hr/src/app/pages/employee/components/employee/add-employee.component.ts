@@ -30,8 +30,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { RecipeTypesConstant } from '@minhdu-fontend/constants';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   templateUrl: 'add-employee.component.html'

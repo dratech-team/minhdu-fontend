@@ -20,7 +20,7 @@ import { TemplateOvertimeAction } from '../../+state/template-overtime/template-
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'

@@ -29,7 +29,7 @@ import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/t
 import { Subject } from 'rxjs';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   selector: 'app-payroll-stay',

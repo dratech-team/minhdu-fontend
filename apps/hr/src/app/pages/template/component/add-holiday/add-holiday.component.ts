@@ -12,7 +12,7 @@ import * as lodash from 'lodash';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { startWith } from 'rxjs/operators';
 import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 
 @Component({

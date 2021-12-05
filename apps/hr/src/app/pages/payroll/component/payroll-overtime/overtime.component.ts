@@ -40,7 +40,7 @@ import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   selector: 'app-payroll-overtime',

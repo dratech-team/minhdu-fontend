@@ -28,7 +28,7 @@ import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   selector: 'app-payroll-basic',

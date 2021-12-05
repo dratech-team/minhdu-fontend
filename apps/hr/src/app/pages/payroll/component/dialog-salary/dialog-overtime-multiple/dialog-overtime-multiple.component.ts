@@ -14,7 +14,7 @@ import { TemplateOvertime } from '../../../../template/+state/template-overtime/
 import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { MatStepper } from '@angular/material/stepper';
 import { PartialDayEnum, Position } from '@minhdu-fontend/data-models';
-import { searchAutocomplete } from '../../../../../../../../../libs/utils/autocomplete.ultil';
+import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
 import { SalaryService } from '../../../service/salary.service';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 

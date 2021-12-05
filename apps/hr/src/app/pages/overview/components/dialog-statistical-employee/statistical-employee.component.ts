@@ -4,9 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { startWith } from 'rxjs/operators';
 import { Branch } from '@minhdu-fontend/data-models';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   templateUrl: 'statistical-employee.component.html'

@@ -26,7 +26,7 @@ export const getBranchSuccess = createAction(
 
 export const addBranch = createAction(
   '[Orgchart/API] Add Branch',
-  props<{ branch: { name: string } }>()
+  props<{ branch: { name: string , positionIds: number[]} }>()
 );
 
 export const addBranchSuccess = createAction(
@@ -36,7 +36,7 @@ export const addBranchSuccess = createAction(
 
 export const updateBranch = createAction(
   '[Orgchart/API] Update Branch',
-  props<{ id: number, name: string }>()
+  props<{ id: number, name: string, positionIds: number[] }>()
 );
 
 

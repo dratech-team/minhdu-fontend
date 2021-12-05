@@ -3,14 +3,16 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, startWith } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { Router } from '@angular/router';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
+import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -18,10 +20,15 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 export class BranchContainer implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
+  positions$ = this.store.pipe(select(getAllPosition));
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  branch = new FormControl();
+  formGroup = new FormGroup({
+    code: new FormControl(''),
+    branch:new FormControl(),
+    position: new FormControl('')
+  })
   pageType = PageTypeEnum;
 
   constructor(
@@ -32,9 +39,13 @@ export class BranchContainer implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
-    this.branch.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
+    this.formGroup.get('branch')!.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
       this.store.dispatch(OrgchartActions.searchBranch({ branch: val }));
     });
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.positions$
+    );
   }
 
   addBranch() {
@@ -72,5 +83,9 @@ export class BranchContainer implements OnInit {
         type:'overtime'
       }
     }).then()
+  }
+
+  onSelectPosition(positionName: string) {
+    this.formGroup.get('position')!.patchValue(positionName);
   }
 }

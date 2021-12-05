@@ -28,9 +28,9 @@ import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dial
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
 import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/unitAllowance.constant';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   selector: 'app-payroll-allowance',

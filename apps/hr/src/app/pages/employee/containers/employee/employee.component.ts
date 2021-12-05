@@ -25,12 +25,13 @@ import {
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
+
 import { EmployeeConstant } from '@minhdu-fontend/constants';
 import { selectAllProvince } from '@minhdu-fontend/location';
 import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
 import { BehaviorSubject, Observable, Observer, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   templateUrl: 'employee.component.html'
