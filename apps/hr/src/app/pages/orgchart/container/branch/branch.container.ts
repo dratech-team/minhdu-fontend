@@ -88,4 +88,13 @@ export class BranchContainer implements OnInit {
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);
   }
+
+  onListPosition(event: any) {
+    this.router.navigate(['to-chuc/chuc-vu', event.id]).then()
+  }
+
+  updateBranch($event: any) {
+    this.dialog.open(DialogBranchComponent,
+      { width: 'fit-content', data: { branch: $event, isUpdate: true } });
+  }
 }

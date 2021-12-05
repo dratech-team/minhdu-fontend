@@ -21,6 +21,7 @@ export class MouseRightComponent {
   @Output() Employee = new EventEmitter();
   @Output() payroll = new EventEmitter();
   @Output() overtime = new EventEmitter();
+  @Output() listPosition = new EventEmitter();
   @Output() Update = new EventEmitter();
 
   constructor(
@@ -76,6 +77,10 @@ export class MouseRightComponent {
   }
   onOvertime(item: any) {
     this.overtime.emit(item);
+  }
+
+  onListPosition(item: any) {
+    this.listPosition.emit(item);
   }
 
   onUpdate(item: any) {

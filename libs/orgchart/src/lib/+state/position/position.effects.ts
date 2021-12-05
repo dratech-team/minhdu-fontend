@@ -5,6 +5,8 @@ import { throwError } from 'rxjs';
 import { PositionActions } from './position.actions';
 import { PositionService } from '../../services/position.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class PositionEffects {
@@ -36,7 +38,15 @@ export class PositionEffects {
   addPosition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
-      switchMap(param => this.positionService.addOne(param)),
+      switchMap(param => this.positionService.addOne(param).pipe(
+        map(res =>{
+          if(param.branchId){
+            this.store.dispatch(OrgchartActions.getBranch({id:param.branchId}))
+
+          }
+          return res
+        })
+      )),
       map(position => {
         this.snackBar.open('Tạo mới chức vụ thành công', '', { duration: 1500 });
         return PositionActions.addPositionSuccess({ position });
@@ -53,10 +63,12 @@ export class PositionEffects {
         { name: param.name, workday: param.workday }).pipe(
         map(_ =>{
           this.snackBar.open('Cập nhật chức vụ thành công', '', { duration: 1500 });
-          return PositionActions.loadPosition()
+          this.store.dispatch(PositionActions.updatePositionSuccess())
+          return OrgchartActions.getBranch({id: param.branchId})
         } ),
-        catchError(err => throwError(err))
-      ))
+
+      )),
+      catchError(err => throwError(err))
     )
   );
 
@@ -66,7 +78,7 @@ export class PositionEffects {
       switchMap(param => this.positionService.delete(param.id).pipe(
         map(_ => {
             this.snackBar.open('Xóa chức vụ thành công', '', { duration: 1500 });
-            return PositionActions.loadPosition();
+            return OrgchartActions.getBranch({id: param.branchId})
           }
         ),
         catchError(err => throwError(err))
@@ -76,6 +88,7 @@ export class PositionEffects {
 
   constructor(
     private actions$: Actions,
+    private store: Store,
     private snackBar: MatSnackBar,
     private positionService: PositionService
   ) {

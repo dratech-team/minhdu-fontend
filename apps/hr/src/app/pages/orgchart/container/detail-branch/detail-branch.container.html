@@ -1,4 +1,4 @@
-<div style='max-width: 1300px; overflow-x: auto' class='w-100 mx-auto' *ngIf='(branch$|async) as branch'>
+<div style='max-width: 100%; overflow-x: auto' class='w-100 mx-auto' *ngIf='(branch$|async) as branch'>
   <div class='w-100 d-flex justify-content-center mb-2 '>
     <div class='w-100 px-5'>
       <div class='w-100'>
@@ -8,6 +8,7 @@
           <div class='mt-2'><span
             class='font-sm font-weight-bold'>Tổng số nhân viên</span>: {{branch?._count?.employees}}</div>
           <div class='mt-2'>
+            <div class='btn btn-primary mr-2' (click)='onListPosition(branch.id)'>Danh sách chức vụ</div>
             <div class='btn btn-primary mr-2' (click)='updateBranch(branch)'>Sửa đơn vị</div>
             <div class='btn btn-danger' (click)='deleteBranch(branch)'>Xóa đon vị</div>
           </div>

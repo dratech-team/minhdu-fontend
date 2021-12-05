@@ -10,7 +10,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { AllowanceBranchComponent } from '../../component/dialog-allowance-branch/allowance-branch.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: 'detail-branch.container.html'
@@ -26,6 +26,7 @@ export class DetailBranchContainer implements OnInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
+    private readonly router: Router,
     private readonly store: Store<AppState>) {
   }
 
@@ -80,5 +81,9 @@ export class DetailBranchContainer implements OnInit {
           }));
       }
     });
+  }
+
+  onListPosition(id: number) {
+    this.router.navigate(['to-chuc/chuc-vu', id]).then()
   }
 }

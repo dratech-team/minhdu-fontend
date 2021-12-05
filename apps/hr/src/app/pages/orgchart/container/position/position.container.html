@@ -38,8 +38,8 @@
             </th>
           </tr>
           </thead>
-          <tbody *ngIf='(positions$| async) as positions'>
-          <tr *ngFor='let position of positions ; let i = index'
+          <tbody *ngIf='(branch$| async) as branch'>
+          <tr *ngFor='let position of branch.positions ; let i = index'
               (contextmenu)='childPosition.onContextMenu($event,position)'>
             <th class='pointer' (click)='updatePosition(position)'>
               {{i + 1}}
@@ -57,8 +57,8 @@
               {{position?._count?.employees}}
             </th>
           </tr>
-          <tr *ngIf=' positions.length === 0 ' style='height: 50vh'>
-            <td colspan='4' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+          <tr *ngIf='!branch.positions || branch.positions.length === 0 ' style='height: 50vh'>
+            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
             </td>
           </tr>
           </tbody>

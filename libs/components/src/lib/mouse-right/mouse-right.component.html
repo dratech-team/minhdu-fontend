@@ -20,6 +20,11 @@
                (execute)='readAndUpdate($event.item)'>
      {{type === pageType.PAYMENT_HISTORY? 'Sửa': 'Xem chi tiết'}}
   </ng-template>
+  <ng-template *ngIf='type === pageType.BRANCH'
+               contextMenuItem let-item
+               (execute)='onUpdate($event.item)'>
+   Sửa
+  </ng-template>
   <ng-template *ngIf='type === pageType.CUSTOMER'
                contextMenuItem let-item
                (execute)='onPayment($event.item)'>
@@ -54,5 +59,10 @@
                contextMenuItem let-item
                (execute)='onOvertime($event.item)'>
    Tăng ca
+  </ng-template>
+  <ng-template *ngIf='type === pageType.BRANCH'
+               contextMenuItem let-item
+               (execute)='onListPosition($event.item)'>
+    Danh sách chức vụ
   </ng-template>
 </context-menu>

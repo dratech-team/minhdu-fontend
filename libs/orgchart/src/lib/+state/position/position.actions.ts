@@ -16,7 +16,7 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ name: string, workday?: number }>()
+  props<{ name: string, workday?: number, branchId?: number }>()
 );
 
 export const addPositionSuccess = createAction(
@@ -26,12 +26,16 @@ export const addPositionSuccess = createAction(
 
 export const updatePosition = createAction(
   '[Position/API] Update Position',
-  props<{ id: number, name: string, workday: Date }>()
+  props<{ id: number, name: string, workday: Date, branchId: number }>()
+);
+
+export const updatePositionSuccess = createAction(
+  '[Position/API] Update Position Success',
 );
 
 export const deletePosition = createAction(
   '[Position/API] Delete Position',
-  props<{ id: number }>()
+  props<{ id: number, branchId: number }>()
 );
 
 export const loadPositionFailure = createAction(
@@ -48,5 +52,6 @@ export const PositionActions = {
   searchPosition,
   loadPositionFailure,
   updatePosition,
+  updatePositionSuccess,
   deletePosition
 };

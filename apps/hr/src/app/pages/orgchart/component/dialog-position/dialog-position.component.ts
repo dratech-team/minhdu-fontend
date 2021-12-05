@@ -43,9 +43,18 @@ export class DialogPositionComponent implements OnInit {
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
         this.store.dispatch(PositionActions.updatePosition(
-          { id: this.data.position.id, name: val.position, workday: val.workday }));
+          {
+            id: this.data.position.id,
+            name: val.position,
+            workday: val.workday,
+            branchId: parseInt(this.data.branchId)
+          }));
       } else {
-        this.store.dispatch(PositionActions.addPosition({ name: val.position, workday: val.workday }));
+        this.store.dispatch(PositionActions.addPosition({
+          name: val.position,
+          workday: val.workday,
+          branchId: this.data.branchId
+        }));
       }
 
     } else {
