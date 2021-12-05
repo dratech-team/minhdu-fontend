@@ -27,6 +27,10 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/autocomplete.ultil';
 import { EmployeeConstant } from '@minhdu-fontend/constants';
+import { selectAllProvince } from '@minhdu-fontend/location';
+import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
+import { BehaviorSubject, Observable, Observer, Subject } from 'rxjs';
+import { District, Province, Ward } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -52,12 +56,18 @@ export class EmployeeComponent implements OnInit {
   isLeft = false;
   branchName = '';
   positionName = '';
+  provinces$ = this.store.pipe(select(selectAllProvince));
+  districts$!: Observable<District[]>;
+  wards$!: Observable<Ward[]>;
   formGroup = new FormGroup({
     name: new FormControl(''),
     birthday: new FormControl(''),
     phone: new FormControl(''),
     identity: new FormControl(''),
     address: new FormControl(''),
+    province: new FormControl(''),
+    district: new FormControl(''),
+    ward: new FormControl(''),
     gender: new FormControl(''),
     workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
@@ -75,6 +85,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
         this.formGroup.get('branch')!.setValue(val.branch, { emitEvent: false });
@@ -136,6 +147,12 @@ export class EmployeeComponent implements OnInit {
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
       this.branches$
     );
+
+    this.provinces$ = searchAutocomplete(
+      this.formGroup.get('province')!.valueChanges.pipe(startWith('')),
+      this.provinces$
+    );
+
   }
 
   add(): void {
@@ -160,6 +177,9 @@ export class EmployeeComponent implements OnInit {
       phone: val.phone,
       identity: val.identity,
       address: val.address,
+      province: val.province,
+      district: val.district,
+      ward: val.ward,
       gender: val.gender,
       position: val.position,
       branch: val.branch,
@@ -187,6 +207,32 @@ export class EmployeeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+  onSelectProvince(province: Province) {
+    this.districts$ = new Observable(sub => {
+      sub.next(province.districts);
+    });
+    this.districts$ = searchAutocomplete(
+      this.formGroup.get('district')!.valueChanges.pipe(startWith('')),
+      this.districts$
+    );
+    this.formGroup.get('province')!.patchValue(province.name);
+  }
+
+  onSelectDistrict(district: District) {
+    this.wards$ = new Observable(sub => {
+      sub.next(district.wards);
+    });
+    this.wards$ = searchAutocomplete(
+      this.formGroup.get('ward')!.valueChanges.pipe(startWith('')),
+      this.wards$
+    );
+    this.formGroup.get('district')!.patchValue(district.name);
+  }
+
+  onSelectWard(wardName: string) {
+    this.formGroup.get('ward')!.patchValue(wardName);
   }
 
   onScroll() {

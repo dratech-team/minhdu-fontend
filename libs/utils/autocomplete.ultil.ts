@@ -1,4 +1,4 @@
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export const searchAutocomplete = (name$: Observable<string>, data$: Observable<any[]>) => {
@@ -17,6 +17,7 @@ export const searchAutocomplete = (name$: Observable<string>, data$: Observable<
     })
   );
 };
+
 
 export const searchAndAddAutocomplete = (name$: Observable<string>, data$: Observable<any[]>) => {
   return combineLatest([

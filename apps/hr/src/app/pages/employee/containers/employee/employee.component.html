@@ -21,7 +21,7 @@
            [infiniteScrollThrottle]='10'
            [scrollWindow]='false'
            (scrolled)='onScroll()'>
-        <table [formGroup]='formGroup' class='main-table' style='width: 2400px '>
+        <table [formGroup]='formGroup' class='main-table' style='width: 3200px '>
           <thead>
           <tr>
             <th style='background:white'>
@@ -99,7 +99,40 @@
               <div class='border-top text-center'>CMND / CCCD</div>
               <input type='tel' class='form-control text-center' formControlName='identity'>
             </th>
-            <th>
+            <th width='5%'>
+              <div class='border-top text-center'>Tỉnh / Thành phố</div>
+              <input class='form-control' type='text' matInput [matAutocomplete]='province' formControlName='province'>
+              <mat-autocomplete #province='matAutocomplete'>
+                <mat-option *ngFor='let province of provinces$ | async'
+                            [value]='province.name' (click)='onSelectProvince(province)'
+                            (onSelectionChange)='onSelectProvince(province)'>
+                  {{province.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </th>
+            <th width='5%'>
+              <div class='border-top text-center'>Quận / Huyện</div>
+              <input class='form-control' type='text' matInput [matAutocomplete]='district' formControlName='district'>
+              <mat-autocomplete #district='matAutocomplete'>
+                <mat-option *ngFor='let district of districts$ | async'
+                            [value]='district.name' (click)='onSelectDistrict(district)'
+                            (onSelectionChange)='onSelectDistrict(district)'>
+                  {{district.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </th>
+            <th width='7%'>
+              <div class='border-top text-center'>Phường / Xã</div>
+              <input class='form-control' type='text' matInput [matAutocomplete]='ward' formControlName='ward'>
+              <mat-autocomplete #ward='matAutocomplete'>
+                <mat-option *ngFor='let ward of wards$ | async'
+                            [value]='ward.name' (click)='onSelectWard(ward.name)'
+                            (onSelectionChange)='onSelectWard(ward.name)'>
+                  {{ward.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </th>
+            <th width='12%'>
               <div class='border-top text-center'>Địa chỉ</div>
               <input type='text' class='form-control text-center' formControlName='address'>
             </th>
@@ -151,6 +184,15 @@
             </th>
             <th class='pointer'>
               {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
+            </th>
+            <th class='pointer'>
+              {{employee?.ward?.district?.province?.name}}
+            </th>
+            <th class='pointer'>
+              {{employee?.ward?.district?.name}}
+            </th>
+            <th class='pointer'>
+              {{employee?.ward?.name}}
             </th>
             <th class='pointer'>
               {{employee?.address}}
