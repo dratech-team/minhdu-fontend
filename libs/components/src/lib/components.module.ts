@@ -27,6 +27,7 @@ import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 import { TransformPipe } from './pipes/transform.pipe';
 import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
+import { MouseRightChipPositionComponent } from './mouse-right-position-of-branch/mouse-right-chip-position.component';
 
 @NgModule({
   imports: [
@@ -60,7 +61,8 @@ import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
     ShowAlertComponent,
     TransformUnitPipe,
     TransformPipe,
-    DialogSharedComponent
+    DialogSharedComponent,
+    MouseRightChipPositionComponent
   ],
   providers: [DecimalPipe],
   exports: [
@@ -78,7 +80,8 @@ import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
     ShowAlertComponent,
     TransformUnitPipe,
     TransformPipe,
-    DialogSharedComponent
+    DialogSharedComponent,
+    MouseRightChipPositionComponent
   ],
 })
 export class ComponentsModule {}

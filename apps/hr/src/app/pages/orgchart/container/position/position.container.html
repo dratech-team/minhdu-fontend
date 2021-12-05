@@ -40,7 +40,7 @@
           </thead>
           <tbody *ngIf='(branch$| async) as branch'>
           <tr *ngFor='let position of branch.positions ; let i = index'
-              (contextmenu)='childPosition.onContextMenu($event,position)'>
+              (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'>
             <th class='pointer' (click)='updatePosition(position)'>
               {{i + 1}}
             </th>

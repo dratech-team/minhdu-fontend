@@ -69,18 +69,21 @@ export class PositionContainer implements OnInit {
   onEmployee(event: any){
     this.router.navigate(['ho-so'], {
       queryParams:{
-        position: event.name
+        position: event.position.name,
+        branch: event.branch.name,
       }
     }).then()
   }
 
   onPayroll(event: any){
-    this.store.dispatch(PayrollAction.updateStatePayroll({position: event.name}))
+    this.store.dispatch(PayrollAction.updateStatePayroll(
+      {position: event.position.name, branch:  event.branch.name,}))
     this.router.navigate(['phieu-luong']).then()
   }
 
   onOvertime(event: any){
-    this.store.dispatch(PayrollAction.updateStatePayroll({position: event.name}))
+    this.store.dispatch(PayrollAction.updateStatePayroll(
+      {position: event.position.name, branch:  event.branch.name,}))
     this.router.navigate(['phieu-luong'], {
       queryParams:{
         type:'overtime'

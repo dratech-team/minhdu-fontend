@@ -23,6 +23,7 @@ import { BranchContainer } from './container/branch/branch.container';
 import { DialogBranchComponent } from './component/dialog-branch/dialog-branch.component';
 import { AllowanceBranchComponent } from './component/dialog-allowance-branch/allowance-branch.component';
 import { DetailBranchContainer } from './container/detail-branch/detail-branch.container';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { DetailBranchContainer } from './container/detail-branch/detail-branch.c
     MatProgressBarModule,
     MatProgressSpinnerModule,
     OrgchartRoutingModule,
-    MatDialogModule
+    MatDialogModule,
+    ContextMenuModule
   ],
   declarations: [
     DialogPositionComponent,

@@ -1,6 +1,6 @@
 <!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
 
-  <div class='mb-2 ' style='width: 96% ; margin: 0 auto'>
+<div class='mb-2 ' style='width: 96% ; margin: 0 auto'>
     <div class='w-100'>
       <div  style='max-width: 1500px ; margin: 0 auto'>
         <div class='row h3 '>Đơn vị</div>
@@ -47,7 +47,9 @@
           </tr>
           </thead>
           <tbody *ngIf='(branches$| async) as branches'>
-          <tr *ngFor='let branch of branches ; let i = index' (contextmenu)='childBranch.onContextMenu($event,branch)'>
+          <tr *ngFor='let branch of branches ; let i = index'
+              [contextMenu]='childBranch'
+              [contextMenuSubject]='branch'>
             <th class='pointer' (click)='detailBranch(branch)'>
               {{i + 1}}
             </th>
@@ -61,9 +63,12 @@
               <mat-chip-list>
                 <mat-chip
                   (click)='detailBranch(branch)'
+                  [contextMenu]='childChip'
+                  [contextMenuSubject]='{position: position, branch: branch}'
                   [style]='{"background": i%2  === 0? "#dddddd":"white"}'
                   *ngFor='let position of branch.positions'>
                   {{position.name}}
+
                 </mat-chip>
               </mat-chip-list>
             </th>
@@ -83,14 +88,58 @@
       </div>
     </div>
   </div>
-<app-mouse-right #childBranch
-                 [type]='pageType.BRANCH'
-                 (addEvent)='addBranch()'
-                 (readEvent)='detailBranch($event)'
-                 (deleteEvent)='deleteBranch($event)'
-                 (Employee)='onEmployee($event)'
-                 (payroll)='onPayroll($event)'
-                 (overtime)='onOvertime($event)'
-                 (listPosition)='onListPosition($event)'
-                 (Update)='updateBranch($event)'
-></app-mouse-right>
+<context-menu #childBranch>
+  <ng-template contextMenuItem
+               (execute)='addBranch()'>
+    Thêm
+  </ng-template>
+  <ng-template
+               contextMenuItem
+               (execute)='deleteBranch($event.item)'>
+    Xóa
+  </ng-template>
+  <ng-template contextMenuItem
+               (execute)='detailBranch($event.item)'>
+Xem chi tiết
+  </ng-template>
+  <ng-template
+               contextMenuItem
+               (execute)='updateBranch($event.item)'>
+    Sửa
+  </ng-template>
+
+  <ng-template
+               contextMenuItem
+               (execute)='onEmployee($event.item)'>
+    Hồ sơ
+  </ng-template>
+  <ng-template
+               contextMenuItem
+               (execute)='onPayroll($event.item)'>
+    Bảng lương
+  </ng-template>
+  <ng-template contextMenuItem
+               (execute)='onOvertime($event.item)'>
+    Tăng ca
+  </ng-template>
+  <ng-template  contextMenuItem
+               (execute)='onListPosition($event.item)'>
+    Danh sách chức vụ
+  </ng-template>
+</context-menu>
+<context-menu #childChip>
+  <ng-template
+    contextMenuItem
+    (execute)='onEmployeePositionChip($event.item)'>
+    Hồ sơ
+  </ng-template>
+  <ng-template
+    contextMenuItem
+    (execute)='onPayrollPositionChip($event.item)'>
+    Bảng lương
+  </ng-template>
+  <ng-template contextMenuItem
+               (execute)='onOvertimePositionChip($event.item)'>
+    Tăng ca
+  </ng-template>
+</context-menu>

@@ -97,4 +97,31 @@ export class BranchContainer implements OnInit {
     this.dialog.open(DialogBranchComponent,
       { width: 'fit-content', data: { branch: $event, isUpdate: true } });
   }
+
+  onEmployeePositionChip(item: any) {
+    this.router.navigate(['ho-so'], {
+      queryParams:{
+        branch: item.branch.name,
+        position: item.position.name,
+      }
+    }).then()
+  }
+
+  onPayrollPositionChip(item: any) {
+    this.store.dispatch(PayrollAction.updateStatePayroll(
+      {branch: item.branch.name, position: item.position.name}
+    ))
+    this.router.navigate(['phieu-luong']).then()
+  }
+
+  onOvertimePositionChip(item: any){
+    this.store.dispatch(PayrollAction.updateStatePayroll(
+      {branch: item.branch.name, position: item.position.name}
+    ))
+    this.router.navigate(['phieu-luong'], {
+      queryParams:{
+        type:'overtime'
+      }
+    }).then()
+  }
 }
