@@ -86,7 +86,12 @@ export class BranchContainer implements OnInit {
   }
 
   onListPosition(event: any) {
-    this.router.navigate(['to-chuc/chuc-vu', event.id]).then()
+    this.router.navigate(['to-chuc/chuc-vu'],
+      {
+        queryParams:{
+          branchId: event.id,
+        }
+      }).then()
   }
 
   updateBranch($event: any) {

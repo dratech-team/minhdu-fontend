@@ -84,6 +84,11 @@ export class DetailBranchContainer implements OnInit {
   }
 
   onListPosition(id: number) {
-    this.router.navigate(['to-chuc/chuc-vu', id]).then()
+    this.router.navigate(['to-chuc/chuc-vu'],
+      {
+        queryParams:{
+          branchId: id,
+        }
+      }).then()
   }
 }

@@ -57,6 +57,11 @@ export const navItems: INavData[] = [
     icon: 'cil-lock-locked'
   },
   {
+    name: 'Chức vụ',
+    url: '/to-chuc/chuc-vu',
+    icon: 'cil-lock-locked'
+  },
+  {
     title: true,
     name: 'Hệ thống'
   },

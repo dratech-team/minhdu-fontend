@@ -3,7 +3,11 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { OrgchartEnum, PayrollEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import { PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {
+  getAllPosition,
+  getPositionLoaded,
+  PositionActions
+} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -12,13 +16,18 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { ActivatedRoute, Router } from '@angular/router';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Observable } from 'rxjs';
+import { Branch } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'position.container.html'
 })
 export class PositionContainer implements OnInit {
-  branch$ = this.store.select(getBranchById(this.branchId));
-  positionLoaded$ = this.store.pipe(select(getOrgchartLoaded));
+  branchId: number | undefined = undefined;
+  branch$!: Observable<Branch | undefined>;
+  branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
+  positionLoaded$ = this.store.pipe(select(getPositionLoaded));
+  position$ = this.store.pipe(select(getAllPosition));
   type = OrgchartEnum;
   pageType = PageTypeEnum;
   pageSize = 30;
@@ -29,11 +38,24 @@ export class PositionContainer implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
     private readonly router: Router,
+    private readonly activeRouter: ActivatedRoute,
     private readonly store: Store<AppState>) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(OrgchartActions.getBranch({ id: this.branchId }));
+    this.activeRouter.queryParams.subscribe(val => {
+      if (val.branchId) {
+        this.branchId = val.branchId;
+        if (this.branchId) {
+          this.branch$ = this.store.select(getBranchById(this.branchId));
+          this.store.dispatch(OrgchartActions.getBranch({ id: this.branchId }));
+        }
+      } else {
+        this.branchId = undefined;
+        this.store.dispatch(PositionActions.loadPosition());
+      }
+    });
+
     this.positions.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
       this.store.dispatch(PositionActions.searchPosition({ position: val }));
     });
@@ -51,14 +73,10 @@ export class PositionContainer implements OnInit {
     });
   }
 
-  get branchId(): number {
-    return this.activatedRoute.snapshot.params.id;
-  }
-
   deletePosition($event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
-      if (val) {
+      if (val && this.branchId) {
         this.store.dispatch(PositionActions.deletePosition({ id: $event.id, branchId: this.branchId }));
       }
     });

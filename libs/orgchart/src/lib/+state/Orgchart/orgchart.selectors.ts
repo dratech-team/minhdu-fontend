@@ -34,9 +34,14 @@ export const getOrgchartEntities = createSelector(
   selectEntities
 );
 
-export const getBranchById = (id: number) => createSelector(
-  getOrgchartEntities,
-  (branchEntities) => branchEntities[id]
+export const getBranchById = (id: number|undefined) =>
+  createSelector(getOrgchartEntities, (branchEntities) => {
+    if(id){
+      return  branchEntities[id]
+    }else{
+      return undefined
+    }
+  }
 );
 
 export const getOrgchartLoaded = createSelector(

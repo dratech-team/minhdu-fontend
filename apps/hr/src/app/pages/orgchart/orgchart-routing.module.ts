@@ -7,7 +7,7 @@ import { DetailBranchContainer } from './container/detail-branch/detail-branch.c
 
 const routes: Routes = [
   {
-    path: 'chuc-vu/:id',
+    path: 'chuc-vu',
     component: PositionContainer
   },
   {

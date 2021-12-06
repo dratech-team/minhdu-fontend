@@ -4,66 +4,104 @@
   <div class='d-flex justify-content-center mb-2 '>
     <div>
       <div style='width: 1050px;'>
-        <div class=' h3 '>Chức vụ</div>
+        <div *ngIf='this.branchId else title'>
+          <div *ngIf='(branch$|async) as branch' class=' h3 '>Chức vụ của đơn vị {{branch.name}}</div>
+        </div>
+       <ng-template #title>
+         <div class=' h3 '>Chức vụ</div>
+       </ng-template>
         <div>
           <button (click)='addPosition()' class='btn btn-primary mt-3 '>Tạo chức vụ</button>
         </div>
       </div>
-      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
-      <div class='fixTableHead mt-5 ' *ngIf='(positionLoaded$|async)'>
-        <table style='width: 1050px;'>
-          <thead>
-          <tr>
-            <th style='width: 50px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
-              <input disabled>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Mã chức vụ</div>
-              <input  disabled>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-              <input class='form-control border text-center' type='text' matInput [formControl]='positions'>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>
-                Ngày công chuẩn <br /> (Mỗi nhân viên có thể sẽ khác nhau)
-              </div>
-              <input  disabled>
-            </th>
-            <th>
-              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
-              <input  disabled>
-            </th>
-          </tr>
-          </thead>
-          <tbody *ngIf='(branch$| async) as branch'>
-          <tr *ngFor='let position of branch.positions ; let i = index'
-              (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'>
-            <th class='pointer' (click)='updatePosition(position)'>
-              {{i + 1}}
-            </th>
-            <th class='pointer' (click)='updatePosition(position)'>
-              {{position.id}}
-            </th>
-            <th class='pointer' (click)='updatePosition(position)'>
-              {{position.name}}
-            </th>
-            <th class='pointer' (click)='updatePosition(position)'>
-              {{position.workday}}
-            </th>
-            <th class='pointer' (click)='updatePosition(position)'>
-              {{position?._count?.employees}}
-            </th>
-          </tr>
-          <tr *ngIf='!branch.positions || branch.positions.length === 0 ' style='height: 50vh'>
-            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)  && !(branchLoaded$ | async)  else tablePosition  ' count='15' appearance='line'></ngx-skeleton-loader>
+      <ng-template #tablePosition>
+        <div class='fixTableHead mt-5 '>
+          <table style='width: 1050px;'>
+            <thead>
+            <tr>
+              <th style='width: 50px'>
+                <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Mã chức vụ</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
+                <input class='form-control border text-center' type='text' matInput [formControl]='positions'>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>
+                  Ngày công chuẩn <br /> (Mỗi nhân viên có thể sẽ khác nhau)
+                </div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
+                <input disabled>
+              </th>
+            </tr>
+            </thead>
+            <ng-template [ngIf]='!this.branchId'>
+              <tbody *ngIf='(position$ |async) as positions'>
+              <tr *ngFor='let position of  positions ; let i = index'
+                  (contextmenu)='childPosition.onContextMenu($event,{position: position})'>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{i + 1}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.id}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.name}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.workday}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position?._count?.employees}}
+                </th>
+              </tr>
+              <tr *ngIf='(positions.length === 0)' style='height: 50vh'>
+                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+                </td>
+              </tr>
+              </tbody>
+            </ng-template>
+
+            <ng-template [ngIf]='this.branchId' >
+              <tbody *ngIf='(branch$|async) as branch'>
+              <tr *ngFor='let position of  branch.positions ; let i = index'
+                  (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{i + 1}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.id}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.name}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position.workday}}
+                </th>
+                <th class='pointer' (click)='updatePosition(position)'>
+                  {{position?._count?.employees}}
+                </th>
+              </tr>
+              <tr *ngIf='(!branch.positions ||branch.positions.length === 0)' style='height: 50vh'>
+                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+                </td>
+              </tr>
+              </tbody>
+            </ng-template>
+
+          </table>
+        </div>
+      </ng-template>
+
     </div>
   </div>
 </div>
@@ -77,5 +115,4 @@
   (payroll)='onPayroll($event)'
   (overtime)='onOvertime($event)'
 >
-
 </app-mouse-right>
