@@ -11,6 +11,7 @@ import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class HolidayComponent implements OnInit {
 
   constructor(
     private readonly dialog: MatDialog,
+    private readonly router: Router,
     private readonly store: Store<AppState>
   ) {
   }
@@ -83,6 +85,10 @@ export class HolidayComponent implements OnInit {
         }
       }
     });
+  }
+
+  detailHoliday(id: number){
+    this.router.navigate(['ban-mau/ngay-le/chi-tiet-ngay-le', id]).then()
   }
 
   deleteHoliday($event: any) {

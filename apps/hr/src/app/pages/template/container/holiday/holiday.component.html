@@ -67,33 +67,33 @@
           <tbody *ngIf='(holidays$| async) as holidays'>
           <tr *ngFor='let holiday of holidays ; let i = index'
               (contextmenu)='child.onContextMenu($event,holiday)'>
-            <th class=' pointer ' (click)='Holiday(holiday)'>
+            <th class=' pointer ' (click)='detailHoliday(holiday.id)'>
               {{i + 1}}
             </th>
-            <th class=' pointer ' (click)='Holiday(holiday)'>
+            <th class=' pointer ' (click)='detailHoliday(holiday.id)'>
               {{holiday.name}}
             </th>
-            <th class='  pointer ' (click)='Holiday(holiday)'>
+            <th class='  pointer ' (click)='detailHoliday(holiday.id)'>
               {{holiday.datetime |date: 'dd/MM/yyyy'}}
             </th>
-            <th class='  pointer ' (click)='Holiday(holiday)'>
+            <th class='  pointer ' (click)='detailHoliday(holiday.id)'>
               {{holiday.rate}}
             </th>
-            <th class='  pointer ' *ngIf='holiday.price' (click)='Holiday(holiday)'>
+            <th class='  pointer ' *ngIf='holiday.price' (click)='detailHoliday(holiday.id)'>
               {{holiday.price | number :'1.0-0'}}đ
             </th>
-            <th class='  pointer ' *ngIf='!holiday.price' (click)='Holiday(holiday)'>
+            <th class='  pointer ' *ngIf='!holiday.price' (click)='detailHoliday(holiday.id)'>
             </th>
-            <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='Holiday(holiday)'>
+            <th class='  pointer ' *ngIf='!holiday.isConstraint' (click)='detailHoliday(holiday.id)'>
               Không ràng buộc
             </th>
-            <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='Holiday(holiday)'>
+            <th class='  pointer ' *ngIf='holiday.isConstraint' (click)='detailHoliday(holiday.id)'>
               Có ràng buộc
             </th>
-            <th class=' pointer p-1' (click)='Holiday(holiday)'>
+            <th class=' pointer p-1' (click)='detailHoliday(holiday.id)'>
               <mat-chip-list>
                 <mat-chip
-                  (click)='Holiday(holiday)'
+                  (click)='detailHoliday(holiday.id)'
                   [style]='{"background": i%2  === 0? "#dddddd":"white"}'
                   *ngFor='let position of holiday.positions'>
                   {{position.name}}

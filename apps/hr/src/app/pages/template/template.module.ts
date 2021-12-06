@@ -31,6 +31,7 @@ import { TemplateSalaryEffect } from './+state/teamlate-salary/template-salary.e
 import { SalaryComponent } from './container/salary/salary.component';
 import { SystemModule } from '@minhdu-fontend/system';
 import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
+import { DetailHoliday } from './container/detail-holiday/detail-holiday';
 
 
 
@@ -70,7 +71,8 @@ import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
     DialogTemplateOvertimeComponent,
     HolidayComponent,
     AddHolidayComponent,
-    TransformBlockSalaryPipe
+    TransformBlockSalaryPipe,
+    DetailHoliday
   ]
 })
 export class TemplateModule {

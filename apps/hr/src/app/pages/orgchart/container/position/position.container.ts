@@ -86,20 +86,22 @@ export class PositionContainer implements OnInit {
     this.router.navigate(['ho-so'], {
       queryParams: {
         position: event.position.name,
-        branch: event.branch.name
+        branch: event.branch ? event.branch.name : ''
       }
     }).then();
   }
 
   onPayroll(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      { position: event.position.name, branch: event.branch.name }));
+      { position: event.position.name, branch: event.branch ? event.branch.name: '' }));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertime(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      { position: event.position.name, branch: event.branch.name, filter: PayrollEnum.PAYROLL_OVERTIME }));
+      { position: event.position.name, branch:
+        event.branch? event.branch.name : '',
+        filter: PayrollEnum.PAYROLL_OVERTIME }));
     this.router.navigate(['phieu-luong']).then();
   }
 }
