@@ -62,7 +62,6 @@ export const payrollReducer = createReducer(
   ),
 
   on(PayrollAction.updatePayrollSuccess, (state, { payroll }) => {
-      console.log(payroll);
       return adapter.updateOne({ id: payroll.id, changes: payroll }, { ...state, loaded: true });
     }
   ),

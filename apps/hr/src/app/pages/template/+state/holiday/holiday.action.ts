@@ -13,7 +13,7 @@ export const AddHolidaySuccess = createAction(
 );
 
 export const handleHolidayError = createAction(
-  '[API_HOLIDAY] Handle HOLIDAY Error',
+  '[API_HOLIDAY] Handle HOLIDAY Error'
 );
 
 export const LoadAllHoliday = createAction(
@@ -32,7 +32,7 @@ export const LoadInitHolidaySuccess = createAction(
 
 export const LoadMoreHoliday = createAction(
   '[Load_HOLIDAY] Load More holiday',
-  props<{holidayDTO: HolidayDTO }>()
+  props<{ holidayDTO: HolidayDTO }>()
 );
 
 export const LoadMoreHolidaySuccess = createAction(
@@ -42,14 +42,27 @@ export const LoadMoreHolidaySuccess = createAction(
 
 export const UpdateHoliday = createAction(
   '[UPDATE_HOLIDAY] Update Holiday',
-  props<{ id: number, holiday: any }>()
+  props<{ id: number, holiday: any, updateDetail: boolean }>()
 );
 
 export const DeleteHoliday = createAction(
   '[DELETE_HOLIDAY] Delete Holiday',
   props<{ id: number }>()
 );
+export const getHoliday = createAction(
+  '[GET_HOLIDAY] Get One Holiday',
+  props<{ id: number, params?: { position?: string, branch?: string, code?: number, name?: string } }>()
+);
 
+export const getHolidaySuccess = createAction(
+  '[GET_HOLIDAY] Get One Holiday Success',
+  props<{ holiday: Holiday }>()
+);
+
+export const updateStateHoliday = createAction(
+  '[State_HOLIDAY] Update state Holiday ',
+  props<{ branch?: string, position?: string }>()
+);
 
 export const HolidayAction = {
   AddHoliday,
@@ -61,5 +74,8 @@ export const HolidayAction = {
   LoadMoreHoliday,
   LoadMoreHolidaySuccess,
   UpdateHoliday,
-  DeleteHoliday
+  DeleteHoliday,
+  getHoliday,
+  getHolidaySuccess,
+  updateStateHoliday
 };

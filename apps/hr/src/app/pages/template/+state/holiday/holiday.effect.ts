@@ -7,7 +7,8 @@ import { HolidayService } from '../../../payroll/service/holiday.service';
 import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { selectorHolidayTotal } from './holiday.selector';
+import { selectBranchHoliday, selectorHolidayTotal, selectPositionHoliday } from './holiday.selector';
+import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Injectable()
 export class HolidayEffect {
@@ -69,13 +70,28 @@ export class HolidayEffect {
     this.action$.pipe(
       ofType(HolidayAction.UpdateHoliday),
       switchMap((pram) => this.holidayService.update(pram.id, pram.holiday).pipe(
-        map(_ => HolidayAction.LoadAllHoliday()),
-        catchError((err) => {
-            this.store.dispatch(HolidayAction.handleHolidayError());
-            return throwError(err);
+        map(_ => {
+          console.log(pram.updateDetail)
+            if (pram.updateDetail) {
+
+              return HolidayAction.getHoliday({
+                id: pram.id,
+                params: {
+                  position: getState(selectPositionHoliday, this.store),
+                  branch: getState(selectBranchHoliday, this.store)
+                }
+              });
+            } else {
+              return HolidayAction.LoadAllHoliday();
+            }
           }
-        )
-      ))
+        ))
+      ),
+      catchError((err) => {
+          this.store.dispatch(HolidayAction.handleHolidayError());
+          return throwError(err);
+        }
+      )
     ));
 
   deleteHoliday$ = createEffect(() =>
@@ -87,6 +103,21 @@ export class HolidayEffect {
           );
         }
       )
+    ));
+
+  getHoliday$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(HolidayAction.getHoliday),
+      switchMap((props) => {
+          return this.holidayService.getOneHoliday(props.id, props.params);
+        }
+      ),
+      map(res => {
+          this.snackBar.open('Tải ngày lễ thành công', '', { duration: 1500 });
+          return HolidayAction.getHolidaySuccess({ holiday: res });
+        }
+      ),
+      catchError(err => throwError(err))
     ));
 
   constructor(

@@ -1,12 +1,131 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>Title</title>
-</head>
-<body>
-<div>
-  hello
+<div class='main-content'>
+
+  <div style=' margin:0 30px'>
+    <ngx-skeleton-loader *ngIf='!(loaded$ | async); else holiday' count='10' appearance='line'></ngx-skeleton-loader>
+    <ng-template #holiday>
+      <div *ngIf='(holiday$|async) as holiday'>
+        <div class=' h3 mx-auto ' style='width: 1500px ;'>Ngày lễ {{holiday.name}} </div>
+      </div>
+      <div class='table-scroll mx-auto mt-3'>
+        <table [formGroup]='formGroup' style='width: 1500px'>
+          <thead>
+          <tr>
+            <th style='width: 50px'>
+              <div class='border-top text-center'>stt</div>
+              <input disabled>
+            </th>
+            <th style='width: 120px'>
+              <div class='border-top text-center'>Mã nhân viên</div>
+              <input class='form-control text-center' formControlName='code'>
+            </th>
+            <th style='width: 250px'>
+              <div class='border-top text-center'>
+                <div class='d-flex justify-content-center' style='height: 100%'>
+                Tên nhân viên
+                </div>
+              </div>
+              <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
+            </th>
+            <th>
+              <div class='border-top text-center'>Chức vụ</div>
+              <input class='form-control' type='text' matInput [matAutocomplete]='position' [formControl]='fCtrlPosition'>
+              <mat-autocomplete #position='matAutocomplete'>
+                <mat-option *ngFor='let position of positions$ | async'
+                            [value]='position.name' (click)='onSelectPosition(position.name)'
+                            (onSelectionChange)='onSelectPosition(position.name)'>
+                  {{position.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </th>
+            <th style='width: 200px'>
+              <div class='title-profile'>Đơn vị</div>
+              <input class='form-control' type='text' matInput [matAutocomplete]='branch' [formControl]='fCtrlBranch'>
+              <mat-autocomplete #branch='matAutocomplete'>
+                <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                            (onSelectionChange)='onSelectBranch(branch.name)'>
+                  {{branch.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </th>
+            <th style='width: 150px'>
+              <div class='border-top text-center'>Hệ số</div>
+              <input disabled>
+            </th>
+            <th style='width: 170px'>
+              <div class='border-top text-center'>Giá</div>
+              <input type='number' disabled>
+            </th>
+            <th style='width: 170px'>
+              <div class='border-top text-center'>Ràng buộc ngày lễ</div>
+              <input disabled>
+            </th>
+          </tr>
+          </thead>
+          <tbody *ngIf='(holiday$| async) as holiday'>
+          <tr *ngFor='let employee of holiday.employees ; let i = index'
+              [contextMenu]='child'
+              [contextMenuSubject]='holiday'
+          >
+            <th class=' pointer ' (click)='detailPayroll(employee.salary.payrollId)'
+                [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{i + 1}}
+            </th>
+            <th class='  pointer '  (click)='detailPayroll(employee.salary.payrollId)'
+                [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{employee.id}}
+            </th>
+            <th class='  pointer ' (click)='detailPayroll(employee.salary.payrollId)'
+                [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{employee.lastName}}
+            </th>
+            <th class=' pointer p-1' (click)='detailPayroll(employee.salary.payrollId)'>
+              {{employee.position.name}}
+            </th>
+            <th class='  pointer '  (click)='detailPayroll(employee.salary.payrollId)'
+                [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{employee.branch.name}}
+            </th>
+            <th class='  pointer ' (click)='detailPayroll(employee.salary.payrollId)'>
+              {{holiday?.rate}}
+            </th>
+            <th class='  pointer '   (click)='detailPayroll(employee.salary.payrollId)'>
+              {{ employee?.salary?.price ?  (employee?.salary?.price | number : '1-0.0') + 'đ' :
+              'Chưa cập nhật'}}
+            </th>
+            <th class='  pointer ' *ngIf='!holiday.isConstraint'  (click)='detailPayroll(employee.salary.payrollId)'>
+              Không ràng buộc
+            </th>
+            <th class='  pointer ' *ngIf='holiday.isConstraint'  (click)='detailPayroll(employee.salary.payrollId)'>
+              Có ràng buộc
+            </th>
+          </tr>
+          <tr *ngIf='!holiday.employees || holiday.employees.length === 0 ' class='position-relative'>
+            <td colspan='8' class='font-xl font-weight-bold' style='height:50vh '>
+              <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có ngày lễ nào !</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+    <context-menu #child>
+      <ng-template contextMenuItem
+                   (execute)='updateHoliday($event.item)'>
+        Sửa
+      </ng-template>
+    </context-menu>
+  </div>
 </div>
-</body>
-</html>
+
+<style>
+  .table-scroll th:nth-child(3) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 170px;
+    z-index: 2;
+  }
+
+  .table-scroll thead th:nth-child(3) {
+    z-index: 5;
+  }
+</style>

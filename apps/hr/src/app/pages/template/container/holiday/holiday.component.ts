@@ -12,6 +12,7 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { Router } from '@angular/router';
+import { Position } from '@minhdu-fontend/data-models';
 
 
 @Component({
@@ -69,29 +70,34 @@ export class HolidayComponent implements OnInit {
     );
   }
 
-  Holiday($event?: any) {
+  Holiday() {
     const dialogRef = this.dialog.open(AddHolidayComponent, {
       width: '35%',
-      data: $event,
       panelClass: 'ccc',
       backdropClass: 'ggg'
     });
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        if (val.isUpdate) {
-          this.store.dispatch(HolidayAction.UpdateHoliday({ id: val.id, holiday: val.data }));
-        } else {
-          this.store.dispatch(HolidayAction.AddHoliday({ holiday: val.data }));
-        }
-      }
+  }
+
+  updateHoliday($event?: any) {
+    const dialogRef = this.dialog.open(AddHolidayComponent, {
+      width: '35%',
+      data: { holiday: $event, upDateDetail: false, isUpdate: true },
+      panelClass: 'ccc',
+      backdropClass: 'ggg'
     });
   }
 
-  detailHoliday(id: number){
-    this.router.navigate(['ban-mau/ngay-le/chi-tiet-ngay-le', id]).then()
+  detailHoliday(id: number, position?: Position) {
+    if (position) {
+      this.store.dispatch(HolidayAction.updateStateHoliday({
+        position: position.name
+      }));
+    }
+    this.router.navigate(['ban-mau/ngay-le/chi-tiet-ngay-le', id]).then();
   }
 
   deleteHoliday($event: any) {
+
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
@@ -116,10 +122,10 @@ export class HolidayComponent implements OnInit {
     return {
       take: this.pageSize,
       skip: this.pageIndexInit,
-      name: val.name,
       rate: val.rate,
       position: val.position,
-      datetime: val.datetime
+      datetime: val.datetime,
+      isConstraint: val.isConstraint
     };
   }
 

@@ -21,15 +21,9 @@
           <tr>
             <th style='width: 50px'>
               <div class='border-top text-center'>stt</div>
-              <input disabled
-              >
+              <input disabled>
             </th>
-            <th>
-              <div class='border-top text-center'>Tên ngày lễ</div>
-              <input class='form-control ' type='text' formControlName='name'
-              >
-            </th>
-            <th>
+            <th style='width:200px'>
               <div class='border-top text-center'>Ngày</div>
               <input class='form-control  ' type='date' formControlName='datetime'>
             </th>
@@ -45,11 +39,11 @@
             </th>
             <th style='width: 170px'>
               <div class='border-top text-center'>Ràng buộc ngày lễ</div>
-              <select class='select border-top' style='width:100%'>
-                <option value=''>Mặc định</option>
-                <option value='{{false}}'>Có</option>
-                <option value='{{true}}'>Không</option>
-              </select>
+              <mat-select class='select border-top' style='width:100%' formControlName='isConstraint'>
+                <mat-option value=''>Mặc định</mat-option>
+                <mat-option value='{{false}}'>Có</mat-option>
+                <mat-option value='{{true}}'>Không</mat-option>
+              </mat-select>
             </th>
             <th>
               <div class='border-top text-center'>Chức vụ</div>
@@ -70,10 +64,7 @@
             <th class=' pointer ' (click)='detailHoliday(holiday.id)'>
               {{i + 1}}
             </th>
-            <th class=' pointer ' (click)='detailHoliday(holiday.id)'>
-              {{holiday.name}}
-            </th>
-            <th class='  pointer ' (click)='detailHoliday(holiday.id)'>
+            <th  class='  pointer ' (click)='detailHoliday(holiday.id)'>
               {{holiday.datetime |date: 'dd/MM/yyyy'}}
             </th>
             <th class='  pointer ' (click)='detailHoliday(holiday.id)'>
@@ -93,7 +84,7 @@
             <th class=' pointer p-1' (click)='detailHoliday(holiday.id)'>
               <mat-chip-list>
                 <mat-chip
-                  (click)='detailHoliday(holiday.id)'
+                  (click)='detailHoliday(holiday.id,position)'
                   [style]='{"background": i%2  === 0? "#dddddd":"white"}'
                   *ngFor='let position of holiday.positions'>
                   {{position.name}}
@@ -112,8 +103,8 @@
     </div>
 
   </ng-template>
-  <app-mouse-right #child (addEvent)='Holiday($event)'
-                   (readEvent)='Holiday($event)'
+  <app-mouse-right #child (addEvent)='Holiday()'
+                   (readEvent)='updateHoliday($event)'
                    (deleteEvent)='deleteHoliday($event)'
   ></app-mouse-right>
 </div>

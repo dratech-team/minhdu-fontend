@@ -1,4 +1,4 @@
-import { Position } from '@minhdu-fontend/data-models';
+import { Employee, Position } from '@minhdu-fontend/data-models';
 
 export interface Holiday {
   id: number,
@@ -8,7 +8,8 @@ export interface Holiday {
   positions: Position[]
   note?: string,
   isConstraint?: boolean,
-  price?: number
+  price?: number,
+  employees?: any[]
 }
 
 export interface HolidayDTO {

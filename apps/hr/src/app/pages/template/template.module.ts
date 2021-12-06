@@ -32,6 +32,7 @@ import { SalaryComponent } from './container/salary/salary.component';
 import { SystemModule } from '@minhdu-fontend/system';
 import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 
 
@@ -62,7 +63,8 @@ import { DetailHoliday } from './container/detail-holiday/detail-holiday';
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    SystemModule
+    SystemModule,
+    ContextMenuModule
   ],
   declarations: [
     TemplateOvertimeComponent,

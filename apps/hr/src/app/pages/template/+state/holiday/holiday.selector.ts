@@ -20,6 +20,14 @@ export const selectorHolidayTotal = createSelector(
   selectorHolidayState,
   fromHoliday.selectTotal
 );
+
+export const  getHolidayById = (id: number) => createSelector(
+  selectorAllHoliday,
+  (holiday) =>{
+    return  holiday.find(item => item.id == id)
+  }
+)
+
 export const selectHolidayLoaded = createSelector(
   selectorHolidayState,
   (state) => {
@@ -36,5 +44,18 @@ export const selectHolidayAdding = createSelector(
   selectorHolidayState,
   (state) => {
     return state.adding;
+  }
+);
+export const selectBranchHoliday = createSelector(
+  selectorHolidayState,
+  (state) => {
+    return state.branch;
+  }
+);
+
+export const selectPositionHoliday = createSelector(
+  selectorHolidayState,
+  (state) => {
+    return state.position;
   }
 );

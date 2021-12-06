@@ -35,4 +35,8 @@ export class HolidayService extends BaseService<Holiday>{
     return super.delete(id);
   }
 
+  getOneHoliday(id: any, params: any): Observable<Holiday> {
+    return this.http.get<Holiday>(Api.HR.PAYROLL.holiday+ `/${id}`,{params});
+  }
+
 }

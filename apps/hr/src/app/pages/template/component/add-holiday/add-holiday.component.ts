@@ -41,24 +41,24 @@ export class AddHolidayComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
-    if (this.data) {
-      if (this.data.positions) {
-        this.positionSelected = [...this.data.positions];
+    if (this.data?.isUpdate) {
+      if (this.data.holiday.positions) {
+        this.positionSelected = [...this.data.holiday.positions];
       }
-      this.hidePrice = this.data.rate <= 1;
+      this.hidePrice = this.data.holiday.rate <= 1;
     }
 
     this.store.dispatch(PositionActions.loadPosition());
     this.formGroup = this.formBuilder.group({
-      name: [this.data?.name, Validators.required],
+      name: [this.data?.holiday?.name, Validators.required],
       datetime: [
         this.datePipe.transform(
-          this.data?.datetime, 'yyyy-MM-dd'
+          this.data?.holiday?.datetime, 'yyyy-MM-dd'
         ),
         Validators.required],
-      rate: [this.data ? this.data.rate : 1, Validators.required],
-      isConstraint: [this.data ? this.data?.isConstraint : true],
-      price: [this.data?.price]
+      rate: [this.data?.isUpdate ? this.data.holiday.rate : 1, Validators.required],
+      isConstraint: [this.data?.isUpdate ? this.data?.holiday?.isConstraint : true],
+      price: [this.data?.holiday?.price]
     });
 
     this.positions$ = searchAndAddAutocomplete(
@@ -96,8 +96,9 @@ export class AddHolidayComponent implements OnInit {
           : val.price
         : undefined
     };
-    if (this.data) {
-      this.store.dispatch(HolidayAction.UpdateHoliday({ id: this.data?.id, holiday: holiday }));
+    if (this.data?.isUpdate) {
+      this.store.dispatch(HolidayAction.UpdateHoliday({
+        id: this.data.holiday.id, holiday: holiday, updateDetail: this.data.updateDetail }));
     } else {
       this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
     }
