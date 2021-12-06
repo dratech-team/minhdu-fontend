@@ -16,6 +16,8 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { Router } from '@angular/router';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { Position } from '@minhdu-fontend/data-models';
+import * as lodash from 'lodash';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -29,23 +31,25 @@ export class TemplateOvertimeComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   employeeTypeEnum = EmployeeType;
+  fCtrlPosition = new FormControl('')
   formGroup = new FormGroup(
     {
       title: new FormControl(''),
       price: new FormControl(''),
       unit: new FormControl(''),
       note: new FormControl(''),
-      position: new FormControl(''),
       branch: new FormControl(''),
       employeeType: new FormControl('')
     }
   );
+  positionsSelected: Position[] = []
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly router: Router,
+    private readonly snackbar: MatSnackBar,
     private readonly store: Store<AppState>
   ) {
   }
@@ -61,6 +65,7 @@ export class TemplateOvertimeComponent implements OnInit {
         skip: this.pageIndexInit
       }
     }));
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -77,7 +82,7 @@ export class TemplateOvertimeComponent implements OnInit {
 
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.fCtrlPosition.valueChanges.pipe(startWith('')),
       this.positions$
     );
 
@@ -123,17 +128,43 @@ export class TemplateOvertimeComponent implements OnInit {
       price: val.price,
       unit: val.unit,
       note: val.note,
-      position: val.position,
-      branch: val.branch
+      branch: val.branch,
+      positions: this.positionsSelected.map(val => val.name)
     };
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('position')!.patchValue(branchName);
+
   }
 
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+  onSelectPosition(position: Position,event: any ,positionInput: HTMLElement): any {
+    if(event.isUserInput){
+      if(this.positionsSelected.length < 3){
+        if (position.id) {
+          if (this.positionsSelected.some(item => item.id === position.id)) {
+            this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+          } else {
+            this.positionsSelected.push(position);
+            const value = this.formGroup.value
+            this.store.dispatch(TemplateOvertimeAction.loadInit({templateOvertimeDTO: this.template(value)}))
+          }
+        }
+      }else{
+        this.snackbar.open('Chọn tối đa 3 chức vụ','', {duration: 1500})
+      }
+      setTimeout(() => {
+          this.fCtrlPosition.setValue('');
+          positionInput.blur();
+        }
+      );
+    }
+  }
+
+  removePosition(position: Position) {
+    lodash.remove(this.positionsSelected, position);
+    const value = this.formGroup.value
+    this.store.dispatch(TemplateOvertimeAction.loadInit({templateOvertimeDTO: this.template(value)}))
   }
 
   onOvertime(template: any, position?: Position) {

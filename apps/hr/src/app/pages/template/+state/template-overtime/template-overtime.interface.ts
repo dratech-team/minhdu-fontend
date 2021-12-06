@@ -26,7 +26,7 @@ export interface TemplateOvertimeDTO {
   price?: number,
   unit?: DatetimeUnitEnum,
   note?: string,
-  position?: string,
+  positions?: string[],
   department?: string,
   branch?: string
 }

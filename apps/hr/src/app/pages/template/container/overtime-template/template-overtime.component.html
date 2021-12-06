@@ -1,20 +1,18 @@
 <div class='main-content mx-auto' style='width: 98%'>
   <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-  <div>
+  <div style='width: 1700px' class='mx-auto'>
     <div class=' h3 '>Bản mẫu tăng ca</div>
     <div>
       <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
     </div>
   </div>
-
-  <div class='fixTableHead mt-5' style='width: 100%'
+  <div class='table-scroll mt-5'
        infiniteScroll
        [infiniteScrollDistance]='0.5'
        [scrollWindow]='false'
        [alwaysCallback]='true'
        (scrolled)='onScroll()'>
-
-    <table [formGroup]='formGroup'>
+    <table [formGroup]='formGroup'  style='width: 1700px'>
       <thead>
       <tr>
         <th style='width: 50px'>
@@ -65,13 +63,29 @@
             </mat-option>
           </mat-autocomplete>
         </th>
-        <th>
-          <div class='border-top text-center'>Chức vụ</div>
-          <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+        <th style=' width:500px'>
+          <div *ngIf='this.positionsSelected.length === 0 else chip' class='border-top text-center'>Chức vụ</div>
+          <ng-template #chip>
+            <mat-chip-list #chipList >
+              <mat-chip
+                style='font-size: 12px '
+                *ngFor='let position of positionsSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removePosition(position)'>
+                {{position.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </ng-template>
+          <input class='form-control' type='text' matInput [matAutocomplete]='position'
+                 [formControl]='fCtrlPosition'  #positionInput>
           <mat-autocomplete #position='matAutocomplete'>
             <mat-option *ngFor='let position of positions$ | async'
-                        [value]='position.name' (click)='onSelectPosition(position.name)'
-                        (onSelectionChange)='onSelectPosition(position.name)'>
+                        [value]='position.name' (click)='onSelectPosition(position,$event,positionInput)'
+                        (onSelectionChange)='onSelectPosition(position,$event,positionInput)'>
               {{position.name}}
             </mat-option>
           </mat-autocomplete>
@@ -87,10 +101,12 @@
       <tbody *ngIf='(templates$| async) as templates'>
       <tr *ngFor='let template of templates; let i = index'
           (contextmenu)='child.onContextMenu($event,template)'>
-        <th class='  pointer ' (click)='onOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{i + 1}}
         </th>
-        <th class='  pointer ' (click)='onOvertime(template)'>
+        <th class='  pointer ' (click)='onOvertime(template)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{template.title}}
         </th>
         <th class='  pointer ' (click)='onOvertime(template)'>
@@ -156,3 +172,12 @@
                    (deleteEvent)='deleteOvertime($event)'
   ></app-mouse-right>
 </div>
+<style>
+  .table-scroll th:nth-child(2) {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 50px;
+    min-width: 250px;
+    z-index: 2;
+  }
+</style>
