@@ -59,3 +59,10 @@ export const selectPositionHoliday = createSelector(
     return state.position;
   }
 );
+
+export const selectTotalHoliday = createSelector(
+  selectorHolidayState,
+  (state) => {
+    return state.total;
+  }
+);

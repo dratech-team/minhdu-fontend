@@ -16,7 +16,7 @@ export const HandleTemplateError = createAction(
 );
 export const loadALlTemplate = createAction(
   '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
-  props<{ positionId?: number | '', unit?: string, branchId?: number }>()
+  props<{ positionIds?: number[], unit?: string, branchId?: number, }>()
 );
 
 export const loadInit = createAction(
@@ -27,7 +27,7 @@ export const loadInit = createAction(
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Overtime] Load Template overtime Success',
-  props<{ templateOvertimes: TemplateOvertime[] }>()
+  props<{ templateOvertimes: TemplateOvertime[], total: number }>()
 );
 
 
@@ -39,7 +39,7 @@ export const loadMoreTemplateOverTime = createAction(
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Overtime] Load More Template overtime Success',
-  props<{ templateOvertimes: TemplateOvertime[] }>()
+  props<{ templateOvertimes: TemplateOvertime[], total: number }>()
 );
 
 export const updateTemplate = createAction(

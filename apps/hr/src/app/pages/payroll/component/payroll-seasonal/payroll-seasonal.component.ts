@@ -23,6 +23,7 @@ import { Payroll } from '../../+state/payroll/payroll.interface';
 })
 export class PayrollSeasonalComponent implements OnInit {
   @Input() payroll$!: Observable<Payroll[]>
+  @Input() total$!: Observable<number>
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   @Input() formGroup!: FormGroup;
   @Input() positions$!: Observable<Position[]>;

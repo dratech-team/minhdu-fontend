@@ -27,7 +27,7 @@ export const LoadInit = createAction(
 
 export const LoadInitHolidaySuccess = createAction(
   '[Load_HOLIDAY] Load holiday Success',
-  props<{ holidays: Holiday[] }>()
+  props<{ holidays: Holiday[], total: number }>()
 );
 
 export const LoadMoreHoliday = createAction(
@@ -37,7 +37,7 @@ export const LoadMoreHoliday = createAction(
 
 export const LoadMoreHolidaySuccess = createAction(
   '[Load_HOLIDAY] Load More holiday Success',
-  props<{ holidays: Holiday[] }>()
+  props<{ holidays: Holiday[], total: number }>()
 );
 
 export const UpdateHoliday = createAction(

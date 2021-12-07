@@ -37,3 +37,10 @@ export const selectTemplateAdding = createSelector(
     return state.adding;
   }
 );
+
+export const selectTotalTemplateOvertime = createSelector(
+  selectorTemplateState,
+  (state) => {
+    return state.total;
+  }
+);

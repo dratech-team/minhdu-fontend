@@ -7,7 +7,11 @@ import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
 import { TemplateSalaryComponent } from '../../component/template-salary/template-salary.component';
-import { selectorAllTemplate, selectTemplateAdding } from '../../+state/teamlate-salary/template-salary.selector';
+import {
+  selectorAllTemplate,
+  selectTemplateAdding,
+  selectTotalTemplateSalary
+} from '../../+state/teamlate-salary/template-salary.selector';
 import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants';
 
 
@@ -16,6 +20,7 @@ import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants'
 })
 export class SalaryComponent implements OnInit {
   adding$ = this.store.pipe(select(selectTemplateAdding));
+  total$ = this.store.pipe(select(selectTotalTemplateSalary));
   templateSalaries$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;

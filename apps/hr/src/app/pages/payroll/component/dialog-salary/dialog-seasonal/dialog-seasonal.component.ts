@@ -57,11 +57,11 @@ export class DialogSeasonalComponent implements OnInit {
 
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {
-        positionId: this.data?.payroll.employee?.position?.id,
+        positionIds: [this.data?.payroll.employee?.position?.id],
         unit: DatetimeUnitEnum.HOUR
       }));
     if (this.data.isUpdate) {
-      this.checkTemplate = true
+      this.checkTemplate = true;
       this.formGroup = this.formBuilder.group({
         datetime: [this.datePipe.transform(
           this.data.salary.datetime, 'yyyy-MM-dd')],
@@ -118,7 +118,7 @@ export class DialogSeasonalComponent implements OnInit {
       times: value.times,
       unit: value.unit,
       payrollId: this.data.isUpdate ? this.data.salary.payrollId : this.data.payroll.id,
-      type: value.unit === DatetimeUnitEnum.HOUR?  SalaryTypeEnum.OVERTIME: SalaryTypeEnum.PART_TIME
+      type: value.unit === DatetimeUnitEnum.HOUR ? SalaryTypeEnum.OVERTIME : SalaryTypeEnum.PART_TIME
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {

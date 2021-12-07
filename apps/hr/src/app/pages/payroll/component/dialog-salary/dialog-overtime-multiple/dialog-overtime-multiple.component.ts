@@ -17,6 +17,7 @@ import { PartialDayEnum, Position } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
 import { SalaryService } from '../../../service/salary.service';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
+import * as lodash from 'lodash';
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -42,7 +43,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   templateId?: number;
-  positionId?: number;
+  positionsSelected: Position[] = []
   datetimeUnitEnum = DatetimeUnitEnum;
   positionOfTempOver: Position[] = [];
   employeeType!: EmployeeType;
@@ -95,7 +96,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       });
     } else {
       this.formGroup = this.formBuilder.group({
-        datetime: [this.datePipe.transform(this.data.createdAt,'yyyy-MM-dd'),undefined],
+        datetime: [this.datePipe.transform(this.data.createdAt, 'yyyy-MM-dd'), undefined],
         month: [undefined],
         note: [''],
         times: [1],
@@ -112,7 +113,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
           }
           this.store.dispatch(
             TemplateOvertimeAction.loadALlTemplate({
-              positionId: this.positionId || '',
+              positionIds: this.positionsSelected.map(val => val.id),
               unit: this.unit ? this.unit : ''
             })
           );
@@ -146,11 +147,24 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onSelectPosition(positionId: number) {
-    this.positionOfTempOver = [];
-    this.positionId = positionId;
-    this.templateId = undefined;
-    this.titleOvertimes.patchValue('');
+  onSelectPosition(position: Position,event: any, positionInput: HTMLElement ) {
+    if(event.isUserInput){
+      if(position.id){
+        if (this.positionsSelected.some(item => item.id === position.id)) {
+          this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+        }else{
+          this.positionOfTempOver = [];
+          this.positionsSelected.push(position) ;
+          this.templateId = undefined;
+          this.titleOvertimes.patchValue('');
+        }
+      }
+    }
+    setTimeout(() => {
+        this.positions.setValue('');
+        positionInput.blur();
+      }
+    );
   }
 
   pickAllowance(allowEmpIds: number[]) {
@@ -267,7 +281,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
           this.dialogRef.close(
             {
               title: this.title,
-              datetime: value.datetime,
+              datetime: value.datetime
             });
         }
       });
@@ -282,7 +296,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
       this.dialogRef.close(
         {
           datetime: value.datetime,
-          title: this.title,
+          title: this.title
         });
     }
 
@@ -291,5 +305,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   selectPartialDay(partialDay: any) {
     this.title = 'Tăng ca ' + partialDay.title;
     this.partialDay = partialDay;
+  }
+
+  removePosition(position: Position) {
+    lodash.remove(this.positionsSelected, position);
+    this.titleOvertimes.patchValue('');
   }
 }

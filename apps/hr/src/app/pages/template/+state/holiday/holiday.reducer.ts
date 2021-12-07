@@ -10,12 +10,13 @@ export interface holidayState extends EntityState<Holiday> {
   added?: boolean,
   branch?: string,
   position?: string,
+  total: number
 }
 
 export const adapter: EntityAdapter<Holiday> = createEntityAdapter<Holiday>();
 
 export const initialHoliday = adapter.getInitialState({
-  loaded: false, added: false, adding: false, branch: '', position: ''
+  loaded: false, added: false, adding: false, branch: '', position: '', total: 0
 });
 
 export const HolidayReducer = createReducer(
@@ -26,10 +27,10 @@ export const HolidayReducer = createReducer(
   ),
 
   on(HolidayAction.LoadInitHolidaySuccess, (state, action) =>
-    adapter.setAll(action.holidays, { ...state, loaded: true, adding: false, added: true })),
+    adapter.setAll(action.holidays, { ...state, loaded: true, adding: false, added: true, total: action.total })),
 
   on(HolidayAction.LoadMoreHolidaySuccess, (state, action) =>
-    adapter.addMany(action.holidays, { ...state, loaded: true })),
+    adapter.addMany(action.holidays, { ...state, loaded: true, total: action.total })),
 
   on(HolidayAction.UpdateHoliday, (state, _) => {
       return { ...state, added: false, adding: true };
@@ -42,7 +43,7 @@ export const HolidayReducer = createReducer(
   ),
 
   on(HolidayAction.AddHolidaySuccess, (state, action) =>
-    adapter.setOne(action.holiday, { ...state, loaded: true, adding: false, added: true })
+    adapter.setOne(action.holiday, { ...state, loaded: true, adding: false, added: true, total: state.total + 1 })
   ),
 
   on(HolidayAction.handleHolidayError, (state, _) => {

@@ -20,7 +20,10 @@ export class TemplateOvertimeEffect {
         }
       ),
       map((responsePagination) =>
-        TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data })),
+        TemplateOvertimeAction.loadInitTempLateSuccess({
+          templateOvertimes: responsePagination.data,
+          total: responsePagination.total
+        })),
       catchError((err) => throwError(err))
     ));
 
@@ -31,7 +34,10 @@ export class TemplateOvertimeEffect {
         return this.templateOvertimeService.pagination(props.templateOvertimeDTO);
       }),
       map((responsePagination) => {
-          return TemplateOvertimeAction.loadInitTempLateSuccess({ templateOvertimes: responsePagination.data });
+          return TemplateOvertimeAction.loadInitTempLateSuccess({
+            templateOvertimes: responsePagination.data,
+            total: responsePagination.total
+          });
         }
       ),
       catchError((err) => throwError(err))
@@ -56,7 +62,8 @@ export class TemplateOvertimeEffect {
           });
         }
         return TemplateOvertimeAction.loadMoreTempLateSuccess({
-          templateOvertimes: responsePagination.data
+          templateOvertimes: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))
@@ -94,7 +101,8 @@ export class TemplateOvertimeEffect {
       ofType(TemplateOvertimeAction.deleteTemplate),
       switchMap((pram) => {
           return this.templateOvertimeService.delete(pram.id).pipe(
-            map(_ => TemplateOvertimeAction.loadInit({ templateOvertimeDTO: { take: 30, skip: 0 } }))
+            map(_ => TemplateOvertimeAction.loadInit(
+              { templateOvertimeDTO: { take: 30, skip: 0 } }))
           );
         }
       )

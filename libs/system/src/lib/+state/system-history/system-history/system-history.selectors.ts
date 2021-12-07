@@ -7,6 +7,7 @@ import { SystemHistory } from './system-history.model';
 export interface SystemHistoryState extends EntityState<SystemHistory> {
   loaded: boolean;
   selectedBillId: number;
+  total: number
 }
 
 export const selectorSystemHistoryState = createFeatureSelector<SystemHistoryState>(
@@ -25,6 +26,11 @@ export const selectorAllSystemHistory = createSelector(
 export const selectedSystemHistoryLoaded = createSelector(
   selectorSystemHistoryState,
   (state) => state.loaded
+);
+
+export const selectedTotalSystemHistory = createSelector(
+  selectorSystemHistoryState,
+  (state) => state.total
 );
 
 export const selectorSystemHistoryTotal = createSelector(

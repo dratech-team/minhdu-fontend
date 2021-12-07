@@ -15,7 +15,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedLoadedPayroll, selectedPositionPayroll,
+  selectedLoadedPayroll, selectedPositionPayroll, selectedTotalPayroll,
   selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
@@ -64,6 +64,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   pageSize: number = 30;
   pageIndexInit = 0;
   payroll$ = this.store.pipe(select(selectorAllPayroll));
+  total$ = this.store.pipe(select(selectedTotalPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));

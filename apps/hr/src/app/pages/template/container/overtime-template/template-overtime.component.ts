@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '../../../../reducers';
-import { selectorAllTemplate, selectTemplateAdding } from '../../+state/template-overtime/template-overtime.selector';
+import {
+  selectorAllTemplate,
+  selectTemplateAdding,
+  selectTotalTemplateOvertime
+} from '../../+state/template-overtime/template-overtime.selector';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { DatetimeUnitEnum, EmployeeType, PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -18,6 +22,7 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { Position } from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { selectTotalTemplateSalary } from '../../+state/teamlate-salary/template-salary.selector';
 
 
 @Component({
@@ -26,6 +31,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TemplateOvertimeComponent implements OnInit {
   pageTypeEnum = PageTypeEnum
   adding$ = this.store.pipe(select(selectTemplateAdding));
+  total$ = this.store.pipe(select(selectTotalTemplateOvertime));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   pageSize = 30;
@@ -129,7 +135,7 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: val.unit,
       note: val.note,
       branch: val.branch,
-      positions: this.positionsSelected.map(val => val.name)
+      positionIds: this.positionsSelected.map(val => val.id)
     };
   }
 

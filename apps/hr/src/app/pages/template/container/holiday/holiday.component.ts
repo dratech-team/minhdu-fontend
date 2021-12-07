@@ -5,7 +5,12 @@ import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from 'apps/hr/src/app/reducers';
-import { selectHolidayAdding, selectHolidayLoaded, selectorAllHoliday } from '../../+state/holiday/holiday.selector';
+import {
+  selectHolidayAdding,
+  selectHolidayLoaded,
+  selectorAllHoliday,
+  selectTotalHoliday
+} from '../../+state/holiday/holiday.selector';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
@@ -13,6 +18,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
+import { selectTotalTemplateOvertime } from '../../+state/template-overtime/template-overtime.selector';
 
 
 @Component({
@@ -20,6 +26,7 @@ import { Position } from '@minhdu-fontend/data-models';
 })
 export class HolidayComponent implements OnInit {
   adding$ = this.store.pipe(select(selectHolidayAdding));
+  total$ = this.store.pipe(select(selectTotalHoliday));
   convertBoolean = ConvertBoolean;
   pageSize = 30;
   pageIndexInit = 0;

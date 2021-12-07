@@ -3,7 +3,10 @@
   <ng-template #systemHistory>
     <div style='width: 96%; min-width: 1300px' class='mx-auto'>
       <div class='row h3 mt-3'>Lịch sử hệ thống</div>
-      <div class='fixTableHead my-5 mx-auto '
+      <div class='mt-3 font-weight-bold'>
+        Tổng: {{total$|async}}
+      </div>
+      <div class='fixTableHead my-2 mx-auto '
            infiniteScroll
            [infiniteScrollDistance]='0.1'
            [infiniteScrollThrottle]='10'

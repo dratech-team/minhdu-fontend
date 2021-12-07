@@ -14,6 +14,7 @@ import { roleAppHR } from '@minhdu-fontend/constants';
 import { PageTypeEnum } from '../../../../../enums/sell/page-type.enum';
 import { DialogDeleteComponent } from '../../../../../components/src/lib/dialog-delete/dialog-delete.component';
 import { AuthActions } from '@minhdu-fontend/auth';
+import { selectedTotalSystemHistory } from '../../+state/system-history/system-history/system-history.selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -43,6 +44,7 @@ export class AccountManagementContainer implements OnInit {
 
   Accounts$ = this.store.pipe(select(selectorAllAccount));
   loaded$ = this.store.pipe(select(selectedAccountLoaded));
+  total$ = this.store.pipe(select(selectedTotalSystemHistory));
 
   ngOnInit(): void {
     this.store.dispatch(AccountManagementActions.loadInit(
