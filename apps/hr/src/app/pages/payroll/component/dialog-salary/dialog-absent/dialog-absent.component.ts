@@ -174,7 +174,7 @@ export class DialogAbsentComponent implements OnInit {
 
     if (
       (typeof this.selectedIndex === 'number' &&
-        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary.type === 'DEDUCTION')
+        this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary?.type === 'DEDUCTION')
       && (!value.price)
     ) {
       return this.snackbar.open('Chưa nhập tiền khấu trừ', '', { duration: 1500 });
