@@ -37,6 +37,10 @@
                 <span class='d-inline-block font-weight-bold'>Ngày vào làm: </span>
                 <span class='ml-1'>{{payroll.employee.createdAt|date: 'dd/MM/yyyy'}}</span>
               </div>
+              <div class='col-12 d-flex justify-content-start ' style='color: black'>
+                <span class='d-inline-block font-weight-bold'>Đơn vị: </span>
+                <span class='ml-1'>{{payroll.employee.branch.name}}</span>
+              </div>
             </div>
             <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
                  class='col-12 d-flex align-items-center mt-2'>
