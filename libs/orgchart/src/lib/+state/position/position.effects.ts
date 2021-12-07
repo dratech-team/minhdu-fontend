@@ -78,7 +78,11 @@ export class PositionEffects {
       switchMap(param => this.positionService.delete(param.id).pipe(
         map(_ => {
             this.snackBar.open('Xóa chức vụ thành công', '', { duration: 1500 });
-            return OrgchartActions.getBranch({id: param.branchId})
+            if(param.branchId){
+              return OrgchartActions.getBranch({ id: param.branchId })
+            }else{
+              return  PositionActions.loadPosition()
+            }
           }
         ),
         catchError(err => throwError(err))

@@ -35,7 +35,7 @@ export const updatePositionSuccess = createAction(
 
 export const deletePosition = createAction(
   '[Position/API] Delete Position',
-  props<{ id: number, branchId: number }>()
+  props<{ id: number, branchId?: number }>()
 );
 
 export const loadPositionFailure = createAction(

@@ -76,8 +76,11 @@ export class PositionContainer implements OnInit {
   deletePosition($event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
-      if (val && this.branchId) {
-        this.store.dispatch(PositionActions.deletePosition({ id: $event.id, branchId: this.branchId }));
+      if (val) {
+        this.store.dispatch(PositionActions.deletePosition({
+          id: $event.position.id,
+          branchId: this.branchId ? this.branchId : undefined
+        }));
       }
     });
   }
@@ -93,15 +96,17 @@ export class PositionContainer implements OnInit {
 
   onPayroll(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      { position: event.position.name, branch: event.branch ? event.branch.name: '' }));
+      { position: event.position.name, branch: event.branch ? event.branch.name : '' }));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertime(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      { position: event.position.name, branch:
-        event.branch? event.branch.name : '',
-        filter: PayrollEnum.PAYROLL_OVERTIME }));
+      {
+        position: event.position.name, branch:
+          event.branch ? event.branch.name : '',
+        filter: PayrollEnum.PAYROLL_OVERTIME
+      }));
     this.router.navigate(['phieu-luong']).then();
   }
 }
