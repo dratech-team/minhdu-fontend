@@ -74,3 +74,10 @@ export const selectorScrollXTotal = createSelector(
     return state.scrollX;
   }
 );
+
+export const selectorTotalEmployee = createSelector(
+  selectorEmployeeState,
+  (state) => {
+    return state.total;
+  }
+);

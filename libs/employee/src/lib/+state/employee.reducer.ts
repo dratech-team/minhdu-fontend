@@ -14,7 +14,8 @@ export interface EmployeeState extends EntityState<Employee> {
   branch: string;
   position: string
   selectedEmployeeId: number;
-  scrollX: number
+  scrollX: number,
+  total: number
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
@@ -26,7 +27,8 @@ export const initialEmployee = adapter.getInitialState({
   deleted: false,
   position: '',
   branch: '',
-  scrollX: 0
+  scrollX: 0,
+  total: 0
 });
 
 export const EmployeeReducer = createReducer(
@@ -36,10 +38,10 @@ export const EmployeeReducer = createReducer(
     return { ...state, loaded: false };
   }),
   on(EmployeeAction.LoadEmployeesSuccess, (state, action) =>
-    adapter.setAll(action.employees, { ...state, loaded: true })
+    adapter.setAll(action.employees, { ...state, loaded: true, total: action.total })
   ),
   on(EmployeeAction.LoadMoreEmployeesSuccess, (state, action) =>
-    adapter.addMany(action.employees, { ...state, loaded: true })
+    adapter.addMany(action.employees, { ...state, loaded: true, total: action.total })
   ),
 
   on(EmployeeAction.addEmployee, (state, _) => {
@@ -48,7 +50,7 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.addEmployeeSuccess, (state, action) => {
-      return adapter.addOne(action.employee, { ...state, adding: false, added: true });
+      return adapter.addOne(action.employee, { ...state, adding: false, added: true, total: state.total + 1 });
     }
   ),
 
@@ -85,7 +87,7 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.deleteEmployeeSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
+    adapter.removeOne(action.id, { ...state, loaded: true, deleted: true, total: state.total - 1 })
   ),
 
   on(EmployeeAction.deleteContractSuccess, (state, { employeeId }) =>

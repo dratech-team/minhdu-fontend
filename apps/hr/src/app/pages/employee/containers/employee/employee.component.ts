@@ -7,7 +7,7 @@ import {
   EmployeeAction,
   selectEmployeeAdding,
   selectEmployeeLoaded,
-  selectorAllEmployee, selectorScrollXTotal
+  selectorAllEmployee, selectorScrollXTotal, selectorTotalEmployee
 } from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
@@ -49,6 +49,7 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   scrollX$ = this.store.select(selectorScrollXTotal);
+  total$ = this.store.select(selectorTotalEmployee);
   employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
@@ -265,7 +266,7 @@ export class EmployeeComponent implements OnInit {
   permanentlyDeleted($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { EMPLOYEE: $event, permanentlyDeleted: true }
+      data: { employee: $event, permanentlyDeleted: true }
     });
   }
 }

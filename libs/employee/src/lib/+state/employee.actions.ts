@@ -15,11 +15,11 @@ export const loadMoreEmployees = createAction(
 
 export const LoadEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] Load Employee Success',
-  props<{ employees: Employee[] }>()
+  props<{ employees: Employee[], total: number  }>()
 );
 export const LoadMoreEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] LoadMore Employee Success',
-  props<{ employees: Employee[] }>()
+  props<{ employees: Employee[], total: number }>()
 );
 
 

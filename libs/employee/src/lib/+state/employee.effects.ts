@@ -24,7 +24,8 @@ export class EmployeeEffect {
       map((responsePagination) => {
         this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
         return EmployeeAction.LoadEmployeesSuccess({
-          employees: responsePagination.data
+          employees: responsePagination.data,
+          total: responsePagination.total,
         });
       }),
       catchError((err) => throwError(err))
@@ -50,7 +51,8 @@ export class EmployeeEffect {
           });
         }
         return EmployeeAction.LoadMoreEmployeesSuccess({
-          employees: responsePagination.data
+          employees: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => {

@@ -14,204 +14,207 @@
   <div class='mx-auto' style='width: 98%'>
     <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
     <ng-template #employees>
-      <div class='table-scroll my-5 mx-auto'
-           (scroll)='onScrollX($event)'
-           [scrollLeft]='(scrollX$|async)'
-           #tableEmployee
-           infiniteScroll
-           [alwaysCallback]='true'
-           [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='10'
-           [scrollWindow]='false'
-           (scrolled)='onScroll()'
-      >
-        <table [formGroup]='formGroup' class='main-table' style='width: 3200px '>
-          <thead>
-          <tr>
-            <th style='background:white'>
-              <div class='border-top text-center'>stt</div>
-              <input class=' text-center' type='text' disabled>
-            </th>
-            <th style='background:white'>
-              <div class='border-top text-center'>Mã nhân viên</div>
-              <input class='form-control text-center' type='text'>
-            </th>
-            <th style='background:white'>
-              <div class='border-top text-center'>Tên nhân viên</div>
-              <input class='form-control text-center ' type='search' formControlName='name'
-                     placeholder='Trần Gia Hiệu'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Loại nhân viên</div>
-              <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
-                <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-                <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Ngày sinh</div>
-              <input class='form-control text-center ' type='date' formControlName='birthday'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Giới tính</div>
-              <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
-                <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
-                <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
-                <mat-option value='{{genderType.OTHER}}'>Khác</mat-option>
-                <mat-option value=''>Mặc định</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Ngày vào làm</div>
-              <input type='date' class='border' formControlName='workedAt'>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Loại lương</div>
-              <mat-select class='select border-top' style='min-width: 170px' required formControlName='flatSalary'>
-                <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
-                <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
-                <mat-option value=''>Mặc định</mat-option>
-              </mat-select>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Số điện thoại</div>
-              <input class='form-control text-center'  type='tel' formControlName='phone'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Đơn vị</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
-              <mat-autocomplete #branch='matAutocomplete'>
-                <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                            (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-                >
-                  {{branch.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th>
-              <div class='border-top text-center'>Chức vụ</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
-              <mat-autocomplete #position='matAutocomplete'>
-                <mat-option *ngFor='let position of positions$ | async'
-                            [value]='position.name' (click)='onSelectPosition(position.name)'
-                            (onSelectionChange)='onSelectPosition(position.name)'>
-                  {{position.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>CMND / CCCD</div>
-              <input type='tel' class='form-control text-center' formControlName='identity'>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Tỉnh / Thành phố</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='province' formControlName='province'>
-              <mat-autocomplete #province='matAutocomplete'>
-                <mat-option *ngFor='let province of provinces$ | async'
-                            [value]='province.name' (click)='onSelectProvince(province)'
-                            (onSelectionChange)='onSelectProvince(province)'>
-                  {{province.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th width='5%'>
-              <div class='border-top text-center'>Quận / Huyện</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='district' formControlName='district'>
-              <mat-autocomplete #district='matAutocomplete'>
-                <mat-option *ngFor='let district of districts$ | async'
-                            [value]='district.name' (click)='onSelectDistrict(district)'
-                            (onSelectionChange)='onSelectDistrict(district)'>
-                  {{district.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th width='7%'>
-              <div class='border-top text-center'>Phường / Xã</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='ward' formControlName='ward'>
-              <mat-autocomplete #ward='matAutocomplete'>
-                <mat-option *ngFor='let ward of wards$ | async'
-                            [value]='ward.name' (click)='onSelectWard(ward.name)'
-                            (onSelectionChange)='onSelectWard(ward.name)'>
-                  {{ward.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th width='12%'>
-              <div class='border-top text-center'>Địa chỉ</div>
-              <input type='text' class='form-control text-center' formControlName='address'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Chú thích</div>
-              <input disabled type='search'>
-            </th>
-          </tr>
-          </thead>
-          <tbody *ngIf='(employees$|async) as employees'>
-          <tr *ngFor='let employee of employees; let i = index'
-              (contextmenu)='child.onContextMenu($event,employee)' (click)='readAndUpdate(employee)'>
-            <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{i + 1}}
-            </th>
-            <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{employee?.id}}
-            </th>
-            <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{employee?.lastName}}
-            </th>
-            <th class='pointer'>
-              {{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
-            </th>
-            <th class='pointer'>
-              {{employee?.birthday | date:'dd/MM/yyyy'}}
-            </th>
-            <th class='pointer'>
-              {{
-              employee.gender === 'MALE' ? 'Nam' :
-                employee.gender === 'FEMALE' ? 'Nữ' :
-                  'Khác'
-              }}
-            </th>
-            <th class='pointer'>
-              {{employee?.createdAt|date: 'dd/MM/yyyy'}}
-            </th>
-            <th class='pointer'>
-              {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
-            </th>
-            <th class='pointer'>
-              {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
-            </th>
-            <th class='pointer'>
-              {{employee?.branch?.name}}
-            </th>
-            <th class='pointer'>
-              {{employee?.position?.name}}
-            </th>
-            <th class='pointer'>
-              {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
-            </th>
-            <th class='pointer'>
-              {{employee?.ward?.district?.province?.name}}
-            </th>
-            <th class='pointer'>
-              {{employee?.ward?.district?.name}}
-            </th>
-            <th class='pointer'>
-              {{employee?.ward?.name}}
-            </th>
-            <th class='pointer'>
-              {{employee?.address}}
-            </th>
-            <th class='pointer'>
-              {{employee?.note}}
-            </th>
-          </tr>
-          <tr *ngIf='employees.length === 0' style='height: 50vh'>
-            <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
-              <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có nhân viên nào !</span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+      <div class='my-5'>
+        <div class='font-weight-bold mb-2'> Tổng: {{(total$|async)}}</div>
+        <div class='table-scroll mx-auto'
+             (scroll)='onScrollX($event)'
+             [scrollLeft]='(scrollX$|async)'
+             #tableEmployee
+             infiniteScroll
+             [alwaysCallback]='true'
+             [infiniteScrollDistance]='1'
+             [infiniteScrollThrottle]='10'
+             [scrollWindow]='false'
+             (scrolled)='onScroll()'
+        >
+          <table [formGroup]='formGroup' class='main-table' style='width: 3200px '>
+            <thead>
+            <tr>
+              <th style='background:white'>
+                <div class='border-top text-center'>stt</div>
+                <input class=' text-center' type='text' disabled>
+              </th>
+              <th style='background:white'>
+                <div class='border-top text-center'>Mã nhân viên</div>
+                <input class='form-control text-center' type='text'>
+              </th>
+              <th style='background:white'>
+                <div class='border-top text-center'>Tên nhân viên</div>
+                <input class='form-control text-center ' type='search' formControlName='name'
+                       placeholder='Trần Gia Hiệu'>
+              </th>
+              <th>
+                <div class='border-top text-center'>Loại nhân viên</div>
+                <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
+                  <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+                  <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+                </mat-select>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Ngày sinh</div>
+                <input class='form-control text-center ' type='date' formControlName='birthday'>
+              </th>
+              <th>
+                <div class='border-top text-center'>Giới tính</div>
+                <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
+                  <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
+                  <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
+                  <mat-option value='{{genderType.OTHER}}'>Khác</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Ngày vào làm</div>
+                <input type='date' class='border' formControlName='workedAt'>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Loại lương</div>
+                <mat-select class='select border-top' style='min-width: 170px' required formControlName='flatSalary'>
+                  <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
+                  <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Số điện thoại</div>
+                <input class='form-control text-center'  type='tel' formControlName='phone'>
+              </th>
+              <th>
+                <div class='border-top text-center'>Đơn vị</div>
+                <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+                <mat-autocomplete #branch='matAutocomplete'>
+                  <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                              (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+                  >
+                    {{branch.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th>
+                <div class='border-top text-center'>Chức vụ</div>
+                <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+                <mat-autocomplete #position='matAutocomplete'>
+                  <mat-option *ngFor='let position of positions$ | async'
+                              [value]='position.name' (click)='onSelectPosition(position.name)'
+                              (onSelectionChange)='onSelectPosition(position.name)'>
+                    {{position.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>CMND / CCCD</div>
+                <input type='tel' class='form-control text-center' formControlName='identity'>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Tỉnh / Thành phố</div>
+                <input class='form-control' type='text' matInput [matAutocomplete]='province' formControlName='province'>
+                <mat-autocomplete #province='matAutocomplete'>
+                  <mat-option *ngFor='let province of provinces$ | async'
+                              [value]='province.name' (click)='onSelectProvince(province)'
+                              (onSelectionChange)='onSelectProvince(province)'>
+                    {{province.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th width='5%'>
+                <div class='border-top text-center'>Quận / Huyện</div>
+                <input class='form-control' type='text' matInput [matAutocomplete]='district' formControlName='district'>
+                <mat-autocomplete #district='matAutocomplete'>
+                  <mat-option *ngFor='let district of districts$ | async'
+                              [value]='district.name' (click)='onSelectDistrict(district)'
+                              (onSelectionChange)='onSelectDistrict(district)'>
+                    {{district.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th width='7%'>
+                <div class='border-top text-center'>Phường / Xã</div>
+                <input class='form-control' type='text' matInput [matAutocomplete]='ward' formControlName='ward'>
+                <mat-autocomplete #ward='matAutocomplete'>
+                  <mat-option *ngFor='let ward of wards$ | async'
+                              [value]='ward.name' (click)='onSelectWard(ward.name)'
+                              (onSelectionChange)='onSelectWard(ward.name)'>
+                    {{ward.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th width='12%'>
+                <div class='border-top text-center'>Địa chỉ</div>
+                <input type='text' class='form-control text-center' formControlName='address'>
+              </th>
+              <th>
+                <div class='border-top text-center'>Chú thích</div>
+                <input disabled type='search'>
+              </th>
+            </tr>
+            </thead>
+            <tbody *ngIf='(employees$|async) as employees'>
+            <tr *ngFor='let employee of employees; let i = index'
+                (contextmenu)='child.onContextMenu($event,employee)' (click)='readAndUpdate(employee)'>
+              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{i + 1}}
+              </th>
+              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{employee?.id}}
+              </th>
+              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{employee?.lastName}}
+              </th>
+              <th class='pointer'>
+                {{employee?.type === employeeType.EMPLOYEE_FULL_TIME ? 'Nhân viên chính thức' : 'Nhân viên thời vụ' }}
+              </th>
+              <th class='pointer'>
+                {{employee?.birthday | date:'dd/MM/yyyy'}}
+              </th>
+              <th class='pointer'>
+                {{
+                employee.gender === 'MALE' ? 'Nam' :
+                  employee.gender === 'FEMALE' ? 'Nữ' :
+                    'Khác'
+                }}
+              </th>
+              <th class='pointer'>
+                {{employee?.createdAt|date: 'dd/MM/yyyy'}}
+              </th>
+              <th class='pointer'>
+                {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
+              </th>
+              <th class='pointer'>
+                {{employee?.phone ? employee.phone : 'Chưa cập nhật'}}
+              </th>
+              <th class='pointer'>
+                {{employee?.branch?.name}}
+              </th>
+              <th class='pointer'>
+                {{employee?.position?.name}}
+              </th>
+              <th class='pointer'>
+                {{employee?.identify ? employee.identify : 'Chưa cập nhật'}}
+              </th>
+              <th class='pointer'>
+                {{employee?.ward?.district?.province?.name}}
+              </th>
+              <th class='pointer'>
+                {{employee?.ward?.district?.name}}
+              </th>
+              <th class='pointer'>
+                {{employee?.ward?.name}}
+              </th>
+              <th class='pointer'>
+                {{employee?.address}}
+              </th>
+              <th class='pointer'>
+                {{employee?.note}}
+              </th>
+            </tr>
+            <tr *ngIf='employees.length === 0' style='height: 50vh'>
+              <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
+                <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có nhân viên nào !</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </ng-template>
   </div>
