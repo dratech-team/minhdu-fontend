@@ -18,7 +18,10 @@ export class HolidayEffect {
       ofType(HolidayAction.LoadAllHoliday),
       switchMap(_ => this.holidayService.pagination()),
       map((responsePagination) =>
-        HolidayAction.LoadInitHolidaySuccess({ holidays: responsePagination.data })),
+        HolidayAction.LoadInitHolidaySuccess({
+          holidays: responsePagination.data,
+          total: responsePagination.total
+        })),
       catchError((err) => throwError(err))
     ));
 
@@ -27,7 +30,10 @@ export class HolidayEffect {
       ofType(HolidayAction.LoadInit),
       switchMap(props => this.holidayService.pagination(props.holidayDTO)),
       map((responsePagination) =>
-        HolidayAction.LoadInitHolidaySuccess({ holidays: responsePagination.data })),
+        HolidayAction.LoadInitHolidaySuccess({
+          holidays: responsePagination.data,
+          total: responsePagination.total
+        })),
       catchError((err) => throwError(err))
     ));
 
@@ -47,7 +53,10 @@ export class HolidayEffect {
               panelClass: ['background-snackbar']
             });
           }
-          return HolidayAction.LoadMoreHolidaySuccess({ holidays: responsePagination.data });
+          return HolidayAction.LoadMoreHolidaySuccess({
+            holidays: responsePagination.data,
+            total: responsePagination.total
+          });
         }
       ),
       catchError((err) => throwError(err))

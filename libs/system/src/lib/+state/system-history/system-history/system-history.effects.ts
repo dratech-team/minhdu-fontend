@@ -44,7 +44,8 @@ export class SystemHistoryEffects {
           });
         }
         return SystemHistoryActions.loadMoreSystemHistorySuccess({
-          systemHistory: responsePagination.data
+          systemHistory: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))

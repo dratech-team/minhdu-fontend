@@ -4,12 +4,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
 import {
-  selectedSystemHistoryLoaded,
+  selectedSystemHistoryLoaded, selectedTotalSystemHistory,
   selectorAllSystemHistory
 } from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
 import { MainAction } from '../../../../../../../apps/sell/src/app/states/main.action';
+import { selectTotalTemplateOvertime } from '../../../../../../../apps/hr/src/app/pages/template/+state/template-overtime/template-overtime.selector';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,9 +40,10 @@ export class SystemHistoryContainer implements OnInit {
 
   systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
   loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
+  total$ = this.store.pipe(select(selectedTotalSystemHistory));
 
   ngOnInit(): void {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.SYSTEM_HISTORY}))
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.SYSTEM_HISTORY }));
     this.store.dispatch(SystemHistoryActions.loadSystemHistory(
       { take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges

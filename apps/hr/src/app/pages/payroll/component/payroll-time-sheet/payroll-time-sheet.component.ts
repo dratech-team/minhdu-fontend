@@ -17,6 +17,7 @@ import { DatePipe } from '@angular/common';
 })
 export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() loaded$?: Observable<boolean>;
+  @Input() total$?: Observable<number>;
   @Input() daysInMonth: any[] = [];
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
@@ -30,6 +31,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventHistoryPayroll = new EventEmitter<any>();
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
+
   unit = DatetimeUnitEnum;
   pageType = PageTypeEnum;
   @Input() formGroup!: FormGroup;

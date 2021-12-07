@@ -27,7 +27,7 @@ export const loadInit = createAction(
 );
 export const loadInitTempLateSuccess = createAction(
   '[Load_Template_Salary] Load Template Salary Success',
-  props<{ templateSalary: TemplateSalary[] }>()
+  props<{ templateSalary: TemplateSalary[], total: number }>()
 );
 
 
@@ -37,7 +37,7 @@ export const loadMoreTemplateBasic = createAction(
 );
 export const loadMoreTempLateSuccess = createAction(
   '[Load_Template_Salary] Load More Template Salary Success',
-  props<{ templateSalary: TemplateSalary[] }>()
+  props<{ templateSalary: TemplateSalary[], total: number }>()
 );
 
 export const updateTemplate = createAction(

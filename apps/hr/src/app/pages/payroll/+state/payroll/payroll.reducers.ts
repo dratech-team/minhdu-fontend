@@ -24,7 +24,7 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: ''
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: '', total: 0
 });
 
 export const payrollReducer = createReducer(
@@ -67,7 +67,7 @@ export const payrollReducer = createReducer(
   ),
 
   on(PayrollAction.deletePayrollSuccess, (state, action) =>
-    adapter.removeOne(action.id, { ...state, deleted: true, adding: false })),
+    adapter.removeOne(action.id, { ...state, deleted: true, adding: false, total: state.total - 1 })),
 
   on(PayrollAction.confirmPayroll, (state, _) => {
     return { ...state, confirmed: false };

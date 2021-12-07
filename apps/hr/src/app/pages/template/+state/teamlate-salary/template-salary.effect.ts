@@ -23,7 +23,10 @@ export class TemplateSalaryEffect {
         );
       }),
       map((responsePagination) =>
-        TemplateSalaryAction.loadInitTempLateSuccess({ templateSalary: responsePagination.data })),
+        TemplateSalaryAction.loadInitTempLateSuccess({
+          templateSalary: responsePagination.data ,
+          total: responsePagination.total
+        })),
       catchError((err) => throwError(err))
     ));
 
@@ -36,7 +39,10 @@ export class TemplateSalaryEffect {
       )),
       map((responsePagination) => {
           console.log(responsePagination);
-          return TemplateSalaryAction.loadInitTempLateSuccess({ templateSalary: responsePagination.data });
+          return TemplateSalaryAction.loadInitTempLateSuccess({
+            templateSalary: responsePagination.data,
+            total: responsePagination.total
+          });
         }
       ),
       catchError((err) => throwError(err))
@@ -62,7 +68,8 @@ export class TemplateSalaryEffect {
           });
         }
         return TemplateSalaryAction.loadMoreTempLateSuccess({
-          templateSalary: responsePagination.data
+          templateSalary: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))
