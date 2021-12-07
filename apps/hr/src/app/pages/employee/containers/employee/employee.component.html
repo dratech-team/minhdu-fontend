@@ -15,12 +15,16 @@
     <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
     <ng-template #employees>
       <div class='table-scroll my-5 mx-auto'
+            (scroll)='onScrollX($event)'
+           [scrollLeft]='(scrollX$|async)'
+           #tableEmployee
            infiniteScroll
            [alwaysCallback]='true'
            [infiniteScrollDistance]='1'
            [infiniteScrollThrottle]='10'
            [scrollWindow]='false'
-           (scrolled)='onScroll()'>
+           (scrolled)='onScroll()'
+      >
         <table [formGroup]='formGroup' class='main-table' style='width: 3200px '>
           <thead>
           <tr>

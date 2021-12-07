@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -7,7 +7,7 @@ import {
   EmployeeAction,
   selectEmployeeAdding,
   selectEmployeeLoaded,
-  selectorAllEmployee
+  selectorAllEmployee, selectorScrollXTotal
 } from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
@@ -37,6 +37,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
   templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
+  @ViewChild('tableEmployee') tableEmployee!: ElementRef;
   searchType = SearchEmployeeType;
   genderType = Gender;
   flatSalary = FlatSalary;
@@ -47,6 +48,7 @@ export class EmployeeComponent implements OnInit {
   employeeType = EmployeeType;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
+  scrollX$ = this.store.select(selectorScrollXTotal)
   employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
@@ -84,6 +86,7 @@ export class EmployeeComponent implements OnInit {
     private readonly activeRouter: ActivatedRoute
   ) {
   }
+  @HostListener('window:scroll', ['$event'])
 
   ngOnInit(): void {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
@@ -167,6 +170,11 @@ export class EmployeeComponent implements OnInit {
       width: 'fit-content',
       data: { employeeId: $event.id, leftAt: $event.leftAt }
     });
+  }
+
+  onScrollX(event: any){
+    this.store.dispatch(EmployeeAction.updateStateEmployee({
+      scrollX:this.tableEmployee.nativeElement.scrollLeft }))
   }
 
   employee(val: any) {

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, debounceTime, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
 import {
   EmployeeAction,
-  selectorEmployeeTotal
+  selectorEmployeeTotal, updateStateEmployeeSuccess
 } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
@@ -254,7 +254,21 @@ export class EmployeeEffect {
       catchError((err) => throwError(err))
     )
   );
-
+  updateState$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.updateStateEmployee),
+      debounceTime(100),
+      switchMap((props) =>{
+        return  of(props.scrollX)
+      }
+        ),
+      map((res) => {
+          return EmployeeAction.updateStateEmployeeSuccess({ scrollX: res });
+        }
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
   constructor(
     private readonly action$: Actions,
     private readonly employeeService: EmployeeService,

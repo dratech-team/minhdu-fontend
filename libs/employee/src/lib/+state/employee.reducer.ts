@@ -14,6 +14,7 @@ export interface EmployeeState extends EntityState<Employee> {
   branch: string;
   position: string
   selectedEmployeeId: number;
+  scrollX: number
 }
 
 export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
@@ -22,9 +23,10 @@ export const initialEmployee = adapter.getInitialState({
   loaded: false,
   adding: false,
   added: false,
-  deleted: false ,
+  deleted: false,
   position: '',
   branch: '',
+  scrollX: 0
 });
 
 export const EmployeeReducer = createReducer(
@@ -65,10 +67,10 @@ export const EmployeeReducer = createReducer(
   ),
 
   on(EmployeeAction.updateEmployeeSuccess, (state, { employee }) => {
-    console.log(employee)
+      console.log(employee);
       return adapter.updateOne(
         { id: employee.id, changes: employee },
-        { ...state, adding: false, added: true});
+        { ...state, adding: false, added: true });
     }
   ),
 
@@ -86,11 +88,13 @@ export const EmployeeReducer = createReducer(
     adapter.removeOne(action.id, { ...state, loaded: true, deleted: true })
   ),
 
-  on(EmployeeAction.deleteContractSuccess, (state, {employeeId}) =>
-    adapter.updateOne({id: employeeId ,
-      changes:{
-      contracts: []
-      }},
+  on(EmployeeAction.deleteContractSuccess, (state, { employeeId }) =>
+    adapter.updateOne({
+        id: employeeId,
+        changes: {
+          contracts: []
+        }
+      },
       { ...state, loaded: true, deleted: true })
   ),
 
@@ -122,8 +126,13 @@ export const EmployeeReducer = createReducer(
   on(EmployeeAction.updateDegree, (state, _) => {
       return { ...state, adding: true, added: false };
     }
-  )
+  ),
+
+  on(EmployeeAction.updateStateEmployee, (state, { scrollX }) => {
+    return { ...state, scrollX: scrollX ? scrollX : state.scrollX };
+  })
 );
+
 
 export const {
   selectEntities,
