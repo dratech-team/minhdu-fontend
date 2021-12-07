@@ -8,7 +8,7 @@ import { RelativeService } from './service/relative.service';
 import { DegreeService } from './service/degree.service';
 import {
   EmployeeAction,
-  selectorEmployeeTotal, updateStateEmployeeSuccess
+  selectorEmployeeTotal
 } from '@minhdu-fontend/employee';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
@@ -254,21 +254,7 @@ export class EmployeeEffect {
       catchError((err) => throwError(err))
     )
   );
-  updateState$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(EmployeeAction.updateStateEmployee),
-      debounceTime(100),
-      switchMap((props) =>{
-        return  of(props.scrollX)
-      }
-        ),
-      map((res) => {
-          return EmployeeAction.updateStateEmployeeSuccess({ scrollX: res });
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
+
   constructor(
     private readonly action$: Actions,
     private readonly employeeService: EmployeeService,

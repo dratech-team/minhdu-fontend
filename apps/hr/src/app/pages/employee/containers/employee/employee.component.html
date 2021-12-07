@@ -15,7 +15,7 @@
     <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
     <ng-template #employees>
       <div class='table-scroll my-5 mx-auto'
-            (scroll)='onScrollX($event)'
+           (scroll)='onScrollX($event)'
            [scrollLeft]='(scrollX$|async)'
            #tableEmployee
            infiniteScroll

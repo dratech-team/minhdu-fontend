@@ -129,10 +129,7 @@ export const updateStateEmployee = createAction(
   '[UPDATE_STATE] Update State Employee  ',
   props<{ scrollX?: number }>()
 );
-export const updateStateEmployeeSuccess = createAction(
-  '[UPDATE_STATE] Update State Employee Success  ',
-  props<{ scrollX?: number }>()
-);
+
 export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
@@ -160,5 +157,4 @@ export const EmployeeAction = {
   deleteContract,
   deleteContractSuccess,
   updateStateEmployee,
-  updateStateEmployeeSuccess
 };

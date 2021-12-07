@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -17,7 +17,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, startWith } from 'rxjs/operators';
+import { debounceTime, delay, startWith, switchMap, tap, throttleTime } from 'rxjs/operators';
 import {
   getAllPosition,
   PositionActions
@@ -29,7 +29,7 @@ import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.
 import { EmployeeConstant } from '@minhdu-fontend/constants';
 import { selectAllProvince } from '@minhdu-fontend/location';
 import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
-import { BehaviorSubject, Observable, Observer, Subject } from 'rxjs';
+import { BehaviorSubject, fromEvent, Observable, Observer, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
@@ -48,7 +48,7 @@ export class EmployeeComponent implements OnInit {
   employeeType = EmployeeType;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
-  scrollX$ = this.store.select(selectorScrollXTotal)
+  scrollX$ = this.store.select(selectorScrollXTotal);
   employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
@@ -62,6 +62,7 @@ export class EmployeeComponent implements OnInit {
   provinces$ = this.store.pipe(select(selectAllProvince));
   districts$!: Observable<District[]>;
   wards$!: Observable<Ward[]>;
+  eventScrollX = new Subject<any>();
   formGroup = new FormGroup({
     name: new FormControl(''),
     birthday: new FormControl(''),
@@ -86,6 +87,7 @@ export class EmployeeComponent implements OnInit {
     private readonly activeRouter: ActivatedRoute
   ) {
   }
+
   @HostListener('window:scroll', ['$event'])
 
   ngOnInit(): void {
@@ -157,6 +159,14 @@ export class EmployeeComponent implements OnInit {
       this.provinces$
     );
 
+    this.eventScrollX.pipe(
+      debounceTime(200)
+    ).subscribe(event => {
+      this.store.dispatch(EmployeeAction.updateStateEmployee({
+        scrollX: this.tableEmployee.nativeElement.scrollLeft
+      }));
+    });
+
   }
 
   add(): void {
@@ -172,9 +182,8 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  onScrollX(event: any){
-    this.store.dispatch(EmployeeAction.updateStateEmployee({
-      scrollX:this.tableEmployee.nativeElement.scrollLeft }))
+  onScrollX(event: any) {
+    this.eventScrollX.next(event);
   }
 
   employee(val: any) {
