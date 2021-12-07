@@ -135,7 +135,7 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: val.unit,
       note: val.note,
       branch: val.branch,
-      positions: this.positionsSelected.map(val => val.name)
+      positionIds: this.positionsSelected.map(val => val.id)
     };
   }
 

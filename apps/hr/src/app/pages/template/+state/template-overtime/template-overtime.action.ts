@@ -16,7 +16,7 @@ export const HandleTemplateError = createAction(
 );
 export const loadALlTemplate = createAction(
   '[LOAD_TEMPLATE_OVERTIME] Load All Template Overtime',
-  props<{ positionId?: number | '', unit?: string, branchId?: number }>()
+  props<{ positionIds?: number[], unit?: string, branchId?: number, }>()
 );
 
 export const loadInit = createAction(

@@ -236,7 +236,7 @@ export class DialogOvertimeComponent implements OnInit {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       {
         branchId: this.data.payroll.employee.branch.id,
-        positionId: this.data?.payroll.employee.position.id,
+        positionIds: [this.data?.payroll.employee.position.id],
         unit: unit ? this.unit : ''
       }));
     this.titleOvertimes.patchValue('');
