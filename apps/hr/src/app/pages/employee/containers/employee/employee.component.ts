@@ -89,8 +89,6 @@ export class EmployeeComponent implements OnInit {
   ) {
   }
 
-  @HostListener('window:scroll', ['$event'])
-
   ngOnInit(): void {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
