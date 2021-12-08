@@ -36,7 +36,7 @@ export interface Employee {
   mst?: string,
   createdAt: Date,
   workedAt: Date;
-  workday:number,
+  workday: number,
   contractAt: string,
   leftAt: Date,
   isFlatSalary: boolean,
@@ -54,7 +54,8 @@ export interface Employee {
   historySalaries: SalaryHistory[];
   contractType?: string,
   recipeType: RecipeType,
-  salaryHistories:Salary[],
-  type: EmployeeType
+  salaryHistories: Salary[],
+  type: EmployeeType,
+  isSelect?: boolean
 }
 
