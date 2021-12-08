@@ -22,7 +22,7 @@
           <div class='border-top text-center'>Mã nhân viên</div>
           <input type='number' class='form-control text-center' formControlName='code'>
         </th>
-        <th style='width: 270px'>
+        <th style='width: 250px'>
           <div class='border-top text-center'>
             <div class='d-flex justify-content-center' style='height: 100%'>
               <span>Tên nhân viên</span>
@@ -33,7 +33,7 @@
           </div>
           <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
         </th>
-        <th style='width: 150px ; z-index: 3'>
+        <th style='width: 120px ; z-index: 3'>
           <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
             <span *ngIf='this.salaryIds.length  === 0'>
                Chọn
@@ -209,22 +209,26 @@
   .table-scroll th:nth-child(4) {
     position: -webkit-sticky;
     position: sticky;
-    left: 440px;
-    z-index: 2;
-  }
-
-  .table-scroll th:nth-child(5) {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 590px;
+    left: 420px;
     z-index: 2;
   }
 
 
   .table-scroll thead th:nth-child(3),
-  .table-scroll thead th:nth-child(4),
-  .table-scroll thead th:nth-child(5) {
+  .table-scroll thead th:nth-child(4) {
     z-index: 5;
+  }
+  @media screen and (min-width: 1500px) {
+    .table-scroll th:nth-child(5) {
+      position: -webkit-sticky;
+      position: sticky;
+      left: 540px;
+      z-index: 2;
+    }
+
+    .table-scroll thead th:nth-child(5) {
+      z-index: 5;
+    }
   }
 
   .table-scroll tr:nth-child(odd) {
