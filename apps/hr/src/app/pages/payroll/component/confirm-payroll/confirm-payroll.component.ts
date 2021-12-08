@@ -18,8 +18,10 @@ import { selectedConfirmedPayroll } from '../../+state/payroll/payroll.selector'
 })
 export class ConfirmPayrollComponent implements OnInit {
   accConfirmedAt = new FormControl(this.datePipe.transform(
-    this.data?.payroll?.accConfirmedAt ? new Date(this.data.payroll.accConfirmedAt) :
-      new Date(this.data?.payroll?.createdAt)
+    this.data?.payroll?.accConfirmedAt ? getLastDayInMonth(
+      new Date( this.data.payroll.accConfirmedAt)) :
+      getLastDayInMonth(
+        new Date( this.data?.payroll?.createdAt))
     , 'yyyy-MM-dd'));
   payslip$?: Observable<Payslip>;
   recipeType = RecipeType;
