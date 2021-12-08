@@ -36,7 +36,8 @@
               </th>
               <th style='background:white'>
                 <div class='border-top text-center'>Mã nhân viên</div>
-                <input class='form-control text-center' type='text'>
+                <input class='form-control text-center' type='search'>
+
               </th>
               <th style='background:white'>
                 <div class='border-top text-center'>Tên nhân viên</div>
@@ -77,11 +78,11 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Số điện thoại</div>
-                <input class='form-control text-center'  type='tel' formControlName='phone'>
+                <input class='form-control text-center'  (keypress)="checkInputNumber($event)"  type='search' formControlName='phone'>
               </th>
               <th>
                 <div class='border-top text-center'>Đơn vị</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
                 <mat-autocomplete #branch='matAutocomplete'>
                   <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                               (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
@@ -92,7 +93,7 @@
               </th>
               <th>
                 <div class='border-top text-center'>Chức vụ</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
                 <mat-autocomplete #position='matAutocomplete'>
                   <mat-option *ngFor='let position of positions$ | async'
                               [value]='position.name' (click)='onSelectPosition(position.name)'
@@ -103,11 +104,11 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>CMND / CCCD</div>
-                <input type='tel' class='form-control text-center' formControlName='identity'>
+                <input type='search' (keypress)="checkInputNumber($event)" class='form-control text-center' formControlName='identity'>
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Tỉnh / Thành phố</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='province' formControlName='province'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='province' formControlName='province'>
                 <mat-autocomplete #province='matAutocomplete'>
                   <mat-option *ngFor='let province of provinces$ | async'
                               [value]='province.name' (click)='onSelectProvince(province)'
@@ -118,7 +119,7 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Quận / Huyện</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='district' formControlName='district'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='district' formControlName='district'>
                 <mat-autocomplete #district='matAutocomplete'>
                   <mat-option *ngFor='let district of districts$ | async'
                               [value]='district.name' (click)='onSelectDistrict(district)'
@@ -129,7 +130,7 @@
               </th>
               <th width='7%'>
                 <div class='border-top text-center'>Phường / Xã</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='ward' formControlName='ward'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='ward' formControlName='ward'>
                 <mat-autocomplete #ward='matAutocomplete'>
                   <mat-option *ngFor='let ward of wards$ | async'
                               [value]='ward.name' (click)='onSelectWard(ward.name)'
@@ -140,7 +141,7 @@
               </th>
               <th width='12%'>
                 <div class='border-top text-center'>Địa chỉ</div>
-                <input type='text' class='form-control text-center' formControlName='address'>
+                <input type='search' class='form-control text-center' formControlName='address'>
               </th>
               <th>
                 <div class='border-top text-center'>Chú thích</div>

@@ -16,6 +16,7 @@ import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-m
 import { Observable } from 'rxjs';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-seasonal',
@@ -102,5 +103,9 @@ export class PayrollSeasonalComponent implements OnInit {
 
   historyPayroll(event: any) {
     this.EventHistoryPayroll.emit(event);
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

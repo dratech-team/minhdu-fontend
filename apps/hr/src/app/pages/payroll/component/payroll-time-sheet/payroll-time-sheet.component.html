@@ -19,20 +19,20 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã phiếu lương</div>
-            <input type='number' class='form-control text-center' formControlName='code'>
+            <input type='search' (keypress)="checkInputNumber($event)"  class='form-control text-center' formControlName='code'>
           </th>
           <th style='width: 250px'>
             <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text'
+            <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='search'
                    formControlName='name'>
           </th>
           <th style='width: 150px'>
             <div class='border-top text-center'>Ngày công chuẩn</div>
-            <input class='text-center' type='number' disabled>
+            <input class='text-center' type='search' disabled>
           </th>
           <th>
             <div class=' text-center'>Chức vụ</div>
-            <input class='form-control' type='text' matInput [matAutocomplete]='position'
+            <input class='form-control' type='search' [matAutocomplete]='position'
                    formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
@@ -44,7 +44,7 @@
           </th>
           <th>
             <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type='text' matInput [matAutocomplete]='branch'
+            <input class='form-control' type='search' matInput [matAutocomplete]='branch'
                    formControlName='branch'>
             <mat-autocomplete #branch='matAutocomplete'>
               <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'

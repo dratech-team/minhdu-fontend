@@ -20,17 +20,17 @@
           <th style='width: 120px'>
             <div class='border-top text-center'>Mã nhân Viên</div>
             <input class='form-control input-profile'
-                   type='text'
+                   type='search'
                    formControlName='code'
             >
           </th>
           <th>
             <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control input-profile ' type='text' placeholder='Trần Gia Hiệu' formControlName='name'>
+            <input class='form-control input-profile ' type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
           </th>
           <th>
             <div class='title-profile'>Chức vụ</div>
-            <input class='form-control' type='text' matInput [matAutocomplete]='position'
+            <input class='form-control' type='search' matInput [matAutocomplete]='position'
                    formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async' [value]='position.name'

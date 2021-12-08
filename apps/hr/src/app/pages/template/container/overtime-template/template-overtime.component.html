@@ -29,7 +29,7 @@
           <div class='border-top text-center'>Tên bản mẫu</div>
           <input
             class='form-control '
-            type='text'
+            type='search'
             formControlName='title'
           >
         </th>
@@ -57,7 +57,7 @@
         </th>
         <th>
           <div class='border-top text-center'>Đơn vị</div>
-          <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+          <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                         (onSelectionChange)='onSelectBranch(branch.name)'
@@ -83,7 +83,7 @@
               </mat-chip>
             </mat-chip-list>
           </ng-template>
-          <input class='form-control' type='text' matInput [matAutocomplete]='position'
+          <input class='form-control' type='search' matInput [matAutocomplete]='position'
                  [formControl]='fCtrlPosition'  #positionInput>
           <mat-autocomplete #position='matAutocomplete'>
             <mat-option *ngFor='let position of positions$ | async'

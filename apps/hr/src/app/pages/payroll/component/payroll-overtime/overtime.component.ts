@@ -41,6 +41,7 @@ import { DialogSharedComponent } from '../../../../../../../../libs/components/s
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-overtime',
@@ -53,6 +54,7 @@ export class OvertimeComponent implements OnInit {
   createdAt = getState(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
+    code: new FormControl(''),
     name: new FormControl(''),
     startAt: new FormControl(),
     endAt: new FormControl(),
@@ -149,6 +151,7 @@ export class OvertimeComponent implements OnInit {
           this.loaded = false;
           const params = {
             searchType: value.searchType,
+            code: value.code,
             startAt: new Date(value.startAt),
             endAt: new Date(value.endAt),
             title: value.title,
@@ -211,6 +214,7 @@ export class OvertimeComponent implements OnInit {
             const value = this.formGroup.value;
             const overtime = {
               searchType: value.searchType,
+              code: value.code,
               startedAt: new Date(value.startAt),
               endedAt: new Date(value.endAt),
               title: value.title || '',
@@ -309,6 +313,7 @@ export class OvertimeComponent implements OnInit {
             const value = this.formGroup.value;
             const payrollOvertime = {
               searchType: value.searchType,
+              code: value.code,
               startAt: new Date(value.startAt),
               endAt: new Date(value.endAt),
               title: value.title,
@@ -387,5 +392,9 @@ export class OvertimeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DatePipe } from '@angular/common';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-time-sheet',
@@ -88,5 +89,10 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
 
   onSelectBranch(branchName: string) {
     this.EventSelectBranch.emit(branchName);
+  }
+
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

@@ -19,6 +19,7 @@ import { getAllPosition, PositionActions } from '../../../../../../../../libs/or
 import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
 import { selectTotalTemplateOvertime } from '../../+state/template-overtime/template-overtime.selector';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 
 @Component({
@@ -138,5 +139,9 @@ export class HolidayComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')!.patchValue(positionName);
+  }
+
+  checkInputNumber($event: any){
+    return checkInputNumber($event)
   }
 }

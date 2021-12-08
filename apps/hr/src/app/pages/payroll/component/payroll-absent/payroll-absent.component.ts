@@ -32,6 +32,7 @@ import { getAllPosition, PositionActions } from '../../../../../../../../libs/or
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-absent',
@@ -334,5 +335,10 @@ export class PayrollAbsentComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

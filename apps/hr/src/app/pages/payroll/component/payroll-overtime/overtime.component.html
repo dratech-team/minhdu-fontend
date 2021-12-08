@@ -12,7 +12,7 @@
       </th>
       <th>
         <div class='border-top text-center'>Mã nhân viên</div>
-        <input type='text' disabled>
+        <input type='search' (keypress)="checkInputNumber($event)" class='form-control text-center' formControlName='code'>
       </th>
       <th style='width: 250px'>
         <div class='border-top text-center'>
@@ -23,7 +23,7 @@
             </mat-select>
           </div>
         </div>
-        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='text' formControlName='name'>
+        <input class='form-control text-center' placeholder='Nhập tên nhân viên' type='search' formControlName='name'>
       </th>
       <th style=' width: 120px; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center'>Chọn</div>
@@ -44,7 +44,7 @@
       </th>
       <th style='width: 200px'>
         <div class='border-top d-flex justify-content-center align-items-center'>Chức vụ</div>
-        <input class='form-control' type='text' matInput [matAutocomplete]='position'
+        <input class='form-control' type='search' matInput [matAutocomplete]='position'
                formControlName='position'>
         <mat-autocomplete #position='matAutocomplete'>
           <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
@@ -55,7 +55,7 @@
       </th>
       <th style='width: 200px'>
         <div class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+        <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                       (onSelectionChange)='onSelectBranch(branch.name)'>
@@ -76,7 +76,7 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
-        <input class='form-control' type='text' matInput [matAutocomplete]='templateOvertime'
+        <input class='form-control' type='search' matInput [matAutocomplete]='templateOvertime'
                formControlName='title'>
         <mat-autocomplete #templateOvertime='matAutocomplete'>
           <mat-option *ngFor='let template of templateOvertime$ | async' [value]='template.title'

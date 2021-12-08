@@ -22,7 +22,7 @@
               </th>
               <th style='width:150px'>
                 <div class='border-top text-center'>Tiêu đề</div>
-                <input class='form-control  ' type='text' disabled>
+                <input class='form-control  ' type='search' disabled>
               </th>
               <th style='width:50px'>
                 <div class='border-top text-center'>Ngày</div>
@@ -30,7 +30,7 @@
               </th>
               <th style='width: 50px'>
                 <div class='border-top text-center'>Hệ số</div>
-                <input class='form-control  ' type='number' formControlName='rate'>
+                <input class='form-control ' (keypress)='checkInputNumber($event)' type='search' formControlName='rate'>
               </th>
               <th style='width: 100px'>
                 <div class='border-top text-center'>Giá</div>
@@ -46,7 +46,7 @@
               </th>
               <th>
                 <div class='border-top text-center'>Chức vụ</div>
-                <input class='form-control' type='text' matInput [matAutocomplete]='position'
+                <input class='form-control' type='search' matInput [matAutocomplete]='position'
                   formControlName='position'>
                 <mat-autocomplete #position='matAutocomplete'>
                   <mat-option *ngFor='let position of positions$ | async' [value]='position.name'

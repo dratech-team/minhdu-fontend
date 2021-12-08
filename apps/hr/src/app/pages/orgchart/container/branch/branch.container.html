@@ -19,15 +19,15 @@
             </th>
             <th  style='width: 100px'>
               <div class='border-top d-flex justify-content-center align-items-center'>Mã đơn vị</div>
-              <input class='form-control text-center' formControlName='code'>
+              <input class='form-control text-center' type='search' (keypress)='inputCheckNumber($event)' formControlName='code'>
             </th>
             <th  style='width: 200px'>
               <div class='border-top d-flex justify-content-center align-items-center'>Tên đơn vị</div>
-              <input class='form-control border text-center' type='text' matInput formControlName='branch'>
+              <input class='form-control border text-center' type='search' matInput formControlName='branch'>
             </th>
             <th>
               <div class='border-top text-center'>Chức vụ</div>
-              <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+              <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
               <mat-autocomplete #position='matAutocomplete'>
                 <mat-option *ngFor='let position of positions$ | async'
                             [value]='position.name' (click)='onSelectPosition(position.name)'

@@ -13,6 +13,7 @@ import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -124,5 +125,9 @@ export class BranchContainer implements OnInit {
         type:'overtime'
       }
     }).then()
+  }
+
+  inputCheckNumber($event: any){
+    return checkInputNumber($event)
   }
 }

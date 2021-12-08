@@ -13,21 +13,21 @@
           <th style='width: 50px'>
             <div class='border-top text-center'>stt</div>
             <input class='form-control  '
-                   type='text'
+                   type='search'
                    formControlName='name'
             >
           </th>
           <th>
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control  '
-                   type='text'
+                   type='search'
                    placeholder='Trần Gia Hiệu'
                    formControlName='name'
             >
           </th>
           <th>
             <div class=' text-center'>Chức vụ</div>
-            <input class='form-control' type='text' matInput [matAutocomplete]='position' formControlName='position'>
+            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async'
                           [value]='position.name' (click)='onSelectPosition(position.name)'
@@ -38,7 +38,7 @@
           </th>
           <th>
             <div class=' text-center'>Đơn vị</div>
-            <input class='form-control' type='text' matInput [matAutocomplete]='branch' formControlName='branch'>
+            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
             <mat-autocomplete #branch='matAutocomplete'>
               <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
                           (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'

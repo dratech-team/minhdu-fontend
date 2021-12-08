@@ -31,6 +31,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
 import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/unitAllowance.constant';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -347,5 +348,10 @@ export class PayrollAllowanceComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

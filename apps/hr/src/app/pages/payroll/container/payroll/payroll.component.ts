@@ -38,6 +38,7 @@ import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/
 import { ExportService } from '@minhdu-fontend/service';
 import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
 import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -511,5 +512,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         }
       }
     });
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

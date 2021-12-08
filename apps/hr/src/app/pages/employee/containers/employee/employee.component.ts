@@ -32,7 +32,7 @@ import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+s
 import { BehaviorSubject, fromEvent, Observable, Observer, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 @Component({
   templateUrl: 'employee.component.html'
 })
@@ -266,5 +266,9 @@ export class EmployeeComponent implements OnInit {
       width: 'fit-content',
       data: { employee: $event, permanentlyDeleted: true }
     });
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

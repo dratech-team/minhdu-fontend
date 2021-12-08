@@ -30,6 +30,7 @@ import { Subject } from 'rxjs';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -311,5 +312,9 @@ export class PayrollStayComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('branch')!.patchValue(branchName);
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }
