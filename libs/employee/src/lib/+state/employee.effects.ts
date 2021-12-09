@@ -4,7 +4,7 @@ import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectorAllEmployee,
-  selectorEmployeeTotal,
+  selectorEmployeeTotal
 } from '@minhdu-fontend/employee';
 import { SlackService } from '@minhdu-fontend/service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -25,17 +25,9 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.pagination(props.employee)),
       map((responsePagination) => {
         this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
-        const employeesInStore = getSelectors<Employee[]>(
-          selectorAllEmployee,
-          this.store
-        ).filter((employee) => employee.isSelect);
-
         return EmployeeAction.LoadEmployeesSuccess({
-          employees: (responsePagination.data.map((employee) => {
-            /// TODO: check isSelectAll = true để set true/ false cho isSelect
-            return Object.assign(employee, { isSelect: false });
-          }) as Employee[]).concat(employeesInStore),
-          total: responsePagination.total,
+          employees: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))
@@ -48,7 +40,7 @@ export class EmployeeEffect {
       withLatestFrom(this.store.pipe(select(selectorEmployeeTotal))),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props.employee)), {
-          skip: skip,
+          skip: skip
         })
       ),
       switchMap((props) => {
@@ -59,21 +51,12 @@ export class EmployeeEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Lấy hết nhân viên' },
+            data: { content: 'Lấy hết nhân viên' }
           });
         }
-        const employeeIdsInStore = getSelectors<Employee[]>(
-          selectorAllEmployee,
-          this.store
-        )
-          .filter((employee) => employee.isSelect)
-          .map((employee) => employee.id);
-
         return EmployeeAction.LoadMoreEmployeesSuccess({
-          employees: responsePagination.data.filter((employee) => {
-            return !employeeIdsInStore.includes(employee.id);
-          }),
-          total: responsePagination.total,
+          employees: responsePagination.data,
+          total: responsePagination.total
         });
       }),
       catchError((err) => {
@@ -103,7 +86,7 @@ export class EmployeeEffect {
       switchMap((props) => this.relativeService.addOneRelative(props.relative)),
       map((res) => {
         this.snackBar.open('Thêm người thân thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
@@ -149,7 +132,7 @@ export class EmployeeEffect {
       ),
       map((res) => {
         this.snackBar.open('Cập nhật nhân viên thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
@@ -168,7 +151,7 @@ export class EmployeeEffect {
       ),
       map((res) => {
         this.snackBar.open('Cập nhật người thân thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
@@ -185,7 +168,7 @@ export class EmployeeEffect {
       switchMap((props) => this.degreeService.update(props.id, props.degree)),
       map((res) => {
         this.snackBar.open('Cập nhật bằng cấp thành công', '', {
-          duration: 1000,
+          duration: 1000
         });
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
@@ -203,7 +186,7 @@ export class EmployeeEffect {
         this.employeeService.delete(props.id).pipe(
           map(() => {
             this.snackBar.open('Xóa nhân viên vĩnh viễn thành công', '', {
-              duration: 1000,
+              duration: 1000
             });
             return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
           }),
@@ -220,7 +203,7 @@ export class EmployeeEffect {
         this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map(() => {
             this.snackBar.open('Xóa nhân viên thành công', '', {
-              duration: 1000,
+              duration: 1000
             });
             return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
           }),
@@ -261,10 +244,10 @@ export class EmployeeEffect {
         this.degreeService.deleteContracts(props.id).pipe(
           map((_) => {
             this.snackBar.open('Xóa bằng hợp đồng thành công', '', {
-              duration: 1000,
+              duration: 1000
             });
             return EmployeeAction.deleteContractSuccess({
-              employeeId: props.employeeId,
+              employeeId: props.employeeId
             });
           })
         )
@@ -281,5 +264,6 @@ export class EmployeeEffect {
     private readonly snackBar: MatSnackBar,
     private readonly store: Store,
     private readonly slackService: SlackService
-  ) {}
+  ) {
+  }
 }

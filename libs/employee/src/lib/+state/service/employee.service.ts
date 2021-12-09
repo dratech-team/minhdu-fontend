@@ -29,7 +29,6 @@ export class EmployeeService extends BaseService<Employee> {
 
   update(id: number, props: any): Observable<UpdateNum<Employee>> {
     return super.update(id, props).pipe(val => {
-      console.log(val);
       return val;
     });
   }

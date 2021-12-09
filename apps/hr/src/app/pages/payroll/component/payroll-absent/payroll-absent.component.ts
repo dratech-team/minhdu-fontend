@@ -49,16 +49,17 @@ import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-
 
 @Component({
   selector: 'app-payroll-absent',
-  templateUrl: 'payroll-absent.component.html',
+  templateUrl: 'payroll-absent.component.html'
 })
 export class PayrollAbsentComponent implements OnInit {
   @Input() eventAddAbsent?: Subject<any>;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
+  @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   pageType = PageTypeEnum;
   datetimeUnit = DatetimeUnitEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -72,7 +73,7 @@ export class PayrollAbsentComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
+    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -88,6 +89,7 @@ export class PayrollAbsentComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   unitAbsent = UnitAbsentConstant;
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly datePipe: DatePipe,
@@ -95,18 +97,19 @@ export class PayrollAbsentComponent implements OnInit {
     private readonly salaryService: SalaryService,
     private readonly snackbar: MatSnackBar,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     let paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,
-      salaryTitle: this.absentTitle ? this.absentTitle : '',
       salaryType: SalaryTypeEnum.ABSENT,
       filterType: FilterTypeEnum.SALARY,
       position: getSelectors<string>(selectedPositionPayroll, this.store),
-      branch: getSelectors<string>(selectedBranchPayroll, this.store),
+      branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
+
 
     this.store.dispatch(PositionActions.loadPosition());
 
@@ -123,23 +126,36 @@ export class PayrollAbsentComponent implements OnInit {
     );
 
     if (this.absentTitle) {
-      Object.assign(paramLoadInit, { createdAt: new Date(this.createdAt) });
+      Object.assign(paramLoadInit, {
+        createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd')
+      });
     } else {
       Object.assign(paramLoadInit, {
         startedAt: getFirstDayInMonth(new Date(this.createdAt)),
-        endedAt: getLastDayInMonth(new Date(this.createdAt)),
+        endedAt: getLastDayInMonth(new Date(this.createdAt))
       });
     }
+
     this.store.dispatch(
       PayrollAction.loadInit({
-        payrollDTO: paramLoadInit,
+        payrollDTO: paramLoadInit
       })
     );
 
     if (this.absentTitle) {
       this.formGroup
         .get('title')!
-        .setValue(this.absentTitle, { emitEvent: false });
+        .setValue(this.absentTitle);
+      this.formGroup
+        .get('startedAt')!
+        .setValue(
+          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+        );
+      this.formGroup
+        .get('endedAt')!
+        .setValue(
+          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+        );
     }
 
     this.eventAddAbsent?.subscribe((val) => {
@@ -161,12 +177,12 @@ export class PayrollAbsentComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.startedAt),
           position: value.position,
-          branch: value.branch,
+          branch: value.branch
         })
       );
       this.store.dispatch(
         PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollAbsent(),
+          payrollDTO: this.mapPayrollAbsent()
         })
       );
     });
@@ -212,7 +228,7 @@ export class PayrollAbsentComponent implements OnInit {
 
   addSalaryAbsent() {
     const ref = this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -252,8 +268,8 @@ export class PayrollAbsentComponent implements OnInit {
           salaryIds: this.salaryIds,
           updateMultiple: true,
           createdAt: value.startedAt,
-          type: SalaryTypeEnum.ABSENT,
-        },
+          type: SalaryTypeEnum.ABSENT
+        }
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
@@ -279,7 +295,7 @@ export class PayrollAbsentComponent implements OnInit {
 
   deleteMultipleSalaryAbsent() {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -296,7 +312,7 @@ export class PayrollAbsentComponent implements OnInit {
             this.isSelectSalary = false;
             this.salaryIds = [];
             this.snackbar.open('Xóa khấu trừ thành công', '', {
-              duration: 1500,
+              duration: 1500
             });
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollAbsent() })
@@ -309,7 +325,7 @@ export class PayrollAbsentComponent implements OnInit {
 
   deleteSalaryAbsent(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -317,11 +333,11 @@ export class PayrollAbsentComponent implements OnInit {
           if (val) {
             this.store.dispatch(
               PayrollAction.loadInit({
-                payrollDTO: this.mapPayrollAbsent(),
+                payrollDTO: this.mapPayrollAbsent()
               })
             );
             this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500,
+              duration: 1500
             });
           }
         });
@@ -333,7 +349,7 @@ export class PayrollAbsentComponent implements OnInit {
     const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayrollAbsent(),
+        payrollDTO: this.mapPayrollAbsent()
       })
     );
   }
@@ -369,7 +385,7 @@ export class PayrollAbsentComponent implements OnInit {
       salaryType: SalaryTypeEnum.ABSENT,
       filterType: FilterTypeEnum.SALARY,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
@@ -379,7 +395,7 @@ export class PayrollAbsentComponent implements OnInit {
     } else {
       Object.assign(params, {
         startedAt: value.startedAt,
-        endedAt: value.endedAt,
+        endedAt: value.endedAt
       });
     }
     if (!value.name) {

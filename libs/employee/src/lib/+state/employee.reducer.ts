@@ -18,9 +18,7 @@ export interface EmployeeState extends EntityState<Employee> {
   total: number;
 }
 
-export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>({
-  sortComparer: (x, y) => (x === y ? 0 : x ? -1 : 1),
-});
+export const adapter: EntityAdapter<Employee> = createEntityAdapter<Employee>();
 
 export const initialEmployee = adapter.getInitialState({
   loaded: false,
@@ -87,7 +85,6 @@ export const EmployeeReducer = createReducer(
   }),
 
   on(EmployeeAction.updateEmployeeSuccess, (state, { employee }) => {
-    console.log(employee);
     return adapter.updateOne(
       { id: employee.id, changes: employee },
       { ...state, adding: false, added: true }

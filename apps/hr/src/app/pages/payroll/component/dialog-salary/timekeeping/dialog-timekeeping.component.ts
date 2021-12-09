@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
@@ -23,7 +23,7 @@ export class DialogTimekeepingComponent implements OnInit {
   submitted = false;
   selectedIndex = 0;
   unitMinute = false;
-  employeeIds: number[] = [];
+  employeeSelected: Employee[] = [];
   isManyPeople = false;
 
   constructor(
@@ -53,7 +53,7 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      datetime: [this.datePipe.transform(this.data.createdAt,'yyyy-MM-dd'), Validators.required],
+      datetime: [this.datePipe.transform(this.data.createdAt, 'yyyy-MM-dd'), Validators.required],
       times: [],
       minutes: [],
       rate: [1, Validators.required],
@@ -87,14 +87,14 @@ export class DialogTimekeepingComponent implements OnInit {
       note: value.note,
       unit: this.titleAbsents[this.selectedIndex]?.unit,
       times: value.times,
-      employeeIds: this.employeeIds.length > 0 ? this.employeeIds : undefined
+      employeeIds: this.employeeSelected.length > 0 ? this.employeeSelected.map(e => e.id) : undefined
     };
 
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY && typeof value.partialDay !== 'number') {
       return this.snackBar.open('Chưa chọn buổi', '', { duration: 2000 });
     }
 
-    if (this.employeeIds.length === 0) {
+    if (this.employeeSelected.length === 0) {
       return this.snackBar.open('Chưa chọn nhân viên', '', { duration: 2000 });
     }
 
@@ -116,35 +116,22 @@ export class DialogTimekeepingComponent implements OnInit {
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary, isTimesheet: this.data?.isTimesheet
     }));
-    if (this.data?.multiple) {
-      this.dialogRef.close(
-        {
-          datetime: value.datetime,
-          title: this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
-            ? this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title
-            : this.titleAbsents[this.selectedIndex]?.title
-        }
-      );
-    } else {
       this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
         if (added) {
           this.dialogRef.close({
             datetime: value.datetime,
-            title: this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
-              ? this.titleAbsents[this.selectedIndex]?.title + ' ' + this.titleSession[value.partialDay]?.title
-              : this.titleAbsents[this.selectedIndex]?.title
+            title: salary.title
           });
         }
       });
-    }
   }
 
   onSelectAbsent(index: number) {
     this.selectedIndex = index;
   }
 
-  pickEmployees(employeeIds: number[]) {
-    this.employeeIds = employeeIds;
+  pickEmployees(employees: Employee[]) {
+    this.employeeSelected = employees;
   }
 
   tabChanged($event: MatTabChangeEvent) {
