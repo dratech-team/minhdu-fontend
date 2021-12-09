@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { selectBranchHoliday, selectorHolidayTotal, selectPositionHoliday } from './holiday.selector';
-import { getState } from '../../../../../../../../libs/utils/getState.ultils';
+import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Injectable()
 export class HolidayEffect {
@@ -86,8 +86,8 @@ export class HolidayEffect {
               return HolidayAction.getHoliday({
                 id: pram.id,
                 params: {
-                  position: getState(selectPositionHoliday, this.store),
-                  branch: getState(selectBranchHoliday, this.store)
+                  position: getSelectors(selectPositionHoliday, this.store),
+                  branch: getSelectors(selectBranchHoliday, this.store)
                 }
               });
             } else {

@@ -1,42 +1,41 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { PayrollService } from '../../service/payroll.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { select, Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
+import { select, Store } from '@ngrx/store';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddedPayroll,
   selectedAddingPayroll,
   selectedCreateAtPayroll
 } from '../../+state/payroll/payroll.selector';
+import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
-import { getState } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Component({
-  templateUrl: 'add-payroll.component.html'
+  templateUrl: 'add-payroll.component.html',
 })
 export class AddPayrollComponent implements OnInit {
   formGroup!: FormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  createdAt = getState(selectedCreateAtPayroll, this.store)
+  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
 
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
     private readonly formBuilder: FormBuilder,
-    private readonly payrollService: PayrollService,
-    private readonly snackBar: MatSnackBar,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data?: any,
-  ) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data?: any
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      generate: [this.datePipe.transform( this.createdAt, 'yyyy-MM')]
+      generate: [this.datePipe.transform(this.createdAt, 'yyyy-MM')],
     });
   }
 
@@ -49,10 +48,10 @@ export class AddPayrollComponent implements OnInit {
       width: 'fit-content',
       disableClose: true,
       data: {
-        content: 'Đang khởi tạo phiếu lương...'
-      }
+        content: 'Đang khởi tạo phiếu lương...',
+      },
     });
-    this.adding$.subscribe(val => {
+    this.adding$.subscribe((val) => {
       if (val) {
         ref.close();
       }
@@ -61,21 +60,23 @@ export class AddPayrollComponent implements OnInit {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
         employeeId: +this.data.employeeId,
-        employeeType: this.data?.employeeType
+        employeeType: this.data?.employeeType,
       };
-      this.store.dispatch(PayrollAction.addPayroll({
-        generate: generate,
-        addOne: true,
-        inHistory: this.data.inHistory
-      }));
+      this.store.dispatch(
+        PayrollAction.addPayroll({
+          generate: generate,
+          addOne: true,
+          inHistory: this.data.inHistory,
+        })
+      );
     } else {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
-        employeeType: this.data?.employeeType
+        employeeType: this.data?.employeeType,
       };
       this.store.dispatch(PayrollAction.addPayroll({ generate: generate }));
     }
-    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+    this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
       if (added) {
         this.dialogRef.close(new Date(this.formGroup.value.generate));
       }

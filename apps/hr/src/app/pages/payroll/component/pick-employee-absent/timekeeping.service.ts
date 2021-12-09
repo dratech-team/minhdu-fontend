@@ -7,7 +7,4 @@ export class TimekeepingService {
   constructor(private readonly store: Store) {
   }
 
-  searchEmployees(val: any) {
-    return this.store.dispatch(EmployeeAction.loadInit({employee: val}));
-  }
 }

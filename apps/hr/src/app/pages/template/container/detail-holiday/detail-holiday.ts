@@ -8,7 +8,7 @@ import {
   selectHolidayLoaded,
   selectPositionHoliday
 } from '../../+state/holiday/holiday.selector';
-import { getState } from '../../../../../../../../libs/utils/getState.ultils';
+import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { FormControl, FormGroup } from '@angular/forms';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
@@ -28,13 +28,13 @@ export class DetailHoliday implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   loaded$ = this.store.pipe(select(selectHolidayLoaded));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  fCtrlPosition = new FormControl(getState(selectPositionHoliday, this.store));
+  fCtrlPosition = new FormControl(getSelectors(selectPositionHoliday, this.store));
   fCtrlBranch = new FormControl('');
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
       code: new FormControl(''),
-      position: new FormControl(getState(selectPositionHoliday, this.store)),
+      position: new FormControl(getSelectors(selectPositionHoliday, this.store)),
       branch: new FormControl(''),
       isConstraint: new FormControl('')
     }
@@ -55,7 +55,7 @@ export class DetailHoliday implements OnInit {
 
     this.store.dispatch(HolidayAction.getHoliday({
       id: this.holidayId,
-      params: { position: getState(selectPositionHoliday, this.store) }
+      params: { position: getSelectors(selectPositionHoliday, this.store) }
     }));
 
     this.fCtrlPosition.valueChanges.subscribe(val => {

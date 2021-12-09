@@ -1,6 +1,7 @@
-import { createAction, props } from '@ngrx/store';
 import { Employee } from '@minhdu-fontend/data-models';
-import { Update, UpdateNum } from '@ngrx/entity/src/models';
+import { Predicate } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
+import { createAction, props } from '@ngrx/store';
 import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
@@ -15,13 +16,18 @@ export const loadMoreEmployees = createAction(
 
 export const LoadEmployeesSuccess = createAction(
   '[LOAD_EMPLOYEE] Load Employee Success',
-  props<{ employees: Employee[], total: number  }>()
-);
-export const LoadMoreEmployeesSuccess = createAction(
-  '[LOAD_EMPLOYEE] LoadMore Employee Success',
-  props<{ employees: Employee[], total: number }>()
+  props<{ employees: Employee[]; total: number }>()
 );
 
+const RemoveManyEmployee = createAction(
+  '[REMOVE_MANY_EMPLOYEE] Remove many employees',
+  props<{ predicate: Predicate<Employee> }>()
+);
+
+export const LoadMoreEmployeesSuccess = createAction(
+  '[LOAD_EMPLOYEE] LoadMore Employee Success',
+  props<{ employees: Employee[]; total: number }>()
+);
 
 export const addEmployee = createAction(
   '[ADD_EMPLOYEE] Add Employee',
@@ -34,7 +40,7 @@ export const handleEmployeeError = createAction(
 
 export const addEmployeeSuccess = createAction(
   '[ADD_EMPLOYEE] Add Employee Success',
-  props<{ employee: Employee, }>()
+  props<{ employee: Employee }>()
 );
 
 export const addRelative = createAction(
@@ -50,9 +56,7 @@ export const addDegree = createAction(
   props<{ degree: any }>()
 );
 
-export const handleDegreeError = createAction(
-  '[ADD_DEGREE] Add Degree Error'
-);
+export const handleDegreeError = createAction('[ADD_DEGREE] Add Degree Error');
 
 export const getEmployee = createAction(
   '[GET EMPLOYEE] Get Employee',
@@ -66,7 +70,7 @@ export const getEmployeeSuccess = createAction(
 
 export const updateEmployee = createAction(
   '[UPDATE_EMPLOYEE] Update Employee Employee',
-  props<{ id: number, employee: any }>()
+  props<{ id: number; employee: any }>()
 );
 
 export const updateEmployeeSuccess = createAction(
@@ -76,12 +80,12 @@ export const updateEmployeeSuccess = createAction(
 
 export const updateRelative = createAction(
   '[UPDATE_RELATIVE] Update Relative',
-  props<{ employeeId: number, id: number, relative: any }>()
+  props<{ employeeId: number; id: number; relative: any }>()
 );
 
 export const updateDegree = createAction(
   '[UPDATE_RELATIVE] Update Degree',
-  props<{ id: number, employeeId: number, degree: any }>()
+  props<{ id: number; employeeId: number; degree: any }>()
 );
 
 export const deleteEmployee = createAction(
@@ -91,7 +95,7 @@ export const deleteEmployee = createAction(
 
 export const leaveEmployee = createAction(
   '[LEAVE_EMPLOYEE] Leave Employee',
-  props<{ id: number, body: { leftAt: Date | '' } }>()
+  props<{ id: number; body: { leftAt: Date | '' } }>()
 );
 
 export const deleteEmployeeSuccess = createAction(
@@ -101,12 +105,12 @@ export const deleteEmployeeSuccess = createAction(
 
 export const deleteRelative = createAction(
   '[DELETE_RELATIVE] Delete Relative',
-  props<{ id: number, employeeId: number }>()
+  props<{ id: number; employeeId: number }>()
 );
 
 export const deleteDegree = createAction(
   '[DELETE_DEGREE] Delete Degree ',
-  props<{ id: number, employeeId: number }>()
+  props<{ id: number; employeeId: number }>()
 );
 
 export const setLoaded = createAction(
@@ -114,10 +118,9 @@ export const setLoaded = createAction(
   props<{ loaded: boolean }>()
 );
 
-
 export const deleteContract = createAction(
   '[DELETE_CONTRACT] Delete contracts ',
-  props<{ id: number, employeeId: number }>()
+  props<{ id: number; employeeId: number }>()
 );
 
 export const deleteContractSuccess = createAction(
@@ -135,6 +138,7 @@ export const EmployeeAction = {
   LoadMoreEmployeesSuccess,
   loadInit,
   LoadEmployeesSuccess,
+  RemoveManyEmployee,
   addEmployee,
   addEmployeeSuccess,
   handleEmployeeError,

@@ -1,8 +1,8 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { EmployeeState } from './employee.reducer';
-import * as fromEmployee from './employee.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { Employee } from '@minhdu-fontend/data-models';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import * as fromEmployee from './employee.reducer';
+import { EmployeeState } from './employee.reducer';
 export interface State {
   employees: fromEmployee.EmployeeState;
 }
