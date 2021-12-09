@@ -53,7 +53,7 @@ export class PayrollAllowanceComponent implements OnInit {
   @Input() allowanceTitle?: string;
   pageType = PageTypeEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -114,7 +114,18 @@ export class PayrollAllowanceComponent implements OnInit {
       this.formGroup
         .get('title')!
         .setValue(this.allowanceTitle, { emitEvent: false });
+
+      this.formGroup
+        .get('createdAt')!
+        .setValue(
+          this.datePipe.transform(
+            new Date(getSelectors(selectedCreateAtPayroll, this.store)),
+            'yyyy-MM'
+          ),
+          { emitEvent: false }
+        );
     }
+
     this.eventAddAllowance?.subscribe((val) => {
       this.formGroup
         .get('title')!

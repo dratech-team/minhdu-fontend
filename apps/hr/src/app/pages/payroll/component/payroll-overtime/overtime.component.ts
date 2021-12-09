@@ -71,7 +71,7 @@ export class OvertimeComponent implements OnInit {
   @Input() eventAddOvertime?: Subject<any>;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
