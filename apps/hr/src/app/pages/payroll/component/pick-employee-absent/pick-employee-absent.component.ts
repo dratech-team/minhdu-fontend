@@ -36,7 +36,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
 export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
   @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
-  @Input() isSelectAll!: boolean;
+  isSelectAll = false;
   @Input() employeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   type = SalaryTypeEnum;

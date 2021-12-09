@@ -1,11 +1,11 @@
 import {
-  Component,
+  Component, DoCheck,
   EventEmitter,
-  Input,
+  Input, IterableDiffers,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -30,7 +30,7 @@ import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ul
   selector: 'app-table-employee-selected',
   templateUrl: './table-employee-selected.component.html',
 })
-export class TableEmployeeSelectedComponent implements OnInit {
+export class TableEmployeeSelectedComponent implements OnInit, DoCheck {
   @Input() employees: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   type = SalaryTypeEnum;
@@ -38,13 +38,23 @@ export class TableEmployeeSelectedComponent implements OnInit {
   employeesSelected: Employee[] = [];
   employeeId!: number;
   isEventSearch = false;
-
+  differ: any
   constructor(
+    private differs: IterableDiffers,
     private readonly store: Store,
-  ) {}
+  ) {
+    this.differ = differs.find([]).create(undefined);
+  }
 
   ngOnInit(): void {
     this.employeesSelected = this.employees
+  }
+  ngDoCheck() {
+    const employeesChange = this.differ.diff(this.employees)
+    if(employeesChange){
+      this.isSelectAll = true;
+      this.employeesSelected = this.employees
+    }
   }
 
   updateSelect(employee: Employee) {
@@ -60,13 +70,6 @@ export class TableEmployeeSelectedComponent implements OnInit {
       this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
-  someComplete(): boolean {
-    return (
-      this.employees.filter((e) =>
-        this.employeesSelected.some((item) => item.id === e.id)
-      ).length > 0 && !this.isSelectAll
-    );
-  }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
