@@ -117,11 +117,10 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
         }
       });
     });
-
     this.store.dispatch(PositionActions.loadPosition());
 
-    this.store.dispatch(OrgchartActions.init());
 
+    this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
