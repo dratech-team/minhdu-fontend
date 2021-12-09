@@ -54,10 +54,10 @@ export class TableEmployeeSelectedComponent implements OnInit {
     } else {
       this.employeesSelected.push(Object.assign(employee, { isSelect: true }));
     }
-    this.isSelectAll =
-      this.employees !== null &&
-      this.employees.every((e) => this.employeesSelected.includes(e));
-    this.EventSelectEmployee.emit(this.employeesSelected);
+      this.isSelectAll =
+        this.employees.length !== 0 &&
+        this.employees.every((e) => this.employeesSelected.includes(e));
+      this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   someComplete(): boolean {
@@ -81,10 +81,7 @@ export class TableEmployeeSelectedComponent implements OnInit {
           );
         }
       } else {
-        const index = this.employeesSelected.indexOf(employee);
-        if (index > -1) {
-          this.employeesSelected.splice(index, 1);
-        }
+      this.employeesSelected = []
       }
     });
     this.EventSelectEmployee.emit(this.employeesSelected);
