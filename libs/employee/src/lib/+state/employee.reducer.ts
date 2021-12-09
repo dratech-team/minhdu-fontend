@@ -38,7 +38,7 @@ export const EmployeeReducer = createReducer(
     return { ...state, loaded: false };
   }),
   on(EmployeeAction.LoadEmployeesSuccess, (state, { employees, total }) => {
-    return adapter.addMany(employees, {
+    return adapter.setAll(employees, {
       ...state,
       loaded: true,
       total: total,

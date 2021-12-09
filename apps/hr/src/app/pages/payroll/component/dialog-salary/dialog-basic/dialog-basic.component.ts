@@ -56,7 +56,6 @@ export class DialogBasicComponent implements OnInit {
       this.checkSalary = false;
     }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.BASIC }));
-
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
         price: [this.data.salary.price, Validators.required],
@@ -142,7 +141,7 @@ export class DialogBasicComponent implements OnInit {
           })
         );
       } else {
-        const data = { salary: salary, employeeIds: this.employeeSelected };
+        const data = { salary: salary, employeeIds: this.employeeSelected.map(e=> e.id) };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
           if (val) {
             if (this.data?.addMultiple) {
