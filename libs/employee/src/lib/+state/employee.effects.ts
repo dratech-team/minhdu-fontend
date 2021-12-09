@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Employee } from '@minhdu-fontend/data-models';
 import {
-  EmployeeAction, selectorEmployeeTotal
+  EmployeeAction,
+  selectorAllEmployee,
+  selectorEmployeeTotal,
 } from '@minhdu-fontend/employee';
 import { SlackService } from '@minhdu-fontend/service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -9,6 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
+import { getSelectors } from './../../../../utils/getState.ultils';
 import { DegreeService } from './service/degree.service';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
@@ -21,14 +25,16 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.pagination(props.employee)),
       map((responsePagination) => {
         this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
-        // const employees = getState(selectorAllEmployee, this.store);
-
-        // console.log(employees);
+        const employeesInStore = getSelectors<Employee[]>(
+          selectorAllEmployee,
+          this.store
+        ).filter((employee) => employee.isSelect);
 
         return EmployeeAction.LoadEmployeesSuccess({
-          employees: responsePagination.data.map((employee) =>
-            Object.assign(employee, { isSelect: false })
-          ),
+          employees: (responsePagination.data.map((employee) => {
+            /// TODO: check isSelectAll = true để set true/ false cho isSelect
+            return Object.assign(employee, { isSelect: false });
+          }) as Employee[]).concat(employeesInStore),
           total: responsePagination.total,
         });
       }),
@@ -56,8 +62,17 @@ export class EmployeeEffect {
             data: { content: 'Lấy hết nhân viên' },
           });
         }
+        const employeeIdsInStore = getSelectors<Employee[]>(
+          selectorAllEmployee,
+          this.store
+        )
+          .filter((employee) => employee.isSelect)
+          .map((employee) => employee.id);
+
         return EmployeeAction.LoadMoreEmployeesSuccess({
-          employees: responsePagination.data,
+          employees: responsePagination.data.filter((employee) => {
+            return !employeeIdsInStore.includes(employee.id);
+          }),
           total: responsePagination.total,
         });
       }),
