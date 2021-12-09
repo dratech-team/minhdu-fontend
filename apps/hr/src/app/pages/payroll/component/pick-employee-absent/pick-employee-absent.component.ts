@@ -117,9 +117,11 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
         }
       });
     });
+
     this.store.dispatch(PositionActions.loadPosition());
 
     this.store.dispatch(OrgchartActions.init());
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -170,8 +172,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
     const employeeSelectedChange = this.differ.diff(this.employeesSelected)
     if(employeeSelectedChange){
       this.isSelectAll =
-        this.employees !== null &&
-        this.employees.every((e) => this.employeesSelected.includes(e));
+        this.employees.length > 1 &&
+        this.employees.every((e) => this.employeesSelected.some(item => item.id ===  e.id));
     }
   }
 
@@ -184,7 +186,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
     }
     this.isSelectAll =
       this.employees !== null &&
-      this.employees.every((e) => this.employeesSelected.includes(e));
+      this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
