@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../../reducers';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
@@ -21,7 +21,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
-  employeeIds: number[] = [];
+  employeeSelected: Employee[] = [];
   isManyPeople = false;
 
   constructor(
@@ -55,7 +55,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.employeeIds.length === 0) {
+    if (this.employeeSelected.length === 0) {
       this.snackBar.open('Chưa chọn nhân viên', '', { duration: 1500 });
     }
     const value = this.formGroup.value;
@@ -70,7 +70,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
       datetime: new Date(value.month),
       note: value.note,
       unit: value.unit ? value.unit : undefined,
-      employeeIds: this.employeeIds
+      employeeIds: this.employeeSelected.map(e => e.id)
     };
     this.store.dispatch(
       PayrollAction.addSalary({
@@ -89,8 +89,8 @@ export class DialogAllowanceMultipleComponent implements OnInit {
   }
 
 
-  pickEmployees(employeeIds: number[]) {
-    this.employeeIds = employeeIds;
+  pickEmployees(employees: Employee[]) {
+    this.employeeSelected = employees;
   }
 
   tabChanged($event: MatTabChangeEvent) {

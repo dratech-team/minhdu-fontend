@@ -1,11 +1,12 @@
 import {
-  Component,
+  Component, DoCheck,
   EventEmitter,
   Input,
+  IterableDiffers,
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -18,23 +19,26 @@ import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
-  selectorTotalEmployee,
+  selectorTotalEmployee
 } from '@minhdu-fontend/employee';
 import {
   getAllPosition,
-  PositionActions,
+  PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
+import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 
 @Component({
   selector: 'app-pick-employee-absent',
-  templateUrl: './pick-employee-absent.component.html',
+  templateUrl: './pick-employee-absent.component.html'
 })
-export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
-  @Input() employeeIdInit?: Employee;
+export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
+  @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
-  @Output() EventSelectEmployee = new EventEmitter<number[]>();
+  @Input() isSelectAll!: boolean;
+  @Input() employeesSelected: Employee[] = [];
+  @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   type = SalaryTypeEnum;
   pageSize = 30;
   pageIndex = 0;
@@ -43,25 +47,27 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
   branches$ = this.store.pipe(select(getAllOrgchart));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   total$ = this.store.pipe(select(selectorTotalEmployee));
-  isSelectAll = false;
   employees: Employee[] = [];
-  employeesSelected: Employee[] = [];
   employeeId!: number;
   isEventSearch = false;
+  differ: any
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     position: new FormControl('', Validators.required),
-    branch: new FormControl('', Validators.required),
+    branch: new FormControl('', Validators.required)
   });
 
   constructor(
+    private differs: IterableDiffers,
     private readonly store: Store,
     private readonly service: TimekeepingService
-  ) {}
+  ) {
+    this.differ = differs.find([]).create(undefined);
+  }
 
   ngOnInit(): void {
-    if (this.employeeIdInit) {
-      this.employeesSelected.push(this.employeeIdInit);
+    if (this.employeeInit) {
+      this.employeesSelected.push(this.employeeInit);
     }
     if (this.createdPayroll) {
       this.store.dispatch(
@@ -69,8 +75,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
           employee: {
             take: 30,
             skip: 0,
-            createdPayroll: new Date(this.createdPayroll),
-          },
+            createdPayroll: new Date(this.createdPayroll)
+          }
         })
       );
     }
@@ -84,20 +90,11 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
       employees.forEach((employee) => {
         if (this.isSelectAll) {
           if (!this.employeesSelected.some((e) => e.id === employee.id)) {
-            this.employeesSelected.push(
-              Object.assign(JSON.parse(JSON.stringify(employee)), {
-                isSelect: true,
-              })
-            );
+            this.employeesSelected.push(employee);
           }
         }
       });
       this.employees = JSON.parse(JSON.stringify(employees));
-      this.employees.map((emp) => {
-        if (this.employeesSelected.some((item) => item.id === emp.id)) {
-          emp.isSelect = true;
-        }
-      });
       const value = this.formGroup.value;
       this.employeesSelected.map((item) => {
         if (
@@ -107,24 +104,22 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
               (value.name.toLowerCase().includes(item.lastName.toLowerCase()) ||
                 value.name === '') &&
               (value.position
-                .toLowerCase()
-                .includes(item.position.name.toLowerCase()) ||
+                  .toLowerCase()
+                  .includes(item.position.name.toLowerCase()) ||
                 value.position === '') &&
               (value.branch
-                .toLowerCase()
-                .includes(item.branch.name.toLowerCase()) ||
+                  .toLowerCase()
+                  .includes(item.branch.name.toLowerCase()) ||
                 value.branch === '')
           )
         ) {
           this.employees.push(item);
         }
       });
-      this.employees = sortBoolean(this.employees);
     });
-
     this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
 
+    this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -133,7 +128,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
           Object.assign(val, {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdPayroll: new Date(this.createdPayroll),
+            createdPayroll: new Date(this.createdPayroll)
           });
           return this.store.dispatch(
             EmployeeAction.loadInit({ employee: val })
@@ -142,52 +137,41 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
       )
       .subscribe();
 
-    this.positions$ = combineLatest([
+    this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition)),
-    ]).pipe(
-      map(([position, positions]) => {
-        if (position) {
-          return positions.filter((e) => {
-            return e.name.toLowerCase().includes(position?.toLowerCase());
-          });
-        } else {
-          return positions;
-        }
-      })
+      this.store.pipe(select(getAllPosition))
     );
 
-    this.branches$ = combineLatest([
+    this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
-      this.branches$,
-    ]).pipe(
-      map(([branch, branches]) => {
-        if (branch) {
-          return branches.filter((e) => {
-            return e.name.toLowerCase().includes(branch?.toLowerCase());
-          });
-        } else {
-          return branches;
-        }
-      })
+      this.branches$
     );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      changes.createdPayroll.previousValue !==
-      changes.createdPayroll.currentValue
+      changes.createdPayroll?.previousValue !==
+      changes.createdPayroll?.currentValue
     ) {
       this.isSelectAll = false;
       this.employeesSelected = [];
-      this.EventSelectEmployee.emit(this.employeesSelected.map((e) => e.id));
+      this.EventSelectEmployee.emit(this.employeesSelected);
       this.store.dispatch(
         EmployeeAction.loadInit({
           employee: {
-            createdPayroll: new Date(changes.createdPayroll.currentValue),
-          },
+            createdPayroll: new Date(changes.createdPayroll.currentValue)
+          }
         })
       );
+    }
+  }
+
+  ngDoCheck() {
+    const employeeSelectedChange = this.differ.diff(this.employeesSelected)
+    if(employeeSelectedChange){
+      this.isSelectAll =
+        this.employees !== null &&
+        this.employees.every((e) => this.employeesSelected.includes(e));
     }
   }
 
@@ -201,7 +185,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
     this.isSelectAll =
       this.employees !== null &&
       this.employees.every((e) => this.employeesSelected.includes(e));
-    this.EventSelectEmployee.emit(this.employeesSelected.map((e) => e.id));
+    this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   someComplete(): boolean {
@@ -220,9 +204,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
     this.employees?.forEach((employee) => {
       if (select) {
         if (!this.employeesSelected.some((item) => item.id === employee.id)) {
-          this.employeesSelected.push(
-            Object.assign(employee, { isSelect: true })
-          );
+          this.employeesSelected.push(employee);
         }
       } else {
         const index = this.employeesSelected.indexOf(employee);
@@ -231,7 +213,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
         }
       }
     });
-    this.EventSelectEmployee.emit(this.employeesSelected.map((e) => e.id));
+    this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   onSelectPosition(positionName: string) {
@@ -257,13 +239,11 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges {
       name: val.name,
       position: val.position,
       branch: val.branch,
-      createdPayroll: new Date(this.createdPayroll),
+      createdPayroll: new Date(this.createdPayroll)
     };
   }
 
   selectEmployee(employee: Employee) {
-    /// TODO: Select employee => update isSelect in store
-    /// Tạo 1 state isSelectAll: Mỗi lần data get từ api vè nếu isSelectAll = true thì isSelect = true
     return this.employeesSelected.some((e) => e.id === employee.id);
   }
 }

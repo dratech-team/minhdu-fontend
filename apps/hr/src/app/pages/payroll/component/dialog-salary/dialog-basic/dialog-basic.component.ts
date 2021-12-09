@@ -14,6 +14,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SalaryService } from '../../../service/salary.service';
+import { Employee } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -28,7 +29,7 @@ export class DialogBasicComponent implements OnInit {
   role = localStorage.getItem('role');
   templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate));
   isManyPeople = false;
-  employeeIds: number[] = [];
+  employeeSelected: Employee[] = [];
   /// FIXME: Dummy data
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
@@ -86,7 +87,7 @@ export class DialogBasicComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.data?.addMultiple && this.employeeIds.length === 0){
+    if(this.data?.addMultiple && this.employeeSelected.length === 0){
       return  this.snackbar.open('Chưa chọn nhân viên', 'Đóng')
     }
     const value = this.formGroup.value;
@@ -133,7 +134,7 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data.payroll?.employee?.id) {
+      if (this.employeeSelected.length === 1 && this.employeeSelected[0] == this.data.payroll?.employee?.id) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
@@ -141,7 +142,7 @@ export class DialogBasicComponent implements OnInit {
           })
         );
       } else {
-        const data = { salary: salary, employeeIds: this.employeeIds };
+        const data = { salary: salary, employeeIds: this.employeeSelected };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
           if (val) {
             if (this.data?.addMultiple) {
@@ -176,7 +177,7 @@ export class DialogBasicComponent implements OnInit {
     }
   }
 
-  pickEmployees(employeeIds: number[]) {
-    this.employeeIds = employeeIds;
+  pickEmployees(employees: Employee[]) {
+    this.employeeSelected = employees;
   }
 }

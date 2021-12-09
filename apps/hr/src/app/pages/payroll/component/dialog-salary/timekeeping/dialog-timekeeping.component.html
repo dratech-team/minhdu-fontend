@@ -78,10 +78,19 @@
         </mat-tab>
         <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-employee-absent
+            [isSelectAll]='false'
+            [employeesSelected]='employeeSelected'
             [createdPayroll]='formGroup.get("datetime")?.value'
             (EventSelectEmployee)='pickEmployees($event)'
           >
           </app-pick-employee-absent>
+        </mat-tab>
+        <mat-tab [disabled]='employeeSelected.length === 0' label='Nhân viên đã chọn' >
+        <app-table-employee-selected
+        [employees]='employeeSelected'
+        (EventSelectEmployee)='pickEmployees($event)'
+        >
+        </app-table-employee-selected>
         </mat-tab>
       </mat-tab-group>
       <div class='row  mt-2 ml-2'>

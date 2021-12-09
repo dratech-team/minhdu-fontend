@@ -55,7 +55,7 @@
     </mat-tab>
     <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
       <app-pick-employee-absent
-        [employeeIdInit]='this.data?.payroll?.employee?.id'
+        [employeeInit]='this.data?.payroll?.employee'
         [createdPayroll]='data?.payroll?.createdAt? data.payroll.createdAt: data.createdAt'
         (EventSelectEmployee)='pickEmployees($event)'
       >

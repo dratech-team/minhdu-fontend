@@ -1,51 +1,32 @@
 <div style='min-width: 850px'>
-  <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
-  <ng-template #employee>
-    <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{total$|async}})</div>
+    <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}})</div>
     <div class='fixTableHead' style='height: 40vh'
          infiniteScroll
-         [infiniteScrollThrottle]='10'
+         [infiniteScrollThrottle]='20'
          [alwaysCallback]='true'
          [infiniteScrollDistance]='1'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup' style='width: 850px'>
+         [scrollWindow]='false'>
+      <table style='width: 850px'>
         <thead style='z-index: 2'>
         <tr>
           <th style='width: 50px'>
             <div class='border-top text-center'>stt</div>
             <input class='form-control  '
-                   type='search'
+                  disabled
             >
           </th>
           <th>
             <div class='border-top text-center'>Tên nhân viên</div>
-            <input class='form-control  '
-                   type='search'
-                   placeholder='Trần Gia Hiệu'
-                   formControlName='name'>
+            <input class='form-control' disabled >
           </th>
           <th>
             <div class=' text-center'>Chức vụ</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async'
-                          [value]='position.name' (click)='onSelectPosition(position.name)'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <input disabled>
+
           </th>
           <th>
             <div class=' text-center'>Đơn vị</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-              >
-                {{branch.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <input disabled>
           </th>
           <th style='width: 100px;'>
             <div class=' text-center' style='background: white'>Tất cả</div>
@@ -77,6 +58,5 @@
         </tbody>
       </table>
     </div>
-  </ng-template>
 </div>
 

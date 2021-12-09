@@ -13,6 +13,7 @@ import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salar
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { SalaryService } from '../../../service/salary.service';
+import { Employee } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -24,7 +25,7 @@ export class DialogStayComponent implements OnInit {
   submitted = false;
   indexTitle = 0;
   salariesStay$ = this.store.pipe(select(selectorAllTemplate));
-  employeeIds: number[] = [];
+  employeeSelected: Employee[] = [];
   isManyPeople = false;
 
   constructor(
@@ -67,7 +68,7 @@ export class DialogStayComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.data?.addMultiple && this.employeeIds.length === 0) {
+    if (this.data?.addMultiple && this.employeeSelected.length === 0) {
       return this.snackBar.open('Chưa chọn nhân viên', 'Đóng');
     }
     const value = this.formGroup.value;
@@ -100,14 +101,14 @@ export class DialogStayComponent implements OnInit {
         }));
       }
     } else {
-      if (this.employeeIds.length === 1 && this.employeeIds[0] == this.data?.payroll?.employee?.id) {
+      if (this.employeeSelected.length === 1 && this.employeeSelected[0] == this.data?.payroll?.employee?.id) {
         this.store.dispatch(PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
             salary: salary
           })
         );
       } else {
-        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeIds })
+        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeSelected })
           .subscribe(val => {
             if (val) {
               if (this.data?.addMultiple) {
@@ -141,8 +142,7 @@ export class DialogStayComponent implements OnInit {
     }
   }
 
-  pickEmployees(employeeIds: number[]) {
-    this.employeeIds = employeeIds;
-    console.log(this.employeeIds);
+  pickEmployees(employees: Employee[]) {
+    this.employeeSelected = employees;
   }
 }
