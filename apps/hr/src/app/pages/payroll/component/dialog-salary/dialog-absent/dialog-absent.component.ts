@@ -108,7 +108,7 @@ export class DialogAbsentComponent implements OnInit {
         note: [this.data.salary?.note],
         type: [this.data.type],
         rate: [1],
-        partialDay: []
+        partialDay: [this.data.salary?.partial]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -148,7 +148,6 @@ export class DialogAbsentComponent implements OnInit {
       !this.formGroup.value.minutes
     ) {
     }
-
     const value = this.formGroup.value;
     const salary = {
       title: this.data?.salary?.title,
@@ -231,6 +230,21 @@ export class DialogAbsentComponent implements OnInit {
           datetime: value.datetime ? new Date(value.datetime) : undefined
         });
       }
+      if (this.data.salary.unit === DatetimeUnitEnum.DAY) {
+        if (this.data.salary.type === 'ABSENT') {
+          Object.assign(salary,
+            {
+              title: 'Vắng ' + this.titleSession.find(item => item.type === value.partialDay)!.title,
+              partial: value.partialDay
+            });
+        } else {
+          Object.assign(salary,
+            {
+              title: 'Không đi làm ' + this.titleSession.find(item => item.type === value.partialDay)!.title,
+              partial: value.partialDay
+            });
+        }
+      }
       if (this.data?.updateMultiple) {
         delete salary.payrollId;
         Object.assign(salary, { salaryIds: this.data.salaryIds });
@@ -239,7 +253,8 @@ export class DialogAbsentComponent implements OnInit {
           if (val) {
             this.snackbar.open(val.message, '', { duration: 1500 });
             this.dialogRef.close({
-              datetime: value.datetime
+              datetime: value.datetime,
+              title: salary.title
             });
           }
         });
@@ -258,8 +273,7 @@ export class DialogAbsentComponent implements OnInit {
         return this.snackBar.open('Chưa chọn Loại', '', { duration: 2000 });
       }
       if (
-        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY &&
-        typeof value.partialDay !== 'number'
+        this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY && !value.partialDay
       ) {
         return this.snackBar.open('Chưa chọn buổi ', '', { duration: 2000 });
       }
@@ -272,7 +286,7 @@ export class DialogAbsentComponent implements OnInit {
       }
       if (
         this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
-        && value.partialDay === 2
+        && value.partialDay === PartialDayEnum.ALL_DAY
         && (!value.startedAt || !value.endedAt)
       ) {
         return this.snackBar.open('Chưa chọn từ ngày đến ngày ', '', { duration: 2000 });
@@ -286,36 +300,30 @@ export class DialogAbsentComponent implements OnInit {
       if (
         this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY
       ) {
-        if (
-          this.titleAbsents[this.selectedIndex]?.unit ===
-          DatetimeUnitEnum.DAY &&
-          typeof value.partialDay !== 'number'
-        ) {
-          return this.snackBar.open('chưa chọn buổi', '', { duration: 2000 });
-        }
-        if (value.partialDay === 2) {
+
+        if (value.partialDay === PartialDayEnum.ALL_DAY) {
           if (moment(value.startedAt).format('YYYY-MM-DD')
             === moment(value.endedAt).format('YYYY-MM-DD')) {
             Object.assign(salary, {
               title:
                 this.titleAbsents[this.selectedIndex]?.title +
                 ' ' +
-                this.titleSession[value.partialDay]?.title,
-              times: this.titleSession[value.partialDay].times,
+                this.titleSession.find(item => item.type === value.partialDay)!.title,
+              times: this.titleSession.find(item => item.type === value.partialDay)!.times,
               datetime: new Date(value.startedAt + '-00'),
-              partial: this.titleSession[value.partialDay].type
+              partial: this.titleSession.find(item => item.type === value.partialDay)!.type
             });
           } else {
             Object.assign(salary, {
               title:
                 this.titleAbsents[this.selectedIndex]?.title +
                 ' ' +
-                this.titleSession[value.partialDay]?.title,
-              times: this.titleSession[value.partialDay].times *
+                this.titleSession.find(item => item.type === value.partialDay)!.title,
+              times: this.titleSession.find(item => item.type === value.partialDay)!.times *
                 (new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1),
               startedAt: new Date(value.startedAt + '-00'),
               endedAt: new Date(value.endedAt + '-00'),
-              partial: this.titleSession[value.partialDay].type
+              partial: this.titleSession.find(item => item.type === value.partialDay)!.type
             });
           }
         } else {
@@ -323,10 +331,10 @@ export class DialogAbsentComponent implements OnInit {
             title:
               this.titleAbsents[this.selectedIndex]?.title +
               ' ' +
-              this.titleSession[value.partialDay]?.title,
-            times: this.titleSession[value.partialDay].times,
+              this.titleSession.find(item => item.type === value.partialDay)!.title,
+            times: this.titleSession.find(item => item.type === value.partialDay)!.times,
             datetime: new Date(value.datetime),
-            partial: this.titleSession[value.partialDay].type
+            partial: this.titleSession.find(item => item.type === value.partialDay)!.type
           });
         }
       }

@@ -219,7 +219,7 @@ export class PayrollAbsentComponent implements OnInit {
           if (val) {
             this.isSelectSalary = false;
             this.salaryIds = [];
-            this.formGroup.get('title')!.setValue(salariesSelected[0].title);
+            this.formGroup.get('title')!.setValue(val.title);
             this.formGroup.get('startedAt')!.setValue(
               this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd'));
             this.formGroup.get('endedAt')!.setValue(
