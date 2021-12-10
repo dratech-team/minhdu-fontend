@@ -122,10 +122,10 @@ export class OvertimeComponent implements OnInit {
         title: this.overtimeTitle ? this.overtimeTitle : '',
         searchType: SearchTypeEnum.CONTAINS,
         startAt: this.overtimeTitle
-          ? new Date(this.createdAt)
+          ? this.createdAt
           : getFirstDayInMonth(new Date(this.createdAt)),
         endAt: this.overtimeTitle
-          ? new Date(this.createdAt)
+          ?  this.createdAt
           : getLastDayInMonth(new Date(this.createdAt)),
         position: getSelectors(selectedPositionPayroll, this.store),
         branch: getSelectors(selectedBranchPayroll, this.store),
