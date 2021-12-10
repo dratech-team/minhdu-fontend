@@ -33,7 +33,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
   selector: 'app-pick-employee-absent',
   templateUrl: './pick-employee-absent.component.html'
 })
-export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
+export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChanges{
   @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
   isSelectAll = false;
@@ -50,7 +50,6 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
   employees: Employee[] = [];
   employeeId!: number;
   isEventSearch = false;
-  differ: any
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     position: new FormControl('', Validators.required),
@@ -58,16 +57,38 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
   });
 
   constructor(
-    private differs: IterableDiffers,
     private readonly store: Store,
     private readonly service: TimekeepingService
-  ) {
-    this.differ = differs.find([]).create(undefined);
+  ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.employeesSelected){
+      this.isSelectAll =
+        this.employees.length > 1 &&
+        this.employees.every((e) => this.employeesSelected.some(item => item.id ===  e.id));
+    }
+
+    if (
+      changes.createdPayroll?.previousValue !==
+      changes.createdPayroll?.currentValue
+    ) {
+      this.isSelectAll = false;
+      this.employeesSelected = [];
+      this.EventSelectEmployee.emit(this.employeesSelected);
+      this.store.dispatch(
+        EmployeeAction.loadInit({
+          employee: {
+            createdPayroll: new Date(changes.createdPayroll.currentValue)
+          }
+        })
+      );
+    }
   }
 
   ngOnInit(): void {
     if (this.employeeInit) {
       this.employeesSelected.push(this.employeeInit);
+      this.EventSelectEmployee.emit(this.employeesSelected)
     }
     if (this.createdPayroll) {
       this.store.dispatch(
@@ -94,6 +115,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
           }
         }
       });
+
       this.employees = JSON.parse(JSON.stringify(employees));
       const value = this.formGroup.value;
       this.employeesSelected.map((item) => {
@@ -149,35 +171,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes.createdPayroll?.previousValue !==
-      changes.createdPayroll?.currentValue
-    ) {
-      this.isSelectAll = false;
-      this.employeesSelected = [];
-      this.EventSelectEmployee.emit(this.employeesSelected);
-      this.store.dispatch(
-        EmployeeAction.loadInit({
-          employee: {
-            createdPayroll: new Date(changes.createdPayroll.currentValue)
-          }
-        })
-      );
-    }
-  }
-
-  ngDoCheck() {
-    const employeeSelectedChange = this.differ.diff(this.employeesSelected)
-    if(employeeSelectedChange){
-      this.isSelectAll =
-        this.employees.length > 1 &&
-        this.employees.every((e) => this.employeesSelected.some(item => item.id ===  e.id));
-    }
-  }
-
   updateSelect(employee: Employee) {
-    const index = this.employeesSelected.indexOf(employee);
+    const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
     if (index > -1) {
       this.employeesSelected.splice(index, 1);
     } else {
@@ -208,7 +203,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, DoCheck {
           this.employeesSelected.push(employee);
         }
       } else {
-        const index = this.employeesSelected.indexOf(employee);
+        const index = this.employeesSelected.findIndex(emp=> emp.id === employee.id);
         if (index > -1) {
           this.employeesSelected.splice(index, 1);
         }

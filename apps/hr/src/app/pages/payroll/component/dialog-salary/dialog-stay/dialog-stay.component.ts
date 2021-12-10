@@ -101,7 +101,7 @@ export class DialogStayComponent implements OnInit {
         }));
       }
     } else {
-      if (this.employeeSelected.length === 1 && this.employeeSelected[0] == this.data?.payroll?.employee?.id) {
+      if (this.employeeSelected.length === 1 && this.employeeSelected[0].id == this.data?.payroll?.employee?.id) {
         this.store.dispatch(PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
             salary: salary
@@ -143,6 +143,6 @@ export class DialogStayComponent implements OnInit {
   }
 
   pickEmployees(employees: Employee[]) {
-    this.employeeSelected = employees;
+    this.employeeSelected = [...employees] ;
   }
 }

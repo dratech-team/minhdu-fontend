@@ -131,7 +131,7 @@ export class DialogTimekeepingComponent implements OnInit {
   }
 
   pickEmployees(employees: Employee[]) {
-    this.employeeSelected = employees;
+    this.employeeSelected = [...employees] ;
   }
 
   tabChanged($event: MatTabChangeEvent) {

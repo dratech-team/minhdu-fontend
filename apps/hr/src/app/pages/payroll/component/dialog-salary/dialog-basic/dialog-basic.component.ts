@@ -68,6 +68,7 @@ export class DialogBasicComponent implements OnInit {
         rate: [1, Validators.required]
       });
     } else {
+      this.employeeSelected.push(this.data.payroll.employee.id)
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
         type: ['', Validators.required
@@ -133,7 +134,7 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.employeeSelected.length === 1 && this.employeeSelected[0] == this.data.payroll?.employee?.id) {
+      if (this.employeeSelected.length === 1 && this.employeeSelected[0].id == this.data.payroll?.employee?.id) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
@@ -177,6 +178,6 @@ export class DialogBasicComponent implements OnInit {
   }
 
   pickEmployees(employees: Employee[]) {
-    this.employeeSelected = employees;
+    this.employeeSelected = [...employees] ;
   }
 }

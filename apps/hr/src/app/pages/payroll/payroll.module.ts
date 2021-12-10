@@ -70,6 +70,7 @@ import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absen
 import { SelectAddMultiple } from './component/dialog-select-add-multiple/select-add-multiple';
 import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/select-update-multiple';
 import { TableEmployeeSelectedComponent } from './component/table-employee-selected/table-employee-selected.component';
+import { TableAllowanceEmployeeComponent } from './component/table-allowance-emp-selected/table-allowance-employee.component';
 
 @NgModule({
   imports: [
@@ -149,7 +150,8 @@ import { TableEmployeeSelectedComponent } from './component/table-employee-selec
     PayrollAbsentComponent,
     SelectAddMultiple,
     SelectUpdateMultiple,
-    TableEmployeeSelectedComponent
+    TableEmployeeSelectedComponent,
+    TableAllowanceEmployeeComponent
   ],
   providers: [
     MatDatepickerModule

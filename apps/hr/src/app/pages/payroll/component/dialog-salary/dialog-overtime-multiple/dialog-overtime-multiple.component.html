@@ -260,22 +260,25 @@
           </div>
         </div>
       </mat-dialog-content>
-      <button *ngIf='employeeIds.length === 0 && !data.isUpdate' class='btn btn-primary mt-2' (click)='check()'>Tiếp
+      <button *ngIf='employeesSelected.length === 0 && !data.isUpdate' class='btn btn-primary mt-2' (click)='check()'>
+        Tiếp
         theo
       </button>
-      <button *ngIf='employeeIds.length > 0 || data.isUpdate'
+      <button *ngIf='employeesSelected.length > 0 || data.isUpdate'
               class='btn btn-primary mt-2'
               (click)='onSubmit()'>Lưu
       </button>
     </mat-step>
-    <mat-step [editable]='false'
-              *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'
+    <mat-step
+      *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'
     >
       <ng-template matStepLabel>
         <span
           (click)='check()'>Chọn nhân viên</span>
       </ng-template>
       <app-pick-employee-overtime *ngIf='!data?.isUpdate'
+                                  [employeesSelected]='employeesSelected'
+                                  [allowEmployeesSelected]='allowEmpSelected'
                                   [checkAllowance]='onAllowanceOvertime'
                                   [search]='{templateId: templateId ,
                                              createdPayroll:  formGroup.get("month")?.value?
@@ -287,6 +290,19 @@
                                   (EventSelectEmployee)='pickEmployees($event)'
       >
       </app-pick-employee-overtime>
+      <button class='btn btn-primary' (click)='onSubmit()'>Lưu
+      </button>
+    </mat-step>
+    <mat-step  *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'
+               label='Nhân viên đã chọn ({{employeesSelected.length}})'>
+      <app-table-allowance-employee
+        [checkAllowance]='onAllowanceOvertime'
+        [employees]='employeesSelected'
+        [allowEmployeesSelected]='allowEmpSelected'
+        (EventSelectAllowance)='pickAllowance($event)'
+        (EventSelectEmployee)='pickEmployees($event)'
+      >
+      </app-table-allowance-employee>
       <button class='btn btn-primary' (click)='onSubmit()'>Lưu
       </button>
     </mat-step>

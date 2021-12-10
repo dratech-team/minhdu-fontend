@@ -30,7 +30,7 @@ import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ul
   selector: 'app-table-employee-selected',
   templateUrl: './table-employee-selected.component.html',
 })
-export class TableEmployeeSelectedComponent implements OnInit, DoCheck {
+export class TableEmployeeSelectedComponent implements OnInit,OnChanges {
   @Input() employees: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   type = SalaryTypeEnum;
@@ -45,20 +45,20 @@ export class TableEmployeeSelectedComponent implements OnInit, DoCheck {
   ) {
     this.differ = differs.find([]).create(undefined);
   }
+ngOnChanges(changes: SimpleChanges) {
+    if(changes.employees){
+      this.isSelectAll = true;
+      this.employeesSelected = this.employees
+    }
+}
 
   ngOnInit(): void {
     this.employeesSelected = this.employees
   }
-  ngDoCheck() {
-    const employeesChange = this.differ.diff(this.employees)
-    if(employeesChange){
-      this.isSelectAll = true;
-      this.employeesSelected = this.employees
-    }
-  }
+
 
   updateSelect(employee: Employee) {
-    const index = this.employeesSelected.indexOf(employee);
+    const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
     if (index > -1) {
       this.employeesSelected.splice(index, 1);
     } else {

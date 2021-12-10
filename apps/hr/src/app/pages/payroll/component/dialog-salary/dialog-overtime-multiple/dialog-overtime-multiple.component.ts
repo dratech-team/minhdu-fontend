@@ -13,7 +13,7 @@ import { map, startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
 import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { MatStepper } from '@angular/material/stepper';
-import { PartialDayEnum, Position } from '@minhdu-fontend/data-models';
+import { Employee, PartialDayEnum, Position } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
 import { SalaryService } from '../../../service/salary.service';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
@@ -29,9 +29,8 @@ export class DialogOvertimeMultipleComponent implements OnInit {
   titleOvertimes = new FormControl();
   onAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
-  employeeIds: number[] = [];
-  allowEmpIds: number[] = [];
-  allowSalaryIds: number[] = [];
+  employeesSelected: Employee[] = [];
+  allowEmpSelected: Employee[] = [];
   price!: number;
   title!: string;
   unit?: DatetimeUnitEnum;
@@ -167,12 +166,12 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     );
   }
 
-  pickAllowance(allowEmpIds: number[]) {
-    this.allowEmpIds = allowEmpIds;
+  pickAllowance(employees: Employee[]): any {
+    this.allowEmpSelected = [...employees] ;
   }
 
-  pickEmployees(employeeIds: number[]): any {
-    this.employeeIds = employeeIds;
+  pickEmployees(employees: Employee[]): any {
+    this.employeesSelected = [...employees]
   }
 
   pickOverTime(data: TemplateOvertime) {
@@ -252,7 +251,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
-        allowEmpIds: this.allowEmpIds,
+        allowEmpIds: this.allowEmpSelected.map(e => e.id),
         allowance:
           {
             title: value.titleAllowance,
@@ -286,12 +285,12 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         }
       });
     } else {
-      if (this.employeeIds.length === 0) {
+      if (this.employeesSelected.length === 0) {
         return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
           duration: 1000
         });
       }
-      Object.assign(salary, { employeeIds: this.employeeIds });
+      Object.assign(salary, { employeeIds: this.employeesSelected.map(e => e.id) });
       this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
       this.dialogRef.close(
         {
