@@ -32,13 +32,12 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
   @Input() allowEmployeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   @Output() EventSelectAllowance = new EventEmitter<Employee[]>();
+  employeesSelected: Employee[] = [];
   isSelectAllEmployee = true;
   isSelectAllowance = true;
-  employeesSelected: Employee[] = [];
   differ: any;
 
   constructor(
-
     private readonly store: Store,
     private readonly snackBar: MatSnackBar
   ) {
@@ -46,9 +45,26 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if( changes.employees){
-      this.isSelectAllEmployee = true
-      this.employeesSelected = this.employees
+    if (changes.employees) {
+      if (changes.employees.currentValue.length == 0) {
+        this.isSelectAllEmployee = false;
+        this.isSelectAllowance = false;
+      } else {
+        this.isSelectAllEmployee = true;
+        this.isSelectAllowance =
+          this.employees !== null &&
+          this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+      }
+      this.employeesSelected = this.employees;
+    }
+    if (changes.allowEmployeesSelected) {
+      if (changes.allowEmployeesSelected.currentValue.length == 0) {
+        this.isSelectAllowance = false;
+      } else {
+        this.isSelectAllowance =
+          this.employees !== null &&
+          this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+      }
     }
 
   }
@@ -91,7 +107,7 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
           this.employeesSelected.push(employee);
         }
       } else {
-        this.isSelectAllEmployee = false
+        this.isSelectAllEmployee = false;
         this.employeesSelected = [];
         this.allowEmployeesSelected = [];
       }
