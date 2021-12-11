@@ -33,7 +33,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
   selector: 'app-pick-employee-absent',
   templateUrl: './pick-employee-absent.component.html'
 })
-export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChanges{
+export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges {
   @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
   isSelectAll = false;
@@ -59,13 +59,14 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChange
   constructor(
     private readonly store: Store,
     private readonly service: TimekeepingService
-  ) { }
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.employeesSelected){
+    if (changes.employeesSelected) {
       this.isSelectAll =
         this.employees.length > 1 &&
-        this.employees.every((e) => this.employeesSelected.some(item => item.id ===  e.id));
+        this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
     }
 
     if (
@@ -78,6 +79,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChange
       this.store.dispatch(
         EmployeeAction.loadInit({
           employee: {
+            take: 30,
+            skip: 0,
             createdPayroll: new Date(changes.createdPayroll.currentValue)
           }
         })
@@ -88,7 +91,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChange
   ngOnInit(): void {
     if (this.employeeInit) {
       this.employeesSelected.push(this.employeeInit);
-      this.EventSelectEmployee.emit(this.employeesSelected)
+      this.EventSelectEmployee.emit(this.employeesSelected);
     }
     if (this.createdPayroll) {
       this.store.dispatch(
@@ -203,7 +206,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges , OnChange
           this.employeesSelected.push(employee);
         }
       } else {
-        const index = this.employeesSelected.findIndex(emp=> emp.id === employee.id);
+        const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
         if (index > -1) {
           this.employeesSelected.splice(index, 1);
         }

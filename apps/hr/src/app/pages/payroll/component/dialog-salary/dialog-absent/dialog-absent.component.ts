@@ -3,15 +3,15 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   Inject,
-  OnInit,
+  OnInit, Output,
   ViewChild
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { Employee, PartialDayEnum, Salary } from '@minhdu-fontend/data-models';
 import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
@@ -36,6 +36,8 @@ export class DialogAbsentComponent implements OnInit {
   unitAbsent = false;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
+  salariesSelected: Salary[] = [];
+  @Output() EmitSalariesSelected = new EventEmitter<Salary[]>();
 
   constructor(
     public datePipe: DatePipe,
@@ -76,6 +78,8 @@ export class DialogAbsentComponent implements OnInit {
         getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
       this.lastDayInMonth = this.datePipe.transform(
         getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+    } else {
+      this.salariesSelected = this.data.salariesSelected;
     }
     if (this.data?.isUpdate) {
       if (this.data.salary?.unit === DatetimeUnitEnum.MINUTE) {
@@ -247,7 +251,7 @@ export class DialogAbsentComponent implements OnInit {
       }
       if (this.data?.updateMultiple) {
         delete salary.payrollId;
-        Object.assign(salary, { salaryIds: this.data.salaryIds });
+        Object.assign(salary, { salaryIds: this.salariesSelected.map((e: Salary) => e.id) });
         this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
@@ -372,5 +376,10 @@ export class DialogAbsentComponent implements OnInit {
 
   onSelectAbsent(index: number) {
     this.selectedIndex = index;
+  }
+
+  changeSalariesSelected($event: Salary[]) {
+    this.salariesSelected = $event;
+    this.EmitSalariesSelected.emit(this.salariesSelected);
   }
 }

@@ -1,7 +1,7 @@
 <ngx-skeleton-loader *ngIf='!(loaded$|async) else payrollBasic' count='18' appearance='line'></ngx-skeleton-loader>
 <ng-template #payrollBasic>
   <div class='font-lg font-weight-bold my-2'>
-    Đã chọn: {{salaryIds.length}}/{{totalSalaryBasic$|async}}
+    Đã chọn: {{salariesSelected.length}}/{{totalSalaryBasic$|async}}
   </div>
   <div class='table-scroll mt-2 position-relative'
        infiniteScroll
@@ -35,8 +35,8 @@
         </th>
         <th style='width: 120px ; z-index: 3'>
           <div class='border-top border-bottom d-flex justify-content-center align-items-center p-1'>
-            <span *ngIf='salaryIds.length === 0' class='mr-2'>Chọn</span>
-            <div *ngIf='salaryIds.length > 0' class='w-100 d-flex justify-content-between'>
+            <span *ngIf='salariesSelected.length === 0' class='mr-2'>Chọn</span>
+            <div *ngIf='salariesSelected.length > 0' class='w-100 d-flex justify-content-between'>
               <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                       (click)='updateMultipleSalaryBasic()'
                       class=' btn btn-primary d-flex justify-content-center align-items-center '>
@@ -128,8 +128,8 @@
           <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'>
             <mat-checkbox
-              [checked]='salaryIds.includes(item.id)'
-              (change)='updateSelectSalary(item.id)'>
+              [checked]='selectSalary(item)'
+              (change)='updateSelectSalary(item)'>
             </mat-checkbox>
           </div>
         </th>

@@ -1,6 +1,6 @@
 <ngx-skeleton-loader *ngIf='!loaded' count='18' appearance='line'></ngx-skeleton-loader>
 <div class='font-lg font-weight-bold mb-2'>
-  Đã chọn: {{salaryIds.length}}/{{salaries.length}}
+  Đã chọn: {{salariesSelected.length}}/{{salaries.length}}
 </div>
 <div class='table-scroll mt-3 position-relative '>
   <table [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
@@ -30,13 +30,13 @@
         <div class='d-flex'>
           <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                   (click)='updateMultipleSalaryOvertime()'
-                  *ngIf='salaryIds.length > 0'
+                  *ngIf='salariesSelected.length > 0'
                   class=' btn btn-primary d-flex justify-content-center align-items-center '>
             Sửa
           </button>
           <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                   (click)='deleteMultipleSalaryOvertime()'
-                  *ngIf='salaryIds.length > 0'
+                  *ngIf='salariesSelected.length > 0'
                   class='btn btn-danger d-flex justify-content-center align-items-center '>
             Xóa
           </button>
@@ -175,8 +175,8 @@
         <div class=' d-flex align-items-center justify-content-center pointer '
              *ngFor='let item of overtime.salaries'>
           <mat-checkbox
-            [checked]='salaryIds.includes(item.id)'
-            (change)='updateSelectSalary(item.id)'>
+            [checked]='selectSalary(item)'
+            (change)='updateSelectSalary(item)'>
           </mat-checkbox>
         </div>
       </th>

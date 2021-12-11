@@ -1,39 +1,44 @@
 import { Salary } from '@minhdu-fontend/data-models';
 
-export const someComplete = (salaries: Salary[], salaryIds: number[], isSelectSalary: boolean) => {
+export const someComplete = (salaries: any[], salariesSelected: any[], isSelectSalary: boolean) => {
   return (
-    salaries.filter(e => salaryIds.includes(e.id)).length > 0 && !isSelectSalary
+    salaries.filter(e => salariesSelected.some(item => item.salary.id === e.salary.id)).length > 0 && !isSelectSalary
   );
 };
 
 
-export const updateSelect = (id: number, salaryIds: number[], isSelectSalary: boolean, salaries: Salary[]) => {
-  const index = salaryIds.indexOf(id);
+export const updateSelect = (salarySelected: any, salariesSelected: any[], isSelectSalary: boolean, salaries: any[]) => {
+  const index = salariesSelected.findIndex(item => item.salary.id === salarySelected.salary.id);
   if (index > -1) {
-    salaryIds.splice(index, 1);
+    salariesSelected.splice(index, 1);
   } else {
-    salaryIds.push(id);
+    salariesSelected.push(salarySelected);
   }
-  return  isSelectSalary = salaries !== null && salaries.every(e => salaryIds.includes(e.id))
+  return isSelectSalary = salaries.length > 0 && salaries.every(e => salariesSelected.some(item =>
+    item.salary.id === e.salary.id));
 };
 
 export const setAll = (
   select: boolean,
-  salaries: Salary[],
-  salaryIds: number[]
+  salaries: any[],
+  salariesSelected: any[],
+  isTableSalary?: boolean
 ) => {
-
-  salaries?.forEach((salary) => {
+  salaries?.forEach((val) => {
     if (select) {
-      if (!salaryIds.includes(salary.id)) {
-        salaryIds.push(salary.id);
+      if (!salariesSelected.some(item => item.salary.id === val.salary.id)) {
+        salariesSelected.push(val);
       }
     } else {
-      const index = salaryIds.indexOf(salary.id);
-      if (index > -1) {
-        salaryIds.splice(index, 1);
+      if (isTableSalary) {
+        salariesSelected.length = 0;
+      } else {
+        const index = salariesSelected.findIndex(item => item.salary.id === val.salary.id);
+        if (index > -1) {
+          salariesSelected.splice(index, 1);
+        }
       }
     }
   });
-  return select
+  return select;
 };

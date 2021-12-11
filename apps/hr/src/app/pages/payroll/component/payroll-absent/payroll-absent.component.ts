@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
-import { Salary } from '@minhdu-fontend/data-models';
+import { Employee, Salary } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -81,9 +81,9 @@ export class PayrollAbsentComponent implements OnInit {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
-  salaryIds: number[] = [];
+  salariesSelected: any[] = [];
   isSelectSalary = false;
-  salaries: Salary[] = [];
+  salaries: any[] = [];
   pageSize = 30;
   pageIndex = 0;
   positions$ = this.store.pipe(select(getAllPosition));
@@ -109,7 +109,6 @@ export class PayrollAbsentComponent implements OnInit {
       position: getSelectors<string>(selectedPositionPayroll, this.store),
       branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
-
 
     this.store.dispatch(PositionActions.loadPosition());
 
@@ -199,12 +198,12 @@ export class PayrollAbsentComponent implements OnInit {
               ) {
                 if (
                   this.isSelectSalary &&
-                  !this.salaryIds.includes(salary.id) &&
+                  !this.salariesSelected.some(item => item.id === salary.id) &&
                   !this.salaries.find((e) => e.id === salary.id)
                 ) {
-                  this.salaryIds.push(salary.id);
+                  this.salariesSelected.push({salary:salary, employee: payroll.employee});
                 }
-                this.salaries.push(salary);
+                this.salaries.push({salary:salary, employee: payroll.employee});
               }
             });
           }
@@ -217,7 +216,6 @@ export class PayrollAbsentComponent implements OnInit {
         //export Absent
       }
     });
-    console.log(this.salaries);
   }
 
   readPayroll(event: any) {
@@ -251,7 +249,7 @@ export class PayrollAbsentComponent implements OnInit {
     const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach((salary) => {
-      if (this.salaryIds.includes(salary.id)) {
+      if (this.salariesSelected.some(item => item.id === salary.id)) {
         salariesSelected.push(salary);
       }
     });
@@ -261,20 +259,25 @@ export class PayrollAbsentComponent implements OnInit {
       })
     ) {
       const ref = this.dialog.open(DialogAbsentComponent, {
-        width: '600px',
+        width: 'fit-content',
         data: {
           isUpdate: true,
           salary: salariesSelected[0],
-          salaryIds: this.salaryIds,
+          salariesSelected: this.salariesSelected,
           updateMultiple: true,
           createdAt: value.startedAt,
           type: SalaryTypeEnum.ABSENT
         }
       });
+      ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
+        this.salariesSelected = val;
+        this.isSelectSalary = this.salaries.length > 0
+          && this.salaries.every(e => this.salariesSelected.some(item => item.id === e.id));
+      });
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.isSelectSalary = false;
-          this.salaryIds = [];
+          this.salariesSelected = [];
           this.formGroup.get('title')!.setValue(val.title);
           this.formGroup
             .get('startedAt')!
@@ -300,17 +303,17 @@ export class PayrollAbsentComponent implements OnInit {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         let deleteSuccess = new Subject<number>();
-        this.salaryIds.forEach((id, index) => {
-          this.salaryService.delete(id).subscribe((val: any) => {
+        this.salariesSelected.forEach((salary, index) => {
+          this.salaryService.delete(salary.id).subscribe((val: any) => {
             if (val) {
               deleteSuccess.next(index);
             }
           });
         });
         deleteSuccess.subscribe((val) => {
-          if (val === this.salaryIds.length - 1) {
+          if (val === this.salariesSelected.length - 1) {
             this.isSelectSalary = false;
-            this.salaryIds = [];
+            this.salariesSelected = [];
             this.snackbar.open('Xóa khấu trừ thành công', '', {
               duration: 1500
             });
@@ -354,21 +357,22 @@ export class PayrollAbsentComponent implements OnInit {
     );
   }
 
-  updateSelectSalary(id: number) {
+  updateSelectSalary(salary: Salary, employee: Employee) {
+    const  salarySelected = {salary, employee}
     this.isSelectSalary = updateSelect(
-      id,
-      this.salaryIds,
+      salarySelected,
+      this.salariesSelected,
       this.isSelectSalary,
       this.salaries
     );
   }
 
   someCompleteSalary(): boolean {
-    return someComplete(this.salaries, this.salaryIds, this.isSelectSalary);
+    return someComplete(this.salaries, this.salariesSelected, this.isSelectSalary);
   }
 
   setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
+    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
   }
 
   mapPayrollAbsent() {
@@ -414,5 +418,9 @@ export class PayrollAbsentComponent implements OnInit {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+  selectSalary(salary: Salary) {
+    return this.salariesSelected.some((e) => e.salary.id === salary.id);
   }
 }

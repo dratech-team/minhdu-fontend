@@ -73,7 +73,7 @@ export class PayrollAllowanceComponent implements OnInit {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
-  salaryIds: number[] = [];
+  salariesSelected: Salary[] = [];
   isSelectSalary = false;
   salaries: Salary[] = [];
   pageSize = 30;
@@ -189,10 +189,10 @@ export class PayrollAllowanceComponent implements OnInit {
               if (salary.type === SalaryTypeEnum.ALLOWANCE) {
                 if (
                   this.isSelectSalary &&
-                  !this.salaryIds.includes(salary.id) &&
+                  !this.salariesSelected.some(item => item.id === salary.id) &&
                   !this.salaries.find((e) => e.id === salary.id)
                 ) {
-                  this.salaryIds.push(salary.id);
+                  this.salariesSelected.push(salary);
                 }
                 this.salaries.push(salary);
               }
@@ -250,7 +250,7 @@ export class PayrollAllowanceComponent implements OnInit {
     const value = this.formGroup.value;
     let salariesSelected: Salary[] = [];
     this.salaries.forEach((salary) => {
-      if (this.salaryIds.includes(salary.id)) {
+      if (this.salariesSelected.some(item => item.id === salary.id)) {
         salariesSelected.push(salary);
       }
     });
@@ -268,7 +268,7 @@ export class PayrollAllowanceComponent implements OnInit {
         data: {
           isUpdate: true,
           salary: salariesSelected[0],
-          salaryIds: this.salaryIds,
+          salaryIds: this.salariesSelected,
           updateMultiple: true,
           type: SalaryTypeEnum.ALLOWANCE,
         },
@@ -276,7 +276,7 @@ export class PayrollAllowanceComponent implements OnInit {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.isSelectSalary = false;
-          this.salaryIds = [];
+          this.salariesSelected = [];
           this.formGroup
             .get('title')!
             .setValue(val.title, { emitEvent: false });
@@ -312,17 +312,17 @@ export class PayrollAllowanceComponent implements OnInit {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         let deleteSuccess = new Subject<number>();
-        this.salaryIds.forEach((id, index) => {
-          this.salaryService.delete(id).subscribe((val: any) => {
+        this.salariesSelected.forEach((salary, index) => {
+          this.salaryService.delete(salary.id).subscribe((val: any) => {
             if (val) {
               deleteSuccess.next(index);
             }
           });
         });
         deleteSuccess.subscribe((val) => {
-          if (val === this.salaryIds.length - 1) {
+          if (val === this.salariesSelected.length - 1) {
             this.isSelectSalary = false;
-            this.salaryIds = [];
+            this.salariesSelected = [];
             this.snackbar.open('Xóa lương cơ bản thành công', '', {
               duration: 1500,
             });
@@ -366,21 +366,21 @@ export class PayrollAllowanceComponent implements OnInit {
     );
   }
 
-  updateSelectSalary(id: number) {
+  updateSelectSalary(salary: Salary) {
     this.isSelectSalary = updateSelect(
-      id,
-      this.salaryIds,
+      salary,
+      this.salariesSelected,
       this.isSelectSalary,
       this.salaries
     );
   }
 
   someCompleteSalary(): boolean {
-    return someComplete(this.salaries, this.salaryIds, this.isSelectSalary);
+    return someComplete(this.salaries, this.salariesSelected, this.isSelectSalary);
   }
 
   setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
+    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
   }
 
   mapPayrollAllowance() {
@@ -415,5 +415,8 @@ export class PayrollAllowanceComponent implements OnInit {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+  selectSalary(salary: Salary) {
+    return this.salariesSelected.some((e) => e.id === salary.id);
   }
 }

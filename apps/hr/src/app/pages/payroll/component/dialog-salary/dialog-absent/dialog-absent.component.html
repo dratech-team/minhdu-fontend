@@ -1,5 +1,9 @@
 <div class='px-5  main-popup'>
-  <div mat-dialog-close class='close-popup'>
+  <app-table-salaries-selected
+  [salaries]='salariesSelected'
+  (EmitSalariesSelected)='changeSalariesSelected($event)'>
+  </app-table-salaries-selected>
+  <div mat-dialog-close class='close-popup' >
     <span class='mr-1'> close</span>
     <div class='x-popup'>
       <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>

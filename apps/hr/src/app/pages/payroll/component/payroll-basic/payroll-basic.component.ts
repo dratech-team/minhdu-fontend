@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SearchTypeConstant } from '@minhdu-fontend/constants';
-import { Salary } from '@minhdu-fontend/data-models';
+import { Employee, Salary } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -42,7 +42,7 @@ import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic
 
 @Component({
   selector: 'app-payroll-basic',
-  templateUrl: 'payroll-basic.component.html',
+  templateUrl: 'payroll-basic.component.html'
 })
 export class PayrollBasicComponent implements OnInit {
   pageType = PageTypeEnum;
@@ -58,7 +58,7 @@ export class PayrollBasicComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
+    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -69,11 +69,11 @@ export class PayrollBasicComponent implements OnInit {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
-  salaryIds: number[] = [];
+  salariesSelected: Salary[] = [];
   isSelectSalary = false;
-  salaries: Salary[] = [];
   pageSize = 30;
   pageIndex = 0;
+  salaries: Salary[] = [];
 
   constructor(
     private readonly dialog: MatDialog,
@@ -82,7 +82,8 @@ export class PayrollBasicComponent implements OnInit {
     private readonly salaryService: SalaryService,
     private readonly snackbar: MatSnackBar,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   //dummy
   salaryBasic = [
@@ -90,8 +91,9 @@ export class PayrollBasicComponent implements OnInit {
     { title: 'Lương theo PL.HD', value: 'Lương theo PL.HD' },
     { title: 'Lương Tín nhiệm', value: 'Lương Tín nhiệm' },
     { title: 'Lương TN quản lý thêm', value: 'Lương TN quản lý thêm' },
-    { title: 'Tất cả', value: '' },
+    { title: 'Tất cả', value: '' }
   ];
+
 
   ngOnInit() {
     this.store.dispatch(
@@ -103,8 +105,8 @@ export class PayrollBasicComponent implements OnInit {
           filterType: FilterTypeEnum.SALARY,
           createdAt: new Date(this.createdAt),
           position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store),
-        },
+          branch: getSelectors(selectedBranchPayroll, this.store)
+        }
       })
     );
 
@@ -117,12 +119,12 @@ export class PayrollBasicComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
           branch: value.branch,
-          position: value.position,
+          position: value.position
         })
       );
       this.store.dispatch(
         PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollBasic(),
+          payrollDTO: this.mapPayrollBasic()
         })
       );
     });
@@ -149,10 +151,10 @@ export class PayrollBasicComponent implements OnInit {
               ) {
                 if (
                   this.isSelectSalary &&
-                  !this.salaryIds.includes(salary.id) &&
+                  !this.salariesSelected.some(item => item.id === salary.id) &&
                   !this.salaries.find((e) => e.id === salary.id)
                 ) {
-                  this.salaryIds.push(salary.id);
+                  this.salariesSelected.push(salary);
                 }
                 this.salaries.push(salary);
               }
@@ -181,8 +183,8 @@ export class PayrollBasicComponent implements OnInit {
       data: {
         createdAt: this.formGroup.get('createdAt')!.value,
         addMultiple: true,
-        type: SalaryTypeEnum.BASIC,
-      },
+        type: SalaryTypeEnum.BASIC
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -196,8 +198,8 @@ export class PayrollBasicComponent implements OnInit {
               createdAt: this.formGroup.get('createdAt')!.value,
               salaryTitle: val.title,
               position: val.position,
-              branch: val.branch,
-            },
+              branch: val.branch
+            }
           })
         );
       }
@@ -205,14 +207,8 @@ export class PayrollBasicComponent implements OnInit {
   }
 
   updateMultipleSalaryBasic() {
-    let salariesSelected: Salary[] = [];
-    this.salaries.forEach((salary) => {
-      if (this.salaryIds.includes(salary.id)) {
-        salariesSelected.push(salary);
-      }
-    });
     if (
-      salariesSelected.every((value, index, array) => {
+      this.salariesSelected.every((value, index, array) => {
         return value.title === array[0].title;
       })
     ) {
@@ -220,32 +216,36 @@ export class PayrollBasicComponent implements OnInit {
         width: 'fit-content',
         data: {
           isUpdate: true,
-          salary: salariesSelected[0],
-          salaryIds: this.salaryIds,
-          updateMultiple: true,
-        },
+          salary: this.salariesSelected[0],
+          salaryIds: this.salariesSelected.map(e => e.id)
+        }
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
+          if (val.salariesSelected) {
+            this.salariesSelected = val.salariesSelected;
+            this.isSelectSalary = this.salariesSelected.length > 0 &&
+              this.salaries.every(e => this.salariesSelected.some(item => item.id === e.id));
+          }
           this.isSelectSalary = false;
-          this.salaryIds = [];
+          this.salariesSelected = [];
           const value = this.formGroup.value;
           this.formGroup
             .get('title')!
-            .setValue(salariesSelected[0].title, { emitEvent: false });
+            .setValue(this.salariesSelected[0].title, { emitEvent: false });
           console.log(value);
-          console.log(salariesSelected[0].title);
+          console.log(this.salariesSelected[0].title);
           const params = {
             take: this.pageSize,
             skip: this.pageIndex,
             code: this.formGroup.get('code')!.value,
             searchType: value.searchType,
             createdAt: value.createdAt,
-            salaryTitle: salariesSelected[0].title,
+            salaryTitle: this.salariesSelected[0].title,
             name: this.formGroup.get('name')!.value,
             salaryType: SalaryTypeEnum.BASIC,
             position: value.position,
-            branch: value.branch,
+            branch: value.branch
           };
           if (this.formGroup.get('name')!.value === '') {
             delete params.name;
@@ -253,7 +253,7 @@ export class PayrollBasicComponent implements OnInit {
           console.log(params);
           this.store.dispatch(
             PayrollAction.loadInit({
-              payrollDTO: params,
+              payrollDTO: params
             })
           );
         }
@@ -265,25 +265,24 @@ export class PayrollBasicComponent implements OnInit {
 
   deleteMultipleSalaryBasic() {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         let deleteSuccess = new Subject<number>();
-        this.salaryIds.forEach((id, index) => {
-          this.salaryService.delete(id).subscribe((val: any) => {
+        this.salariesSelected.forEach((salary, index) => {
+          this.salaryService.delete(salary.id).subscribe((val: any) => {
             if (val) {
               deleteSuccess.next(index);
             }
           });
         });
         deleteSuccess.subscribe((val) => {
-          console.log(val);
-          if (val === this.salaryIds.length - 1) {
+          if (val === this.salariesSelected.length - 1) {
             this.isSelectSalary = false;
-            this.salaryIds = [];
+            this.salariesSelected = [];
             this.snackbar.open('Xóa lương cơ bản thành công', '', {
-              duration: 1500,
+              duration: 1500
             });
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollBasic() })
@@ -296,7 +295,7 @@ export class PayrollBasicComponent implements OnInit {
 
   deleteSalaryBasic(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -305,11 +304,11 @@ export class PayrollBasicComponent implements OnInit {
           if (val) {
             this.store.dispatch(
               PayrollAction.loadInit({
-                payrollDTO: this.mapPayrollBasic(),
+                payrollDTO: this.mapPayrollBasic()
               })
             );
             this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500,
+              duration: 1500
             });
           }
         });
@@ -321,7 +320,7 @@ export class PayrollBasicComponent implements OnInit {
     const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayrollBasic(),
+        payrollDTO: this.mapPayrollBasic()
       })
     );
   }
@@ -339,7 +338,7 @@ export class PayrollBasicComponent implements OnInit {
       filterType: FilterTypeEnum.SALARY,
       salaryType: SalaryTypeEnum.BASIC,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
     if (!value.name) {
       delete params.name;
@@ -347,21 +346,21 @@ export class PayrollBasicComponent implements OnInit {
     return params;
   }
 
-  updateSelectSalary(id: number) {
+  updateSelectSalary(salary: Salary) {
     this.isSelectSalary = updateSelect(
-      id,
-      this.salaryIds,
+      salary,
+      this.salariesSelected,
       this.isSelectSalary,
       this.salaries
     );
   }
 
   someCompleteSalary(): boolean {
-    return someComplete(this.salaries, this.salaryIds, this.isSelectSalary);
+    return someComplete(this.salaries, this.salariesSelected, this.isSelectSalary);
   }
 
   setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salaryIds);
+    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
   }
 
   onSelectPosition(positionName: string) {
@@ -374,5 +373,9 @@ export class PayrollBasicComponent implements OnInit {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+  selectSalary(salary: Salary) {
+    return this.salariesSelected.some((e) => e.id === salary.id);
   }
 }
