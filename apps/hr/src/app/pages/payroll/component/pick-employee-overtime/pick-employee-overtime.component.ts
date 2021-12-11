@@ -22,6 +22,7 @@ import { PickEmployeeService } from './pick-employee.service';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { Subject } from 'rxjs';
+import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 
 @Component({
   selector: 'app-pick-employee-overtime',
@@ -107,13 +108,18 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('ssss')
     this.employees$.subscribe((employees) => {
+      if(employees.length === 0){
+        this.isSelectAllEmployee = false
+      }
       if (this.isEventSearch) {
         this.isSelectAllEmployee =
           employees.every((e) =>
             this.employeesSelected.some((item) => item.id === e.id)
-          ) && this.employeesSelected.length > 0;
+          )
+          && this.employeesSelected.length > 0
+          && this.employeesSelected.length >= Number(getSelectors(selectorTotalEmployee,this.store))
+        ;
         this.isSelectAllowance = employees.every((e) =>
           this.allowEmployeesSelected.some((item) => item.id === e.id)
         ) && this.allowEmployeesSelected.length === this.employeesSelected.length;

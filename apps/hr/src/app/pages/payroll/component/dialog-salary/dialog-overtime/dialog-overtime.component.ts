@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -19,7 +19,7 @@ import { startWith } from 'rxjs/operators';
 import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { SalaryService } from '../../../service/salary.service';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 
@@ -28,6 +28,7 @@ import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 })
 
 export class DialogOvertimeComponent implements OnInit {
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   datetimeUnitEnum = DatetimeUnitEnum;
   titleOvertimes = new FormControl();
   onAllowanceOvertime = false;
@@ -45,6 +46,7 @@ export class DialogOvertimeComponent implements OnInit {
   lastDayInMonth!: string | null;
   recipeType = RecipeType;
   partialDay: any;
+  salariesSelected: SalaryPayroll[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -75,6 +77,8 @@ export class DialogOvertimeComponent implements OnInit {
       if ((this.data?.isUpdate && this.data.salary.allowance)) {
         this.onAllowanceOvertime = true;
       }
+    }else{
+      this.salariesSelected = this.data.salariesSelected
     }
     if (this.data?.isUpdate) {
       if (!this.data.salary?.unit)
@@ -168,7 +172,7 @@ export class DialogOvertimeComponent implements OnInit {
         delete salary.payrollId;
         Object.assign(salary, {
           allowanceDeleted: !this.onAllowanceOvertime && this.data.salary.allowance,
-          salaryIds: this.data.salaryIds
+          salaryIds: this.salariesSelected.map(e => e.salary.id)
         });
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
@@ -240,5 +244,10 @@ export class DialogOvertimeComponent implements OnInit {
         unit: unit ? this.unit : ''
       }));
     this.titleOvertimes.patchValue('');
+  }
+
+  changeSalariesSelected($event: SalaryPayroll[]) {
+    this.salariesSelected = $event;
+    this.EmitSalariesSelected.emit(this.salariesSelected);
   }
 }

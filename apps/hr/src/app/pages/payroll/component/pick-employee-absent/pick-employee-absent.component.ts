@@ -28,6 +28,8 @@ import {
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
+import { selectedTotalPayroll } from '../../+state/payroll/payroll.selector';
 
 @Component({
   selector: 'app-pick-employee-absent',
@@ -105,11 +107,15 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       );
     }
     this.employees$.subscribe((employees) => {
+      if(employees.length === 0){
+        this.isSelectAll = false
+      }
       if (this.isEventSearch) {
         this.isSelectAll =
           employees.every((e) =>
-            this.employeesSelected.some((item) => item.id === e.id)
-          ) && this.employeesSelected.length > 0;
+            this.employeesSelected.some((item) => item.id === e.id))
+          && this.employeesSelected.length > 0
+          && this.employeesSelected.length >= Number(getSelectors(selectorTotalEmployee, this.store));
       }
       employees.forEach((employee) => {
         if (this.isSelectAll) {

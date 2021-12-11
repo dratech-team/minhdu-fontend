@@ -12,7 +12,7 @@ export interface PayrollSalary {
   }
 }
 
-interface employee {
+export interface employee {
   id: number,
   firstName: string,
   lastName: string,

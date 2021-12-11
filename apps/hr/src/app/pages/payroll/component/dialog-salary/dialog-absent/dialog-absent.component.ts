@@ -11,7 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Employee, PartialDayEnum, Salary } from '@minhdu-fontend/data-models';
+import { Employee, PartialDayEnum, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
@@ -36,8 +36,8 @@ export class DialogAbsentComponent implements OnInit {
   unitAbsent = false;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
-  salariesSelected: Salary[] = [];
-  @Output() EmitSalariesSelected = new EventEmitter<Salary[]>();
+  salariesSelected: SalaryPayroll[] = [];
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
   constructor(
     public datePipe: DatePipe,
@@ -251,7 +251,8 @@ export class DialogAbsentComponent implements OnInit {
       }
       if (this.data?.updateMultiple) {
         delete salary.payrollId;
-        Object.assign(salary, { salaryIds: this.salariesSelected.map((e: Salary) => e.id) });
+        Object.assign(salary, { salaryIds: this.salariesSelected.map(
+          (e: SalaryPayroll) => e.salary.id) });
         this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
@@ -378,7 +379,7 @@ export class DialogAbsentComponent implements OnInit {
     this.selectedIndex = index;
   }
 
-  changeSalariesSelected($event: Salary[]) {
+  changeSalariesSelected($event: SalaryPayroll[]) {
     this.salariesSelected = $event;
     this.EmitSalariesSelected.emit(this.salariesSelected);
   }

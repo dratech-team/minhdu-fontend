@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConvertBooleanFrontEnd, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -13,7 +13,7 @@ import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salar
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { SalaryService } from '../../../service/salary.service';
-import { Employee } from '@minhdu-fontend/data-models';
+import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -24,9 +24,11 @@ export class DialogStayComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   indexTitle = 0;
+  tabindex = 0
   salariesStay$ = this.store.pipe(select(selectorAllTemplate));
   employeeSelected: Employee[] = [];
-  isManyPeople = false;
+  salariesSelected: SalaryPayroll[] = [];
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
   constructor(
     public datePipe: DatePipe,
@@ -43,6 +45,9 @@ export class DialogStayComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (this.data?.updateMultiple) {
+      this.salariesSelected = this.data.salariesSelected;
+    }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     if (this.data?.isUpdate) {
       this.formGroup = this.formBuilder.group({
@@ -85,7 +90,7 @@ export class DialogStayComponent implements OnInit {
       if (this.data?.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
-            salaryIds: this.data.salaryIds,
+            salaryIds: this.salariesSelected.map( e => e.salary.id),
             title: value.title ? value.title : this.data?.salary?.title,
             price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price
           }).subscribe(val => {
@@ -108,7 +113,7 @@ export class DialogStayComponent implements OnInit {
           })
         );
       } else {
-        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeSelected })
+        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeSelected.map(e => e.id) })
           .subscribe(val => {
             if (val) {
               if (this.data?.addMultiple) {
@@ -132,17 +137,17 @@ export class DialogStayComponent implements OnInit {
     this.formGroup.get('price')!.setValue(price);
   }
 
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
-    }
-  }
 
   pickEmployees(employees: Employee[]) {
     this.employeeSelected = [...employees] ;
+  }
+
+  changeSalariesSelected($event: SalaryPayroll[]) {
+    this.salariesSelected = $event;
+    this.EmitSalariesSelected.emit(this.salariesSelected);
+  }
+
+  changeTab(indexTab: number) {
+    this.tabindex = indexTab
   }
 }

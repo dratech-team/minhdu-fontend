@@ -3,6 +3,7 @@ import { DatetimeUnitEnum, SalaryTypeEnum } from '../../../enums';
 import { SalaryHistory } from './salary-history';
 import { PartialDayEnum } from '@minhdu-fontend/data-models';
 import { Employee } from '../employee/employee';
+import { employee } from './payroll-salary';
 
 
 export interface Salary {
@@ -28,3 +29,7 @@ export interface Salary {
   employee?: Employee
 }
 
+export interface SalaryPayroll {
+  salary: Salary,
+  employee: Employee|employee
+}

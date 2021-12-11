@@ -176,7 +176,7 @@
              *ngFor='let item of overtime.salaries'>
           <mat-checkbox
             [checked]='selectSalary(item)'
-            (change)='updateSelectSalary(item)'>
+            (change)='updateSelectSalary({salary:item,employee: overtime})'>
           </mat-checkbox>
         </div>
       </th>

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConvertBooleanFrontEnd, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -14,13 +14,14 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SalaryService } from '../../../service/salary.service';
-import { Employee } from '@minhdu-fontend/data-models';
+import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
 })
 export class DialogBasicComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
@@ -30,6 +31,8 @@ export class DialogBasicComponent implements OnInit {
   templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate));
   isManyPeople = false;
   employeeSelected: Employee[] = [];
+  salariesSelected: SalaryPayroll[] = [];
+  tabindex = 0
   /// FIXME: Dummy data
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
@@ -52,6 +55,9 @@ export class DialogBasicComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data?.updateMultiple) {
+      this.salariesSelected = this.data.salariesSelected;
+    }
     if (this.data?.salary?.type === this.type.BASIC_INSURANCE) {
       this.checkSalary = false;
     }
@@ -68,7 +74,7 @@ export class DialogBasicComponent implements OnInit {
         rate: [1, Validators.required]
       });
     } else {
-      this.employeeSelected.push(this.data.payroll.employee.id)
+      this.employeeSelected.push(this.data.payroll.employee.id);
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
         type: ['', Validators.required
@@ -87,8 +93,8 @@ export class DialogBasicComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.data?.addMultiple && this.employeeSelected.length === 0){
-      return  this.snackbar.open('Chưa chọn nhân viên', 'Đóng')
+    if (this.data?.addMultiple && this.employeeSelected.length === 0) {
+      return this.snackbar.open('Chưa chọn nhân viên', 'Đóng');
     }
     const value = this.formGroup.value;
     const titleSalary = this.salaries.find((val) => val.type === value.type);
@@ -103,14 +109,14 @@ export class DialogBasicComponent implements OnInit {
       payrollId: this.data?.isUpdate ? this.data.salary.payrollId : this.data?.payroll?.id,
       type:
         value.type === this.type.BASIC_INSURANCE ? value.type : this.type.BASIC,
-      datetime: new Date(this.data?.payroll?.createdAt|| this.data?.createdAt)
+      datetime: new Date(this.data?.payroll?.createdAt || this.data?.createdAt)
     };
-    this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}))
+    this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
     if (this.data?.isUpdate) {
       if (this.data?.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
-            salaryIds: this.data.salaryIds,
+            salaryIds: this.salariesSelected.map(e => e.salary.id),
             title: this.data.salary.title,
             price: this.checkSalary
               ? typeof value.price === 'string'
@@ -121,7 +127,7 @@ export class DialogBasicComponent implements OnInit {
           if (val) {
             this.snackbar.open(val.message, '', { duration: 1500 });
             this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
-            this.dialogRef.close(true);
+            this.dialogRef.close({title:this.salariesSelected[0].salary.title});
           }
         });
       } else {
@@ -142,7 +148,7 @@ export class DialogBasicComponent implements OnInit {
           })
         );
       } else {
-        const data = { salary: salary, employeeIds: this.employeeSelected.map(e=> e.id) };
+        const data = { salary: salary, employeeIds: this.employeeSelected.map(e => e.id) };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
           if (val) {
             if (this.data?.addMultiple) {
@@ -178,6 +184,15 @@ export class DialogBasicComponent implements OnInit {
   }
 
   pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees] ;
+    this.employeeSelected = [...employees];
+  }
+
+  changeSalariesSelected($event: SalaryPayroll[]) {
+    this.salariesSelected = $event;
+    this.EmitSalariesSelected.emit(this.salariesSelected);
+  }
+
+  changeTab(indexTab: number) {
+    this.tabindex = indexTab
   }
 }

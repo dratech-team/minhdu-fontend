@@ -5,7 +5,14 @@
       <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+  <mat-tab-group dynamicHeight  [(selectedIndex)]="tabindex">
+    <mat-tab *ngIf='data.updateMultiple'  label='Nhân viên đã chọn ({{salariesSelected.length}})'>
+      <app-table-salaries-selected
+        [salaries]='salariesSelected'
+        (EmitSalariesSelected)='changeSalariesSelected($event)'>
+      </app-table-salaries-selected>
+      <button class='btn btn-primary' (click)='changeTab(1)' >Tiếp theo</button>
+    </mat-tab>
     <mat-tab label='Phụ cấp ở lại'>
       <form [formGroup]='formGroup' style='min-width: 400px'>
         <div class='form-group' [formGroup]='formGroup'>
@@ -46,7 +53,10 @@
           </div>
         </div>
         <div class='footer-popup  '>
-          <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
+          <div class='d-flex'>
+            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2 ' (click)='changeTab(0)'>trở lại</button>
+            <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
+          </div>
           <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
             ?
           </button>

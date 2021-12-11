@@ -1,13 +1,14 @@
-import { Salary } from '@minhdu-fontend/data-models';
+import { Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 
-export const someComplete = (salaries: any[], salariesSelected: any[], isSelectSalary: boolean) => {
+export const someComplete = (salaries: SalaryPayroll[], salariesSelected: SalaryPayroll[], isSelectSalary: boolean) => {
   return (
     salaries.filter(e => salariesSelected.some(item => item.salary.id === e.salary.id)).length > 0 && !isSelectSalary
   );
 };
 
 
-export const updateSelect = (salarySelected: any, salariesSelected: any[], isSelectSalary: boolean, salaries: any[]) => {
+export const updateSelect = (
+  salarySelected: SalaryPayroll, salariesSelected: SalaryPayroll[], isSelectSalary: boolean, salaries: SalaryPayroll[]) => {
   const index = salariesSelected.findIndex(item => item.salary.id === salarySelected.salary.id);
   if (index > -1) {
     salariesSelected.splice(index, 1);
@@ -20,8 +21,8 @@ export const updateSelect = (salarySelected: any, salariesSelected: any[], isSel
 
 export const setAll = (
   select: boolean,
-  salaries: any[],
-  salariesSelected: any[],
+  salaries: SalaryPayroll[],
+  salariesSelected: SalaryPayroll[],
   isTableSalary?: boolean
 ) => {
   salaries?.forEach((val) => {

@@ -1,4 +1,4 @@
-<div class='px-5  main-popup'>
+<div class='px-2  main-popup'>
   <div mat-dialog-close class='close-popup'>
     <span class='mr-1'> close</span>
     <div class='x-popup'>
@@ -6,7 +6,14 @@
     </div>
   </div>
   <form [formGroup]='formGroup'>
-    <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+    <mat-tab-group [(selectedIndex)]='tabindex' dynamicHeight>
+      <mat-tab *ngIf='data.updateMultiple'  label='Nhân viên đã chọn ({{salariesSelected.length}})'>
+        <app-table-salaries-selected
+          [salaries]='salariesSelected'
+          (EmitSalariesSelected)='changeSalariesSelected($event)'>
+        </app-table-salaries-selected>
+        <button class='btn btn-primary' (click)='changeTab(1)' >Tiếp theo</button>
+      </mat-tab>
       <mat-tab label='Lương cơ bản'>
         <div class='form-group' style='min-width: 400px'>
           <div *ngIf='false' class=' mb-5 title-popup'>
@@ -52,6 +59,17 @@
             </div>
           </div>
         </div>
+        <div class='mt-2 row'>
+          <div class='ml-4 d-flex'>
+            <button  *ngIf='data.updateMultiple' (click)='changeTab(0)' class='btn btn-primary  mr-2 '>trở lại</button>
+            <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+          </div>
+          <a *ngIf='role === roleEnum.HUMAN_RESOURCE && !data.updateMultiple ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
+            mới</a>
+          <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+            ?
+          </button>
+        </div>
       </mat-tab>
       <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
         <app-pick-employee-absent
@@ -62,13 +80,5 @@
         </app-pick-employee-absent>
       </mat-tab>
     </mat-tab-group>
-    <div class='mt-2 row'>
-      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-      <a *ngIf='role === roleEnum.HUMAN_RESOURCE ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
-        mới</a>
-      <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-        ?
-      </button>
-    </div>
   </form>
 </div>

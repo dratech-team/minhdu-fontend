@@ -20,7 +20,8 @@
         </th>
         <th>
           <div class='border-top text-center'>Mã nhân viên</div>
-          <input type='search' (keypress)="checkInputNumber($event)" class='form-control text-center' formControlName='code'>
+          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
+                 formControlName='code'>
         </th>
         <th style='width: 250px'>
           <div class='border-top text-center'>
@@ -38,7 +39,7 @@
             <span *ngIf='this.salariesSelected.length  === 0'>
                Chọn
             </span>
-            <div  class='w-100 d-flex justify-content-between'   *ngIf='salariesSelected.length > 0'>
+            <div class='w-100 d-flex justify-content-between' *ngIf='salariesSelected.length > 0'>
               <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                       (click)='updateMultipleSalaryStay()'
                       class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
@@ -105,7 +106,7 @@
       </tr>
       </thead>
       <tbody *ngIf='(payrollStay$|async) as payrollsBasic'>
-      <tr *ngFor='let payrollBasic of payrollsBasic; let i = index'
+      <tr *ngFor='let payrollStay of payrollsBasic; let i = index'
           [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'
       >
         <th class='pointer'
@@ -113,54 +114,54 @@
           {{i + 1}}
         </th>
         <th class='pointer'
-            (click)='readPayroll(payrollBasic)'
+            (click)='readPayroll(payrollStay)'
             [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollBasic?.id}}
+          {{payrollStay?.id}}
         </th>
         <th class='pointer'
-            (click)='readPayroll(payrollBasic)'
+            (click)='readPayroll(payrollStay)'
             [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollBasic.employee.lastName}}
+          {{payrollStay.employee.lastName}}
         </th>
         <th class='pointer'
             [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
           <div class=' d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["STAY"]'>
+               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'>
             <mat-checkbox
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item)'>
+              (change)='updateSelectSalary(item,payrollStay.employee)'>
             </mat-checkbox>
           </div>
         </th>
         <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollBasic)'
+            (click)='readPayroll(payrollStay)'
             [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollBasic.employee.position?.name}}</th>
+          {{payrollStay.employee.position?.name}}</th>
         <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollBasic)'
+            (click)='readPayroll(payrollStay)'
             [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollBasic.employee.branch?.name}}</th>
+          {{payrollStay.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
           <div class='border d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["STAY"]'
+               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollBasic)'>
+               (click)='readPayroll(payrollStay)'>
             {{this.createdAt|date:'yyyy-MM'}}
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>
           <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["STAY"]'
+               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollBasic)'>
+               (click)='readPayroll(payrollStay)'>
             {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
           </div>
         </th>
         <th class='pointer'>
           <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["STAY"]'
+               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollBasic)'>
+               (click)='readPayroll(payrollStay)'>
             {{item?.times}}
             {{
             item.unit === "HOUR" ? "Giờ" : "Ngày"
@@ -169,9 +170,9 @@
         </th>
         <th class='pointer'>
           <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["STAY"]'
+               *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollBasic)'>
+               (click)='readPayroll(payrollStay)'>
             {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
             {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
           </div>
@@ -218,6 +219,7 @@
   .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
+
   @media screen and (min-width: 1500px) {
     .table-scroll th:nth-child(5) {
       position: -webkit-sticky;

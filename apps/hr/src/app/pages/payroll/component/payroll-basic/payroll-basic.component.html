@@ -129,7 +129,7 @@
                *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'>
             <mat-checkbox
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item)'>
+              (change)='updateSelectSalary({salary: item, employee: payrollBasic.employee})'>
             </mat-checkbox>
           </div>
         </th>

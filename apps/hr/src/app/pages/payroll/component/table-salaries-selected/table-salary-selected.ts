@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Employee, Salary } from '@minhdu-fontend/data-models';
+import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { setAll, updateSelect } from '../../utils/pick-salary';
 
 @Component({
@@ -7,9 +7,9 @@ import { setAll, updateSelect } from '../../utils/pick-salary';
   templateUrl: 'table-salaries-selected.html'
 })
 export class TableSalarySelected implements OnInit{
-  @Input() salaries: Salary[] = []
-  @Output() EmitSalariesSelected = new EventEmitter<Salary[]>()
-  salariesSelected: Salary [] = []
+  @Input() salaries: SalaryPayroll[] = []
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>()
+  salariesSelected: SalaryPayroll [] = []
   isSelectAll = true
   constructor() {
   }
@@ -17,9 +17,9 @@ export class TableSalarySelected implements OnInit{
     this.salariesSelected = this.salaries
   }
 
-  updateSelectSalary(salary: Salary) {
+  updateSelectSalary(salarySelected: SalaryPayroll) {
     this.isSelectAll = updateSelect(
-      salary,
+      salarySelected,
       this.salariesSelected,
       this.isSelectAll,
       this.salaries
@@ -32,7 +32,7 @@ export class TableSalarySelected implements OnInit{
   }
 
   selectSalary(salary: Salary) {
-   const event = this.salariesSelected.some((e) => e.id === salary.id);
+   const event = this.salariesSelected.some((e) => e.salary.id === salary.id);
     this.EmitSalariesSelected.emit(this.salariesSelected)
     return event
   }

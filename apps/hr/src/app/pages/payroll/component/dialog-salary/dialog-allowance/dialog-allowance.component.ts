@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,21 +12,21 @@ import { ShowAlertComponent } from '../../../../../../../../../libs/components/s
 import { AppState } from '../../../../../reducers';
 import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
 import { SalaryService } from '../../../service/salary.service';
+import { SalaryPayroll } from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'
 })
 export class DialogAllowanceComponent implements OnInit {
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   numberChars = new RegExp('[^0-9]', 'g');
-  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  isManyPeople = false;
   type = SalaryTypeEnum;
   datetimeEnum = DatetimeUnitEnum;
   formGroup!: FormGroup;
   submitted = false;
   isAllDay = true;
   isApprentice = false;
-
+  salariesSelected: SalaryPayroll[] = [];
 
   constructor(
     public datePipe: DatePipe,
@@ -48,7 +48,9 @@ export class DialogAllowanceComponent implements OnInit {
     ) {
       this.isAllDay = false;
     }
-
+    if(this.data.updateMultiple){
+      this.salariesSelected = this.data.salariesSelected
+    }
     if (this.data?.salary?.unit === DatetimeUnitEnum.DAY
       && this.data?.salary?.datetime) {
       this.isApprentice = true;
@@ -107,7 +109,7 @@ export class DialogAllowanceComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
+    console.log(this.formGroup);
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -140,7 +142,7 @@ export class DialogAllowanceComponent implements OnInit {
       if (this.data.updateMultiple) {
         this.salaryService.updateMultipleSalaryOvertime(
           {
-            salaryIds: this.data.salaryIds,
+            salaryIds: this.salariesSelected.map(e => e.salary.id),
             title: value.title,
             price:
               typeof value.price === 'string'
@@ -202,5 +204,10 @@ export class DialogAllowanceComponent implements OnInit {
           this.data?.payroll?.createdAt, 'yyyy-MM-dd'
         ));
     }
+  }
+
+  changeSalariesSelected($event: SalaryPayroll[]) {
+    this.salariesSelected = $event;
+    this.EmitSalariesSelected.emit(this.salariesSelected);
   }
 }

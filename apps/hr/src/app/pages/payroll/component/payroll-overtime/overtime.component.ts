@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   OnChanges,
-  SimpleChanges
+  SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,7 +25,7 @@ import {
   selectedAddingPayroll,
   selectedBranchPayroll,
   selectedCreateAtPayroll,
-  selectedPositionPayroll
+  selectedPositionPayroll, selectedTotalPayroll
 } from '../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../reducers';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -48,7 +48,7 @@ import { DialogDeleteComponent } from '../../../../../../../../libs/components/s
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { SalaryService } from '../../service/salary.service';
 import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
-import { Salary } from '@minhdu-fontend/data-models';
+import { Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overtime-multiple';
 import { DialogExportComponent } from '../dialog-export/dialog-export.component';
@@ -93,7 +93,7 @@ export class OvertimeComponent implements OnInit {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   overtime!: PayrollSalary;
-  salariesSelected: Salary[] = [];
+  salariesSelected: SalaryPayroll[] = [];
   // overtime$ = this.store.pipe(select(selectorOvertime));
   // loaded$ = this.store.pipe(select(selectedLoadedSalary));
   loaded = false;
@@ -102,7 +102,7 @@ export class OvertimeComponent implements OnInit {
   searchTypeConstant = SearchTypeConstant;
   unitsConstant = UnitsConstant;
   isSelectSalary = false;
-  salaries: Salary[] = [];
+  salaries: SalaryPayroll[] = [];
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -112,7 +112,8 @@ export class OvertimeComponent implements OnInit {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly salaryService: SalaryService,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private ref: ChangeDetectorRef
   ) {
   }
 
@@ -133,8 +134,11 @@ export class OvertimeComponent implements OnInit {
       .subscribe((val) => {
         this.loaded = true;
         val.employees.forEach(
-          (employee) =>
-            (this.salaries = this.salaries.concat(employee.salaries))
+          (employee) => {
+            employee.salaries.forEach(salary => {
+              this.salaries.push({ salary: salary, employee: employee });
+            });
+          }
         );
         this.overtime = val;
       });
@@ -206,13 +210,19 @@ export class OvertimeComponent implements OnInit {
           delete params.name;
         }
         this.isSelectSalary = false;
-        this.salariesSelected = [];
         this.salaries = [];
         this.overtimeService.getOvertime(params).subscribe((val) => {
           this.loaded = true;
           val.employees.forEach(
             (employee) =>
-              (this.salaries = this.salaries.concat(employee.salaries))
+              employee.salaries.forEach(salary => {
+                this.isSelectSalary = employee.salaries.every(e => this.salariesSelected.some(item => item.salary.id === e.id));
+                if (this.isSelectSalary
+                  && !this.salariesSelected.some(item => item.salary.id === salary.id)) {
+                  this.salariesSelected.push({ salary, employee: employee });
+                }
+                this.salaries.push({ salary: salary, employee: employee });
+              })
           );
           return (this.overtime = val);
         });
@@ -311,20 +321,16 @@ export class OvertimeComponent implements OnInit {
   }
 
   updateMultipleSalaryOvertime(): any {
-    let salariesSelected: Salary[] = [];
-    this.salaries.forEach((salary) => {
-      if (this.salariesSelected.some(item => item.id === salary.id)) {
-        salariesSelected.push(salary);
-      }
-    });
     if (
-      salariesSelected.every(function(value, index, array) {
-        return value.title === array[0].title;
+      this.salariesSelected.every(function(value, index, array) {
+        return value.salary.title === array[0].salary.title
+          && value.salary.datetime === array[0].salary.datetime
+          ;
       })
     ) {
-      if (!salariesSelected[0].unit) {
+      if (!this.salariesSelected[0].salary.unit) {
         return this.snackbar.open(
-          'Không sửa lương tuy chọn cho nhiều nhân viên được',
+          'Không sửa lương tùy chọn cho nhiều nhân viên được',
           'Đóng'
         );
       }
@@ -332,14 +338,20 @@ export class OvertimeComponent implements OnInit {
         width: 'fit-content',
         data: {
           type: SalaryTypeEnum.OVERTIME,
-          salary: salariesSelected[0],
-          createdAt: salariesSelected[0]?.datetime
-            ? salariesSelected[0]?.datetime
+          salary: this.salariesSelected[0].salary,
+          createdAt: this.salariesSelected[0].salary?.datetime
+            ? this.salariesSelected[0].salary?.datetime
             : this.formGroup.get('startAt')!.value,
-          salaryIds: this.salariesSelected,
+          salariesSelected: this.salariesSelected,
           updateMultiple: true,
           isUpdate: true
         }
+      });
+      ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
+        this.salariesSelected = val;
+        this.isSelectSalary = this.salaries.length > 0
+          && this.salaries.every(e => this.salariesSelected.some(item => item.salary.id === e.salary.id));
+        this.ref.detectChanges()
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
@@ -366,7 +378,7 @@ export class OvertimeComponent implements OnInit {
       const deleteSuccess = new Subject<number>();
       if (value) {
         this.salariesSelected.forEach((salary, index) => {
-          this.salaryService.delete(salary.id).subscribe((_) => {
+          this.salaryService.delete(salary.salary.id).subscribe((_) => {
             deleteSuccess.next(index);
           });
         });
@@ -435,10 +447,10 @@ export class OvertimeComponent implements OnInit {
     });
   }
 
-  updateSelectSalary(salary: Salary) {
+  updateSelectSalary(salarySelected: SalaryPayroll) {
     if (this.overtime) {
       this.isSelectSalary = updateSelect(
-        salary,
+        salarySelected,
         this.salariesSelected,
         this.isSelectSalary,
         this.salaries
@@ -475,7 +487,8 @@ export class OvertimeComponent implements OnInit {
   checkInputNumber(event: any) {
     return checkInputNumber(event);
   }
+
   selectSalary(salary: Salary) {
-    return this.salariesSelected.some((e) => e.id === salary.id);
+    return this.salariesSelected.some((e) => e.salary.id === salary.id);
   }
 }

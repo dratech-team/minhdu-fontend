@@ -112,7 +112,7 @@ import { TableSalarySelected } from './component/table-salaries-selected/table-s
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   declarations: [
     PayrollComponent,
