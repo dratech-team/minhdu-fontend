@@ -4,9 +4,15 @@
             [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
   <ul class='nav navbar-nav ml-auto'>
     <li class='nav-item dropdown'>
-      <a (click)='detailAccount()' class='nav-link' data-toggle='dropdown' role='button' aria-haspopup='true'
+      <a (click)='changePassword()' class='nav-link pointer' data-toggle='dropdown' role='button' aria-haspopup='true'
          aria-expanded='false'>
-        <img src='assets/img/uranus.png' class='img-avatar' alt='contact@uranus-solutions.com' />
+        <div class='d-flex justify-content-center align-items-center'>
+          <span class='mr-1 font-weight-bold font-sm'>Đổi mật khẩu</span>
+          <img src='assets/icon/padlock.png'
+               style='width: 18px; height: 18px'
+               class='password' alt='contact@uranus-solutions.com' />
+        </div>
+
       </a>
     </li>
   </ul>

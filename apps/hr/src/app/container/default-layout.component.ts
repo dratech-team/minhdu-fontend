@@ -50,7 +50,7 @@ export class DefaultLayoutComponent implements OnInit {
     this.dialog.open(RegisterComponent, { width: '40%' });
   }
 
-  detailAccount() {
+  changePassword() {
     this.dialog.open(DialogChangePassword, {width:'fit-content',})
   }
 }
