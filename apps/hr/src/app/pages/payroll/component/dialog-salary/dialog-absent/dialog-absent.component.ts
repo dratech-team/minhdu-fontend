@@ -239,13 +239,15 @@ export class DialogAbsentComponent implements OnInit {
           Object.assign(salary,
             {
               title: 'Vắng ' + this.titleSession.find(item => item.type === value.partialDay)!.title,
-              partial: value.partialDay
+              partial: value.partialDay,
+              times: this.titleSession.find(item => item.type === value.partialDay)!.times,
             });
         } else {
           Object.assign(salary,
             {
               title: 'Không đi làm ' + this.titleSession.find(item => item.type === value.partialDay)!.title,
-              partial: value.partialDay
+              partial: value.partialDay,
+              times: this.titleSession.find(item => item.type === value.partialDay)!.times,
             });
         }
       }
