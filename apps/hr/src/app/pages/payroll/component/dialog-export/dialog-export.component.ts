@@ -46,7 +46,7 @@ export class DialogExportComponent implements OnInit {
     });
     this.exportService.print(
     this.data.api,
-      Object.assign(this.data.params, { fileName: this.name.value }),
+      Object.assign(this.data.params, { filename: this.name.value }),
       { items: this.itemSelected }
     );
     this.dialogRef.close();
