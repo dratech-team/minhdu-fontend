@@ -1,4 +1,4 @@
-import { EmployeeType } from '../enums';
+import { EmployeeType } from '../../enums';
 
 
 export const EmployeeConstant = [

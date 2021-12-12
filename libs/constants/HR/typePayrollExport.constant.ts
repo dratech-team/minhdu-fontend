@@ -1,4 +1,4 @@
-import { PayrollEnum, WarehouseTypeEnum } from '../enums';
+import { PayrollEnum, WarehouseTypeEnum } from '../../enums';
 
 export const TypePayrollExportConstant = [
   {

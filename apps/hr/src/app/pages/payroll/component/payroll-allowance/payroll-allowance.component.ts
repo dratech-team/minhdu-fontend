@@ -38,8 +38,8 @@ import {
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
-import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/unitAllowance.constant';
+import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
+import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/HR/unitAllowance.constant';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 

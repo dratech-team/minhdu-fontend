@@ -1,4 +1,4 @@
-import { PayrollEnum } from '../enums';
+import { PayrollEnum } from '../../enums';
 
 export const PayrollConstant = [
   {

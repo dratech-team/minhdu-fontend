@@ -1,4 +1,4 @@
-import { SalaryTypeEnum } from '../enums';
+import { SalaryTypeEnum } from '../../enums';
 
 export const BlockSalariesConstant = [
   {

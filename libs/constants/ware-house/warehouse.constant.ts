@@ -1,4 +1,4 @@
-import { WarehouseTypeEnum } from '../enums';
+import { WarehouseTypeEnum } from '../../enums';
 
 export const WarehouseConstant = [
   {

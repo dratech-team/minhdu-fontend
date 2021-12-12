@@ -1,4 +1,4 @@
-import { CustomerResource } from '../enums';
+import { CustomerResource } from '../../enums';
 
 export const CustomerResourcesConstant = [
   {

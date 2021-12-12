@@ -1,4 +1,4 @@
-import { MenuEnum } from '../enums';
+import { MenuEnum } from '../../enums';
 
 
 export const MenuWarehouseConstant = [

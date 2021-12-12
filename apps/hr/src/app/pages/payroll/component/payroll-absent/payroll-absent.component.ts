@@ -37,7 +37,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { UnitAbsentConstant } from '../../../../../../../../libs/constants/unitAbsent.constant';
+import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import {
   getAllPosition,

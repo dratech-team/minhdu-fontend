@@ -11,7 +11,7 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { MedicineDialogComponent } from '../../components/medicine-dialog/medicine-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { MainAction } from '../../../../../states/main.action';
-import { UnitMedicineConstant } from '../../../../../../../../../libs/constants/unit-medicine.constant';
+import { UnitMedicineConstant } from '../../../../../../../../../libs/constants/ware-house/unit-medicine.constant';
 
 @Component({
   selector: 'app-medicine',

@@ -57,7 +57,7 @@ import { RestorePayrollComponent } from '../../component/restore-payroll/restore
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
-  templateUrl: 'payroll.component.html',
+  templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
   formGroup = new FormGroup({
@@ -77,7 +77,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     ),
     branch: new FormControl(
       getSelectors<string>(selectedBranchPayroll, this.store)
-    ),
+    )
   });
   selectPayroll = new FormControl(
     getSelectors<PayrollEnum>(selectedTypePayroll, this.store)
@@ -126,11 +126,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     private readonly exportService: ExportService,
     private readonly activeRouter: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loadInitPayroll();
-
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
         this.overtimeTitle = JSON.parse(JSON.stringify(val.titleOvertime));
@@ -152,7 +152,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
             filter: val,
-            createdAt: new Date(),
+            createdAt: new Date()
           })
         );
       } else {
@@ -216,7 +216,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             PayrollAction.updateStatePayroll({
               createdAt: new Date(val.createdAt) || new Date(val.createdAt),
               branch: val.branch,
-              position: val.position,
+              position: val.position
             })
           );
           return this.loadInitPayroll();
@@ -241,7 +241,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loadInitPayroll() {
     this.store.dispatch(
       PayrollAction.loadInit({
-        payrollDTO: this.mapPayroll(this.formGroup.value),
+        payrollDTO: this.mapPayroll(this.formGroup.value)
       })
     );
   }
@@ -263,12 +263,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           : this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? FilterTypeEnum.SEASONAL
           : this.selectedPayroll === PayrollEnum.PAYROLL
-          ? FilterTypeEnum.PAYROLL
-          : FilterTypeEnum.SALARY,
+            ? FilterTypeEnum.PAYROLL
+            : FilterTypeEnum.SALARY,
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME,
+          : EmployeeType.EMPLOYEE_FULL_TIME
     };
   }
 
@@ -276,7 +276,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const val = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayroll(val),
+        payrollDTO: this.mapPayroll(val)
       })
     );
   }
@@ -284,7 +284,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   addPayroll($event?: any): void {
     const ref = this.dialog.open(AddPayrollComponent, {
       width: '30%',
-      data: { employeeId: $event?.employee?.id, addOne: true },
+      data: { employeeId: $event?.employee?.id, addOne: true }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -298,7 +298,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type },
+      data: { id, type }
     });
   }
 
@@ -308,8 +308,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       data: {
         createdAt: this.createdAt,
         type: type,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -317,12 +317,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.overtimeTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(val.datetime),
+            createdAt: new Date(val.datetime)
           })
         );
         this.eventAddOvertime.next({
           createdAt: new Date(val.datetime),
-          overtimeTitle: val.title,
+          overtimeTitle: val.title
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
       }
@@ -334,8 +334,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
@@ -343,12 +343,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.allowanceTitle = value.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(value.datetime),
+            createdAt: new Date(value.datetime)
           })
         );
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
         this.eventAddAllowance.next({
-          allowanceTitle: value.title,
+          allowanceTitle: value.title
         });
       }
     });
@@ -360,8 +360,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -369,12 +369,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.absentTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(val.datetime),
+            createdAt: new Date(val.datetime)
           })
         );
         this.eventAddAbsent.next({
           datetime: val.datetime,
-          absentTitle: val.title,
+          absentTitle: val.title
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
       }
@@ -390,7 +390,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   exportPayroll() {
     const ref = this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
-      data: { title: 'Xuât bảng lương' },
+      data: {
+        title: 'Xuât bảng lương',
+        exportType: FilterTypeEnum.PAYROLL
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -402,7 +405,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           branch: value.branch,
           paidAt: value.paidAt,
           accConfirmedAt: value.accConfirmedAt,
-          exportType: FilterTypeEnum.PAYROLL,
+          exportType: FilterTypeEnum.PAYROLL
         };
         this.exportService.print(
           Api.HR.PAYROLL.EXPORT,
@@ -410,21 +413,54 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             payroll,
             value?.createdAt
               ? {
-                  createdAt: new Date(value.createdAt),
-                  filename: val,
-                }
-              : { filename: val }
-          )
+                createdAt: new Date(value.createdAt),
+                filename: val.fileName
+              }
+              : {
+                filename: val.fileName
+              }
+          ),
+          { items: val.itemSelected }
         );
       }
     });
   }
 
   exportTimekeeping() {
-    this.dialog.open(DialogExportTimekeepingComponent, {
+   const ref = this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
-      data: { datetime: this.createdAt },
+      data: {
+        title: 'Xuât bảng lương',
+        exportType: FilterTypeEnum.TIME_SHEET
+      }
     });
+   ref.afterClosed().subscribe(val =>{
+     if(val){
+       const value = this.formGroup.value;
+       const payroll = {
+         code: value.code || '',
+         name: value.name,
+         position: value.position,
+         branch: value.branch,
+         exportType: FilterTypeEnum.TIME_SHEET
+       };
+       this.exportService.print(
+         Api.HR.PAYROLL.TIMEKEEPING_EXPORT,
+         Object.assign(
+           payroll,
+           value?.createdAt
+             ? {
+               createdAt: new Date(value.createdAt),
+               filename: val.fileName
+             }
+             : {
+               filename: val.fileName
+             }
+         ),
+         { items: val.itemSelected }
+       );
+     }
+   })
   }
 
   onSelectPosition(positionName: string) {
@@ -442,8 +478,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         employeeType:
           this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
             ? EmployeeType.EMPLOYEE_SEASONAL
-            : '',
-      },
+            : ''
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -464,19 +500,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { PAYROLL: event },
+      data: { PAYROLL: event }
     });
   }
 
   deletePayroll(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
           PayrollAction.deletePayroll({
-            id: event.id,
+            id: event.id
           })
         );
       }
@@ -488,8 +524,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
         queryParams: {
           name: event.employee.firstName + ' ' + event.employee.lastName,
-          employeeType: event.employee.type,
-        },
+          employeeType: event.employee.type
+        }
       })
       .then();
   }
@@ -541,8 +577,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(SelectUpdateMultiple, {
       width: 'fit-content',
       data: {
-        pageType: this.selectedPayroll,
-      },
+        pageType: this.selectedPayroll
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -578,5 +614,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+  print(){
+
   }
 }

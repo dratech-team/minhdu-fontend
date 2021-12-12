@@ -1,4 +1,4 @@
-import { DatetimeUnitEnum, } from '../enums';
+import { DatetimeUnitEnum, } from '../../enums';
 
 export const UnitAbsentConstant = [
   {

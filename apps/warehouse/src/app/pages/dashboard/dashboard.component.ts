@@ -4,18 +4,18 @@ import { WarehouseConstant } from '@minhdu-fontend/constants';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MainAction } from '../../states/main.action';
-import { getState } from '../../../../../../libs/utils/getState.ultils';
 import { selectedWareHouse } from '../../states/main.selector';
+import { getSelectors } from '../../../../../../libs/utils/getState.ultils';
 
 @Component({
   selector: 'app-main-dashboard',
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  selectWarehouse = new FormControl(getState(selectedWareHouse, this.store));
+  selectWarehouse = new FormControl(getSelectors(selectedWareHouse, this.store));
   warehouseTypeEnum = WarehouseTypeEnum;
   warehouseConstant = WarehouseConstant;
-  warehouseType = getState(selectedWareHouse, this.store);
+  warehouseType = getSelectors(selectedWareHouse, this.store);
 
   constructor(
     private readonly store: Store

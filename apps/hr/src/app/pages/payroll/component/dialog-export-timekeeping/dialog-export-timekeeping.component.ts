@@ -32,7 +32,8 @@ export class DialogExportTimekeepingComponent {
         datetime: datetime ? new Date(datetime) : new Date(),
         filename: this.name.value,
         exportType: FilterTypeEnum.TIME_SHEET
-      }
+      },
+
     );
     this.dialogRef.close();
   }

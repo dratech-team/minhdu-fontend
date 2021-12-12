@@ -16,7 +16,8 @@ export const Api = {
       holiday: 'holiday',
       PAYSLIP: 'payslip',
       BRANCH_ALLOWANCE: 'branch/allowance',
-      GENERATE_HOLIDAY: 'generate-holiday'
+      GENERATE_HOLIDAY: 'generate-holiday',
+      ITEMS_EXPORT: 'payroll/export/items',
     },
     EMPLOYEE: {
       EMPLOYEE: 'employee',
