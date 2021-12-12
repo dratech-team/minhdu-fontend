@@ -388,79 +388,49 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   exportPayroll() {
+    const value = this.formGroup.value;
+    const payroll = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position,
+      branch: value.branch,
+      paidAt: value.paidAt,
+      accConfirmedAt: value.accConfirmedAt,
+      exportType: FilterTypeEnum.PAYROLL
+    };
+    if (value.createdAt) {
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+    }
     const ref = this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.PAYROLL
-      }
-    });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        const value = this.formGroup.value;
-        const payroll = {
-          code: value.code || '',
-          name: value.name,
-          position: value.position,
-          branch: value.branch,
-          paidAt: value.paidAt,
-          accConfirmedAt: value.accConfirmedAt,
-          exportType: FilterTypeEnum.PAYROLL
-        };
-        this.exportService.print(
-          Api.HR.PAYROLL.EXPORT,
-          Object.assign(
-            payroll,
-            value?.createdAt
-              ? {
-                createdAt: new Date(value.createdAt),
-                filename: val.fileName
-              }
-              : {
-                filename: val.fileName
-              }
-          ),
-          { items: val.itemSelected }
-        );
+        exportType: FilterTypeEnum.PAYROLL,
+        params: payroll,
+        api: Api.HR.PAYROLL.EXPORT
       }
     });
   }
 
   exportTimekeeping() {
-   const ref = this.dialog.open(DialogExportComponent, {
+    const value = this.formGroup.value;
+    const payroll = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position,
+      branch: value.branch,
+      exportType: FilterTypeEnum.TIME_SHEET
+    };
+
+    const ref = this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.TIME_SHEET
+        exportType: FilterTypeEnum.TIME_SHEET,
+        params: payroll,
+        api: Api.HR.PAYROLL.TIMEKEEPING_EXPORT
       }
     });
-   ref.afterClosed().subscribe(val =>{
-     if(val){
-       const value = this.formGroup.value;
-       const payroll = {
-         code: value.code || '',
-         name: value.name,
-         position: value.position,
-         branch: value.branch,
-         exportType: FilterTypeEnum.TIME_SHEET
-       };
-       this.exportService.print(
-         Api.HR.PAYROLL.TIMEKEEPING_EXPORT,
-         Object.assign(
-           payroll,
-           value?.createdAt
-             ? {
-               createdAt: new Date(value.createdAt),
-               filename: val.fileName
-             }
-             : {
-               filename: val.fileName
-             }
-         ),
-         { items: val.itemSelected }
-       );
-     }
-   })
   }
 
   onSelectPosition(positionName: string) {
@@ -616,7 +586,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     return checkInputNumber(event);
   }
 
-  print(){
+  print() {
 
   }
 }

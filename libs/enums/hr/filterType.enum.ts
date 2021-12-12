@@ -3,5 +3,9 @@ export enum FilterTypeEnum {
   TIME_SHEET = 'TIME_SHEET',
   SALARY  = 'SALARY',
   SEASONAL = 'SEASONAL ',
-  OVERTIME = 'OVERTIME'
+  OVERTIME = 'OVERTIME',
+  BASIC = 'BASIC',
+  STAY = 'STAY',
+  ALLOWANCE = 'ALLOWANCE',
+  ABSENT = 'ABSENT',
 }

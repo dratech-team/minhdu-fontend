@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SearchTypeConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
@@ -41,6 +41,7 @@ import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/te
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
+import { DialogExportComponent } from '../dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -163,6 +164,32 @@ export class PayrollStayComponent implements OnInit {
                 this.salaries.push({ salary, employee: payroll.employee });
               }
             });
+          }
+        });
+      }
+    });
+
+    this.eventExportStay?.subscribe((val) => {
+      if (val) {
+        const value = this.formGroup.value;
+        const payrollStay = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          exportType: FilterTypeEnum.STAY,
+          title: value.title
+        };
+        if(value.createdAt){
+          Object.assign(payrollStay, {createdAt: value.createdAt})
+        }
+        const ref = this.dialog.open(DialogExportComponent, {
+          width: 'fit-content',
+          data: {
+            title: 'Xuât bảng phụ cấp lương',
+            exportType: FilterTypeEnum.STAY,
+            params: payrollStay,
+            api: Api.HR.PAYROLL.PAYROLL
           }
         });
       }

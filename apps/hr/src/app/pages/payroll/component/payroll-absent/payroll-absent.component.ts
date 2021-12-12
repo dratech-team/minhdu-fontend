@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SearchTypeConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
@@ -55,6 +55,7 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
+import { DialogExportComponent } from '../dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-absent',
@@ -233,7 +234,38 @@ export class PayrollAbsentComponent implements OnInit  {
 
     this.eventExportAbsent?.subscribe((val) => {
       if (val) {
-        //export Absent
+        const value = this.formGroup.value;
+        const payrollAbsent = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          exportType: FilterTypeEnum.ALLOWANCE,
+          title: value.title
+        };
+        if(value.startedAt && value.endedAt){
+          if (
+            moment(value.startedAt).format('YYYY-MM-DD') ===
+            moment(value.endedAt).format('YYYY-MM-DD')
+          ) {
+            Object.assign(payrollAbsent, { createdAt: value.startedAt });
+          } else {
+
+            Object.assign(payrollAbsent, {
+              startedAt: value.startedAt,
+              endedAt: value.endedAt
+            });
+          }
+        }
+        const ref = this.dialog.open(DialogExportComponent, {
+          width: 'fit-content',
+          data: {
+            title: 'Xuât bảng khấu trừ',
+            exportType: FilterTypeEnum.ABSENT,
+            params: payrollAbsent,
+            api: Api.HR.PAYROLL.PAYROLL_EXPORT_OVERTIME
+          }
+        });
       }
     });
   }

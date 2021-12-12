@@ -5,6 +5,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { FormControl, Validators } from '@angular/forms';
 import { Employee } from '@minhdu-fontend/data-models';
 import { ItemExportService } from '../../service/item-export.service';
+import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
   templateUrl: 'dialog-export.component.html'
@@ -19,17 +20,19 @@ export class DialogExportComponent implements OnInit {
   constructor(
     private readonly dialogRef: MatDialogRef<DialogExportComponent>,
     private readonly itemExportService: ItemExportService,
+    private readonly exportService: ExportService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit() {
     this.itemExportService.getItemExport({ exportType: this.data.exportType }).subscribe(val => {
-      val.map((e, i) =>{
-        Object.assign(e,{index: i})
-      })
+      val.map((e, i) => {
+        Object.assign(e, { index: i });
+      });
       this.itemsExport = val;
-      this.itemSelected =[...this.itemsExport]  ;
+      this.itemSelected = [...this.itemsExport];
+
     });
   }
 
@@ -38,11 +41,15 @@ export class DialogExportComponent implements OnInit {
     if (!this.name.value) {
       return;
     }
-    const fileName = this.name.value;
-    this.itemSelected.sort((a, b) =>{
-      return a.index - b.index
-    })
-    this.dialogRef.close({ fileName, itemSelected: this.itemSelected });
+    this.itemSelected.sort((a, b) => {
+      return a.index - b.index;
+    });
+    this.exportService.print(
+    this.data.api,
+      Object.assign(this.data.params, { fileName: this.name.value }),
+      { items: this.itemSelected }
+    );
+    this.dialogRef.close();
   }
 
   someComplete(): boolean {

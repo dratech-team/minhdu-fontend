@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SearchTypeConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
@@ -48,6 +48,7 @@ import { AppState } from '../../../../reducers';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
+import { DialogExportComponent } from '../dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-basic',
@@ -188,7 +189,27 @@ export class PayrollBasicComponent implements OnInit {
 
     this.eventExportBasic?.subscribe((val) => {
       if (val) {
-        //export basic
+        const value = this.formGroup.value;
+        const payrollBASIC = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          exportType: FilterTypeEnum.STAY,
+          title: value.title
+        };
+        if(value.createdAt){
+          Object.assign(payrollBASIC, {createdAt: value.createdAt})
+        }
+        const ref = this.dialog.open(DialogExportComponent, {
+          width: 'fit-content',
+          data: {
+            title: 'Xuât bảng lương cơ bản',
+            exportType: FilterTypeEnum.BASIC,
+            params: payrollBASIC,
+            api: Api.HR.PAYROLL.PAYROLL
+          }
+        });
       }
     });
   }

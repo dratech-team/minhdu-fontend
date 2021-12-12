@@ -9,7 +9,7 @@ import {
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
-import { SearchTypeConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { debounceTime, startWith } from 'rxjs/operators';
@@ -42,6 +42,7 @@ import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/un
 import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/HR/unitAllowance.constant';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { DialogExportComponent } from '../dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -217,7 +218,27 @@ export class PayrollAllowanceComponent implements OnInit {
 
     this.eventExportAllowance?.subscribe((val) => {
       if (val) {
-        //export allowance
+        const value = this.formGroup.value;
+        const payrollAllowance = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          exportType: FilterTypeEnum.ALLOWANCE,
+          title: value.title
+        };
+        if(value.createdAt){
+          Object.assign(payrollAllowance, {createdAt: value.createdAt})
+        }
+        const ref = this.dialog.open(DialogExportComponent, {
+          width: 'fit-content',
+          data: {
+            title: 'Xuât bảng phụ cấp khác',
+            exportType: FilterTypeEnum.ALLOWANCE,
+            param: payrollAllowance,
+            api: Api.HR.PAYROLL.PAYROLL
+          }
+        });
       }
     });
   }

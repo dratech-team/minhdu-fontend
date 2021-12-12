@@ -62,6 +62,7 @@ import {
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-payroll-overtime',
@@ -268,26 +269,40 @@ export class OvertimeComponent implements OnInit {
 
     this.eventExportOvertime?.subscribe((val) => {
       if (val) {
+        const value = this.formGroup.value;
+        const overtime = {
+          searchType: value.searchType,
+          code: value.code,
+          startedAt: new Date(value.startAt),
+          endedAt: new Date(value.endAt),
+          title: value.title || '',
+          name: value.name || '',
+          filename: val,
+          exportType: FilterTypeEnum.OVERTIME,
+          position: value.position,
+          branch: value.branch
+        };
+        if(value.startedAt && value.endedAt){
+          if (
+            moment(value.startedAt).format('YYYY-MM-DD') ===
+            moment(value.endedAt).format('YYYY-MM-DD')
+          ) {
+            Object.assign(overtime, { createdAt: value.startedAt });
+          } else {
+
+            Object.assign(overtime, {
+              startedAt: value.startedAt,
+              endedAt: value.endedAt
+            });
+          }
+        }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
-          data: { title: 'Xuất Bảng tăng ca' }
-        });
-        ref.afterClosed().subscribe((val) => {
-          if (val) {
-            const value = this.formGroup.value;
-            const overtime = {
-              searchType: value.searchType,
-              code: value.code,
-              startedAt: new Date(value.startAt),
-              endedAt: new Date(value.endAt),
-              title: value.title || '',
-              name: value.name || '',
-              filename: val,
-              exportType: FilterTypeEnum.OVERTIME,
-              position: value.position,
-              branch: value.branch
-            };
-            this.exportService.print(Api.HR.PAYROLL.EXPORT, overtime);
+          data: {
+            title: 'Xuất Bảng tăng ca',
+            params: overtime,
+            exportType: FilterTypeEnum.OVERTIME,
+            api: Api.HR.PAYROLL.PAYROLL
           }
         });
       }
