@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -25,6 +25,7 @@ export class DialogTimekeepingComponent implements OnInit {
   unitMinute = false;
   employeeSelected: Employee[] = [];
   isManyPeople = false;
+  tabIndex = 0;
 
   constructor(
     public datePipe: DatePipe,
@@ -116,14 +117,14 @@ export class DialogTimekeepingComponent implements OnInit {
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary, isTimesheet: this.data?.isTimesheet
     }));
-      this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
-        if (added) {
-          this.dialogRef.close({
-            datetime: value.datetime,
-            title: salary.title
-          });
-        }
-      });
+    this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
+      if (added) {
+        this.dialogRef.close({
+          datetime: value.datetime,
+          title: salary.title
+        });
+      }
+    });
   }
 
   onSelectAbsent(index: number) {
@@ -131,16 +132,15 @@ export class DialogTimekeepingComponent implements OnInit {
   }
 
   pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees] ;
+    this.employeeSelected = [...employees];
   }
 
-  tabChanged($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 2:
-        this.isManyPeople = true;
-        break;
-      default:
-        this.isManyPeople = false;
-    }
+  nextTab(tab: any) {
+    this.tabIndex = tab._selectedIndex + 1;
+
+  }
+
+  previousTab(tab: any) {
+    this.tabIndex = tab._selectedIndex - 1;
   }
 }

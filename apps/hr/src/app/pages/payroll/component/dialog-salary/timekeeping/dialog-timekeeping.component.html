@@ -7,7 +7,7 @@
   </div>
   <mat-dialog-content class='mat-typography'>
     <form [formGroup]='formGroup'>
-      <mat-tab-group (selectedTabChange)='tabChanged($event)' dynamicHeight>
+      <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex'  dynamicHeight>
         <mat-tab label='Khấu trừ'>
           <div style='min-width: 600px'>
             <div class=' mb-3 title-popup'>
@@ -75,6 +75,7 @@
               </div>
             </div>
           </div>
+          <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
         </mat-tab>
         <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-employee-absent
@@ -83,21 +84,27 @@
             (EventSelectEmployee)='pickEmployees($event)'
           >
           </app-pick-employee-absent>
+          <div class='mt-2'>
+            <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
+            <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
+          </div>
         </mat-tab>
-        <mat-tab [disabled]='employeeSelected.length === 0' label='Nhân viên đã chọn ({{this.employeeSelected.length}})' >
-        <app-table-employee-selected
-        [employees]='employeeSelected'
-        (EventSelectEmployee)='pickEmployees($event)'
-        >
-        </app-table-employee-selected>
+        <mat-tab
+          label='Nhân viên đã chọn ({{this.employeeSelected.length}})'>
+          <app-table-employee-selected
+            [employees]='employeeSelected'
+            (EventSelectEmployee)='pickEmployees($event)'
+          >
+          </app-table-employee-selected>
+          <div class='row  mt-2 ml-2'>
+            <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
+            <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
+            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+              ?
+            </button>
+          </div>
         </mat-tab>
       </mat-tab-group>
-      <div class='row  mt-2 ml-2'>
-        <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>
-        <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
-          ?
-        </button>
-      </div>
     </form>
   </mat-dialog-content>
 </div>

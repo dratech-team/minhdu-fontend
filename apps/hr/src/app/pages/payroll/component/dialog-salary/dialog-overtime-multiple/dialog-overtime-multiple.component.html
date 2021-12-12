@@ -290,7 +290,9 @@
                                   (EventSelectEmployee)='pickEmployees($event)'
       >
       </app-pick-employee-overtime>
-      <button class='btn btn-primary' (click)='onSubmit()'>Lưu
+      <button class='btn btn-primary mr-2' matStepperPrevious>Trở lại
+      </button>
+      <button class='btn btn-primary' matStepperNext>Tiếp theo
       </button>
     </mat-step>
     <mat-step  *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'
@@ -303,6 +305,8 @@
         (EventSelectEmployee)='pickEmployees($event)'
       >
       </app-table-allowance-employee>
+      <button class='btn btn-primary mr-2' matStepperPrevious>Trở lại
+      </button>
       <button class='btn btn-primary' (click)='onSubmit()'>Lưu
       </button>
     </mat-step>

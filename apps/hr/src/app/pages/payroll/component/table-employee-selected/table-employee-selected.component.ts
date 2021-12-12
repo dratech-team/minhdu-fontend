@@ -17,20 +17,20 @@ import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
-  selectorTotalEmployee,
+  selectorTotalEmployee
 } from '@minhdu-fontend/employee';
 import {
   getAllPosition,
-  PositionActions,
+  PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
 
 @Component({
   selector: 'app-table-employee-selected',
-  templateUrl: './table-employee-selected.component.html',
+  templateUrl: './table-employee-selected.component.html'
 })
-export class TableEmployeeSelectedComponent implements OnInit,OnChanges {
+export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
   @Input() employees: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
   type = SalaryTypeEnum;
@@ -38,22 +38,27 @@ export class TableEmployeeSelectedComponent implements OnInit,OnChanges {
   employeesSelected: Employee[] = [];
   employeeId!: number;
   isEventSearch = false;
-  differ: any
+  differ: any;
+
   constructor(
     private differs: IterableDiffers,
-    private readonly store: Store,
+    private readonly store: Store
   ) {
     this.differ = differs.find([]).create(undefined);
   }
-ngOnChanges(changes: SimpleChanges) {
-    if(changes.employees){
-      this.isSelectAll = true;
-      this.employeesSelected = this.employees
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.employees) {
+      this.isSelectAll = changes.employees.currentValue.length > 0;
+      this.employeesSelected = this.employees;
     }
-}
+  }
 
   ngOnInit(): void {
-    this.employeesSelected = this.employees
+    if (this.employees.length === 0) {
+      this.isSelectAll = false;
+    }
+    this.employeesSelected = this.employees;
   }
 
 
@@ -64,10 +69,10 @@ ngOnChanges(changes: SimpleChanges) {
     } else {
       this.employeesSelected.push(Object.assign(employee, { isSelect: true }));
     }
-      this.isSelectAll =
-        this.employees.length !== 0 &&
-        this.employees.every((e) => this.employeesSelected.includes(e));
-      this.EventSelectEmployee.emit(this.employeesSelected);
+    this.isSelectAll =
+      this.employees.length !== 0 &&
+      this.employees.every((e) => this.employeesSelected.includes(e));
+    this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
 
@@ -84,7 +89,7 @@ ngOnChanges(changes: SimpleChanges) {
           );
         }
       } else {
-      this.employeesSelected = []
+        this.employeesSelected = [];
       }
     });
     this.EventSelectEmployee.emit(this.employeesSelected);
