@@ -1,12 +1,23 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
 import { Order } from '../../../pages/order/+state/order.interface';
-import { PickOrderService } from './pick-order.service';
 import { PaidType } from 'libs/enums/paidType.enum';
+import { Employee } from '@minhdu-fontend/data-models';
+import { OrderAction } from '../../../pages/order/+state/order.action';
+import { selectedTotalOrder, selectorAllOrders } from '../../../pages/order/+state/order.selector';
+import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
+import { selectorTotalEmployee } from '@minhdu-fontend/employee';
+import {
+  checkIsSelectAllInit,
+  handleValSubPickItems,
+  pickAll,
+  pickOne,
+  someComplete
+} from '../../../../../../../libs/utils/pick-item.ultil';
 
 
 @Component({
@@ -16,132 +27,114 @@ import { PaidType } from 'libs/enums/paidType.enum';
 })
 export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
-  @Input() orderIdDefault?: number;
+  @Input() orderDefault?: Order;
   @Input() payment = false;
-  @Input() orders$: any;
-  @Input() orderIdsOfRoute!: number[];
-  @Input() customerId!: number;
-  @Output() checkEvent = new EventEmitter<number[]>();
-  @Output() checkEventPickOne = new EventEmitter<number>();
+  @Input() orderSelected: Order[] = [];
+  @Input() customerId?: number;
+  @Output() checkEvent = new EventEmitter<Order[]>();
+  @Output() checkEventPickOne = new EventEmitter<Order>();
+  orders$ = this.store.select(selectorAllOrders);
+  total$ = this.store.select(selectedTotalOrder);
   orders: Order[] = [];
-  orderId!: number;
+  pageSize = 30;
+  pageIndex = 0;
+  orderPickOne!: Order;
   paidType = PaidType;
   isSelectAll = false;
-  orderIds: number[] = [];
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
       createdAt: new FormControl(''),
       paidType: new FormControl(''),
-      explain: new FormControl(''),
-      commodityTotal: new FormControl('')
-
+      explain: new FormControl('')
     });
+  eventSearch = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store,
     private readonly dialog: MatDialog,
-    private readonly service: PickOrderService,
     private dialogRef: MatDialogRef<PickOrderComponent>
   ) {
   }
 
   ngOnInit(): void {
-    //case: update set one order value default
-    if(this.orderIdDefault){
-      this.orderId = this.orderIdDefault
-    }
-    //case: update  set more order value default
-    if (this.orderIdsOfRoute) {
-      this.orderIds = this.orderIdsOfRoute;
-    }
-    //case: dialog
-    if (this.data?.orders$) {
-      this.data.orders$.subscribe(
-        (val: Order[]) => {
-          this.orders = JSON.parse(JSON.stringify(val));
+    this.store.dispatch(OrderAction.loadInit(
+      {
+        orderDTO: {
+          skip: this.pageIndex,
+          take: this.pageSize,
+          customerId: this.customerId ? this.customerId : ''
         }
-      );
-    } else {
-      this.orders$.subscribe((order: Order) => {
-          this.orders = JSON.parse(JSON.stringify(order));
-        }
-      );
+      }));
+
+    if (this.orderDefault) {
+      this.orderPickOne = this.orderDefault;
     }
+
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((_) => {
+        this.eventSearch = true;
         const val = this.formGroup.value;
-        this.service.searchOrder(this.order(val));
+        this.store.dispatch(OrderAction.loadInit({ orderDTO: this.order(val) }));
       })
     ).subscribe();
+
+    this.orders$.subscribe(orders => {
+      if (orders.length === 0) {
+        this.isSelectAll = false;
+      }
+      if (this.eventSearch) {
+        this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
+      }
+      this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
+    });
   }
 
-  // onScroll() {
-  //   const val = this.formGroup.value;
-  //   this.service.scrollOrder(this.order(val, this.pageSize, this.pageIndex));
-  // }
+  onScroll() {
+    this.eventSearch = false;
+    const val = this.formGroup.value;
+    this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.order(val) }));
+  }
 
 
   order(val: any) {
-    // pageIndex === 0 ? this.pageIndex = 1 : this.pageIndex++;
     return {
-      customerId: this?.customerId,
+      take: this.pageSize,
+      skip: this.pageIndex,
+      customerId: this.customerId ? this.customerId : '',
       customer: val.name.trim(),
       paidType: val.paidType,
       explain: val.explain.trim(),
-      createdAt: val.createdAt,
-      commodityTotal: val.commodityTotal
+      createdAt: new Date(val.createdAt)
     };
   }
 
-  updateAllSelect(id: number) {
-    const index = this.orderIds.indexOf(id);
-    if (index > -1) {
-      this.orderIds.splice(index, 1);
-    } else {
-      this.orderIds.push(id);
-    }
-    this.isSelectAll = this.orders !== null && this.orders.every(e => this.orderIds.includes(e.id));
-    this.checkEvent.emit(this.orderIds);
+
+  updateAllSelect(order: Order) {
+    this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
+    this.checkEvent.emit(this.orderSelected);
   }
 
   someComplete(): boolean {
-    if (this.orders == null) {
-      return false;
-    }
-    return (
-      this.orders.filter(e => this.orderIds.includes(e.id)).length > 0 && !this.isSelectAll
-    );
+    return someComplete(this.orders, this.orderSelected, this.isSelectAll);
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    this.orders?.forEach(order => {
-        if (select) {
-          if (!this.orderIds.includes(order.id)) {
-            this.orderIds.push(order.id);
-          }
-        } else {
-          const index = this.orderIds.indexOf(order.id);
-          if (index > -1) {
-            this.orderIds.splice(index, 1);
-          }
-        }
-      }
-    );
-    this.checkEvent.emit(this.orderIds);
+    pickAll(select, this.orders, this.orderSelected);
+    this.checkEvent.emit(this.orderSelected);
   }
 
   pickOneOrder() {
     const pickOrder = document.getElementsByName('pick-one');
     for (let i = 0; i < pickOrder.length; i++) {
       if (pickOrder[i].checked) {
-        this.orderId = parseInt(pickOrder[i].value);
+        this.orderPickOne = pickOrder[i].value;
       }
     }
-    this.checkEventPickOne.emit(this.orderId);
+    this.checkEventPickOne.emit(this.orderPickOne);
   }
 
   closeDialog() {
@@ -149,10 +142,14 @@ export class PickOrderComponent implements OnInit {
     const pickOrder = document.getElementsByName('pick-one');
     for (let i = 0; i < pickOrder.length; i++) {
       if (pickOrder[i].checked) {
-        this.orderId = parseInt(pickOrder[i].value);
+        this.orderPickOne = pickOrder[i].value;
       }
     }
     //case: pick multiple
-    this.dialogRef.close(this.orderId);
+    this.dialogRef.close(this.orderPickOne);
+  }
+
+  checkOrder(order: Order) {
+    return this.orderSelected.some((item) => item.id === order.id);
   }
 }

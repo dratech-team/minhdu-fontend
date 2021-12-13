@@ -47,11 +47,10 @@
     <mat-step [stepControl]="secondFormGroup"  [editable]="true">
       <ng-template matStepLabel >Chọn đơn hàng</ng-template>
     <app-pick-order
-      [orderIdDefault]='data?.paymentHistory?.orderId'
+      [orderDefault]='data?.paymentHistory?.orderId'
       [pickOne]='true'
       [payment]='true'
       [formGroup]="secondFormGroup"
-      [orders$]='orders$'
       [customerId]='data.id'
       (checkEventPickOne)='pickOrders($event)'
     ></app-pick-order >
@@ -94,10 +93,10 @@
             <th>Lần thanh toán</th>
           </tr>
           <tr >
-            <td>{{ordersPicked?.customer?.lastName}}</td>
-            <td>{{ordersPicked?.createdAt|date:'dd/MM/yyyy'}}</td>
-            <td>{{ordersPicked?.commodityTotal|number:'0.0'}}</td>
-            <td>{{ordersPicked?.paymentHistories?.length}}</td>
+            <td>{{orderPicked?.customer?.lastName}}</td>
+            <td>{{orderPicked?.createdAt|date:'dd/MM/yyyy'}}</td>
+            <td>{{orderPicked?.commodityTotal|number:'0.0'}}</td>
+            <td>{{orderPicked?.paymentHistories?.length}}</td>
           </tr>
         </table>
         <div>

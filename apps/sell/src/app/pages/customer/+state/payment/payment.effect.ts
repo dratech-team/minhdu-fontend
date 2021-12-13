@@ -43,16 +43,18 @@ export class PaymentEffect {
       map(res => {
         this.store.dispatch(OrderAction.loadOrdersAssigned({
           take: 30,
-          skip:0,
+          skip: 0,
           customerId: res.customerId,
           delivered: ConvertBoolean.TRUE
-        }))
+        }));
         this.store.dispatch(OrderAction.loadInit({
-          take: 30,
-          skip:0,
-          customerId: res.customerId
-        }))
-        this.store.dispatch(CustomerAction.getCustomer({id: res.customerId}))
+          orderDTO: {
+            take: 30,
+            skip: 0,
+            customerId: res.customerId
+          }
+        }));
+        this.store.dispatch(CustomerAction.getCustomer({ id: res.customerId }));
         return res;
       }),
       map(res => {
@@ -68,20 +70,22 @@ export class PaymentEffect {
     this.action$.pipe(
       ofType(PaymentAction.updatePayment),
       switchMap((props) => this.paymentService.updatePayment(props.id, props.infoPayment)),
-      map(res =>{
+      map(res => {
         this.store.dispatch(OrderAction.loadOrdersAssigned({
           take: 30,
-          skip:0,
+          skip: 0,
           customerId: res.customerId,
           delivered: ConvertBoolean.TRUE
-        }))
+        }));
         this.store.dispatch(OrderAction.loadInit({
-          take: 30,
-          skip:0,
-          customerId: res.customerId,
-        }))
-        this.store.dispatch(CustomerAction.getCustomer({id:res.customerId}))
-        return res
+          orderDTO: {
+            take: 30,
+            skip: 0,
+            customerId: res.customerId
+          }
+        }));
+        this.store.dispatch(CustomerAction.getCustomer({ id: res.customerId }));
+        return res;
       }),
       map(res => {
           this.snackbar.open('Cập nhật thành công', '', { duration: 1500 });
@@ -100,20 +104,22 @@ export class PaymentEffect {
         this.paymentService.delete(props.id).pipe(
           map(_ => {
             this.snackbar.open('Xóa lịch sử thanh toán thành công', '', { duration: 1500 });
-            this.store.dispatch(PaymentAction.deletePaymentSuccess({id:props.id}))
+            this.store.dispatch(PaymentAction.deletePaymentSuccess({ id: props.id }));
           }),
           map(_ => {
             this.store.dispatch(OrderAction.loadOrdersAssigned({
               take: 30,
-              skip:0,
+              skip: 0,
               customerId: props.customerId,
               delivered: ConvertBoolean.TRUE
-            }))
+            }));
             this.store.dispatch(OrderAction.loadInit({
-              take: 30,
-              skip:0,
-              customerId: props.customerId
-            }))
+              orderDTO: {
+                take: 30,
+                skip: 0,
+                customerId: props.customerId
+              }
+            }));
             return CustomerAction.getCustomer({ id: props.customerId });
           })
         )

@@ -22,10 +22,8 @@ import { selectedAdded } from '../../+state/payment/payment.selector';
 })
 
 export class PaymentDialogComponent implements OnInit {
-  orders$ = this.store.pipe(select(selectorOrdersByCustomerId(this.data.id)));
   numberChars = new RegExp('[^0-9]', 'g');
-  ordersPicked!: Order;
-  orderId!: number;
+  orderPicked!: Order;
   payType = PaymentType;
   formGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -41,7 +39,6 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(OrderAction.loadInit({ customerId: this.data.id }));
     this.secondFormGroup = this.formBuilder.group({
       pick: ['', Validators.required]
     });
@@ -79,7 +76,7 @@ export class PaymentDialogComponent implements OnInit {
       payType: val.payType ? val.payType : undefined,
       total: typeof (val.paidTotal) === 'string' ? Number(val.paidTotal.replace(this.numberChars, '')) : val.paidTotal,
       paidAt: val.paidAt,
-      orderId: this.orderId,
+      orderId: this.orderPicked.id,
       note: val.note
     };
     if (this.data?.isUpdate) {
@@ -113,12 +110,9 @@ export class PaymentDialogComponent implements OnInit {
     }
   }
 
-  pickOrders($event: number) {
-    this.orderId = $event;
-    this.store.pipe(select(selectorCurrentOrder(this.orderId))).subscribe(
-      val => this.ordersPicked = JSON.parse(JSON.stringify(val))
-    );
-    if (this.orderId) {
+  pickOrders($event: Order) {
+    this.orderPicked = $event;
+    if (this.orderPicked) {
       this.secondFormGroup = this.formBuilder.group({
         pick: [true,Validators.required]
       });

@@ -25,6 +25,7 @@ import {
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
+import { pickAll, pickOne, someComplete } from '../../../../../../../../libs/utils/pick-item.ultil';
 
 @Component({
   selector: 'app-table-employee-selected',
@@ -58,40 +59,22 @@ export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
     if (this.employees.length === 0) {
       this.isSelectAll = false;
     }
-    this.employeesSelected = this.employees;
+    this.employeesSelected =[...this.employees]  ;
   }
 
 
   updateSelect(employee: Employee) {
-    const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
-    if (index > -1) {
-      this.employeesSelected.splice(index, 1);
-    } else {
-      this.employeesSelected.push(Object.assign(employee, { isSelect: true }));
-    }
-    this.isSelectAll =
-      this.employees.length !== 0 &&
-      this.employees.every((e) => this.employeesSelected.includes(e));
+    this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
 
-  setAll(select: boolean) {
-    this.isSelectAll = select;
-    if (this.employees == null) {
-      return;
-    }
-    this.employees?.forEach((employee) => {
-      if (select) {
-        if (!this.employeesSelected.some((item) => item.id === employee.id)) {
-          this.employeesSelected.push(
-            Object.assign(employee, { isSelect: true })
-          );
-        }
-      } else {
-        this.employeesSelected = [];
-      }
-    });
+  someComplete(): boolean {
+    return someComplete(this.employees,this.employeesSelected, this.isSelectAll)
+  }
+
+  setAll() {
+    this.employeesSelected = []
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 

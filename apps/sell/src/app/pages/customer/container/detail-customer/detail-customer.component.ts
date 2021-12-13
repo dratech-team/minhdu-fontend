@@ -49,7 +49,7 @@ export class DetailCustomerComponent implements OnInit {
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
-      OrderAction.loadInit({ take: 10, skip: 0, customerId: this.getId })
+      OrderAction.loadInit({ orderDTO:{take: 10, skip: 0, customerId: this.getId} })
     );
     this.store.dispatch(
       OrderAction.loadOrdersAssigned({

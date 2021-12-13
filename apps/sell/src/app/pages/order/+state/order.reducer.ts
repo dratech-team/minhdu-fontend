@@ -7,6 +7,7 @@ export interface OrderState extends EntityState<Order> {
   loaded: boolean,
   added: boolean,
   selectedOrderId: number,
+  total: number
 }
 
 export interface OrderAssignedState extends EntityState<Order> {
@@ -16,15 +17,15 @@ export interface OrderAssignedState extends EntityState<Order> {
 
 export const adapter: EntityAdapter<Order> = createEntityAdapter<Order>();
 
-export const initialOrder = adapter.getInitialState({ loaded: false, added: false });
+export const initialOrder = adapter.getInitialState({ loaded: false, added: false, total: 0 });
 
 export const OrderReducer = createReducer(
   initialOrder,
   on(OrderAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.orders, { ...state, loaded: true })
+    adapter.setAll(action.orders, { ...state, loaded: true, total: action.total })
   ),
   on(OrderAction.loadMoreOrdersSuccess, (state, action) =>
-    adapter.addMany(action.orders, { ...state, loaded: true })
+    adapter.addMany(action.orders, { ...state, loaded: true, total: action.total })
   ),
   on(OrderAction.getOrderSuccess, (state, action) =>
     adapter.upsertOne(action.order, { ...state, loaded: true })
@@ -33,9 +34,9 @@ export const OrderReducer = createReducer(
       return { ...state, added: false };
     }
   ),
-  on(OrderAction.addOrderSuccess, (state, action) =>{
-   return adapter.addOne(action.order, { ...state, loaded: true, added: true })
-  }
+  on(OrderAction.addOrderSuccess, (state, action) => {
+      return adapter.addOne(action.order, { ...state, loaded: true, added: true });
+    }
   )
 );
 

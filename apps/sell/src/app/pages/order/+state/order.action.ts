@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Order } from './order.interface';
+import { Order, OrderDTO } from './order.interface';
 
 export const addOrder = createAction(
   '[ADD_ORDER] Add Order',
@@ -17,44 +17,22 @@ export const loadAllOrder = createAction(
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{
-    take?: number;
-    skip?: number;
-    paidType?: string;
-    customerId?: number;
-    routeId?: number;
-    customer?: string;
-    delivered?: number;
-    explain?: string;
-    createdAt?: Date;
-    destination?: string
-  }>()
+  props<{orderDTO : OrderDTO}>()
 );
 
 export const loadInitSuccess = createAction(
   '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[] }>()
+  props<{ orders: Order[], total: number }>()
 );
 
 export const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
-  props<{
-    take: number;
-    skip: number;
-    paidType?: string;
-    customerId?: number;
-    routeId?: number;
-    customer?: string;
-    delivered?: number;
-    explain?: string;
-    createdAt?: Date;
-    destination?: string
-  }>()
+  props<{orderDTO : OrderDTO }>()
 );
 
 export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[] }>()
+  props<{ orders: Order[] ,total: number}>()
 );
 
 export const getOrder = createAction(

@@ -53,12 +53,12 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
-    this.store.dispatch(OrderAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(OrderAction.loadInit({ orderDTO:{take: this.pageSize, skip: this.pageIndexInit} }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(OrderAction.loadInit(this.order(val)));
+          this.store.dispatch(OrderAction.loadInit({orderDTO: this.order(val)}));
         })
       )
       .subscribe();
@@ -71,7 +71,7 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      OrderAction.loadMoreOrders(this.order(val))
+      OrderAction.loadMoreOrders({orderDTO: this.order(val)})
     );
   }
 

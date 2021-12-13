@@ -13,6 +13,12 @@ import { EmployeeAction, selectorTotalEmployee } from '@minhdu-fontend/employee'
 import { Employee } from '@minhdu-fontend/data-models';
 import { debounceTime } from 'rxjs/operators';
 import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
+import {
+  checkIsSelectAllInit,
+  handleValSubPickItems, pickAll,
+  pickOne,
+  someComplete
+} from '../../../../../../../libs/utils/pick-item.ultil';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -62,23 +68,13 @@ export class PickCommodityComponent implements OnInit {
     });
 
     this.commodities$.subscribe(commodities => {
-      if(commodities.length === 0){
-        this.isSelectAll = false
+      if (commodities.length === 0) {
+        this.isSelectAll = false;
       }
       if (this.isEventSearch) {
-        this.isSelectAll =
-          commodities.every((commodity) =>
-            this.commoditiesSelected.some((item) => item.id === commodity.id))
-          && this.commoditiesSelected.length > 0;
+        this.isSelectAll = checkIsSelectAllInit(commodities, this.commoditiesSelected);
       }
-      commodities.forEach((commodity) => {
-        if (this.isSelectAll) {
-          if (!this.commoditiesSelected.some((item) => item.id === commodity.id)) {
-            this.commoditiesSelected.push(commodity);
-          }
-        }
-      });
-      this.commodities = JSON.parse(JSON.stringify(commodities));
+      this.commodities = handleValSubPickItems(commodities, this.commodities, this.commoditiesSelected, this.isSelectAll);
     });
 
   }
@@ -111,39 +107,17 @@ export class PickCommodityComponent implements OnInit {
   }
 
   updateAllSelect(commodity: Commodity) {
-    const index = this.commoditiesSelected.findIndex(item => item.id === commodity.id);
-    if (index > -1) {
-      this.commoditiesSelected.splice(index, 1);
-    } else {
-      this.commoditiesSelected.push(commodity);
-    }
-    this.isSelectAll = this.commodities.length > 0
-      && this.commodities.every(item => this.commoditiesSelected.some(val => val.id === item.id));
+    this.isSelectAll = pickOne(commodity, this.commoditiesSelected, this.commodities).isSelectAll
     this.checkEvent.emit(this.commoditiesSelected);
   }
 
   someComplete(): boolean {
-    return (
-      this.commodities.filter(item => this.commoditiesSelected.some(val => val.id === item.id)).length > 0
-      && !this.isSelectAll
-    );
+    return someComplete(this.commodities, this.commoditiesSelected, this.isSelectAll)
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    this.commodities?.forEach(commodity => {
-        if (select) {
-          if (!this.commoditiesSelected.some(item => item.id === commodity.id)) {
-            this.commoditiesSelected.push(commodity);
-          }
-        } else {
-          const index = this.commoditiesSelected.findIndex(item => item.id === commodity.id);
-          if (index > -1) {
-            this.commoditiesSelected.splice(index, 1);
-          }
-        }
-      }
-    );
+    pickAll(select, this.commodities, this.commoditiesSelected)
     this.checkEvent.emit(this.commoditiesSelected);
   }
 

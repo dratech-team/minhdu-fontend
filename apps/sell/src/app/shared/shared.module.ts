@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PickOrderComponent } from './components/pick-order/pick-order.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { PickOrderService } from './components/pick-order/pick-order.service';
 import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -71,7 +70,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   ],
   providers:[
     DecimalPipe,
-    PickOrderService,
     PickCustomerService,
     PickCommodityService,
     PickRoutesService

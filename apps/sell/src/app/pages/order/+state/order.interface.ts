@@ -25,3 +25,15 @@ export interface Order {
   deliveredAt: Date;
   hide: boolean
 }
+export interface OrderDTO {
+  take?: number;
+  skip?: number;
+  paidType?: string;
+  customerId?: number|string;
+  routeId?: number;
+  customer?: string;
+  delivered?: number;
+  explain?: string;
+  createdAt?: Date;
+  destination?: string
+}

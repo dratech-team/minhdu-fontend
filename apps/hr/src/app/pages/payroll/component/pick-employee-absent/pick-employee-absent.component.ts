@@ -26,10 +26,13 @@ import {
   PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { selectedTotalPayroll } from '../../+state/payroll/payroll.selector';
+import {
+  checkIsSelectAllInit,
+  handleValSubPickItems, pickAll,
+  pickOne, someComplete
+} from '../../../../../../../../libs/utils/pick-item.ultil';
 
 @Component({
   selector: 'app-pick-employee-absent',
@@ -107,51 +110,20 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       );
     }
     this.employees$.subscribe((employees) => {
-      if(employees.length === 0){
-        this.isSelectAll = false
+      if (employees.length === 0) {
+        this.isSelectAll = false;
       }
       if (this.isEventSearch) {
-        this.isSelectAll =
-          employees.every((e) =>
-            this.employeesSelected.some((item) => item.id === e.id))
-          && this.employeesSelected.length > 0
-          && this.employeesSelected.length >= Number(getSelectors(selectorTotalEmployee, this.store));
+        this.isSelectAll = checkIsSelectAllInit(employees, this.employeesSelected)
       }
-      employees.forEach((employee) => {
-        if (this.isSelectAll) {
-          if (!this.employeesSelected.some((e) => e.id === employee.id)) {
-            this.employeesSelected.push(employee);
-          }
-        }
-      });
 
-      this.employees = JSON.parse(JSON.stringify(employees));
+      this.employees = handleValSubPickItems(employees, this.employees, this.employeesSelected, this.isSelectAll)
       const value = this.formGroup.value;
-      this.employeesSelected.map((item) => {
-        if (
-          this.employees.every(
-            (e) =>
-              e.id !== item.id &&
-              (value.name.toLowerCase().includes(item.lastName.toLowerCase()) ||
-                value.name === '') &&
-              (value.position
-                  .toLowerCase()
-                  .includes(item.position.name.toLowerCase()) ||
-                value.position === '') &&
-              (value.branch
-                  .toLowerCase()
-                  .includes(item.branch.name.toLowerCase()) ||
-                value.branch === '')
-          )
-        ) {
-          this.employees.push(item);
-        }
-      });
     });
     this.store.dispatch(PositionActions.loadPosition());
 
-
     this.store.dispatch(OrgchartActions.init());
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -181,43 +153,17 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   }
 
   updateSelect(employee: Employee) {
-    const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
-    if (index > -1) {
-      this.employeesSelected.splice(index, 1);
-    } else {
-      this.employeesSelected.push(Object.assign(employee, { isSelect: true }));
-    }
-    this.isSelectAll =
-      this.employees !== null &&
-      this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
+   this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   someComplete(): boolean {
-    return (
-      this.employees.filter((e) =>
-        this.employeesSelected.some((item) => item.id === e.id)
-      ).length > 0 && !this.isSelectAll
-    );
+    return someComplete(this.employees,this.employeesSelected, this.isSelectAll)
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    if (this.employees == null) {
-      return;
-    }
-    this.employees?.forEach((employee) => {
-      if (select) {
-        if (!this.employeesSelected.some((item) => item.id === employee.id)) {
-          this.employeesSelected.push(employee);
-        }
-      } else {
-        const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
-        if (index > -1) {
-          this.employeesSelected.splice(index, 1);
-        }
-      }
-    });
+    pickAll(select, this.employees, this.employeesSelected)
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
@@ -248,7 +194,7 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
     };
   }
 
-  selectEmployee(employee: Employee) {
+  checkEmployee(employee: Employee) {
     return this.employeesSelected.some((e) => e.id === employee.id);
   }
 }

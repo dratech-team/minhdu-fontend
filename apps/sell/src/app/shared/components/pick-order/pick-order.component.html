@@ -1,30 +1,31 @@
-<div class='table-scroll' style='height: 35vh' >
-  <table
-         infiniteScroll
-         [infiniteScrollThrottle]='10'
-         [alwaysCallback]='true'
-         [infiniteScrollDistance]='1'
-         [scrollWindow]='false'>
-    <thead [formGroup]='formGroup'>
+
+<div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$|async}})</div>
+<div class='table-scroll' style='height: 35vh'
+     infiniteScroll
+     [infiniteScrollThrottle]='10'
+     [alwaysCallback]='true'
+     [infiniteScrollDistance]='1'
+     [scrollWindow]='false'
+     (scrolled)='onScroll()'>
+  <table [formGroup]='formGroup'>
+    <thead>
     <tr>
       <th *ngIf='!payment'>
         <div class=' '>Khách hàng</div>
         <input class='form-control '
-               type='text'
+               type='search'
                formControlName='name'
         >
       </th>
       <th>
         <div class=' '>Ngày tạo</div>
         <input class='form-control '
-               type='text' formControlName='createdAt'
+               type='date' formControlName='createdAt'
         >
       </th>
       <th>
         <div class=' '>Tiền hàng</div>
-        <input formControlName='commodityTotal'
-               class='form-control  '
-               type='number'>
+        <input type='number' disabled>
       </th>
       <th>
         <div class=' '>Thanh toán</div>
@@ -108,16 +109,16 @@
           <input (change)='pickOneOrder()'
                  *ngIf='data?.pickOne||pickOne'
                  type='radio'
-                 [checked]='orderId === order.id'
-                 name='pick-one' value='{{order.id}}'
+                 [checked]='orderPickOne.id === order.id'
+                 name='pick-one' value='{{order}}'
           >
         </div>
         <div>
           <mat-checkbox
             *ngIf='!pickOne||data?.pickMore'
             class='checkID'
-            [checked]='orderIds.includes(order.id)'
-            (change)='updateAllSelect(order.id)'>
+            [checked]='checkOrder(order)'
+            (change)='updateAllSelect(order)'>
           </mat-checkbox>
         </div>
       </th>
@@ -134,7 +135,7 @@
 </div>
 <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận</button>
 <style>
-  ::ng-deep .mat-step-header[aria-selected="true"]  {
+  ::ng-deep .mat-step-header[aria-selected="true"] {
     height: 30px !important;
   }
 </style>

@@ -17,7 +17,7 @@ export class RouteDialogComponent implements OnInit {
   submitted = false;
   orders$ = this.store.pipe(select(selectorAllOrders));
   orders: Order[] = [];
-  orderIdsOfRoute: number[] = [];
+  orderIdsOfRoute: Order[] = [];
   isSelectAll = false;
 
   constructor(
@@ -31,8 +31,7 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val.id));
-    this.store.dispatch(OrderAction.loadAllOrder());
+    this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val));
     this.formGroup = this.formBuilder.group({
       name: [this.data?.route?.name, Validators.required],
       startedAt: [this.datePipe.transform(
@@ -46,7 +45,7 @@ export class RouteDialogComponent implements OnInit {
   }
 
 
-  pickOrders(orders: number[]) {
+  pickOrders(orders: Order[]) {
     this.orderIdsOfRoute = orders;
   }
 

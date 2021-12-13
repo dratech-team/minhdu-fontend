@@ -33,15 +33,21 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadAllOrder),
       switchMap((props) => this.orderService.pagination()),
-      map((responsePagination) => OrderAction.loadInitSuccess({ orders: responsePagination.data })),
+      map((responsePagination) => OrderAction.loadInitSuccess({
+        orders: responsePagination.data,
+        total: responsePagination.total
+      })),
       catchError((err) => throwError(err))
     ));
 
   loadInit$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.loadInit),
-      switchMap((props) => this.orderService.pagination(props)),
-      map((responsePagination) => OrderAction.loadInitSuccess({ orders: responsePagination.data })),
+      switchMap((props) => this.orderService.pagination(props.orderDTO)),
+      map((responsePagination) => OrderAction.loadInitSuccess({
+        orders: responsePagination.data ,
+        total: responsePagination.total
+      })),
       catchError((err) => throwError(err))
     ));
 
@@ -50,7 +56,7 @@ export class OrderEffect {
       ofType(OrderAction.loadMoreOrders),
       withLatestFrom(this.store.pipe(select(selectorOrderTotal))),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props.orderDTO)), { skip: skip })
       ),
       switchMap((props) => {
         return this.orderService.pagination(props);
@@ -63,7 +69,10 @@ export class OrderEffect {
               data: { content: 'Đã lấy hết đơn hàng' }
             });
           }
-          return OrderAction.loadMoreOrdersSuccess({ orders: responsePagination.data });
+          return OrderAction.loadMoreOrdersSuccess({
+            orders: responsePagination.data,
+            total: responsePagination.total
+          });
         }
       ),
       catchError((err) => throwError(err))
@@ -121,7 +130,7 @@ export class OrderEffect {
         map((_) => {
             switch (props.typeUpdate) {
               case 'DELIVERED':
-                return OrderAction.loadInit({ take: 30, skip: 0 });
+                return OrderAction.loadInit({ orderDTO: {take: 30, skip: 0} });
               default:
                 return OrderAction.getOrder({ id: props.id });
             }
@@ -177,9 +186,9 @@ export class OrderEffect {
         map((_) => {
           if (props.customerId) {
             this.store.dispatch(CustomerAction.getCustomer({ id: props.customerId }));
-            return OrderAction.loadInit({ take: 30, skip: 0, customerId: props.customerId });
+            return OrderAction.loadInit({ orderDTO: {take: 30, skip: 0, customerId: props.customerId} });
           } else {
-            return OrderAction.loadInit({ take: 30, skip: 0 });
+            return OrderAction.loadInit({ orderDTO: {take: 30, skip: 0} });
           }
         }),
         catchError((err) => throwError(err))

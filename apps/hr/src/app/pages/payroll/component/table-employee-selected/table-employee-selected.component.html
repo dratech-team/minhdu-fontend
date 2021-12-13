@@ -32,7 +32,8 @@
             <div class='border-top border-bottom'>
               <mat-checkbox class='example-margin  mt-2 mx-auto'
                             [checked]='isSelectAll'
-                            (change)='setAll($event.checked)'>
+                            [indeterminate]='someComplete()'
+                            (change)='setAll()'>
               </mat-checkbox>
             </div>
           </th>

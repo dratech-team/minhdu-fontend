@@ -21,6 +21,7 @@ import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { pickAll, pickOne } from '../../../../../../../../libs/utils/pick-item.ultil';
 
 @Component({
   selector: 'app-table-allowance-employee',
@@ -55,7 +56,8 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
           this.employees !== null &&
           this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
       }
-      this.employeesSelected = this.employees;
+      console.log(changes.employees.currentValue);
+      this.employeesSelected = [...changes.employees.currentValue];
     }
     if (changes.allowEmployeesSelected) {
       if (changes.allowEmployeesSelected.currentValue.length == 0) {
@@ -66,31 +68,17 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
           this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
       }
     }
-
   }
 
   ngOnInit(): void {
-    this.employeesSelected = this.employees;
+    this.employeesSelected = [...this.employees];
   }
 
   //check-box-employee
   updateSelectEmployee(employee: Employee) {
-    const index = this.employeesSelected.findIndex(emp => emp.id === employee.id);
-    const indexAllowance = this.allowEmployeesSelected.findIndex(emp => emp.id === employee.id);
-    if (index > -1) {
-      this.employeesSelected.splice(index, 1);
-      if (indexAllowance > -1) {
-        this.allowEmployeesSelected.splice(indexAllowance, 1);
-      }
-    } else {
-      this.employeesSelected.push(employee);
-    }
-    this.isSelectAllEmployee =
-      this.employees !== null &&
-      this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
-    this.isSelectAllowance =
-      this.employees !== null &&
-      this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+    const val = pickOne(employee, this.employeesSelected, this.employees, this.allowEmployeesSelected);
+    this.isSelectAllEmployee = val.isSelectAll;
+    this.isSelectAllowance = val.isSelectAllowance;
     this.EventSelectEmployee.emit(this.employeesSelected);
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
@@ -98,42 +86,22 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
 
   setAllEmployee(select: boolean) {
     this.isSelectAllEmployee = select;
-    if (this.employees == null) {
+    if (this.employees.length === 0) {
       return;
     }
-    this.employees?.forEach((employee) => {
-      if (select) {
-        if (!this.employeesSelected.some(emp => emp.id === employee.id)) {
-          this.employeesSelected.push(employee);
-        }
-      } else {
-        this.isSelectAllEmployee = false;
-        this.employeesSelected = [];
-        this.allowEmployeesSelected = [];
-      }
-    });
-    this.EventSelectAllowance.emit(this.allowEmployeesSelected);
+    this.isSelectAllowance = pickAll(
+      select,
+      this.employees,
+      this.employeesSelected,
+      this.allowEmployeesSelected,
+      this.isSelectAllowance);
     this.EventSelectEmployee.emit(this.employeesSelected);
+    this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
   //check-box-allowance
   updateSelectAllowance(employee: Employee) {
-    const index = this.allowEmployeesSelected.findIndex(emp => emp.id === employee.id);
-    if (index > -1) {
-      this.allowEmployeesSelected.splice(index, 1);
-    } else {
-      if (this.employeesSelected.some(e => e.id === employee.id)) {
-        this.allowEmployeesSelected.push(employee);
-      } else {
-        this.snackBar.open(
-          'Phụ cấp chỉ được chọn khi nhân viên được chọn. Xin cảm ơn.',
-          'Đã hiểu'
-        );
-      }
-    }
-    this.isSelectAllowance =
-      this.employees !== null &&
-      this.employees.every((e) => this.allowEmployeesSelected.some(item => item.id === e.id));
+    this.isSelectAllowance = pickOne(employee, this.allowEmployeesSelected, this.employees).isSelectAll;
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
@@ -146,22 +114,7 @@ export class TableAllowanceEmployeeComponent implements OnInit, OnChanges {
 
   setAllAllowance(select: boolean) {
     this.isSelectAllowance = select;
-    if (this.employees == null) {
-      return;
-    }
-    this.employees?.forEach((employee) => {
-      if (select) {
-        if (!this.allowEmployeesSelected.some(emp => emp.id === employee.id)) {
-          this.allowEmployeesSelected.push(employee);
-        }
-      } else {
-        const index = this.allowEmployeesSelected.findIndex(emp => emp.id === employee.id);
-        ;
-        if (index > -1) {
-          this.allowEmployeesSelected.splice(index, 1);
-        }
-      }
-    });
+    pickAll(select, this.employees, this.allowEmployeesSelected);
     this.EventSelectAllowance.emit(this.allowEmployeesSelected);
   }
 
