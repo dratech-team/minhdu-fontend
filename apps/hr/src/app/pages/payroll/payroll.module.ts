@@ -50,7 +50,6 @@ import { OvertimeReducer } from './+state/payroll/overtime.reducer';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RestorePayrollComponent } from './component/restore-payroll/restore-payroll.component';
 import { DialogExportTimekeepingComponent } from './component/dialog-export-timekeeping/dialog-export-timekeeping.component';
-import { DialogExportComponent } from './component/dialog-export/dialog-export.component';
 import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
@@ -131,8 +130,7 @@ import { TableSalarySelected } from './component/table-salaries-selected/table-s
     DialogOvertimeMultipleComponent,
     ConvertTimePipe,
     AddPayrollComponent,
-    DialogExportComponent,
-    HistoryPayrollComponent,
+      HistoryPayrollComponent,
     OvertimeComponent,
     LoadingComponent,
     RestorePayrollComponent,

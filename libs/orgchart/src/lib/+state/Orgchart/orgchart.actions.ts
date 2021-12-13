@@ -7,7 +7,7 @@ export const init = createAction('[Orgchart Page] Init');
 
 export const searchBranch = createAction(
   '[Orgchart/API] Search branch',
-  props<{ branch: string }>()
+  props<{ branch?: string, position?: string, code?: number  }>()
 );
 
 export const loadOrgchartSuccess = createAction(

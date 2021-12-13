@@ -1,10 +1,4 @@
 <div class='animated main-popup p-1'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
   <div class='font-weight-bold font-xl mb-1'>
     {{data.title}}
   </div>
@@ -62,6 +56,9 @@
             style='font-size: 12px'
             class=' col-md-3 btn btn-ok d-flex justify-content-center'>Đồng ý
     </button>
+    <button mat-dialog-close
+            style='font-size: 12px'
+            class="  col-md-2 ml-3 btn btn-cancel d-flex justify-content-center">Hủy</button>
   </div>
 </div>
 

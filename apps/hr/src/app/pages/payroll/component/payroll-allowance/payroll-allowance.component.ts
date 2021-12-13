@@ -42,7 +42,7 @@ import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/un
 import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/HR/unitAllowance.constant';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { DialogExportComponent } from '../dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-allowance',

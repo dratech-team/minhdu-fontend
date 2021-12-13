@@ -23,7 +23,7 @@ import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { DialogExportComponent } from '../../component/dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';

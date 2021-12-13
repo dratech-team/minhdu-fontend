@@ -18,6 +18,8 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Observable } from 'rxjs';
 import { Branch } from '@minhdu-fontend/data-models';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { Api } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'position.container.html'
@@ -108,5 +110,17 @@ export class PositionContainer implements OnInit {
         filter: PayrollEnum.PAYROLL_OVERTIME
       }));
     this.router.navigate(['phieu-luong']).then();
+  }
+
+  printPosition() {
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuất bảng chức vụ',
+        exportType: 'POSITION',
+        params: this.branchId ? {branchId: this.branchId} : undefined,
+        api: Api.HR.POSITION_EXPORT
+      }
+    })
   }
 }

@@ -4,7 +4,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { ExportService } from '@minhdu-fontend/service';
 import { FormControl, Validators } from '@angular/forms';
 import { Employee } from '@minhdu-fontend/data-models';
-import { ItemExportService } from '../../service/item-export.service';
+import { ItemExportService } from './item-export.service';
 import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
@@ -44,9 +44,13 @@ export class DialogExportComponent implements OnInit {
     this.itemSelected.sort((a, b) => {
       return a.index - b.index;
     });
+    if (this.data?.params) {
+
+    }
     this.exportService.print(
-    this.data.api,
-      Object.assign(this.data.params, { filename: this.name.value }),
+      this.data.api,
+      this.data?.params ?
+        Object.assign(this.data.params, { filename: this.name.value }) : { filename: this.name.value },
       { items: this.itemSelected }
     );
     this.dialogRef.close();

@@ -16,6 +16,7 @@ import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -151,6 +152,14 @@ export class CustomerComponent implements OnInit{
       address: val.address.trim(),
       note: val.note.trim()
     };
-    this.exportService.print(Api.SELL.CUSTOMER.CUSTOMER_EXPORT, customers);
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuât bảng khác hàng',
+        exportType: 'CUSTOMER',
+        params: customers,
+        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
+      }
+    })
   }
 }

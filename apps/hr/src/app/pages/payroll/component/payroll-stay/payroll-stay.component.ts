@@ -41,7 +41,7 @@ import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/te
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
-import { DialogExportComponent } from '../dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-stay',

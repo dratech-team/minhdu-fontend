@@ -47,7 +47,7 @@ import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.
 import { AppState } from '../../../../reducers';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
 import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
-import { DialogExportComponent } from '../../component/dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';

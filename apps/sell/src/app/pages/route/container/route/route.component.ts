@@ -14,6 +14,7 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
 import { MainAction } from '../../../../states/main.action';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -110,6 +111,14 @@ export class RouteComponent implements OnInit {
       bsx: val.bsx.trim(),
       garage: val.garage.trim()
     };
-    this.exportService.print(Api.SELL.ROUTE.ROUTE_EXPORT, route);
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuât bảng Tuyến đường',
+        exportType: 'ORDER',
+        params: route,
+        api: Api.SELL.ROUTE.ROUTE_EXPORT
+      }
+    })
   }
 }

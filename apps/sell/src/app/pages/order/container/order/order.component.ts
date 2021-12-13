@@ -16,6 +16,7 @@ import { AppState } from '../../../../reducers';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { CurrenciesConstant } from '@minhdu-fontend/constants';
 import { MainAction } from '../../../../states/main.action';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   templateUrl: 'order.component.html'
@@ -118,6 +119,14 @@ export class OrderComponent implements OnInit {
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE
     };
-    this.exportService.print(Api.SELL.ORDER.ORDER_EXPORT, order);
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuất bảng đơn hàng',
+        exportType: 'ORDER',
+        params: order,
+        api: Api.SELL.ORDER.ORDER_EXPORT
+      }
+    })
   }
 }

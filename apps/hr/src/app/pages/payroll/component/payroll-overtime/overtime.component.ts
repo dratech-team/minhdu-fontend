@@ -51,7 +51,7 @@ import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salar
 import { Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { UpdateOvertimeMultiple } from '../update-overtime-multiple/update-overtime-multiple';
-import { DialogExportComponent } from '../dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { ExportService } from '@minhdu-fontend/service';
 import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog-overtime.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';

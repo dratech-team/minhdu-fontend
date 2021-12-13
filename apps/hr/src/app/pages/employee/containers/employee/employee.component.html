@@ -1,14 +1,19 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
 <div class='main-content'>
   <div class='row h3 ml-3'>Hồ sơ nhân viên</div>
-  <div class='d-flex align-items-center '>
-    <button *ngIf='employeeControl.value !== employeeType.EMPLOYEE_LEFT_AT'
-            (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên
-    </button>
-    <div style='width: fit-content'>
-      <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='employeeControl'>
-        <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
-      </mat-select>
+  <div class='d-flex align-items-center justify-content-between '>
+    <div class='d-flex'>
+      <button *ngIf='employeeControl.value !== employeeType.EMPLOYEE_LEFT_AT'
+              (click)='add()' class='ml-3 btn btn-primary'>Thêm nhân viên
+      </button>
+      <div style='width: fit-content'>
+        <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='employeeControl'>
+          <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div>
+      <button  class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>

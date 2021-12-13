@@ -48,7 +48,7 @@ import { AppState } from '../../../../reducers';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
-import { DialogExportComponent } from '../dialog-export/dialog-export.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-basic',

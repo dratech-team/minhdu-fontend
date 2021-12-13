@@ -26,13 +26,14 @@ import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 
-import { EmployeeConstant } from '@minhdu-fontend/constants';
+import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
 import { selectAllProvince } from '@minhdu-fontend/location';
 import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
 import { BehaviorSubject, fromEvent, Observable, Observer, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 @Component({
   templateUrl: 'employee.component.html'
 })
@@ -270,5 +271,40 @@ export class EmployeeComponent implements OnInit {
 
   checkInputNumber(event: any){
     return checkInputNumber(event)
+  }
+
+  printEmployee() {
+    const val = this.formGroup.value;
+    const employee = {
+      name: val.name,
+      birthday: val.birthday,
+      phone: val.phone,
+      identity: val.identity,
+      address: val.address,
+      province: val.province,
+      district: val.district,
+      ward: val.ward,
+      gender: val.gender,
+      position: val.position,
+      branch: val.branch,
+      workedAt: val.workedAt,
+      isLeft: this.isLeft,
+      employeeType: val.employeeType,
+      isFlatSalary:
+        val.flatSalary === this.flatSalary.FLAT_SALARY
+          ? this.convertBoolean.TRUE
+          : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
+          ? this.convertBoolean.FALSE
+          : val.flatSalary
+    };
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuất bảng nhân viên',
+        exportType: 'EMPLOYEE',
+        params: employee,
+        api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+      }
+    })
   }
 }

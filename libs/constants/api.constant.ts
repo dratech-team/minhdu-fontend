@@ -27,12 +27,14 @@ export const Api = {
       POSITION: 'position',
       BRANCH: 'branch',
       DEPARTMENT: 'department',
+      EMPLOYEE_EXPORT: 'payroll/export/employee',
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',
       OVERTIME_TEMPLATE: 'overtime-template'
-    }
-
+    },
+    BRANCH_EXPORT: 'payroll/export/branch',
+    POSITION_EXPORT: 'payroll/export/position',
   },
   SELL: {
     STATISTICAL:{

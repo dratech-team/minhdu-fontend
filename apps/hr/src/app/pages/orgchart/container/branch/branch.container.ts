@@ -14,6 +14,8 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { Api } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -40,8 +42,8 @@ export class BranchContainer implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
-    this.formGroup.get('branch')!.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
-      this.store.dispatch(OrgchartActions.searchBranch({ branch: val }));
+    this.formGroup.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
+      this.store.dispatch(OrgchartActions.searchBranch({ branch: val.branch, position: val.position, code: val.code }));
     });
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
@@ -129,5 +131,23 @@ export class BranchContainer implements OnInit {
 
   inputCheckNumber($event: any){
     return checkInputNumber($event)
+  }
+
+  printBranch() {
+    const val = this.formGroup.value;
+    const branch = {
+      name: val.branch,
+      code: val.code,
+      position: val.position
+    };
+    this.dialog.open(DialogExportComponent,{
+      width: 'fit-content',
+      data: {
+        title: 'Xuất bảng Đơn vị',
+        exportType: 'BRANCH',
+        params: branch,
+        api: Api.HR.BRANCH_EXPORT
+      }
+    })
   }
 }
