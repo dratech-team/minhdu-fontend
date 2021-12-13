@@ -27,11 +27,10 @@ export class AddOrderComponent implements OnInit {
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
   customers: Customer [] = [];
   commodityUnit = CommodityUnit;
-  CommoditiesPicked: Commodity [] = [];
+  commoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: Customer | undefined;
   customerId: number | undefined;
-  commodityIds: number[] = [];
   payType = PaymentType;
   reload = new Subject<boolean>();
   formGroup!: FormGroup;
@@ -44,10 +43,7 @@ export class AddOrderComponent implements OnInit {
     if (document.contains(document.getElementById('success'))) {
       this.customerId = undefined;
       this.customerPicked = undefined;
-      this.commodityIds = [];
-      this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
-        this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
-      });
+      this.commoditiesPicked = [];
     }
   });
 
@@ -111,27 +107,21 @@ export class AddOrderComponent implements OnInit {
       width: '65%',
       data: {
         pickMore: true,
-        type: 'DIALOG'
+        type: 'DIALOG',
+        commoditiesPicked: this.commoditiesPicked
       }
     });
     ref.afterClosed().subscribe(val => {
         if (val) {
-          this.commodityIds = val;
-          this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
-            this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
-          });
+          this.commoditiesPicked = val;
         }
       }
     );
   }
 
-  deleteCommodityId(commodityId: number) {
-    this.commodityIds.forEach((element, index) => {
-      if (element === commodityId) this.commodityIds.splice(index, 1);
-    });
-    this.store.pipe(select(selectorCommodityByIds(this.commodityIds))).subscribe(val => {
-      this.CommoditiesPicked = JSON.parse(JSON.stringify(val));
-    });
+  deleteCommodity(commodity: Commodity) {
+    const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id)
+    this.commoditiesPicked.splice(index,1)
   }
 
   get checkValid() {
@@ -157,7 +147,7 @@ export class AddOrderComponent implements OnInit {
       explain: val.explain,
       wardId: this.wardId,
       customerId: this.customerId,
-      commodityIds: this.commodityIds
+      commodityIds: this.commoditiesPicked.map(item => item.id)
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
     this.store.pipe(select(selectedOrderAdded)).subscribe(added => {

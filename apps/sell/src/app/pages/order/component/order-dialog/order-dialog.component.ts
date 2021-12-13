@@ -25,8 +25,7 @@ export class OrderDialogComponent implements OnInit {
   submitted = false;
   routes: number[] = [];
   customers: Customer[] = [];
-  commodities: Commodity[] = [];
-  commodityIds: number[] = [];
+  commoditiesSelected: Commodity[] = [];
   wardId!: number;
 
   constructor(
@@ -40,9 +39,8 @@ export class OrderDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
-    this.commodities$.subscribe(val => this.commodities = JSON.parse(JSON.stringify(val)));
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(
         this.data?.order?.createdAt, 'yyyy-MM-dd')
@@ -68,8 +66,8 @@ export class OrderDialogComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       customerId: this.data.order.customerId,
-      commodityIds: this.commodityIds,
-      wardId: this.wardId|| this.data.order.destination.id,
+      commodityIds: this.commoditiesSelected.map(item => item.id),
+      wardId: this.wardId || this.data.order.destination.id,
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
@@ -80,8 +78,8 @@ export class OrderDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  pickCommodity(commodityIds: number[]) {
-    this.commodityIds = commodityIds;
+  pickCommodity(commodities: Commodity[]) {
+    this.commoditiesSelected = commodities;
   }
 
   onSelectWard($event: number) {

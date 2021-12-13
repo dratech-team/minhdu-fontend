@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CommodityService } from '../service/commodity.service';
 import { CommodityAction } from './commodity.action';
 import { throwError } from 'rxjs';
 import { OrderAction } from '../../order/+state/order.action';
+import { select, Store } from '@ngrx/store';
+import { selectorTotalCommodityInStore } from './commodity.selector';
 
 @Injectable()
 export class CommodityEffect {
@@ -12,7 +14,7 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.addCommodity),
       switchMap((props) => this.commodityService.addOne(props.commodity).pipe(
-        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } })),
         catchError((err) => throwError(err))
       ))
     ));
@@ -21,7 +23,10 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.loadAllCommodities),
       switchMap((_) => this.commodityService.pagination()),
-      map((ResponsePaginate) => CommodityAction.loadInitSuccess({ commodity: ResponsePaginate.data })),
+      map((ResponsePaginate) => CommodityAction.loadInitSuccess({
+        commodity: ResponsePaginate.data,
+        total: ResponsePaginate.total
+      })),
       catchError((err) => throwError(err))
     )
   );
@@ -29,19 +34,33 @@ export class CommodityEffect {
   loadCommodity$ = createEffect(() =>
     this.action.pipe(
       ofType(CommodityAction.loadInit),
-      switchMap((params) => this.commodityService.pagination(params)),
-      map((ResponsePaginate) => CommodityAction.loadInitSuccess({ commodity: ResponsePaginate.data })),
+      switchMap((params) => this.commodityService.pagination(params.CommodityDTO)),
+      map((ResponsePaginate) => CommodityAction.loadInitSuccess({
+        commodity: ResponsePaginate.data,
+        total: ResponsePaginate.total
+      })),
       catchError((err) => throwError(err))
     )
   );
+
   loadMoreCommodity$ = createEffect(() =>
     this.action.pipe(
       ofType(CommodityAction.loadMoreCommodity),
+      withLatestFrom(this.store.pipe(select(selectorTotalCommodityInStore))),
+      map(([props, skip]) =>
+        Object.assign(JSON.parse(JSON.stringify(props.commodityDTO)), {
+          skip: skip
+        })
+      ),
       switchMap((params) => this.commodityService.pagination(params)),
-      map((ResponsePaginate) => CommodityAction.loadMoreCommoditySuccess({ commodity: ResponsePaginate.data })),
+      map((ResponsePaginate) => CommodityAction.loadMoreCommoditySuccess({
+        commodity: ResponsePaginate.data,
+        total: ResponsePaginate.total
+      })),
       catchError((err) => throwError(err))
     )
   );
+
   getCommodity$ = createEffect(() =>
     this.action.pipe(
       ofType(CommodityAction.getCommodity),
@@ -55,7 +74,7 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.updateCommodity),
       switchMap((props) => this.commodityService.update(props.id, props.commodity).pipe(
-        map(_ => CommodityAction.loadInit({ take: 30, skip: 0 })),
+        map(_ => CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } })),
         catchError((err) => throwError(err))
       ))
     )
@@ -69,7 +88,7 @@ export class CommodityEffect {
             if (props.orderId) {
               return OrderAction.getOrder({ id: props.orderId });
             } else {
-              return CommodityAction.loadInit({ take: 30, skip: 0 });
+              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
             }
           }
         ),
@@ -80,6 +99,7 @@ export class CommodityEffect {
 
   constructor(
     private readonly action: Actions,
+    private readonly store: Store,
     private readonly commodityService: CommodityService
   ) {
   }

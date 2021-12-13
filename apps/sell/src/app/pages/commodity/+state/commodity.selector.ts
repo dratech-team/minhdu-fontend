@@ -40,3 +40,13 @@ export const selectedLoaded = createSelector(
   selectorCommodityState,
   (state) => state.loaded
 )
+
+export const selectedTotalCommodity= createSelector(
+  selectorCommodityState,
+  (state) => state.total
+)
+export const selectorTotalCommodityInStore= createSelector(
+  selectorCommodityState,
+  formCommodity.selectTotal
+);
+

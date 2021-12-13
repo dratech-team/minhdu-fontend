@@ -13,7 +13,7 @@ export class PickCommodityService {
   }
 
   loadInit() {
-    return this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    return this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 }}));
   }
 
   scrollCommodities(val: any) {

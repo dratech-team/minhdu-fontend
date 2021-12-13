@@ -6,26 +6,33 @@ import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PickCommodityService } from './pick-commodity.service';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { CommodityAction, loadInit } from '../../../pages/commodity/+state/commodity.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { selectAllCommodity } from '../../../pages/commodity/+state/commodity.selector';
+import { selectAllCommodity, selectedTotalCommodity } from '../../../pages/commodity/+state/commodity.selector';
+import { EmployeeAction, selectorTotalEmployee } from '@minhdu-fontend/employee';
+import { Employee } from '@minhdu-fontend/data-models';
+import { debounceTime } from 'rxjs/operators';
+import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  @Input() commodities: Commodity[] = [];
+  commodities: Commodity[] = [];
   commodityUnit = CommodityUnit;
+  @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickPOne: boolean | undefined;
-  @Output() checkEvent = new EventEmitter();
+  @Output() checkEvent = new EventEmitter<Commodity[]>();
   resourceType = CustomerResource;
   customerType = CustomerType;
-  pageIndex = 1;
+  pageIndex = 0;
   pageSize = 30;
+  isEventSearch = true;
   isSelectAll = false;
-  commodityIds: number[] = [];
-  commodities$ = this.store.pipe(select(selectAllCommodity));
+
+  commodities$ = this.store.select(selectAllCommodity);
+  total$ = this.store.select(selectedTotalCommodity);
   formGroup = new FormGroup(
     {
       code: new FormControl(''),
@@ -44,22 +51,42 @@ export class PickCommodityComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(CommodityAction.loadAllCommodities());
+    if (this.data?.commoditiesPicked) {
+      this.commoditiesSelected = [...this.data?.commoditiesPicked];
+    }
+    this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } }));
+    this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(val => {
+      this.isEventSearch = true;
+      this.store.dispatch(CommodityAction.loadMoreCommodity(
+        { commodityDTO: this.commodity(val) }));
+    });
+
     this.commodities$.subscribe(commodities => {
+      if(commodities.length === 0){
+        this.isSelectAll = false
+      }
+      if (this.isEventSearch) {
+        this.isSelectAll =
+          commodities.every((commodity) =>
+            this.commoditiesSelected.some((item) => item.id === commodity.id))
+          && this.commoditiesSelected.length > 0;
+      }
+      commodities.forEach((commodity) => {
+        if (this.isSelectAll) {
+          if (!this.commoditiesSelected.some((item) => item.id === commodity.id)) {
+            this.commoditiesSelected.push(commodity);
+          }
+        }
+      });
       this.commodities = JSON.parse(JSON.stringify(commodities));
     });
+
   }
 
-  // onScroll() {
-  //   const val = {
-  //     take: this.pageSize,
-  //     skip: this.pageSize * this.pageIndex
-  //   };
-  //   this.pageIndex++;
-  //   this.service.scrollCommodities(val);
-  // }
   commodity(val: any) {
     return {
+      take: this.pageSize,
+      skip: this.pageIndex,
       name: val.name,
       code: val.code,
       unit: val.unit
@@ -83,20 +110,22 @@ export class PickCommodityComponent implements OnInit {
     this.dialog.open(CommodityDialogComponent, { width: '40%', data: $event });
   }
 
-  updateAllSelect(id: number) {
-    const index = this.commodityIds.indexOf(id);
+  updateAllSelect(commodity: Commodity) {
+    const index = this.commoditiesSelected.findIndex(item => item.id === commodity.id);
     if (index > -1) {
-      this.commodityIds.splice(index, 1);
+      this.commoditiesSelected.splice(index, 1);
     } else {
-      this.commodityIds.push(id);
+      this.commoditiesSelected.push(commodity);
     }
-    this.isSelectAll = this.commodities !== null && this.commodities.every(e => this.commodityIds.includes(e.id));
-    this.checkEvent.emit(this.commodityIds);
+    this.isSelectAll = this.commodities.length > 0
+      && this.commodities.every(item => this.commoditiesSelected.some(val => val.id === item.id));
+    this.checkEvent.emit(this.commoditiesSelected);
   }
 
   someComplete(): boolean {
     return (
-      this.commodities.filter(e => this.commodityIds.includes(e.id)).length > 0 && !this.isSelectAll
+      this.commodities.filter(item => this.commoditiesSelected.some(val => val.id === item.id)).length > 0
+      && !this.isSelectAll
     );
   }
 
@@ -104,21 +133,34 @@ export class PickCommodityComponent implements OnInit {
     this.isSelectAll = select;
     this.commodities?.forEach(commodity => {
         if (select) {
-          if (!this.commodityIds.includes(commodity.id)) {
-            this.commodityIds.push(commodity.id);
+          if (!this.commoditiesSelected.some(item => item.id === commodity.id)) {
+            this.commoditiesSelected.push(commodity);
           }
         } else {
-          const index = this.commodityIds.indexOf(commodity.id);
+          const index = this.commoditiesSelected.findIndex(item => item.id === commodity.id);
           if (index > -1) {
-            this.commodityIds.splice(index, 1);
+            this.commoditiesSelected.splice(index, 1);
           }
         }
       }
     );
-    this.checkEvent.emit(this.commodityIds);
+    this.checkEvent.emit(this.commoditiesSelected);
+  }
+
+  onScroll() {
+    this.isEventSearch = false;
+    const val = this.formGroup.value;
+    this.store.dispatch(
+      CommodityAction.loadMoreCommodity(
+        { commodityDTO: this.commodity(val) })
+    );
   }
 
   closeDialog() {
-    this.dialogRef.close(this.commodityIds);
+    this.dialogRef.close(this.commoditiesSelected);
+  }
+
+  checkedCommodity(commodity: Commodity) {
+    return this.commoditiesSelected.some((item) => item.id === commodity.id);
   }
 }

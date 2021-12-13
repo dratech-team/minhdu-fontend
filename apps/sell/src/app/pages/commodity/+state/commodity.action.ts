@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Commodity } from './commodity.interface';
+import { Commodity, CommodityDTO } from './commodity.interface';
 
 
 export const addCommodity = createAction(
@@ -17,34 +17,20 @@ export const loadAllCommodities = createAction(
 
 export const loadInit = createAction(
   '[LOAD_COMMODITY] Load Commodity',
-  props<{
-    take?: number,
-    skip?: number,
-    orderId?: number,
-    code?: string,
-    name?: string,
-    unit?: string
-  }>()
+  props<{ CommodityDTO : CommodityDTO}>()
 );
 export const loadInitSuccess = createAction(
   '[LOAD_COMMODITY] Load Commodity Success',
-  props<{ commodity: Commodity[] }>()
+  props<{ commodity: Commodity[], total: number }>()
 );
 
 export const loadMoreCommodity = createAction(
   '[LOAD_MORE_COMMODITY] Load Commodity',
-  props<{
-    take: number,
-    skip: number,
-    orderId?: number,
-    code?: string,
-    name?: string,
-    unit?: string
-  }>()
+  props<{ commodityDTO : CommodityDTO }>()
 );
 export const loadMoreCommoditySuccess = createAction(
   '[LOAD_MORE_COMMODITY] Load More Commodity Success',
-  props<{ commodity: Commodity[] }>()
+  props<{ commodity: Commodity[], total: number }>()
 );
 export const getCommodity = createAction(
   '[GET_COMMODITY] Get Commodity ',

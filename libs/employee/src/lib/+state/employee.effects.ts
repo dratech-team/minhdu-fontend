@@ -12,7 +12,6 @@ import { select, Store } from '@ngrx/store';
 import { throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
-import { getSelectors } from './../../../../utils/getState.ultils';
 import { DegreeService } from './service/degree.service';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';

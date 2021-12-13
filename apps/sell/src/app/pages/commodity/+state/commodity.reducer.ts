@@ -6,26 +6,28 @@ import { CommodityAction } from './commodity.action';
 
 export interface CommodityState extends EntityState<Commodity> {
   loaded: boolean,
-  selectedCommodityId: number
+  selectedCommodityId: number,
+  total: number
 }
 
 export const adapter: EntityAdapter<Commodity> = createEntityAdapter<Commodity>();
 
-export const initialCommodity = adapter.getInitialState({ loaded: false });
+export const initialCommodity = adapter.getInitialState({ loaded: false, total: 0 });
 
 export const CommodityReducer = createReducer(
   initialCommodity,
 
   on(CommodityAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.commodity, { ...state, loaded: true })),
+    adapter.setAll(action.commodity, { ...state, loaded: true, total: action.total })),
 
   on(CommodityAction.loadMoreCommoditySuccess, (state, action) =>
-    adapter.addMany(action.commodity, { ...state, loaded: true })),
+    adapter.addMany(action.commodity, { ...state, loaded: true, total: action.total })),
 
   on(CommodityAction.getCommoditySuccess, (state, action) =>
     adapter.upsertOne(action.commodity, { ...state, loaded: true }))
 );
 export const {
   selectEntities,
-  selectAll
+  selectAll,
+  selectTotal
 } = adapter.getSelectors();

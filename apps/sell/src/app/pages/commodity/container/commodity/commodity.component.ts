@@ -32,7 +32,7 @@ export class CommodityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CommodityAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
   }
 
   add() {
@@ -43,7 +43,7 @@ export class CommodityComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(CommodityAction.loadMoreCommodity(this.commodity(val, this.pageSize, this.pageIndex)));
+    this.store.dispatch(CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val, this.pageSize, this.pageIndex) }));
   }
 
   deleteCommodity($event: any) {
