@@ -1,0 +1,33 @@
+<div class='mx-3' style='margin-top: 100px'>
+
+  <div class=' font-weight-bold font-xl mx-auto ' style='width: 1200px'>
+  {{data.name}}
+  </div>
+  <div class='fixTableHead  mt-5 mx-auto'>
+    <table style='min-width: 1200px' #table [formGroup]='formGroup' >
+      <thead>
+      <tr>
+        <th style='width: 70px'>
+          <div class='border-top text-center'>stt</div>
+          <input class=' text-center' type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tháng</div>
+          <input class='form-control text-center ' type='month' formControlName='month'>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tổng Tiền</div>
+          <input class=' text-center' type='text' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let item of data.items;let i = index'>
+        <td class='position'>{{i + 1}}</td>
+        <td class='position'>{{item.month}}</td>
+        <td class='position'>{{item.total}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

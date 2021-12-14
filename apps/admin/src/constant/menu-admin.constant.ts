@@ -2,9 +2,14 @@ import { App, MenuEnum } from '@minhdu-fontend/enums';
 
 export const MenuAdminConstant = [
   {
+    name: 'Tổng quan',
+    state:MenuEnum.OVERVIEW,
+    href: '/'
+  },
+  {
     name: 'Tổng quan bán hàng',
     state:MenuEnum.OVERVIEW_SELL,
-    href: '/admin'
+    href: '/ban-hang'
   },
   {
     name: 'Tổng quan kho',

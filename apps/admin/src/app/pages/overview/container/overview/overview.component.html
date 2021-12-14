@@ -1,0 +1,50 @@
+<div class='mx-3' style='margin-top: 100px'>
+
+  <div class=' font-weight-bold font-xl mx-auto ' style='width: 1200px'>
+    Lương nhân viên
+  </div>
+  <div class='fixTableHead  mt-5 mx-auto'>
+    <table style='min-width: 1200px' #table [formGroup]='formGroup' >
+      <thead>
+      <tr>
+        <th style='width: 70px'>
+          <div class='border-top text-center'>stt</div>
+          <input class=' text-center' type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tên</div>
+          <input class='form-control text-center ' type='search' formControlName='name'>
+        </th>
+        <th>
+          <div class='border-top text-center'>Đơn vị công tác</div>
+          <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+            >
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='border-top text-center'>Khoảng tiền</div>
+          <input class=' text-center' type='text' disabled>
+        </th>
+        <th>
+          <div class='border-top text-center'>Tổng lương</div>
+          <input class=' text-center' type='text' disabled>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let item of data;let i = index'>
+        <td class='position'>{{i + 1}}</td>
+        <td class='position'>{{item.name}}</td>
+        <td class='position'>{{item.branch}}</td>
+        <td class='position'>{{item.price}}</td>
+        <td class='position'>{{item.total}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

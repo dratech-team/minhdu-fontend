@@ -17,7 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverviewModule),
+        loadChildren: () => import('./pages/overview/overview-hr.module').then(m => m.OverviewHrModule),
         data: {
           title: ''
         }

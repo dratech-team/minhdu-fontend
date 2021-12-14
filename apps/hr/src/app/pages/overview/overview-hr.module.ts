@@ -15,8 +15,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { OverviewRoutingModule } from './overview-routing.module';
-import { OverviewComponent } from './containers/overview/overview.component';
+import { OverviewHrRoutingModule } from './overview-hr-routing.module';
+import { OverviewHrComponent } from './containers/overview/overview-hr.component';
 import { StatisticalEmployeeComponent } from './components/dialog-statistical-employee/statistical-employee.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -40,17 +40,17 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgxSkeletonLoaderModule.forRoot(),
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    OverviewRoutingModule,
+    OverviewHrRoutingModule,
     MatDialogModule,
     MatDatepickerModule
   ],
   exports: [
-    OverviewComponent
+    OverviewHrComponent
   ],
   declarations: [
-    OverviewComponent,
+    OverviewHrComponent,
     StatisticalEmployeeComponent
   ]
 })
-export class OverviewModule {
+export class OverviewHrModule {
 }

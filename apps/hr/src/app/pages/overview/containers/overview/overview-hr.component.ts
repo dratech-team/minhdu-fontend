@@ -9,7 +9,7 @@ import { StatisticalEmployeeComponent } from '../../components/dialog-statistica
   selector: 'app-overview-hr',
   templateUrl: 'overview.component.html'
 })
-export class OverviewComponent implements OnInit {
+export class OverviewHrComponent implements OnInit {
   data = [
     {
       'name': 'Germany',
