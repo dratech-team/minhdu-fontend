@@ -59,9 +59,9 @@ export class TableOrdersComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(val));
+      this.customerService.scrollOrdersAssigned( this.orders(val));
     } else {
-      this.customerService.scrollOrders(this.orders(val));
+      this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.orders(val)}));
     }
   }
 

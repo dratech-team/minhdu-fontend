@@ -8,7 +8,11 @@ import { Order } from '../../../pages/order/+state/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Employee } from '@minhdu-fontend/data-models';
 import { OrderAction } from '../../../pages/order/+state/order.action';
-import { selectedTotalOrder, selectorAllOrders } from '../../../pages/order/+state/order.selector';
+import {
+  selectedTotalOrder,
+  selectorAllOrders,
+  selectorCurrentOrder
+} from '../../../pages/order/+state/order.selector';
 import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
 import { selectorTotalEmployee } from '@minhdu-fontend/employee';
 import {
@@ -27,7 +31,7 @@ import {
 })
 export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
-  @Input() orderDefault?: Order;
+  @Input() orderIdDefault?: number;
   @Input() payment = false;
   @Input() orderSelected: Order[] = [];
   @Input() customerId?: number;
@@ -68,8 +72,10 @@ export class PickOrderComponent implements OnInit {
         }
       }));
 
-    if (this.orderDefault) {
-      this.orderPickOne = this.orderDefault;
+    if (this.orderIdDefault) {
+      this.store.select(selectorCurrentOrder(this.orderIdDefault)).subscribe(val => {
+        this.orderPickOne = JSON.parse(JSON.stringify(val));
+      });
     }
 
     this.formGroup.valueChanges.pipe(
@@ -127,13 +133,8 @@ export class PickOrderComponent implements OnInit {
     this.checkEvent.emit(this.orderSelected);
   }
 
-  pickOneOrder() {
-    const pickOrder = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickOrder.length; i++) {
-      if (pickOrder[i].checked) {
-        this.orderPickOne = pickOrder[i].value;
-      }
-    }
+  pickOneOrder(order: Order) {
+    this.orderPickOne = order;
     this.checkEventPickOne.emit(this.orderPickOne);
   }
 
