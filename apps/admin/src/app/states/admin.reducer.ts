@@ -6,11 +6,10 @@ import { AdminAction } from './admin.action';
 
 export const adapter: EntityAdapter<any> = createEntityAdapter<any>();
 
-export const initialAdmin = adapter.getInitialState({ tab: MenuEnum.OVERVIEW_SELL});
+export const initialAdmin = adapter.getInitialState({ tab: MenuEnum.OVERVIEW});
 export  const  AdminReducer = createReducer(
   initialAdmin,
   on(AdminAction.updateStateMenu, (state, {tab}) => {
-    console.log(tab)
     return {...state, tab: tab }
   })
 )

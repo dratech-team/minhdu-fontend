@@ -13,11 +13,16 @@ const routes: Routes = [
     loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
   },
   {
-    path:'admin',
+    path:'',
     component: AdminLayoutComponent ,
     children:[
       {
         path:'',
+        loadChildren:() =>
+          import('./pages/overview-salary/overview-salary.module').then(m => m.OverviewSalaryModule)
+      },
+      {
+        path:'ban-hang',
         loadChildren:() =>
           import('./pages/statistical-sell/statistical-sell.module').then(m => m.StatisticalSellModule)
       },

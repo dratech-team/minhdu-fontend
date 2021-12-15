@@ -1,11 +1,12 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { OverviewComponent } from './containers/overview/overview.component';
+import { OverviewHrComponent } from './containers/overview/overview-hr.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: OverviewComponent
+    component: OverviewHrComponent
   }
 
 ];
@@ -15,5 +16,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class OverviewRoutingModule {
+export class OverviewHrRoutingModule {
 }
