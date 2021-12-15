@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path:'',
         loadChildren:() =>
-          import('./pages/overview/overview.module').then(m => m.OverviewModule)
+          import('./pages/overview-salary/overview-salary.module').then(m => m.OverviewSalaryModule)
       },
       {
         path:'ban-hang',

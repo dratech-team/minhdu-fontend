@@ -1,14 +1,14 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { OverviewComponent } from './container/overview/overview.component';
-import { DetailOverviewComponent } from './components/detail-overview/detail-overview.component';
+import { DetailOverviewComponent } from './container/detail-overview/detail-overview.component';
+import { OverviewSalaryComponent } from './container/overview-salary/overview-salary.component';
 
 
 
 const routes: Routes = [
   {
     path: '',
-    component: OverviewComponent
+    component: OverviewSalaryComponent
   },
   {
     path: 'chi-tiet-luong/:id',
@@ -20,5 +20,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class OverviewRoutingModule {
+export class OverviewSalaryRoutingModule {
 }
