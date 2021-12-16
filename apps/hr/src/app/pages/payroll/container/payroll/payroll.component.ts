@@ -419,6 +419,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: value.name,
       position: value.position,
       branch: value.branch,
+      createdAt: value.createdAt,
       exportType: FilterTypeEnum.TIME_SHEET
     };
 
@@ -428,7 +429,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng lương',
         exportType: FilterTypeEnum.TIME_SHEET,
         params: payroll,
-        api: Api.HR.PAYROLL.TIMEKEEPING_EXPORT
+        api: Api.HR.PAYROLL.EXPORT
       }
     });
   }

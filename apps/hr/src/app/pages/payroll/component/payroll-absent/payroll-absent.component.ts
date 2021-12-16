@@ -263,7 +263,7 @@ export class PayrollAbsentComponent implements OnInit  {
             title: 'Xuât bảng khấu trừ',
             exportType: FilterTypeEnum.ABSENT,
             params: payrollAbsent,
-            api: Api.HR.PAYROLL.PAYROLL_EXPORT_OVERTIME
+            api: Api.HR.PAYROLL.EXPORT
           }
         });
       }
