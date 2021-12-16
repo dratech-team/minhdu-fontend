@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import {
   EmployeeType,
   FilterTypeEnum,
   PayrollEnum,
-  SalaryTypeEnum
+  SalaryTypeEnum,
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { ExportService } from '@minhdu-fontend/service';
@@ -32,13 +32,14 @@ import {
   selectedPositionPayroll,
   selectedTotalPayroll,
   selectedTypePayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import {
   getAllPosition,
-  PositionActions
+  PositionActions,
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
@@ -46,8 +47,6 @@ import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { AppState } from '../../../../reducers';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { DialogExportTimekeepingComponent } from '../../component/dialog-export-timekeeping/dialog-export-timekeeping.component';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
@@ -57,7 +56,7 @@ import { RestorePayrollComponent } from '../../component/restore-payroll/restore
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 
 @Component({
-  templateUrl: 'payroll.component.html'
+  templateUrl: 'payroll.component.html',
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
   formGroup = new FormGroup({
@@ -77,7 +76,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     ),
     branch: new FormControl(
       getSelectors<string>(selectedBranchPayroll, this.store)
-    )
+    ),
   });
   selectPayroll = new FormControl(
     getSelectors<PayrollEnum>(selectedTypePayroll, this.store)
@@ -126,8 +125,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     private readonly exportService: ExportService,
     private readonly activeRouter: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.loadInitPayroll();
@@ -152,7 +150,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
             filter: val,
-            createdAt: new Date()
+            createdAt: new Date(),
           })
         );
       } else {
@@ -216,7 +214,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             PayrollAction.updateStatePayroll({
               createdAt: new Date(val.createdAt) || new Date(val.createdAt),
               branch: val.branch,
-              position: val.position
+              position: val.position,
             })
           );
           return this.loadInitPayroll();
@@ -241,7 +239,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loadInitPayroll() {
     this.store.dispatch(
       PayrollAction.loadInit({
-        payrollDTO: this.mapPayroll(this.formGroup.value)
+        payrollDTO: this.mapPayroll(this.formGroup.value),
       })
     );
   }
@@ -263,12 +261,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           : this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? FilterTypeEnum.SEASONAL
           : this.selectedPayroll === PayrollEnum.PAYROLL
-            ? FilterTypeEnum.PAYROLL
-            : FilterTypeEnum.SALARY,
+          ? FilterTypeEnum.PAYROLL
+          : FilterTypeEnum.SALARY,
       employeeType:
         this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME
+          : EmployeeType.EMPLOYEE_FULL_TIME,
     };
   }
 
@@ -276,7 +274,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const val = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayroll(val)
+        payrollDTO: this.mapPayroll(val),
       })
     );
   }
@@ -284,7 +282,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   addPayroll($event?: any): void {
     const ref = this.dialog.open(AddPayrollComponent, {
       width: '30%',
-      data: { employeeId: $event?.employee?.id, addOne: true }
+      data: { employeeId: $event?.employee?.id, addOne: true },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -298,7 +296,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type }
+      data: { id, type },
     });
   }
 
@@ -308,8 +306,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       data: {
         createdAt: this.createdAt,
         type: type,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
-      }
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -317,12 +315,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.overtimeTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(val.datetime)
+            createdAt: new Date(val.datetime),
           })
         );
         this.eventAddOvertime.next({
           createdAt: new Date(val.datetime),
-          overtimeTitle: val.title
+          overtimeTitle: val.title,
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
       }
@@ -334,8 +332,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
-      }
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      },
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
@@ -343,12 +341,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.allowanceTitle = value.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(value.datetime)
+            createdAt: new Date(value.datetime),
           })
         );
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
         this.eventAddAllowance.next({
-          allowanceTitle: value.title
+          allowanceTitle: value.title,
         });
       }
     });
@@ -360,8 +358,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET
-      }
+        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -369,12 +367,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.absentTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(val.datetime)
+            createdAt: new Date(val.datetime),
           })
         );
         this.eventAddAbsent.next({
           datetime: val.datetime,
-          absentTitle: val.title
+          absentTitle: val.title,
         });
         this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
       }
@@ -387,7 +385,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .then();
   }
 
-  exportPayroll() {
+  exportPayroll(exportType: FilterTypeEnum) {
     const value = this.formGroup.value;
     const payroll = {
       code: value.code || '',
@@ -396,7 +394,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       branch: value.branch,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      exportType: FilterTypeEnum.PAYROLL
+      exportType: exportType,
     };
     if (value.createdAt) {
       Object.assign(payroll, { createdAt: new Date(value.createdAt) });
@@ -405,32 +403,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.PAYROLL,
+        exportType: exportType,
         params: payroll,
-        api: Api.HR.PAYROLL.EXPORT
-      }
-    });
-  }
-
-  exportTimekeeping() {
-    const value = this.formGroup.value;
-    const payroll = {
-      code: value.code || '',
-      name: value.name,
-      position: value.position,
-      branch: value.branch,
-      createdAt: value.createdAt,
-      exportType: FilterTypeEnum.TIME_SHEET
-    };
-
-    const ref = this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.TIME_SHEET,
-        params: payroll,
-        api: Api.HR.PAYROLL.EXPORT
-      }
+        api: Api.HR.PAYROLL.EXPORT,
+      },
     });
   }
 
@@ -449,8 +425,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         employeeType:
           this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
             ? EmployeeType.EMPLOYEE_SEASONAL
-            : ''
-      }
+            : '',
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -471,19 +447,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(event: any) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { PAYROLL: event }
+      data: { PAYROLL: event },
     });
   }
 
   deletePayroll(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
           PayrollAction.deletePayroll({
-            id: event.id
+            id: event.id,
           })
         );
       }
@@ -495,34 +471,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
         queryParams: {
           name: event.employee.firstName + ' ' + event.employee.lastName,
-          employeeType: event.employee.type
-        }
+          employeeType: event.employee.type,
+        },
       })
       .then();
-  }
-
-  exportOvertime() {
-    this.eventExportOvertime.next(true);
-  }
-
-  exportBasic() {
-    this.eventExportBasic.next(true);
-  }
-
-  exportStay() {
-    this.eventExportStay.next(true);
-  }
-
-  exportPayrollSeasonal() {
-    //Export Payroll Seasonal
-  }
-
-  exportAllowance() {
-    this.eventExportAllowance.next(true);
-  }
-
-  exportAbsent() {
-    this.eventExportAbsent.next(true);
   }
 
   openDialogAddMultiple() {
@@ -548,46 +500,17 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(SelectUpdateMultiple, {
       width: 'fit-content',
       data: {
-        pageType: this.selectedPayroll
-      }
+        pageType: this.selectedPayroll,
+      },
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        switch (val) {
-          case PayrollEnum.PAYROLL:
-            this.exportPayroll();
-            break;
-          case PayrollEnum.TIME_SHEET:
-            this.exportTimekeeping();
-            break;
-          case PayrollEnum.PAYROLL_OVERTIME:
-            this.exportOvertime();
-            break;
-          case PayrollEnum.PAYROLL_ABSENT:
-            this.exportAbsent();
-            break;
-          case PayrollEnum.PAYROLL_ALLOWANCE:
-            this.exportAllowance();
-            break;
-          case PayrollEnum.PAYROLL_STAY:
-            this.exportStay();
-            break;
-          case PayrollEnum.PAYROLL_BASIC:
-            this.exportBasic();
-            break;
-          case PayrollEnum.PAYROLL_SEASONAL:
-            this.exportPayrollSeasonal();
-            break;
-        }
+        this.exportPayroll(val);
       }
     });
   }
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
-  }
-
-  print() {
-
   }
 }
