@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
@@ -8,6 +9,7 @@ export class ExportService {
   }
 
   print(url: string, params?: any, body?: any) {
+    const reader: FileReader = new FileReader()
     return this.http
       .post(url, body, { observe: 'response', responseType: 'blob', params })
       .subscribe((data) => {

@@ -1,9 +1,9 @@
 import {
-  HttpClient,
+  HttpClient, HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
+  HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly http: HttpClient
-  ) {}
+  ) {
+  }
 
   intercept(
     request: HttpRequest<any>,
@@ -38,12 +39,37 @@ export class ErrorInterceptor implements HttpInterceptor {
           /// FIXME: action not working
           this.store.dispatch(AuthActions.logout());
         } else if ([403].indexOf(err.status) !== -1) {
-          this.router.navigate(['/he-thong/han-che-truy-cap']).then()
+          this.router.navigate(['/he-thong/han-che-truy-cap']).then();
+        }
+        if (err instanceof HttpErrorResponse && err.error instanceof Blob && err.error.type === 'application/json') {
+          return new Promise<any>((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = (e: Event) => {
+              try {
+                const errMsg = JSON.parse((<any>e.target).result);
+                reject(new HttpErrorResponse({
+                  error: errMsg,
+                  headers: err.headers,
+                  status: err.status,
+                  statusText: err.statusText
+                }));
+                this.snackBar.open('[ FAILURE ]  ' + errMsg.message, 'Đóng', { panelClass: 'ddd' });
+              } catch (e) {
+                reject(err);
+              }
+            };
+            reader.onerror = (e) => {
+              reject(err);
+            };
+            reader.readAsText(err.error);
+          });
         }
         const error =
           err?.error?.message ||
           'Lỗi từ server. Vui lòng liên hệ kỹ thuật để được hỗ trợ';
-        this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng',{panelClass:'ddd'});
+        this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng', { panelClass: 'ddd' });
+        return throwError(error);
+
 
         /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook. Tắt vpn để error rơi vào case này
         // this.http
@@ -53,7 +79,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         //     icon_emoji: ':ladybug:',
         //   })
         //   .subscribe((v) => console.log('send report bug to slack', v)).unsubscribe();
-        return throwError(error);
       })
     );
   }
