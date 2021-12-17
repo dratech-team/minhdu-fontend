@@ -330,6 +330,7 @@
 
     <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
       <app-payroll-overtime
+        [createdAt]='this.createdAt'
         [overtimeTitle]='overtimeTitle'
         [eventAddOvertime]='eventAddOvertime'
         [eventExportOvertime]='eventExportOvertime'></app-payroll-overtime>

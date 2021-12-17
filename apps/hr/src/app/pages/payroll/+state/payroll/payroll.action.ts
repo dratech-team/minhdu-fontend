@@ -3,6 +3,7 @@ import { UpdateNum } from '@ngrx/entity/src/models';
 import { createAction, props } from '@ngrx/store';
 import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 import { Payroll, PayrollDTO } from './payroll.interface';
+import { totalSalary } from '@minhdu-fontend/data-models';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -11,7 +12,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_PAYROLL] Load Payrolls Success',
-  props<{ payrolls: Payroll[]; total: number }>()
+  props<{ payrolls: Payroll[]; total: number, totalOvertime?: totalSalary }>()
 );
 export const loadMorePayrolls = createAction(
   '[LOAD_PAYROLL] Load More Payrolls',
@@ -20,7 +21,7 @@ export const loadMorePayrolls = createAction(
 
 export const loadMorePayrollsSuccess = createAction(
   '[LOAD_PAYROLL] Load More Payrolls Success',
-  props<{ payrolls: Payroll[]; total: number }>()
+  props<{ payrolls: Payroll[]; total: number, totalOvertime?: totalSalary }>()
 );
 
 export const filterOvertime = createAction(
@@ -175,5 +176,5 @@ export const PayrollAction = {
   updateStatePayroll,
   deleteSalarySuccess,
   updateSalaryMultipleSuccess,
-  addSalaryMultipleSuccess,
+  addSalaryMultipleSuccess
 };

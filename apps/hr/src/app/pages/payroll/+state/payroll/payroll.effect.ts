@@ -25,16 +25,18 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        return this.payrollService.pagination(requestPaginate.payrollDTO);
+        return this.payrollService.paginationPayroll(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
         /// FIXME: Add nhiều load lại che mất thông báo cho thêm hàng loạt. nên handle lại logic.
         // this.snackBar.open('Tải phiếu lương thành công', '', {
         //   duration: 1000,
         // });
+        console.log( ResponsePaginate)
         return PayrollAction.loadInitSuccess({
           payrolls: ResponsePaginate.data,
-          total: ResponsePaginate.total
+          total: ResponsePaginate.total,
+          totalOvertime: ResponsePaginate.totalSalary
         });
       }),
       catchError((err) => throwError(err))
@@ -49,7 +51,7 @@ export class PayrollEffect {
         Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), { skip: skip })
       ),
       switchMap((props) => {
-        return this.payrollService.pagination(props);
+        return this.payrollService.paginationPayroll(props);
       }),
       map((ResponsePaginate) => {
         if (ResponsePaginate.data.length === 0) {
@@ -61,7 +63,8 @@ export class PayrollEffect {
         }
         return PayrollAction.loadMorePayrollsSuccess({
           payrolls: ResponsePaginate.data,
-          total: ResponsePaginate.total
+          total: ResponsePaginate.total,
+          totalOvertime: ResponsePaginate.totalSalary
         });
       }),
       catchError((err) => throwError(err))

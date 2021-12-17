@@ -31,5 +31,13 @@ export interface Salary {
 
 export interface SalaryPayroll {
   salary: Salary,
-  employee: Employee|employee
+  employee: Employee | employee
+}
+
+export interface totalSalary {
+  total: number,
+  unit: {
+    days: number,
+    hours: number
+  }
 }

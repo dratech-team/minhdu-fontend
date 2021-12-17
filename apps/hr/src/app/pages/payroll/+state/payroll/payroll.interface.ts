@@ -21,6 +21,13 @@ export interface Payroll {
   payslip: Payslip;
   taxed: boolean;
   timesheet: { datetime: any[]; total: number };
+  salary?: {
+    total: number,
+    unit:{
+      days: number,
+      hours: number
+    }
+  }
 }
 
 export interface PayrollDTO{
@@ -35,7 +42,7 @@ export interface PayrollDTO{
   branch?: string,
   paidAt?: boolean,
   accConfirmedAt?: boolean,
-  filterType?: FilterTypeEnum,
+  filterType?: string,
   salaryType?: SalaryTypeEnum,
   salaryTitle?: string,
   searchType?: SearchTypeEnum,

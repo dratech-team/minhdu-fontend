@@ -99,6 +99,11 @@ export const selectedTotalPayroll = createSelector(
   (state) => state.total
 );
 
+export const selectedTotalOvertimePayroll = createSelector(
+  selectorPayrollState,
+  (state) => state.totalOvertime
+);
+
 export const selectedCreateAtPayroll = createSelector(
   selectorPayrollState,
   (state) => {

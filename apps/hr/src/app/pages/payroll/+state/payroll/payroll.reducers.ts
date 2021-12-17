@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
 import { ConvertBoolean, ConvertBooleanFrontEnd, PayrollEnum } from '@minhdu-fontend/enums';
+import { totalSalary } from '@minhdu-fontend/data-models';
 
 export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
@@ -16,7 +17,8 @@ export interface PayrollState extends EntityState<Payroll> {
   filter: PayrollEnum,
   branch: string,
   position: string,
-  total: number
+  total: number,
+  totalOvertime?: totalSalary
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
@@ -24,7 +26,8 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: '', total: 0
+  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: '', total: 0,
+  totalOvertime: { total: 0, unit: { days: 0, hours: 0 } }
 });
 
 export const payrollReducer = createReducer(
@@ -36,11 +39,23 @@ export const payrollReducer = createReducer(
 
   on(PayrollAction.loadInitSuccess, (state, action) => {
     return adapter.setAll(action.payrolls,
-      { ...state, loaded: true, added: true, adding: false, total: action.total });
+      {
+        ...state,
+        loaded: true,
+        added: true,
+        adding: false,
+        total: action.total,
+        totalOvertime: action.totalOvertime ? action.totalOvertime : state.totalOvertime
+      });
   }),
 
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) => {
-      return adapter.addMany(action.payrolls, { ...state, loaded: true, total: action.total });
+      return adapter.addMany(action.payrolls, {
+        ...state,
+        loaded: true,
+        total: action.total,
+        totalOvertime: action.totalOvertime ? action.totalOvertime : state.totalOvertime
+      });
     }
   ),
 

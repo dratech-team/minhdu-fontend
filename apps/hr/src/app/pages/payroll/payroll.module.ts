@@ -53,7 +53,6 @@ import { DialogExportTimekeepingComponent } from './component/dialog-export-time
 import { DialogManConfirmedAtComponent } from './component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { templateSalaryReducer } from '../template/+state/teamlate-salary/template-salary.reducer';
 import { TemplateSalaryEffect } from '../template/+state/teamlate-salary/template-salary.effect';
-import { OvertimeComponent } from './component/payroll-overtime/overtime.component';
 import { PayrollTimeSheetComponent } from './component/payroll-time-sheet/payroll-time-sheet.component';
 import { PayrollSeasonalComponent } from './component/payroll-seasonal/payroll-seasonal.component';
 import { DialogSeasonalComponent } from './component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
@@ -71,6 +70,7 @@ import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/
 import { TableEmployeeSelectedComponent } from './component/table-employee-selected/table-employee-selected.component';
 import { TableAllowanceEmployeeComponent } from './component/table-allowance-emp-selected/table-allowance-employee.component';
 import { TableSalarySelected } from './component/table-salaries-selected/table-salary-selected';
+import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-overtime.component';
 
 @NgModule({
   imports: [
@@ -131,7 +131,7 @@ import { TableSalarySelected } from './component/table-salaries-selected/table-s
     ConvertTimePipe,
     AddPayrollComponent,
       HistoryPayrollComponent,
-    OvertimeComponent,
+    PayrollOvertimeComponent,
     LoadingComponent,
     RestorePayrollComponent,
     DialogExportTimekeepingComponent,
