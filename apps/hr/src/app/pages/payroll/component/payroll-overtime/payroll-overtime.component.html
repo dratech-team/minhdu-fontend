@@ -150,8 +150,8 @@
         </th>
         <th>
           <div class='text-center'>
-            {{totalOvertime.unit.days  + 'Ngày'}} +
-            {{totalOvertime.unit?.hours + 'Giờ'}}
+            {{totalOvertime.unit.days  + ' Ngày'}} +
+            {{totalOvertime.unit?.hours + ' Giờ'}}
           </div>
         </th>
         <th>
@@ -233,7 +233,10 @@
             {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
           </div>
         </th>
-        <th class='pointer' *ngIf='payrollOvertime.salary'> {{payrollOvertime.salary.unit.days}} </th>
+        <th class='pointer' *ngIf='payrollOvertime.salary'>
+          {{payrollOvertime.salary.unit.days +' Ngày'}} +
+          {{payrollOvertime.salary.unit.hours +' Giờ'}}
+        </th>
         <th class='pointer' *ngIf='payrollOvertime.salary'> {{payrollOvertime.salary.total|number:'1.0-0'}} VND</th>
 
       </tr>
