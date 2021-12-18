@@ -61,6 +61,7 @@ export class PayrollEffect {
             data: { content: 'Đã lấy hết phiếu lương' }
           });
         }
+        console.log(ResponsePaginate.data)
         return PayrollAction.loadMorePayrollsSuccess({
           payrolls: ResponsePaginate.data,
           total: ResponsePaginate.total,

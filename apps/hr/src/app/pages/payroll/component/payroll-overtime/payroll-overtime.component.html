@@ -142,9 +142,6 @@
         </th>
         <th>
           <div  class='text-center'>
-            {{totalOvertime.unit.days  + 'Ngày'}} +
-            {{totalOvertime.unit?.hours + 'Giờ'}}
-
           </div>
         </th>
         <th>
@@ -152,7 +149,10 @@
           </div>
         </th>
         <th>
-          <div class='text-center'></div>
+          <div class='text-center'>
+            {{totalOvertime.unit.days  + 'Ngày'}} +
+            {{totalOvertime.unit?.hours + 'Giờ'}}
+          </div>
         </th>
         <th>
           <div class='text-center'>
@@ -163,25 +163,24 @@
       </thead>
       <tbody *ngIf='(payrollOvertime$|async) as payrollOvertimes'>
       <tr *ngFor='let payrollOvertime of payrollOvertimes; let i = index'
-          [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'
-      >
+          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{i + 1}}
         </th>
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime?.id}}
         </th>
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime.employee.lastName}}
         </th>
         <th class='pointer'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollOvertime.salaries'>
             <mat-checkbox
@@ -192,11 +191,11 @@
         </th>
         <th style='width: 200px' class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime.employee.position?.name}}</th>
         <th style='width: 200px' class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
-            [ngStyle]='{"background":payrollOvertime.salaries.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
           <div class='border d-flex align-items-center justify-content-center pointer '

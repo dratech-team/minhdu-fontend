@@ -54,7 +54,11 @@ export const payrollReducer = createReducer(
         ...state,
         loaded: true,
         total: action.total,
-        totalOvertime: action.totalOvertime ? action.totalOvertime : state.totalOvertime
+        totalOvertime:
+          action.totalOvertime
+          && action.totalOvertime.total > 0
+          &&  action.totalOvertime.unit.days > 0
+          &&  action.totalOvertime.unit.days > 0 ? action.totalOvertime : state.totalOvertime
       });
     }
   ),

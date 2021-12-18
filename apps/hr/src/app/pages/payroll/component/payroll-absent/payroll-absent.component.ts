@@ -210,6 +210,7 @@ export class PayrollAbsentComponent implements OnInit  {
             payroll.salaries.forEach((salary) => {
               if (
                 salary.type === SalaryTypeEnum.ABSENT ||
+                salary.type === SalaryTypeEnum.DEDUCTION ||
                 salary.type === SalaryTypeEnum.DAY_OFF
               ) {
                 if (this.isEventSearch) {

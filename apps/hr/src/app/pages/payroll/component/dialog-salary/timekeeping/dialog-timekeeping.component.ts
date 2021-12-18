@@ -10,6 +10,7 @@ import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import { getFirstDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 
 
 @Component({
@@ -43,7 +44,9 @@ export class DialogTimekeepingComponent implements OnInit {
     { title: 'Vắng', unit: this.datetimeUnit.DAY, type: this.type.ABSENT },
     { title: 'Không đi làm', unit: this.datetimeUnit.DAY, type: this.type.DAY_OFF },
     { title: 'Đi trễ', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
-    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT }
+    { title: 'Về Sớm', unit: this.datetimeUnit.MINUTE, type: this.type.ABSENT },
+    { title: 'Quên bổ sung công', unit: this.datetimeUnit.TIMES, type: this.type.ABSENT },
+    { title: 'Khác', unit: this.datetimeUnit.OTHER, type: this.type.DEDUCTION }
   ];
   //Dummy data select các buổi trong ngày
   titleSession = [
@@ -54,6 +57,8 @@ export class DialogTimekeepingComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
+      title: [],
+      price: [],
       datetime: [this.datePipe.transform(this.data.createdAt, 'yyyy-MM-dd'), Validators.required],
       times: [],
       minutes: [],
@@ -73,12 +78,23 @@ export class DialogTimekeepingComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
+    const value = this.formGroup.value;
+    if (
+      (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER)
+    ) {
+      if (!value.title) {
+        return this.snackBar.open('Chưa nhập tên khấu trừ', '', { duration: 1500 });
+      }
+      if (!value.price) {
+        return this.snackBar.open('Chưa nhập tiền khấu trừ', '', { duration: 1500 });
+      }
+    }
+
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
       !this.formGroup.value.times && !this.formGroup.value.minutes) {
       return this.snackBar.open('Chưa nhập thời gian', '', { duration: 2000 });
     }
 
-    const value = this.formGroup.value;
     const salary = {
       title: this.titleAbsents[this.selectedIndex]?.title,
       type: this.titleAbsents[this.selectedIndex]?.type,
@@ -86,7 +102,7 @@ export class DialogTimekeepingComponent implements OnInit {
       datetime: value.datetime ? new Date(value.datetime) : undefined,
       forgot: value.forgot,
       note: value.note,
-      unit: this.titleAbsents[this.selectedIndex]?.unit,
+      unit: this.titleAbsents[this.selectedIndex].unit ? this.titleAbsents[this.selectedIndex].unit : undefined,
       times: value.times,
       employeeIds: this.employeeSelected.length > 0 ? this.employeeSelected.map(e => e.id) : undefined
     };
@@ -107,12 +123,29 @@ export class DialogTimekeepingComponent implements OnInit {
         }
       );
     } else {
+
       Object.assign(
         salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
           times: value.times ? value.times * 60 + value.minutes : value.minutes
         }
       );
+      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
+        Object.assign(salary, {
+          title: this.titleAbsents[this.selectedIndex]?.title,
+          times: value.times
+        });
+      }
+      if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER) {
+        delete salary.unit;
+        Object.assign(salary, {
+          title: value.title,
+          price: typeof value.price === 'string'
+            ? Number(value.price.replace(this.numberChars, ''))
+            : value.price,
+          datetime: value.datetime ? new Date(value.datetime) : undefined
+        });
+      }
     }
     this.store.dispatch(PayrollAction.addSalary({
       salary: salary, isTimesheet: this.data?.isTimesheet
