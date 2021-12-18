@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component, DoCheck,
   EventEmitter,
   Input, IterableDiffers,
@@ -56,7 +57,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   constructor(
     private readonly store: Store,
     private readonly service: PickEmployeeService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
   ) {
   }
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatetimeUnitEnum, EmployeeType, partialDay, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
@@ -22,7 +22,7 @@ import * as lodash from 'lodash';
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
 })
-export class DialogOvertimeMultipleComponent implements OnInit {
+export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChecked{
   @ViewChild(MatStepper) stepper!: MatStepper;
   positions = new FormControl();
   positions$ = this.store.pipe(select(getAllPosition));
@@ -59,6 +59,7 @@ export class DialogOvertimeMultipleComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly salaryService: SalaryService,
     private readonly dialogRef: MatDialogRef<DialogOvertimeMultipleComponent>,
+    private ref: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
@@ -136,6 +137,10 @@ export class DialogOvertimeMultipleComponent implements OnInit {
         this.formGroup.get('month')!.setValue('');
       }
     });
+  }
+
+  ngAfterContentChecked() {
+    this.ref.detectChanges()
   }
 
   checkAllowanceOvertime() {
