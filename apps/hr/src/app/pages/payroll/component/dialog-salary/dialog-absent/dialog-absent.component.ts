@@ -302,7 +302,7 @@ export class DialogAbsentComponent implements OnInit {
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {
         Object.assign(salary, {
           title: this.titleAbsents[this.selectedIndex]?.title,
-          datetime: getFirstDayInMonth(new Date())
+          datetime: getFirstDayInMonth(new Date()).toUTCString()
         });
       }
       if (
