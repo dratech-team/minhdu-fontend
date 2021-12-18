@@ -48,5 +48,6 @@ export interface PayrollDTO{
   searchType?: SearchTypeEnum,
   employeeId?: number,
   startedAt?: Date,
-  endedAt?: Date
+  endedAt?: Date,
+  employeeType?: string
 }
