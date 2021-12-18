@@ -44,7 +44,7 @@ export interface PayrollDTO{
   accConfirmedAt?: boolean,
   filterType?: string,
   salaryType?: SalaryTypeEnum,
-  salaryTitle?: string,
+  title?: string,
   searchType?: SearchTypeEnum,
   employeeId?: number,
   startedAt?: Date,

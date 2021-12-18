@@ -308,7 +308,7 @@ export class PayrollOvertimeComponent implements OnInit {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      salaryTitle: value.title ? value.title : '',
+      title: value.title ? value.title : '',
       name: value.name,
       unit: value.unit? value.unit:'',
       salaryType: SalaryTypeEnum.OVERTIME,
@@ -320,7 +320,6 @@ export class PayrollOvertimeComponent implements OnInit {
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
     ) {
-      console.log(value.endedAt )
       Object.assign(params, { createdAt: this.datePipe.transform(value.startedAt,'YYYY-MM-dd') });
     } else {
       Object.assign(params, {

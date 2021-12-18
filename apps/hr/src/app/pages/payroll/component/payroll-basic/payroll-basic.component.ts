@@ -239,7 +239,7 @@ export class PayrollBasicComponent implements OnInit {
               skip: this.pageSize,
               code: this.formGroup.get('code')!.value,
               createdAt: this.formGroup.get('createdAt')!.value,
-              salaryTitle: val.title,
+              title: val.title,
               position: val.position,
               branch: val.branch
             }
