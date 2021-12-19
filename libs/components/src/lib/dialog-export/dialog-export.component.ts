@@ -1,20 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Api } from '@minhdu-fontend/constants';
-import { ExportService } from '@minhdu-fontend/service';
 import { FormControl, Validators } from '@angular/forms';
-import { Employee } from '@minhdu-fontend/data-models';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ExportService } from '@minhdu-fontend/service';
 import { ItemExportService } from './item-export.service';
-import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
-  templateUrl: 'dialog-export.component.html'
+  templateUrl: 'dialog-export.component.html',
 })
 export class DialogExportComponent implements OnInit {
   name = new FormControl('', Validators.required);
   submitted = false;
   isSelectAll = true;
-  itemsExport: any [] = [];
+  itemsExport: any[] = [];
   itemSelected: any[] = [];
 
   constructor(
@@ -22,18 +19,18 @@ export class DialogExportComponent implements OnInit {
     private readonly itemExportService: ItemExportService,
     private readonly exportService: ExportService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.itemExportService.getItemExport({ exportType: this.data.exportType }).subscribe(val => {
-      val.map((e, i) => {
-        Object.assign(e, { index: i });
+    this.itemExportService
+      .getItemExport({ exportType: this.data.exportType })
+      .subscribe((val) => {
+        val.map((e, i) => {
+          Object.assign(e, { index: i });
+        });
+        this.itemsExport = val;
+        this.itemSelected = [...this.itemsExport];
       });
-      this.itemsExport = val;
-      this.itemSelected = [...this.itemsExport];
-
-    });
   }
 
   onSubmit(): any {
@@ -45,12 +42,12 @@ export class DialogExportComponent implements OnInit {
       return a.index - b.index;
     });
     if (this.data?.params) {
-
     }
     this.exportService.print(
       this.data.api,
-      this.data?.params ?
-        Object.assign(this.data.params, { filename: this.name.value }) : { filename: this.name.value },
+      this.data?.params
+        ? Object.assign(this.data.params, { filename: this.name.value })
+        : { filename: this.name.value },
       { items: this.itemSelected }
     );
     this.dialogRef.close();
@@ -75,7 +72,9 @@ export class DialogExportComponent implements OnInit {
           this.itemSelected.push(item);
         }
       } else {
-        const index = this.itemSelected.findIndex((val: any) => val.key === item.key);
+        const index = this.itemSelected.findIndex(
+          (val: any) => val.key === item.key
+        );
         if (index > -1) {
           this.itemSelected.splice(index, 1);
         }
@@ -84,7 +83,9 @@ export class DialogExportComponent implements OnInit {
   }
 
   updateSelect(item: any) {
-    const index = this.itemSelected.findIndex((val: any) => val.key === item.key);
+    const index = this.itemSelected.findIndex(
+      (val: any) => val.key === item.key
+    );
     if (index > -1) {
       this.itemSelected.splice(index, 1);
     } else {
@@ -92,7 +93,9 @@ export class DialogExportComponent implements OnInit {
     }
     this.isSelectAll =
       this.itemsExport !== null &&
-      this.itemsExport.every((item: any) => this.itemSelected.some((val: any) => val.key === item.key));
+      this.itemsExport.every((item: any) =>
+        this.itemSelected.some((val: any) => val.key === item.key)
+      );
   }
 
   selectItem(val: any) {

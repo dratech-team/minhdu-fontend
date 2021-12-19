@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,10 +17,9 @@ import {
   EmployeeType,
   FilterTypeEnum,
   PayrollEnum,
-  SalaryTypeEnum,
+  SalaryTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
@@ -32,14 +31,14 @@ import {
   selectedPositionPayroll,
   selectedTotalPayroll,
   selectedTypePayroll,
-  selectorAllPayroll,
+  selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import {
   getAllPosition,
-  PositionActions,
+  PositionActions
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 import { rageDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
@@ -123,7 +122,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
-    private readonly exportService: ExportService,
     private readonly activeRouter: ActivatedRoute
   ) {}
 
@@ -280,17 +278,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addPayroll($event?: any): void {
-    const ref = this.dialog.open(AddPayrollComponent, {
-      width: '30%',
-      data: { employeeId: $event?.employee?.id, addOne: true },
-    });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        this.formGroup
-          .get('createdAt')!
-          .patchValue(this.datePipe.transform(val, 'yyyy-MM'));
-      }
-    });
+    const ref = this.dialog
+      .open(AddPayrollComponent, {
+        width: '30%',
+        data: { employeeId: $event?.employee?.id, addOne: true },
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.formGroup
+            .get('createdAt')!
+            .patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        }
+      });
   }
 
   updateConfirmPayroll(id: number, type: string) {
@@ -301,55 +301,59 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addSalaryOvertime(type: SalaryTypeEnum): any {
-    const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
-      width: 'fit-content',
-      data: {
-        createdAt: this.createdAt,
-        type: type,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
-    });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        this.createdAt = new Date(val.datetime);
-        this.overtimeTitle = val.title;
-        this.store.dispatch(
-          PayrollAction.updateStatePayroll({
+    this.dialog
+      .open(DialogOvertimeMultipleComponent, {
+        width: 'fit-content',
+        data: {
+          createdAt: this.createdAt,
+          type: type,
+          isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+        },
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.createdAt = new Date(val.datetime);
+          this.overtimeTitle = val.title;
+          this.store.dispatch(
+            PayrollAction.updateStatePayroll({
+              createdAt: new Date(val.datetime),
+            })
+          );
+          this.eventAddOvertime.next({
             createdAt: new Date(val.datetime),
-          })
-        );
-        this.eventAddOvertime.next({
-          createdAt: new Date(val.datetime),
-          overtimeTitle: val.title,
-        });
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
-      }
-    });
+            overtimeTitle: val.title,
+          });
+          this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
+        }
+      });
   }
 
   addSalaryAllowance() {
-    const ref = this.dialog.open(DialogAllowanceMultipleComponent, {
-      width: 'fit-content',
-      data: {
-        createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
-      },
-    });
-    ref.afterClosed().subscribe((value) => {
-      if (value) {
-        this.createdAt = new Date(value.datetime);
-        this.allowanceTitle = value.title;
-        this.store.dispatch(
-          PayrollAction.updateStatePayroll({
-            createdAt: new Date(value.datetime),
-          })
-        );
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
-        this.eventAddAllowance.next({
-          allowanceTitle: value.title,
-        });
-      }
-    });
+    this.dialog
+      .open(DialogAllowanceMultipleComponent, {
+        width: 'fit-content',
+        data: {
+          createdAt: this.createdAt,
+          isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+        },
+      })
+      .afterClosed()
+      .subscribe((value) => {
+        if (value) {
+          this.createdAt = new Date(value.datetime);
+          this.allowanceTitle = value.title;
+          this.store.dispatch(
+            PayrollAction.updateStatePayroll({
+              createdAt: new Date(value.datetime),
+            })
+          );
+          this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
+          this.eventAddAllowance.next({
+            allowanceTitle: value.title,
+          });
+        }
+      });
   }
 
   timekeeping() {
@@ -399,7 +403,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     if (value.createdAt) {
       Object.assign(payroll, { createdAt: new Date(value.createdAt) });
     }
-    const ref = this.dialog.open(DialogExportComponent, {
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
@@ -497,17 +501,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   openDialogUpdateMultiple() {
-    const ref = this.dialog.open(SelectUpdateMultiple, {
-      width: 'fit-content',
-      data: {
-        pageType: this.selectedPayroll,
-      },
-    });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        this.exportPayroll(val);
-      }
-    });
+    this.dialog
+      .open(SelectUpdateMultiple, {
+        width: 'fit-content',
+        data: {
+          pageType: this.selectedPayroll,
+        },
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val) {
+          this.exportPayroll(val);
+        }
+      });
   }
 
   checkInputNumber(event: any) {
