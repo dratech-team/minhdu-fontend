@@ -241,22 +241,10 @@ export class PayrollAbsentComponent implements OnInit  {
           position: value.position,
           branch: value.branch,
           exportType: FilterTypeEnum.ABSENT,
-          title: value.title
+          title: value.title,
+          startedAt: value.startedAt,
+          endedAt: value.endedAt
         };
-        if(value.startedAt && value.endedAt){
-          if (
-            moment(value.startedAt).format('YYYY-MM-DD') ===
-            moment(value.endedAt).format('YYYY-MM-DD')
-          ) {
-            Object.assign(payrollAbsent, { createdAt: value.startedAt });
-          } else {
-
-            Object.assign(payrollAbsent, {
-              startedAt: value.startedAt,
-              endedAt: value.endedAt
-            });
-          }
-        }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
