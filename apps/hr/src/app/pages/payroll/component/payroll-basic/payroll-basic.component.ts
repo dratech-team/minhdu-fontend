@@ -194,7 +194,7 @@ export class PayrollBasicComponent implements OnInit {
           name: value.name,
           position: value.position,
           branch: value.branch,
-          exportType: FilterTypeEnum.STAY,
+          exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
         if(value.createdAt){
