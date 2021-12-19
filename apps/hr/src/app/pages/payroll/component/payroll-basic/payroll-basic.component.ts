@@ -206,7 +206,7 @@ export class PayrollBasicComponent implements OnInit {
             title: 'Xuât bảng lương cơ bản',
             exportType: FilterTypeEnum.BASIC,
             params: payrollBASIC,
-            api: Api.HR.PAYROLL.PAYROLL
+            api: Api.HR.PAYROLL.EXPORT
           }
         });
       }

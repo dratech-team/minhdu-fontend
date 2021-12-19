@@ -188,7 +188,7 @@ export class PayrollStayComponent implements OnInit {
             title: 'Xuât bảng phụ cấp lương',
             exportType: FilterTypeEnum.STAY,
             params: payrollStay,
-            api: Api.HR.PAYROLL.PAYROLL
+            api: Api.HR.PAYROLL.EXPORT
           }
         });
       }
