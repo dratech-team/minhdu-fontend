@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -7,7 +14,7 @@ import {
   FilterTypeEnum,
   Gender,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum,
 } from '@minhdu-fontend/enums';
 import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
@@ -27,7 +34,7 @@ import {
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedTotalPayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
 import { Router } from '@angular/router';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
@@ -35,7 +42,7 @@ import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dial
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import {
   getAllPosition,
-  PositionActions
+  PositionActions,
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
@@ -46,7 +53,7 @@ import { DialogExportComponent } from '../../../../../../../../libs/components/s
 
 @Component({
   selector: 'app-payroll-allowance',
-  templateUrl: 'payroll-allowance.component.html'
+  templateUrl: 'payroll-allowance.component.html',
 })
 export class PayrollAllowanceComponent implements OnInit {
   @Input() eventAddAllowance?: Subject<any>;
@@ -64,8 +71,10 @@ export class PayrollAllowanceComponent implements OnInit {
       this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM')
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
-    position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
+    position: new FormControl(
+      getSelectors(selectedPositionPayroll, this.store)
+    ),
+    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   templateBasic$ = new Subject<any>();
@@ -92,8 +101,7 @@ export class PayrollAllowanceComponent implements OnInit {
     private readonly snackbar: MatSnackBar,
     private readonly router: Router,
     private ref: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(
@@ -106,8 +114,8 @@ export class PayrollAllowanceComponent implements OnInit {
           salaryType: SalaryTypeEnum.ALLOWANCE,
           filterType: FilterTypeEnum.SALARY,
           position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
-        }
+          branch: getSelectors(selectedBranchPayroll, this.store),
+        },
       })
     );
 
@@ -149,13 +157,15 @@ export class PayrollAllowanceComponent implements OnInit {
           payrollDTO: {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdAt: new Date(getSelectors(selectedCreateAtPayroll, this.store)),
+            createdAt: new Date(
+              getSelectors(selectedCreateAtPayroll, this.store)
+            ),
             title: val.allowanceTitle ? val.allowanceTitle : '',
             salaryType: SalaryTypeEnum.ALLOWANCE,
             filterType: FilterTypeEnum.SALARY,
             position: getSelectors(selectedPositionPayroll, this.store),
-            branch: getSelectors(selectedBranchPayroll, this.store)
-          }
+            branch: getSelectors(selectedBranchPayroll, this.store),
+          },
         })
       );
     });
@@ -166,12 +176,12 @@ export class PayrollAllowanceComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
           position: value.position,
-          branch: value.branch
+          branch: value.branch,
         })
       );
       this.store.dispatch(
         PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollAllowance()
+          payrollDTO: this.mapPayrollAllowance(),
         })
       );
     });
@@ -197,16 +207,27 @@ export class PayrollAllowanceComponent implements OnInit {
             payroll.salaries.forEach((salary) => {
               if (salary.type === SalaryTypeEnum.ALLOWANCE) {
                 if (this.isEventSearch) {
-                  this.isSelectSalary = this.salariesSelected.length > 0
-                    && this.salariesSelected.length >= Number(getSelectors(selectedTotalPayroll, this.store))
-                    && this.salaries.every(item => this.salariesSelected.some(val => val.salary.id === item.salary.id));
+                  this.isSelectSalary =
+                    this.salariesSelected.length > 0 &&
+                    this.salariesSelected.length >=
+                      Number(getSelectors(selectedTotalPayroll, this.store)) &&
+                    this.salaries.every((item) =>
+                      this.salariesSelected.some(
+                        (val) => val.salary.id === item.salary.id
+                      )
+                    );
                 }
                 if (
                   this.isSelectSalary &&
-                  !this.salariesSelected.some(item => item.salary.id === salary.id) &&
+                  !this.salariesSelected.some(
+                    (item) => item.salary.id === salary.id
+                  ) &&
                   !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({ salary, employee: payroll.employee });
+                  this.salariesSelected.push({
+                    salary,
+                    employee: payroll.employee,
+                  });
                 }
                 this.salaries.push({ salary, employee: payroll.employee });
               }
@@ -225,10 +246,10 @@ export class PayrollAllowanceComponent implements OnInit {
           position: value.position,
           branch: value.branch,
           exportType: FilterTypeEnum.ALLOWANCE,
-          title: value.title
+          title: value.title,
         };
-        if(value.createdAt){
-          Object.assign(payrollAllowance, {createdAt: value.createdAt})
+        if (value.createdAt) {
+          Object.assign(payrollAllowance, { createdAt: value.createdAt });
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -236,8 +257,8 @@ export class PayrollAllowanceComponent implements OnInit {
             title: 'Xuât bảng phụ cấp khác',
             exportType: FilterTypeEnum.ALLOWANCE,
             param: payrollAllowance,
-            api: Api.HR.PAYROLL.PAYROLL
-          }
+            api: Api.HR.PAYROLL.PAYROLL,
+          },
         });
       }
     });
@@ -251,7 +272,7 @@ export class PayrollAllowanceComponent implements OnInit {
 
   addSalaryAllowance() {
     const ref = this.dialog.open(DialogAllowanceMultipleComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -272,8 +293,8 @@ export class PayrollAllowanceComponent implements OnInit {
               salaryType: SalaryTypeEnum.ALLOWANCE,
               filterType: FilterTypeEnum.SALARY,
               position: val.position,
-              branch: val.branch
-            }
+              branch: val.branch,
+            },
           })
         );
       }
@@ -298,14 +319,17 @@ export class PayrollAllowanceComponent implements OnInit {
           salary: this.salariesSelected[0].salary,
           salariesSelected: this.salariesSelected,
           updateMultiple: true,
-          type: SalaryTypeEnum.ALLOWANCE
-        }
+          type: SalaryTypeEnum.ALLOWANCE,
+        },
       });
       ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
         this.salariesSelected = val;
-        this.isSelectSalary = this.salaries.length > 0
-          && this.salaries.every(e => this.salariesSelected.some(item => item.salary.id === e.salary.id));
-        this.ref.detectChanges()
+        this.isSelectSalary =
+          this.salaries.length > 0 &&
+          this.salaries.every((e) =>
+            this.salariesSelected.some((item) => item.salary.id === e.salary.id)
+          );
+        this.ref.detectChanges();
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
@@ -328,8 +352,8 @@ export class PayrollAllowanceComponent implements OnInit {
                 salaryType: SalaryTypeEnum.ALLOWANCE,
                 filterType: FilterTypeEnum.SALARY,
                 position: val.position,
-                branch: val.branch
-              }
+                branch: val.branch,
+              },
             })
           );
         }
@@ -341,7 +365,7 @@ export class PayrollAllowanceComponent implements OnInit {
 
   deleteMultipleSalaryAllowance() {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -358,7 +382,7 @@ export class PayrollAllowanceComponent implements OnInit {
             this.isSelectSalary = false;
             this.salariesSelected = [];
             this.snackbar.open('Xóa lương cơ bản thành công', '', {
-              duration: 1500
+              duration: 1500,
             });
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollAllowance() })
@@ -371,7 +395,7 @@ export class PayrollAllowanceComponent implements OnInit {
 
   deleteSalaryAllowance(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -379,11 +403,11 @@ export class PayrollAllowanceComponent implements OnInit {
           if (val) {
             this.store.dispatch(
               PayrollAction.loadInit({
-                payrollDTO: this.mapPayrollAllowance()
+                payrollDTO: this.mapPayrollAllowance(),
               })
             );
             this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500
+              duration: 1500,
             });
           }
         });
@@ -396,7 +420,7 @@ export class PayrollAllowanceComponent implements OnInit {
     const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayrollAllowance()
+        payrollDTO: this.mapPayrollAllowance(),
       })
     );
   }
@@ -412,7 +436,11 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   someCompleteSalary(): boolean {
-    return someComplete(this.salaries, this.salariesSelected, this.isSelectSalary);
+    return someComplete(
+      this.salaries,
+      this.salariesSelected,
+      this.isSelectSalary
+    );
   }
 
   setAllSalary(select: boolean) {
@@ -433,7 +461,7 @@ export class PayrollAllowanceComponent implements OnInit {
       salaryType: SalaryTypeEnum.ALLOWANCE,
       filterType: FilterTypeEnum.SALARY,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
     if (!value.name) {
       delete params.name;
