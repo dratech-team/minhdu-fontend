@@ -240,7 +240,7 @@ export class PayrollAbsentComponent implements OnInit  {
           name: value.name,
           position: value.position,
           branch: value.branch,
-          exportType: FilterTypeEnum.ALLOWANCE,
+          exportType: FilterTypeEnum.ABSENT,
           title: value.title
         };
         if(value.startedAt && value.endedAt){
