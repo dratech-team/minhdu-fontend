@@ -231,7 +231,7 @@ export class PayrollOvertimeComponent implements OnInit {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
             exportType: FilterTypeEnum.OVERTIME,
-            api: Api.HR.PAYROLL.PAYROLL
+            api: Api.HR.PAYROLL.EXPORT
           }
         });
       }

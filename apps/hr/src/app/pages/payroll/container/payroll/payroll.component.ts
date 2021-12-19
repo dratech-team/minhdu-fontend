@@ -503,7 +503,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .afterClosed()
       .subscribe((val) => {
         if (val) {
-          console.log(val)
           switch (val) {
             case FilterTypeEnum.BASIC:
               this.eventExportBasic.next(true);
