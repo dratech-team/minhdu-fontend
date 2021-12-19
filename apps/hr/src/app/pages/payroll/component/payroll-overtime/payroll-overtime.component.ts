@@ -240,7 +240,8 @@ export class PayrollOvertimeComponent implements OnInit {
             });
           }
         }
-        const ref = this.dialog.open(DialogExportComponent, {
+        console.log('ssss')
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
             title: 'Xuất Bảng tăng ca',
