@@ -34,7 +34,6 @@ export class DialogExportComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log('sssss')
     this.submitted = true;
     if (!this.name.value) {
       return;

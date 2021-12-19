@@ -110,6 +110,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventAddAbsent = new Subject<any>();
   eventExportOvertime = new Subject<boolean>();
   eventExportAbsent = new Subject<boolean>();
+  eventExportSeasonal = new Subject<boolean>();
   eventExportBasic = new Subject<boolean>();
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
@@ -544,6 +545,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               break;
             case FilterTypeEnum.TIME_SHEET:
               this.exportTimeSheet()
+              break;
+            case FilterTypeEnum.SEASONAL:
+              this.eventExportAbsent.next(true);
               break;
             case FilterTypeEnum.PAYROLL:
               this.exportPayroll();

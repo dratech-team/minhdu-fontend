@@ -2,7 +2,7 @@ import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum } from '@minhdu-fontend/enums';
 import { OvertimeService } from '../../service/overtime.service';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { select, Store } from '@ngrx/store';
@@ -13,10 +13,12 @@ import {
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { Api } from '@minhdu-fontend/constants';
 
 @Component({
   selector: 'app-payroll-seasonal',
@@ -26,6 +28,7 @@ export class PayrollSeasonalComponent implements OnInit {
   @Input() payroll$!: Observable<Payroll[]>
   @Input() total$!: Observable<number>
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  @Input() eventExportSeasonal?: Subject<any>;
   @Input() formGroup!: FormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
@@ -53,6 +56,33 @@ export class PayrollSeasonalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.eventExportSeasonal?.subscribe((val) => {
+      if (val) {
+        const value = this.formGroup.value;
+        const payrollSeasonal = {
+          code: value.code || '',
+          name: value.name,
+          position: value.position,
+          branch: value.branch,
+          exportType: FilterTypeEnum.SEASONAL,
+          paidAt: value.paidAt,
+          accConfirmedAt: value.accConfirmedAt,
+          employeeType: EmployeeType.EMPLOYEE_SEASONAL
+        };
+        if (value.createdAt) {
+          Object.assign(payrollSeasonal, { createdAt: value.createdAt });
+        }
+        const ref = this.dialog.open(DialogExportComponent, {
+          width: 'fit-content',
+          data: {
+            title: 'Xuât bảng lương công nhật',
+            exportType: FilterTypeEnum.SEASONAL,
+            params: payrollSeasonal,
+            api: Api.HR.PAYROLL.EXPORT
+          }
+        });
+      }
+    });
   }
 
 

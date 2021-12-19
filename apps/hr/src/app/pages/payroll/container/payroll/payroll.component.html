@@ -338,6 +338,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.SEASONAL '>
       <app-payroll-seasonal
+        [eventExportSeasonal]='eventExportAbsent'
         [payroll$]='payroll$'
         [total$]='total$'
         [formGroup]='formGroup'

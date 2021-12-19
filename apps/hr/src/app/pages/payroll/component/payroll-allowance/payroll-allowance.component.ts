@@ -255,7 +255,7 @@ export class PayrollAllowanceComponent implements OnInit {
           data: {
             title: 'Xuât bảng phụ cấp khác',
             exportType: FilterTypeEnum.ALLOWANCE,
-            param: payrollAllowance,
+            params: payrollAllowance,
             api: Api.HR.PAYROLL.EXPORT
           }
         });
