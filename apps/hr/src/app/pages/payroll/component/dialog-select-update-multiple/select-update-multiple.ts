@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TypePayrollExportConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'select-update-multiple.html'
 })
 export class SelectUpdateMultiple {
-  typePayroll = PayrollEnum;
+  typePayroll = FilterTypeEnum;
   typePayrollExportConstant = TypePayrollExportConstant
   constructor(
     private readonly dialogRef: MatDialogRef<SelectUpdateMultiple>,
@@ -16,7 +16,7 @@ export class SelectUpdateMultiple {
   }
 
 
-  selectTypeUpdateMultiple(payrollType: PayrollEnum): any {
+  selectTypeUpdateMultiple(payrollType: FilterTypeEnum): any {
     this.dialogRef.close(payrollType);
   }
 }

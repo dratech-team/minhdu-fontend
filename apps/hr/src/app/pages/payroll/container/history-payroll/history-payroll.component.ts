@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PayrollEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -55,7 +55,6 @@ export class HistoryPayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   PageTypeEnum = PageTypeEnum;
-  payrollEnum = PayrollEnum;
 
   constructor(
     private readonly snackbar: MatSnackBar,

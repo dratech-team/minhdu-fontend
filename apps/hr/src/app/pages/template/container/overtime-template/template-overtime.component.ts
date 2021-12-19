@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
-  EmployeeType,
-  PayrollEnum,
+  EmployeeType, FilterTypeEnum,
   SalaryTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -190,13 +189,13 @@ export class TemplateOvertimeComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           position: position.name,
-          filter: PayrollEnum.PAYROLL_OVERTIME,
+          filter: FilterTypeEnum.OVERTIME,
         })
       );
     } else {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          filter: PayrollEnum.PAYROLL_OVERTIME,
+          filter: FilterTypeEnum.OVERTIME,
         })
       );
     }

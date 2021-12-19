@@ -1,28 +1,28 @@
-import { PayrollEnum, WarehouseTypeEnum } from '../../enums';
+import { FilterTypeEnum, WarehouseTypeEnum } from '../../enums';
 
 export const TypePayrollExportConstant = [
   {
     name: 'Xuất bảng tăng ca',
-    value: PayrollEnum.PAYROLL_OVERTIME
+    value: FilterTypeEnum.OVERTIME
   },
   {
     name: 'Xuất bảng khấu trừ',
-    value: PayrollEnum.PAYROLL_ABSENT
+    value: FilterTypeEnum.ABSENT
   },
   {
     name: 'Xuất bảng phụ cấp lương',
-    value: PayrollEnum.PAYROLL_STAY
+    value: FilterTypeEnum.STAY
   },
   {
     name: 'Xuất bảng phụ cấp khác',
-    value: PayrollEnum.PAYROLL_ALLOWANCE
+    value: FilterTypeEnum.ALLOWANCE
   },
   {
     name: 'Xuất bảng lương cơ bản',
-    value: PayrollEnum.PAYROLL_BASIC
+    value: FilterTypeEnum.BASIC
   },
   {
     name: 'Xuất bảng lương công nhật',
-    value: PayrollEnum.PAYROLL_SEASONAL
+    value: FilterTypeEnum.SEASONAL
   },
 ];

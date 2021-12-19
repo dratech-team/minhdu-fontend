@@ -60,7 +60,7 @@
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL'>
+    <div *ngIf='selectedPayroll === filterTypeEnum.PAYROLL'>
       <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll'
                            count='18' appearance='line'></ngx-skeleton-loader>
       <ng-template #payroll>
@@ -306,7 +306,7 @@
 
       </ng-template>
     </div>
-    <div *ngIf='selectedPayroll === payrollEnum.TIME_SHEET'>
+    <div *ngIf='selectedPayroll === filterTypeEnum.TIME_SHEET'>
       <app-payroll-time-sheet
         [formGroup]='formGroup'
         [daysInMonth]='daysInMonth'
@@ -328,7 +328,7 @@
       </app-payroll-time-sheet>
     </div>
 
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_OVERTIME '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME '>
       <app-payroll-overtime
         [createdAt]='this.createdAt'
         [overtimeTitle]='overtimeTitle'
@@ -336,7 +336,7 @@
         [eventExportOvertime]='eventExportOvertime'></app-payroll-overtime>
     </div>
 
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_SEASONAL '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.SEASONAL '>
       <app-payroll-seasonal
         [payroll$]='payroll$'
         [total$]='total$'
@@ -353,18 +353,18 @@
         (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
     </div>
 
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_BASIC '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <app-payroll-basic
         [eventExportBasic]='eventExportBasic'
       ></app-payroll-basic>
     </div>
 
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_STAY '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
       <app-payroll-stay
         [eventExportStay]='eventExportStay'
       ></app-payroll-stay>
     </div>
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ALLOWANCE '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance
         [createdAt]='this.createdAt'
         [allowanceTitle]='allowanceTitle'
@@ -372,7 +372,7 @@
         [eventExportAllowance]='eventExportAllowance'
       ></app-payroll-allowance>
     </div>
-    <div *ngIf='selectedPayroll === payrollEnum.PAYROLL_ABSENT '>
+    <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent
         [absentTitle]='absentTitle'
         [createdAt]='this.createdAt'

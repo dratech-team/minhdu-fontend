@@ -97,8 +97,7 @@ export class PayrollStayComponent implements OnInit {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: new Date(this.createdAt),
-          salaryType: SalaryTypeEnum.STAY,
-          filterType: FilterTypeEnum.SALARY,
+          filterType: FilterTypeEnum.STAY,
           position: getSelectors(selectedPositionPayroll, this.store),
           branch: getSelectors(selectedBranchPayroll, this.store)
         }
@@ -223,8 +222,7 @@ export class PayrollStayComponent implements OnInit {
               code: value.code,
               createdAt: this.formGroup.get('createdAt')!.value,
               title: val.title,
-              salaryType: SalaryTypeEnum.STAY,
-              filterType: FilterTypeEnum.SALARY,
+              filterType: FilterTypeEnum.STAY,
               position: val.position,
               branch: val.branch
             }
@@ -273,8 +271,7 @@ export class PayrollStayComponent implements OnInit {
                 createdAt: new Date(value.createdAt),
                 title: val.title,
                 name: value.name,
-                salaryType: SalaryTypeEnum.STAY,
-                filterType: FilterTypeEnum.SALARY,
+                filterType: FilterTypeEnum.STAY,
                 position: val.position,
                 branch: val.branch
               }
@@ -377,8 +374,7 @@ export class PayrollStayComponent implements OnInit {
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
-      salaryType: SalaryTypeEnum.STAY,
-      filterType: FilterTypeEnum.SALARY,
+      filterType: FilterTypeEnum.STAY,
       position: value.position,
       branch: value.branch
     };

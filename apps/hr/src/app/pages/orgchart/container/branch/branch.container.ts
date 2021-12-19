@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { OrgchartEnum, PayrollEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith } from 'rxjs/operators';
@@ -29,9 +29,9 @@ export class BranchContainer implements OnInit {
   pageIndexInit = 0;
   formGroup = new FormGroup({
     code: new FormControl(''),
-    branch:new FormControl(),
+    branch: new FormControl(),
     position: new FormControl('')
-  })
+  });
   pageType = PageTypeEnum;
 
   constructor(
@@ -68,20 +68,22 @@ export class BranchContainer implements OnInit {
     });
   }
 
-  onEmployee(event: any){
+  onEmployee(event: any) {
     this.router.navigate(['ho-so'], {
-      queryParams:{
+      queryParams: {
         branch: event.name
       }
-    }).then()
+    }).then();
   }
-  onPayroll(event: any){
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name}))
-    this.router.navigate(['phieu-luong']).then()
+
+  onPayroll(event: any) {
+    this.store.dispatch(PayrollAction.updateStatePayroll({ branch: event.name }));
+    this.router.navigate(['phieu-luong']).then();
   }
-  onOvertime(event: any){
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name, filter: PayrollEnum.PAYROLL_OVERTIME}))
-    this.router.navigate(['phieu-luong'] ).then()
+
+  onOvertime(event: any) {
+    this.store.dispatch(PayrollAction.updateStatePayroll({ branch: event.name, filter: FilterTypeEnum.OVERTIME }));
+    this.router.navigate(['phieu-luong']).then();
   }
 
   onSelectPosition(positionName: string) {
@@ -91,10 +93,10 @@ export class BranchContainer implements OnInit {
   onListPosition(event: any) {
     this.router.navigate(['to-chuc/chuc-vu'],
       {
-        queryParams:{
-          branchId: event.id,
+        queryParams: {
+          branchId: event.id
         }
-      }).then()
+      }).then();
   }
 
   updateBranch($event: any) {
@@ -104,33 +106,33 @@ export class BranchContainer implements OnInit {
 
   onEmployeePositionChip(item: any) {
     this.router.navigate(['ho-so'], {
-      queryParams:{
+      queryParams: {
         branch: item.branch.name,
-        position: item.position.name,
+        position: item.position.name
       }
-    }).then()
+    }).then();
   }
 
   onPayrollPositionChip(item: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      {branch: item.branch.name, position: item.position.name}
-    ))
-    this.router.navigate(['phieu-luong']).then()
+      { branch: item.branch.name, position: item.position.name }
+    ));
+    this.router.navigate(['phieu-luong']).then();
   }
 
-  onOvertimePositionChip(item: any){
+  onOvertimePositionChip(item: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      {branch: item.branch.name, position: item.position.name}
-    ))
+      { branch: item.branch.name, position: item.position.name }
+    ));
     this.router.navigate(['phieu-luong'], {
-      queryParams:{
-        type:'overtime'
+      queryParams: {
+        type: 'overtime'
       }
-    }).then()
+    }).then();
   }
 
-  inputCheckNumber($event: any){
-    return checkInputNumber($event)
+  inputCheckNumber($event: any) {
+    return checkInputNumber($event);
   }
 
   printBranch() {
@@ -140,7 +142,7 @@ export class BranchContainer implements OnInit {
       code: val.code,
       position: val.position
     };
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuất bảng Đơn vị',
@@ -148,6 +150,6 @@ export class BranchContainer implements OnInit {
         params: branch,
         api: Api.HR.BRANCH_EXPORT
       }
-    })
+    });
   }
 }

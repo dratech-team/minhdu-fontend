@@ -1,4 +1,4 @@
-import { ConvertBooleanFrontEnd, PayrollEnum } from '@minhdu-fontend/enums';
+import { ConvertBooleanFrontEnd, FilterTypeEnum } from '@minhdu-fontend/enums';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { createAction, props } from '@ngrx/store';
 import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
@@ -138,7 +138,7 @@ export const scanHolidayError = createAction(
 export const updateStatePayroll = createAction(
   '[SELECT_PAYROLL] Select Payroll',
   props<{
-    filter?: PayrollEnum;
+    filter?: FilterTypeEnum;
     createdAt?: Date;
     branch?: string;
     position?: string;
