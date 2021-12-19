@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { OrgchartEnum, PayrollEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import {
   getAllPosition,
@@ -107,20 +107,20 @@ export class PositionContainer implements OnInit {
       {
         position: event.position.name, branch:
           event.branch ? event.branch.name : '',
-        filter: PayrollEnum.PAYROLL_OVERTIME
+        filter: FilterTypeEnum.OVERTIME
       }));
     this.router.navigate(['phieu-luong']).then();
   }
 
   printPosition() {
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuất bảng chức vụ',
         exportType: 'POSITION',
-        params: this.branchId ? {branchId: this.branchId} : undefined,
+        params: this.branchId ? { branchId: this.branchId } : undefined,
         api: Api.HR.POSITION_EXPORT
       }
-    })
+    });
   }
 }

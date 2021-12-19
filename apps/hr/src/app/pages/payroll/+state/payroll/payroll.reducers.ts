@@ -2,7 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
-import { ConvertBoolean, ConvertBooleanFrontEnd, PayrollEnum } from '@minhdu-fontend/enums';
+import { ConvertBoolean, ConvertBooleanFrontEnd, FilterTypeEnum } from '@minhdu-fontend/enums';
 import { totalSalary } from '@minhdu-fontend/data-models';
 
 export interface PayrollState extends EntityState<Payroll> {
@@ -14,7 +14,7 @@ export interface PayrollState extends EntityState<Payroll> {
   deleted: boolean
   selectedPayrollId: number,
   createdAt: Date,
-  filter: PayrollEnum,
+  filter: FilterTypeEnum,
   branch: string,
   position: string,
   total: number,
@@ -26,7 +26,7 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: PayrollEnum.TIME_SHEET, branch: '', position: '', total: 0,
+  createdAt: new Date(), filter: FilterTypeEnum.TIME_SHEET, branch: '', position: '', total: 0,
   totalOvertime: { total: 0, unit: { days: 0, hours: 0 } }
 });
 

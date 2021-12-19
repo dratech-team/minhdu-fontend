@@ -113,8 +113,7 @@ export class PayrollBasicComponent implements OnInit {
         payrollDTO: {
           take: this.pageSize,
           skip: this.pageIndex,
-          salaryType: SalaryTypeEnum.BASIC,
-          filterType: FilterTypeEnum.SALARY,
+          filterType: FilterTypeEnum.BASIC,
           createdAt: new Date(this.createdAt),
           position: getSelectors(selectedPositionPayroll, this.store),
           branch: getSelectors(selectedBranchPayroll, this.store)
@@ -291,8 +290,7 @@ export class PayrollBasicComponent implements OnInit {
             createdAt: value.createdAt,
             salaryTitle: val.title,
             name: this.formGroup.get('name')!.value,
-            salaryType: SalaryTypeEnum.BASIC,
-            filterType: FilterTypeEnum.SALARY,
+            filterType: FilterTypeEnum.BASIC,
             position: value.position,
             branch: value.branch
           };
@@ -385,8 +383,7 @@ export class PayrollBasicComponent implements OnInit {
       createdAt: new Date(value.createdAt),
       salaryTitle: value.title ? value.title : '',
       name: value.name,
-      filterType: FilterTypeEnum.SALARY,
-      salaryType: SalaryTypeEnum.BASIC,
+      filterType: FilterTypeEnum.BASIC,
       position: value.position,
       branch: value.branch
     };

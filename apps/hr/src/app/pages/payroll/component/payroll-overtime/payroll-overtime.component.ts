@@ -128,8 +128,7 @@ export class PayrollOvertimeComponent implements OnInit {
     let paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,
-      salaryType: SalaryTypeEnum.OVERTIME,
-      filterType:  FilterTypeEnum.SALARY,
+      filterType:  FilterTypeEnum.OVERTIME,
       position: getSelectors<string>(selectedPositionPayroll, this.store),
       branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
@@ -312,8 +311,7 @@ export class PayrollOvertimeComponent implements OnInit {
       title: value.title ? value.title : '',
       name: value.name,
       unit: value.unit? value.unit:'',
-      salaryType: SalaryTypeEnum.OVERTIME,
-      filterType: FilterTypeEnum.SALARY,
+      filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
       branch: value.branch
     };

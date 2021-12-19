@@ -116,8 +116,7 @@ export class PayrollAbsentComponent implements OnInit  {
     let paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,
-      salaryType: SalaryTypeEnum.ABSENT,
-      filterType: FilterTypeEnum.SALARY,
+      filterType: FilterTypeEnum.ABSENT,
       position: getSelectors<string>(selectedPositionPayroll, this.store),
       branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
@@ -435,8 +434,7 @@ export class PayrollAbsentComponent implements OnInit  {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       unit: value.unit,
-      salaryType: SalaryTypeEnum.ABSENT,
-      filterType: FilterTypeEnum.SALARY,
+      filterType: FilterTypeEnum.ABSENT,
       position: value.position,
       branch: value.branch
     };

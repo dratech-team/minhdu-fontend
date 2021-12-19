@@ -16,7 +16,6 @@ import { EmployeeAction } from '@minhdu-fontend/employee';
 import {
   EmployeeType,
   FilterTypeEnum,
-  PayrollEnum,
   SalaryTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
@@ -78,9 +77,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     ),
   });
   selectPayroll = new FormControl(
-    getSelectors<PayrollEnum>(selectedTypePayroll, this.store)
+    getSelectors<FilterTypeEnum>(selectedTypePayroll, this.store)
   );
-  selectedPayroll: PayrollEnum = getSelectors<PayrollEnum>(
+  selectedPayroll: FilterTypeEnum = getSelectors<FilterTypeEnum>(
     selectedTypePayroll,
     this.store
   );
@@ -104,7 +103,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   pageType = PageTypeEnum;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
-  payrollEnum = PayrollEnum;
+  filterTypeEnum = FilterTypeEnum;
   private stop$ = new Subject<void>();
   eventAddOvertime = new Subject<any>();
   eventAddAllowance = new Subject<any>();
@@ -140,7 +139,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
-      if (val === PayrollEnum.TIME_SHEET && !this.createdAt) {
+      if (val === FilterTypeEnum.TIME_SHEET && !this.createdAt) {
         this.selectedPayroll = val;
         this.formGroup.get('createdAt')!.reset();
         this.createdAt = new Date();
@@ -152,7 +151,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           })
         );
       } else {
-        if (val === PayrollEnum.PAYROLL || val === PayrollEnum.TIME_SHEET) {
+        if (val === FilterTypeEnum.PAYROLL || val === FilterTypeEnum.TIME_SHEET) {
           this.positionName = getSelectors(selectedPositionPayroll, this.store);
           this.branchName = getSelectors(selectedBranchPayroll, this.store);
           this.formGroup
@@ -166,10 +165,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(PayrollAction.updateStatePayroll({ filter: val }));
       }
       if (
-        val !== PayrollEnum.PAYROLL_STAY &&
-        val !== PayrollEnum.PAYROLL_BASIC &&
-        val !== PayrollEnum.PAYROLL_ALLOWANCE &&
-        val !== PayrollEnum.PAYROLL_ABSENT
+        val !== FilterTypeEnum.STAY &&
+        val !== FilterTypeEnum.BASIC &&
+        val !== FilterTypeEnum.ALLOWANCE &&
+        val !== FilterTypeEnum.ABSENT
       ) {
         this.formGroup
           .get('createdAt')!
@@ -189,7 +188,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         map((val) => {
           if (
             !val.createdAt &&
-            this.selectedPayroll === PayrollEnum.TIME_SHEET
+            this.selectedPayroll === FilterTypeEnum.TIME_SHEET
           ) {
             this.snackbar.open('Phiếu chấm công phải chọn tháng', 'Đóng');
             this.formGroup
@@ -253,16 +252,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
-      filterType:
-        this.selectedPayroll === PayrollEnum.TIME_SHEET
-          ? FilterTypeEnum.TIME_SHEET
-          : this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
-          ? FilterTypeEnum.SEASONAL
-          : this.selectedPayroll === PayrollEnum.PAYROLL
-          ? FilterTypeEnum.PAYROLL
-          : FilterTypeEnum.SALARY,
+      filterType: this.selectedPayroll,
       employeeType:
-        this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
+        this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
           : EmployeeType.EMPLOYEE_FULL_TIME,
     };
@@ -307,7 +299,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         data: {
           createdAt: this.createdAt,
           type: type,
-          isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
         },
       })
       .afterClosed()
@@ -324,7 +316,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             createdAt: new Date(val.datetime),
             overtimeTitle: val.title,
           });
-          this.selectPayroll.setValue(PayrollEnum.PAYROLL_OVERTIME);
+          this.selectPayroll.setValue(FilterTypeEnum.OVERTIME);
         }
       });
   }
@@ -335,7 +327,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         width: 'fit-content',
         data: {
           createdAt: this.createdAt,
-          isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+          isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
         },
       })
       .afterClosed()
@@ -348,7 +340,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               createdAt: new Date(value.datetime),
             })
           );
-          this.selectPayroll.setValue(PayrollEnum.PAYROLL_ALLOWANCE);
+          this.selectPayroll.setValue(FilterTypeEnum.ALLOWANCE);
           this.eventAddAllowance.next({
             allowanceTitle: value.title,
           });
@@ -362,7 +354,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         createdAt: this.createdAt,
-        isTimesheet: this.selectedPayroll === PayrollEnum.TIME_SHEET,
+        isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET,
       },
     });
     ref.afterClosed().subscribe((val) => {
@@ -378,7 +370,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           datetime: val.datetime,
           absentTitle: val.title,
         });
-        this.selectPayroll.setValue(PayrollEnum.PAYROLL_ABSENT);
+        this.selectPayroll.setValue(FilterTypeEnum.ABSENT);
       }
     });
   }
@@ -427,7 +419,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: '30%',
       data: {
         employeeType:
-          this.selectedPayroll === PayrollEnum.PAYROLL_SEASONAL
+          this.selectedPayroll === FilterTypeEnum.SEASONAL
             ? EmployeeType.EMPLOYEE_SEASONAL
             : '',
       },

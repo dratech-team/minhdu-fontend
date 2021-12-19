@@ -1,36 +1,37 @@
-import { PayrollEnum } from '../../enums';
+import { FilterTypeEnum } from '../../enums';
+
 
 export const PayrollConstant = [
   {
     name: 'Bảng lương',
-    value: PayrollEnum.PAYROLL,
+    value: FilterTypeEnum.PAYROLL,
   },
   {
     name: 'Bảng tăng ca',
-    value: PayrollEnum.PAYROLL_OVERTIME,
+    value: FilterTypeEnum.OVERTIME,
   },
   {
     name: 'Bảng chấm công',
-    value: PayrollEnum.TIME_SHEET,
+    value: FilterTypeEnum.TIME_SHEET,
   },
   {
     name: 'Bảng lương công nhật',
-    value: PayrollEnum.PAYROLL_SEASONAL,
+    value: FilterTypeEnum.SEASONAL,
   },
   {
     name: 'Bảng lương cơ bản',
-    value: PayrollEnum.PAYROLL_BASIC
+    value: FilterTypeEnum.BASIC
   },
   {
     name: 'Bảng phụ cấp lương',
-    value: PayrollEnum.PAYROLL_STAY
+    value: FilterTypeEnum.STAY
   },
   {
     name: 'Bảng phụ cấp khác',
-    value: PayrollEnum.PAYROLL_ALLOWANCE
+    value: FilterTypeEnum.ALLOWANCE
   },
   {
     name: 'Bảng khấu trừ',
-    value: PayrollEnum.PAYROLL_ABSENT
+    value: FilterTypeEnum.ABSENT
   },
 ]
