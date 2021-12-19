@@ -17,6 +17,6 @@ export class SelectUpdateMultiple {
 
 
   selectTypeUpdateMultiple(payrollType: FilterTypeEnum): any {
-    this.dialogRef.close(this.data.pageType);
+    this.dialogRef.close(payrollType);
   }
 }

@@ -381,7 +381,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .then();
   }
 
-  exportPayroll(exportType: FilterTypeEnum) {
+  exportPayroll() {
     const value = this.formGroup.value;
     const payroll = {
       code: value.code || '',
@@ -390,7 +390,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       branch: value.branch,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      exportType: exportType,
+      exportType: FilterTypeEnum.PAYROLL,
     };
     if (value.createdAt) {
       Object.assign(payroll, { createdAt: new Date(value.createdAt) });
@@ -399,7 +399,30 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: exportType,
+        exportType: FilterTypeEnum.PAYROLL,
+        params: payroll,
+        api: Api.HR.PAYROLL.EXPORT,
+      },
+    });
+  }
+
+  exportTimeSheet() {
+    const value = this.formGroup.value;
+    const payroll = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position,
+      branch: value.branch,
+      exportType: FilterTypeEnum.TIME_SHEET,
+    };
+    if (value.createdAt) {
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+    }
+    this.dialog.open(DialogExportComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xuât bảng chấm công',
+        exportType: FilterTypeEnum.TIME_SHEET,
         params: payroll,
         api: Api.HR.PAYROLL.EXPORT,
       },
@@ -519,8 +542,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             case FilterTypeEnum.STAY:
               this.eventExportStay.next(true);
               break;
+            case FilterTypeEnum.TIME_SHEET:
+              this.exportTimeSheet()
+              break;
             case FilterTypeEnum.PAYROLL:
-              this.exportPayroll(val);
+              this.exportPayroll();
               break;
           }
         }

@@ -18,7 +18,7 @@
           <input type='text' disabled>
         </th>
         <th>
-          <div class='border-top text-center'>Mã nhân viên</div>
+          <div class='border-top text-center'>Mã phiếu lương</div>
           <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
                  formControlName='code'>
         </th>
@@ -172,7 +172,7 @@
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{payrollOvertime?.id}}
+          {{payrollOvertime?.payrollId}}
         </th>
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
