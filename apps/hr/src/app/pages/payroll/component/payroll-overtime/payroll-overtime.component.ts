@@ -216,30 +216,15 @@ export class PayrollOvertimeComponent implements OnInit {
         const overtime = {
           searchType: value.searchType,
           code: value.code,
-          startedAt: new Date(value.startAt),
-          endedAt: new Date(value.endAt),
           title: value.title || '',
           name: value.name || '',
           filename: val,
           exportType: FilterTypeEnum.OVERTIME,
           position: value.position,
-          branch: value.branch
+          branch: value.branch,
+          startedAt: value.startedAt,
+          endedAt: value.endedAt
         };
-        if (value.startedAt && value.endedAt) {
-          if (
-            moment(value.startedAt).format('YYYY-MM-DD') ===
-            moment(value.endedAt).format('YYYY-MM-DD')
-          ) {
-            Object.assign(overtime, { createdAt: value.startedAt });
-          } else {
-
-            Object.assign(overtime, {
-              startedAt: value.startedAt,
-              endedAt: value.endedAt
-            });
-          }
-        }
-        console.log('ssss')
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {

@@ -492,7 +492,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  openDialogUpdateMultiple() {
+  openDialogExportMultiple() {
     this.dialog
       .open(SelectUpdateMultiple, {
         width: 'fit-content',
@@ -503,7 +503,26 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .afterClosed()
       .subscribe((val) => {
         if (val) {
-          this.exportPayroll(val);
+          switch (val) {
+            case FilterTypeEnum.BASIC:
+              this.eventExportBasic.next(true);
+              break;
+            case FilterTypeEnum.OVERTIME:
+              this.eventExportOvertime.next(true);
+              break;
+            case FilterTypeEnum.ALLOWANCE:
+              this.eventExportAllowance.next(true);
+              break;
+            case FilterTypeEnum.ABSENT:
+              this.eventExportAbsent.next(true);
+              break;
+            case FilterTypeEnum.STAY:
+              this.eventExportStay.next(true);
+              break;
+            case FilterTypeEnum.PAYROLL:
+              this.exportPayroll(val);
+              break;
+          }
         }
       });
   }
