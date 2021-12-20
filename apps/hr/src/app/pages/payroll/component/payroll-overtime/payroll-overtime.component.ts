@@ -217,7 +217,6 @@ export class PayrollOvertimeComponent implements OnInit {
           searchType: value.searchType,
           code: value.code,
           title: value.title || '',
-          name: value.name || '',
           filename: val,
           exportType: FilterTypeEnum.OVERTIME,
           position: value.position,
@@ -225,6 +224,9 @@ export class PayrollOvertimeComponent implements OnInit {
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
+        if(value.name){
+          Object.assign(overtime,{name:value.name})
+        }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
