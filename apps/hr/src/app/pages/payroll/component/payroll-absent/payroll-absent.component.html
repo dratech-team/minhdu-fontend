@@ -110,24 +110,23 @@
       </thead>
       <tbody *ngIf='(payrollAbsent$|async) as payrollsAbsent'>
       <tr *ngFor='let payrollAbsent of payrollsAbsent; let i = index'
-          [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'
-      >
+          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
         <th class='pointer'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{i + 1}}
         </th>
         <th class='pointer'
             (click)='readPayroll(payrollAbsent)'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollAbsent?.id}}
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          {{payrollAbsent.payrollId}}
         </th>
         <th class='pointer'
             (click)='readPayroll(payrollAbsent)'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollAbsent.employee.lastName}}
         </th>
         <th class='pointer'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'>
             <mat-checkbox
@@ -138,14 +137,13 @@
         </th>
         <th class='pointer'
             (click)='readPayroll(payrollAbsent)'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollAbsent.employee.position?.name}}</th>
         <th class='pointer'
-            (click)='readPayroll(payrollAbsent)'
-            [ngStyle]='{"background":payrollsAbsent.length > 0 ? "white" : "#dddddd" }'>
+            (click)='readPayroll(payrollAbsent)'>
           {{payrollAbsent.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer '
+          <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAbsent)'>
@@ -162,7 +160,7 @@
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAbsent)'>
@@ -170,7 +168,7 @@
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAbsent)'>
@@ -182,7 +180,7 @@
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAbsent)'>

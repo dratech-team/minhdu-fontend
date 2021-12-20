@@ -19,7 +19,7 @@
           <input type='text' disabled>
         </th>
         <th>
-          <div class='border-top text-center'>Mã nhân viên</div>
+          <div class='border-top text-center'>Mã phiếu lương</div>
           <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
                  formControlName='code'>
         </th>
@@ -107,24 +107,23 @@
       </thead>
       <tbody *ngIf='(payrollStay$|async) as payrollsBasic'>
       <tr *ngFor='let payrollStay of payrollsBasic; let i = index'
-          [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'
-      >
+          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
         <th class='pointer'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{i + 1}}
         </th>
         <th class='pointer'
             (click)='readPayroll(payrollStay)'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
-          {{payrollStay?.id}}
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          {{payrollStay.payrollId}}
         </th>
         <th class='pointer'
             (click)='readPayroll(payrollStay)'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollStay.employee.lastName}}
         </th>
         <th class='pointer'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'>
             <mat-checkbox
@@ -135,14 +134,13 @@
         </th>
         <th style='width: 200px' class='pointer'
             (click)='readPayroll(payrollStay)'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollStay.employee.position?.name}}</th>
         <th style='width: 200px' class='pointer'
-            (click)='readPayroll(payrollStay)'
-            [ngStyle]='{"background":payrollsBasic.length > 0 ? "white" : "#dddddd" }'>
+            (click)='readPayroll(payrollStay)'>
           {{payrollStay.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer '
+          <div class=' d-flex align-items-center justify-content-center pointer '
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollStay)'>
@@ -150,7 +148,7 @@
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollStay)'>
@@ -158,7 +156,7 @@
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollStay)'>
@@ -169,7 +167,7 @@
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
+          <div class=' d-flex align-items-center justify-content-center pointer'
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollStay)'>

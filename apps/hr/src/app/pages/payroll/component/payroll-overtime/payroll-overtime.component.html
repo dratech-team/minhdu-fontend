@@ -110,7 +110,8 @@
           <input type='text' disabled>
         </th>
       </tr>
-      <tr *ngIf='(totalOvertime$|async) as totalOvertime' style=' color: red ; position: relative ; top:-1px ;background:white'>
+      <tr *ngIf='(totalOvertime$|async) as totalOvertime'
+          style=' color: red ; position: relative ; top:-1px ;background:white'>
         <th style='background:white'>
           <div class=''></div>
         </th>
@@ -141,16 +142,16 @@
           <div class='text-center'></div>
         </th>
         <th>
-          <div  class='text-center'>
-          </div>
-        </th>
-        <th>
           <div class='text-center'>
           </div>
         </th>
         <th>
           <div class='text-center'>
-            {{totalOvertime.unit.days  + ' Ngày'}} +
+          </div>
+        </th>
+        <th>
+          <div class='text-center'>
+            {{totalOvertime.unit.days + ' Ngày'}} +
             {{totalOvertime.unit?.hours + ' Giờ'}}
           </div>
         </th>
@@ -197,25 +198,34 @@
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime.employee.branch?.name}}</th>
-        <th class='pointer' style='width: 220px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollOvertime.salaries'
+        <th class='pointer' style='width: 220px;' >
+          <div class=' d-flex align-items-center justify-content-center pointer '
+               [ngClass]='{
+                "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
+                }'
+               *ngFor='let item of payrollOvertime.salaries; let index = index'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             {{item.datetime|date:'yyyy-MM-dd'}}
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollOvertime.salaries'
+          <div class=' d-flex align-items-center justify-content-center pointer'
+               [ngClass]='{
+                "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
+                }'
+               *ngFor='let item of payrollOvertime.salaries; let index = index'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollOvertime.salaries'
+          <div class=' d-flex align-items-center justify-content-center pointer'
+               [ngClass]='{
+                "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
+                }'
+               *ngFor='let item of payrollOvertime.salaries; let index = index'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             {{item?.times}}
@@ -225,8 +235,11 @@
           </div>
         </th>
         <th class='pointer'>
-          <div class='border d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollOvertime.salaries'
+          <div class=' d-flex align-items-center justify-content-center pointer'
+               [ngClass]='{
+                "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
+                }'
+               *ngFor='let item of payrollOvertime.salaries; let index = index'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
@@ -234,8 +247,8 @@
           </div>
         </th>
         <th class='pointer' *ngIf='payrollOvertime.salary'>
-          {{payrollOvertime.salary.unit.days +' Ngày'}} +
-          {{payrollOvertime.salary.unit.hours +' Giờ'}}
+          {{payrollOvertime.salary.unit.days + ' Ngày'}} +
+          {{payrollOvertime.salary.unit.hours + ' Giờ'}}
         </th>
         <th class='pointer' *ngIf='payrollOvertime.salary'> {{payrollOvertime.salary.total|number:'1.0-0'}} VND</th>
 
@@ -307,11 +320,6 @@
     position: sticky;
     top: 70px;
   }
-
-  .table-scroll tbody th {
-    padding: 0px;
-  }
-
 </style>
 
 
