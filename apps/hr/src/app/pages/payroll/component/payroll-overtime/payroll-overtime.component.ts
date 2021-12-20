@@ -10,7 +10,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -120,11 +120,19 @@ export class PayrollOvertimeComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly salaryService: SalaryService,
     private readonly exportService: ExportService,
+    private readonly activeRouter: ActivatedRoute,
     private ref: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
+    this.activeRouter.queryParams.subscribe((val) => {
+      if (val.titleOvertime) {
+        this.formGroup
+          .get('title')!
+          .setValue(JSON.parse(JSON.stringify(val.titleOvertime)));
+      }
+    });
     let paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,

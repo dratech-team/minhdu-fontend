@@ -122,16 +122,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
-    private readonly activeRouter: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.loadInitPayroll();
-    this.activeRouter.queryParams.subscribe((val) => {
-      if (val.titleOvertime) {
-        this.overtimeTitle = JSON.parse(JSON.stringify(val.titleOvertime));
-      }
-    });
+
 
     this.daysInMonth = rageDaysInMonth(this.createdAt);
 
