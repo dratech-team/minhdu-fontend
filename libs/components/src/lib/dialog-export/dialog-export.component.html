@@ -3,14 +3,35 @@
     {{data.title}}
   </div>
   <mat-dialog-content >
-    <div class=' mt-1 mb-3 '>
-      <span class='title-item'>Tên file</span><span class='star'>*</span>
-      <input type='text' class='form-control mt-1' [formControl]='name'
-             [ngClass]="{ 'is-invalid': submitted && name.errors}">
-      <div *ngIf='submitted && name.errors' class='invalid-feedback'>
-        <div *ngIf='name.errors'>Chưa nhập tên file</div>
+    <div [formGroup]='formGroup'>
+      <div class=' mt-1 mb-3 '>
+        <span class='title-item'>Tên file</span><span class='star'>*</span>
+        <input type='text' class='form-control mt-1' formControlName='name'
+               [ngClass]="{ 'is-invalid': submitted &&  formGroup.controls.name.errors}">
+        <div *ngIf='submitted && formGroup.controls.name.errors' class='invalid-feedback'>
+          <div *ngIf='formGroup.controls.name.errors'>Chưa nhập tên file</div>
+        </div>
       </div>
+      <div class=' mt-1 mb-3 ' *ngIf='data.exportType === exportType.OVERTIME else createdAt'>
+        <span class='title-item'>Tháng</span><span class='star'>*</span>
+        <div class='form-control d-flex align-items-center'>
+          <mat-date-range-input [rangePicker]='picker'>
+            <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
+            <input matEndDate formControlName='endedAt' placeholder='Đến ngày'>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </div>
+
+      </div>
+      <ng-template #createdAt>
+        <div class=' mt-1 mb-3 '>
+          <span class='title-item'>Tháng</span><span class='star'>*</span>
+          <input type='date' class='form-control' formControlName='createdAt'>
+        </div>
+      </ng-template>
     </div>
+
     <div class=' title-item mb-2'><span>Các mục muốn in</span><span class='star'>*</span></div>
     <div class='fixTableHead' style='max-height: 35vh; width: 500px; overflow-y: auto'>
       <table >

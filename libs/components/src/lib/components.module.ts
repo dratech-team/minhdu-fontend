@@ -29,6 +29,7 @@ import { TransformPipe } from './pipes/transform.pipe';
 import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
 import { MouseRightChipPositionComponent } from './mouse-right-position-of-branch/mouse-right-chip-position.component';
 import { DialogExportComponent } from './dialog-export/dialog-export.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { DialogExportComponent } from './dialog-export/dialog-export.component';
     NgxChartsModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule
   ],
   declarations: [
     SwimLaneChartComponent,
