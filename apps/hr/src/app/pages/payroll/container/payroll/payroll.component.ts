@@ -127,7 +127,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     this.loadInitPayroll();
 
-
     this.daysInMonth = rageDaysInMonth(this.createdAt);
 
     this.store.dispatch(PositionActions.loadPosition());
@@ -152,10 +151,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.branchName = getSelectors(selectedBranchPayroll, this.store);
           this.formGroup
             .get('position')!
-            .setValue(this.positionName, { eventEmit: false });
+            .setValue(this.positionName, { emitEvent: false });
           this.formGroup
             .get('branch')!
-            .setValue(this.branchName, { eventEmit: false });
+            .setValue(this.branchName, { emitEvent: false });
         }
         this.selectedPayroll = val;
         this.store.dispatch(PayrollAction.updateStatePayroll({ filter: val }));
@@ -198,6 +197,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       )
       .pipe(debounceTime(1500))
       .subscribe((val) => {
+        console.log('aaaaa')
         if (val) {
           this.branchName = val?.branch;
           this.positionName = val?.position;

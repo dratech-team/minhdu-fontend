@@ -1,13 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FilterTypeEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { ItemExportService } from './item-export.service';
-import { DatePipe } from '@angular/common';
-import { FilterTypeEnum } from '@minhdu-fontend/enums';
 
 @Component({
-  templateUrl: 'dialog-export.component.html'
+  templateUrl: 'dialog-export.component.html',
 })
 export class DialogExportComponent implements OnInit {
   formGroup!: FormGroup;
@@ -24,26 +29,36 @@ export class DialogExportComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    if(this.data.exportType === FilterTypeEnum.OVERTIME && this.data.exportType === FilterTypeEnum.ABSENT){
+    if(this.data.exportType === FilterTypeEnum.OVERTIME || this.data.exportType === FilterTypeEnum.ABSENT){
       this.formGroup = this.formBuilder.group({
         name: new FormControl('', Validators.required),
         startedAt: new FormControl(
-          this.datePipe.transform(new Date(this.data?.params?.startedAt), 'YYYY-MM-dd')),
+          this.datePipe.transform(
+            new Date(this.data?.params?.startedAt),
+            'YYYY-MM-dd'
+          )
+        ),
         endedAt: new FormControl(
-          this.datePipe.transform(new Date(this.data?.params?.endedAt), 'YYYY-MM-dd'))
+          this.datePipe.transform(
+            new Date(this.data?.params?.endedAt),
+            'YYYY-MM-dd'
+          )
+        ),
       });
-    }else{
+    } else {
       this.formGroup = this.formBuilder.group({
         name: new FormControl('', Validators.required),
         createdAt: new FormControl(
-          this.datePipe.transform(new Date(this.data?.params?.createdAt), 'YYYY-MM-dd')),
+          this.datePipe.transform(
+            new Date(this.data?.params?.createdAt),
+            'YYYY-MM'
+          )
+        ),
       });
     }
-
 
     this.itemExportService
       .getItemExport({ exportType: this.data.exportType })
@@ -67,14 +82,16 @@ export class DialogExportComponent implements OnInit {
     });
     if (this.data?.params) {
     }
-    console.log(new Date(value.startedAt).toUTCString())
+    console.log(new Date(value.startedAt).toUTCString());
     if (this.data.exportType === FilterTypeEnum.OVERTIME || this.data.exportType === FilterTypeEnum.ABSENT ) {
       Object.assign(this.data.params, {
         startedAt: new Date(value.startedAt).toUTCString(),
         endedAt: new Date(value.endedAt).toUTCString(),
       });
     } else {
-      Object.assign(this.data.params, { createdAt: new Date(value.createdAt).toUTCString()  });
+      Object.assign(this.data.params, {
+        createdAt: new Date(value.createdAt).toUTCString(),
+      });
     }
     this.exportService.print(
       this.data.api,
