@@ -28,7 +28,7 @@ export class DialogExportComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.data.exportType === FilterTypeEnum.OVERTIME){
+    if(this.data.exportType === FilterTypeEnum.OVERTIME && this.data.exportType === FilterTypeEnum.ABSENT){
       this.formGroup = this.formBuilder.group({
         name: new FormControl('', Validators.required),
         startedAt: new FormControl(
@@ -68,7 +68,7 @@ export class DialogExportComponent implements OnInit {
     if (this.data?.params) {
     }
     console.log(new Date(value.startedAt).toUTCString())
-    if (this.data.exportType === FilterTypeEnum.OVERTIME) {
+    if (this.data.exportType === FilterTypeEnum.OVERTIME || this.data.exportType === FilterTypeEnum.ABSENT ) {
       Object.assign(this.data.params, {
         startedAt: new Date(value.startedAt).toUTCString(),
         endedAt: new Date(value.endedAt).toUTCString(),

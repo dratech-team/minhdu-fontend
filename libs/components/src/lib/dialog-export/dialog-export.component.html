@@ -12,7 +12,7 @@
           <div *ngIf='formGroup.controls.name.errors'>Chưa nhập tên file</div>
         </div>
       </div>
-      <div class=' mt-1 mb-3 ' *ngIf='data.exportType === exportType.OVERTIME else createdAt'>
+      <div class=' mt-1 mb-3 ' *ngIf='data.exportType === exportType.OVERTIME || data.exportType === exportType.ABSENT else createdAt'>
         <span class='title-item'>Từ ngày đến ngày</span><span class='star'>*</span>
         <div class='form-control d-flex align-items-center'>
           <mat-date-range-input [rangePicker]='picker'>
