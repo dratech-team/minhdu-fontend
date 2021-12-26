@@ -111,6 +111,7 @@ export class PayrollOvertimeComponent implements OnInit {
   salaries: SalaryPayroll[] = [];
   isEventSearch = false;
   loaded$ = this.store.select(selectedLoadedPayroll);
+
   constructor(
     private readonly snackbar: MatSnackBar,
     private readonly overtimeService: OvertimeService,
@@ -126,21 +127,21 @@ export class PayrollOvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
+    let paramLoadInit = {
+      take: this.pageSize,
+      skip: this.pageIndex,
+      filterType: FilterTypeEnum.OVERTIME,
+      position: getSelectors<string>(selectedPositionPayroll, this.store),
+      branch: getSelectors<string>(selectedBranchPayroll, this.store)
+    };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
         this.formGroup
           .get('title')!
           .setValue(JSON.parse(JSON.stringify(val.titleOvertime)));
+        Object.assign(paramLoadInit, { title: val.titleOvertime });
       }
     });
-    let paramLoadInit = {
-      take: this.pageSize,
-      skip: this.pageIndex,
-      filterType:  FilterTypeEnum.OVERTIME,
-      position: getSelectors<string>(selectedPositionPayroll, this.store),
-      branch: getSelectors<string>(selectedBranchPayroll, this.store)
-    };
-
     this.store.dispatch(PositionActions.loadPosition());
 
     this.store.dispatch(OrgchartActions.init());
@@ -189,7 +190,7 @@ export class PayrollOvertimeComponent implements OnInit {
         .setValue(
           this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
         );
-    }else{
+    } else {
       Object.assign(paramLoadInit, {
         startedAt: getFirstDayInMonth(new Date(this.createdAt)),
         endedAt: getLastDayInMonth(new Date(this.createdAt))
@@ -232,8 +233,8 @@ export class PayrollOvertimeComponent implements OnInit {
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
-        if(value.name){
-          Object.assign(overtime,{name:value.name})
+        if (value.name) {
+          Object.assign(overtime, { name: value.name });
         }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -266,8 +267,8 @@ export class PayrollOvertimeComponent implements OnInit {
     this.payrollOvertime$.subscribe((payrolls) => {
       if (payrolls) {
         this.salaries = [];
-        if(payrolls.length === 0){
-          this.isSelectSalary = false
+        if (payrolls.length === 0) {
+          this.isSelectSalary = false;
         }
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
@@ -305,7 +306,7 @@ export class PayrollOvertimeComponent implements OnInit {
       searchType: value.searchType,
       title: value.title ? value.title : '',
       name: value.name,
-      unit: value.unit? value.unit:'',
+      unit: value.unit ? value.unit : '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
       branch: value.branch
@@ -314,7 +315,7 @@ export class PayrollOvertimeComponent implements OnInit {
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
     ) {
-      Object.assign(params, { createdAt: this.datePipe.transform(value.startedAt,'YYYY-MM-dd') });
+      Object.assign(params, { createdAt: this.datePipe.transform(value.startedAt, 'YYYY-MM-dd') });
     } else {
       Object.assign(params, {
         startedAt: value.startedAt,
