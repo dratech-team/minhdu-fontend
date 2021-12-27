@@ -23,7 +23,7 @@ export interface Order {
   commodityTotal:number;
   paymentTotal: number;
   deliveredAt: Date;
-  hide: boolean
+  hide: boolean;
 }
 export interface OrderDTO {
   take?: number;

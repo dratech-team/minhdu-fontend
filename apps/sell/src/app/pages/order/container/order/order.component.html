@@ -72,11 +72,12 @@
         </th>
         <th>
           <div class=''> Trạng thái đơn hàng</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='deliveredAt'>
-            <option value='{{statusOrder.DELIVERED}}'>Đã giao</option>
-            <option value='{{statusOrder.NOT_DELIVERED}}'>Đang giao</option>
-            <option value=''>tất cả</option>
-          </select>
+          <mat-select class='select border-top' style='width: 100%'  required formControlName='deliveredAt'>
+            <mat-option value='{{statusOrder.DELIVERED}}'>Đã giao</mat-option>
+            <mat-option value='{{statusOrder.NOT_DELIVERED}}'>Chưa giao hàng</mat-option>
+            <mat-option value='{{statusOrder.DELIVERING}}'>Đang giao</mat-option>
+            <mat-option value=''>tất cả</mat-option>
+          </mat-select>
         </th>
       </tr>
       </thead>
@@ -110,8 +111,11 @@
         <th (click)='detailOrder(order.id)' *ngIf='order.deliveredAt'>
           Đã giao
         </th>
-        <th (click)='detailOrder(order.id)' *ngIf='!order.deliveredAt'>
+        <th (click)='detailOrder(order.id)' *ngIf='!order.deliveredAt && order.routes.length > 0'>
           Đang giao
+        </th>
+        <th (click)='detailOrder(order.id)' *ngIf='!order.deliveredAt && order.routes.length === 0'>
+          Chưa giao
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
