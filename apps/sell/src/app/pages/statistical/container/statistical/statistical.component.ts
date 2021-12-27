@@ -71,13 +71,13 @@ export class StatisticalComponent implements OnInit {
 
   onStatistical(type: FilterOverviewEnum, params: any) {
     const value = {
-      startedAt: params.startedAt ,
+      startedAt: params.startedAt,
       endedAt: params.endedAt,
       option: params.option
     };
-    if(!params.startedAt){
-      delete value.startedAt
-      delete value.endedAt
+    if (!params.startedAt) {
+      delete value.startedAt;
+      delete value.endedAt;
     }
     switch (type) {
       case this.filterOverview.AGENCY:
@@ -131,6 +131,8 @@ export class StatisticalComponent implements OnInit {
         return 'Gà bán';
       case OptionOverviewEnum.SALES:
         return 'Doanh thu';
+      case OptionOverviewEnum.DEBT:
+        return 'Công nợ';
     }
   }
 }

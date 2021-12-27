@@ -7,5 +7,6 @@ export enum FilterOverviewEnum {
 export enum OptionOverviewEnum {
   SOLD = 'SOLD',
   CUSTOMER = 'CUSTOMER',
-  SALES = 'SALES'
+  SALES = 'SALES',
+  DEBT = 'DEBT',
 }
