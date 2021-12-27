@@ -36,8 +36,9 @@ export const Api = {
     OVERVIEW : 'overview/hr'
   },
   SELL: {
+    OVERVIEW: 'overview/sell',
     STATISTICAL:{
-      STATISTICAL_AGENCY: 'statistical/agency',
+      STATISTICAL_AGENCY: 'overview/agency',
       STATISTICAL_PROVINCE: 'statistical/nation',
       STATISTICAL_CHICKEN: 'statistical/chicken',
       STATISTICAL_CUSTOMER: 'statistical/customer',

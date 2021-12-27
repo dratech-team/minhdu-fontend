@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Api } from '@minhdu-fontend/constants';
 import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
 import {
-  DatetimeUnitEnum, MenuEnum,
+  DatetimeUnitEnum, FilterOverviewEnum, MenuEnum, OptionOverviewEnum,
   StatisticalXType,
   StatisticalYType
 } from '@minhdu-fontend/enums';
@@ -15,151 +15,122 @@ import { StatisticalService } from '../../service/statistical/statistical.servic
 import { document } from 'ngx-bootstrap/utils';
 import { Store } from '@ngrx/store';
 import { MainAction } from '../../../../states/main.action';
+import { getFirstDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: 'statistical.component.html',
-  styleUrls: ['statistical.component.scss'],
+  styleUrls: ['statistical.component.scss']
 })
-export class StatisticalComponent implements OnInit{
+export class StatisticalComponent implements OnInit {
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
   TotalPotential = 0;
   totalOrders = 0;
   date = new Date();
+  optionOverview = OptionOverviewEnum;
+  api = Api;
   CurrentMonth = getMonth(new Date()) + 1;
   statisticalCustomerData: stakedChart[] = [];
   statisticalDebt: stakedChart[] = [];
-  statisticalChicken: Statistical[] = [];
+  statisticalYear: Statistical[] = [];
   statisticalYType = StatisticalYType;
-  statisticalXType = StatisticalXType;
-  formGroup!: FormGroup;
+  filterOverview = FilterOverviewEnum;
   dateTime = DatetimeUnitEnum;
-  labelY!: string;
+  labelYProvince!: string;
+  labelYYear!: string;
+  labelYAgency!: string;
   labelYCustomer!: string;
+  firstDayInCurrentMonth = getFirstDayInMonth(new Date());
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
+    private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog,
     private readonly statisticalService: StatisticalService,
-    private readonly exportService: ExportService,
-  ) {}
+    private readonly exportService: ExportService
+  ) {
+  }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.HOME}))
-    this.statisticalService
-      .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, {
-        type: this.statisticalYType.ORDER,
-        startedAt: new Date(this.date.getFullYear(), this.date.getMonth(), 1),
-        endedAt: new Date(),
-      })
-      .subscribe((val) => {
-        val.forEach((value) => {
-          value.series.forEach(
-            (item: any) => (this.totalOrders = this.totalOrders + item.value)
-          );
-        });
-      });
-    this.statisticalCustomer({ type: this.statisticalYType.POTENTIAL });
-    this.statisticalCustomer({ type: this.statisticalYType.COMMODITY_DETAIL });
-    const btnOrder = document.getElementById('home');
-    btnOrder?.classList.add('btn-border');
-    this.formGroup = this.formBuilder.group({
-      type: [Validators.required],
-      startedAt: [Validators.required],
-      endedAt: [Validators.required],
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.HOME }));
+    this.onStatistical(this.filterOverview.NATION, {
+      option: OptionOverviewEnum.SALES
     });
-  }
-  onStatistical(type: StatisticalXType) {
-    const ref = this.dialog.open(PickStatisticalTypeComponent, {
-      width: '30%',
+    this.onStatistical(this.filterOverview.YEAR, {
+      option: OptionOverviewEnum.SALES
     });
-    ref.afterClosed().subscribe((val) => {
-      if (val) {
-        const value = {
-          startedAt: val.startedAt,
-          endedAt: val.endedAt,
-          type: val.type,
-        };
-        switch (type) {
-          case this.statisticalXType.AGENCY:
-            this.statisticalService
-              .getAll(Api.SELL.STATISTICAL.STATISTICAL_AGENCY, value)
-              .subscribe((value) => {
-                if (val) {
-                  this.statisticalAgency = value;
-                }
-              });
-            if (val.print) {
-              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT, value);
-            }
-            break;
-          case this.statisticalXType.CHICKEN_TYPE:
-            this.statisticalService
-              .getAll(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN, value)
-              .subscribe((value) => {
-                if (val) {
-                  this.statisticalChicken = value;
-                }
-              });
-            if (val.print) {
-              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CHICKEN_PRINT, value);
-            }
-            break;
-          case this.statisticalXType.PROVINCE:
-            this.statisticalService
-              .getAll(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE, value)
-              .subscribe((value) => {
-                if (value) {
-                  this.statisticalProvince = value;
-                }
-              });
-            if (val.print) {
-              this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT, value);
-            }
-        }
-        switch (val.type) {
-          case this.statisticalYType.CUSTOMER:
-            this.labelY = 'Khách hàng';
-            break;
-          case this.statisticalYType.REVENUE:
-            this.labelY = 'Doanh thu';
-            break;
-          default:
-            this.labelY = 'Số lượng';
-        }
-      }
 
+    this.onStatistical(this.filterOverview.AGENCY, {
+      option: OptionOverviewEnum.SALES
     });
   }
 
-  printCustomer(type: StatisticalYType) {
-    this.exportService.print(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER_PRINT, type);
+
+  onStatistical(type: FilterOverviewEnum, params: any) {
+    const value = {
+      startedAt: params.startedAt ,
+      endedAt: params.endedAt,
+      option: params.option
+    };
+    if(!params.startedAt){
+      delete value.startedAt
+      delete value.endedAt
+    }
+    switch (type) {
+      case this.filterOverview.AGENCY:
+        Object.assign(value, { filter: FilterOverviewEnum.AGENCY });
+        this.labelYAgency = this.setLabelY(params.option);
+        this.statisticalService
+          .getAll(Api.SELL.OVERVIEW, value)
+          .subscribe((value) => {
+            if (value) {
+              this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
+              this.statisticalAgency = value;
+            }
+          });
+        break;
+      case this.filterOverview.YEAR:
+        Object.assign(value, { filter: FilterOverviewEnum.YEAR });
+        this.labelYYear = this.setLabelY(params.option);
+        this.statisticalService
+          .getAll(Api.SELL.OVERVIEW, value)
+          .subscribe((value) => {
+            if (value) {
+              this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
+              this.statisticalYear = value;
+            }
+          });
+        break;
+      case this.filterOverview.NATION:
+        Object.assign(value, { filter: FilterOverviewEnum.NATION });
+        this.labelYProvince = this.setLabelY(params.option);
+        this.statisticalService
+          .getAll(Api.SELL.OVERVIEW, value)
+          .subscribe((value) => {
+            if (value) {
+
+              this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
+              this.statisticalProvince = value;
+            }
+          });
+    }
   }
 
-  statisticalCustomer(param: any) {
-    this.statisticalService
-      .getAll(Api.SELL.STATISTICAL.STATISTICAL_CUSTOMER, param)
-      .subscribe((value) => {
-        if (value) {
-          switch (param.type) {
-            case this.statisticalYType.POTENTIAL:
-              this.statisticalPotential = value;
-              this.statisticalPotential.forEach((val) => {
-                this.TotalPotential = this.TotalPotential + val.series[0].value;
-              });
-              break;
-            case this.statisticalYType.COMMODITY_DETAIL:
-              this.labelYCustomer = 'Số lượng gà';
-              this.statisticalCustomerData = value;
-              break;
-            case this.statisticalYType.DEBT:
-              this.labelYCustomer = 'Số Tiền';
-              this.statisticalDebt = value;
-              break;
-          }
-        }
-      });
+  printStatistical(url: any, params: any) {
+    this.exportService.print(url, params);
+  }
+
+  setLabelY(type: OptionOverviewEnum): string {
+    switch (type) {
+      case OptionOverviewEnum.CUSTOMER:
+        return 'Khách hàng';
+      case OptionOverviewEnum.SOLD:
+        return 'Gà bán';
+      case OptionOverviewEnum.SALES:
+        return 'Doanh thu';
+    }
   }
 }

@@ -32,6 +32,8 @@ export * from './searchType.enum';
 export * from './hr/filterType.enum';
 export * from './input-search.enum';
 export * from './hr/overviewFilter.enum';
+export * from './sell/overview.enum';
+
 
 
 

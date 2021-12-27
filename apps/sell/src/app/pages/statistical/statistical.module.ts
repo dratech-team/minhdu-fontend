@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { StatisticalComponent } from './container/statistical/statistical.component';
 import { StatisticalRoutingModule } from './statistical-routing.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
@@ -34,7 +34,9 @@ import { MainReducer } from '../../states/mainReducer';
     StatisticalComponent,
     PickStatisticalTypeComponent,
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
 })
 export class StatisticalModule {
 
