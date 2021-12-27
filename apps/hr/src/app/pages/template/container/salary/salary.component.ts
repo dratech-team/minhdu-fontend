@@ -9,7 +9,7 @@ import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-sala
 import { TemplateSalaryComponent } from '../../component/template-salary/template-salary.component';
 import {
   selectorAllTemplate,
-  selectTemplateAdding,
+  selectTemplateAdding, selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
 import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants';
@@ -21,6 +21,7 @@ import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants'
 export class SalaryComponent implements OnInit {
   adding$ = this.store.pipe(select(selectTemplateAdding));
   total$ = this.store.pipe(select(selectTotalTemplateSalary));
+  loaded$ = this.store.pipe(select(selectTemplateLoaded));
   templateSalaries$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;

@@ -17,7 +17,7 @@ import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import {
   selectorAllTemplate,
-  selectTemplateAdding,
+  selectTemplateAdding, selectTemplateLoaded,
   selectTotalTemplateOvertime
 } from '../../+state/template-overtime/template-overtime.selector';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
@@ -37,6 +37,7 @@ export class TemplateOvertimeComponent implements OnInit {
   pageTypeEnum = PageTypeEnum;
   adding$ = this.store.pipe(select(selectTemplateAdding));
   total$ = this.store.pipe(select(selectTotalTemplateOvertime));
+  loaded$= this.store.select(selectTemplateLoaded)
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   pageSize = 30;
