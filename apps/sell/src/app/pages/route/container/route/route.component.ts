@@ -15,6 +15,7 @@ import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
 import { MainAction } from '../../../../states/main.action';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -47,11 +48,13 @@ export class RouteComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedRouteLoaded));
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}))
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
     this.routes$.subscribe(val => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach(item => {
-        item.endedAt = new Date(item.endedAt);
+        if(item.endedAt){
+          item.endedAt = new Date(item.endedAt);
+        }
       });
     });
     this.store.dispatch(RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
@@ -92,7 +95,12 @@ export class RouteComponent implements OnInit {
   }
 
   deleteRoute($event: any) {
-    this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
+    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    ref.afterClosed().subscribe(value => {
+      if (value) {
+        this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
+      }
+    });
   }
 
   detailRoute(id: number) {
@@ -111,7 +119,7 @@ export class RouteComponent implements OnInit {
       bsx: val.bsx.trim(),
       garage: val.garage.trim()
     };
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng Tuyến đường',
@@ -119,6 +127,6 @@ export class RouteComponent implements OnInit {
         params: route,
         api: Api.SELL.ROUTE.ROUTE_EXPORT
       }
-    })
+    });
   }
 }

@@ -74,8 +74,8 @@
         <th *ngIf='!route.driver'>{{route?.employee?.lastName}}</th>
         <th>{{route?.bsx}}</th>
         <th>{{route?.garage}}</th>
-        <th *ngIf='route.endedAt.getTime() < today '>Hoàn thành</th>
-        <th *ngIf='route.endedAt.getTime() >= today '>Đang chạy</th>
+        <th *ngIf='route.endedAt &&  route.endedAt.getTime() < today '>Hoàn thành</th>
+        <th *ngIf='!route.endedAt ||  route.endedAt.getTime() >= today '>Đang chạy</th>
       </tr>
       <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
         <td colspan='10' class='position-relative font-weight-bold font-lg'>

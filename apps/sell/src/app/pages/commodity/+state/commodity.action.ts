@@ -45,9 +45,14 @@ export const updateCommodity = createAction(
   '[UPDATE_COMMODITY] Update Commodity',
   props<{ id: number, commodity: any }>()
 );
+
 export const deleteCommodity = createAction(
   '[DELETE_COMMODITY] Delete Commodity',
   props<{ id: number, orderId?: number }>()
+);
+
+export const resetStateCommodityNewAdd = createAction(
+  '[UPDATE_STATE_COMMODITY] Reset State Commodity',
 );
 export const CommodityAction = {
   loadAllCommodities,
@@ -60,5 +65,6 @@ export const CommodityAction = {
   getCommodity,
   getCommoditySuccess,
   updateCommodity,
-  deleteCommodity
+  deleteCommodity,
+  resetStateCommodityNewAdd
 };

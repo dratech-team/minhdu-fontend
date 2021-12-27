@@ -41,6 +41,11 @@ export const selectedLoaded = createSelector(
   (state) => state.loaded
 )
 
+export const selectedCommodityNewAdd = createSelector(
+  selectorCommodityState,
+  (state) => state.commodityNewAdd
+)
+
 export const selectedTotalCommodity= createSelector(
   selectorCommodityState,
   (state) => state.total

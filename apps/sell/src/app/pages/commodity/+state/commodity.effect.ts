@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 import { OrderAction } from '../../order/+state/order.action';
 import { select, Store } from '@ngrx/store';
 import { selectorTotalCommodityInStore } from './commodity.selector';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class CommodityEffect {
@@ -15,7 +16,8 @@ export class CommodityEffect {
       ofType(CommodityAction.addCommodity),
       switchMap((props) => this.commodityService.addOne(props.commodity).pipe(
         map(commodity => {
-            return CommodityAction.addCommoditySuccess({commodity:commodity });
+            this.snackbar.open('Thêm hàng hóa thành công', '', { duration: 1500 });
+            return CommodityAction.addCommoditySuccess({ commodity: commodity });
           }
         ),
         catchError((err) => throwError(err))
@@ -26,10 +28,14 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.loadAllCommodities),
       switchMap((_) => this.commodityService.pagination()),
-      map((ResponsePaginate) => CommodityAction.loadInitSuccess({
-        commodity: ResponsePaginate.data,
-        total: ResponsePaginate.total
-      })),
+      map((ResponsePaginate) => {
+          this.snackbar.open('Tải hàng hóa thành công', '', { duration: 1500 });
+          return CommodityAction.loadInitSuccess({
+            commodity: ResponsePaginate.data,
+            total: ResponsePaginate.total
+          });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -56,10 +62,17 @@ export class CommodityEffect {
         })
       ),
       switchMap((params) => this.commodityService.pagination(params)),
-      map((ResponsePaginate) => CommodityAction.loadMoreCommoditySuccess({
-        commodity: ResponsePaginate.data,
-        total: ResponsePaginate.total
-      })),
+      map((ResponsePaginate) => {
+        this.snackbar.open( ResponsePaginate.data.length > 0 ?
+          'Tải hàng hóa thành công' :
+          'Đã tải hết hành hóa'
+          , '', { duration: 1500 });
+          return CommodityAction.loadMoreCommoditySuccess({
+            commodity: ResponsePaginate.data,
+            total: ResponsePaginate.total
+          });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -68,7 +81,10 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.getCommodity),
       switchMap((props) => this.commodityService.getOne(props.id)),
-      map((commodity) => CommodityAction.getCommoditySuccess({ commodity: commodity })),
+      map((commodity) => {
+          return CommodityAction.getCommoditySuccess({ commodity: commodity });
+        }
+      ),
       catchError((err) => throwError(err))
     )
   );
@@ -77,7 +93,11 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.updateCommodity),
       switchMap((props) => this.commodityService.update(props.id, props.commodity).pipe(
-        map(_ => CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } })),
+        map(_ => {
+            this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
+            return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
+          }
+        ),
         catchError((err) => throwError(err))
       ))
     )
@@ -88,6 +108,7 @@ export class CommodityEffect {
       ofType(CommodityAction.deleteCommodity),
       switchMap((props) => this.commodityService.delete(props.id).pipe(
         map(_ => {
+            this.snackbar.open('Xóa hàng hóa thành công', '', { duration: 1500 });
             if (props.orderId) {
               return OrderAction.getOrder({ id: props.orderId });
             } else {
@@ -103,6 +124,7 @@ export class CommodityEffect {
   constructor(
     private readonly action: Actions,
     private readonly store: Store,
+    private readonly snackbar: MatSnackBar,
     private readonly commodityService: CommodityService
   ) {
   }

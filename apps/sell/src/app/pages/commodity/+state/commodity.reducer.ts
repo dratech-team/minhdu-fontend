@@ -7,7 +7,8 @@ import { CommodityAction } from './commodity.action';
 export interface CommodityState extends EntityState<Commodity> {
   loaded: boolean,
   selectedCommodityId: number,
-  total: number
+  total: number,
+  commodityNewAdd?: Commodity
 }
 
 export const adapter: EntityAdapter<Commodity> = createEntityAdapter<Commodity>();
@@ -26,8 +27,13 @@ export const CommodityReducer = createReducer(
   on(CommodityAction.getCommoditySuccess, (state, action) =>
     adapter.upsertOne(action.commodity, { ...state, loaded: true })),
 
-  on(CommodityAction.addCommoditySuccess, (state, action) =>
-    adapter.upsertOne(action.commodity, { ...state, loaded: true }))
+  on(CommodityAction.addCommoditySuccess, (state, action) => {
+      return adapter.upsertOne(action.commodity, { ...state, loaded: true, commodityNewAdd: action.commodity });
+    }
+  ),
+  on(CommodityAction.resetStateCommodityNewAdd, (state, _) => {
+    return { ...state, commodityNewAdd: null };
+  })
 );
 export const {
   selectEntities,

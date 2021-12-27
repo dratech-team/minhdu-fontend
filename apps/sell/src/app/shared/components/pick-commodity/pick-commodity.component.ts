@@ -8,7 +8,11 @@ import { PickCommodityService } from './pick-commodity.service';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { CommodityAction, loadInit } from '../../../pages/commodity/+state/commodity.action';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { selectAllCommodity, selectedTotalCommodity } from '../../../pages/commodity/+state/commodity.selector';
+import {
+  selectAllCommodity,
+  selectedCommodityNewAdd,
+  selectedTotalCommodity
+} from '../../../pages/commodity/+state/commodity.selector';
 import { EmployeeAction, selectorTotalEmployee } from '@minhdu-fontend/employee';
 import { Employee } from '@minhdu-fontend/data-models';
 import { debounceTime } from 'rxjs/operators';
@@ -19,6 +23,7 @@ import {
   pickOne,
   someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
+import { objectKeys } from '@angular-eslint/eslint-plugin/dist/utils/utils';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -60,6 +65,11 @@ export class PickCommodityComponent implements OnInit {
     if (this.data?.commoditiesPicked) {
       this.commoditiesSelected = [...this.data?.commoditiesPicked];
     }
+    this.store.select(selectedCommodityNewAdd).subscribe(val => {
+      if(val){
+        this.commoditiesSelected.push(val)
+      }
+    })
     this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } }));
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe(val => {
       this.isEventSearch = true;
@@ -90,16 +100,11 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-   const ref = this.dialog.open(CommodityDialogComponent, { width: '40%' });
-   ref.afterClosed().subscribe(val => {
-     if(val){
-       this.commoditiesSelected.push(val)
-     }
-   })
+    const ref = this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 
   deleteCommodity($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '35%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
@@ -112,17 +117,17 @@ export class PickCommodityComponent implements OnInit {
   }
 
   updateAllSelect(commodity: Commodity) {
-    this.isSelectAll = pickOne(commodity, this.commoditiesSelected, this.commodities).isSelectAll
+    this.isSelectAll = pickOne(commodity, this.commoditiesSelected, this.commodities).isSelectAll;
     this.checkEvent.emit(this.commoditiesSelected);
   }
 
   someComplete(): boolean {
-    return someComplete(this.commodities, this.commoditiesSelected, this.isSelectAll)
+    return someComplete(this.commodities, this.commoditiesSelected, this.isSelectAll);
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    pickAll(select, this.commodities, this.commoditiesSelected)
+    pickAll(select, this.commodities, this.commoditiesSelected);
     this.checkEvent.emit(this.commoditiesSelected);
   }
 
@@ -136,6 +141,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   closeDialog() {
+    this.store.dispatch(CommodityAction.resetStateCommodityNewAdd())
     this.dialogRef.close(this.commoditiesSelected);
   }
 
