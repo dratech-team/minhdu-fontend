@@ -33,6 +33,7 @@ export const Api = {
     },
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',
+    OVERVIEW : 'overview/hr'
   },
   SELL: {
     STATISTICAL:{

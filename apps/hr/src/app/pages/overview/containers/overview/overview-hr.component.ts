@@ -4,63 +4,33 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { MatDialog } from '@angular/material/dialog';
 import { StatisticalEmployeeComponent } from '../../components/dialog-statistical-employee/statistical-employee.component';
+import { OverviewService } from '../../service/overview.service';
+import { OverviewFilterEnum } from '@minhdu-fontend/enums';
+import { Chart, stakedChart } from '@minhdu-fontend/data-models';
 
 @Component({
   selector: 'app-overview-hr',
   templateUrl: 'overview.component.html'
 })
 export class OverviewHrComponent implements OnInit {
-  data = [
-    {
-      'name': 'Germany',
-      'value': 8940000
-    },
-    {
-      'name': 'USA',
-      'value': 5000000
-    }
-  ];
-  multi = [
-    {
-      'name': 'Germany',
-      'series': [
-        {
-          'name': '2010',
-          'value': 7300000
-        }
-      ]
-    },
-
-    {
-      'name': 'USA',
-      'series': [
-        {
-          'name': '2010',
-          'value': 7870000
-        }
-      ]
-    },
-
-    {
-      'name': 'France',
-      'series': [
-        {
-          'name': '2010',
-          'value': 5000002
-        }
-      ]
-    }
-  ];
+  overviewAgeEmployee: Chart [] = [];
+  overviewTotalEmployee:stakedChart [] = [];
 
   constructor(
     private readonly store: Store<AppState>,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly overviewService: OverviewService
   ) {
 
   }
 
   ngOnInit() {
-
+    this.overviewService.overviewAge({ filter: OverviewFilterEnum.AGE }).subscribe(val => {
+      this.overviewAgeEmployee = val;
+    });
+    this.overviewService.overviewTotalEmp({ filter: OverviewFilterEnum.CREATED_AT }).subscribe(val => {
+      this.overviewTotalEmployee = val;
+    });
   }
 
   statisticalEmployee() {

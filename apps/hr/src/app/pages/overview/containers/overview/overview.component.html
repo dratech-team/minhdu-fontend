@@ -16,7 +16,7 @@
         <div class='mx-auto' style='width: fit-content ; position: relative'>
           <app-pie-chart class='mt-1'
                          [view]='[600,450]'
-                         [data]='data'
+                         [data]='overviewAgeEmployee'
           ></app-pie-chart>
         </div>
       </div>
@@ -39,7 +39,7 @@
                                      [labelX]='"Năm"'
                                      [labelY]='"Nhân viên"'
                                      [legend]='true'
-                                     [data]='multi'
+                                     [data]='overviewTotalEmployee'
           ></app-staked-vertical-chart>
         </div>
       </div>
