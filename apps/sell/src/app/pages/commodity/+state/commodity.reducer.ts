@@ -24,6 +24,9 @@ export const CommodityReducer = createReducer(
     adapter.addMany(action.commodity, { ...state, loaded: true, total: action.total })),
 
   on(CommodityAction.getCommoditySuccess, (state, action) =>
+    adapter.upsertOne(action.commodity, { ...state, loaded: true })),
+
+  on(CommodityAction.addCommoditySuccess, (state, action) =>
     adapter.upsertOne(action.commodity, { ...state, loaded: true }))
 );
 export const {

@@ -14,7 +14,10 @@ export class CommodityEffect {
     this.action.pipe(
       ofType(CommodityAction.addCommodity),
       switchMap((props) => this.commodityService.addOne(props.commodity).pipe(
-        map(_ => CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } })),
+        map(commodity => {
+            return CommodityAction.addCommoditySuccess({commodity:commodity });
+          }
+        ),
         catchError((err) => throwError(err))
       ))
     ));

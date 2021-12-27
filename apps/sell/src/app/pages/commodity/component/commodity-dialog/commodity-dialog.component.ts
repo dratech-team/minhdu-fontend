@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
@@ -17,6 +17,7 @@ export class CommodityDialogComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store<AppState>,
+    private readonly dialogRef: MatDialogRef<CommodityDialogComponent>,
   ) {
   }
   ngOnInit() {
@@ -48,5 +49,6 @@ export class CommodityDialogComponent implements OnInit{
     }else{
       this.store.dispatch(CommodityAction.addCommodity({commodity: commodity}))
     }
+    this.dialogRef.close()
   }
 }

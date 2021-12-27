@@ -90,7 +90,12 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' });
+   const ref = this.dialog.open(CommodityDialogComponent, { width: '40%' });
+   ref.afterClosed().subscribe(val => {
+     if(val){
+       this.commoditiesSelected.push(val)
+     }
+   })
   }
 
   deleteCommodity($event: any) {

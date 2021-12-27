@@ -19,7 +19,7 @@ export class RouteDialogComponent implements OnInit {
   orders: Order[] = [];
   orderIdsOfRoute: Order[] = [];
   isSelectAll = false;
-
+  tabIndex = 0
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -31,6 +31,9 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.data?.selectOrder){
+      this.tabIndex = 1
+    }
     this?.data?.route?.orders.forEach((val: Order) => this.orderIdsOfRoute.push(val));
     this.formGroup = this.formBuilder.group({
       name: [this.data?.route?.name, Validators.required],
@@ -69,7 +72,7 @@ export class RouteDialogComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver,
       garage: val.garage,
-      orderIds: this.orderIdsOfRoute
+      orderIds: this.orderIdsOfRoute.map(item => item.id)
     };
     if (this.data) {
       this.store.dispatch(RouteAction.updateRoute({ route: route, id: this.data.route.id }));
@@ -77,5 +80,14 @@ export class RouteDialogComponent implements OnInit {
       this.store.dispatch(RouteAction.addRoute({ route: route }));
     }
     this.dialogRef.close();
+  }
+
+  nextTab(tab: any) {
+    this.tabIndex = tab._selectedIndex + 1;
+
+  }
+
+  previousTab(tab: any) {
+    this.tabIndex = tab._selectedIndex - 1;
   }
 }
