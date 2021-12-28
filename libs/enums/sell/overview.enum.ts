@@ -1,7 +1,7 @@
 export enum FilterOverviewEnum {
   NATION = 'NATION',
   YEAR = 'YEAR',
-  AGENCY = 'AGENCY'
+  CUSTOMER = 'CUSTOMER'
 }
 
 export enum OptionOverviewEnum {
