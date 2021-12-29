@@ -1,15 +1,15 @@
 import {
-  HttpClient, HttpErrorResponse,
+  HttpClient,
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthActions, AuthState } from '@minhdu-fontend/auth';
-import { Api } from '@minhdu-fontend/constants';
 import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -21,8 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly http: HttpClient
-  ) {
-  }
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -41,24 +40,33 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if ([403].indexOf(err.status) !== -1) {
           this.router.navigate(['/he-thong/han-che-truy-cap']).then();
         }
-        if (err instanceof HttpErrorResponse && err.error instanceof Blob && err.error.type === 'application/json') {
-          return new Promise<any>((resolve, reject) => {
+        if (
+          err instanceof HttpErrorResponse &&
+          err.error instanceof Blob &&
+          err.error.type === 'application/json'
+        ) {
+          return new Promise<any>((_, reject) => {
             let reader = new FileReader();
             reader.onload = (e: Event) => {
               try {
                 const errMsg = JSON.parse((<any>e.target).result);
-                reject(new HttpErrorResponse({
-                  error: errMsg,
-                  headers: err.headers,
-                  status: err.status,
-                  statusText: err.statusText
-                }));
-                this.snackBar.open('[ FAILURE ]  ' + errMsg.message, 'Đóng', { panelClass: 'ddd' });
+                reject(
+                  new HttpErrorResponse({
+                    error: errMsg,
+                    headers: err.headers,
+                    status: err.status,
+                    statusText: err.statusText,
+                  })
+                );
+                this.snackBar.open('[ FAILURE ]  ' + errMsg.message, '', {
+                  panelClass: 'ddd',
+                  duration: 3000,
+                });
               } catch (e) {
                 reject(err);
               }
             };
-            reader.onerror = (e) => {
+            reader.onerror = () => {
               reject(err);
             };
             reader.readAsText(err.error);
@@ -67,9 +75,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         const error =
           err?.error?.message ||
           'Lỗi từ server. Vui lòng liên hệ kỹ thuật để được hỗ trợ';
-        this.snackBar.open('[ FAILURE ]  ' + error, 'Đóng', { panelClass: 'ddd' });
+        this.snackBar.open('[ FAILURE ]  ' + error, '', {
+          panelClass: 'ddd',
+          duration: 3000,
+        });
         return throwError(error);
-
 
         /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook. Tắt vpn để error rơi vào case này
         // this.http
