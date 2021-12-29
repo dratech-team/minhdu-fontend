@@ -21,7 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { environmentAppWarehouse } from '../environments/environment';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { environmentAppWarehouse } from '../environments/environment';
     BrowserModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-      logOnly: environmentAppWarehouse.production, // Restrict extension to log-only mode
+      logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([]),
