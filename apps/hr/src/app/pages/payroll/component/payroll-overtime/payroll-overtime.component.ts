@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   Api,
   SearchTypeConstant,
-  UnitsConstant
+  UnitsConstant,
 } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
@@ -15,7 +15,7 @@ import {
   FilterTypeEnum,
   Gender,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum,
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -32,19 +32,19 @@ import {
   selectedPositionPayroll,
   selectedTotalOvertimePayroll,
   selectedTotalPayroll,
-  selectorAllPayroll
+  selectorAllPayroll,
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import {
   getAllPosition,
-  PositionActions
+  PositionActions,
 } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 import {
   getFirstDayInMonth,
-  getLastDayInMonth
+  getLastDayInMonth,
 } from '../../../../../../../../libs/utils/daytime.until';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
@@ -355,6 +355,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
   updateMultipleSalaryOvertime(): any {
     const uniq = _.uniqWith(this.mapSalary(this.salariesSelected), _.isEqual);
+    console.log(uniq, this.mapSalary(this.salariesSelected));
     if (uniq.length === 1) {
       if (!this.salariesSelected[0].salary.unit) {
         return this.snackbar.open(
@@ -406,6 +407,17 @@ export class PayrollOvertimeComponent implements OnInit {
       const uniqPrice = [...new Set(uniq.map(({ price }) => price))];
       const uniqUnit = [...new Set(uniq.map(({ unit }) => unit))];
 
+      /// FIXME: Can validate allowance isEqual
+      // const uniqAllowance = [
+      //   ...new Set(uniq.map(({ allowance }) => allowance)),
+      // ];
+
+      // ${
+      //   uniqAllowance.length > 1
+      //     ? 'phụ cấp tăng ca: ' + uniqAllowance.join(', ') + ', '
+      //     : ''
+      // }
+
       this.snackbar.open(
         `Sửa đổi hàng loạt phải giống nhau về Loại tăng ca, đơn vị tính, đơn giá và ngày tăng ca. Mục đang bị sai: 
          ${
@@ -428,6 +440,7 @@ export class PayrollOvertimeComponent implements OnInit {
     }
   }
 
+  /// FIXME: Can validate allowance isEqual
   mapSalary = (salaries: any[]) =>
     salaries.map(({ salary }) => ({
       title: salary.title,
@@ -437,6 +450,10 @@ export class PayrollOvertimeComponent implements OnInit {
       rate: salary.rate,
       type: salary.type,
       unit: salary.unit,
+      // allowance: {
+      //   title: salary?.allowance?.title,
+      //   price: salary?.allowance?.price,
+      // },
     }));
 
   deleteMultipleSalaryOvertime(): any {
