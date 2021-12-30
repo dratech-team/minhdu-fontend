@@ -306,7 +306,7 @@ export class PayrollBasicComponent implements OnInit {
         }
       });
     } else {
-      this.snackbar.open('chưa chọn cùng loại  lương', 'Đóng');
+      this.snackbar.open('chưa chọn cùng loại lương', 'Đóng');
     }
   }
 
