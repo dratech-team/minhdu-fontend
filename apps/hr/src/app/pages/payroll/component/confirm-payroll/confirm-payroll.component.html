@@ -45,6 +45,10 @@
             <span class='font-weight-bold col-4'>Lương tháng: </span>
             <span class='col-8'>{{data.payroll.createdAt|date:'MM/yyyy'}}</span>
           </div>
+          <div class=' row mt-1'>
+            <span class='font-weight-bold col-4'>Ngày xác nhận: </span>
+            <span class='col-8'>{{data.payroll.accConfirmedAt | date:'dd/MM/yyyy'}}</span>
+          </div>
         </div>
         <div class=' col-6 d-flex flex-column'>
           <div class=' row mt-1 d-flex'>

@@ -2,24 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { ConvertBoolean, MenuEnum, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
+import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
+import {
+  ConvertBoolean,
+  MenuEnum,
+  PaymentType,
+  StatusOrder
+} from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
-import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
-import { selectorAllOrders, selectedOrderLoaded } from '../../+state/order.selector';
+import {
+  selectedOrderLoaded, selectorAllOrders
+} from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
-import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
-import { CurrenciesConstant } from '@minhdu-fontend/constants';
 import { MainAction } from '../../../../states/main.action';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 
 @Component({
-  templateUrl: 'order.component.html'
+  templateUrl: 'order.component.html',
 })
 export class OrderComponent implements OnInit {
   pageTypeEnum = PageTypeEnum;
@@ -33,11 +38,11 @@ export class OrderComponent implements OnInit {
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
-    deliveredAt: new FormControl(''),
+    status: new FormControl(0),
     explain: new FormControl(''),
     createdAt: new FormControl(''),
     commodityTotal: new FormControl(''),
-    destination: new FormControl('')
+    destination: new FormControl(''),
   });
 
   constructor(
@@ -45,20 +50,25 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly exportService: ExportService
-  ) {
-  }
+  ) {}
 
   orders$ = this.store.pipe(select(selectorAllOrders));
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
 
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
-    this.store.dispatch(OrderAction.loadInit({ orderDTO:{take: this.pageSize, skip: this.pageIndexInit} }));
+    this.store.dispatch(
+      OrderAction.loadInit({
+        orderDTO: { take: this.pageSize, skip: this.pageIndexInit },
+      })
+    );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(OrderAction.loadInit({orderDTO: this.order(val)}));
+          this.store.dispatch(
+            OrderAction.loadInit({ orderDTO: this.order(val) })
+          );
         })
       )
       .subscribe();
@@ -71,7 +81,7 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      OrderAction.loadMoreOrders({orderDTO: this.order(val)})
+      OrderAction.loadMoreOrders({ orderDTO: this.order(val) })
     );
   }
 
@@ -85,9 +95,7 @@ export class OrderComponent implements OnInit {
       commodityTotal: val.commodityTotal,
       explain: val.explain.trim(),
       createdAt: val.createdAt.trim(),
-      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED ?
-        this.convertBoolean.TRUE :
-        this.convertBoolean.FALSE
+      status: val.status,
     };
   }
 
@@ -98,7 +106,7 @@ export class OrderComponent implements OnInit {
   UpdateOrder($event: any) {
     this.dialog.open(OrderDialogComponent, {
       width: '60%',
-      data: { order: $event, type: 'DELIVERED' }
+      data: { order: $event, type: 'DELIVERED' },
     });
   }
 
@@ -115,18 +123,19 @@ export class OrderComponent implements OnInit {
       commodityTotal: val.commodityTotal.trim(),
       explain: val.explain.trim(),
       createdAt: val.createdAt.trim(),
-      deliveredAt: val.deliveredAt === this.statusOrder.DELIVERED ?
-        this.convertBoolean.TRUE :
-        this.convertBoolean.FALSE
+      deliveredAt:
+        val.deliveredAt === this.statusOrder.DELIVERED
+          ? this.convertBoolean.TRUE
+          : this.convertBoolean.FALSE,
     };
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuất bảng đơn hàng',
         exportType: 'ORDER',
         params: order,
-        api: Api.SELL.ORDER.ORDER_EXPORT
-      }
-    })
+        api: Api.SELL.ORDER.ORDER_EXPORT,
+      },
+    });
   }
 }
