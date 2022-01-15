@@ -1,8 +1,12 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -14,22 +18,20 @@ import { PieChartComponent } from './chart/pie-chart/pie-chart-component';
 import { StakedVerticalChartComponent } from './chart/staked-vertical-bar-chart/staked-vertical-chart.component';
 import { SwimLaneChartComponent } from './chart/swimlane-chart/swim-lane-chart.component';
 import { DevelopmentComponent } from './development/development.component';
+import { DialogDatePickerComponent } from './dialog-datepicker/dialog-datepicker.component';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
+import { DialogExportComponent } from './dialog-export/dialog-export.component';
+import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
 import { InputCurrencyDirective } from './directive/input-currency.directive';
+import { MouseRightChipPositionComponent } from './mouse-right-position-of-branch/mouse-right-chip-position.component';
 import { MouseRightComponent } from './mouse-right/mouse-right.component';
 import { PickLocationComponent } from './pick-location/pick-location.component';
 import { NotEmptyPipe } from './pipes/notEmty.pipe';
 import { SearchEmployeePipe } from './pipes/searchEmployee.pipe';
-import { SnackBarComponent } from './snackBar/snack-bar.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 import { TransformPipe } from './pipes/transform.pipe';
-import { DialogSharedComponent } from './dialog-shared/dialog-shared.component';
-import { MouseRightChipPositionComponent } from './mouse-right-position-of-branch/mouse-right-chip-position.component';
-import { DialogExportComponent } from './dialog-export/dialog-export.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ShowAlertComponent } from './show-alert/show-alert.component';
+import { SnackBarComponent } from './snackBar/snack-bar.component';
 
 @NgModule({
   imports: [
@@ -47,7 +49,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSelectModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -66,9 +69,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     TransformPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
-    DialogExportComponent
+    DialogExportComponent,
+    DialogDatePickerComponent
   ],
-  providers: [DecimalPipe],
+  providers: [DecimalPipe, MatDatepickerModule],
   exports: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -86,7 +90,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     TransformPipe,
     DialogSharedComponent,
     MouseRightChipPositionComponent,
-    DialogExportComponent
+    DialogExportComponent,
+    DialogDatePickerComponent
   ],
 })
 export class ComponentsModule {}

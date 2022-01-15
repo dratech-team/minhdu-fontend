@@ -11,6 +11,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
+import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
@@ -104,8 +105,7 @@ export class OrderComponent implements OnInit {
   }
 
   UpdateOrder($event: any) {
-    this.dialog.open(OrderDialogComponent, {
-      width: '60%',
+    this.dialog.open(DialogDatePickerComponent, {
       data: { order: $event, type: 'DELIVERED' },
     });
   }

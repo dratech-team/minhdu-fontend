@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import {  OrderRoutingModule } from './order-routing.module';
+import { OrderRoutingModule } from './order-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { OrderAssignedReducer, OrderReducer } from './+state/order.reducer';
@@ -13,7 +13,11 @@ import { OrderComponent } from './container/order/order.component';
 import { DetailOrderComponent } from './container/detail-order/detail-order.component';
 import { OrderDialogComponent } from './component/order-dialog/order-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CustomerModule } from '../customer/customer.module';
@@ -28,9 +32,11 @@ import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar'
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -56,7 +62,7 @@ import { MainReducer } from '../../states/mainReducer';
     MatAutocompleteModule,
     RouteModule,
     SharedModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
   ],
   declarations: [
     TableRouteComponent,
@@ -66,14 +72,12 @@ import { MainReducer } from '../../states/mainReducer';
     OrderDialogComponent,
     AddOrderComponent,
   ],
-  exports: [
-
-  ],
+  exports: [],
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    DatePipe]
+    DatePipe,
+    MatDatepickerModule
+  ],
 })
-export class OrderModule{
-
-}
+export class OrderModule {}
