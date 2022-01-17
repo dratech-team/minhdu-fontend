@@ -8,7 +8,7 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
 import { selectorAllPayment } from '../../+state/payment/payment.selector';
 import { PaymentAction } from '../../+state/payment/payment.action';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { ItemContextMenu } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
@@ -19,7 +19,7 @@ import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.compone
 })
 
 export class TablePaymentComponent implements OnInit {
-  pageTypeEnum = PageTypeEnum;
+  pageTypeEnum = ItemContextMenu;
   formGroup = new FormGroup(
     {
       name: new FormControl(''),

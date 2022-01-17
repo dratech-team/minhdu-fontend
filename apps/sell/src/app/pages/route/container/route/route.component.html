@@ -90,6 +90,7 @@
 </ng-template>
 <app-mouse-right
   #child (addEvent)='add()'
+  [items]="[ItemContextMenu.ENDED_AT]"
   (deleteEvent)='deleteRoute($event)'
   (readEvent)='detailRoute($event)'
 >

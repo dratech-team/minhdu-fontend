@@ -14,7 +14,7 @@ import { select, Store } from '@ngrx/store';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { PaidType } from 'libs/enums/paidType.enum';
-import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
+import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
 import {
@@ -28,7 +28,7 @@ import { MainAction } from '../../../../states/main.action';
   templateUrl: 'order.component.html',
 })
 export class OrderComponent implements OnInit {
-  pageTypeEnum = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
   currenciesConstant = CurrenciesConstant;

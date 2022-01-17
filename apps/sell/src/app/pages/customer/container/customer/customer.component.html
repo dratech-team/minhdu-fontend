@@ -5,136 +5,112 @@
 </div>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else customer' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #customer>
-  <div class='table-scroll mx-auto my-5' style='width: 96%;'
-       infiniteScroll
-       [infiniteScrollDistance]='0.1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       [alwaysCallback]='true'
-       (scrolled)='onScroll()'>
+  <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
+    [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true' (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' style='width: 2400px'>
       <thead>
-      <tr>
-        <th style='min-width: 300px'>
-          <div class=''>Tên khách hàng</div>
-          <input
-            formControlName='name'
-            class='form-control  '
-            type='text'
-            placeholder='Trần Gia Hiệu'
-          >
-        </th>
-        <th style='width: 150px'>
-          <div class=''>Ngày sinh</div>
-          <input formControlName='birthDay'
-                 class='form-control  '
-                 type='date'
-          >
-        </th>
-        <th>
-          <div class=''>Giới tính</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='gender'>
-            <option value='MALE'>Nam</option>
-            <option value='FEMALE'>Nữ</option>
-            <option value='OTHER'>Khác</option>
-            <option value=''>Tất cả</option>
-          </select>
-        </th>
-        <th style='width: 150px'>
-          <div class=''>Số điện thoại</div>
-          <input formControlName='phone'
-                 class='form-control  '
-                 type='tel'
-                 pattern='[0-9]{3} [0-9]{3} [0-9]{4}' maxlength='12'>
-        </th>
-        <th style='width: 150px'>
-          <div>Tiềm năng</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='isPotential'>
-            <option value='{{true}}'>Tìm năng</option>
-            <option value='{{false}}'>Không tìm năng</option>
-            <option value=''>Tất cả</option>
-          </select>
-        </th>
-        <th style='width: 200px'>
-          <div class=''>Quốc gia</div>
-          <input formControlName='nationId'
-                 class='form-control  '
-                 type='text'>
-        </th>
-        <th>
-          <div class=''>Nguồn khách hàng</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='resource'>
-            <option *ngFor='let item of resourceTypes ' [value]='item.type'>{{item.name}}</option>
-          </select>
-        </th>
-        <th>
-          <div class=''>Loại khách hàng</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required
-                  formControlName='customerType'>
-            <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
-            <option value='{{customerType.AGENCY}}'>Đại lý</option>
-            <option value=''>Tất cả</option>
-          </select>
-        </th>
-        <th>
-          <div class=''>Email</div>
-          <input formControlName='email'
-                 class='form-control  '
-                 type='text'>
-        </th>
-        <th>
-          <div class=''>Địa chỉ</div>
-          <input formControlName='address'
-                 class='form-control  '
-                 type='search'>
-        </th>
-        <th>
-          <div class=''>Chú thích</div>
-          <input formControlName='note'
-                 class='form-control '
-                 type='search'>
-        </th>
-      </tr>
+        <tr>
+          <th style='min-width: 300px'>
+            <div class=''>Tên khách hàng</div>
+            <input formControlName='name' class='form-control  ' type='text' placeholder='Trần Gia Hiệu'>
+          </th>
+          <th style='width: 150px'>
+            <div class=''>Ngày sinh</div>
+            <input formControlName='birthDay' class='form-control  ' type='date'>
+          </th>
+          <th>
+            <div class=''>Giới tính</div>
+            <select class='select border-top' style='width: 100%' matNativeControl required formControlName='gender'>
+              <option value='MALE'>Nam</option>
+              <option value='FEMALE'>Nữ</option>
+              <option value='OTHER'>Khác</option>
+              <option value=''>Tất cả</option>
+            </select>
+          </th>
+          <th style='width: 150px'>
+            <div class=''>Số điện thoại</div>
+            <input formControlName='phone' class='form-control  ' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
+              maxlength='12'>
+          </th>
+          <th style='width: 150px'>
+            <div>Tiềm năng</div>
+            <select class='select border-top' style='width: 100%' matNativeControl required
+              formControlName='isPotential'>
+              <option value='{{true}}'>Tìm năng</option>
+              <option value='{{false}}'>Không tìm năng</option>
+              <option value=''>Tất cả</option>
+            </select>
+          </th>
+          <th style='width: 200px'>
+            <div class=''>Quốc gia</div>
+            <input formControlName='nationId' class='form-control  ' type='text'>
+          </th>
+          <th>
+            <div class=''>Nguồn khách hàng</div>
+            <select class='select border-top' style='width: 100%' matNativeControl required formControlName='resource'>
+              <option *ngFor='let item of resourceTypes ' [value]='item.type'>{{item.name}}</option>
+            </select>
+          </th>
+          <th>
+            <div class=''>Loại khách hàng</div>
+            <select class='select border-top' style='width: 100%' matNativeControl required
+              formControlName='customerType'>
+              <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
+              <option value='{{customerType.AGENCY}}'>Đại lý</option>
+              <option value=''>Tất cả</option>
+            </select>
+          </th>
+          <th>
+            <div class=''>Email</div>
+            <input formControlName='email' class='form-control  ' type='text'>
+          </th>
+          <th>
+            <div class=''>Địa chỉ</div>
+            <input formControlName='address' class='form-control  ' type='search'>
+          </th>
+          <th>
+            <div class=''>Chú thích</div>
+            <input formControlName='note' class='form-control ' type='search'>
+          </th>
+        </tr>
       </thead>
       <tbody *ngIf='(customers$| async) as customers'>
-      <tr class='pointer' *ngFor='let customer of customers; let i = index' (click)='readAndUpdate(customer)'
+        <tr class='pointer' *ngFor='let customer of customers; let i = index' (click)='readAndUpdate(customer)'
           (contextmenu)='child.onContextMenu($event,customer)'>
-        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
-        <th>{{customer?.birthday| date:'dd/MM/yyyy'}}</th>
-        <th *ngIf='customer?.gender === genderType.MALE'> Nam</th>
-        <th *ngIf='customer?.gender === genderType.FEMALE'> Nữ</th>
-        <th *ngIf='customer?.gender === genderType.OTHER'> Khác</th>
-        <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
-        <th>
-          <input type='checkbox' disabled [checked]='customer.isPotential'>
-        </th>
-        <th>
-          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name : 'Chưa cập nhật'}}
-        </th>
-        <th>{{ customer.resource|transform: resourceTypes}}</th>
-        <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
-        <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
-        <th *ngIf='!customer?.type'> Chưa cập nhật</th>
-        <th>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</th>
-        <th>{{customer?.address}}</th>
-        <th> {{customer.note}}</th>
-      </tr>
-      <tr *ngIf='!customers || customers.length === 0 ' style='height:60vh; '>
-        <td colspan='15' class='position-relative font-weight-bold'>
-          <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
-             Hiện chưa có Khách hàng nào!
-          </span>
-        </td>
-      </tr>
+          <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
+          <th>{{customer?.birthday| date:'dd/MM/yyyy'}}</th>
+          <th *ngIf='customer?.gender === genderType.MALE'> Nam</th>
+          <th *ngIf='customer?.gender === genderType.FEMALE'> Nữ</th>
+          <th *ngIf='customer?.gender === genderType.OTHER'> Khác</th>
+          <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
+          <th>
+            <input type='checkbox' disabled [checked]='customer.isPotential'>
+          </th>
+          <th>
+            {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :
+            'Chưa cập nhật'}}
+          </th>
+          <th>{{ customer.resource|transform: resourceTypes}}</th>
+          <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
+          <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
+          <th *ngIf='!customer?.type'> Chưa cập nhật</th>
+          <th>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</th>
+          <th>{{customer?.address}}</th>
+          <th> {{customer.note}}</th>
+        </tr>
+        <tr *ngIf='!customers || customers.length === 0 ' style='height:60vh; '>
+          <td colspan='15' class='position-relative font-weight-bold'>
+            <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
+              Hiện chưa có Khách hàng nào!
+            </span>
+          </td>
+        </tr>
       </tbody>
 
     </table>
   </div>
 </ng-template>
 
-<app-mouse-right [type]='pageType.CUSTOMER'
-                 #child (addEvent)='add()'
-                 (deleteEvent)='deleteCustomer($event)'
-                 (payment)='payment($event)'
-                 (readEvent)='readAndUpdate($event)'>
+<app-mouse-right [items]='[ItemContextMenu.PAYMENT]' #child (addEvent)='add()' (deleteEvent)='deleteCustomer($event)'
+  (payment)='payment($event)' (readEvent)='readAndUpdate($event)'>
 </app-mouse-right>

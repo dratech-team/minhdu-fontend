@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ContextMenuService } from 'ngx-contextmenu';
-import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
+import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
 
 @Component({
   selector: 'app-mouse-right-chip-position',

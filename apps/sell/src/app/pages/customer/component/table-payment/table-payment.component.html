@@ -78,7 +78,7 @@
 <app-mouse-right
   (deleteEvent)='deletePayment($event.id)'
   (readEvent)='updatePayment($event)'
-  #child [type]='pageTypeEnum.PAYMENT_HISTORY'
+  #child [items]='[pageTypeEnum.PERMANENTLY]'
 >
 
 </app-mouse-right>

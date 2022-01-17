@@ -11,7 +11,7 @@ import { AccountManagementActions } from '../../+state/account-management/accoun
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from '../../../../../auth/src/lib/components/dialog-register.component/register.component';
 import { roleAppHR } from '@minhdu-fontend/constants';
-import { PageTypeEnum } from '../../../../../enums/sell/page-type.enum';
+import { ItemContextMenu } from '../../../../../enums/sell/page-type.enum';
 import { DialogDeleteComponent } from '../../../../../components/src/lib/dialog-delete/dialog-delete.component';
 import { AuthActions } from '@minhdu-fontend/auth';
 import { selectedTotalSystemHistory } from '../../+state/system-history/system-history/system-history.selectors';
@@ -34,7 +34,7 @@ export class AccountManagementContainer implements OnInit {
     createdAt: new FormControl('')
   });
   roleHr = roleAppHR;
-  pageTypeEnum = PageTypeEnum;
+  pageTypeEnum = ItemContextMenu;
 
   constructor(
     private readonly store: Store,

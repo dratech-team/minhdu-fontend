@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ContextMenuService } from 'ngx-contextmenu';
-import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
+import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
 
 @Component({
   selector: 'app-mouse-right',
@@ -8,8 +8,8 @@ import { PageTypeEnum } from '../../../../enums/sell/page-type.enum';
   styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
-  @Input() type?: PageTypeEnum;
-  pageType = PageTypeEnum;
+  @Input() items?: ItemContextMenu[];
+  ItemContextMenu = ItemContextMenu;
   @Output() addEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() permanentlyDeletedEvent = new EventEmitter();
@@ -22,7 +22,7 @@ export class MouseRightComponent {
   @Output() payroll = new EventEmitter();
   @Output() overtime = new EventEmitter();
   @Output() listPosition = new EventEmitter();
-  @Output() Update = new EventEmitter();
+  @Output() update = new EventEmitter();
 
   constructor(
     private contextMenuService: ContextMenuService
@@ -84,6 +84,6 @@ export class MouseRightComponent {
   }
 
   onUpdate(item: any) {
-    this.Update.emit(item);
+    this.update.emit(item);
   }
 }

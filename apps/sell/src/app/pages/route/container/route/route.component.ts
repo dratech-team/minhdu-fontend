@@ -18,6 +18,7 @@ import { DialogDeleteComponent } from '../../../../../../../../libs/components/s
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
+import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 
 @Component({
   templateUrl: 'route.component.html',
@@ -25,6 +26,7 @@ import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.
 export class RouteComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
+  ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
   statusRoute = StatusRoute;
   routes: Route[] = [];

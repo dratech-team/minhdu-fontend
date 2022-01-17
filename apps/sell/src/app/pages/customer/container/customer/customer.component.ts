@@ -7,7 +7,7 @@ import { ConvertBoolean, CustomerResource, CustomerType, Gender, MenuEnum } from
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
+import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../+state/customer/customer.action';
 import { selectedCustomerLoaded, selectorAllCustomer } from '../../+state/customer/customer.selector';
@@ -26,7 +26,7 @@ export class CustomerComponent implements OnInit{
   boolean = ConvertBoolean;
   resourceType = CustomerResource;
   resourceTypes = CustomerResourcesConstant;
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   genderType = Gender;
   orders?: Order;
   pageSize = 30;
