@@ -1,5 +1,5 @@
 <div class=' h3 mt-3 ml-5 '>
-  <span>Danh sách Tuyến đường</span>
+  <span>Danh sách tuyến đường</span>
 </div>
 <div class='d-flex justify-content-between mt-3  ml-5'>
   <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
@@ -56,7 +56,7 @@
       <tbody>
       <tr *ngFor='let route of routes'
           (click)='detailRoute(route.id)'
-          (contextmenu)='child.onContextMenu($event,route)' class='pointer'>
+          (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
         <th>{{route?.name}}</th>
         <th *ngIf='route.startedAt !== null'>
           {{route?.startedAt|date:'dd/MM/yyyy'}}

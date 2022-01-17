@@ -1,24 +1,26 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
+import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ExportService } from 'libs/service/export.service';
-import { document } from 'ngx-bootstrap/utils';
 import { debounceTime, tap } from 'rxjs/operators';
 import { RouteAction } from '../+state/route.action';
-import { selectorAllRoute, selectedRouteLoaded } from '../+state/Route.selector';
-import { AppState } from '../../../../reducers';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
 import { Route } from '../+state/route.interface';
-import { MainAction } from '../../../../states/main.action';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {
+  selectedRouteLoaded,
+  selectorAllRoute,
+} from '../+state/Route.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { AppState } from '../../../../reducers';
+import { MainAction } from '../../../../states/main.action';
+import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 
 @Component({
-  templateUrl: 'route.component.html'
+  templateUrl: 'route.component.html',
 })
 export class RouteComponent implements OnInit {
   pageSize = 30;
@@ -33,31 +35,31 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
-    statusRoute: new FormControl('')
+    statusRoute: new FormControl(''),
   });
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router,
-    private readonly exportService: ExportService
-  ) {
-  }
+    private readonly router: Router
+  ) {}
 
   routes$ = this.store.pipe(select(selectorAllRoute));
   loaded$ = this.store.pipe(select(selectedRouteLoaded));
 
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
-    this.routes$.subscribe(val => {
+    this.routes$.subscribe((val) => {
       this.routes = JSON.parse(JSON.stringify(val));
-      this.routes.forEach(item => {
-        if(item.endedAt){
+      this.routes.forEach((item) => {
+        if (item.endedAt) {
           item.endedAt = new Date(item.endedAt);
         }
       });
     });
-    this.store.dispatch(RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(
+      RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+    );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -70,15 +72,13 @@ export class RouteComponent implements OnInit {
 
   add() {
     this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
     });
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(
-      RouteAction.loadMoreRoutes(this.route(val))
-    );
+    this.store.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
   }
 
   route(val: any) {
@@ -90,13 +90,15 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim()
+      garage: val.garage.trim(),
     };
   }
 
   deleteRoute($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
-    ref.afterClosed().subscribe(value => {
+    const ref = this.dialog.open(DialogDeleteComponent, {
+      width: 'fit-content',
+    });
+    ref.afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
       }
@@ -104,9 +106,7 @@ export class RouteComponent implements OnInit {
   }
 
   detailRoute(id: number) {
-    this.router
-      .navigate(['tuyen-duong/chi-tiet-tuyen-duong', id])
-      .then();
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
   }
 
   printRouter() {
@@ -117,7 +117,7 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim()
+      garage: val.garage.trim(),
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -125,8 +125,8 @@ export class RouteComponent implements OnInit {
         title: 'Xuât bảng Tuyến đường',
         exportType: 'ORDER',
         params: route,
-        api: Api.SELL.ROUTE.ROUTE_EXPORT
-      }
+        api: Api.SELL.ROUTE.ROUTE_EXPORT,
+      },
     });
   }
 }
