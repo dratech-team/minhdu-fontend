@@ -32,6 +32,7 @@ import { TransformUnitPipe } from './pipes/transform-unit.pipe';
 import { TransformPipe } from './pipes/transform.pipe';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { SnackBarComponent } from './snackBar/snack-bar.component';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    BsDatepickerModule.forRoot(),
   ],
   declarations: [
     SwimLaneChartComponent,
