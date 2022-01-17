@@ -5,7 +5,7 @@
   <ng-template contextMenuItem let-item (execute)='delete($event.item)'>
     Xóa
   </ng-template>
-  <ng-template contextMenuItem let-item (execute)='onUpdate($event.item)'>
+  <ng-template contextMenuItem let-item (execute)='update($event.item)'>
     Sửa
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.PERMANENTLY)" contextMenuItem let-item
@@ -13,7 +13,7 @@
     Xóa vĩnh viễn
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.RESTORE)" contextMenuItem let-item
-    (execute)='onRestore($event.item)'>
+    (execute)='restore($event.item)'>
     khôi phục
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.DETAIL)" contextMenuItem let-item
@@ -37,11 +37,11 @@
     Hồ sơ
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.PAYROLL)" contextMenuItem let-item
-    (execute)='onPayroll($event.item)'>
+    (execute)='payroll($event.item)'>
     Bảng lương
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.OVERTIME)" contextMenuItem let-item
-    (execute)='onOvertime($event.item)'>
+    (execute)='overtime($event.item)'>
     Tăng ca
   </ng-template>
   <ng-template *ngIf="items?.includes(ItemContextMenu.POSITIONS)" contextMenuItem let-item

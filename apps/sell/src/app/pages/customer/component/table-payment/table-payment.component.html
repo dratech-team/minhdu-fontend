@@ -1,87 +1,64 @@
-<div class='fixTableHead mt-3'
-     style='width: 100%;
-         max-height: 32vh;'
-     infiniteScroll
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [infiniteScrollThrottle]='100'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'>
+<div class='fixTableHead mt-3' style='width: 100%;
+         max-height: 32vh;' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
+  [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()'>
   <table>
     <thead [formGroup]='formGroup'>
-    <tr>
-      <th>
-        <div >Ngày Thanh toán</div>
-        <input
-          formControlName='paidAt'
-          class='form-control '
-          type='date'>
-      </th>
-      <th>
-        <div >Số tiền thanh toán</div>
-        <input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th>
-        <div>Đơn vị</div>
-        <input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th>
-        <div >Loại thanh toán</div>
-        <input
-          [disabled]='true'
-          type='number'>
-      </th>
-      <th>
-        <div >Chú thích</div>
-        <input
-          [disabled]='true'
-          type='number'>
-      </th>
-    </tr>
+      <tr>
+        <th>
+          <div>Ngày Thanh toán</div>
+          <input formControlName='paidAt' class='form-control ' type='date'>
+        </th>
+        <th>
+          <div>Số tiền thanh toán</div>
+          <input [disabled]='true' type='number'>
+        </th>
+        <th>
+          <div>Đơn vị</div>
+          <input [disabled]='true' type='number'>
+        </th>
+        <th>
+          <div>Loại thanh toán</div>
+          <input [disabled]='true' type='number'>
+        </th>
+        <th>
+          <div>Chú thích</div>
+          <input [disabled]='true' type='number'>
+        </th>
+      </tr>
     </thead>
     <tbody *ngIf='(paymentHistories$|async) as paymentHistories'>
-    <tr class='pointer'  *ngFor='let paymentHistory of paymentHistories'  (click)='updatePayment(paymentHistory)'
-         (contextmenu)='child.onContextMenu($event,paymentHistory)'>
-      <th>
-        {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
-      </th>
-      <th >
-        {{paymentHistory.total|number:'1.0-0'|notEmpty:'0'}}
-      </th>
-      <th>
-       Việt nam đồng
-      </th>
-      <th  *ngIf='paymentHistory?.payType === payType.CASH'>
-        Tiền mặt
-      </th>
-      <th  *ngIf='paymentHistory?.payType === payType.TRANSFER'>
-        Chuyển khoản
-      </th>
-      <th>
-        {{paymentHistory?.note }}
-      </th>
-    </tr>
-    <tr *ngIf='!paymentHistories || paymentHistories.length === 0 ' style='height: 20vh'>
-      <td colspan='5' class='font-xl font-weight-bold position-relative '>
-        <span style='position: absolute; top: 40%; left: 40%'>
-           Hiện chưa có lịch sử thanh toán nào!
-        </span>
-      </td>
-    </tr>
+      <tr class='pointer' *ngFor='let paymentHistory of paymentHistories' (click)='updatePayment(paymentHistory)'
+        (contextmenu)='child.onContextMenu($event,paymentHistory)'>
+        <th>
+          {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
+        </th>
+        <th>
+          {{paymentHistory.total|number:'1.0-0'|notEmpty:'0'}}
+        </th>
+        <th>
+          Việt nam đồng
+        </th>
+        <th *ngIf='paymentHistory?.payType === payType.CASH'>
+          Tiền mặt
+        </th>
+        <th *ngIf='paymentHistory?.payType === payType.TRANSFER'>
+          Chuyển khoản
+        </th>
+        <th>
+          {{paymentHistory?.note }}
+        </th>
+      </tr>
+      <tr *ngIf='!paymentHistories || paymentHistories.length === 0 ' style='height: 20vh'>
+        <td colspan='5' class='font-xl font-weight-bold position-relative '>
+          <span style='position: absolute; top: 40%; left: 40%'>
+            Hiện chưa có lịch sử thanh toán nào!
+          </span>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
-<app-mouse-right
-  (deleteEvent)='deletePayment($event.id)'
-  (readEvent)='updatePayment($event)'
-  #child [items]='[pageTypeEnum.PERMANENTLY]'
->
+<app-mouse-right (onDel)='deletePayment($event.id)' (onDetail)='updatePayment($event)' #child
+  [items]='[pageTypeEnum.PERMANENTLY]'>
 
 </app-mouse-right>
-
-
-

@@ -108,5 +108,5 @@
   </div>
 </ng-template>
 
-<app-mouse-right #child [items]='[ItemContextMenu.DETAIL, ItemContextMenu.ENDED_AT]' (addEvent)='addOrder()' (readEvent)='detailOrder($event.id)'
+<app-mouse-right #child [items]='[ItemContextMenu.DETAIL, ItemContextMenu.ENDED_AT]' (addEvent)='addOrder()' (onDetail)='detailOrder($event.id)'
   (delivered)='UpdateOrder($event)'></app-mouse-right>
