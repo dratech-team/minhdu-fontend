@@ -7,7 +7,7 @@ import {
   ConvertBoolean,
   MenuEnum,
   PaymentType,
-  StatusOrder
+  StatusOrder,
 } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
 import {
   selectedOrderLoaded,
-  selectorAllOrders
+  selectorAllOrders,
 } from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
@@ -109,13 +109,15 @@ export class OrderComponent implements OnInit {
       .open(DialogDatePickerComponent)
       .afterClosed()
       .subscribe((deliveredAt) => {
-        this.store.dispatch(
-          OrderAction.updateOrder({
-            order: { deliveredAt },
-            id: $event.id,
-            typeUpdate: 'DELIVERED',
-          })
-        );
+        if (deliveredAt) {
+          this.store.dispatch(
+            OrderAction.updateOrder({
+              order: { deliveredAt },
+              id: $event.id,
+              typeUpdate: 'DELIVERED',
+            })
+          );
+        }
       });
   }
 

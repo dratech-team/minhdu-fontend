@@ -4,97 +4,84 @@
 <div class='d-flex justify-content-between mt-3  ml-5'>
   <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
   <a (click)='printRouter()' target='_blank' download='data.xlsx'
-     class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
+    class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
 </div>
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
 <ng-template #route>
-  <div class='table-scroll mx-auto border-top my-5' style='width: 96%'
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'>
+  <div class='table-scroll mx-auto border-top my-5' style='width: 96%' infiniteScroll [alwaysCallback]='true'
+    [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
     <table [formGroup]='formGroup'>
       <thead>
-      <tr>
-        <th style='min-width: 200px'>
-          <div>Tên Tuyến đường</div>
-          <input formControlName='name' class='form-control' type='text' placeholder=''>
-        </th>
-        <th>
-          <div class=''>Ngày bắt đầu</div>
-          <input formControlName='startedAt' class=' form-control' type='date'>
-        </th>
-        <th>
-          <div class=''>Ngày Kết thúc</div>
-          <input formControlName='endedAt' class='form-control' type='date'>
-        </th>
-        <th>
-          <div class=''>Tên Tài xế</div>
-          <input formControlName='driver' class=' form-control' type='text' placeholder='Trần Gia Hiệu'>
-        </th>
-        <th>
-          <div class=''>Biển số xe</div>
-          <input formControlName='bsx' class='form-control' type='text' placeholder='77G1-55555'>
-        </th>
-        <th>
-          <div>Nhà xe</div>
-          <input type='text' class='form-control'
-                 placeholder='Nhập nhà xe' formControlName='garage'>
-        </th>
-        <th>
-          <div class=' '>Trạng thái chuyến xe</div>
-          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='statusRoute'>
-            <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
-            <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
-            <option value=''>Tất cả</option>
-          </select>
-        </th>
-      </tr>
+        <tr>
+          <th style='min-width: 200px'>
+            <div>Tên Tuyến đường</div>
+            <input formControlName='name' class='form-control' type='text' placeholder=''>
+          </th>
+          <th>
+            <div class=''>Ngày bắt đầu</div>
+            <input formControlName='startedAt' class=' form-control' type='date'>
+          </th>
+          <th>
+            <div class=''>Ngày Kết thúc</div>
+            <input formControlName='endedAt' class='form-control' type='date'>
+          </th>
+          <th>
+            <div class=''>Tên Tài xế</div>
+            <input formControlName='driver' class=' form-control' type='text' placeholder='Trần Gia Hiệu'>
+          </th>
+          <th>
+            <div class=''>Biển số xe</div>
+            <input formControlName='bsx' class='form-control' type='text' placeholder='77G1-55555'>
+          </th>
+          <th>
+            <div>Nhà xe</div>
+            <input type='text' class='form-control' placeholder='Nhập nhà xe' formControlName='garage'>
+          </th>
+          <th>
+            <div class=' '>Trạng thái chuyến xe</div>
+            <select class='select border-top' style='width: 100%' matNativeControl required
+              formControlName='statusRoute'>
+              <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
+              <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
+              <option value=''>Tất cả</option>
+            </select>
+          </th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor='let route of routes'
-          (click)='detailRoute(route.id)'
+        <tr *ngFor='let route of routes' (click)='detailRoute(route.id)'
           (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
-        <th>{{route?.name}}</th>
-        <th *ngIf='route.startedAt !== null'>
-          {{route?.startedAt|date:'dd/MM/yyyy'}}
-        </th>
-        <th *ngIf='route.startedAt === null'>
-          Chưa cập nhật
-        </th>
-        <th *ngIf='route.endedAt !== null'>
-          {{route?.endedAt|date:'dd/MM/yyyy'}}
-        </th>
-        <th *ngIf='route.endedAt === null'>
-          Chưa cập nhật
-        </th>
-        <th *ngIf='route.driver'>{{route?.driver}}</th>
-        <th *ngIf='!route.driver'>{{route?.employee?.lastName}}</th>
-        <th>{{route?.bsx}}</th>
-        <th>{{route?.garage}}</th>
-        <th *ngIf='route.endedAt &&  route.endedAt.getTime() < today '>Hoàn thành</th>
-        <th *ngIf='!route.endedAt ||  route.endedAt.getTime() >= today '>Đang chạy</th>
-      </tr>
-      <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
-        <td colspan='10' class='position-relative font-weight-bold font-lg'>
+          <th>{{route?.name}}</th>
+          <th *ngIf='route.startedAt !== null'>
+            {{route?.startedAt|date:'dd/MM/yyyy'}}
+          </th>
+          <th *ngIf='route.startedAt === null'>
+            Chưa cập nhật
+          </th>
+          <th *ngIf='route.endedAt !== null'>
+            {{route?.endedAt|date:'dd/MM/yyyy'}}
+          </th>
+          <th *ngIf='route.endedAt === null'>
+            Chưa cập nhật
+          </th>
+          <th *ngIf='route.driver'>{{route?.driver}}</th>
+          <th *ngIf='!route.driver'>{{route?.employee?.lastName}}</th>
+          <th>{{route?.bsx}}</th>
+          <th>{{route?.garage}}</th>
+          <th *ngIf='route.endedAt &&  route.endedAt.getTime() < today '>Hoàn thành</th>
+          <th *ngIf='!route.endedAt ||  route.endedAt.getTime() >= today '>Đang chạy</th>
+        </tr>
+        <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
+          <td colspan='10' class='position-relative font-weight-bold font-lg'>
             <span style='position: absolute; top:40%; left: 40% '>
-                Hiện tại chưa có đơn Tuyến đường nào
+              Hiện tại chưa có đơn Tuyến đường nào
             </span>
-        </td>
-      </tr>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </ng-template>
-<app-mouse-right
-  #child (addEvent)='add()'
-  [items]="[ItemContextMenu.ENDED_AT]"
-  (onDel)='deleteRoute($event)'
-  (onDetail)='detailRoute($event)'
->
+<app-mouse-right #child (onAdd)='add()' [items]="[ItemContextMenu.ENDED_AT]" (onDel)='deleteRoute($event)'
+  (onDetail)='detailRoute($event)' (onEnd)="onEnd()">
 </app-mouse-right>
-
-
-

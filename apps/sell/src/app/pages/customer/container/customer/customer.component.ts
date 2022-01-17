@@ -110,6 +110,7 @@ export class CustomerComponent implements OnInit{
     };
   }
 
+  /// FIXME: pass param for update customer
   readAndUpdate($event?: any) {
     this.router
       .navigate(['khach-hang/chi-tiet-khach-hang', $event.id])

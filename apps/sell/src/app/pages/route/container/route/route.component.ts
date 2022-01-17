@@ -19,6 +19,7 @@ import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
+import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 
 @Component({
   templateUrl: 'route.component.html',
@@ -105,6 +106,10 @@ export class RouteComponent implements OnInit {
         this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
       }
     });
+  }
+
+  onEnd() {
+    this.dialog.open(DialogDatePickerComponent);
   }
 
   detailRoute(id: number) {
