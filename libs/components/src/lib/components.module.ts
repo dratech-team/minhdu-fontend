@@ -9,7 +9,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -72,9 +75,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,
-    DialogDatePickerComponent
+    DialogDatePickerComponent,
   ],
-  providers: [DecimalPipe, MatDatepickerModule],
   exports: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -93,7 +95,12 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     DialogSharedComponent,
     MouseRightChipPositionComponent,
     DialogExportComponent,
-    DialogDatePickerComponent
+    DialogDatePickerComponent,
+  ],
+  providers: [
+    DecimalPipe,
+    MatDatepickerModule,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
 export class ComponentsModule {}

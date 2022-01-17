@@ -10,7 +10,7 @@ import {
   AppBreadcrumbModule,
   AppFooterModule,
   AppHeaderModule,
-  AppSidebarModule
+  AppSidebarModule,
 } from '@coreui/angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { StoreModule } from '@ngrx/store';
@@ -21,7 +21,10 @@ import { HashLocationStrategy, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NxModule } from '@nrwl/angular';
 import { DefaultLayoutComponent } from './container/default-layout.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -58,7 +61,7 @@ registerLocaleData(localeVi);
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true // Pauses recording actions and state changes when the extension window is not open
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
     }),
     EffectsModule.forRoot([AuthEffects]),
     NxModule.forRoot(),
@@ -72,7 +75,7 @@ registerLocaleData(localeVi);
     MatSidenavModule,
     MatButtonModule,
     MatCheckboxModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
   ],
   declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],
@@ -80,16 +83,16 @@ registerLocaleData(localeVi);
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     { provide: LOCALE_ID, useValue: 'vi-VN' },
-    HashLocationStrategy
-  ]
+    HashLocationStrategy,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

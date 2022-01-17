@@ -11,28 +11,26 @@ export const addOrderSuccess = createAction(
   props<{ order: Order }>()
 );
 
-export const loadAllOrder = createAction(
-  '[LOAD_ORDERS] Load All Order'
-);
+export const loadAllOrder = createAction('[LOAD_ORDERS] Load All Order');
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{orderDTO : OrderDTO}>()
+  props<{ orderDTO: OrderDTO }>()
 );
 
 export const loadInitSuccess = createAction(
   '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[], total: number }>()
+  props<{ orders: Order[]; total: number }>()
 );
 
 export const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
-  props<{orderDTO : OrderDTO }>()
+  props<{ orderDTO: OrderDTO }>()
 );
 
 export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[] ,total: number}>()
+  props<{ orders: Order[]; total: number }>()
 );
 
 export const getOrder = createAction(
@@ -47,12 +45,12 @@ export const getOrderSuccess = createAction(
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ order: any; id: number; typeUpdate?: string }>()
+  props<{ order: Partial<Order>; id: number; typeUpdate?: 'DELIVERED' }>()
 );
 
 export const updateHideOrder = createAction(
   '[UPDATE_ORDER] Update Hide Order',
-  props<{ hide: any; id: number, customerId: number }>()
+  props<{ hide: any; id: number; customerId: number }>()
 );
 
 export const payment = createAction(
@@ -62,7 +60,7 @@ export const payment = createAction(
 
 export const deleteOrder = createAction(
   '[DELETE_ORDER] Delete Order',
-  props<{ id: number, customerId?: number }>()
+  props<{ id: number; customerId?: number }>()
 );
 export const loadOrdersAssigned = createAction(
   '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
@@ -96,9 +94,7 @@ export const loadMoreOrdersAssignedSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
-export const handleOrderError = createAction(
-  '[ORDER_ERROR] Order error'
-);
+export const handleOrderError = createAction('[ORDER_ERROR] Order error');
 
 export const OrderAction = {
   addOrder,
@@ -117,5 +113,5 @@ export const OrderAction = {
   loadOrdersAssigned,
   loadOrdersAssignedSuccess,
   loadMoreOrdersAssigned,
-  loadMoreOrdersAssignedSuccess
+  loadMoreOrdersAssignedSuccess,
 };

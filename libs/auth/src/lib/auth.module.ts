@@ -10,7 +10,7 @@ import { authReducer } from './+state/auth.reducer';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from './interceptors';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { LogoutComponent } from './components/dialog-logout.component/logout.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RegisterComponent } from './components/dialog-register.component/register.component';
@@ -51,7 +51,8 @@ import { DialogChangePassword } from './components/dialog-change-password/dialog
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ]
 })
 export class AuthModule {

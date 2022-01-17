@@ -12,11 +12,7 @@
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
-        <button
-          data-toggle='tooltip'
-          data-placement='top'
-          title=' chỉnh sửa '
-          class='edit animated'
+        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
           (click)='updateOrder(order)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
@@ -25,34 +21,34 @@
         <div class='col-6  form-group'>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Khách hàng :</span>
+              <span>Khách hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-            <span class='contain-detail' style=' color: #3C3B54'>
-           {{order?.customer?.lastName}}
-            </span>
+              <span class='contain-detail' style=' color: #3C3B54'>
+                {{order?.customer?.lastName}}
+              </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Ngày tạo đơn :</span>
+              <span>Ngày tạo đơn:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.createdAt |date: 'dd/MM/yyyy'}}
-            </span>
+              <span class='contain-detail' style=' color: #3C3B54'>
+                {{order?.createdAt |date: 'dd/MM/yyyy'}}
+              </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>explain :</span>
+              <span>Diến giải:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='contain-detail' style=' color: #3C3B54'>
-             {{order?.explain}}
-            </span>
+              <span class='contain-detail' style=' color: #3C3B54'>
+                {{order?.explain}}
+              </span>
               <span *ngIf='!order?.explain'>
-             Chưa cập nhật
+                Chưa cập nhật
               </span>
             </div>
           </div>
@@ -61,40 +57,40 @@
               <span>Tổng tiền hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='contain-detail' style=' color: #f86c6b;'>
-            {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
-            </span>
+              <span class='contain-detail' style=' color: #f86c6b;'>
+                {{order.commodityTotal|number:'1.0'|notEmpty:'0'}} đ
+              </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
-              <span>Tổng tiền thanh toán :</span>
+              <span>Tổng tiền thanh toán:</span>
             </div>
             <div class='col-md-8 py-1 border-bottom '>
-            <span class='contain-detail' style=' color: #20c997'>
-              {{order.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
-            </span>
+              <span class='contain-detail' style=' color: #20c997'>
+                {{order.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
+              </span>
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2 title-employee title-detail'>
               <span>Điểm đến:</span>
             </div>
-            <div class='col-md-8 py-2 border-bottom  '
-                 *ngIf='order?.destination'
-            >
-            <span class='title-detail'>
-              {{order?.destination?.name}} -
-              {{order?.destination?.district?.name}} -
-              {{order?.destination?.district?.province?.name}}
-            </span>
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail'>
+                {{order?.destination ? order?.destination?.name + ' - ' + order?.destination?.district?.name + ' - ' +
+                order?.destination?.district?.province?.name : 'Đang cập nhật'}}
+              </span>
             </div>
-            <div class='col-md-8 py-2 border-bottom  '
-                 *ngIf='!order?.destination'
-            >
-            <span class='title-detail'>
-              Chưa cập nhật
-            </span>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-4 py-2 title-employee title-detail'>
+              <span>Ngày nhận hàng:</span>
+            </div>
+            <div class='col-md-8 py-2 border-bottom'>
+              <span class='title-detail'>
+                {{(order?.deliveredAt | date: 'dd/MM/yyyy') || 'Đang giao hàng'}}
+              </span>
             </div>
           </div>
         </div>
@@ -166,4 +162,3 @@
     </div>
   </div>
 </div>
-

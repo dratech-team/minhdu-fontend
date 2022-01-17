@@ -1,23 +1,25 @@
-import { NgModule } from '@angular/core';
-import { StatisticalSellRoutingModule } from './statistical-sell-routing.module';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { StatisticalSellComponent } from './containers/statiscal-sell/statistical-sell.component';
-import { ComponentsModule } from '@minhdu-fontend/components';
-import { BarChartModule } from '@swimlane/ngx-charts';
-import { PickStatisticalTypeComponent } from './component/pick-statistical-type/pick-statistical-type.component';
-import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-day.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { StoreModule } from '@ngrx/store';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
+} from '@angular/material/snack-bar';
+import { ComponentsModule } from '@minhdu-fontend/components';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { MainReducer } from '../../../../../sell/src/app/states/mainReducer';
+import { StoreModule } from '@ngrx/store';
+import { BarChartModule } from '@swimlane/ngx-charts';
 import { AdminReducer } from '../../states/admin.reducer';
+import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-day.component';
+import { PickStatisticalTypeComponent } from './component/pick-statistical-type/pick-statistical-type.component';
+import { StatisticalSellComponent } from './containers/statiscal-sell/statistical-sell.component';
+import { StatisticalSellRoutingModule } from './statistical-sell-routing.module';
+
 
 @NgModule({
   imports: [
@@ -38,10 +40,11 @@ import { AdminReducer } from '../../states/admin.reducer';
   declarations: [
     PickDayToDayComponent,
     PickStatisticalTypeComponent,
-    StatisticalSellComponent
+    StatisticalSellComponent,
   ],
-  exports: [
+  exports: [],
+  providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
-export class StatisticalSellModule {
-}
+export class StatisticalSellModule {}

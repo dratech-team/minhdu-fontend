@@ -12,7 +12,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { CustomerEffect } from './+state/customer/customer.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { DetailCustomerComponent } from './container/detail-customer/detail-customer.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -60,13 +63,12 @@ import { MainReducer } from '../../states/mainReducer';
     CustomerComponent,
     DetailCustomerComponent,
     CustomerDialogComponent,
-    PaymentDialogComponent
+    PaymentDialogComponent,
   ],
   providers: [
     DatePipe,
-    PickCustomerService
-  ]
-
+    PickCustomerService,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+  ],
 })
-export class CustomerModule {
-}
+export class CustomerModule {}

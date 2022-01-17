@@ -18,11 +18,11 @@ import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
 import {
-  selectedOrderLoaded, selectorAllOrders
+  selectedOrderLoaded,
+  selectorAllOrders
 } from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
-import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 
 @Component({
   templateUrl: 'order.component.html',
@@ -105,9 +105,18 @@ export class OrderComponent implements OnInit {
   }
 
   UpdateOrder($event: any) {
-    this.dialog.open(DialogDatePickerComponent, {
-      data: { order: $event, type: 'DELIVERED' },
-    });
+    this.dialog
+      .open(DialogDatePickerComponent)
+      .afterClosed()
+      .subscribe((deliveredAt) => {
+        this.store.dispatch(
+          OrderAction.updateOrder({
+            order: { deliveredAt },
+            id: $event.id,
+            typeUpdate: 'DELIVERED',
+          })
+        );
+      });
   }
 
   addOrder() {

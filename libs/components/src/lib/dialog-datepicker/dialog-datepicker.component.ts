@@ -3,19 +3,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
 @Component({
   template: `
     <div class="row">
-      <div class="col-xs-12 col-12 col-md-4 form-group mb-3">
+      <div class="col-xs-12 col-12">
         <input
           type="text"
           class="form-control"
           #dp="bsDatepicker"
           [isOpen]="true"
-          (bsValueChange)="(bsValueChange)"
+          (bsValueChange)="onChange($event)"
+          [maxDate]="maxDate"
+          placement="left"
           bsDatepicker
         />
       </div>
-      <div class="col-xs-12 col-12 col-md-3 form-group mb-3">
-        <button class="btn btn-success" (click)="onApply()" type="button">
-          Cập nhật
+      <div class="col-xs-12 col-12">
+        <button
+          class="btn btn-primary font-lg"
+          type="submit"
+          [mat-dialog-close]="onApply()"
+        >
+          Xác nhận
         </button>
       </div>
     </div>
@@ -24,8 +30,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class DialogDatePickerComponent {
   @Output() confirm = new EventEmitter();
   bsValueChange!: Date;
+  maxDate = new Date();
+  datetime!: Date;
+
+  onChange(event: Date) {
+    this.datetime = event;
+  }
 
   onApply() {
-    this.confirm.emit(this.bsValueChange);
+    return this.datetime;
   }
 }

@@ -32,7 +32,10 @@ import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -77,7 +80,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
     DatePipe,
-    MatDatepickerModule
+    MatDatepickerModule,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
 export class OrderModule {}
