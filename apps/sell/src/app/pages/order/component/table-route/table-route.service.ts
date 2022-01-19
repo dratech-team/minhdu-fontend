@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllRoute } from '../../../route/container/+state/Route.selector';
+import { selectorAllRoute } from '../../../route/container/+state/route.selector';
 import { RouteAction } from '../../../route/container/+state/route.action';
 
 

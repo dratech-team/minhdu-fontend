@@ -2,7 +2,7 @@
   Danh sách đơn hàng
 </div>
 <div class='ml-5 d-flex justify-content-between'>
-  <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm Đơn hàng</button>
+  <button (click)='add()' class='btn btn-primary font-lg mt-3'>Thêm</button>
   <button (click)='printOrder()' class='btn btn-primary font-lg mr-5 mt-3'>Xuất</button>
 </div>
 
@@ -31,8 +31,8 @@
             <input formControlName='destination' class='form-control' type='text'>
           </th>
           <th>
-            <div class=''>Diễn giải</div>
-            <input formControlName='explain' class='form-control' type='text'>
+            <div>Hàng hoá</div>
+            <input formControlName='destination' class='form-control' type='text'>
           </th>
           <th>
             <div class=''>Tiền hàng</div>
@@ -54,6 +54,10 @@
             <!--                    </select>-->
           </th>
           <th>
+            <div class=''>Diễn giải</div>
+            <input formControlName='explain' class='form-control' type='text'>
+          </th>
+          <th>
             <div class=''> Trạng thái đơn hàng</div>
             <mat-select class='select border-top' style='width: 100%' required formControlName='status'>
               <mat-option value='{{statusOrder.DELIVERED}}'>Đã giao</mat-option>
@@ -63,13 +67,13 @@
           </th>
         </tr>
       </thead>
-      <tbody *ngIf='(orders$| async) as orders'>
+      <tbody *ngIf='(orders$ | async) as orders'>
         <tr class='pointer' *ngFor='let order of orders; let i = index' (click)='detailOrder(order.id)'
           (contextmenu)='child.onContextMenu($event, order)'>
           <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{order.customer.lastName}}
           </th>
-          <th >
+          <th>
             {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
           </th>
           <th>
@@ -80,18 +84,26 @@
             {{order?.destination?.district?.name}} -
             {{order?.destination?.district?.province?.name}}
           </th>
-          <th>{{order?.explain}} </th>
+          <th class='pointer' style='width: 220px;'>
+            <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
+                  "border-top": order.commodities.length > 1 && index  !== 0
+                  }' *ngFor='let commodity of order.commodities; let index = index'>
+              {{commodity.name}}
+            </div>
+          </th>
           <th style='color: #f86c6b'>
             {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
           </th>
-          <th  style='color: #20c997'>
+          <th style='color: #20c997'>
             {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
           </th>
           <th>
             {{order.currency | transform:currenciesConstant}}
           </th>
-          <th >
-            {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length )> 0 ? 'Đang giao' : 'Chưa giao'}}
+          <th>{{order?.explain}} </th>
+          <th>
+            {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length )> 0 ? 'Đang giao' : 'Chưa
+            giao'}}
           </th>
         </tr>
         <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>

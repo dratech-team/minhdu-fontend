@@ -1,5 +1,5 @@
 <div class=' h3 mt-3 ml-5 '>
-  <span>Danh sách tuyến đường</span>
+  Danh sách tuyến đường
 </div>
 <div class='d-flex justify-content-between mt-3  ml-5'>
   <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
@@ -30,6 +30,10 @@
             <input formControlName='driver' class=' form-control' type='text' placeholder='Trần Gia Hiệu'>
           </th>
           <th>
+            <div class=''>Khách hàng</div>
+            <input formControlName='driver' class=' form-control' type='text' placeholder='Trần Gia Hiệu'>
+          </th>
+          <th>
             <div class=''>Biển số xe</div>
             <input formControlName='bsx' class='form-control' type='text' placeholder='77G1-55555'>
           </th>
@@ -38,7 +42,7 @@
             <input type='text' class='form-control' placeholder='Nhập nhà xe' formControlName='garage'>
           </th>
           <th>
-            <div class=' '>Trạng thái chuyến xe</div>
+            <div class=''>Trạng thái chuyến xe</div>
             <select class='select border-top' style='width: 100%' matNativeControl required
               formControlName='statusRoute'>
               <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
@@ -51,25 +55,25 @@
       <tbody>
         <tr *ngFor='let route of routes' (click)='detailRoute(route.id)'
           (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
-          <th>{{route?.name}}</th>
-          <th *ngIf='route.startedAt !== null'>
-            {{route?.startedAt|date:'dd/MM/yyyy'}}
+          <th>{{route?.name || 'Chưa cập nhật'}}</th>
+          <th>
+            {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
           </th>
-          <th *ngIf='route.startedAt === null'>
-            Chưa cập nhật
+          <th>
+            {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
           </th>
-          <th *ngIf='route.endedAt !== null'>
-            {{route?.endedAt|date:'dd/MM/yyyy'}}
+          <th>{{route?.driver || route?.employee?.lastName}}</th>
+          <th>
+            <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
+              "border-top": route.orders.length > 1 && index  !== 0
+              }' *ngFor='let order of route.orders; let index = index'>
+              {{order.customer.lastName}}
+            </div>
           </th>
-          <th *ngIf='route.endedAt === null'>
-            Chưa cập nhật
+          <th>{{route?.bsx || 'Chưa cập nhật'}}</th>
+          <th>{{route?.garage || 'Chưa cập nhật'}}</th>
+          <th>{{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
           </th>
-          <th *ngIf='route.driver'>{{route?.driver}}</th>
-          <th *ngIf='!route.driver'>{{route?.employee?.lastName}}</th>
-          <th>{{route?.bsx}}</th>
-          <th>{{route?.garage}}</th>
-          <th *ngIf='route.endedAt &&  route.endedAt.getTime() < today '>Hoàn thành</th>
-          <th *ngIf='!route.endedAt ||  route.endedAt.getTime() >= today '>Đang chạy</th>
         </tr>
         <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
           <td colspan='10' class='position-relative font-weight-bold font-lg'>
