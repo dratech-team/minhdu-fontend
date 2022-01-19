@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ExportService } from 'libs/service/export.service';
 import { debounceTime, tap } from 'rxjs/operators';
-import { RouteAction } from '../+state/route.action';
+import { RouteAction, updateRoute } from '../+state/route.action';
 import { Route } from '../+state/route.interface';
 import {
   selectedRouteLoaded,
@@ -108,8 +108,18 @@ export class RouteComponent implements OnInit {
     });
   }
 
-  onEnd() {
-    this.dialog.open(DialogDatePickerComponent);
+  onEnd(event: Route) {
+    console.log('route ', event);
+    this.dialog
+      .open(DialogDatePickerComponent)
+      .afterClosed()
+      .subscribe((datetime) => {
+        if (datetime) {
+          this.store.dispatch(
+            updateRoute({ id: event.id, route: { endedAt: datetime } })
+          );
+        }
+      });
   }
 
   detailRoute(id: number) {

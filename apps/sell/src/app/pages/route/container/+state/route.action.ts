@@ -14,15 +14,15 @@ export const addRouteSuccess = createAction(
 export const loadInit = createAction(
   '[LOAD_ROUTES] Load Route',
   props<{
-    take: number,
-    skip: number,
-    orderId?: number,
-    name?: string,
-    startedAt?: Date,
-    endedAt?: Date,
-    driver?: string,
-    bsx?: string,
-    garage?: string,
+    take: number;
+    skip: number;
+    orderId?: number;
+    name?: string;
+    startedAt?: Date;
+    endedAt?: Date;
+    driver?: string;
+    bsx?: string;
+    garage?: string;
   }>()
 );
 
@@ -34,14 +34,14 @@ export const loadInitSuccess = createAction(
 export const loadMoreRoutes = createAction(
   '[LOAD_MORE_ROUTES] Load More Order',
   props<{
-    take: number,
-    orderId?: number,
-    name?: string,
-    startedAt?: Date,
-    endedAt?: Date,
-    driver?: string,
-    bsx?: string,
-    garage?: string,
+    take: number;
+    orderId?: number;
+    name?: string;
+    startedAt?: Date;
+    endedAt?: Date;
+    driver?: string;
+    bsx?: string;
+    garage?: string;
   }>()
 );
 
@@ -62,7 +62,7 @@ export const getRouteSuccess = createAction(
 
 export const updateRoute = createAction(
   '[UPDATE_ROUTE] Update Route',
-  props<{ route: any, id: number }>()
+  props<{ id: number; route: Omit<Partial<Route>, 'id'> }>()
 );
 
 export const deleteRoute = createAction(
@@ -80,5 +80,5 @@ export const RouteAction = {
   getRoute,
   getRouteSuccess,
   updateRoute,
-  deleteRoute
+  deleteRoute,
 };

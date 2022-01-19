@@ -6,21 +6,14 @@
           Thông tin Khách hàng
         </div>
         <div class=' col d-flex flex-column'>
-          <img
-            class='rounded-circle row'
-            alt='50x50'
-            src='{{customer.avt}}'
-            data-holder-rendered='true'
-            height='160px'
-          />
+          <img class='rounded-circle row' alt='50x50' src='{{customer.avt}}' data-holder-rendered='true'
+            height='160px' />
           <div class=' d-flex flex-column justify-content-center'>
-            <button
-              (click)='development()'
-              class='  btn p-2 mb-3 rounded shadow-sm'>
+            <button (click)='development()' class='  btn p-2 mb-3 rounded shadow-sm'>
               <img src='/assets/icon/share/person-circle.svg' alt='avatar'>
               <span class='ml-2' style='color: #80828B;'>
-                  Đổi avatar
-            </span>
+                Đổi avatar
+              </span>
             </button>
             <button (click)='deleteCustomer(customer.id)' class='  btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
@@ -33,14 +26,11 @@
       </div>
       <div class='col-7 d-flex justify-content-end align-items-start'>
         <div class='align-items-center'>
-          <div class=' mr-2 p-2 '
-               style='border: solid 1px'
-               [ngStyle]="{ 'border-color': customer.debt && customer.debt < 0? 'red': 'green'}"
-          >
-            <span class='title-detail '
-                  style='padding: 8px'
-                  [ngStyle]="{ 'color': customer.debt && customer.debt < 0? 'red': 'green'}">
-                  {{customer.debt| number: '1.0-0'}}
+          <div class=' mr-2 p-2 ' style='border: solid 1px'
+            [ngStyle]="{ 'border-color': customer.debt && customer.debt < 0? 'red': 'green'}">
+            <span class='title-detail ' style='padding: 8px'
+              [ngStyle]="{ 'color': customer.debt && customer.debt < 0? 'red': 'green'}">
+              {{customer.debt| number: '1.0-0'}}
             </span>
           </div>
         </div>
@@ -52,11 +42,7 @@
     <div class='col-12 justify-content-center'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
-        <button
-          data-toggle='tooltip'
-          data-placement='top'
-          title=' chỉnh sửa '
-          class='edit animated'
+        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
           (click)='updateCustomer(customer)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
@@ -65,57 +51,38 @@
         <div class='col-6 mr-5 form-group'>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Họ và tên :</span>
+              <span>Họ và tên:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='title-detail' style=' color: #3C3B54'>
-             {{customer.lastName}}
-            </span>
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Giới tính :</span>
-            </div>
-            <div class='col-md-8 d-flex flex-row border-bottom' style='max-height: 40px'>
-              <label class='col-md-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54; margin-bottom: 0 '>
-                <input disabled type='radio' name='group1[]' class='mx-1'
-                       [checked]="customer.gender === 'FEMALE'">
-                Nữ
-              </label>
-              <label class='col-md-2 py-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54;margin-bottom: 0'>
-                <input disabled type='radio' name='group1[]' class='mr-1' [checked]="customer.gender ==='MALE'">Nam
-              </label>
-              <label class='col-md-2 py-2'
-                     style='display: flex;justify-content: flex-start;align-items: center;color: #3C3B54;margin-bottom: 0'>
-                <input disabled type='radio' name='group1[]' class='mr-1'
-                       [checked]="customer.gender === 'OTHER'">Khác
-              </label>
-            </div>
-          </div>
-          <div class='row ml-1 align-items-center'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Ngày sinh :</span>
-            </div>
-            <div class='col-md-8 py-2 border-bottom'>
-              <span *ngIf='customer?.birthday === undefined'>
-                Chưa cập nhật
+              <span class='title-detail' style=' color: #3C3B54'>
+                {{customer.lastName}}
               </span>
-              <span class='title-detail' *ngIf='customer?.birthday'>
-                  {{customer.birthday|date:'dd/MM/yyyy'}}
-                </span>
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Giới tính:</span>
+            </div>
+            <div class='col-md-8 py-2 border-bottom title-detail'>
+              {{customer.gender === 'MALE' ? 'Nam' : customer.gender === 'FEMALE' ? 'Nữ' : 'Khác'}}
+            </div>
+          </div>
+          <div class='row ml-1 align-items-center'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Ngày sinh:</span>
+            </div>
+            <div class='col-md-8 py-2 border-bottom title-detail'>
+              {{(customer.birthday | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </div>
           </div>
           <div class='row ml-1  align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span> Nguyên quán :</span>
+              <span> Nguyên quán:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='title-detail' style='color: #3C3B54'>
-              {{customer.birthplace === null ? 'Chưa cập nhật' : customer.birthplace }}
-            </span>
+              <span class='title-detail' style='color: #3C3B54'>
+                {{customer.birthplace || 'Chưa cập nhật' }}
+              </span>
             </div>
           </div>
           <div class=' row ml-1 align-items-center '>
@@ -123,22 +90,17 @@
               <span>Số:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-            <span class='title-detail'>
-               {{customer.identify}}
-            </span>
+              <span class='title-detail'>
+                {{customer.identify}}
+              </span>
             </div>
           </div>
           <div class=' row ml-1 align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
               <span>Ngày cấp:</span>
             </div>
-            <div class='col-md-8 py-2 border-bottom'>
-                <span *ngIf='customer.idCardAt === null '>
-                Đang cập nhật
-                </span>
-              <span class='title-detail' *ngIf='customer.idCardAt !== null '>
-                {{ customer.idCardAt|date:'dd/MM/yyy'}}
-                </span>
+            <div class='col-md-8 py-2 border-bottom title-detail'>
+              {{ (customer.idCardAt | date:'dd/MM/yyy') || 'Chưa cập nhật'}}
             </div>
           </div>
           <div class=' row ml-1 align-items-center'>
@@ -146,19 +108,19 @@
               <span>Nơi cấp:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-            <span class='title-detail'>
-              {{customer.issuedBy}}
-            </span>
+              <span class='title-detail'>
+                {{customer?.issuedBy || 'Chưa cập nhật'}}
+              </span>
             </div>
           </div>
           <div class='row ml-1  align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span> Dân tộc :</span>
+              <span> Dân tộc:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
-            <span class='title-detail' style='color: #3C3B54'>
-              {{customer.ethnicity === null ? 'Chưa cập nhật' : customer.ethnicity }}
-            </span>
+              <span class='title-detail' style='color: #3C3B54'>
+                {{customer.ethnicity || 'Chưa cập nhật' }}
+              </span>
             </div>
           </div>
         </div>
@@ -166,17 +128,17 @@
 
           <div class='row align-items-start'>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Địa chỉ :</span>
+              <span>Địa chỉ:</span>
             </div>
             <div class='col-md-9 py-2 border-bottom'>
-            <span class='title-detail'>
-              {{customer.address}}
-            </span>
+              <span class='title-detail'>
+                {{customer.address}}
+              </span>
             </div>
           </div>
           <div class='row align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Phường xã :</span>
+              <span>Phường xã:</span>
             </div>
             <div class='col py-2  border-bottom'>
               <div class='title-detail'>
@@ -186,7 +148,7 @@
           </div>
           <div class='row align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Quận huyện :</span>
+              <span>Quận huyện:</span>
             </div>
             <div class='col py-2 border-bottom '>
               <div class='title-detail '>
@@ -206,12 +168,12 @@
           </div>
           <div class='row  align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Tôn giáo :</span>
+              <span>Tôn giáo:</span>
             </div>
             <div class='col-md-9 py-2 border-bottom '>
-            <span class='title-detail' style='color: #3C3B54'>
-               {{customer.religion === null ? 'Chưa cập nhật' : customer.religion }}
-            </span>
+              <span class='title-detail' style='color: #3C3B54'>
+                {{customer?.religion || "Chưa cập nhật"}}
+              </span>
             </div>
           </div>
         </div>
@@ -229,9 +191,9 @@
                 <span>Địa chỉ:</span>
               </div>
               <div class='col-md-8 py-2 border-bottom'>
-            <span class='title-detail'>
-                {{customer?.address ? customer.address : 'Chưa cập nhật'  }}
-            </span>
+                <span class='title-detail'>
+                  {{customer?.address || 'Chưa cập nhật' }}
+                </span>
               </div>
             </div>
             <div class=' row  align-items-center'>
@@ -239,9 +201,9 @@
                 <span>Số điện thoại:</span>
               </div>
               <div class='col-md-8 py-2 border-bottom'>
-            <span style='color: #7749F8  '>
-                {{customer?.phone ? customer.phone : 'Chưa cập nhật' }}
-            </span>
+                <span style='color: #7749F8  '>
+                  {{customer?.phone || 'Chưa cập nhật' }}
+                </span>
               </div>
             </div>
             <div class=' row  align-items-center'>
@@ -249,9 +211,9 @@
                 <span>FaceBook:</span>
               </div>
               <div class='col-md-8 py-2 border-bottom'>
-            <span class='title-detail'>
-                {{customer?.facebook ? customer.facebook : ' Chưa cập nhật'}}
-            </span>
+                <span class='title-detail'>
+                  {{customer?.facebook || 'Chưa cập nhật'}}
+                </span>
               </div>
             </div>
             <div class=' row  align-items-center'>
@@ -259,11 +221,8 @@
                 <span>Zalo:</span>
               </div>
               <div class='col-md-8 py-2 border-bottom'>
-                  <span class='title-detail' *ngIf='customer?.zalo'>
-                      {{ customer.zalo}}
-                  </span>
-                <span *ngIf='!customer?.zalo'>
-                  chưa cập nhật
+                <span class='title-detail'>
+                  {{ customer?.zalo || 'Chưa cập nhật'}}
                 </span>
               </div>
             </div>
@@ -279,9 +238,9 @@
               <span>Tk ngân hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-                <span>
-                    {{customer?.bank?.stk === null ? 'Chưa cập nhật' : customer.bank.stk}}
-                </span>
+              <span>
+                {{customer?.bank?.stk || 'Chưa cập nhật'}}
+              </span>
             </div>
           </div>
           <div class=' row align-items-center'>
@@ -289,9 +248,9 @@
               <span>Chủ sở hữu:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-            <span class='contain-detail'>
-                {{customer?.bank?.owner ? customer.bank.owner : 'Chưa cập nhật' }}
-            </span>
+              <span class='contain-detail'>
+                {{customer?.bank?.owner || 'Chưa cập nhật' }}
+              </span>
             </div>
           </div>
           <div class=' row align-items-center'>
@@ -299,9 +258,9 @@
               <span>Tên ngân hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-            <span class='contain-detail'>
-                {{customer?.bank?.name === null ? 'Chưa cập nhật' : customer.bank.name}}
-            </span>
+              <span class='contain-detail'>
+                {{customer?.bank?.name || 'Chưa cập nhật'}}
+              </span>
             </div>
           </div>
         </div>
@@ -310,24 +269,23 @@
     <div class='col-12 mt-5 '>
       <div class='d-flex align-items-center justify-content-between mb-2 '>
         <div class='row align-items-center title-table ml-1'>Đơn hàng đang giao</div>
-        <div routerLink='/don-hang/them-don-hang'
-             [queryParams]='{data:customer.id|json}'
-             class=' mt-3 btn btn-primary font-lg'>Thêm đơn hàng
+        <div routerLink='/don-hang/them-don-hang' [queryParams]='{data:customer.id | json}'
+          class=' mt-3 btn btn-primary font-lg'>Thêm đơn hàng
         </div>
       </div>
-      <ngx-skeleton-loader *ngIf='!(loadedOrdersAssigned$ | async); else orderNotAssigned' count='7'
-                           appearance='line'></ngx-skeleton-loader>
+      <ngx-skeleton-loader *ngIf='!(loadedOrdersAssigned$ | async); else orderNotAssigned' count='7' appearance='line'>
+      </ngx-skeleton-loader>
       <ng-template #orderNotAssigned>
-        <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$'
-                         [customerId]='customer.id'></app-table-order>
+        <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'>
+        </app-table-order>
       </ng-template>
     </div>
     <div class='col-12 mt-5 '>
       <div class='row d-flex align-items-center '>
         <div class='row align-items-center title-table ml-1 mb-2'>Đơn hàng đã giao</div>
       </div>
-      <ngx-skeleton-loader *ngIf='!(loadedOrdersNotAssigned$ | async); else orderAssigned' count='7'
-                           appearance='line'></ngx-skeleton-loader>
+      <ngx-skeleton-loader *ngIf='!(loadedOrdersNotAssigned$ | async); else orderAssigned' count='7' appearance='line'>
+      </ngx-skeleton-loader>
       <ng-template #orderAssigned>
         <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>
       </ng-template>
