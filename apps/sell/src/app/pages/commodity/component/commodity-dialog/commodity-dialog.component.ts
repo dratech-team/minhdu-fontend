@@ -5,6 +5,7 @@ import { CommodityUnit } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { CommodityAction } from '../../+state/commodity.action';
+import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html',

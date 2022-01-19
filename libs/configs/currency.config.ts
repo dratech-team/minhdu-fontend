@@ -12,3 +12,9 @@ export const customCurrencyMaskConfig = {
   nullable: true,
   inputMode: CurrencyMaskInputMode.FINANCIAL,
 };
+
+export const customCurrencyMaskConfig2 = Object.assign(
+  {},
+  customCurrencyMaskConfig,
+  { suffix: ' đ' }
+);
