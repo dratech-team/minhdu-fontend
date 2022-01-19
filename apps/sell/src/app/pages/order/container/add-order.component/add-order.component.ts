@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '../../../../reducers';
-import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import { OrderAction } from '../../+state/order.action';
-import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { selectorCommodityByIds } from '../../../commodity/+state/commodity.selector';
-import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
-import { document } from 'ngx-bootstrap/utils';
-import { Customer } from '../../../customer/+state/customer/customer.interface';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
+import { select, Store } from '@ngrx/store';
+import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
+import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
+import { document } from 'ngx-bootstrap/utils';
+import { Subject } from 'rxjs';
+import { OrderAction } from '../../+state/order.action';
 import { selectedOrderAdded } from '../../+state/order.selector';
+import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
+import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { Customer } from '../../../customer/+state/customer/customer.interface';
+import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
 
 
 @Component({

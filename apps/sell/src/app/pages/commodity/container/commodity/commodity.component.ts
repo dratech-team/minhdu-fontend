@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: 'commodity.component.html'
 })
 export class CommodityComponent implements OnInit {
-  commodity$ = this.store.pipe(select(selectAllCommodity));
+  commodities$ = this.store.pipe(select(selectAllCommodity));
   commodityUnit = CommodityUnit;
   pageIndex = 1;
   pageSize = 30;

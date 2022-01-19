@@ -35,22 +35,10 @@ export class CommodityDialogComponent implements OnInit {
     const commodity = {
       code: value.code,
       name: value.name,
-      price:
-        typeof value.price === 'string'
-          ? Number(value.price.replace(this.numberChars, ''))
-          : value.price,
-      amount:
-        typeof value.amount === 'string'
-          ? Number(value.amount.replace(this.numberChars, ''))
-          : value.amount,
-      gift:
-        typeof value.gift === 'string'
-          ? Number(value.gift.replace(this.numberChars, ''))
-          : value.gift,
-      more:
-        typeof value.more === 'string'
-          ? Number(value.more.replace(this.numberChars, ''))
-          : value.more,
+      price: Number(value.price.replace(this.numberChars, '')),
+      amount: Number(value.amount.replace(this.numberChars, '')),
+      gift: Number(value.gift.replace(this.numberChars, '')),
+      more: Number(value.more.replace(this.numberChars, '')),
       unit: value.unit,
     };
     if (this.data) {

@@ -138,7 +138,7 @@
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollAllowance.employee.branch?.name}}</th>
         <th class='pointer' style='width: 220px;'>
-          <div class=' d-flex align-items-center justify-content-center pointer '
+          <div class=' d-flex align-items-center justify-content-center  '
                *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollAllowance)'>
