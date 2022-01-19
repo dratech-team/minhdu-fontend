@@ -55,7 +55,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor='let commodity of commodities; let i = index' (contextmenu)='child.onContextMenu($event,commodity)' class="pointer">
+        <tr *ngFor='let commodity of commodities; let i = index' (contextmenu)='child.onContextMenu($event,commodity)'
+          class="pointer">
           <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <mat-checkbox class='checkID' [checked]='checkedCommodity(commodity)' (change)='updateAllSelect(commodity)'>
             </mat-checkbox>
@@ -84,5 +85,5 @@
   </div>
   <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>
 </div>
-<app-mouse-right #child (addEvent)='addCommodity()' (deleteEvent)='deleteCommodity($event)'
-  (readEvent)='UpdateCommodity($event)'></app-mouse-right>
+<app-mouse-right #child (onAdd)='addCommodity()' (onDel)='deleteCommodity($event)'
+  (onUpdate)='updateCommodity($event)'></app-mouse-right>

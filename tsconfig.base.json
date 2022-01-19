@@ -25,7 +25,8 @@
       "@minhdu-fontend/employee": ["libs/employee/src/index.ts"],
       "@minhdu-fontend/location": ["libs/location/src/index.ts"],
       "@minhdu-fontend/environment": ["libs/environments/index.ts"],
-      "@minhdu-fontend/system": ["libs/system/src/index.ts"]
+      "@minhdu-fontend/system": ["libs/system/src/index.ts"],
+      "@minhdu-fontend/config": ["libs/configs/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

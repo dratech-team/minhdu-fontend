@@ -11,8 +11,7 @@ import { CommodityAction } from '../../+state/commodity.action';
 })
 export class CommodityDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  commodityUnit = CommodityUnit;
-  numberChars = new RegExp('[^0-9]', 'g');
+  CommodityUnit = CommodityUnit;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -32,13 +31,14 @@ export class CommodityDialogComponent implements OnInit {
   }
   onSubmit() {
     const value = this.formGroup.value;
+    console.log(value);
     const commodity = {
       code: value.code,
       name: value.name,
-      price: Number(value.price.replace(this.numberChars, '')),
-      amount: Number(value.amount.replace(this.numberChars, '')),
-      gift: Number(value.gift.replace(this.numberChars, '')),
-      more: Number(value.more.replace(this.numberChars, '')),
+      price: value.price,
+      amount: value.amount,
+      gift: value.gift,
+      more: value.more,
       unit: value.unit,
     };
     if (this.data) {

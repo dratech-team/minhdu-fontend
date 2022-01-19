@@ -4,18 +4,18 @@ import {
   Inject,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import {
   CommodityUnit,
   CustomerResource,
-  CustomerType
+  CustomerType,
 } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -25,14 +25,14 @@ import {
   handleValSubPickItems,
   pickAll,
   pickOne,
-  someComplete
+  someComplete,
 } from '../../../../../../../libs/utils/pick-item.ultil';
 import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import {
   selectAllCommodity,
   selectedCommodityNewAdd,
-  selectedTotalCommodity
+  selectedTotalCommodity,
 } from '../../../pages/commodity/+state/commodity.selector';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { PickCommodityService } from './pick-commodity.service';
@@ -135,8 +135,11 @@ export class PickCommodityComponent implements OnInit {
     });
   }
 
-  UpdateCommodity($event: any) {
-    this.dialog.open(CommodityDialogComponent, { width: '40%', data: $event });
+  updateCommodity(commodity: Commodity) {
+    this.dialog.open(CommodityDialogComponent, {
+      width: '40%',
+      data: commodity,
+    });
   }
 
   updateAllSelect(commodity: Commodity) {

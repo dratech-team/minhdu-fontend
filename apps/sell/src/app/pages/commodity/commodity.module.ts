@@ -18,7 +18,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { DetailCommodityComponent } from './container/detail-commodity/detail-commodity.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PickCommodityService } from '../../shared/components/pick-commodity/pick-commodity.service';
-
+import { NgxCurrencyModule } from 'ngx-currency';
+import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 
 @NgModule({
   imports: [
@@ -34,18 +35,14 @@ import { PickCommodityService } from '../../shared/components/pick-commodity/pic
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
-    FormsModule
+    FormsModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
   ],
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,
     DetailCommodityComponent,
   ],
-  providers: [
-    DatePipe,
-    PickCommodityService,
-  ]
+  providers: [DatePipe, PickCommodityService],
 })
-export class CommodityModule {
-
-}
+export class CommodityModule {}
