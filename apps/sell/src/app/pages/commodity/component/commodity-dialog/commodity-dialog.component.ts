@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
 import { CommodityAction } from '../../+state/commodity.action';
-import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
+import { AppState } from '../../../../reducers';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html',

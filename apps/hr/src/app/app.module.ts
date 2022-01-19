@@ -39,6 +39,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PayrollModule } from './pages/payroll/payroll.module';
 import localeVi from '@angular/common/locales/vi';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
 
 registerLocaleData(localeVi);
 
@@ -76,6 +78,7 @@ registerLocaleData(localeVi);
     MatButtonModule,
     MatCheckboxModule,
     InfiniteScrollModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig2),
   ],
   declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],

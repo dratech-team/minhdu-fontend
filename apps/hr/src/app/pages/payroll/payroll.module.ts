@@ -86,12 +86,15 @@ import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-o
     StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
     StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
     StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
-    StoreModule.forFeature(FeatureName.TEMPLATE_OVERTIME, templateOvertimeReducer),
+    StoreModule.forFeature(
+      FeatureName.TEMPLATE_OVERTIME,
+      templateOvertimeReducer
+    ),
     EffectsModule.forFeature([
       PayrollEffect,
       HolidayEffect,
       TemplateOvertimeEffect,
-      TemplateSalaryEffect
+      TemplateSalaryEffect,
     ]),
     CommonModule,
     MatInputModule,
@@ -130,7 +133,7 @@ import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-o
     DialogOvertimeMultipleComponent,
     ConvertTimePipe,
     AddPayrollComponent,
-      HistoryPayrollComponent,
+    HistoryPayrollComponent,
     PayrollOvertimeComponent,
     LoadingComponent,
     RestorePayrollComponent,
@@ -151,12 +154,8 @@ import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-o
     SelectUpdateMultiple,
     TableEmployeeSelectedComponent,
     TableAllowanceEmployeeComponent,
-    TableSalarySelected
+    TableSalarySelected,
   ],
-  providers: [
-    MatDatepickerModule
-  ]
+  providers: [MatDatepickerModule],
 })
-
-export class PayrollModule {
-}
+export class PayrollModule {}
