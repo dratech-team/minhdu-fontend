@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { HolidayAction } from '../../+state/holiday/holiday.action';
 import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { AppState } from 'apps/hr/src/app/reducers';
 import {
   selectHolidayAdding,
@@ -14,12 +14,10 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
-import { selectTotalTemplateOvertime } from '../../+state/template-overtime/template-overtime.selector';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
 import { of } from 'rxjs';
 
 
@@ -27,11 +25,16 @@ import { of } from 'rxjs';
   templateUrl: 'holiday.component.html'
 })
 export class HolidayComponent implements OnInit {
-  adding$ = this.store.pipe(select(selectHolidayAdding));
-  total$ = this.store.pipe(select(selectTotalHoliday));
   convertBoolean = ConvertBoolean;
   pageSize = 30;
   pageIndexInit = 0;
+
+  adding$ = this.store.pipe(select(selectHolidayAdding));
+  total$ = this.store.pipe(select(selectTotalHoliday));
+  positions$ = this.store.pipe(select(getAllPosition));
+  holidays$ = this.store.pipe(select(selectorAllHoliday));
+  loaded$ = this.store.pipe(select(selectHolidayLoaded));
+
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
@@ -41,9 +44,6 @@ export class HolidayComponent implements OnInit {
       isConstraint: new FormControl('')
     }
   );
-  positions$ = this.store.pipe(select(getAllPosition));
-  holidays$ = this.store.pipe(select(selectorAllHoliday));
-  loaded$ = this.store.pipe(select(selectHolidayLoaded));
 
   constructor(
     private readonly dialog: MatDialog,
@@ -142,7 +142,7 @@ export class HolidayComponent implements OnInit {
     this.formGroup.get('position')?.patchValue(positionName);
   }
 
-  checkInputNumber($event: any){
-    return checkInputNumber($event)
+  checkInputNumber($event: any) {
+    return checkInputNumber($event);
   }
 }

@@ -1,15 +1,17 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   selectCurrentPayroll,
-  selectedAddingPayroll, selectedDeletedPayroll,
-  selectedLoadedPayroll, selectedScannedPayroll
+  selectedAddingPayroll,
+  selectedDeletedPayroll,
+  selectedLoadedPayroll,
+  selectedScannedPayroll
 } from '../../+state/payroll/payroll.selector';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum, EmployeeType } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Salary } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -24,6 +26,7 @@ import { LoadingComponent } from '../../component/popup-loading/loading.componen
 import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { DatePipe } from '@angular/common';
+import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 
 
 @Component({
@@ -46,7 +49,7 @@ export class DetailPayrollComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe,
+    private readonly datePipe: DatePipe
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
@@ -74,34 +77,7 @@ export class DetailPayrollComponent implements OnInit {
       width: '700px',
       data: { type, payroll, isUpdate: false }
     };
-    switch (type) {
-      case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: 'fit-content' }));
-      }
-        break;
-      case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
-      }
-        break;
-      case SalaryTypeEnum.ALLOWANCE: {
-        this.dialog.open(DialogAllowanceComponent, config);
-      }
-        break;
-      case SalaryTypeEnum.OVERTIME: {
-        this.dialog.open(DialogOvertimeComponent, config);
-      }
-        break;
-      case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
-      }
-        break;
-      case SalaryTypeEnum.PART_TIME: {
-        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
-      }
-        break;
-      default :
-        console.error('error add salary in detail payroll');
-    }
+    this.openSalary(type, config);
   }
 
   updateSalary(type: SalaryTypeEnum, salary: Salary, payroll?: Payroll) {
@@ -109,39 +85,44 @@ export class DetailPayrollComponent implements OnInit {
       width: '40%',
       data: { type, salary, isUpdate: true, payroll: payroll }
     };
+    this.openSalary(type, config);
+  }
+
+  openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
     switch (type) {
       case SalaryTypeEnum.BASIC : {
         this.dialog.open(DialogBasicComponent, Object.assign(config, { width: 'fit-content' }));
-      }
         break;
+      }
       case SalaryTypeEnum.STAY: {
         this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
-      }
         break;
+      }
       case SalaryTypeEnum.ALLOWANCE: {
         this.dialog.open(DialogAllowanceComponent, config);
-      }
         break;
+      }
       case SalaryTypeEnum.OVERTIME: {
         this.dialog.open(DialogOvertimeComponent, config);
-      }
         break;
+      }
       case SalaryTypeEnum.ABSENT: {
         this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
-      }
         break;
+      }
       case SalaryTypeEnum.PART_TIME: {
         this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
-      }
         break;
-      default :
+      }
+      default: {
         console.error('error add salary in detail payroll');
+      }
+
     }
   }
 
   removeSalary(id: number, payrollId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
-    dialogRef.afterClosed().subscribe((value) => {
+    this.dialog.open(DialogDeleteComponent, { width: 'fit-content' }).afterClosed().subscribe((value) => {
       if (value) {
         this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
       }
@@ -239,7 +220,7 @@ export class DetailPayrollComponent implements OnInit {
       data: {
         title: 'Cập nhật tính thuế',
         description: `Bạn muốn ${payroll.taxed ? 'tắt' : 'bật'} trừ thuế cho phiếu lương của tháng
-        ${ this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM' ) }`
+        ${this.datePipe.transform(new Date(payroll.createdAt), 'yyyy-MM')}`
       }
     });
     ref.afterClosed().subscribe(val => {

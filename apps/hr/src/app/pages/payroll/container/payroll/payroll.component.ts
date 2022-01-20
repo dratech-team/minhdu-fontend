@@ -348,10 +348,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  readPayroll($event: any) {
-    this.router
-      .navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id])
-      .then();
+  updatePayroll($event: any) {
+    this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', $event.id], {
+      queryParams: {
+        isUpdate: true
+      }
+    }).then();
   }
 
   onSelectPosition(positionName: string) {

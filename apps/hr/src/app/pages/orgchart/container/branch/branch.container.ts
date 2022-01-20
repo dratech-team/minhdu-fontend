@@ -20,19 +20,20 @@ import { of } from 'rxjs';
   templateUrl: 'branch.container.html'
 })
 export class BranchContainer implements OnInit {
+  pageSize = 30;
+  pageIndexInit = 0;
+  type = OrgchartEnum;
+  ItemContextMenu = ItemContextMenu;
+
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
   positions$ = this.store.pipe(select(getAllPosition));
 
-  type = OrgchartEnum;
-  pageSize = 30;
-  pageIndexInit = 0;
   formGroup = new FormGroup({
     code: new FormControl(''),
     branch: new FormControl(),
     position: new FormControl('')
   });
-  ItemContextMenu = ItemContextMenu;
 
   constructor(
     private readonly dialog: MatDialog,

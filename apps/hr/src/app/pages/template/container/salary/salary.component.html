@@ -81,9 +81,11 @@
     </ng-template>
 
   </div>
-  <app-mouse-right #child (addEvent)='addTemplateSalary()'
-                   (readEvent)='updateTemplateSalary($event)'
-                   (deleteEvent)='deleteBasicSalary($event)'
+  <app-mouse-right
+    #child
+    (onAdd)='addTemplateSalary()'
+    (onUpdate)='updateTemplateSalary($event)'
+    (onDel)='deleteBasicSalary($event)'
   ></app-mouse-right>
 </div>
 
