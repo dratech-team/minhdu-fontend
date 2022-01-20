@@ -10,13 +10,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Api, PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
 import {
   EmployeeType,
-  FilterTypeEnum,
-  SalaryTypeEnum
+  FilterTypeEnum, ItemContextMenu, SalaryTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -34,7 +33,6 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import {
   getAllPosition,
   PositionActions
@@ -100,7 +98,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   overtimeTitle?: string;
   allowanceTitle?: string;
   absentTitle?: string;
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   daysInMonth: any[] = [];
   payrollConstant = PayrollConstant;
   filterTypeEnum = FilterTypeEnum;
@@ -121,7 +119,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
-    private ref: ChangeDetectorRef,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -146,7 +144,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           })
         );
       } else {
-        if (val === FilterTypeEnum.PAYROLL || val === FilterTypeEnum.TIME_SHEET) {
+        if (
+          val === FilterTypeEnum.PAYROLL ||
+          val === FilterTypeEnum.TIME_SHEET
+        ) {
           this.positionName = getSelectors(selectedPositionPayroll, this.store);
           this.branchName = getSelectors(selectedBranchPayroll, this.store);
           this.formGroup
@@ -197,7 +198,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       )
       .pipe(debounceTime(1500))
       .subscribe((val) => {
-        console.log('aaaaa')
+        console.log('aaaaa');
         if (val) {
           this.branchName = val?.branch;
           this.positionName = val?.position;
@@ -539,7 +540,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               this.eventExportStay.next(true);
               break;
             case FilterTypeEnum.TIME_SHEET:
-              this.exportTimeSheet()
+              this.exportTimeSheet();
               break;
             case FilterTypeEnum.SEASONAL:
               this.eventExportAbsent.next(true);

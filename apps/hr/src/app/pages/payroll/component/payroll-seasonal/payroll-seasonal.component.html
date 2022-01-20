@@ -19,7 +19,7 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search' (keypress)="checkInputNumber($event)" >
+            <input class='form-control text-center' type='search' (keypress)='checkInputNumber($event)'>
           </th>
           <th style='width: 210px'>
             <div class='border-top text-center'>Tên nhân viên</div>
@@ -174,13 +174,14 @@
     </div>
   </div>
 
-  <app-mouse-right [type]='pageType.PAYROLL'
-                   #child
-                   (addEvent)='addPayroll($event)'
-                   (deleteEvent)='deletePayroll($event)'
-                   (restore)='restorePayroll($event)'
-                   (HistoryPayroll)='historyPayroll($event)'
-                   (readEvent)='readPayroll($event)'>
+  <app-mouse-right
+    [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]'
+    #child
+    (onAdd)='addPayroll($event)'
+    (onDel)='deletePayroll($event)'
+    (onRestore)='restorePayroll($event)'
+    (onHisPayroll)='historyPayroll($event)'
+    (onDetail)='readPayroll($event)'>
   </app-mouse-right>
 </ng-template>
 <style>
@@ -191,6 +192,7 @@
     left: 170px;
     z-index: 2;
   }
+
   .table-scroll th:nth-child(4) {
     position: -webkit-sticky;
     position: sticky;
@@ -199,8 +201,7 @@
   }
 
   .table-scroll thead th:nth-child(3),
-  .table-scroll thead th:nth-child(4)
-  {
+  .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
 </style>

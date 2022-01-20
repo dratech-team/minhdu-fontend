@@ -19,7 +19,8 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã phiếu lương</div>
-            <input type='search' (keypress)="checkInputNumber($event)"  class='form-control text-center' formControlName='code'>
+            <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
+                   formControlName='code'>
           </th>
           <th style='width: 250px'>
             <div class='border-top text-center'>Tên nhân viên</div>
@@ -98,7 +99,7 @@
             {{payroll.employee?.branch?.name}}
           </th>
           <th class='pointer text-center' (click)='readPayroll(payroll)'>
-            {{payroll.createdAt|date:'yyyy-MM'}}
+            {{payroll.createdAt | date:'yyyy-MM'}}
           </th>
           <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
               [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
@@ -126,13 +127,14 @@
   </div>
 </ng-template>
 
-<app-mouse-right [type]='pageType.PAYROLL'
-                 #child
-                 (deleteEvent)='deletePayroll($event)'
-                 (addEvent)='addPayroll($event)'
-                 (restore)='restorePayroll($event)'
-                 (HistoryPayroll)='historyPayroll($event)'
-                 (readEvent)='readPayroll($event)'>
+<app-mouse-right
+  [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]'
+  #child
+  (onDel)='deletePayroll($event)'
+  (onAdd)='addPayroll($event)'
+  (onRestore)='restorePayroll($event)'
+  (onHisPayroll)='historyPayroll($event)'
+  (onDetail)='readPayroll($event)'>
 </app-mouse-right>
 
 <style>

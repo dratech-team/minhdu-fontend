@@ -171,8 +171,8 @@
                *ngFor='let item of payrollStay.salaries|filterTypeSalary:["STAY"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollStay)'>
-            {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
-            {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
+            {{item?.price ? (item.price | number:'1.0-0') : 0}}VND
+            {{ item.allowance ? '+ ' + (item.allowance.price | number:'1.0-0') + 'VND' : '' }}
           </div>
         </th>
       </tr>
@@ -186,11 +186,11 @@
   </div>
 </ng-template>
 
-<app-mouse-right [type]='pageType.PAYROLL_SALARY'
-                 (addEvent)='addSalaryStay()'
-                 (readEvent)='readPayroll($event)'
-                 (deleteEvent)='deleteSalaryStay($event)'
-                 #child>
+<app-mouse-right
+  #child
+  (onAdd)='addSalaryStay()'
+  (onDetail)='readPayroll($event)'
+  (onDel)='deleteSalaryStay($event)'>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {

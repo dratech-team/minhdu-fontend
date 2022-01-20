@@ -1,16 +1,15 @@
-import { Component, Input, EventEmitter, Output, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, ItemContextMenu } from '@minhdu-fontend/enums';
 import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { Observable } from 'rxjs';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DatePipe } from '@angular/common';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { checkInputNumber } from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-payroll-time-sheet',
@@ -34,7 +33,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventDeletePayroll = new EventEmitter<any>();
 
   unit = DatetimeUnitEnum;
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   @Input() formGroup!: FormGroup;
 
   constructor(
@@ -50,7 +49,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
     this.ref.detectChanges();
   }
 
-
   onScroll() {
     this.EventScroll.emit();
   }
@@ -58,7 +56,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   onSelectPosition(positionName: string) {
     this.EventSelectPosition.emit(positionName);
   }
-
 
   addPayroll($event?: any): void {
     this.EventAddPayroll.emit($event);
@@ -92,7 +89,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   }
 
 
-  checkInputNumber(event: any){
-    return checkInputNumber(event)
+  checkInputNumber(event: any) {
+    return checkInputNumber(event);
   }
 }

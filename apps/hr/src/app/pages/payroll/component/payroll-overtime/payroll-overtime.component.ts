@@ -4,18 +4,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  Api,
-  SearchTypeConstant,
-  UnitsConstant,
-} from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
+  ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum,
+  SearchTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -32,20 +29,13 @@ import {
   selectedPositionPayroll,
   selectedTotalOvertimePayroll,
   selectedTotalPayroll,
-  selectorAllPayroll,
+  selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {
-  getAllPosition,
-  PositionActions,
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import {
-  getFirstDayInMonth,
-  getLastDayInMonth,
-} from '../../../../../../../../libs/utils/daytime.until';
+import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { AppState } from '../../../../reducers';
@@ -58,13 +48,36 @@ import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog
 
 @Component({
   selector: 'app-payroll-overtime',
-  templateUrl: 'payroll-overtime.component.html',
+  templateUrl: 'payroll-overtime.component.html'
 })
 export class PayrollOvertimeComponent implements OnInit {
   @Input() eventAddOvertime?: Subject<any>;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+
+  ItemContextMenu = ItemContextMenu;
+  salaryType = SalaryTypeEnum;
+  pageSize = 30;
+  pageIndex = 0;
+  pageIndexInit = 0;
+  genderType = Gender;
+  unit = DatetimeUnitEnum;
+  salariesSelected: Array<SalaryPayroll> = [];
+  salaries: Array<SalaryPayroll> = [];
+  searchTypeConstant = SearchTypeConstant;
+  unitsConstant = UnitsConstant;
+  isSelectSalary = false;
+  isEventSearch = false;
+
+  loaded$ = this.store.select(selectedLoadedPayroll);
+  payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
+  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
+  adding$ = this.store.pipe(select(selectedAddingPayroll));
+
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -79,28 +92,8 @@ export class PayrollOvertimeComponent implements OnInit {
       getSelectors(selectedPositionPayroll, this.store)
     ),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
-    searchType: new FormControl(SearchTypeEnum.CONTAINS),
+    searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
-  pageType = PageTypeEnum;
-  salaryType = SalaryTypeEnum;
-  pageSize = 30;
-  pageIndex = 0;
-  pageIndexInit = 0;
-  genderType = Gender;
-  unit = DatetimeUnitEnum;
-  salariesSelected: SalaryPayroll[] = [];
-  payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
-  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  adding$ = this.store.pipe(select(selectedAddingPayroll));
-  searchTypeConstant = SearchTypeConstant;
-  unitsConstant = UnitsConstant;
-  isSelectSalary = false;
-  salaries: SalaryPayroll[] = [];
-  isEventSearch = false;
-  loaded$ = this.store.select(selectedLoadedPayroll);
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -111,26 +104,24 @@ export class PayrollOvertimeComponent implements OnInit {
     private readonly salaryService: SalaryService,
     private readonly activeRouter: ActivatedRoute,
     private readonly ref: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
-    let paramLoadInit = {
+    const paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.OVERTIME,
       position: getSelectors<string>(selectedPositionPayroll, this.store),
-      branch: getSelectors<string>(selectedBranchPayroll, this.store),
+      branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
-        this.formGroup
-          .get('title')!
-          .setValue(JSON.parse(JSON.stringify(val.titleOvertime)));
+        this.formGroup.get('title')?.setValue(JSON.parse(JSON.stringify(val.titleOvertime)));
         Object.assign(paramLoadInit, { title: val.titleOvertime });
       }
     });
     this.store.dispatch(PositionActions.loadPosition());
-
     this.store.dispatch(OrgchartActions.init());
 
     this.positions$ = searchAutocomplete(
@@ -147,7 +138,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
     this.templateOvertime$ = combineLatest([
       this.formGroup.get('title')!.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(selectorAllTemplate)),
+      this.store.pipe(select(selectorAllTemplate))
     ]).pipe(
       map(([title, templateOvertimes]) => {
         if (title) {
@@ -162,7 +153,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
     if (this.overtimeTitle) {
       Object.assign(paramLoadInit, {
-        createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd'),
+        createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd')
       });
       this.formGroup.get('title')!.setValue(this.overtimeTitle);
       this.formGroup
@@ -178,13 +169,13 @@ export class PayrollOvertimeComponent implements OnInit {
     } else {
       Object.assign(paramLoadInit, {
         startedAt: getFirstDayInMonth(new Date(this.createdAt)),
-        endedAt: getLastDayInMonth(new Date(this.createdAt)),
+        endedAt: getLastDayInMonth(new Date(this.createdAt))
       });
     }
 
     this.store.dispatch(
       PayrollAction.loadInit({
-        payrollDTO: paramLoadInit,
+        payrollDTO: paramLoadInit
       })
     );
 
@@ -216,7 +207,7 @@ export class PayrollOvertimeComponent implements OnInit {
           position: value.position,
           branch: value.branch,
           startedAt: value.startedAt,
-          endedAt: value.endedAt,
+          endedAt: value.endedAt
         };
         if (value.name) {
           Object.assign(overtime, { name: value.name });
@@ -227,8 +218,8 @@ export class PayrollOvertimeComponent implements OnInit {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
             exportType: FilterTypeEnum.OVERTIME,
-            api: Api.HR.PAYROLL.EXPORT,
-          },
+            api: Api.HR.PAYROLL.EXPORT
+          }
         });
       }
     });
@@ -239,12 +230,12 @@ export class PayrollOvertimeComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.startedAt),
           position: value.position,
-          branch: value.branch,
+          branch: value.branch
         })
       );
       this.store.dispatch(
         PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollOvertime(),
+          payrollDTO: this.mapPayrollOvertime()
         })
       );
     });
@@ -263,7 +254,7 @@ export class PayrollOvertimeComponent implements OnInit {
                   this.isSelectSalary =
                     this.salariesSelected.length > 0 &&
                     this.salariesSelected.length >=
-                      Number(getSelectors(selectedTotalPayroll, this.store)) &&
+                    Number(getSelectors(selectedTotalPayroll, this.store)) &&
                     this.salaries.every((item) =>
                       this.salariesSelected.some(
                         (val) => val.salary.id === item.salary.id
@@ -279,12 +270,12 @@ export class PayrollOvertimeComponent implements OnInit {
                 ) {
                   this.salariesSelected.push({
                     salary: salary,
-                    employee: payroll.employee,
+                    employee: payroll.employee
                   });
                 }
                 this.salaries.push({
                   salary: salary,
-                  employee: payroll.employee,
+                  employee: payroll.employee
                 });
               }
             });
@@ -306,19 +297,19 @@ export class PayrollOvertimeComponent implements OnInit {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
     ) {
       Object.assign(params, {
-        createdAt: this.datePipe.transform(value.startedAt, 'YYYY-MM-dd'),
+        createdAt: this.datePipe.transform(value.startedAt, 'YYYY-MM-dd')
       });
     } else {
       Object.assign(params, {
         startedAt: value.startedAt,
-        endedAt: value.endedAt,
+        endedAt: value.endedAt
       });
     }
     if (!value.name) {
@@ -337,8 +328,8 @@ export class PayrollOvertimeComponent implements OnInit {
     const ref = this.dialog.open(DialogOvertimeMultipleComponent, {
       width: 'fit-content',
       data: {
-        type: SalaryTypeEnum.OVERTIME,
-      },
+        type: SalaryTypeEnum.OVERTIME
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -373,8 +364,8 @@ export class PayrollOvertimeComponent implements OnInit {
             : this.formGroup.get('startAt')!.value,
           salariesSelected: this.salariesSelected,
           updateMultiple: true,
-          isUpdate: true,
-        },
+          isUpdate: true
+        }
       });
       ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
         this.salariesSelected = val;
@@ -402,7 +393,7 @@ export class PayrollOvertimeComponent implements OnInit {
       const uniqDatetime = [
         ...new Set(
           uniq.map(({ datetime }) => moment(datetime).format('DD/MM/YYYY'))
-        ),
+        )
       ];
       const uniqPrice = [...new Set(uniq.map(({ price }) => price))];
       const uniqUnit = [...new Set(uniq.map(({ unit }) => unit))];
@@ -419,12 +410,12 @@ export class PayrollOvertimeComponent implements OnInit {
       // }
 
       this.snackbar.open(
-        `Sửa đổi hàng loạt phải giống nhau về Loại tăng ca, đơn vị tính, đơn giá và ngày tăng ca. Mục đang bị sai: 
+        `Sửa đổi hàng loạt phải giống nhau về Loại tăng ca, đơn vị tính, đơn giá và ngày tăng ca. Mục đang bị sai:
          ${
-           uniqTitle.length > 1
-             ? ' loại tăng ca: ' + uniqTitle.join(', ') + `` + ', '
-             : ''
-         } ${
+          uniqTitle.length > 1
+            ? ' loại tăng ca: ' + uniqTitle.join(', ') + `` + ', '
+            : ''
+        } ${
           uniqUnit.length > 1
             ? 'đơn vị tính: ' + uniqUnit.join(', ') + ', '
             : ''
@@ -449,7 +440,7 @@ export class PayrollOvertimeComponent implements OnInit {
       price: salary.price,
       rate: salary.rate,
       type: salary.type,
-      unit: salary.unit,
+      unit: salary.unit
       // allowance: {
       //   title: salary?.allowance?.title,
       //   price: salary?.allowance?.price,
@@ -458,7 +449,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
   deleteMultipleSalaryOvertime(): any {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((value) => {
       const deleteSuccess = new Subject<number>();
@@ -482,7 +473,7 @@ export class PayrollOvertimeComponent implements OnInit {
               title: value.title,
               name: value.name,
               position: value.position,
-              branch: value.branch,
+              branch: value.branch
             };
             if (!value.name) {
               delete payrollOvertime.name;
@@ -498,7 +489,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
   deleteSalaryOvertime(event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
@@ -510,7 +501,7 @@ export class PayrollOvertimeComponent implements OnInit {
           title: value.title,
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: value.branch
         };
         if (!value.name) {
           delete payrollOvertime.name;
@@ -518,7 +509,7 @@ export class PayrollOvertimeComponent implements OnInit {
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
             this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500,
+              duration: 1500
             });
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollOvertime() })
@@ -575,7 +566,7 @@ export class PayrollOvertimeComponent implements OnInit {
     this.isEventSearch = false;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
-        payrollDTO: this.mapPayrollOvertime(),
+        payrollDTO: this.mapPayrollOvertime()
       })
     );
   }

@@ -1,23 +1,19 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu } from '@minhdu-fontend/enums';
 import { OvertimeService } from '../../service/overtime.service';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { select, Store } from '@ngrx/store';
-import {
-  selectedLoadedPayroll,
-  selectorAllPayrollSeasonal
-} from '../../+state/payroll/payroll.selector';
+import { selectedLoadedPayroll } from '../../+state/payroll/payroll.selector';
 import { DatePipe } from '@angular/common';
 import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { Observable, Subject } from 'rxjs';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { checkInputNumber } from '@minhdu-fontend/utils';
+import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
 
 @Component({
@@ -25,18 +21,12 @@ import { Api } from '@minhdu-fontend/constants';
   templateUrl: 'payroll-seasonal.component.html'
 })
 export class PayrollSeasonalComponent implements OnInit {
-  @Input() payroll$!: Observable<Payroll[]>
-  @Input() total$!: Observable<number>
-  loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  @Input() payroll$!: Observable<Payroll[]>;
+  @Input() total$!: Observable<number>;
   @Input() eventExportSeasonal?: Subject<any>;
   @Input() formGroup!: FormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
-  unit = DatetimeUnitEnum;
-  loaded = false;
-  pageType = PageTypeEnum;
-  pageSize: number = 30;
-  pageIndexInit = 0;
   @Output() EventHistoryPayroll = new EventEmitter<any>();
   @Output() EventRestorePayroll = new EventEmitter<any>();
   @Output() EventReadPayroll = new EventEmitter<any>();
@@ -45,6 +35,13 @@ export class PayrollSeasonalComponent implements OnInit {
   @Output() EventSelectPosition = new EventEmitter<string>();
   @Output() EventSelectBranch = new EventEmitter<string>();
   @Output() EventScroll = new EventEmitter<any>();
+
+  unit = DatetimeUnitEnum;
+  loaded = false;
+  ItemContextMenu = ItemContextMenu;
+  pageSize = 30;
+  pageIndexInit = 0;
+  loaded$ = this.store.pipe(select(selectedLoadedPayroll));
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -95,7 +92,7 @@ export class PayrollSeasonalComponent implements OnInit {
       { width: '30%', data: { employeeId: $event?.employee?.id, addOne: true } });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.formGroup.get('createdAt')!.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
   }
@@ -135,7 +132,7 @@ export class PayrollSeasonalComponent implements OnInit {
     this.EventHistoryPayroll.emit(event);
   }
 
-  checkInputNumber(event: any){
-    return checkInputNumber(event)
+  checkInputNumber(event: any) {
+    return checkInputNumber(event);
   }
 }

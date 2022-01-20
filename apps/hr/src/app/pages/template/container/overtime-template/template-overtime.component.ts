@@ -4,40 +4,33 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
-import {
-  DatetimeUnitEnum,
-  EmployeeType, FilterTypeEnum,
-  SalaryTypeEnum
-} from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import * as lodash from 'lodash';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import {
   selectorAllTemplate,
-  selectTemplateAdding, selectTemplateLoaded,
+  selectTemplateAdding,
+  selectTemplateLoaded,
   selectTotalTemplateOvertime
 } from '../../+state/template-overtime/template-overtime.selector';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { AppState } from '../../../../reducers';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 
 @Component({
-  templateUrl: 'template-overtime.component.html',
+  templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
-  pageTypeEnum = PageTypeEnum;
+  pageTypeEnum = ItemContextMenu;
   adding$ = this.store.pipe(select(selectTemplateAdding));
   total$ = this.store.pipe(select(selectTotalTemplateOvertime));
-  loaded$= this.store.select(selectTemplateLoaded)
+  loaded$ = this.store.select(selectTemplateLoaded);
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   pageSize = 30;
@@ -50,7 +43,7 @@ export class TemplateOvertimeComponent implements OnInit {
     unit: new FormControl(''),
     note: new FormControl(''),
     branch: new FormControl(''),
-    employeeType: new FormControl(''),
+    employeeType: new FormControl('')
   });
   positionsSelected: Position[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
@@ -61,7 +54,8 @@ export class TemplateOvertimeComponent implements OnInit {
     private readonly router: Router,
     private readonly snackbar: MatSnackBar,
     private readonly store: Store<AppState>
-  ) {}
+  ) {
+  }
 
   templates$ = this.store.pipe(select(selectorAllTemplate));
 
@@ -72,8 +66,8 @@ export class TemplateOvertimeComponent implements OnInit {
       TemplateOvertimeAction.loadInit({
         templateOvertimeDTO: {
           take: this.pageSize,
-          skip: this.pageIndexInit,
-        },
+          skip: this.pageIndexInit
+        }
       })
     );
 
@@ -83,7 +77,7 @@ export class TemplateOvertimeComponent implements OnInit {
         tap((val) => {
           this.store.dispatch(
             TemplateOvertimeAction.loadInit({
-              templateOvertimeDTO: this.template(val),
+              templateOvertimeDTO: this.template(val)
             })
           );
         })
@@ -104,7 +98,7 @@ export class TemplateOvertimeComponent implements OnInit {
   templateOvertime($event?: any) {
     this.dialog.open(DialogTemplateOvertimeComponent, {
       width: '40%',
-      data: $event,
+      data: $event
     });
   }
 
@@ -123,7 +117,7 @@ export class TemplateOvertimeComponent implements OnInit {
     const val = this.formGroup.value;
     this.store.dispatch(
       TemplateOvertimeAction.loadMoreTemplateOverTime({
-        templateOvertimeDTO: this.template(val),
+        templateOvertimeDTO: this.template(val)
       })
     );
   }
@@ -137,7 +131,7 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: val.unit,
       note: val.note,
       branch: val.branch,
-      positionIds: this.positionsSelected.map((val) => val.id),
+      positionIds: this.positionsSelected.map((val) => val.id)
     };
   }
 
@@ -160,7 +154,7 @@ export class TemplateOvertimeComponent implements OnInit {
             const value = this.formGroup.value;
             this.store.dispatch(
               TemplateOvertimeAction.loadInit({
-                templateOvertimeDTO: this.template(value),
+                templateOvertimeDTO: this.template(value)
               })
             );
           }
@@ -180,7 +174,7 @@ export class TemplateOvertimeComponent implements OnInit {
     const value = this.formGroup.value;
     this.store.dispatch(
       TemplateOvertimeAction.loadInit({
-        templateOvertimeDTO: this.template(value),
+        templateOvertimeDTO: this.template(value)
       })
     );
   }
@@ -190,21 +184,21 @@ export class TemplateOvertimeComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           position: position.name,
-          filter: FilterTypeEnum.OVERTIME,
+          filter: FilterTypeEnum.OVERTIME
         })
       );
     } else {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          filter: FilterTypeEnum.OVERTIME,
+          filter: FilterTypeEnum.OVERTIME
         })
       );
     }
     this.router
       .navigate(['phieu-luong'], {
         queryParams: {
-          titleOvertime: template.title,
-        },
+          titleOvertime: template.title
+        }
       })
       .then();
   }

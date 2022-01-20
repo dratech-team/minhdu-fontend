@@ -7591,10 +7591,12 @@ ng-apexcharts@^1.5.12:
   dependencies:
     tslib "^1.10.0"
 
-ngx-bootstrap@^5.6.1:
-  version "5.6.2"
-  resolved "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-5.6.2.tgz"
-  integrity sha512-6YHXtdXkGH3w0NQoaUgNYAcrj064Lv5RTO284ha/hvpNTrh55yQz2cVh0VvwBk3MjyY2tdmLH4SuCJDszYdYiw==
+ngx-bootstrap@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-8.0.0.tgz#a1d222e626a1f5e13acdaafd754bb18874a1d561"
+  integrity sha512-UjJ/57Pr7ctdI2L113QX1IqJPYtOMrp5Qq/RLvUT1TOwPQWPi9LXTQ/7BtipkptQjer7Fk9yueITH3Y8vD+Dmg==
+  dependencies:
+    tslib "^2.0.0"
 
 ngx-contextmenu@^6.0.0:
   version "6.0.0"
@@ -7602,6 +7604,13 @@ ngx-contextmenu@^6.0.0:
   integrity sha512-y/v++xVNccz5C1NydtL5sHVZwACsKTgXbmZ76CPierv/nPAstr6rrTX37Zlwal3OnbN5XGTSKRcXZSuWUC5Z1Q==
   dependencies:
     tslib "^2.1.0"
+
+ngx-currency@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/ngx-currency/-/ngx-currency-2.5.3.tgz#16384485871ab28abc00e4fbcbbe3def43c5bdee"
+  integrity sha512-NS58eSK1vTIzrtbK1KI6zUpaZrFZtBHGX8aYQefSSf8qz83alB4rIEzXoMn/ZydPhoVTg2vk8m+3aVs6PiPnOA==
+  dependencies:
+    tslib "^2.0.0"
 
 ngx-infinite-scroll@^10.0.1:
   version "10.0.1"

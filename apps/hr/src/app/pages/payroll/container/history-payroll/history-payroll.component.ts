@@ -22,7 +22,7 @@ import {
 import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { ItemContextMenu } from '@minhdu-fontend/enums';
 import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
@@ -54,7 +54,7 @@ export class HistoryPayrollComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  PageTypeEnum = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
 
   constructor(
     private readonly snackbar: MatSnackBar,

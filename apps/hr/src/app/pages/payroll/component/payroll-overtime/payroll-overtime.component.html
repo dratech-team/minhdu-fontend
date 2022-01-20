@@ -198,7 +198,7 @@
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{payrollOvertime.employee.branch?.name}}</th>
-        <th class='pointer' style='width: 220px;' >
+        <th class='pointer' style='width: 220px;'>
           <div class=' d-flex align-items-center justify-content-center pointer '
                [ngClass]='{
                 "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
@@ -262,11 +262,12 @@
     </table>
   </div>
 </ng-template>
-<app-mouse-right [type]='pageType.PAYROLL_OVERTIME'
-                 (addEvent)='addSalaryOvertime()'
-                 (readEvent)='detailPayroll($event.payrollId)'
-                 (deleteEvent)='deleteSalaryOvertime($event)'
-                 #child>
+<app-mouse-right
+  #child
+  (onAdd)='addSalaryOvertime()'
+  (onDetail)='detailPayroll($event.payrollId)'
+  (onDel)='deleteSalaryOvertime($event)'
+>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {

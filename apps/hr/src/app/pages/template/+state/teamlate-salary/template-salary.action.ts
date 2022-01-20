@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { TemplateSalary, TemplateSalaryDTO } from './template-salary';
 
 export const AddTemplate = createAction(

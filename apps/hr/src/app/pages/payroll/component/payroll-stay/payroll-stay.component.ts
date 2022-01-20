@@ -10,6 +10,7 @@ import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
+  ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
@@ -26,29 +27,22 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
 import { AppState } from '../../../../reducers';
 import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
 import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 
 @Component({
   selector: 'app-payroll-stay',
   templateUrl: 'payroll-stay.component.html'
 })
 export class PayrollStayComponent implements OnInit {
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   @Input() eventExportStay?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -112,7 +106,7 @@ export class PayrollStayComponent implements OnInit {
       TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY })
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
-      this.isEventSearch = true
+      this.isEventSearch = true;
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
@@ -139,8 +133,8 @@ export class PayrollStayComponent implements OnInit {
 
     this.payrollStay$.subscribe((payrolls) => {
       if (payrolls) {
-        if(payrolls.length === 0){
-          this.isSelectSalary = false
+        if (payrolls.length === 0) {
+          this.isSelectSalary = false;
         }
         this.salaries = [];
         payrolls.forEach((payroll) => {
@@ -179,8 +173,8 @@ export class PayrollStayComponent implements OnInit {
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
-        if(value.createdAt){
-          Object.assign(payrollStay, {createdAt: value.createdAt})
+        if (value.createdAt) {
+          Object.assign(payrollStay, { createdAt: value.createdAt });
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -337,7 +331,7 @@ export class PayrollStayComponent implements OnInit {
   }
 
   onScroll() {
-    this.isEventSearch = false
+    this.isEventSearch = false;
     const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
