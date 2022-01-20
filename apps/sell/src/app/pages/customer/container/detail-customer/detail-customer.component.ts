@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PaidType } from 'libs/enums/paidType.enum';
+import { Store } from '@ngrx/store';
+import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
+import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer/customer.action';
 import { Customer } from '../../+state/customer/customer.interface';
 import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
@@ -12,15 +11,15 @@ import { AppState } from '../../../../reducers';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
 import {
-  selectorOrdersAssignedById,
-  selectorOrdersNotAssignedById,
+  selectedNotOrderLoaded,
   selectedOrderLoaded,
-  selectedNotOrderLoaded
+  selectorOrdersAssignedById,
+  selectorOrdersNotAssignedById
 } from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { ConvertBoolean, MenuEnum } from '@minhdu-fontend/enums';
 import { MainAction } from '../../../../states/main.action';
+import { getSelectors } from '@minhdu-fontend/utils';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -30,7 +29,6 @@ export class DetailCustomerComponent implements OnInit {
   convertBoolean = ConvertBoolean;
   orders: Order[] = [];
   paidType = PaidType;
-  customer!: Customer;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -39,17 +37,17 @@ export class DetailCustomerComponent implements OnInit {
   ) {
   }
 
-  customer$ = this.store.pipe(select(selectorCurrentCustomer(this.getId)));
-  ordersNotAssigned$ = this.store.pipe(select(selectorOrdersNotAssignedById(this.getId)));
-  ordersAssigned$ = this.store.pipe(select(selectorOrdersAssignedById(this.getId)));
-  loadedOrdersAssigned$ = this.store.pipe(select(selectedOrderLoaded));
-  loadedOrdersNotAssigned$ = this.store.pipe(select(selectedNotOrderLoaded));
+  customer$ = this.store.select(selectorCurrentCustomer(this.getId));
+  ordersNotAssigned$ = this.store.select(selectorOrdersNotAssignedById(this.getId));
+  ordersAssigned$ = this.store.select(selectorOrdersAssignedById(this.getId));
+  loadedOrdersAssigned$ = this.store.select(selectedOrderLoaded);
+  loadedOrdersNotAssigned$ = this.store.select(selectedNotOrderLoaded);
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
     this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
     this.store.dispatch(
-      OrderAction.loadInit({ orderDTO:{take: 10, skip: 0, customerId: this.getId} })
+      OrderAction.loadInit({ orderDTO: { take: 10, skip: 0, customerId: this.getId } })
     );
     this.store.dispatch(
       OrderAction.loadOrdersAssigned({
@@ -59,6 +57,12 @@ export class DetailCustomerComponent implements OnInit {
         delivered: this.convertBoolean.TRUE
       })
     );
+
+    this.activatedRoute.queryParams.subscribe(param => {
+      if (param.isUpdate === 'true') {
+        this.updateCustomer(getSelectors(selectorCurrentCustomer(this.getId), this.store));
+      }
+    });
   }
 
   updateCustomer(customer: Customer) {

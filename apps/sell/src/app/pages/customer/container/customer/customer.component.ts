@@ -1,13 +1,19 @@
-import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { ConvertBoolean, CustomerResource, CustomerType, Gender, MenuEnum } from '@minhdu-fontend/enums';
+import {
+  ConvertBoolean,
+  CustomerResource,
+  CustomerType,
+  Gender,
+  ItemContextMenu,
+  MenuEnum
+} from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../+state/customer/customer.action';
 import { selectedCustomerLoaded, selectorAllCustomer } from '../../+state/customer/customer.selector';
@@ -16,21 +22,23 @@ import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
-export class CustomerComponent implements OnInit{
+export class CustomerComponent implements OnInit {
+  pageSize = 30;
+  pageIndexInit = 0;
   customerType = CustomerType;
   boolean = ConvertBoolean;
-  resourceType = CustomerResource;
   resourceTypes = CustomerResourcesConstant;
   ItemContextMenu = ItemContextMenu;
   genderType = Gender;
   orders?: Order;
-  pageSize = 30;
-  pageIndexInit = 0;
+
+  customers$ = this.store.select(selectorAllCustomer);
+  loaded$ = this.store.select(selectedCustomerLoaded);
+
   formGroup = new FormGroup({
     resource: new FormControl(''),
     isPotential: new FormControl(''),
@@ -49,15 +57,12 @@ export class CustomerComponent implements OnInit{
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly exportService: ExportService,
+    private readonly exportService: ExportService
   ) {
   }
 
-  customers$ = this.store.pipe(select(selectorAllCustomer));
-  loaded$ = this.store.pipe(select(selectedCustomerLoaded));
-
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.CUSTOMER}))
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
     this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
@@ -110,11 +115,12 @@ export class CustomerComponent implements OnInit{
     };
   }
 
-  /// FIXME: pass param for update customer
-  readAndUpdate($event?: any) {
-    this.router
-      .navigate(['khach-hang/chi-tiet-khach-hang', $event.id])
-      .then();
+  readAndUpdate($event?: any, isUpdate?: boolean) {
+    this.router.navigate(['khach-hang/chi-tiet-khach-hang', $event.id], {
+      queryParams: {
+        isUpdate: isUpdate
+      }
+    }).then();
   }
 
   deleteCustomer($event: any) {
@@ -153,7 +159,7 @@ export class CustomerComponent implements OnInit{
       address: val.address.trim(),
       note: val.note.trim()
     };
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng khác hàng',
@@ -161,6 +167,6 @@ export class CustomerComponent implements OnInit{
         params: customers,
         api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
       }
-    })
+    });
   }
 }
