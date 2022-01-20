@@ -17,7 +17,7 @@
          [scrollWindow]='false'
          [alwaysCallback]='true'
          (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup'  style='width: 1700px'>
+      <table [formGroup]='formGroup' style='width: 1700px'>
         <thead>
         <tr>
           <th style='width: 50px'>
@@ -71,7 +71,7 @@
           <th style=' width:500px'>
             <div *ngIf='this.positionsSelected.length === 0 else chip' class='border-top text-center'>Chức vụ</div>
             <ng-template #chip>
-              <mat-chip-list #chipList >
+              <mat-chip-list #chipList>
                 <mat-chip
                   style='font-size: 12px '
                   *ngFor='let position of positionsSelected'
@@ -86,7 +86,7 @@
               </mat-chip-list>
             </ng-template>
             <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                   [formControl]='fCtrlPosition'  #positionInput>
+                   [formControl]='fCtrlPosition' #positionInput>
             <mat-autocomplete #position='matAutocomplete'>
               <mat-option *ngFor='let position of positions$ | async'
                           [value]='position.name' (click)='onSelectPosition(position,$event,positionInput)'
@@ -173,12 +173,14 @@
     </div>
   </ng-template>
 
-  <app-mouse-right #child
-                   (addEvent)='templateOvertime($event)'
-                   (readEvent)='templateOvertime($event)'
-                   (deleteEvent)='deleteOvertime($event)'
+  <app-mouse-right
+    #child
+    (onAdd)='templateOvertime()'
+    (onUpdate)='templateOvertime($event)'
+    (onDel)='deleteOvertime($event)'
   ></app-mouse-right>
 </div>
+
 <style>
   .table-scroll th:nth-child(2) {
     position: -webkit-sticky;

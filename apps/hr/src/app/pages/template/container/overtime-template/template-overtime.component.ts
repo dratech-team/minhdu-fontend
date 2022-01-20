@@ -17,7 +17,7 @@ import {
   selectTemplateLoaded,
   selectTotalTemplateOvertime
 } from '../../+state/template-overtime/template-overtime.selector';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { AppState } from '../../../../reducers';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
@@ -27,7 +27,6 @@ import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-positi
   templateUrl: 'template-overtime.component.html'
 })
 export class TemplateOvertimeComponent implements OnInit {
-  pageTypeEnum = ItemContextMenu;
   adding$ = this.store.pipe(select(selectTemplateAdding));
   total$ = this.store.pipe(select(selectTotalTemplateOvertime));
   loaded$ = this.store.select(selectTemplateLoaded);
