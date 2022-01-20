@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Observable } from 'rxjs';
-import { Branch } from '@minhdu-fontend/data-models';
+import { Branch, Position } from '@minhdu-fontend/data-models';
 import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
 
@@ -62,10 +62,9 @@ export class PositionContainer implements OnInit {
     this.dialog.open(DialogPositionComponent, { width: 'fit-content', data: { branchId: this.branchId } });
   }
 
-  updatePosition($event: any) {
+  updatePosition($event: Position) {
     this.dialog.open(DialogPositionComponent, {
-      width: 'fit-content', data:
-        { position: $event, isUpdate: true, branchId: this.branchId }
+      width: 'fit-content', data: { position: $event, isUpdate: true, branchId: this.branchId }
     });
   }
 

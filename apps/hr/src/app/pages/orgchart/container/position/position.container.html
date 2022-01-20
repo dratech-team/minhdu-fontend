@@ -15,7 +15,7 @@
           <!--          <button (click)='printPosition()' class='btn btn-primary mt-3 '>Xuất</button>-->
         </div>
       </div>
-      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)  && !(branchLoaded$ | async)  else tablePosition  '
+      <ngx-skeleton-loader *ngIf='!(positionLoaded$ | async)  && !(branchLoaded$ | async)  else tablePosition  '
                            count='15' appearance='line'></ngx-skeleton-loader>
       <ng-template #tablePosition>
         <div class='fixTableHead mt-5 '>
@@ -47,54 +47,62 @@
             </tr>
             </thead>
             <ng-template [ngIf]='!this.branchId'>
-              <tbody *ngIf='(position$ |async) as positions'>
-              <tr *ngFor='let position of  positions ; let i = index'
-                  (contextmenu)='childPosition.onContextMenu($event,{position: position})'>
-                <th class='pointer' (click)='updatePosition(position)'>
+              <tbody *ngIf='(position$ | async) as positions'>
+              <tr
+                *ngFor='let position of  positions ; let i = index'
+                (click)='updatePosition(position)'
+                (contextmenu)='childPosition.onContextMenu($event,{position: position})'
+              >
+                <th class='pointer'>
                   {{i + 1}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.id}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.name}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.workday}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position?._count?.employees}}
                 </th>
               </tr>
               <tr *ngIf='(positions.length === 0)' style='height: 50vh'>
-                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>
+                  Hiện không có chức vụ nào
                 </td>
               </tr>
               </tbody>
             </ng-template>
 
             <ng-template [ngIf]='this.branchId'>
-              <tbody *ngIf='(branch$|async) as branch'>
-              <tr *ngFor='let position of  branch.positions ; let i = index'
-                  (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'>
-                <th class='pointer' (click)='updatePosition(position)'>
+              <tbody *ngIf='(branch$ | async) as branch'>
+              <tr
+                *ngFor='let position of  branch.positions ; let i = index'
+                (click)='updatePosition(position)'
+                (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'
+              >
+                <th class='pointer'>
                   {{i + 1}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.id}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.name}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position.workday}}
                 </th>
-                <th class='pointer' (click)='updatePosition(position)'>
+                <th class='pointer'>
                   {{position?._count?.employees}}
                 </th>
               </tr>
-              <tr *ngIf='(!branch.positions ||branch.positions.length === 0)' style='height: 50vh'>
-                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có chức vụ nào
+              <tr *ngIf='(!branch.positions || branch.positions.length === 0)' style='height: 50vh'>
+                <td colspan='5' class='text-center check-content font-weight-bold font-xl '>
+                  Hiện không có chức vụ nào
                 </td>
               </tr>
               </tbody>
@@ -111,7 +119,7 @@
   #childPosition
   [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.PROFILE, ItemContextMenu.OVERTIME]'
   (onAdd)='addPosition()'
-  (onDetail)='updatePosition($event)'
+  (onUpdate)='updatePosition($event.position)'
   (onDel)='deletePosition($event)'
   (onProfile)='onEmployee($event)'
   (onPayroll)='onPayroll($event)'

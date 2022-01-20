@@ -2,17 +2,12 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import {
-  getAllPosition,
-  PositionActions,
-  selectPositionAdded
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { getBranchAdded, getBranchById, getSelectedBranchId, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { getBranchAdded, OrgchartActions, PositionService } from '@minhdu-fontend/orgchart';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import * as lodash from 'lodash';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -26,7 +21,8 @@ export class DialogBranchComponent implements OnInit {
   positionSelected: Position[] = [];
   positions = new FormControl('');
   positions$ = this.store.pipe(select(getAllPosition));
-  branch$?:Observable<Branch|undefined>
+  branch$?: Observable<Branch | undefined>;
+
   constructor(
     private readonly dialogRef: MatDialogRef<DialogBranchComponent>,
     private readonly formBuilder: FormBuilder,
@@ -68,7 +64,7 @@ export class DialogBranchComponent implements OnInit {
           { id: this.data.branch.id, name: val.branch, positionIds: this.positionSelected.map(val => val.id) }));
       } else {
         this.store.dispatch(OrgchartActions.addBranch(
-          { branch: { name: val.branch , positionIds:  this.positionSelected.map(val => val.id) } }));
+          { branch: { name: val.branch, positionIds: this.positionSelected.map(val => val.id) } }));
       }
     } else {
       return;
