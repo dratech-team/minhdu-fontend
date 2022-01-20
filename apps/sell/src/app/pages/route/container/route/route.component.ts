@@ -11,17 +11,14 @@ import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
 import { RouteAction, updateRoute } from '../+state/route.action';
 import { Route } from '../+state/route.interface';
-import {
-  selectedRouteLoaded,
-  selectorAllRoute,
-} from '../+state/route.selector';
+import { selectedRouteLoaded, selectorAllRoute } from '../+state/route.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 
 @Component({
-  templateUrl: 'route.component.html',
+  templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
   pageSize = 30;
@@ -37,14 +34,15 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
-    statusRoute: new FormControl(''),
+    statusRoute: new FormControl('')
   });
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   routes$ = this.store.pipe(select(selectorAllRoute));
   loaded$ = this.store.pipe(select(selectedRouteLoaded));
@@ -66,7 +64,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          console.log(val)
+          console.log(val);
           this.store.dispatch(RouteAction.loadInit(this.route(val)));
         })
       )
@@ -75,7 +73,7 @@ export class RouteComponent implements OnInit {
 
   add() {
     this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
   }
 
@@ -93,13 +91,13 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim(),
+      garage: val.garage.trim()
     };
   }
 
   deleteRoute($event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
@@ -122,8 +120,8 @@ export class RouteComponent implements OnInit {
       });
   }
 
-  detailRoute(id: number) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
+  detailRoute(id: number, isUpdate: boolean) {
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], { queryParams: { isUpdate } }).then();
   }
 
   printRouter() {
@@ -134,7 +132,7 @@ export class RouteComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver.trim(),
       bsx: val.bsx.trim(),
-      garage: val.garage.trim(),
+      garage: val.garage.trim()
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -142,8 +140,8 @@ export class RouteComponent implements OnInit {
         title: 'Xuât bảng Tuyến đường',
         exportType: 'ORDER',
         params: route,
-        api: Api.SELL.ROUTE.ROUTE_EXPORT,
-      },
+        api: Api.SELL.ROUTE.ROUTE_EXPORT
+      }
     });
   }
 }

@@ -9,114 +9,120 @@
 <ngx-skeleton-loader *ngIf='!(loaded$ | async); else order' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #order>
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
-    [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
-    (scrolled)='onScroll()'>
+       [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
+       (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' style='min-width: 1800px'>
       <thead>
-        <tr>
-          <th style='min-width: 200px'>
-            <div class=''>Khách hàng</div>
-            <input formControlName='name' class='form-control' type='search'>
-          </th>
-          <th>
-            <div class=''>Ngày tạo</div>
-            <input formControlName='createdAt' class=' form-control' type='date'>
-          </th>
-          <th>
-            <div class=''>Ngày giao hàng</div>
-            <input formControlName='deliveredAt' class=' form-control' type='date'>
-          </th>
-          <th>
-            <div class=''>Điểm đến</div>
-            <input formControlName='destination' class='form-control' type='text'>
-          </th>
-          <th>
-            <div>Hàng hoá</div>
-            <input formControlName='commodity' class='form-control' type='text'>
-          </th>
-          <th>
-            <div class=''>Tiền hàng</div>
-            <input formControlName='commodityTotal' class='form-control' type='number'>
-          </th>
-          <th>
-            <div class=''> Thanh toán</div>
-            <select class='select border-top' style='width: 100%' matNativeControl required formControlName='paidType'>
-              <option value='{{paidType.PAID}}'>Có thanh toán</option>
-              <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
-              <option value=''>tất cả</option>
-            </select>
-          </th>
-          <th>
-            <div>Đơn vị tiền</div>
-            <input class='form-control  ' disabled>
-            <!--                    <select  class='select border-top' style='width: 100%'  matNativeControl required >-->
-            <!--                      <option *ngFor='let item of currenciesConstant' [value]='item.type'>{{item.name}}</option>-->
-            <!--                    </select>-->
-          </th>
-          <th>
-            <div class=''>Diễn giải</div>
-            <input formControlName='explain' class='form-control' type='text'>
-          </th>
-          <th>
-            <div class=''> Trạng thái đơn hàng</div>
-            <mat-select class='select border-top' style='width: 100%' required formControlName='status'>
-              <mat-option value='{{statusOrder.DELIVERED}}'>Đã giao</mat-option>
-              <mat-option value='{{statusOrder.DELIVERING}}'>Đang giao</mat-option>
-              <mat-option value=''>tất cả</mat-option>
-            </mat-select>
-          </th>
-        </tr>
+      <tr>
+        <th style='min-width: 200px'>
+          <div class=''>Khách hàng</div>
+          <input formControlName='name' class='form-control' type='search'>
+        </th>
+        <th>
+          <div class=''>Ngày tạo</div>
+          <input formControlName='createdAt' class=' form-control' type='date'>
+        </th>
+        <th>
+          <div class=''>Ngày giao hàng</div>
+          <input formControlName='deliveredAt' class=' form-control' type='date'>
+        </th>
+        <th>
+          <div class=''>Điểm đến</div>
+          <input formControlName='destination' class='form-control' type='text'>
+        </th>
+        <th>
+          <div>Hàng hoá</div>
+          <input formControlName='commodity' class='form-control' type='text'>
+        </th>
+        <th>
+          <div class=''>Tiền hàng</div>
+          <input formControlName='commodityTotal' class='form-control' type='number'>
+        </th>
+        <th>
+          <div class=''> Thanh toán</div>
+          <select class='select border-top' style='width: 100%' matNativeControl required formControlName='paidType'>
+            <option value='{{paidType.PAID}}'>Có thanh toán</option>
+            <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+            <option value=''>tất cả</option>
+          </select>
+        </th>
+        <th>
+          <div>Đơn vị tiền</div>
+          <input class='form-control  ' disabled>
+        </th>
+        <th>
+          <div class=''>Diễn giải</div>
+          <input formControlName='explain' class='form-control' type='text'>
+        </th>
+        <th>
+          <div class=''> Trạng thái đơn hàng</div>
+          <mat-select class='select border-top' style='width: 100%' required formControlName='status'>
+            <mat-option value='{{statusOrder.DELIVERED}}'>Đã giao</mat-option>
+            <mat-option value='{{statusOrder.DELIVERING}}'>Đang giao</mat-option>
+            <mat-option value=''>tất cả</mat-option>
+          </mat-select>
+        </th>
+      </tr>
       </thead>
       <tbody *ngIf='(orders$ | async) as orders'>
-        <tr class='pointer' *ngFor='let order of orders; let i = index' (click)='detailOrder(order.id)'
-          (contextmenu)='child.onContextMenu($event, order)'>
-          <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{order.customer.lastName}}
-          </th>
-          <th>
-            {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
-          </th>
-          <th>
-            {{(order?.deliveredAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
-          </th>
-          <th>
-            {{order?.destination?.name}} -
-            {{order?.destination?.district?.name}} -
-            {{order?.destination?.district?.province?.name}}
-          </th>
-          <th class='pointer' style='width: 220px;'>
-            <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
+      <tr
+        class='pointer'
+        *ngFor='let order of orders; let i = index'
+        (click)='readAndUpdate(order.id, false)'
+        (contextmenu)='child.onContextMenu($event, order)'
+      >
+        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          {{order.customer.lastName}}
+        </th>
+        <th>
+          {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
+        </th>
+        <th>
+          {{(order?.deliveredAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
+        </th>
+        <th>
+          {{order?.destination?.name}} -
+          {{order?.destination?.district?.name}} -
+          {{order?.destination?.district?.province?.name}}
+        </th>
+        <th class='pointer' style='width: 220px;'>
+          <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
                   "border-top": order.commodities.length > 1 && index  !== 0
                   }' *ngFor='let commodity of order.commodities; let index = index'>
-              {{commodity.name}}
-            </div>
-          </th>
-          <th style='color: #f86c6b'>
-            {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
-          </th>
-          <th style='color: #20c997'>
-            {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
-          </th>
-          <th>
-            {{order.currency | transform:currenciesConstant}}
-          </th>
-          <th>{{order?.explain}} </th>
-          <th>
-            {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length )> 0 ? 'Đang giao' : 'Chưa
-            giao'}}
-          </th>
-        </tr>
-        <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
-          <td colspan='20' class='font-weight-bold position-relative'>
+            {{commodity.name}}
+          </div>
+        </th>
+        <th style='color: #f86c6b'>
+          {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
+        </th>
+        <th style='color: #20c997'>
+          {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
+        </th>
+        <th>
+          {{order.currency | transform:currenciesConstant}}
+        </th>
+        <th>{{order?.explain}} </th>
+        <th>
+          {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length) > 0 ? 'Đang giao' : 'Chưa
+          giao'}}
+        </th>
+      </tr>
+      <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
+        <td colspan='20' class='font-weight-bold position-relative'>
             <span style='position: absolute; top: 40%; left: 40%; font-size: 23px'>
               Hiện tại chưa có đơn hàng nào!
             </span>
-          </td>
-        </tr>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
 </ng-template>
 
-<app-mouse-right #child [items]='[ItemContextMenu.DETAIL, ItemContextMenu.ENDED_AT]' (onAdd)='addOrder()'
-  (onDetail)='detailOrder($event.id)' (onEnd)='UpdateOrder($event)'></app-mouse-right>
+<app-mouse-right
+  #child
+  [items]='[ItemContextMenu.ENDED_AT]'
+  (onAdd)='addOrder()'
+  (onUpdate)='readAndUpdate($event.id, true)'
+  (onEnd)='UpdateOrder($event)'
+></app-mouse-right>

@@ -95,8 +95,12 @@ export class OrderComponent implements OnInit {
     return value;
   }
 
-  detailOrder(id: number) {
-    this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
+  readAndUpdate(id: number, isUpdate: boolean) {
+    this.router.navigate(['don-hang/chi-tiet-don-hang', id], {
+      queryParams: {
+        isUpdate: isUpdate
+      }
+    }).then();
   }
 
   UpdateOrder($event: any) {

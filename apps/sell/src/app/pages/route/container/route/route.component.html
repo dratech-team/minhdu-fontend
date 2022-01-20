@@ -53,8 +53,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor='let route of routes' (click)='detailRoute(route.id)'
-          (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
+        <tr
+          *ngFor='let route of routes'
+          (click)='detailRoute(route.id, false)'
+          (contextmenu)='child.onContextMenu($event, route)' class='pointer'
+        >
           <th>{{route?.name || 'Chưa cập nhật'}}</th>
           <th>
             {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
@@ -86,6 +89,12 @@
     </table>
   </div>
 </ng-template>
-<app-mouse-right #child (onAdd)='add()' [items]="[ItemContextMenu.ENDED_AT]" (onDel)='deleteRoute($event)'
-  (onDetail)='detailRoute($event)' (onEnd)="onEnd($event)">
+<app-mouse-right
+  #child
+  [items]="[ItemContextMenu.ENDED_AT]"
+  (onAdd)='add()'
+  (onDel)='deleteRoute($event)'
+  (onUpdate)='detailRoute($event.id, true)'
+  (onEnd)="onEnd($event)"
+>
 </app-mouse-right>

@@ -3,16 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import {
-  ConvertBoolean,
-  CustomerResource,
-  CustomerType,
-  Gender,
-  ItemContextMenu,
-  MenuEnum
-} from '@minhdu-fontend/enums';
+import { ConvertBoolean, CustomerType, Gender, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerAction } from '../../+state/customer/customer.action';
