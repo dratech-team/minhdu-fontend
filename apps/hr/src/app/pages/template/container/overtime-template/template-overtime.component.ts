@@ -34,7 +34,7 @@ export class TemplateOvertimeComponent implements OnInit {
   unit = DatetimeUnitEnum;
   pageSize = 30;
   pageIndexInit = 0;
-  employeeTypeEnum = EmployeeType;
+  EmployeeType = EmployeeType;
   fCtrlPosition = new FormControl('');
   formGroup = new FormGroup({
     title: new FormControl(''),

@@ -44,8 +44,8 @@
           <th>
             <div class='border-top text-center'>Loại nhân viên</div>
             <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
-              <mat-option value='{{employeeTypeEnum.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
-              <mat-option value='{{employeeTypeEnum.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
+              <mat-option value='{{EmployeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
+              <mat-option value='{{EmployeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
               <mat-option value=''>Tất cả</mat-option>
             </mat-select>
           </th>
@@ -61,9 +61,10 @@
             <div class='border-top text-center'>Đơn vị</div>
             <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
             <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (onSelectionChange)='onSelectBranch(branch.name)'
-              >
+              <mat-option
+                *ngFor='let branch of branches$ | async'
+                [value]='branch.name'
+                (onSelectionChange)='onSelectBranch(branch.name)'>
                 {{branch.name}}
               </mat-option>
             </mat-autocomplete>
@@ -88,9 +89,11 @@
             <input class='form-control' type='search' matInput [matAutocomplete]='position'
                    [formControl]='fCtrlPosition' #positionInput>
             <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async'
-                          [value]='position.name' (click)='onSelectPosition(position,$event,positionInput)'
-                          (onSelectionChange)='onSelectPosition(position,$event,positionInput)'>
+              <mat-option
+                *ngFor='let position of positions$ | async'
+                [value]='position.name'
+                (click)='onSelectPosition(position,$event,positionInput)'
+                (onSelectionChange)='onSelectPosition(position,$event,positionInput)'>
                 {{position.name}}
               </mat-option>
             </mat-autocomplete>
@@ -104,60 +107,77 @@
         </tr>
         </thead>
         <tbody *ngIf='(templates$| async) as templates'>
-        <tr *ngFor='let template of templates; let i = index'
-            (contextmenu)='child.onContextMenu($event,template)'>
-          <th class='  pointer ' (click)='onOvertime(template)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+        <tr
+          *ngFor='let template of templates; let i = index'
+          (contextmenu)='child.onContextMenu($event,template)'>
+          <th
+            class='pointer'
+            (click)='onOvertime(template)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{i + 1}}
           </th>
-          <th class='  pointer ' (click)='onOvertime(template)'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          <th
+            class='pointer'
+            (click)='onOvertime(template)'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             {{template.title}}
           </th>
-          <th class='  pointer ' (click)='onOvertime(template)'>
-            {{template.price| number: '1.0-0'}} VND
+          <th
+            class='pointer'
+            (click)='onOvertime(template)'>
+            {{template.price | number: '1.0-0'}}
+            VND
           </th>
-          <th class='  pointer ' (click)='onOvertime(template)'>
-            {{template.employeeType === employeeTypeEnum.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
+          <th
+            class='pointer'
+            (click)='onOvertime(template)'>
+            {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
           </th>
-          <th class='  pointer' *ngIf='template.unit === unit.DAY'
-              (click)='templateOvertime(template)'>
+          <th
+            class='pointer'
+            *ngIf='template.unit === unit.DAY'
+            (click)='templateOvertime(template)'>
             Ngày
           </th>
-          <th class='  pointer'
-              *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-              (click)='onOvertime(template)'>
+          <th
+            class='pointer'
+            *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
+            (click)='onOvertime(template)'>
             Giờ
           </th>
-          <th class='  pointer' *ngIf='template.unit === unit.MONTH'
-              (click)='onOvertime(template)'>
+          <th
+            class='pointer' *ngIf='template.unit === unit.MONTH'
+            (click)='onOvertime(template)'>
             Tháng
           </th>
-          <th class='  pointer '
-              (click)='onOvertime(template)'
-              *ngIf='template?.branch'
-          >
+          <th
+            class='pointer '
+            (click)='onOvertime(template)'
+            *ngIf='template?.branch'>
             {{template?.branch?.name}}
           </th>
-          <th class='  pointer '
-              (click)='onOvertime(template)'
-              *ngIf='!template?.branch'
-          >
+          <th
+            class='pointer '
+            (click)='onOvertime(template)'
+            *ngIf='!template?.branch'>
           </th>
-          <th class='  pointer p-1 '
-              (click)='onOvertime(template)'>
+          <th
+            class='pointer p-1 '
+            (click)='onOvertime(template)'>
             <mat-chip-list>
-              <mat-chip (click)='onOvertime(template, position)'
-                        [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-                        *ngFor='let position of template.positions'
-                        [selectable]='false'
-                        [removable]='false'>
+              <mat-chip
+                (click)='onOvertime(template, position)'
+                [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                *ngFor='let position of template.positions'
+                [selectable]='false'
+                [removable]='false'>
                 {{position.name}}
               </mat-chip>
             </mat-chip-list>
           </th>
-          <th class=' pointer '
-              (click)='onOvertime(template)'>
+          <th
+            class='pointer '
+            (click)='onOvertime(template)'>
             {{template.note}}
           </th>
         </tr>
