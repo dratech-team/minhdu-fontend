@@ -10,7 +10,7 @@ import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { SalaryService } from '../../../service/salary.service';
 
 @Component({
