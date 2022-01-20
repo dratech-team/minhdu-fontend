@@ -1,14 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  AfterContentChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +10,7 @@ import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
+  ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
@@ -36,40 +28,53 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import {
+  checkInputNumber,
   getFirstDayInMonth,
-  getLastDayInMonth
-} from '../../../../../../../../libs/utils/daytime.until';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+  getLastDayInMonth,
+  getSelectors,
+  searchAutocomplete
+} from '@minhdu-fontend/utils';
 import { AppState } from '../../../../reducers';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-absent',
   templateUrl: 'payroll-absent.component.html'
 })
 
-export class PayrollAbsentComponent implements OnInit  {
+export class PayrollAbsentComponent implements OnInit {
   @Input() eventAddAbsent?: Subject<any>;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
-  pageType = PageTypeEnum;
-  datetimeUnit = DatetimeUnitEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
+
+  pageSize = 30;
+  pageIndex = 0;
+  ItemContextMenu = ItemContextMenu;
+  datetimeUnit = DatetimeUnitEnum;
+  unitAbsent = UnitAbsentConstant;
+  isEventSearch = false;
+  searchTypeConstant = SearchTypeConstant;
+  genderType = Gender;
+  unit = DatetimeUnitEnum;
+  salariesSelected: SalaryPayroll[] = [];
+  isSelectSalary = false;
+  salaries: SalaryPayroll[] = [];
+
+  totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
+  loaded$ = this.store.select(selectedLoadedPayroll);
+  payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -85,21 +90,6 @@ export class PayrollAbsentComponent implements OnInit  {
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
-  totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
-  searchTypeConstant = SearchTypeConstant;
-  loaded$ = this.store.select(selectedLoadedPayroll);
-  genderType = Gender;
-  unit = DatetimeUnitEnum;
-  payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
-  salariesSelected: SalaryPayroll[] = [];
-  isSelectSalary = false;
-  salaries: SalaryPayroll[] = [];
-  pageSize = 30;
-  pageIndex = 0;
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  unitAbsent = UnitAbsentConstant;
-  isEventSearch = false;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -201,8 +191,8 @@ export class PayrollAbsentComponent implements OnInit  {
     this.payrollAbsent$.subscribe((payrolls) => {
       if (payrolls) {
         this.salaries = [];
-        if(payrolls.length === 0){
-          this.isSelectSalary = false
+        if (payrolls.length === 0) {
+          this.isSelectSalary = false;
         }
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
@@ -215,7 +205,7 @@ export class PayrollAbsentComponent implements OnInit  {
                 if (this.isEventSearch) {
                   this.isSelectSalary = this.salariesSelected.length > 0
                     && this.salariesSelected.length >= Number(getSelectors(selectedTotalPayroll, this.store))
-                   && this.salaries.every(item => this.salariesSelected.some(val => val.salary.id === item.salary.id));
+                    && this.salaries.every(item => this.salariesSelected.some(val => val.salary.id === item.salary.id));
                 }
                 if (
                   this.isSelectSalary &&
@@ -308,7 +298,7 @@ export class PayrollAbsentComponent implements OnInit  {
         this.salariesSelected = val;
         this.isSelectSalary = this.salaries.length > 0
           && this.salaries.every(e => this.salariesSelected.some(item => item.salary.id === e.salary.id));
-        this.ref.detectChanges()
+        this.ref.detectChanges();
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {

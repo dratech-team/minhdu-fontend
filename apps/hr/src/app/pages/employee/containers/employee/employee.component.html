@@ -13,7 +13,7 @@
       </div>
     </div>
     <div>
-      <button  class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
+      <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
@@ -83,7 +83,8 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Số điện thoại</div>
-                <input class='form-control text-center'  (keypress)="checkInputNumber($event)"  type='search' formControlName='phone'>
+                <input class='form-control text-center' (keypress)='checkInputNumber($event)' type='search'
+                       formControlName='phone'>
               </th>
               <th>
                 <div class='border-top text-center'>Đơn vị</div>
@@ -98,7 +99,8 @@
               </th>
               <th>
                 <div class='border-top text-center'>Chức vụ</div>
-                <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='position'
+                       formControlName='position'>
                 <mat-autocomplete #position='matAutocomplete'>
                   <mat-option *ngFor='let position of positions$ | async'
                               [value]='position.name' (click)='onSelectPosition(position.name)'
@@ -109,11 +111,13 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>CMND / CCCD</div>
-                <input type='search' (keypress)="checkInputNumber($event)" class='form-control text-center' formControlName='identity'>
+                <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
+                       formControlName='identity'>
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Tỉnh / Thành phố</div>
-                <input class='form-control' type='search' matInput [matAutocomplete]='province' formControlName='province'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='province'
+                       formControlName='province'>
                 <mat-autocomplete #province='matAutocomplete'>
                   <mat-option *ngFor='let province of provinces$ | async'
                               [value]='province.name' (click)='onSelectProvince(province)'
@@ -124,7 +128,8 @@
               </th>
               <th width='5%'>
                 <div class='border-top text-center'>Quận / Huyện</div>
-                <input class='form-control' type='search' matInput [matAutocomplete]='district' formControlName='district'>
+                <input class='form-control' type='search' matInput [matAutocomplete]='district'
+                       formControlName='district'>
                 <mat-autocomplete #district='matAutocomplete'>
                   <mat-option *ngFor='let district of districts$ | async'
                               [value]='district.name' (click)='onSelectDistrict(district)'
@@ -225,19 +230,15 @@
     </ng-template>
   </div>
 
-  <app-mouse-right [type]='isLeft? pageTypeEnum.EMPLOYEE_LEFT_AT : undefined '
-                   #child (addEvent)='add()'
-                   (deleteEvent)='delete($event)'
-                   (permanentlyDeletedEvent)='permanentlyDeleted($event)'
-                   (readEvent)='readAndUpdate($event)'>
+  <app-mouse-right
+    #child
+    [items]='isLeft ? [ItemContextMenu.PERMANENTLY] : []'
+    (onAdd)='add()'
+    (onDel)='delete($event)'
+    (onDelPerm)='permanentlyDeleted($event)'
+    (onDetail)='readAndUpdate($event)'>
   </app-mouse-right>
 </div>
-<app-mouse-right [type]='isLeft? pageTypeEnum.EMPLOYEE_LEFT_AT : undefined '
-                 #child (addEvent)='add()'
-                 (deleteEvent)='delete($event)'
-                 (permanentlyDeletedEvent)='permanentlyDeleted($event)'
-                 (readEvent)='readAndUpdate($event)'>
-</app-mouse-right>
 
 <style>
 

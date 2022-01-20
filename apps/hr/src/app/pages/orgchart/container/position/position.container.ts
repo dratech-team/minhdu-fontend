@@ -1,24 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FilterTypeEnum, OrgchartEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, ItemContextMenu, OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  getAllPosition,
-  getPositionLoaded,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, getPositionLoaded, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { DialogPositionComponent } from '../../component/dialog-position/dialog-position.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Observable } from 'rxjs';
 import { Branch } from '@minhdu-fontend/data-models';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
 
 @Component({
@@ -31,7 +26,7 @@ export class PositionContainer implements OnInit {
   positionLoaded$ = this.store.pipe(select(getPositionLoaded));
   position$ = this.store.pipe(select(getAllPosition));
   type = OrgchartEnum;
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   pageSize = 30;
   pageIndexInit = 0;
   positions = new FormControl();
@@ -62,7 +57,6 @@ export class PositionContainer implements OnInit {
       this.store.dispatch(PositionActions.searchPosition({ position: val }));
     });
   }
-
 
   addPosition() {
     this.dialog.open(DialogPositionComponent, { width: 'fit-content', data: { branchId: this.branchId } });

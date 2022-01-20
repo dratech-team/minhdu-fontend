@@ -7,15 +7,16 @@
         <div *ngIf='this.branchId else title'>
           <div *ngIf='(branch$|async) as branch' class=' h3 '>Chức vụ của đơn vị {{branch.name}}</div>
         </div>
-       <ng-template #title>
-         <div class=' h3 '>Chức vụ</div>
-       </ng-template>
+        <ng-template #title>
+          <div class=' h3 '>Chức vụ</div>
+        </ng-template>
         <div class='d-flex justify-content-between'>
           <button (click)='addPosition()' class='btn btn-primary mt-3 '>Tạo chức vụ</button>
-<!--          <button (click)='printPosition()' class='btn btn-primary mt-3 '>Xuất</button>-->
+          <!--          <button (click)='printPosition()' class='btn btn-primary mt-3 '>Xuất</button>-->
         </div>
       </div>
-      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)  && !(branchLoaded$ | async)  else tablePosition  ' count='15' appearance='line'></ngx-skeleton-loader>
+      <ngx-skeleton-loader *ngIf='!(positionLoaded$|async)  && !(branchLoaded$ | async)  else tablePosition  '
+                           count='15' appearance='line'></ngx-skeleton-loader>
       <ng-template #tablePosition>
         <div class='fixTableHead mt-5 '>
           <table style='width: 1050px;'>
@@ -72,7 +73,7 @@
               </tbody>
             </ng-template>
 
-            <ng-template [ngIf]='this.branchId' >
+            <ng-template [ngIf]='this.branchId'>
               <tbody *ngIf='(branch$|async) as branch'>
               <tr *ngFor='let position of  branch.positions ; let i = index'
                   (contextmenu)='childPosition.onContextMenu($event,{position: position, branch: branch})'>
@@ -108,12 +109,12 @@
 </div>
 <app-mouse-right
   #childPosition
-  [type]='pageType.LINK'
-  (addEvent)='addPosition()'
-  (readEvent)='updatePosition($event)'
-  (deleteEvent)='deletePosition($event)'
-  (Employee)='onEmployee($event)'
-  (payroll)='onPayroll($event)'
-  (overtime)='onOvertime($event)'
+  [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.PROFILE, ItemContextMenu.OVERTIME]'
+  (onAdd)='addPosition()'
+  (onDetail)='updatePosition($event)'
+  (onDel)='deletePosition($event)'
+  (onProfile)='onEmployee($event)'
+  (onPayroll)='onPayroll($event)'
+  (onOvertime)='onOvertime($event)'
 >
 </app-mouse-right>

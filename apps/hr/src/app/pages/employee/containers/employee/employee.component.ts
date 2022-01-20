@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -7,48 +7,56 @@ import {
   EmployeeAction,
   selectEmployeeAdding,
   selectEmployeeLoaded,
-  selectorAllEmployee, selectorScrollXTotal, selectorTotalEmployee
+  selectorAllEmployee,
+  selectorScrollXTotal,
+  selectorTotalEmployee
 } from '@minhdu-fontend/employee';
 import {
   ConvertBoolean,
+  EmployeeType,
   FlatSalary,
   Gender,
-  SearchEmployeeType, EmployeeType
+  ItemContextMenu,
+  SearchEmployeeType
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { debounceTime, delay, startWith, switchMap, tap, throttleTime } from 'rxjs/operators';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-
 import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
 import { selectAllProvince } from '@minhdu-fontend/location';
 import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
-import { BehaviorSubject, fromEvent, Observable, Observer, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
+import { DialogExportComponent } from '@minhdu-fontend/components';
+
 @Component({
   templateUrl: 'employee.component.html'
 })
 export class EmployeeComponent implements OnInit {
   @ViewChild('tableEmployee') tableEmployee!: ElementRef;
+  @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
+
+  districts$!: Observable<District[]>;
+  wards$!: Observable<Ward[]>;
+
+  pageSize: number = 35;
+  pageIndexInit = 0;
   searchType = SearchEmployeeType;
   genderType = Gender;
   flatSalary = FlatSalary;
   convertBoolean = ConvertBoolean;
-  pageTypeEnum = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
   employeeContain = EmployeeConstant;
-  employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   employeeType = EmployeeType;
-  @ViewChild(MatMenuTrigger)
-  contextMenu!: MatMenuTrigger;
+  isLeft = false;
+  branchName = '';
+  positionName = '';
+  eventScrollX = new Subject<any>();
+
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
   employees$ = this.store.pipe(select(selectorAllEmployee));
@@ -56,15 +64,9 @@ export class EmployeeComponent implements OnInit {
   adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
-  pageSize: number = 35;
-  pageIndexInit = 0;
-  isLeft = false;
-  branchName = '';
-  positionName = '';
   provinces$ = this.store.pipe(select(selectAllProvince));
-  districts$!: Observable<District[]>;
-  wards$!: Observable<Ward[]>;
-  eventScrollX = new Subject<any>();
+
+  employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   formGroup = new FormGroup({
     name: new FormControl(''),
     birthday: new FormControl(''),
@@ -208,8 +210,8 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-          ? this.convertBoolean.FALSE
-          : val.flatSalary
+            ? this.convertBoolean.FALSE
+            : val.flatSalary
     };
     if (val.workedAt) {
       return employee;
@@ -269,8 +271,8 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  checkInputNumber(event: any){
-    return checkInputNumber(event)
+  checkInputNumber(event: any) {
+    return checkInputNumber(event);
   }
 
   printEmployee() {
@@ -294,10 +296,10 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-          ? this.convertBoolean.FALSE
-          : val.flatSalary
+            ? this.convertBoolean.FALSE
+            : val.flatSalary
     };
-    this.dialog.open(DialogExportComponent,{
+    this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuất bảng nhân viên',
@@ -305,6 +307,6 @@ export class EmployeeComponent implements OnInit {
         params: employee,
         api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
       }
-    })
+    });
   }
 }

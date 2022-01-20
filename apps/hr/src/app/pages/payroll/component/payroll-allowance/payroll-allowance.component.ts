@@ -1,28 +1,21 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { Subject } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
+  ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
-import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
+import { Subject } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Api, SearchTypeConstant, UnitAllowanceConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryService } from '../../service/salary.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -37,19 +30,11 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import { Router } from '@angular/router';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
+import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
 import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { UnitAbsentConstant } from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
-import { UnitAllowanceConstant } from '../../../../../../../../libs/constants/HR/unitAllowance.constant';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -59,9 +44,27 @@ export class PayrollAllowanceComponent implements OnInit {
   @Input() eventAddAllowance?: Subject<any>;
   @Input() eventExportAllowance?: Subject<any>;
   @Input() allowanceTitle?: string;
-  pageType = PageTypeEnum;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+
+  pageSize = 30;
+  pageIndex = 0;
+  salariesSelected: SalaryPayroll[] = [];
+  isSelectSalary = false;
+  salaries: SalaryPayroll[] = [];
+  searchTypeConstant = SearchTypeConstant;
+  ItemContextMenu = ItemContextMenu;
+  genderType = Gender;
+  unit = DatetimeUnitEnum;
+  unitAllowance = UnitAllowanceConstant;
+  isEventSearch = false;
+
+  totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
+  loaded$ = this.store.select(selectedLoadedPayroll);
+  payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -76,22 +79,6 @@ export class PayrollAllowanceComponent implements OnInit {
     ),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
-  totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
-  templateBasic$ = new Subject<any>();
-  searchTypeConstant = SearchTypeConstant;
-  loaded$ = this.store.select(selectedLoadedPayroll);
-  genderType = Gender;
-  unit = DatetimeUnitEnum;
-  payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
-  salariesSelected: SalaryPayroll[] = [];
-  isSelectSalary = false;
-  salaries: SalaryPayroll[] = [];
-  pageSize = 30;
-  pageIndex = 0;
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  unitAllowance = UnitAllowanceConstant;
-  isEventSearch = false;
 
   constructor(
     private readonly dialog: MatDialog,

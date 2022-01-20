@@ -1,130 +1,136 @@
 <!--<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>-->
 
 <div class='mb-2 ' style='width: 96% ; margin: 0 auto'>
-    <div class='w-100'>
-      <div  style='max-width: 1500px ; margin: 0 auto'>
-        <div class='h3 '>Đơn vị</div>
-        <div class='d-flex justify-content-between ' *ngIf='(branches$|async) as branch'>
-          <button (click)='addBranch()' class='btn btn-primary mt-3 '>Tạo Đơn vị</button>
-<!--          <button (click)='printBranch()' class='btn btn-primary mt-3 '>Xuất</button>-->
-        </div>
-      </div>
-      <ngx-skeleton-loader *ngIf='!(branchLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
-      <div style='max-width: 1500px ; margin: 0 auto' class='fixTableHead mt-5 w-100 ' *ngIf='(branchLoaded$|async)'>
-        <table class='w-100' [formGroup]='formGroup'>
-          <thead>
-          <tr>
-            <th style='width: 50px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
-              <input disabled>
-            </th>
-            <th  style='width: 100px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Mã đơn vị</div>
-              <input class='form-control text-center' type='search' (keypress)='inputCheckNumber($event)' formControlName='code'>
-            </th>
-            <th  style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Tên đơn vị</div>
-              <input class='form-control border text-center' type='search' matInput formControlName='branch'>
-            </th>
-            <th>
-              <div class='border-top text-center'>Chức vụ</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
-              <mat-autocomplete #position='matAutocomplete'>
-                <mat-option *ngFor='let position of positions$ | async'
-                            [value]='position.name' (click)='onSelectPosition(position.name)'
-                            (onSelectionChange)='onSelectPosition(position.name)'>
-                  {{position.name}}
-                </mat-option>
-              </mat-autocomplete>
-            </th>
-            <th  style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
-              <input class='form-control border text-center' type='text' disabled>
-            </th>
-            <th  style='width: 200px'>
-              <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên nghỉ việc</div>
-              <input class='form-control border text-center' type='text' disabled>
-            </th>
-          </tr>
-          </thead>
-          <tbody *ngIf='(branches$| async) as branches'>
-          <tr *ngFor='let branch of branches ; let i = index'
-              [contextMenu]='childBranch'
-              [contextMenuSubject]='branch'>
-            <th class='pointer' (click)='detailBranch(branch)'>
-              {{i + 1}}
-            </th>
-            <th class='pointer' (click)='detailBranch(branch)'>
-              {{branch.id}}
-            </th>
-            <th class='pointer' (click)='detailBranch(branch)'>
-              {{branch.name}}
-            </th>
-            <th class=' pointer p-1' (click)='detailBranch(branch)'>
-              <mat-chip-list>
-                <mat-chip
-                  (click)='detailBranch(branch)'
-                  [contextMenu]='childChip'
-                  [contextMenuSubject]='{position: position, branch: branch}'
-                  [style]='{"background": i%2  === 0? "#dddddd":"white"}'
-                  *ngFor='let position of branch.positions'>
-                  {{position.name}}
-
-                </mat-chip>
-              </mat-chip-list>
-            </th>
-            <th class='pointer' (click)='detailBranch(branch)'>
-              {{branch?._count?.employees}}
-            </th>
-            <th class='pointer' (click)='detailBranch(branch)'>
-            {{branch?._count?.employeeLeft }}
-          </th>
-          </tr>
-          <tr *ngIf=' branches.length === 0 ' style='height: 50vh'>
-            <td colspan='5' class='text-center check-content font-weight-bold font-xl '>Hiện không có đơn vị nào
-            </td>
-          </tr>
-          </tbody>
-        </table>
+  <div class='w-100'>
+    <div style='max-width: 1500px ; margin: 0 auto'>
+      <div class='h3 '>Đơn vị</div>
+      <div class='d-flex justify-content-between ' *ngIf='(branches$|async) as branch'>
+        <button (click)='addBranch()' class='btn btn-primary mt-3 '>Tạo Đơn vị</button>
+        <!--          <button (click)='printBranch()' class='btn btn-primary mt-3 '>Xuất</button>-->
       </div>
     </div>
+    <ngx-skeleton-loader *ngIf='!(branchLoaded$|async)' count='15' appearance='line'></ngx-skeleton-loader>
+    <div style='max-width: 1500px ; margin: 0 auto' class='fixTableHead mt-5 w-100 ' *ngIf='(branchLoaded$|async)'>
+      <table class='w-100' [formGroup]='formGroup'>
+        <thead>
+        <tr>
+          <th style='width: 50px'>
+            <div class='border-top d-flex justify-content-center align-items-center'>stt</div>
+            <input disabled>
+          </th>
+          <th style='width: 100px'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Mã đơn vị</div>
+            <input class='form-control text-center' type='search' (keypress)='inputCheckNumber($event)'
+                   formControlName='code'>
+          </th>
+          <th style='width: 200px'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Tên đơn vị</div>
+            <input class='form-control border text-center' type='search' matInput formControlName='branch'>
+          </th>
+          <th>
+            <div class='border-top text-center'>Chức vụ</div>
+            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option
+                *ngFor='let position of positions$ | async'
+                [value]='position.name' (click)='onSelectPosition(position.name)'
+                (onSelectionChange)='onSelectPosition(position.name)'>
+                {{position.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </th>
+          <th style='width: 200px'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên</div>
+            <input class='form-control border text-center' type='text' disabled>
+          </th>
+          <th style='width: 200px'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Tổng nhân viên nghỉ việc</div>
+            <input class='form-control border text-center' type='text' disabled>
+          </th>
+        </tr>
+        </thead>
+        <tbody *ngIf='(branches$| async) as branches'>
+        <tr *ngFor='let branch of branches ; let i = index'
+            [contextMenu]='childBranch'
+            [contextMenuSubject]='branch'>
+          <th class='pointer' (click)='detailBranch(branch)'>
+            {{i + 1}}
+          </th>
+          <th class='pointer' (click)='detailBranch(branch)'>
+            {{branch.id}}
+          </th>
+          <th class='pointer' (click)='detailBranch(branch)'>
+            {{branch.name}}
+          </th>
+          <th class=' pointer p-1' (click)='detailBranch(branch)'>
+            <mat-chip-list>
+              <mat-chip
+                (click)='detailBranch(branch)'
+                [contextMenu]='childChip'
+                [contextMenuSubject]='{position: position, branch: branch}'
+                [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+                *ngFor='let position of branch.positions'>
+                {{position.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </th>
+          <th class='pointer' (click)='detailBranch(branch)'>
+            {{branch?._count?.employees}}
+          </th>
+          <th class='pointer' (click)='detailBranch(branch)'>
+            {{branch?._count?.employeeLeft }}
+          </th>
+        </tr>
+        <tr *ngIf=' branches.length === 0 ' style='height: 50vh'>
+          <td colspan='5' class='text-center check-content font-weight-bold font-xl '>
+            Hiện không có đơn vị nào
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+</div>
 <context-menu #childBranch>
-  <ng-template contextMenuItem
-               (execute)='addBranch()'>
+  <ng-template
+    contextMenuItem
+    (execute)='addBranch()'>
     Thêm
   </ng-template>
   <ng-template
-               contextMenuItem
-               (execute)='deleteBranch($event.item)'>
+    contextMenuItem
+    (execute)='deleteBranch($event.item)'>
     Xóa
   </ng-template>
-  <ng-template contextMenuItem
-               (execute)='detailBranch($event.item)'>
-Xem chi tiết
+  <ng-template
+    contextMenuItem
+    (execute)='detailBranch($event.item)'>
+    Xem chi tiết
   </ng-template>
   <ng-template
-               contextMenuItem
-               (execute)='updateBranch($event.item)'>
+    contextMenuItem
+    (execute)='updateBranch($event.item)'>
     Sửa
   </ng-template>
 
   <ng-template
-               contextMenuItem
-               (execute)='onEmployee($event.item)'>
+    contextMenuItem
+    (execute)='onEmployee($event.item)'>
     Hồ sơ
   </ng-template>
   <ng-template
-               contextMenuItem
-               (execute)='onPayroll($event.item)'>
+    contextMenuItem
+    (execute)='onPayroll($event.item)'>
     Bảng lương
   </ng-template>
-  <ng-template contextMenuItem
-               (execute)='onOvertime($event.item)'>
+  <ng-template
+    contextMenuItem
+    (execute)='onOvertime($event.item)'>
     Tăng ca
   </ng-template>
-  <ng-template  contextMenuItem
-               (execute)='onListPosition($event.item)'>
+  <ng-template
+    contextMenuItem
+    (execute)='onListPosition($event.item)'>
     Danh sách chức vụ
   </ng-template>
 </context-menu>
@@ -139,8 +145,9 @@ Xem chi tiết
     (execute)='onPayrollPositionChip($event.item)'>
     Bảng lương
   </ng-template>
-  <ng-template contextMenuItem
-               (execute)='onOvertimePositionChip($event.item)'>
+  <ng-template
+    contextMenuItem
+    (execute)='onOvertimePositionChip($event.item)'>
     Tăng ca
   </ng-template>
 </context-menu>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { FilterTypeEnum, OrgchartEnum } from '@minhdu-fontend/enums';
+import { FilterTypeEnum, ItemContextMenu, OrgchartEnum } from '@minhdu-fontend/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith } from 'rxjs/operators';
@@ -9,12 +9,10 @@ import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dia
 import { getAllOrgchart, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { DialogBranchComponent } from '../../component/dialog-branch/dialog-branch.component';
 import { Router } from '@angular/router';
-import { PageTypeEnum } from 'libs/enums/sell/page-type.enum';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
-import { getAllPosition } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
+import { getAllPosition } from '@minhdu-fontend/orgchart-position';
+import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
+import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
 
 @Component({
@@ -24,6 +22,7 @@ export class BranchContainer implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   branchLoaded$ = this.store.pipe(select(getOrgchartLoaded));
   positions$ = this.store.pipe(select(getAllPosition));
+
   type = OrgchartEnum;
   pageSize = 30;
   pageIndexInit = 0;
@@ -32,7 +31,7 @@ export class BranchContainer implements OnInit {
     branch: new FormControl(),
     position: new FormControl('')
   });
-  pageType = PageTypeEnum;
+  ItemContextMenu = ItemContextMenu;
 
   constructor(
     private readonly dialog: MatDialog,

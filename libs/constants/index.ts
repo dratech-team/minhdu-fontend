@@ -16,3 +16,4 @@ export * from './ware-house/warehouse.constant';
 export * from './ware-house/unit-medicine.constant';
 export * from './searchType.constant';
 export * from './HR/typePayrollExport.constant';
+export * from './HR/unitAllowance.constant';

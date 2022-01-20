@@ -20,7 +20,8 @@
         </th>
         <th>
           <div class='border-top text-center'>Mã nhân viên</div>
-          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center' formControlName='code'>
+          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
+                 formControlName='code'>
         </th>
         <th style='width: 250px'>
           <div class='border-top text-center'>
@@ -96,11 +97,11 @@
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
-        <mat-select class='select w-100 border-top'  formControlName='unit'>
-          <mat-option *ngFor='let item of unitAbsent' [value]='item.type'>
-            {{item.name}}
-          </mat-option>
-        </mat-select>
+          <mat-select class='select w-100 border-top' formControlName='unit'>
+            <mat-option *ngFor='let item of unitAbsent' [value]='item.type'>
+              {{item.name}}
+            </mat-option>
+          </mat-select>
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Quên giấy phép</div>
@@ -198,11 +199,11 @@
   </div>
 </ng-template>
 
-<app-mouse-right [type]='pageType.PAYROLL_SALARY'
-                 (addEvent)='addSalaryAbsent()'
-                 (readEvent)='readPayroll($event)'
-                 (deleteEvent)='deleteSalaryAbsent($event)'
-                 #child>
+<app-mouse-right
+  #child
+  (onAdd)='addSalaryAbsent()'
+  (onDetail)='readPayroll($event)'
+  (onDel)='deleteSalaryAbsent($event)'>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {
@@ -225,7 +226,7 @@
   }
 
   .table-scroll thead th:nth-child(3),
-  .table-scroll thead th:nth-child(4){
+  .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
 

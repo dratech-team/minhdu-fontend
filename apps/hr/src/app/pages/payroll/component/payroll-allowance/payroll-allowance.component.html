@@ -20,7 +20,8 @@
         </th>
         <th>
           <div class='border-top text-center'>Mã nhân viên</div>
-          <input type='search' (keypress)="checkInputNumber($event)" class='form-control text-center' formControlName='code'>
+          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
+                 formControlName='code'>
         </th>
         <th style='width: 250px'>
           <div class='border-top text-center'>
@@ -184,11 +185,11 @@
     </table>
   </div>
 </ng-template>
-<app-mouse-right [type]='pageType.PAYROLL_SALARY'
-                 (addEvent)='addSalaryAllowance()'
-                 (readEvent)='readPayroll($event)'
-                 (deleteEvent)='deleteSalaryAllowance($event)'
-                 #child>
+<app-mouse-right
+  #child
+  (onAdd)='addSalaryAllowance()'
+  (onDetail)='readPayroll($event)'
+  (onDel)='deleteSalaryAllowance($event)'>
 </app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {

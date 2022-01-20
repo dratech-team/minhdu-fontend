@@ -1,24 +1,16 @@
 import { DatePipe } from '@angular/common';
-import {
-  AfterContentChecked, ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
-import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
+import { Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
+  ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
@@ -35,30 +27,40 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PageTypeEnum } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
 import { AppState } from '../../../../reducers';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
 
 @Component({
   selector: 'app-payroll-basic',
   templateUrl: 'payroll-basic.component.html'
 })
 export class PayrollBasicComponent implements OnInit {
-  pageType = PageTypeEnum;
   @Input() eventExportBasic?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
+
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
+  loaded$ = this.store.select(selectedLoadedPayroll);
+  payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+
+  pageSize = 30;
+  pageIndex = 0;
+  salaries: SalaryPayroll[] = [];
+  salariesSelected: SalaryPayroll[] = [];
+  isSelectSalary = false;
+  isEventSearch = false;
+  genderType = Gender;
+  unit = DatetimeUnitEnum;
+  ItemContextMenu = ItemContextMenu;
+  searchTypeConstant = SearchTypeConstant;
+
   formGroup = new FormGroup({
     title: new FormControl(''),
     code: new FormControl(''),
@@ -70,21 +72,6 @@ export class PayrollBasicComponent implements OnInit {
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
-  templateBasic$ = new Subject<any>();
-  searchTypeConstant = SearchTypeConstant;
-  loaded$ = this.store.select(selectedLoadedPayroll);
-  genderType = Gender;
-  unit = DatetimeUnitEnum;
-  payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
-  salariesSelected: SalaryPayroll[] = [];
-  isSelectSalary = false;
-  pageSize = 30;
-  pageIndex = 0;
-  salaries: SalaryPayroll[] = [];
-  isEventSearch = false;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -152,11 +139,11 @@ export class PayrollBasicComponent implements OnInit {
     );
 
     this.payrollBasic$.subscribe((payrolls) => {
-      console.log(Number(getSelectors(selectedTotalPayroll, this.store)))
+      console.log(Number(getSelectors(selectedTotalPayroll, this.store)));
       if (payrolls) {
         this.salaries = [];
-        if(payrolls.length === 0){
-          this.isSelectSalary = false
+        if (payrolls.length === 0) {
+          this.isSelectSalary = false;
         }
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
@@ -197,8 +184,8 @@ export class PayrollBasicComponent implements OnInit {
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
-        if(value.createdAt){
-          Object.assign(payrollBASIC, {createdAt: value.createdAt})
+        if (value.createdAt) {
+          Object.assign(payrollBASIC, { createdAt: value.createdAt });
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
