@@ -3,13 +3,14 @@
   <div class='font-lg font-weight-bold mb-2'>
     Đã chọn: {{salariesSelected.length}}/{{salaries.length}}
   </div>
-  <div class='table-scroll mt-3 position-relative '
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'>
+  <div
+    class='table-scroll mt-3 position-relative '
+    infiniteScroll
+    [alwaysCallback]='true'
+    [infiniteScrollDistance]='1'
+    [infiniteScrollThrottle]='10'
+    [scrollWindow]='false'
+    (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
       <thead>
       <tr>
@@ -19,8 +20,11 @@
         </th>
         <th>
           <div class='border-top text-center'>Mã phiếu lương</div>
-          <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
-                 formControlName='code'>
+          <input
+            type='search'
+            (keypress)='checkInputNumber($event)'
+            class='form-control text-center'
+            formControlName='code'>
         </th>
         <th style='width: 250px'>
           <div class='border-top text-center'>

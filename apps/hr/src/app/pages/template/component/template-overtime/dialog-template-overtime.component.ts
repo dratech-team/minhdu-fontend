@@ -69,9 +69,9 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       note: [this.data?.note]
     });
 
-    this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
+    this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
-        this.formGroup.get('unit')!.patchValue(DatetimeUnitEnum.HOUR);
+        this.formGroup.get('unit')?.patchValue(DatetimeUnitEnum.HOUR);
       }
     });
 

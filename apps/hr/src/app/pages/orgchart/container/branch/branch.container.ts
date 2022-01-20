@@ -14,6 +14,7 @@ import { getAllPosition } from '@minhdu-fontend/orgchart-position';
 import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
 import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -45,7 +46,7 @@ export class BranchContainer implements OnInit {
       this.store.dispatch(OrgchartActions.searchBranch({ branch: val.branch, position: val.position, code: val.code }));
     });
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
   }
@@ -86,7 +87,7 @@ export class BranchContainer implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onListPosition(event: any) {

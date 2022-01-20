@@ -16,7 +16,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -122,12 +122,12 @@ export class PayrollStayComponent implements OnInit {
     });
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
 
@@ -200,13 +200,13 @@ export class PayrollStayComponent implements OnInit {
       width: 'fit-content',
       data: {
         addMultiple: true,
-        createdAt: this.formGroup.get('createdAt')!.value,
+        createdAt: this.formGroup.get('createdAt')?.value,
         type: SalaryTypeEnum.STAY
       }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
         const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
@@ -214,7 +214,7 @@ export class PayrollStayComponent implements OnInit {
               take: this.pageSize,
               skip: this.pageIndex,
               code: value.code,
-              createdAt: this.formGroup.get('createdAt')!.value,
+              createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position,
@@ -379,11 +379,11 @@ export class PayrollStayComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

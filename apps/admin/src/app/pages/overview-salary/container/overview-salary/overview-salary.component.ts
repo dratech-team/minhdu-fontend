@@ -5,15 +5,14 @@ import { select, Store } from '@ngrx/store';
 import { SalaryPaymentService } from '../service/salary-payment.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { OverviewSalary } from '../model/overview-salary';
-import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailOverviewComponent } from '../detail-overview/detail-overview.component';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -42,7 +41,7 @@ export class OverviewSalaryComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
     this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW }));
@@ -87,9 +86,10 @@ export class OverviewSalaryComponent implements OnInit {
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
-  checkInputNumber(event: any){
-    return checkInputNumber(event)
+
+  checkInputNumber(event: any) {
+    return checkInputNumber(event);
   }
 }

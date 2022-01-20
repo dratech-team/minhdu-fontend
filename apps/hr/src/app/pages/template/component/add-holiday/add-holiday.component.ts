@@ -66,7 +66,7 @@ export class AddHolidayComponent implements OnInit {
       this.positions$
     );
 
-    this.formGroup.get('rate')!.valueChanges.subscribe(
+    this.formGroup.get('rate')?.valueChanges.subscribe(
       rate => this.hidePrice = rate <= 1
     );
   }

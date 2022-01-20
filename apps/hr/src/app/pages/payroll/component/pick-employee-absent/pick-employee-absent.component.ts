@@ -14,7 +14,7 @@ import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
@@ -142,12 +142,12 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       .subscribe();
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.store.pipe(select(getAllPosition))
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
   }
@@ -168,11 +168,11 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   onScroll() {

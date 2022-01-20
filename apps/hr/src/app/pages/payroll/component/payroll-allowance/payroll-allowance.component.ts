@@ -7,7 +7,7 @@ import {
   SalaryTypeEnum,
   SearchTypeEnum
 } from '@minhdu-fontend/enums';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Api, SearchTypeConstant, UnitAllowanceConstant } from '@minhdu-fontend/constants';
 import { select, Store } from '@ngrx/store';
@@ -173,12 +173,12 @@ export class PayrollAllowanceComponent implements OnInit {
     });
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
 
@@ -262,10 +262,8 @@ export class PayrollAllowanceComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
-        this.formGroup
-          .get('createdAt')!
-          .setValue(val.datetime, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('createdAt')?.setValue(val.datetime, { emitEvent: false });
         const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
@@ -328,8 +326,8 @@ export class PayrollAllowanceComponent implements OnInit {
               payrollDTO: {
                 take: this.pageSize,
                 skip: this.pageIndex,
-                code: this.formGroup.get('code')!.value,
-                unit: this.formGroup.get('unit')!.value,
+                code: this.formGroup.get('code')?.value,
+                unit: this.formGroup.get('unit')?.value,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
                 title: val.title,
@@ -453,11 +451,11 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')!?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

@@ -130,11 +130,11 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
       this.store.pipe(select(getAllPosition))
     );
 
-    this.formGroup.get('days')!.valueChanges.subscribe(days => {
+    this.formGroup.get('days')?.valueChanges.subscribe(days => {
       if (days > 1) {
-        this.formGroup.get('datetime')!.setValue('');
+        this.formGroup.get('datetime')?.setValue('');
       } else {
-        this.formGroup.get('month')!.setValue('');
+        this.formGroup.get('month')?.setValue('');
       }
     });
   }

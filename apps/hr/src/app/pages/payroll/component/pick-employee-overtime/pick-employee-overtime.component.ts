@@ -1,28 +1,21 @@
-import {
-  ChangeDetectorRef,
-  Component, DoCheck,
-  EventEmitter,
-  Input, IterableDiffers,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee } from '@minhdu-fontend/data-models';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
-  selectorAllEmployee, selectorTotalEmployee
+  selectorAllEmployee,
+  selectorTotalEmployee
 } from '@minhdu-fontend/employee';
-import {SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { PickEmployeeService } from './pick-employee.service';
 import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { checkIsSelectAllInit, pickAll, pickOne } from '../../../../../../../../libs/utils/pick-item.ultil';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -57,7 +50,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   constructor(
     private readonly store: Store,
     private readonly service: PickEmployeeService,
-    private readonly snackBar: MatSnackBar,
+    private readonly snackBar: MatSnackBar
   ) {
   }
 
@@ -135,7 +128,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
     this.store.dispatch(PositionActions.loadPosition());
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
@@ -201,7 +194,7 @@ export class PickEmployeeOvertimeComponent implements OnInit, OnChanges {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   selectEmployee(employee: Employee) {

@@ -28,7 +28,7 @@ import { AddEmployeeComponent } from '../../components/employee/add-employee.com
 import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
 import { selectAllProvince } from '@minhdu-fontend/location';
 import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
 import { DialogExportComponent } from '@minhdu-fontend/components';
@@ -96,11 +96,11 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
-        this.formGroup.get('branch')!.setValue(val.branch, { emitEvent: false });
+        this.formGroup.get('branch')?.setValue(val.branch, { emitEvent: false });
         this.branchName = val.branch;
       }
       if (val.position) {
-        this.formGroup.get('position')!.setValue(val.position, { emitEvent: false });
+        this.formGroup.get('position')?.setValue(val.position, { emitEvent: false });
         this.positionName = val.position;
       }
     });
@@ -147,17 +147,17 @@ export class EmployeeComponent implements OnInit {
     });
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
 
     this.provinces$ = searchAutocomplete(
-      this.formGroup.get('province')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('province')?.valueChanges.pipe(startWith('')) || of(''),
       this.provinces$
     );
 
@@ -222,11 +222,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   onSelectProvince(province: Province) {
@@ -234,10 +234,10 @@ export class EmployeeComponent implements OnInit {
       sub.next(province.districts);
     });
     this.districts$ = searchAutocomplete(
-      this.formGroup.get('district')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('district')?.valueChanges.pipe(startWith('')) || of(''),
       this.districts$
     );
-    this.formGroup.get('province')!.patchValue(province.name);
+    this.formGroup.get('province')?.patchValue(province.name);
   }
 
   onSelectDistrict(district: District) {
@@ -245,14 +245,14 @@ export class EmployeeComponent implements OnInit {
       sub.next(district.wards);
     });
     this.wards$ = searchAutocomplete(
-      this.formGroup.get('ward')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('ward')?.valueChanges.pipe(startWith('')) || of(''),
       this.wards$
     );
-    this.formGroup.get('district')!.patchValue(district.name);
+    this.formGroup.get('district')?.patchValue(district.name);
   }
 
   onSelectWard(wardName: string) {
-    this.formGroup.get('ward')!.patchValue(wardName);
+    this.formGroup.get('ward')?.patchValue(wardName);
   }
 
   onScroll() {

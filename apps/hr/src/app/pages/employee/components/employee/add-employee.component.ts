@@ -118,9 +118,9 @@ export class AddEmployeeComponent implements OnInit {
         this.branches$
       );
 
-    this.formGroup.get('employeeType')!.valueChanges.subscribe(val => {
+    this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
-        this.formGroup.get('recipeType')!.setValue(RecipeType.CT3);
+        this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
   }

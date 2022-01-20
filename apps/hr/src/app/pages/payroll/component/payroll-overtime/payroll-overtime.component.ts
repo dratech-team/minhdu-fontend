@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Api, SearchTypeConstant, UnitsConstant } from '@minhdu-fontend/constants';
+import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
@@ -18,7 +18,7 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, of, Subject } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -31,13 +31,15 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import {
+  checkInputNumber,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors,
+  searchAutocomplete
+} from '@minhdu-fontend/utils';
 import { AppState } from '../../../../reducers';
 import { TemplateOvertimeAction } from '../../../template/+state/template-overtime/template-overtime.action';
 import { selectorAllTemplate } from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -47,7 +49,7 @@ import { DialogOvertimeMultipleComponent } from '../dialog-salary/dialog-overtim
 import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog-overtime.component';
 
 @Component({
-  selector: 'app-payroll-overtime',
+  selector: 'minhdu-fontend-payroll-overtime',
   templateUrl: 'payroll-overtime.component.html'
 })
 export class PayrollOvertimeComponent implements OnInit {
@@ -66,7 +68,6 @@ export class PayrollOvertimeComponent implements OnInit {
   salariesSelected: Array<SalaryPayroll> = [];
   salaries: Array<SalaryPayroll> = [];
   searchTypeConstant = SearchTypeConstant;
-  unitsConstant = UnitsConstant;
   isSelectSalary = false;
   isEventSearch = false;
 
@@ -125,19 +126,19 @@ export class PayrollOvertimeComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
 
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
 
     this.templateOvertime$ = combineLatest([
-      this.formGroup.get('title')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('title')?.valueChanges.pipe(startWith('')) || of(''),
       this.store.pipe(select(selectorAllTemplate))
     ]).pipe(
       map(([title, templateOvertimes]) => {
@@ -155,17 +156,13 @@ export class PayrollOvertimeComponent implements OnInit {
       Object.assign(paramLoadInit, {
         createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd')
       });
-      this.formGroup.get('title')!.setValue(this.overtimeTitle);
-      this.formGroup
-        .get('startedAt')!
-        .setValue(
-          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-        );
-      this.formGroup
-        .get('endedAt')!
-        .setValue(
-          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-        );
+      this.formGroup.get('title')?.setValue(this.overtimeTitle);
+      this.formGroup.get('startedAt')?.setValue(
+        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+      );
+      this.formGroup.get('endedAt')?.setValue(
+        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+      );
     } else {
       Object.assign(paramLoadInit, {
         startedAt: getFirstDayInMonth(new Date(this.createdAt)),
@@ -181,18 +178,14 @@ export class PayrollOvertimeComponent implements OnInit {
 
     this.eventAddOvertime?.subscribe((val) => {
       if (val.overtimeTitle) {
-        this.formGroup.get('title')!.setValue(val.overtimeTitle);
+        this.formGroup.get('title')?.setValue(val.overtimeTitle);
       }
-      this.formGroup
-        .get('startAt')!
-        .setValue(
-          this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
-        );
-      this.formGroup
-        .get('endAt')!
-        .setValue(
-          this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
-        );
+      this.formGroup.get('startAt')?.setValue(
+        this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
+      );
+      this.formGroup.get('endAt')?.setValue(
+        this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
+      );
     });
 
     this.eventExportOvertime?.subscribe((val) => {
@@ -320,7 +313,7 @@ export class PayrollOvertimeComponent implements OnInit {
 
   onSelectTemplateOvertime(event: any, title: string) {
     if (event.isUserInput) {
-      this.formGroup.get('title')!.patchValue(title);
+      this.formGroup.get('title')?.patchValue(title);
     }
   }
 
@@ -333,13 +326,9 @@ export class PayrollOvertimeComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup
-          .get('startAt')!
-          .setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup
-          .get('endAt')!
-          .setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('title')!.setValue(val.title);
+        this.formGroup.get('startAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('endAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('title')?.setValue(val.title);
       }
     });
   }
@@ -361,7 +350,7 @@ export class PayrollOvertimeComponent implements OnInit {
           salary: this.salariesSelected[0].salary,
           createdAt: this.salariesSelected[0].salary?.datetime
             ? this.salariesSelected[0].salary?.datetime
-            : this.formGroup.get('startAt')!.value,
+            : this.formGroup.get('startAt')?.value,
           salariesSelected: this.salariesSelected,
           updateMultiple: true,
           isUpdate: true
@@ -379,13 +368,9 @@ export class PayrollOvertimeComponent implements OnInit {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
-          this.formGroup.get('title')!.setValue(val.title);
-          this.formGroup
-            .get('startedAt')!
-            .setValue(new Date(val.datetime), 'yyyy-MM-dd');
-          this.formGroup
-            .get('endedAt')!
-            .setValue(new Date(val.datetime), 'yyyy-MM-dd');
+          this.formGroup.get('title')?.setValue(val.title);
+          this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+          this.formGroup.get('endedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
         }
       });
     } else {
@@ -547,11 +532,11 @@ export class PayrollOvertimeComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

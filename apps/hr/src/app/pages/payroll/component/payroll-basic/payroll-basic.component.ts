@@ -16,7 +16,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -36,7 +36,7 @@ import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
 
 @Component({
-  selector: 'app-payroll-basic',
+  selector: 'minhdu-fontend-payroll-basic',
   templateUrl: 'payroll-basic.component.html'
 })
 export class PayrollBasicComponent implements OnInit {
@@ -129,12 +129,12 @@ export class PayrollBasicComponent implements OnInit {
     });
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ?? of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) ?? of(''),
       this.branches$
     );
 
@@ -210,21 +210,21 @@ export class PayrollBasicComponent implements OnInit {
     const ref = this.dialog.open(DialogBasicComponent, {
       width: 'fit-content',
       data: {
-        createdAt: this.formGroup.get('createdAt')!.value,
+        createdAt: this.formGroup.get('createdAt')?.value,
         addMultiple: true,
         type: SalaryTypeEnum.BASIC
       }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')!.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: {
               take: this.pageIndex,
               skip: this.pageSize,
-              code: this.formGroup.get('code')!.value,
-              createdAt: this.formGroup.get('createdAt')!.value,
+              code: this.formGroup.get('code')?.value,
+              createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
               branch: val.branch
@@ -266,22 +266,20 @@ export class PayrollBasicComponent implements OnInit {
           }
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup
-            .get('title')!
-            .setValue(val.title, { emitEvent: false });
+          this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
           const params = {
             take: this.pageSize,
             skip: this.pageIndex,
-            code: this.formGroup.get('code')!.value,
+            code: this.formGroup.get('code')?.value,
             searchType: value.searchType,
             createdAt: value.createdAt,
             salaryTitle: val.title,
-            name: this.formGroup.get('name')!.value,
+            name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position,
             branch: value.branch
           };
-          if (this.formGroup.get('name')!.value === '') {
+          if (this.formGroup.get('name')?.value === '') {
             delete params.name;
           }
           console.log(params);
@@ -303,7 +301,7 @@ export class PayrollBasicComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        let deleteSuccess = new Subject<number>();
+        const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
             if (val) {
@@ -398,11 +396,11 @@ export class PayrollBasicComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

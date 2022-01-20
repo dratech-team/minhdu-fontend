@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
 import { selectTotalTemplateOvertime } from '../../+state/template-overtime/template-overtime.selector';
 import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -73,7 +74,7 @@ export class HolidayComponent implements OnInit {
       .subscribe();
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
   }
@@ -138,7 +139,7 @@ export class HolidayComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber($event: any){

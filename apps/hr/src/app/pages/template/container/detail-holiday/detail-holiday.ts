@@ -60,13 +60,13 @@ export class DetailHoliday implements OnInit {
 
     this.fCtrlPosition.valueChanges.subscribe(val => {
       if (!val) {
-        this.formGroup.get('position')!.patchValue('');
+        this.formGroup.get('position')?.patchValue('');
       }
     });
 
     this.fCtrlBranch.valueChanges.subscribe(val => {
       if (!val) {
-        this.formGroup.get('branch')!.patchValue('');
+        this.formGroup.get('branch')?.patchValue('');
       }
     });
     this.formGroup.valueChanges
@@ -111,11 +111,11 @@ export class DetailHoliday implements OnInit {
 
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   detailPayroll(id: number) {

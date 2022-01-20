@@ -85,11 +85,11 @@ export class DialogAllowanceComponent implements OnInit {
         rate: [1]
       });
     }
-    this.formGroup.get('unit')!.valueChanges.subscribe(unit => {
+    this.formGroup.get('unit')?.valueChanges.subscribe(unit => {
       if (unit === DatetimeUnitEnum.DAY) {
-        this.formGroup.get('datetime')!.setValue('');
+        this.formGroup.get('datetime')?.setValue('');
       } else if (unit === DatetimeUnitEnum.MONTH) {
-        this.formGroup.get('datetime')!.patchValue(
+        this.formGroup.get('datetime')?.patchValue(
           this.datePipe.transform(this.data.payroll.createdAt, 'yyyy-MM'));
       }
     });
@@ -199,7 +199,7 @@ export class DialogAllowanceComponent implements OnInit {
         }
       });
       this.isApprentice = true;
-      this.formGroup.get('datetime')!.setValue(
+      this.formGroup.get('datetime')?.setValue(
         this.datePipe.transform(
           this.data?.payroll?.createdAt, 'yyyy-MM-dd'
         ));

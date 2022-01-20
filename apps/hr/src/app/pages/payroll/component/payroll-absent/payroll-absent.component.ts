@@ -17,7 +17,7 @@ import {
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -116,12 +116,12 @@ export class PayrollAbsentComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
 
@@ -159,15 +159,11 @@ export class PayrollAbsentComponent implements OnInit {
     }
 
     this.eventAddAbsent?.subscribe((val) => {
-      this.formGroup.get('title')!.setValue(val.absentTitle);
-      this.formGroup
-        .get('startedAt')!
-        .setValue(
+      this.formGroup.get('title')?.setValue(val.absentTitle);
+      this.formGroup.get('startedAt')?.setValue(
           this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
         );
-      this.formGroup
-        .get('endedAt')!
-        .setValue(
+      this.formGroup.get('endedAt')?.setValue(
           this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
         );
     });
@@ -261,15 +257,11 @@ export class PayrollAbsentComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')!.setValue(val.title);
-        this.formGroup
-          .get('startedAt')!
-          .setValue(
+        this.formGroup.get('title')?.setValue(val.title);
+        this.formGroup.get('startedAt')?.setValue(
             this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
           );
-        this.formGroup
-          .get('endedAt')!
-          .setValue(
+        this.formGroup.get('endedAt')?.setValue(
             this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
           );
       }
@@ -304,15 +296,11 @@ export class PayrollAbsentComponent implements OnInit {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')!.setValue(val.title);
-          this.formGroup
-            .get('startedAt')!
-            .setValue(
+          this.formGroup.get('title')?.setValue(val.title);
+          this.formGroup.get('startedAt')?.setValue(
               this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
             );
-          this.formGroup
-            .get('endedAt')!
-            .setValue(
+          this.formGroup.get('endedAt')?.setValue(
               this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
             );
         }
@@ -434,11 +422,11 @@ export class PayrollAbsentComponent implements OnInit {
   }
 
   onSelectPosition(positionName: string) {
-    this.formGroup.get('position')!.patchValue(positionName);
+    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

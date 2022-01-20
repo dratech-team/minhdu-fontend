@@ -165,9 +165,9 @@ export class DialogSeasonalComponent implements OnInit {
 
   pickOverTime(data: TemplateOvertime) {
     this.checkTemplate = !!data;
-    this.formGroup.get('price')!.setValue(data.price);
+    this.formGroup.get('price')?.setValue(data.price);
     this.title = data.title;
-    this.formGroup.get('rate')!.setValue(data.rate);
+    this.formGroup.get('rate')?.setValue(data.rate);
   }
 
   checkAllowanceOvertime() {

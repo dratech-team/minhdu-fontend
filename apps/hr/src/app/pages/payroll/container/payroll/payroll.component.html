@@ -285,21 +285,21 @@
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME '>
-      <app-payroll-overtime [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
-        [eventAddOvertime]='eventAddOvertime' [eventExportOvertime]='eventExportOvertime'></app-payroll-overtime>
+      <minhdu-fontend-payroll-overtime [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
+                                       [eventAddOvertime]='eventAddOvertime' [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.SEASONAL '>
-      <app-payroll-seasonal [eventExportSeasonal]='eventExportAbsent' [payroll$]='payroll$' [total$]='total$'
-        [formGroup]='formGroup' [positions$]='positions$' [branches$]='branches$' (EventScroll)='onScroll()'
-        (EventDeletePayroll)='deletePayroll($event)' (EventUpdateConfirm)='updateConfirmPayroll($event.id, $event.type)'
-        (EventReadPayroll)='readPayroll($event)' (EventHistoryPayroll)='historyPayroll($event)'
-        (EventRestorePayroll)='restorePayroll($event)' (EventSelectBranch)='onSelectBranch($event)'
-        (EventSelectPosition)='onSelectPosition($event)'></app-payroll-seasonal>
+      <minhdu-fontend-payroll-seasonal [eventExportSeasonal]='eventExportAbsent' [payroll$]='payroll$' [total$]='total$'
+                                       [formGroup]='formGroup' [positions$]='positions$' [branches$]='branches$' (EventScroll)='onScroll()'
+                                       (EventDeletePayroll)='deletePayroll($event)' (EventUpdateConfirm)='updateConfirmPayroll($event.id, $event.type)'
+                                       (EventReadPayroll)='readPayroll($event)' (EventHistoryPayroll)='historyPayroll($event)'
+                                       (EventRestorePayroll)='restorePayroll($event)' (EventSelectBranch)='onSelectBranch($event)'
+                                       (EventSelectPosition)='onSelectPosition($event)'></minhdu-fontend-payroll-seasonal>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
-      <app-payroll-basic [eventExportBasic]='eventExportBasic'></app-payroll-basic>
+      <minhdu-fontend-payroll-basic [eventExportBasic]='eventExportBasic'></minhdu-fontend-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>

@@ -17,7 +17,7 @@ import { DialogExportComponent } from '@minhdu-fontend/components';
 import { Api } from '@minhdu-fontend/constants';
 
 @Component({
-  selector: 'app-payroll-seasonal',
+  selector: 'minhdu-fontend-payroll-seasonal',
   templateUrl: 'payroll-seasonal.component.html'
 })
 export class PayrollSeasonalComponent implements OnInit {

@@ -22,6 +22,7 @@ import { AppState } from '../../../../reducers';
 import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
 import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: 'template-overtime.component.html'
@@ -89,7 +90,7 @@ export class TemplateOvertimeComponent implements OnInit {
     );
 
     this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')!.valueChanges.pipe(startWith('')),
+      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
   }
@@ -135,7 +136,7 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('position')!.patchValue(branchName);
+    this.formGroup.get('position')?.patchValue(branchName);
   }
 
   onSelectPosition(
