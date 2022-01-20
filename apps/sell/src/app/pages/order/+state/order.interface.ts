@@ -5,22 +5,22 @@ import { Route } from '../../route/container/+state/route.interface';
 import { PaymentHistory, Ward } from '@minhdu-fontend/data-models';
 
 export interface Order {
-  id : number,
-  customer : Customer,
-  customerId :number,
-  createdAt : Date,
-  explain: string,
-  currency : CurrencyUnit,
-  commodities: Commodity[],
-  routes: Route[],
-  paidAt?: Date,
-  payType?:PaymentType,
-  paidTotal?: number,
-  debt: number,
-  destination?: Ward,
-  isSelect?: boolean,
+  id: number;
+  customer: Customer;
+  customerId: number;
+  createdAt: Date;
+  explain: string;
+  currency: CurrencyUnit;
+  commodities: Commodity[];
+  routes: Route[];
+  paidAt?: Date;
+  payType?: PaymentType;
+  paidTotal?: number;
+  debt: number;
+  destination?: Ward;
+  isSelect?: boolean;
   paymentHistories: PaymentHistory[];
-  commodityTotal:number;
+  commodityTotal: number;
   paymentTotal: number;
   deliveredAt: Date;
   hide: boolean;
@@ -29,11 +29,11 @@ export interface OrderDTO {
   take?: number;
   skip?: number;
   paidType?: string;
-  customerId?: number|string;
+  customerId?: number | string;
   routeId?: number;
   customer?: string;
   delivered?: number;
   explain?: string;
   createdAt?: Date;
-  destination?: string
+  destination?: string;
 }

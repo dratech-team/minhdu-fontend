@@ -41,7 +41,9 @@ export class OrderComponent implements OnInit {
     name: new FormControl(''),
     status: new FormControl(0),
     explain: new FormControl(''),
-    createdAt: new FormControl(''),
+    commodity: new FormControl(''),
+    createdAt: new FormControl(),
+    deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
     destination: new FormControl(''),
   });
@@ -87,17 +89,19 @@ export class OrderComponent implements OnInit {
   }
 
   order(val: any) {
-    return {
+    const value = Object.assign(val, {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      paidType: val.paidType,
-      customer: val.name.trim(),
-      destination: val.destination.trim(),
-      commodityTotal: val.commodityTotal,
-      explain: val.explain.trim(),
-      createdAt: val.createdAt.trim(),
-      status: val.status,
-    };
+    });
+    if (!value?.createdAt) {
+      delete value.createdAt;
+    }
+
+    if (!value?.deliveredAt) {
+      delete value.deliveredAt;
+    }
+
+    return value;
   }
 
   detailOrder(id: number) {

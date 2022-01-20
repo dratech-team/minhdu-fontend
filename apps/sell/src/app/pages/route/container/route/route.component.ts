@@ -66,6 +66,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          console.log(val)
           this.store.dispatch(RouteAction.loadInit(this.route(val)));
         })
       )
@@ -83,7 +84,7 @@ export class RouteComponent implements OnInit {
     this.store.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
   }
 
-  route(val: any) {
+  route(val: Route) {
     return {
       skip: 0,
       take: this.pageSize,

@@ -8,7 +8,7 @@ export interface Route {
   name: string,
   startedAt: Date,
   endedAt: Date,
-  driver: Employee,
+  driver: string,
   employee: Employee,
   orders: Order[],
   garage: string,
