@@ -8,7 +8,6 @@ import { PayrollService } from '../../service/payroll.service';
   templateUrl: 'restore-payroll.component.html'
 })
 export class RestorePayrollComponent {
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly store: Store,
@@ -18,11 +17,9 @@ export class RestorePayrollComponent {
   ) {
   }
 
-
   restorePayroll() {
     this.payrollService.restorePayroll(this.data.payroll.id).subscribe(
       res => {
-        console.log(res)
         this.snackbar.open(res.message, '', { duration: 1500 });
       }
     );

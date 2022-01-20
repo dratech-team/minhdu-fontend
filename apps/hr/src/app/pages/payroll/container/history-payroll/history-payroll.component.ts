@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FilterTypeEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { ItemContextMenu, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -15,25 +15,36 @@ import {
   selectedLoadedPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { AppState } from '../../../../reducers';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
 import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { ItemContextMenu } from '@minhdu-fontend/enums';
-import { DialogExportComponent } from '../../../../../../../../libs/components/src/lib/dialog-export/dialog-export.component';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { DialogManConfirmedAtComponent } from '../../component/dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 
 @Component({
   templateUrl: 'history-payroll.component.html'
 })
 export class HistoryPayrollComponent implements OnInit {
-  name$!: Observable<string>;
+  @ViewChild(MatMenuTrigger)
+  contextMenu!: MatMenuTrigger;
+  code?: string;
+
   employeeType$!: Observable<string>;
+
+  pageSize = 30;
+  pageIndexInit = 0;
+  salaryType = SalaryTypeEnum;
+  ItemContextMenu = ItemContextMenu;
+
+  loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  positions$ = this.store.pipe(select(getAllPosition));
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  adding$ = this.store.pipe(select(selectedAddingPayroll));
+  name$: Observable<string> = this.activatedRoute.queryParams.pipe(map(param => param.name));
+  payroll$ = this.store.pipe(select(selectorAllPayroll));
+
   formGroup = new FormGroup({
     name: new FormControl(''),
     paidAt: new FormControl(''),
@@ -43,18 +54,6 @@ export class HistoryPayrollComponent implements OnInit {
     position: new FormControl(''),
     branch: new FormControl('')
   });
-  @ViewChild(MatMenuTrigger)
-  contextMenu!: MatMenuTrigger;
-  salaryType = SalaryTypeEnum;
-  pageSize: number = 30;
-  pageIndexInit = 0;
-  payroll$ = this.store.pipe(select(selectorAllPayroll));
-  loaded$ = this.store.pipe(select(selectedLoadedPayroll));
-  code?: string;
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
-  adding$ = this.store.pipe(select(selectedAddingPayroll));
-  ItemContextMenu = ItemContextMenu;
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -66,7 +65,6 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.name$ = this.activatedRoute.queryParams.pipe(map(param => param.name));
     this.employeeType$ = this.activatedRoute.queryParams.pipe(map(param => {
         console.log(param.employeeType);
         return param.employeeType;
@@ -188,13 +186,9 @@ export class HistoryPayrollComponent implements OnInit {
   }
 
   deletePayroll(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
-    ref.afterClosed().subscribe(val => {
+    this.dialog.open(DialogDeleteComponent, { width: 'fit-content' }).afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(PayrollAction.deletePayroll(
-          {
-            id: event.id
-          }));
+        this.store.dispatch(PayrollAction.deletePayroll({ id: event.id }));
       }
     });
   }

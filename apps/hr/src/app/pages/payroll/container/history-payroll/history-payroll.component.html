@@ -1,5 +1,5 @@
-<mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row h3 ml-3'>Lịch sử lương của nhân viên {{name$|async}}</div>
+<mat-spinner *ngIf='adding$ | async' class='loading'></mat-spinner>
+<div class='row h3 ml-3'>Lịch sử lương của nhân viên {{name$ | async}}</div>
 <div class='row ml-3 mt-3 d-flex justify-content-between'>
   <div class='d-flex '>
     <div>
@@ -327,7 +327,7 @@
               </th>
             </tr>
           </thead>
-          <tbody *ngIf='(payroll$|async) as payrolls'>
+          <tbody *ngIf='(payroll$ | async) as payrolls'>
             <tr *ngFor='let payroll of payrolls; let i = index' (contextmenu)='child.onContextMenu($event,payroll)'>
               <th class='pointer' (click)='readPayroll(payroll)' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 {{i + 1}}

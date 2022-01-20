@@ -34,6 +34,7 @@ import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/se
 import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
 import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
 import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { Payroll } from '../../+state/payroll/payroll.interface';
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -353,54 +354,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .then();
   }
 
-  exportPayroll() {
-    const value = this.formGroup.value;
-    const payroll = {
-      code: value.code || '',
-      name: value.name,
-      position: value.position,
-      branch: value.branch,
-      paidAt: value.paidAt,
-      accConfirmedAt: value.accConfirmedAt,
-      exportType: FilterTypeEnum.PAYROLL
-    };
-    if (value.createdAt) {
-      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
-    }
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.PAYROLL,
-        params: payroll,
-        api: Api.HR.PAYROLL.EXPORT
-      }
-    });
-  }
-
-  exportTimeSheet() {
-    const value = this.formGroup.value;
-    const payroll = {
-      code: value.code || '',
-      name: value.name,
-      position: value.position,
-      branch: value.branch,
-      exportType: FilterTypeEnum.TIME_SHEET
-    };
-    if (value.createdAt) {
-      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
-    }
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xuât bảng chấm công',
-        exportType: FilterTypeEnum.TIME_SHEET,
-        params: payroll,
-        api: Api.HR.PAYROLL.EXPORT
-      }
-    });
-  }
-
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')?.patchValue(positionName);
   }
@@ -421,24 +374,20 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup
-          .get('createdAt')!
-          .patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
   }
 
   selectMonth(event: any) {
     this.createdAt = event;
-    this.formGroup
-      .get('createdAt')!
-      .patchValue(this.datePipe.transform(event, 'yyyy-MM'));
+    this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }
 
-  restorePayroll(event: any) {
+  restorePayroll(payroll: Payroll) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { PAYROLL: event }
+      data: { payroll: payroll }
     });
   }
 
@@ -461,7 +410,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.router
       .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
         queryParams: {
-          name: event.employee.firstName + ' ' + event.employee.lastName,
+          name: event.employee.lastName,
           employeeType: event.employee.type
         }
       })
@@ -530,5 +479,54 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+
+  exportPayroll() {
+    const value = this.formGroup.value;
+    const payroll = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position,
+      branch: value.branch,
+      paidAt: value.paidAt,
+      accConfirmedAt: value.accConfirmedAt,
+      exportType: FilterTypeEnum.PAYROLL
+    };
+    if (value.createdAt) {
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+    }
+    this.dialog.open(DialogExportComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xuât bảng lương',
+        exportType: FilterTypeEnum.PAYROLL,
+        params: payroll,
+        api: Api.HR.PAYROLL.EXPORT
+      }
+    });
+  }
+
+  exportTimeSheet() {
+    const value = this.formGroup.value;
+    const payroll = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position,
+      branch: value.branch,
+      exportType: FilterTypeEnum.TIME_SHEET
+    };
+    if (value.createdAt) {
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+    }
+    this.dialog.open(DialogExportComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xuât bảng chấm công',
+        exportType: FilterTypeEnum.TIME_SHEET,
+        params: payroll,
+        api: Api.HR.PAYROLL.EXPORT
+      }
+    });
   }
 }
