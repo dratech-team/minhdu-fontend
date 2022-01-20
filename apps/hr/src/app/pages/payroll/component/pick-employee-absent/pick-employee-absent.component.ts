@@ -1,38 +1,21 @@
-import {
-  Component, DoCheck,
-  EventEmitter,
-  Input,
-  IterableDiffers,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
+import { debounceTime, startWith, tap } from 'rxjs/operators';
 import { TimekeepingService } from './timekeeping.service';
-import { combineLatest, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
   selectorTotalEmployee
 } from '@minhdu-fontend/employee';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
-import {
-  checkIsSelectAllInit,
-  handleValSubPickItems, pickAll,
-  pickOne, someComplete
-} from '../../../../../../../../libs/utils/pick-item.ultil';
+import { searchAutocomplete } from '@minhdu-fontend/utils';
+import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
 
 @Component({
   selector: 'app-pick-employee-absent',
@@ -41,20 +24,23 @@ import {
 export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges {
   @Input() employeeInit?: Employee;
   @Input() createdPayroll!: Date;
-  isSelectAll = false;
   @Input() employeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
-  type = SalaryTypeEnum;
+
   pageSize = 30;
   pageIndex = 0;
+  type = SalaryTypeEnum;
+  employees: Employee[] = [];
+  employeeId!: number;
+  isEventSearch = false;
+  isSelectAll = false;
+
   employees$ = this.store.pipe(select(selectorAllEmployee));
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   total$ = this.store.pipe(select(selectorTotalEmployee));
-  employees: Employee[] = [];
-  employeeId!: number;
-  isEventSearch = false;
+
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     position: new FormControl('', Validators.required),
@@ -114,10 +100,10 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
         this.isSelectAll = false;
       }
       if (this.isEventSearch) {
-        this.isSelectAll = checkIsSelectAllInit(employees, this.employeesSelected)
+        this.isSelectAll = checkIsSelectAllInit(employees, this.employeesSelected);
       }
 
-      this.employees = handleValSubPickItems(employees, this.employees, this.employeesSelected, this.isSelectAll)
+      this.employees = handleValSubPickItems(employees, this.employees, this.employeesSelected, this.isSelectAll);
       const value = this.formGroup.value;
     });
     this.store.dispatch(PositionActions.loadPosition());
@@ -153,17 +139,17 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
   }
 
   updateSelect(employee: Employee) {
-   this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll
+    this.isSelectAll = pickOne(employee, this.employeesSelected, this.employees).isSelectAll;
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
   someComplete(): boolean {
-    return someComplete(this.employees,this.employeesSelected, this.isSelectAll)
+    return someComplete(this.employees, this.employeesSelected, this.isSelectAll);
   }
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    pickAll(select, this.employees, this.employeesSelected)
+    pickAll(select, this.employees, this.employeesSelected);
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 

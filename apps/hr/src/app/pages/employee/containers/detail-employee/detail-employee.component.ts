@@ -2,27 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Degree, Employee, Relative } from '@minhdu-fontend/data-models';
-import {
-  EmployeeAction,
-  selectCurrentEmployee, selectEmployeeAdding
-} from '@minhdu-fontend/employee';
+import { EmployeeAction, selectCurrentEmployee, selectEmployeeAdding } from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
   DegreeStatusEnum,
   DegreeTypeEnum,
-  FlatSalary,
-  FormalityEnum, RecipeType,
+  FormalityEnum,
+  RecipeType,
   RelationshipEnum
 } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DevelopmentComponent } from '../../../../../../../../libs/components/src/lib/development/development.component';
+import { Store } from '@ngrx/store';
+import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
 import { AppState } from '../../../../reducers';
 import { AddDegreeComponent } from '../../components/degree/add-degree.component';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { UpdateContractComponent } from '../../components/dialog-update-contract/update-contract.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { AddRelativeComponent } from '../../components/relative/add-relative.component';
+import { getSelectors } from '@minhdu-fontend/utils';
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -35,10 +32,9 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-  isNotFlat = FlatSalary.NOT_FLAT_SALARY;
-  isFlat = FlatSalary.FLAT_SALARY;
-  employee$ = this.store.pipe(select(selectCurrentEmployee(this.employeeId)));
-  adding$ = this.store.pipe(select(selectEmployeeAdding));
+
+  employee$ = this.store.select(selectCurrentEmployee(this.employeeId));
+  adding$ = this.store.select(selectEmployeeAdding);
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -50,6 +46,12 @@ export class DetailEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.getEmployee({ id: this.employeeId }));
+
+    this.activatedRoute.queryParams.subscribe(param => {
+      if (param.isUpdate) {
+        this.updateEmployee(getSelectors(selectCurrentEmployee(this.employeeId), this.store));
+      }
+    });
   }
 
   get employeeId(): number {
@@ -65,7 +67,7 @@ export class DetailEmployeeComponent implements OnInit {
 
   deleteEmployee(employeeId: number, leftAt?: Date): void {
     this.dialog.open(DeleteEmployeeComponent, {
-      width:'fit-content',
+      width: 'fit-content',
       data: { employeeId, leftAt }
     });
   }
@@ -82,10 +84,9 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   deleteRelative(id: number, employeeId: number) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: '30%'
-    });
-    dialogRef.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
           EmployeeAction.deleteRelative({ id: id, employeeId: employeeId })

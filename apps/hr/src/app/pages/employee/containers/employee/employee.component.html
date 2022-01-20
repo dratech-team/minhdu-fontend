@@ -23,7 +23,7 @@
         <div class='font-weight-bold mb-2'> Tổng: {{(total$|async)}}</div>
         <div class='table-scroll mx-auto'
              (scroll)='onScrollX($event)'
-             [scrollLeft]='(scrollX$|async)'
+             [scrollLeft]='(scrollX$ | async)'
              #tableEmployee
              infiniteScroll
              [alwaysCallback]='true'
@@ -159,7 +159,7 @@
               </th>
             </tr>
             </thead>
-            <tbody *ngIf='(employees$|async) as employees'>
+            <tbody *ngIf='(employees$ | async) as employees'>
             <tr *ngFor='let employee of employees; let i = index'
                 (contextmenu)='child.onContextMenu($event,employee)' (click)='readAndUpdate(employee)'>
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
@@ -236,7 +236,7 @@
     (onAdd)='add()'
     (onDel)='delete($event)'
     (onDelPerm)='permanentlyDeleted($event)'
-    (onDetail)='readAndUpdate($event)'>
+    (onUpdate)='readAndUpdate($event)'>
   </app-mouse-right>
 </div>
 

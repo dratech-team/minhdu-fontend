@@ -26,8 +26,7 @@ import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-positi
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
 import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
-import { selectAllProvince } from '@minhdu-fontend/location';
-import { ProvinceAction } from '../../../../../../../../libs/location/src/lib/+state/province/nation.action';
+import { ProvinceAction, selectAllProvince } from '@minhdu-fontend/location';
 import { Observable, of, Subject } from 'rxjs';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
@@ -43,7 +42,7 @@ export class EmployeeComponent implements OnInit {
   districts$!: Observable<District[]>;
   wards$!: Observable<Ward[]>;
 
-  pageSize: number = 35;
+  pageSize = 35;
   pageIndexInit = 0;
   searchType = SearchEmployeeType;
   genderType = Gender;
@@ -210,8 +209,8 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-            ? this.convertBoolean.FALSE
-            : val.flatSalary
+          ? this.convertBoolean.FALSE
+          : val.flatSalary
     };
     if (val.workedAt) {
       return employee;
@@ -261,7 +260,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   readAndUpdate($event: any): void {
-    this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id]).then();
+    this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id], {
+      queryParams: {
+        isUpdate: true
+      }
+    }).then();
   }
 
   permanentlyDeleted($event: any) {
@@ -296,8 +299,8 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-            ? this.convertBoolean.FALSE
-            : val.flatSalary
+          ? this.convertBoolean.FALSE
+          : val.flatSalary
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
