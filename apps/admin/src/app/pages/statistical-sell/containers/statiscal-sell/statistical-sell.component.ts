@@ -17,13 +17,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['statistical-sell.component.scss']
 })
 export class StatisticalSellComponent implements OnInit {
-  TotalPotential = 0;
-  totalOrders = 0;
-  date = new Date();
-  CurrentMonth = getMonth(new Date()) + 1;
-  statisticalCommodityDetail: stakedChart[] = [];
-  dateTime = DatetimeUnitEnum;
-
   overview$: Observable<OverviewSell> = this.service.getAll({ filter: 'MONTH' });
 
   constructor(

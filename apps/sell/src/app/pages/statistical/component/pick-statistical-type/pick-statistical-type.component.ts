@@ -10,6 +10,7 @@ export class PickStatisticalTypeComponent implements OnInit {
   @Input() type!: FilterOverviewEnum;
   @Output() EventPrint = new EventEmitter<any>();
   @Output() EventStatistical = new EventEmitter<any>();
+
   optionOverview = OptionOverviewEnum;
   filterOverview = FilterOverviewEnum;
   formGroup!: FormGroup;

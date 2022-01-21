@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class=' row col-12 my-2 mx-1' *ngIf='overview$ | async as overview'>
-      <div class='col-md-4 col-xm-12 p-1 '>
+      <div class='col-md-4 col-xm-12 p-1 pointer' [routerLink]='overview.order.link' target='_blank'>
         <div class='col-12 p-2  rounded bg-success'>
           <div class='h4'>Đơn hàng trong tháng {{overview.datetime | date:'MM/YYYY'}}</div>
           <div class='d-flex'>
@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div class='col-md-4 col-xm-12 p-1  '>
+      <div class='col-md-4 col-xm-12 p-1 pointer' [routerLink]='overview.order.income.link' target='_blank'>
         <div class='col-12 p-2 rounded  bg-primary'>
           <div class='h4'>Doanh thu tháng {{overview.datetime | date:'MM/YYYY'}}</div>
           <div class='d-flex'>
@@ -41,7 +41,7 @@
           </div>
         </div>
       </div>
-      <div class='col-md-4 col-xm-12 p-1   '>
+      <div class='col-md-4 col-xm-12 p-1 pointer' [routerLink]='overview.customer.link' target='_blank'>
         <div class='col-12 p-2 rounded  bg-warning'>
           <div class='h4'>Khách hàng</div>
           <div class='d-flex'>

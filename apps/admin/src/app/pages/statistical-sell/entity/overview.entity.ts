@@ -1,6 +1,7 @@
 interface Rate {
   rate: number;
   total: number;
+  link: string;
 }
 
 export interface OverviewSell {
@@ -8,10 +9,12 @@ export interface OverviewSell {
   order: {
     rate: number;
     total: number;
+    link: string;
     income: Rate;
   };
   customer: {
     potential: number;
     total: number;
+    link: string;
   }
 }
