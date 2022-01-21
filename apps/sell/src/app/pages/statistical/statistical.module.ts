@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { MainReducer } from '../../states/mainReducer';
+import { StatisticalService } from './service/statistical/statistical.service';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { MainReducer } from '../../states/mainReducer';
   ],
   exports: [StatisticalComponent],
   providers: [
+    StatisticalService,
     DatePipe
   ]
 })

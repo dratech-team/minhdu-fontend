@@ -30,7 +30,6 @@ export class StatisticalComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly snackbar: MatSnackBar,
     private readonly statisticalService: StatisticalService,
     private readonly exportService: ExportService
   ) {
@@ -68,7 +67,6 @@ export class StatisticalComponent implements OnInit {
           .getAll(Api.SELL.OVERVIEW, value)
           .subscribe((value) => {
             if (value) {
-              this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
               this.statisticalAgency = value;
             }
           });
@@ -81,9 +79,6 @@ export class StatisticalComponent implements OnInit {
           .getAll(Api.SELL.OVERVIEW, value)
           .subscribe((value) => {
             if (value) {
-              this.snackbar.open('Thống kê thành công', '', {
-                duration: 1500
-              });
               this.statisticalYear = value;
             }
           });
@@ -96,7 +91,6 @@ export class StatisticalComponent implements OnInit {
           .getAll(Api.SELL.OVERVIEW, value)
           .subscribe((value) => {
             if (value) {
-              this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
               this.statisticalProvince = value;
             }
           });
