@@ -5,7 +5,7 @@
       <mat-option [hidden]='type === filterOverview.CUSTOMER' value='{{optionOverview.CUSTOMER}}'> Khách hàng</mat-option>
       <mat-option value='{{optionOverview.SOLD}}'> Gà bán</mat-option>
       <mat-option value='{{optionOverview.SALES}}'> Doanh thu</mat-option>
-      <mat-option *ngIf='type === filterOverview.CUSTOMER' value='{{optionOverview.SALES}}'> Công nợ</mat-option>
+      <mat-option *ngIf='type === filterOverview.CUSTOMER' value='{{optionOverview.DEBT}}'> Công nợ</mat-option>
     </mat-select>
   </div>
   <div class='ml-2'>

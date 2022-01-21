@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Api } from '@minhdu-fontend/constants';
-import { stakedChart, Statistical } from '@minhdu-fontend/data-models';
+import { stakedChart } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, FilterOverviewEnum, MenuEnum, OptionOverviewEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { Store } from '@ngrx/store';
@@ -18,9 +17,9 @@ export class StatisticalComponent implements OnInit {
   api = Api;
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
+  statisticalYear: stakedChart[] = [];
   statisticalPotential: stakedChart[] = [];
   statisticalCustomerData: stakedChart[] = [];
-  statisticalYear: Statistical[] = [];
   filterOverview = FilterOverviewEnum;
   dateTime = DatetimeUnitEnum;
   labelYProvince!: string;
@@ -72,18 +71,6 @@ export class StatisticalComponent implements OnInit {
           });
         break;
       }
-      case this.filterOverview.YEAR: {
-        Object.assign(value, { filter: FilterOverviewEnum.YEAR });
-        this.labelYYear = this.setLabelY(params.option);
-        this.statisticalService
-          .getAll(Api.SELL.OVERVIEW, value)
-          .subscribe((value) => {
-            if (value) {
-              this.statisticalYear = value;
-            }
-          });
-        break;
-      }
       case this.filterOverview.NATION: {
         Object.assign(value, { filter: FilterOverviewEnum.NATION });
         this.labelYProvince = this.setLabelY(params.option);
@@ -92,6 +79,18 @@ export class StatisticalComponent implements OnInit {
           .subscribe((value) => {
             if (value) {
               this.statisticalProvince = value;
+            }
+          });
+        break;
+      }
+      case this.filterOverview.YEAR: {
+        Object.assign(value, { filter: FilterOverviewEnum.YEAR });
+        this.labelYYear = this.setLabelY(params.option);
+        this.statisticalService
+          .getAll(Api.SELL.OVERVIEW, value)
+          .subscribe((value) => {
+            if (value) {
+              this.statisticalYear = value;
             }
           });
         break;
