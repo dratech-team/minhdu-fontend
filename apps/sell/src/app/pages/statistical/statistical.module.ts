@@ -27,16 +27,17 @@ import { MainReducer } from '../../states/mainReducer';
     MatDialogModule,
     MatMenuModule,
     MatButtonModule,
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer)
   ],
   declarations: [
     PickDayToDayComponent,
     StatisticalComponent,
-    PickStatisticalTypeComponent,
+    PickStatisticalTypeComponent
   ],
+  exports: [StatisticalComponent],
   providers: [
     DatePipe
-  ],
+  ]
 })
 export class StatisticalModule {
 

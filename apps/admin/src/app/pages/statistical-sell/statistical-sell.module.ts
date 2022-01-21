@@ -19,7 +19,8 @@ import { PickDayToDayComponent } from './component/pick-day-to-day/pick-day-to-d
 import { PickStatisticalTypeComponent } from './component/pick-statistical-type/pick-statistical-type.component';
 import { StatisticalSellComponent } from './containers/statiscal-sell/statistical-sell.component';
 import { StatisticalSellRoutingModule } from './statistical-sell-routing.module';
-
+import { StatisticalSellService } from './service/statistical-sell.service';
+import { StatisticalModule } from '../../../../../sell/src/app/pages/statistical/statistical.module';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { StatisticalSellRoutingModule } from './statistical-sell-routing.module'
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forFeature(FeatureName.ADMIN, AdminReducer),
+    StatisticalModule
   ],
   declarations: [
     PickDayToDayComponent,
@@ -44,6 +46,7 @@ import { StatisticalSellRoutingModule } from './statistical-sell-routing.module'
   ],
   exports: [],
   providers: [
+    StatisticalSellService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
