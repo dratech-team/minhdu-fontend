@@ -176,7 +176,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       )
       .pipe(debounceTime(1500))
       .subscribe((val) => {
-        console.log('aaaaa');
         if (val) {
           this.branchName = val?.branch;
           this.positionName = val?.position;

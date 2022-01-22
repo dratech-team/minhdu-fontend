@@ -12,11 +12,11 @@
       <tr>
         <th style='min-width: 300px'>
           <div class=''>Tên khách hàng</div>
-          <input formControlName='name' class='form-control  ' type='text' placeholder='Trần Gia Hiệu'>
+          <input class='form-control' type='text' placeholder='Trần Văn A' formControlName='name'>
         </th>
         <th style='width: 150px'>
           <div class=''>Ngày sinh</div>
-          <input formControlName='birthDay' class='form-control  ' type='date'>
+          <input formControlName='birthDay' class='form-control' type='date'>
         </th>
         <th>
           <div class=''>Giới tính</div>
@@ -29,7 +29,7 @@
         </th>
         <th style='width: 150px'>
           <div class=''>Số điện thoại</div>
-          <input formControlName='phone' class='form-control  ' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
+          <input formControlName='phone' class='form-control' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
                  maxlength='12'>
         </th>
         <th style='width: 150px'>
@@ -43,7 +43,7 @@
         </th>
         <th style='width: 200px'>
           <div class=''>Quốc gia</div>
-          <input formControlName='nationId' class='form-control  ' type='text'>
+          <input formControlName='nationId' class='form-control' type='text'>
         </th>
         <th>
           <div class=''>Nguồn khách hàng</div>
@@ -62,15 +62,15 @@
         </th>
         <th>
           <div class=''>Email</div>
-          <input formControlName='email' class='form-control  ' type='text'>
+          <input formControlName='email' class='form-control' type='text'>
         </th>
         <th>
           <div class=''>Địa chỉ</div>
-          <input formControlName='address' class='form-control  ' type='search'>
+          <input formControlName='address' class='form-control' type='search'>
         </th>
         <th>
           <div class=''>Chú thích</div>
-          <input formControlName='note' class='form-control ' type='search'>
+          <input formControlName='note' class='form-control' type='search'>
         </th>
       </tr>
       </thead>
@@ -102,7 +102,7 @@
         <th>{{customer?.address}}</th>
         <th> {{customer.note}}</th>
       </tr>
-      <tr *ngIf='!customers || customers.length === 0 ' style='height:60vh; '>
+      <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
         <td colspan='15' class='position-relative font-weight-bold'>
             <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
               Hiện chưa có Khách hàng nào!

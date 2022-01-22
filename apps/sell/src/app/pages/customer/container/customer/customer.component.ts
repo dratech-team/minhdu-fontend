@@ -33,12 +33,12 @@ export class CustomerComponent implements OnInit {
   loaded$ = this.store.select(selectedCustomerLoaded);
 
   formGroup = new FormGroup({
+    name: new FormControl(''),
     resource: new FormControl(''),
-    isPotential: new FormControl(''),
+    isPotential: new FormControl(),
     customerType: new FormControl(''),
     nationId: new FormControl(''),
     phone: new FormControl(''),
-    name: new FormControl(''),
     birthDay: new FormControl(''),
     gender: new FormControl(''),
     email: new FormControl(''),
@@ -90,12 +90,7 @@ export class CustomerComponent implements OnInit {
       skip: 0,
       take: this.pageSize,
       resource: val.resource,
-      isPotential:
-        val.isPotential === 'true'
-          ? this.boolean.TRUE
-          : val.isPotential === 'false'
-          ? this.boolean.FALSE
-          : val.isPotential,
+      isPotential: val.isPotential.trim('\''),
       customerType: val.customerType,
       nationId: val.nationId,
       phone: val.phone.trim(),
