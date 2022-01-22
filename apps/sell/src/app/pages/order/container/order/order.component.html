@@ -27,6 +27,10 @@
           <input formControlName='deliveredAt' class=' form-control' type='date'>
         </th>
         <th>
+          <div class=''>Xe xuất</div>
+          <input formControlName='destination' class='form-control' type='text'>
+        </th>
+        <th>
           <div class=''>Điểm đến</div>
           <input formControlName='destination' class='form-control' type='text'>
         </th>
@@ -80,6 +84,16 @@
         <th>
           {{(order?.deliveredAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
         </th>
+        <th *ngIf='order?.routes?.length; else notCar'>
+          <span *ngFor='let route of order?.routes'>
+              {{route?.bsx}},
+          </span>
+        </th>
+        <ng-template #notCar>
+          <th>
+            -
+          </th>
+        </ng-template>
         <th>
           {{order?.destination?.name}} -
           {{order?.destination?.district?.name}} -

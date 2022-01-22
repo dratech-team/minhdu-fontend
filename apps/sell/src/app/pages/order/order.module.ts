@@ -66,6 +66,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     RouteModule,
     SharedModule,
     NgxSkeletonLoaderModule.forRoot(),
+    CommonModule
   ],
   declarations: [
     TableRouteComponent,
