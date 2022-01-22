@@ -18,14 +18,11 @@ export class StatisticalComponent implements OnInit {
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalYear: stakedChart[] = [];
-  statisticalPotential: stakedChart[] = [];
-  statisticalCustomerData: stakedChart[] = [];
   filterOverview = FilterOverviewEnum;
   dateTime = DatetimeUnitEnum;
   labelYProvince!: string;
   labelYYear!: string;
   labelYAgency!: string;
-  labelYCustomer!: string;
 
   constructor(
     private readonly store: Store,
