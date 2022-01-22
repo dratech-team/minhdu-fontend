@@ -8,7 +8,7 @@
           <span class=' mt-2 ml-3 mb-1 title-chart'>Thống kê theo tỉnh</span>
           <app-pick-statical
             (EventStatistical)='onStatistical(filterOverview.NATION, $event)'
-            (EventPrint)='printStatistical(api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT,$event)'
+            (EventPrint)='printStatistical(Api.SELL.STATISTICAL.STATISTICAL_PROVINCE_PRINT,$event)'
           ></app-pick-statical>
         </div>
         <div>
@@ -31,7 +31,7 @@
           <app-pick-statical
             [type]='filterOverview.CUSTOMER'
             (EventStatistical)='onStatistical(filterOverview.CUSTOMER, $event)'
-            (EventPrint)='printStatistical(api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,$event)'
+            (EventPrint)='printStatistical(Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,$event)'
           ></app-pick-statical>
         </div>
         <div>
@@ -54,7 +54,7 @@
           <app-pick-statical
             [type]='filterOverview.YEAR'
             (EventStatistical)='onStatistical(filterOverview.YEAR, $event)'
-            (EventPrint)='printStatistical(api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,$event)'
+            (EventPrint)='printStatistical(Api.SELL.STATISTICAL.STATISTICAL_AGENCY_PRINT,$event)'
           ></app-pick-statical>
         </div>
         <div>

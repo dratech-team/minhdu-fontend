@@ -13,8 +13,7 @@ import { StatisticalService } from '../../service/statistical/statistical.servic
   styleUrls: ['statistical.component.scss']
 })
 export class StatisticalComponent implements OnInit {
-  date = new Date();
-  api = Api;
+  Api = Api;
   statisticalProvince: stakedChart[] = [];
   statisticalAgency: stakedChart[] = [];
   statisticalYear: stakedChart[] = [];
