@@ -64,7 +64,6 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          console.log(val);
           this.store.dispatch(RouteAction.loadInit(this.route(val)));
         })
       )
@@ -83,16 +82,10 @@ export class RouteComponent implements OnInit {
   }
 
   route(val: Route) {
-    return {
+    return Object.assign(val, {
       skip: 0,
-      take: this.pageSize,
-      name: val.name.trim(),
-      startedAt: val.startedAt,
-      endedAt: val.endedAt,
-      driver: val.driver.trim(),
-      bsx: val.bsx.trim(),
-      garage: val.garage.trim()
-    };
+      take: this.pageSize
+    });
   }
 
   deleteRoute($event: any) {

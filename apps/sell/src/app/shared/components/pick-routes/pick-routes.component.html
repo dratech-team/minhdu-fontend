@@ -44,9 +44,9 @@
          (scrolled)='onScroll()'
     >
       <div class='row-content' *ngFor='let route of routes'>
-        <div class='content-profile col-3 pointer '>{{route?.name}}</div>
-        <div class='content-profile col-2 pointer ' *ngIf='route.startedAt !== null'>
-          {{route?.startedAt|date:'dd/MM/yyyy'}}
+        <div class='content-profile col-3 pointer'>{{route?.name}}</div>
+        <div class='content-profile col-2 pointer'>
+          {{route?.startedAt | date:'dd/MM/yyyy'}}
         </div>
         <div class='content-profile col-2 pointer ' *ngIf='route.startedAt === null'>
           Chưa cập nhật

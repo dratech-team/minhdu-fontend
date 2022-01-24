@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { MainReducer } from '../../states/mainReducer';
     MatCheckboxModule,
     FormsModule,
     SharedModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
+    MatDatepickerModule
   ],
   declarations: [
     RouteComponent,

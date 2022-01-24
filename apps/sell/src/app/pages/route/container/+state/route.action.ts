@@ -80,5 +80,5 @@ export const RouteAction = {
   getRoute,
   getRouteSuccess,
   updateRoute,
-  deleteRoute,
+  deleteRoute
 };
