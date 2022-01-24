@@ -20,25 +20,25 @@
         </th>
         <th>
           <div class=''>Ngày tạo</div>
-          <mat-form-field appearance='fill'>
+          <div class='d-flex border-top'>
             <mat-date-range-input [rangePicker]='picker'>
               <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>
               <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
+          </div>
         </th>
         <th>
           <div class=''>Ngày giao hàng</div>
-          <mat-form-field appearance='fill'>
+          <div class='d-flex border-top'>
             <mat-date-range-input [rangePicker]='picker2'>
               <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
               <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker2'></mat-datepicker-toggle>
             <mat-date-range-picker #picker2></mat-date-range-picker>
-          </mat-form-field>
+          </div>
         </th>
         <th>
           <div class=''>Xe xuất</div>
