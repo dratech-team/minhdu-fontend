@@ -32,7 +32,10 @@ export class OrderComponent implements OnInit {
     status: new FormControl(0),
     explain: new FormControl(''),
     commodity: new FormControl(''),
-    createdAt: new FormControl(),
+    createStartedAt: new FormControl(),
+    createEndedAt: new FormControl(),
+    deliveryStartedAt: new FormControl(),
+    deliveryEndedAt: new FormControl(),
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
     destination: new FormControl('')
@@ -53,7 +56,7 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.store.dispatch(
       OrderAction.loadInit({
-        orderDTO: { take: this.pageSize, skip: this.pageIndexInit }
+        orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: 0 }
       })
     );
     this.formGroup.valueChanges
@@ -84,14 +87,15 @@ export class OrderComponent implements OnInit {
       skip: this.pageIndexInit,
       take: this.pageSize
     });
-    if (!value?.createdAt) {
-      delete value.createdAt;
+    if (!value?.createStartedAt && !value?.createEndedAt) {
+      delete value?.createStartedAt;
+      delete value?.createEndedAt;
     }
 
-    if (!value?.deliveredAt) {
-      delete value.deliveredAt;
+    if (!value?.deliveryStartedAt && !value?.deliveryEndedAt) {
+      delete value?.deliveryStartedAt;
+      delete value?.deliveryEndedAt;
     }
-
     return value;
   }
 
@@ -132,11 +136,11 @@ export class OrderComponent implements OnInit {
       destination: val.destination.trim(),
       commodityTotal: val.commodityTotal.trim(),
       explain: val.explain.trim(),
-      createdAt: val.createdAt.trim(),
-      deliveredAt:
-        val.deliveredAt === this.statusOrder.DELIVERED
-          ? this.convertBoolean.TRUE
-          : this.convertBoolean.FALSE
+      createdAt: val.createdAt.trim()
+      // deliveredAt:
+      //   val.deliveredAt === this.statusOrder.DELIVERED
+      //     ? this.convertBoolean.TRUE
+      //     : this.convertBoolean.FALSE
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',

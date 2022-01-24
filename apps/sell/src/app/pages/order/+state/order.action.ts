@@ -15,7 +15,7 @@ export const loadAllOrder = createAction('[LOAD_ORDERS] Load All Order');
 
 export const loadInit = createAction(
   '[LOAD_ORDERS] Load Order',
-  props<{ orderDTO: OrderDTO }>()
+  props<{ orderDTO: Partial<OrderDTO> }>()
 );
 
 export const loadInitSuccess = createAction(
@@ -25,7 +25,7 @@ export const loadInitSuccess = createAction(
 
 export const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
-  props<{ orderDTO: OrderDTO }>()
+  props<{ orderDTO: Partial<OrderDTO> }>()
 );
 
 export const loadMoreOrdersSuccess = createAction(

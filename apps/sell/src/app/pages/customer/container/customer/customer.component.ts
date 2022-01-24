@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { ConvertBoolean, CustomerType, Gender, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
+import { CustomerType, Gender, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
@@ -15,6 +15,9 @@ import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
+import { PotentialTypes } from '../../constants/potentialTypes';
+import { CustomerTypes } from '../../constants/customer.type';
+import { GenderTypes } from '../../constants/generTypes';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -23,10 +26,11 @@ export class CustomerComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
-  boolean = ConvertBoolean;
   resourceTypes = CustomerResourcesConstant;
+  PotentialType = PotentialTypes;
+  CustomerTypes = CustomerTypes;
+  GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
-  genderType = Gender;
   orders?: Order;
 
   customers$ = this.store.select(selectorAllCustomer);
@@ -90,11 +94,11 @@ export class CustomerComponent implements OnInit {
       skip: 0,
       take: this.pageSize,
       resource: val.resource,
-      isPotential: val.isPotential.trim('\''),
+      isPotential: val.isPotential,
       customerType: val.customerType,
       nationId: val.nationId,
       phone: val.phone.trim(),
-      customer: val.name.trim(),
+      name: val.name.trim(),
       birthDay: val.birthDay,
       gender: val.gender,
       email: val.email.trim(),
@@ -131,12 +135,7 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     const customers = {
       resource: val.resource,
-      isPotential:
-        val.isPotential === 'true'
-          ? 1
-          : val.isPotential === 'false'
-          ? 0
-          : val.isPotential,
+      isPotential: val.isPotential,
       customerType: val.customerType,
       nationId: val.nationId,
       phone: val.phone.trim(),
