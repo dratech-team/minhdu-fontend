@@ -45,7 +45,7 @@ export class PaymentEffect {
           take: 30,
           skip: 0,
           customerId: res.customerId,
-          delivered: ConvertBoolean.TRUE
+          status: ConvertBoolean.TRUE
         }));
         this.store.dispatch(OrderAction.loadInit({
           orderDTO: {
@@ -75,7 +75,7 @@ export class PaymentEffect {
           take: 30,
           skip: 0,
           customerId: res.customerId,
-          delivered: ConvertBoolean.TRUE
+          status: ConvertBoolean.TRUE
         }));
         this.store.dispatch(OrderAction.loadInit({
           orderDTO: {
@@ -111,7 +111,7 @@ export class PaymentEffect {
               take: 30,
               skip: 0,
               customerId: props.customerId,
-              delivered: ConvertBoolean.TRUE
+              status: ConvertBoolean.TRUE
             }));
             this.store.dispatch(OrderAction.loadInit({
               orderDTO: {

@@ -10,7 +10,7 @@
     <thead [formGroup]='formGroup'>
     <tr>
       <th>
-        <div >Ngày tạo</div>
+        <div>Ngày tạo</div>
         <input
           formControlName='createdAt'
           class='form-control  '
@@ -70,27 +70,27 @@
       <th *ngIf='order?.createdAt=== null' (click)='detailOrder(order.id)'>
         Đang cập nhật
       </th>
-      <th  (click)='detailOrder(order.id)'>
+      <th (click)='detailOrder(order.id)'>
         {{order?.destination?.name}} -
         {{order?.destination?.district?.name}} -
         {{order?.destination?.district?.province?.name}}
       </th>
-      <th  (click)='detailOrder(order.id)' style='color: #f86c6b'>
+      <th (click)='detailOrder(order.id)' style='color: #f86c6b'>
         {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
       </th>
-      <th  (click)='detailOrder(order.id)' style='color: #20c997'>
+      <th (click)='detailOrder(order.id)' style='color: #20c997'>
         {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
       </th>
-      <th *ngIf='delivered'  (click)='detailOrder(order.id)'>
+      <th *ngIf='delivered' (click)='detailOrder(order.id)'>
         {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
       </th>
-      <th *ngIf='!delivered'  (click)='detailOrder(order.id)'>
+      <th *ngIf='!delivered' (click)='detailOrder(order.id)'>
         {{order?.explain}}
       </th>
       <th *ngIf='delivered'>
         <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
       </th>
-      <th *ngIf='!delivered' >
+      <th *ngIf='!delivered'>
         <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order)'>Hủy</button>
     </tr>
     <tr *ngIf='!orders || orders.length === 0 '

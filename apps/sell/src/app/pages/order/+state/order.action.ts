@@ -70,7 +70,7 @@ export const loadOrdersAssigned = createAction(
     paidType?: string;
     customer?: string;
     customerId?: number;
-    delivered?: number;
+    status?: number;
   }>()
 );
 

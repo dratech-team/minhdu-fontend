@@ -184,7 +184,7 @@ export class OrderEffect {
               OrderAction.loadOrdersAssigned({
                 take: 30,
                 skip: 0,
-                delivered: this.convertBoolean.TRUE,
+                status: this.convertBoolean.TRUE,
               })
             );
             return CustomerAction.getCustomer({ id: props.customerId });
@@ -194,7 +194,7 @@ export class OrderEffect {
               OrderAction.loadOrdersAssigned({
                 take: 30,
                 skip: 0,
-                delivered: this.convertBoolean.TRUE,
+                status: this.convertBoolean.TRUE,
               })
             );
             return throwError(err);

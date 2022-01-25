@@ -54,7 +54,7 @@ export class DetailCustomerComponent implements OnInit {
         take: 10,
         skip: 0,
         customerId: this.getId,
-        delivered: this.convertBoolean.TRUE
+        status: this.convertBoolean.TRUE
       })
     );
 
