@@ -24,7 +24,7 @@
               <span>Khách hàng:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
-              <span class='contain-detail' style=' color: #3C3B54'>
+              <span class='contain-detail pointer' style=' color: #3C3B54' (click)='onRoute(order.customer.id)'>
                 {{order?.customer?.lastName}}
               </span>
             </div>

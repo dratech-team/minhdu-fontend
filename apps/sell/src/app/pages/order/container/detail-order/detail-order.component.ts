@@ -60,4 +60,8 @@ export class DetailOrderComponent implements OnInit {
       }
     });
   }
+
+  onRoute(id: number) {
+    this.router.navigate(['khach-hang/chi-tiet-khach-hang', id]).then();
+  }
 }
