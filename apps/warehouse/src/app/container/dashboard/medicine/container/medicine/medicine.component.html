@@ -137,9 +137,9 @@
   </ng-template>
 </div>
 <app-mouse-right #child
-                 (addEvent)='importMedicine()'
-                 (deleteEvent)='deleteMedicine($event)'
-                 (readEvent)='updateMedicine($event)'></app-mouse-right>
+                 (onAdd)='importMedicine()'
+                 (onDel)='deleteMedicine($event)'
+                 (onUpdate)='updateMedicine($event)'></app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
