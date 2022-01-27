@@ -132,21 +132,22 @@ export class OrderComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       paidType: val.paidType,
-      customer: val.name.trim(),
-      destination: val.destination.trim(),
-      commodityTotal: val.commodityTotal.trim(),
-      explain: val.explain.trim(),
-      createdAt: val.createdAt.trim()
-      // deliveredAt:
-      //   val.deliveredAt === this.statusOrder.DELIVERED
-      //     ? this.convertBoolean.TRUE
-      //     : this.convertBoolean.FALSE
+      customer: val.name?.trim(),
+      destination: val.destination?.trim(),
+      commodityTotal: val.commodityTotal?.trim(),
+      explain: val.explain?.trim(),
+      createStartedAt: val.createStartedAt?.trim(),
+      createEndedAt: val.createEndedAt?.trim(),
+      status:
+        val.deliveredAt === this.statusOrder.DELIVERED
+          ? this.convertBoolean.TRUE
+          : this.convertBoolean.FALSE
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         title: 'Xuất bảng đơn hàng',
-        exportType: 'ORDER',
+        exportType: 'RANGE_DATETIME',
         params: order,
         api: Api.SELL.ORDER.ORDER_EXPORT
       }

@@ -503,6 +503,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng lương',
         exportType: FilterTypeEnum.PAYROLL,
         params: payroll,
+        isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
       }
     });
@@ -526,6 +527,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng chấm công',
         exportType: FilterTypeEnum.TIME_SHEET,
         params: payroll,
+        isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
       }
     });

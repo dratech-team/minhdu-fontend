@@ -196,7 +196,7 @@ export class PayrollOvertimeComponent implements OnInit {
           code: value.code,
           title: value.title || '',
           filename: val,
-          exportType: FilterTypeEnum.OVERTIME,
+          exportType: 'RANGE_DATETIME',
           position: value.position,
           branch: value.branch,
           startedAt: value.startedAt,
@@ -210,7 +210,8 @@ export class PayrollOvertimeComponent implements OnInit {
           data: {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
-            exportType: FilterTypeEnum.OVERTIME,
+            exportType: 'RANGE_DATETIME',
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });

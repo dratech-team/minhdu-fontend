@@ -237,12 +237,13 @@ export class PayrollAllowanceComponent implements OnInit {
         if (value.createdAt) {
           Object.assign(payrollAllowance, { createdAt: value.createdAt });
         }
-        const ref = this.dialog.open(DialogExportComponent, {
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng phụ cấp khác',
             exportType: FilterTypeEnum.ALLOWANCE,
             params: payrollAllowance,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });

@@ -69,12 +69,13 @@ export class PayrollSeasonalComponent implements OnInit {
         if (value.createdAt) {
           Object.assign(payrollSeasonal, { createdAt: value.createdAt });
         }
-        const ref = this.dialog.open(DialogExportComponent, {
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng lương công nhật',
             exportType: FilterTypeEnum.SEASONAL,
             params: payrollSeasonal,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });

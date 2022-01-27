@@ -226,17 +226,18 @@ export class PayrollAbsentComponent implements OnInit {
           name: value.name,
           position: value.position,
           branch: value.branch,
-          exportType: FilterTypeEnum.ABSENT,
+          exportType: 'RANGE_DATETIME',
           title: value.title,
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
-        const ref = this.dialog.open(DialogExportComponent, {
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng khấu trừ',
-            exportType: FilterTypeEnum.ABSENT,
+            exportType: 'RANGE_DATETIME',
             params: payrollAbsent,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });
