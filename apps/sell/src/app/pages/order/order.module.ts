@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatDialogModule,
   MatDialogRef,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS
 } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -34,7 +34,7 @@ import { PaymentHistoryComponent } from './container/payment-history/payment-his
 import { TableRouteComponent } from './component/table-route/table-route.component';
 import {
   MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
@@ -75,7 +75,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
-    AddOrderComponent,
+    AddOrderComponent
   ],
   exports: [],
   providers: [
@@ -83,7 +83,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     { provide: MAT_DIALOG_DATA, useValue: {} },
     DatePipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class OrderModule {}
+export class OrderModule {
+}

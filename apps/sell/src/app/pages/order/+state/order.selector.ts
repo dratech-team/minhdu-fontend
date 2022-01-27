@@ -73,7 +73,7 @@ export const selectorOrdersByCustomerId = (customerId: number) => createSelector
   }
 );
 
-export const selectorCurrentOrder = (id: number)  =>createSelector(
+export const selectorCurrentOrder = (id: number)  => createSelector(
   selectorOrderEntities,
   (orderEntities) =>{
     return  orderEntities[id]
