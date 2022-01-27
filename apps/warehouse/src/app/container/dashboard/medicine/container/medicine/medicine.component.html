@@ -1,11 +1,4 @@
 <div class='mx-auto' style='width: 98%'>
-  <button (click)='importMedicine()' class='btn btn-primary font-sm mt-2'>Nhập thuốc
-  </button>
-  <button (click)='exportMedicine()' class='btn btn-primary font-sm mt-2 ml-2'>Xuất
-    thuốc
-  </button>
-</div>
-<div class='mx-auto' style='width: 98%'>
   <ngx-skeleton-loader *ngIf='!(medicines$ | async)  ; else medicine'
                        count='18' appearance='line'></ngx-skeleton-loader>
   <ng-template #medicine>

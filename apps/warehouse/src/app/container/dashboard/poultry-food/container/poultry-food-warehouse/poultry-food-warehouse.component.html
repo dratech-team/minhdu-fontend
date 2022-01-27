@@ -1,10 +1,4 @@
 <div class='mx-auto' style='width: 98%'>
-  <button (click)='importPoultryFood()' class='btn btn-primary font-sm mt-2'>Nhập thực phẩm
-  </button>
-  <button (click)='exportPoultryFood()' class='btn btn-primary font-sm mt-2 ml-2'>Xuất thực phẩm
-  </button>
-</div>
-<div class='mx-auto' style='width: 98%'>
   <ngx-skeleton-loader *ngIf='!(poultryFoods$ | async)  ; else poultryFood'
                        count='18' appearance='line'></ngx-skeleton-loader>
   <ng-template #poultryFood>

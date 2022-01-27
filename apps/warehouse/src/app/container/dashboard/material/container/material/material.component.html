@@ -1,10 +1,4 @@
 <div class='mx-auto' style='width: 98%'>
-  <button (click)='importMaterial()' class='btn btn-primary font-sm mt-2'>Nhập thiết bị
-  </button>
-  <button (click)='exportMaterial()' class='btn btn-primary font-sm mt-2 ml-2'>Xuất thiết bị
-  </button>
-</div>
-<div class='mx-auto' style='width: 98%'>
   <ngx-skeleton-loader *ngIf='!(material$ | async)  ; else material'
                        count='18' appearance='line'></ngx-skeleton-loader>
   <ng-template #material>

@@ -1,20 +1,28 @@
-
-  <div class='row '
-       style=' padding: 0 15px;position: fixed; left: 0; right: 0; background: white; z-index: 10'>
-    <div class='mt-2 d-flex  align-items-center' style='margin-left: 22px'>
-      <div class='h3 mb-0' >Tổng kho vật tư </div>
+<div class='p-3'>
+  <div class='col-3'>
+    <div class='mt-2 d-flex'>
+      <div class='h3 mb-0'>Kho</div>
       <div>
         <div class='ml-3'>
-          <mat-select style='min-width: 150px'  id='type' class='form-control' [formControl]='selectWarehouse'>
+          <mat-select style='min-width: 150px' id='type' class='form-control' [formControl]='selectWarehouse'>
             <mat-option *ngFor='let item of warehouseConstant' [value]='item.value'>{{item.name}}</mat-option>
           </mat-select>
         </div>
       </div>
     </div>
+    <div>
+      <button class='btn btn-primary font-sm mt-2'>
+        Nhập
+      </button>
+      <button class='btn btn-primary font-sm mt-2 ml-2'>
+        Xuất
+      </button>
+    </div>
   </div>
-  <div style='margin: 55px auto 50px;'>
+  <div>
     <app-medicine *ngIf='warehouseType === warehouseTypeEnum.MEDICINE'></app-medicine>
     <app-poultry-food *ngIf='warehouseType === warehouseTypeEnum.POULTRY_FOOD'></app-poultry-food>
     <app-material *ngIf='warehouseType === warehouseTypeEnum.MATERIAL'></app-material>
   </div>
+</div>
 
