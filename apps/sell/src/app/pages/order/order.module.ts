@@ -81,7 +81,6 @@ import { MatNativeDateModule } from '@angular/material/core';
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {  } },
     DatePipe,
     MatDatepickerModule,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }

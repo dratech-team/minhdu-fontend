@@ -107,7 +107,7 @@
               <th class='text-center'> Mã hàng hóa</th>
               <th class='text-center'> Tên hàng hóa</th>
               <th class='text-center'>Đơn vị</th>
-              <th class='text-center'>Giá trước khuyến mãi</th>
+              <th class='text-center'>Đơn giá</th>
               <th class='text-center'>Khuyến mãi</th>
               <th class='text-center'>Giá sau khuyến mãi</th>
               <th class='text-center'>Số lượng</th>
@@ -118,7 +118,7 @@
               <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
               <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>
-              <th class='text-center'>{{commodity.price|number:'1.0'|notEmpty:'0'}} đ</th>
+              <th class='text-center'>{{commodity.price | number:'1.0' | notEmpty:'Theo thời giá'}}</th>
               <th class='text-center'> {{commodity.gift}} </th>
               <th class='text-center'>{{commodity?.more ? commodity.more.price : '' | number:'1.0' | notEmpty:'0'}}đ
               </th>
