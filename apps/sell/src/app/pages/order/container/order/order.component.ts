@@ -62,7 +62,7 @@ export class OrderComponent implements OnInit {
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
-        tap((val) => {
+        tap((val: any) => {
           this.store.dispatch(
             OrderAction.loadInit({ orderDTO: this.order(val) })
           );
@@ -136,8 +136,8 @@ export class OrderComponent implements OnInit {
       destination: val.destination?.trim(),
       commodityTotal: val.commodityTotal?.trim(),
       explain: val.explain?.trim(),
-      createStartedAt: val.createStartedAt?.trim(),
-      createEndedAt: val.createEndedAt?.trim(),
+      startedAt: val.createStartedAt?.trim(),
+      endedAt: val.createEndedAt?.trim(),
       status:
         val.deliveredAt === this.statusOrder.DELIVERED
           ? this.convertBoolean.TRUE
@@ -149,7 +149,7 @@ export class OrderComponent implements OnInit {
         title: 'Xuất bảng đơn hàng',
         exportType: 'RANGE_DATETIME',
         params: order,
-        api: Api.SELL.ORDER.ORDER_EXPORT
+        api: Api.SELL.ORDER.EXPORT_ITEMS
       }
     });
   }

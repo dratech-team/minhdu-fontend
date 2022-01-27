@@ -54,6 +54,7 @@ export const Api = {
     },
    ORDER:{
      ORDER: 'order',
+     EXPORT_ITEMS: 'order/export/items',
      ORDER_EXPORT: 'order/export/print',
 
    },
