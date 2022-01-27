@@ -19,19 +19,19 @@ export class CommodityDialogComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<CommodityDialogComponent>
   ) {}
   ngOnInit() {
+    console.log(this.data)
     this.formGroup = this.formBuilder.group({
-      name: [this.data?.name, Validators.required],
-      code: [this.data?.code, Validators.required],
-      price: [this.data?.price, Validators.required],
-      unit: [this.data?.unit || CommodityUnit.CON, Validators.required],
-      amount: [this.data?.amount, Validators.required],
-      gift: [this.data?.gift, Validators.required],
-      more: [this.data?.more.amount, Validators.required],
+      name: [this.data?.commodity?.name, Validators.required],
+      code: [this.data?.commodity?.code, Validators.required],
+      price: [this.data?.commodity?.price, Validators.required],
+      unit: [this.data?.commodity?.unit || CommodityUnit.CON, Validators.required],
+      amount: [this.data?.commodity?.amount, Validators.required],
+      gift: [this.data?.commodity?.gift, Validators.required],
+      more: [this.data?.commodity?.more?.amount, Validators.required],
     });
   }
   onSubmit() {
     const value = this.formGroup.value;
-    console.log(value);
     const commodity = {
       code: value.code,
       name: value.name,

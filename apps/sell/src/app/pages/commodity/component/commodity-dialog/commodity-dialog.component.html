@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Thêm thông tin hàng hóa</h2>
+<h2 mat-dialog-title>{{data.isUpdate ? 'Sửa thông tin hàng hoá' : 'Thêm thông tin hàng hóa'}}</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>

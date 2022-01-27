@@ -3,7 +3,7 @@
   <div class='row' *ngIf='(order$ | async)  as commodity'>
     <div class='row mt-5'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
-        Chi tiết Đơn hàng
+        Chi tiết đơn hàng
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
         <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-          (click)='updateOrder(order)'>
+                (click)='updateOrder(order)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -99,7 +99,7 @@
       </div>
       <div class='col-12 mt-5'>
         <div class='row d-flex align-items-center '>
-          <div class='row align-items-center title-table mr-4'>Hàng hóa</div>
+          <div class='row align-items-center title-table mr-4'>Hàng hoá</div>
         </div>
         <div class='mt-3 '>
           <table class='mt-3'>
@@ -111,17 +111,21 @@
               <th class='text-center'>Khuyến mãi</th>
               <th class='text-center'>Giá sau khuyến mãi</th>
               <th class='text-center'>Số lượng</th>
+              <th class='text-center'>Sửa</th>
               <th class='text-center'>Xóa</th>
             </tr>
             <tr *ngFor='let commodity of order.commodities'>
               <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
-              <th class='text-center' *ngIf='commodity.unit === commodityUnit.KG'> Kilogam</th>
-              <th class='text-center' *ngIf='commodity.unit === commodityUnit.CON'> Con</th>
+              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>
               <th class='text-center'>{{commodity.price|number:'1.0'|notEmpty:'0'}} đ</th>
               <th class='text-center'> {{commodity.gift}} </th>
-              <th class='text-center'>{{commodity?.more ? commodity.more.price: ''|number:'1.0'|notEmpty:'0'}} đ</th>
+              <th class='text-center'>{{commodity?.more ? commodity.more.price : '' | number:'1.0' | notEmpty:'0'}}đ
+              </th>
               <th class='text-center'> {{commodity.amount}}</th>
+              <th class='text-center'>
+                <button class='btn btn-edit' (click)='updateComodity(commodity.id, commodity)'>Sửa</button>
+              </th>
               <th class='text-center'>
                 <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
               </th>
@@ -157,7 +161,6 @@
             <td colspan='6' class='text-center check-content'> Hiện chưa có tuyến đường nào!</td>
           </tr>
         </table>
-        <!--       <app-route-order ></app-route-order>-->
       </div>
     </div>
   </div>

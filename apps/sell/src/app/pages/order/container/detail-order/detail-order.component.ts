@@ -12,6 +12,8 @@ import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { MainAction } from '../../../../states/main.action';
 import { getSelectors } from '@minhdu-fontend/utils';
+import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { CommodityDialogComponent } from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -50,6 +52,10 @@ export class DetailOrderComponent implements OnInit {
 
   detailRoute(id: number) {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
+  }
+
+  updateComodity(id: number, commodity: Commodity) {
+    this.dialog.open(CommodityDialogComponent, { data: { commodity, isUpdate: true }, width: '30%' });
   }
 
   deleteCommodity(commodityId: number) {
