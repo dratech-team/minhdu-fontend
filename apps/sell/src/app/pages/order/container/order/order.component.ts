@@ -83,7 +83,7 @@ export class OrderComponent implements OnInit {
   }
 
   order(val: any) {
-    const value = Object.assign(val, {
+    const value = Object.assign(JSON.parse(JSON.stringify(val)), {
       skip: this.pageIndexInit,
       take: this.pageSize
     });

@@ -1,28 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OrderService } from '../service/order.service';
-import { OrderAction, updateHideOrder } from './order.action';
-import {
-  catchError,
-  map,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { OrderAction } from './order.action';
+import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { CommodityAction } from '../../commodity/+state/commodity.action';
-import {
-  CustomerAction,
-  getCustomer,
-} from '../../customer/+state/customer/customer.action';
+import { CustomerAction } from '../../customer/+state/customer/customer.action';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import {
-  selectorOrderAssignedTotal,
-  selectorOrderTotal,
-} from './order.selector';
+import { selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class OrderEffect {
@@ -35,6 +23,12 @@ export class OrderEffect {
         this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
         return OrderAction.addOrderSuccess({ order: res });
       }),
+      tap(() => this.router.navigate(['/don-hang']).then((v => {
+        /// FIXME:
+        if (v) {
+          location.reload();
+        }
+      }))),
       catchError((err) => {
         return throwError(err);
       })
@@ -48,7 +42,7 @@ export class OrderEffect {
       map((responsePagination) =>
         OrderAction.loadInitSuccess({
           orders: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         })
       ),
       catchError((err) => throwError(err))
@@ -62,7 +56,7 @@ export class OrderEffect {
       map((responsePagination) =>
         OrderAction.loadInitSuccess({
           orders: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         })
       ),
       catchError((err) => throwError(err))
@@ -75,7 +69,7 @@ export class OrderEffect {
       withLatestFrom(this.store.pipe(select(selectorOrderTotal))),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props.orderDTO)), {
-          skip: skip,
+          skip: skip
         })
       ),
       switchMap((props) => {
@@ -86,12 +80,12 @@ export class OrderEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết đơn hàng' },
+            data: { content: 'Đã lấy hết đơn hàng' }
           });
         }
         return OrderAction.loadMoreOrdersSuccess({
           orders: responsePagination.data,
-          total: responsePagination.total,
+          total: responsePagination.total
         });
       }),
       catchError((err) => throwError(err))
@@ -106,7 +100,7 @@ export class OrderEffect {
       }),
       map((responsePagination) => {
         return OrderAction.loadOrdersAssignedSuccess({
-          orders: responsePagination.data,
+          orders: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -128,11 +122,11 @@ export class OrderEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết đơn hàng' },
+            data: { content: 'Đã lấy hết đơn hàng' }
           });
         }
         return OrderAction.loadMoreOrdersAssignedSuccess({
-          orders: responsePagination.data,
+          orders: responsePagination.data
         });
       }),
       catchError((err) => throwError(err))
@@ -157,7 +151,7 @@ export class OrderEffect {
             switch (props.typeUpdate) {
               case 'DELIVERED':
                 return OrderAction.loadInit({
-                  orderDTO: { take: 30, skip: 0 },
+                  orderDTO: { take: 30, skip: 0 }
                 });
               default:
                 return OrderAction.getOrder({ id: props.id });
@@ -184,7 +178,7 @@ export class OrderEffect {
               OrderAction.loadOrdersAssigned({
                 take: 30,
                 skip: 0,
-                status: this.convertBoolean.TRUE,
+                status: this.convertBoolean.TRUE
               })
             );
             return CustomerAction.getCustomer({ id: props.customerId });
@@ -194,7 +188,7 @@ export class OrderEffect {
               OrderAction.loadOrdersAssigned({
                 take: 30,
                 skip: 0,
-                status: this.convertBoolean.TRUE,
+                status: this.convertBoolean.TRUE
               })
             );
             return throwError(err);
@@ -227,7 +221,7 @@ export class OrderEffect {
                 CustomerAction.getCustomer({ id: props.customerId })
               );
               return OrderAction.loadInit({
-                orderDTO: { take: 30, skip: 0, customerId: props.customerId },
+                orderDTO: { take: 30, skip: 0, customerId: props.customerId }
               });
             } else {
               return OrderAction.loadInit({ orderDTO: { take: 30, skip: 0 } });
@@ -243,6 +237,8 @@ export class OrderEffect {
     private snackBar: MatSnackBar,
     private readonly action: Actions,
     private readonly orderService: OrderService,
-    private readonly store: Store
-  ) {}
+    private readonly store: Store,
+    private readonly router: Router
+  ) {
+  }
 }

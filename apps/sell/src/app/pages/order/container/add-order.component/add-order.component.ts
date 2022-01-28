@@ -7,7 +7,6 @@ import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } 
 import { select, Store } from '@ngrx/store';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { document } from 'ngx-bootstrap/utils';
 import { Subject } from 'rxjs';
 import { OrderAction } from '../../+state/order.action';
 import { selectedOrderAdded } from '../../+state/order.selector';
@@ -17,6 +16,7 @@ import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -38,33 +38,26 @@ export class AddOrderComponent implements OnInit {
   submitted = false;
   wardId!: number;
 
-  observer = new MutationObserver((mutations) => {
-    if (document.contains(document.getElementById('success'))) {
-      this.customerId = undefined;
-      this.customerPicked = undefined;
-      this.commoditiesPicked = [];
-    }
-  });
-
   constructor(
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}))
-    this.customerPicked$.subscribe(val => {
+    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
+    this.customerPicked$.subscribe((val: any) => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
     this.formGroup = this.formBuilder.group({
-      createdAt: ['', Validators.required],
+      createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
       explain: ['']
     });
   }
@@ -79,18 +72,17 @@ export class AddOrderComponent implements OnInit {
   }
 
   pickCustomer() {
-    const ref = this.dialog.open(PickCustomerComponent, {
+    this.dialog.open(PickCustomerComponent, {
       width: '50%',
       data: {
         pickOne: true
       }
-    });
-    ref.afterClosed().subscribe(val => {
+    }).afterClosed().subscribe(val => {
         if (val) {
           this.customerId = val;
           this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val => {
             this.customerPicked = JSON.parse(JSON.stringify(val));
-          }).unsubscribe();
+          });
         }
       }
     );
@@ -102,15 +94,14 @@ export class AddOrderComponent implements OnInit {
   }
 
   pickCommodities() {
-    const ref = this.dialog.open(PickCommodityComponent, {
+    this.dialog.open(PickCommodityComponent, {
       width: '65%',
       data: {
         pickMore: true,
         type: 'DIALOG',
         commoditiesPicked: this.commoditiesPicked
       }
-    });
-    ref.afterClosed().subscribe(val => {
+    }).afterClosed().subscribe(val => {
         if (val) {
           this.commoditiesPicked = val;
         }
@@ -119,8 +110,8 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCommodity(commodity: Commodity) {
-    const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id)
-    this.commoditiesPicked.splice(index,1)
+    const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id);
+    this.commoditiesPicked.splice(index, 1);
   }
 
   get checkValid() {
@@ -149,16 +140,9 @@ export class AddOrderComponent implements OnInit {
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
-    this.store.pipe(select(selectedOrderAdded)).subscribe(added => {
-      if (added) {
-        this.router.navigate(['/don-hang']).then();
-      }
-    });
-    // this.observer.observe(document, { childList: true, subtree: true });
   }
 
   onSelectWard($event: number) {
     this.wardId = $event;
   }
-
 }

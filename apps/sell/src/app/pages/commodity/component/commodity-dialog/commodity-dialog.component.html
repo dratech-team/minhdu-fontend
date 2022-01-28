@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{data.isUpdate ? 'Sửa thông tin hàng hoá' : 'Thêm thông tin hàng hóa'}}</h2>
+<h2 mat-dialog-title>{{data?.isUpdate ? 'Sửa thông tin hàng hoá' : 'Thêm thông tin hàng hóa'}}</h2>
 <mat-dialog-content class='mat-typography'>
   <form [formGroup]='formGroup' (submit)='onSubmit()'>
     <div class='form-group'>
@@ -17,27 +17,27 @@
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='price'>Giá<span class='star'>*</span></label>
-          <input type="text" class="form-control" id='price' placeholder="200,000" formControlName="price" currencyMask
-            [options]="{ suffix: ' đ' }" />
+          <label for='price'>Giá</label>
+          <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask
+                 [options]="{ suffix: ' đ' }" />
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='amount'>Số lượng<span class='star'>*</span></label>
-          <input type="text" class="form-control" id='amount' placeholder="1,000" formControlName="amount" currencyMask>
+          <input type='text' class='form-control' id='amount' placeholder='1,000' formControlName='amount' currencyMask>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='gift'>Khuyến mãi</label>
-          <input type="text" class="form-control" id='gift' placeholder="1,000" formControlName="gift" currencyMask>
+          <input type='text' class='form-control' id='gift' placeholder='1,000' formControlName='gift' currencyMask>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='more'>Mua thêm</label>
-          <input type="text" class="form-control" id='more' placeholder="1,000" formControlName="more" currencyMask>
+          <input type='text' class='form-control' id='more' placeholder='1,000' formControlName='more' currencyMask>
         </div>
       </div>
       <div class='row mt-3'>
@@ -55,7 +55,7 @@
       </div>
       <div class='row d-flex mt-3 justify-content-center'>
         <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button type='submit' (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
+        <button type='submit' class='btn btn-dark ml-2'> Xác nhận</button>
       </div>
     </div>
   </form>

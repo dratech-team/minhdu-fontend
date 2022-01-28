@@ -45,6 +45,18 @@
         </div>
         <div *ngIf='customerPicked' class='animated fadeIn'>
           <div class='h5 ml-4'> Khách hàng</div>
+          <div class='mt-2 ml-4 pointer' (click)='pickCustomer()'>
+            <div
+              class='d-flex justify-content-center align-items-center '
+              style='width: 200px;
+                        height: 40px;
+                        background-color: #f0f2f4;
+                        border: 1px solid #d3d7de;
+                        border-radius: 4px;'>
+              <span class='h5' style='color: #20a8d8; margin-bottom: 0'>Chọn Khách hàng <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'>
+              </span>
+            </div>
+          </div>
           <table class='mb-1 ml-4' style="width:98%">
             <tr>
               <th class='text-center'>Tên khách hàng</th>
@@ -69,15 +81,6 @@
                   class='btn btn-danger '>bỏ chọn</button> </td>
             </tr>
           </table>
-          <div class='mt-2 ml-4 pointer' (click)='pickCustomer()'>
-            <div class=' d-flex justify-content-center align-items-center ' style='width: 200px;
-                        height: 40px;
-                        background-color: #f0f2f4;
-                        border: 1px solid #d3d7de;
-                        border-radius: 4px;'><span class='h5' style='color: #20a8d8; margin-bottom: 0'>Chọn Khách hàng
-                <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
-            </div>
-          </div>
         </div>
 
         <div class='mt-5 ml-4 pointer animated fadeIn' *ngIf='!customerPicked' (click)='pickCustomer()'
@@ -92,12 +95,21 @@
         <div *ngIf='commoditiesPicked.length > 0' class='mt-3 mb-3 animated fadeIn'>
           <div class='h5 ml-4'> Hàng hóa ({{commoditiesPicked.length}})</div>
           <div class='fixTableHead' style='height: 400px; width: 100% ; overflow-y: auto'>
+            <div class=' ml-4  my-2' (click)='pickCommodities()'>
+              <div class=' d-flex justify-content-center align-items-center ' style=' width: 200px;
+                        height: 40px;
+                        background-color: #f0f2f4;
+                        border: 1px solid #d3d7de;
+                        border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8 ; margin-bottom: 0'>Chọn
+                hàng hóa <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
+              </div>
+            </div>
             <table class='mb-1 ml-4'>
               <thead>
                 <tr style='height: 35px' class='border-top border-bottom'>
                   <th class='text-center'>Mã hàng hóa</th>
                   <th class='text-center'>Tên hàng hóa</th>
-                  <th class='text-center'>Giá trước KM</th>
+                  <th class='text-center'>Đơn giá</th>
                   <th class='text-center'>Số lượng</th>
                   <th class='text-center'>Khuyến mãi</th>
                   <th class='text-center'>Mua thêm</th>
@@ -110,7 +122,7 @@
                 <tr *ngFor='let commodity of commoditiesPicked'>
                   <td class='text-center'> {{commodity.code}} </td>
                   <td class='text-center'> {{commodity.name}} </td>
-                  <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'0'}} đ </td>
+                  <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</td>
                   <td class='text-center'>{{commodity.amount | number :'1.0-0'}} </td>
                   <td class='text-center'>{{commodity.gift | number :'1.0-0'}} </td>
                   <td class='text-center'>{{commodity.more.amount | number :'1.0-0'}} </td>
@@ -122,16 +134,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <div class=' ml-4  my-2' (click)='pickCommodities()'>
-            <div class=' d-flex justify-content-center align-items-center ' style=' width: 200px;
-                        height: 40px;
-                        background-color: #f0f2f4;
-                        border: 1px solid #d3d7de;
-                        border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8 ; margin-bottom: 0'>Chọn
-                hàng hóa <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
-            </div>
           </div>
         </div>
         <div class=' ml-4  my-5 animated fadeIn ' *ngIf='commoditiesPicked.length === 0' style="width:98%"

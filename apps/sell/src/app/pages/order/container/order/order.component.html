@@ -90,7 +90,7 @@
         (contextmenu)='child.onContextMenu($event, order)'
       >
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{order.customer.lastName}}
+          {{order.customer?.lastName}}
         </th>
         <th>
           {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}

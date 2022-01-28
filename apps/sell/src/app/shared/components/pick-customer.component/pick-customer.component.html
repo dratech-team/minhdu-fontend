@@ -15,20 +15,22 @@
       <tr>
         <th style='width: 150px'>
           <div>Tất cả</div>
-          <mat-checkbox *ngIf='data.pickMore'
-                        class='example-margin m-auto '
-                        [checked]='isSelectAll'
-                        [indeterminate]='someComplete()'
-                        (change)='setAll($event.checked)'>
+          <mat-checkbox
+            *ngIf='data.pickMore'
+            class='example-margin m-auto '
+            [checked]='isSelectAll'
+            [indeterminate]='someComplete()'
+            (change)='setAll($event.checked)'>
           </mat-checkbox>
-          <input disabled *ngIf='data.pickOne||pickOne'>
+          <input disabled *ngIf='data.pickOne || pickOne'>
         </th>
         <th>
           <div>Tên Khách hàng</div>
-          <input class='form-control input-profile'
-                 type='text'
-                 placeholder='PN10001'
-                 formControlName='name'
+          <input
+            class='form-control input-profile'
+            type='text'
+            placeholder='PN10001'
+            formControlName='name'
           >
         </th>
         <th>
@@ -52,10 +54,11 @@
       <tbody>
       <tr *ngFor='let customer of customers'>
         <th class='py-2'>
-          <mat-checkbox *ngIf='data.pickMore'
-                        class='checkID'
-                        [checked]='customerIds.includes(customer.id)'
-                        (change)='updateAllSelect(customer.id)'>
+          <mat-checkbox
+            *ngIf='data.pickMore'
+            class='checkID'
+            [checked]='customerIds.includes(customer.id)'
+            (change)='updateAllSelect(customer.id)'>
           </mat-checkbox>
           <input
             style='height: 12px ; margin: auto'
