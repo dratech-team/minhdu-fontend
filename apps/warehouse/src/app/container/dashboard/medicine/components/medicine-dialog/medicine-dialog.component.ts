@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { MedicineAction } from '../../+state/medicine.action';
-import { UnitMedicineConstant } from '../../../../../../../../../libs/constants/ware-house/unit-medicine.constant';
+import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'medicine-dialog.component.html'
