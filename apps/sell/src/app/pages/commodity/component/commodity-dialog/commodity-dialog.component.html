@@ -6,13 +6,23 @@
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='code'>Mã hàng hóa<span class='star'>*</span>
           </label>
-          <input type='text' class='form-control' id='code' formControlName='code'>
+          <input class='form-control' type='search' matInput [matAutocomplete]='code' formControlName='code'>
+          <mat-autocomplete #code='matAutocomplete'>
+            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.code' (click)='selectCommodity(commodity)'>
+              {{commodity.code}}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='name'>Tên hàng hóa<span class='star'>*</span></label>
-          <input type='text' class='form-control' id='name' placeholder='Gà loại 1' formControlName='name'>
+          <input class='form-control' type='search' matInput [matAutocomplete]='name' formControlName='name'>
+          <mat-autocomplete #name='matAutocomplete'>
+            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.name' (click)='selectCommodity(commodity)'>
+              {{commodity.name}}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
       <div class='row mt-3'>

@@ -63,6 +63,7 @@ export const Api = {
       ROUTE_EXPORT: 'route/export/print',
     },
     COMMODITY: 'commodity',
+    COMMODITY_TEMPLATE: 'commodity-template',
     BILL: 'bill'
   },
 

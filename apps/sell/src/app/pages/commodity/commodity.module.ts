@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PickCommodityService } from '../../shared/components/pick-commodity/pick-commodity.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
     MatCheckboxModule,
     FormsModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    MatAutocompleteModule
   ],
   declarations: [
     CommodityComponent,

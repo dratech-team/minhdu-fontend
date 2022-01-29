@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({
@@ -24,6 +23,10 @@ export class CommodityService extends BaseService<Commodity> {
 
   getAll(params?: any): Observable<Commodity[]> {
     return super.getAll(params);
+  }
+
+  getTemplate(): Observable<any> {
+    return this.http.get(Api.SELL.COMMODITY_TEMPLATE);
   }
 
   pagination(params?: any): Observable<ResponsePaginate<Commodity>> {

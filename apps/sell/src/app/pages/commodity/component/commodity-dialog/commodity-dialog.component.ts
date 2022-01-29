@@ -1,25 +1,32 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { CommodityAction } from '../../+state/commodity.action';
 import { AppState } from '../../../../reducers';
+import { CommodityService } from '../../service/commodity.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: 'commodity-dialog.component.html',
+  templateUrl: 'commodity-dialog.component.html'
 })
 export class CommodityDialogComponent implements OnInit {
   formGroup!: FormGroup;
   CommodityUnit = CommodityUnit;
+
+  commodities$ = this.service.getTemplate().pipe(tap(v => console.log(v)));
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store<AppState>,
-    private readonly dialogRef: MatDialogRef<CommodityDialogComponent>
-  ) {}
+    private readonly dialogRef: MatDialogRef<CommodityDialogComponent>,
+    private readonly service: CommodityService
+  ) {
+  }
+
   ngOnInit() {
-    console.log(this.data)
     this.formGroup = this.formBuilder.group({
       name: [this.data?.commodity?.name, Validators.required],
       code: [this.data?.commodity?.code, Validators.required],
@@ -27,9 +34,15 @@ export class CommodityDialogComponent implements OnInit {
       unit: [this.data?.commodity?.unit || CommodityUnit.CON, Validators.required],
       amount: [this.data?.commodity?.amount, Validators.required],
       gift: [this.data?.commodity?.gift, Validators.required],
-      more: [this.data?.commodity?.more?.amount, Validators.required],
+      more: [this.data?.commodity?.more?.amount, Validators.required]
     });
   }
+
+  selectCommodity(commodity: any) {
+    this.formGroup.get('code')?.patchValue(commodity.code);
+    this.formGroup.get('name')?.patchValue(commodity.name);
+  }
+
   onSubmit() {
     const value = this.formGroup.value;
     const commodity = {
@@ -39,13 +52,13 @@ export class CommodityDialogComponent implements OnInit {
       amount: value.amount,
       gift: value.gift,
       more: value.more,
-      unit: value.unit,
+      unit: value.unit
     };
     if (this.data) {
       this.store.dispatch(
         CommodityAction.updateCommodity({
           id: this.data.id,
-          commodity: commodity,
+          commodity: commodity
         })
       );
     } else {
