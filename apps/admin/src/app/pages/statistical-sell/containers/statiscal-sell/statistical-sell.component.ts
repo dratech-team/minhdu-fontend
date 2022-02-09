@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { stakedChart } from '@minhdu-fontend/data-models';
 import { getMonth } from 'ngx-bootstrap/chronos';
 import { DatetimeUnitEnum, MenuEnum } from '@minhdu-fontend/enums';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminAction } from '../../../../states/admin.action';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['statistical-sell.component.scss']
 })
 export class StatisticalSellComponent implements OnInit {
-  overview$: Observable<OverviewSell> = this.service.getAll({ filter: 'MONTH' });
+  overview$: Observable<OverviewSell> = this.service.getAll({ filter: 'MONTH', datetime: new Date() });
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -32,5 +32,9 @@ export class StatisticalSellComponent implements OnInit {
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
 
+  }
+
+  valueChange(event: any) {
+    this.overview$ = this.service.getAll({ filter: 'MONTH', datetime: event.target.value || new Date() });
   }
 }

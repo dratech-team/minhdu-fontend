@@ -6,10 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { StoreModule } from '@ngrx/store';
@@ -21,6 +18,7 @@ import { StatisticalSellComponent } from './containers/statiscal-sell/statistica
 import { StatisticalSellRoutingModule } from './statistical-sell-routing.module';
 import { StatisticalSellService } from './service/statistical-sell.service';
 import { StatisticalModule } from '../../../../../sell/src/app/pages/statistical/statistical.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -37,17 +35,19 @@ import { StatisticalModule } from '../../../../../sell/src/app/pages/statistical
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forFeature(FeatureName.ADMIN, AdminReducer),
-    StatisticalModule
+    StatisticalModule,
+    MatDatepickerModule
   ],
   declarations: [
     PickDayToDayComponent,
     PickStatisticalTypeComponent,
-    StatisticalSellComponent,
+    StatisticalSellComponent
   ],
   exports: [],
   providers: [
     StatisticalSellService,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class StatisticalSellModule {}
+export class StatisticalSellModule {
+}
