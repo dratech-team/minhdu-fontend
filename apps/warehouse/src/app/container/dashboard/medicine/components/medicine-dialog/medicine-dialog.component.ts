@@ -11,8 +11,8 @@ import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 })
 export class MedicineDialogComponent implements OnInit {
   formGroup!: FormGroup;
-  medicineConstant = UnitMedicineConstant
-  numberChars = new RegExp('[^0-9]', 'g');
+  medicineConstant = UnitMedicineConstant;
+
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,15 +34,15 @@ export class MedicineDialogComponent implements OnInit {
         )
         , Validators.required],
       price: [this?.data?.price, Validators.required],
-      discount: [this?.data?.discount ? this.data.discount * 100: undefined , Validators.required],
+      discount: [this?.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
       invoice: [this?.data?.invoice, Validators.required],
       unit: [this?.data?.unit, Validators.required],
       amount: [this?.data?.amount, Validators.required],
       createdAt: [
         this.datePipe.transform(
-          this?.data?.createdAt, 'yyyy-MM-dd'
+          this?.data?.createdAt || new Date(), 'yyyy-MM-dd'
         )
-        , Validators.required],
+        , Validators.required]
     });
   }
 
@@ -50,18 +50,18 @@ export class MedicineDialogComponent implements OnInit {
     const value = this.formGroup.value;
     const medicine = {
       code: value?.code,
-      barcode: value?.barcode ,
+      barcode: value?.barcode,
       name: value.name,
       provider: value.provider,
       expire: value.expire,
-      price: typeof(value.price) === 'string'?Number(value.price.replace(this.numberChars, '')): value.price ,
-      discount: value?.discount? value.discount/100: undefined,
+      price: value.price,
+      discount: value?.discount ? value.discount / 100 : undefined,
       createdAt: value.createdAt,
       invoice: value?.invoice,
       amount: value.amount,
-      unit: value?.unit,
+      unit: value?.unit
     };
-    if (this.data) {
+    if (this.data?.isUpdate) {
       this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
     } else {
       this.store.dispatch(MedicineAction.addMedicine({ medicine: medicine }));
