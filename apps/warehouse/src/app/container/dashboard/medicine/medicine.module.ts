@@ -10,7 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MedicineDialogComponent } from './components/medicine-dialog/medicine-dialog.component';
+import { ProductDialogComponent } from './components/product-dialog/product-dialog.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../../states/main.reducer';
 import { WarehouseService } from './state/warehouse.service';
@@ -30,7 +30,7 @@ import { WarehouseEffect } from './state/warehouse/warehouse.effect';
     EffectsModule.forFeature([WarehouseEffect])
   ],
   declarations: [
-    MedicineDialogComponent,
+    ProductDialogComponent,
     MedicineComponent
   ],
   exports: [

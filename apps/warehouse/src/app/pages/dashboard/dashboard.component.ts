@@ -5,7 +5,7 @@ import { MainAction } from '../../states/main.action';
 import { selectedWareHouse } from '../../states/main.selector';
 import { getSelectors } from '@minhdu-fontend/utils';
 import { MatDialog } from '@angular/material/dialog';
-import { MedicineDialogComponent } from '../../container/dashboard/medicine/components/medicine-dialog/medicine-dialog.component';
+import { ProductDialogComponent } from '../../container/dashboard/medicine/components/product-dialog/product-dialog.component';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -29,6 +29,6 @@ export class DashboardComponent implements OnInit {
   }
 
   import() {
-    this.dialog.open(MedicineDialogComponent);
+    this.dialog.open(ProductDialogComponent);
   }
 }

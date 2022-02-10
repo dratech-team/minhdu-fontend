@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { MedicineDialogComponent } from '../../components/medicine-dialog/medicine-dialog.component';
+import { ProductDialogComponent } from '../../components/product-dialog/product-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { selectLoading, selectProducts } from '../../state/warehouse/warehouse.selector';
@@ -52,7 +52,7 @@ export class MedicineComponent implements OnInit {
   }
 
   importMedicine() {
-    this.dialog.open(MedicineDialogComponent, { width: '40%' });
+    this.dialog.open(ProductDialogComponent, { width: '40%' });
   }
 
   onScroll() {
@@ -77,7 +77,7 @@ export class MedicineComponent implements OnInit {
   }
 
   updateMedicine(medicine: any) {
-    this.dialog.open(MedicineDialogComponent,
+    this.dialog.open(ProductDialogComponent,
       {
         width: '40%',
         data: medicine

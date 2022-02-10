@@ -6,9 +6,9 @@ import { Store } from '@ngrx/store';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 
 @Component({
-  templateUrl: 'medicine-dialog.component.html'
+  templateUrl: 'product-dialog.component.html'
 })
-export class MedicineDialogComponent implements OnInit {
+export class ProductDialogComponent implements OnInit {
   formGroup!: FormGroup;
   medicineConstant = UnitMedicineConstant;
 
