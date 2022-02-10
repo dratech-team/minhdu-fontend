@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { MedicineAction } from '../../+state/medicine.action';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 
 @Component({
@@ -62,9 +61,9 @@ export class MedicineDialogComponent implements OnInit {
       unit: value?.unit
     };
     if (this.data?.isUpdate) {
-      this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
+      // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
     } else {
-      this.store.dispatch(MedicineAction.addMedicine({ medicine: medicine }));
+      // this.store.dispatch(MedicineAction.addMedicine({ medicine: medicine }));
     }
 
   }
