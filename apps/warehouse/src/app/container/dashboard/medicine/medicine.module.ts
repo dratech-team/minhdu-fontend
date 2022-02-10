@@ -12,9 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProductDialogComponent } from './components/product-dialog/product-dialog.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MainReducer } from '../../../states/main.reducer';
 import { WarehouseService } from './state/warehouse.service';
 import { WarehouseEffect } from './state/warehouse/warehouse.effect';
+import { warehouseReducer } from './state/warehouse/warehouse.reducer';
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ import { WarehouseEffect } from './state/warehouse/warehouse.effect';
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    StoreModule.forFeature(FeatureName.WAREHOUSE, MainReducer),
+    StoreModule.forFeature(FeatureName.WAREHOUSE, warehouseReducer),
     EffectsModule.forFeature([WarehouseEffect])
   ],
   declarations: [

@@ -30,6 +30,7 @@ import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
+import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -42,13 +43,13 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     AppRoutingModule,
     BrowserModule,
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({}, {}),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,

@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
+import { AppState } from '../../../../../../../../hr/src/app/reducers';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -12,16 +14,20 @@ export class ProductDialogComponent implements OnInit {
   formGroup!: FormGroup;
   medicineConstant = UnitMedicineConstant;
 
+  // branches$ = this.store.select(get);
+
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store
+    private readonly store: Store<AppState>
   ) {
   }
 
   ngOnInit() {
+    this.store.dispatch(OrgchartActions.init());
+
     this.formGroup = this.formBuilder.group({
       barcode: [this?.data?.barcode, Validators.required],
       code: [this?.data?.code, Validators.required],

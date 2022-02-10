@@ -4,7 +4,7 @@ import * as OrgchartActions from './orgchart.actions';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BranchService } from '../../services/branch.service';
 import { throwError } from 'rxjs';
-import { OrgchartService } from '../../services/orgchart.service';
+import { OrgchartService } from '@minhdu-fontend/orgchart';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()

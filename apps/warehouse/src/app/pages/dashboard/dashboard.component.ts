@@ -7,6 +7,7 @@ import { getSelectors } from '@minhdu-fontend/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent } from '../../container/dashboard/medicine/components/product-dialog/product-dialog.component';
 import { DashboardService } from './dashboard.service';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
 
 @Component({
   templateUrl: 'dashboard.component.html'

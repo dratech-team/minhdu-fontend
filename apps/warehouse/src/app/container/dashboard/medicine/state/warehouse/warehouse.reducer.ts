@@ -14,7 +14,6 @@ export const initial = adapter.getInitialState({ loading: true });
 export const warehouseReducer = createReducer(
   initial,
   on(WarehouseAction.loadProductSuccess, (state, action) => {
-      console.log(state);
       return adapter.addMany(action.products, { ...state, loading: false });
     }
   ),

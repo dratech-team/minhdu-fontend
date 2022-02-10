@@ -34,8 +34,6 @@ import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
 import { ContextMenuModule } from 'ngx-contextmenu';
 
-
-
 @NgModule({
   imports: [
     ComponentsModule,
