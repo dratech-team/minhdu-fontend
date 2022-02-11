@@ -1,3 +1,4 @@
 export interface Warehouse {
-  id: number
+  id: number;
+  name: string;
 }

@@ -4,12 +4,20 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Kho<span class='star'>*</span></label>
-        <input class='form-control ' type='search' matInput [matAutocomplete]='branch' style='width: 100%' #positionInput formControlName='branch'>
+        <input
+          matInput
+          class='form-control'
+          type='search'
+          [matAutocomplete]='branch'
+          style='width: 100%'
+          [(ngModel)]='modelBranch'
+          formControlName='branch'
+        >
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option
             *ngFor='let branch of branches$ | async'
-            [value]='!branch.id ? positionInput.value : branch.name'
-            (onSelectionChange)='onSelectionChange($event, branch, positionInput)'
+            [value]=' branch.name'
+            (onSelectionChange)='onSelectionChange($event, branch)'
           >
             {{branch.name}}
           </mat-option>
@@ -17,7 +25,24 @@
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Loại kho<span class='star'>*</span></label>
-        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' inputCurrency>
+        <input
+          matInput
+          class='form-control'
+          type='search'
+          [matAutocomplete]='branch'
+          style='width: 100%'
+          [(ngModel)]='modelBranch'
+          formControlName='branch'
+        >
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option
+            *ngFor='let branch of branches$ | async'
+            [value]=' branch.name'
+            (onSelectionChange)='onSelectionChange($event, branch)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
     </div>
     <div class='row mt-3'>

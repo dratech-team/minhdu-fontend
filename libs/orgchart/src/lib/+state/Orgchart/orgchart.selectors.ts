@@ -25,6 +25,11 @@ export const getAllOrgchart = createSelector(
   (state: State) => selectAll(state)
 );
 
+export const getLatestOrgchart = createSelector(
+  getOrgchartState,
+  (state: State) => selectAll(state)[selectAll(state).length - 1]
+);
+
 export const getOrgchartEntities = createSelector(
   getOrgchartState,
   selectEntities

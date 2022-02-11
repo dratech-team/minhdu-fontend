@@ -14,11 +14,9 @@ import { OrgchartActions } from '@minhdu-fontend/orgchart';
 })
 export class DashboardComponent implements OnInit {
   selectWarehouse = new FormControl(getSelectors(selectedWareHouse, this.store));
-  warehouse$ = this.service.getAll();
 
   constructor(
     private readonly store: Store,
-    private readonly service: DashboardService,
     private readonly dialog: MatDialog
   ) {
   }
@@ -27,9 +25,5 @@ export class DashboardComponent implements OnInit {
     this.selectWarehouse.valueChanges.subscribe(value => {
       this.store.dispatch(MainAction.updateState({ warehouse: value }));
     });
-  }
-
-  import() {
-    this.dialog.open(ProductDialogComponent);
   }
 }

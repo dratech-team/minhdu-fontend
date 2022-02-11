@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -7,8 +7,10 @@ import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ProductDialogComponent } from '../../components/product-dialog/product-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { selectLoading, selectProducts } from '../../state/warehouse/warehouse.selector';
+import { selectProducts, selectWarehouseLoading } from '../../state/warehouse/warehouse.selector';
+import { DashboardService } from '../../../../../pages/dashboard/dashboard.service';
 import { WarehouseAction } from '../../state/warehouse/warehouse.action';
+import { Warehouse } from '../../state/warehouse/entities/product.entity';
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -16,10 +18,9 @@ import { WarehouseAction } from '../../state/warehouse/warehouse.action';
 
 })
 export class MedicineComponent implements OnInit {
-  @Input() warehouseId: number = 1;
-
+  warehouse$ = this.service.getAll();
   products$ = this.store.select(selectProducts);
-  loading$ = this.store.select(selectLoading);
+  loading$ = this.store.select(selectWarehouseLoading);
 
   medicineConstant = UnitMedicineConstant;
   formGroup = new FormGroup(
@@ -31,7 +32,8 @@ export class MedicineComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly service: DashboardService
   ) {
   }
 
@@ -39,7 +41,7 @@ export class MedicineComponent implements OnInit {
     this.store.dispatch(WarehouseAction.loadProduct({
       take: PaginationDto.take,
       skip: PaginationDto.skip,
-      warehouseId: this.warehouseId
+      warehouseId: 1
     }));
 
     this.formGroup.valueChanges.pipe(
@@ -82,5 +84,15 @@ export class MedicineComponent implements OnInit {
         width: '40%',
         data: medicine
       });
+  }
+
+  selectWarehouse(warehouse: any) {
+    console.log(warehouse);
+    this.store.dispatch(WarehouseAction.selectWarehouse({ warehouseId: warehouse.id }));
+  }
+
+
+  import() {
+    this.dialog.open(ProductDialogComponent);
   }
 }

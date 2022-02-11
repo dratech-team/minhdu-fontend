@@ -1,7 +1,27 @@
 <div class='mx-auto' style='width: 98%'>
-  <ngx-skeleton-loader *ngIf='(loading$ | async); else product'
-                       count='18' appearance='line'></ngx-skeleton-loader>
+  <ngx-skeleton-loader *ngIf='(loading$ | async); else product' count='18' appearance='line'></ngx-skeleton-loader>
   <ng-template #product>
+    <div class='col-3'>
+      <div class='mt-2 d-flex'>
+        <div class='h3 mb-0'>Kho</div>
+        <div>
+          <div class='ml-3'>
+            <mat-select style='min-width: 150px' id='type' class='form-control'>
+              <mat-option *ngFor='let item of warehouse$ | async' [value]='item.name'
+                          (click)='selectWarehouse(item)'>{{item.name}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button class='btn btn-primary font-sm mt-2' (click)='import()'>
+          Nhập
+        </button>
+        <button class='btn btn-primary font-sm mt-2 ml-2'>
+          Xuất
+        </button>
+      </div>
+    </div>
     <div class='table-scroll mt-2 animated fadeIn'
          infiniteScroll
          [infiniteScrollDistance]='1'

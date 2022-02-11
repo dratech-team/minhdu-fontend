@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { addBranch, getAllOrgchart, getLatestOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { startWith } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { of } from 'rxjs';
 export class ProductDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart);
   medicineConstant = UnitMedicineConstant;
+  modelBranch: string = '';
 
   formGroup = this.formBuilder.group({
     barcode: [this?.data?.barcode, Validators.required],
@@ -79,13 +80,13 @@ export class ProductDialogComponent implements OnInit {
     } else {
       // this.store.dispatch(MedicineAction.addMedicine({ medicine: medicine }));
     }
-
   }
 
-  onSelectionChange(event: any, branch: any, positionInput: any) {
-
+  onSelectionChange(event: any, branch: any) {
+    const value = this.formGroup.get('branch')?.value;
     if (!branch?.id) {
-      this.store.dispatch(addBranch({ branch: { name: positionInput.value } }));
+      this.store.dispatch(addBranch({ branch: { name: value } }));
+      this.formGroup.get('branch')?.setValue(value);
     } else {
       this.formGroup.get('branch')?.patchValue(branch.name);
     }

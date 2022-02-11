@@ -25,10 +25,15 @@ const loadProductSuccess = createAction(
   props<{ products: Product[] }>()
 );
 
+const selectWarehouse = createAction(
+  '[WAREHOUSE] Select Warehouse Id',
+  props<{ warehouseId: number }>()
+);
 
 export const WarehouseAction = {
   addProduct,
   loadProduct,
   addProductSuccess,
-  loadProductSuccess
+  loadProductSuccess,
+  selectWarehouse,
 };

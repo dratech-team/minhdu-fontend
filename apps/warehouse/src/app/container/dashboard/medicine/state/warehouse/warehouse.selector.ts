@@ -11,7 +11,7 @@ const selectorState = createFeatureSelector<WarehouseState>(
   FeatureName.WAREHOUSE
 );
 
-export const selectLoading = createSelector(selectorState, state => state.loading);
+export const selectWarehouseLoading = createSelector(selectorState, state => state.loading);
 
 export const selectProducts = createSelector(
   selectorState,

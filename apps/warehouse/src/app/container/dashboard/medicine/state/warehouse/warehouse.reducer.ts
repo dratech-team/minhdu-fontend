@@ -5,6 +5,7 @@ import { WarehouseAction } from './warehouse.action';
 
 export interface WarehouseState extends EntityState<Product> {
   loading: boolean;
+  warehouseId: number;
 }
 
 export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
@@ -22,7 +23,11 @@ export const warehouseReducer = createReducer(
   ),
   on(WarehouseAction.addProductSuccess, (state, action) =>
     adapter.addOne(action.product, { ...state, loading: false })
-  )
+  ),
+  on(WarehouseAction.selectWarehouse, (state, action) => {
+    console.log("reducer", action)
+    return { ...state, warehouseId: action.warehouseId };
+  })
 );
 
 export const {
