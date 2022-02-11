@@ -15,6 +15,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { WarehouseService } from './state/warehouse.service';
 import { WarehouseEffect } from './state/warehouse/warehouse.effect';
 import { warehouseReducer } from './state/warehouse/warehouse.reducer';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { warehouseReducer } from './state/warehouse/warehouse.reducer';
     MatDialogModule,
     NgxSkeletonLoaderModule,
     StoreModule.forFeature(FeatureName.WAREHOUSE, warehouseReducer),
-    EffectsModule.forFeature([WarehouseEffect])
+    EffectsModule.forFeature([WarehouseEffect]),
+    MatAutocompleteModule,
   ],
   declarations: [
     ProductDialogComponent,

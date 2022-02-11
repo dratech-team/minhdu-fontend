@@ -4,18 +4,16 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Kho<span class='star'>*</span></label>
-<!--        <input class='form-control ' type='text' matInput  [matAutocomplete]='branch'-->
-<!--               style='width: 100%'-->
-<!--               [matChipInputFor]='chipList'-->
-<!--               #positionInput>-->
-<!--        <mat-autocomplete #branch='matAutocomplete'>-->
-<!--          <mat-option *ngFor='let position of positions$ | async'-->
-<!--                      [value]='!position.id ? positionInput.value : position.name '-->
-<!--                      (onSelectionChange)='onCreatePosition($event, position,positionInput)'-->
-<!--          >-->
-<!--            {{position.name}}-->
-<!--          </mat-option>-->
-<!--        </mat-autocomplete>-->
+        <input class='form-control ' type='search' matInput [matAutocomplete]='branch' style='width: 100%' #positionInput formControlName='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option
+            *ngFor='let branch of branches$ | async'
+            [value]='!branch.id ? positionInput.value : branch.name'
+            (onSelectionChange)='onSelectionChange($event, branch, positionInput)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Loại kho<span class='star'>*</span></label>
@@ -67,7 +65,8 @@
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='discount'>Chiếc khấu (%)</label>
-        <input type='number' min='0' max='1' step='0.01' class='form-control' id='discount' placeholder='10' formControlName='discount'>
+        <input type='number' min='0' max='1' step='0.01' class='form-control' id='discount' placeholder='10'
+               formControlName='discount'>
       </div>
     </div>
     <div class='row mt-3'>

@@ -24,9 +24,9 @@ export const searchAndAddAutocomplete = (name$: Observable<string>, data$: Obser
     name$,
     data$
   ]).pipe(
-    map(([name, Data]) => {
+    map(([name, data]) => {
       if (name) {
-        const result = Data.filter((e) => {
+        const result = data.filter((e) => {
           return e.name.toLowerCase().includes(name?.toLowerCase());
         });
         if (result.length === 0) {
@@ -34,7 +34,7 @@ export const searchAndAddAutocomplete = (name$: Observable<string>, data$: Obser
         }
         return result;
       } else {
-        return Data;
+        return data;
       }
     })
   );

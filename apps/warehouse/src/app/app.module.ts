@@ -31,6 +31,7 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
+import { OrgchartModule } from '@minhdu-fontend/orgchart';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -62,6 +63,7 @@ import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
     MatFormFieldModule,
     MatSelectModule,
     MatMenuModule,
+    OrgchartModule
   ],
   providers: [
     {
