@@ -1,15 +1,15 @@
-import { BaseService } from '@minhdu-fontend/service';
-import { Api } from '@minhdu-fontend/constants';
-import { HttpClient } from '@angular/common/http';
-import { Product } from './warehouse/entities/product.entity';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { Product } from '../state/warehouse/entities/product.entity';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
 @Injectable()
-export class WarehouseService extends BaseService<Product> {
+export class ProductService extends BaseService<Product> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.PRODUCT, http);
+    super(Api.WAREHOUSE.WAREHOUSE, http);
   }
 
   addOne(props: any): Observable<Product> {

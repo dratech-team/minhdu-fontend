@@ -3,27 +3,33 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { addBranch, getAllOrgchart, getLatestOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
+import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ProductAction } from '../../state/product/product.action';
+import { ProductQuery } from '../../state/product/product.query';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart);
+  warehouse$ = this.warehouseQuery.selectAll();
+
   medicineConstant = UnitMedicineConstant;
-  modelBranch: string = '';
 
   formGroup = this.formBuilder.group({
-    barcode: [this?.data?.barcode, Validators.required],
-    branch: [this?.data?.branchId],
-    code: [this?.data?.code, Validators.required],
-    name: [this?.data?.name, Validators.required],
-    provider: [this?.data?.provider, Validators.required],
+    barcode: [this.data?.barcode, Validators.required],
+    branch: [this.data?.branchId],
+    warehouse: [this.data?.warehouse?.name],
+    code: [this.data?.code, Validators.required],
+    name: [this.data?.name, Validators.required],
+    provider: [this.data?.provider, Validators.required],
     expire: [
       this.datePipe.transform(
         this?.data?.expire, 'yyyy-MM-dd'
@@ -46,7 +52,10 @@ export class ProductDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
+    private readonly warehouseQuery: WarehouseQuery,
+    private readonly productQuery: ProductQuery,
+    private readonly action$: Actions,
   ) {
   }
 

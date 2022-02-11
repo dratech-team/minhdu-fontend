@@ -10,7 +10,6 @@
           type='search'
           [matAutocomplete]='branch'
           style='width: 100%'
-          [(ngModel)]='modelBranch'
           formControlName='branch'
         >
         <mat-autocomplete #branch='matAutocomplete'>
@@ -29,18 +28,17 @@
           matInput
           class='form-control'
           type='search'
-          [matAutocomplete]='branch'
+          [matAutocomplete]='warehouse'
           style='width: 100%'
-          [(ngModel)]='modelBranch'
-          formControlName='branch'
+          formControlName='warehouse'
         >
-        <mat-autocomplete #branch='matAutocomplete'>
+        <mat-autocomplete #warehouse='matAutocomplete'>
           <mat-option
-            *ngFor='let branch of branches$ | async'
-            [value]=' branch.name'
-            (onSelectionChange)='onSelectionChange($event, branch)'
+            *ngFor='let warehouse of warehouse$ | async'
+            [value]=' warehouse.name'
+            (onSelectionChange)='onSelectionChange($event, warehouse)'
           >
-            {{branch.name}}
+            {{warehouse.name}}
           </mat-option>
         </mat-autocomplete>
       </div>

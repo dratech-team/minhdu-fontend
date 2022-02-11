@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ProductDialogComponent } from '../../components/product-dialog/product-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { selectProducts, selectWarehouseLoading } from '../../state/warehouse/warehouse.selector';
-import { DashboardService } from '../../../../../pages/dashboard/dashboard.service';
 import { WarehouseAction } from '../../state/warehouse/warehouse.action';
-import { Warehouse } from '../../state/warehouse/entities/product.entity';
+import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ProductAction } from '../../state/product/product.action';
+import { ProductQuery } from '../../state/product/product.query';
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -18,11 +17,12 @@ import { Warehouse } from '../../state/warehouse/entities/product.entity';
 
 })
 export class MedicineComponent implements OnInit {
-  warehouse$ = this.service.getAll();
-  products$ = this.store.select(selectProducts);
-  loading$ = this.store.select(selectWarehouseLoading);
+  warehouse$ = this.warehouseQuery.selectAll();
+  products$ = this.productQuery.selectAll();
+  loading$ = this.warehouseQuery.selectLoading();
 
   medicineConstant = UnitMedicineConstant;
+  warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
     {
       name: new FormControl('')
@@ -30,18 +30,18 @@ export class MedicineComponent implements OnInit {
   );
 
   constructor(
-    private readonly store: Store,
-    private readonly dialog: MatDialog,
-    private readonly router: Router,
-    private readonly service: DashboardService
+    private readonly warehouseQuery: WarehouseQuery,
+    private readonly productQuery: ProductQuery,
+    private readonly actions$: Actions,
+    private readonly dialog: MatDialog
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(WarehouseAction.loadProduct({
+    this.actions$.dispatch(ProductAction.loadProduct({
       take: PaginationDto.take,
       skip: PaginationDto.skip,
-      warehouseId: 1
+      warehouseId: this.warehouseIdSelected
     }));
 
     this.formGroup.valueChanges.pipe(
@@ -87,12 +87,16 @@ export class MedicineComponent implements OnInit {
   }
 
   selectWarehouse(warehouse: any) {
-    console.log(warehouse);
-    this.store.dispatch(WarehouseAction.selectWarehouse({ warehouseId: warehouse.id }));
+    this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouse: warehouse.id }));
   }
 
 
   import() {
-    this.dialog.open(ProductDialogComponent);
+    this.dialog.open(ProductDialogComponent, {
+      data: {
+        isUpdate: false,
+        warehouse: this.warehouseQuery.getValue().warehouseSelected
+      }
+    });
   }
 }

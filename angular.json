@@ -6,6 +6,9 @@
   },
   "defaultProject": "hr",
   "schematics": {
+    "@datorama/akita:component": {
+      "styleext": "scss"
+    },
     "@nrwl/angular": {
       "application": {
         "linter": "eslint"

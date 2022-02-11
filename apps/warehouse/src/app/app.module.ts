@@ -32,6 +32,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -46,11 +47,7 @@ import { OrgchartModule } from '@minhdu-fontend/orgchart';
     BrowserModule,
     EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true // Pauses recording actions and state changes when the extension window is not open
-    }),
+    AkitaNgDevtools.forRoot(),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
