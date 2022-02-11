@@ -23,14 +23,7 @@ export class ProductEffect {
     }),
     tap((data) => {
       this.productStore.set(data.data);
-      // this.productStore.update((state) => ({ ...state, loading: false }));
     }),
     catchError((err) => throwError(err))
-  );
-
-  @Effect({ dispatch: false })
-  selectWarehouse$ = this.action$.pipe(
-    ofType(ProductAction.selectWarehouse),
-    tap((({ warehouse }) => this.productStore.update(state => ({ ...state, warehouseSelected: warehouse }))))
   );
 }

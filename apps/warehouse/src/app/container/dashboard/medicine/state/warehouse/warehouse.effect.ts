@@ -24,4 +24,11 @@ export class WarehouseEffect {
       this.warehouseStore.set(data);
     })
   );
+
+
+  @Effect({ dispatch: false })
+  selectWarehouse$ = this.action$.pipe(
+    ofType(WarehouseAction.selectedWarehouseId),
+    tap((v) => this.warehouseStore.update(state => ({ ...state, selected: v.warehouseId })))
+  );
 }

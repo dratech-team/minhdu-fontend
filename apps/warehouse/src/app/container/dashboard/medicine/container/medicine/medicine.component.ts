@@ -19,7 +19,7 @@ import { ProductQuery } from '../../state/product/product.query';
 export class MedicineComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll();
   products$ = this.productQuery.selectAll();
-  loading$ = this.warehouseQuery.selectLoading();
+  loading$ = this.productQuery.selectLoading();
 
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
@@ -43,6 +43,8 @@ export class MedicineComponent implements OnInit {
       skip: PaginationDto.skip,
       warehouseId: this.warehouseIdSelected
     }));
+
+    this.actions$.dispatch(WarehouseAction.loadWarehouses);
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -87,16 +89,13 @@ export class MedicineComponent implements OnInit {
   }
 
   selectWarehouse(warehouse: any) {
-    this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouse: warehouse.id }));
+    this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouseId: warehouse.id }));
   }
 
 
   import() {
     this.dialog.open(ProductDialogComponent, {
-      data: {
-        isUpdate: false,
-        warehouse: this.warehouseQuery.getValue().warehouseSelected
-      }
+      data: { isUpdate: false }
     });
   }
 }

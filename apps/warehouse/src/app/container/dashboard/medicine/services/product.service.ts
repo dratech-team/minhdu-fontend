@@ -9,7 +9,7 @@ import { ResponsePaginate } from '@minhdu-fontend/data-models';
 @Injectable()
 export class ProductService extends BaseService<Product> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.WAREHOUSE, http);
+    super(Api.WAREHOUSE.PRODUCT, http);
   }
 
   addOne(props: any): Observable<Product> {

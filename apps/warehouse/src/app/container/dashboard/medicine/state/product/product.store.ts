@@ -4,13 +4,11 @@ import { Injectable } from '@angular/core';
 
 export interface ProductState extends EntityState<Product> {
   loading: boolean;
-  warehouseIdSelected: number | null;
 }
 
 export function createInitialState(): ProductState {
   return {
-    loading: true,
-    warehouseIdSelected: null
+    loading: true
   };
 }
 

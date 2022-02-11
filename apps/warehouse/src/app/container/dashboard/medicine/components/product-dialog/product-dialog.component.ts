@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
+import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
@@ -11,7 +11,6 @@ import { startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ProductAction } from '../../state/product/product.action';
 import { ProductQuery } from '../../state/product/product.query';
 
 @Component({
@@ -22,11 +21,12 @@ export class ProductDialogComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll();
 
   medicineConstant = UnitMedicineConstant;
+  warehouseId = this.warehouseQuery.getValue().selected;
 
   formGroup = this.formBuilder.group({
     barcode: [this.data?.barcode, Validators.required],
     branch: [this.data?.branchId],
-    warehouse: [this.data?.warehouse?.name],
+    warehouse: [this.warehouseQuery.getEntity(this.warehouseId)?.name],
     code: [this.data?.code, Validators.required],
     name: [this.data?.name, Validators.required],
     provider: [this.data?.provider, Validators.required],
@@ -38,7 +38,7 @@ export class ProductDialogComponent implements OnInit {
     price: [this?.data?.price, Validators.required],
     discount: [this?.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
     invoice: [this?.data?.invoice, Validators.required],
-    unit: [this?.data?.unit, Validators.required],
+    unit: [this?.data?.unit || UnitMedicineConstant[1].value, Validators.required],
     amount: [this?.data?.amount, Validators.required],
     createdAt: [
       this.datePipe.transform(
@@ -55,7 +55,7 @@ export class ProductDialogComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly warehouseQuery: WarehouseQuery,
     private readonly productQuery: ProductQuery,
-    private readonly action$: Actions,
+    private readonly action$: Actions
   ) {
   }
 
@@ -91,8 +91,18 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  onSelectionChange(event: any, branch: any) {
+  onChangeBranch(event: any, branch: any) {
     const value = this.formGroup.get('branch')?.value;
+    if (!branch?.id) {
+      this.store.dispatch(addBranch({ branch: { name: value } }));
+      this.formGroup.get('branch')?.setValue(value);
+    } else {
+      this.formGroup.get('branch')?.patchValue(branch.name);
+    }
+  }
+
+  onChangeWarehouse(event: any, branch: any) {
+    const value = this.formGroup.get('warehouse')?.value;
     if (!branch?.id) {
       this.store.dispatch(addBranch({ branch: { name: value } }));
       this.formGroup.get('branch')?.setValue(value);
