@@ -8,7 +8,8 @@
           </label>
           <input class='form-control' type='search' matInput [matAutocomplete]='code' formControlName='code'>
           <mat-autocomplete #code='matAutocomplete'>
-            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.code' (click)='selectCommodity(commodity)'>
+            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.code'
+                        (click)='selectCommodity(commodity)'>
               {{commodity.code}}
             </mat-option>
           </mat-autocomplete>
@@ -19,7 +20,8 @@
           <label for='name'>Tên hàng hóa<span class='star'>*</span></label>
           <input class='form-control' type='search' matInput [matAutocomplete]='name' formControlName='name'>
           <mat-autocomplete #name='matAutocomplete'>
-            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.name' (click)='selectCommodity(commodity)'>
+            <mat-option *ngFor='let commodity of commodities$ | async' [value]='commodity.name'
+                        (click)='selectCommodity(commodity)'>
               {{commodity.name}}
             </mat-option>
           </mat-autocomplete>
@@ -28,14 +30,15 @@
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='price'>Giá</label>
-          <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask
+          <input type='text' autocomplete='false'  class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask
                  [options]="{ suffix: ' đ' }" />
         </div>
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='amount'>Số lượng<span class='star'>*</span></label>
-          <input type='text' class='form-control' id='amount' placeholder='1,000' formControlName='amount' currencyMask>
+          <input type='text' autocomplete='false' class='form-control' id='amount' placeholder='1,000'
+                 formControlName='amount' currencyMask>
         </div>
       </div>
       <div class='row mt-3'>

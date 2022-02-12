@@ -27,7 +27,7 @@ import { ProductEffect } from './state/product.effect';
     MatDialogModule,
     NgxSkeletonLoaderModule,
     AkitaNgEffectsModule.forFeature([WarehouseEffect, ProductEffect]),
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ],
   declarations: [
     ProductDialogComponent,

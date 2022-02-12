@@ -17,7 +17,7 @@
           <mat-option
             *ngFor='let branch of branches$ | async'
             [value]=' branch'
-            (onSelectionChange)='onChangeBranch($event, branch)'
+            (onSelectionChange)='onChangeAutoComp($event, branch, "branch")'
           >
             {{branch.name}}
           </mat-option>
@@ -60,7 +60,7 @@
           <mat-option
             *ngFor='let warehouse of warehouse$ | async'
             [value]=' warehouse'
-            (onSelectionChange)='onChangeWarehouse($event, warehouse)'
+            (onSelectionChange)='onChangeAutoComp($event, warehouse, "warehouse")'
           >
             {{warehouse.name}}
           </mat-option>
@@ -82,11 +82,11 @@
                placeholder='Nhà thuốc An Khang' formControlName='provider'>
         <mat-autocomplete #provider='matAutocomplete'>
           <mat-option
-            *ngFor='let warehouse of warehouse$ | async'
-            [value]=' warehouse'
-            (onSelectionChange)='onChangeWarehouse($event, warehouse)'
+            *ngFor='let provider of providers$ | async'
+            [value]='provider'
+            (onSelectionChange)='onChangeAutoComp($event, provider, "provider")'
           >
-            {{warehouse.name}}
+            {{provider.name}}
           </mat-option>
         </mat-autocomplete>
       </div>

@@ -12,6 +12,8 @@ import { of } from 'rxjs';
 import { WarehouseQuery } from '../../../../../pages/warehouse/state/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ProductQuery } from '../../state/product.query';
+import { ProviderQuery } from '../../../../../pages/provider/state/provider.query';
+import { ProviderActions } from '../../../../../pages/provider/state/provider.action';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -20,6 +22,7 @@ export class ProductDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart).pipe(map(branches => branches.concat({ id: -1, name: 'Kho tổng' })));
   transferBranches$ = this.branches$.pipe(map(branches => branches.filter(branch => branch.id !== this.formGroup.get('branch')?.value.id as number)));
   warehouse$ = this.warehouseQuery.selectAll();
+  providers$ = this.providerQuery.selectAll();
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
@@ -58,16 +61,23 @@ export class ProductDialogComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly warehouseQuery: WarehouseQuery,
     private readonly productQuery: ProductQuery,
+    private readonly providerQuery: ProviderQuery,
     private readonly action$: Actions
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
+    this.store.dispatch(ProviderActions.loadProviders());
 
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
       this.branches$
+    );
+
+    this.providers$ = searchAndAddAutocomplete(
+      this.formGroup.get('provider')?.valueChanges?.pipe(startWith('')) || of(''),
+      this.providers$
     );
   }
 
@@ -94,27 +104,28 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  onChangeBranch(event: any, branch: any) {
-    const value = this.formGroup.get('branch')?.value;
-    if (branch?.id < 0) {
-      this.isTransfer = false;
-    } else if (branch?.id === 0) {
-      this.isTransfer = false;
-      this.store.dispatch(addBranch({ branch: { name: value } }));
-      this.formGroup.get('branch')?.setValue(value);
-    } else {
-      this.isTransfer = true;
-      this.formGroup.get('branch')?.patchValue(branch.name);
-    }
-  }
+  // onChangeBranch(event: any, branch: any) {
+  //   const value = this.formGroup.get('branch')?.value;
+  //   if (branch?.id < 0) {
+  //     this.isTransfer = false;
+  //     this.formGroup.get('branch')?.setValue(branch.name);
+  //   } else if (branch?.id === 0) {
+  //     this.isTransfer = false;
+  //     this.store.dispatch(addBranch({ branch: { name: value } }));
+  //     this.formGroup.get('branch')?.setValue(value);
+  //   } else {
+  //     this.isTransfer = true;
+  //     this.formGroup.get('branch')?.patchValue(branch.name);
+  //   }
+  // }
 
-  onChangeWarehouse(event: any, branch: any) {
-    const value = this.formGroup.get('warehouse')?.value;
-    if (!branch?.id) {
-      this.store.dispatch(addBranch({ branch: { name: value } }));
-      this.formGroup.get('warehouse')?.setValue(value);
+  onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
+    const fg = this.formGroup.get(type)?.value;
+    if (!value?.id) {
+      this.store.dispatch(addBranch({ branch: { name: fg } }));
+      this.formGroup.get(type)?.setValue(fg);
     } else {
-      this.formGroup.get('warehouse')?.patchValue(branch.name);
+      this.formGroup.get(type)?.patchValue(value.name);
     }
   }
 }
