@@ -78,11 +78,12 @@ export const Api = {
   AUTH_SIGN_IN: 'auth/signin',
   WAREHOUSE: {
     WAREHOUSE: 'warehouse',
+    PRODUCT: 'product',
+    PROVIDER: 'provider',
     MEDICINE: 'medicine',
     POULTRY_FOOD: 'poultryFood',
-    PRODUCT: 'product',
     REQUISITE: 'requisite',
-    MATERIAL: 'material'
+    MATERIAL: 'material',
   },
   ADMIN: {
     HR: 'admin/hr'

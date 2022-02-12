@@ -23,28 +23,28 @@
           </mat-option>
         </mat-autocomplete>
       </div>
-<!--      <div class='col-sm' [formGroup]='formGroup' *ngIf='isTransfer'>-->
-<!--        <label for='branch'>Nhập từ Kho<span class='star'>*</span></label>-->
-<!--        <input-->
-<!--          matInput-->
-<!--          id='branch'-->
-<!--          class='form-control'-->
-<!--          type='search'-->
-<!--          [matAutocomplete]='transferBranch'-->
-<!--          style='width: 100%'-->
-<!--          value='Kho tổng'-->
-<!--          formControlName='transferBranch'-->
-<!--        >-->
-<!--        <mat-autocomplete #transferBranch='matAutocomplete'>-->
-<!--          <mat-option-->
-<!--            *ngFor='let branch of transferBranches$ | async'-->
-<!--            [value]=' branch'-->
-<!--            (onSelectionChange)='onChangeBranch($event, branch)'-->
-<!--          >-->
-<!--            {{branch.name}}-->
-<!--          </mat-option>-->
-<!--        </mat-autocomplete>-->
-<!--      </div>-->
+      <!--      <div class='col-sm' [formGroup]='formGroup' *ngIf='isTransfer'>-->
+      <!--        <label for='branch'>Nhập từ Kho<span class='star'>*</span></label>-->
+      <!--        <input-->
+      <!--          matInput-->
+      <!--          id='branch'-->
+      <!--          class='form-control'-->
+      <!--          type='search'-->
+      <!--          [matAutocomplete]='transferBranch'-->
+      <!--          style='width: 100%'-->
+      <!--          value='Kho tổng'-->
+      <!--          formControlName='transferBranch'-->
+      <!--        >-->
+      <!--        <mat-autocomplete #transferBranch='matAutocomplete'>-->
+      <!--          <mat-option-->
+      <!--            *ngFor='let branch of transferBranches$ | async'-->
+      <!--            [value]=' branch'-->
+      <!--            (onSelectionChange)='onChangeBranch($event, branch)'-->
+      <!--          >-->
+      <!--            {{branch.name}}-->
+      <!--          </mat-option>-->
+      <!--        </mat-autocomplete>-->
+      <!--      </div>-->
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='warehouse'>Loại kho<span class='star'>*</span></label>
         <input
@@ -78,7 +78,17 @@
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='provider'>Nhà cung cấp</label>
-        <input type='text' class='form-control' id='provider' placeholder='Nhà thuốc An Khang' formControlName='provider'>
+        <input matInput type='search' [matAutocomplete]='provider' class='form-control' id='provider'
+               placeholder='Nhà thuốc An Khang' formControlName='provider'>
+        <mat-autocomplete #provider='matAutocomplete'>
+          <mat-option
+            *ngFor='let warehouse of warehouse$ | async'
+            [value]=' warehouse'
+            (onSelectionChange)='onChangeWarehouse($event, warehouse)'
+          >
+            {{warehouse.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
     </div>
     <div class='row mt-3'>

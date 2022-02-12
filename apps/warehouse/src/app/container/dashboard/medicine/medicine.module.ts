@@ -9,12 +9,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProductDialogComponent } from './components/product-dialog/product-dialog.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { WarehouseService } from './services/warehouse.service';
-import { WarehouseEffect } from './state/warehouse/warehouse.effect';
+import { WarehouseService } from '../../../pages/warehouse/services/warehouse.service';
+import { WarehouseEffect } from '../../../pages/warehouse/state/warehouse.effect';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { ProductService } from './services/product.service';
-import { ProductEffect } from './state/product/product.effect';
+import { ProductEffect } from './state/product.effect';
 
 @NgModule({
   imports: [
