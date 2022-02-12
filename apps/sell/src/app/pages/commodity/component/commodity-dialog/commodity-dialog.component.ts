@@ -15,7 +15,7 @@ export class CommodityDialogComponent implements OnInit {
   formGroup!: FormGroup;
   CommodityUnit = CommodityUnit;
 
-  commodities$ = this.service.getTemplate().pipe(tap(v => console.log(v)));
+  commodities$ = this.service.getTemplate();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
