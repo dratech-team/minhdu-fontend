@@ -1,9 +1,9 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { ProviderEntity } from '../entities/provider.entity';
+import { ProviderDtoEntity } from '../entities/provider-dto.entity';
 
 const addProvider = createAction(
   '[PROVIDER] Add Provider',
-  props<{ provider: ProviderEntity }>()
+  props<{ provider: ProviderDtoEntity }>()
 );
 
 const loadProviders = createAction('[PROVIDER] Load Providers');

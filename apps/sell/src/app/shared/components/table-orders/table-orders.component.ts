@@ -8,11 +8,9 @@ import { Observable } from 'rxjs';
 import { Order } from '../../../pages/order/+state/order.interface';
 import { OrderAction } from '../../../pages/order/+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-
 
 @Component({
   selector: 'app-table-order',
@@ -26,7 +24,7 @@ export class TableOrdersComponent implements OnInit {
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
-      destination: new FormControl(''),
+      ward: new FormControl(''),
       explain: new FormControl('')
     });
   paidType = PaidType;
@@ -59,9 +57,9 @@ export class TableOrdersComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned( this.orders(val));
+      this.customerService.scrollOrdersAssigned(this.orders(val));
     } else {
-      this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.orders(val)}));
+      this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.orders(val) }));
     }
   }
 
@@ -74,7 +72,7 @@ export class TableOrdersComponent implements OnInit {
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       createdAt: val.createdAt,
-      destination: val.destination,
+      ward: val.ward,
       explain: val.explain
     };
   }
@@ -93,11 +91,13 @@ export class TableOrdersComponent implements OnInit {
 
   deleteOrder(order: Order) {
     const ref = this.dialog.open(DialogSharedComponent,
-      { width: 'fit-content',
+      {
+        width: 'fit-content',
         data: {
-        title:'Đơn hàng đang giao',
-          description:`hủy đơn hàng đang giao ${order?.destination?.name} ${order?.destination?.district?.name} ${order?.destination?.district?.province?.name}`
-      } });
+          title: 'Đơn hàng đang giao',
+          description: `hủy đơn hàng đang giao ${order?.ward?.name} ${order?.ward?.district?.name} ${order?.ward?.district?.province?.name}`
+        }
+      });
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrderAction.deleteOrder({ id: order.id, customerId: order.customerId }));

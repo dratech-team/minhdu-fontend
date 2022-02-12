@@ -38,7 +38,7 @@ export class OrderComponent implements OnInit {
     deliveryEndedAt: new FormControl(),
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
-    destination: new FormControl('')
+    ward: new FormControl('')
   });
 
   constructor(
@@ -133,7 +133,7 @@ export class OrderComponent implements OnInit {
     const order = {
       paidType: val.paidType,
       customer: val.name?.trim(),
-      destination: val.destination?.trim(),
+      ward: val.ward?.trim(),
       commodityTotal: val.commodityTotal?.trim(),
       explain: val.explain?.trim(),
       startedAt: val.createStartedAt?.trim(),

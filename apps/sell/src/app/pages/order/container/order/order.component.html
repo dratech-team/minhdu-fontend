@@ -42,11 +42,11 @@
         </th>
         <th>
           <div class=''>Xe xuất</div>
-          <input formControlName='destination' class='form-control' type='text'>
+          <input formControlName='ward' class='form-control' type='text'>
         </th>
         <th>
           <div class=''>Điểm đến</div>
-          <input formControlName='destination' class='form-control' type='search'>
+          <input formControlName='ward' class='form-control' type='search'>
         </th>
         <th>
           <div>Hàng hoá</div>
@@ -109,9 +109,9 @@
           </th>
         </ng-template>
         <th>
-          {{order?.destination?.name}} -
-          {{order?.destination?.district?.name}} -
-          {{order?.destination?.district?.province?.name}}
+          {{order?.ward?.name}} -
+          {{order?.ward?.district?.name}} -
+          {{order?.ward?.district?.province?.name}}
         </th>
         <th class='pointer' style='width: 220px;'>
           <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{

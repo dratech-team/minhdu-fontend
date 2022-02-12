@@ -48,9 +48,9 @@ export class OrderDialogComponent implements OnInit {
       deliveredAt: [this.datePipe.transform(
         this.data?.order?.deliveredAt, 'yyyy-MM-dd')],
       explain: [this.data?.order?.explain],
-      province: [this.data?.order?.destination?.district?.province?.id, Validators.required],
-      district: [this.data?.order?.destination?.district?.id, Validators.required],
-      ward: [this.data?.order?.destination?.id, Validators.required]
+      province: [this.data?.order?.ward?.district?.province?.id, Validators.required],
+      district: [this.data?.order?.ward?.district?.id, Validators.required],
+      ward: [this.data?.order?.ward?.id, Validators.required]
     });
   }
 
@@ -67,7 +67,7 @@ export class OrderDialogComponent implements OnInit {
     const order = {
       customerId: this.data.order.customerId,
       commodityIds: this.commoditiesSelected.map(item => item.id),
-      wardId: this.wardId || this.data.order.destination.id,
+      wardId: this.wardId || this.data.order.ward.id,
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };

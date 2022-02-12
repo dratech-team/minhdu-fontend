@@ -39,8 +39,15 @@
           <div class='ml-3 h5'>Nơi nhận hàng<span class='star'>*</span>
           </div>
           <div class='d-flex'>
-            <app-pick-location class='col-9' [reload$]='reload' [formGroup]='formGroup' [form]='checkValid'
-                               [submitted]='submitted' (eventSelectWard)='onSelectWard($event)'></app-pick-location>
+            <app-pick-location
+              class='col-9'
+              [formGroup]='formGroup'
+              [form]='checkValid'
+              [submitted]='submitted'
+              (eventSelectWard)='onSelectWard($event)'
+              [isRequiredDistrict]='false'
+              [isRequiredWard]='false'
+            ></app-pick-location>
           </div>
         </div>
         <div *ngIf='customerPicked' class='animated fadeIn'>

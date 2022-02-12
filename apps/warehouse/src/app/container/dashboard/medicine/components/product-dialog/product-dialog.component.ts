@@ -14,6 +14,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { ProductQuery } from '../../state/product.query';
 import { ProviderQuery } from '../../../../../pages/provider/state/provider.query';
 import { ProviderActions } from '../../../../../pages/provider/state/provider.action';
+import { WarehouseAction } from '../../../../../pages/warehouse/state/warehouse.action';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -122,7 +123,23 @@ export class ProductDialogComponent implements OnInit {
   onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
     const fg = this.formGroup.get(type)?.value;
     if (!value?.id) {
-      this.store.dispatch(addBranch({ branch: { name: fg } }));
+      switch (type) {
+        case 'branch': {
+          this.store.dispatch(addBranch({ branch: { name: fg } }));
+          break;
+        }
+        case 'provider': {
+          this.store.dispatch(ProviderActions.addProvider({ provider: { name: fg } }));
+          break;
+        }
+        case 'warehouse': {
+          // this.store.dispatch(WarehouseAction.ad({ provider: { name: fg } }));
+          break;
+        }
+        default: {
+          console.error('[product-dialog.component.ts] Type onChange Autocomplete unavailble');
+        }
+      }
       this.formGroup.get(type)?.setValue(fg);
     } else {
       this.formGroup.get(type)?.patchValue(value.name);

@@ -19,7 +19,7 @@
       <th>
         <div class=''>Điểm đến</div>
         <input
-          formControlName='destination'
+          formControlName='ward'
           class='form-control  '
           type='text'>
       </th>
@@ -71,9 +71,9 @@
         Đang cập nhật
       </th>
       <th (click)='detailOrder(order.id)'>
-        {{order?.destination?.name}} -
-        {{order?.destination?.district?.name}} -
-        {{order?.destination?.district?.province?.name}}
+        {{order?.ward?.name}} -
+        {{order?.ward?.district?.name}} -
+        {{order?.ward?.district?.province?.name}}
       </th>
       <th (click)='detailOrder(order.id)' style='color: #f86c6b'>
         {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ

@@ -117,7 +117,7 @@
                   {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
                 </th>
                 <th class='pointer' (click)='detailOrder(order.id)'>
-                  {{order?.destination?.name}}
+                  {{order?.ward?.name}}
                 </th>
                 <th class='pointer' (click)='detailOrder(order.id)'>
                   {{order.explain}}

@@ -17,7 +17,7 @@ export interface Order {
   payType?: PaymentType;
   paidTotal?: number;
   debt: number;
-  destination?: Ward;
+  ward?: Ward;
   isSelect?: boolean;
   paymentHistories: PaymentHistory[];
   commodityTotal: number;
@@ -43,5 +43,5 @@ export interface OrderDTO {
   } | Date;
   status: 0 | 1;
   explain: string;
-  destination: string;
+  ward: string;
 }
