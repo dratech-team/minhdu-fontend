@@ -3,10 +3,10 @@
   <ng-template #product>
     <div class='col-3'>
       <div class='mt-2 d-flex'>
-        <div class='h3 mb-0'>Kho</div>
+        <div class='h3 mb-0'>Loại kho</div>
         <div>
           <div class='ml-3'>
-            <mat-select style='min-width: 150px' id='type' class='form-control'>
+            <mat-select style='min-width: 150px' id='type' class='form-control' value='Tất cả'>
               <mat-option *ngFor='let item of warehouse$ | async' [value]='item.name'
                           (click)='selectWarehouse(item)'>{{item.name}}</mat-option>
             </mat-select>

@@ -7,7 +7,7 @@ import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
-import { startWith } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -17,15 +17,18 @@ import { ProductQuery } from '../../state/product/product.query';
   templateUrl: 'product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
-  branches$ = this.store.select(getAllOrgchart);
+  branches$ = this.store.select(getAllOrgchart).pipe(map(branches => branches.concat({ id: -1, name: 'Kho tổng' })));
+  transferBranches$ = this.branches$.pipe(map(branches => branches.filter(branch => branch.id !== this.formGroup.get('branch')?.value.id as number)));
   warehouse$ = this.warehouseQuery.selectAll();
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
+  isTransfer = false;
 
   formGroup = this.formBuilder.group({
     barcode: [this.data?.barcode, Validators.required],
     branch: [this.data?.branchId],
+    transferBranch: [],
     warehouse: [this.warehouseQuery.getEntity(this.warehouseId)?.name],
     code: [this.data?.code, Validators.required],
     name: [this.data?.name, Validators.required],
@@ -73,9 +76,9 @@ export class ProductDialogComponent implements OnInit {
     console.log(value);
     const medicine = {
       code: value?.code,
-      barcode: value?.barcode,
       name: value.name,
-      provider: value.provider,
+      branchId: value.branch.id > 0 ? value.branch.id : null,
+      providerId: value.provider,
       expire: value.expire,
       price: value.price,
       discount: value?.discount ? value.discount / 100 : undefined,
@@ -93,10 +96,14 @@ export class ProductDialogComponent implements OnInit {
 
   onChangeBranch(event: any, branch: any) {
     const value = this.formGroup.get('branch')?.value;
-    if (!branch?.id) {
+    if (branch?.id < 0) {
+      this.isTransfer = false;
+    } else if (branch?.id === 0) {
+      this.isTransfer = false;
       this.store.dispatch(addBranch({ branch: { name: value } }));
       this.formGroup.get('branch')?.setValue(value);
     } else {
+      this.isTransfer = true;
       this.formGroup.get('branch')?.patchValue(branch.name);
     }
   }
@@ -105,9 +112,9 @@ export class ProductDialogComponent implements OnInit {
     const value = this.formGroup.get('warehouse')?.value;
     if (!branch?.id) {
       this.store.dispatch(addBranch({ branch: { name: value } }));
-      this.formGroup.get('branch')?.setValue(value);
+      this.formGroup.get('warehouse')?.setValue(value);
     } else {
-      this.formGroup.get('branch')?.patchValue(branch.name);
+      this.formGroup.get('warehouse')?.patchValue(branch.name);
     }
   }
 }

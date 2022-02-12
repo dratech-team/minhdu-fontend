@@ -3,9 +3,10 @@
   <div class='form-group'>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='price'>Kho<span class='star'>*</span></label>
+        <label for='branch'>Kho<span class='star'>*</span></label>
         <input
           matInput
+          id='branch'
           class='form-control'
           type='search'
           [matAutocomplete]='branch'
@@ -15,19 +16,42 @@
         <mat-autocomplete #branch='matAutocomplete'>
           <mat-option
             *ngFor='let branch of branches$ | async'
-            [value]=' branch.name'
+            [value]=' branch'
             (onSelectionChange)='onChangeBranch($event, branch)'
           >
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>
       </div>
+<!--      <div class='col-sm' [formGroup]='formGroup' *ngIf='isTransfer'>-->
+<!--        <label for='branch'>Nhập từ Kho<span class='star'>*</span></label>-->
+<!--        <input-->
+<!--          matInput-->
+<!--          id='branch'-->
+<!--          class='form-control'-->
+<!--          type='search'-->
+<!--          [matAutocomplete]='transferBranch'-->
+<!--          style='width: 100%'-->
+<!--          value='Kho tổng'-->
+<!--          formControlName='transferBranch'-->
+<!--        >-->
+<!--        <mat-autocomplete #transferBranch='matAutocomplete'>-->
+<!--          <mat-option-->
+<!--            *ngFor='let branch of transferBranches$ | async'-->
+<!--            [value]=' branch'-->
+<!--            (onSelectionChange)='onChangeBranch($event, branch)'-->
+<!--          >-->
+<!--            {{branch.name}}-->
+<!--          </mat-option>-->
+<!--        </mat-autocomplete>-->
+<!--      </div>-->
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='price'>Loại kho<span class='star'>*</span></label>
+        <label for='warehouse'>Loại kho<span class='star'>*</span></label>
         <input
           matInput
           class='form-control'
           type='search'
+          id='warehouse'
           [matAutocomplete]='warehouse'
           style='width: 100%'
           formControlName='warehouse'
@@ -35,7 +59,7 @@
         <mat-autocomplete #warehouse='matAutocomplete'>
           <mat-option
             *ngFor='let warehouse of warehouse$ | async'
-            [value]=' warehouse.name'
+            [value]=' warehouse'
             (onSelectionChange)='onChangeWarehouse($event, warehouse)'
           >
             {{warehouse.name}}
@@ -52,29 +76,33 @@
         <label for='name'>Tên hàng hóa <span class='star'>*</span></label>
         <input type='text' class='form-control' id='name' placeholder='Anticoc' formControlName='name'>
       </div>
-    </div>
-    <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='code'>Ngày hạch toán</label>
-        <input type='date' class='form-control' formControlName='code'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='code'>Ngày chứng từ</label>
-        <input type='date' class='form-control' formControlName='code'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='code'>Số chứng từ</label>
-        <input type='text' class='form-control' formControlName='code'>
+        <label for='provider'>Nhà cung cấp</label>
+        <input type='text' class='form-control' id='provider' placeholder='Nhà thuốc An Khang' formControlName='provider'>
       </div>
     </div>
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='expire'>Ngày sản xuất (nếu có)</label>
-        <input type='date' class='form-control' id='expire' placeholder='Gà loại 1' formControlName='expire'>
+        <label for='billedAt'>Ngày hạch toán</label>
+        <input type='date' class='form-control' id='billedAt' formControlName='billedAt'>
+      </div>
+      <div class='col-sm' [formGroup]='formGroup'>
+        <label for='billedAt'>Ngày chứng từ</label>
+        <input type='date' class='form-control' id='billedAt' formControlName='billedAt'>
+      </div>
+      <div class='col-sm' [formGroup]='formGroup'>
+        <label for='billCode'>Số chứng từ</label>
+        <input type='text' class='form-control' id='billCode' formControlName='billCode'>
+      </div>
+    </div>
+    <div class='row mt-3'>
+      <div class='col-sm' [formGroup]='formGroup'>
+        <label for='mfg'>Ngày sản xuất (nếu có)</label>
+        <input type='date' class='form-control' id='mfg' placeholder='Gà loại 1' formControlName='mfg'>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='expire'>Hạn sử dụng (nếu có)</label>
-        <input type='date' class='form-control' id='expire' placeholder='Gà loại 1' formControlName='expire'>
+        <input type='date' class='form-control' id='expire' placeholder='Gà loại 1' formControlName='exp'>
       </div>
     </div>
     <div class='row mt-3'>
@@ -83,8 +111,9 @@
         <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' inputCurrency>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
-        <label for='price'>Số lượng<span class='star'>*</span></label>
-        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' inputCurrency>
+        <label for='amount'>Số lượng<span class='star'>*</span></label>
+        <input type='text' class='form-control' id='amount' placeholder='200,000' formControlName='amount'
+               inputCurrency>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='discount'>Chiếc khấu (%)</label>
@@ -100,10 +129,6 @@
             {{item.name}}
           </mat-option>
         </mat-select>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='amount'>Số lượng<span class='star'>*</span></label>
-        <input type='number' class='form-control' id='amount' placeholder='1,000' formControlName='amount'>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='createdAt'>Ngày nhập<span class='star'>*</span></label>

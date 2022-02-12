@@ -10,6 +10,7 @@ import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ProductAction } from '../../state/product/product.action';
 import { ProductQuery } from '../../state/product/product.query';
+import { Warehouse } from '../../state/warehouse/entities/product.entity';
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -17,7 +18,7 @@ import { ProductQuery } from '../../state/product/product.query';
 
 })
 export class MedicineComponent implements OnInit {
-  warehouse$ = this.warehouseQuery.selectAll();
+  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({ id: -1, name: 'Tất cả' })));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
 
@@ -88,8 +89,13 @@ export class MedicineComponent implements OnInit {
       });
   }
 
-  selectWarehouse(warehouse: any) {
+  selectWarehouse(warehouse: Warehouse) {
     this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouseId: warehouse.id }));
+    this.actions$.dispatch(ProductAction.loadProduct({
+      take: PaginationDto.take,
+      skip: PaginationDto.skip,
+      warehouseId: warehouse.id > 0 ? warehouse.id : null
+    }));
   }
 
 
