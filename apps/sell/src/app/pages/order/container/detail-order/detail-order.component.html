@@ -86,7 +86,7 @@
             </div>
             <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
-                {{(order?.deliveredAt | date: 'dd/MM/yyyy') || 'Đang giao hàng'}}
+                {{(order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao'}}
               </span>
             </div>
           </div>
@@ -115,9 +115,9 @@
               <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
               <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>
-              <th class='text-center'>{{commodity.price | number:'1.0' | notEmpty:'Theo thời giá'}}</th>
-              <th class='text-center'> {{commodity.gift}} </th>
-              <th class='text-center'>{{commodity?.more ? commodity.more.price : '' | number:'1.0' | notEmpty:'0'}}đ
+              <th class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</th>
+              <th class='text-center'> {{commodity.gift || '0'}} </th>
+              <th class='text-center'>{{commodity?.more ? commodity.more.price : '' | number:'1.0-0' | notEmpty:'-'}}
               </th>
               <th class='text-center'> {{commodity.amount}}</th>
               <th class='text-center'>

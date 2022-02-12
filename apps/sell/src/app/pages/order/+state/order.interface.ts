@@ -2,7 +2,7 @@ import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { Customer } from '../../customer/+state/customer/customer.interface';
 import { Commodity } from '../../commodity/+state/commodity.interface';
 import { Route } from '../../route/container/+state/route.interface';
-import { PaymentHistory, Ward } from '@minhdu-fontend/data-models';
+import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
 
 export interface Order {
   id: number;
@@ -17,6 +17,8 @@ export interface Order {
   payType?: PaymentType;
   paidTotal?: number;
   debt: number;
+  province?: Province;
+  district?: District;
   ward?: Ward;
   isSelect?: boolean;
   paymentHistories: PaymentHistory[];

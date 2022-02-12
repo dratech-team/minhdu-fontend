@@ -64,10 +64,10 @@
             <option value=''>tất cả</option>
           </select>
         </th>
-        <th>
-          <div>Đơn vị tiền</div>
-          <input class='form-control' [disabled]='true'>
-        </th>
+        <!--        <th>-->
+        <!--          <div>Đơn vị tiền</div>-->
+        <!--          <input class='form-control' [disabled]='true'>-->
+        <!--        </th>-->
         <th>
           <div class=''>Diễn giải</div>
           <input formControlName='explain' class='form-control' type='text' [disabled]='true'>
@@ -93,10 +93,10 @@
           {{order.customer?.lastName}}
         </th>
         <th>
-          {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
+          {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
         </th>
         <th>
-          {{(order?.deliveredAt | date: 'dd/MM/yyyy' || 'Đang cập nhật...')}}
+          {{((order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao')}}
         </th>
         <th *ngIf='order?.routes?.length; else notCar'>
           <span *ngFor='let route of order?.routes'>
@@ -109,9 +109,9 @@
           </th>
         </ng-template>
         <th>
-          {{order?.ward?.name}} -
-          {{order?.ward?.district?.name}} -
-          {{order?.ward?.district?.province?.name}}
+          {{order?.province?.name}}
+          {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
+          {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
         </th>
         <th class='pointer' style='width: 220px;'>
           <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
@@ -126,12 +126,12 @@
         <th style='color: #20c997'>
           {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
         </th>
-        <th>
-          {{order.currency | transform:currenciesConstant}}
-        </th>
-        <th>{{order?.explain}} </th>
-        <th>
-          {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length) > 0 ? 'Đang giao' : 'Chưa giao'}}
+        <!--        <th>-->
+        <!--          {{order.currency | transform:currenciesConstant}}-->
+        <!--        </th>-->
+        <th>{{order?.explain || 'Chưa cập nhật'}} </th>
+        <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
+          {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao'}}
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
