@@ -1,7 +1,7 @@
 import { BaseService } from '@minhdu-fontend/service';
 import { Api } from '@minhdu-fontend/constants';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../state/warehouse/entities/product.entity';
+import { Product } from '../state/entities/product.entity';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ResponsePaginate, Warehouse } from '@minhdu-fontend/data-models';

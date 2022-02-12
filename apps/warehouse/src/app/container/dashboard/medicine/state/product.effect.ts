@@ -4,7 +4,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { ProductAction } from './product.action';
 import { ProductStore } from './product.store';
-import { ProductService } from '../../services/product.service';
+import { ProductService } from '../services/product.service';
 
 @Injectable()
 export class ProductEffect {

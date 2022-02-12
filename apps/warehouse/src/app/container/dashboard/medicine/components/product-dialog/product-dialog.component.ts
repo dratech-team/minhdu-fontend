@@ -9,9 +9,9 @@ import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { map, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
+import { WarehouseQuery } from '../../../../../pages/warehouse/state/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ProductQuery } from '../../state/product/product.query';
+import { ProductQuery } from '../../state/product.query';
 
 @Component({
   templateUrl: 'product-dialog.component.html'

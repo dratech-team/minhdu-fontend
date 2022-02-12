@@ -1,5 +1,5 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { ProductDto } from '../warehouse/entities/product.entity';
+import { ProductDto } from '../../../../pages/warehouse/state/entities/product.entity';
 
 const addProduct = createAction(
   '[WAREHOUSE/PRODUCT] Add Product',

@@ -5,12 +5,12 @@ import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ProductDialogComponent } from '../../components/product-dialog/product-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { WarehouseAction } from '../../state/warehouse/warehouse.action';
-import { WarehouseQuery } from '../../state/warehouse/warehouse.query';
+import { WarehouseAction } from '../../../../../pages/warehouse/state/warehouse.action';
+import { WarehouseQuery } from '../../../../../pages/warehouse/state/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ProductAction } from '../../state/product/product.action';
-import { ProductQuery } from '../../state/product/product.query';
-import { Warehouse } from '../../state/warehouse/entities/product.entity';
+import { ProductAction } from '../../state/product.action';
+import { ProductQuery } from '../../state/product.query';
+import { Warehouse } from '../../../../../pages/warehouse/state/entities/product.entity';
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
