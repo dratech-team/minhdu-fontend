@@ -16,6 +16,7 @@ export interface Customer {
   issuedBy: string,
   ward: Ward,
   wardId: number,
+  province: { id: number, name: string },
   address: string,
   email?: string,
   religion: string,
@@ -30,6 +31,6 @@ export interface Customer {
   facebook?: string,
   zalo?: string
   isSelect?: boolean,
-  debt?:number,
+  debt?: number,
   paymentHistories?: PaymentHistory[],
 }

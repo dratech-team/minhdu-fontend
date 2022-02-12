@@ -83,7 +83,7 @@
       >
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
         <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
-        <th> {{customer?.gender === 'MALE' ? 'Nam' : 'Nữ'}}</th>
+        <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
         <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
         <th>
           <input type='checkbox' disabled [checked]='customer.isPotential'>
@@ -93,12 +93,10 @@
           'Chưa cập nhật'}}
         </th>
         <th>{{ customer.resource | transform: resourceTypes}}</th>
-        <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
-        <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
-        <th *ngIf='!customer?.type'> Chưa cập nhật</th>
-        <th>{{customer?.email ? customer.email : 'Chưa cập nhật'}}</th>
-        <th>{{customer?.address}}</th>
-        <th> {{customer.note}}</th>
+        <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
+        <th>{{customer?.email || 'Chưa cập nhật'}}</th>
+        <th>{{customer?.address || 'Chưa cập nhật'}}</th>
+        <th> {{customer?.note || 'Chưa cập nhật'}}</th>
       </tr>
       <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
         <td colspan='15' class='position-relative font-weight-bold'>

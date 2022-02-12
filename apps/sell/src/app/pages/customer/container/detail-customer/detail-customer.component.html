@@ -64,7 +64,7 @@
               <span>Giới tính:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom title-detail'>
-              {{customer.gender === 'MALE' ? 'Nam' : customer.gender === 'FEMALE' ? 'Nữ' : 'Khác'}}
+              {{customer.gender === 'MALE' ? 'Nam' : customer.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}
             </div>
           </div>
           <div class='row ml-1 align-items-center'>
@@ -77,7 +77,7 @@
           </div>
           <div class='row ml-1  align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
-              <span> Nguyên quán:</span>
+              <span>Nguyên quán:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom '>
               <span class='title-detail' style='color: #3C3B54'>
@@ -87,11 +87,11 @@
           </div>
           <div class=' row ml-1 align-items-center '>
             <div class='col-md-3 py-2  title-detail'>
-              <span>Số:</span>
+              <span>CMND Số:</span>
             </div>
             <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
-                {{customer.identify}}
+                {{customer.identify || 'Chưa cập nhật'}}
               </span>
             </div>
           </div>
@@ -125,45 +125,44 @@
           </div>
         </div>
         <div class='col-5  form-group'>
-
-          <div class='row align-items-start'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Địa chỉ:</span>
-            </div>
-            <div class='col-md-9 py-2 border-bottom'>
-              <span class='title-detail'>
-                {{customer.address}}
-              </span>
-            </div>
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Phường xã:</span>
-            </div>
-            <div class='col py-2  border-bottom'>
-              <div class='title-detail'>
-                <div>{{customer?.ward?.name}}</div>
-              </div>
-            </div>
-          </div>
-          <div class='row align-items-center'>
-            <div class='col-md-3 py-2  title-detail'>
-              <span>Quận huyện:</span>
-            </div>
-            <div class='col py-2 border-bottom '>
-              <div class='title-detail '>
-                {{customer?.ward?.district?.name}}
-              </div>
-            </div>
-          </div>
           <div class='row align-items-center'>
             <div class='col-md-3 py-2  title-detail'>
               <span>Tỉnh thành:</span>
             </div>
             <div class=' col py-2 border-bottom'>
               <div class='title-detail'>
-                {{customer?.ward?.district?.province?.name}}
+                {{customer?.ward?.district?.province?.name || customer.province.name}}
               </div>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Quận/huyện:</span>
+            </div>
+            <div class='col py-2 border-bottom '>
+              <div class='title-detail '>
+                {{customer?.ward?.district?.name || 'Chưa cập nhật'}}
+              </div>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Phường/xã:</span>
+            </div>
+            <div class='col py-2  border-bottom'>
+              <div class='title-detail'>
+                <div>{{customer?.ward?.name || 'Chưa cập nhật'}}</div>
+              </div>
+            </div>
+          </div>
+          <div class='row align-items-start'>
+            <div class='col-md-3 py-2  title-detail'>
+              <span>Địa chỉ:</span>
+            </div>
+            <div class='col-md-9 py-2 border-bottom'>
+              <span class='title-detail'>
+                {{customer.address || 'Chưa cập nhật'}}
+              </span>
             </div>
           </div>
           <div class='row  align-items-center'>

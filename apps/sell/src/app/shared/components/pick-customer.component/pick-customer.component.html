@@ -34,6 +34,16 @@
           >
         </th>
         <th>
+          <div>Số điện thoại</div>
+          <input
+            [disabled]='true'
+            class='form-control input-profile'
+            type='text'
+            placeholder='0123456789'
+            formControlName='name'
+          >
+        </th>
+        <th>
           <div>Loại khách hàng</div>
           <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
                   formControlName='type'>
@@ -46,7 +56,7 @@
           <div class=' border-top'>Nguồn khách hàng</div>
           <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
                   formControlName='resource'>
-            <option *ngFor='let item of resourceTypes' [value]='item.type'>{{item.name}}</option>
+            <option *ngFor='let item of customerResourcesConstant' [value]='item.type'>{{item.name}}</option>
           </select>
         </th>
       </tr>
@@ -64,15 +74,14 @@
             style='height: 12px ; margin: auto'
             (change)='pickOneCustomer()'
             [checked]='customer.id === customerId'
-            *ngIf='data.pickOne||pickOne'
+            *ngIf='data.pickOne || pickOne'
             type='radio' name='pick-one'
             value='{{customer.id}}'>
         </th>
         <th class='pointer'>{{customer.lastName}}</th>
-        <th *ngIf='customer?.type === customerType.AGENCY'> Đại lý</th>
-        <th *ngIf='customer?.type === customerType.RETAIL'> Bán lẻ</th>
-        <th *ngIf='customer?.type === undefined'> Chưa cập nhật</th>
-        <th> {{customer?.resource|transform:resourceTypes}}</th>
+        <th class='pointer'>{{customer.phone}}</th>
+        <th>{{customer?.type  | transform:CustomerTypeConstant }} </th>
+        <th> {{customer?.resource | transform:customerResourcesConstant}}</th>
       </tr>
       <tr *ngIf='!customers || customers.length === 0 ' style='height: 150px'
           class=' d-flex justify-content-center align-content-center'>

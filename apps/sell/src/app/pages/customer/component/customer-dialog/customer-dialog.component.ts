@@ -16,7 +16,9 @@ export class CustomerDialogComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
-  wardId!: number;
+  provinceId: number | undefined;
+  districtId: number | undefined;
+  wardId: number | undefined;
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -29,53 +31,31 @@ export class CustomerDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data?.isUpdate) {
-      this.formGroup = this.formBuilder.group({
-        identify: [this.data.customer?.identify],
-        issuedBy: [this.data.customer?.issuedBy],
-        birthplace: [this.data.customer?.birthplace],
-        idCardAt: [
-          this.datePipe.transform(
-            this.data.customer?.idCardAt, 'yyyy-MM-dd'
-          )],
-        email: [this.data.customer?.email],
-        phone: [this.data.customer?.phone],
-        note: [this.data.customer?.note],
-        firstName: [this.data.customer.firstName],
-        lastName: [this.data.customer.lastName],
-        address: [this.data.customer.address],
-        gender: [this.data.customer.gender],
-        birthday: [
-          this.datePipe.transform(
-            this.data.customer.birthday, 'yyyy-MM-dd'
-          )],
-        ethnicity: [this.data.customer?.ethnicity],
-        religion: [this.data.customer?.religion],
-        type: [this.data.customer?.type],
-        resource: [this.data.customer?.resource],
-        isPotential: [this.data.customer?.isPotential]
-      });
-    } else {
-      this.formGroup = this.formBuilder.group({
-        identify: [],
-        issuedBy: [],
-        birthplace: [],
-        idCardAt: [],
-        email: [],
-        phone: [undefined, Validators.required],
-        note: [],
-        lastName: [undefined, Validators.required],
-        address: [undefined, Validators.required],
-        gender: [undefined, Validators.required],
-        birthday: [undefined, Validators.required],
-        ethnicity: [],
-        religion: [],
-        type: [],
-        resource: [],
-        isPotential: []
-      });
-    }
-
+    this.formGroup = this.formBuilder.group({
+      firstName: [this.data?.customer?.firstName],
+      lastName: [this.data?.customer?.lastName, Validators.required],
+      identify: [this.data?.customer?.identify],
+      issuedBy: [this.data?.customer?.issuedBy],
+      birthplace: [this.data?.customer?.birthplace],
+      idCardAt: [
+        this.datePipe.transform(
+          this.data?.customer?.idCardAt, 'yyyy-MM-dd'
+        )],
+      email: [this.data?.customer?.email],
+      phone: [this.data?.customer?.phone, Validators.required],
+      note: [this.data?.customer?.note],
+      address: [this.data?.customer?.address],
+      gender: [this.data?.customer?.gender],
+      birthday: [
+        this.datePipe.transform(
+          this.data?.customer?.birthday, 'yyyy-MM-dd'
+        )],
+      ethnicity: [this.data?.customer?.ethnicity],
+      religion: [this.data?.customer?.religion],
+      type: [this.data?.customer?.type],
+      resource: [this.data?.customer?.resource],
+      isPotential: [this.data?.customer?.isPotential]
+    });
   }
 
   get checkValid() {
@@ -101,13 +81,17 @@ export class CustomerDialogComponent implements OnInit {
       type: value.type,
       resource: value.resource,
       address: value.address,
-      wardId: this.wardId || this.data.customer.ward.id,
+      provinceId: this.provinceId || this.data?.customer?.province?.id,
+      districtId: this.districtId || this.data?.customer?.district?.id,
+      wardId: this.wardId || this.data?.customer?.ward?.id,
       email: value.email ? value.email : undefined,
       note: value.note ? value.note : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
       religion: value.religion ? value.religion : undefined,
       isPotential: value.isPotential ? value.isPotential : undefined
     };
+
+    console.log(customer)
     if (this.data) {
       this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {

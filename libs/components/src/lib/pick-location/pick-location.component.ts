@@ -1,9 +1,6 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import {
-  selectAllProvince,
-  selectDistrictByProvinceId
-} from '@minhdu-fontend/location';
+import { selectAllProvince, selectDistrictByProvinceId } from '@minhdu-fontend/location';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { AppState } from '../../../../../apps/sell/src/app/reducers';
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
@@ -20,8 +17,13 @@ import { map, startWith } from 'rxjs/operators';
 export class PickLocationComponent implements OnInit {
   @Input() form: any;
   @Input() submitted!: boolean;
+  @Input() isRequiredProvince: boolean = true;
+  @Input() isRequiredDistrict: boolean = true;
+  @Input() isRequiredWard: boolean = true;
   @Input() ward?: any;
   @Input() reload$?: Subject<boolean>;
+  @Output() eventSelectProvince = new EventEmitter<any>();
+  @Output() eventSelectDistrict = new EventEmitter<any>();
   @Output() eventSelectWard = new EventEmitter<any>();
   provinces$ = this.store.pipe(select(selectAllProvince));
   districts$!: Observable<District[]>;
@@ -100,11 +102,13 @@ export class PickLocationComponent implements OnInit {
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
     this.formDistrict.patchValue('');
+    this.eventSelectProvince.emit(province.id);
   }
 
   onDistrict(district: District) {
     this.lstWard = district.wards;
     this.formWard.patchValue('');
+    this.eventSelectDistrict.emit(district.id);
   }
 
   onWard(ward: Ward) {

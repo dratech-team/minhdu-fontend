@@ -53,18 +53,14 @@
       </div>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='address'>Địa chỉ</label> <span class='star'>*</span>
+          <label for='address'>Địa chỉ</label>
           <input
             class='form-control'
             formControlName='address'
             id='address'
             placeholder='Số nhà / thôn xóm'
             type='text'
-            [ngClass]="{ 'is-invalid': submitted && checkValid.address.errors?.required }"
           >
-          <div *ngIf='submitted && checkValid.address.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập địa chỉ</div>
-          </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='note'>Ghi chú</label>
@@ -76,13 +72,17 @@
           >
         </div>
       </div>
-      <app-pick-location [ward]='data?.ward'
-                         [formGroup]='formGroup'
-                         [submitted]='submitted'
-                         [form]='checkValid'
-                         (eventSelectWard)='onSelectWard($event)'
+      <app-pick-location
+        [ward]='data?.ward'
+        [formGroup]='formGroup'
+        [submitted]='submitted'
+        [form]='checkValid'
+        [isRequiredDistrict]='false'
+        [isRequiredWard]='false'
+        (eventSelectProvince)='provinceId = $event'
+        (eventSelectDistrict)='districtId = $event'
+        (eventSelectWard)='wardId = $event'
       >
-
       </app-pick-location>
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
@@ -126,28 +126,18 @@
           </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='birthday'>Ngày sinh <span class='star'>*</span></label>
+          <label for='birthday'>Ngày sinh</label>
           <input type='date' id='birthday' class='form-control' formControlName='birthday'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.birthday.errors?.required }">
-          <div *ngIf='submitted && checkValid.birthday.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập ngày sinh</div>
-          </div>
         </div>
         <div class='col-sm' [formGroup]='formGroup'>
-          <label for='gender'>Giới tính<span class='star'>*</span></label>
+          <label for='gender'>Giới tính</label>
           <div id='gender'>
             <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
               <mat-radio-button value='MALE'>Nam</mat-radio-button>
               <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
               <mat-radio-button value='OTHER'>Khác</mat-radio-button>
             </mat-radio-group>
-            <div *ngIf='submitted && checkValid.gender.errors?.required'
-                 style='width: 100%;
-                  margin-top: 0.25rem;
-                  font-size: 80%;
-                  color: #f86c6b;'>
-              <div>Chưa chọn giới tính</div>
-            </div>
           </div>
         </div>
       </div>
