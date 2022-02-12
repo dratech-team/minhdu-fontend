@@ -6,25 +6,20 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.comp
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
 import { Router } from '@angular/router';
-import { MenuWarehouseConstant } from '@minhdu-fontend/constants';
-import { selectedTab } from '../../states/main.selector';
-
 
 @Component({
-  selector: 'app-wareHouse',
   templateUrl: './warehouse-layout.component.html',
   styleUrls: ['./warehouse-layout.component.scss']
 })
-export class WarehouseLayoutComponent implements OnInit,AfterContentChecked {
+export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
-  menuWarehouses = MenuWarehouseConstant;
-  tab$ = this.store.select(selectedTab)
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly ref: ChangeDetectorRef,
+    private readonly ref: ChangeDetectorRef
   ) {
   }
 
@@ -35,7 +30,7 @@ export class WarehouseLayoutComponent implements OnInit,AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    this.ref.detectChanges()
+    this.ref.detectChanges();
   }
 
   logout() {

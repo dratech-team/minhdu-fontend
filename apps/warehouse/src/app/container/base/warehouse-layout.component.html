@@ -27,12 +27,15 @@
       </div>
     </div>
   </div>
-  <div class='flex justify-content-start my-1'>
-    <button *ngFor='let item of menuWarehouses'
-            [ngClass]='{"btn-border": item.state ===(tab$|async)}'
-            class=' button  btn-header font-lg overflow-hidden d-flex align-items-center '
-            routerLink='{{item.href}}' mat-menu-item>{{item.name}}
-    </button>
+  <div class='p-3'>
+    <mat-tab-group>
+      <mat-tab label='Tổng kho vật tư'>
+        <minhdu-fontend-warehouse></minhdu-fontend-warehouse>
+      </mat-tab>
+      <mat-tab label='Lịch sử hệ thống'>
+        Đang phát triển !!!
+      </mat-tab>
+    </mat-tab-group>
   </div>
 
 </div>

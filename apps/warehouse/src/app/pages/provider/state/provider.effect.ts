@@ -3,8 +3,7 @@ import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { ProviderStore } from './provider.store';
 import { ProviderService } from '../services/provider.service';
 import { ProviderActions } from './provider.action';
-import { switchMap } from 'rxjs/operators';
-import { tap } from 'lodash';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ProviderEffect {
@@ -15,14 +14,21 @@ export class ProviderEffect {
   ) {
   }
 
-  @Effect({ dispatch: false })
+  @Effect()
   loadProviders$ = this.action$.pipe(
     ofType(ProviderActions.loadProviders),
     switchMap(() => {
       return this.service.getAll();
     }),
-    tap(data => {
+    tap((data) => {
       this.providerStore.set(data);
     })
+  );
+
+  @Effect()
+  addProvider$ = this.action$.pipe(
+    ofType(ProviderActions.addProvider),
+    switchMap((provider) => this.service.addOne(provider)),
+    tap((provider) => this.providerStore.add(provider))
   );
 }

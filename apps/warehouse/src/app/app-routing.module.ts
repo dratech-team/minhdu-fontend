@@ -6,36 +6,23 @@ const routes: Routes = [
   {
     path: 'auth/login',
     loadChildren: () =>
-      import('@minhdu-fontend/auth').then((m) => m.AuthModule),
+      import('@minhdu-fontend/auth').then((m) => m.AuthModule)
   },
   {
     path: '',
     component: WarehouseLayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./pages/dashboard/dashboard.module').then(
-            (m) => m.DashboardModule
-          ),
-      },
-      {
-        path: 'he-thong',
-        loadChildren: () =>
-          import('@minhdu-fontend/system').then(
-            (m) => m.SystemModule
-          ),
-      },
-    ],
-  },
+    children: []
+  }
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      initialNavigation: 'enabled',
-    }),
+      initialNavigation: 'enabled'
+    })
   ],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

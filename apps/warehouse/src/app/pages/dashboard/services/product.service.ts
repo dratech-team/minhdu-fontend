@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { Product } from '../../../../pages/warehouse/state/entities/product.entity';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Product } from '../entities/product.entity';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {

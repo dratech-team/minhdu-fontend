@@ -20,7 +20,7 @@ export class WarehouseEffect {
     switchMap(() => {
       return this.service.getAll();
     }),
-    tap(data => {
+    tap((data) => {
       this.warehouseStore.set(data);
     })
   );
@@ -30,5 +30,12 @@ export class WarehouseEffect {
   selectWarehouse$ = this.action$.pipe(
     ofType(WarehouseAction.selectedWarehouseId),
     tap((v) => this.warehouseStore.update(state => ({ ...state, selected: v.warehouseId })))
+  );
+
+  @Effect()
+  addWarehouse$ = this.action$.pipe(
+    ofType(WarehouseAction.addWarehouse),
+    switchMap((warehouse) => this.service.addOne(warehouse)),
+    tap(warehouse => this.warehouseStore.add(warehouse))
   );
 }

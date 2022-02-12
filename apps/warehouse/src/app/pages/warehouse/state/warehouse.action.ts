@@ -5,7 +5,7 @@ import { WarehouseDtoEntity } from './entities/warehouse-dto.entity';
 const loadWarehouses = createAction('[WAREHOUSE] Load Warehouses');
 
 const addWarehouse = createAction(
-  '[WAREHOUSE] Load Warehouses',
+  '[WAREHOUSE] Add Warehouses',
   props<{ warehouse: WarehouseDtoEntity }>()
 );
 
@@ -16,5 +16,6 @@ const selectedWarehouseId = createAction(
 
 export const WarehouseAction = {
   loadWarehouses,
-  selectedWarehouseId
+  selectedWarehouseId,
+  addWarehouse
 };

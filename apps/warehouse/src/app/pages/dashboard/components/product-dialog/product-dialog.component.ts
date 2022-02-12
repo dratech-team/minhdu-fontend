@@ -5,16 +5,16 @@ import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { AppState } from '../../../../../reducers';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { map, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { WarehouseQuery } from '../../../../../pages/warehouse/state/warehouse.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ProductQuery } from '../../state/product.query';
-import { ProviderQuery } from '../../../../../pages/provider/state/provider.query';
-import { ProviderActions } from '../../../../../pages/provider/state/provider.action';
-import { WarehouseAction } from '../../../../../pages/warehouse/state/warehouse.action';
+import { AppState } from '../../../../reducers';
+import { WarehouseQuery } from '../../../warehouse/state/warehouse.query';
+import { ProviderQuery } from '../../../provider/state/provider.query';
+import { ProviderActions } from '../../../provider/state/provider.action';
+import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -37,9 +37,9 @@ export class ProductDialogComponent implements OnInit {
     code: [this.data?.code, Validators.required],
     name: [this.data?.name, Validators.required],
     provider: [this.data?.provider, Validators.required],
-    expire: [
+    exp: [
       this.datePipe.transform(
-        this?.data?.expire, 'yyyy-MM-dd'
+        this?.data?.exp, 'yyyy-MM-dd'
       )
       , Validators.required],
     price: [this?.data?.price, Validators.required],
@@ -122,6 +122,7 @@ export class ProductDialogComponent implements OnInit {
 
   onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
     const fg = this.formGroup.get(type)?.value;
+
     if (!value?.id) {
       switch (type) {
         case 'branch': {
@@ -133,7 +134,7 @@ export class ProductDialogComponent implements OnInit {
           break;
         }
         case 'warehouse': {
-          // this.store.dispatch(WarehouseAction.ad({ provider: { name: fg } }));
+          this.store.dispatch(WarehouseAction.addWarehouse({ warehouse: { name: fg } }));
           break;
         }
         default: {

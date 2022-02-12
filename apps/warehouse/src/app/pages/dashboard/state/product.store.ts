@@ -1,6 +1,6 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Product } from '../../../../pages/warehouse/state/entities/product.entity';
 import { Injectable } from '@angular/core';
+import { Product } from '../entities/product.entity';
 
 export interface ProductState extends EntityState<Product> {
   loading: boolean;

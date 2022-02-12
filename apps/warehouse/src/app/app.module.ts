@@ -5,12 +5,7 @@ import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  AppBreadcrumbModule,
-  AppFooterModule,
-  AppHeaderModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,10 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,6 +25,11 @@ import { environment } from '../environments/environment';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { ProviderModule } from './pages/provider/provider.module';
+import { WarehouseModule } from './pages/warehouse/warehouse.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MedicineModule } from './pages/dashboard/medicine.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -65,22 +62,28 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
     MatFormFieldModule,
     MatSelectModule,
     MatMenuModule,
-    OrgchartModule
+    OrgchartModule,
+    ProviderModule,
+    WarehouseModule,
+    MedicineModule,
+    RouterModule,
+    MatTabsModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true,
+      multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true,
+      multi: true
     },
     HashLocationStrategy,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -4,9 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class ProviderService extends BaseService<ProviderEntity> {
-  constructor(public http: HttpClient) {
+  constructor(public readonly http: HttpClient) {
     super(Api.WAREHOUSE.PROVIDER, http);
   }
 
