@@ -12,8 +12,8 @@
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
-        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                (click)='updateOrder(order)'>
+        <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit'
+                (click)='updateOrder(order, "GENERAL")'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -65,7 +65,7 @@
             </div>
             <div class='col-md-8 py-1 border-bottom '>
               <span class='contain-detail' style=' color: #20c997'>
-                {{order.paymentTotal|number:'1.0'|notEmpty:'0'}} đ
+                {{order.paymentTotal | number:'1.0'|notEmpty:'0'}} đ
               </span>
             </div>
           </div>
@@ -75,8 +75,7 @@
             </div>
             <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
-                {{order?.ward ? order?.ward?.name + ' - ' + order?.ward?.district?.name + ' - ' +
-                order?.ward?.district?.province?.name : 'Đang cập nhật'}}
+                {{order?.province?.name + ' - ' + order?.district?.name + ' - ' + order?.ward?.name}}
               </span>
             </div>
           </div>
@@ -95,15 +94,16 @@
         </div>
       </div>
       <div class='col-12 mt-5'>
-        <div class='row d-flex align-items-center '>
-          <div class='row align-items-center title-table mr-4'>Hàng hoá</div>
+        <div class='d-flex align-items-center justify-content-between mb-2 '>
+          <div class='row align-items-center title-table ml-1'>Hàng hoá</div>
+          <button class='mt-3 btn btn-secondary' (click)='updateOrder(order, "COMMODITY")'>Thêm</button>
         </div>
         <div class='mt-3 '>
           <table class='mt-3'>
             <tr>
               <th class='text-center'> Mã hàng hóa</th>
               <th class='text-center'> Tên hàng hóa</th>
-<!--              <th class='text-center'>Đơn vị</th>-->
+              <!--              <th class='text-center'>Đơn vị</th>-->
               <th class='text-center'>Số lượng</th>
               <th class='text-center'>Đơn giá</th>
               <th class='text-center'>Tặng</th>
@@ -115,7 +115,7 @@
             <tr *ngFor='let commodity of order.commodities'>
               <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
-<!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
+              <!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
               <th class='text-center'> {{commodity.amount}}</th>
               <th class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</th>
               <th class='text-center'> {{commodity.gift || '0'}} </th>

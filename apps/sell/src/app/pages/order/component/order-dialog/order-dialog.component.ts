@@ -40,6 +40,7 @@ export class OrderDialogComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
+
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(
@@ -48,9 +49,9 @@ export class OrderDialogComponent implements OnInit {
       deliveredAt: [this.datePipe.transform(
         this.data?.order?.deliveredAt, 'yyyy-MM-dd')],
       explain: [this.data?.order?.explain],
-      province: [this.data?.order?.ward?.district?.province?.id, Validators.required],
-      district: [this.data?.order?.ward?.district?.id, Validators.required],
-      ward: [this.data?.order?.ward?.id, Validators.required]
+      province: [this.data?.order?.province?.id, Validators.required],
+      district: [this.data?.order?.district?.id],
+      ward: [this.data?.order?.ward?.id]
     });
   }
 
@@ -67,10 +68,11 @@ export class OrderDialogComponent implements OnInit {
     const order = {
       customerId: this.data.order.customerId,
       commodityIds: this.commoditiesSelected.map(item => item.id),
-      wardId: this.wardId || this.data.order.ward.id,
+      wardId: this.wardId || this.data.order?.ward?.id,
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
+    console.log(order)
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }

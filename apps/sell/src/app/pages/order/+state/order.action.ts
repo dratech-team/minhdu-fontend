@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Order, OrderDTO } from './order.interface';
+import { Order, OrderDTO, UpdateOrderDto } from './order.interface';
 
 export const addOrder = createAction(
   '[ADD_ORDER] Add Order',
@@ -45,7 +45,7 @@ export const getOrderSuccess = createAction(
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ order: Partial<Order>; id: number; typeUpdate?: 'DELIVERED' }>()
+  props<{ order: Partial<UpdateOrderDto>; id: number; typeUpdate?: 'DELIVERED' }>()
 );
 
 export const updateHideOrder = createAction(

@@ -4,18 +4,18 @@ import {
   Inject,
   Input,
   OnInit,
-  Output,
+  Output
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import {
   CommodityUnit,
   CustomerResource,
-  CustomerType,
+  CustomerType
 } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -25,21 +25,21 @@ import {
   handleValSubPickItems,
   pickAll,
   pickOne,
-  someComplete,
+  someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
 import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import {
   selectAllCommodity,
   selectedCommodityNewAdd,
-  selectedTotalCommodity,
+  selectedTotalCommodity
 } from '../../../pages/commodity/+state/commodity.selector';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { PickCommodityService } from './pick-commodity.service';
 
 @Component({
   selector: 'app-pick-commodity',
-  templateUrl: 'pick-commodity.component.html',
+  templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
   commodities: Commodity[] = [];
@@ -47,7 +47,6 @@ export class PickCommodityComponent implements OnInit {
   @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter<Commodity[]>();
-  resourceType = CustomerResource;
   customerType = CustomerType;
   pageIndex = 0;
   pageSize = 30;
@@ -59,7 +58,7 @@ export class PickCommodityComponent implements OnInit {
   formGroup = new FormGroup({
     code: new FormControl(''),
     name: new FormControl(''),
-    unit: new FormControl(''),
+    unit: new FormControl('')
   });
 
   constructor(
@@ -68,7 +67,8 @@ export class PickCommodityComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PickCommodityComponent>,
     private readonly service: PickCommodityService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.data?.commoditiesPicked) {
@@ -81,7 +81,7 @@ export class PickCommodityComponent implements OnInit {
     });
     this.store.dispatch(
       CommodityAction.loadInit({
-        CommodityDTO: { take: this.pageSize, skip: this.pageIndex },
+        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
       })
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
@@ -116,17 +116,19 @@ export class PickCommodityComponent implements OnInit {
       skip: this.pageIndex,
       name: val.name,
       code: val.code,
-      unit: val.unit,
+      unit: val.unit
     };
   }
 
   addCommodity() {
-    const ref = this.dialog.open(CommodityDialogComponent, { width: '40%' });
+    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
+      console.log('====', val);
+    });
   }
 
   deleteCommodity($event: any) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      width: 'fit-content',
+      width: 'fit-content'
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
@@ -138,7 +140,7 @@ export class PickCommodityComponent implements OnInit {
   updateCommodity(commodity: Commodity) {
     this.dialog.open(CommodityDialogComponent, {
       width: '40%',
-      data: commodity,
+      data: commodity
     });
   }
 

@@ -20,6 +20,8 @@ export class PickLocationComponent implements OnInit {
   @Input() isRequiredProvince: boolean = true;
   @Input() isRequiredDistrict: boolean = true;
   @Input() isRequiredWard: boolean = true;
+  @Input() province?: any;
+  @Input() district?: any;
   @Input() ward?: any;
   @Input() reload$?: Subject<boolean>;
   @Output() eventSelectProvince = new EventEmitter<any>();

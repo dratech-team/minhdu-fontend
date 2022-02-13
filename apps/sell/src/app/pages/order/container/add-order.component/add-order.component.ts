@@ -9,7 +9,6 @@ import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { Subject } from 'rxjs';
 import { OrderAction } from '../../+state/order.action';
-import { selectedOrderAdded } from '../../+state/order.selector';
 import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
@@ -31,7 +30,6 @@ export class AddOrderComponent implements OnInit {
   customerPicked: Customer | undefined;
   customerId: number | undefined;
   payType = PaymentType;
-  reload = new Subject<boolean>();
   formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;

@@ -14,6 +14,7 @@ import { MainAction } from '../../../../states/main.action';
 import { getSelectors } from '@minhdu-fontend/utils';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityDialogComponent } from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
+import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -46,8 +47,20 @@ export class DetailOrderComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateOrder(order: Order) {
-    this.dialog.open(OrderDialogComponent, { width: '60%', data: { order: order, type: 'UPDATE' } });
+  updateOrder(order: Order, type?: 'GENERAL' | 'COMMODITY') {
+    if (type === 'GENERAL') {
+      this.dialog.open(OrderDialogComponent, { width: '60%', data: { order: order, tab: 1, type: 'UPDATE' } });
+    } else {
+      this.dialog.open(PickCommodityComponent, {
+        width: '60%',
+        data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
+      }).afterClosed().subscribe((value) => {
+        this.store.dispatch(OrderAction.updateOrder({
+          id: order.id,
+          order: { commodityIds: value.map((e: any) => e.id) }
+        }));
+      });
+    }
   }
 
   detailRoute(id: number) {

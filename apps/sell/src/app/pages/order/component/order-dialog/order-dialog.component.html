@@ -7,7 +7,7 @@
   </div>
   <form [formGroup]='formGroup'>
     <mat-tab-group dynamicHeight>
-      <mat-tab class='col-12' label='Thông tin đơn hàng'>
+      <mat-tab class='col-12' label='Thông tin đơn hàng' *ngIf='data?.tab === 1'>
         <div [formGroup]='formGroup' style='height: 30vh'>
           <div class='form-group' style='margin: 5% 10%'>
             <div class='row'>
@@ -31,7 +31,11 @@
               </div>
             </div>
             <app-pick-location
-              [ward]='data?.order?.ward'
+              [province]='data.order.province'
+              [district]='data.order?.district'
+              [ward]='data.order?.ward'
+              [isRequiredDistrict]='false'
+              [isRequiredWard]='false'
               [formGroup]='formGroup'
               [form]='checkValid'
               [submitted]='submitted'
@@ -42,9 +46,9 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa'>
+      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>
         <div class='mt-2'>
-          <app-pick-commodity  (checkEvent)='pickCommodity($event)'></app-pick-commodity>
+          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>
         </div>
       </mat-tab>
     </mat-tab-group>

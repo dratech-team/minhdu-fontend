@@ -28,6 +28,10 @@ export interface Order {
   hide: boolean;
 }
 
+export interface UpdateOrderDto extends Omit<Order, 'commodities'>{
+  commodityIds: number[];
+}
+
 export interface OrderDTO {
   take: number;
   skip: number;
