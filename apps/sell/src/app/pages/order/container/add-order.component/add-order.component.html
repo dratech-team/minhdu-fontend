@@ -142,9 +142,9 @@
                 <td class='text-center'> {{commodity.name}} </td>
                 <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</td>
                 <td class='text-center'>{{commodity.amount | number :'1.0-0'}} </td>
-                <td class='text-center'>{{commodity?.gift | number :'1.0-0' | notEmpty:'0'}} </td>
-                <td class='text-center'>{{commodity?.more?.amount | number :'1.0-0' | notEmpty:'0'}} </td>
-                <td class='text-center'> {{commodity.more.price | number:'1.0-0' | notEmpty:'0'}} đ</td>
+                <td class='text-center'>{{commodity.gift | number :'1.0-0' | notEmpty:'0'}} </td>
+                <td class='text-center'>{{commodity.more?.amount | number :'1.0-0' | notEmpty:'0'}} </td>
+                <td class='text-center'> {{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}} đ</td>
                 <td class='text-center '> {{commodity?.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}}</td>
                 <td class='text-center'>
                   <button (click)='deleteCommodity(commodity)' style=' font-size: 10px' class='btn btn-danger'>bỏ chọn

@@ -103,23 +103,25 @@
             <tr>
               <th class='text-center'> Mã hàng hóa</th>
               <th class='text-center'> Tên hàng hóa</th>
-              <th class='text-center'>Đơn vị</th>
-              <th class='text-center'>Đơn giá</th>
-              <th class='text-center'>Khuyến mãi</th>
-              <th class='text-center'>Giá sau khuyến mãi</th>
+<!--              <th class='text-center'>Đơn vị</th>-->
               <th class='text-center'>Số lượng</th>
+              <th class='text-center'>Đơn giá</th>
+              <th class='text-center'>Tặng</th>
+              <th class='text-center'>Số lượng mua thêm</th>
+              <th class='text-center'>Đơn giá mua thêm</th>
               <th class='text-center'>Sửa</th>
               <th class='text-center'>Xóa</th>
             </tr>
             <tr *ngFor='let commodity of order.commodities'>
               <th class='text-center '> {{commodity.code}} </th>
               <th class='text-center'> {{commodity.name}} </th>
-              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>
+<!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
+              <th class='text-center'> {{commodity.amount}}</th>
               <th class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</th>
               <th class='text-center'> {{commodity.gift || '0'}} </th>
-              <th class='text-center'>{{commodity?.more ? commodity.more.price : '' | number:'1.0-0' | notEmpty:'-'}}
+              <th class='text-center'> {{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
+              <th class='text-center'>{{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}}
               </th>
-              <th class='text-center'> {{commodity.amount}}</th>
               <th class='text-center'>
                 <button class='btn btn-edit' (click)='updateComodity(commodity.id, commodity)'>Sửa</button>
               </th>
