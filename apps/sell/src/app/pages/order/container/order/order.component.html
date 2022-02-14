@@ -117,7 +117,10 @@
           <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
                   "border-top": order.commodities.length > 1 && index  !== 0
                   }' *ngFor='let commodity of order.commodities; let index = index'>
-            {{commodity.name + ' (Mua: ' + commodity.amount + (commodity.gift ? ', tặng: ' + commodity.gift : '') + (commodity.more ? ', mua thêm: ' + commodity.more.amount : '') + ')'}}
+            {{commodity.name + ' (Mua: ' + (commodity.amount | number:'1.0-0') + (commodity.gift ? ', tặng: ' + (commodity.gift | number:'1.0-0') : '') + (commodity.more ? ', mua thêm: ' + (commodity.more.amount | number:'1.0-0') : '') + '). Tổng: '}}
+            <span
+              class='text-danger'>{{(commodity.amount + (commodity?.gift || 0) + (commodity.more?.amount || 0) | number:'1.0-0')}}
+          </span>
           </div>
         </th>
         <th style='color: #f86c6b'>
