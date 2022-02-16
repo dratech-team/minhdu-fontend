@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
 import { ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
@@ -45,6 +45,7 @@ export class OrderComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly exportService: ExportService
   ) {
   }
@@ -53,12 +54,14 @@ export class OrderComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
 
   ngOnInit() {
+    const params = this.route.snapshot.queryParams;
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.store.dispatch(
       OrderAction.loadInit({
-        orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: 0 }
+        orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 }
       })
     );
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
