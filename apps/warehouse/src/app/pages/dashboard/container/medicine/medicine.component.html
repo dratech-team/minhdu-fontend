@@ -80,7 +80,7 @@
             <input disabled>
           </th>
           <th>
-            <div class='border-top text-center'>Ngày nhập</div>
+            <div class='border-top text-center'>Ngày nhập kho</div>
             <input disabled>
           </th>
         </tr>
@@ -108,7 +108,7 @@
             {{product?.provider?.name}}
           </th>
           <th class='pointer'>
-            {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin}}
+            {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
           </th>
           <th class='pointer' style='color: #4dbd74'>
             {{product.price | number:'1.0'|notEmpty:'0'}} đ

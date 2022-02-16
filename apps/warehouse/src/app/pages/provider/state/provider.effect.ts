@@ -14,7 +14,7 @@ export class ProviderEffect {
   ) {
   }
 
-  @Effect()
+  @Effect({ dispatch: false })
   loadProviders$ = this.action$.pipe(
     ofType(ProviderActions.loadProviders),
     switchMap(() => {
@@ -28,7 +28,9 @@ export class ProviderEffect {
   @Effect()
   addProvider$ = this.action$.pipe(
     ofType(ProviderActions.addProvider),
-    switchMap((provider) => this.service.addOne(provider)),
+    switchMap((provider) => {
+      return this.service.addOne(provider);
+    }),
     tap((provider) => this.providerStore.add(provider))
   );
 }

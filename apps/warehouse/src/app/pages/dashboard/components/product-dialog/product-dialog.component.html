@@ -118,12 +118,12 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Đơn giá<span class='star'>*</span></label>
-        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' inputCurrency>
+        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask [options]="{ suffix: ' đ' }">
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='amount'>Số lượng<span class='star'>*</span></label>
         <input type='text' class='form-control' id='amount' placeholder='200,000' formControlName='amount'
-               inputCurrency>
+               currencyMask>
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='discount'>Chiếc khấu (%)</label>
