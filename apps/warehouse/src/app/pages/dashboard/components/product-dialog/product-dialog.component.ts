@@ -37,9 +37,17 @@ export class ProductDialogComponent implements OnInit {
     code: [this.data?.code, Validators.required],
     name: [this.data?.name, Validators.required],
     provider: [this.data?.provider, Validators.required],
+    accountedAt: [this.data?.accountedAt, Validators.required],
+    billedAt: [this.data?.billedAt, Validators.required],
+    billCode: [this.data?.billCode, Validators.required],
     exp: [
       this.datePipe.transform(
         this?.data?.exp, 'yyyy-MM-dd'
+      )
+      , Validators.required],
+    mfg: [
+      this.datePipe.transform(
+        this?.data?.mfg, 'yyyy-MM-dd'
       )
       , Validators.required],
     price: [this?.data?.price, Validators.required],

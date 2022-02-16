@@ -12,6 +12,10 @@ export class ProviderService extends BaseService<ProviderEntity> {
     super(Api.WAREHOUSE.PROVIDER, http);
   }
 
+  addOne(props: any): Observable<ProviderEntity> {
+    return super.addOne(props);
+  }
+
   getAll(params?: any): Observable<ProviderEntity[]> {
     return super.getAll(params);
   }
