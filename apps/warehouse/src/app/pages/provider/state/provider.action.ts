@@ -3,7 +3,7 @@ import { ProviderDtoEntity } from '../entities/provider-dto.entity';
 
 const addProvider = createAction(
   '[PROVIDER] Add Provider',
-  props<{ provider: ProviderDtoEntity }>()
+  props<{ name: ProviderDtoEntity['name'] }>()
 );
 
 const loadProviders = createAction('[PROVIDER] Load Providers');

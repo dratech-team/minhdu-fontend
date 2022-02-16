@@ -14,7 +14,7 @@ export class ProviderEffect {
   ) {
   }
 
-  @Effect()
+  @Effect({ dispatch: false })
   loadProviders$ = this.action$.pipe(
     ofType(ProviderActions.loadProviders),
     switchMap(() => {

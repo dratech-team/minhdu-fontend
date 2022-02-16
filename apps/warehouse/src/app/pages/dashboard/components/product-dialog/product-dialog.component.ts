@@ -15,6 +15,7 @@ import { WarehouseQuery } from '../../../warehouse/state/warehouse.query';
 import { ProviderQuery } from '../../../provider/state/provider.query';
 import { ProviderActions } from '../../../provider/state/provider.action';
 import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
+import { ProductAction } from '../../state/product.action';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -30,36 +31,37 @@ export class ProductDialogComponent implements OnInit {
   isTransfer = false;
 
   formGroup = this.formBuilder.group({
-    barcode: [this.data?.barcode, Validators.required],
-    branch: [this.data?.branchId],
-    transferBranch: [],
-    warehouse: [this.warehouseQuery.getEntity(this.warehouseId)?.name],
-    code: [this.data?.code, Validators.required],
     name: [this.data?.name, Validators.required],
-    provider: [this.data?.provider, Validators.required],
-    accountedAt: [this.data?.accountedAt, Validators.required],
-    billedAt: [this.data?.billedAt, Validators.required],
-    billCode: [this.data?.billCode, Validators.required],
-    exp: [
-      this.datePipe.transform(
-        this?.data?.exp, 'yyyy-MM-dd'
-      )
-      , Validators.required],
+    code: [this.data?.code, Validators.required],
     mfg: [
       this.datePipe.transform(
         this?.data?.mfg, 'yyyy-MM-dd'
       )
       , Validators.required],
-    price: [this?.data?.price, Validators.required],
-    discount: [this?.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
+    exp: [
+      this.datePipe.transform(
+        this?.data?.exp, 'yyyy-MM-dd'
+      )
+      , Validators.required],
+    accountedAt: [this.data?.accountedAt, Validators.required],
+    billedAt: [this.data?.billedAt, Validators.required],
+    billCode: [this.data?.billCode, Validators.required],
+    branch: [this.data?.branchId],
+    warehouse: [this.warehouseQuery.getEntity(this.warehouseId)?.name],
+    price: [this.data?.price, Validators.required],
+    amount: [this.data?.amount, Validators.required],
+    discount: [this.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
+    provider: [this.data?.provider, Validators.required],
+    note: [this.data?.note],
+    transferBranch: [],
     invoice: [this?.data?.invoice, Validators.required],
     unit: [this?.data?.unit || UnitMedicineConstant[1].value, Validators.required],
-    amount: [this?.data?.amount, Validators.required],
     createdAt: [
       this.datePipe.transform(
         this?.data?.createdAt || new Date(), 'yyyy-MM-dd'
       )
-      , Validators.required]
+      , Validators.required
+    ]
   });
 
   constructor(
@@ -77,7 +79,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.store.dispatch(ProviderActions.loadProviders());
+    this.action$.dispatch(ProviderActions.loadProviders());
 
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
@@ -92,41 +94,32 @@ export class ProductDialogComponent implements OnInit {
 
   onSubmit() {
     const value = this.formGroup.value;
-    console.log(value);
-    const medicine = {
-      code: value?.code,
+    const product = {
       name: value.name,
+      code: value?.code,
+      mfg: value?.mfg,
+      exp: value?.exp,
+      accountedAt: value?.accountedAt,
+      billedAt: value?.billedAt,
+      billCode: value?.billCode,
       branchId: value.branch.id > 0 ? value.branch.id : null,
-      providerId: value.provider,
-      expire: value.expire,
+      warehouseId: value.warehouse.id,
       price: value.price,
-      discount: value?.discount ? value.discount / 100 : undefined,
-      createdAt: value.createdAt,
-      invoice: value?.invoice,
       amount: value.amount,
-      unit: value?.unit
+      discount: value?.discount ? value.discount / 100 : undefined,
+      providerId: value.provider.id,
+      note: value?.note,
+      unit: value.unit,
+      createdAt: value.createdAt
     };
-    if (this.data?.isUpdate) {
-      // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
-    } else {
-      // this.store.dispatch(MedicineAction.addMedicine({ medicine: medicine }));
-    }
+    this.action$.dispatch(ProductAction.addProduct({ product: product }));
+    // if (this.data?.isUpdate) {
+    //   console.log("update product")
+    //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
+    // } else {
+    //   this.action$.dispatch(ProductAction.addProduct({ product: product }));
+    // }
   }
-
-  // onChangeBranch(event: any, branch: any) {
-  //   const value = this.formGroup.get('branch')?.value;
-  //   if (branch?.id < 0) {
-  //     this.isTransfer = false;
-  //     this.formGroup.get('branch')?.setValue(branch.name);
-  //   } else if (branch?.id === 0) {
-  //     this.isTransfer = false;
-  //     this.store.dispatch(addBranch({ branch: { name: value } }));
-  //     this.formGroup.get('branch')?.setValue(value);
-  //   } else {
-  //     this.isTransfer = true;
-  //     this.formGroup.get('branch')?.patchValue(branch.name);
-  //   }
-  // }
 
   onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
     const fg = this.formGroup.get(type)?.value;
@@ -138,11 +131,11 @@ export class ProductDialogComponent implements OnInit {
           break;
         }
         case 'provider': {
-          this.store.dispatch(ProviderActions.addProvider({ provider: { name: fg } }));
+          this.action$.dispatch(ProviderActions.addProvider({ name: fg }));
           break;
         }
         case 'warehouse': {
-          this.store.dispatch(WarehouseAction.addWarehouse({ warehouse: { name: fg } }));
+          this.action$.dispatch(WarehouseAction.addWarehouse({ warehouse: { name: fg } }));
           break;
         }
         default: {

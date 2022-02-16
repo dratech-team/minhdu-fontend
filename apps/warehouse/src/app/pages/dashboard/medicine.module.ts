@@ -14,7 +14,8 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { ProductService } from './services/product.service';
 import { ProductEffect } from './state/product.effect';
 import { WarehouseService } from '../warehouse/services/warehouse.service';
-import { WarehouseEffect } from '../warehouse/state/warehouse.effect';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { WarehouseEffect } from '../warehouse/state/warehouse.effect';
     NgxSkeletonLoaderModule,
     AkitaNgEffectsModule.forFeature([ProductEffect]),
     MatAutocompleteModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
   ],
   declarations: [
     ProductDialogComponent,

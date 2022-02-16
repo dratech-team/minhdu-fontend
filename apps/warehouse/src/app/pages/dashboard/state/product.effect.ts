@@ -26,4 +26,11 @@ export class ProductEffect {
     }),
     catchError((err) => throwError(err))
   );
+
+  @Effect()
+  addProduct$ = this.action$.pipe(
+    ofType(ProductAction.addProduct),
+    switchMap(product => this.service.addOne(product.product)),
+    tap(data => this.productStore.add(data))
+  );
 }
