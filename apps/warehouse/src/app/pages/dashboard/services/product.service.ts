@@ -20,6 +20,10 @@ export class ProductService extends BaseService<Product> {
     return super.getAll(params);
   }
 
+  getOne(id: any): Observable<Product> {
+    return super.getOne(id);
+  }
+
   pagination(params?: any): Observable<ResponsePaginate<Product>> {
     return super.pagination(params);
   }

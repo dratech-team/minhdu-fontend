@@ -107,7 +107,6 @@ export class ProductDialogComponent implements OnInit {
 
   onSubmit() {
     const value = this.formGroup.value;
-    console.log(value)
     const product = {
       name: value.name,
       code: value?.code,
@@ -162,8 +161,8 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  onSelectItem(event: Product) {
-    this.data = event;
+  onSelectItem(event: any) {
+    this.formGroup.reset(event);
   }
 }
 
