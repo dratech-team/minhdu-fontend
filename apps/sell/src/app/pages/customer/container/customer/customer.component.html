@@ -112,7 +112,8 @@
 
 <app-mouse-right
   #child
-  [items]='[ItemContextMenu.PAYMENT]'
+  [items]='[ItemContextMenu.PAYMENT, ItemContextMenu.ADD_ORDER]'
+  (onAddOrder)='addOrder($event)'
   (onAdd)='add()'
   (onDel)='deleteCustomer($event)'
   (onPay)='payment($event)'

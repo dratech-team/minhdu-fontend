@@ -5,11 +5,12 @@ import { ItemContextMenu } from '../../../../enums/sell/page-type.enum';
 @Component({
   selector: 'app-mouse-right',
   templateUrl: './mouse-right.component.html',
-  styleUrls: ['./mouse-right.component.scss'],
+  styleUrls: ['./mouse-right.component.scss']
 })
 export class MouseRightComponent {
   @Input() items?: ItemContextMenu[];
   ItemContextMenu = ItemContextMenu;
+  @Output() onAddOrder = new EventEmitter();
   @Output() onAdd = new EventEmitter();
   @Output() onDel = new EventEmitter();
   @Output() onDelPerm = new EventEmitter();
@@ -24,15 +25,20 @@ export class MouseRightComponent {
   @Output() onPositions = new EventEmitter();
   @Output() onUpdate = new EventEmitter();
 
-  constructor(private contextMenuService: ContextMenuService) {}
+  constructor(private contextMenuService: ContextMenuService) {
+  }
 
   public onContextMenu($event: MouseEvent, item: any): void {
     this.contextMenuService.show.next({
       event: $event,
-      item: item,
+      item: item
     });
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  addOrder(item: any): void {
+    this.onAddOrder.emit(item);
   }
 
   add(item: any): void {
@@ -42,7 +48,7 @@ export class MouseRightComponent {
   delete(item: any): void {
     this.onDel.emit(item);
   }
-  
+
   update(item: any) {
     this.onUpdate.emit(item);
   }
@@ -66,6 +72,7 @@ export class MouseRightComponent {
   restore(item: any) {
     this.onRestore.emit(item);
   }
+
   onHistoryPayroll(item: any) {
     this.onHisPayroll.emit(item);
   }
@@ -77,7 +84,7 @@ export class MouseRightComponent {
   payroll(item: any) {
     this.onPayroll.emit(item);
   }
-  
+
   overtime(item: any) {
     this.onOvertime.emit(item);
   }

@@ -29,17 +29,9 @@
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='provider'>Nhà cung cấp</label>
-        <input matInput type='search' [matAutocomplete]='provider' class='form-control' id='provider'
-               placeholder='Nhà thuốc An Khang' formControlName='provider'>
-        <mat-autocomplete #provider='matAutocomplete'>
-          <mat-option
-            *ngFor='let provider of providers$ | async'
-            [value]='provider'
-            (onSelectionChange)='onChangeAutoComp($event, provider, "provider")'
-          >
-            {{provider.name}}
-          </mat-option>
-        </mat-autocomplete>
+        <input nz-input type='search' [nzAutocomplete]='provider' class='form-control' id='provider'
+               placeholder='Nhà thuốc An Khang' formControlName='provider' (ngModelChange)='onChangeProvider($event)'>
+        <nz-autocomplete [nzDataSource]='providerOptions' #provider></nz-autocomplete>
       </div>
     </div>
     <div class='row mt-3'>
@@ -87,20 +79,20 @@
         </mat-autocomplete>
       </div>
     </div>
-    <div class='row mt-3'>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='accountedAt'>Ngày hạch toán</label>
-        <input type='date' class='form-control' id='accountedAt' formControlName='accountedAt'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='billedAt'>Ngày chứng từ</label>
-        <input type='date' class='form-control' id='billedAt' formControlName='billedAt'>
-      </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='billCode'>Số chứng từ</label>
-        <input type='text' class='form-control' id='billCode' formControlName='billCode'>
-      </div>
-    </div>
+<!--    <div class='row mt-3'>-->
+<!--      <div class='col-sm' [formGroup]='formGroup'>-->
+<!--        <label for='accountedAt'>Ngày hạch toán</label>-->
+<!--        <input type='date' class='form-control' id='accountedAt' formControlName='accountedAt'>-->
+<!--      </div>-->
+<!--      <div class='col-sm' [formGroup]='formGroup'>-->
+<!--        <label for='billedAt'>Ngày chứng từ</label>-->
+<!--        <input type='date' class='form-control' id='billedAt' formControlName='billedAt'>-->
+<!--      </div>-->
+<!--      <div class='col-sm' [formGroup]='formGroup'>-->
+<!--        <label for='billCode'>Số chứng từ</label>-->
+<!--        <input type='text' class='form-control' id='billCode' formControlName='billCode'>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='mfg'>Ngày sản xuất (nếu có)</label>
@@ -137,15 +129,11 @@
           </mat-option>
         </mat-select>
       </div>
-      <div class='col-sm' [formGroup]='formGroup'>
-        <label for='createdAt'>Ngày nhập<span class='star'>*</span></label>
-        <input type='date' class='form-control' id='createdAt' placeholder='1,000' formControlName='createdAt'>
-      </div>
     </div>
 
     <div class='row d-flex mt-3 justify-content-center'>
       <button type='button' class='btn btn-secondary'>Huỷ</button>
-      <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
+      <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> {{'Xác nhận'}}</button>
     </div>
   </div>
 </form>

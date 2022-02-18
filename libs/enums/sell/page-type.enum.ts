@@ -9,4 +9,5 @@ export enum ItemContextMenu {
   PAYROLL = 'PAYROLL',
   OVERTIME = 'OVERTIME',
   POSITIONS = 'POSITIONS',
+  ADD_ORDER = 'ADD_ORDER',
 }

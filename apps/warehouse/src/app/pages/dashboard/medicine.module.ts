@@ -16,9 +16,11 @@ import { ProductEffect } from './state/product.effect';
 import { WarehouseService } from '../warehouse/services/warehouse.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 
 @NgModule({
   imports: [
+    NzAutocompleteModule,
     ComponentsModule,
     ReactiveFormsModule,
     MatInputModule,

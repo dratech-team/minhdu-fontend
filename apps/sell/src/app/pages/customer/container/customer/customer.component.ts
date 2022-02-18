@@ -73,6 +73,15 @@ export class CustomerComponent implements OnInit {
       .subscribe();
   }
 
+  addOrder($event?: any) {
+    console.log()
+    this.router.navigate(['/don-hang/them-don-hang'], {
+      queryParams: {
+        data: $event.id
+      }
+    }).then();
+  }
+
   add($event?: any) {
     this.dialog.open(CustomerDialogComponent, {
       width: '50%',

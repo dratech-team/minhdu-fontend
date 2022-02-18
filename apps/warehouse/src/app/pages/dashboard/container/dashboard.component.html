@@ -78,10 +78,10 @@
             <div class='border-top text-center'>Chiếc khấu</div>
             <input disabled>
           </th>
-          <th>
-            <div class='border-top text-center'>Số chứng từ</div>
-            <input disabled>
-          </th>
+          <!--          <th>-->
+          <!--            <div class='border-top text-center'>Số chứng từ</div>-->
+          <!--            <input disabled>-->
+          <!--          </th>-->
           <th>
             <div class='border-top text-center'>Đơn vị</div>
             <input disabled>
@@ -119,7 +119,7 @@
             {{product?.amount}}
           </th>
           <th class='pointer' style='color: #4dbd74'>
-            {{product.price * product.amount | number:'1.0'|notEmpty:'0'}}
+            {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
           </th>
           <th class='pointer'>
             {{product?.code}}
@@ -133,9 +133,9 @@
           <th class='pointer' style='color: #4dbd74'>
             {{(product.discount || 0) * 100 + '%' }}
           </th>
-          <th class='pointer'>
-            {{product?.billCode}}
-          </th>
+          <!--          <th class='pointer'>-->
+          <!--            {{product?.billCode}}-->
+          <!--          </th>-->
           <th class='pointer'>
             {{product.unit | transform:medicineConstant}}
           </th>
