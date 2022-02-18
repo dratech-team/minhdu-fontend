@@ -14,6 +14,17 @@
     <table [formGroup]='formGroup' style='min-width: 1800px'>
       <thead>
       <tr>
+        <th>
+          <div class=''>Ngày nhận hàng</div>
+          <div class='d-flex border-top'>
+            <mat-date-range-input [rangePicker]='picker2'>
+              <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
+              <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]='picker2'></mat-datepicker-toggle>
+            <mat-date-range-picker #picker2></mat-date-range-picker>
+          </div>
+        </th>
         <th style='min-width: 200px'>
           <div class=''>Khách hàng</div>
           <input formControlName='name' class='form-control' type='search'>
@@ -27,17 +38,6 @@
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-          </div>
-        </th>
-        <th>
-          <div class=''>Ngày giao hàng</div>
-          <div class='d-flex border-top'>
-            <mat-date-range-input [rangePicker]='picker2'>
-              <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
-              <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]='picker2'></mat-datepicker-toggle>
-            <mat-date-range-picker #picker2></mat-date-range-picker>
           </div>
         </th>
         <th>
@@ -89,14 +89,14 @@
         (click)='readAndUpdate(order.id, false)'
         (contextmenu)='child.onContextMenu($event, order)'
       >
+        <th>
+          {{((order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao')}}
+        </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{order.customer?.lastName}}
         </th>
         <th>
           {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
-        </th>
-        <th>
-          {{((order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao')}}
         </th>
         <th *ngIf='order?.routes?.length; else notCar'>
           <span *ngFor='let route of order?.routes'>

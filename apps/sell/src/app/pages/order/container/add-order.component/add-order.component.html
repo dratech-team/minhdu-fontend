@@ -31,20 +31,23 @@
             </div>
           </div>
           <div class='col-6' [formGroup]='formGroup'>
-            <label for='explain' class='h5'>Diễn giải</label>
+            <label for='explain' class='h5'>Chú thích</label>
             <input type='text' class='form-control' id='explain' formControlName='explain'>
           </div>
         </div>
         <div class='row mt-3 ml-2 d-flex flex-column'>
-          <div class='ml-3 h5'>Nơi nhận hàng<span class='star'>*</span>
-          </div>
           <div class='d-flex'>
+            <div>
+              <label for='deliveriedAt' class='h5'>Ngày nhận hàng</label>
+              <input type='date' class='form-control' id='deliveriedAt' formControlName='deliveriedAt'>
+            </div>
             <app-pick-location
               class='col-9'
               [formGroup]='formGroup'
               [form]='checkValid'
               [submitted]='submitted'
               (eventSelectWard)='onSelectWard($event)'
+              (eventSelectProvince)='provinceId =$event'
               [isRequiredDistrict]='false'
               [isRequiredWard]='false'
             ></app-pick-location>
@@ -68,14 +71,15 @@
           <table class='mb-1 ml-4' style='width:98%'>
             <tr>
               <th class='text-center'>Tên khách hàng</th>
+              <th class='text-center'>Số điện thoại</th>
               <th class='text-center'>Loại khách hàng</th>
               <th class='text-center'>Nguồn khác hàng</th>
-              <th class='text-center'>Số điện thoại</th>
               <th class='text-center'>Email</th>
               <th class='text-center'>Bỏ chọn</th>
             </tr>
             <tr>
               <td class='text-center'>{{customerPicked.lastName}}</td>
+              <td class='text-center'>{{customerPicked?.phone}}</td>
               <td
                 class='text-center'> {{customerPicked?.type === customerType.AGENCY ? 'Đại lý' : customerPicked?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</td>
               <td class='text-center'>
@@ -89,7 +93,6 @@
                     : 'Khác'
                 }}
               </td>
-              <td class='text-center'>{{customerPicked?.phone}}</td>
               <td class='text-center' *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
               <td class='text-center' *ngIf='!customerPicked?.email'>Chưa cập nhật</td>
               <td class='text-center'>

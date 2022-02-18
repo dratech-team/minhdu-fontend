@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AkitaDevtools } from '@datorama/akita-ngdevtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -45,11 +45,6 @@ import { RouterModule } from '@angular/router';
     EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
     AkitaNgDevtools.forRoot(),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true // Pauses recording actions and state changes when the extension window is not open
-    }),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,

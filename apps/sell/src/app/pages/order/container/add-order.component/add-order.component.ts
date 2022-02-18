@@ -34,7 +34,8 @@ export class AddOrderComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
-  wardId!: number;
+  wardId?: number;
+  provinceId!: number;
 
   constructor(
     private readonly store: Store<AppState>,
@@ -56,6 +57,7 @@ export class AddOrderComponent implements OnInit {
     });
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
+      deliveriedAt: [],
       explain: ['']
     });
   }
@@ -132,8 +134,10 @@ export class AddOrderComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       createdAt: val.createdAt,
+      deliveredAt: val.deliveredAt,
       explain: val.explain,
       wardId: this.wardId,
+      provinceId: this.provinceId,
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
