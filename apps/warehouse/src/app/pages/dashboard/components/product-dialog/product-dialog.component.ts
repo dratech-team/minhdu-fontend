@@ -22,13 +22,11 @@ import { ProductAction } from '../../state/product.action';
 })
 export class ProductDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart).pipe(map(branches => branches.concat({ id: -1, name: 'Kho tổng' })));
-  transferBranches$ = this.branches$.pipe(map(branches => branches.filter(branch => branch.id !== this.formGroup.get('branch')?.value.id as number)));
   warehouse$ = this.warehouseQuery.selectAll();
   providers$ = this.providerQuery.selectAll();
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
-  isTransfer = false;
 
   formGroup = this.formBuilder.group({
     name: [this.data?.name, Validators.required],
@@ -65,7 +63,6 @@ export class ProductDialogComponent implements OnInit {
   });
 
   constructor(
-    @Inject(LOCALE_ID) private locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
@@ -90,6 +87,10 @@ export class ProductDialogComponent implements OnInit {
       this.formGroup.get('provider')?.valueChanges?.pipe(startWith('')) || of(''),
       this.providers$
     );
+  }
+
+  onClick(event: any) {
+    console.log(event)
   }
 
   onSubmit() {
@@ -123,7 +124,6 @@ export class ProductDialogComponent implements OnInit {
 
   onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
     const fg = this.formGroup.get(type)?.value;
-
     if (!value?.id) {
       switch (type) {
         case 'branch': {
@@ -142,7 +142,7 @@ export class ProductDialogComponent implements OnInit {
           console.error('[product-dialog.component.ts] Type onChange Autocomplete unavailble');
         }
       }
-      this.formGroup.get(type)?.setValue(fg);
+      this.formGroup.get(type)?.patchValue(fg);
     } else {
       this.formGroup.get(type)?.patchValue(value.name);
     }

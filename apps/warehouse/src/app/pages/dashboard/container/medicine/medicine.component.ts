@@ -21,6 +21,7 @@ export class MedicineComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({ id: -1, name: 'Tất cả' })));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
+  warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
 
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
@@ -102,6 +103,6 @@ export class MedicineComponent implements OnInit {
   import() {
     this.dialog.open(ProductDialogComponent, {
       data: { isUpdate: false }
-    });
+    }).afterClosed();
   }
 }

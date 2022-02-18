@@ -59,8 +59,9 @@
         <mat-autocomplete #warehouse='matAutocomplete'>
           <mat-option
             *ngFor='let warehouse of warehouse$ | async'
-            [value]=' warehouse'
+            [value]='warehouse'
             (onSelectionChange)='onChangeAutoComp($event, warehouse, "warehouse")'
+
           >
             {{warehouse.name}}
           </mat-option>
@@ -118,7 +119,8 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='price'>Đơn giá<span class='star'>*</span></label>
-        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask [options]="{ suffix: ' đ' }">
+        <input type='text' class='form-control' id='price' placeholder='200,000' formControlName='price' currencyMask
+               [options]="{ suffix: ' đ' }">
       </div>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='amount'>Số lượng<span class='star'>*</span></label>
@@ -147,7 +149,7 @@
     </div>
 
     <div class='row d-flex mt-3 justify-content-center'>
-      <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+      <button type='button' class='btn btn-secondary'>Huỷ</button>
       <button type='submit' mat-dialog-close class='btn btn-dark ml-2'> Xác nhận</button>
     </div>
   </div>

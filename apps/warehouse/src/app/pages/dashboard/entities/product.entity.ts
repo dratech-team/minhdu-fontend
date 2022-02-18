@@ -11,11 +11,11 @@ export interface Product {
   readonly billedAt?: Date;
   readonly billCode?: string;
   readonly branch?: Branch;
-  readonly warehouse?: Warehouse;
-  readonly price?: number;
-  readonly  amount: number;
+  readonly warehouse: Warehouse;
+  readonly price: number;
+  readonly amount: number;
   readonly discount?: number;
-  readonly provider?: Provider;
+  readonly provider: Provider;
   readonly note?: string;
   readonly unit: WarehouseUnit;
   readonly createdAt?: Date;
