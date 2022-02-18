@@ -16,6 +16,7 @@ export interface Customer {
   issuedBy: string,
   ward: Ward,
   wardId: number,
+  district?: { id: number, name: string },
   province: { id: number, name: string },
   address: string,
   email?: string,

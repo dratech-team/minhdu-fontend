@@ -15,6 +15,11 @@
           <input class='form-control' type='search' placeholder='Trần Văn A' formControlName='name'>
         </th>
         <th style='width: 150px'>
+          <div class=''>Số điện thoại</div>
+          <input formControlName='phone' class='form-control' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
+                 maxlength='12'>
+        </th>
+        <th style='width: 150px'>
           <div class=''>Ngày sinh</div>
           <input formControlName='birthDay' class='form-control' type='date'>
         </th>
@@ -31,21 +36,16 @@
           </mat-select>
         </th>
         <th style='width: 150px'>
-          <div class=''>Số điện thoại</div>
-          <input formControlName='phone' class='form-control' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
-                 maxlength='12'>
-        </th>
-        <th style='width: 150px'>
           <div>Tiềm năng</div>
           <mat-select class='select border-top' style='width: 100%' matNativeControl required
                       formControlName='isPotential'>
             <mat-option *ngFor='let item of PotentialType' [value]='item.type'>{{item.name}}</mat-option>
           </mat-select>
         </th>
-        <th style='width: 200px'>
-          <div class=''>Quốc gia</div>
-          <input formControlName='nationId' class='form-control' type='text'>
-        </th>
+        <!--        <th style='width: 200px'>-->
+        <!--          <div class=''>Quốc gia</div>-->
+        <!--          <input formControlName='nationId' class='form-control' type='text'>-->
+        <!--        </th>-->
         <th>
           <div class=''>Nguồn khách hàng</div>
           <mat-select class='select border-top' style='width: 100%' matNativeControl required
@@ -82,20 +82,20 @@
         (contextmenu)='child.onContextMenu($event, customer)'
       >
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
+        <th>{{customer?.phone || 'Chưa cập nhật'}}</th>
         <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
         <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
-        <th>{{customer?.phone ? customer.phone : 'Chưa cập nhật'}}</th>
         <th>
           <input type='checkbox' disabled [checked]='customer.isPotential'>
         </th>
-        <th>
-          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :
-          'Chưa cập nhật'}}
-        </th>
+        <!--        <th>-->
+        <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
+        <!--          'Chưa cập nhật'}}-->
+        <!--        </th>-->
         <th>{{ customer.resource | transform: resourceTypes}}</th>
         <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
         <th>{{customer?.email || 'Chưa cập nhật'}}</th>
-        <th>{{customer?.address || 'Chưa cập nhật'}}</th>
+        <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>
         <th> {{customer?.note || 'Chưa cập nhật'}}</th>
       </tr>
       <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
