@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MedicineComponent } from './container/medicine/medicine.component';
+import { DashboardComponent } from './container/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -33,10 +33,10 @@ import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
   ],
   declarations: [
     ProductDialogComponent,
-    MedicineComponent
+    DashboardComponent
   ],
   exports: [
-    MedicineComponent
+    DashboardComponent
   ],
   providers: [
     DatePipe,

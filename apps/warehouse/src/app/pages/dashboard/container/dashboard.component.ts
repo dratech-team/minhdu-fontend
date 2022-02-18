@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { ProductDialogComponent } from '../../components/product-dialog/product-dialog.component';
+import { ProductDialogComponent } from '../components/product-dialog/product-dialog.component';
 import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { Actions } from '@datorama/akita-ng-effects';
-import { ProductAction } from '../../state/product.action';
-import { ProductQuery } from '../../state/product.query';
-import { WarehouseQuery } from '../../../warehouse/state/warehouse.query';
-import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
-import { Warehouse } from '../../../warehouse/state/entities/product.entity';
+import { ProductAction } from '../state/product.action';
+import { ProductQuery } from '../state/product.query';
+import { WarehouseQuery } from '../../warehouse/state/warehouse.query';
+import { WarehouseAction } from '../../warehouse/state/warehouse.action';
+import { Warehouse } from '../../warehouse/state/entities/product.entity';
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
-  templateUrl: 'medicine.component.html'
+  templateUrl: 'dashboard.component.html'
 
 })
-export class MedicineComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({ id: -1, name: 'Tất cả' })));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
