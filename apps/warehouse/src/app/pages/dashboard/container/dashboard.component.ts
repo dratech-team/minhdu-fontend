@@ -41,9 +41,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(ProductAction.loadProduct({
-      take: PaginationDto.take,
-      skip: PaginationDto.skip,
-      warehouseId: this.warehouseIdSelected
+      search: {
+        take: PaginationDto.take,
+        skip: PaginationDto.skip,
+        warehouseId: this.warehouseIdSelected
+      }
     }));
 
     this.actions$.dispatch(WarehouseAction.loadWarehouses);
@@ -93,9 +95,11 @@ export class DashboardComponent implements OnInit {
   selectWarehouse(warehouse: Warehouse) {
     this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouseId: warehouse.id }));
     this.actions$.dispatch(ProductAction.loadProduct({
-      take: PaginationDto.take,
-      skip: PaginationDto.skip,
-      warehouseId: warehouse.id > 0 ? warehouse.id : null
+      search: {
+        take: PaginationDto.take,
+        skip: PaginationDto.skip,
+        warehouseId: warehouse.id > 0 ? warehouse.id : null
+      }
     }));
   }
 

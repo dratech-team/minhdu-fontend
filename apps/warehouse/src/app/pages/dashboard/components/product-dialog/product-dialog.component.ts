@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ProductQuery } from '../../state/product.query';
@@ -16,6 +16,10 @@ import { ProviderQuery } from '../../../provider/state/provider.query';
 import { ProviderActions } from '../../../provider/state/provider.action';
 import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
 import { ProductAction } from '../../state/product.action';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../entities/product.entity';
+
+type InputType = 'branch' | 'warehouse' | 'provider';
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -24,12 +28,13 @@ export class ProductDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart).pipe(map(branches => branches.concat({ id: -1, name: 'Kho tổng' })));
   warehouse$ = this.warehouseQuery.selectAll();
   providers$ = this.providerQuery.selectAll();
+  products$ = this.productQuery.selectAll();
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
 
   formGroup = this.formBuilder.group({
-    name: [this.data?.name, Validators.required],
+    product: [this.data?.name, Validators.required],
     code: [this.data?.code, Validators.required],
     mfg: [
       this.datePipe.transform(
@@ -69,6 +74,7 @@ export class ProductDialogComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly warehouseQuery: WarehouseQuery,
     private readonly productQuery: ProductQuery,
+    private readonly productService: ProductService,
     private readonly providerQuery: ProviderQuery,
     private readonly action$: Actions
   ) {
@@ -87,14 +93,21 @@ export class ProductDialogComponent implements OnInit {
       this.formGroup.get('provider')?.valueChanges?.pipe(startWith('')) || of(''),
       this.providers$
     );
+
+    this.formGroup.get('product')?.valueChanges.pipe(
+      debounceTime(1500)
+    ).subscribe((val => {
+      this.products$ = this.productService.pagination({ take: 10, skip: 0, name: val }).pipe(map(data => data.data));
+    }));
   }
 
   onClick(event: any) {
-    console.log(event)
+    this.store.dispatch(OrgchartActions.init());
   }
 
   onSubmit() {
     const value = this.formGroup.value;
+    console.log(value)
     const product = {
       name: value.name,
       code: value?.code,
@@ -103,7 +116,7 @@ export class ProductDialogComponent implements OnInit {
       accountedAt: value?.accountedAt,
       billedAt: value?.billedAt,
       billCode: value?.billCode,
-      branchId: value.branch.id > 0 ? value.branch.id : null,
+      branchId: value?.branch?.id > 0 ? value.branch.id : null,
       warehouseId: value.warehouse.id,
       price: value.price,
       amount: value.amount,
@@ -113,7 +126,8 @@ export class ProductDialogComponent implements OnInit {
       unit: value.unit,
       createdAt: value.createdAt
     };
-    this.action$.dispatch(ProductAction.addProduct({ product: product }));
+
+    // this.action$.dispatch(ProductAction.addProduct({ product: product }));
     // if (this.data?.isUpdate) {
     //   console.log("update product")
     //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
@@ -122,7 +136,7 @@ export class ProductDialogComponent implements OnInit {
     // }
   }
 
-  onChangeAutoComp(event: any, value: any, type: 'branch' | 'warehouse' | 'provider') {
+  onChangeAutoComp(event: any, value: any, type: InputType) {
     const fg = this.formGroup.get(type)?.value;
     if (!value?.id) {
       switch (type) {
@@ -146,6 +160,10 @@ export class ProductDialogComponent implements OnInit {
     } else {
       this.formGroup.get(type)?.patchValue(value.name);
     }
+  }
+
+  onSelectItem(event: Product) {
+    this.data = event;
   }
 }
 
