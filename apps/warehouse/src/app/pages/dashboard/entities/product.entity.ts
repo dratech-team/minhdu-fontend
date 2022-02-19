@@ -3,6 +3,7 @@ import { WarehouseUnit } from '../../warehouse/state/entities/warehouse-unit.ent
 import { Provider, Warehouse } from '../../warehouse/state/entities/product.entity';
 
 export interface Product {
+  readonly id: number;
   readonly name: string;
   readonly code?: string;
   readonly mfg?: Date;

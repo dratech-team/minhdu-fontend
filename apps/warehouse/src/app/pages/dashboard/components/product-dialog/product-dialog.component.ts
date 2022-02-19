@@ -30,11 +30,10 @@ export class ProductDialogComponent implements OnInit {
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
-
   providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
 
   formGroup = this.formBuilder.group({
-    product: [this.data?.name, Validators.required],
+    name: [this.data?.name, Validators.required],
     code: [this.data?.code, Validators.required],
     mfg: [
       this.datePipe.transform(
@@ -56,8 +55,6 @@ export class ProductDialogComponent implements OnInit {
     discount: [this.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
     provider: [this.data?.provider, Validators.required],
     note: [this.data?.note],
-    transferBranch: [],
-    invoice: [this?.data?.invoice, Validators.required],
     unit: [this?.data?.unit || UnitMedicineConstant[1].value, Validators.required]
   });
 
@@ -90,9 +87,17 @@ export class ProductDialogComponent implements OnInit {
     }));
   }
 
+  get checkValid() {
+    return this.formGroup.controls;
+  }
+
   onSubmit() {
+    if (!this.formGroup.invalid) {
+      return;
+    }
     const value = this.formGroup.value;
-    Object.assign(value, { name: value.product });
+    // Object.assign(value, { name: value.product });
+    console.log('submit data ', value);
     this.action$.dispatch(ProductAction.addProduct({ product: value }));
     // if (this.data?.isUpdate) {
     //   console.log("update product")
@@ -100,6 +105,7 @@ export class ProductDialogComponent implements OnInit {
     // } else {
     //   this.action$.dispatch(ProductAction.addProduct({ product: product }));
     // }
+
   }
 
   onChangeAutoComp(event: any, value: any, type: InputType) {
@@ -136,15 +142,12 @@ export class ProductDialogComponent implements OnInit {
 
   onSelectItem(event: any) {
     const data = Object.assign({}, event, {
-      product: event.product,
-      provider: event.provider.name,
-      warehouse: event.warehouse.name,
       branch: event.branch.name,
-      amount: null
+      warehouse: event.warehouse.name,
+      provider: event.provider.name,
+      amount: null,
     });
     this.formGroup.reset(data);
-
-    console.log(data)
   }
 }
 

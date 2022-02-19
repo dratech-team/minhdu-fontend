@@ -22,7 +22,7 @@ export class ProductEffect {
       return this.service.pagination(props.search);
     }),
     tap((data) => {
-      console.log(data)
+      console.log(data);
       this.productStore.set(data.data);
     }),
     catchError((err) => throwError(err))
@@ -32,6 +32,9 @@ export class ProductEffect {
   addProduct$ = this.action$.pipe(
     ofType(ProductAction.addProduct),
     switchMap(product => this.service.addOne(product.product)),
-    tap(data => this.productStore.add(data))
+    tap(data => {
+
+      this.productStore.upsert(data?.id, data);
+    })
   );
 }
