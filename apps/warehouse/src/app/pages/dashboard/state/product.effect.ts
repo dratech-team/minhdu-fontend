@@ -31,7 +31,12 @@ export class ProductEffect {
   @Effect()
   addProduct$ = this.action$.pipe(
     ofType(ProductAction.addProduct),
-    switchMap(product => this.service.addOne(product.product)),
+    switchMap(product => {
+      if (product.product?.branch === 'Kho tổng') {
+        return this.service.addOne(Object.assign(product.product, { branch: null }));
+      }
+      return this.service.addOne(product.product);
+    }),
     tap(data => {
 
       this.productStore.upsert(data?.id, data);

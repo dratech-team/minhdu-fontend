@@ -96,8 +96,7 @@ export class ProductDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    // Object.assign(value, { name: value.product });
-    console.log('submit data ', value);
+
     this.action$.dispatch(ProductAction.addProduct({ product: value }));
     // if (this.data?.isUpdate) {
     //   console.log("update product")
