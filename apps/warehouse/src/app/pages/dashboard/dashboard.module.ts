@@ -46,5 +46,5 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
     ProductService
   ]
 })
-export class MedicineModule {
+export class DashboardModule {
 }

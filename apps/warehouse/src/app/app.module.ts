@@ -28,7 +28,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { ProviderModule } from './pages/provider/provider.module';
 import { WarehouseModule } from './pages/warehouse/warehouse.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MedicineModule } from './pages/dashboard/medicine.module';
+import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -60,7 +60,7 @@ import { RouterModule } from '@angular/router';
     OrgchartModule,
     ProviderModule,
     WarehouseModule,
-    MedicineModule,
+    DashboardModule,
     RouterModule,
     MatTabsModule
   ],
