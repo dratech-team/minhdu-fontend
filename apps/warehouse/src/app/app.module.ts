@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { CommonModule, HashLocationStrategy } from '@angular/common';
-import { AkitaDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule } from '@coreui/angular';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,15 +21,14 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { AppComponent } from './app.component';
 import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { environment } from '../environments/environment';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { ProviderModule } from './pages/provider/provider.module';
 import { WarehouseModule } from './pages/warehouse/warehouse.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DashboardModule } from './pages/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
+import { ImportExportModule } from './pages/import-export/import-export.module';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -62,7 +61,8 @@ import { RouterModule } from '@angular/router';
     WarehouseModule,
     DashboardModule,
     RouterModule,
-    MatTabsModule
+    MatTabsModule,
+    ImportExportModule
   ],
   providers: [
     {

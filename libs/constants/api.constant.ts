@@ -80,10 +80,7 @@ export const Api = {
     WAREHOUSE: 'warehouse',
     PRODUCT: 'product',
     PROVIDER: 'provider',
-    MEDICINE: 'medicine',
-    POULTRY_FOOD: 'poultryFood',
-    REQUISITE: 'requisite',
-    MATERIAL: 'material',
+    IMPORT_EXPORT: 'import-export',
   },
   ADMIN: {
     HR: 'admin/hr'
