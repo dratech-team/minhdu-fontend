@@ -80,7 +80,7 @@ export const Api = {
     WAREHOUSE: 'warehouse',
     PRODUCT: 'product',
     PROVIDER: 'provider',
-    IMPORT_EXPORT: 'import-export',
+    HISTORY: 'warehouse-history',
   },
   ADMIN: {
     HR: 'admin/hr'
