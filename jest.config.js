@@ -10,5 +10,6 @@ module.exports = {
     '<rootDir>/apps/warehouse',
     '<rootDir>/apps/admin',
     '<rootDir>/libs/system-history',
+    '<rootDir>/apps/breed',
   ],
 };
