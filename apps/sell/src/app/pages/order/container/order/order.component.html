@@ -161,7 +161,7 @@
         <!--        </th>-->
         <th>{{order?.explain || 'Chưa cập nhật'}} </th>
         <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
-          {{order.deliveredAt}}  {{order.deliveredAt || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
+          {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
