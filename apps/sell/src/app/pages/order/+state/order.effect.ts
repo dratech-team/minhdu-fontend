@@ -30,7 +30,7 @@ export class OrderEffect {
         if (!props.order?.customerId) {
           throw this.snackBar.open('Khách hàng không được để trống');
         }
-        if (!props.order?.commodities?.length) {
+        if (!props.order?.commodityIds?.length) {
           throw this.snackBar.open('Vui lòng chọn hàng hóa');
         }
         return this.orderService.addOne(props.order);
