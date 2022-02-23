@@ -82,6 +82,9 @@ export const Api = {
     PROVIDER: 'provider',
     HISTORY: 'warehouse-history',
   },
+  BREED: {
+    EGG: 'egg'
+  },
   ADMIN: {
     HR: 'admin/hr'
   },
