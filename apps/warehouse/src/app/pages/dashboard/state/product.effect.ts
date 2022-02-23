@@ -22,7 +22,6 @@ export class ProductEffect {
       return this.service.pagination(props.search);
     }),
     tap((data) => {
-      console.log(data);
       this.productStore.set(data.data);
     }),
     catchError((err) => throwError(err))

@@ -9,7 +9,7 @@ import { ResponsePaginate } from '@minhdu-fontend/data-models';
 @Injectable()
 export class ImportExportService extends BaseService<ImportExportEntity> {
   constructor(public http: HttpClient) {
-    super(Api.WAREHOUSE.IMPORT_EXPORT, http);
+    super(Api.WAREHOUSE.HISTORY, http);
   }
 
   pagination(params?: any): Observable<ResponsePaginate<ImportExportEntity>> {

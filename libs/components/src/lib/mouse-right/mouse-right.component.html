@@ -30,7 +30,7 @@
   </ng-template>
   <ng-template *ngIf='items?.includes(ItemContextMenu.ENDED_AT)' contextMenuItem let-item
                (execute)='onDelivered($event.item)'>
-    Ngày kết thúc
+    Ngày giao hàng
   </ng-template>
   <ng-template *ngIf='items?.includes(ItemContextMenu.HISTORY_PAYROLL)' contextMenuItem let-item
                (execute)='onHistoryPayroll($event.item)'>

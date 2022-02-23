@@ -14,15 +14,20 @@
     <table [formGroup]='formGroup' style='min-width: 2600px'>
       <thead>
       <tr>
-        <th>
-          <div class=''>Ngày nhận hàng</div>
+        <th style='width: 200px'>
+          <div class=''>Ngày hẹn giao</div>
           <div class='d-flex border-top'>
-            <mat-date-range-input [rangePicker]='picker2'>
+            <mat-date-range-input [rangePicker]='rangePicker'>
               <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
               <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]='picker2'></mat-datepicker-toggle>
-            <mat-date-range-picker #picker2></mat-date-range-picker>
+            <mat-datepicker-toggle matSuffix [for]='rangePicker'></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker>
+              <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancel</button>
+                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
           </div>
         </th>
         <th style='min-width: 200px'>
@@ -37,7 +42,12 @@
               <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-date-range-picker #picker>
+              <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancel</button>
+                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
           </div>
         </th>
         <th>
@@ -100,7 +110,7 @@
         (contextmenu)='child.onContextMenu($event, order)'
       >
         <th>
-          {{((order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao')}}
+          {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{order.customer?.lastName}}
@@ -148,7 +158,7 @@
         <!--        </th>-->
         <th>{{order?.explain || 'Chưa cập nhật'}} </th>
         <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
-          {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao'}}
+          {{order.deliveredAt}}  {{order.deliveredAt || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>

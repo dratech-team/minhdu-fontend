@@ -13,11 +13,7 @@ import { OrderComponent } from './container/order/order.component';
 import { DetailOrderComponent } from './container/detail-order/detail-order.component';
 import { OrderDialogComponent } from './component/order-dialog/order-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CustomerModule } from '../customer/customer.module';
@@ -32,14 +28,11 @@ import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
   imports: [
@@ -54,7 +47,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     EffectsModule.forFeature([OrderEffect, RouteEffect]),
     MatInputModule,
     InfiniteScrollModule,
-    CommonModule,
     MatDialogModule,
     MatSelectModule,
     MatTabsModule,
@@ -66,9 +58,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     RouteModule,
     SharedModule,
     NgxSkeletonLoaderModule.forRoot(),
-    CommonModule,
     MatDatepickerModule,
-    CommonModule
+    CommonModule,
   ],
   declarations: [
     TableRouteComponent,

@@ -15,12 +15,12 @@
           <a href='https://www.facebook.com/GatachonlocMinhDuBinhDinh' target='_blank'>
             <img height='20px btn' src='/assets/icon/warehouse-layout/facebook.svg' alt='facebook'></a>
         </button>
-        <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle='tooltip'
-                data-placement='bottom' title='Tạo tài khoản'
-                class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
-          <img height='20px' src='./assets/icon/warehouse-layout/person-plus.svg' alt='create'>
-        </button>
-        <button (click)='logout()' type='button' data-toggle='tooltip' data-placement='bottom' title='Đăng xuất'
+<!--        <button *ngIf='role === roleEnum.ADMIN' (click)='signUp()' type='button' data-toggle='tooltip'-->
+<!--                data-placement='bottom' title='Tạo tài khoản'-->
+<!--                class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>-->
+<!--          <img height='20px' src='./assets/icon/warehouse-layout/person-plus.svg' alt='create'>-->
+<!--        </button>-->
+        <button  type='button' data-toggle='tooltip' data-placement='bottom' title='Đăng xuất'
                 class='col-md-1 col-xm-2 btn d-flex align-items-center justify-content-center'>
           <img height='20px' src='./assets/icon/warehouse-layout/box-arrow-right.svg' alt='setting'>
         </button>
@@ -29,19 +29,10 @@
   </div>
   <div class='p-3'>
     <mat-tab-group>
-      <mat-tab label='Hàng hóa'>
-        <minhdu-fontend-warehouse></minhdu-fontend-warehouse>
-      </mat-tab>
-      <mat-tab label='Xuất - Nhập kho'>
-        <minhdu-fontend-import-export></minhdu-fontend-import-export>
-      </mat-tab>
-      <mat-tab label='Kiểm kho'>
+      <mat-tab label='Dashboard'>
         Đang phát triển !!!
       </mat-tab>
-      <mat-tab label='Thu - Chi'>
-        Đang phát triển !!!
-      </mat-tab>
-      <mat-tab label='Lịch sử hệ thống'>
+      <mat-tab label='Nhà máy ấp'>
         Đang phát triển !!!
       </mat-tab>
     </mat-tab-group>

@@ -51,6 +51,13 @@
     },
     "system": {
       "tags": []
+    },
+    "breed": {
+      "tags": []
+    },
+    "breed-e2e": {
+      "tags": [],
+      "implicitDependencies": ["breed"]
     }
   }
 }

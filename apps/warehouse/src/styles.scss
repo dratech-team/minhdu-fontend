@@ -1,4 +1,5 @@
 @import "~@coreui/coreui-pro/scss/coreui";
+@import "scss/custom-scroll-table";
 
 body {
   height: fit-content !important;
@@ -248,4 +249,3 @@ tr:nth-child(even) {
   line-height: 28px;
   color: #7749F8
 }
-@import "scss/custom-scroll-table";

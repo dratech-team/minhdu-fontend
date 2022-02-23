@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, HashLocationStrategy } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './containers/auth.container';
 import { StoreModule } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { authReducer } from './+state/auth.reducer';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from './interceptors';
-import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { LogoutComponent } from './components/dialog-logout.component/logout.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RegisterComponent } from './components/dialog-register.component/register.component';
@@ -52,7 +52,7 @@ import { DialogChangePassword } from './components/dialog-change-password/dialog
       useClass: ErrorInterceptor,
       multi: true
     },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ]
 })
 export class AuthModule {

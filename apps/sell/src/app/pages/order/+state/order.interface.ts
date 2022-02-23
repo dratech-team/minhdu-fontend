@@ -25,6 +25,7 @@ export interface Order {
   commodityTotal: number;
   paymentTotal: number;
   deliveredAt: Date;
+  endedAt: Date;
   hide: boolean;
 }
 

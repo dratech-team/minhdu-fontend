@@ -40,7 +40,7 @@
       "projectType": "application",
       "root": "apps/hr",
       "sourceRoot": "apps/hr/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -134,7 +134,7 @@
       "projectType": "library",
       "root": "libs/components",
       "sourceRoot": "libs/components/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -159,7 +159,7 @@
       "projectType": "library",
       "root": "libs/auth",
       "sourceRoot": "libs/auth/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -184,7 +184,7 @@
       "projectType": "library",
       "root": "libs/orgchart",
       "sourceRoot": "libs/orgchart/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -209,7 +209,7 @@
       "projectType": "application",
       "root": "apps/sell",
       "sourceRoot": "apps/sell/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -306,7 +306,7 @@
       "projectType": "library",
       "root": "libs/employee",
       "sourceRoot": "libs/employee/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -331,7 +331,7 @@
       "projectType": "library",
       "root": "libs/location",
       "sourceRoot": "libs/location/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -356,7 +356,7 @@
       "projectType": "application",
       "root": "apps/warehouse",
       "sourceRoot": "apps/warehouse/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -456,7 +456,7 @@
       "projectType": "application",
       "root": "apps/admin",
       "sourceRoot": "apps/admin/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -553,7 +553,7 @@
       "projectType": "library",
       "root": "libs/system-history",
       "sourceRoot": "libs/system-history/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -570,6 +570,122 @@
               "libs/system/src/**/*.ts",
               "libs/system/src/**/*.html"
             ]
+          }
+        }
+      }
+    },
+    "breed": {
+      "projectType": "application",
+      "root": "apps/breed",
+      "sourceRoot": "apps/breed/src",
+      "prefix": "minhdu",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/breed",
+            "index": "apps/breed/src/index.html",
+            "main": "apps/breed/src/main.ts",
+            "polyfills": "apps/breed/src/polyfills.ts",
+            "tsConfig": "apps/breed/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/breed/src/favicon.ico", "apps/breed/src/assets"],
+            "styles": ["apps/breed/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/breed/src/environments/environment.ts",
+                  "with": "apps/breed/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "breed:build:production"
+            },
+            "development": {
+              "browserTarget": "breed:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "breed:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/breed/src/**/*.ts",
+              "apps/breed/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/breed"],
+          "options": {
+            "jestConfig": "apps/breed/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "breed-e2e": {
+      "root": "apps/breed-e2e",
+      "sourceRoot": "apps/breed-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/breed-e2e/cypress.json",
+            "tsConfig": "apps/breed-e2e/tsconfig.e2e.json",
+            "devServerTarget": "breed:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "breed:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/breed-e2e/**/*.{js,ts}"]
           }
         }
       }

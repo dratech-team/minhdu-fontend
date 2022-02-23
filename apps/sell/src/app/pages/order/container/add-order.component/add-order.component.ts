@@ -1,22 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { Subject } from 'rxjs';
 import { OrderAction } from '../../+state/order.action';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -43,8 +39,7 @@ export class AddOrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
   ) {
   }
 
@@ -57,7 +52,7 @@ export class AddOrderComponent implements OnInit {
     });
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
-      deliveriedAt: [],
+      endedAt: [],
       explain: ['']
     });
   }
@@ -123,18 +118,10 @@ export class AddOrderComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (!this.customerId) {
-      this.snackbar.openFromComponent(SnackBarComponent, {
-        data: { content: 'Chưa chọn khách hàng' },
-        panelClass: ['background-snackbar-validate'],
-        duration: 2500
-      });
-      return;
-    }
     const val = this.formGroup.value;
     const order = {
       createdAt: val.createdAt,
-      deliveredAt: val.deliveredAt,
+      endedAt: val.endedAt,
       explain: val.explain,
       wardId: this.wardId,
       provinceId: this.provinceId,
