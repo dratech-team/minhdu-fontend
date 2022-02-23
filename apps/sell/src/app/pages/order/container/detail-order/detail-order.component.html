@@ -75,7 +75,9 @@
             </div>
             <div class='col-md-8 py-2 border-bottom'>
               <span class='title-detail'>
-                {{order?.province?.name + ' - ' + order?.district?.name + ' - ' + order?.ward?.name}}
+                 {{order?.province?.name}}
+                {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
+                {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
               </span>
             </div>
           </div>
