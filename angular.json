@@ -40,7 +40,7 @@
       "projectType": "application",
       "root": "apps/hr",
       "sourceRoot": "apps/hr/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -134,7 +134,7 @@
       "projectType": "library",
       "root": "libs/components",
       "sourceRoot": "libs/components/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -159,7 +159,7 @@
       "projectType": "library",
       "root": "libs/auth",
       "sourceRoot": "libs/auth/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -184,7 +184,7 @@
       "projectType": "library",
       "root": "libs/orgchart",
       "sourceRoot": "libs/orgchart/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -209,7 +209,7 @@
       "projectType": "application",
       "root": "apps/sell",
       "sourceRoot": "apps/sell/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -306,7 +306,7 @@
       "projectType": "library",
       "root": "libs/employee",
       "sourceRoot": "libs/employee/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -331,7 +331,7 @@
       "projectType": "library",
       "root": "libs/location",
       "sourceRoot": "libs/location/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -356,7 +356,7 @@
       "projectType": "application",
       "root": "apps/warehouse",
       "sourceRoot": "apps/warehouse/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -456,7 +456,7 @@
       "projectType": "application",
       "root": "apps/admin",
       "sourceRoot": "apps/admin/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -553,7 +553,7 @@
       "projectType": "library",
       "root": "libs/system-history",
       "sourceRoot": "libs/system-history/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -578,7 +578,7 @@
       "projectType": "application",
       "root": "apps/breed",
       "sourceRoot": "apps/breed/src",
-      "prefix": "minhdu-fontend",
+      "prefix": "minhdu",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
