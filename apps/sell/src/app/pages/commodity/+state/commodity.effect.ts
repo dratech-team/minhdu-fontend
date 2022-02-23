@@ -29,7 +29,6 @@ export class CommodityEffect {
       ofType(CommodityAction.loadAllCommodities),
       switchMap((_) => this.commodityService.pagination()),
       map((ResponsePaginate) => {
-          this.snackbar.open('Tải hàng hóa thành công', '', { duration: 1500 });
           return CommodityAction.loadInitSuccess({
             commodity: ResponsePaginate.data,
             total: ResponsePaginate.total
@@ -63,10 +62,10 @@ export class CommodityEffect {
       ),
       switchMap((params) => this.commodityService.pagination(params)),
       map((ResponsePaginate) => {
-        this.snackbar.open( ResponsePaginate.data.length > 0 ?
-          'Tải hàng hóa thành công' :
-          'Đã tải hết hành hóa'
-          , '', { duration: 1500 });
+          this.snackbar.open(ResponsePaginate.data.length > 0 ?
+            'Tải hàng hóa thành công' :
+            'Đã tải hết hành hóa'
+            , '', { duration: 1500 });
           return CommodityAction.loadMoreCommoditySuccess({
             commodity: ResponsePaginate.data,
             total: ResponsePaginate.total

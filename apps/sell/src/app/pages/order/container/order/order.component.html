@@ -54,20 +54,20 @@
           <div class=''>Xe xuất</div>
           <input formControlName='ward' class='form-control' type='text'>
         </th>
-        <th style="min-width: 300px">
+        <th style='min-width: 300px'>
           <div class=''>Điểm đến</div>
           <input formControlName='ward' class='form-control' type='search'>
         </th>
         <th>
           <div>Hàng hóa</div>
-          <div class="d-flex">
-            <div class="d-flex flex-column w-100 " *ngFor="let item of lstTitleCommodity">
-              <div class="border" style="width: 300px">
+          <div class='d-flex'>
+            <div class='d-flex flex-column w-100 ' *ngFor='let item of commodities$ | async'>
+              <div class='border' style='width: 300px'>
                 {{item.name}}
               </div>
-              <div class="d-flex w-100">
-                <div class="border" style="width: 150px">Số lượng</div>
-                <div class="border" style="width: 150px">Đơn giá</div>
+              <div class='d-flex w-100'>
+                <div class='border' style='width: 150px'>Số lượng</div>
+                <div class='border' style='width: 150px'>Đơn giá</div>
               </div>
             </div>
           </div>
@@ -128,23 +128,26 @@
             -
           </th>
         </ng-template>
-        <th style="min-width: 300px">
+        <th style='min-width: 300px'>
           {{order?.province?.name}}
           {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
           {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
         </th>
-        <th class='pointer d-flex' style="padding: 0px; border: none" >
-          <div class='h-100 d-flex pointer border' *ngFor='let item of lstTitleCommodity' style="width: 300px; min-height: 32px">
-                <div *ngFor=" let commodity of order.commodities">
-                  <div class="d-flex" *ngIf="item.code === commodity.code">
-                    <div class="border-right d-flex justify-content-center align-items-center " style="width: 150px ; min-height: 30px">
-                      {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
-                    </div>
-                    <div class="border-left d-flex justify-content-center align-items-center" style="width: 150px; min-height: 30px">
-                      {{commodity.price | number:'1.0-0' | notEmpty:'0'}} đ
-                    </div>
-                  </div>
+        <th class='pointer d-flex' style='padding: 0px; border: none'>
+          <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
+               style='width: 300px; min-height: 32px'>
+            <div *ngFor=' let commodity of order.commodities'>
+              <div class='d-flex' *ngIf='item.code === commodity.code'>
+                <div class='border-right d-flex justify-content-center align-items-center '
+                     style='width: 150px ; min-height: 30px'>
+                  {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
                 </div>
+                <div class='border-left d-flex justify-content-center align-items-center'
+                     style='width: 150px; min-height: 30px'>
+                  {{commodity.price | number:'1.0-0' | notEmpty:'0'}} đ
+                </div>
+              </div>
+            </div>
           </div>
         </th>
         <th style='color: #f86c6b'>

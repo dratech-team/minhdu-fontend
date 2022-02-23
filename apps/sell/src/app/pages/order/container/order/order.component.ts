@@ -8,18 +8,25 @@ import { ExportService } from '@minhdu-fontend/service';
 import { select, Store } from '@ngrx/store';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderAction } from '../../+state/order.action';
 import { selectedOrderLoaded, selectorAllOrders } from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
-import {OrderService} from "../../service/order.service";
-import {Commodity} from "../../../commodity/+state/commodity.interface";
+import * as _ from 'lodash';
 
 @Component({
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
+  orders$ = this.store.pipe(select(selectorAllOrders));
+  loaded$ = this.store.pipe(select(selectedOrderLoaded));
+  commodities$ = this.store.select(selectorAllOrders).pipe(
+    map(orders => {
+      return [...new Set(_.flattenDeep(orders.map(order => order.commodities)))];
+    })
+  );
+
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
@@ -28,7 +35,7 @@ export class OrderComponent implements OnInit {
   payType = PaymentType;
   pageSize = 40;
   pageIndexInit = 0;
-  lstTitleCommodity: Commodity [] = []
+
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
@@ -48,21 +55,11 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly exportService: ExportService,
-    private readonly orderService: OrderService,
+    private readonly exportService: ExportService
   ) {
   }
 
-  orders$ = this.store.pipe(select(selectorAllOrders));
-  loaded$ = this.store.pipe(select(selectedOrderLoaded));
-
   ngOnInit() {
-    this.orderService.getTitleCommodity().subscribe(lstTitle =>{
-      if(lstTitle){
-        this.lstTitleCommodity =lstTitle.data
-      }
-      console.log(this.lstTitleCommodity)
-    })
     const params = this.route.snapshot.queryParams;
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.store.dispatch(
