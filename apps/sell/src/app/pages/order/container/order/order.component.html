@@ -14,18 +14,18 @@
     <table [formGroup]='formGroup' style='min-width: 1800px'>
       <thead>
       <tr>
-        <th>
+        <th style='width: 200px'>
           <div class=''>Ngày nhận hàng</div>
           <div class='d-flex border-top'>
-            <mat-date-range-input [rangePicker]="rangePicker">
-              <input matStartDate  formControlName='deliveryStartedAt' placeholder='Từ ngày'>
+            <mat-date-range-input [rangePicker]='rangePicker'>
+              <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
               <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]='rangePicker'></mat-datepicker-toggle>
             <mat-date-range-picker #rangePicker>
               <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancel</button>
-                <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
               </mat-date-range-picker-actions>
             </mat-date-range-picker>
           </div>
@@ -37,15 +37,15 @@
         <th>
           <div class=''>Ngày tạo</div>
           <div class='d-flex border-top'>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate  formControlName='createStartedAt' placeholder='Từ ngày'>
+            <mat-date-range-input [rangePicker]='picker'>
+              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>
               <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>
             </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
             <mat-date-range-picker #picker>
               <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancel</button>
-                <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
               </mat-date-range-picker-actions>
             </mat-date-range-picker>
           </div>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { HashLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, registerLocaleData } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,9 @@ import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.compo
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { MatTabsModule } from '@angular/material/tabs';
+import localeVi from '@angular/common/locales/vi';
+
+registerLocaleData(localeVi);
 
 @NgModule({
   imports: [
@@ -55,10 +58,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     LocationModule,
     MatDialogModule,
-    MatTabsModule,
+    MatTabsModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
-
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -71,7 +73,8 @@ import { MatTabsModule } from '@angular/material/tabs';
       multi: true
     },
     HashLocationStrategy,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    { provide: LOCALE_ID, useValue: 'vi-VN' }
   ],
   bootstrap: [AppComponent]
 })
