@@ -52,7 +52,7 @@ export class AddOrderComponent implements OnInit {
     });
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
-      deliveriedAt: [],
+      endedAt: [],
       explain: ['']
     });
   }
@@ -121,7 +121,7 @@ export class AddOrderComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       createdAt: val.createdAt,
-      deliveredAt: val.deliveredAt,
+      endedAt: val.endedAt,
       explain: val.explain,
       wardId: this.wardId,
       provinceId: this.provinceId,

@@ -15,7 +15,7 @@
       <thead>
       <tr>
         <th style='width: 200px'>
-          <div class=''>Ngày nhận hàng</div>
+          <div class=''>Ngày hẹn giao</div>
           <div class='d-flex border-top'>
             <mat-date-range-input [rangePicker]='rangePicker'>
               <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
@@ -100,7 +100,7 @@
         (contextmenu)='child.onContextMenu($event, order)'
       >
         <th>
-          {{((order?.deliveredAt | date: 'dd/MM/yyyy') || order?.routes?.length ? 'Đang giao hàng' : 'Đơn chưa giao')}}
+          {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{order.customer?.lastName}}
@@ -144,7 +144,7 @@
         <!--        </th>-->
         <th>{{order?.explain || 'Chưa cập nhật'}} </th>
         <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
-          {{order.deliveredAt ? 'Đã giao' : (!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao'}}
+          {{order.deliveredAt}}  {{order.deliveredAt || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
         </th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
