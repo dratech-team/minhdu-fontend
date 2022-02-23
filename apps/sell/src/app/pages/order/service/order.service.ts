@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
+import {Commodity} from "../../commodity/+state/commodity.interface";
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<Order> {
@@ -41,5 +42,9 @@ export class OrderService extends BaseService<Order> {
 
   delete(id: number): Observable<void> {
     return super.delete(id);
+  }
+
+  getTitleCommodity():Observable<any>{
+    return this.http.get<any>('commodity')
   }
 }

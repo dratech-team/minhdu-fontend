@@ -13,6 +13,8 @@ import { OrderAction } from '../../+state/order.action';
 import { selectedOrderLoaded, selectorAllOrders } from '../../+state/order.selector';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
+import {OrderService} from "../../service/order.service";
+import {Commodity} from "../../../commodity/+state/commodity.interface";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -26,12 +28,12 @@ export class OrderComponent implements OnInit {
   payType = PaymentType;
   pageSize = 40;
   pageIndexInit = 0;
+  lstTitleCommodity: Commodity [] = []
   formGroup = new FormGroup({
     paidType: new FormControl(''),
     name: new FormControl(''),
     status: new FormControl(0),
     explain: new FormControl(''),
-    commodity: new FormControl(''),
     createStartedAt: new FormControl(),
     createEndedAt: new FormControl(),
     deliveryStartedAt: new FormControl(),
@@ -46,7 +48,8 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private readonly orderService: OrderService,
   ) {
   }
 
@@ -54,6 +57,12 @@ export class OrderComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
 
   ngOnInit() {
+    this.orderService.getTitleCommodity().subscribe(lstTitle =>{
+      if(lstTitle){
+        this.lstTitleCommodity =lstTitle.data
+      }
+      console.log(this.lstTitleCommodity)
+    })
     const params = this.route.snapshot.queryParams;
     this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.store.dispatch(
