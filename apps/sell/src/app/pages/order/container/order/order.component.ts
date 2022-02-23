@@ -23,7 +23,7 @@ export class OrderComponent implements OnInit {
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
   commodities$ = this.store.select(selectorAllOrders).pipe(
     map(orders => {
-      return [...new Set(_.flattenDeep(orders.map(order => order.commodities)))];
+      return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
 
