@@ -10,6 +10,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { HashLocationStrategy } from '@angular/common';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {AppRoutingModule} from "./app-routing.module";
+import {incubatorFactoryContainer} from "./pages/incubator-factory/containers/incubator-factory.container";
 
 const routes: Routes = [
   // {
@@ -25,9 +27,14 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [AppComponent, BreedLayoutComponent],
+  declarations: [
+    AppComponent,
+    BreedLayoutComponent,
+    incubatorFactoryContainer,
+  ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     AppFooterModule,
     MatTabsModule,
