@@ -8,17 +8,33 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../customer/+state/customer/customer.action';
-import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { selectorOrderAssignedTotal, selectorOrderTotal } from './order.selector';
 import { Router } from '@angular/router';
+import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+
 
 @Injectable()
 export class OrderEffect {
   convertBoolean = ConvertBoolean;
+
   addOrder$ = createEffect(() =>
     this.action.pipe(
       ofType(OrderAction.addOrder),
-      switchMap((props) => this.orderService.addOne(props.order)),
+      switchMap((props) => {
+        if (!props.order?.createdAt) {
+          throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
+        }
+        if (!props.order?.provinceId) {
+          throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
+        }
+        if (!props.order?.customerId) {
+          throw this.snackBar.open('Khách hàng không được để trống');
+        }
+        if (!props.order?.commodities?.length) {
+          throw this.snackBar.open('Vui lòng chọn hàng hóa');
+        }
+        return this.orderService.addOne(props.order);
+      }),
       map((res) => {
         this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
         return OrderAction.addOrderSuccess({ order: res });

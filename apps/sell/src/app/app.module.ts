@@ -55,7 +55,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     LocationModule,
     MatDialogModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
 
