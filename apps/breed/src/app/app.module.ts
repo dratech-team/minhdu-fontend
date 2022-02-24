@@ -11,14 +11,9 @@ import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
 import { HashLocationStrategy } from '@angular/common';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import {AppRoutingModule} from "./app-routing.module";
-import {incubatorFactoryContainer} from "./pages/incubator-factory/containers/incubator-factory.container";
+import {incubatorFactoryComponent} from "./pages/incubator-factory/containers/incubator-factory.component";
 
 const routes: Routes = [
-  // {
-  //   path: 'auth/login',
-  //   loadChildren: () =>
-  //     import('@minhdu-fontend/auth').then((m) => m.AuthModule)
-  // },
   {
     path: '',
     component: BreedLayoutComponent,
@@ -30,12 +25,10 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     BreedLayoutComponent,
-    incubatorFactoryContainer,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     AppFooterModule,
     MatTabsModule,
     MatDialogModule

@@ -18,6 +18,6 @@ export class BreedLayoutComponent implements OnInit {
     this.router.navigate(['/']).then();
   }
   onIncubatorFactory(){
-    this.router.navigate(['/']).then()
+    this.router.navigate(['nha-may-ap']).then()
   }
 }
