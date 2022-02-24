@@ -91,7 +91,6 @@ export class CustomerDialogComponent implements OnInit {
       isPotential: value.isPotential ? value.isPotential : undefined
     };
 
-    console.log(customer)
     if (this.data) {
       this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {

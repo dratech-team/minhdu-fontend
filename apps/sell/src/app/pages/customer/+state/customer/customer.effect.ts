@@ -50,9 +50,13 @@ export class CustomerEffect {
   addCustomer$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.addCustomer),
-      switchMap((props) => this.customerService.addOne(props.customer)),
+      switchMap((props) => {
+        if (!props.customer?.provinceId) {
+          throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
+        }
+        return this.customerService.addOne(props.customer);
+      }),
       map((res) => {
-        console.log(res)
           return CustomerAction.addCustomerSuccess({ customer: res });
         }
       ),
