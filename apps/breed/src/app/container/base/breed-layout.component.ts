@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './breed-layout.component.html',
-  styleUrls: ['./breed-layout.component.scss']
 })
 export class BreedLayoutComponent implements OnInit {
   role = localStorage.getItem('role');
@@ -17,5 +16,8 @@ export class BreedLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.router.navigate(['/']).then();
+  }
+  onIncubatorFactory(){
+    this.router.navigate(['nha-may-ap']).then()
   }
 }

@@ -1,42 +1,34 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { BreedLayoutComponent } from './container/base/breed-layout.component';
 import { AppFooterModule } from '@coreui/angular';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { HashLocationStrategy } from '@angular/common';
+import { CommonModule, HashLocationStrategy } from '@angular/common';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { EggTypeModule } from './pages/egg-type/egg-type.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-const routes: Routes = [
-  // {
-  //   path: 'auth/login',
-  //   loadChildren: () =>
-  //     import('@minhdu-fontend/auth').then((m) => m.AuthModule)
-  // },
-  {
-    path: '',
-    component: BreedLayoutComponent
-  }
-];
-
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, BreedLayoutComponent],
+  declarations: [
+    AppComponent,
+    BreedLayoutComponent
+  ],
   imports: [
+    BrowserModule,
     BrowserAnimationsModule,
     BrowserModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
+    CommonModule,
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
     AppFooterModule,
     MatTabsModule,
-    MatDialogModule,
-    EggTypeModule,
-    HttpClientModule,
+    MatDialogModule
     // EffectsModule.forRoot([AuthEffects]),
     // StoreModule.forRoot({}, {}),
   ],

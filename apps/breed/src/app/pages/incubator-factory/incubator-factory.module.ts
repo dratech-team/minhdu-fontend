@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { IncubatorFactoryService } from './services/incubator-factory.service';
+import { IncubatorFactoryRoutingModule } from './incubator-factory-routing.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CommonModule } from '@angular/common';
 import { IncubatorFactoryEffect } from './state/incubator-factory.effect';
-import { HttpClientModule } from '@angular/common/http';
+import { IncubatorFactoryComponent } from './containers/incubator-factory.component';
 
 @NgModule({
+  declarations: [
+    IncubatorFactoryComponent
+  ],
   imports: [
-    AkitaNgEffectsModule.forFeature([IncubatorFactoryEffect])
+    IncubatorFactoryRoutingModule,
+    AkitaNgEffectsModule.forFeature([IncubatorFactoryEffect]),
+    MatAutocompleteModule,
+    CommonModule
   ],
   providers: [IncubatorFactoryService]
 })
