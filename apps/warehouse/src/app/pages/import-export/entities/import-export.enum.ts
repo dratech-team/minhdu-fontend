@@ -1,4 +1,5 @@
 export enum ImportExportEnum {
   IMPORT = 'IMPORT',
-  EXPORT = 'EXPORT'
+  EXPORT = 'EXPORT',
+  INVENTORY = 'INVENTORY',
 }
