@@ -6,17 +6,17 @@ import { BreedLayoutComponent } from './container/base/breed-layout.component';
 import { AppFooterModule } from '@coreui/angular';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { HashLocationStrategy } from '@angular/common';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {CommonModule, HashLocationStrategy} from '@angular/common';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
+import {AppRoutingModule} from "./app-routing.module";
+import {EffectsModule} from "@ngrx/effects";
+import {StoreModule} from "@ngrx/store";
+import {AuthEffects} from "../../../../libs/auth/src/lib/+state/auth.effects";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const routes: Routes = [
-  // {
-  //   path: 'auth/login',
-  //   loadChildren: () =>
-  //     import('@minhdu-fontend/auth').then((m) => m.AuthModule)
-  // },
   {
     path: '',
     component: BreedLayoutComponent,
@@ -25,15 +25,24 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [AppComponent, BreedLayoutComponent],
+  declarations: [
+    AppComponent,
+    BreedLayoutComponent,
+  ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
+    BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
     AppFooterModule,
     MatTabsModule,
-    MatDialogModule
-    // EffectsModule.forRoot([AuthEffects]),
-    // StoreModule.forRoot({}, {}),
+    MatDialogModule,
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot({}, {}),
+    MatSnackBarModule,
   ],
   providers: [
     {

@@ -1,0 +1,313 @@
+@import "~@coreui/coreui-pro/scss/coreui";
+
+body {
+  margin: 0 !important;
+  background: white !important;
+  overflow-x: hidden;
+}
+
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+$spinkit-spinner-color: $body-color;
+@import '~spinkit/scss/spinkit.scss';
+.star {
+  color: red;
+  font-size: 15px;
+}
+
+.background-snackbar {
+  background: #4dbd74d1;
+}
+
+.background-snackbar-validate {
+  background: #f86c6ba6;
+}
+app-dashboard {
+  height: fit-content !important;
+  min-height: auto !important;
+}
+.chart-legend {
+  position: absolute;
+  bottom: 0px;
+  left: 10px;
+  max-width: 520px;
+  overflow: hidden;
+}
+
+// Here you can add other styles
+.main {
+  background: white;
+  font-family: Roboto, serif;
+}
+
+.no-underline {
+  text-decoration: none !important
+}
+
+.ngx-charts-outer {
+  margin: auto;
+}
+
+.btn-border {
+  border: solid 2px #5bc0de;
+  color: #428bca;
+}
+
+.main-title {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.title-table {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  color: #1f2229;
+}
+
+.contain-detail {
+
+}
+
+.required {
+  color: red;
+}
+
+.required-input {
+  border: solid 1px red;
+}
+
+.title-detail {
+  font-size: 13px;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  color: #1f2229;
+  padding-right: 8px;
+}
+
+.label-input {
+  font-size: 16px;
+  line-height: 19px;
+  color: #3C3B54;
+}
+
+.star {
+  margin-left: 5px;
+  color: red;
+}
+
+.title-popup {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 35px;
+  letter-spacing: 0.2px;
+}
+
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  background: #EBEBEB;
+  border-radius: 4px;
+}
+
+.content-table {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3C3B54;
+  vertical-align: inherit !important;
+}
+
+.content-popup {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #80828B;
+}
+
+.btn-ok {
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #ffffff;
+  background: #3C3B54;
+  border-radius: 4px;
+}
+
+.main-popup {
+  position: relative;
+}
+
+.main-popup .close-popup {
+  font-size: 16px;
+  color: #7749F8;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+
+.main-popup .close-popup .x-popup > img {
+  width: 7px;
+}
+
+.x-popup {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 14px;
+  height: 14px;
+  border: solid 1px #7749F8;
+  border-radius: 50%;
+  background: #7749F8;
+}
+
+.color-delete {
+  color: #EB5757 !important;
+}
+
+.background-delete {
+  background: #EB5757 !important;
+}
+
+.success {
+  background: #B5EEBB;
+}
+
+.fail {
+  background: #EEB5B5;
+}
+
+.attention {
+  background: #EDEEB5;
+}
+
+.btn-print {
+  border: solid 1px #95AAF8;
+  background: #95AAF8;
+  border-radius: 32px;
+}
+
+.title-input {
+  font-size: 16px;
+  line-height: 19px;
+  color: #3C3B54;
+}
+
+.share-table {
+  border: solid 1px #c8ced3;
+}
+
+.title-child {
+  font-size: 16px;
+  color: #3C3B54;
+  line-height: 19px;
+}
+
+.context-menu {
+  cursor: context-menu;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.btn-edit {
+  border: solid 1px #80828B;
+  border-radius: 20%;
+}
+
+input[type='checkbox'] {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  outline: 1px solid gray;
+  box-shadow: none;
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 1em;
+  background: white;
+}
+
+input[type='checkbox']:checked:after {
+  content: '✔';
+  color: red;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.main-profile {
+  width: max-content;
+  padding: 1rem;
+}
+
+.tab {
+  position: relative;
+  margin-top: 10px;
+  left: 5%;
+  width: 80%;
+}
+
+.edit {
+  cursor: pointer;
+  display: flex;
+  margin-right: 10px;
+  background: #4B3880;
+  padding: 4px;
+  border: solid 1px #4B3880;
+  border-radius: 4px;
+}
+
+.add {
+  display: flex;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 28px;
+  color: #7749F8
+}
+
+.main-content{
+  min-height: 79vh;
+}
+@import "scss/custom-scroll-table";
