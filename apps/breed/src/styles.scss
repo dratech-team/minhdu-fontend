@@ -307,4 +307,7 @@ tr:nth-child(even) {
   color: #7749F8
 }
 
+.main-content{
+  min-height: 79vh;
+}
 @import "scss/custom-scroll-table";

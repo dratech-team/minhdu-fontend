@@ -3,6 +3,9 @@ import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
 import {IncubatorFactoryService} from './services/incubator-factory.service';
 import {incubatorFactoryComponent} from "./containers/incubator-factory.component";
 import {IncubatorFactoryRoutingModule} from "./incubator-factory-routing.module";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -10,7 +13,9 @@ import {IncubatorFactoryRoutingModule} from "./incubator-factory-routing.module"
   ],
   imports: [
     IncubatorFactoryRoutingModule,
-    AkitaNgEffectsModule.forFeature([])
+    AkitaNgEffectsModule.forFeature([]),
+    MatAutocompleteModule,
+    CommonModule,
   ],
   providers: [IncubatorFactoryService]
 })

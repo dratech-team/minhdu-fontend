@@ -1,3 +1,43 @@
-<div>
-  asdasdasds
+<div class="main-content">
+  <div class="ml-2" style="width: 98%;">
+    <table class="table-scroll">
+      <thead>
+      <tr>
+        <td>
+          <div class='border-top text-center'>Đơn vị</div>
+          <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+            >
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+          <table>
+            <tr>
+              <td>
+                stt
+              </td>
+              <td>
+                tần Suất Ấp
+              </td>
+              <td>
+                Ngày ấp
+              </td>
+              <td>
+                Ngày nờ
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          trứng ấp
+        </td>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
 </div>

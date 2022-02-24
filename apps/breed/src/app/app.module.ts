@@ -6,12 +6,15 @@ import { BreedLayoutComponent } from './container/base/breed-layout.component';
 import { AppFooterModule } from '@coreui/angular';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { HashLocationStrategy } from '@angular/common';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {CommonModule, HashLocationStrategy} from '@angular/common';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
 import {AppRoutingModule} from "./app-routing.module";
-import {incubatorFactoryComponent} from "./pages/incubator-factory/containers/incubator-factory.component";
+import {EffectsModule} from "@ngrx/effects";
+import {StoreModule} from "@ngrx/store";
+import {AuthEffects} from "../../../../libs/auth/src/lib/+state/auth.effects";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const routes: Routes = [
   {
@@ -28,12 +31,18 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    HttpClientModule,
+    BrowserModule,
     AppRoutingModule,
     AppFooterModule,
     MatTabsModule,
-    MatDialogModule
-    // EffectsModule.forRoot([AuthEffects]),
-    // StoreModule.forRoot({}, {}),
+    MatDialogModule,
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot({}, {}),
+    MatSnackBarModule,
   ],
   providers: [
     {
