@@ -13,7 +13,7 @@
        (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' style='min-width: 3000px'>
       <thead>
-      <tr>
+      <tr >
         <th style='width: 200px'>
           <div class=''>Ngày hẹn giao</div>
           <div class='d-flex border-top'>
@@ -109,7 +109,7 @@
         (click)='readAndUpdate(order.id, false)'
         (contextmenu)='child.onContextMenu($event, order)'
       >
-        <th>
+        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
