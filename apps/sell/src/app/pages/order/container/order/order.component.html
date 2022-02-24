@@ -112,7 +112,7 @@
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
-        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+        <th>
           {{order.customer?.lastName}}
         </th>
         <th>
