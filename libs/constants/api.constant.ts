@@ -15,7 +15,7 @@ export const Api = {
       PAYSLIP: 'payslip',
       BRANCH_ALLOWANCE: 'branch/allowance',
       GENERATE_HOLIDAY: 'generate-holiday',
-      ITEMS_EXPORT: 'payroll/export/items',
+      ITEMS_EXPORT: 'payroll/export/items'
     },
     EMPLOYEE: {
       EMPLOYEE: 'employee',
@@ -25,7 +25,7 @@ export const Api = {
       POSITION: 'position',
       BRANCH: 'branch',
       DEPARTMENT: 'department',
-      EMPLOYEE_EXPORT: 'payroll/export/employee',
+      EMPLOYEE_EXPORT: 'payroll/export/employee'
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',
@@ -33,11 +33,11 @@ export const Api = {
     },
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',
-    OVERVIEW : 'overview/hr'
+    OVERVIEW: 'overview/hr'
   },
   SELL: {
     OVERVIEW: 'overview/sell',
-    STATISTICAL:{
+    STATISTICAL: {
       STATISTICAL_AGENCY: 'overview/agency',
       STATISTICAL_PROVINCE: 'statistical/nation',
       STATISTICAL_CHICKEN: 'statistical/chicken',
@@ -45,22 +45,22 @@ export const Api = {
       STATISTICAL_AGENCY_PRINT: 'statistical/agency/export/print',
       STATISTICAL_PROVINCE_PRINT: 'statistical/nation/export/print',
       STATISTICAL_CHICKEN_PRINT: 'statistical/chicken/export/print',
-      STATISTICAL_CUSTOMER_PRINT: 'statistical/customer/export/print',
+      STATISTICAL_CUSTOMER_PRINT: 'statistical/customer/export/print'
     },
     CUSTOMER: {
       CUSTOMER: 'customer',
       CUSTOMER_EXPORT: 'customer/export/print',
-      PAYMENT: 'payment-history',
+      PAYMENT: 'payment-history'
     },
-   ORDER:{
-     ORDER: 'order',
-     EXPORT_ITEMS: 'order/export/items',
-     ORDER_EXPORT: 'order/export/print',
+    ORDER: {
+      ORDER: 'order',
+      EXPORT_ITEMS: 'order/export/items',
+      ORDER_EXPORT: 'order/export/print'
 
-   },
-    ROUTE:{
+    },
+    ROUTE: {
       ROUTE: 'route',
-      ROUTE_EXPORT: 'route/export/print',
+      ROUTE_EXPORT: 'route/export/print'
     },
     COMMODITY: 'commodity',
     COMMODITY_TEMPLATE: 'commodity-template',
@@ -80,10 +80,11 @@ export const Api = {
     WAREHOUSE: 'warehouse',
     PRODUCT: 'product',
     PROVIDER: 'provider',
-    HISTORY: 'warehouse-history',
+    HISTORY: 'warehouse-history'
   },
   BREED: {
-    EGG: 'egg'
+    EGG: 'egg',
+    EGG_TYPE: 'egg-type'
   },
   ADMIN: {
     HR: 'admin/hr'
