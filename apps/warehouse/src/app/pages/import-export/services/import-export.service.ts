@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { SearchImportExportDto } from '../dto/search-import-export.dto';
 
 @Injectable()
 export class ImportExportService extends BaseService<ImportExportEntity> {
@@ -12,7 +13,7 @@ export class ImportExportService extends BaseService<ImportExportEntity> {
     super(Api.WAREHOUSE.HISTORY, http);
   }
 
-  pagination(params?: any): Observable<ResponsePaginate<ImportExportEntity>> {
+  pagination(params?: SearchImportExportDto): Observable<ResponsePaginate<ImportExportEntity>> {
     return super.pagination(params);
   }
 }
