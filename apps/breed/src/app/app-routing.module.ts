@@ -4,6 +4,10 @@ import {BreedLayoutComponent} from "./container/base/breed-layout.component";
 
 const routes: Routes = [
   {
+    path: 'auth/login',
+    loadChildren: () => import('@minhdu-fontend/auth').then(m => m.AuthModule)
+  },
+  {
     path: '',
     component:BreedLayoutComponent,
     data: {

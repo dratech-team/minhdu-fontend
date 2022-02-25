@@ -1,0 +1,73 @@
+<div class=' py-3 main-popup' style="width: 300px">
+  <div (click)="closePopup()" class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='./assets/icon/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class="h4">
+    Thêm loại trứng
+  </div>
+  <form [formGroup]='formGroup' class="mt-2">
+          <div class='form-group'>
+            <div class='row'>
+              <div class='col-sm' [formGroup]='formGroup'>
+                <label for='eggType'>Loại trứng<span class='star'>*</span></label>
+                <mat-select class="form-control" id="eggType" formControlName="eggType"
+                            [ngClass]="{ 'is-invalid': submitted && checkValid.eggType.errors }">
+                  <mat-option *ngFor="let item of eggType$|async" [value]="item?.id">
+                    {{item?.name}}
+                  </mat-option>
+                </mat-select>
+                <div *ngIf='submitted && checkValid.eggType.errors?.required' class='invalid-feedback'>
+                  <div>Chưa chọn loại trứng</div>
+                </div>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col-sm' [formGroup]='formGroup'>
+                <label for='amount'>Số lượng trứng<span class='star'>*</span></label>
+                <input type='number' class='form-control' id='amount' formControlName='amount'
+                       [ngClass]="{ 'is-invalid': submitted && checkValid.amount.errors }">
+                <div *ngIf='submitted && checkValid.amount.errors?.required' class='invalid-feedback'>
+                  <div>Chưa nhập số lượng trứng</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='createdAt'>Ngày tạo<span class='star'>*</span>
+              </label>
+              <input type="date" class='form-control' id='createdAt' formControlName='createdAt'
+                     [ngClass]="{ 'is-invalid': submitted && checkValid.createdAt.errors }">
+              <div *ngIf='submitted && checkValid.createdAt.errors?.required' class='invalid-feedback'>
+                <div>Chưa chọn ngày</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='createdAt'>Đơn vị<span class='star'>*</span>
+              </label>
+              <input class='form-control' type='search' matInput formControlName="branches" [matAutocomplete]='branch'
+                     #branchInput>
+              <mat-autocomplete #branch='matAutocomplete'>
+                <mat-option *ngFor='let branch of branches$ | async'
+                            [value]='!branch.id ? branchInput.value : branch.name'
+                            (onSelectionChange)='onSelectBranch($event,branch)'>
+                  {{branch.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+    <div class='footer-popup row ml-2 mt-3'>
+      <button (click)="closePopup()" class='btn btn-cancel mr-3 '>Hủy</button>
+      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button type='button' class='btn award' data-toggle='tooltip'
+              data-placement='left'
+              title='xóa'>
+      </button>
+    </div>
+  </form>
+</div>

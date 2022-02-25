@@ -6,6 +6,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { CreateIncubatorFactoryDto } from '../dto/create-incubator-factory.dto';
 import { SearchIncubatorFactoryDto } from '../dto/search-incubator-factory.dto';
+import {ResponsePaginate} from "@minhdu-fontend/data-models";
 
 @Injectable()
 export class IncubatorFactoryService extends BaseService<IncubatorFactoryEntity> {
@@ -19,5 +20,8 @@ export class IncubatorFactoryService extends BaseService<IncubatorFactoryEntity>
 
   getAll(params?: SearchIncubatorFactoryDto): Observable<IncubatorFactoryEntity[]> {
     return super.getAll(params);
+  }
+  pagination(params?: SearchIncubatorFactoryDto): Observable<ResponsePaginate<IncubatorFactoryEntity>> {
+    return super.pagination(params);
   }
 }

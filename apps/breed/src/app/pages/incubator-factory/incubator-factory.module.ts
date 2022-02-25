@@ -6,16 +6,28 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { IncubatorFactoryEffect } from './state/incubator-factory.effect';
 import { IncubatorFactoryComponent } from './containers/incubator-factory.component';
+import {AddEggComponent} from "./components/dialog-add-egg/add-egg.component";
+import { FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {EggTypeModule} from "../egg-type/egg-type.module";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
-    IncubatorFactoryComponent
+    IncubatorFactoryComponent,
+    AddEggComponent
   ],
   imports: [
     IncubatorFactoryRoutingModule,
     AkitaNgEffectsModule.forFeature([IncubatorFactoryEffect]),
     MatAutocompleteModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    EggTypeModule,
+    MatDatepickerModule,
+    InfiniteScrollModule,
+    MatSelectModule,
   ],
   providers: [IncubatorFactoryService]
 })

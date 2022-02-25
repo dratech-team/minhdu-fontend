@@ -8,10 +8,20 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from '@minhdu-fontend/auth';
-import { CommonModule, HashLocationStrategy } from '@angular/common';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {CommonModule, DatePipe, HashLocationStrategy} from '@angular/common';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import {StoreModule} from "@ngrx/store";
+import {EffectsModule} from "@ngrx/effects";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../../../hr/src/environments/environment";
+import {OrgchartModule} from "@minhdu-fontend/orgchart";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatNativeDateModule} from "@angular/material/core";
+import {LocationModule} from "@minhdu-fontend/location";
+import {MatSelectModule} from "@angular/material/select";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -19,6 +29,8 @@ import { AppRoutingModule } from './app-routing.module';
     BreedLayoutComponent
   ],
   imports: [
+    StoreModule,
+    EffectsModule,
     BrowserModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -28,9 +40,22 @@ import { AppRoutingModule } from './app-routing.module';
     AppRoutingModule,
     AppFooterModule,
     MatTabsModule,
-    MatDialogModule
-    // EffectsModule.forRoot([AuthEffects]),
-    // StoreModule.forRoot({}, {}),
+    MatDialogModule,
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
+    OrgchartModule,
+    MatSnackBarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    LocationModule,
+    MatSelectModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {
@@ -44,7 +69,8 @@ import { AppRoutingModule } from './app-routing.module';
       multi: true
     },
     HashLocationStrategy,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
