@@ -591,7 +591,9 @@
             "tsConfig": "apps/breed/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/breed/src/favicon.ico", "apps/breed/src/assets"],
-            "styles": ["apps/breed/src/styles.scss"],
+            "styles": [
+              "apps/breed/src/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"],
             "scripts": []
           },
           "configurations": {

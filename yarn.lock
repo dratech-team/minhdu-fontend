@@ -1539,7 +1539,7 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@datorama/akita-ng-effects@^1.0.6":
+"@datorama/akita-ng-effects@^1.0.3":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@datorama/akita-ng-effects/-/akita-ng-effects-1.0.6.tgz#0b117c147284a445dfb5dc85624de82e6c89397d"
   integrity sha512-FAOSzsFpi45D8dbED9M4fbu6sdrwV376YTtQMlTEcjK/yfoOnO5Dg1E8V4LCfbvBs523Rg7QIZWNnSBdDajw4g==
@@ -1547,17 +1547,17 @@
     ts-action "^11.0.0"
     ts-action-operators "^9.1.1"
 
-"@datorama/akita-ngdevtools@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@datorama/akita-ngdevtools/-/akita-ngdevtools-7.0.0.tgz#81494fc2cc3e70f6a2cab52c75acb72b711bb0f9"
-  integrity sha512-ufUYu+mG9LFxDlbF4A8HYB6RhWLWy0U8iadu1ORUIEwpKhNZ6f+H4UH8ntzNxtKgf2yf61yV+s2CJ4i+WezfzA==
+"@datorama/akita-ngdevtools@^6.0.0":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@datorama/akita-ngdevtools/-/akita-ngdevtools-6.0.1.tgz#8e3a1ff00146c1e3e8c5da8e5a30445557c3c4c8"
+  integrity sha512-jEsFTHQNJwLv+bSayHyGzI6zW3tVPUpx3yrWHKQGTc2cMsbhcjuId+o/Q6VkyMzM4vew3Itasz5XrrZTooakIw==
   dependencies:
-    tslib "^2.3.0"
+    rxjs "6.6.7"
 
-"@datorama/akita@^7.1.0":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@datorama/akita/-/akita-7.1.1.tgz#912cf78c190a765ac815adee16116b688dd1edc0"
-  integrity sha512-x/RgwleA1u/Z3ICL7OBSsiUByzIwSjAnx4IcdgIYS090wc2C94u4UG5mWP8Yx98NUS6mnFeHLUVllXP+BQsl1A==
+"@datorama/akita@^6.2.0":
+  version "6.2.4"
+  resolved "https://registry.yarnpkg.com/@datorama/akita/-/akita-6.2.4.tgz#13e883879dc29ac4e3a775dc39f361df53051ea7"
+  integrity sha512-bSaYvLn+OEfLIaqDd4Ur5fWy2L0TJyWPZU3SIbhDaCPN52M0upnk2GNPqIUyGLQem9LCzpwkIGW9mvafgEv93w==
   dependencies:
     schematics-utilities "^2.0.3"
 

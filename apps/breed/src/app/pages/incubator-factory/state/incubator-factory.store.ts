@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EntityStore, StoreConfig } from '@datorama/akita';
-import { EntityState } from '@ngrx/entity';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { IncubatorFactoryEntity } from '../entities/incubator-factory.entity';
 
 export interface IncubatorFactoryState extends EntityState<IncubatorFactoryEntity> {
   loading: boolean;
+  branchId: number
 }
 
 export const createInitialState = () => ({ loading: true });
