@@ -13,13 +13,13 @@
        (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' style='min-width: 3000px'>
       <thead>
-      <tr >
+      <tr>
         <th style='width: 200px'>
-          <div class=''>Ngày hẹn giao</div>
+          <div>Ngày hẹn giao</div>
           <div class='d-flex border-top'>
             <mat-date-range-input [rangePicker]='rangePicker'>
-              <input matStartDate formControlName='deliveryStartedAt' placeholder='Từ ngày'>
-              <input matEndDate formControlName='deliveryEndedAt' placeholder='đến ngày'>
+              <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
+              <input matEndDate formControlName='endedAt' placeholder='đến ngày'>
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]='rangePicker'></mat-datepicker-toggle>
             <mat-date-range-picker #rangePicker>
@@ -34,29 +34,29 @@
           <div class=''>Khách hàng</div>
           <input formControlName='name' class='form-control' type='search'>
         </th>
+        <th style='min-width: 300px'>
+          <div class=''>Điểm đến</div>
+          <input formControlName='ward' class='form-control' type='search'>
+        </th>
         <th>
           <div class=''>Ngày tạo</div>
           <div class='d-flex border-top'>
-            <mat-date-range-input [rangePicker]='picker'>
-              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>
-              <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-            <mat-date-range-picker #picker>
-              <mat-date-range-picker-actions>
-                <button mat-button matDateRangePickerCancel>Cancel</button>
-                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
-              </mat-date-range-picker-actions>
-            </mat-date-range-picker>
+<!--            <mat-date-range-input [rangePicker]='picker'>-->
+<!--              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>-->
+<!--              <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>-->
+<!--            </mat-date-range-input>-->
+<!--            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>-->
+<!--            <mat-date-range-picker #picker>-->
+<!--              <mat-date-range-picker-actions>-->
+<!--                <button mat-button matDateRangePickerCancel>Cancel</button>-->
+<!--                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>-->
+<!--              </mat-date-range-picker-actions>-->
+<!--            </mat-date-range-picker>-->
           </div>
         </th>
         <th>
           <div class=''>Xe xuất</div>
           <input formControlName='ward' class='form-control' type='text'>
-        </th>
-        <th style='min-width: 300px'>
-          <div class=''>Điểm đến</div>
-          <input formControlName='ward' class='form-control' type='search'>
         </th>
         <th style="width: 150px;">
           <div>Hàng hóa</div>
@@ -115,6 +115,11 @@
         <th>
           {{order.customer?.lastName}}
         </th>
+        <th style='min-width: 300px'>
+          {{order?.province?.name}}
+          {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
+          {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
+        </th>
         <th>
           {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
         </th>
@@ -128,11 +133,6 @@
             -
           </th>
         </ng-template>
-        <th style='min-width: 300px'>
-          {{order?.province?.name}}
-          {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
-          {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
-        </th>
         <th class='pointer d-flex' style='padding: 0px; border: none'>
           <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
                style='width: 300px; min-height: 32px'>

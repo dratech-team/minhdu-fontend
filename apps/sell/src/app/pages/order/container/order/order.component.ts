@@ -41,6 +41,8 @@ export class OrderComponent implements OnInit {
     name: new FormControl(''),
     status: new FormControl(0),
     explain: new FormControl(''),
+    startedAt: new FormControl(),
+    endedAt: new FormControl(),
     createStartedAt: new FormControl(),
     createEndedAt: new FormControl(),
     deliveryStartedAt: new FormControl(),
@@ -104,6 +106,16 @@ export class OrderComponent implements OnInit {
     if (!value?.deliveryStartedAt && !value?.deliveryEndedAt) {
       delete value?.deliveryStartedAt;
       delete value?.deliveryEndedAt;
+    }
+
+    if (!value?.startedAt && !value?.endedAt) {
+      delete value?.startedAt;
+      delete value?.endedAt;
+    }
+
+    if (value?.startedAt && !value?.endedAt) {
+      value.endedAt = value?.startedAt;
+      this.formGroup.get('endedAt')?.patchValue(value.endedAt)
     }
     return value;
   }
