@@ -83,8 +83,9 @@ export const Api = {
     HISTORY: 'warehouse-history'
   },
   BREED: {
+    EGG_TYPE: 'egg-type',
     EGG: 'egg',
-    EGG_TYPE: 'egg-type'
+    INCUBATOR: 'incubator',
   },
   ADMIN: {
     HR: 'admin/hr'

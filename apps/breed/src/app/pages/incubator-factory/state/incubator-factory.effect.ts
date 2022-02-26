@@ -32,19 +32,19 @@ export class IncubatorFactoryEffect {
     switchMap(props => this.service.pagination(props)),
     map(({ data }) => {
       return data.map((incubator) => {
-        const amountAdded = incubator.eggs.filter(egg => egg.type.added).map(a => a.amount).reduce((a, b) => a + b, 0);
-        const amount = incubator.eggs.map(a => a.amount).reduce((a, b) => a + b, 0);
+        // const amountAdded = incubator.eggs.filter(egg => egg.type.added).map(a => a.amount).reduce((a, b) => a + b, 0);
+        // const amount = incubator.eggs.map(a => a.amount).reduce((a, b) => a + b, 0);
 
-        incubator.eggs.push({
-          type: {
-            id: -1,
-            name: 'Tổng soi loại',
-            added: false,
-            rated: true
-          },
-          amount: amountAdded,
-          rate: amountAdded / amount
-        });
+        // incubator.eggs.push({
+        //   type: {
+        //     id: -1,
+        //     name: 'Tổng soi loại',
+        //     added: false,
+        //     rated: true
+        //   },
+        //   amount: amountAdded,
+        //   rate: amountAdded / amount
+        // });
         return incubator;
       });
     }),
