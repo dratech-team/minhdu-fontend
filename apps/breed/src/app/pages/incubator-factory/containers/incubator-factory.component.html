@@ -1,125 +1,117 @@
-<div class="main-content">
-  <div class="ml-2" style="width: 98%;">
-    <div class="row">
-      <span class="font-xl mb-3 font-weight-bold ml-3">Nhà máy ấp</span>
+<div class='main-content'>
+  <div class='ml-2' style='width: 98%;'>
+    <div class='row'>
+      <span class='font-xl mb-3 font-weight-bold ml-3'>Nhà máy ấp</span>
     </div>
-    <div class="row mb-2" [formGroup]="formGroup">
-      <button class="btn btn-primary ml-3" (click)="addEgg()">Thêm trứng</button>
+    <div class='row mb-2' [formGroup]='formGroup'>
+      <button class='btn btn-primary ml-3' (click)='addEgg()'>Thêm trứng</button>
       <div class='d-flex border ml-3 rounded-sm'>
         <mat-date-range-input [rangePicker]='picker'>
           <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
           <input matEndDate formControlName='endedAt' placeholder='Đến ngày'>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #picker>
+          <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Cancel</button>
+            <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
       </div>
     </div>
-    <div class="table-scroll" infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
-      <table [formGroup]="formGroup" style="min-width:1500px;">
+    <div
+      infiniteScroll
+      class='table-scroll'
+      [alwaysCallback]='true'
+      [infiniteScrollDistance]='1'
+      [infiniteScrollThrottle]='10'
+      [scrollWindow]='false'
+      (scrolled)='onScroll()'
+    >
+      <table [formGroup]='formGroup' style='min-width:1500px;'>
         <thead>
         <tr>
           <td>
-
-            <div class="d-flex">
-              <span class="ml-2"> Đơn vị:</span>
-              <input style="height: 21px; width:65%" class='form-control ml-2' type='search' matInput formControlName="branches"
-                     [matAutocomplete]='branch'
-                     #branchInput>
+            <div class='d-flex'>
+              <span class='ml-2' style='font-weight: bold'> Đơn vị:</span>
+              <input
+                matInput
+                style='height: 21px; width:65%'
+                class='form-control ml-2'
+                type='search'
+                formControlName='branches'
+                [matAutocomplete]='branch'
+                #branchInput
+              >
               <mat-autocomplete #branch='matAutocomplete'>
-                <mat-option *ngFor='let branch of branches$ | async'
-                            [value]='!branch.id ? branchInput.value : branch.name'
-                            (onSelectionChange)='onSelectBranch($event,branch)'>
+                <mat-option
+                  *ngFor='let branch of branches$ | async'
+                  [value]='!branch.id ? branchInput.value : branch.name'
+                  (onSelectionChange)='onSelectBranch(branch)'
+                >
                   {{branch.name}}
                 </mat-option>
               </mat-autocomplete>
             </div>
             <table>
-              <tr>
-                <td style="width: 10%">
-                  stt
+              <tr style='font-weight: bold'>
+                <td style='width: 10%'>
+                  STT
                 </td>
-                <td style="width:30%">
+                <td style='width:30%'>
                   Tần suất ấp
                 </td>
-                <td style="width:30%">
+                <td style='width:30%'>
                   Ngày ấp
                 </td>
-                <td style="width:30%">
+                <td style='width:30%'>
                   Ngày nờ
                 </td>
               </tr>
             </table>
           </td>
-          <td>
-            trứng ấp
+          <td style='font-weight: bold'>
+            Trứng ấp
           </td>
-          <td *ngFor="let item of eggTypes$|async">
+          <td *ngFor='let item of eggTypes$ | async' style='font-weight: bold'>
             {{item?.name}}
             <table>
               <tr>
-                <td [ngStyle]="{'width': item?.rated ? '50%' : '100%' }">
+                <td [ngStyle]="{'width': item.rated ? '50%' : '100%' }">
                   Số lượng
                 </td>
-                <td style="width:50%" *ngIf="item?.rated">
-                  Tỉ lệ
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td>
-            Tổng soi loại
-            <table>
-              <tr>
-                <td style="width: 50%">
-                  Số lượng
-                </td>
-                <td style="width:50%">
-                  Tỉ lệ
+                <td style='width:50%' *ngIf='item.rated'>
+                  Tỷ lệ
                 </td>
               </tr>
             </table>
           </td>
         </tr>
         </thead>
-        <tbody *ngIf="eggData$|async as eggData">
-        <tr *ngFor="let item of eggData.data;let i= index">
+        <tbody>
+        <tr *ngFor='let item of egg$ | async; let i= index'>
           <td>
             <table>
               <tr>
-                <td style="width:10%">{{i + 1}}</td>
-                <td style="width:30%">//</td>
-                <td style="width:30%"> {{item.createdAt|date:'dd/MM/yyyy'}}</td>
-                <td style="width:30%"> {{item.endedAt|date:'dd/MM/yyyy'}}</td>
+                <td style='width:10%'>{{i + 1}}</td>
+                <td style='width:30%'>//</td>
+                <td style='width:30%'> {{item.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td style='width:30%'> {{item.endedAt | date:'dd/MM/yyyy'}}</td>
               </tr>
             </table>
           </td>
           <td>
             {{item.totalEgg}}
           </td>
-          <td *ngFor="let eggType of eggTypes$|async">
-            <div *ngFor="let egg of item.eggs">
-              <table *ngIf="eggType?.id === egg.type.id">
+          <td *ngFor='let eggType of eggTypes$ | async'>
+            <div *ngFor='let egg of item.eggs'>
+              <table *ngIf='eggType.id === egg.type.id'>
                 <tr>
-                  <td style="width: 50%;">
+                  <td style='width: 50%;'>
                     {{egg.amount}}
                   </td>
-                  <td style="width:50%;">
-                    {{egg?.rate}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </td>
-          <td *ngIf="eggTypes$|async as eggTypes">
-            <div *ngFor="let egg of item.eggs">
-              <table *ngIf="checkEgg(eggTypes,egg)">
-                <tr>
-                  <td style="width: 50%;">
-                    {{egg.amount}}
-                  </td>
-                  <td style="width:50%;">
-                    {{egg?.rate}}
+                  <td *ngIf='eggType.rated' style='width:50%; color: red'>
+                    {{egg.rate | percent}}
                   </td>
                 </tr>
               </table>

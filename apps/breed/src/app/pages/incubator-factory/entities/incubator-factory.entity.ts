@@ -1,7 +1,6 @@
-import {EggEnum} from './egg.enum';
-import {Branch} from '@minhdu-fontend/data-models';
-import {EggTypeEntity} from "../../egg-type/entities/egg-type.entity";
-
+import { EggEnum } from './egg.enum';
+import { Branch } from '@minhdu-fontend/data-models';
+import { EggTypeEntity } from '../../egg-type/entities/egg-type.entity';
 
 export interface IncubatorFactoryEntity {
   readonly id: number;
@@ -16,8 +15,8 @@ export interface IncubatorFactoryEntity {
 
 export interface Egg {
   readonly type: EggTypeEntity
-  readonly amount: string
-  readonly rate: string
+  readonly amount: number
+  readonly rate: number;
 }
 
 

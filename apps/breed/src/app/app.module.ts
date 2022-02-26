@@ -22,6 +22,8 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {LocationModule} from "@minhdu-fontend/location";
 import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 
 @NgModule({
   declarations: [
@@ -41,13 +43,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     AppFooterModule,
     MatTabsModule,
     MatDialogModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-    }),
+    AkitaNgDevtools.forRoot(),
     OrgchartModule,
     MatSnackBarModule,
     FormsModule,
