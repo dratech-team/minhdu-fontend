@@ -10,7 +10,7 @@ import { SearchIncubatorFactoryDto } from '../dto/search-incubator-factory.dto';
 @Injectable()
 export class IncubatorFactoryService extends BaseService<IncubatorFactoryEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.BREED.EGG, http);
+    super(Api.BREED.INCUBATOR, http);
   }
 
   addOne(props: CreateIncubatorFactoryDto): Observable<IncubatorFactoryEntity> {

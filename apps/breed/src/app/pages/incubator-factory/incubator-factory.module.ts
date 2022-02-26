@@ -6,6 +6,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { IncubatorFactoryEffect } from './state/incubator-factory.effect';
 import { IncubatorFactoryComponent } from './containers/incubator-factory.component';
+import { EggService } from './services/egg.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { IncubatorFactoryComponent } from './containers/incubator-factory.compon
     MatAutocompleteModule,
     CommonModule
   ],
-  providers: [IncubatorFactoryService]
+  providers: [IncubatorFactoryService, EggService]
 })
 export class IncubatorFactoryModule {
 }
