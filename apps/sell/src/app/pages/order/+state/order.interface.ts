@@ -63,3 +63,11 @@ export interface CommodityUniq {
 export interface ResponsePaginateOrder<T> extends ResponsePaginate<T> {
   commodityUniq: CommodityUniq[]
 }
+
+export interface OrderHistory{
+  id: number,
+  orderId:number,
+  type: string,
+  note: string,
+  timestamp: Date
+}
