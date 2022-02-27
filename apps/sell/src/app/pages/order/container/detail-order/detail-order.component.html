@@ -182,12 +182,12 @@
              (scrolled)='loadMoreOrderHistory()'>
           <table>
             <tr style="position: sticky; top: 1px; background: white">
-              <th class='text-center border-top'> Thời gian</th>
-              <th class='text-center border-top'> Loại gà</th>
-              <th class='text-center border-top'>nội dung</th>
+              <th class='text-center border-top'>Thời gian</th>
+              <th class='text-center border-top'>Loại gà</th>
+              <th class='text-center border-top'>Nội dung</th>
             </tr>
             <tr *ngFor='let orderHistory of orderHistories'>
-              <th class='text-center pointer'> {{orderHistory.timestamp|date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center pointer'> {{orderHistory.timestamp | date: 'hh:mm:ss - dd/MM/yyyy'}} </th>
               <th class='text-center pointer'> {{orderHistory.type}}</th>
               <th class='text-center pointer'> {{orderHistory.note}} </th>
             </tr>
