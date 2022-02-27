@@ -27,6 +27,7 @@ export interface Order {
   deliveredAt: Date;
   endedAt: Date;
   hide: boolean;
+  totalCommodity?:number
 }
 
 export interface UpdateOrderDto extends Omit<Order, 'commodities'> {

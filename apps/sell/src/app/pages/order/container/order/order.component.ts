@@ -179,10 +179,6 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  getTotalEachCommodity(commodities: Commodity[]): number {
-    return getTotalCommodity(commodities)
-  }
-
   getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
     return getTotalCommodity(CommodityUniq)
   }

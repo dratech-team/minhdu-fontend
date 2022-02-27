@@ -11,6 +11,8 @@ import {CustomerAction} from '../../customer/+state/customer/customer.action';
 import {selectorOrderAssignedTotal, selectorOrderTotal} from './order.selector';
 import {Router} from '@angular/router';
 import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import {Order} from "./order.interface";
+import {getTotalCommodity} from "../../../../../../../libs/utils/sell.ultil";
 
 
 @Injectable()
@@ -70,12 +72,16 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadInit),
       switchMap((props) => this.orderService.paginationOrder(props.orderDTO)),
-      map((responsePagination) =>
-        OrderAction.loadInitSuccess({
-          orders: responsePagination.data,
-          total: responsePagination.total,
-          commodityUniq: responsePagination.commodityUniq
-        })
+      map((responsePagination) => {
+          responsePagination.data.map((order: Order)=>{
+            order.totalCommodity = getTotalCommodity(order.commodities)
+          })
+          return OrderAction.loadInitSuccess({
+            orders: responsePagination.data,
+            total: responsePagination.total,
+            commodityUniq: responsePagination.commodityUniq
+          })
+        }
       ),
       catchError((err) => throwError(err))
     )
