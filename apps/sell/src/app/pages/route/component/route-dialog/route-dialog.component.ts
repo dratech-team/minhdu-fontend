@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { RouteAction } from '../../container/+state/route.action';
+import { RouteAction } from '../../+state/route.action';
 import { DatePipe } from '@angular/common';
 import { selectorAllOrders } from '../../../order/+state/order.selector';
 import { Order } from '../../../order/+state/order.interface';

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouteAction } from './route.action';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { RouteService } from '../../service/route.service';
+import { RouteService } from '../service/route.service';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { selectorRouteTotal } from './route.selector';
 import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
+import {selectorRouteTotal} from "./route.selector";
+import {Order} from "../../order/+state/order.interface";
 
 @Injectable()
 export class RouteEffect {
@@ -27,7 +28,7 @@ export class RouteEffect {
         return RouteAction.loadInitSuccess({
           routes: responsePagination.data.map((e) => {
             return Object.assign(e, {
-              customers: e.orders.map((order) => order.customer.lastName),
+              customers: e.orders.map((order:Order) => order.customer.lastName),
             });
           }),
         });

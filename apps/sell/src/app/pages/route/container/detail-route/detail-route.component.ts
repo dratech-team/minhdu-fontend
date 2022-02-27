@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import { Route } from '../+state/route.interface';
+import { Route } from '../../+state/route.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { selectorCurrentRoute } from '../+state/route.selector';
+import { selectorCurrentRoute } from '../../+state/route.selector';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteAction } from '../+state/route.action';
+import { RouteAction } from '../../+state/route.action';
 import { MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MainAction } from '../../../../states/main.action';
 import { getSelectors } from '@minhdu-fontend/utils';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
+import {Order} from "../../../order/+state/order.interface";
 
 @Component({
   templateUrl: 'detail-route.component.html'
