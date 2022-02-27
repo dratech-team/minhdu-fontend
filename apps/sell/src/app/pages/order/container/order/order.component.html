@@ -11,7 +11,7 @@
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
        [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
        (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' style='min-width: 3000px'>
+    <table [formGroup]='formGroup' style='min-width: 3150px'>
       <thead>
       <tr>
         <th style='width: 200px'>
@@ -30,7 +30,7 @@
             </mat-date-range-picker>
           </div>
         </th>
-        <th style='min-width: 200px'>
+        <th style='width: 250px'>
           <div class=''>Khách hàng</div>
           <input formControlName='name' class='form-control' type='search'>
         </th>
@@ -72,6 +72,12 @@
             </div>
           </div>
         </th>
+        <th style="width: 150px">
+          <div>Tổng</div>
+          <div class="border">
+            Số lượng
+          </div>
+        </th>
         <th>
           <div class=''>Tiền hàng</div>
           <input formControlName='commodityTotal' class='form-control' type='number'>
@@ -109,7 +115,7 @@
         (click)='readAndUpdate(order.id, false)'
         (contextmenu)='child.onContextMenu($event, order)'
       >
-        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+        <th  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
@@ -136,7 +142,7 @@
         </ng-template>
         <th class='pointer d-flex' style='padding: 0px; border: none'>
           <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
-               style='width: 300px; min-height: 32px'>
+               style='width: 301px; min-height: 32px'>
             <div *ngFor=' let commodity of order.commodities'>
               <div class='d-flex' *ngIf='item.code === commodity.code'>
                 <div class='border-right d-flex justify-content-center align-items-center '
@@ -151,6 +157,9 @@
             </div>
           </div>
         </th>
+        <th>
+          {{getTotalCommodity(order.commodities)}}
+        </th>
         <th style='color: #f86c6b'>
           {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
         </th>
@@ -164,6 +173,36 @@
         <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
           {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
         </th>
+      </tr>
+      <tr *ngIf='orders.length > 0'>
+        <th></th>
+        <th></th>
+        <th>Tổng</th>
+        <th></th>
+        <th></th>
+        <th *ngIf="CommodityUniq$|async as CommodityUniq" class=" p-0">
+          <div class="d-flex">
+            <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
+                 style='width: 301px; min-height: 32px'>
+              <div *ngFor=' let commodity of CommodityUniq'>
+                <div class='d-flex' *ngIf='item.code === commodity.code'>
+                  <div class='border-right d-flex justify-content-center align-items-center '
+                       style='width: 150px ; min-height: 30px'>
+                    {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
+                  </div>
+                  <div class='border-left d-flex justify-content-center align-items-center'
+                       style='width: 150px; min-height: 30px'>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
       <tr *ngIf='!orders || orders.length === 0' style='height:45vh'>
         <td colspan='20' class='font-weight-bold position-relative'>
@@ -197,7 +236,7 @@
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;
     position: sticky;
-    left: 400px;
+    left: 450px;
     z-index: 2;
   }
 

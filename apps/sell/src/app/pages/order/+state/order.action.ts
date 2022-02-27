@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Order, OrderDTO, UpdateOrderDto } from './order.interface';
+import {CommodityUniq, Order, OrderDTO, UpdateOrderDto} from './order.interface';
 
 export const addOrder = createAction(
   '[ADD_ORDER] Add Order',
@@ -20,7 +20,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[]; total: number }>()
+  props<{ orders: Order[]; total: number,   commodityUniq: CommodityUniq[] }>()
 );
 
 export const loadMoreOrders = createAction(
@@ -30,7 +30,7 @@ export const loadMoreOrders = createAction(
 
 export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[]; total: number }>()
+  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
 );
 
 export const getOrder = createAction(

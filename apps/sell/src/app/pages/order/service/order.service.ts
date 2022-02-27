@@ -4,7 +4,7 @@ import { Order } from '../+state/order.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import {ResponsePaginate, ResponsePaginateOrder} from '@minhdu-fontend/data-models';
 import { Update } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
 
@@ -20,8 +20,9 @@ export class OrderService extends BaseService<Order> {
     return super.addOne(props);
   }
 
-  pagination(params?: any): Observable<ResponsePaginate<Order>> {
-    return super.pagination(params);
+
+  paginationOrder(params?: any): Observable<ResponsePaginateOrder<Order>> {
+    return this.http.get<ResponsePaginateOrder<Order>>(Api.SELL.ORDER.ORDER, { params })
   }
 
   payment(id: number, body: any): Observable<Update<Order>> {
