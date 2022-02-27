@@ -6,7 +6,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -17,9 +17,9 @@ import {
   CustomerResource,
   CustomerType
 } from '@minhdu-fontend/enums';
-import { Store } from '@ngrx/store';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { debounceTime } from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {debounceTime} from 'rxjs/operators';
 import {
   checkIsSelectAllInit,
   handleValSubPickItems,
@@ -27,15 +27,15 @@ import {
   pickOne,
   someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
-import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
+import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
+import {Commodity} from '../../../pages/commodity/+state/commodity.interface';
 import {
   selectAllCommodity,
   selectedCommodityNewAdd,
   selectedTotalCommodity
 } from '../../../pages/commodity/+state/commodity.selector';
-import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
-import { PickCommodityService } from './pick-commodity.service';
+import {CommodityDialogComponent} from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
+import {PickCommodityService} from './pick-commodity.service';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -81,13 +81,13 @@ export class PickCommodityComponent implements OnInit {
     });
     this.store.dispatch(
       CommodityAction.loadInit({
-        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
+        CommodityDTO: {take: this.pageSize, skip: this.pageIndex}
       })
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.isEventSearch = true;
       this.store.dispatch(
-        CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+        CommodityAction.loadMoreCommodity({commodityDTO: this.commodity(val)})
       );
     });
 
@@ -121,7 +121,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
+    this.dialog.open(CommodityDialogComponent, {width: '40%'}).afterClosed().subscribe(val => {
       console.log('====', val);
     });
   }
@@ -132,7 +132,7 @@ export class PickCommodityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.store.dispatch(CommodityAction.deleteCommodity({id: $event.id}));
       }
     });
   }
@@ -140,7 +140,7 @@ export class PickCommodityComponent implements OnInit {
   updateCommodity(commodity: Commodity) {
     this.dialog.open(CommodityDialogComponent, {
       width: '40%',
-      data: commodity
+      data: {commodity}
     });
   }
 
@@ -171,7 +171,7 @@ export class PickCommodityComponent implements OnInit {
     this.isEventSearch = false;
     const val = this.formGroup.value;
     this.store.dispatch(
-      CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+      CommodityAction.loadMoreCommodity({commodityDTO: this.commodity(val)})
     );
   }
 

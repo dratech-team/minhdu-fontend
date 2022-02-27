@@ -70,8 +70,8 @@ export class DetailOrderComponent implements OnInit {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
   }
 
-  updateComodity(id: number, commodity: Commodity) {
-    this.dialog.open(CommodityDialogComponent, {data: {commodity, isUpdate: true}, width: '30%'});
+  updateCommodity(orderId: number, commodity: Commodity) {
+    this.dialog.open(CommodityDialogComponent, {data: {commodity, isUpdate: true, orderId: orderId}, width: '30%'});
   }
 
   deleteCommodity(commodityId: number) {
