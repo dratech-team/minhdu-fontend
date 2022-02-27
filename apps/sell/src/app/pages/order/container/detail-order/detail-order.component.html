@@ -145,7 +145,7 @@
           </table>
         </div>
       </div>
-      <div class='col-12 my-5'>
+      <div class='col-12 mt-5'>
         <div class='row d-flex align-items-center '>
           <div class='row align-items-center title-table mr-4'>Tuyến đường</div>
         </div>
@@ -170,6 +170,32 @@
             <td colspan='6' class='text-center check-content'> Hiện chưa có tuyến đường nào!</td>
           </tr>
         </table>
+      </div>
+      <div class='col-12 my-5'>
+        <div class='row d-flex align-items-center mb-3 '>
+          <div class='row align-items-center title-table mr-4'>Lịch sử chốt đơn</div>
+        </div>
+        <div style="height: 250px; overflow:auto; "
+             class="border"
+             infiniteScroll [infiniteScrollDistance]='0.1'
+             [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
+             (scrolled)='loadMoreOrderHistory()'>
+          <table>
+            <tr style="position: sticky; top: 1px; background: white">
+              <th class='text-center border-top'> Thời gian</th>
+              <th class='text-center border-top'> Loại gà</th>
+              <th class='text-center border-top'>nội dung</th>
+            </tr>
+            <tr *ngFor='let orderHistory of orderHistories'>
+              <th class='text-center pointer'> {{orderHistory.timestamp|date: 'dd/MM/yyyy'}} </th>
+              <th class='text-center pointer'> {{orderHistory.type}}</th>
+              <th class='text-center pointer'> {{orderHistory.note}} </th>
+            </tr>
+            <tr *ngIf='orderHistories.length === 0' class='font-lg my-4'>
+              <td colspan='6' class='text-center check-content'> Hiện chưa có lịch sử chỉnh sửa đơn hàng nào!</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
