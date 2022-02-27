@@ -42,12 +42,12 @@
       </div>
     </form>
     <div class='outer   animated fadeIn' infiniteScroll [infiniteScrollDistance]='1' [infiniteScrollThrottle]='100'
-      [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(commodities$ | async) as commodities'>
+         [scrollWindow]='false' (scrolled)='onScroll()' *ngIf='(commodities$ | async) as commodities'>
 
       <div class='row-content' *ngFor='let commodity of commodities'
-        (contextmenu)='child.onContextMenu($event,commodity)'>
+           (contextmenu)='child.onContextMenu($event,commodity)'>
         <app-mouse-right #child (addEvent)='add()' (deleteEvent)='deleteCommodity($event)'
-          (readEvent)='UpdateCommodity($event)'></app-mouse-right>
+                         (readEvent)='UpdateCommodity($event)'></app-mouse-right>
         <div class='content-profile default pointer'>{{commodity?.code}} </div>
         <div class='content-profile note pointer'>{{commodity?.name}} </div>
         <div class='content-profile default pointer'>{{commodity.unit === commodityUnit.KG ? 'KG' : 'Con'}}</div>

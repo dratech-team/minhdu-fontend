@@ -9,9 +9,9 @@ import { DatePipe } from '@angular/common';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
 import { CustomerAction } from '../../../customer/+state/customer/customer.action';
-import { selectAllCommodity } from '../../../commodity/+state/commodity.selector';
 import { Commodity } from '../../../commodity/entities/commodity.entity';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
+import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 
 
 @Component({
@@ -19,7 +19,8 @@ import { CommodityAction } from '../../../commodity/+state/commodity.action';
 })
 export class OrderDialogComponent implements OnInit {
   customers$ = this.store.pipe(select(selectorAllCustomer));
-  commodities$ = this.store.pipe(select(selectAllCommodity));
+  commodities$ = this.commodityQuery.selectAll();
+
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
@@ -30,6 +31,7 @@ export class OrderDialogComponent implements OnInit {
 
   constructor(
     private readonly store: Store<AppState>,
+    private readonly commodityQuery: CommodityQuery,
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<OrderDialogComponent>,
@@ -72,7 +74,7 @@ export class OrderDialogComponent implements OnInit {
       explain: val.explain,
       deliveredAt: val.deliveredAt
     };
-    console.log(order)
+    console.log(order);
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }

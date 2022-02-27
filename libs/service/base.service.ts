@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Update, UpdateNum } from '@ngrx/entity/src/models';
+import { UpdateNum } from '@ngrx/entity/src/models';
 import { ResponsePaginate } from '../data-models';
 
 export class BaseService<T> {
@@ -11,11 +11,11 @@ export class BaseService<T> {
   }
 
   pagination(params?: any): Observable<ResponsePaginate<T>> {
-    return this.http.get<ResponsePaginate<T>>(this.url, {params})
+    return this.http.get<ResponsePaginate<T>>(this.url, { params });
   }
 
   getAll(params?: any): Observable<T[]> {
-    return this.http.get<T[]>(this.url, {params});
+    return this.http.get<T[]>(this.url, { params });
   }
 
   getOne(id: any): Observable<T> {
@@ -30,7 +30,7 @@ export class BaseService<T> {
     return this.http.patch<UpdateNum<T>>(this.url + `/${id}`, body);
   }
 
-  delete(id: number, params?: any): Observable<void> {
-    return this.http.delete<void>(this.url + `/${id}`,{params});
+  delete(id: number, params?: any): Observable<T> {
+    return this.http.delete<T>(this.url + `/${id}`, { params });
   }
 }

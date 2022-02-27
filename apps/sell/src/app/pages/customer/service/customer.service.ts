@@ -32,7 +32,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
 
-  delete(id: number): Observable<void> {
+  delete(id: number): Observable<Customer> {
     return super.delete(id);
   }
 }

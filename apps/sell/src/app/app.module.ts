@@ -27,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { MatTabsModule } from '@angular/material/tabs';
 import localeVi from '@angular/common/locales/vi';
+import { AkitaDevtools, AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 registerLocaleData(localeVi);
 
@@ -42,11 +43,12 @@ registerLocaleData(localeVi);
     AppRoutingModule,
     EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true // Pauses recording actions and state changes when the extension window is not open
-    }),
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 25, // Retains last 25 states
+    //   logOnly: environment.production, // Restrict extension to log-only mode
+    //   autoPause: true // Pauses recording actions and state changes when the extension window is not open
+    // }),
+    AkitaNgDevtools.forRoot(),
     NxModule.forRoot(),
     AppHeaderModule,
     AppSidebarModule,

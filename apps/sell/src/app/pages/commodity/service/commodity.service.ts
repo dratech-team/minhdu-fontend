@@ -41,7 +41,7 @@ export class CommodityService extends BaseService<Commodity> {
     return super.update(id, body);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: number): Observable<Commodity> {
     return super.delete(id);
   }
 }

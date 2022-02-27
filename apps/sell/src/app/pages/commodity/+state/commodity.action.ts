@@ -6,11 +6,6 @@ const addCommodity = createAction(
   props<{ commodity: any }>()
 );
 
-const addCommoditySuccess = createAction(
-  '[ADD_COMMODITY] Add Commodity Success',
-  props<{ commodity: Commodity }>()
-);
-
 const loadAllCommodities = createAction(
   '[LOAD_COMMODITY] load All Commodity'
 );
@@ -20,29 +15,14 @@ const loadInit = createAction(
   props<{ CommodityDTO: CommodityDTO }>()
 );
 
-const loadInitSuccess = createAction(
-  '[LOAD_COMMODITY] Load Commodity Success',
-  props<{ commodity: Commodity[], total: number }>()
-);
-
 const loadMoreCommodity = createAction(
   '[LOAD_MORE_COMMODITY] Load Commodity',
   props<{ commodityDTO: CommodityDTO }>()
 );
 
-const loadMoreCommoditySuccess = createAction(
-  '[LOAD_MORE_COMMODITY] Load More Commodity Success',
-  props<{ commodity: Commodity[], total: number }>()
-);
-
 const getCommodity = createAction(
   '[GET_COMMODITY] Get Commodity ',
   props<{ id: number }>()
-);
-
-const getCommoditySuccess = createAction(
-  '[GET_COMMODITY] Get Commodity Success',
-  props<{ commodity: Commodity }>()
 );
 
 const updateCommodity = createAction(
@@ -62,13 +42,9 @@ const resetStateCommodityNewAdd = createAction(
 export const CommodityAction = {
   loadAllCommodities,
   addCommodity,
-  addCommoditySuccess,
   loadInit,
-  loadInitSuccess,
   loadMoreCommodity,
-  loadMoreCommoditySuccess,
   getCommodity,
-  getCommoditySuccess,
   updateCommodity,
   deleteCommodity,
   resetStateCommodityNewAdd

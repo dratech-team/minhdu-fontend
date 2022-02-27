@@ -17,7 +17,7 @@ export class AccountManagementService extends BaseService<Account> {
   getAll(params?: any): Observable<Account[]> {
     return super.getAll(params);
   }
-  delete(id: number, params?: any): Observable<void> {
+  delete(id: number, params?: any): Observable<Account> {
     return super.delete(id, params);
   }
 }

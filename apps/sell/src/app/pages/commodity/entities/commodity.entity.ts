@@ -16,6 +16,7 @@ export interface Commodity {
     price: number,
   },
   closed: boolean,
+  selected: boolean
 }
 
 export interface CommodityDTO {

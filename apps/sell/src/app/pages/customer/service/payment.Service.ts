@@ -27,7 +27,7 @@ export class PaymentService extends BaseService<PaymentHistory> {
     return this.http.post<PaymentHistory>(Api.SELL.CUSTOMER.PAYMENT, body);
   }
 
-  delete(id: number, params?: any): Observable<void> {
+  delete(id: number, params?: any): Observable<PaymentHistory> {
     return super.delete(id, params);
   }
 }

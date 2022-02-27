@@ -41,7 +41,7 @@ export class EmployeeService extends BaseService<Employee> {
     return this.http.patch<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/leave`, body);
   }
 
-  delete(id: number, params?: any): Observable<void> {
+  delete(id: number, params?: any): Observable<Employee> {
     return super.delete(id, params);
   }
 }

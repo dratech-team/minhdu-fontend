@@ -30,7 +30,7 @@ export class PositionService extends BaseService<Position> {
     return super.update(id, body);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: number): Observable<Position> {
     return super.delete(id);
   }
 }

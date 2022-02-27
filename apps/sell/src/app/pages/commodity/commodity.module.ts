@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CommodityRoutingModule } from './commodity-routing.module';
 import { CommodityComponent } from './container/commodity/commodity.component';
-import { StoreModule } from '@ngrx/store';
-import { FeatureName } from '@minhdu-fontend/constants';
-import { CommodityReducer } from './+state/commodity.reducer';
-import { EffectsModule } from '@ngrx/effects';
 import { CommodityEffect } from './+state/commodity.effect';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -21,13 +17,13 @@ import { PickCommodityService } from '../../shared/components/pick-commodity/pic
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 
 @NgModule({
   imports: [
     ComponentsModule,
     CommodityRoutingModule,
-    StoreModule.forFeature(FeatureName.COMMODITY, CommodityReducer),
-    EffectsModule.forFeature([CommodityEffect]),
+    AkitaNgEffectsModule.forFeature([CommodityEffect]),
     MatInputModule,
     InfiniteScrollModule,
     CommonModule,
@@ -43,8 +39,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,
-    DetailCommodityComponent,
+    DetailCommodityComponent
   ],
-  providers: [DatePipe, PickCommodityService],
+  providers: [DatePipe, PickCommodityService]
 })
-export class CommodityModule {}
+export class CommodityModule {
+}

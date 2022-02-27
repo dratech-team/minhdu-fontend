@@ -26,7 +26,7 @@ export  class RouteService extends BaseService<Route>{
   update(id: any, body: any): Observable<UpdateNum<Route>> {
     return super.update(id, body);
   }
-  delete(id: number): Observable<void> {
+  delete(id: number): Observable<Route> {
     return super.delete(id);
   }
 }
