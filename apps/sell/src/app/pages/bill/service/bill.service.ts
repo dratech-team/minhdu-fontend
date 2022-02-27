@@ -6,7 +6,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
-@Injectable({providedIn:'root'})
+@Injectable()
 export class BillService extends BaseService<Bill>{
   constructor(
     public readonly http: HttpClient

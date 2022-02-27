@@ -1,29 +1,29 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props } from '@datorama/akita-ng-effects';
 import { Bill } from './Bill.interface';
 
 
-export const loadInit = createAction(
+const loadInit = createAction(
   '[LOAD_BILLS] Load Bill',
-  props<{take:number, skip: number }>()
-)
+  props<{ take: number, skip: number }>()
+);
 
-export const loadInitSuccess = createAction(
+const loadInitSuccess = createAction(
   '[LOAD_BILLS] Load Bill Success',
-  props<{bills:Bill[]}>()
-)
+  props<{ bills: Bill[] }>()
+);
 
-export const loadMoreBills = createAction(
+const loadMoreBills = createAction(
   '[LOAD_MORE_BILLS] Load More Bill',
-  props<{take:number, skip: number }>()
-)
+  props<{ take: number, skip: number }>()
+);
 
-export const loadMoreBillsSuccess = createAction(
+const loadMoreBillsSuccess = createAction(
   '[LOAD_MORE_BILLS] Load More Bill Success',
-  props<{bills:Bill[]}>()
-)
-export const BillAction ={
+  props<{ bills: Bill[] }>()
+);
+export const BillAction = {
   loadInit,
   loadInitSuccess,
   loadMoreBills,
-  loadMoreBillsSuccess,
-}
+  loadMoreBillsSuccess
+};
