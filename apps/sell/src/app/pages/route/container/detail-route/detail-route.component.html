@@ -12,7 +12,7 @@
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
         <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-          (click)='updateRoute(route)'>
+                (click)='updateRoute(route)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -86,50 +86,57 @@
           <button class='btn btn-primary mr-3' (click)='updateRoute(route, true)'>Thêm đơn hàng</button>
         </div>
         <div class='fixTableHead my-3' style=' max-height: 50vh; width: 100%' infiniteScroll [alwaysCallback]='true'
-          [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'>
+             [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'>
           <table>
             <thead>
-              <tr class=' mt-3 animated fadeIn'>
-                <th>
-                  <div class=''>Khách hàng</div>
-                  <input disabled class='form-control ' type='date'>
-                </th>
-                <th>
-                  <div class=''>Ngày tạo</div>
-                  <input disabled class='form-control  ' type='date'>
-                </th>
-                <th>
-                  <div class=''>Điểm đến</div>
-                  <input disabled class='form-control  ' type='text'>
-                </th>
-                <th>
-                  <div class=''> Diễn giải</div>
-                  <input disabled class='form-control' type='number'>
-                </th>
-              </tr>
+            <tr class=' mt-3 animated fadeIn'>
+              <th>
+                <div class=''>Khách hàng</div>
+                <input disabled class='form-control ' type='date'>
+              </th>
+              <th>
+                <div class=''>Ngày tạo</div>
+                <input disabled class='form-control  ' type='date'>
+              </th>
+              <th>
+                <div class=''>Điểm đến</div>
+                <input disabled class='form-control  ' type='text'>
+              </th>
+              <th>
+                <div class=''> Diễn giải</div>
+                <input disabled class='form-control' type='text'>
+              </th>
+              <th>
+                <div class=''>Tổng số lượng</div>
+                <input disabled class='form-control' type='text'>
+              </th>
+            </tr>
             </thead>
             <tbody>
-              <tr *ngFor='let order of route.orders'>
-                <th class='pointer' (click)='detailOrder(order.id)'>
-                  {{order?.customer?.lastName || 'Đang cập nhật'}}
-                </th>
-                <th class='pointer' (click)='detailOrder(order.id)'>
-                  {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
-                </th>
-                <th class='pointer' (click)='detailOrder(order.id)'>
-                  {{order?.ward?.name}}
-                </th>
-                <th class='pointer' (click)='detailOrder(order.id)'>
-                  {{order.explain}}
-                </th>
-              </tr>
-              <tr *ngIf='!route.orders || route.orders.length === 0 '>
-                <td class='font-xl d-flex align-items-center'>
+            <tr *ngFor='let order of route.orders'>
+              <th class='pointer' (click)='detailOrder(order.id)'>
+                {{order?.customer?.lastName || 'Đang cập nhật'}}
+              </th>
+              <th class='pointer' (click)='detailOrder(order.id)'>
+                {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
+              </th>
+              <th class='pointer' (click)='detailOrder(order.id)'>
+                {{order?.ward?.name}}
+              </th>
+              <th class='pointer' (click)='detailOrder(order.id)'>
+                {{order.explain}}
+              </th>
+              <th class='pointer' (click)='detailOrder(order.id)'>
+                {{order.commodities}}
+              </th>
+            </tr>
+            <tr *ngIf='!route.orders || route.orders.length === 0 '>
+              <td class='font-xl d-flex align-items-center'>
                   <span>
                     Hiện chưa có đơn hàng nào!
                   </span>
-                </td>
-              </tr>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>

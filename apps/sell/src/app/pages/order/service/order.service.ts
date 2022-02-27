@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from '@minhdu-fontend/service';
-import { Order } from '../+state/order.interface';
-import { HttpClient } from '@angular/common/http';
-import { Api } from '@minhdu-fontend/constants';
-import { Observable } from 'rxjs';
-import {ResponsePaginate, ResponsePaginateOrder} from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity';
-import { UpdateNum } from '@ngrx/entity/src/models';
+import {Injectable} from '@angular/core';
+import {BaseService} from '@minhdu-fontend/service';
+import {Order, ResponsePaginateOrder} from '../+state/order.interface';
+import {HttpClient} from '@angular/common/http';
+import {Api} from '@minhdu-fontend/constants';
+import {Observable} from 'rxjs';
+import {Update} from '@ngrx/entity';
+import {UpdateNum} from '@ngrx/entity/src/models';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class OrderService extends BaseService<Order> {
   constructor(
     public readonly http: HttpClient
@@ -22,7 +21,7 @@ export class OrderService extends BaseService<Order> {
 
 
   paginationOrder(params?: any): Observable<ResponsePaginateOrder<Order>> {
-    return this.http.get<ResponsePaginateOrder<Order>>(Api.SELL.ORDER.ORDER, { params })
+    return this.http.get<ResponsePaginateOrder<Order>>(Api.SELL.ORDER.ORDER, {params})
   }
 
   payment(id: number, body: any): Observable<Update<Order>> {

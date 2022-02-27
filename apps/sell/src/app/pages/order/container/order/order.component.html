@@ -41,17 +41,17 @@
         <th>
           <div class=''>Ngày tạo</div>
           <div class='d-flex border-top'>
-<!--            <mat-date-range-input [rangePicker]='picker'>-->
-<!--              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>-->
-<!--              <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>-->
-<!--            </mat-date-range-input>-->
-<!--            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>-->
-<!--            <mat-date-range-picker #picker>-->
-<!--              <mat-date-range-picker-actions>-->
-<!--                <button mat-button matDateRangePickerCancel>Cancel</button>-->
-<!--                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>-->
-<!--              </mat-date-range-picker-actions>-->
-<!--            </mat-date-range-picker>-->
+            <!--            <mat-date-range-input [rangePicker]='picker'>-->
+            <!--              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>-->
+            <!--              <input matEndDate formControlName='createEndedAt' placeholder='đến ngày'>-->
+            <!--            </mat-date-range-input>-->
+            <!--            <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>-->
+            <!--            <mat-date-range-picker #picker>-->
+            <!--              <mat-date-range-picker-actions>-->
+            <!--                <button mat-button matDateRangePickerCancel>Cancel</button>-->
+            <!--                <button mat-raised-button color='primary' matDateRangePickerApply>Apply</button>-->
+            <!--              </mat-date-range-picker-actions>-->
+            <!--            </mat-date-range-picker>-->
           </div>
         </th>
         <th>
@@ -115,12 +115,12 @@
         (click)='readAndUpdate(order.id, false)'
         (contextmenu)='child.onContextMenu($event, order)'
       >
-        <th  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{(order?.endedAt | date: 'dd/MM/yyyy')}}
         </th>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
 
-        {{order.customer?.lastName}}
+          {{order.customer?.lastName}}
         </th>
         <th style='min-width: 250px' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           {{order?.province?.name}}
