@@ -31,6 +31,9 @@ export class RouteEffect {
           route.orders.map(order => {
             order.commodityTotal = getTotalCommodity(order.commodities);
           })
+
+          route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0)
+
           Object.assign(route, {
             customers: route.orders.map((order: Order) => order.customer.lastName),
           })
@@ -65,6 +68,9 @@ export class RouteEffect {
           route.orders.map(order => {
             order.commodityTotal = getTotalCommodity(order.commodities);
           })
+
+          route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0)
+
           Object.assign(route, {
             customers: route.orders.map((order: Order) => order.customer.lastName),
           })
