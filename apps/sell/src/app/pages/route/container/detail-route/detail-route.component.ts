@@ -10,6 +10,8 @@ import { RouteAction } from '../+state/route.action';
 import { MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MainAction } from '../../../../states/main.action';
 import { getSelectors } from '@minhdu-fontend/utils';
+import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -51,5 +53,9 @@ export class DetailRouteComponent implements OnInit {
 
   detailOrder(orderId: number) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
+  }
+
+  getTotalEachCommodity(commodities: Commodity[]): number{
+    return getTotalCommodity(commodities)
   }
 }

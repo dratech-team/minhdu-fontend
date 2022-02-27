@@ -1,13 +1,14 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Order } from './order.interface';
-import { createReducer, on } from '@ngrx/store';
-import { OrderAction } from './order.action';
+import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
+import {CommodityUniq, Order} from './order.interface';
+import {createReducer, on} from '@ngrx/store';
+import {OrderAction} from './order.action';
 
 export interface OrderState extends EntityState<Order> {
   loaded: boolean,
   added: boolean,
   selectedOrderId: number,
-  total: number
+  total: number,
+  commodityUniq: CommodityUniq []
 }
 
 export interface OrderAssignedState extends EntityState<Order> {
@@ -17,39 +18,47 @@ export interface OrderAssignedState extends EntityState<Order> {
 
 export const adapter: EntityAdapter<Order> = createEntityAdapter<Order>();
 
-export const initialOrder = adapter.getInitialState({ loaded: false, added: false, total: 0 });
+export const initialOrder = adapter.getInitialState({
+  loaded: false,
+  added: false,
+  total: 0,
+  commodityUniq: [] as CommodityUniq[]
+});
 
 export const OrderReducer = createReducer(
   initialOrder,
-  on(OrderAction.loadInitSuccess, (state, action) =>
-    adapter.setAll(action.orders, { ...state, loaded: true, total: action.total })
+    on(OrderAction.loadInitSuccess, (state, action) =>
+    adapter.setAll(action.orders, {...state, loaded: true, total: action.total, commodityUniq: action.commodityUniq})
   ),
   on(OrderAction.loadMoreOrdersSuccess, (state, action) =>
-    adapter.addMany(action.orders, { ...state, loaded: true, total: action.total })
+    adapter.addMany(action.orders, {
+      ...state, loaded: true, total: action.total,
+      commodityUniq: action.commodityUniq.length === 0 ? state.commodityUniq : action.commodityUniq
+    })
   ),
   on(OrderAction.getOrderSuccess, (state, action) =>
-    adapter.upsertOne(action.order, { ...state, loaded: true })
+    adapter.upsertOne(action.order, {...state, loaded: true})
   ),
   on(OrderAction.addOrder, (state, _) => {
-      return { ...state, added: false };
+      return {...state, added: false};
     }
   ),
   on(OrderAction.addOrderSuccess, (state, action) => {
-      return adapter.addOne(action.order, { ...state, loaded: true, added: true });
+      return adapter.addOne(action.order, {...state, loaded: true, added: true});
     }
   )
 );
 
-export const initialOrderAssigned = adapter.getInitialState({ loaded: false });
+export const initialOrderAssigned = adapter.getInitialState({loaded: false});
 
 export const OrderAssignedReducer = createReducer(
   initialOrderAssigned,
   on(OrderAction.loadOrdersAssignedSuccess, (state, action) =>
-    adapter.setAll(action.orders, { ...state, loaded: true })
+    adapter.setAll(action.orders, {...state, loaded: true})
   ),
   on(OrderAction.loadMoreOrdersAssignedSuccess, (state, action) =>
-    adapter.addMany(action.orders, { ...state, loaded: true })
+    adapter.addMany(action.orders, {...state, loaded: true})
   )
 );
 
-export const { selectAll, selectEntities, selectTotal } = adapter.getSelectors();
+export const {selectAll, selectEntities, selectTotal} = adapter.getSelectors();

@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
-import { ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { select, Store } from '@ngrx/store';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderAction } from '../../+state/order.action';
-import { selectedOrderLoaded, selectorAllOrders } from '../../+state/order.selector';
-import { AppState } from '../../../../reducers';
-import { MainAction } from '../../../../states/main.action';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Api, CurrenciesConstant} from '@minhdu-fontend/constants';
+import {ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {select, Store} from '@ngrx/store';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderAction} from '../../+state/order.action';
+import {selectedCommodityUniqOrder, selectedOrderLoaded, selectorAllOrders} from '../../+state/order.selector';
+import {AppState} from '../../../../reducers';
+import {MainAction} from '../../../../states/main.action';
 import * as _ from 'lodash';
+import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
+import {CommodityUniq} from "../../+state/order.interface";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -21,6 +24,7 @@ import * as _ from 'lodash';
 export class OrderComponent implements OnInit {
   orders$ = this.store.pipe(select(selectorAllOrders));
   loaded$ = this.store.pipe(select(selectedOrderLoaded));
+  CommodityUniq$ = this.store.pipe(select(selectedCommodityUniqOrder));
   commodities$ = this.store.select(selectorAllOrders).pipe(
     map(orders => {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
@@ -63,10 +67,10 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}));
     this.store.dispatch(
       OrderAction.loadInit({
-        orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 }
+        orderDTO: {take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0}
       })
     );
 
@@ -75,7 +79,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.store.dispatch(
-            OrderAction.loadInit({ orderDTO: this.order(val) })
+            OrderAction.loadInit({orderDTO: this.order(val)})
           );
         })
       )
@@ -89,7 +93,7 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      OrderAction.loadMoreOrders({ orderDTO: this.order(val) })
+      OrderAction.loadMoreOrders({orderDTO: this.order(val)})
     );
   }
 
@@ -136,7 +140,7 @@ export class OrderComponent implements OnInit {
         if (deliveredAt) {
           this.store.dispatch(
             OrderAction.updateOrder({
-              order: { deliveredAt },
+              order: {deliveredAt},
               id: $event.id,
               typeUpdate: 'DELIVERED'
             })
@@ -173,5 +177,13 @@ export class OrderComponent implements OnInit {
         api: Api.SELL.ORDER.EXPORT_ITEMS
       }
     });
+  }
+
+  getTotalEachCommodity(commodities: Commodity[]): number {
+    return getTotalCommodity(commodities)
+  }
+
+  getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
+    return getTotalCommodity(CommodityUniq)
   }
 }
