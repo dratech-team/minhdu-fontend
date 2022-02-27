@@ -73,7 +73,7 @@
           </div>
         </th>
         <th style="width: 150px">
-          <div>Tổng</div>
+          <div style="color: red">Tổng</div>
           <div class="border">
             Số lượng
           </div>
@@ -158,7 +158,7 @@
           </div>
         </th>
         <th style="color: red">
-          {{getTotalEachCommodity(order.commodities)}}
+          {{getTotalEachCommodity(order.commodities)| number:'1.0-0' | notEmpty:'0'}}
         </th>
         <th style='color: #f86c6b'>
           {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
@@ -177,7 +177,7 @@
       <tr *ngIf='orders.length > 0'>
         <th></th>
         <th></th>
-        <th>Tổng</th>
+        <th style="color: red">Tổng</th>
         <th></th>
         <th></th>
         <th class=" p-0" *ngIf="CommodityUniq$|async as CommodityUniq">
@@ -199,7 +199,7 @@
           </div>
         </th>
         <th *ngIf="CommodityUniq$|async as CommodityUniq" style="color:red">
-          {{getTotalCommodity(CommodityUniq)}}
+          {{getTotalCommodity(CommodityUniq)| number:'1.0-0' | notEmpty:'0'}}
         </th>
         <th></th>
         <th></th>

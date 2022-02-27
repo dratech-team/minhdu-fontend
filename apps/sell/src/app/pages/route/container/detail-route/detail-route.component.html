@@ -127,7 +127,7 @@
                 {{order.explain}}
               </th>
               <th class='pointer' (click)='detailOrder(order.id)'>
-                {{order.commodities}}
+                {{getTotalEachCommodity(order.commodities)}}
               </th>
             </tr>
             <tr *ngIf='!route.orders || route.orders.length === 0 '>
