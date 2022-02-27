@@ -28,7 +28,7 @@ import {
   someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
 import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
-import {Commodity} from '../../../pages/commodity/+state/commodity.interface';
+import {Commodity} from '../../../pages/commodity/entities/commodity.entity';
 import {
   selectAllCommodity,
   selectedCommodityNewAdd,

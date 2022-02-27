@@ -9,7 +9,7 @@ import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-
 import { OrderAction } from '../../+state/order.action';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { Commodity } from '../../../commodity/entities/commodity.entity';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
 import { DatePipe } from '@angular/common';

@@ -10,7 +10,7 @@ import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
 import { CustomerAction } from '../../../customer/+state/customer/customer.action';
 import { selectAllCommodity } from '../../../commodity/+state/commodity.selector';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { Commodity } from '../../../commodity/entities/commodity.entity';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 
 

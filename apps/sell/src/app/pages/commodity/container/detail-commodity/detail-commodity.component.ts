@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import {  selectorCurrentCommodity } from '../../+state/commodity.selector';
 import { CommodityAction } from '../../+state/commodity.action';
-import { Commodity } from '../../+state/commodity.interface';
+import { Commodity } from '../../entities/commodity.entity';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
 import { ActivatedRoute } from '@angular/router';

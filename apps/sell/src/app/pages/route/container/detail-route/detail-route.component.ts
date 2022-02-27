@@ -10,7 +10,7 @@ import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {MainAction} from '../../../../states/main.action';
 import {getSelectors} from '@minhdu-fontend/utils';
-import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {Commodity} from "../../../commodity/entities/commodity.entity";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {Order} from "../../../order/+state/order.interface";
 

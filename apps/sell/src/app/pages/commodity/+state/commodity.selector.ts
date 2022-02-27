@@ -1,6 +1,6 @@
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Commodity } from './commodity.interface';
+import { Commodity } from '../entities/commodity.entity';
 import { CommodityState } from './commodity.reducer';
 import { FeatureName } from '@minhdu-fontend/constants';
 import * as formCommodity from './commodity.reducer'

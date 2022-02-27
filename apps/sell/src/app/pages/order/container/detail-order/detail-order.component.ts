@@ -12,7 +12,7 @@ import {CommodityAction} from '../../../commodity/+state/commodity.action';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {MainAction} from '../../../../states/main.action';
 import {getSelectors} from '@minhdu-fontend/utils';
-import {Commodity} from '../../../commodity/+state/commodity.interface';
+import {Commodity} from '../../../commodity/entities/commodity.entity';
 import {CommodityDialogComponent} from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
 import {PickCommodityComponent} from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import {

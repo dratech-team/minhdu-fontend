@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Commodity } from './commodity.interface';
+import { Commodity } from '../entities/commodity.entity';
 import { createReducer, on } from '@ngrx/store';
 import { CommodityAction } from './commodity.action';
 

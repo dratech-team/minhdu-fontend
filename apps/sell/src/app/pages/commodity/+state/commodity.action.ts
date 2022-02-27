@@ -1,59 +1,64 @@
-import { createAction, props } from '@ngrx/store';
-import { Commodity, CommodityDTO } from './commodity.interface';
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { Commodity, CommodityDTO } from '../entities/commodity.entity';
 
-
-export const addCommodity = createAction(
+const addCommodity = createAction(
   '[ADD_COMMODITY] Add Commodity',
   props<{ commodity: any }>()
 );
-export const addCommoditySuccess = createAction(
+
+const addCommoditySuccess = createAction(
   '[ADD_COMMODITY] Add Commodity Success',
   props<{ commodity: Commodity }>()
 );
 
-export const loadAllCommodities = createAction(
+const loadAllCommodities = createAction(
   '[LOAD_COMMODITY] load All Commodity'
 );
 
-export const loadInit = createAction(
+const loadInit = createAction(
   '[LOAD_COMMODITY] Load Commodity',
-  props<{ CommodityDTO : CommodityDTO}>()
+  props<{ CommodityDTO: CommodityDTO }>()
 );
-export const loadInitSuccess = createAction(
+
+const loadInitSuccess = createAction(
   '[LOAD_COMMODITY] Load Commodity Success',
   props<{ commodity: Commodity[], total: number }>()
 );
 
-export const loadMoreCommodity = createAction(
+const loadMoreCommodity = createAction(
   '[LOAD_MORE_COMMODITY] Load Commodity',
-  props<{ commodityDTO : CommodityDTO }>()
+  props<{ commodityDTO: CommodityDTO }>()
 );
-export const loadMoreCommoditySuccess = createAction(
+
+const loadMoreCommoditySuccess = createAction(
   '[LOAD_MORE_COMMODITY] Load More Commodity Success',
   props<{ commodity: Commodity[], total: number }>()
 );
-export const getCommodity = createAction(
+
+const getCommodity = createAction(
   '[GET_COMMODITY] Get Commodity ',
   props<{ id: number }>()
 );
-export const getCommoditySuccess = createAction(
+
+const getCommoditySuccess = createAction(
   '[GET_COMMODITY] Get Commodity Success',
   props<{ commodity: Commodity }>()
 );
 
-export const updateCommodity = createAction(
+const updateCommodity = createAction(
   '[UPDATE_COMMODITY] Update Commodity',
-  props<{ id: number, commodity: any, orderId?:number }>()
+  props<{ id: number, commodity: any, orderId?: number }>()
 );
 
-export const deleteCommodity = createAction(
+const deleteCommodity = createAction(
   '[DELETE_COMMODITY] Delete Commodity',
   props<{ id: number, orderId?: number }>()
 );
 
-export const resetStateCommodityNewAdd = createAction(
-  '[UPDATE_STATE_COMMODITY] Reset State Commodity',
+const resetStateCommodityNewAdd = createAction(
+  '[UPDATE_STATE_COMMODITY] Reset State Commodity'
 );
+
 export const CommodityAction = {
   loadAllCommodities,
   addCommodity,

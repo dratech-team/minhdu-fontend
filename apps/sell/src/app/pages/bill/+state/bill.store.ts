@@ -1,5 +1,5 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Bill } from './Bill.interface';
+import { Bill } from './bill.interface';
 import { Injectable } from '@angular/core';
 
 export interface BillState extends EntityState<Bill> {

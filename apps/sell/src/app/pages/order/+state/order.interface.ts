@@ -1,6 +1,6 @@
 import {CurrencyUnit, PaymentType} from '@minhdu-fontend/enums';
 import {Customer} from '../../customer/+state/customer/customer.interface';
-import {Commodity} from '../../commodity/+state/commodity.interface';
+import {Commodity} from '../../commodity/entities/commodity.entity';
 import {Route} from '../../route/+state/route.interface';
 import {District, PaymentHistory, Province, ResponsePaginate, Ward} from '@minhdu-fontend/data-models';
 

@@ -14,7 +14,7 @@ import {selectedCommodityUniqOrder, selectedOrderLoaded, selectorAllOrders} from
 import {AppState} from '../../../../reducers';
 import {MainAction} from '../../../../states/main.action';
 import * as _ from 'lodash';
-import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {Commodity} from "../../../commodity/entities/commodity.entity";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {CommodityUniq} from "../../+state/order.interface";
 
