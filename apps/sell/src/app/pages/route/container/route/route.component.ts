@@ -16,6 +16,7 @@ import { DialogDeleteComponent } from '../../../../../../../../libs/components/s
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
+import {Commodity} from "../../../commodity/+state/commodity.interface";
 
 @Component({
   templateUrl: 'route.component.html'

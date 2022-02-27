@@ -15,6 +15,8 @@ import {AppState} from '../../../../reducers';
 import {MainAction} from '../../../../states/main.action';
 import * as _ from 'lodash';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
+import {CommodityUniq} from "../../+state/order.interface";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -177,7 +179,11 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  getTotalCommodity(commodities: Commodity[]): number {
-     return commodities.reduce((total,commodity)=> total + commodity.amount, 0)
+  getTotalEachCommodity(commodities: Commodity[]): number {
+    return getTotalCommodity(commodities)
+  }
+
+  getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
+    return getTotalCommodity(CommodityUniq)
   }
 }

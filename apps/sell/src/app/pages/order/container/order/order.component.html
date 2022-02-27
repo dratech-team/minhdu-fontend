@@ -157,8 +157,8 @@
             </div>
           </div>
         </th>
-        <th>
-          {{getTotalCommodity(order.commodities)}}
+        <th style="color: red">
+          {{getTotalEachCommodity(order.commodities)}}
         </th>
         <th style='color: #f86c6b'>
           {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
@@ -180,14 +180,14 @@
         <th>Tổng</th>
         <th></th>
         <th></th>
-        <th *ngIf="CommodityUniq$|async as CommodityUniq" class=" p-0">
+        <th class=" p-0" *ngIf="CommodityUniq$|async as CommodityUniq">
           <div class="d-flex">
             <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
                  style='width: 301px; min-height: 32px'>
               <div *ngFor=' let commodity of CommodityUniq'>
                 <div class='d-flex' *ngIf='item.code === commodity.code'>
                   <div class='border-right d-flex justify-content-center align-items-center '
-                       style='width: 150px ; min-height: 30px'>
+                       style='width: 150px ; min-height: 30px; color: red'>
                     {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
                   </div>
                   <div class='border-left d-flex justify-content-center align-items-center'
@@ -198,7 +198,9 @@
             </div>
           </div>
         </th>
-        <th></th>
+        <th *ngIf="CommodityUniq$|async as CommodityUniq" style="color:red">
+          {{getTotalCommodity(CommodityUniq)}}
+        </th>
         <th></th>
         <th></th>
         <th></th>
