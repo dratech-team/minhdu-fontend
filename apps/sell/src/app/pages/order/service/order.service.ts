@@ -19,7 +19,6 @@ export class OrderService extends BaseService<Order> {
     return super.addOne(props);
   }
 
-
   paginationOrder(params?: any): Observable<ResponsePaginateOrder<Order>> {
     return this.http.get<ResponsePaginateOrder<Order>>(Api.SELL.ORDER.ORDER, {params})
   }
