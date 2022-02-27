@@ -43,7 +43,7 @@ export const getCommoditySuccess = createAction(
 
 export const updateCommodity = createAction(
   '[UPDATE_COMMODITY] Update Commodity',
-  props<{ id: number, commodity: any }>()
+  props<{ id: number, commodity: any, orderId?:number }>()
 );
 
 export const deleteCommodity = createAction(

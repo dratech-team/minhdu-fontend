@@ -111,6 +111,7 @@
               <th class='text-center'>Tặng</th>
               <th class='text-center'>Số lượng mua thêm</th>
               <th class='text-center'>Đơn giá mua thêm</th>
+              <th class='text-center'>Chốt đơn</th>
               <th class='text-center'>Sửa</th>
               <th class='text-center'>Xóa</th>
             </tr>
@@ -123,6 +124,13 @@
               <th class='text-center'> {{commodity.gift || '0'}} </th>
               <th class='text-center'> {{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
               <th class='text-center'>{{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}}
+              </th>
+              <th class='text-center'>
+                <div (click)="closingCommodity(commodity, order.id)">
+                  <mat-checkbox style="pointer-events: none"
+                                [checked]="commodity.closed">
+                  </mat-checkbox>
+                </div>
               </th>
               <th class='text-center'>
                 <button class='btn btn-edit' (click)='updateComodity(commodity.id, commodity)'>Sửa</button>
