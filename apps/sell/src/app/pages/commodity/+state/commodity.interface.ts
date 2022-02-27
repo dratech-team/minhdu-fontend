@@ -18,6 +18,7 @@ export interface Commodity{
     amount: number,
     price: number,
   },
+  closed: boolean,
 }
 export interface CommodityDTO{
   take?: number,

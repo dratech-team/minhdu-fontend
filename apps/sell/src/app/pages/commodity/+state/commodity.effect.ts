@@ -94,7 +94,12 @@ export class CommodityEffect {
       switchMap((props) => this.commodityService.update(props.id, props.commodity).pipe(
         map(_ => {
             this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
-            return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
+            if(props.orderId){
+              return OrderAction.getOrder({id: props.orderId } )
+            }else{
+              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } })
+            }
+           ;
           }
         ),
         catchError((err) => throwError(err))
