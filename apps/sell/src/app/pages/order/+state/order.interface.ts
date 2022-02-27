@@ -60,5 +60,5 @@ export interface CommodityUniq {
 }
 
 export interface ResponsePaginateOrder<T> extends ResponsePaginate<T> {
-  commodityUniq: CommodityUniq []
+  commodityUniq: CommodityUniq[]
 }
