@@ -126,8 +126,8 @@
               <th class='pointer' (click)='detailOrder(order.id)'>
                 {{order.explain}}
               </th>
-              <th class='pointer' (click)='detailOrder(order.id)'>
-                {{order.totalCommodity}}
+              <th class='pointer' (click)='detailOrder(order.id)' style="color: red">
+                {{order.totalCommodity | number:'1.0-0' | notEmpty:'0'}}
               </th>
             </tr>
             <tr>
@@ -138,7 +138,7 @@
               <th></th>
               <th></th>
               <th style="color: red">
-                {{route.totalCommodityUniq}}
+                {{route.totalCommodityUniq | number:'1.0-0' | notEmpty:'0'}}
               </th>
             </tr>
             <tr *ngIf='!route.orders || route.orders.length === 0 '>
