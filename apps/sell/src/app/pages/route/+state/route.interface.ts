@@ -16,4 +16,5 @@ export interface Route {
   latitude: string,
   longitude: string,
   isSelect?: boolean,
+  totalCommodityUniq: number
 }

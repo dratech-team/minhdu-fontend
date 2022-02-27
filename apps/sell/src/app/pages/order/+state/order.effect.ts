@@ -57,12 +57,16 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.loadAllOrder),
       switchMap((props) => this.orderService.paginationOrder()),
-      map((responsePagination) =>
-        OrderAction.loadInitSuccess({
-          orders: responsePagination.data,
-          total: responsePagination.total,
-          commodityUniq: responsePagination.commodityUniq
-        })
+      map((responsePagination) => {
+          responsePagination.data.map((order: Order) => {
+            order.totalCommodity = getTotalCommodity(order.commodities)
+          })
+          return OrderAction.loadInitSuccess({
+            orders: responsePagination.data,
+            total: responsePagination.total,
+            commodityUniq: responsePagination.commodityUniq
+          })
+        }
       ),
       catchError((err) => throwError(err))
     )
@@ -73,7 +77,7 @@ export class OrderEffect {
       ofType(OrderAction.loadInit),
       switchMap((props) => this.orderService.paginationOrder(props.orderDTO)),
       map((responsePagination) => {
-          responsePagination.data.map((order: Order)=>{
+          responsePagination.data.map((order: Order) => {
             order.totalCommodity = getTotalCommodity(order.commodities)
           })
           return OrderAction.loadInitSuccess({
@@ -107,6 +111,9 @@ export class OrderEffect {
             data: {content: 'Đã lấy hết đơn hàng'}
           });
         }
+        responsePagination.data.map((order: Order) => {
+          order.totalCommodity = getTotalCommodity(order.commodities)
+        })
         return OrderAction.loadMoreOrdersSuccess({
           orders: responsePagination.data,
           total: responsePagination.total,

@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { Route } from '../../+state/route.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { selectorCurrentRoute } from '../../+state/route.selector';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouteAction } from '../../+state/route.action';
-import { MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { MainAction } from '../../../../states/main.action';
-import { getSelectors } from '@minhdu-fontend/utils';
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {Route} from '../../+state/route.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
+import {selectorCurrentRoute} from '../../+state/route.selector';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RouteAction} from '../../+state/route.action';
+import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {MainAction} from '../../../../states/main.action';
+import {getSelectors} from '@minhdu-fontend/utils';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {Order} from "../../../order/+state/order.interface";
@@ -31,8 +31,8 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
-    this.store.dispatch(RouteAction.getRoute({ id: this.routeId }));
+    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
+    this.store.dispatch(RouteAction.getRoute({id: this.routeId}));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
@@ -44,7 +44,7 @@ export class DetailRouteComponent implements OnInit {
   updateRoute(route: Route, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: '60%',
-      data: { route: route, selectOrder: selectOrder }
+      data: {route: route, selectOrder: selectOrder}
     });
   }
 
@@ -54,9 +54,5 @@ export class DetailRouteComponent implements OnInit {
 
   detailOrder(orderId: number) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
-  }
-
-  getTotalEachCommodity(commodities: Commodity[]): number{
-    return getTotalCommodity(commodities)
   }
 }
