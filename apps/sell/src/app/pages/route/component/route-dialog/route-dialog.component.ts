@@ -6,7 +6,6 @@ import { RouteAction } from '../../+state/route.action';
 import { DatePipe } from '@angular/common';
 import { selectorAllOrders } from '../../../order/+state/order.selector';
 import { Order } from '../../../order/+state/order.interface';
-import { OrderAction } from '../../../order/+state/order.action';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -15,11 +14,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orders$ = this.store.pipe(select(selectorAllOrders));
-  orders: Order[] = [];
-  orderIdsOfRoute: Order[] = [];
+  orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
   isSelectAll = false;
   tabIndex = 0;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -33,9 +31,7 @@ export class RouteDialogComponent implements OnInit {
     if (this.data?.selectOrder) {
       this.tabIndex = 1;
     }
-    this?.data?.route?.orders.forEach((val: Order) =>
-      this.orderIdsOfRoute.push(val)
-    );
+
     this.formGroup = this.formBuilder.group({
       name: [this.data?.route?.name, Validators.required],
       startedAt: [
