@@ -53,10 +53,10 @@ export class CommodityDialogComponent implements OnInit {
       more: value.more,
       unit: value.unit
     };
-    if (this.data) {
+    if (this.data?.isUpdate) {
       this.store.dispatch(
         CommodityAction.updateCommodity({
-          id: this.data.id,
+          id: this.data.commodity.id,
           commodity: commodity
         })
       );
