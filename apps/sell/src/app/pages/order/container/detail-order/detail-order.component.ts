@@ -113,11 +113,9 @@ export class DetailOrderComponent implements OnInit {
         }))
       }
     })
-
   }
 
   loadMoreOrderHistory() {
-    console.log('sss')
     this.orderHistoryService.pagination({
       skip: this.orderHistories.length,
       take: 10,
