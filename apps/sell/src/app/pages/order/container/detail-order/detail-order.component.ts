@@ -38,6 +38,7 @@ export class DetailOrderComponent implements OnInit {
     content: new FormControl(''),
     commodity: new FormControl(''),
   })
+
   constructor(
     private readonly store: Store<AppState>,
     private readonly activatedRoute: ActivatedRoute,
@@ -78,8 +79,11 @@ export class DetailOrderComponent implements OnInit {
         data: {commoditiesSelected: order.commodities, type: 'DIALOG'}
       }).afterClosed().subscribe((value) => {
         this.store.dispatch(OrderAction.updateOrder({
-          id: order.id,
-          order: {commodityIds: value.map((e: any) => e.id)}
+          updateOrderDto: {
+            id: order.id,
+            commodityIds: value.map((e: any) => e.id)
+          }
+
         }));
       });
     }
@@ -145,13 +149,13 @@ export class DetailOrderComponent implements OnInit {
     this.loadInitOrderHistory()
   }
 
-  loadInitOrderHistory(search?: any){
+  loadInitOrderHistory(search?: any) {
     this.orderHistoryService.pagination({
       take: 6,
       skip: 0,
       orderId: this.getOrderId,
-      commodity: search? search.commodity: '',
-      content: search? search.content: ''
+      commodity: search ? search.commodity : '',
+      content: search ? search.content : ''
     }).subscribe(val => {
       if (val) {
         this.orderHistories = val.data

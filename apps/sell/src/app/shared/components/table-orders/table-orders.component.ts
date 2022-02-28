@@ -120,10 +120,11 @@ export class TableOrdersComponent implements OnInit {
     }).afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrderAction.updateOrder({
-          order: {deliveredAt: val.day},
-          id: order.id,
-          typeUpdate: 'IN_CUSTOMER',
-          customerId: order.customerId
+          updateOrderDto:{
+            order: {deliveredAt: val.day, customerId:order.customerId},
+            id: order.id,
+            typeUpdate: 'IN_CUSTOMER',
+          }
         }))
       }
     })

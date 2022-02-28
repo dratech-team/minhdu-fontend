@@ -46,10 +46,7 @@ export const getOrderSuccess = createAction(
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
   props<{
-    order: Partial<UpdateOrderDto>;
-    id: number;
-    typeUpdate?: 'DELIVERED' | 'IN_CUSTOMER',
-    customerId?: number
+     updateOrderDto: UpdateOrderDto
   }>()
 );
 
