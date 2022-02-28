@@ -10,10 +10,9 @@ import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {MainAction} from '../../../../states/main.action';
 import {getSelectors} from '@minhdu-fontend/utils';
-import {Commodity} from "../../../commodity/+state/commodity.interface";
-import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
-import {Order} from "../../../order/+state/order.interface";
-import {CompleteRouteDialogComponent} from "../../component/complete-route-dialog/complete-route-dialog.component";
+import {
+  DialogDatePickerComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -58,9 +57,20 @@ export class DetailRouteComponent implements OnInit {
   }
 
   completeRoute(route: Route) {
-    this.dialog.open(CompleteRouteDialogComponent, {
+    this.dialog.open(DialogDatePickerComponent, {
       width: 'fit-content',
-      data: {route}
-    })
+      data: {
+        titlePopup: 'Hoàn tất tuyến đường',
+        title: 'Ngày hoàn tất',
+        dayInit: route.endedAt
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if (val) {
+          this.store.dispatch(
+            RouteAction.updateRoute({route: {endedAt: val.day}, id: route.id})
+          )
+        }
+      })
   }
 }

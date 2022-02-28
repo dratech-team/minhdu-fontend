@@ -185,6 +185,13 @@ export class OrderEffect {
                 return OrderAction.loadInit({
                   orderDTO: {take: 30, skip: 0}
                 });
+              case 'IN_CUSTOMER':
+                this.store.dispatch(OrderAction.loadOrdersAssigned({
+                  take: 30, skip: 0, customerId: props.customerId
+                }))
+                return OrderAction.loadInit({
+                  orderDTO: {take: 30, skip: 0, customerId: props.customerId}
+                })
               default:
                 return OrderAction.getOrder({id: props.id});
             }
@@ -248,7 +255,7 @@ export class OrderEffect {
       switchMap((props) =>
         this.orderService.delete(props.id).pipe(
           map((_) => {
-            this.snackBar.open('Xoá đơn hàng thành công','',{duration: 1500})
+            this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500})
             if (props.customerId) {
               this.store.dispatch(
                 CustomerAction.getCustomer({id: props.customerId})
