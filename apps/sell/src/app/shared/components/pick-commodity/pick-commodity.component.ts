@@ -3,26 +3,24 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
 import { Commodity } from '../../../pages/commodity/entities/commodity.entity';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityStore } from '../../../pages/commodity/+state/commodity.store';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  // @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter<Commodity[]>();
 
   commodities$ = this.commodityQuery.selectAll();
-  commoditiesSelected$ = this.commodityQuery.selectAll({filterBy: [entity => entity.selected]});
+  commoditiesSelected$ = this.commodityQuery.selectAll({ filterBy: [entity => entity.selected] });
   total$ = this.commodityQuery.selectCount();
 
   commodityUnit = CommodityUnit;
@@ -53,10 +51,9 @@ export class PickCommodityComponent implements OnInit {
       // this.commoditiesSelected = [...this.data?.commoditiesPicked];
     }
     this.actions$.dispatch(
-      CommodityAction.loadInit({
-        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
-      })
+      CommodityAction.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } })
     );
+
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.isEventSearch = true;
       this.actions$.dispatch(
@@ -121,7 +118,6 @@ export class PickCommodityComponent implements OnInit {
   }
 
   closeDialog() {
-    // this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
     this.dialogRef.close(this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }));
   }
 }

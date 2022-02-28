@@ -20,9 +20,10 @@ import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 })
 export class AddOrderComponent implements OnInit {
   customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
-  customers: Customer [] = [];
+  commoditiesPicked$ = this.commodityQuery.selectAll({ filterBy: [entity => entity.selected] });
+
+  customers: Customer[] = [];
   commodityUnit = CommodityUnit;
-  commoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: Customer | undefined;
   customerId: number | undefined;
@@ -96,21 +97,14 @@ export class AddOrderComponent implements OnInit {
       data: {
         pickMore: true,
         type: 'DIALOG',
-        commoditiesPicked: this.commoditiesPicked
+        ids: this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }).map(commodity => commodity.id)
       }
-    }).afterClosed().subscribe(val => {
-      console.log("======", val);
-        if (val) {
-          console.log("======", val);
-          this.commoditiesPicked = this.commodityQuery.getAll({ filterBy: [entity => entity.selected] });
-        }
-      }
-    );
+    });
   }
 
   deleteCommodity(commodity: Commodity) {
-    const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id);
-    this.commoditiesPicked.splice(index, 1);
+    // const index = this.commoditiesPicked$.findIndex(item => item.id === commodity.id);
+    // this.commoditiesPicked$.splice(index, 1);
   }
 
   get checkValid() {
@@ -130,7 +124,7 @@ export class AddOrderComponent implements OnInit {
       wardId: this.wardId,
       provinceId: this.provinceId,
       customerId: this.customerId,
-      commodityIds: this.commoditiesPicked.map(item => item.id)
+      commodityIds: this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }).map(commodity => commodity.id)
     };
     this.store.dispatch(OrderAction.addOrder({ order: order }));
   }

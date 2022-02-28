@@ -59,7 +59,7 @@
           (contextmenu)='child.onContextMenu($event,commodity)'
           class='pointer'>
         <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <mat-checkbox class='checkID' [checked]='commodity?.selected || false'
+          <mat-checkbox class='checkID' [checked]='commodity?.selected || this.data.ids.includes(commodity.id) ||  false'
                         (change)='onCheck(commodity, $event.checked)'>
           </mat-checkbox>
         </th>
@@ -85,7 +85,7 @@
     </table>
 
   </div>
-  <button *ngIf='data.type === "DIALOG"' mat-dialog-close class='my-2 btn btn-primary'>xác nhận</button>
+  <button *ngIf='data.type === "DIALOG"' (click)='closeDialog()' class='my-2 btn btn-primary'>xác nhận</button>
 </div>
 <app-mouse-right #child (onAdd)='addCommodity()' (onDel)='deleteCommodity($event)'
                  (onUpdate)='updateCommodity($event)'></app-mouse-right>
