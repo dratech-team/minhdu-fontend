@@ -40,12 +40,18 @@
           </div>
           <div class='row ml-1 align-items-center'>
             <div class='col-md-4 py-2  title-detail '>
-              <span>Ngày Kết thúc:</span>
+              <span>Hoàn tất:</span>
             </div>
-            <div class='col-md-8 py-2 border-bottom '>
+            <div class='col-md-7 py-2 border-bottom '>
               <span class='title-detail' style=' color: #3C3B54'>
                 {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
               </span>
+            </div>
+            <div class="col-md-1">
+              <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
+                      (click)='completeRoute(route)'>
+                <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
+              </button>
             </div>
           </div>
           <div class='row ml-1 align-items-center '>

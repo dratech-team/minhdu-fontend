@@ -10,17 +10,19 @@ import { CommodityDialogComponent } from '../../../pages/commodity/component/com
 import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityStore } from '../../../pages/commodity/+state/commodity.store';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  @Input() commoditiesSelected: Commodity[] = [];
+  // @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter<Commodity[]>();
 
   commodities$ = this.commodityQuery.selectAll();
+  commoditiesSelected$ = this.commodityQuery.selectAll({filterBy: [entity => entity.selected]});
   total$ = this.commodityQuery.selectCount();
 
   commodityUnit = CommodityUnit;
@@ -48,7 +50,7 @@ export class PickCommodityComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data?.commoditiesPicked) {
-      this.commoditiesSelected = [...this.data?.commoditiesPicked];
+      // this.commoditiesSelected = [...this.data?.commoditiesPicked];
     }
     this.actions$.dispatch(
       CommodityAction.loadInit({
@@ -74,9 +76,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
-      console.log('====', val);
-    });
+    this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 
   deleteCommodity($event: any) {
@@ -121,7 +121,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   closeDialog() {
-    this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
-    this.dialogRef.close(this.commoditiesSelected);
+    // this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
+    this.dialogRef.close(this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }));
   }
 }

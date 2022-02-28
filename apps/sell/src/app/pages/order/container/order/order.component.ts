@@ -17,6 +17,9 @@ import * as _ from 'lodash';
 import {Commodity} from "../../../commodity/entities/commodity.entity";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {CommodityUniq} from "../../+state/order.interface";
+import {
+  DialogSharedComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -134,15 +137,25 @@ export class OrderComponent implements OnInit {
 
   UpdateOrder($event: any) {
     this.dialog
-      .open(DialogDatePickerComponent)
+      .open(DialogDatePickerComponent, {
+        width: 'fit-content',
+        data: {
+          titlePopup: 'Xác Nhận ngày giao hàng',
+          title: 'Ngày xác nhận'
+        }
+      })
       .afterClosed()
-      .subscribe((deliveredAt) => {
-        if (deliveredAt) {
+      .subscribe((val: any) => {
+        if (val) {
           this.store.dispatch(
             OrderAction.updateOrder({
-              order: {deliveredAt},
-              id: $event.id,
-              typeUpdate: 'DELIVERED'
+              updateOrderDto: {
+                order: {
+                  deliveredAt: val.day,
+                },
+                typeUpdate: 'DELIVERED',
+                id: $event.id,
+              }
             })
           );
         }
@@ -181,5 +194,24 @@ export class OrderComponent implements OnInit {
 
   getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
     return getTotalCommodity(CommodityUniq)
+  }
+
+  cancelOrder($event: any) {
+    this.store.dispatch(OrderAction.cancelOrder({orderId: $event.id}))
+  }
+
+  deleteOrder($event: any) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá đơn hàng',
+        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
+      }
+    })
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(OrderAction.deleteOrder({id: $event.id}))
+      }
+    })
   }
 }

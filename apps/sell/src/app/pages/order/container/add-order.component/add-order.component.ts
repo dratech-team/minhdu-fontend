@@ -13,6 +13,7 @@ import { Commodity } from '../../../commodity/entities/commodity.entity';
 import { Customer } from '../../../customer/+state/customer/customer.interface';
 import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
 import { DatePipe } from '@angular/common';
+import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -40,6 +41,7 @@ export class AddOrderComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
+    private readonly commodityQuery: CommodityQuery
   ) {
   }
 
@@ -97,8 +99,10 @@ export class AddOrderComponent implements OnInit {
         commoditiesPicked: this.commoditiesPicked
       }
     }).afterClosed().subscribe(val => {
+      console.log("======", val);
         if (val) {
-          this.commoditiesPicked = val;
+          console.log("======", val);
+          this.commoditiesPicked = this.commodityQuery.getAll({ filterBy: [entity => entity.selected] });
         }
       }
     );
