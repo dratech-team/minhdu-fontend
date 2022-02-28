@@ -43,6 +43,9 @@ export class OrderService extends BaseService<Order> {
     return super.delete(id);
   }
 
+  cancelOrder(id: number):Observable<void>{
+    return this.http.delete<void>('order'+`/${id}`+'/cancel')
+  }
   orderhistory():Observable<any>{
     return this.http.get('')
 }

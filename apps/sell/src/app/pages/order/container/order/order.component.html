@@ -220,10 +220,12 @@
 
 <app-mouse-right
   #child
-  [items]='[ItemContextMenu.ENDED_AT]'
+  [items]='[ItemContextMenu.ENDED_AT,ItemContextMenu.CANCEL_ORDER,ItemContextMenu.PERMANENTLY]'
   (onAdd)='addOrder()'
   (onUpdate)='readAndUpdate($event.id, true)'
   (onEnd)='UpdateOrder($event)'
+  (onCancelOrder)="cancelOrder($event)"
+  (onDelPerm)="deleteOrder($event)"
 ></app-mouse-right>
 
 

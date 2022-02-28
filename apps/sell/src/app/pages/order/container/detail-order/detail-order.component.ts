@@ -22,6 +22,7 @@ import {OrderHistoryService} from "../../service/order-history.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime} from "rxjs/operators";
+import {BehaviorSubject, Subject} from "rxjs";
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -31,7 +32,7 @@ export class DetailOrderComponent implements OnInit {
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistory[] = []
-  loading = false
+  loading$ = new BehaviorSubject<boolean>(false)
 
   formOrderHistory = new FormGroup({
     content: new FormControl(''),
@@ -48,6 +49,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading$.subscribe(val => console.log(val))
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}));
     this.store.dispatch(OrderAction.getOrder({id: this.getOrderId}));
     this.loadInitOrderHistory()
@@ -139,7 +141,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   refreshOrderHistory() {
-    this.loading = true
+    this.loading$.next(true)
     this.loadInitOrderHistory()
   }
 
@@ -153,7 +155,7 @@ export class DetailOrderComponent implements OnInit {
     }).subscribe(val => {
       if (val) {
         this.orderHistories = val.data
-        this.loading = false
+        this.loading$.next(false)
         this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', {duration: 1500})
       }
     })

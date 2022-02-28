@@ -17,6 +17,9 @@ import * as _ from 'lodash';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {CommodityUniq} from "../../+state/order.interface";
+import {
+  DialogSharedComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -181,5 +184,24 @@ export class OrderComponent implements OnInit {
 
   getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
     return getTotalCommodity(CommodityUniq)
+  }
+
+  cancelOrder($event: any) {
+    this.store.dispatch(OrderAction.cancelOrder({orderId: $event.id}))
+  }
+
+  deleteOrder($event: any) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá đơn hàng',
+        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
+      }
+    })
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(OrderAction.deleteOrder({id: $event.id}))
+      }
+    })
   }
 }

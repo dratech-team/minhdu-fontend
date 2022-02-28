@@ -94,6 +94,11 @@ export const loadMoreOrdersAssignedSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
+export const cancelOrder = createAction(
+  '[CANCEL_ORDER] Cancel Order',
+  props<{ orderId: number }>()
+);
+
 export const handleOrderError = createAction('[ORDER_ERROR] Order error');
 
 export const OrderAction = {
@@ -113,5 +118,6 @@ export const OrderAction = {
   loadOrdersAssigned,
   loadOrdersAssignedSuccess,
   loadMoreOrdersAssigned,
-  loadMoreOrdersAssignedSuccess
+  loadMoreOrdersAssignedSuccess,
+  cancelOrder
 };
