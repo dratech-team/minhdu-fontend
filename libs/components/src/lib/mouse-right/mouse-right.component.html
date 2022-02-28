@@ -13,7 +13,7 @@
     Sửa
   </ng-template>
   <ng-template *ngIf='items?.includes(ItemContextMenu.CANCEL_ORDER)' contextMenuItem let-item
-               (execute)='cancelOrder($event.item)'>
+               (execute)='cancel($event.item)'>
     Huỷ đơn hàng
   </ng-template>
   <ng-template *ngIf='items?.includes(ItemContextMenu.PERMANENTLY)' contextMenuItem let-item
