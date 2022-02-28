@@ -55,6 +55,12 @@
           type='number'>
       </th>
       <th *ngIf='!delivered'>
+        <div class=''>Đã giao</div>
+        <input
+          [disabled]='true'
+          type='number'>
+      </th>
+      <th *ngIf='!delivered'>
         <div class=''>Hủy</div>
         <input
           [disabled]='true'
@@ -90,6 +96,8 @@
       <th *ngIf='delivered'>
         <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
       </th>
+      <th *ngIf='!delivered'>
+        <button  class='btn btn-primary' (click)='confirmOrder(order)'>Đã giao</button>
       <th *ngIf='!delivered'>
         <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order)'>Hủy</button>
     </tr>

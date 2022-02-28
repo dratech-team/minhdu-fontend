@@ -178,15 +178,22 @@ export class OrderEffect {
     this.action.pipe(
       ofType(OrderAction.updateOrder),
       switchMap((props) =>
-        this.orderService.update(props.id, props.order).pipe(
+        this.orderService.update(props.updateOrderDto.id, props.updateOrderDto.order).pipe(
           map((_) => {
-            switch (props.typeUpdate) {
+            switch (props.updateOrderDto.typeUpdate) {
               case 'DELIVERED':
                 return OrderAction.loadInit({
                   orderDTO: {take: 30, skip: 0}
                 });
+              case 'IN_CUSTOMER':
+                this.store.dispatch(OrderAction.loadOrdersAssigned({
+                  take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId
+                }))
+                return OrderAction.loadInit({
+                  orderDTO: {take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId}
+                })
               default:
-                return OrderAction.getOrder({id: props.id});
+                return OrderAction.getOrder({id: props.updateOrderDto.id});
             }
           }),
           tap(() => {
@@ -248,7 +255,7 @@ export class OrderEffect {
       switchMap((props) =>
         this.orderService.delete(props.id).pipe(
           map((_) => {
-            this.snackBar.open('Xoá đơn hàng thành công','',{duration: 1500})
+            this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500})
             if (props.customerId) {
               this.store.dispatch(
                 CustomerAction.getCustomer({id: props.customerId})
