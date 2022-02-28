@@ -307,4 +307,11 @@ tr:nth-child(even) {
   color: #7749F8
 }
 
+.loading {
+  position: fixed !important;
+  left: 50%;
+  top: 50%;
+  z-index: 2000
+}
+
 @import "scss/custom-scroll-table";

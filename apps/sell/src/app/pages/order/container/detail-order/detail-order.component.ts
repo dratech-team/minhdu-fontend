@@ -20,6 +20,8 @@ import {
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {OrderHistoryService} from "../../service/order-history.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {FormControl, FormGroup} from "@angular/forms";
+import {debounceTime} from "rxjs/operators";
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -29,7 +31,12 @@ export class DetailOrderComponent implements OnInit {
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistory[] = []
+  loading = false
 
+  formOrderHistory = new FormGroup({
+    content: new FormControl(''),
+    commodity: new FormControl(''),
+  })
   constructor(
     private readonly store: Store<AppState>,
     private readonly activatedRoute: ActivatedRoute,
@@ -43,17 +50,17 @@ export class DetailOrderComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}));
     this.store.dispatch(OrderAction.getOrder({id: this.getOrderId}));
-    this.orderHistoryService.pagination({take: 6, skip: 0, orderId: this.getOrderId}).subscribe(val => {
-      if (val) {
-        this.orderHistories = val.data
-      }
-    })
+    this.loadInitOrderHistory()
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
         this.updateOrder(getSelectors(selectorCurrentOrder(this.getOrderId), this.store));
       }
     });
+
+    this.formOrderHistory.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
+      this.loadInitOrderHistory(val)
+    })
   }
 
   get getOrderId(): number {
@@ -119,12 +126,35 @@ export class DetailOrderComponent implements OnInit {
     this.orderHistoryService.pagination({
       skip: this.orderHistories.length,
       take: 10,
-      orderId: this.getOrderId
+      orderId: this.getOrderId,
+      content: this.formOrderHistory.value.content,
+      commodity: this.formOrderHistory.value.commodity,
     }).subscribe(val => {
       if (val.data.length > 0) {
         this.orderHistories = this.orderHistories.concat(val.data)
       } else {
         this.snackBar.open('Đã lấy hết lịch sử chỉnh sửa đơn hàng', '', {duration: 1500})
+      }
+    })
+  }
+
+  refreshOrderHistory() {
+    this.loading = true
+    this.loadInitOrderHistory()
+  }
+
+  loadInitOrderHistory(search?: any){
+    this.orderHistoryService.pagination({
+      take: 6,
+      skip: 0,
+      orderId: this.getOrderId,
+      commodity: search? search.commodity: '',
+      content: search? search.content: ''
+    }).subscribe(val => {
+      if (val) {
+        this.orderHistories = val.data
+        this.loading = false
+        this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', {duration: 1500})
       }
     })
   }
