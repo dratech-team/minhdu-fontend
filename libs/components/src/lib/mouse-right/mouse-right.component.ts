@@ -24,6 +24,7 @@ export class MouseRightComponent {
   @Output() onOvertime = new EventEmitter();
   @Output() onPositions = new EventEmitter();
   @Output() onUpdate = new EventEmitter();
+  @Output() onCancel = new EventEmitter();
 
   constructor(private contextMenuService: ContextMenuService) {
   }
@@ -91,5 +92,9 @@ export class MouseRightComponent {
 
   onListPosition(item: any) {
     this.onPositions.emit(item);
+  }
+
+  cancel(item: any) {
+    this.onCancel.emit(item)
   }
 }

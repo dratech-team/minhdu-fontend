@@ -10,4 +10,5 @@ export enum ItemContextMenu {
   OVERTIME = 'OVERTIME',
   POSITIONS = 'POSITIONS',
   ADD_ORDER = 'ADD_ORDER',
+  CANCEL_ORDER = 'CANCEL_ORDER',
 }

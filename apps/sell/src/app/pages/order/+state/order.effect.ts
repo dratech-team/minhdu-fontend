@@ -248,6 +248,7 @@ export class OrderEffect {
       switchMap((props) =>
         this.orderService.delete(props.id).pipe(
           map((_) => {
+            this.snackBar.open('Xoá đơn hàng thành công','',{duration: 1500})
             if (props.customerId) {
               this.store.dispatch(
                 CustomerAction.getCustomer({id: props.customerId})
@@ -264,6 +265,19 @@ export class OrderEffect {
       )
     )
   );
+
+  cancelOrder$ = createEffect(() =>
+    this.action.pipe(
+      ofType(OrderAction.cancelOrder),
+      switchMap((prop) =>
+        this.orderService.cancelOrder(prop.orderId)),
+      map((_) => {
+          this.snackBar.open('Huỷ đơn hàng thành công', '', {duration: 1500})
+          return OrderAction.loadInit({orderDTO: {take: 30, skip: 0}})
+        }
+      ),
+      catchError((err) => throwError(err))
+    ))
 
   constructor(
     private snackBar: MatSnackBar,
