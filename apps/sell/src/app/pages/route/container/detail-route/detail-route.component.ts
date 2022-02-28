@@ -13,6 +13,7 @@ import {getSelectors} from '@minhdu-fontend/utils';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
 import {Order} from "../../../order/+state/order.interface";
+import {CompleteRouteDialogComponent} from "../../component/complete-route-dialog/complete-route-dialog.component";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -54,5 +55,12 @@ export class DetailRouteComponent implements OnInit {
 
   detailOrder(orderId: number) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
+  }
+
+  completeRoute(route: Route) {
+    this.dialog.open(CompleteRouteDialogComponent, {
+      width: 'fit-content',
+      data: {route}
+    })
   }
 }
