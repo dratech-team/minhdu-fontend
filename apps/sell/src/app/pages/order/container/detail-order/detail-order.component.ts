@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {selectorCurrentOrder} from '../../+state/order.selector';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Order} from '../../+state/order.interface';
+import {Order, OrderHistory} from '../../+state/order.interface';
 import {CommodityUnit, ConvertBoolean, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {OrderAction} from '../../+state/order.action';
 import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';
@@ -18,6 +18,8 @@ import {PickCommodityComponent} from '../../../../shared/components/pick-commodi
 import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import {OrderHistoryService} from "../../service/order-history.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -26,18 +28,26 @@ export class DetailOrderComponent implements OnInit {
   order$ = this.store.select(selectorCurrentOrder(this.getOrderId));
   payType = PaymentType;
   commodityUnit = CommodityUnit;
+  orderHistories: OrderHistory[] = []
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar,
+    private readonly orderHistoryService: OrderHistoryService,
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}));
     this.store.dispatch(OrderAction.getOrder({id: this.getOrderId}));
+    this.orderHistoryService.pagination({take: 6, skip: 0, orderId: this.getOrderId}).subscribe(val => {
+      if (val) {
+        this.orderHistories = val.data
+      }
+    })
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
@@ -104,5 +114,20 @@ export class DetailOrderComponent implements OnInit {
       }
     })
 
+  }
+
+  loadMoreOrderHistory() {
+    console.log('sss')
+    this.orderHistoryService.pagination({
+      skip: this.orderHistories.length,
+      take: 10,
+      orderId: this.getOrderId
+    }).subscribe(val => {
+      if (val.data.length > 0) {
+        this.orderHistories = this.orderHistories.concat(val.data)
+      } else {
+        this.snackBar.open('Đã lấy hết lịch sử chỉnh sửa đơn hàng', '', {duration: 1500})
+      }
+    })
   }
 }
