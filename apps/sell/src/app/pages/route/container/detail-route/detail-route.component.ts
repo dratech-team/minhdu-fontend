@@ -1,26 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {Route} from '../../+state/route.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
-import {selectorCurrentRoute} from '../../+state/route.selector';
-import {ActivatedRoute, Router} from '@angular/router';
-import {RouteAction} from '../../+state/route.action';
-import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
-import {MainAction} from '../../../../states/main.action';
-import {getSelectors} from '@minhdu-fontend/utils';
-import { DialogDatePickerComponent } from "@minhdu-fontend/components";
+import { Component, OnInit } from '@angular/core';
+import { Route } from '../../+state/route.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouteAction } from '../../+state/route.action';
+import { MenuEnum, PaymentType } from '@minhdu-fontend/enums';
+import { MainAction } from '../../../../states/main.action';
+import { DialogDatePickerComponent } from '@minhdu-fontend/components';
 import { Actions } from '@datorama/akita-ng-effects';
+import { RouteQuery } from '../../+state/route.query';
 
 @Component({
   templateUrl: 'detail-route.component.html'
 })
 export class DetailRouteComponent implements OnInit {
-  route$ = this.actions$.select(selectorCurrentRoute(this.routeId));
+  route$ = this.routeQuery.selectEntity(this.routeId);
 
   payType = PaymentType;
 
   constructor(
     private readonly actions$: Actions,
+    private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router
@@ -28,20 +28,20 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
-    this.actions$.dispatch(RouteAction.getRoute({id: this.routeId}));
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
+    this.actions$.dispatch(RouteAction.getRoute({ id: this.routeId }));
 
     this.activatedRoute.queryParams.subscribe(param => {
-      if (param.isUpdate === 'true') {
-        this.updateRoute(getSelectors(selectorCurrentRoute(this.routeId), this.store));
+      if (param.isUpdate === 'true' && this.routeId) {
+        this.updateRoute(this.routeQuery.getEntity(this.routeId));
       }
     });
   }
 
-  updateRoute(route: Route, selectOrder?: boolean) {
+  updateRoute(route?: Route, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: '60%',
-      data: {route: route, selectOrder: selectOrder}
+      data: { route: route, selectOrder: selectOrder }
     });
   }
 
@@ -64,10 +64,10 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.store.dispatch(
-            RouteAction.updateRoute({route: {endedAt: val.day}, id: route.id})
-          )
+          this.actions$.dispatch(
+            RouteAction.updateRoute({ route: { endedAt: val.day }, id: route.id })
+          );
         }
-      })
+      });
   }
 }
