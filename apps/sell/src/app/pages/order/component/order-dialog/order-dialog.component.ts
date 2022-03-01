@@ -6,10 +6,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentType} from '@minhdu-fontend/enums';
 import {OrderAction} from '../../+state/order.action';
 import {DatePipe} from '@angular/common';
-import {Customer} from '../../../customer/+state/customer.interface';
+import {CustomerEntity} from '../../../customer/entities/customer.entity';
 import {selectorAllCustomer} from '../../../customer/+state/customer/customer.selector';
 import {CustomerAction} from '../../../customer/+state/customer.action';
-import {CommodityAction} from '../../../commodity/+state/commodity.action';
+import {CommodityActions} from '../../../commodity/+state/commodity.actions';
 import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 import { Commodity } from '../../../commodity/entities/commodity.entity';
 
@@ -24,7 +24,7 @@ export class OrderDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   routes: number[] = [];
-  customers: Customer[] = [];
+  customers: CustomerEntity[] = [];
   commoditiesSelected: Commodity[] = [];
   wardId!: number;
 
@@ -40,7 +40,7 @@ export class OrderDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(CustomerAction.loadInit({take: 30, skip: 0}));
-    this.store.dispatch(CommodityAction.loadInit({CommodityDTO: {take: 30, skip: 0}}));
+    this.store.dispatch(CommodityActions.loadInit({CommodityDTO: {take: 30, skip: 0}}));
 
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.formGroup = this.formBuilder.group({

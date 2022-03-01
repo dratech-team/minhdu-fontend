@@ -4,7 +4,7 @@ import { OrderHistory } from '../../entities/order.entity';
 import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction } from '../../../commodity/+state/commodity.action';
+import { CommodityActions } from '../../../commodity/+state/commodity.actions';
 import { DialogDeleteComponent, DialogSharedComponent } from '@minhdu-fontend/components';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/entities/commodity.entity';
@@ -93,7 +93,7 @@ export class DetailOrderComponent implements OnInit {
     const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: commodityId, orderId: this.getOrderId }));
+        this.actions$.dispatch(CommodityActions.deleteCommodity({ id: commodityId, orderId: this.getOrderId }));
       }
     });
   }
@@ -111,7 +111,7 @@ export class DetailOrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.updateCommodity({
+        this.actions$.dispatch(CommodityActions.updateCommodity({
           orderId: orderId,
           id: commodity.id,
           commodity: { closed: !commodity.closed }

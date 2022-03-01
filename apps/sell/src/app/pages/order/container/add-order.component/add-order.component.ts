@@ -6,7 +6,7 @@ import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } 
 import { OrderAction } from '../../+state/order.action';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/entities/commodity.entity';
-import { Customer } from '../../../customer/+state/customer.interface';
+import { CustomerEntity } from '../../../customer/entities/customer.entity';
 import { DatePipe } from '@angular/common';
 import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -22,10 +22,10 @@ export class AddOrderComponent implements OnInit {
   customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot.params.id);
   commoditiesPicked: Commodity[] = [];
 
-  customers: Customer[] = [];
+  customers: CustomerEntity[] = [];
   commodityUnit = CommodityUnit;
   numberChars = new RegExp('[^0-9]', 'g');
-  customerPicked: Customer | undefined;
+  customerPicked: CustomerEntity | undefined;
   submitted = false;
   wardId?: number;
   provinceId!: number;

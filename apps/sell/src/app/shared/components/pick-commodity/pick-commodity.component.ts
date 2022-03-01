@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime } from 'rxjs/operators';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { CommodityActions } from '../../../pages/commodity/+state/commodity.actions';
 import { Commodity } from '../../../pages/commodity/entities/commodity.entity';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
@@ -47,12 +47,12 @@ export class PickCommodityComponent implements OnInit {
 
   ngOnInit(): void {
     this.actions$.dispatch(
-      CommodityAction.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } })
+      CommodityActions.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } })
     );
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.actions$.dispatch(
-        CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+        CommodityActions.loadMoreCommodity({ commodityDTO: this.commodity(val) })
       );
     });
   }
@@ -77,7 +77,7 @@ export class PickCommodityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.actions$.dispatch(CommodityActions.deleteCommodity({ id: $event.id }));
       }
     });
   }
@@ -123,7 +123,7 @@ export class PickCommodityComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+      CommodityActions.loadMoreCommodity({ commodityDTO: this.commodity(val) })
     );
   }
 

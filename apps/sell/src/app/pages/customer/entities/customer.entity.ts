@@ -2,7 +2,7 @@ import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Bank, PaymentHistory, Ward } from '@minhdu-fontend/data-models';
 import { OrderEntity } from '../../order/entities/order.entity';
 
-export interface Customer {
+export interface CustomerEntity {
   id: number,
   lastName: string,
   avt?: string,

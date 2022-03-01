@@ -1,11 +1,11 @@
-import { Customer } from '../../customer/+state/customer.interface';
+import { CustomerEntity } from '../../customer/entities/customer.entity';
 import { Commodity } from '../../commodity/entities/commodity.entity';
 import { Route } from '../../route/+state/route.interface';
 import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
 
 export interface OrderEntity {
   id: number;
-  customer: Customer;
+  customer: CustomerEntity;
   createdAt: Date;
   endedAt: Date;
   createdBy?: string;

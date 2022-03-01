@@ -1,46 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { Customer } from './customer.interface';
 import { CustomerType, Gender } from '@minhdu-fontend/enums';
 
-
-export const addCustomer = createAction(
-  '[ADD_CUSTOMER] Add Customer',
+const addOne = createAction(
+  '[CUSTOMER] Add One',
   props<{ customer: any }>()
 );
 
-export const addCustomerSuccess = createAction(
-  '[ADD_CUSTOMER] Add Customer Success',
-  props<{ customer: Customer }>()
-);
-
-export const loadInit = createAction(
-  '[LOAD_CUSTOMER] Load Init',
-  props<{
-    skip: number,
-    take: number,
-    type?: string,
-    resource?: string,
-    isPotential?: number,
-    phone?: number,
-    nationId?: number,
-    gender?: Gender,
-    birthDay?: Date,
-    email?: string,
-    note?: string,
-    customerType?: CustomerType,
-    customer?: string,
-
-  }>()
-);
-
-
-export const loadInitSuccess = createAction(
-  '[LOAD_CUSTOMER] Load Init Success',
-  props<{ customers: Customer[] }>()
-);
-
-export const loadMoreCustomers = createAction(
-  '[LOAD_MORE_CUSTOMER] Load More Customer',
+const loadAll = createAction(
+  '[CUSTOMER] Load All',
   props<{
     skip: number,
     take: number,
@@ -58,42 +25,21 @@ export const loadMoreCustomers = createAction(
   }>()
 );
 
-export const loadCustomersSuccess = createAction(
-  '[LOAD_MORE_CUSTOMER] Load More Customer Success',
-  props<{ customers: Customer[] }>()
-);
-
-export const getCustomer = createAction(
-  '[GET_CUSTOMER] Get Customer ',
+const getOne = createAction(
+  '[CUSTOMER] Get One ',
   props<{ id: number }>()
 );
 
-export const getCustomerSuccess = createAction(
-  '[GET_CUSTOMER] Get Customer Success',
-  props<{ customer: Customer }>()
-);
-
-export const updateCustomer = createAction(
-  '[UPDATE_CUSTOMER] Update Customer',
-  props<{ customer: any, id: number }>()
+const update = createAction(
+  '[CUSTOMER] Update',
+  props<{ id: number, updates: any, }>()
 );
 
 
-export const deleteCustomer = createAction(
-  '[DELETE_CUSTOMER] Delete Customer',
-  props<{ id: number, customerId?: number }>()
+const remove = createAction(
+  '[CUSTOMER] Remove',
+  props<{ id: number }>()
 );
 
-export const CustomerAction = {
-  addCustomer,
-  addCustomerSuccess,
-  loadInit,
-  loadInitSuccess,
-  loadMoreCustomers,
-  loadCustomersSuccess,
-  getCustomer,
-  getCustomerSuccess,
-  updateCustomer,
-  deleteCustomer
-};
+export const CustomerAction = { addOne, loadAll, getOne, update, remove };
 
