@@ -8,7 +8,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {select, Store} from '@ngrx/store';
 import {SnackBarComponent} from 'libs/components/src/lib/snackBar/snack-bar.component';
 import {selectorRouteTotal} from "./route.selector";
-import {Order} from "../../order/+state/order.interface";
+import {Order} from "../../order/entities/order.entity";
 import {getTotalCommodity} from "../../../../../../../libs/utils/sell.ultil";
 
 @Injectable()

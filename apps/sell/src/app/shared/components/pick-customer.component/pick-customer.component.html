@@ -44,21 +44,24 @@
           >
         </th>
         <th>
-          <div>Loại khách hàng</div>
-          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
-                  formControlName='type'>
-            <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
-            <option value='{{customerType.AGENCY}}'>Đại lý</option>
-            <option value=''>Tất cả</option>
-          </select>
+          Nơi ở
         </th>
-        <th>
-          <div class=' border-top'>Nguồn khách hàng</div>
-          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
-                  formControlName='resource'>
-            <option *ngFor='let item of customerResourcesConstant' [value]='item.type'>{{item.name}}</option>
-          </select>
-        </th>
+<!--        <th>-->
+<!--          <div>Loại khách hàng</div>-->
+<!--          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required-->
+<!--                  formControlName='type'>-->
+<!--            <option value='{{customerType.RETAIL}}'>Bán lẻ</option>-->
+<!--            <option value='{{customerType.AGENCY}}'>Đại lý</option>-->
+<!--            <option value=''>Tất cả</option>-->
+<!--          </select>-->
+<!--        </th>-->
+<!--        <th>-->
+<!--          <div class=' border-top'>Nguồn khách hàng</div>-->
+<!--          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required-->
+<!--                  formControlName='resource'>-->
+<!--            <option *ngFor='let item of customerResourcesConstant' [value]='item.type'>{{item.name}}</option>-->
+<!--          </select>-->
+<!--        </th>-->
       </tr>
       </thead>
       <tbody>
@@ -80,8 +83,9 @@
         </th>
         <th class='pointer'>{{customer.lastName}}</th>
         <th class='pointer'>{{customer.phone}}</th>
-        <th>{{customer?.type  | transform:CustomerTypeConstant }} </th>
-        <th> {{customer?.resource | transform:customerResourcesConstant}}</th>
+        <th class='pointer'>{{customer.province.name}}</th>
+<!--        <th>{{customer?.type  | transform:CustomerTypeConstant }} </th>-->
+<!--        <th> {{customer?.resource | transform:customerResourcesConstant}}</th>-->
       </tr>
       <tr *ngIf='!customers || customers.length === 0 ' style='height: 150px'
           class=' d-flex justify-content-center align-content-center'>

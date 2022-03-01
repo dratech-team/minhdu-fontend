@@ -1,20 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { RouteAction } from '../../+state/route.action';
 import { DatePipe } from '@angular/common';
-import { selectorAllOrders } from '../../../order/+state/order.selector';
-import { Order } from '../../../order/+state/order.interface';
+import { OrderEntity } from '../../../order/entities/order.entity';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  templateUrl: 'route-dialog.component.html',
+  templateUrl: 'route-dialog.component.html'
 })
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
+  orderIdsOfRoute: OrderEntity[] = this.data?.route?.orders || [];
   isSelectAll = false;
   tabIndex = 0;
 
@@ -25,7 +24,8 @@ export class RouteDialogComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
     private readonly snackbar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     if (this.data?.selectOrder) {
@@ -36,18 +36,18 @@ export class RouteDialogComponent implements OnInit {
       name: [this.data?.route?.name, Validators.required],
       startedAt: [
         this.datePipe.transform(this.data?.route?.startedAt, 'yyyy-MM-dd'),
-        Validators.required,
+        Validators.required
       ],
       endedAt: [
-        this.datePipe.transform(this.data?.route?.endedAt, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.data?.route?.endedAt, 'yyyy-MM-dd')
       ],
       bsx: [this.data?.route?.bsx, Validators.required],
       driver: [this.data?.route?.driver, Validators.required],
-      garage: [this.data?.route?.garage],
+      garage: [this.data?.route?.garage]
     });
   }
 
-  pickOrders(orders: Order[]) {
+  pickOrders(orders: OrderEntity[]) {
     this.orderIdsOfRoute = orders;
   }
 
@@ -71,7 +71,7 @@ export class RouteDialogComponent implements OnInit {
       endedAt: val.endedAt,
       driver: val.driver,
       garage: val.garage,
-      orderIds: this.orderIdsOfRoute.map((item) => item.id),
+      orderIds: this.orderIdsOfRoute.map((item) => item.id)
     };
     if (this.data) {
       this.store.dispatch(

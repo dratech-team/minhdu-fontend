@@ -7,7 +7,7 @@ import { TablePaymentRouteService } from './table-payment-route.service';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
 import { selectorAllPayment } from '../../+state/payment/payment.selector';
-import { PaymentAction } from '../../+state/payment/payment.action';
+import { PaymentAction } from '../../../payment/state/payment.action';
 import { ItemContextMenu } from '../../../../../../../../libs/enums/sell/page-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';

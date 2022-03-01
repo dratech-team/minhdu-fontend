@@ -1,5 +1,5 @@
 import { CommodityUnit } from '@minhdu-fontend/enums';
-import { Order } from '../../order/+state/order.interface';
+import { Order } from '../../order/entities/order.entity';
 
 export interface Commodity {
   id: number

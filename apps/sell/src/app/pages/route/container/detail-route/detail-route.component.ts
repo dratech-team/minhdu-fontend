@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../reducers';
 import {Route} from '../../+state/route.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
@@ -10,20 +8,19 @@ import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {MainAction} from '../../../../states/main.action';
 import {getSelectors} from '@minhdu-fontend/utils';
-import {
-  DialogDatePickerComponent
-} from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
+import { DialogDatePickerComponent } from "@minhdu-fontend/components";
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   templateUrl: 'detail-route.component.html'
 })
 export class DetailRouteComponent implements OnInit {
+  route$ = this.actions$.select(selectorCurrentRoute(this.routeId));
+
   payType = PaymentType;
 
-  route$ = this.store.select(selectorCurrentRoute(this.routeId));
-
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router
@@ -31,8 +28,8 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
-    this.store.dispatch(RouteAction.getRoute({id: this.routeId}));
+    this.actions$.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
+    this.actions$.dispatch(RouteAction.getRoute({id: this.routeId}));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {

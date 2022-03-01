@@ -7,6 +7,7 @@ import { PaymentHistory } from '@minhdu-fontend/data-models';
 })
 export class PaymentHistoryComponent implements OnInit{
   paymentHistories: PaymentHistory[] = [];
+
   constructor(
     private readonly route: ActivatedRoute,
   ) {

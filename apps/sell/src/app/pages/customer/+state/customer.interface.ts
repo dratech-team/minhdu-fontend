@@ -1,6 +1,6 @@
 import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Bank, PaymentHistory, Ward } from '@minhdu-fontend/data-models';
-import { Order } from '../../../order/+state/order.interface';
+import { OrderEntity } from '../../order/entities/order.entity';
 
 export interface Customer {
   id: number,
@@ -26,7 +26,8 @@ export interface Customer {
   type: CustomerType,
   resource: CustomerResource,
   note?: string,
-  orders: Order[],
+  delivering: OrderEntity [],
+  delivered: OrderEntity [],
   isPotential?: boolean,
   bank: Bank,
   facebook?: string,

@@ -1,70 +1,47 @@
-import {createAction, props} from '@ngrx/store';
-import {CommodityUniq, Order, OrderDTO, UpdateOrderDto} from './order.interface';
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { CreateOrderDto } from '../dto/create-order.dto';
+import { SearchOrderDto } from '../dto/search-order.dto';
+import { UpdateOrderDto } from '../dto/update-order.dto';
 
-export const addOrder = createAction(
-  '[ADD_ORDER] Add Order',
-  props<{ order: any }>()
+const addOne = createAction(
+  '[ORDER] Add Order',
+  props<CreateOrderDto>()
 );
 
-export const addOrderSuccess = createAction(
-  '[ADD_ORDER] Add Order Success',
-  props<{ order: Order }>()
-);
-
-export const loadAllOrder = createAction('[LOAD_ORDERS] Load All Order');
-
-export const loadInit = createAction(
-  '[LOAD_ORDERS] Load Order',
-  props<{ orderDTO: Partial<OrderDTO> }>()
-);
-
-export const loadInitSuccess = createAction(
-  '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
-);
-
-export const loadMoreOrders = createAction(
-  '[LOAD_MORE_ORDERS] Load More Order',
-  props<{ orderDTO: Partial<OrderDTO> }>()
-);
-
-export const loadMoreOrdersSuccess = createAction(
-  '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
-);
-
-export const getOrder = createAction(
-  '[GET_ORDER] Get Order',
-  props<{ id: number }>()
-);
-
-export const getOrderSuccess = createAction(
-  '[GET_ORDER] Get Order Success',
-  props<{ order: Order }>()
-);
-
-export const updateOrder = createAction(
-  '[UPDATE_ORDER] Update Order',
-  props<{
-     updateOrderDto: UpdateOrderDto
+const loadAll = createAction(
+  '[ORDER] Load More Order',
+  props<Partial<SearchOrderDto> & {
+    take: number;
+    skip: number
   }>()
 );
 
-export const updateHideOrder = createAction(
-  '[UPDATE_ORDER] Update Hide Order',
-  props<{ hide: any; id: number; customerId: number }>()
+const getOne = createAction(
+  '[ORDER] Get One Order',
+  props<{ id: number }>()
 );
 
-export const payment = createAction(
+const update = createAction(
+  '[ORDER] Update Order',
+  props<UpdateOrderDto>()
+);
+
+const hide = createAction(
+  '[UPDATE_ORDER] Update Hide Order',
+  props<{ id: number; hide: any }>()
+);
+
+const payment = createAction(
   '[PAYMENT] Payment',
   props<{ order: any; id: number }>()
 );
 
-export const deleteOrder = createAction(
-  '[DELETE_ORDER] Delete Order',
+const remove = createAction(
+  '[ORDER] Delete Order',
   props<{ id: number; customerId?: number }>()
 );
-export const loadOrdersAssigned = createAction(
+
+const loadOrdersAssigned = createAction(
   '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
   props<{
     take: number;
@@ -76,10 +53,6 @@ export const loadOrdersAssigned = createAction(
   }>()
 );
 
-export const loadOrdersAssignedSuccess = createAction(
-  '[LOAD_ORDERS_ASSIGNED] Load Order Assigned Success',
-  props<{ orders: Order[] }>()
-);
 export const loadMoreOrdersAssigned = createAction(
   '[LOAD_MORE_ORDERS_ASSIGNED] Load More Order Assigned',
   props<{
@@ -91,35 +64,23 @@ export const loadMoreOrdersAssigned = createAction(
     delivered?: number;
   }>()
 );
-export const loadMoreOrdersAssignedSuccess = createAction(
-  '[LOAD__MORE_ORDERS_ASSIGNED] Load More Order Assigned Success',
-  props<{ orders: Order[] }>()
-);
 
-export const cancelOrder = createAction(
+const cancelOrder = createAction(
   '[CANCEL_ORDER] Cancel Order',
   props<{ orderId: number }>()
 );
 
-export const handleOrderError = createAction('[ORDER_ERROR] Order error');
+const handleOrderError = createAction('[ORDER_ERROR] Order error');
 
 export const OrderAction = {
-  addOrder,
-  addOrderSuccess,
-  loadInit,
-  loadAllOrder,
-  loadInitSuccess,
-  loadMoreOrders,
-  loadMoreOrdersSuccess,
-  getOrder,
-  getOrderSuccess,
-  updateOrder,
-  updateHideOrder,
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  hide,
+  remove,
   payment,
-  deleteOrder,
   loadOrdersAssigned,
-  loadOrdersAssignedSuccess,
-  loadMoreOrdersAssigned,
-  loadMoreOrdersAssignedSuccess,
-  cancelOrder
+  cancelOrder,
+  handleOrderError
 };

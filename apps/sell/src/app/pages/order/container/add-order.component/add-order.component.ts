@@ -3,40 +3,45 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderAction } from '../../+state/order.action';
-import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/entities/commodity.entity';
-import { Customer } from '../../../customer/+state/customer/customer.interface';
-import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
+import { Customer } from '../../../customer/+state/customer.interface';
 import { DatePipe } from '@angular/common';
 import { CommodityQuery } from '../../../commodity/+state/commodity.query';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../../customer/+state/customer.query';
+import { CreateOrderDto } from '../../dto/create-order.dto';
+import { PickCustomerComponent } from '../../../../shared/components/pick-customer.component/pick-customer.component';
+import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
-  commoditiesPicked$ = this.commodityQuery.selectAll({ filterBy: [entity => entity.selected] });
+  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot.params.id);
+  commoditiesPicked: Commodity[] = [];
 
   customers: Customer[] = [];
   commodityUnit = CommodityUnit;
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: Customer | undefined;
-  customerId: number | undefined;
-  payType = PaymentType;
-  formGroup!: FormGroup;
-  customerType = CustomerType;
-  resourceType = CustomerResource;
   submitted = false;
   wardId?: number;
   provinceId!: number;
 
+  payType = PaymentType;
+  customerType = CustomerType;
+  resourceType = CustomerResource;
+  formGroup: FormGroup = this.formBuilder.group({
+    createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
+    endedAt: [],
+    explain: ['']
+  });
+
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
@@ -47,48 +52,33 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
+    console.log('===', this.commoditiesPicked);
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.customerPicked$.subscribe((val: any) => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
-    this.formGroup = this.formBuilder.group({
-      createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
-      endedAt: [],
-      explain: ['']
-    });
-  }
-
-  getCustomerId() {
-    this.route.queryParams.subscribe(param => {
-      if (param.data) {
-        this.customerId = JSON.parse(param.data);
-      }
-    });
-    return this.customerId;
   }
 
   pickCustomer() {
     this.dialog.open(PickCustomerComponent, {
-      width: '50%',
+      width: '70%',
       data: {
         pickOne: true
       }
     }).afterClosed().subscribe(val => {
         if (val) {
-          this.customerId = val;
-          this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val => {
-            this.customerPicked = JSON.parse(JSON.stringify(val));
-          });
+          this.route.snapshot.params.id = val;
+          this.customerPicked = this.customerQuery.getEntity(this.route.snapshot.params.id);
         }
       }
     );
   }
 
   deleteCustomerId() {
-    this.customerId = undefined;
-    this.customerPicked = undefined;
+    // this.customerId = undefined;
+    // this.customerPicked = undefined;
   }
 
   pickCommodities() {
@@ -97,14 +87,18 @@ export class AddOrderComponent implements OnInit {
       data: {
         pickMore: true,
         type: 'DIALOG',
-        ids: this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }).map(commodity => commodity.id)
+        ids: this.commoditiesPicked.map(commodity => commodity.id)
+      }
+    }).afterClosed().subscribe((commodityIds) => {
+      if (commodityIds) {
+        this.commoditiesPicked = commodityIds.map((commodityId: number[]) => this.commodityQuery.getEntity(commodityId));
       }
     });
   }
 
-  deleteCommodity(commodity: Commodity) {
-    // const index = this.commoditiesPicked$.findIndex(item => item.id === commodity.id);
-    // this.commoditiesPicked$.splice(index, 1);
+  unSelect(commodity: Commodity) {
+    const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id);
+    this.commoditiesPicked.splice(index, 1);
   }
 
   get checkValid() {
@@ -117,16 +111,18 @@ export class AddOrderComponent implements OnInit {
       return;
     }
     const val = this.formGroup.value;
-    const order = {
-      createdAt: val.createdAt,
-      endedAt: val.endedAt,
-      explain: val.explain,
-      wardId: this.wardId,
-      provinceId: this.provinceId,
-      customerId: this.customerId,
-      commodityIds: this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }).map(commodity => commodity.id)
-    };
-    this.store.dispatch(OrderAction.addOrder({ order: order }));
+    if (this.wardId) {
+      const order: CreateOrderDto = {
+        customerId: this.route.snapshot.params.id,
+        createdAt: val.createdAt,
+        endedAt: val.endedAt,
+        explain: val.explain,
+        wardId: this.wardId,
+        provinceId: this.provinceId,
+        commodityIds: this.commoditiesPicked.map(commodity => commodity.id)
+      };
+      this.actions$.dispatch(OrderAction.addOne(order));
+    }
   }
 
   onSelectWard($event: number) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { selectorAllPayment } from '../../+state/payment/payment.selector';
-import { PaymentAction } from '../../+state/payment/payment.action';
+import { PaymentAction } from '../../../payment/state/payment.action';
 
 @Injectable({providedIn: 'root'})
 export class TablePaymentRouteService {

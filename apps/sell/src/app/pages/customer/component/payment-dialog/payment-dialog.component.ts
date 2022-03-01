@@ -4,9 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { Order } from '../../../order/+state/order.interface';
+import { Order } from '../../../order/entities/order.entity';
 import { DatePipe } from '@angular/common';
-import { PaymentAction } from '../../+state/payment/payment.action';
+import { PaymentAction } from '../../../payment/state/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
 import {
   selectorAllOrders,

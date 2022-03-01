@@ -3,21 +3,20 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { CustomerType, Gender, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
+import { CustomerType, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectedCustomerLoaded, selectorAllCustomer } from '../../+state/customer/customer.selector';
+import { CustomerAction } from '../../+state/customer.action';
 import { AppState } from '../../../../reducers';
-import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
 import { PotentialTypes } from '../../constants/potentialTypes';
 import { CustomerTypes } from '../../constants/customer.type';
 import { GenderTypes } from '../../constants/generTypes';
+import { OrderEntity } from '../../../order/entities/order.entity';
+import { CustomerQuery } from '../../+state/customer.query';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -31,10 +30,10 @@ export class CustomerComponent implements OnInit {
   CustomerTypes = CustomerTypes;
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
-  orders?: Order;
+  orders?: OrderEntity;
 
-  customers$ = this.store.select(selectorAllCustomer);
-  loaded$ = this.store.select(selectedCustomerLoaded);
+  customers$ = this.customerQuery.selectAll();
+  loaded$ = !this.customerQuery.selectLoading();
 
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -54,7 +53,7 @@ export class CustomerComponent implements OnInit {
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly exportService: ExportService
+    private readonly customerQuery: CustomerQuery
   ) {
   }
 
@@ -74,7 +73,7 @@ export class CustomerComponent implements OnInit {
   }
 
   addOrder($event?: any) {
-    console.log()
+    console.log();
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
         data: $event.id

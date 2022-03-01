@@ -275,7 +275,7 @@
       <ngx-skeleton-loader *ngIf='!(loadedOrdersAssigned$ | async); else orderNotAssigned' count='7' appearance='line'>
       </ngx-skeleton-loader>
       <ng-template #orderNotAssigned>
-        <app-table-order [delivered]='false' [orders$]='ordersNotAssigned$' [customerId]='customer.id'>
+        <app-table-order [delivered]='false' [orders]='ordersNotAssigned$ | async' [customerId]='customer.id'>
         </app-table-order>
       </ng-template>
     </div>
@@ -286,7 +286,7 @@
       <ngx-skeleton-loader *ngIf='!(loadedOrdersNotAssigned$ | async); else orderAssigned' count='7' appearance='line'>
       </ngx-skeleton-loader>
       <ng-template #orderAssigned>
-        <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>
+<!--        <app-table-order [delivered]='true' [orders$]='ordersAssigned$' [customerId]='customer.id'></app-table-order>-->
       </ng-template>
 
     </div>

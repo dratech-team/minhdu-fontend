@@ -207,8 +207,8 @@
             </div>
           </div>
         </th>
-        <th *ngIf="CommodityUniq$|async as CommodityUniq" style="color:red">
-          {{getTotalCommodity(CommodityUniq)| number:'1.0-0' | notEmpty:'0'}}
+        <th *ngIf="CommodityUniq$ | async as CommodityUniq" style="color:red">
+          {{getTotalCommodity(CommodityUniq) | number:'1.0-0' | notEmpty:'0'}}
         </th>
         <th></th>
         <th></th>
