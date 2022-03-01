@@ -30,8 +30,11 @@ export interface Order {
   totalCommodity:number
 }
 
-export interface UpdateOrderDto extends Omit<Order, 'commodities'> {
-  commodityIds: number[];
+export interface UpdateOrderDto{
+  order?: Partial<Order>,
+  id: number
+  commodityIds?: number[];
+  typeUpdate?: 'DELIVERED' | 'IN_CUSTOMER',
 }
 
 export interface OrderDTO {

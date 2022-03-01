@@ -137,15 +137,25 @@ export class OrderComponent implements OnInit {
 
   UpdateOrder($event: any) {
     this.dialog
-      .open(DialogDatePickerComponent)
+      .open(DialogDatePickerComponent, {
+        width: 'fit-content',
+        data: {
+          titlePopup: 'Xác Nhận ngày giao hàng',
+          title: 'Ngày xác nhận'
+        }
+      })
       .afterClosed()
-      .subscribe((deliveredAt) => {
-        if (deliveredAt) {
+      .subscribe((val: any) => {
+        if (val) {
           this.store.dispatch(
             OrderAction.updateOrder({
-              order: {deliveredAt},
-              id: $event.id,
-              typeUpdate: 'DELIVERED'
+              updateOrderDto: {
+                order: {
+                  deliveredAt: val.day,
+                },
+                typeUpdate: 'DELIVERED',
+                id: $event.id,
+              }
             })
           );
         }

@@ -23,7 +23,6 @@ import {SharedModule} from '../../shared/shared.module';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {MainReducer} from '../../states/mainReducer';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {CompleteRouteDialogComponent} from "./component/complete-route-dialog/complete-route-dialog.component";
 
 @NgModule({
   imports: [
@@ -51,7 +50,6 @@ import {CompleteRouteDialogComponent} from "./component/complete-route-dialog/co
     RouteComponent,
     DetailRouteComponent,
     RouteDialogComponent,
-    CompleteRouteDialogComponent
   ],
   providers: [
     DatePipe,
