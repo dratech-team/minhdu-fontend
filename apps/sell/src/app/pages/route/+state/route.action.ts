@@ -1,5 +1,6 @@
 import {createAction, props} from '@datorama/akita-ng-effects';
 import {Route} from "./entities/route.entity";
+import {SearchRouteDto} from "./entities/search-route-dto.entity";
 
 
 export const addOne = createAction(
@@ -9,9 +10,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[ROUTE] Load All',
-  props<{
-
-  }>()
+  props<SearchRouteDto>()
 );
 
 export const getOne = createAction(

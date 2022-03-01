@@ -1,4 +1,4 @@
-export interface loadAllRouteDtoEntity {
+export interface SearchRouteDto {
   readonly take?: number;
   readonly skip?: number;
   readonly orderId?: number;
