@@ -1,5 +1,5 @@
 import {Employee} from "@minhdu-fontend/data-models";
-import {Order} from "../../order/+state/order.interface";
+import {OrderEntity} from "../../order/entities/order.entity";
 
 export interface Route {
   readonly id: number,
@@ -8,7 +8,7 @@ export interface Route {
   endedAt: Date,
   readonly driver: string,
   readonly employee?: Employee,
-  readonly orders?: Order[],
+  readonly orders: OrderEntity[],
   readonly garage: string,
   readonly bsx: string,
   readonly latitude?: string,

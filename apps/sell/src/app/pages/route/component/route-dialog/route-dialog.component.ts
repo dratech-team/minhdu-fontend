@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteActions} from "../../+state/route.action";
-import {Order} from "@datorama/akita";
+import {OrderEntity} from "../../../order/entities/order.entity";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -13,7 +13,7 @@ import {Order} from "@datorama/akita";
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
+  orderIdsOfRoute: OrderEntity[] = this.data?.route?.orders || [];
   isSelectAll = false;
   tabIndex = 0;
 
@@ -47,7 +47,7 @@ export class RouteDialogComponent implements OnInit {
     });
   }
 
-  pickOrders(orders: Order[]) {
+  pickOrders(orders: OrderEntity[]) {
     this.orderIdsOfRoute = orders;
   }
 

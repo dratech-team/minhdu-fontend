@@ -5,10 +5,10 @@ import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
 import {throwError} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Order} from "../../order/+state/order.interface";
 import {getTotalCommodity} from "../../../../../../../libs/utils/sell.ultil";
 import {RouteStore} from "./route.store";
 import {Route} from "../entities/route.entity";
+import {OrderEntity} from "../../order/entities/order.entity";
 
 @Injectable()
 export class RouteEffect {
@@ -45,7 +45,7 @@ export class RouteEffect {
             route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0)
 
             Object.assign(route, {
-              customers: route.orders.map((order: Order) => order.customer.lastName),
+              customers: route.orders.map((order: OrderEntity) => order.customer.lastName),
             })
           })
           if (params.skip && params.skip > 0) {
