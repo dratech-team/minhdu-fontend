@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Order } from '../../../order/+state/order.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteActions} from "../../+state/route.action";
+import {Order} from "@datorama/akita";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
