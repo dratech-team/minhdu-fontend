@@ -1,11 +1,13 @@
 import {createAction, props} from '@datorama/akita-ng-effects';
-import {Route} from "./entities/route.entity";
-import {SearchRouteDto} from "./entities/search-route-dto.entity";
+import {Route} from "../entities/route.entity";
+import {SearchRouteDto} from "../entities/search-route-dto.entity";
+import {UpdateRouteDto} from "../entities/update-route-dto.entity";
+import {CreateRouteDto} from "../entities/create-route-dto.entity";
 
 
 export const addOne = createAction(
   '[ROUTE] Add One',
-  props<{ routeDto: Partial<Route> }>()
+  props<CreateRouteDto>()
 );
 
 export const loadAll = createAction(
@@ -20,7 +22,7 @@ export const getOne = createAction(
 
 export const update = createAction(
   '[ROUTE] Update',
-  props<{ id: number; route: Omit<Partial<Route>, 'id'> }>()
+  props<{ id: number; updates: UpdateRouteDto }>()
 );
 
 export const remove = createAction(

@@ -9,14 +9,14 @@ import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepi
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
-import { RouteAction, updateRoute } from '../../+state/route.action';
-import { Route } from '../../+state/route.interface';
-import { selectedRouteLoaded, selectorAllRoute } from '../../+state/route.selector';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import {Commodity} from "../../../commodity/entities/commodity.entity";
+import {Route} from "../../entities/route.entity";
+import {RouteQuery} from "../../+state/route.query";
+import {Actions} from "@datorama/akita-ng-effects";
+import {RouteActions} from "../../+state/route.action";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -39,17 +39,17 @@ export class RouteComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly routeQuery: RouteQuery,
+    private readonly actions$: Actions,
   ) {
   }
 
-  routes$ = this.store.pipe(select(selectorAllRoute));
-  loaded$ = this.store.pipe(select(selectedRouteLoaded));
+  routes$ = this.routeQuery.selectAll()
+  loaded$ = this.routeQuery.selectLoading()
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
     this.routes$.subscribe((val) => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach((item) => {
@@ -58,9 +58,13 @@ export class RouteComponent implements OnInit {
         }
       });
     });
+
+    this.actions$.dispatch(RouteActions)
+
     this.store.dispatch(
       RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
     );
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),

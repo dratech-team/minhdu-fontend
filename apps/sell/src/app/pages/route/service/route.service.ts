@@ -5,7 +5,9 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
-import {Route} from "../+state/route.interface";
+import {CreateRouteDto} from "../entities/create-route-dto.entity";
+import {SearchRouteDto} from "../entities/search-route-dto.entity";
+import {Route} from "../entities/route.entity";
 
 @Injectable({providedIn: 'root'})
 export  class RouteService extends BaseService<Route>{
@@ -14,10 +16,10 @@ export  class RouteService extends BaseService<Route>{
   ) {
     super(Api.SELL.ROUTE.ROUTE , http);
   }
-  addOne(props: Route): Observable<Route> {
+  addOne(props: CreateRouteDto): Observable<Route> {
     return super.addOne(props);
   }
-  pagination(params: any): Observable<ResponsePaginate<Route>> {
+  pagination(params: SearchRouteDto): Observable<ResponsePaginate<Route>> {
     return super.pagination(params);
   }
   getOne(id: any): Observable<Route> {

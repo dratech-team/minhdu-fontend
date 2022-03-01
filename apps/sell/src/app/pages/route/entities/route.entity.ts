@@ -1,11 +1,11 @@
-import {Employee} from '@minhdu-fontend/data-models';
-import {Order} from '../../order/+state/order.interface';
+import {Employee} from "@minhdu-fontend/data-models";
+import {Order} from "../../order/+state/order.interface";
 
 export interface Route {
   readonly id: number,
   readonly name: string,
   readonly startedAt: Date,
-  readonly endedAt: Date,
+  endedAt: Date,
   readonly driver: string,
   readonly employee: Employee,
   readonly orders: Order[],
@@ -14,5 +14,5 @@ export interface Route {
   readonly latitude: string,
   readonly longitude: string,
   readonly isSelect?: boolean,
-  readonly totalCommodityUniq: number
+  totalCommodityUniq: number
 }
