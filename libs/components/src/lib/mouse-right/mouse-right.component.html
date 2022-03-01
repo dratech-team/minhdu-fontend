@@ -6,11 +6,15 @@
   <ng-template contextMenuItem let-item (execute)='add($event.item)'>
     Thêm
   </ng-template>
-  <ng-template contextMenuItem let-item (execute)='delete($event.item)'>
+  <ng-template *ngIf='!items?.includes(ItemContextMenu.CANCEL_ORDER)' contextMenuItem let-item (execute)='delete($event.item)'>
     Xóa
   </ng-template>
   <ng-template contextMenuItem let-item (execute)='update($event.item)'>
     Sửa
+  </ng-template>
+  <ng-template *ngIf='items?.includes(ItemContextMenu.CANCEL_ORDER)' contextMenuItem let-item
+               (execute)='cancel($event.item)'>
+    Huỷ đơn hàng
   </ng-template>
   <ng-template *ngIf='items?.includes(ItemContextMenu.PERMANENTLY)' contextMenuItem let-item
                (execute)='permanentlyDeleted($event.item)'>

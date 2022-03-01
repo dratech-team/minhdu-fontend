@@ -6,6 +6,9 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
+import { SearchCommodityDto } from '../dto/search-commodity.dto';
+import { UpdateCommodityDto } from '../dto/update-commodity.dto';
+import { CreateCommodityDto } from '../dto/create-commodity.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +20,11 @@ export class CommodityService extends BaseService<Commodity> {
     super(Api.SELL.COMMODITY, http);
   }
 
-  addOne(props: Commodity): Observable<Commodity> {
+  addOne(props: CreateCommodityDto): Observable<Commodity> {
     return super.addOne(props);
   }
 
-  getAll(params?: any): Observable<Commodity[]> {
+  getAll(params?: SearchCommodityDto): Observable<Commodity[]> {
     return super.getAll(params);
   }
 
@@ -33,15 +36,15 @@ export class CommodityService extends BaseService<Commodity> {
     return super.pagination(params);
   }
 
-  getOne(id: any): Observable<Commodity> {
+  getOne(id: Commodity['id']): Observable<Commodity> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<Commodity>> {
+  update(id: Commodity['id'], body: UpdateCommodityDto): Observable<UpdateNum<Commodity>> {
     return super.update(id, body);
   }
 
-  delete(id: number): Observable<Commodity> {
+  delete(id: Commodity['id']): Observable<Commodity> {
     return super.delete(id);
   }
 }

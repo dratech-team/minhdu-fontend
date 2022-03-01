@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { CommodityAction } from '../../+state/commodity.action';
+import { CommodityActions } from '../../+state/commodity.actions';
 import { Commodity } from '../../entities/commodity.entity';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
@@ -24,7 +22,7 @@ export class DetailCommodityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CommodityAction.getCommodity({ id: this.getId }));
+    this.actions$.dispatch(CommodityActions.getOne({ id: this.getId }));
 
   }
 

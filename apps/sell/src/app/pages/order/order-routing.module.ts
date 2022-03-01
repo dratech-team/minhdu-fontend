@@ -5,7 +5,6 @@ import { DetailOrderComponent } from './container/detail-order/detail-order.comp
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -29,5 +28,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class OrderRoutingModule {
-
 }

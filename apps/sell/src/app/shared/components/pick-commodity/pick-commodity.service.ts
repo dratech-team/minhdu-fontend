@@ -1,4 +1,4 @@
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { CommodityActions } from '../../../pages/commodity/+state/commodity.actions';
 import { Injectable } from '@angular/core';
 import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -14,11 +14,11 @@ export class PickCommodityService {
   }
 
   loadInit() {
-    return this.actions$.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
+    return this.actions$.dispatch(CommodityActions.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
   }
 
   scrollCommodities(val: any) {
-    this.actions$.dispatch(CommodityAction.loadMoreCommodity(val));
+    this.actions$.dispatch(CommodityActions.loadMoreCommodity(val));
   }
 
   commodities() {

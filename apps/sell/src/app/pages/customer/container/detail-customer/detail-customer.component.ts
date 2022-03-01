@@ -1,71 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { Customer } from '../../+state/customer/customer.interface';
-import { selectorCurrentCustomer } from '../../+state/customer/customer.selector';
-import { AppState } from '../../../../reducers';
-import { OrderAction } from '../../../order/+state/order.action';
-import { Order } from '../../../order/+state/order.interface';
-import {
-  selectedNotOrderLoaded,
-  selectedOrderLoaded,
-  selectorOrdersAssignedById,
-  selectorOrdersNotAssignedById
-} from '../../../order/+state/order.selector';
+import { CustomerAction } from '../../+state/customer.action';
+import { CustomerEntity } from '../../entities/customer.entity';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
-import { getSelectors } from '@minhdu-fontend/utils';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../+state/customer.query';
+import { OrderEntity } from '../../../order/entities/order.entity';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
+  customer$ = this.customerQuery.selectEntity(this.getId);
+  loadedOrdersAssigned$ = of(true);
+  loadedOrdersNotAssigned$ = of(true);
+
   convertBoolean = ConvertBoolean;
-  orders: Order[] = [];
+  orders: OrderEntity[] = [];
   paidType = PaidType;
 
   constructor(
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly store: Store<AppState>,
     private readonly dialog: MatDialog
   ) {
   }
 
-  customer$ = this.store.select(selectorCurrentCustomer(this.getId));
-  ordersNotAssigned$ = this.store.select(selectorOrdersNotAssignedById(this.getId));
-  ordersAssigned$ = this.store.select(selectorOrdersAssignedById(this.getId));
-  loadedOrdersAssigned$ = this.store.select(selectedOrderLoaded);
-  loadedOrdersNotAssigned$ = this.store.select(selectedNotOrderLoaded);
-
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
-    this.store.dispatch(
-      OrderAction.loadInit({ orderDTO: { take: 10, skip: 0, customerId: this.getId } })
-    );
-    this.store.dispatch(
-      OrderAction.loadOrdersAssigned({
-        take: 10,
-        skip: 0,
-        customerId: this.getId,
-        status: this.convertBoolean.TRUE
-      })
-    );
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
+    this.actions$.dispatch(CustomerAction.getCustomer({ id: this.getId }));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
-        this.updateCustomer(getSelectors(selectorCurrentCustomer(this.getId), this.store));
+        // this.updateCustomer(this.customerQuery.getEntity(this.getId));
       }
     });
   }
 
-  updateCustomer(customer: Customer) {
+  updateCustomer(customer: CustomerEntity) {
     this.dialog.open(CustomerDialogComponent, {
       data: { customer, isUpdate: true },
       width: '50%'
@@ -82,7 +62,7 @@ export class DetailCustomerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(CustomerAction.deleteCustomer({ id: id }));
+        this.actions$.dispatch(CustomerAction.deleteCustomer({ id: id }));
       }
     });
   }

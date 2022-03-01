@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommodityAction } from '../../+state/commodity.action';
+import { CommodityActions } from '../../+state/commodity.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
 import { CommodityUnit } from '@minhdu-fontend/enums';
@@ -33,7 +33,7 @@ export class CommodityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
+    this.actions$.dispatch(CommodityActions.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
   }
 
   add() {
@@ -44,14 +44,14 @@ export class CommodityComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val, this.pageSize, this.pageIndex) }));
+    this.actions$.dispatch(CommodityActions.loadMoreCommodity({ commodityDTO: this.commodity(val, this.pageSize, this.pageIndex) }));
   }
 
   deleteCommodity($event: any) {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.actions$.dispatch(CommodityActions.deleteCommodity({ id: $event.id }));
       }
     });
   }

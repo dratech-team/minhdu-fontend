@@ -1,34 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Api, CurrenciesConstant} from '@minhdu-fontend/constants';
-import {ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {select, Store} from '@ngrx/store';
-import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {OrderAction} from '../../+state/order.action';
-import {selectedCommodityUniqOrder, selectedOrderLoaded, selectorAllOrders} from '../../+state/order.selector';
-import {AppState} from '../../../../reducers';
-import {MainAction} from '../../../../states/main.action';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
+import { ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
+import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import { debounceTime, map, tap } from 'rxjs/operators';
+import { OrderAction } from '../../+state/order.action';
+import { MainAction } from '../../../../states/main.action';
 import * as _ from 'lodash';
-import {Commodity} from "../../../commodity/entities/commodity.entity";
-import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
-import {CommodityUniq} from "../../+state/order.interface";
+import { CommodityUniq } from '../../entities/order.entity';
+import { DialogSharedComponent } from '@minhdu-fontend/components';
+import { Actions } from '@datorama/akita-ng-effects';
+import { OrderQuery } from '../../+state/order.query';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
-  orders$ = this.store.pipe(select(selectorAllOrders));
-  loaded$ = this.store.pipe(select(selectedOrderLoaded));
-  CommodityUniq$ = this.store.pipe(select(selectedCommodityUniqOrder));
-  commodities$ = this.store.select(selectorAllOrders).pipe(
-    map(orders => {
-      return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
-    })
+  orders$ = this.orderQuery.selectAll();
+  loaded$ = !this.orderQuery.selectLoading();
+  // CommodityUniq$ = this.store.pipe(select(selectedCommodityUniqOrder));
+  CommodityUniq$ = of();
+  commodities$ = this.orderQuery.selectAll().pipe(
+    map(orders => _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code'))
   );
 
   ItemContextMenu = ItemContextMenu;
@@ -57,30 +54,30 @@ export class OrderComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly orderQuery: OrderQuery,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly exportService: ExportService
+    private readonly route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ORDER}));
-    this.store.dispatch(
-      OrderAction.loadInit({
-        orderDTO: {take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0}
-      })
-    );
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
+    // this.actions$.dispatch(
+    //   OrderAction.loadAll({
+    //     orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 }
+    //   })
+    // );
 
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val: any) => {
-          this.store.dispatch(
-            OrderAction.loadInit({orderDTO: this.order(val)})
-          );
+          // this.actions$.dispatch(
+          //   OrderAction.loadInit({ orderDTO: this.order(val) })
+          // );
         })
       )
       .subscribe();
@@ -92,9 +89,9 @@ export class OrderComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(
-      OrderAction.loadMoreOrders({orderDTO: this.order(val)})
-    );
+    // this.actions$.dispatch(
+    //   OrderAction.loadMoreOrders({ orderDTO: this.order(val) })
+    // );
   }
 
   order(val: any) {
@@ -119,7 +116,7 @@ export class OrderComponent implements OnInit {
 
     if (value?.startedAt && !value?.endedAt) {
       value.endedAt = value?.startedAt;
-      this.formGroup.get('endedAt')?.patchValue(value.endedAt)
+      this.formGroup.get('endedAt')?.patchValue(value.endedAt);
     }
     return value;
   }
@@ -134,17 +131,27 @@ export class OrderComponent implements OnInit {
 
   UpdateOrder($event: any) {
     this.dialog
-      .open(DialogDatePickerComponent)
+      .open(DialogDatePickerComponent, {
+        width: 'fit-content',
+        data: {
+          titlePopup: 'Xác Nhận ngày giao hàng',
+          title: 'Ngày xác nhận'
+        }
+      })
       .afterClosed()
-      .subscribe((deliveredAt) => {
-        if (deliveredAt) {
-          this.store.dispatch(
-            OrderAction.updateOrder({
-              order: {deliveredAt},
-              id: $event.id,
-              typeUpdate: 'DELIVERED'
-            })
-          );
+      .subscribe((val: any) => {
+        if (val) {
+          // this.actions$.dispatch(
+          //   OrderAction.updateOrder({
+          //     updateOrderDto: {
+          //       order: {
+          //         deliveredAt: val.day
+          //       },
+          //       typeUpdate: 'DELIVERED',
+          //       id: $event.id
+          //     }
+          //   })
+          // );
         }
       });
   }
@@ -179,7 +186,26 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
-    return getTotalCommodity(CommodityUniq)
+  getTotalCommodity(commodityUniq: CommodityUniq[]): number {
+    return commodityUniq.reduce((a, b) => a + b.amount, 0);
+  }
+
+  cancelOrder($event: any) {
+    this.actions$.dispatch(OrderAction.cancelOrder({ orderId: $event.id }));
+  }
+
+  deleteOrder($event: any) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá đơn hàng',
+        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(OrderAction.remove({ id: $event.id }));
+      }
+    });
   }
 }

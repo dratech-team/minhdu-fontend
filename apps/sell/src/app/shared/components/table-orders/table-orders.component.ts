@@ -1,16 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaidType } from 'libs/enums/paidType.enum';
+import { ConvertBoolean, PaidType } from '@minhdu-fontend/enums';
 import { Router } from '@angular/router';
-import { TableOrderCustomerService } from './table-order-customer.service';
-import { Observable } from 'rxjs';
-import { Order } from '../../../pages/order/+state/order.interface';
-import { OrderAction } from '../../../pages/order/+state/order.action';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { OrderEntity } from '../../../pages/order/entities/order.entity';
+import { Actions } from '@datorama/akita-ng-effects';
+import { DialogDatePickerComponent, DialogSharedComponent } from '@minhdu-fontend/components';
+import { OrderAction } from '../../../pages/order/+state/order.action';
 
 @Component({
   selector: 'app-table-order',
@@ -18,9 +15,10 @@ import { DialogSharedComponent } from '../../../../../../../libs/components/src/
 })
 
 export class TableOrdersComponent implements OnInit {
-  @Input() orders$!: Observable<Order[]>;
-  @Input() delivered!: boolean;
-  @Input() customerId!: number;
+  @Input() orders: OrderEntity[] = [];
+  @Input() delivered: boolean = false;
+  @Input() customerId?: number;
+
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
@@ -33,22 +31,17 @@ export class TableOrdersComponent implements OnInit {
   convertBoolean = ConvertBoolean;
 
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Actions,
     private readonly router: Router,
-    private readonly dialog: MatDialog,
-    private readonly customerService: TableOrderCustomerService
+    private readonly dialog: MatDialog
   ) {
   }
 
+  //
   ngOnInit() {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((val) => {
-          if (this.delivered) {
-            this.customerService.searchOrdersAssigned(this.orders(val));
-          } else {
-            this.customerService.searchOrders(this.orders(val));
-          }
         }
       )
     ).subscribe();
@@ -57,13 +50,13 @@ export class TableOrdersComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(val));
+      // this.customerService.scrollOrdersAssigned(this.orders(val));
     } else {
-      this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.orders(val) }));
+      this.actions$.dispatch(OrderAction.loadAll(this.mapOrder(val)));
     }
   }
 
-  orders(val: any): any {
+  mapOrder(val: any): any {
     return {
       skip: this.pageIndexInit,
       take: this.pageSize,
@@ -81,26 +74,42 @@ export class TableOrdersComponent implements OnInit {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  updateOrder(order: Order) {
-    this.store.dispatch(OrderAction.updateHideOrder({
+  updateOrder(order: OrderEntity) {
+    this.actions$.dispatch(OrderAction.hide({
       id: order.id,
-      hide: { hide: !order.hide },
-      customerId: order.customerId
+      hide: { hide: !order.hide }
     }));
   }
 
-  deleteOrder(order: Order) {
-    const ref = this.dialog.open(DialogSharedComponent,
+  deleteOrder(order: OrderEntity) {
+    this.dialog.open(DialogSharedComponent,
       {
         width: 'fit-content',
         data: {
           title: 'Đơn hàng đang giao',
           description: `hủy đơn hàng đang giao ${order?.ward?.name} ${order?.ward?.district?.name} ${order?.ward?.district?.province?.name}`
         }
-      });
-    ref.afterClosed().subscribe(val => {
+      }).afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderAction.deleteOrder({ id: order.id, customerId: order.customerId }));
+        this.actions$.dispatch(OrderAction.remove({ id: order.id }));
+      }
+    });
+  }
+
+  confirmOrder(order: OrderEntity) {
+    this.dialog.open(DialogDatePickerComponent, {
+      width: 'fit-content',
+      data: {
+        titlePopup: 'Xác nhận giao hàng',
+        title: 'Ngày giao hàng'
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(OrderAction.update({
+          order: { deliveredAt: val.day },
+          id: order.id,
+          typeUpdate: 'IN_CUSTOMER'
+        }));
       }
     });
   }

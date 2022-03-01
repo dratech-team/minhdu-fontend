@@ -1,5 +1,5 @@
+<mat-spinner *ngIf='loading$|async' class='loading'></mat-spinner>
 <div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
-
   <div class='row' *ngIf='(order$ | async)  as commodity'>
     <div class='row mt-5'>
       <div class=' main-title  mr-5' style='font-size: 20px'>
@@ -175,17 +175,37 @@
         <div class='row d-flex align-items-center mb-3 '>
           <div class='row align-items-center title-table mr-4'>Lịch sử chốt đơn</div>
         </div>
+        <div class="d-flex justify-content-end">
+          <img (click)="refreshOrderHistory()" class="border" width="20px" src="assets/icon/share/arrow-clockwise.svg"
+               alt="refresh">
+        </div>
         <div style="height: 250px; overflow:auto; "
              class="border"
              infiniteScroll [infiniteScrollDistance]='0.1'
              [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
              (scrolled)='loadMoreOrderHistory()'>
-          <table>
-            <tr style="position: sticky; top: 1px; background: white">
-              <th class='text-center border-top'>Thời gian</th>
-              <th class='text-center border-top'>Loại gà</th>
-              <th class='text-center border-top'>Nội dung</th>
+          <table [formGroup]="formOrderHistory">
+            <thead style="position: sticky; top: 1px; background: white">
+            <tr>
+              <th class='text-center border-top'>
+                <div>
+                  <div>Thời gian</div>
+                  <input type="search" disabled class="form-control">
+                </div>
+               </th>
+              <th class='text-center border-top'> <div>
+                <div>Loại gà</div>
+                <input type="search"  class="form-control" formControlName="commodity">
+              </div>
+              </th>
+              <th class='text-center border-top'>
+                <div>
+                  <div>Nội dung</div>
+                  <input type="search" class="form-control" formControlName="content">
+                </div>
+              </th>
             </tr>
+            </thead>
             <tr *ngFor='let orderHistory of orderHistories'>
               <th class='text-center pointer'> {{orderHistory.timestamp | date: 'hh:mm:ss - dd/MM/yyyy'}} </th>
               <th class='text-center pointer'> {{orderHistory.type}}</th>

@@ -3,7 +3,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { OrderRoutingModule } from './order-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { OrderAssignedReducer, OrderReducer } from './+state/order.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { OrderEffect } from './+state/order.effect';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +31,9 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NzMessageModule } from 'ng-zorro-antd/message';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OrderService } from './service/order.service';
+import { OrderHistoryService } from './service/order-history.service';
 
 @NgModule({
   imports: [
@@ -40,9 +41,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,
-    StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
     StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-    StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     EffectsModule.forFeature([OrderEffect, RouteEffect]),
     MatInputModule,
@@ -50,7 +49,6 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     MatDialogModule,
     MatSelectModule,
     MatTabsModule,
-    CustomerModule,
     MatCheckboxModule,
     CommodityModule,
     NgxMatSelectSearchModule,
@@ -60,6 +58,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     NgxSkeletonLoaderModule.forRoot(),
     MatDatepickerModule,
     CommonModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     TableRouteComponent,
@@ -69,14 +68,16 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     OrderDialogComponent,
     AddOrderComponent
   ],
-  exports: [],
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
-  ]
+    OrderService,
+    OrderHistoryService
+  ],
+  exports: [],
 })
 export class OrderModule {
 }

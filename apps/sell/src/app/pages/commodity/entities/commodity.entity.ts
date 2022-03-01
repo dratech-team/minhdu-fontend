@@ -1,5 +1,5 @@
 import { CommodityUnit } from '@minhdu-fontend/enums';
-import { Order } from '../../order/+state/order.interface';
+import { OrderEntity } from '../../order/entities/order.entity';
 
 export interface Commodity {
   id: number
@@ -8,15 +8,13 @@ export interface Commodity {
   unit: CommodityUnit,
   price: number
   amount: number
-  orders: Order[]
-  isSelect: boolean;
+  orders: OrderEntity[]
   gift: number;
   more: {
     amount: number,
     price: number,
   },
   closed: boolean,
-  selected: boolean
 }
 
 export interface CommodityDTO {

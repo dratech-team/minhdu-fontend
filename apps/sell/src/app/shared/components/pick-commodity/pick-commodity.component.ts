@@ -4,19 +4,19 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { debounceTime } from 'rxjs/operators';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { CommodityActions } from '../../../pages/commodity/+state/commodity.actions';
 import { Commodity } from '../../../pages/commodity/entities/commodity.entity';
 import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CommodityStore } from '../../../pages/commodity/+state/commodity.store';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickPOne: boolean | undefined;
   @Output() checkEvent = new EventEmitter<Commodity[]>();
 
@@ -27,8 +27,6 @@ export class PickCommodityComponent implements OnInit {
   customerType = CustomerType;
   pageIndex = 0;
   pageSize = 30;
-  isEventSearch = true;
-  isSelectAll = false;
 
   formGroup = new FormGroup({
     code: new FormControl(''),
@@ -41,24 +39,20 @@ export class PickCommodityComponent implements OnInit {
     private readonly commodityQuery: CommodityQuery,
     private readonly commodityStore: CommodityStore,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { ids: number[], type: 'DIALOG' },
     private dialogRef: MatDialogRef<PickCommodityComponent>
   ) {
+    console.log(this.data)
   }
 
   ngOnInit(): void {
-    if (this.data?.commoditiesPicked) {
-      this.commoditiesSelected = [...this.data?.commoditiesPicked];
-    }
     this.actions$.dispatch(
-      CommodityAction.loadInit({
-        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
-      })
+      CommodityActions.loadInit({ CommodityDTO: { take: this.pageSize, skip: this.pageIndex } })
     );
+
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
-      this.isEventSearch = true;
       this.actions$.dispatch(
-        CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+        CommodityActions.loadMoreCommodity({ commodityDTO: this.commodity(val) })
       );
     });
   }
@@ -74,9 +68,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
-      console.log('====', val);
-    });
+    this.dialog.open(CommodityDialogComponent, { width: '40%' });
   }
 
   deleteCommodity($event: any) {
@@ -85,7 +77,7 @@ export class PickCommodityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.actions$.dispatch(CommodityActions.deleteCommodity({ id: $event.id }));
       }
     });
   }
@@ -98,30 +90,44 @@ export class PickCommodityComponent implements OnInit {
   }
 
   onIndeterminate() {
-    const checkedLength = this.commodityQuery.getAll({ filterBy: [entity => entity.selected] }).length;
-    return checkedLength !== 0 && checkedLength !== this.commodityQuery.getCount();
+    const length = this.commodityQuery.getAll().length;
+    return this.data.ids.length !== 0 && length !== this.data.ids.length;
   }
 
   onCheck(commodity: Commodity, checked: boolean) {
-    this.commodityStore.update(commodity.id, { selected: checked });
+    if (checked) {
+      this.data.ids.push(commodity.id);
+      console.log('===', this.data.ids);
+    } else {
+      const index = this.data.ids.indexOf(commodity.id);
+      if (index > -1) {
+        this.data.ids.splice(index, 1);
+      }
+    }
   }
 
   setAll(checked: boolean) {
-    this.commodityQuery.getAll().forEach(commodity => {
-      this.commodityStore.update(commodity.id, { selected: checked });
-    });
+    if (checked) {
+      if (this.data?.ids) {
+        this.data.ids = this.commodityQuery.getAll().map(commodity => commodity.id);
+      }
+    } else {
+      this.data.ids = [];
+    }
+  }
+
+  isAll() {
+    return this.data.ids.length === this.commodityQuery.getAll().length;
   }
 
   onScroll() {
-    this.isEventSearch = false;
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+      CommodityActions.loadMoreCommodity({ commodityDTO: this.commodity(val) })
     );
   }
 
   closeDialog() {
-    this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
-    this.dialogRef.close(this.commoditiesSelected);
+    this.dialogRef.close(this.data.ids);
   }
 }

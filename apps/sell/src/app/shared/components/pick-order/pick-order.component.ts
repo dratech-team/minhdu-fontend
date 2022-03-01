@@ -1,28 +1,12 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
-import { Order } from '../../../pages/order/+state/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
-import { Employee } from '@minhdu-fontend/data-models';
-import { OrderAction } from '../../../pages/order/+state/order.action';
-import {
-  selectedTotalOrder,
-  selectorAllOrders,
-  selectorCurrentOrder
-} from '../../../pages/order/+state/order.selector';
-import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
-import { selectorTotalEmployee } from '@minhdu-fontend/employee';
-import {
-  checkIsSelectAllInit,
-  handleValSubPickItems,
-  pickAll,
-  pickOne,
-  someComplete
-} from '../../../../../../../libs/utils/pick-item.ultil';
-
+import { pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import { OrderEntity } from '../../../pages/order/entities/order.entity';
+import { OrderQuery } from '../../../pages/order/+state/order.query';
 
 @Component({
   selector: 'app-pick-order',
@@ -33,16 +17,16 @@ export class PickOrderComponent implements OnInit {
   @Input() pickOne = false;
   @Input() orderIdDefault?: number;
   @Input() payment = false;
-  @Input() orderSelected: Order[] = [];
+  @Input() orderSelected: OrderEntity[] = [];
   @Input() customerId?: number;
-  @Output() checkEvent = new EventEmitter<Order[]>();
-  @Output() checkEventPickOne = new EventEmitter<Order>();
-  orders$ = this.store.select(selectorAllOrders);
-  total$ = this.store.select(selectedTotalOrder);
-  orders: Order[] = [];
+  @Output() checkEvent = new EventEmitter<OrderEntity[]>();
+  @Output() checkEventPickOne = new EventEmitter<OrderEntity>();
+  orders$ = this.orderQuery.selectAll();
+  total$ = this.orderQuery.selectCount();
+  orders: OrderEntity[] = [];
   pageSize = 30;
   pageIndex = 0;
-  orderPickOne!: Order;
+  orderPickOne?: OrderEntity;
   paidType = PaidType;
   isSelectAll = false;
   formGroup = new FormGroup(
@@ -56,26 +40,24 @@ export class PickOrderComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly store: Store,
     private readonly dialog: MatDialog,
+    private readonly orderQuery: OrderQuery,
     private dialogRef: MatDialogRef<PickOrderComponent>
   ) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(OrderAction.loadInit(
-      {
-        orderDTO: {
-          skip: this.pageIndex,
-          take: this.pageSize,
-          customerId: this.customerId ? this.customerId : ''
-        }
-      }));
+    // this.store.dispatch(OrderAction.loadInit(
+    //   {
+    //     orderDTO: {
+    //       skip: this.pageIndex,
+    //       take: this.pageSize,
+    //       customerId: this.customerId ? this.customerId : ''
+    //     }
+    //   }));
 
     if (this.orderIdDefault) {
-      this.store.select(selectorCurrentOrder(this.orderIdDefault)).subscribe(val => {
-        this.orderPickOne = JSON.parse(JSON.stringify(val));
-      });
+      this.orderPickOne = this.orderQuery.getEntity(this.orderIdDefault);
     }
 
     this.formGroup.valueChanges.pipe(
@@ -83,25 +65,25 @@ export class PickOrderComponent implements OnInit {
       tap((_) => {
         this.eventSearch = true;
         const val = this.formGroup.value;
-        this.store.dispatch(OrderAction.loadInit({ orderDTO: this.order(val) }));
+        // this.store.dispatch(OrderAction.loadInit({ orderDTO: this.order(val) }));
       })
     ).subscribe();
 
     this.orders$.subscribe(orders => {
-      if (orders.length === 0) {
-        this.isSelectAll = false;
-      }
-      if (this.eventSearch) {
-        this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
-      }
-      this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
+      // if (orders.length === 0) {
+      //   this.isSelectAll = false;
+      // }
+      // if (this.eventSearch) {
+      //   this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
+      // }
+      // this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
     });
   }
 
   onScroll() {
     this.eventSearch = false;
     const val = this.formGroup.value;
-    this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.order(val) }));
+    // this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.order(val) }));
   }
 
 
@@ -118,7 +100,7 @@ export class PickOrderComponent implements OnInit {
   }
 
 
-  updateAllSelect(order: Order) {
+  updateAllSelect(order: OrderEntity) {
     this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
     this.checkEvent.emit(this.orderSelected);
   }
@@ -133,7 +115,7 @@ export class PickOrderComponent implements OnInit {
     this.checkEvent.emit(this.orderSelected);
   }
 
-  pickOneOrder(order: Order) {
+  pickOneOrder(order: OrderEntity) {
     this.orderPickOne = order;
     this.checkEventPickOne.emit(this.orderPickOne);
   }
@@ -150,7 +132,7 @@ export class PickOrderComponent implements OnInit {
     this.dialogRef.close(this.orderPickOne);
   }
 
-  checkOrder(order: Order) {
+  checkOrder(order: OrderEntity) {
     return this.orderSelected.some((item) => item.id === order.id);
   }
 }

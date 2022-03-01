@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommodityUnit } from '@minhdu-fontend/enums';
-import { CommodityAction } from '../../+state/commodity.action';
+import { CommodityActions } from '../../+state/commodity.actions';
 import { CommodityService } from '../../service/commodity.service';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DialogSharedComponent } from '@minhdu-fontend/components';
 import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
@@ -67,20 +67,12 @@ export class CommodityDialogComponent implements OnInit {
           if (val) {
             Object.assign(commodity, { histored: true });
           }
-          this.actions$.dispatch(
-            CommodityAction.updateCommodity({
-              id: this.data.commodity.id,
-              commodity: commodity,
-              orderId: this.data.orderId
-            })
-          );
+          this.actions$.dispatch(CommodityActions.update({ id: this.data.commodity.id, updates: commodity }));
           this.dialogRef.close();
         });
       }
     } else {
-      this.actions$.dispatch(
-        CommodityAction.addCommodity({ commodity: commodity })
-      );
+      this.actions$.dispatch(CommodityActions.addOne(commodity));
       this.dialogRef.close();
     }
   }

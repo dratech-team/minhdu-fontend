@@ -62,12 +62,13 @@
           <div>Hàng hóa</div>
           <div class='d-flex'>
             <div class='d-flex flex-column w-100 ' *ngFor='let item of commodities$ | async'>
-              <div class='border' style='width: 300px'>
+              <div class='border' style='width: 401px'>
                 {{item.name}}
               </div>
               <div class='d-flex w-100'>
-                <div class='border' style='width: 150px'>Số lượng</div>
-                <div class='border' style='width: 150px'>Đơn giá</div>
+                <div class='border-right' style='width: 150px'>Số lượng</div>
+                <div style='width: 150px'>Đơn giá</div>
+                <div class='border-left' style='width: 100px'>Chốt</div>
               </div>
             </div>
           </div>
@@ -142,16 +143,21 @@
         </ng-template>
         <th class='pointer d-flex' style='padding: 0px; border: none'>
           <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
-               style='width: 301px; min-height: 32px'>
+               style='width: 401px; min-height: 32px'>
             <div *ngFor=' let commodity of order.commodities'>
               <div class='d-flex' *ngIf='item.code === commodity.code'>
                 <div class='border-right d-flex justify-content-center align-items-center '
                      style='width: 150px ; min-height: 30px'>
                   {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
                 </div>
-                <div class='border-left d-flex justify-content-center align-items-center'
+                <div class='d-flex justify-content-center align-items-center'
                      style='width: 150px; min-height: 30px'>
                   {{commodity.price | number:'1.0-0' | notEmpty:'0'}} đ
+                </div>
+                <div [ngStyle]="{'color':commodity.closed?'black':'red'}"
+                  class='border-left d-flex justify-content-center align-items-center'
+                     style='width: 100px; min-height: 30px'>
+                  {{commodity.closed?'Đã chốt':'Chưa chốt'}}
                 </div>
               </div>
             </div>
@@ -183,23 +189,26 @@
         <th class=" p-0" *ngIf="CommodityUniq$|async as CommodityUniq">
           <div class="d-flex">
             <div class='h-100 d-flex pointer border' *ngFor='let item of commodities$ | async'
-                 style='width: 301px; min-height: 32px'>
+                 style='width: 401px; min-height: 32px'>
               <div *ngFor=' let commodity of CommodityUniq'>
                 <div class='d-flex' *ngIf='item.code === commodity.code'>
                   <div class='border-right d-flex justify-content-center align-items-center '
                        style='width: 150px ; min-height: 30px; color: red'>
                     {{commodity.amount | number:'1.0-0' | notEmpty:'0'}}
                   </div>
-                  <div class='border-left d-flex justify-content-center align-items-center'
+                  <div class=' d-flex justify-content-center align-items-center'
                        style='width: 150px; min-height: 30px'>
+                  </div>
+                  <div class='border-left d-flex justify-content-center align-items-center'
+                       style='width: 100px; min-height: 30px'>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </th>
-        <th *ngIf="CommodityUniq$|async as CommodityUniq" style="color:red">
-          {{getTotalCommodity(CommodityUniq)| number:'1.0-0' | notEmpty:'0'}}
+        <th *ngIf="CommodityUniq$ | async as CommodityUniq" style="color:red">
+          {{getTotalCommodity(CommodityUniq) | number:'1.0-0' | notEmpty:'0'}}
         </th>
         <th></th>
         <th></th>
@@ -220,10 +229,12 @@
 
 <app-mouse-right
   #child
-  [items]='[ItemContextMenu.ENDED_AT]'
+  [items]='[ItemContextMenu.ENDED_AT,ItemContextMenu.CANCEL_ORDER,ItemContextMenu.PERMANENTLY]'
   (onAdd)='addOrder()'
   (onUpdate)='readAndUpdate($event.id, true)'
   (onEnd)='UpdateOrder($event)'
+  (onCancel)="cancelOrder($event)"
+  (onDelPerm)="deleteOrder($event)"
 ></app-mouse-right>
 
 
