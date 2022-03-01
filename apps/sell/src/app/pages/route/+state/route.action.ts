@@ -1,84 +1,38 @@
-import { createAction, props } from '@ngrx/store';
-import { Route } from './route.interface';
+import {createAction, props} from '@datorama/akita-ng-effects';
+import {Route} from "./entities/route.entity";
 
-export const addRoute = createAction(
-  '[ADD_ROUTE] Add Route',
-  props<{ route: any }>()
+
+export const addOne = createAction(
+  '[ROUTE] Add One',
+  props<{ routeDto: Partial<Route> }>()
 );
 
-export const addRouteSuccess = createAction(
-  '[ADD_ROUTE] Add Route Success',
-  props<{ route: Route }>()
-);
-
-export const loadInit = createAction(
-  '[LOAD_ROUTES] Load Route',
+export const loadAll = createAction(
+  '[ROUTE] Load All',
   props<{
-    take: number;
-    skip: number;
-    orderId?: number;
-    name?: string;
-    startedAt?: Date;
-    endedAt?: Date;
-    driver?: string;
-    bsx?: string;
-    garage?: string;
+
   }>()
 );
 
-export const loadInitSuccess = createAction(
-  '[LOAD_ROUTES] Load Route Success',
-  props<{ routes: Route[] }>()
-);
-
-export const loadMoreRoutes = createAction(
-  '[LOAD_MORE_ROUTES] Load More Order',
-  props<{
-    take: number;
-    orderId?: number;
-    name?: string;
-    startedAt?: Date;
-    endedAt?: Date;
-    driver?: string;
-    bsx?: string;
-    garage?: string;
-  }>()
-);
-
-export const loadMoreRoutesSuccess = createAction(
-  '[LOAD_MORE_ROUTES] Load More Routes success',
-  props<{ routes: Route[] }>()
-);
-
-export const getRoute = createAction(
-  '[GET_ROUTE] get route',
+export const getOne = createAction(
+  '[ROUTE] Get One',
   props<{ id: number }>()
 );
 
-export const getRouteSuccess = createAction(
-  '[GET_ROUTE] Get route Success',
-  props<{ route: Route }>()
-);
-
-export const updateRoute = createAction(
-  '[UPDATE_ROUTE] Update Route',
+export const update = createAction(
+  '[ROUTE] Update',
   props<{ id: number; route: Omit<Partial<Route>, 'id'> }>()
 );
 
-export const deleteRoute = createAction(
-  '[DELETE_ROUTE] Delete Route',
-  props<{ idRoute: number }>()
+export const remove = createAction(
+  '[ROUTE] Remove',
+  props<{ id: number }>()
 );
 
-export const RouteAction = {
-  addRoute,
-  addRouteSuccess,
-  loadInit,
-  loadInitSuccess,
-  loadMoreRoutes,
-  loadMoreRoutesSuccess,
-  getRoute,
-  getRouteSuccess,
-  updateRoute,
-  deleteRoute
+export const RouteActions = {
+  addOne,
+  loadAll,
+  getOne,
+  update,
+  remove
 };
