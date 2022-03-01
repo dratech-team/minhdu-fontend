@@ -1,18 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../reducers';
-import {Route} from '../../+state/route.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
-import {selectorCurrentRoute} from '../../+state/route.selector';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
-import {MainAction} from '../../../../states/main.action';
-import {getSelectors} from '@minhdu-fontend/utils';
-import {Commodity} from "../../../commodity/entities/commodity.entity";
-import {getTotalCommodity} from "../../../../../../../../libs/utils/sell.ultil";
-import {Order} from "../../../order/+state/order.interface";
+import {RouteQuery} from "../../+state/route.query";
+import {Actions} from "@datorama/akita-ng-effects";
+import {RouteActions} from "../../+state/route.action";
+import {Route} from "../../entities/route.entity";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -20,23 +14,24 @@ import {Order} from "../../../order/+state/order.interface";
 export class DetailRouteComponent implements OnInit {
   payType = PaymentType;
 
-  route$ = this.store.select(selectorCurrentRoute(this.routeId));
+  route$ = this.routeQuery.selectEntity(this.routeId);
 
   constructor(
-    private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly routeQuery: RouteQuery,
+    private readonly actions$: Actions,
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
-    this.store.dispatch(RouteAction.getRoute({id: this.routeId}));
+    this.actions$.dispatch(RouteActions.getOne({id: this.routeId}));
 
     this.activatedRoute.queryParams.subscribe(param => {
-      if (param.isUpdate === 'true') {
-        this.updateRoute(getSelectors(selectorCurrentRoute(this.routeId), this.store));
+      const route = this.routeQuery.getEntity(this.routeId)
+      if (param.isUpdate === 'true' && route) {
+        this.updateRoute(route, true);
       }
     });
   }

@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, tap } from 'rxjs/operators';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { AppState } from '../../../../reducers';
-import { MainAction } from '../../../../states/main.action';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api} from '@minhdu-fontend/constants';
+import {MenuEnum, StatusRoute} from '@minhdu-fontend/enums';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
+import {debounceTime, tap} from 'rxjs/operators';
+import {
+  DialogDeleteComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
 import {Route} from "../../entities/route.entity";
 import {RouteQuery} from "../../+state/route.query";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -59,17 +58,13 @@ export class RouteComponent implements OnInit {
       });
     });
 
-    this.actions$.dispatch(RouteActions)
-
-    this.store.dispatch(
-      RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
-    );
+    this.actions$.dispatch(RouteActions.loadAll({take: this.pageSize, skip: this.pageIndexInit}))
 
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(RouteAction.loadInit(this.route(val)));
+          this.actions$.dispatch(RouteActions.loadAll(this.route(val)));
         })
       )
       .subscribe();
@@ -83,12 +78,12 @@ export class RouteComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
+    this.actions$.dispatch(RouteActions.loadAll(this.route(val, true)));
   }
 
-  route(val: Route) {
+  route(val: Route, isScroll?: boolean) {
     return Object.assign(val, {
-      skip: 0,
+      skip: isScroll ? this.routeQuery.getCount() : this.pageIndexInit,
       take: this.pageSize
     });
   }
@@ -99,27 +94,26 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
+        this.actions$.dispatch(RouteActions.remove({id: $event.id}));
       }
     });
   }
 
   onEnd(event: Route) {
-    console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent)
       .afterClosed()
       .subscribe((datetime) => {
         if (datetime) {
-          this.store.dispatch(
-            updateRoute({ id: event.id, route: { endedAt: datetime } })
+          this.actions$.dispatch(
+            RouteActions.update({id: event.id, updates: {endedAt: datetime}})
           );
         }
       });
   }
 
   detailRoute(id: number, isUpdate: boolean) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], { queryParams: { isUpdate } }).then();
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
   printRouter() {

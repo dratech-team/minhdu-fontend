@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import {  FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Route } from '../../../pages/route/+state/route.interface';
 import { PickRoutesService } from './pick-routes.service';
 import { RouteDialogComponent } from '../../../pages/route/component/route-dialog/route-dialog.component';
+import {Route} from "../../../pages/route/entities/route.entity";
 
 
 @Component({

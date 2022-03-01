@@ -7,12 +7,12 @@ export interface Route {
   readonly startedAt: Date,
   endedAt: Date,
   readonly driver: string,
-  readonly employee: Employee,
-  readonly orders: Order[],
+  readonly employee?: Employee,
+  readonly orders?: Order[],
   readonly garage: string,
   readonly bsx: string,
-  readonly latitude: string,
-  readonly longitude: string,
-  readonly isSelect?: boolean,
-  totalCommodityUniq: number
+  readonly latitude?: string,
+  readonly longitude?: string,
+  isSelect?: boolean,
+  totalCommodityUniq?: number
 }

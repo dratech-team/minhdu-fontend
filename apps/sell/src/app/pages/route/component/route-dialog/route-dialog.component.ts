@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { RouteAction } from '../../+state/route.action';
 import { DatePipe } from '@angular/common';
-import { selectorAllOrders } from '../../../order/+state/order.selector';
 import { Order } from '../../../order/+state/order.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {Actions} from "@datorama/akita-ng-effects";
+import {RouteActions} from "../../+state/route.action";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -21,10 +20,11 @@ export class RouteDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly actions$: Actions,
+
   ) {}
 
   ngOnInit() {
@@ -74,11 +74,11 @@ export class RouteDialogComponent implements OnInit {
       orderIds: this.orderIdsOfRoute.map((item) => item.id),
     };
     if (this.data) {
-      this.store.dispatch(
-        RouteAction.updateRoute({ route: route, id: this.data.route.id })
+      this.actions$.dispatch(
+        RouteActions.update({ updates: route, id: this.data.route.id })
       );
     } else {
-      this.store.dispatch(RouteAction.addRoute({ route: route }));
+      this.actions$.dispatch(RouteActions.addOne( route ));
     }
     this.dialogRef.close();
   }
