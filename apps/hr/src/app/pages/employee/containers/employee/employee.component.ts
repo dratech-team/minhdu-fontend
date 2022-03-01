@@ -172,6 +172,7 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
+      disableClose: true,
       width: '60%'
     });
   }
