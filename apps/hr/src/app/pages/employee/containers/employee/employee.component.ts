@@ -260,10 +260,10 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadMoreEmployees({ employee: this.employee(val) }));
   }
 
-  readAndUpdate($event: any): void {
+  readAndUpdate($event: any, isUpdate?: boolean): void {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
-        isUpdate: true
+        isUpdate
       }
     }).then();
   }
