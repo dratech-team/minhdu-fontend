@@ -246,6 +246,9 @@ export class AddEmployeeComponent implements OnInit {
           .subscribe((branch) => (this.branchId = branch.id));
         this.snackbar.open('Đã tạo', '', {duration: 2500});
       } else {
+        if(this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL){
+          this.formGroup.get('recipeType')!.setValue(branch.recipe)
+        }
         this.branchId = branch.id;
       }
     }

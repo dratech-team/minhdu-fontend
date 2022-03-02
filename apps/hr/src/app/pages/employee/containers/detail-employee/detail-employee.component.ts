@@ -21,6 +21,7 @@ import {AddEmployeeComponent} from '../../components/employee/add-employee.compo
 import {AddRelativeComponent} from '../../components/relative/add-relative.component';
 import {getSelectors} from '@minhdu-fontend/utils';
 import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
+import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -33,7 +34,7 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-
+  recipeConstant = RecipeSalaryConstant
   employee$ = this.store.select(selectCurrentEmployee(this.employeeId));
   adding$ = this.store.select(selectEmployeeAdding);
 
