@@ -119,7 +119,7 @@
             </div>
           </div>
           <div class='row mt-3' [formGroup]='formGroup'>
-            <div class='col-4'>
+            <div class='col'>
               <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
               <mat-select
                 [ngStyle]='{
@@ -132,6 +132,16 @@
                 </mat-option>
               </mat-select>
             </div>
+            <div class='col' [formGroup]='formGroup'>
+                <label for='phone'>Số điện thoại khác </label>
+                <input type='tel'
+                       class='form-control not-arrow-input'
+                       id='phone'
+                       placeholder='0337552146'
+                       formControlName='workPhone'
+                       (keypress)='checkInputNumber($event)'
+                >
+              </div>
           </div>
         </div>
       </form>

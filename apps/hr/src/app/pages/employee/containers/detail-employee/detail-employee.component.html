@@ -174,7 +174,7 @@
             <div class='col-md-4 py-2 title-employee title-detail'>
               <span>Công thức lương:</span>
             </div>
-            <div class='col-md-8 py-2 '>
+            <div class='col-md-8 py-2 '>f
             <span class='contain-detail'>
               {{employee.recipeType|transform:recipeConstant}}
             </span>
@@ -318,6 +318,16 @@
             <div class='col-md-8 py-2'>
             <span class='contain-detail' style='color: #7749F8  '>
                 {{employee.phone === null ? 'Chưa cập nhật' : employee.phone}}
+            </span>
+            </div>
+          </div>
+          <div class='row align-items-center'>
+            <div class='col-md-3 py-2 title-employee title-detail'>
+              <span>Số ĐT khác:</span>
+            </div>
+            <div class='col-md-8 py-2'>
+            <span class='contain-detail' style='color: #7749F8  '>
+                {{employee.workPhone === null ? 'Chưa cập nhật' : employee.workPhone}}
             </span>
             </div>
           </div>

@@ -81,6 +81,7 @@ export class AddEmployeeComponent implements OnInit {
       email: [this.data?.employee?.email],
       workday: [this.data?.employee?.workday],
       phone: [this.data?.employee?.phone],
+      workPhone: [this.data?.employee?.workPhone],
       note: [this.data?.employee?.note],
       workedAt: [
         this.data?.employee?.workedAt ?
@@ -170,6 +171,7 @@ export class AddEmployeeComponent implements OnInit {
       lastName: value.lastName,
       gender: value.gender,
       phone: value.phone ? value.phone.toString() : undefined,
+      workPhone: value.workday ? value.workPhone.toString() : undefined,
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
@@ -260,5 +262,9 @@ export class AddEmployeeComponent implements OnInit {
 
   checkNumberInput(event: any) {
     return checkInputNumber(event);
+  }
+
+  checkInputNumber(event: any){
+    return checkInputNumber(event)
   }
 }

@@ -20,7 +20,7 @@ export interface Employee {
   lastName: string,
   avt?: string,
   gender: Gender,
-  phone: string,
+  phone?: string,
   workPhone?: string,
   birthday: Date,
   birthplace: string,
