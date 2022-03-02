@@ -1,4 +1,3 @@
-
 <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
 <div class='table-scroll' style='height: 80vh'
      infiniteScroll
@@ -7,132 +6,132 @@
      [infiniteScrollDistance]='1'
      [scrollWindow]='false'
      (scrolled)='onScroll()'>
-  <table [formGroup]='formGroup'>
-    <thead>
-    <tr>
-      <th *ngIf='!payment'>
-        <div class=' '>Khách hàng</div>
-        <input class='form-control '
-               type='search'
-               formControlName='name'
-        >
-      </th>
-      <th>
-        <div class=' '>Ngày tạo</div>
-        <input class='form-control '
-               type='date' formControlName='createdAt'
-        >
-      </th>
-      <th>
-        <div class=' '>Tiền hàng</div>
-        <input type='number' disabled>
-      </th>
-      <th>
-        <div class=' '>Thanh toán</div>
-        <select class='select border-top' style='width: 100%' formControlName='paidType'>
-          <option value='{{paidType.PAID}}'>Có thanh toán</option>
-          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
-          <option value=''>tất cả</option>
-        </select>
-      </th>
-      <th>
-        <div class=' '>lần thanh toán</div>
-        <input
-          disabled
-          class='form-control  '
-          type='number'>
-      </th>
-      <th *ngIf='payment'>
-        <div class=' '>Diễn giải</div>
-        <input class='form-control '
-               type='text' formControlName='explain'
-        >
-      </th>
-      <th style='z-index: 2;width: 100px'>
-        <div>Tất cả</div>
-        <div class='border-top p-1'>
-          <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
-                        style='margin-right: 2%'
-                        class='example-margin checkID  '
-                        [checked]='isSelectAll'
-                        [indeterminate]='someComplete()'
-                        (change)='setAll($event.checked)'>
-          </mat-checkbox>
-        </div>
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor='let order of orders'>
-      <th *ngIf='!payment'>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           style='color: black'
-           target='_blank' class='  pointer no-underline '>{{ order?.customer?.lastName}}
-        </a>
-      </th>
-      <th>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           style='color: black'
-           target='_blank' class='  pointer no-underline '>
-          {{order?.createdAt ? (order?.createdAt| date: 'dd/MM/yyyy') : 'Đang cập nhật'}}
-        </a>
-      </th>
-      <th>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='  pointer no-underline ' style='color: #f86c6b'>
-          {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
-        </a>
-      </th>
-      <th>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           target='_blank' class='  pointer no-underline ' style='color: #20c997'>
-          {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
-        </a>
-      </th>
-      <th>
-        <a routerLink='/don-hang/lich-su-thanh-toan'
-           style='color: black'
-           [queryParams]='{data:order.paymentHistories|json}'
-           target='_blank' class='   pointer hover-link '>
-          {{order?.paymentHistories?.length}}
-        </a>
-      </th>
-      <th *ngIf='payment'>
-        <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
-           style='color: black'
-           target='_blank' class='  pointer no-underline '>
-          {{order.explain}}
-        </a>
-      </th>
-      <th>
-        <div>
-          <input (change)='pickOneOrder(order)'
-                 *ngIf='data?.pickOne||pickOne'
-                 type='radio'
-                 [checked]='orderPickOne?.id === order.id'
-          >
-        </div>
-        <div>
-          <mat-checkbox
-            *ngIf='!pickOne||data?.pickMore'
-            class='checkID'
-            [checked]='checkOrder(order)'
-            (change)='updateAllSelect(order)'>
-          </mat-checkbox>
-        </div>
-      </th>
-    </tr>
-    <tr *ngIf='!orders || orders.length === 0'>
-      <td colspan='6' class='position-relative' style='height: 30vh'>
-        <span style='position: absolute; top:40%; left: 40%'>
-           Hiện tại chưa có đơn hàng nào!
-        </span>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <!--<nz-table #nestedTable [nzData]="orders">
-    <thead>
+  <!-- <table [formGroup]='formGroup'>
+     <thead>
+     <tr>
+       <th *ngIf='!payment'>
+         <div class=' '>Khách hàng</div>
+         <input class='form-control '
+                type='search'
+                formControlName='name'
+         >
+       </th>
+       <th>
+         <div class=' '>Ngày tạo</div>
+         <input class='form-control '
+                type='date' formControlName='createdAt'
+         >
+       </th>
+       <th>
+         <div class=' '>Tiền hàng</div>
+         <input type='number' disabled>
+       </th>
+       <th>
+         <div class=' '>Thanh toán</div>
+         <select class='select border-top' style='width: 100%' formControlName='paidType'>
+           <option value='{{paidType.PAID}}'>Có thanh toán</option>
+           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
+           <option value=''>tất cả</option>
+         </select>
+       </th>
+       <th>
+         <div class=' '>lần thanh toán</div>
+         <input
+           disabled
+           class='form-control  '
+           type='number'>
+       </th>
+       <th *ngIf='payment'>
+         <div class=' '>Diễn giải</div>
+         <input class='form-control '
+                type='text' formControlName='explain'
+         >
+       </th>
+       <th style='z-index: 2;width: 100px'>
+         <div>Tất cả</div>
+         <div class='border-top p-1'>
+           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
+                         style='margin-right: 2%'
+                         class='example-margin checkID  '
+                         [checked]='isSelectAll'
+                         [indeterminate]='someComplete()'
+                         (change)='setAll($event.checked)'>
+           </mat-checkbox>
+         </div>
+       </th>
+     </tr>
+     </thead>
+     <tbody>
+     <tr *ngFor='let order of orders'>
+       <th *ngIf='!payment'>
+         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+            style='color: black'
+            target='_blank' class='  pointer no-underline '>{{ order?.customer?.lastName}}
+         </a>
+       </th>
+       <th>
+         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+            style='color: black'
+            target='_blank' class='  pointer no-underline '>
+           {{order?.createdAt ? (order?.createdAt| date: 'dd/MM/yyyy') : 'Đang cập nhật'}}
+         </a>
+       </th>
+       <th>
+         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+            target='_blank' class='  pointer no-underline ' style='color: #f86c6b'>
+           {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
+         </a>
+       </th>
+       <th>
+         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+            target='_blank' class='  pointer no-underline ' style='color: #20c997'>
+           {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
+         </a>
+       </th>
+       <th>
+         <a routerLink='/don-hang/lich-su-thanh-toan'
+            style='color: black'
+            [queryParams]='{data:order.paymentHistories|json}'
+            target='_blank' class='   pointer hover-link '>
+           {{order?.paymentHistories?.length}}
+         </a>
+       </th>
+       <th *ngIf='payment'>
+         <a [routerLink]='["/don-hang/chi-tiet-don-hang/",order.id]'
+            style='color: black'
+            target='_blank' class='  pointer no-underline '>
+           {{order.explain}}
+         </a>
+       </th>
+       <th>
+         <div>
+           <input (change)='pickOneOrder(order)'
+                  *ngIf='data?.pickOne||pickOne'
+                  type='radio'
+                  [checked]='orderPickOne?.id === order.id'
+           >
+         </div>
+         <div>
+           <mat-checkbox
+             *ngIf='!pickOne||data?.pickMore'
+             class='checkID'
+             [checked]='checkOrder(order)'
+             (change)='updateAllSelect(order)'>
+           </mat-checkbox>
+         </div>
+       </th>
+     </tr>
+     <tr *ngIf='!orders || orders.length === 0'>
+       <td colspan='6' class='position-relative' style='height: 30vh'>
+         <span style='position: absolute; top:40%; left: 40%'>
+            Hiện tại chưa có đơn hàng nào!
+         </span>
+       </td>
+     </tr>
+     </tbody>
+   </table>-->
+  <nz-table #nestedTable [nzData]="orders">
+    <thead [formGroup]="formGroup">
     <tr>
       <th></th>
       <th *ngIf='!payment'>
@@ -249,14 +248,29 @@
           </div>
         </td>
       </tr>
-      <tr [nzExpand]="false"  >
-        <nz-table [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
-
-        </nz-table>
-      </tr>
-    </ng-template>
-    </tbody>
-  </nz-table>-->
+      <tr [nzExpand]="false">
+        <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
+          <thead>
+            <th>Mã hàng hoá</th>
+            <th>Tên hàng hoá</th>
+            <th>Số lượng</th>
+            <th>Mua thêm</th>
+            <th>Khuyến mãi</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let commodity of innerTable.data">
+              <td>{{commodity.code}}</td>
+              <td>{{commodity.name}}</td>
+              <td>{{commodity.code}}</td>
+              <td>{{commodity.code}}</td>
+              <td>{{commodity.code}}</td>
+            </tr>
+          </tbody>
+  </nz-table>
+  </tr>
+  </ng-template>
+  </tbody>
+  </nz-table>
 </div>
 <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận</button>
 <style>
