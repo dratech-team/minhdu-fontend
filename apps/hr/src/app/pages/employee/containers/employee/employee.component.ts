@@ -172,6 +172,7 @@ export class EmployeeComponent implements OnInit {
 
   add(): void {
     this.dialog.open(AddEmployeeComponent, {
+      disableClose: true,
       width: '60%'
     });
   }
@@ -179,7 +180,7 @@ export class EmployeeComponent implements OnInit {
   delete($event: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employeeId: $event.id, leftAt: $event.leftAt }
+      data: { employee: $event,  permanentlyDeleted: this.isLeft }
     });
   }
 
@@ -259,20 +260,20 @@ export class EmployeeComponent implements OnInit {
     this.store.dispatch(EmployeeAction.loadMoreEmployees({ employee: this.employee(val) }));
   }
 
-  readAndUpdate($event: any): void {
+  readAndUpdate($event: any, isUpdate?: boolean): void {
     this.router.navigate(['ho-so/chi-tiet-nhan-vien', $event.id], {
       queryParams: {
-        isUpdate: true
+        isUpdate
       }
     }).then();
   }
 
-  permanentlyDeleted($event: any) {
-    this.dialog.open(DeleteEmployeeComponent, {
-      width: 'fit-content',
-      data: { employee: $event, permanentlyDeleted: true }
-    });
-  }
+  // permanentlyDeleted($event: any) {
+  //   this.dialog.open(DeleteEmployeeComponent, {
+  //     width: 'fit-content',
+  //     data: { employee: $event, permanentlyDeleted: true }
+  //   });
+  // }
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
@@ -310,6 +311,13 @@ export class EmployeeComponent implements OnInit {
         params: employee,
         api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
       }
+    });
+  }
+
+  reStore($event: any) {
+    this.dialog.open(DeleteEmployeeComponent, {
+      width: 'fit-content',
+      data: { employeeId: $event.id,  leftAt: true }
     });
   }
 }

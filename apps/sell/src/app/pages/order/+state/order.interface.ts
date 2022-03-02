@@ -1,8 +1,8 @@
-import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
-import { Customer } from '../../customer/+state/customer/customer.interface';
-import { Commodity } from '../../commodity/+state/commodity.interface';
-import { Route } from '../../route/container/+state/route.interface';
-import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
+import {CurrencyUnit, PaymentType} from '@minhdu-fontend/enums';
+import {Customer} from '../../customer/+state/customer/customer.interface';
+import {Commodity} from '../../commodity/+state/commodity.interface';
+import {Route} from '../../route/+state/route.interface';
+import {District, PaymentHistory, Province, ResponsePaginate, Ward} from '@minhdu-fontend/data-models';
 
 export interface Order {
   id: number;
@@ -27,10 +27,14 @@ export interface Order {
   deliveredAt: Date;
   endedAt: Date;
   hide: boolean;
+  totalCommodity:number
 }
 
-export interface UpdateOrderDto extends Omit<Order, 'commodities'>{
-  commodityIds: number[];
+export interface UpdateOrderDto{
+  order?: Partial<Order>,
+  id: number
+  commodityIds?: number[];
+  typeUpdate?: 'DELIVERED' | 'IN_CUSTOMER',
 }
 
 export interface OrderDTO {
@@ -51,4 +55,22 @@ export interface OrderDTO {
   status: 0 | 1;
   explain: string;
   ward: string;
+}
+
+export interface CommodityUniq {
+  code: string,
+  name: string,
+  amount: number
+}
+
+export interface ResponsePaginateOrder<T> extends ResponsePaginate<T> {
+  commodityUniq: CommodityUniq[]
+}
+
+export interface OrderHistory{
+  id: number,
+  orderId:number,
+  type: string,
+  note: string,
+  timestamp: Date
 }

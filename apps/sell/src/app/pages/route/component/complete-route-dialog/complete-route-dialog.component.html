@@ -1,0 +1,31 @@
+<div class='px-2 py-3 main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='assets/icon/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <div class="mb-2 font-weight-bold font-xl">Hoàn tất tuyến đường</div>
+  <form [formGroup]='formGroup'>
+      <div [formGroup]='formGroup' class='px-3'>
+        <div class='form-group'>
+          <div class='row mt-3'>
+            <div class='col-sm' [formGroup]='formGroup'>
+              <label for='endedAt'>Ngày hoàn tất</label><span class="star">*</span>
+              <input
+                class='form-control'
+                formControlName='endedAt'
+                id='endedAt'
+                type='date'
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+  </form>
+  <div class="d-flex mt-4">
+    <button mat-dialog-close class="btn btn-cancel">huỷ</button>
+    <button (click)="onSubmit()"  class="btn btn-primary ml-2">Đồng ý</button>
+  </div>
+</div>
+

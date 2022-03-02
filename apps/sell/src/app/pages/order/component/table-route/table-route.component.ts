@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { TableRouteService } from './table-route.service';
-import { selectorAllRoute } from '../../../route/container/+state/route.selector';
+import { selectorAllRoute } from '../../../route/+state/route.selector';
 
 @Component({
   selector:'app-route-order',

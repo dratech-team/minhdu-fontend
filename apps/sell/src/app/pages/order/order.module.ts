@@ -22,8 +22,8 @@ import { CommodityModule } from '../commodity/commodity.module';
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RouteReducer } from '../route/container/+state/route.reducer';
-import { RouteEffect } from '../route/container/+state/route.effect';
+import { RouteReducer } from '../route/+state/route.reducer';
+import { RouteEffect } from '../route/+state/route.effect';
 import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
@@ -33,34 +33,36 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
-  imports: [
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    ComponentsModule,
-    OrderRoutingModule,
-    StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-    StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
-    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
-    EffectsModule.forFeature([OrderEffect, RouteEffect]),
-    MatInputModule,
-    InfiniteScrollModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatTabsModule,
-    CustomerModule,
-    MatCheckboxModule,
-    CommodityModule,
-    NgxMatSelectSearchModule,
-    MatAutocompleteModule,
-    RouteModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatDatepickerModule,
-    CommonModule,
-  ],
+    imports: [
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+        OrderRoutingModule,
+        StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
+        StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+        StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
+        StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
+        EffectsModule.forFeature([OrderEffect, RouteEffect]),
+        MatInputModule,
+        InfiniteScrollModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatTabsModule,
+        CustomerModule,
+        MatCheckboxModule,
+        CommodityModule,
+        NgxMatSelectSearchModule,
+        MatAutocompleteModule,
+        RouteModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatDatepickerModule,
+        CommonModule,
+        MatProgressSpinnerModule,
+    ],
   declarations: [
     TableRouteComponent,
     PaymentHistoryComponent,

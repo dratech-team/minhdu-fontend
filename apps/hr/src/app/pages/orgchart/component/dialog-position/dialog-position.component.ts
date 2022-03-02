@@ -7,6 +7,7 @@ import { Branch } from '@minhdu-fontend/data-models';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { startWith } from 'rxjs/operators';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: 'dialog-position.component.html'
@@ -49,7 +50,7 @@ export class DialogPositionComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onsubmit() {
+  onsubmit(): any {
     this.submitted = true;
     if (this.formGroup.valid) {
       const val = this.formGroup.value;

@@ -46,7 +46,7 @@ export class DeleteEmployeeComponent implements OnInit {
     } else {
       this.store.dispatch(EmployeeAction.leaveEmployee(
         {
-          id: this.data.employeeId,
+          id: this.data.employee.id,
           body: { leftAt: this.data.leftAt ? '' : new Date(this.formGroup.value.leftAt) }
         }));
     }

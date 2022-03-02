@@ -1,5 +1,5 @@
-import { createAction, props } from '@ngrx/store';
-import { Order, OrderDTO, UpdateOrderDto } from './order.interface';
+import {createAction, props} from '@ngrx/store';
+import {CommodityUniq, Order, OrderDTO, UpdateOrderDto} from './order.interface';
 
 export const addOrder = createAction(
   '[ADD_ORDER] Add Order',
@@ -20,7 +20,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[]; total: number }>()
+  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
 );
 
 export const loadMoreOrders = createAction(
@@ -30,7 +30,7 @@ export const loadMoreOrders = createAction(
 
 export const loadMoreOrdersSuccess = createAction(
   '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[]; total: number }>()
+  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
 );
 
 export const getOrder = createAction(
@@ -45,7 +45,9 @@ export const getOrderSuccess = createAction(
 
 export const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
-  props<{ order: Partial<UpdateOrderDto>; id: number; typeUpdate?: 'DELIVERED' }>()
+  props<{
+     updateOrderDto: UpdateOrderDto
+  }>()
 );
 
 export const updateHideOrder = createAction(
@@ -94,6 +96,11 @@ export const loadMoreOrdersAssignedSuccess = createAction(
   props<{ orders: Order[] }>()
 );
 
+export const cancelOrder = createAction(
+  '[CANCEL_ORDER] Cancel Order',
+  props<{ orderId: number }>()
+);
+
 export const handleOrderError = createAction('[ORDER_ERROR] Order error');
 
 export const OrderAction = {
@@ -114,4 +121,5 @@ export const OrderAction = {
   loadOrdersAssignedSuccess,
   loadMoreOrdersAssigned,
   loadMoreOrdersAssignedSuccess,
+  cancelOrder
 };

@@ -1,43 +1,43 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import * as moment from 'moment';
+import {Component, EventEmitter, Inject, Output} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Store} from "@ngrx/store";
+import {DatePipe} from "@angular/common";
 
 @Component({
-  template: `
-    <div class='row'>
-      <div class='col-xs-12 col-12'>
-        <input
-          type='text'
-          class='form-control'
-          #dp='bsDatepicker'
-          [isOpen]='true'
-          (bsValueChange)='onChange($event)'
-          [maxDate]='maxDate'
-          placement='left'
-          bsDatepicker
-        />
-      </div>
-      <div class='col-xs-12 col-12'>
-        <button
-          class='btn btn-primary font-lg'
-          type='submit'
-          [mat-dialog-close]='onApply()'
-        >
-          Xác nhận
-        </button>
-      </div>
-    </div>
-  `
+  templateUrl:'dialog-datapicker.html'
 })
 export class DialogDatePickerComponent {
-  @Output() confirm = new EventEmitter();
-  maxDate = new Date();
-  datetime?: Date;
+  formGroup!: FormGroup;
+  submitted = false;
 
-  onChange(event: Date) {
-    this.datetime = event;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
+    private readonly datePipe: DatePipe,
+    private readonly dialogRef: MatDialogRef<DialogDatePickerComponent>,
+  ) {
   }
 
-  onApply() {
-    return this.datetime
+  ngOnInit() {
+    this.formGroup = this.formBuilder.group({
+      day: [
+        this.datePipe.transform(this.data?.route?.endedAt ?
+          this.data?.dayInit : new Date(), 'yyyy-MM-dd'),
+      ]
+    });
+  }
+
+  get f() {
+    return this.formGroup.controls;
+  }
+
+  onSubmit(): any {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    this.dialogRef.close({day: this.formGroup.value.day});
   }
 }

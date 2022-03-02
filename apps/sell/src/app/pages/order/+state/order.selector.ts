@@ -113,6 +113,11 @@ export const selectedTotalOrder = createSelector(
   (state) => state.total
 )
 
+export const selectedCommodityUniqOrder = createSelector(
+  selectorOrderState,
+  (state) => state.commodityUniq
+)
+
 export const selectorOrderTotal = createSelector(
   selectorOrderState,
   fromOrder.selectTotal

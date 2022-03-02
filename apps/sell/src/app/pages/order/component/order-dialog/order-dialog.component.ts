@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { AppState } from '../../../../reducers';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderAction } from '../../+state/order.action';
-import { DatePipe } from '@angular/common';
-import { Customer } from '../../../customer/+state/customer/customer.interface';
-import { selectorAllCustomer } from '../../../customer/+state/customer/customer.selector';
-import { CustomerAction } from '../../../customer/+state/customer/customer.action';
-import { selectAllCommodity } from '../../../commodity/+state/commodity.selector';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { CommodityAction } from '../../../commodity/+state/commodity.action';
+import {Component, Inject, OnInit} from '@angular/core';
+import {AppState} from '../../../../reducers';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {select, Store} from '@ngrx/store';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {PaymentType} from '@minhdu-fontend/enums';
+import {OrderAction} from '../../+state/order.action';
+import {DatePipe} from '@angular/common';
+import {Customer} from '../../../customer/+state/customer/customer.interface';
+import {selectorAllCustomer} from '../../../customer/+state/customer/customer.selector';
+import {CustomerAction} from '../../../customer/+state/customer/customer.action';
+import {selectAllCommodity} from '../../../commodity/+state/commodity.selector';
+import {Commodity} from '../../../commodity/+state/commodity.interface';
+import {CommodityAction} from '../../../commodity/+state/commodity.action';
 
 
 @Component({
@@ -38,8 +38,8 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
-    this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
+    this.store.dispatch(CustomerAction.loadInit({take: 30, skip: 0}));
+    this.store.dispatch(CommodityAction.loadInit({CommodityDTO: {take: 30, skip: 0}}));
 
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.formGroup = this.formBuilder.group({
@@ -70,13 +70,19 @@ export class OrderDialogComponent implements OnInit {
       commodityIds: this.commoditiesSelected.map(item => item.id),
       wardId: this.wardId || this.data.order?.ward?.id,
       explain: val.explain,
-      deliveredAt: val.deliveredAt
+      deliveredAt: val.deliveredAt,
+      typeUpdate: this.data.type
     };
     console.log(order)
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }
-    this.store.dispatch(OrderAction.updateOrder({ order: order, id: this.data.order.id, typeUpdate: this.data.type }));
+    this.store.dispatch(OrderAction.updateOrder({
+      updateOrderDto: {
+        order: order,
+        id: this.data.order.id
+      }
+    }));
     this.dialogRef.close();
   }
 
