@@ -1,5 +1,6 @@
-import { Position } from '@minhdu-fontend/data-models';
-import { createAction, props } from '@ngrx/store';
+import {Position} from '@minhdu-fontend/data-models';
+import {createAction, props} from '@ngrx/store';
+import {UpdateNum} from "@ngrx/entity/src/models";
 
 export const loadPosition = createAction(
   '[Position/API] Load Position'
@@ -16,7 +17,7 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ name: string, workday?: number, branchId?: number }>()
+  props<{ name: string, workday?: number,/* branchId?: number*/ }>()
 );
 
 export const addPositionSuccess = createAction(
@@ -26,11 +27,12 @@ export const addPositionSuccess = createAction(
 
 export const updatePosition = createAction(
   '[Position/API] Update Position',
-  props<{ id: number, name: string, workday: Date, branchId: number }>()
+  props<{ id: number, name: string, workday: Date, /*branchId: number */ }>()
 );
 
 export const updatePositionSuccess = createAction(
   '[Position/API] Update Position Success',
+  props<{ position: UpdateNum<Position>}>()
 );
 
 export const deletePosition = createAction(

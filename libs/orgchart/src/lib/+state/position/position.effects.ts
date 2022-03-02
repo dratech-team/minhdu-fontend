@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { PositionActions } from './position.actions';
-import { PositionService } from '../../services/position.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Store } from '@ngrx/store';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, mergeMap, switchMap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {PositionActions} from './position.actions';
+import {PositionService} from '../../services/position.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {OrgchartActions} from '@minhdu-fontend/orgchart';
+import {Store} from '@ngrx/store';
 
 @Injectable()
 export class PositionEffects {
@@ -15,8 +15,8 @@ export class PositionEffects {
       ofType(PositionActions.loadPosition),
       mergeMap((prams) => this.positionService.getAll(prams)),
       map(position => {
-          this.snackBar.open('Tải chức vụ thành công', '', { duration: 1000 });
-          return PositionActions.loadPositionSuccess({ position });
+          this.snackBar.open('Tải chức vụ thành công', '', {duration: 1000});
+          return PositionActions.loadPositionSuccess({position});
         }
       ),
       catchError(err => throwError(err))
@@ -28,8 +28,8 @@ export class PositionEffects {
       ofType(PositionActions.searchPosition),
       mergeMap((props) => this.positionService.getAll(props)),
       map(position => {
-        this.snackBar.open('Tải chức vụ thành công', '', { duration: 1000 });
-        return PositionActions.loadPositionSuccess({ position });
+        this.snackBar.open('Tải chức vụ thành công', '', {duration: 1000});
+        return PositionActions.loadPositionSuccess({position});
       }),
       catchError(err => throwError(err))
     )
@@ -39,17 +39,16 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.addPosition),
       switchMap(param => this.positionService.addOne(param).pipe(
-        map(res =>{
-          if(param.branchId){
-            this.store.dispatch(OrgchartActions.getBranch({id:param.branchId}))
-
-          }
+        map(res => {
+          /*if (param.branchId) {
+            this.store.dispatch(OrgchartActions.getBranch({id: param.branchId}))
+          }*/
           return res
         })
       )),
       map(position => {
-        this.snackBar.open('Tạo mới chức vụ thành công', '', { duration: 1500 });
-        return PositionActions.addPositionSuccess({ position });
+        this.snackBar.open('Tạo mới chức vụ thành công', '', {duration: 1500});
+        return PositionActions.addPositionSuccess({position});
       }),
       catchError(err => throwError(err))
     )
@@ -60,13 +59,12 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.updatePosition),
       switchMap(param => this.positionService.update(param.id,
-        { name: param.name, workday: param.workday }).pipe(
-        map(_ =>{
-          this.snackBar.open('Cập nhật chức vụ thành công', '', { duration: 1500 });
-          this.store.dispatch(PositionActions.updatePositionSuccess())
-          return OrgchartActions.getBranch({id: param.branchId})
-        } ),
-
+        {name: param.name, workday: param.workday}).pipe(
+        map(position => {
+          this.snackBar.open('Cập nhật chức vụ thành công', '', {duration: 1500});
+          return PositionActions.updatePositionSuccess({position})
+          /*return OrgchartActions.getBranch({id: param.branchId})*/
+        }),
       )),
       catchError(err => throwError(err))
     )
@@ -77,11 +75,11 @@ export class PositionEffects {
       ofType(PositionActions.deletePosition),
       switchMap(param => this.positionService.delete(param.id).pipe(
         map(_ => {
-            this.snackBar.open('Xóa chức vụ thành công', '', { duration: 1500 });
-            if(param.branchId){
-              return OrgchartActions.getBranch({ id: param.branchId })
-            }else{
-              return  PositionActions.loadPosition()
+            this.snackBar.open('Xóa chức vụ thành công', '', {duration: 1500});
+            if (param.branchId) {
+              return OrgchartActions.getBranch({id: param.branchId})
+            } else {
+              return PositionActions.loadPosition()
             }
           }
         ),

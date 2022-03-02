@@ -20,7 +20,7 @@
                   Đổi avatar
             </span>
         </button>
-        <button (click)='deleteEmployee(employee.id, employee.leftAt)'
+        <button (click)='deleteEmployee(employee, employee.leftAt)'
                 class='row btn shadow-none p-2 mb-3 bg-light rounded'>
               <span style='text-align: center; font-weight: 600;font-size: 16px;line-height: 19px; width:240px;'>
                  {{employee.leftAt ? 'Khôi phục' : 'Xóa nhân viên' }}

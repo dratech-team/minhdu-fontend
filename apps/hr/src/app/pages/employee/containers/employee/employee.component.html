@@ -232,10 +232,10 @@
 
   <app-mouse-right
     #child
-    [items]='isLeft ? [ItemContextMenu.PERMANENTLY] : []'
+    [items]='isLeft ? [ItemContextMenu.RESTORE] : []'
     (onAdd)='add()'
     (onDel)='delete($event)'
-    (onDelPerm)='permanentlyDeleted($event)'
+    (onRestore)="reStore($event)"
     (onUpdate)='readAndUpdate($event,true)'>
   </app-mouse-right>
 </div>

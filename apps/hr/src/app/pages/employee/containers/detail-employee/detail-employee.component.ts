@@ -20,6 +20,7 @@ import {UpdateContractComponent} from '../../components/dialog-update-contract/u
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {AddRelativeComponent} from '../../components/relative/add-relative.component';
 import {getSelectors} from '@minhdu-fontend/utils';
+import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -66,10 +67,10 @@ export class DetailEmployeeComponent implements OnInit {
     });
   }
 
-  deleteEmployee(employeeId: number, leftAt?: Date): void {
+  deleteEmployee(employee: Employee, leftAt?: Date): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: {employeeId, leftAt}
+      data: {employee, leftAt}
     });
   }
 
