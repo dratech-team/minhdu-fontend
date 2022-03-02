@@ -185,7 +185,7 @@
                 }}
               </th>
               <th class='pointer'>
-                {{employee?.createdAt|date: 'dd/MM/yyyy'}}
+                {{employee?.createdAt ? ( employee?.createdAt|date: 'dd/MM/yyyy'): 'Chưa cập nhật'}}
               </th>
               <th class='pointer'>
                 {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}
