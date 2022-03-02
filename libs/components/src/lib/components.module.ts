@@ -36,6 +36,7 @@ import { TransformPipe } from './pipes/transform.pipe';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {FilterDayPipe} from "./pipes/filter-day.pipe";
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MouseRightChipPositionComponent,
     DialogExportComponent,
     DialogDatePickerComponent,
+    FilterDayPipe
   ],
   exports: [
     SwimLaneChartComponent,
@@ -96,6 +98,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MouseRightChipPositionComponent,
     DialogExportComponent,
     DialogDatePickerComponent,
+    FilterDayPipe,
   ],
   providers: [
     DecimalPipe,
