@@ -31,6 +31,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {NzTableModule} from "ng-zorro-antd/table";
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    NzTableModule
   ],
   declarations: [
     TableOrdersComponent,

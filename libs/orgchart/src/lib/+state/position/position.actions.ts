@@ -17,7 +17,7 @@ export const loadPositionSuccess = createAction(
 
 export const addPosition = createAction(
   '[Position/API] Add Position',
-  props<{ name: string, workday?: number,/* branchId?: number*/ }>()
+  props<{ name: string, workday?: number, branchId?: number }>()
 );
 
 export const addPositionSuccess = createAction(
@@ -27,7 +27,7 @@ export const addPositionSuccess = createAction(
 
 export const updatePosition = createAction(
   '[Position/API] Update Position',
-  props<{ id: number, name: string, workday: Date, /*branchId: number */ }>()
+  props<{ id: number, name: string, workday: Date, branchId?: number  }>()
 );
 
 export const updatePositionSuccess = createAction(

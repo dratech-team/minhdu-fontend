@@ -15,9 +15,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class DialogPositionComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  // branchId!: number
-  // branches = new FormControl();
-/*  branches$ = this.store.pipe(select(getAllOrgchart));*/
+  branchId!: number
+  branches = new FormControl();
+  branches$ = this.store.pipe(select(getAllOrgchart));
   constructor(
     private readonly dialogRef: MatDialogRef<DialogPositionComponent>,
     private readonly formBuilder: FormBuilder,
@@ -27,9 +27,9 @@ export class DialogPositionComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(OrgchartActions.init());
+    this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
-      // this.branchId = this.data.position.branchId
+      this.branchId = this.data.position.branchId
       this.formGroup = this.formBuilder.group({
         position: [this.data.position.name],
         workday: [this.data.position.workday],
@@ -40,10 +40,10 @@ export class DialogPositionComponent implements OnInit {
         workday: [undefined, Validators.required],
       });
     }
-    // this.branches$ = searchAutocomplete(
-    //   this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
-    //   this.branches$
-    // );
+    this.branches$ = searchAutocomplete(
+      this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
+      this.branches$
+    );
   }
 
   get checkValid() {
@@ -60,13 +60,13 @@ export class DialogPositionComponent implements OnInit {
             id: this.data.position.id,
             name: val.position,
             workday: val.workday,
-           /* branchId: this.branchId*/
+            branchId: this.branchId
           }));
       } else {
         this.store.dispatch(PositionActions.addPosition({
           name: val.position,
           workday: val.workday,
-         /* branchId: this.data?.branchId ? this.data.branchId : this.branchId*/
+          branchId: this.data?.branchId ? this.data.branchId : this.branchId
         }));
       }
 
@@ -80,7 +80,7 @@ export class DialogPositionComponent implements OnInit {
     });
   }
 
- /* selectBranch(branch: Branch) {
+  selectBranch(branch: Branch) {
       this.branchId = branch.id;
-  }*/
+  }
 }
