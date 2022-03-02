@@ -24,7 +24,6 @@ export const pickOne = (item: any, itemSelected: any [], items: any[], allowEmpl
 
 
 export const pickAll = (select: boolean, items: any[], itemsSelected: any[] , allowEmployeesSelected?: any [] ,isSelectAllowance?: boolean):any => {
-  console.log(isSelectAllowance)
   items.forEach(val => {
     if (select) {
       if (!itemsSelected.some(x => x.id === val.id)) {

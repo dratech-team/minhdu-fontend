@@ -74,7 +74,8 @@ import {NzTableModule} from "ng-zorro-antd/table";
     DecimalPipe,
     PickCustomerService,
     PickCommodityService,
-    PickRoutesService
+    PickRoutesService,
+
   ],
   exports: [
     TableOrdersComponent,
@@ -82,7 +83,6 @@ import {NzTableModule} from "ng-zorro-antd/table";
     PickOrderComponent,
     PickCustomerComponent,
     PickRoutesComponent,
-
   ],
 })
 export class SharedModule {

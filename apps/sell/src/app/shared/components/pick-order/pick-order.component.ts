@@ -1,20 +1,20 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, tap } from 'rxjs/operators';
-import { document } from 'ngx-bootstrap/utils';
-import { Order } from '../../../pages/order/+state/order.interface';
-import { PaidType } from 'libs/enums/paidType.enum';
-import { Employee } from '@minhdu-fontend/data-models';
-import { OrderAction } from '../../../pages/order/+state/order.action';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {debounceTime, tap} from 'rxjs/operators';
+import {document} from 'ngx-bootstrap/utils';
+import {Order} from '../../../pages/order/+state/order.interface';
+import {PaidType} from 'libs/enums/paidType.enum';
+import {Employee} from '@minhdu-fontend/data-models';
+import {OrderAction} from '../../../pages/order/+state/order.action';
 import {
   selectedTotalOrder,
   selectorAllOrders,
   selectorCurrentOrder
 } from '../../../pages/order/+state/order.selector';
-import { getSelectors } from '../../../../../../../libs/utils/getState.ultils';
-import { selectorTotalEmployee } from '@minhdu-fontend/employee';
+import {getSelectors} from '../../../../../../../libs/utils/getState.ultils';
+import {selectorTotalEmployee} from '@minhdu-fontend/employee';
 import {
   checkIsSelectAllInit,
   handleValSubPickItems,
@@ -22,6 +22,7 @@ import {
   pickOne,
   someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
+import {Commodity} from "../../../pages/commodity/+state/commodity.interface";
 
 
 @Component({
@@ -36,10 +37,12 @@ export class PickOrderComponent implements OnInit {
   @Input() orderSelected: Order[] = [];
   @Input() customerId?: number;
   @Output() checkEvent = new EventEmitter<Order[]>();
+  @Output() checkCommodityEvent = new EventEmitter<Commodity[]>();
   @Output() checkEventPickOne = new EventEmitter<Order>();
   orders$ = this.store.select(selectorAllOrders);
   total$ = this.store.select(selectedTotalOrder);
   orders: Order[] = [];
+  commoditiesSelected: Commodity[] = []
   pageSize = 30;
   pageIndex = 0;
   orderPickOne!: Order;
@@ -83,7 +86,7 @@ export class PickOrderComponent implements OnInit {
       tap((_) => {
         this.eventSearch = true;
         const val = this.formGroup.value;
-        this.store.dispatch(OrderAction.loadInit({ orderDTO: this.order(val) }));
+        this.store.dispatch(OrderAction.loadInit({orderDTO: this.order(val)}));
       })
     ).subscribe();
 
@@ -101,7 +104,7 @@ export class PickOrderComponent implements OnInit {
   onScroll() {
     this.eventSearch = false;
     const val = this.formGroup.value;
-    this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.order(val) }));
+    this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.order(val)}));
   }
 
 
@@ -120,6 +123,12 @@ export class PickOrderComponent implements OnInit {
 
   updateAllSelect(order: Order) {
     this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
+    order.commodities.forEach(val => {
+      const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
+      if (index > -1) {
+        this.commoditiesSelected.splice(index, 1)
+      }
+    })
     this.checkEvent.emit(this.orderSelected);
   }
 
@@ -130,6 +139,7 @@ export class PickOrderComponent implements OnInit {
   setAll(select: boolean) {
     this.isSelectAll = select;
     pickAll(select, this.orders, this.orderSelected);
+    this.commoditiesSelected = []
     this.checkEvent.emit(this.orderSelected);
   }
 
@@ -152,5 +162,29 @@ export class PickOrderComponent implements OnInit {
 
   checkOrder(order: Order) {
     return this.orderSelected.some((item) => item.id === order.id);
+  }
+
+  checkCommodity(commodity: Commodity) {
+    return this.commoditiesSelected.some((item) => item.id === commodity.id);
+  }
+
+  pickCommodity(commodity: Commodity, order: Order, checkbox: any) {
+    const indexOrder = this.orderSelected.findIndex(val => val.id === order.id)
+    if (indexOrder > -1) {
+      this.orderSelected.splice(indexOrder, 1)
+      this.isSelectAll = false
+      this.checkEvent.emit(this.orderSelected);
+    }
+    const index = this.commoditiesSelected.findIndex(val => val.id === commodity.id)
+    if (index > -1) {
+      this.commoditiesSelected.splice(index, 1)
+    } else {
+      this.commoditiesSelected.push(commodity)
+      if(order.commodities.every(val => this.commoditiesSelected.includes(val))){
+       this.updateAllSelect(order)
+        checkbox.checked = false
+      }
+    }
+    this.checkCommodityEvent.emit(this.commoditiesSelected)
   }
 }

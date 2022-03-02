@@ -57,7 +57,7 @@ export class CommodityDialogComponent implements OnInit {
       unit: value.unit,
       closed: this.data?.orderId ? this.data.commodity.closed : false
     };
-    if (this.data.isUpdate) {
+    if (this.data?.isUpdate) {
       if (this.data?.orderId) {
         const ref = this.dialog.open(DialogSharedComponent, {
           width: 'fit-content',
