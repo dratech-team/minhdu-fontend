@@ -39,6 +39,7 @@ export class AddRelativeComponent implements OnInit {
           this?.data?.relative?.idCardAt, 'yyyy-MM-dd'
         )],
       phone: [this.data?.relative?.phone],
+      workPhone: [this.data?.relative?.workPhone],
       birthday: [
         this.datePipe.transform(
           this.data?.relative?.birthday, 'yyyy-MM-dd'
@@ -65,7 +66,8 @@ export class AddRelativeComponent implements OnInit {
       relationship: value.relationship,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone? value.phone.toString(): undefined,
+      phone:  value.phone?.toString(),
+      workPhone: value.workPhone?.toString(),
       birthplace: value.birthplace,
       identify: value.identify?.toString(),
       issuedBy: value.issuedBy,

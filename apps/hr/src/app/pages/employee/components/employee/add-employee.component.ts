@@ -170,8 +170,8 @@ export class AddEmployeeComponent implements OnInit {
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone ? value.phone.toString() : undefined,
-      workPhone: value.workday ? value.workPhone.toString() : undefined,
+      phone:  value.phone?.toString(),
+      workPhone: value.workPhone?.toString(),
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
@@ -262,9 +262,5 @@ export class AddEmployeeComponent implements OnInit {
 
   checkNumberInput(event: any) {
     return checkInputNumber(event);
-  }
-
-  checkInputNumber(event: any){
-    return checkInputNumber(event)
   }
 }

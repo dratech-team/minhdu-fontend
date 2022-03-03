@@ -132,16 +132,6 @@
                 </mat-option>
               </mat-select>
             </div>
-            <div class='col' [formGroup]='formGroup'>
-                <label for='phone'>Số điện thoại khác </label>
-                <input type='tel'
-                       class='form-control not-arrow-input'
-                       id='phone'
-                       placeholder='0337552146'
-                       formControlName='workPhone'
-                       (keypress)='checkInputNumber($event)'
-                >
-              </div>
           </div>
         </div>
       </form>
