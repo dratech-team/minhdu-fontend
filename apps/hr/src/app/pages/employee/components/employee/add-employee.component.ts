@@ -69,7 +69,6 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    console.log(this.data)
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
       issuedBy: [this.data?.employee?.issuedBy],
@@ -162,8 +161,7 @@ export class AddEmployeeComponent implements OnInit {
     }
     const employee = {
       id: this?.data?.employee?.id,
-      isFlatSalary: value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME ?
-        value.isFlatSalary === this.flatSalary.FLAT_SALARY : undefined,
+      isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY ,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
       workedAt: value.workedAt ? new Date(value.workedAt) : undefined,

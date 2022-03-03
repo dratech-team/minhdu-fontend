@@ -170,9 +170,8 @@ export class PickOrderComponent implements OnInit {
 
   pickCommodity(commodity: Commodity, order: Order, checkbox: any) {
     const indexOrder = this.orderSelected.findIndex(val => val.id === order.id)
-    if (indexOrder > -1) {
-      this.orderSelected.splice(indexOrder, 1)
-      this.isSelectAll = false
+    if (indexOrder <= -1) {
+      this.orderSelected.push(order)
       this.checkEvent.emit(this.orderSelected);
     }
     const index = this.commoditiesSelected.findIndex(val => val.id === commodity.id)
