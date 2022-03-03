@@ -92,6 +92,11 @@ export class RouteDialogComponent implements OnInit {
   }
 
   nextTab(tab: any) {
+    if(this.tabIndex === 0){
+      this.submitted = true
+      if( this.formGroup.invalid)
+      return
+    }
     this.tabIndex = tab._selectedIndex + 1;
   }
 

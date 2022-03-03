@@ -51,6 +51,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   isSelectAll = false;
   formGroup = new FormGroup(
     {
+      isRoute: new FormControl(''),
       name: new FormControl(''),
       createdAt: new FormControl(''),
       paidType: new FormControl(''),
@@ -67,7 +68,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.orderSelected?.currentValue !== changes?.orderSelected?.previousValue) {
+    if (changes.orderSelected?.currentValue !== changes?.orderSelected?.previousValue) {
       this.isSelectAll = this.orders.every(e => this.orderSelected.some(val => val.id === e.id))
     }
   }
@@ -120,22 +121,34 @@ export class PickOrderComponent implements OnInit, OnChanges {
     return {
       take: this.pageSize,
       skip: this.pageIndex,
+      isRoute: val.isRoute,
       customerId: this.customerId ? this.customerId : '',
       customer: val.name.trim(),
       paidType: val.paidType,
       explain: val.explain.trim(),
-      createdAt: new Date(val.createdAt)
+      createdAt: val.createdAt ? new Date(val.createdAt) : '',
     };
   }
 
-  updateAllSelect(order: Order) {
+  updateAllSelect(order: Order, checkBox?: any) {
     this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
-    order.commodities.forEach(val => {
-      const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
-      if (index > -1) {
-        this.commoditiesSelected.splice(index, 1)
-      }
-    })
+    if (checkBox?.checked) {
+      order.commodities.forEach(val => {
+        const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
+        if (index <= -1) {
+          this.commoditiesSelected.push(val)
+        }
+      })
+    } else {
+      order.commodities.forEach(val => {
+        const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
+        if (index > -1) {
+          this.commoditiesSelected.splice(index, 1)
+        }
+      })
+    }
+
+    this.checkCommodityEvent.emit(this.commoditiesSelected)
     this.checkEvent.emit(this.orderSelected);
   }
 
@@ -152,7 +165,14 @@ export class PickOrderComponent implements OnInit, OnChanges {
     } else {
       this.isSelectAll = select;
       pickAll(select, this.orders, this.orderSelected);
+      if (select) {
+        this.commoditiesSelected = []
+        this.orders.forEach(val => val.commodities.map(commodity => this.commoditiesSelected.push(commodity)))
+      } else {
+        this.commoditiesSelected = []
+      }
     }
+    this.checkCommodityEvent.emit(this.commoditiesSelected)
     this.checkEvent.emit(this.orderSelected);
   }
 
@@ -184,14 +204,25 @@ export class PickOrderComponent implements OnInit, OnChanges {
   pickCommodity(commodity: Commodity, order: Order, checkbox: any) {
     const indexOrder = this.orderSelected.findIndex(val => val.id === order.id)
     if (indexOrder <= -1) {
-      this.updateAllSelect(order)
+      this.orderSelected.push(order)
     }
     const index = this.commoditiesSelected.findIndex(val => val.id === commodity.id)
     if (index > -1) {
       this.commoditiesSelected.splice(index, 1)
+      if (this.commoditiesSelected.every(val => order.commodities.every(e => e.id !== val.id))) {
+        this.updateAllSelect(order)
+      }
     } else {
       this.commoditiesSelected.push(commodity)
     }
     this.checkCommodityEvent.emit(this.commoditiesSelected)
+  }
+
+  checkCommodityRoute(order: Order): boolean {
+    return !order.commodities.every(val => typeof (val.routeId) === 'number')
+  }
+
+  getFirstRoute(order: Order): string {
+    return order?.routes[0].bsx
   }
 }
