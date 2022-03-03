@@ -10,6 +10,7 @@ export interface Relative{
   career?: string,
   profile: Profile;
   email?: string,
-  phone: string,
+  phone?: string,
+  workPhone?: string,
   birthday: Date,
 }

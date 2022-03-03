@@ -255,6 +255,25 @@ export class EmployeeEffect {
     )
   );
 
+  deleteWorkHistory$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.deleteWorkHistory),
+      switchMap((props) =>
+        this.employeeService.deleteWorkHistory(props.id).pipe(
+          map((_) => {
+            this.snackBar.open('Xóa Lịch sử công tác thành công', '', {
+              duration: 1000
+            });
+            return EmployeeAction.getEmployee({
+              id: props.employeeId
+            });
+          })
+        )
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
   constructor(
     private readonly action$: Actions,
     private readonly employeeService: EmployeeService,

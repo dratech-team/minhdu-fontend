@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Employee, Relative} from '@minhdu-fontend/data-models';
+import {Degree, Employee, Relative, WorkHistory} from '@minhdu-fontend/data-models';
 import {EmployeeAction, selectCurrentEmployee, selectEmployeeAdding} from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
@@ -21,6 +21,10 @@ import {AddEmployeeComponent} from '../../components/employee/add-employee.compo
 import {AddRelativeComponent} from '../../components/relative/add-relative.component';
 import {getSelectors} from '@minhdu-fontend/utils';
 import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
+import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
+import {
+  DialogSharedComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -33,7 +37,7 @@ export class DetailEmployeeComponent implements OnInit {
   status = DegreeStatusEnum;
   level = DegreeLevelEnum;
   recipeType = RecipeType;
-
+  recipeConstant = RecipeSalaryConstant
   employee$ = this.store.select(selectCurrentEmployee(this.employeeId));
   adding$ = this.store.select(selectEmployeeAdding);
 
@@ -137,5 +141,21 @@ export class DetailEmployeeComponent implements OnInit {
   historySalary(employee: Employee) {
     this.router.navigate(['phieu-luong/lich-su-luong', employee.id],
       {queryParams: {name: employee.lastName}}).then();
+  }
+
+  deleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
+    console.log(workHistory)
+    this.dialog.open(DialogSharedComponent,{
+      width:'fit-content',
+      data:{
+        title:'Xoá lịch sử công tác',
+        description:'Bạn có chắc chắn muốn xoá lịch sử công tác này không'
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if(val){
+          this.store.dispatch(EmployeeAction.deleteWorkHistory({id: workHistory.id, employeeId}))
+        }
+      })
   }
 }

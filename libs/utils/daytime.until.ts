@@ -38,7 +38,7 @@ export const rageDaysInMonth = (datetime: Date) => {
 
 export const sortDatetime = (array: any[]) => {
   if (array.every(e => e.datetime)) {
-    return array.sort(function(a, b) {
+    return array.sort(function (a, b) {
       return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
     });
   } else {

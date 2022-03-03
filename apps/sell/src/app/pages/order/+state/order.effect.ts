@@ -59,6 +59,7 @@ export class OrderEffect {
       switchMap((props) => this.orderService.paginationOrder()),
       map((responsePagination) => {
           responsePagination.data.map((order: Order) => {
+            order.expand = false
             order.totalCommodity = getTotalCommodity(order.commodities)
           })
           return OrderAction.loadInitSuccess({
@@ -78,6 +79,7 @@ export class OrderEffect {
       switchMap((props) => this.orderService.paginationOrder(props.orderDTO)),
       map((responsePagination) => {
           responsePagination.data.map((order: Order) => {
+            order.expand = false
             order.totalCommodity = getTotalCommodity(order.commodities)
           })
           return OrderAction.loadInitSuccess({
@@ -112,6 +114,7 @@ export class OrderEffect {
           });
         }
         responsePagination.data.map((order: Order) => {
+          order.expand = false
           order.totalCommodity = getTotalCommodity(order.commodities)
         })
         return OrderAction.loadMoreOrdersSuccess({

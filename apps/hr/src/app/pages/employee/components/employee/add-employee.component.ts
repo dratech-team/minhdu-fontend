@@ -69,7 +69,6 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    console.log(this.data)
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
       issuedBy: [this.data?.employee?.issuedBy],
@@ -81,6 +80,7 @@ export class AddEmployeeComponent implements OnInit {
       email: [this.data?.employee?.email],
       workday: [this.data?.employee?.workday],
       phone: [this.data?.employee?.phone],
+      workPhone: [this.data?.employee?.workPhone],
       note: [this.data?.employee?.note],
       workedAt: [
         this.data?.employee?.workedAt ?
@@ -161,15 +161,16 @@ export class AddEmployeeComponent implements OnInit {
     }
     const employee = {
       id: this?.data?.employee?.id,
-      isFlatSalary: value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME ?
-        value.isFlatSalary === this.flatSalary.FLAT_SALARY : undefined,
+      isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
+        value.isFlatSalary === this.flatSalary.FLAT_SALARY : false,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
       workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       lastName: value.lastName,
       gender: value.gender,
-      phone: value.phone ? value.phone.toString() : undefined,
+      phone: value.phone?.toString(),
+      workPhone: value.workPhone?.toString(),
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
       identify: value?.identify?.toString(),
@@ -246,6 +247,9 @@ export class AddEmployeeComponent implements OnInit {
           .subscribe((branch) => (this.branchId = branch.id));
         this.snackbar.open('Đã tạo', '', {duration: 2500});
       } else {
+        if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
+          this.formGroup.get('recipeType')!.setValue(branch.recipe)
+        }
         this.branchId = branch.id;
       }
     }
