@@ -59,7 +59,7 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.updatePosition),
       switchMap(param => this.positionService.update(param.id,
-        {name: param.name, workday: param.workday, branchId: param.branchId}).pipe(
+        {name: param.name, workday: param.workday, branchesId: param.branchIds}).pipe(
         map(position => {
           this.snackBar.open('Cập nhật chức vụ thành công', '', {duration: 1500});
           return PositionActions.updatePositionSuccess({position})
