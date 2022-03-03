@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -30,8 +30,11 @@ import {Commodity} from "../../../pages/commodity/+state/commodity.interface";
   templateUrl: 'pick-order.component.html',
   styleUrls: ['pick-route.component.scss']
 })
-export class PickOrderComponent implements OnInit {
+export class PickOrderComponent implements OnInit, OnChanges {
+  @Input() orders: Order[] = [];
+  @Input() commoditiesSelected: Commodity[] = []
   @Input() pickOne = false;
+  @Input() isCheckOrderSelected = false;
   @Input() orderIdDefault?: number;
   @Input() payment = false;
   @Input() orderSelected: Order[] = [];
@@ -41,8 +44,6 @@ export class PickOrderComponent implements OnInit {
   @Output() checkEventPickOne = new EventEmitter<Order>();
   orders$ = this.store.select(selectorAllOrders);
   total$ = this.store.select(selectedTotalOrder);
-  orders: Order[] = [];
-  commoditiesSelected: Commodity[] = []
   pageSize = 30;
   pageIndex = 0;
   orderPickOne!: Order;
@@ -65,7 +66,14 @@ export class PickOrderComponent implements OnInit {
   ) {
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.orderSelected?.currentValue !== changes?.orderSelected?.previousValue) {
+      this.isSelectAll = this.orders.every(e => this.orderSelected.some(val => val.id === e.id))
+    }
+  }
+
   ngOnInit(): void {
+    this.isSelectAll = this.isCheckOrderSelected
     this.store.dispatch(OrderAction.loadInit(
       {
         orderDTO: {
@@ -74,39 +82,39 @@ export class PickOrderComponent implements OnInit {
           customerId: this.customerId ? this.customerId : ''
         }
       }));
-
     if (this.orderIdDefault) {
       this.store.select(selectorCurrentOrder(this.orderIdDefault)).subscribe(val => {
         this.orderPickOne = JSON.parse(JSON.stringify(val));
       });
     }
-
-    this.formGroup.valueChanges.pipe(
-      debounceTime(1000),
-      tap((_) => {
-        this.eventSearch = true;
-        const val = this.formGroup.value;
-        this.store.dispatch(OrderAction.loadInit({orderDTO: this.order(val)}));
-      })
-    ).subscribe();
-
-    this.orders$.subscribe(orders => {
-      if (orders.length === 0) {
-        this.isSelectAll = false;
-      }
-      if (this.eventSearch) {
-        this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
-      }
-      this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
-    });
+    if (!this.isCheckOrderSelected) {
+      this.formGroup.valueChanges.pipe(
+        debounceTime(1000),
+        tap((_) => {
+          this.eventSearch = true;
+          const val = this.formGroup.value;
+          this.store.dispatch(OrderAction.loadInit({orderDTO: this.order(val)}));
+        })
+      ).subscribe();
+      this.orders$.subscribe(orders => {
+        if (orders.length === 0) {
+          this.isSelectAll = false;
+        }
+        if (this.eventSearch) {
+          this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
+        }
+        this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
+      });
+    }
   }
 
   onScroll() {
-    this.eventSearch = false;
-    const val = this.formGroup.value;
-    this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.order(val)}));
+    if (!this.isCheckOrderSelected) {
+      this.eventSearch = false;
+      const val = this.formGroup.value;
+      this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.order(val)}));
+    }
   }
-
 
   order(val: any) {
     return {
@@ -119,7 +127,6 @@ export class PickOrderComponent implements OnInit {
       createdAt: new Date(val.createdAt)
     };
   }
-
 
   updateAllSelect(order: Order) {
     this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
@@ -137,9 +144,15 @@ export class PickOrderComponent implements OnInit {
   }
 
   setAll(select: boolean) {
-    this.isSelectAll = select;
-    pickAll(select, this.orders, this.orderSelected);
-    this.commoditiesSelected = []
+    if (this.isCheckOrderSelected) {
+      this.isSelectAll = false
+      this.commoditiesSelected = []
+      this.orderSelected = []
+      this.checkCommodityEvent.emit(this.commoditiesSelected)
+    } else {
+      this.isSelectAll = select;
+      pickAll(select, this.orders, this.orderSelected);
+    }
     this.checkEvent.emit(this.orderSelected);
   }
 
@@ -171,18 +184,13 @@ export class PickOrderComponent implements OnInit {
   pickCommodity(commodity: Commodity, order: Order, checkbox: any) {
     const indexOrder = this.orderSelected.findIndex(val => val.id === order.id)
     if (indexOrder <= -1) {
-      this.orderSelected.push(order)
-      this.checkEvent.emit(this.orderSelected);
+      this.updateAllSelect(order)
     }
     const index = this.commoditiesSelected.findIndex(val => val.id === commodity.id)
     if (index > -1) {
       this.commoditiesSelected.splice(index, 1)
     } else {
       this.commoditiesSelected.push(commodity)
-      if(order.commodities.every(val => this.commoditiesSelected.includes(val))){
-       this.updateAllSelect(order)
-        checkbox.checked = false
-      }
     }
     this.checkCommodityEvent.emit(this.commoditiesSelected)
   }
