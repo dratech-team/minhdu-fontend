@@ -1,5 +1,5 @@
-import { Observer } from 'rxjs';
-import { Employee } from '../data-models';
+import {Observer} from 'rxjs';
+import {Employee} from '../data-models';
 
 export const pickOne = (item: any, itemSelected: any [], items: any[], allowEmployeesSelected?: any[]) => {
   const index = itemSelected.findIndex(val => val.id === item.id);
@@ -14,34 +14,34 @@ export const pickOne = (item: any, itemSelected: any [], items: any[], allowEmpl
   }
   const result = {
     isSelectAll: items.length > 0 && items.every(val => itemSelected.some(x => x.id === val.id)),
-    isSelectAllowance : false
+    isSelectAllowance: false
   };
   if (allowEmployeesSelected) {
-    Object.assign(result, { isSelectAllowance: items.length > 0 && items.every(val => allowEmployeesSelected.some(x => x.id === val.id)) });
+    Object.assign(result, {isSelectAllowance: items.length > 0 && items.every(val => allowEmployeesSelected.some(x => x.id === val.id))});
   }
   return result;
 };
 
 
-export const pickAll = (select: boolean, items: any[], itemsSelected: any[] , allowEmployeesSelected?: any [] ,isSelectAllowance?: boolean):any => {
+export const pickAll = (select: boolean, items: any[], itemsSelected: any[], allowEmployeesSelected?: any [], isSelectAllowance?: boolean): any => {
   items.forEach(val => {
     if (select) {
       if (!itemsSelected.some(x => x.id === val.id)) {
         itemsSelected.push(val);
       }
     } else {
-      if( allowEmployeesSelected){
+      if (allowEmployeesSelected) {
         isSelectAllowance = false
         const index = itemsSelected.findIndex(x => x.id === val.id);
         const indexAllowance = allowEmployeesSelected.findIndex(emp => emp.id === val.id);
-        if(index > -1){
+        if (index > -1) {
           itemsSelected.splice(index, 1);
-          if(indexAllowance > -1){
+          if (indexAllowance > -1) {
             allowEmployeesSelected.splice(indexAllowance, 1);
           }
         }
 
-      }else{
+      } else {
         const index = itemsSelected.findIndex(x => x.id === val.id);
         if (index > -1) {
           itemsSelected.splice(index, 1);
@@ -50,7 +50,7 @@ export const pickAll = (select: boolean, items: any[], itemsSelected: any[] , al
     }
   });
 
-  return  isSelectAllowance
+  return isSelectAllowance
 };
 
 export const someComplete = (items: any [], itemsSelected: any [], isSelectAll: boolean): boolean => {

@@ -1,3 +1,9 @@
+<div style="width: 100px" class=" mt-2" [formGroup]="formGroup">
+  <mat-select class="form-control" formControlName="isRoute">
+    <mat-option value="">Tất cả</mat-option>
+    <mat-option value="true">Lọc</mat-option>
+  </mat-select>
+</div>
 <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
 <div style='height: 60vh ; overflow: auto'
      infiniteScroll
@@ -45,8 +51,8 @@
       </th>
       <th>
         <div>Thanh toán</div>
-        <select  *ngIf="!isCheckOrderSelected"
-          class='select border-top' style='width: 100%' formControlName='paidType'>
+        <select *ngIf="!isCheckOrderSelected"
+                class='select border-top' style='width: 100%' formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
@@ -140,12 +146,18 @@
             >
           </div>
           <div class="d-flex justify-content-center align-items-center">
-            <mat-checkbox
-              *ngIf='!pickOne||data?.pickMore'
-              class='checkID'
-              [checked]='checkOrder(order)'
-              (change)='updateAllSelect(order)'>
-            </mat-checkbox>
+            <div *ngIf="checkCommodityRoute(order)">
+              <mat-checkbox
+                #checkBoxOrder
+                *ngIf='!pickOne||data?.pickMore'
+                class='checkID'
+                [checked]='checkOrder(order)'
+                (change)='updateAllSelect(order,checkBoxOrder)'>
+              </mat-checkbox>
+            </div>
+            <div *ngIf="!checkCommodityRoute(order)">
+              {{getFirstRoute(order)}}
+            </div>
           </div>
         </td>
       </tr>
@@ -166,11 +178,15 @@
       <td *ngIf='!pickOne||data?.pickMore'>
         <div class="d-flex justify-content-center align-items-center">
           <mat-checkbox
+            *ngIf="!commodity?.route"
             #checkbox
             class='checkID'
             [checked]='checkCommodity(commodity)'
             (change)='pickCommodity(commodity, order, checkbox)'>
           </mat-checkbox>
+          <div *ngIf="commodity?.route">
+            {{commodity?.route?.bsx}}
+          </div>
         </div>
       </td>
     </tr>
