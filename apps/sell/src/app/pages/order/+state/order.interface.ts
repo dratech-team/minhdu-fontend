@@ -52,10 +52,11 @@ export interface OrderDTO {
   createdAt: {
     startedAt: Date,
     endedAt: Date,
-  } | Date;
+  } | Date|string;
   status: 0 | 1;
   explain: string;
   ward: string;
+  isRoute?:boolean
 }
 
 export interface CommodityUniq {

@@ -8,6 +8,8 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
 import { startWith } from 'rxjs/operators';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import * as lodash from 'lodash';
+
 
 @Component({
   templateUrl: 'dialog-position.component.html'
@@ -18,10 +20,12 @@ export class DialogPositionComponent implements OnInit {
   branchId!: number
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
+  branchesSelected: Branch[] = []
   constructor(
     private readonly dialogRef: MatDialogRef<DialogPositionComponent>,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
+    private readonly snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -29,6 +33,9 @@ export class DialogPositionComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
+      if(this.data.position?.branches){
+        this.branchesSelected = [...this.data.position.branches]
+      }
       this.branchId = this.data.position.branchId
       this.formGroup = this.formBuilder.group({
         position: [this.data.position.name],
@@ -60,16 +67,15 @@ export class DialogPositionComponent implements OnInit {
             id: this.data.position.id,
             name: val.position,
             workday: val.workday,
-            branchId: this.branchId
+            branchIds: this.branchesSelected.map(val => val.id)
           }));
       } else {
         this.store.dispatch(PositionActions.addPosition({
           name: val.position,
           workday: val.workday,
-          branchId: this.data?.branchId ? this.data.branchId : this.branchId
+          branchIds: this.branchesSelected.map(val => val.id)
         }));
       }
-
     } else {
       return;
     }
@@ -82,5 +88,26 @@ export class DialogPositionComponent implements OnInit {
 
   selectBranch(branch: Branch) {
       this.branchId = branch.id;
+  }
+
+  onSelectBranch(event: any, branch: Branch, branchesInput: HTMLInputElement) {
+    if (event.isUserInput) {
+      if (branch.id) {
+        if (this.branchesSelected.some(item => item.id === branch.id)) {
+          this.snackbar.open('Đơn vị đã được chọn', '', { duration: 1000 });
+        } else {
+          this.branchesSelected.push(branch);
+        }
+      }
+      setTimeout(() => {
+        this.branches.setValue('');
+        branchesInput.blur();
+      });
+
+    }
+  }
+
+  removeBranchSelected(branch: Branch) {
+    lodash.remove(this.branchesSelected, branch)
   }
 }
