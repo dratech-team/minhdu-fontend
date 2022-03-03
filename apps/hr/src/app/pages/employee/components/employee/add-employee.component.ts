@@ -161,14 +161,15 @@ export class AddEmployeeComponent implements OnInit {
     }
     const employee = {
       id: this?.data?.employee?.id,
-      isFlatSalary: value.isFlatSalary === this.flatSalary.FLAT_SALARY ,
+      isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
+        value.isFlatSalary === this.flatSalary.FLAT_SALARY : false,
       positionId: this.positionId || this.data?.employee.positionId,
       branchId: this.branchId || this.data?.employee.branchId,
       workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       lastName: value.lastName,
       gender: value.gender,
-      phone:  value.phone?.toString(),
+      phone: value.phone?.toString(),
       workPhone: value.workPhone?.toString(),
       birthday: value.birthday ? new Date(value.birthday) : undefined,
       birthplace: value.birthplace,
@@ -246,7 +247,7 @@ export class AddEmployeeComponent implements OnInit {
           .subscribe((branch) => (this.branchId = branch.id));
         this.snackbar.open('Đã tạo', '', {duration: 2500});
       } else {
-        if(this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL){
+        if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
           this.formGroup.get('recipeType')!.setValue(branch.recipe)
         }
         this.branchId = branch.id;
