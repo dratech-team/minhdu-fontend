@@ -1,12 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { RouteAction } from '../../+state/route.action';
-import { DatePipe } from '@angular/common';
-import { selectorAllOrders } from '../../../order/+state/order.selector';
-import { Order } from '../../../order/+state/order.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {RouteAction} from '../../+state/route.action';
+import {DatePipe} from '@angular/common';
+import {selectorAllOrders} from '../../../order/+state/order.selector';
+import {Order} from '../../../order/+state/order.interface';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Commodity} from "../../../commodity/+state/commodity.interface";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -15,6 +16,7 @@ export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
+  commoditySelected: Commodity[] = []
   isSelectAll = false;
   tabIndex = 0;
 
@@ -25,7 +27,8 @@ export class RouteDialogComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
     private readonly snackbar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     if (this.data?.selectOrder) {
@@ -48,7 +51,11 @@ export class RouteDialogComponent implements OnInit {
   }
 
   pickOrders(orders: Order[]) {
-    this.orderIdsOfRoute = orders;
+    this.orderIdsOfRoute = [...orders];
+  }
+
+  pickCommodity(commodities: Commodity[]) {
+    this.commoditySelected = [...commodities];
   }
 
   get f() {
@@ -61,7 +68,7 @@ export class RouteDialogComponent implements OnInit {
       return;
     }
     if (this.orderIdsOfRoute.length === 0) {
-      return this.snackbar.open('Chưa chọn đơn hàng', '', { duration: 1500 });
+      return this.snackbar.open('Chưa chọn đơn hàng', '', {duration: 1500});
     }
     const val = this.formGroup.value;
     const route = {
@@ -72,13 +79,14 @@ export class RouteDialogComponent implements OnInit {
       driver: val.driver,
       garage: val.garage,
       orderIds: this.orderIdsOfRoute.map((item) => item.id),
+      commodityIds: this.commoditySelected.map((item) => item.id),
     };
     if (this.data) {
       this.store.dispatch(
-        RouteAction.updateRoute({ route: route, id: this.data.route.id })
+        RouteAction.updateRoute({route: route, id: this.data.route.id})
       );
     } else {
-      this.store.dispatch(RouteAction.addRoute({ route: route }));
+      this.store.dispatch(RouteAction.addRoute({route: route}));
     }
     this.dialogRef.close();
   }

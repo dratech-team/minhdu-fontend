@@ -1,5 +1,5 @@
 <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
-<div  style='height: 60vh ; overflow: auto'
+<div style='height: 60vh ; overflow: auto'
      infiniteScroll
      [infiniteScrollThrottle]='10'
      [alwaysCallback]='true'
@@ -13,14 +13,26 @@
       <th *ngIf='!payment'>
         <div>Khách hàng</div>
         <input class='form-control '
+               *ngIf="!isCheckOrderSelected"
                type='search'
                formControlName='name'
+        >
+        <input class='form-control '
+               *ngIf="isCheckOrderSelected"
+               type='search'
+               disabled
         >
       </th>
       <th>
         <div>Ngày tạo</div>
         <input class='form-control '
+               *ngIf="!isCheckOrderSelected"
                type='date' formControlName='createdAt'
+        >
+        <input class='form-control '
+               *ngIf="isCheckOrderSelected"
+               type='search'
+               disabled
         >
       </th>
       <th>
@@ -33,11 +45,17 @@
       </th>
       <th>
         <div>Thanh toán</div>
-        <select class='select border-top' style='width: 100%' formControlName='paidType'>
+        <select  *ngIf="!isCheckOrderSelected"
+          class='select border-top' style='width: 100%' formControlName='paidType'>
           <option value='{{paidType.PAID}}'>Có thanh toán</option>
           <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
           <option value=''>tất cả</option>
         </select>
+        <input class='form-control '
+               *ngIf="isCheckOrderSelected"
+               type='search'
+               disabled
+        >
       </th>
       <th>
         <div>lần thanh toán</div>
@@ -135,31 +153,31 @@
         <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
 
     <thead>
-          <th class="text-center">Hàng hoá</th>
-          <th class="text-center">Số lượng</th>
-          <th class="text-center">Giá</th>
-          <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
-          </thead>
-          <tbody>
-          <tr *ngFor="let commodity of innerTable.data">
-            <td class="text-center">{{commodity.name}}</td>
-            <td class="text-center">{{commodity.amount}}</td>
-            <td class="text-center">{{commodity.price}}</td>
-            <td *ngIf='!pickOne||data?.pickMore'>
-              <div class="d-flex justify-content-center align-items-center">
-                <mat-checkbox
-                  #checkbox
-                  class='checkID'
-                  [checked]='checkCommodity(commodity)'
-                  (change)='pickCommodity(commodity, order, checkbox)'>
-                </mat-checkbox>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </nz-table>
-      </tr>
-    </ng-template>
+    <th class="text-center">Hàng hoá</th>
+    <th class="text-center">Số lượng</th>
+    <th class="text-center">Giá</th>
+    <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let commodity of innerTable.data">
+      <td class="text-center">{{commodity.name}}</td>
+      <td class="text-center">{{commodity.amount}}</td>
+      <td class="text-center">{{commodity.price}}</td>
+      <td *ngIf='!pickOne||data?.pickMore'>
+        <div class="d-flex justify-content-center align-items-center">
+          <mat-checkbox
+            #checkbox
+            class='checkID'
+            [checked]='checkCommodity(commodity)'
+            (change)='pickCommodity(commodity, order, checkbox)'>
+          </mat-checkbox>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  </tr>
+  </ng-template>
   </tbody>
   </nz-table>
 </div>
@@ -168,10 +186,12 @@
   ::ng-deep .mat-step-header[aria-selected="true"] {
     height: 30px !important;
   }
-  th{
+
+  th {
     padding: 5px !important;
   }
-  td{
+
+  td {
     padding: 5px !important;
   }
 </style>
