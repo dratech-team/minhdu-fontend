@@ -133,6 +133,11 @@ export const updateStateEmployee = createAction(
   props<{ scrollX?: number }>()
 );
 
+export const deleteWorkHistory = createAction(
+  '[DELETE_WORK_HISTORY] Delete Work History ',
+  props<{ id: number, employeeId: number }>()
+);
+
 export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
@@ -160,5 +165,6 @@ export const EmployeeAction = {
   leaveEmployee,
   deleteContract,
   deleteContractSuccess,
-  updateStateEmployee
+  updateStateEmployee,
+  deleteWorkHistory
 };

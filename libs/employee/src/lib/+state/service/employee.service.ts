@@ -44,4 +44,8 @@ export class EmployeeService extends BaseService<Employee> {
   delete(id: number, params?: any): Observable<void> {
     return super.delete(id, params);
   }
+
+  deleteWorkHistory(id: number, body?: any): Observable<void> {
+    return this.http.patch<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/work-history`, body);
+  }
 }

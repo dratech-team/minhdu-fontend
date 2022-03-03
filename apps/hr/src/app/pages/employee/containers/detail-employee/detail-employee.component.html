@@ -711,11 +711,17 @@
             <th style="background: white" class='text-center border'>Từ ngày</th>
             <th style="background: white" class='text-center border'>Vị trí công việc</th>
             <th style="background: white" class='text-center border'>Đơn vị công tác</th>
+            <th style="background: white" class='text-center border'>Xoá</th>
           </tr>
           <tr *ngFor='let workHistory of employee.workHistories|filterDayWorkHistory'>
             <td class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{workHistory?.position?.name}}</td>
             <td class='text-center'>{{workHistory?.branch?.name}}</td>
+            <td class='text-center' (click)="deleteWorkHistory(workHistory, employee.id)">
+              <button class="btn btn-danger">
+                Xoá
+              </button>
+            </td>
           </tr>
         </table>
       </div>
