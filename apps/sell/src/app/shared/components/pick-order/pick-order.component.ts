@@ -23,6 +23,7 @@ import {
   someComplete
 } from '../../../../../../../libs/utils/pick-item.ultil';
 import {Commodity} from "../../../pages/commodity/+state/commodity.interface";
+import {Route} from "../../../pages/route/+state/route.interface";
 
 
 @Component({
@@ -222,7 +223,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     return !order.commodities.every(val => typeof (val.routeId) === 'number')
   }
 
-  getFirstRoute(order: Order): string {
-    return order?.routes[0].bsx
+  getFirstRoute(order: Order): Route {
+    return order?.routes[0]
   }
 }

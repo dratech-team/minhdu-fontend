@@ -155,9 +155,12 @@
                 (change)='updateAllSelect(order,checkBoxOrder)'>
               </mat-checkbox>
             </div>
-            <div *ngIf="!checkCommodityRoute(order)">
-              {{getFirstRoute(order)}}
-            </div>
+            <a *ngIf="!checkCommodityRoute(order)"
+                 [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",getFirstRoute(order).id]'
+                 style='color: red'
+                 target='_blank' class='  pointer no-underline '>
+              {{getFirstRoute(order).bsx}}
+            </a>
           </div>
         </td>
       </tr>
@@ -184,9 +187,12 @@
             [checked]='checkCommodity(commodity)'
             (change)='pickCommodity(commodity, order, checkbox)'>
           </mat-checkbox>
-          <div *ngIf="commodity?.route">
+          <a *ngIf="commodity?.route"
+             [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",commodity?.route?.id]'
+             style='color: red'
+             target='_blank' class='  pointer no-underline '>
             {{commodity?.route?.bsx}}
-          </div>
+          </a>
         </div>
       </td>
     </tr>
