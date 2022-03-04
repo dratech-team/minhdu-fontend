@@ -155,12 +155,13 @@
                 (change)='updateAllSelect(order,checkBoxOrder)'>
               </mat-checkbox>
             </div>
-            <a *ngIf="!checkCommodityRoute(order)"
-                 [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",getFirstRoute(order).id]'
+            <div *ngIf="!checkCommodityRoute(order)">
+              <a *ngFor="let item of order.routes" [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",item.id]'
                  style='color: red'
-                 target='_blank' class='  pointer no-underline '>
-              {{getFirstRoute(order).bsx}}
-            </a>
+                 target='_blank' class='pointer no-underline '>
+                {{item.bsx}}
+              </a>
+            </div>
           </div>
         </td>
       </tr>

@@ -43,8 +43,8 @@ export class DetailRouteComponent implements OnInit {
 
   updateRoute(route: Route, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
-      width: '60%',
-      data: {route: route, selectOrder: selectOrder}
+      width: 'fit-content',
+      data: {route: route, selectOrder: selectOrder, isUpdate:true}
     });
   }
 

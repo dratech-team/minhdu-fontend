@@ -15,7 +15,7 @@ import {Commodity} from "../../../commodity/+state/commodity.interface";
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
+  orderIdsOfRoute: Order[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
   commoditySelected: Commodity[] = []
   isSelectAll = false;
   tabIndex = 0;
@@ -92,10 +92,10 @@ export class RouteDialogComponent implements OnInit {
   }
 
   nextTab(tab: any) {
-    if(this.tabIndex === 0){
+    if (this.tabIndex === 0) {
       this.submitted = true
-      if( this.formGroup.invalid)
-      return
+      if (this.formGroup.invalid)
+        return
     }
     this.tabIndex = tab._selectedIndex + 1;
   }
