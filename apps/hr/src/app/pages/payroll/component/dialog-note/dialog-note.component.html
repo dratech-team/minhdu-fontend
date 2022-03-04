@@ -1,0 +1,23 @@
+<div class="animated main-popup p-3" style='min-width: 300px'>
+  <div mat-dialog-close class="close-popup">
+    <span class="mr-1"></span>
+  </div>
+  <div class="title-popup">
+    <span>Thêm chú thích </span>
+  </div>
+  <div class=" mt-4 ml-2 " [formGroup]="formGroup">
+    <span class='title-popup mb-2'>Chú thích</span>
+    <input class="form-control" type="text" formControlName="note">
+  </div>
+  <div class="row mt-4 ml-2">
+    <button mat-dialog-close
+            style='font-size: 12px'
+            class="  col-md-2 btn btn-cancel d-flex justify-content-center">Hủy</button>
+    <button (click)="onSubmit()"
+            mat-dialog-close
+            style='font-size: 12px'
+            class="ml-3 col-md-3 btn btn-ok d-flex justify-content-center">Đồng ý
+    </button>
+  </div>
+</div>
+

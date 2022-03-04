@@ -370,6 +370,8 @@
         </table>
       </div>
       <!--      ngày lễ-->
+
+
       <div #holiday class='col-12 mt-5'>
         <table>
           <thead>
@@ -411,6 +413,33 @@
           </tbody>
         </table>
       </div>
+
+      <div #note class='col-12 mt-5'>
+        <table>
+          <thead>
+          <tr style='background-color: #dddddd66;'>
+            <th class=' title '>Chú thích</th>
+            <th width='10%' style='color: #1b8eb7' (click)='addNote(payroll)'><span
+              class='mx-2 pointer'>{{payroll?.note ? 'Sửa': 'Thêm'}}</span>
+              <img class='pointer' style='margin-left: 2px;width: 13px;' src='./assets/img/payroll/plus-lg.svg'
+                   alt='add icon'>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngIf="payroll?.note" style='background: white !important;'>
+            <th>
+              <div>
+                <span>{{payroll?.note}}</span>
+              </div>
+            </th>
+            <th width='10%'>
+            </th>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class='sticky-scroll' *ngIf='isSticky'>
         <div class='pointer' (click)='onSticky(sticky)'>Ẩn >></div>
         <div class='pointer ' (click)='scroll(basic,sticky)'>Lương cơ bản</div>
@@ -419,6 +448,7 @@
         <div class='pointer' (click)='scroll(overtime,sticky)'>Tăng ca</div>
         <div class='pointer' (click)='scroll(absent,sticky)'>Khấu trừ</div>
         <div class='pointer' (click)='scroll(holiday,sticky)'>Đi làm ngày lễ</div>
+        <div class='pointer' (click)='scroll(note,sticky)'>Chú thích</div>
         <div class='pointer' (click)='scroll(footer,sticky)'>Lịch sử và xác nhận lương</div>
       </div>
       <div class='sticky-scroll' #sticky>

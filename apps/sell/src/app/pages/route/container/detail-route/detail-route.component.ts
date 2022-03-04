@@ -100,7 +100,7 @@ export class DetailRouteComponent implements OnInit {
           const index = commodityIds.indexOf(commodity.id)
           commodityIds.splice(index, 1)
           const route = {
-            commodityIds: commodityIds
+            commodityIds: commodityIds,
           }
           this.store.dispatch(RouteAction.updateRoute({
             id: this.route.id,

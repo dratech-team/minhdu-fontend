@@ -71,6 +71,7 @@ import { TableEmployeeSelectedComponent } from './component/table-employee-selec
 import { TableAllowanceEmployeeComponent } from './component/table-allowance-emp-selected/table-allowance-employee.component';
 import { TableSalarySelected } from './component/table-salaries-selected/table-salary-selected';
 import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-overtime.component';
+import {DialogNoteComponent} from "./component/dialog-note/dialog-note.component";
 
 @NgModule({
   imports: [
@@ -155,6 +156,7 @@ import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-o
     TableEmployeeSelectedComponent,
     TableAllowanceEmployeeComponent,
     TableSalarySelected,
+    DialogNoteComponent
   ],
   providers: [MatDatepickerModule],
 })
