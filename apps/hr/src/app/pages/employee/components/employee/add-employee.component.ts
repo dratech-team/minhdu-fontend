@@ -196,7 +196,7 @@ export class AddEmployeeComponent implements OnInit {
       },
       recipeType: value.recipeType
     };
-    if (this.data !== null) {
+    if (this.data) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.data.employee.id,
