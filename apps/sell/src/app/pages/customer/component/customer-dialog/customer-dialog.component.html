@@ -1,210 +1,219 @@
-<h2 mat-dialog-title>Thông tin Khách hàng</h2>
-<mat-dialog-content class='mat-typography'>
-  <form [formGroup]='formGroup' autocomplete='off'>
-    <div class='form-group'>
-      <div class='row'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='lastName'>Họ và tên<span class='star'>*</span>
-          </label>
-          <input
-            class='form-control'
-            formControlName='lastName'
-            id='lastname'
-            placeholder='Hiệu'
-            type='text'
-            [ngClass]="{ 'is-invalid': submitted && checkValid.lastName.errors?.required }"
-          >
-          <div *ngIf='submitted && checkValid.lastName.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập họ và tên khác hàng</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='birthplace'>Nguyên quán</label>
-          <input
-            class='form-control'
-            formControlName='birthplace'
-            id='birthplace'
-            placeholder='Phước Sơn - Tuy Phước - Bình Định '
-            type='text'
-            [ngClass]="{ 'is-invalid': submitted && checkValid.birthplace.errors?.required }"
-          >
-          <div *ngIf='submitted && checkValid.birthplace.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập nguyên quán</div>
-          </div>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='religion'>Tôn giáo
-          </label>
-          <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='ethnicity'>Dân tộc
-          </label>
-          <input
-            class='form-control'
-            formControlName='ethnicity'
-            id='ethnicity'
-            placeholder='Kinh'
-            type='text'
-          >
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='address'>Địa chỉ</label>
-          <input
-            class='form-control'
-            formControlName='address'
-            id='address'
-            placeholder='Số nhà / thôn xóm'
-            type='text'
-          >
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='note'>Ghi chú</label>
-          <input
-            id='note'
-            type='text'
-            class='form-control'
-            formControlName='note'
-          >
-        </div>
-      </div>
-      <app-pick-location
-        [ward]='data?.ward'
-        [formGroup]='formGroup'
-        [submitted]='submitted'
-        [form]='checkValid'
-        [isRequiredDistrict]='false'
-        [isRequiredWard]='false'
-        (eventSelectProvince)='provinceId = $event'
-        (eventSelectDistrict)='districtId = $event'
-        (eventSelectWard)='wardId = $event'
-      >
-      </app-pick-location>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='cmnd'>CMND/CCCD</label>
-          <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
-                 [ngClass]="{ 'is-invalid': submitted && checkValid.identify.errors?.required }">
-          <div *ngIf='submitted && checkValid.identify.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập CMND/CCCD</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='idCardAt'>Ngày cấp</label>
-          <input
-            type='date'
-            placeholder='06/05/1997'
-            class='form-control'
-            id='idCardAt'
-            formControlName='idCardAt'
-            [ngClass]="{ 'is-invalid': submitted && checkValid.idCardAt.errors?.required }"
-          >
-          <div *ngIf='submitted && checkValid.idCardAt.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập ngày cấp</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='issuedBy'>Nơi cấp</label>
-          <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
-                 [ngClass]="{ 'is-invalid': submitted && checkValid.issuedBy.errors?.required }">
-          <div *ngIf='submitted && checkValid.issuedBy.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập nơi cấp</div>
-          </div>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='phone'>Số điện thoại <span class='star'>*</span></label>
-          <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'
-                 [ngClass]="{ 'is-invalid': submitted && checkValid.phone.errors?.required }">
-          <div *ngIf='submitted && checkValid.phone.errors?.required' class='invalid-feedback'>
-            <div>Chưa nhập số điện thoại</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='birthday'>Ngày sinh</label>
-          <input type='date' id='birthday' class='form-control' formControlName='birthday'
-                 [ngClass]="{ 'is-invalid': submitted && checkValid.birthday.errors?.required }">
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='gender'>Giới tính</label>
-          <div id='gender'>
-            <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
-              <mat-radio-button value='MALE'>Nam</mat-radio-button>
-              <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
-              <mat-radio-button value='OTHER'>Khác</mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='type'>Loại Khách hàng</label>
-          <mat-select id='type' class='form-control' formControlName='type'
-                      [ngClass]="{ 'is-invalid': submitted && checkValid.type.errors?.required }">
-            <mat-option value='{{customerType.RETAIL}}'>
-              Khách lẻ
-            </mat-option>
-            <mat-option value='{{customerType.AGENCY}}'>
-              Đại lí
-            </mat-option>
-          </mat-select>
-          <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn loại khách hàng</div>
-          </div>
-        </div>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='resource'>Nguồn khác hàng</label>
-          <mat-select id='resource' class='form-control' formControlName='resource'
-                      [ngClass]="{ 'is-invalid': submitted && checkValid.resource.errors?.required }">
-            <mat-option value='{{resourceType.SELF_FIND}}'>
-              Tự tìm
-            </mat-option>
-            <mat-option value='{{resourceType.INTRODUCED}}'>
-              Giới thiệu
-            </mat-option>
-            <mat-option value='{{resourceType.RESEARCH}}'>
-              Tra cứu
-            </mat-option>
-            <mat-option value='{{resourceType.OTHER}}'>
-              Khác
-            </mat-option>
-          </mat-select>
-          <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
-            <div>Chưa chọn nguồn khách hàng</div>
-          </div>
-        </div>
-      </div>
-      <div class='row mt-3'>
-        <div class='col-sm' [formGroup]='formGroup'>
-          <label for='religion'>Email
-          </label>
-          <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com'
-                 formControlName='email'>
-        </div>
-      </div>
-      <div class='row mt-3' [formGroup]='formGroup'>
-        <div class='col-sm'>
-          <label for='facebook'>Tìm năng</label>
-          <input
-            id='facebook'
-            type='checkbox'
-            class='form-control'
-            formControlName='isPotential'
-          >
-        </div>
-      </div>
-      <div class='row d-flex mt-3 justify-content-center'>
-        <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
-        <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
-      </div>
+<div class="main-popup">
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='assets/icon/share/x2-lg.svg' alt='cancel'>
     </div>
-  </form>
-</mat-dialog-content>
+  </div>
+  <h2 mat-dialog-title>Thông tin Khách hàng</h2>
+  <mat-dialog-content class='mat-typography'>
+    <form [formGroup]='formGroup' autocomplete='off'>
+      <div class='form-group'>
+        <div class='row'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='lastName'>Họ và tên<span class='star'>*</span>
+            </label>
+            <input
+              class='form-control'
+              formControlName='lastName'
+              id='lastname'
+              placeholder='Hiệu'
+              type='text'
+              [ngClass]="{ 'is-invalid': submitted && checkValid.lastName.errors?.required }"
+            >
+            <div *ngIf='submitted && checkValid.lastName.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập họ và tên khác hàng</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='birthplace'>Nguyên quán</label>
+            <input
+              class='form-control'
+              formControlName='birthplace'
+              id='birthplace'
+              placeholder='Phước Sơn - Tuy Phước - Bình Định '
+              type='text'
+              [ngClass]="{ 'is-invalid': submitted && checkValid.birthplace.errors?.required }"
+            >
+            <div *ngIf='submitted && checkValid.birthplace.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập nguyên quán</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='religion'>Tôn giáo
+            </label>
+            <input type='text' class='form-control' id='religion' placeholder='Không' formControlName='religion'>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='ethnicity'>Dân tộc
+            </label>
+            <input
+              class='form-control'
+              formControlName='ethnicity'
+              id='ethnicity'
+              placeholder='Kinh'
+              type='text'
+            >
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='address'>Địa chỉ</label>
+            <input
+              class='form-control'
+              formControlName='address'
+              id='address'
+              placeholder='Số nhà / thôn xóm'
+              type='text'
+            >
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='note'>Ghi chú</label>
+            <input
+              id='note'
+              type='text'
+              class='form-control'
+              formControlName='note'
+            >
+          </div>
+        </div>
+        <app-pick-location
+          [ward]='data?.ward'
+          [formGroup]='formGroup'
+          [submitted]='submitted'
+          [form]='checkValid'
+          [isRequiredDistrict]='false'
+          [isRequiredWard]='false'
+          (eventSelectProvince)='provinceId = $event'
+          (eventSelectDistrict)='districtId = $event'
+          (eventSelectWard)='wardId = $event'
+        >
+        </app-pick-location>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='cmnd'>CMND/CCCD</label>
+            <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
+                   [ngClass]="{ 'is-invalid': submitted && checkValid.identify.errors?.required }">
+            <div *ngIf='submitted && checkValid.identify.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập CMND/CCCD</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='idCardAt'>Ngày cấp</label>
+            <input
+              type='date'
+              placeholder='06/05/1997'
+              class='form-control'
+              id='idCardAt'
+              formControlName='idCardAt'
+              [ngClass]="{ 'is-invalid': submitted && checkValid.idCardAt.errors?.required }"
+            >
+            <div *ngIf='submitted && checkValid.idCardAt.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập ngày cấp</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='issuedBy'>Nơi cấp</label>
+            <input type='text' class='form-control' id='issuedBy' placeholder='Bình Định' formControlName='issuedBy'
+                   [ngClass]="{ 'is-invalid': submitted && checkValid.issuedBy.errors?.required }">
+            <div *ngIf='submitted && checkValid.issuedBy.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập nơi cấp</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='phone'>Số điện thoại <span class='star'>*</span></label>
+            <input type='tel' class='form-control' id='phone' placeholder='0337552146' formControlName='phone'
+                   [ngClass]="{ 'is-invalid': submitted && checkValid.phone.errors?.required }">
+            <div *ngIf='submitted && checkValid.phone.errors?.required' class='invalid-feedback'>
+              <div>Chưa nhập số điện thoại</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='birthday'>Ngày sinh</label>
+            <input type='date' id='birthday' class='form-control' formControlName='birthday'
+                   [ngClass]="{ 'is-invalid': submitted && checkValid.birthday.errors?.required }">
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='gender'>Giới tính</label>
+            <div id='gender'>
+              <mat-radio-group class='d-flex justify-content-around' formControlName='gender'>
+                <mat-radio-button value='MALE'>Nam</mat-radio-button>
+                <mat-radio-button value='FEMALE'>Nữ</mat-radio-button>
+                <mat-radio-button value='OTHER'>Khác</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='type'>Loại Khách hàng</label>
+            <mat-select id='type' class='form-control' formControlName='type'
+                        [ngClass]="{ 'is-invalid': submitted && checkValid.type.errors?.required }">
+              <mat-option value='{{customerType.RETAIL}}'>
+                Khách lẻ
+              </mat-option>
+              <mat-option value='{{customerType.AGENCY}}'>
+                Đại lí
+              </mat-option>
+            </mat-select>
+            <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn loại khách hàng</div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='resource'>Nguồn khác hàng</label>
+            <mat-select id='resource' class='form-control' formControlName='resource'
+                        [ngClass]="{ 'is-invalid': submitted && checkValid.resource.errors?.required }">
+              <mat-option value='{{resourceType.SELF_FIND}}'>
+                Tự tìm
+              </mat-option>
+              <mat-option value='{{resourceType.INTRODUCED}}'>
+                Giới thiệu
+              </mat-option>
+              <mat-option value='{{resourceType.RESEARCH}}'>
+                Tra cứu
+              </mat-option>
+              <mat-option value='{{resourceType.OTHER}}'>
+                Khác
+              </mat-option>
+            </mat-select>
+            <div *ngIf='submitted && checkValid.type.errors?.required' class='invalid-feedback'>
+              <div>Chưa chọn nguồn khách hàng</div>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='religion'>Email
+            </label>
+            <input type='text' class='form-control' id='email' placeholder='trangiahieu@gmail.com'
+                   formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Tìm năng</label>
+            <input
+              id='facebook'
+              type='checkbox'
+              class='form-control'
+              formControlName='isPotential'
+            >
+          </div>
+        </div>
+        <div class='row d-flex mt-3 justify-content-center'>
+          <button type='button' mat-dialog-close class='btn btn-secondary'>Huỷ</button>
+          <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
+
 
 
 
