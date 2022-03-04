@@ -146,7 +146,7 @@
             >
           </div>
           <div class="d-flex justify-content-center align-items-center">
-            <div *ngIf="checkCommodityRoute(order)">
+            <div *ngIf="!checkCommodityRoute(order)">
               <mat-checkbox
                 #checkBoxOrder
                 *ngIf='!pickOne||data?.pickMore'
@@ -155,7 +155,7 @@
                 (change)='updateAllSelect(order,checkBoxOrder)'>
               </mat-checkbox>
             </div>
-            <div *ngIf="!checkCommodityRoute(order)">
+            <div *ngIf="checkCommodityRoute(order)">
               <a *ngFor="let item of order.routes" [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",item.id]'
                  style='color: red'
                  target='_blank' class='pointer no-underline '>

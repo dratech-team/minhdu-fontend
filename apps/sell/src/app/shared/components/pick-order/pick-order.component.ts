@@ -110,8 +110,8 @@ export class PickOrderComponent implements OnInit, OnChanges {
         }
         this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
         this.orders.map(val => {
-            if (this.checkCommodityRoute(val)) {
-                this.ordersFilter.push(val)
+            if (!this.checkCommodityRoute(val)) {
+              this.ordersFilter.push(val)
             }
           }
         )
@@ -145,14 +145,14 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (checkBox?.checked) {
       order.commodities.forEach(val => {
         const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
-        if (index <= -1) {
+        if (index <= -1 && val.routeId === null) {
           this.commoditiesSelected.push(val)
         }
       })
     } else {
       order.commodities.forEach(val => {
         const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
-        if (index > -1) {
+        if (index > -1 && val.routeId === null) {
           this.commoditiesSelected.splice(index, 1)
         }
       })
@@ -177,7 +177,12 @@ export class PickOrderComponent implements OnInit, OnChanges {
       pickAll(select, this.ordersFilter, this.orderSelected);
       if (select) {
         this.commoditiesSelected = []
-        this.ordersFilter.forEach(val => val.commodities.map(commodity => this.commoditiesSelected.push(commodity)))
+        this.ordersFilter.forEach(val => val.commodities.map(commodity => {
+            if (commodity.routeId === null) {
+              this.commoditiesSelected.push(commodity)
+            }
+          }
+        ))
       } else {
         this.commoditiesSelected = []
       }

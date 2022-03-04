@@ -57,6 +57,7 @@ export class RouteDialogComponent implements OnInit {
 
   pickCommodity(commodities: Commodity[]) {
     this.commoditySelected = [...commodities];
+    console.log(this.commoditySelected)
   }
 
   get f() {

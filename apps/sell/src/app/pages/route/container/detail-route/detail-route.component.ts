@@ -95,6 +95,17 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
+          const commodityIds: number[] = []
+          this.route.orders.forEach(val => val.commodities.forEach(val => commodityIds.push(val.id)))
+          const index = commodityIds.indexOf(commodity.id)
+          commodityIds.splice(index, 1)
+          const route = {
+            commodityIds: commodityIds
+          }
+          this.store.dispatch(RouteAction.updateRoute({
+            id: this.route.id,
+            route: route
+          }))
         }
       })
   }
@@ -113,7 +124,7 @@ export class DetailRouteComponent implements OnInit {
           const index = orderIds.indexOf(order.id)
           orderIds.splice(index, 1)
           const route = {
-            orderIds : orderIds
+            orderIds: orderIds
           }
           this.store.dispatch(RouteAction.updateRoute({
             id: this.route.id,
