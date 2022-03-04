@@ -23,29 +23,31 @@ import {SharedModule} from '../../shared/shared.module';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {MainReducer} from '../../states/mainReducer';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {NzTableModule} from "ng-zorro-antd/table";
 
 @NgModule({
-  imports: [
-    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-    StoreModule.forFeature(FeatureName.EMPLOYEE, EmployeeReducer),
-    EffectsModule.forFeature([RouteEffect, EmployeeEffect]),
-    ComponentsModule,
-    RouteRoutingModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCheckboxModule,
-    FormsModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatDatepickerModule
-  ],
+    imports: [
+        StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
+        StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+        StoreModule.forFeature(FeatureName.EMPLOYEE, EmployeeReducer),
+        EffectsModule.forFeature([RouteEffect, EmployeeEffect]),
+        ComponentsModule,
+        RouteRoutingModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCheckboxModule,
+        FormsModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatDatepickerModule,
+        NzTableModule
+    ],
   declarations: [
     RouteComponent,
     DetailRouteComponent,

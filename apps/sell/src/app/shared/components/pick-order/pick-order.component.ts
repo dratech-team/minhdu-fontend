@@ -43,8 +43,11 @@ export class PickOrderComponent implements OnInit, OnChanges {
   @Output() checkEvent = new EventEmitter<Order[]>();
   @Output() checkCommodityEvent = new EventEmitter<Commodity[]>();
   @Output() checkEventPickOne = new EventEmitter<Order>();
+
   orders$ = this.store.select(selectorAllOrders);
   total$ = this.store.select(selectedTotalOrder);
+
+  ordersFilter: Order[] = []
   pageSize = 30;
   pageIndex = 0;
   orderPickOne!: Order;
@@ -70,7 +73,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.orderSelected?.currentValue !== changes?.orderSelected?.previousValue) {
-      this.isSelectAll = this.orders.every(e => this.orderSelected.some(val => val.id === e.id))
+      this.isSelectAll = this.ordersFilter.every(e => this.orderSelected.some(val => val.id === e.id))
     }
   }
 
@@ -106,6 +109,12 @@ export class PickOrderComponent implements OnInit, OnChanges {
           this.isSelectAll = checkIsSelectAllInit(orders, this.orderSelected);
         }
         this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
+        this.orders.map(val => {
+            if (this.checkCommodityRoute(val)) {
+                this.ordersFilter.push(val)
+            }
+          }
+        )
       });
     }
   }
@@ -132,7 +141,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   }
 
   updateAllSelect(order: Order, checkBox?: any) {
-    this.isSelectAll = pickOne(order, this.orderSelected, this.orders).isSelectAll;
+    this.isSelectAll = pickOne(order, this.orderSelected, this.ordersFilter).isSelectAll;
     if (checkBox?.checked) {
       order.commodities.forEach(val => {
         const index = this.commoditiesSelected.findIndex(commodity => commodity.id === val.id)
@@ -154,7 +163,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   }
 
   someComplete(): boolean {
-    return someComplete(this.orders, this.orderSelected, this.isSelectAll);
+    return someComplete(this.ordersFilter, this.orderSelected, this.isSelectAll);
   }
 
   setAll(select: boolean) {
@@ -165,10 +174,10 @@ export class PickOrderComponent implements OnInit, OnChanges {
       this.checkCommodityEvent.emit(this.commoditiesSelected)
     } else {
       this.isSelectAll = select;
-      pickAll(select, this.orders, this.orderSelected);
+      pickAll(select, this.ordersFilter, this.orderSelected);
       if (select) {
         this.commoditiesSelected = []
-        this.orders.forEach(val => val.commodities.map(commodity => this.commoditiesSelected.push(commodity)))
+        this.ordersFilter.forEach(val => val.commodities.map(commodity => this.commoditiesSelected.push(commodity)))
       } else {
         this.commoditiesSelected = []
       }
@@ -216,14 +225,16 @@ export class PickOrderComponent implements OnInit, OnChanges {
     } else {
       this.commoditiesSelected.push(commodity)
     }
+    this.checkEvent.emit(this.orderSelected)
     this.checkCommodityEvent.emit(this.commoditiesSelected)
   }
 
   checkCommodityRoute(order: Order): boolean {
-    return !order.commodities.every(val => typeof (val.routeId) === 'number')
+    return order.commodities.every(val => val.routeId === null)
   }
 
   getFirstRoute(order: Order): Route {
     return order?.routes[0]
   }
+
 }

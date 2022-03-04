@@ -81,9 +81,10 @@ export class DetailOrderComponent implements OnInit {
         this.store.dispatch(OrderAction.updateOrder({
           updateOrderDto: {
             id: order.id,
-            commodityIds: value.map((e: any) => e.id)
+            order: {
+              commodityIds: value.map((e: any) => e.id)
+            }
           }
-
         }));
       });
     }

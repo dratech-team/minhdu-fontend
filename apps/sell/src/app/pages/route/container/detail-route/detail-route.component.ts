@@ -13,6 +13,11 @@ import {getSelectors} from '@minhdu-fontend/utils';
 import {
   DialogDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
+import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {
+  DialogSharedComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import {Order} from "../../../order/+state/order.interface";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -21,6 +26,7 @@ export class DetailRouteComponent implements OnInit {
   payType = PaymentType;
 
   route$ = this.store.select(selectorCurrentRoute(this.routeId));
+  route = {} as Route
 
   constructor(
     private readonly store: Store<AppState>,
@@ -33,6 +39,11 @@ export class DetailRouteComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
     this.store.dispatch(RouteAction.getRoute({id: this.routeId}));
+    this.route$.subscribe(val => {
+      if (val) {
+        this.route = JSON.parse(JSON.stringify(val))
+      }
+    })
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
@@ -44,7 +55,7 @@ export class DetailRouteComponent implements OnInit {
   updateRoute(route: Route, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: 'fit-content',
-      data: {route: route, selectOrder: selectOrder, isUpdate:true}
+      data: {route: route, selectOrder: selectOrder, isUpdate: true}
     });
   }
 
@@ -70,6 +81,44 @@ export class DetailRouteComponent implements OnInit {
           this.store.dispatch(
             RouteAction.updateRoute({route: {endedAt: val.day}, id: route.id})
           )
+        }
+      })
+  }
+
+  cancelCommodity(commodity: Commodity) {
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Huỷ hàng hoá trong tuyến đường',
+        description: 'Bạn có chắc chắn Huỷ hàng hoá này',
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if (val) {
+        }
+      })
+  }
+
+  cancelOrder(order: Order) {
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Huỷ đơn hàng trong tuyến đường',
+        description: 'Bạn có chắc chắn uỷ đơn hàng này',
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if (val) {
+          const orderIds = this.route.orders.map(e => e.id)
+          const index = orderIds.indexOf(order.id)
+          orderIds.splice(index, 1)
+          const route = {
+            orderIds : orderIds
+          }
+          this.store.dispatch(RouteAction.updateRoute({
+            id: this.route.id,
+            route: route
+          }))
         }
       })
   }

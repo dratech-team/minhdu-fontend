@@ -1,4 +1,4 @@
-<div class='animated fadeIn container mb-3 ' *ngIf='(route$ | async)  as route' style='min-height: 80vh!important;'>
+<div class='animated fadeIn container mb-3 '  style='min-height: 80vh!important;'>
 
   <div class='row'>
     <div class='row mt-5'>
@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <div class='row mt-5' style='color:#80828B' *ngIf='(route$ | async)  as route'>
+  <div class='row mt-5' style='color:#80828B'>
     <div class='col-12'>
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
@@ -91,72 +91,91 @@
           <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
           <button class='btn btn-primary mr-3' (click)='updateRoute(route, true)'>Thêm đơn hàng</button>
         </div>
-        <div class='fixTableHead my-3' style=' max-height: 50vh; width: 100%' infiniteScroll [alwaysCallback]='true'
+        <div class='fixTableHead my-3' style=' height: 300px; width: 100% ;overflow: auto' infiniteScroll
+             [alwaysCallback]='true'
              [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'>
-          <table>
+          <nz-table #nestedTable [nzData]="route.orders" [nzShowPagination]="false">
             <thead>
-            <tr class=' mt-3 animated fadeIn'>
+            <tr style="position: sticky;background: white">
+              <th></th>
               <th>
-                <div class=''>Khách hàng</div>
+                <div class="ml-2 font-weight-bold">Khách hàng</div>
                 <input disabled class='form-control ' type='date'>
               </th>
               <th>
-                <div class=''>Ngày tạo</div>
+                <div class='ml-2 font-weight-bold'>Ngày tạo</div>
                 <input disabled class='form-control  ' type='date'>
               </th>
               <th>
-                <div class=''>Điểm đến</div>
+                <div class='ml-2 font-weight-bold'>Điểm đến</div>
                 <input disabled class='form-control  ' type='text'>
               </th>
               <th>
-                <div class=''> Diễn giải</div>
+                <div class='ml-2 font-weight-bold'> Diễn giải</div>
                 <input disabled class='form-control' type='text'>
               </th>
               <th>
-                <div style="color: red">Tổng số lượng</div>
+                <div class="ml-2 font-weight-bold" style="color: red">Tổng số lượng</div>
+                <input disabled class='form-control' type='text'>
+              </th>
+              <th>
+                <div class="ml-2 font-weight-bold" >Huỷ</div>
                 <input disabled class='form-control' type='text'>
               </th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor='let order of route.orders'>
-              <th class='pointer' (click)='detailOrder(order.id)'>
-                {{order?.customer?.lastName || 'Đang cập nhật'}}
-              </th>
-              <th class='pointer' (click)='detailOrder(order.id)'>
-                {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
-              </th>
-              <th class='pointer' (click)='detailOrder(order.id)'>
-                {{order?.ward?.name}}
-              </th>
-              <th class='pointer' (click)='detailOrder(order.id)'>
-                {{order.explain}}
-              </th>
-              <th class='pointer' (click)='detailOrder(order.id)' style="color: red">
-                {{order.totalCommodity | number:'1.0-0' | notEmpty:'0'}}
-              </th>
-            </tr>
-            <tr>
-              <th style="color: red">
-                Tổng
-              </th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th style="color: red">
-                {{route.totalCommodityUniq | number:'1.0-0' | notEmpty:'0'}}
-              </th>
-            </tr>
-            <tr *ngIf='!route.orders || route.orders.length === 0 '>
-              <td class='font-xl d-flex align-items-center'>
-                  <span>
-                    Hiện chưa có đơn hàng nào!
-                  </span>
+            <ng-template ngFor let-order [ngForOf]="nestedTable.data">
+              <tr>
+                <td [(nzExpand)]="order.expand"></td>
+                <td class='pointer' (click)='detailOrder(order.id)'>
+                  {{order?.customer?.lastName || 'Đang cập nhật'}}
+                </td>
+                <td class='pointer' (click)='detailOrder(order.id)'>
+                  {{(order?.createdAt | date: 'dd/MM/yyyy') || ' Đang cập nhật'}}
+                </td>
+                <td class='pointer' (click)='detailOrder(order.id)'>
+                  {{order?.ward?.name}}
+                </td>
+                <td class='pointer' (click)='detailOrder(order.id)'>
+                  {{order.explain}}
+                </td>
+                <td class='pointer' (click)='detailOrder(order.id)' style="color: red">
+                  {{order.totalCommodity | number:'1.0-0' | notEmpty:'0'}}
+                </td>
+                <td class="pointer">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger" (click)="cancelOrder(order)">huỷ</button>
+                  </div>
+                </td>
+              </tr>
+              <tr [nzExpand]="order.expand? order.expand: false">
+                <nz-table #innerTable [nzData]="order.commodities"  nzSize="middle" [nzShowPagination]="false">
+            <thead>
+            <th class="text-center">Hàng hoá</th>
+            <th class="text-center">Số lượng</th>
+            <th class="text-center">Giá</th>
+            <th class="text-center" >Huỷ</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let commodity of innerTable.data">
+              <td class="text-center">{{commodity.name}}</td>
+              <td class="text-center">{{commodity.amount|number:'1.0-0'}}</td>
+              <td class="text-center">{{commodity.price|number:'1.0-0'}}đ</td>
+              <td>
+                <div class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-danger " (click)="cancelCommodity(commodity)">Huỷ</button>
+                </div>
               </td>
             </tr>
             </tbody>
-          </table>
+                </nz-table>
+              </tr>
+            </ng-template>
+            </tbody>
+          </nz-table>
         </div>
+
       </div>
     </div>
   </div>
