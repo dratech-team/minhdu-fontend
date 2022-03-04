@@ -110,8 +110,9 @@ export class PickOrderComponent implements OnInit, OnChanges {
         }
         this.orders = handleValSubPickItems(orders, this.orders, this.orderSelected, this.isSelectAll);
         this.orders.map(val => {
-            if (!this.checkCommodityRoute(val)) {
+            if (this.checkCommodityRoute(val)) {
               this.ordersFilter.push(val)
+              console.log(this.ordersFilter)
             }
           }
         )
@@ -235,7 +236,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   }
 
   checkCommodityRoute(order: Order): boolean {
-    return order.commodities.every(val => val.routeId === null)
+    return order.commodities.some(val => val.routeId === null)
   }
 
   getFirstRoute(order: Order): Route {
