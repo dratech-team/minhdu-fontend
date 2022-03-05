@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { combineLatest, throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerQuery } from './customer.query';
 import { CustomerStore } from './customer.store';
+import { OrderService } from '../../order/service/order.service';
 
 @Injectable()
 export class CustomerEffect {
@@ -16,7 +17,8 @@ export class CustomerEffect {
     private readonly customerStore: CustomerStore,
     private readonly customerQuery: CustomerQuery,
     private readonly customerService: CustomerService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly orderService: OrderService
   ) {
   }
 
@@ -25,8 +27,8 @@ export class CustomerEffect {
       ofType(CustomerAction.loadInit),
       switchMap((props) => this.customerService.pagination(props)),
       tap((ResponsePaginate) => {
-        console.log(ResponsePaginate)
-        this.customerStore.set(ResponsePaginate.data)
+        console.log(ResponsePaginate);
+        this.customerStore.set(ResponsePaginate.data);
       }),
       catchError((err) => throwError(err))
     )
@@ -77,8 +79,14 @@ export class CustomerEffect {
   getCustomer$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.getCustomer),
-      switchMap((props) => this.customerService.getOne(props.id)),
-      map((customer) => this.customerStore.update(customer.id, customer)),
+      switchMap((props) => this.customerService.getOne(props.id).pipe(
+        combineLatest([
+          this.orderService.getAll({ customerId: props.customerId }),
+          this.orderService.getAll({ customerId: props.customerId })
+        ]).pipe(map(([delivered, delivering]) => {
+          return [];
+        }))
+      )),
       catchError((err) => throwError(err))
     )
   );

@@ -1,70 +1,51 @@
-import {createAction, props} from '@ngrx/store';
-import {CommodityUniq, Order, OrderDTO, UpdateOrderDto} from './order.interface';
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { OrderDTO, UpdateOrderDto } from './order.interface';
 
-export const addOrder = createAction(
-  '[ADD_ORDER] Add Order',
+const addOrder = createAction(
+  '[ORDER] Add One',
   props<{ order: any }>()
 );
 
-export const addOrderSuccess = createAction(
-  '[ADD_ORDER] Add Order Success',
-  props<{ order: Order }>()
-);
+const loadAll = createAction('[ORDERS] Load All');
 
-export const loadAllOrder = createAction('[LOAD_ORDERS] Load All Order');
-
-export const loadInit = createAction(
-  '[LOAD_ORDERS] Load Order',
+const loadInit = createAction(
+  '[ORDER] Load Init',
   props<{ orderDTO: Partial<OrderDTO> }>()
 );
 
-export const loadInitSuccess = createAction(
-  '[LOAD_ORDERS_SUCCESS] Load Order Success',
-  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
-);
-
-export const loadMoreOrders = createAction(
+const loadMoreOrders = createAction(
   '[LOAD_MORE_ORDERS] Load More Order',
   props<{ orderDTO: Partial<OrderDTO> }>()
 );
 
-export const loadMoreOrdersSuccess = createAction(
-  '[LOAD_MORE_ORDERS] Load More Order success',
-  props<{ orders: Order[]; total: number, commodityUniq: CommodityUniq[] }>()
-);
-
-export const getOrder = createAction(
+const getOrder = createAction(
   '[GET_ORDER] Get Order',
   props<{ id: number }>()
 );
 
-export const getOrderSuccess = createAction(
-  '[GET_ORDER] Get Order Success',
-  props<{ order: Order }>()
-);
-
-export const updateOrder = createAction(
+const updateOrder = createAction(
   '[UPDATE_ORDER] Update Order',
   props<{
-     updateOrderDto: UpdateOrderDto
+    updateOrderDto: UpdateOrderDto
   }>()
 );
 
-export const updateHideOrder = createAction(
+const updateHideOrder = createAction(
   '[UPDATE_ORDER] Update Hide Order',
   props<{ hide: any; id: number; customerId: number }>()
 );
 
-export const payment = createAction(
+const payment = createAction(
   '[PAYMENT] Payment',
   props<{ order: any; id: number }>()
 );
 
-export const deleteOrder = createAction(
+const deleteOrder = createAction(
   '[DELETE_ORDER] Delete Order',
   props<{ id: number; customerId?: number }>()
 );
-export const loadOrdersAssigned = createAction(
+
+const loadOrdersAssigned = createAction(
   '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
   props<{
     take: number;
@@ -76,11 +57,7 @@ export const loadOrdersAssigned = createAction(
   }>()
 );
 
-export const loadOrdersAssignedSuccess = createAction(
-  '[LOAD_ORDERS_ASSIGNED] Load Order Assigned Success',
-  props<{ orders: Order[] }>()
-);
-export const loadMoreOrdersAssigned = createAction(
+const loadMoreOrdersAssigned = createAction(
   '[LOAD_MORE_ORDERS_ASSIGNED] Load More Order Assigned',
   props<{
     take: number;
@@ -91,35 +68,23 @@ export const loadMoreOrdersAssigned = createAction(
     delivered?: number;
   }>()
 );
-export const loadMoreOrdersAssignedSuccess = createAction(
-  '[LOAD__MORE_ORDERS_ASSIGNED] Load More Order Assigned Success',
-  props<{ orders: Order[] }>()
-);
 
-export const cancelOrder = createAction(
+const cancelOrder = createAction(
   '[CANCEL_ORDER] Cancel Order',
   props<{ orderId: number }>()
 );
 
-export const handleOrderError = createAction('[ORDER_ERROR] Order error');
-
 export const OrderAction = {
   addOrder,
-  addOrderSuccess,
   loadInit,
-  loadAllOrder,
-  loadInitSuccess,
+  loadAll,
   loadMoreOrders,
-  loadMoreOrdersSuccess,
   getOrder,
-  getOrderSuccess,
   updateOrder,
   updateHideOrder,
   payment,
   deleteOrder,
   loadOrdersAssigned,
-  loadOrdersAssignedSuccess,
   loadMoreOrdersAssigned,
-  loadMoreOrdersAssignedSuccess,
   cancelOrder
 };

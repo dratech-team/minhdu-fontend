@@ -51,7 +51,7 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     MatTabsModule,
     MatStepperModule,
     SharedModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
   ],
   declarations: [
     TablePaymentComponent,
@@ -61,9 +61,9 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     PaymentDialogComponent
   ],
   providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
     PickCustomerService,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ]
 })
 export class CustomerModule {
