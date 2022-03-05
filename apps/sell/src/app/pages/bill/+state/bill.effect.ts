@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { BillService } from '../service/bill.service';
 import { BillAction } from './bill.action';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Effect } from '@datorama/akita-ng-effects';
+import { BillStore } from './bill.store';
 
 @Injectable()
 export class BillEffect {
   constructor(
-    private readonly action: Actions,
+    private readonly actions$: Actions,
+    private readonly billStore: BillStore,
     private readonly billService: BillService
   ) {
   }
 
   @Effect()
-  loadInit$ = this.action.pipe(
-    ofType(BillAction.loadInit),
+  loadInit$ = this.actions$.pipe(
+    ofType(BillAction.loadAll),
     switchMap((props) => this.billService.pagination(props)),
-    map((responsePagination) => BillAction.loadInitSuccess({ bills: responsePagination.data })),
-    catchError(err => throwError(err))
-  );
-
-  @Effect()
-  loadMore$ = this.action.pipe(
-    ofType(BillAction.loadMoreBills),
-    switchMap((props) => this.billService.pagination(props)),
-    map((responsePagination) => BillAction.loadMoreBillsSuccess({ bills: responsePagination.data })),
+    tap((response) => {
+      this.billStore.add(response.data);
+    }),
     catchError(err => throwError(err))
   );
 }
