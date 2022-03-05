@@ -94,7 +94,7 @@ export class CustomerComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CustomerAction.loadMoreCustomers(
+      CustomerAction.loadAll(
         this.customer(val)
       )
     );
@@ -130,7 +130,7 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerAction.deleteCustomer({ id: $event.id }));
+        this.actions$.dispatch(CustomerAction.remove({ id: $event.id }));
       }
     });
   }

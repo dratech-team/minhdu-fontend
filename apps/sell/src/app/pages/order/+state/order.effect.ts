@@ -165,7 +165,7 @@ export class OrderEffect {
           //     status: this.convertBoolean.TRUE
           //   })
           // );
-          return CustomerAction.getCustomer({ id: props.customerId });
+          return CustomerAction.loadOne({ id: props.customerId });
         }),
         catchError((err) => throwError(err))
       )
@@ -192,7 +192,7 @@ export class OrderEffect {
           this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
           if (props.customerId) {
             this.actions$.dispatch(
-              CustomerAction.getCustomer({ id: props.customerId })
+              CustomerAction.loadOne({ id: props.customerId })
             );
             return OrderAction.loadInit({
               orderDTO: { take: 30, skip: 0, customerId: props.customerId }

@@ -37,7 +37,7 @@ export class DetailCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.actions$.dispatch(CustomerAction.getCustomer({ id: this.getId }));
+    this.actions$.dispatch(CustomerAction.loadOne({ id: this.getId }));
     this.actions$.dispatch(CustomerAction.loadOrderDelivered({ customerId: this.getId }));
     this.actions$.dispatch(CustomerAction.loadOrderDelivering({ customerId: this.getId }));
 
@@ -68,7 +68,7 @@ export class DetailCustomerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerAction.deleteCustomer({ id: id }));
+        this.actions$.dispatch(CustomerAction.remove({ id: id }));
       }
     });
   }

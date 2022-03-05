@@ -18,7 +18,7 @@ export class PickCustomerService {
   }
 
   scrollCustomer(val: any) {
-    this.actions$.dispatch(CustomerAction.loadMoreCustomers(val));
+    this.actions$.dispatch(CustomerAction.loadAll(val));
   }
 
   searchCustomer(val: any) {

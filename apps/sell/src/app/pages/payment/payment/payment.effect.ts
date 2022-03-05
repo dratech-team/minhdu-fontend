@@ -54,7 +54,7 @@ export class PaymentEffect {
             customerId: res.customerId
           }
         }));
-        this.store.dispatch(CustomerAction.getCustomer({ id: res.customerId }));
+        this.store.dispatch(CustomerAction.loadOne({ id: res.customerId }));
         return res;
       }),
       map(res => {
@@ -84,7 +84,7 @@ export class PaymentEffect {
             customerId: res.customerId
           }
         }));
-        this.store.dispatch(CustomerAction.getCustomer({ id: res.customerId }));
+        this.store.dispatch(CustomerAction.loadOne({ id: res.customerId }));
         return res;
       }),
       map(res => {
@@ -120,7 +120,7 @@ export class PaymentEffect {
                 customerId: props.customerId
               }
             }));
-            return CustomerAction.getCustomer({ id: props.customerId });
+            return CustomerAction.loadOne({ id: props.customerId });
           })
         )
       ),
