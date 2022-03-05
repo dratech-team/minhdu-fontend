@@ -6,7 +6,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../customer/+state/customerActions';
+import { CustomerActions } from '../../customer/+state/customer.actions';
 import { Router } from '@angular/router';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { Order } from '../enitities/order.interface';
@@ -110,7 +110,7 @@ export class OrderEffect {
               });
             case 'IN_CUSTOMER':
               return OrderActions.loadAll({
-                orderDTO: { take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId }
+                orderDTO: { take: 30, skip: 0}
               });
             default:
               return OrderActions.loadOne({ id: props.updateOrderDto.id });
@@ -131,15 +131,8 @@ export class OrderEffect {
     ofType(OrderActions.hide),
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
-        map((_) => {
-          // this.actions$.dispatch(
-          //   OrderAction.loadOrdersAssigned({
-          //     take: 30,
-          //     skip: 0,
-          //     status: this.convertBoolean.TRUE
-          //   })
-          // );
-          return CustomerActions.loadOne({ id: props.customerId });
+        map((res) => {
+          this.orderStore.update(res.id, res);
         }),
         catchError((err) => throwError(err))
       )
@@ -164,16 +157,7 @@ export class OrderEffect {
       this.orderService.delete(props.id).pipe(
         map((_) => {
           this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
-          if (props.customerId) {
-            this.actions$.dispatch(
-              CustomerActions.loadOne({ id: props.customerId })
-            );
-            return OrderActions.loadAll({
-              orderDTO: { take: 30, skip: 0, customerId: props.customerId }
-            });
-          } else {
-            return OrderActions.loadAll({ orderDTO: { take: 30, skip: 0 } });
-          }
+          this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))
       )

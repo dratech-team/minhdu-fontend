@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../+state/customerActions';
+import { CustomerActions } from '../../+state/customer.actions';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../+state/customer.query';
 import { AddCustomerDto } from '../../dto/add-customer.dto';

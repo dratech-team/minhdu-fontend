@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CustomerActions } from '../../../pages/customer/+state/customerActions';
+import { CustomerActions } from '../../../pages/customer/+state/customer.actions';
 import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
 
 @Injectable({ providedIn: 'root' })

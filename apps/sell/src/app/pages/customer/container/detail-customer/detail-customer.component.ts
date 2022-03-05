@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../+state/customerActions';
+import { CustomerActions } from '../../+state/customer.actions';
 import { CustomerEntity } from '../../entities/customer.interface';
 import { Order } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';

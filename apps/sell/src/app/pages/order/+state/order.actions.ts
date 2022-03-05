@@ -25,7 +25,7 @@ const update = createAction(
 
 const hide = createAction(
   '[ORDER] Hide',
-  props<{ hide: any; id: number; customerId: number }>()
+  props<{ id: number, hide: any }>()
 );
 
 const payment = createAction(
@@ -35,7 +35,7 @@ const payment = createAction(
 
 const remove = createAction(
   '[ORDER] Remove',
-  props<{ id: number; customerId?: number }>()
+  props<{ id: number }>()
 );
 
 

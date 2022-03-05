@@ -7,7 +7,7 @@ import { CustomerType, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerActions } from '../../+state/customerActions';
+import { CustomerActions } from '../../+state/customer.actions';
 import { Order } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';

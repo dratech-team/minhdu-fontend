@@ -84,7 +84,6 @@ export class TableOrdersComponent implements OnInit {
     this.store.dispatch(OrderActions.hide({
       id: order.id,
       hide: { hide: !order.hide },
-      customerId: order.customerId
     }));
   }
 
@@ -99,7 +98,7 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderActions.remove({ id: order.id, customerId: order.customerId }));
+        this.store.dispatch(OrderActions.remove({ id: order.id}));
       }
     });
   }

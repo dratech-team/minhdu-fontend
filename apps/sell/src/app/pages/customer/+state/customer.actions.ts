@@ -15,7 +15,7 @@ const loadAll = createAction(
 );
 
 const loadOne = createAction(
-  '[GET_CUSTOMER] Get Customer ',
+  'CUSTOMER] Load One',
   props<{ id: number }>()
 );
 

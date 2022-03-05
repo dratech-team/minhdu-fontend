@@ -1,15 +1,16 @@
 import {CurrencyUnit, PaymentType} from '@minhdu-fontend/enums';
-import {CustomerEntity} from '../../customer/entities/customer.interface';
 import {Commodity} from '../../commodity/+state/commodity.interface';
 import {Route} from '../../route/+state/route.interface';
 import {District, PaymentHistory, Province, ResponsePaginate, Ward} from '@minhdu-fontend/data-models';
+import { CustomerEntity } from '../../customer/entities/customer.interface';
 
 export interface Order {
   id: number;
   customer: CustomerEntity;
-  customerId: number;
   createdAt: Date;
   explain: string;
+  commodityTotal: number;
+  paymentTotal: number;
   currency: CurrencyUnit;
   commodities: Commodity[];
   routes: Route[];
@@ -22,8 +23,6 @@ export interface Order {
   ward?: Ward;
   isSelect?: boolean;
   paymentHistories: PaymentHistory[];
-  commodityTotal: number;
-  paymentTotal: number;
   deliveredAt: Date;
   endedAt: Date;
   hide: boolean;
