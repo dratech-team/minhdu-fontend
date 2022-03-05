@@ -88,6 +88,7 @@ export class PickLocationComponent implements OnInit {
           }
         }
       ));
+
     this.wards$ = this.formWard.valueChanges.pipe(
       startWith(''),
       map(ward => {

@@ -45,13 +45,15 @@ export class AddEmployeeComponent implements OnInit {
   branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  positions$: Observable<Position[]> | undefined;
+  lstPosition: Position [] = []
+  positions$ = new Observable<Position[]>();
   branches$ = this.store.pipe(select(getAllOrgchart))
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant
+
 
   constructor(
     public datePipe: DatePipe,
@@ -118,10 +120,17 @@ export class AddEmployeeComponent implements OnInit {
       employeeType: [this.data?.employee ?
         this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required]
     });
-    this.positions$ = searchAndAddAutocomplete(
-      this.formPosition.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    );
+
+    this.positions$ = this.formPosition.valueChanges.pipe(
+      startWith(''),
+      map(branch => {
+          if (branch) {
+            return this.lstPosition.filter(item => item.name.toLowerCase().includes(branch.toLowerCase()));
+          } else {
+            return this.lstPosition;
+          }
+        }
+      ));
 
     this.branches$ = searchAndAddAutocomplete(
       this.branches.valueChanges.pipe(startWith('')),
@@ -135,8 +144,10 @@ export class AddEmployeeComponent implements OnInit {
     });
 
     this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
-     this.branches.setValue(val[0].name)
+      this.branches.setValue(val[0].name)
       this.branchId = val[0].id
+      if(val[0].positions)
+      this.lstPosition = val[0].positions
     })
   }
 
@@ -259,6 +270,10 @@ export class AddEmployeeComponent implements OnInit {
       } else {
         if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
           this.formGroup.get('recipeType')!.setValue(branch.recipe)
+        }
+        if (branch.positions) {
+          this.lstPosition = branch.positions
+          this.formPosition.patchValue('')
         }
         this.branchId = branch.id;
       }
