@@ -10,8 +10,8 @@ export class BaseService<T> {
   ) {
   }
 
-  pagination(params?: any): Observable<ResponsePaginate<T>> {
-    return this.http.get<ResponsePaginate<T>>(this.url, { params });
+  pagination(params?: any): Observable<ResponsePaginate<T> | any> {
+    return this.http.get<ResponsePaginate<T> | any>(this.url, { params });
   }
 
   getAll(params?: any): Observable<T[]> {

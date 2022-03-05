@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { combineLatest, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
@@ -80,12 +80,19 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.getCustomer),
       switchMap((props) => this.customerService.getOne(props.id).pipe(
-        // combineLatest([
-        //   this.orderService.getAll({ customerId: props.customerId }),
-        //   this.orderService.getAll({ customerId: props.customerId })
-        // ]).pipe(map(([delivered, delivering]) => {
-        //   return [];
-        // }))
+        switchMap(customer => {
+          this.customerStore.update(customer.id, customer);
+          return this.orderService.pagination({ customerId: customer.id }).pipe(
+            switchMap(res => {
+              this.customerStore.update(customer.id, { delivering: res.data });
+              return this.orderService.pagination({ customerId: customer.id }).pipe(
+                tap(res => {
+                  this.customerStore.update(customer.id, { delivered:  res.data  });
+                })
+              );
+            })
+          );
+        })
       )),
       catchError((err) => throwError(err))
     )

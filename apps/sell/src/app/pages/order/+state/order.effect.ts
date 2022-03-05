@@ -64,7 +64,7 @@ export class OrderEffect {
   @Effect()
   loadInit$ = this.actions$.pipe(
     ofType(OrderAction.loadInit),
-    switchMap((props) => this.orderService.paginationOrder(props.orderDTO)),
+    switchMap((props) => this.orderService.pagination(props.orderDTO)),
     map((responsePagination) => {
         responsePagination.data.map((order: Order) => {
           order.expand = false;
@@ -91,7 +91,7 @@ export class OrderEffect {
       })
     ),
     switchMap((props) => {
-      return this.orderService.paginationOrder(props);
+      return this.orderService.pagination(props);
     }),
     map((responsePagination) => {
       if (responsePagination.data.length === 0) {

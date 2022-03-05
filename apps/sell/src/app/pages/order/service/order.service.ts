@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
-import {Order, ResponsePaginateOrder} from '../+state/order.interface';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {Update} from '@ngrx/entity';
-import {UpdateNum} from '@ngrx/entity/src/models';
+import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { CommodityUniq, Order } from '../+state/order.interface';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { Update } from '@ngrx/entity';
+import { UpdateNum } from '@ngrx/entity/src/models';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<Order> {
   constructor(
     public readonly http: HttpClient
@@ -19,8 +20,8 @@ export class OrderService extends BaseService<Order> {
     return super.addOne(props);
   }
 
-  paginationOrder(params?: any): Observable<ResponsePaginateOrder<Order>> {
-    return this.http.get<ResponsePaginateOrder<Order>>(Api.SELL.ORDER.ORDER, {params})
+  pagination(params?: any): Observable<ResponsePaginate<Order> & { commodityUniq: CommodityUniq[] }> {
+    return super.pagination(params)
   }
 
   payment(id: number, body: any): Observable<Update<Order>> {
@@ -43,10 +44,11 @@ export class OrderService extends BaseService<Order> {
     return super.delete(id);
   }
 
-  cancelOrder(id: number):Observable<void>{
-    return this.http.delete<void>('order'+`/${id}`+'/cancel')
+  cancelOrder(id: number): Observable<void> {
+    return this.http.delete<void>('order' + `/${id}` + '/cancel');
   }
-  orderhistory():Observable<any>{
-    return this.http.get('')
-}
+
+  orderhistory(): Observable<any> {
+    return this.http.get('');
+  }
 }
