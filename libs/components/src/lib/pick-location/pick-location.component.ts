@@ -58,6 +58,8 @@ export class PickLocationComponent implements OnInit {
     if (this.ward) {
       this.store.dispatch(DistrictAction.getDistrictsByProvinceId({ provinceId: this.ward.district.province.id }));
       this.store.dispatch(WardAction.getWardsByDistrictId({ districtId: this.ward.district.id }));
+      this.districts$.subscribe(val =>this.lstDistrict = val)
+      this.wards$.subscribe(val => this.lstWard = val)
     }
 
     this.formGroup = <FormGroup>this.controlContainer.control;
