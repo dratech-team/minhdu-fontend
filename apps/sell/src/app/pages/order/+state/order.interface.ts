@@ -1,12 +1,12 @@
 import {CurrencyUnit, PaymentType} from '@minhdu-fontend/enums';
-import {Customer} from '../../customer/+state/customer.interface';
+import {CustomerEntity} from '../../customer/entities/customer.interface';
 import {Commodity} from '../../commodity/+state/commodity.interface';
 import {Route} from '../../route/+state/route.interface';
 import {District, PaymentHistory, Province, ResponsePaginate, Ward} from '@minhdu-fontend/data-models';
 
 export interface Order {
   id: number;
-  customer: Customer;
+  customer: CustomerEntity;
   customerId: number;
   createdAt: Date;
   explain: string;

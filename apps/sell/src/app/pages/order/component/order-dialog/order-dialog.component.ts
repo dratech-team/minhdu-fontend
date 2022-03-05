@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
-import { Customer } from '../../../customer/+state/customer.interface';
+import { CustomerEntity } from '../../../customer/entities/customer.interface';
 import { CustomerAction } from '../../../customer/+state/customer.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
@@ -25,7 +25,7 @@ export class OrderDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   routes: number[] = [];
-  customers: Customer[] = [];
+  customers: CustomerEntity[] = [];
   commoditiesSelected: Commodity[] = [];
   wardId!: number;
 

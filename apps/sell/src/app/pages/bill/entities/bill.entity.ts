@@ -1,10 +1,10 @@
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { Commodity } from '../../commodity/+state/commodity.interface';
-import { Customer } from '../../customer/+state/customer.interface';
+import { CustomerEntity } from '../../customer/entities/customer.interface';
 
 export interface Bill {
   id: number,
-  customer: Customer,
+  customer: CustomerEntity,
   customerId: number,
   paidAt: Date,
   createdAt: Date,

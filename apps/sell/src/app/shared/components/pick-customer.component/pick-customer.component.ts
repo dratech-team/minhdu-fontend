@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { Customer } from '../../../pages/customer/+state/customer.interface';
+import { CustomerEntity } from '../../../pages/customer/entities/customer.interface';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
@@ -19,7 +19,7 @@ import { Actions } from '@datorama/akita-ng-effects';
 export class PickCustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
 
-  @Input() customers: Customer[] = [];
+  @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();

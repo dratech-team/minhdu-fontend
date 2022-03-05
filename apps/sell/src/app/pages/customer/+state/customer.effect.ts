@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../service/customer.service';
@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerQuery } from './customer.query';
 import { CustomerStore } from './customer.store';
 import { OrderService } from '../../order/service/order.service';
+import { AddCustomerDto } from '../dto/add-customer.dto';
 
 @Injectable()
 export class CustomerEffect {
@@ -44,13 +45,13 @@ export class CustomerEffect {
   );
 
   @Effect()
-  addCustomer$ = this.action$.pipe(
+  addOne$ = this.action$.pipe(
     ofType(CustomerAction.addOne),
-    switchMap((props) => {
-      if (!props.customer?.provinceId) {
+    switchMap((props: AddCustomerDto) => {
+      if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
       }
-      return this.customerService.addOne(props.customer);
+      return this.customerService.addOne(props);
     }),
     map((res) => {
         this.customerStore.update(res.id, res);

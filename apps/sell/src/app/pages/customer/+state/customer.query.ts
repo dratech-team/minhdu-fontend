@@ -1,7 +1,7 @@
 import { QueryEntity } from '@datorama/akita';
 import { CustomerState, CustomerStore } from './customer.store';
 import { Injectable } from '@angular/core';
-import { Customer } from './customer.interface';
+import { CustomerEntity } from '../entities/customer.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerQuery extends QueryEntity<CustomerState> {
@@ -9,11 +9,11 @@ export class CustomerQuery extends QueryEntity<CustomerState> {
     super(store);
   }
 
-  selectDelivered = (customerId: Customer['id']) => {
+  selectDelivered = (customerId: CustomerEntity['id']) => {
     return this.selectEntity(customerId, (entity) => entity?.delivered);
   };
 
-  selectDelivering = (customerId: Customer['id']) => {
+  selectDelivering = (customerId: CustomerEntity['id']) => {
     return this.selectEntity(customerId, (entity) => entity?.delivering);
   };
 

@@ -2,11 +2,11 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { select } from '@ngrx/store';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer.action';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../+state/customer.query';
+import { AddCustomerDto } from '../../dto/add-customer.dto';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -69,10 +69,9 @@ export class CustomerDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    const customer = {
-      firstName: value.firstName ? value.firstName : undefined,
-      lastName: value.lastName ? value.lastName : undefined,
-      identify: value.identify ? value.identify.toString() : undefined,
+    const customer: AddCustomerDto = {
+      lastName: value.lastName,
+      identify: value?.identify,
       gender: value.gender,
       phone: value.phone,
       issuedBy: value.issuedBy,
@@ -85,17 +84,17 @@ export class CustomerDialogComponent implements OnInit {
       provinceId: this.provinceId || this.data?.customer?.province?.id,
       districtId: this.districtId || this.data?.customer?.district?.id,
       wardId: this.wardId || this.data?.customer?.ward?.id,
-      email: value.email ? value.email : undefined,
-      note: value.note ? value.note : undefined,
-      ethnicity: value.ethnicity ? value.ethnicity : undefined,
-      religion: value.religion ? value.religion : undefined,
-      isPotential: value.isPotential ? value.isPotential : undefined
+      email: value?.email,
+      note: value?.note,
+      ethnicity: value?.ethnicity,
+      religion: value?.religion,
+      isPotential: value?.isPotential
     };
 
     if (this.data) {
       this.actions$.dispatch(CustomerAction.update({ customer: customer, id: this.data.customer.id }));
     } else {
-      this.actions$.dispatch(CustomerAction.addOne({ customer: customer }));
+      this.actions$.dispatch(CustomerAction.addOne(customer));
     }
     this.customerQuery.selectLoading().subscribe(added => {
       if (added) {

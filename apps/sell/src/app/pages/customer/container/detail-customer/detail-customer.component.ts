@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer.action';
-import { Customer } from '../../+state/customer.interface';
+import { CustomerEntity } from '../../entities/customer.interface';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
@@ -51,7 +51,7 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
-  updateCustomer(customer: Customer) {
+  updateCustomer(customer: CustomerEntity) {
     this.dialog.open(CustomerDialogComponent, {
       data: { customer, isUpdate: true },
       width: '50%'

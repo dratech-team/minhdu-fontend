@@ -9,7 +9,7 @@ import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-
 import { OrderAction } from '../../+state/order.action';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { Customer } from '../../../customer/+state/customer.interface';
+import { CustomerEntity } from '../../../customer/entities/customer.interface';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../../customer/+state/customer.query';
@@ -20,11 +20,11 @@ import { CustomerQuery } from '../../../customer/+state/customer.query';
 export class AddOrderComponent implements OnInit {
   customerPicked$ = this.customerQuery.selectEntity(this.getCustomerId());
 
-  customers: Customer [] = [];
+  customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
-  customerPicked: Customer | undefined;
+  customerPicked: CustomerEntity | undefined;
   customerId: number | undefined;
   payType = PaymentType;
   formGroup!: FormGroup;
