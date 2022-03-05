@@ -33,5 +33,7 @@ export interface Customer {
   zalo?: string
   isSelect?: boolean,
   debt?: number,
+  delivered: Order[],
+  delivering: Order[],
   paymentHistories?: PaymentHistory[],
 }
