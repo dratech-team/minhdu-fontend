@@ -5,11 +5,9 @@ import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
 import { CustomerType, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerActions } from '../../+state/customerActions';
-import { AppState } from '../../../../reducers';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
@@ -24,6 +22,9 @@ import { CustomerQuery } from '../../+state/customer.query';
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  customers$ = this.customerQuery.selectAll();
+  loading$ = this.customerQuery.selectLoading();
+  
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
@@ -33,9 +34,6 @@ export class CustomerComponent implements OnInit {
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
   orders?: Order;
-
-  customers$ = this.customerQuery.selectAll();
-  loading$ = this.customerQuery.selectLoading();
 
   formGroup = new FormGroup({
     name: new FormControl(''),
