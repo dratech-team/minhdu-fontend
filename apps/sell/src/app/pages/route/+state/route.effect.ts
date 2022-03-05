@@ -98,7 +98,7 @@ export class RouteEffect {
           });
           route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
           route.orders.map(val => val.expand = false);
-          this.routeStore.update(route.id, route);
+          this.routeStore.upsert(route.id, route);
         }
       ),
       catchError((err) => throwError(err))
@@ -109,7 +109,14 @@ export class RouteEffect {
     this.action.pipe(
       ofType(RouteAction.updateRoute),
       switchMap((props) => this.routeService.update(props.id, props.route)),
-      map((route) => this.routeStore.update(route.id, route)),
+      map((route) => {
+        route.changes.orders?.forEach(order => {
+          order.totalCommodity = getTotalCommodity(order.commodities);
+        });
+        route.changes.totalCommodityUniq = route.changes.orders?.reduce((a, b) => a + b.totalCommodity, 0);
+        route.changes.orders?.map(val => val.expand = false);
+        return this.routeStore.update(route.id, route)
+        }),
       catchError((err) => throwError(err))
     )
   );

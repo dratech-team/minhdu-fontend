@@ -37,6 +37,7 @@ export class DetailRouteComponent implements OnInit {
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
+        console.log(this.route)
       }
     });
 
@@ -84,6 +85,7 @@ export class DetailRouteComponent implements OnInit {
   }
 
   cancelCommodity(commodity: Commodity) {
+    console.log(commodity.id)
     this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
