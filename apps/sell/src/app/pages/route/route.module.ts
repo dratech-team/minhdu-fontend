@@ -10,7 +10,6 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {ComponentsModule} from '@minhdu-fontend/components';
 import {StoreModule} from '@ngrx/store';
 import {FeatureName} from '@minhdu-fontend/constants';
-import {RouteReducer} from './+state/route.reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {RouteEffect} from './+state/route.effect';
 import {DetailRouteComponent} from './container/detail-route/detail-route.component';
@@ -24,13 +23,13 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {MainReducer} from '../../states/mainReducer';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {NzTableModule} from "ng-zorro-antd/table";
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 
 @NgModule({
     imports: [
-        StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
         StoreModule.forFeature(FeatureName.MAIN, MainReducer),
         StoreModule.forFeature(FeatureName.EMPLOYEE, EmployeeReducer),
-        EffectsModule.forFeature([RouteEffect, EmployeeEffect]),
+        AkitaNgEffectsModule.forFeature([RouteEffect]),
         ComponentsModule,
         RouteRoutingModule,
         MatDialogModule,

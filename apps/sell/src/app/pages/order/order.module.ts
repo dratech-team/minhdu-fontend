@@ -20,7 +20,6 @@ import { CommodityModule } from '../commodity/commodity.module';
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RouteReducer } from '../route/+state/route.reducer';
 import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
@@ -39,7 +38,6 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     ComponentsModule,
     OrderRoutingModule,
     StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     AkitaNgEffectsModule.forFeature([OrderEffect]),
     MatInputModule,
     InfiniteScrollModule,

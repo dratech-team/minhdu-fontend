@@ -8,8 +8,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { StoreModule } from '@ngrx/store';
-import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { OrderEffect } from '../pages/order/+state/order.effect';
 import { ComponentsModule } from '@minhdu-fontend/components';
@@ -17,7 +15,6 @@ import { PickCommodityComponent } from './components/pick-commodity/pick-commodi
 import { PickCustomerComponent } from './components/pick-customer.component/pick-customer.component';
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
-import { RouteReducer } from '../pages/route/+state/route.reducer';
 import { CustomerEffect } from '../pages/customer/+state/customer.effect';
 import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
 import { RouteEffect } from '../pages/route/+state/route.effect';
@@ -28,12 +25,11 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {NzTableModule} from "ng-zorro-antd/table";
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @NgModule({
   imports: [
     ComponentsModule,
-    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     EffectsModule.forFeature([
       OrderEffect,
       CustomerEffect,
@@ -60,14 +56,14 @@ import {NzTableModule} from "ng-zorro-antd/table";
     PickOrderComponent,
     PickCommodityComponent,
     PickCustomerComponent,
-    PickRoutesComponent,
+    PickRoutesComponent
 
   ],
-  providers:[
+  providers: [
     DecimalPipe,
     PickCustomerService,
     PickCommodityService,
-    PickRoutesService,
+    PickRoutesService
 
   ],
   exports: [
@@ -75,8 +71,8 @@ import {NzTableModule} from "ng-zorro-antd/table";
     PickCommodityComponent,
     PickOrderComponent,
     PickCustomerComponent,
-    PickRoutesComponent,
-  ],
+    PickRoutesComponent
+  ]
 })
 export class SharedModule {
 
