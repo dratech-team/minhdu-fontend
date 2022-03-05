@@ -4,7 +4,7 @@ import { catchError, debounceTime, last, map, switchMap, tap } from 'rxjs/operat
 import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
 import { PaymentService } from '../../customer/service/payment.Service';
-import { CustomerAction } from '../../customer/+state/customer.action';
+import { CustomerActions } from '../../customer/+state/customerActions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { OrderAction } from '../../order/+state/order.action';
@@ -54,7 +54,7 @@ export class PaymentEffect {
             customerId: res.customerId
           }
         }));
-        this.store.dispatch(CustomerAction.loadOne({ id: res.customerId }));
+        this.store.dispatch(CustomerActions.loadOne({ id: res.customerId }));
         return res;
       }),
       map(res => {
@@ -84,7 +84,7 @@ export class PaymentEffect {
             customerId: res.customerId
           }
         }));
-        this.store.dispatch(CustomerAction.loadOne({ id: res.customerId }));
+        this.store.dispatch(CustomerActions.loadOne({ id: res.customerId }));
         return res;
       }),
       map(res => {
@@ -120,7 +120,7 @@ export class PaymentEffect {
                 customerId: props.customerId
               }
             }));
-            return CustomerAction.loadOne({ id: props.customerId });
+            return CustomerActions.loadOne({ id: props.customerId });
           })
         )
       ),

@@ -8,7 +8,7 @@ import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
 import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 import { CustomerResourcesConstant, CustomerTypeConstant } from '@minhdu-fontend/constants';
-import { CustomerAction } from '../../../pages/customer/+state/customer.action';
+import { CustomerActions } from '../../../pages/customer/+state/customerActions';
 import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
 import { Actions } from '@datorama/akita-ng-effects';
 
@@ -51,7 +51,7 @@ export class PickCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
+      this.actions$.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });

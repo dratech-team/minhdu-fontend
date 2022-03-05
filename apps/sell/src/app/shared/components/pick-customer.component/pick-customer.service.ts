@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CustomerAction } from '../../../pages/customer/+state/customer.action';
+import { CustomerActions } from '../../../pages/customer/+state/customerActions';
 import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
 
 @Injectable({ providedIn: 'root' })
@@ -14,15 +14,15 @@ export class PickCustomerService {
   }
 
   loadInit() {
-    return this.actions$.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
+    return this.actions$.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
   }
 
   scrollCustomer(val: any) {
-    this.actions$.dispatch(CustomerAction.loadAll(val));
+    this.actions$.dispatch(CustomerActions.loadAll(val));
   }
 
   searchCustomer(val: any) {
-    this.actions$.dispatch(CustomerAction.loadAll(val));
+    this.actions$.dispatch(CustomerActions.loadAll(val));
   }
 
   getCustomers() {

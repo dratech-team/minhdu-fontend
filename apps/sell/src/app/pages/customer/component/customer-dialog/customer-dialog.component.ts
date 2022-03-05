@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer.action';
+import { CustomerActions } from '../../+state/customerActions';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../+state/customer.query';
 import { AddCustomerDto } from '../../dto/add-customer.dto';
@@ -92,9 +92,9 @@ export class CustomerDialogComponent implements OnInit {
     };
 
     if (this.data) {
-      this.actions$.dispatch(CustomerAction.update({ id: this.data.customer.id, updates: customer }));
+      this.actions$.dispatch(CustomerActions.update({ id: this.data.customer.id, updates: customer }));
     } else {
-      this.actions$.dispatch(CustomerAction.addOne(customer));
+      this.actions$.dispatch(CustomerActions.addOne(customer));
     }
     this.customerQuery.selectLoading().subscribe(added => {
       if (added) {

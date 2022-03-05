@@ -26,7 +26,7 @@ const update = createAction(
 
 const remove = createAction(
   '[CUSTOMER] Remove',
-  props<{ id: number, customerId?: number }>()
+  props<{ id: number }>()
 );
 
 const loadOrderDelivered = createAction(
@@ -39,7 +39,7 @@ const loadOrderDelivering = createAction(
   props<{ customerId: CustomerEntity['id'] }>()
 );
 
-export const CustomerAction = {
+export const CustomerActions = {
   addOne,
   loadAll,
   loadOne,

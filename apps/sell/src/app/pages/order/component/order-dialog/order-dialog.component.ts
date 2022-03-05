@@ -7,7 +7,7 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
 import { CustomerEntity } from '../../../customer/entities/customer.interface';
-import { CustomerAction } from '../../../customer/+state/customer.action';
+import { CustomerActions } from '../../../customer/+state/customerActions';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { CommodityQuery } from '../../../commodity/+state/commodity.query';
@@ -41,7 +41,7 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
+    this.store.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
 
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));

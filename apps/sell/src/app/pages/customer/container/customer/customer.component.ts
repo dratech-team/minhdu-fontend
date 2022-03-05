@@ -8,7 +8,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../+state/customer.action';
+import { CustomerActions } from '../../+state/customerActions';
 import { AppState } from '../../../../reducers';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
@@ -62,13 +62,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.actions$.dispatch(CustomerAction.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.actions$.dispatch(CustomerActions.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerAction.loadAll(this.customer(val))
+            CustomerActions.loadAll(this.customer(val))
           );
         })
       )
@@ -94,7 +94,7 @@ export class CustomerComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CustomerAction.loadAll(
+      CustomerActions.loadAll(
         this.customer(val)
       )
     );
@@ -130,7 +130,7 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerAction.remove({ id: $event.id }));
+        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
       }
     });
   }

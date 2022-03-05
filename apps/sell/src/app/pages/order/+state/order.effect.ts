@@ -6,7 +6,7 @@ import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../customer/+state/customer.action';
+import { CustomerActions } from '../../customer/+state/customerActions';
 import { Router } from '@angular/router';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { Order } from './order.interface';
@@ -165,7 +165,7 @@ export class OrderEffect {
           //     status: this.convertBoolean.TRUE
           //   })
           // );
-          return CustomerAction.loadOne({ id: props.customerId });
+          return CustomerActions.loadOne({ id: props.customerId });
         }),
         catchError((err) => throwError(err))
       )
@@ -192,7 +192,7 @@ export class OrderEffect {
           this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
           if (props.customerId) {
             this.actions$.dispatch(
-              CustomerAction.loadOne({ id: props.customerId })
+              CustomerActions.loadOne({ id: props.customerId })
             );
             return OrderAction.loadInit({
               orderDTO: { take: 30, skip: 0, customerId: props.customerId }

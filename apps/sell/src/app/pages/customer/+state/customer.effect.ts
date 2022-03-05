@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { CustomerAction } from './customer.action';
+import { CustomerActions } from './customerActions';
 import { CustomerService } from '../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,7 +25,7 @@ export class CustomerEffect {
 
   @Effect()
   loadCustomers$ = this.action$.pipe(
-    ofType(CustomerAction.loadAll),
+    ofType(CustomerActions.loadAll),
     switchMap((props) => {
       const skip = this.customerQuery.getCount();
       return this.customerService.pagination(Object.assign(props, { skip: skip }));
@@ -46,7 +46,7 @@ export class CustomerEffect {
 
   @Effect()
   addOne$ = this.action$.pipe(
-    ofType(CustomerAction.addOne),
+    ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
       if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
@@ -62,14 +62,14 @@ export class CustomerEffect {
 
   @Effect()
   getCustomer$ = this.action$.pipe(
-    ofType(CustomerAction.loadOne),
+    ofType(CustomerActions.loadOne),
     switchMap((props) => this.customerService.getOne(props.id)),
     catchError((err) => throwError(err))
   );
 
   @Effect()
   updateCustomer$ = this.action$.pipe(
-    ofType(CustomerAction.update),
+    ofType(CustomerActions.update),
     switchMap((props) => this.customerService.update(props.id, props.updates).pipe(
       map((res) => this.customerStore.update(res.id, res)),
       catchError((err) => throwError(err))
@@ -78,7 +78,7 @@ export class CustomerEffect {
 
   @Effect()
   deleteCustomer$ = this.action$.pipe(
-    ofType(CustomerAction.remove),
+    ofType(CustomerActions.remove),
     switchMap((props) => this.customerService.delete(props.id).pipe(
       map(() => this.customerStore.remove(props.id)),
       catchError((err) => throwError(err))
@@ -87,7 +87,7 @@ export class CustomerEffect {
 
   @Effect()
   orderDelivered$ = this.action$.pipe(
-    ofType(CustomerAction.loadOrderDelivered),
+    ofType(CustomerActions.loadOrderDelivered),
     switchMap(props => this.orderService.pagination(Object.assign(props, { status: 1 })).pipe(
       tap(res => {
         this.customerStore.update(props.customerId, { delivered: res.data });
@@ -98,7 +98,7 @@ export class CustomerEffect {
 
   @Effect()
   orderDelivering$ = this.action$.pipe(
-    ofType(CustomerAction.loadOrderDelivering),
+    ofType(CustomerActions.loadOrderDelivering),
     switchMap(props => this.orderService.pagination(Object.assign(props, { status: 0 })).pipe(
       tap(res => {
         this.customerStore.update(props.customerId, { delivering: res.data });
