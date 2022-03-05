@@ -1,20 +1,15 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { CommodityUniq, Order, OrderDTO, UpdateOrderDto } from './order.interface';
+import { OrderDTO, UpdateOrderDto } from './order.interface';
 
 const addOrder = createAction(
   '[ORDER] Add One',
   props<{ order: any }>()
 );
 
-const addOrderSuccess = createAction(
-  '[ORDER] Add Order Success',
-  props<{ order: Order }>()
-);
-
-const loadAll = createAction('[LOAD_ORDERS] Load All Order');
+const loadAll = createAction('[ORDERS] Load All');
 
 const loadInit = createAction(
-  '[LOAD_ORDERS] Load Order',
+  '[ORDER] Load Init',
   props<{ orderDTO: Partial<OrderDTO> }>()
 );
 
@@ -81,9 +76,8 @@ const cancelOrder = createAction(
 
 export const OrderAction = {
   addOrder,
-  addOrderSuccess,
   loadInit,
-  loadAllOrder: loadAll,
+  loadAll,
   loadMoreOrders,
   getOrder,
   updateOrder,

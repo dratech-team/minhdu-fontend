@@ -48,7 +48,7 @@ export class OrderEffect {
     }),
     map((res) => {
       this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
-      return OrderAction.addOrderSuccess({ order: res });
+      this.orderStore.add(res);
     }),
     tap(() => this.router.navigate(['/don-hang']).then((v => {
       /// FIXME:
