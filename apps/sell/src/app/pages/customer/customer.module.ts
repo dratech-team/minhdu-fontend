@@ -29,8 +29,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SharedModule } from '../../shared/shared.module';
 import { TablePaymentComponent } from './component/table-payment/table-payment.component';
-import { PaymentReducer } from './+state/payment/payment.reducer';
-import { PaymentEffect } from './+state/payment/payment.effect';
+import { PaymentReducer } from '../payment/payment/payment.reducer';
+import { PaymentEffect } from '../payment/payment/payment.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 @NgModule({

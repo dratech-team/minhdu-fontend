@@ -3,11 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, debounceTime, last, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
-import { PaymentService } from '../../service/payment.Service';
-import { CustomerAction } from '../customer/customer.action';
+import { PaymentService } from '../../customer/service/payment.Service';
+import { CustomerAction } from '../../customer/+state/customer/customer.action';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { OrderAction } from '../../../order/+state/order.action';
+import { OrderAction } from '../../order/+state/order.action';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Injectable()

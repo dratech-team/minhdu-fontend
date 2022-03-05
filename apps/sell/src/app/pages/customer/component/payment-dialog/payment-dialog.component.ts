@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
-import { PaymentAction } from '../../+state/payment/payment.action';
+import { PaymentAction } from '../../../payment/payment/payment.action';
 import { OrderAction } from '../../../order/+state/order.action';
 import {
   selectorAllOrders,
@@ -14,7 +14,7 @@ import {
   selectorOrdersByCustomerId
 } from '../../../order/+state/order.selector';
 import { tap } from 'rxjs/operators';
-import { selectedAdded } from '../../+state/payment/payment.selector';
+import { selectedAdded } from '../../../payment/payment/payment.selector';
 
 
 @Component({
