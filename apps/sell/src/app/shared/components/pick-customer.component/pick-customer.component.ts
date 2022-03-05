@@ -2,15 +2,15 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
-import { Customer } from '../../../pages/customer/+state/customer/customer.interface';
+import { Customer } from '../../../pages/customer/+state/customer.interface';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { document } from 'ngx-bootstrap/utils';
 import { PickCustomerService } from './pick-customer.service';
 import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 import { CustomerResourcesConstant, CustomerTypeConstant } from '@minhdu-fontend/constants';
-import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
-import { selectorAllCustomer } from '../../../pages/customer/+state/customer/customer.selector';
+import { CustomerAction } from '../../../pages/customer/+state/customer.action';
+import { selectorAllCustomer } from '../../../pages/customer/+state/customer.selector';
 
 @Component({
   selector: 'app-pick-customer',

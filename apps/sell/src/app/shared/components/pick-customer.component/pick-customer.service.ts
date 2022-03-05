@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllCustomer } from '../../../pages/customer/+state/customer/customer.selector';
-import { CustomerAction } from '../../../pages/customer/+state/customer/customer.action';
+import { selectorAllCustomer } from '../../../pages/customer/+state/customer.selector';
+import { CustomerAction } from '../../../pages/customer/+state/customer.action';
 
 @Injectable({providedIn: 'root'})
 export class PickCustomerService {

@@ -5,8 +5,8 @@ import { DatePipe } from '@angular/common';
 import { select, Store } from '@ngrx/store';
 import { AppState } from 'apps/sell/src/app/reducers';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectedCustomerAdded } from '../../+state/customer/customer.selector';
+import { CustomerAction } from '../../+state/customer.action';
+import { selectedCustomerAdded } from '../../+state/customer.selector';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'

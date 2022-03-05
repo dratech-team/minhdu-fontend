@@ -19,8 +19,8 @@ import { PickCustomerComponent } from './components/pick-customer.component/pick
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
 import { RouteReducer } from '../pages/route/+state/route.reducer';
-import { CustomerReducer } from '../pages/customer/+state/customer/customer.reducer';
-import { CustomerEffect } from '../pages/customer/+state/customer/customer.effect';
+import { CustomerReducer } from '../pages/customer/+state/customer.reducer';
+import { CustomerEffect } from '../pages/customer/+state/customer.effect';
 import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
 import { RouteEffect } from '../pages/route/+state/route.effect';
 import { PickCustomerService } from './components/pick-customer.component/pick-customer.service';

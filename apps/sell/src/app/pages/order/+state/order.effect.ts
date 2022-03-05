@@ -7,7 +7,7 @@ import {throwError} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {select, Store} from '@ngrx/store';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
-import {CustomerAction} from '../../customer/+state/customer/customer.action';
+import {CustomerAction} from '../../customer/+state/customer.action';
 import {selectorOrderAssignedTotal, selectorOrderTotal} from './order.selector';
 import {Router} from '@angular/router';
 import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';

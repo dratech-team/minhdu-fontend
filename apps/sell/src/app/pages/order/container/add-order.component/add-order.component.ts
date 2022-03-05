@@ -10,8 +10,8 @@ import { OrderAction } from '../../+state/order.action';
 import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { Customer } from '../../../customer/+state/customer/customer.interface';
-import { selectorCurrentCustomer } from '../../../customer/+state/customer/customer.selector';
+import { Customer } from '../../../customer/+state/customer.interface';
+import { selectorCurrentCustomer } from '../../../customer/+state/customer.selector';
 import { DatePipe } from '@angular/common';
 
 @Component({

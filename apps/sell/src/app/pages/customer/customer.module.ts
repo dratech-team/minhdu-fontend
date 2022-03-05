@@ -7,9 +7,9 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { CustomerReducer } from './+state/customer/customer.reducer';
+import { CustomerReducer } from './+state/customer.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { CustomerEffect } from './+state/customer/customer.effect';
+import { CustomerEffect } from './+state/customer.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import {

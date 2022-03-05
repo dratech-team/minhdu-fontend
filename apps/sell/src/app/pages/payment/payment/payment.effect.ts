@@ -4,7 +4,7 @@ import { catchError, debounceTime, last, map, switchMap, tap } from 'rxjs/operat
 import { throwError } from 'rxjs';
 import { PaymentAction } from './payment.action';
 import { PaymentService } from '../../customer/service/payment.Service';
-import { CustomerAction } from '../../customer/+state/customer/customer.action';
+import { CustomerAction } from '../../customer/+state/customer.action';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { OrderAction } from '../../order/+state/order.action';
