@@ -16,7 +16,7 @@
   </div>
   <div *ngIf='!data.permanentlyDeleted'  class='mt-2' style='width: 400px' >
     <div class='title-popup'>
-      <span *ngIf=' !data.leftAt; else restore '  >Nhân viên tạm thời nghỉ việc {{data.employee.lastName}}</span>
+      <span *ngIf=' !data.leftAt; else restore '  >Nhân viên {{data.employee.lastName}} tạm thời nghỉ việc </span>
       <ng-template  #restore>
         <span>Khôi phục nhân viên</span>
       </ng-template>
