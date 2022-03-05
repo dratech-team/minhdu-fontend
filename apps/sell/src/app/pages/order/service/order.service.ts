@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { CommodityUniq, OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Update } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { AddOrderDto } from '../dto/add-order.dto';
+import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService<OrderEntity> {
@@ -22,7 +23,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   pagination(params?: any): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
-    return super.pagination(params)
+    return super.pagination(params);
   }
 
   payment(id: number, body: any): Observable<Update<OrderEntity>> {

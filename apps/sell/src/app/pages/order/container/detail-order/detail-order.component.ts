@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderEntity, OrderHistory } from '../../enitities/order.interface';
+import { OrderEntity } from '../../enitities/order.interface';
 import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions } from '../../+state/order.actions';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
@@ -19,6 +19,7 @@ import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
+import { OrderHistoryEntity } from '../../enitities/order-history.entity';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -27,7 +28,7 @@ export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
   payType = PaymentType;
   commodityUnit = CommodityUnit;
-  orderHistories: OrderHistory[] = [];
+  orderHistories: OrderHistoryEntity[] = [];
   loading$ = new BehaviorSubject<boolean>(false);
 
   formOrderHistory = new FormGroup({

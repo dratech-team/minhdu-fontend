@@ -12,10 +12,10 @@ import { OrderActions } from '../../+state/order.actions';
 import { MainAction } from '../../../../states/main.action';
 import * as _ from 'lodash';
 import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
-import { CommodityUniq } from '../../enitities/order.interface';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
+import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
 
 @Component({
   templateUrl: 'order.component.html'
