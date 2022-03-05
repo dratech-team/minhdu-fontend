@@ -9,7 +9,7 @@ import { ConvertBoolean } from '@minhdu-fontend/enums';
 import { CustomerActions } from '../../customer/+state/customerActions';
 import { Router } from '@angular/router';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { Order } from './order.interface';
+import { Order } from '../enitities/order.interface';
 import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Order, OrderHistory } from '../../+state/order.interface';
+import { Order, OrderHistory } from '../../enitities/order.interface';
 import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions } from '../../+state/order.actions';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';

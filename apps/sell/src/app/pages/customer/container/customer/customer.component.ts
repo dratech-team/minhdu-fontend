@@ -8,7 +8,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerActions } from '../../+state/customerActions';
-import { Order } from '../../../order/+state/order.interface';
+import { Order } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
@@ -24,7 +24,7 @@ import { CustomerQuery } from '../../+state/customer.query';
 export class CustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
   loading$ = this.customerQuery.selectLoading();
-  
+
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;

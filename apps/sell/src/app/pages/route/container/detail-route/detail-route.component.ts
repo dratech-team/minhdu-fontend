@@ -9,7 +9,7 @@ import { MainAction } from '../../../../states/main.action';
 import { DialogDatePickerComponent } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Order } from '../../../order/+state/order.interface';
+import { Order } from '../../../order/enitities/order.interface';
 import { Actions } from '@datorama/akita-ng-effects';
 import { RouteQuery } from '../../+state/route.query';
 

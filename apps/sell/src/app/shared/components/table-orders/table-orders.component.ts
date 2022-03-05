@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { TableOrderCustomerService } from './table-order-customer.service';
-import { Order } from '../../../pages/order/+state/order.interface';
+import { Order } from '../../../pages/order/enitities/order.interface';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';

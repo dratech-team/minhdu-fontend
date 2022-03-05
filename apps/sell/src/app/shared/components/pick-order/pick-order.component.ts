@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
-import { Order } from '../../../pages/order/+state/order.interface';
+import { Order } from '../../../pages/order/enitities/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';

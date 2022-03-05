@@ -6,7 +6,7 @@ import { RouteService } from '../service/route.service';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
-import { Order } from '../../order/+state/order.interface';
+import { Order } from '../../order/enitities/order.interface';
 import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { RouteStore } from './route.store';
 import { RouteQuery } from './route.query';

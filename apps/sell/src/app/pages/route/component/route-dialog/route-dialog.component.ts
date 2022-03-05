@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
-import {Order} from '../../../order/+state/order.interface';
+import {Order} from '../../../order/enitities/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {MatTabChangeEvent} from "@angular/material/tabs";
