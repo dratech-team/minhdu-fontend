@@ -8,7 +8,7 @@ import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-
 import { OrderActions } from '../../+state/order.actions';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
-import { CustomerEntity } from '../../../customer/entities/customer.interface';
+import { CustomerEntity } from '../../../customer/entities/customer.entity';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../../customer/+state/customer.query';

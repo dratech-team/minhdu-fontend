@@ -1,6 +1,6 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { CustomerEntity } from '../entities/customer.interface';
+import { CustomerEntity } from '../entities/customer.entity';
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   readonly loading: boolean;

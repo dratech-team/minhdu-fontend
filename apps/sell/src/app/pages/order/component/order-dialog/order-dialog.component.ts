@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions } from '../../+state/order.actions';
 import { DatePipe } from '@angular/common';
-import { CustomerEntity } from '../../../customer/entities/customer.interface';
+import { CustomerEntity } from '../../../customer/entities/customer.entity';
 import { CustomerActions } from '../../../customer/+state/customer.actions';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';

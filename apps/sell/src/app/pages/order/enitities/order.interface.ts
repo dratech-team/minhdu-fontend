@@ -2,7 +2,7 @@ import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
 import { Commodity } from '../../commodity/+state/commodity.interface';
 import { Route } from '../../route/+state/route.interface';
 import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
-import { CustomerEntity } from '../../customer/entities/customer.interface';
+import { CustomerEntity } from '../../customer/entities/customer.entity';
 
 export interface OrderEntity {
   id: number;

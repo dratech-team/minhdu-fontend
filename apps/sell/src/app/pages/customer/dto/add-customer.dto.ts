@@ -1,4 +1,4 @@
-import { CustomerEntity } from '../entities/customer.interface';
+import { CustomerEntity } from '../entities/customer.entity';
 
 export interface AddCustomerDto extends Omit<CustomerEntity, 'id' | 'delivered' | 'delivering' | 'paymentHistories' | 'province' | 'district' | 'ward'> {
   readonly provinceId: number;

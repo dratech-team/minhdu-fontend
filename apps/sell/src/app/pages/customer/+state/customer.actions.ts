@@ -1,5 +1,5 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { CustomerEntity } from '../entities/customer.interface';
+import { CustomerEntity } from '../entities/customer.entity';
 import { AddCustomerDto } from '../dto/add-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
 import { LoadCustomerDto } from '../dto/load-customer.dto';

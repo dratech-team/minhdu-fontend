@@ -1,4 +1,4 @@
-import { CustomerEntity } from '../entities/customer.interface';
+import { CustomerEntity } from '../entities/customer.entity';
 
 export interface LoadCustomerDto extends Partial<CustomerEntity> {
   readonly skip: number,

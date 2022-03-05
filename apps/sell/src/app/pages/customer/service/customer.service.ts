@@ -5,8 +5,10 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
-import { CustomerEntity } from '../entities/customer.interface';
+import { CustomerEntity } from '../entities/customer.entity';
 import { AddCustomerDto } from '../dto/add-customer.dto';
+import { LoadCustomerDto } from '../dto/load-customer.dto';
+import { UpdateCustomerDto } from '../dto/update-customer.dto';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {
@@ -20,15 +22,15 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.addOne(props);
   }
 
-  pagination(params: any): Observable<ResponsePaginate<CustomerEntity>> {
+  pagination(params: LoadCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
     return super.pagination(params);
   }
 
-  getOne(id: any): Observable<CustomerEntity> {
+  getOne(id: CustomerEntity['id']): Observable<CustomerEntity> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<CustomerEntity>> {
+  update(id: CustomerEntity['id'], body: UpdateCustomerDto): Observable<UpdateNum<CustomerEntity>> {
     return super.update(id, body);
   }
 
