@@ -64,14 +64,14 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     OrderDialogComponent,
     AddOrderComponent
   ],
-  exports: [],
   providers: [
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
-  ]
+  ],
+  exports: []
 })
 export class OrderModule {
 }

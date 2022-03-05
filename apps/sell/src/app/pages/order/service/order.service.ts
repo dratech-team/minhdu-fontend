@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {Update} from '@ngrx/entity';
 import {UpdateNum} from '@ngrx/entity/src/models';
 
-@Injectable({providedIn: 'root'})
+@Injectable({providedIn: "root"})
 export class OrderService extends BaseService<Order> {
   constructor(
     public readonly http: HttpClient
