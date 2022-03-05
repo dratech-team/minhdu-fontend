@@ -6,7 +6,7 @@ import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } 
 import { select } from '@ngrx/store';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { OrderAction } from '../../+state/order.action';
+import { OrderActions } from '../../+state/order.actions';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CustomerEntity } from '../../../customer/entities/customer.interface';
@@ -130,7 +130,7 @@ export class AddOrderComponent implements OnInit {
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
-    this.actions$.dispatch(OrderAction.addOrder({ order: order }));
+    this.actions$.dispatch(OrderActions.addOne({ order: order }));
   }
 
   onSelectWard($event: number) {

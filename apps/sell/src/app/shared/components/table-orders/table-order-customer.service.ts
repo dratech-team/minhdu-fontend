@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { OrderAction } from '../../../pages/order/+state/order.action';
+import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
 import { Actions } from '@datorama/akita-ng-effects';
 
@@ -15,7 +15,7 @@ export class TableOrderCustomerService {
   }
 
   searchOrders(val: any){
-    this.actions$.dispatch(OrderAction.loadInit(val));
+    this.actions$.dispatch(OrderActions.loadAll(val));
   }
 
   searchOrdersAssigned(val: any){
@@ -23,7 +23,7 @@ export class TableOrderCustomerService {
   }
 
   scrollOrders(val: any){
-    this.actions$.dispatch(OrderAction.loadMoreOrders(val));
+    this.actions$.dispatch(OrderActions.loadAll(val));
   }
 
   scrollOrdersAssigned(val: any){

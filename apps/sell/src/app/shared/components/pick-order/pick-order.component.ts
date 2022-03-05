@@ -5,7 +5,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
 import { Order } from '../../../pages/order/+state/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
-import { OrderAction } from '../../../pages/order/+state/order.action';
+import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import { Route } from '../../../pages/route/+state/route.interface';
@@ -67,7 +67,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.isSelectAll = this.isCheckOrderSelected;
-    this.actions$.dispatch(OrderAction.loadInit(
+    this.actions$.dispatch(OrderActions.loadAll(
       {
         orderDTO: {
           skip: this.pageIndex,
@@ -86,7 +86,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         tap((_) => {
           this.eventSearch = true;
           const val = this.formGroup.value;
-          this.actions$.dispatch(OrderAction.loadInit({ orderDTO: this.order(val) }));
+          this.actions$.dispatch(OrderActions.loadAll({ orderDTO: this.order(val) }));
         })
       ).subscribe();
       this.orders$.subscribe(orders => {
@@ -112,7 +112,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
       const val = this.formGroup.value;
-      this.actions$.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.order(val) }));
+      this.actions$.dispatch(OrderActions.loadAll({ orderDTO: this.order(val) }));
     }
   }
 

@@ -8,7 +8,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderAction } from '../../+state/order.action';
+import { OrderActions } from '../../+state/order.actions';
 import { MainAction } from '../../../../states/main.action';
 import * as _ from 'lodash';
 import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
@@ -69,7 +69,7 @@ export class OrderComponent implements OnInit {
     const params = this.route.snapshot.queryParams;
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.actions$.dispatch(
-      OrderAction.loadInit({
+      OrderActions.loadAll({
         orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 }
       })
     );
@@ -79,7 +79,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderAction.loadInit({ orderDTO: this.order(val) })
+            OrderActions.loadAll({ orderDTO: this.order(val) })
           );
         })
       )
@@ -93,7 +93,7 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      OrderAction.loadMoreOrders({ orderDTO: this.order(val) })
+      OrderActions.loadAll({ orderDTO: this.order(val) })
     );
   }
 
@@ -145,7 +145,7 @@ export class OrderComponent implements OnInit {
       .subscribe((val: any) => {
         if (val) {
           this.actions$.dispatch(
-            OrderAction.updateOrder({
+            OrderActions.update({
               updateOrderDto: {
                 order: {
                   deliveredAt: val.day
@@ -194,7 +194,7 @@ export class OrderComponent implements OnInit {
   }
 
   cancelOrder($event: any) {
-    this.actions$.dispatch(OrderAction.cancelOrder({ orderId: $event.id }));
+    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
   }
 
   deleteOrder($event: any) {
@@ -207,7 +207,7 @@ export class OrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(OrderAction.deleteOrder({ id: $event.id }));
+        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
       }
     });
   }

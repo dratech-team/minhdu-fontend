@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderAction } from '../../+state/order.action';
+import { OrderActions } from '../../+state/order.actions';
 import { DatePipe } from '@angular/common';
 import { CustomerEntity } from '../../../customer/entities/customer.interface';
 import { CustomerActions } from '../../../customer/+state/customerActions';
@@ -80,7 +80,7 @@ export class OrderDialogComponent implements OnInit {
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }
-    this.store.dispatch(OrderAction.updateOrder({
+    this.store.dispatch(OrderActions.update({
       updateOrderDto: {
         order: order,
         id: this.data.order.id

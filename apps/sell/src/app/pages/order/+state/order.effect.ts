@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, ofType } from '@datorama/akita-ng-effects';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { OrderService } from '../service/order.service';
-import { OrderAction } from './order.action';
-import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { OrderActions } from './order.actions';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
@@ -30,7 +30,7 @@ export class OrderEffect {
 
   @Effect()
   addOrder$ = this.actions$.pipe(
-    ofType(OrderAction.addOrder),
+    ofType(OrderActions.addOne),
     switchMap((props) => {
       if (!props.order?.createdAt) {
         throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
@@ -62,84 +62,58 @@ export class OrderEffect {
   );
 
   @Effect()
-  loadInit$ = this.actions$.pipe(
-    ofType(OrderAction.loadInit),
+  loadAll$ = this.actions$.pipe(
+    ofType(OrderActions.loadAll),
     switchMap((props) => this.orderService.pagination(props.orderDTO)),
-    map((responsePagination) => {
-        responsePagination.data.map((order: Order) => {
-          order.expand = false;
-          order.totalCommodity = getTotalCommodity(order.commodities);
-        });
-        this.orderStore.set(responsePagination.data);
-        this.orderStore.update(state => ({
-          ...state,
-          total: responsePagination.total,
-          commodityUniq: responsePagination.commodityUniq
-        }));
+    map((response) => {
+        if (response.data.length === 0) {
+          this.snackBar.openFromComponent(SnackBarComponent, {
+            duration: 2500,
+            panelClass: ['background-snackbar'],
+            data: { content: 'Đã lấy hết đơn hàng' }
+          });
+        } else {
+          response.data.map((order: Order) => {
+            order.expand = false;
+            order.totalCommodity = getTotalCommodity(order.commodities);
+          });
+          this.orderStore.add(response.data);
+          this.orderStore.update(state => ({
+            ...state,
+            total: response.total,
+            commodityUniq: response.commodityUniq
+          }));
+        }
       }
     ),
     catchError((err) => throwError(err))
   );
 
   @Effect()
-  loadMoreOrders$ = this.actions$.pipe(
-    ofType(OrderAction.loadMoreOrders),
-    withLatestFrom(this.orderQuery.selectCount()),
-    map(([props, skip]) =>
-      Object.assign(JSON.parse(JSON.stringify(props.orderDTO)), {
-        skip: skip
-      })
-    ),
-    switchMap((props) => {
-      return this.orderService.pagination(props);
-    }),
-    map((responsePagination) => {
-      if (responsePagination.data.length === 0) {
-        this.snackBar.openFromComponent(SnackBarComponent, {
-          duration: 2500,
-          panelClass: ['background-snackbar'],
-          data: { content: 'Đã lấy hết đơn hàng' }
-        });
-      }
-      responsePagination.data.map((order: Order) => {
-        order.expand = false;
-        order.totalCommodity = getTotalCommodity(order.commodities);
-      });
-      this.orderStore.add(responsePagination.data);
-      this.orderStore.update(state => ({
-        ...state,
-        total: responsePagination.total,
-        commodityUniq: responsePagination.commodityUniq
-      }));
-    }),
-    catchError((err) => throwError(err))
-  );
-
-  @Effect()
-  getOrder$ = this.actions$.pipe(
-    ofType(OrderAction.getOrder),
+  loadOne$ = this.actions$.pipe(
+    ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id)),
     map((order) => this.orderStore.update(order.id, order)),
     catchError((err) => throwError(err))
   );
 
   @Effect()
-  updateOrder$ = this.actions$.pipe(
-    ofType(OrderAction.updateOrder),
+  update$ = this.actions$.pipe(
+    ofType(OrderActions.update),
     switchMap((props) =>
       this.orderService.update(props.updateOrderDto.id, props.updateOrderDto.order).pipe(
         map((_) => {
           switch (props.updateOrderDto.typeUpdate) {
             case 'DELIVERED':
-              return OrderAction.loadInit({
+              return OrderActions.loadAll({
                 orderDTO: { take: 30, skip: 0 }
               });
             case 'IN_CUSTOMER':
-              return OrderAction.loadInit({
+              return OrderActions.loadAll({
                 orderDTO: { take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId }
               });
             default:
-              return OrderAction.getOrder({ id: props.updateOrderDto.id });
+              return OrderActions.loadOne({ id: props.updateOrderDto.id });
           }
         }),
         tap(() => {
@@ -153,8 +127,8 @@ export class OrderEffect {
   );
 
   @Effect()
-  updateHideOrder$ = this.actions$.pipe(
-    ofType(OrderAction.updateHideOrder),
+  updateHide$ = this.actions$.pipe(
+    ofType(OrderActions.hide),
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
         map((_) => {
@@ -174,18 +148,18 @@ export class OrderEffect {
 
   @Effect()
   paymentBill$ = this.actions$.pipe(
-    ofType(OrderAction.payment),
+    ofType(OrderActions.payment),
     switchMap((props) =>
       this.orderService.payment(props.id, props.order).pipe(
-        map((_) => OrderAction.getOrder({ id: props.id })),
+        map((_) => OrderActions.loadOne({ id: props.id })),
         catchError((err) => throwError(err))
       )
     )
   );
 
   @Effect()
-  deleteOrder$ = this.actions$.pipe(
-    ofType(OrderAction.deleteOrder),
+  delete$ = this.actions$.pipe(
+    ofType(OrderActions.remove),
     switchMap((props) =>
       this.orderService.delete(props.id).pipe(
         map((_) => {
@@ -194,11 +168,11 @@ export class OrderEffect {
             this.actions$.dispatch(
               CustomerActions.loadOne({ id: props.customerId })
             );
-            return OrderAction.loadInit({
+            return OrderActions.loadAll({
               orderDTO: { take: 30, skip: 0, customerId: props.customerId }
             });
           } else {
-            return OrderAction.loadInit({ orderDTO: { take: 30, skip: 0 } });
+            return OrderActions.loadAll({ orderDTO: { take: 30, skip: 0 } });
           }
         }),
         catchError((err) => throwError(err))
@@ -207,13 +181,13 @@ export class OrderEffect {
   );
 
   @Effect()
-  cancelOrder$ = this.actions$.pipe(
-    ofType(OrderAction.cancelOrder),
+  cancel$ = this.actions$.pipe(
+    ofType(OrderActions.cancelOrder),
     switchMap((prop) =>
       this.orderService.cancelOrder(prop.orderId)),
     map((_) => {
         this.snackBar.open('Huỷ đơn hàng thành công', '', { duration: 1500 });
-        return OrderAction.loadInit({ orderDTO: { take: 30, skip: 0 } });
+        return OrderActions.loadAll({ orderDTO: { take: 30, skip: 0 } });
       }
     ),
     catchError((err) => throwError(err))

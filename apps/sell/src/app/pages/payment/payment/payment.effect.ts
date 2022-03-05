@@ -7,7 +7,7 @@ import { PaymentService } from '../../customer/service/payment.Service';
 import { CustomerActions } from '../../customer/+state/customerActions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { OrderAction } from '../../order/+state/order.action';
+import { OrderActions } from '../../order/+state/order.actions';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
 
 @Injectable()
@@ -41,13 +41,13 @@ export class PaymentEffect {
       ofType(PaymentAction.payment),
       switchMap((props) => this.paymentService.payment(props.infoPayment)),
       map(res => {
-        this.store.dispatch(OrderAction.loadOrdersAssigned({
+        this.store.dispatch(OrderActions.loadOrdersAssigned({
           take: 30,
           skip: 0,
           customerId: res.customerId,
           status: ConvertBoolean.TRUE
         }));
-        this.store.dispatch(OrderAction.loadInit({
+        this.store.dispatch(OrderActions.loadAll({
           orderDTO: {
             take: 30,
             skip: 0,
@@ -71,13 +71,13 @@ export class PaymentEffect {
       ofType(PaymentAction.updatePayment),
       switchMap((props) => this.paymentService.updatePayment(props.id, props.infoPayment)),
       map(res => {
-        this.store.dispatch(OrderAction.loadOrdersAssigned({
+        this.store.dispatch(OrderActions.loadOrdersAssigned({
           take: 30,
           skip: 0,
           customerId: res.customerId,
           status: ConvertBoolean.TRUE
         }));
-        this.store.dispatch(OrderAction.loadInit({
+        this.store.dispatch(OrderActions.loadAll({
           orderDTO: {
             take: 30,
             skip: 0,
@@ -107,13 +107,13 @@ export class PaymentEffect {
             this.store.dispatch(PaymentAction.deletePaymentSuccess({ id: props.id }));
           }),
           map(_ => {
-            this.store.dispatch(OrderAction.loadOrdersAssigned({
+            this.store.dispatch(OrderActions.loadOrdersAssigned({
               take: 30,
               skip: 0,
               customerId: props.customerId,
               status: ConvertBoolean.TRUE
             }));
-            this.store.dispatch(OrderAction.loadInit({
+            this.store.dispatch(OrderActions.loadAll({
               orderDTO: {
                 take: 30,
                 skip: 0,

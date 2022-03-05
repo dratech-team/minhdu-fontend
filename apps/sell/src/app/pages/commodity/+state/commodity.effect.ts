@@ -4,7 +4,7 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CommodityService } from '../service/commodity.service';
 import { CommodityAction } from './commodity.action';
 import { throwError } from 'rxjs';
-import { OrderAction } from '../../order/+state/order.action';
+import { OrderActions } from '../../order/+state/order.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommodityQuery } from './commodity.query';
 import { CommodityStore } from './commodity.store';
@@ -100,7 +100,7 @@ export class CommodityEffect {
         map(_ => {
             this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
             if (props.orderId) {
-              return OrderAction.getOrder({ id: props.orderId });
+              return OrderActions.loadOne({ id: props.orderId });
             } else {
               return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
             }
@@ -118,7 +118,7 @@ export class CommodityEffect {
         map(_ => {
             this.snackbar.open('Xóa hàng hóa thành công', '', { duration: 1500 });
             if (props.orderId) {
-              return OrderAction.getOrder({ id: props.orderId });
+              return OrderActions.loadOne({ id: props.orderId });
             } else {
               return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
             }

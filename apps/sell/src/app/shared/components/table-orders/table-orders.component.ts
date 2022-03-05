@@ -5,7 +5,7 @@ import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { TableOrderCustomerService } from './table-order-customer.service';
 import { Order } from '../../../pages/order/+state/order.interface';
-import { OrderAction } from '../../../pages/order/+state/order.action';
+import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
@@ -59,7 +59,7 @@ export class TableOrdersComponent implements OnInit {
     if (this.delivered) {
       this.customerService.scrollOrdersAssigned(this.mapOrders(val));
     } else {
-      this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.mapOrders(val) }));
+      this.store.dispatch(OrderActions.loadAll({ orderDTO: this.mapOrders(val) }));
     }
   }
 
@@ -81,7 +81,7 @@ export class TableOrdersComponent implements OnInit {
   }
 
   updateOrder(order: Order) {
-    this.store.dispatch(OrderAction.updateHideOrder({
+    this.store.dispatch(OrderActions.hide({
       id: order.id,
       hide: { hide: !order.hide },
       customerId: order.customerId
@@ -99,7 +99,7 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderAction.deleteOrder({ id: order.id, customerId: order.customerId }));
+        this.store.dispatch(OrderActions.remove({ id: order.id, customerId: order.customerId }));
       }
     });
   }
@@ -113,9 +113,9 @@ export class TableOrdersComponent implements OnInit {
       }
     }).afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderAction.updateOrder({
+        this.store.dispatch(OrderActions.update({
           updateOrderDto: {
-            order: { deliveredAt: val.day},
+            order: { deliveredAt: val.day },
             id: order.id,
             typeUpdate: 'IN_CUSTOMER'
           }

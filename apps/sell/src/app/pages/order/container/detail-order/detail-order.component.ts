@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order, OrderHistory } from '../../+state/order.interface';
 import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { OrderAction } from '../../+state/order.action';
+import { OrderActions } from '../../+state/order.actions';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
@@ -49,7 +49,7 @@ export class DetailOrderComponent implements OnInit {
   ngOnInit() {
     this.loading$.subscribe(val => console.log(val));
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
-    this.actions$.dispatch(OrderAction.getOrder({ id: this.getOrderId }));
+    this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
     this.loadInitOrderHistory();
 
     this.activatedRoute.queryParams.subscribe(param => {
@@ -79,7 +79,7 @@ export class DetailOrderComponent implements OnInit {
         width: '60%',
         data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
       }).afterClosed().subscribe((value) => {
-        this.actions$.dispatch(OrderAction.updateOrder({
+        this.actions$.dispatch(OrderActions.update({
           updateOrderDto: {
             id: order.id,
             order: {
