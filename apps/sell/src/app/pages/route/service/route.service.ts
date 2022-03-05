@@ -23,8 +23,8 @@ export  class RouteService extends BaseService<Route>{
   getOne(id: any): Observable<Route> {
     return super.getOne(id);
   }
-  update(id: any, body: any): Observable<UpdateNum<Route>> {
-    return super.update(id, body);
+  updateOrder(id: any, body: any): Observable<Route> {
+    return this.http.patch<Route>(Api.SELL.ROUTE.ROUTE + `/${id}`, body);
   }
   delete(id: number): Observable<void> {
     return super.delete(id);

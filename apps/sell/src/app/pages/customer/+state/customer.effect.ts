@@ -80,12 +80,12 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.getCustomer),
       switchMap((props) => this.customerService.getOne(props.id).pipe(
-        combineLatest([
-          this.orderService.getAll({ customerId: props.customerId }),
-          this.orderService.getAll({ customerId: props.customerId })
-        ]).pipe(map(([delivered, delivering]) => {
-          return [];
-        }))
+        // combineLatest([
+        //   this.orderService.getAll({ customerId: props.customerId }),
+        //   this.orderService.getAll({ customerId: props.customerId })
+        // ]).pipe(map(([delivered, delivering]) => {
+        //   return [];
+        // }))
       )),
       catchError((err) => throwError(err))
     )
