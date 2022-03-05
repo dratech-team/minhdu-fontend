@@ -3,6 +3,7 @@ import { CustomerEntity } from '../entities/customer.entity';
 import { AddCustomerDto } from '../dto/add-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
 import { LoadCustomerDto } from '../dto/load-customer.dto';
+import { LoadOrderDto } from '../../order/dto/load-order.dto';
 
 const addOne = createAction(
   '[CUSTOMER] Add One',
@@ -31,12 +32,12 @@ const remove = createAction(
 
 const loadOrderDelivered = createAction(
   `[CUSTOMER] Load Order Delivered`,
-  props<{ customerId: CustomerEntity['id'] }>()
+  props<LoadOrderDto>()
 );
 
 const loadOrderDelivering = createAction(
   `[CUSTOMER] Load Order Delivered`,
-  props<{ customerId: CustomerEntity['id'] }>()
+  props<LoadOrderDto>()
 );
 
 export const CustomerActions = {
