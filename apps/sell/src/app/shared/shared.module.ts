@@ -20,7 +20,6 @@ import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
 import { RouteReducer } from '../pages/route/+state/route.reducer';
 import { CustomerReducer } from '../pages/customer/+state/customer/customer.reducer';
-import { CommodityReducer } from '../pages/commodity/+state/commodity.reducer';
 import { CustomerEffect } from '../pages/customer/+state/customer/customer.effect';
 import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
 import { RouteEffect } from '../pages/route/+state/route.effect';
@@ -40,7 +39,6 @@ import {NzTableModule} from "ng-zorro-antd/table";
     StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     StoreModule.forFeature(FeatureName.CUSTOMER, CustomerReducer),
-    StoreModule.forFeature(FeatureName.COMMODITY, CommodityReducer),
     EffectsModule.forFeature([
       OrderEffect,
       CustomerEffect,
