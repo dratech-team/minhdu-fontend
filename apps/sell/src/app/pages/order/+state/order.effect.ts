@@ -63,26 +63,6 @@ export class OrderEffect {
     )
   );
 
-  loadAllOrder$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(OrderAction.loadAllOrder),
-      switchMap((props) => this.orderService.paginationOrder()),
-      map((responsePagination) => {
-          responsePagination.data.map((order: Order) => {
-            order.expand = false;
-            order.totalCommodity = getTotalCommodity(order.commodities);
-          });
-          return OrderAction.loadInitSuccess({
-            orders: responsePagination.data,
-            total: responsePagination.total,
-            commodityUniq: responsePagination.commodityUniq
-          });
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
   loadInit$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrderAction.loadInit),
@@ -134,47 +114,6 @@ export class OrderEffect {
           total: responsePagination.total,
           commodityUniq: responsePagination.commodityUniq
         }));
-      }),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  loadOrdersAssigned$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(OrderAction.loadOrdersAssigned),
-      switchMap((props) => {
-        return this.orderService.pagination(props);
-      }),
-      map((responsePagination) => {
-        return OrderAction.loadOrdersAssignedSuccess({
-          orders: responsePagination.data
-        });
-      }),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  loadMoreOrdersAssigned$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(OrderAction.loadMoreOrdersAssigned),
-      withLatestFrom(this.orderQuery.selectCount()),
-      map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
-      ),
-      switchMap((props) => {
-        return this.orderService.pagination(props);
-      }),
-      map((responsePagination) => {
-        if (responsePagination.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết đơn hàng' }
-          });
-        }
-        return OrderAction.loadMoreOrdersAssignedSuccess({
-          orders: responsePagination.data
-        });
       }),
       catchError((err) => throwError(err))
     )
