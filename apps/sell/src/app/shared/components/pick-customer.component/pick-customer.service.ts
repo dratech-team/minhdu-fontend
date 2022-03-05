@@ -14,7 +14,7 @@ export class PickCustomerService {
   }
 
   loadInit() {
-    return this.actions$.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+    return this.actions$.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
   }
 
   scrollCustomer(val: any) {
@@ -22,7 +22,7 @@ export class PickCustomerService {
   }
 
   searchCustomer(val: any) {
-    this.actions$.dispatch(CustomerAction.loadInit(val));
+    this.actions$.dispatch(CustomerAction.loadAll(val));
   }
 
   getCustomers() {

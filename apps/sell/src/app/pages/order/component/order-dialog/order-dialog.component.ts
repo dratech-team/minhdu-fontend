@@ -41,7 +41,7 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+    this.store.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
     this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
 
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));

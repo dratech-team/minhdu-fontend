@@ -95,7 +95,7 @@ export class CustomerDialogComponent implements OnInit {
     if (this.data) {
       this.actions$.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {
-      this.actions$.dispatch(CustomerAction.addCustomer({ customer: customer }));
+      this.actions$.dispatch(CustomerAction.addOne({ customer: customer }));
     }
     this.customerQuery.selectLoading().subscribe(added => {
       if (added) {

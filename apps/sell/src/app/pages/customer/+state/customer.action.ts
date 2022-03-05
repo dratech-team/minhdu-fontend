@@ -2,13 +2,13 @@ import { createAction, props } from '@datorama/akita-ng-effects';
 import { CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Customer } from './customer.interface';
 
-const addCustomer = createAction(
-  '[ADD_CUSTOMER] Add Customer',
+const addOne = createAction(
+  '[CUSTOMER] Add One',
   props<{ customer: any }>()
 );
 
-const loadInit = createAction(
-  '[LOAD_CUSTOMER] Load Init',
+const loadAll = createAction(
+  '[CUSTOMER] Load All',
   props<{
     skip: number,
     take: number,
@@ -73,8 +73,8 @@ const loadOrderDelivering = createAction(
 );
 
 export const CustomerAction = {
-  addCustomer,
-  loadInit,
+  addOne,
+  loadAll,
   loadMoreCustomers,
   getCustomer,
   updateCustomer,

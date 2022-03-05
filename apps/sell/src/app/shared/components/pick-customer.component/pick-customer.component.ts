@@ -51,7 +51,7 @@ export class PickCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+      this.actions$.dispatch(CustomerAction.loadAll({ take: 30, skip: 0 }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });

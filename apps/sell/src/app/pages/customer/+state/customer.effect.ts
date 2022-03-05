@@ -24,7 +24,7 @@ export class CustomerEffect {
 
   @Effect()
   loadCustomers$ = this.action$.pipe(
-    ofType(CustomerAction.loadInit),
+    ofType(CustomerAction.loadAll),
     switchMap((props) => this.customerService.pagination(props)),
     tap((ResponsePaginate) => {
       console.log(ResponsePaginate);
@@ -59,7 +59,7 @@ export class CustomerEffect {
 
   @Effect()
   addCustomer$ = this.action$.pipe(
-    ofType(CustomerAction.addCustomer),
+    ofType(CustomerAction.addOne),
     switchMap((props) => {
       if (!props.customer?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');

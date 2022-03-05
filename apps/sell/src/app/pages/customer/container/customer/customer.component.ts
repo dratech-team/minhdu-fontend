@@ -62,13 +62,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.actions$.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.actions$.dispatch(CustomerAction.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerAction.loadInit(this.customer(val))
+            CustomerAction.loadAll(this.customer(val))
           );
         })
       )
