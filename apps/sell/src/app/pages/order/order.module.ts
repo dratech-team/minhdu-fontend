@@ -3,8 +3,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { OrderRoutingModule } from './order-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { OrderAssignedReducer, OrderReducer } from './+state/order.reducer';
-import { EffectsModule } from '@ngrx/effects';
 import { OrderEffect } from './+state/order.effect';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -23,7 +21,6 @@ import { AddOrderComponent } from './container/add-order.component/add-order.com
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouteReducer } from '../route/+state/route.reducer';
-import { RouteEffect } from '../route/+state/route.effect';
 import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
@@ -32,37 +29,35 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 
 @NgModule({
-    imports: [
-        MatSnackBarModule,
-        ReactiveFormsModule,
-        ComponentsModule,
-        OrderRoutingModule,
-        StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
-        StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-        StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
-        StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
-        EffectsModule.forFeature([OrderEffect, RouteEffect]),
-        MatInputModule,
-        InfiniteScrollModule,
-        MatDialogModule,
-        MatSelectModule,
-        MatTabsModule,
-        CustomerModule,
-        MatCheckboxModule,
-        CommodityModule,
-        NgxMatSelectSearchModule,
-        MatAutocompleteModule,
-        RouteModule,
-        SharedModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        MatDatepickerModule,
-        CommonModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    ComponentsModule,
+    OrderRoutingModule,
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+    StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
+    AkitaNgEffectsModule.forFeature([OrderEffect]),
+    MatInputModule,
+    InfiniteScrollModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatTabsModule,
+    CustomerModule,
+    MatCheckboxModule,
+    CommodityModule,
+    NgxMatSelectSearchModule,
+    MatAutocompleteModule,
+    RouteModule,
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    MatDatepickerModule,
+    CommonModule,
+    MatProgressSpinnerModule
+  ],
   declarations: [
     TableRouteComponent,
     PaymentHistoryComponent,

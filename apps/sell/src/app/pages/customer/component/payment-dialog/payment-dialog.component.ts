@@ -7,15 +7,8 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { Order } from '../../../order/+state/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../../payment/payment/payment.action';
-import { OrderAction } from '../../../order/+state/order.action';
-import {
-  selectorAllOrders,
-  selectorCurrentOrder,
-  selectorOrdersByCustomerId
-} from '../../../order/+state/order.selector';
 import { tap } from 'rxjs/operators';
 import { selectedAdded } from '../../../payment/payment/payment.selector';
-
 
 @Component({
   templateUrl: 'payment-dialog.component.html'

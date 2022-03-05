@@ -6,7 +6,7 @@
   <button (click)='printOrder()' class='btn btn-primary font-lg mr-5 mt-3'>Xuất</button>
 </div>
 
-<ngx-skeleton-loader *ngIf='!(loaded$ | async); else order' count='10' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='(loading$ | async); else order' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #order>
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
        [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'

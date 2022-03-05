@@ -11,7 +11,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { EffectsModule } from '@ngrx/effects';
-import { OrderAssignedReducer, OrderReducer } from '../pages/order/+state/order.reducer';
 import { OrderEffect } from '../pages/order/+state/order.effect';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { PickCommodityComponent } from './components/pick-commodity/pick-commodity.component';
@@ -34,8 +33,6 @@ import {NzTableModule} from "ng-zorro-antd/table";
 @NgModule({
   imports: [
     ComponentsModule,
-    StoreModule.forFeature(FeatureName.ORDER, OrderReducer),
-    StoreModule.forFeature(FeatureName.ORDER_ASSIGNED, OrderAssignedReducer),
     StoreModule.forFeature(FeatureName.ROUTE, RouteReducer),
     EffectsModule.forFeature([
       OrderEffect,

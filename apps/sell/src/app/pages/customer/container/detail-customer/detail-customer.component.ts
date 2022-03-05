@@ -7,12 +7,6 @@ import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
-import {
-  selectedNotOrderLoaded,
-  selectedOrderLoaded,
-  selectorOrdersAssignedById,
-  selectorOrdersNotAssignedById
-} from '../../../order/+state/order.selector';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
@@ -37,10 +31,12 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   customer$ = this.customerQuery.selectEntity(this.getId);
-  ordersNotAssigned$ = this.customerQuery.select(selectorOrdersNotAssignedById(this.getId));
-  ordersAssigned$ = this.customerQuery.select(selectorOrdersAssignedById(this.getId));
-  loadedOrdersAssigned$ = this.customerQuery.select(selectedOrderLoaded);
-  loadedOrdersNotAssigned$ = this.customerQuery.select(selectedNotOrderLoaded);
+
+  /// FIXME: Sửa lại logic
+  ordersNotAssigned$ = this.customerQuery.selectAll();
+  ordersAssigned$ = this.customerQuery.selectAll();
+  loadedOrdersAssigned$ = this.customerQuery.selectLoading()
+  loadedOrdersNotAssigned$ = this.customerQuery.selectLoading()
 
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
