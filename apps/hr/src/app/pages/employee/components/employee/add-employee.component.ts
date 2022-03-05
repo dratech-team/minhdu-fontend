@@ -41,8 +41,8 @@ export class AddEmployeeComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
   branchId?: number;
   positionId?: number;
-  formPosition = new FormControl();
-  branches = new FormControl();
+  formPosition = new FormControl(this.data?.employee?.position?.name );
+  branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
   positions$: Observable<Position[]> | undefined;
@@ -67,8 +67,14 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.data?.employee.ward)
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
+    if(this.data?.employee){
+      this.positionId = this.data.employee.position.id;
+      this.branchId = this.data.employee.branch.id;
+      this.wardId = this.data.employee.ward.id
+    }
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
       issuedBy: [this.data?.employee?.issuedBy],

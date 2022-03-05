@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectAllProvince, selectDistrictByProvinceId } from '@minhdu-fontend/location';
+import {getAllDistrict, getAllWard, selectAllProvince, selectDistrictByProvinceId} from '@minhdu-fontend/location';
 import { District, Province, Ward } from '@minhdu-fontend/data-models';
 import { AppState } from '../../../../../apps/sell/src/app/reducers';
 import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
@@ -22,14 +22,14 @@ export class PickLocationComponent implements OnInit {
   @Input() isRequiredWard: boolean = true;
   @Input() province?: any;
   @Input() district?: any;
-  @Input() ward?: any;
+  @Input() ward?: Ward ;
   @Input() reload$?: Subject<boolean>;
   @Output() eventSelectProvince = new EventEmitter<any>();
   @Output() eventSelectDistrict = new EventEmitter<any>();
   @Output() eventSelectWard = new EventEmitter<any>();
   provinces$ = this.store.pipe(select(selectAllProvince));
-  districts$!: Observable<District[]>;
-  wards$!: Observable<Ward[]>;
+  districts$ = this.store.pipe(select(getAllDistrict));
+  wards$ = this.store.pipe(select(getAllWard)) ;
   lstDistrict: District[] = [];
   lstWard: Ward [] = [];
   formProvince = new FormControl();
@@ -44,6 +44,11 @@ export class PickLocationComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.ward){
+      this.formProvince.setValue(this.ward?.district?.province?.name)
+      this.formDistrict.setValue(this.ward?.district?.name)
+      this.formWard.setValue(this.ward?.name)
+    }
     this.reload$?.subscribe(val => {
       if (val) {
         this.formGroup.reset();
@@ -53,9 +58,6 @@ export class PickLocationComponent implements OnInit {
     if (this.ward) {
       this.store.dispatch(DistrictAction.getDistrictsByProvinceId({ provinceId: this.ward.district.province.id }));
       this.store.dispatch(WardAction.getWardsByDistrictId({ districtId: this.ward.district.id }));
-      this.store.pipe(select(selectDistrictByProvinceId(
-        this.ward.district.province.id
-      )));
     }
 
     this.formGroup = <FormGroup>this.controlContainer.control;
@@ -69,8 +71,6 @@ export class PickLocationComponent implements OnInit {
             return e.name.toLowerCase().includes(province?.toLowerCase());
           });
         } else {
-          this.lstDistrict = [];
-          this.formDistrict.patchValue('');
           return provinces;
         }
       })
@@ -82,8 +82,6 @@ export class PickLocationComponent implements OnInit {
           if (district) {
             return this.lstDistrict.filter(item => item.name.toLowerCase().includes(district.toLowerCase()));
           } else {
-            this.lstWard = [];
-            this.formWard.patchValue('');
             return this.lstDistrict;
           }
         }
@@ -104,6 +102,7 @@ export class PickLocationComponent implements OnInit {
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
     this.formDistrict.patchValue('');
+    this.formWard.patchValue('');
     this.eventSelectProvince.emit(province.id);
   }
 
