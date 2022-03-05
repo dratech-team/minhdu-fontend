@@ -70,7 +70,7 @@ export class CustomerEffect {
   @Effect()
   updateCustomer$ = this.action$.pipe(
     ofType(CustomerAction.update),
-    switchMap((props) => this.customerService.update(props.id, props.customer).pipe(
+    switchMap((props) => this.customerService.update(props.id, props.updates).pipe(
       map((res) => this.customerStore.update(res.id, res)),
       catchError((err) => throwError(err))
     ))

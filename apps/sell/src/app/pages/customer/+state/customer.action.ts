@@ -2,6 +2,7 @@ import { createAction, props } from '@datorama/akita-ng-effects';
 import { CustomerType, Gender } from '@minhdu-fontend/enums';
 import { CustomerEntity } from '../entities/customer.interface';
 import { AddCustomerDto } from '../dto/add-customer.dto';
+import { UpdateCustomerDto } from '../dto/update-customer.dto';
 
 const addOne = createAction(
   '[CUSTOMER] Add One',
@@ -34,7 +35,7 @@ const loadOne = createAction(
 
 const update = createAction(
   '[CUSTOMER] Update',
-  props<{ customer: any, id: number }>()
+  props<{  id: number, updates: UpdateCustomerDto }>()
 );
 
 const remove = createAction(

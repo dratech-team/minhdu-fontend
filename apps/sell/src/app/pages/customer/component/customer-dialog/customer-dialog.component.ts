@@ -92,7 +92,7 @@ export class CustomerDialogComponent implements OnInit {
     };
 
     if (this.data) {
-      this.actions$.dispatch(CustomerAction.update({ customer: customer, id: this.data.customer.id }));
+      this.actions$.dispatch(CustomerAction.update({ id: this.data.customer.id, updates: customer }));
     } else {
       this.actions$.dispatch(CustomerAction.addOne(customer));
     }
