@@ -24,7 +24,7 @@ import {
 } from 'libs/orgchart/src/lib/+state/position';
 import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
 import {Branch, Position} from '@minhdu-fontend/data-models';
-import {map, startWith} from 'rxjs/operators';
+import {first, map, startWith, tap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
@@ -41,12 +41,12 @@ export class AddEmployeeComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
   branchId?: number;
   positionId?: number;
-  formPosition = new FormControl(this.data?.employee?.position?.name );
+  formPosition = new FormControl(this.data?.employee?.position?.name);
   branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
   positions$: Observable<Position[]> | undefined;
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.store.pipe(select(getAllOrgchart))
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
@@ -67,10 +67,9 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data?.employee.ward)
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
-    if(this.data?.employee){
+    if (this.data?.employee) {
       this.positionId = this.data.employee.position.id;
       this.branchId = this.data.employee.branch.id;
       this.wardId = this.data.employee.ward.id
@@ -134,6 +133,11 @@ export class AddEmployeeComponent implements OnInit {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
+
+    this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
+     this.branches.setValue(val[0].name)
+      this.branchId = val[0].id
+    })
   }
 
   get f() {
