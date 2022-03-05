@@ -1,5 +1,5 @@
 import { Employee } from '@minhdu-fontend/data-models';
-import { Order } from '../../order/enitities/order.interface';
+import { OrderEntity } from '../../order/enitities/order.interface';
 import { PaymentType } from '@minhdu-fontend/enums';
 import { FormControl } from '@angular/forms';
 
@@ -10,7 +10,7 @@ export interface Route {
   endedAt: Date,
   driver: string,
   employee: Employee,
-  orders: Order[],
+  orders: OrderEntity[],
   garage: string,
   bsx: string,
   latitude: string,

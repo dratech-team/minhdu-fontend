@@ -8,7 +8,7 @@ import { ExportService } from '@minhdu-fontend/service';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerActions } from '../../+state/customer.actions';
-import { Order } from '../../../order/enitities/order.interface';
+import { OrderEntity } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
@@ -33,7 +33,7 @@ export class CustomerComponent implements OnInit {
   CustomerTypes = CustomerTypes;
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
-  orders?: Order;
+  orders?: OrderEntity;
 
   formGroup = new FormGroup({
     name: new FormControl(''),

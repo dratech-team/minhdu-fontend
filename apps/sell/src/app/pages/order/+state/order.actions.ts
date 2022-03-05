@@ -1,26 +1,27 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { OrderDTO, UpdateOrderDto } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.interface';
+import { AddOrderDto } from '../dto/add-order.dto';
+import { UpdateOrderDto } from '../dto/update-order.dto';
+import { LoadOrderDto } from '../dto/load-order.dto';
 
 const addOne = createAction(
   '[ORDER] Add One',
-  props<{ order: any }>()
+  props<AddOrderDto>()
 );
 
 const loadAll = createAction(
   '[ORDER] Load Init',
-  props<{ orderDTO: Partial<OrderDTO> }>()
+  props<LoadOrderDto>()
 );
 
 const loadOne = createAction(
   '[ORDER] Load One',
-  props<{ id: number }>()
+  props<{ id: OrderEntity['id'] }>()
 );
 
 const update = createAction(
   '[ORDER] Update',
-  props<{
-    updateOrderDto: UpdateOrderDto
-  }>()
+  props<{ id: OrderEntity['id'], updates: UpdateOrderDto }>()
 );
 
 const hide = createAction(

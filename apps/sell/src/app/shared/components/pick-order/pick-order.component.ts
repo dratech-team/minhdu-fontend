@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
 import { document } from 'ngx-bootstrap/utils';
-import { Order } from '../../../pages/order/enitities/order.interface';
+import { OrderEntity } from '../../../pages/order/enitities/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
@@ -11,6 +11,7 @@ import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import { Route } from '../../../pages/route/+state/route.interface';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
+import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
 
 
 @Component({
@@ -19,25 +20,25 @@ import { OrderQuery } from '../../../pages/order/+state/order.query';
   styleUrls: ['pick-route.component.scss']
 })
 export class PickOrderComponent implements OnInit, OnChanges {
-  @Input() orders: Order[] = [];
+  @Input() orders: OrderEntity[] = [];
   @Input() commoditiesSelected: Commodity[] = [];
   @Input() pickOne = false;
   @Input() isCheckOrderSelected = false;
   @Input() orderIdDefault?: number;
   @Input() payment = false;
-  @Input() orderSelected: Order[] = [];
+  @Input() orderSelected: OrderEntity[] = [];
   @Input() customerId?: number;
-  @Output() checkEvent = new EventEmitter<Order[]>();
+  @Output() checkEvent = new EventEmitter<OrderEntity[]>();
   @Output() checkCommodityEvent = new EventEmitter<Commodity[]>();
-  @Output() checkEventPickOne = new EventEmitter<Order>();
+  @Output() checkEventPickOne = new EventEmitter<OrderEntity>();
 
   orders$ = this.orderQuery.selectAll();
   total$ = this.orderQuery.selectCount();
 
-  ordersFilter: Order[] = [];
+  ordersFilter: OrderEntity[] = [];
   pageSize = 30;
   pageIndex = 0;
-  orderPickOne!: Order;
+  orderPickOne!: OrderEntity;
   paidType = PaidType;
   isSelectAll = false;
   formGroup = new FormGroup(
@@ -67,14 +68,11 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.isSelectAll = this.isCheckOrderSelected;
-    this.actions$.dispatch(OrderActions.loadAll(
-      {
-        orderDTO: {
-          skip: this.pageIndex,
-          take: this.pageSize,
-          customerId: this.customerId ? this.customerId : ''
-        }
-      }));
+    this.actions$.dispatch(OrderActions.loadAll({
+      skip: this.pageIndex,
+      take: this.pageSize,
+      customerId: this.customerId
+    }));
     if (this.orderIdDefault) {
       this.orderQuery.selectEntity(this.orderIdDefault).subscribe(val => {
         this.orderPickOne = JSON.parse(JSON.stringify(val));
@@ -86,7 +84,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         tap((_) => {
           this.eventSearch = true;
           const val = this.formGroup.value;
-          this.actions$.dispatch(OrderActions.loadAll({ orderDTO: this.order(val) }));
+          this.actions$.dispatch(OrderActions.loadAll(this.order(val)));
         })
       ).subscribe();
       this.orders$.subscribe(orders => {
@@ -112,24 +110,23 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
       const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll({ orderDTO: this.order(val) }));
+      this.actions$.dispatch(OrderActions.loadAll(this.order(val)));
     }
   }
 
-  order(val: any) {
+  order(val: any): LoadOrderDto {
     return {
       take: this.pageSize,
       skip: this.pageIndex,
-      isRoute: val.isRoute,
-      customerId: this.customerId ? this.customerId : '',
+      hasRoute: val.hasRoute,
+      customerId: this.customerId,
       customer: val.name.trim(),
-      paidType: val.paidType,
       explain: val.explain.trim(),
       createdAt: val.createdAt ? new Date(val.createdAt) : ''
     };
   }
 
-  updateAllSelect(order: Order, checkBox?: any) {
+  updateAllSelect(order: OrderEntity, checkBox?: any) {
     this.isSelectAll = pickOne(order, this.orderSelected, this.ordersFilter).isSelectAll;
     if (checkBox?.checked) {
       order.commodities.forEach(val => {
@@ -180,7 +177,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     this.checkEvent.emit(this.orderSelected);
   }
 
-  pickOneOrder(order: Order) {
+  pickOneOrder(order: OrderEntity) {
     this.orderPickOne = order;
     this.checkEventPickOne.emit(this.orderPickOne);
   }
@@ -197,7 +194,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     this.dialogRef.close(this.orderPickOne);
   }
 
-  checkOrder(order: Order) {
+  checkOrder(order: OrderEntity) {
     return this.orderSelected.some((item) => item.id === order.id);
   }
 
@@ -205,7 +202,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     return this.commoditiesSelected.some((item) => item.id === commodity.id);
   }
 
-  pickCommodity(commodity: Commodity, order: Order, checkbox: any) {
+  pickCommodity(commodity: Commodity, order: OrderEntity, checkbox: any) {
     const indexOrder = this.orderSelected.findIndex(val => val.id === order.id);
     if (indexOrder <= -1) {
       this.orderSelected.push(order);
@@ -223,11 +220,11 @@ export class PickOrderComponent implements OnInit, OnChanges {
     this.checkCommodityEvent.emit(this.commoditiesSelected);
   }
 
-  checkCommodityRoute(order: Order): boolean {
+  checkCommodityRoute(order: OrderEntity): boolean {
     return order.commodities.some(val => val.routeId === null);
   }
 
-  getFirstRoute(order: Order): Route {
+  getFirstRoute(order: OrderEntity): Route {
     return order?.routes[0];
   }
 

@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { TableOrderCustomerService } from './table-order-customer.service';
-import { Order } from '../../../pages/order/enitities/order.interface';
+import { OrderEntity } from '../../../pages/order/enitities/order.interface';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { DialogDatePickerComponent } from '../../../../../../../libs/components/
 })
 
 export class TableOrdersComponent implements OnInit {
-  @Input() orders!: Order[];
+  @Input() orders!: OrderEntity[];
   @Input() delivered: boolean = false;
 
   formGroup = new FormGroup(
@@ -59,7 +59,7 @@ export class TableOrdersComponent implements OnInit {
     if (this.delivered) {
       this.customerService.scrollOrdersAssigned(this.mapOrders(val));
     } else {
-      this.store.dispatch(OrderActions.loadAll({ orderDTO: this.mapOrders(val) }));
+      this.store.dispatch(OrderActions.loadAll(this.mapOrders(val)));
     }
   }
 
@@ -80,14 +80,14 @@ export class TableOrdersComponent implements OnInit {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id]).then();
   }
 
-  updateOrder(order: Order) {
+  updateOrder(order: OrderEntity) {
     this.store.dispatch(OrderActions.hide({
       id: order.id,
-      hide: { hide: !order.hide },
+      hide: { hide: !order.hide }
     }));
   }
 
-  deleteOrder(order: Order) {
+  deleteOrder(order: OrderEntity) {
     const ref = this.dialog.open(DialogSharedComponent,
       {
         width: 'fit-content',
@@ -98,12 +98,12 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderActions.remove({ id: order.id}));
+        this.store.dispatch(OrderActions.remove({ id: order.id }));
       }
     });
   }
 
-  confirmOrder(order: Order) {
+  confirmOrder(order: OrderEntity) {
     this.dialog.open(DialogDatePickerComponent, {
       width: 'fit-content',
       data: {
@@ -113,10 +113,9 @@ export class TableOrdersComponent implements OnInit {
     }).afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrderActions.update({
-          updateOrderDto: {
-            order: { deliveredAt: val.day },
-            id: order.id,
-            typeUpdate: 'IN_CUSTOMER'
+          id: order.id,
+          updates: {
+            deliveredAt: val.day,
           }
         }));
       }

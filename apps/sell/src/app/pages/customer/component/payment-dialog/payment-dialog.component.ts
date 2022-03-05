@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentType } from '@minhdu-fontend/enums';
-import { Order } from '../../../order/enitities/order.interface';
+import { OrderEntity } from '../../../order/enitities/order.interface';
 import { DatePipe } from '@angular/common';
 import { PaymentAction } from '../../../payment/payment/payment.action';
 import { tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { selectedAdded } from '../../../payment/payment/payment.selector';
 
 export class PaymentDialogComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
-  orderPicked!: Order;
+  orderPicked!: OrderEntity;
   payType = PaymentType;
   formGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -103,7 +103,7 @@ export class PaymentDialogComponent implements OnInit {
     }
   }
 
-  pickOrders($event: Order) {
+  pickOrders($event: OrderEntity) {
     this.orderPicked = $event;
     if (this.orderPicked) {
       this.secondFormGroup = this.formBuilder.group({

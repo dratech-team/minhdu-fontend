@@ -69,9 +69,7 @@ export class OrderComponent implements OnInit {
     const params = this.route.snapshot.queryParams;
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.actions$.dispatch(
-      OrderActions.loadAll({
-        orderDTO: { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 }
-      })
+      OrderActions.loadAll( { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 })
     );
 
     this.formGroup.valueChanges
@@ -79,7 +77,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ orderDTO: this.order(val) })
+            OrderActions.loadAll(this.order(val))
           );
         })
       )
@@ -93,7 +91,7 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      OrderActions.loadAll({ orderDTO: this.order(val) })
+      OrderActions.loadAll(this.order(val))
     );
   }
 
@@ -146,12 +144,9 @@ export class OrderComponent implements OnInit {
         if (val) {
           this.actions$.dispatch(
             OrderActions.update({
-              updateOrderDto: {
-                order: {
-                  deliveredAt: val.day
-                },
-                typeUpdate: 'DELIVERED',
-                id: $event.id
+              id: $event.id,
+              updates: {
+                deliveredAt: val.day
               }
             })
           );

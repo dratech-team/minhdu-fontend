@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { select } from '@ngrx/store';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderActions } from '../../+state/order.actions';
@@ -13,19 +12,20 @@ import { CustomerEntity } from '../../../customer/entities/customer.interface';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../../customer/+state/customer.query';
+import { AddOrderDto } from '../../dto/add-order.dto';
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.customerQuery.selectEntity(this.getCustomerId());
+  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot.params.id);
 
   customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: Commodity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number | undefined;
+  customerId: number = this.route.snapshot.params.id;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -59,15 +59,6 @@ export class AddOrderComponent implements OnInit {
     });
   }
 
-  getCustomerId() {
-    this.route.queryParams.subscribe(param => {
-      if (param.data) {
-        this.customerId = JSON.parse(param.data);
-      }
-    });
-    return this.customerId;
-  }
-
   pickCustomer() {
     this.dialog.open(PickCustomerComponent, {
       width: '50%',
@@ -86,8 +77,8 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCustomerId() {
-    this.customerId = undefined;
-    this.customerPicked = undefined;
+    // this.customerId = undefined;
+    // this.customerPicked = undefined;
   }
 
   pickCommodities() {
@@ -121,7 +112,7 @@ export class AddOrderComponent implements OnInit {
       return;
     }
     const val = this.formGroup.value;
-    const order = {
+    const order: AddOrderDto = {
       createdAt: val.createdAt,
       endedAt: val.endedAt,
       explain: val.explain,
@@ -130,7 +121,7 @@ export class AddOrderComponent implements OnInit {
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
-    this.actions$.dispatch(OrderActions.addOne({ order: order }));
+    this.actions$.dispatch(OrderActions.addOne(order));
   }
 
   onSelectWard($event: number) {

@@ -6,10 +6,9 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../customer/+state/customer.actions';
 import { Router } from '@angular/router';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { Order } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.interface';
 import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
 import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
@@ -32,30 +31,24 @@ export class OrderEffect {
   addOrder$ = this.actions$.pipe(
     ofType(OrderActions.addOne),
     switchMap((props) => {
-      if (!props.order?.createdAt) {
+      if (!props?.createdAt) {
         throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
       }
-      if (!props.order?.provinceId) {
+      if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
       }
-      if (!props.order?.customerId) {
+      if (!props?.customerId) {
         throw this.snackBar.open('Khách hàng không được để trống');
       }
-      if (!props.order?.commodityIds?.length) {
+      if (!props?.commodityIds?.length) {
         throw this.snackBar.open('Vui lòng chọn hàng hóa');
       }
-      return this.orderService.addOne(props.order);
+      return this.orderService.addOne(props);
     }),
     map((res) => {
       this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
       this.orderStore.add(res);
     }),
-    tap(() => this.router.navigate(['/don-hang']).then((v => {
-      /// FIXME:
-      if (v) {
-        location.reload();
-      }
-    }))),
     catchError((err) => {
       return throwError(err);
     })
@@ -64,7 +57,7 @@ export class OrderEffect {
   @Effect()
   loadAll$ = this.actions$.pipe(
     ofType(OrderActions.loadAll),
-    switchMap((props) => this.orderService.pagination(props.orderDTO)),
+    switchMap((props) => this.orderService.pagination(props)),
     map((response) => {
         if (response.data.length === 0) {
           this.snackBar.openFromComponent(SnackBarComponent, {
@@ -73,7 +66,7 @@ export class OrderEffect {
             data: { content: 'Đã lấy hết đơn hàng' }
           });
         } else {
-          response.data.map((order: Order) => {
+          response.data.map((order: OrderEntity) => {
             order.expand = false;
             order.totalCommodity = getTotalCommodity(order.commodities);
           });
@@ -101,20 +94,9 @@ export class OrderEffect {
   update$ = this.actions$.pipe(
     ofType(OrderActions.update),
     switchMap((props) =>
-      this.orderService.update(props.updateOrderDto.id, props.updateOrderDto.order).pipe(
-        map((_) => {
-          switch (props.updateOrderDto.typeUpdate) {
-            case 'DELIVERED':
-              return OrderActions.loadAll({
-                orderDTO: { take: 30, skip: 0 }
-              });
-            case 'IN_CUSTOMER':
-              return OrderActions.loadAll({
-                orderDTO: { take: 30, skip: 0}
-              });
-            default:
-              return OrderActions.loadOne({ id: props.updateOrderDto.id });
-          }
+      this.orderService.update(props.id, props.updates).pipe(
+        map((response) => {
+          this.orderStore.update(response.id, response.changes);
         }),
         tap(() => {
           this.snackBar.open('Cập nhật thành công');
@@ -167,11 +149,10 @@ export class OrderEffect {
   @Effect()
   cancel$ = this.actions$.pipe(
     ofType(OrderActions.cancelOrder),
-    switchMap((prop) =>
-      this.orderService.cancelOrder(prop.orderId)),
-    map((_) => {
+    switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
+    map((res) => {
         this.snackBar.open('Huỷ đơn hàng thành công', '', { duration: 1500 });
-        return OrderActions.loadAll({ orderDTO: { take: 30, skip: 0 } });
+        this.orderStore.remove(res.id)
       }
     ),
     catchError((err) => throwError(err))

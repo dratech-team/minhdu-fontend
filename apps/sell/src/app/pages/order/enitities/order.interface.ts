@@ -1,18 +1,19 @@
-import {CurrencyUnit, PaymentType} from '@minhdu-fontend/enums';
-import {Commodity} from '../../commodity/+state/commodity.interface';
-import {Route} from '../../route/+state/route.interface';
-import {District, PaymentHistory, Province, ResponsePaginate, Ward} from '@minhdu-fontend/data-models';
+import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { Commodity } from '../../commodity/+state/commodity.interface';
+import { Route } from '../../route/+state/route.interface';
+import { District, PaymentHistory, Province, ResponsePaginate, Ward } from '@minhdu-fontend/data-models';
 import { CustomerEntity } from '../../customer/entities/customer.interface';
 
-export interface Order {
+export interface OrderEntity {
   id: number;
   customer: CustomerEntity;
   createdAt: Date;
   explain: string;
   commodityTotal: number;
   paymentTotal: number;
-  currency: CurrencyUnit;
+  deliveredAt: Date;
   commodities: Commodity[];
+  currency: CurrencyUnit;
   routes: Route[];
   paidAt?: Date;
   payType?: PaymentType;
@@ -22,41 +23,13 @@ export interface Order {
   district?: District;
   ward?: Ward;
   isSelect?: boolean;
-  paymentHistories: PaymentHistory[];
-  deliveredAt: Date;
   endedAt: Date;
   hide: boolean;
-  totalCommodity:number,
-  expand?:boolean,
-  commodityIds?: number[];
+  totalCommodity: number,
+  expand?: boolean,
+  paymentHistories: PaymentHistory[];
 }
 
-export interface UpdateOrderDto{
-  order?: Partial<Order>,
-  id: number
-  typeUpdate?: 'DELIVERED' | 'IN_CUSTOMER',
-}
-
-export interface OrderDTO {
-  take: number;
-  skip: number;
-  paidType: string;
-  customerId: number | string;
-  routeId: number;
-  customer: string;
-  deliveredAt: {
-    startedAt: Date,
-    endedAt: Date,
-  } | Date;
-  createdAt: {
-    startedAt: Date,
-    endedAt: Date,
-  } | Date|string;
-  status: 0 | 1;
-  explain: string;
-  ward: string;
-  isRoute?:boolean
-}
 
 export interface CommodityUniq {
   code: string,
@@ -68,9 +41,9 @@ export interface ResponsePaginateOrder<T> extends ResponsePaginate<T> {
   commodityUniq: CommodityUniq[]
 }
 
-export interface OrderHistory{
+export interface OrderHistory {
   id: number,
-  orderId:number,
+  orderId: number,
   type: string,
   note: string,
   timestamp: Date

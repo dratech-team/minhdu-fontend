@@ -1,8 +1,8 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { CommodityUniq, Order } from '../enitities/order.interface';
+import { CommodityUniq, OrderEntity } from '../enitities/order.interface';
 
-export interface OrderState extends EntityState<Order> {
+export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];

@@ -81,10 +81,8 @@ export class OrderDialogComponent implements OnInit {
       delete order.deliveredAt;
     }
     this.store.dispatch(OrderActions.update({
-      updateOrderDto: {
-        order: order,
-        id: this.data.order.id
-      }
+      id: this.data.order.id,
+      updates: order
     }));
     this.dialogRef.close();
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Order, OrderHistory } from '../../enitities/order.interface';
+import { OrderEntity, OrderHistory } from '../../enitities/order.interface';
 import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { OrderActions } from '../../+state/order.actions';
 import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
@@ -71,7 +71,7 @@ export class DetailOrderComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateOrder(order: Order, type?: 'GENERAL' | 'COMMODITY') {
+  updateOrder(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
       this.dialog.open(OrderDialogComponent, { width: '60%', data: { order: order, tab: 1, type: 'UPDATE' } });
     } else {
@@ -80,11 +80,9 @@ export class DetailOrderComponent implements OnInit {
         data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
       }).afterClosed().subscribe((value) => {
         this.actions$.dispatch(OrderActions.update({
-          updateOrderDto: {
-            id: order.id,
-            order: {
-              commodityIds: value.map((e: any) => e.id)
-            }
+          id: order.id,
+          updates: {
+            commodityIds: value.map((e: any) => e.id)
           }
         }));
       });

@@ -27,7 +27,7 @@ export class BaseService<T> {
   }
 
   update(id: any, body: any): Observable<UpdateNum<T>> {
-    return this.http.patch<UpdateNum<T>>(this.url + `/${id}`, body);
+    return this.http.patch<UpdateNum<T> >(this.url + `/${id}`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
