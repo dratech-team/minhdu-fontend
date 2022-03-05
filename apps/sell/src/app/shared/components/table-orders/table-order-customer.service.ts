@@ -19,7 +19,7 @@ export class TableOrderCustomerService {
   }
 
   searchOrdersAssigned(val: any){
-    this.actions$.dispatch(OrderAction.loadOrdersAssigned(val));
+    // this.actions$.dispatch(OrderAction.loadOrdersAssigned(val));
   }
 
   scrollOrders(val: any){
@@ -27,7 +27,7 @@ export class TableOrderCustomerService {
   }
 
   scrollOrdersAssigned(val: any){
-    this.actions$.dispatch(OrderAction.loadMoreOrdersAssigned(val));
+    // this.actions$.dispatch(OrderAction.loadMoreOrdersAssigned(val));
   }
 
   getCustomers() {

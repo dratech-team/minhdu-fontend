@@ -45,29 +45,6 @@ const deleteOrder = createAction(
   props<{ id: number; customerId?: number }>()
 );
 
-const loadOrdersAssigned = createAction(
-  '[LOAD_ORDERS_ASSIGNED] Load Order Assigned',
-  props<{
-    take: number;
-    skip: number;
-    paidType?: string;
-    customer?: string;
-    customerId?: number;
-    status?: number;
-  }>()
-);
-
-const loadMoreOrdersAssigned = createAction(
-  '[LOAD_MORE_ORDERS_ASSIGNED] Load More Order Assigned',
-  props<{
-    take: number;
-    skip: number;
-    paidType?: string;
-    customer?: string;
-    customerId?: number;
-    delivered?: number;
-  }>()
-);
 
 const cancelOrder = createAction(
   '[CANCEL_ORDER] Cancel Order',
@@ -84,7 +61,5 @@ export const OrderAction = {
   updateHideOrder,
   payment,
   deleteOrder,
-  loadOrdersAssigned,
-  loadMoreOrdersAssigned,
   cancelOrder
 };

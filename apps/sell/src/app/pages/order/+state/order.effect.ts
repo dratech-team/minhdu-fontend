@@ -135,9 +135,6 @@ export class OrderEffect {
                 orderDTO: { take: 30, skip: 0 }
               });
             case 'IN_CUSTOMER':
-              this.actions$.dispatch(OrderAction.loadOrdersAssigned({
-                take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId
-              }));
               return OrderAction.loadInit({
                 orderDTO: { take: 30, skip: 0, customerId: props.updateOrderDto.order?.customerId }
               });
@@ -161,25 +158,16 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
         map((_) => {
-          this.actions$.dispatch(
-            OrderAction.loadOrdersAssigned({
-              take: 30,
-              skip: 0,
-              status: this.convertBoolean.TRUE
-            })
-          );
+          // this.actions$.dispatch(
+          //   OrderAction.loadOrdersAssigned({
+          //     take: 30,
+          //     skip: 0,
+          //     status: this.convertBoolean.TRUE
+          //   })
+          // );
           return CustomerAction.getCustomer({ id: props.customerId });
         }),
-        catchError((err) => {
-          this.actions$.dispatch(
-            OrderAction.loadOrdersAssigned({
-              take: 30,
-              skip: 0,
-              status: this.convertBoolean.TRUE
-            })
-          );
-          return throwError(err);
-        })
+        catchError((err) => throwError(err))
       )
     )
   );

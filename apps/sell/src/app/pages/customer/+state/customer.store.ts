@@ -4,9 +4,15 @@ import { Customer } from './customer.interface';
 
 export interface CustomerState extends EntityState<Customer> {
   readonly loading: boolean;
+  readonly deliveredLoading: boolean;
+  readonly deliveringLoading: boolean;
 }
 
-const createInitState = () => ({ loading: true });
+const createInitState = () => ({
+  loading: true,
+  deliveredLoading: true,
+  deliveringLoading: true,
+});
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'customer' })

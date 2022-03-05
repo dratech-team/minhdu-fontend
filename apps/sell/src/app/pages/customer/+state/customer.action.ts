@@ -1,5 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
 import { CustomerType, Gender } from '@minhdu-fontend/enums';
+import { Customer } from './customer.interface';
 
 const addCustomer = createAction(
   '[ADD_CUSTOMER] Add Customer',
@@ -61,12 +62,24 @@ const deleteCustomer = createAction(
   props<{ id: number, customerId?: number }>()
 );
 
+const loadOrderDelivered = createAction(
+  `[CUSTOMER] Load Order Delivered`,
+  props<{ customerId: Customer['id']}>()
+);
+
+const loadOrderDelivering = createAction(
+  `[CUSTOMER] Load Order Delivered`,
+  props<{ customerId: Customer['id']}>()
+);
+
 export const CustomerAction = {
   addCustomer,
   loadInit,
   loadMoreCustomers,
   getCustomer,
   updateCustomer,
-  deleteCustomer
+  deleteCustomer,
+  loadOrderDelivered,
+  loadOrderDelivering
 };
 

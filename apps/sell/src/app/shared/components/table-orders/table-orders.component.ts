@@ -1,21 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {FormControl, FormGroup} from '@angular/forms';
-import {PaidType} from 'libs/enums/paidType.enum';
-import {Router} from '@angular/router';
-import {TableOrderCustomerService} from './table-order-customer.service';
-import {Observable} from 'rxjs';
-import {Order} from '../../../pages/order/+state/order.interface';
-import {OrderAction} from '../../../pages/order/+state/order.action';
-import {MatDialog} from '@angular/material/dialog';
-import {debounceTime, tap} from 'rxjs/operators';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
-import {
-  DialogSharedComponent
-} from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {
-  DialogDatePickerComponent
-} from "../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { FormControl, FormGroup } from '@angular/forms';
+import { PaidType } from 'libs/enums/paidType.enum';
+import { Router } from '@angular/router';
+import { TableOrderCustomerService } from './table-order-customer.service';
+import { Order } from '../../../pages/order/+state/order.interface';
+import { OrderAction } from '../../../pages/order/+state/order.action';
+import { MatDialog } from '@angular/material/dialog';
+import { debounceTime, tap } from 'rxjs/operators';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { DialogDatePickerComponent } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 
 @Component({
   selector: 'app-table-order',
@@ -23,9 +18,9 @@ import {
 })
 
 export class TableOrdersComponent implements OnInit {
-  @Input() orders$!: Observable<Order[]>;
-  @Input() delivered!: boolean;
-  @Input() customerId!: number;
+  @Input() orders!: Order[];
+  @Input() delivered: boolean = false;
+
   formGroup = new FormGroup(
     {
       createdAt: new FormControl(''),
@@ -50,9 +45,9 @@ export class TableOrdersComponent implements OnInit {
       debounceTime(1000),
       tap((val) => {
           if (this.delivered) {
-            this.customerService.searchOrdersAssigned(this.orders(val));
+            this.customerService.searchOrdersAssigned(this.mapOrders(val));
           } else {
-            this.customerService.searchOrders(this.orders(val));
+            this.customerService.searchOrders(this.mapOrders(val));
           }
         }
       )
@@ -62,17 +57,16 @@ export class TableOrdersComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.orders(val));
+      this.customerService.scrollOrdersAssigned(this.mapOrders(val));
     } else {
-      this.store.dispatch(OrderAction.loadMoreOrders({orderDTO: this.orders(val)}));
+      this.store.dispatch(OrderAction.loadMoreOrders({ orderDTO: this.mapOrders(val) }));
     }
   }
 
-  orders(val: any): any {
+  mapOrders(val: any): any {
     return {
       skip: this.pageIndexInit,
       take: this.pageSize,
-      customerId: this.customerId,
       delivered: this.delivered ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
@@ -89,7 +83,7 @@ export class TableOrdersComponent implements OnInit {
   updateOrder(order: Order) {
     this.store.dispatch(OrderAction.updateHideOrder({
       id: order.id,
-      hide: {hide: !order.hide},
+      hide: { hide: !order.hide },
       customerId: order.customerId
     }));
   }
@@ -105,7 +99,7 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderAction.deleteOrder({id: order.id, customerId: order.customerId}));
+        this.store.dispatch(OrderAction.deleteOrder({ id: order.id, customerId: order.customerId }));
       }
     });
   }
@@ -115,18 +109,18 @@ export class TableOrdersComponent implements OnInit {
       width: 'fit-content',
       data: {
         titlePopup: 'Xác nhận giao hàng',
-        title: 'Ngày giao hàng',
+        title: 'Ngày giao hàng'
       }
     }).afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(OrderAction.updateOrder({
-          updateOrderDto:{
-            order: {deliveredAt: val.day, customerId:order.customerId},
+          updateOrderDto: {
+            order: { deliveredAt: val.day},
             id: order.id,
-            typeUpdate: 'IN_CUSTOMER',
+            typeUpdate: 'IN_CUSTOMER'
           }
-        }))
+        }));
       }
-    })
+    });
   }
 }

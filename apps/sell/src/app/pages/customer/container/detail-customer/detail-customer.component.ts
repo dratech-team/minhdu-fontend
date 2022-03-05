@@ -5,7 +5,6 @@ import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/com
 import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
-import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
@@ -18,9 +17,15 @@ import { Actions } from '@datorama/akita-ng-effects';
   styleUrls: ['detail-customer.component.scss']
 })
 export class DetailCustomerComponent implements OnInit {
+  customer$ = this.customerQuery.selectEntity(this.getId);
+  delivered$ = this.customerQuery.selectDelivered(this.getId);
+  delivering$ = this.customerQuery.selectDelivering(this.getId);
+  deliveringLoading$ = this.customerQuery.select(state => state.deliveringLoading);
+  deliveredLoading$ = this.customerQuery.select(state => state.deliveredLoading);
+
   convertBoolean = ConvertBoolean;
-  orders: Order[] = [];
   paidType = PaidType;
+  orders: Order[] = [];
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -30,28 +35,11 @@ export class DetailCustomerComponent implements OnInit {
   ) {
   }
 
-  customer$ = this.customerQuery.selectEntity(this.getId);
-
-  /// FIXME: Sửa lại logic
-  ordersNotAssigned$ = this.customerQuery.selectAll();
-  ordersAssigned$ = this.customerQuery.selectAll();
-  loadedOrdersAssigned$ = this.customerQuery.selectLoading()
-  loadedOrdersNotAssigned$ = this.customerQuery.selectLoading()
-
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
     this.actions$.dispatch(CustomerAction.getCustomer({ id: this.getId }));
-    this.actions$.dispatch(
-      OrderAction.loadInit({ orderDTO: { take: 10, skip: 0, customerId: this.getId } })
-    );
-    this.actions$.dispatch(
-      OrderAction.loadOrdersAssigned({
-        take: 10,
-        skip: 0,
-        customerId: this.getId,
-        status: this.convertBoolean.TRUE
-      })
-    );
+    this.actions$.dispatch(CustomerAction.loadOrderDelivered({ customerId: this.getId }));
+    this.actions$.dispatch(CustomerAction.loadOrderDelivering({ customerId: this.getId }));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
