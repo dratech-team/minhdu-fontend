@@ -8,6 +8,7 @@ import {selectorAllOrders} from '../../../order/+state/order.selector';
 import {Order} from '../../../order/+state/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
+import {MatTabChangeEvent} from "@angular/material/tabs";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -15,7 +16,7 @@ import {Commodity} from "../../../commodity/+state/commodity.interface";
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: Order[] = this.data?.route?.orders || [];
+  orderIdsOfRoute: Order[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
   commoditySelected: Commodity[] = []
   isSelectAll = false;
   tabIndex = 0;
@@ -52,6 +53,7 @@ export class RouteDialogComponent implements OnInit {
 
   pickOrders(orders: Order[]) {
     this.orderIdsOfRoute = [...orders];
+    console.log(this.orderIdsOfRoute)
   }
 
   pickCommodity(commodities: Commodity[]) {
@@ -92,15 +94,23 @@ export class RouteDialogComponent implements OnInit {
   }
 
   nextTab(tab: any) {
-    if(this.tabIndex === 0){
+    if (this.tabIndex === 0) {
       this.submitted = true
-      if( this.formGroup.invalid)
-      return
+      if (this.formGroup.invalid)
+        return
     }
     this.tabIndex = tab._selectedIndex + 1;
   }
 
   previousTab(tab: any) {
     this.tabIndex = tab._selectedIndex - 1;
+  }
+
+  selectTabChange($event: MatTabChangeEvent) {
+    if($event.index === 1){
+      this.submitted = true
+      if (this.formGroup.invalid)
+        this.tabIndex =  0
+    }
   }
 }

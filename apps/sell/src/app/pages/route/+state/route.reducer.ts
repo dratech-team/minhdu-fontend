@@ -16,6 +16,9 @@ export const RouteReducer = createReducer(
   on(RouteAction.loadInitSuccess, (state, action) =>
     adapter.setAll(action.routes, { ...state, loaded: true })
   ),
+  on(RouteAction.updateRouteSuccess, (state, {route}) =>
+    adapter.updateOne({id: route.id, changes: route}, { ...state, loaded: true })
+  ),
   on(RouteAction.loadMoreRoutesSuccess, (state, action) =>
     adapter.addMany(action.routes, { ...state, loaded: true })
   ),

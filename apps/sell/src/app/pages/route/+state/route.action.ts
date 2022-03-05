@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Route } from './route.interface';
+import {UpdateNum} from "@ngrx/entity/src/models";
 
 export const addRoute = createAction(
   '[ADD_ROUTE] Add Route',
@@ -65,6 +66,11 @@ export const updateRoute = createAction(
   props<{ id: number; route: Omit<Partial<Route>, 'id'> }>()
 );
 
+export const updateRouteSuccess = createAction(
+  '[UPDATE_ROUTE] Update Route Success',
+  props<{ route: UpdateNum<Route> }>()
+);
+
 export const deleteRoute = createAction(
   '[DELETE_ROUTE] Delete Route',
   props<{ idRoute: number }>()
@@ -80,5 +86,6 @@ export const RouteAction = {
   getRoute,
   getRouteSuccess,
   updateRoute,
-  deleteRoute
+  deleteRoute,
+  updateRouteSuccess
 };

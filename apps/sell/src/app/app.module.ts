@@ -23,7 +23,7 @@ import { NxModule } from '@nrwl/angular';
 import { LocationModule } from '@minhdu-fontend/location';
 import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { MatTabsModule } from '@angular/material/tabs';
 import localeVi from '@angular/common/locales/vi';
@@ -86,7 +86,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     { provide: LOCALE_ID, useValue: 'vi-VN' },
     { provide: NZ_I18N, useValue: en_US },
-    { provide: NZ_ICONS, useValue: icons }
+    { provide: NZ_ICONS, useValue: icons },
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
   bootstrap: [AppComponent]
 })

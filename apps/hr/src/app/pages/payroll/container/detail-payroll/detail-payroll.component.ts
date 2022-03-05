@@ -27,6 +27,7 @@ import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-se
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { DatePipe } from '@angular/common';
 import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
+import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
 
 
 @Component({
@@ -231,5 +232,9 @@ export class DetailPayrollComponent implements OnInit {
         }));
       }
     });
+  }
+
+  addNote(payroll: Payroll) {
+    this.dialog.open(DialogNoteComponent, {width: 'fit-content', data:{payroll}})
   }
 }

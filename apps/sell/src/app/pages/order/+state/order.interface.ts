@@ -28,13 +28,13 @@ export interface Order {
   endedAt: Date;
   hide: boolean;
   totalCommodity:number,
-  expand?:boolean
+  expand?:boolean,
+  commodityIds?: number[];
 }
 
 export interface UpdateOrderDto{
   order?: Partial<Order>,
   id: number
-  commodityIds?: number[];
   typeUpdate?: 'DELIVERED' | 'IN_CUSTOMER',
 }
 

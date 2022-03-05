@@ -14,6 +14,7 @@ export class DistrictEffect {
       map((props) => DistrictAction.loadAllDistrictsSuccess({ districts: props })),
       catchError(err => throwError(err))
     ));
+
   getDistrict$ = createEffect(() =>
     this.action.pipe(
       ofType(DistrictAction.getDistrict),

@@ -92,6 +92,7 @@ export class RouteEffect {
             order.totalCommodity = getTotalCommodity(order.commodities)
           })
           route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0)
+          route.orders.map(val => val.expand = false)
           return RouteAction.getRouteSuccess({route: route})
         }
       ),
@@ -102,12 +103,9 @@ export class RouteEffect {
   updateRoute$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.updateRoute),
-      switchMap((props) =>
-        this.routeService.update(props.id, props.route).pipe(
-          map((_) => RouteAction.getRoute({id: props.id})),
-          catchError((err) => throwError(err))
-        )
-      )
+      switchMap((props) => this.routeService.update(props.id, props.route)),
+      map((route) => RouteAction.updateRouteSuccess({route: route})),
+      catchError((err) => throwError(err))
     )
   );
 

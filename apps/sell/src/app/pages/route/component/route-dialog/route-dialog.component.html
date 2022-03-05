@@ -6,7 +6,7 @@
     </div>
   </div>
   <form [formGroup]='formGroup'>
-    <mat-tab-group dynamicHeight #tab [(selectedIndex)]='tabIndex'>
+    <mat-tab-group dynamicHeight #tab [(selectedIndex)]='tabIndex' (selectedTabChange)="selectTabChange($event)">
       <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
         <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: auto'>
           <div class='form-group'>

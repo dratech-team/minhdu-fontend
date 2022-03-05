@@ -24,7 +24,7 @@ import {
 } from 'libs/orgchart/src/lib/+state/position';
 import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
 import {Branch, Position} from '@minhdu-fontend/data-models';
-import {map, startWith} from 'rxjs/operators';
+import {first, map, startWith, tap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
@@ -41,17 +41,19 @@ export class AddEmployeeComponent implements OnInit {
   @ViewChild('branchInput') branchInput!: ElementRef;
   branchId?: number;
   positionId?: number;
-  formPosition = new FormControl();
-  branches = new FormControl();
+  formPosition = new FormControl(this.data?.employee?.position?.name);
+  branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  positions$: Observable<Position[]> | undefined;
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  lstPosition: Position [] = []
+  positions$ = new Observable<Position[]>();
+  branches$ = this.store.pipe(select(getAllOrgchart))
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant
+
 
   constructor(
     public datePipe: DatePipe,
@@ -69,6 +71,11 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
+    if (this.data?.employee) {
+      this.positionId = this.data.employee.position.id;
+      this.branchId = this.data.employee.branch.id;
+      this.wardId = this.data.employee.ward.id
+    }
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
       issuedBy: [this.data?.employee?.issuedBy],
@@ -113,10 +120,17 @@ export class AddEmployeeComponent implements OnInit {
       employeeType: [this.data?.employee ?
         this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required]
     });
-    this.positions$ = searchAndAddAutocomplete(
-      this.formPosition.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
-    );
+
+    this.positions$ = this.formPosition.valueChanges.pipe(
+      startWith(''),
+      map(branch => {
+          if (branch) {
+            return this.lstPosition.filter(item => item.name.toLowerCase().includes(branch.toLowerCase()));
+          } else {
+            return this.lstPosition;
+          }
+        }
+      ));
 
     this.branches$ = searchAndAddAutocomplete(
       this.branches.valueChanges.pipe(startWith('')),
@@ -128,6 +142,13 @@ export class AddEmployeeComponent implements OnInit {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
+
+    this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
+      this.branches.setValue(val[0].name)
+      this.branchId = val[0].id
+      if(val[0].positions)
+      this.lstPosition = val[0].positions
+    })
   }
 
   get f() {
@@ -196,7 +217,7 @@ export class AddEmployeeComponent implements OnInit {
       },
       recipeType: value.recipeType
     };
-    if (this.data !== null) {
+    if (this.data) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.data.employee.id,
@@ -249,6 +270,10 @@ export class AddEmployeeComponent implements OnInit {
       } else {
         if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
           this.formGroup.get('recipeType')!.setValue(branch.recipe)
+        }
+        if (branch.positions) {
+          this.lstPosition = branch.positions
+          this.formPosition.patchValue('')
         }
         this.branchId = branch.id;
       }

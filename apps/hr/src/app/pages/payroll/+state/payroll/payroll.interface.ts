@@ -28,6 +28,7 @@ export interface Payroll {
       hours: number
     }
   }
+  note?: string
 }
 
 export interface PayrollDTO{
