@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   EmployeeAction,
   selectEmployeeAdding,
@@ -19,18 +19,18 @@ import {
   ItemContextMenu,
   SearchEmployeeType
 } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { debounceTime, startWith } from 'rxjs/operators';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
-import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
-import { ProvinceAction, selectAllProvince } from '@minhdu-fontend/location';
-import { Observable, of, Subject } from 'rxjs';
-import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
-import { DialogExportComponent } from '@minhdu-fontend/components';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {debounceTime, startWith} from 'rxjs/operators';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
+import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
+import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
+import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
+import {Observable, of, Subject} from 'rxjs';
+import {District, Province, Ward} from '@minhdu-fontend/data-models';
+import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
+import {DialogExportComponent} from '@minhdu-fontend/components';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -80,7 +80,7 @@ export class EmployeeComponent implements OnInit {
     flatSalary: new FormControl(''),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
-    employeeType: new FormControl('')
+    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
   });
 
   constructor(
@@ -110,7 +110,8 @@ export class EmployeeComponent implements OnInit {
           skip: this.pageIndexInit,
           isLeft: this.isLeft,
           branch: this.branchName,
-          position: this.positionName
+          position: this.positionName,
+          employeeType : EmployeeType.EMPLOYEE_FULL_TIME,
         }
       })
     );
