@@ -7,15 +7,10 @@ import { ComponentsModule } from '@minhdu-fontend/components';
 import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { CustomerReducer } from './+state/customer.reducer';
-import { EffectsModule } from '@ngrx/effects';
 import { CustomerEffect } from './+state/customer.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DetailCustomerComponent } from './container/detail-customer/detail-customer.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,9 +25,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { SharedModule } from '../../shared/shared.module';
 import { TablePaymentComponent } from './component/table-payment/table-payment.component';
 import { PaymentReducer } from '../payment/payment/payment.reducer';
-import { PaymentEffect } from '../payment/payment/payment.effect';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MainReducer } from '../../states/mainReducer';
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+
 @NgModule({
   imports: [
     LocationModule,
@@ -45,8 +41,7 @@ import { MainReducer } from '../../states/mainReducer';
     CommonModule,
     StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
     StoreModule.forFeature(FeatureName.MAIN, MainReducer),
-    StoreModule.forFeature(FeatureName.CUSTOMER, CustomerReducer),
-    EffectsModule.forFeature([CustomerEffect, PaymentEffect]),
+    AkitaNgEffectsModule.forFeature([CustomerEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -56,19 +51,20 @@ import { MainReducer } from '../../states/mainReducer';
     MatTabsModule,
     MatStepperModule,
     SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
+    NgxSkeletonLoaderModule.forRoot()
   ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerDialogComponent,
-    PaymentDialogComponent,
+    PaymentDialogComponent
   ],
   providers: [
     DatePipe,
     PickCustomerService,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class CustomerModule {}
+export class CustomerModule {
+}

@@ -3,22 +3,23 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderAction } from '../../+state/order.action';
-import { AppState } from '../../../../reducers';
 import { MainAction } from '../../../../states/main.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { Customer } from '../../../customer/+state/customer.interface';
-import { selectorCurrentCustomer } from '../../../customer/+state/customer.selector';
 import { DatePipe } from '@angular/common';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../../customer/+state/customer.query';
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.store.pipe(select(selectorCurrentCustomer(this.getCustomerId())));
+  customerPicked$ = this.customerQuery.selectEntity(this.getCustomerId());
+
   customers: Customer [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: Commodity [] = [];
@@ -34,17 +35,18 @@ export class AddOrderComponent implements OnInit {
   provinceId!: number;
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly datePipe: DatePipe,
+    private readonly datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.customerPicked$.subscribe((val: any) => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
@@ -75,7 +77,7 @@ export class AddOrderComponent implements OnInit {
     }).afterClosed().subscribe(val => {
         if (val) {
           this.customerId = val;
-          this.store.pipe(select(selectorCurrentCustomer(this.customerId))).subscribe(val => {
+          this.customerQuery.selectEntity(this.customerId).subscribe(val => {
             this.customerPicked = JSON.parse(JSON.stringify(val));
           });
         }
@@ -128,7 +130,7 @@ export class AddOrderComponent implements OnInit {
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
-    this.store.dispatch(OrderAction.addOrder({ order: order }));
+    this.actions$.dispatch(OrderAction.addOrder({ order: order }));
   }
 
   onSelectWard($event: number) {

@@ -7,18 +7,18 @@ import { PaymentType } from '@minhdu-fontend/enums';
 import { OrderAction } from '../../+state/order.action';
 import { DatePipe } from '@angular/common';
 import { Customer } from '../../../customer/+state/customer.interface';
-import { selectorAllCustomer } from '../../../customer/+state/customer.selector';
 import { CustomerAction } from '../../../customer/+state/customer.action';
 import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { CommodityQuery } from '../../../commodity/+state/commodity.query';
+import { CustomerQuery } from '../../../customer/+state/customer.query';
 
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
-  customers$ = this.store.pipe(select(selectorAllCustomer));
+  customers$ = this.customerQuery.selectAll();
   commodities$ = this.commodityQuery.selectAll();
 
   payType = PaymentType;
@@ -32,6 +32,7 @@ export class OrderDialogComponent implements OnInit {
   constructor(
     private readonly store: Store<AppState>,
     private readonly commodityQuery: CommodityQuery,
+    private readonly customerQuery: CustomerQuery,
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<OrderDialogComponent>,

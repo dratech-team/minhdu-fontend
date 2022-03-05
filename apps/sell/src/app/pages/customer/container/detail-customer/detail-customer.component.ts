@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer.action';
 import { Customer } from '../../+state/customer.interface';
-import { selectorCurrentCustomer } from '../../+state/customer.selector';
-import { AppState } from '../../../../reducers';
 import { OrderAction } from '../../../order/+state/order.action';
 import { Order } from '../../../order/+state/order.interface';
 import {
@@ -19,7 +16,8 @@ import {
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
-import { getSelectors } from '@minhdu-fontend/utils';
+import { CustomerQuery } from '../../+state/customer.query';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -32,24 +30,25 @@ export class DetailCustomerComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog
   ) {
   }
 
-  customer$ = this.store.select(selectorCurrentCustomer(this.getId));
-  ordersNotAssigned$ = this.store.select(selectorOrdersNotAssignedById(this.getId));
-  ordersAssigned$ = this.store.select(selectorOrdersAssignedById(this.getId));
-  loadedOrdersAssigned$ = this.store.select(selectedOrderLoaded);
-  loadedOrdersNotAssigned$ = this.store.select(selectedNotOrderLoaded);
+  customer$ = this.customerQuery.selectEntity(this.getId);
+  ordersNotAssigned$ = this.customerQuery.select(selectorOrdersNotAssignedById(this.getId));
+  ordersAssigned$ = this.customerQuery.select(selectorOrdersAssignedById(this.getId));
+  loadedOrdersAssigned$ = this.customerQuery.select(selectedOrderLoaded);
+  loadedOrdersNotAssigned$ = this.customerQuery.select(selectedNotOrderLoaded);
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.store.dispatch(CustomerAction.getCustomer({ id: this.getId }));
-    this.store.dispatch(
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
+    this.actions$.dispatch(CustomerAction.getCustomer({ id: this.getId }));
+    this.actions$.dispatch(
       OrderAction.loadInit({ orderDTO: { take: 10, skip: 0, customerId: this.getId } })
     );
-    this.store.dispatch(
+    this.actions$.dispatch(
       OrderAction.loadOrdersAssigned({
         take: 10,
         skip: 0,
@@ -60,7 +59,10 @@ export class DetailCustomerComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
-        this.updateCustomer(getSelectors(selectorCurrentCustomer(this.getId), this.store));
+        const customer = this.customerQuery.getEntity(this.getId);
+        if (this.getId && customer) {
+          this.updateCustomer(customer);
+        }
       }
     });
   }
@@ -82,7 +84,7 @@ export class DetailCustomerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(CustomerAction.deleteCustomer({ id: id }));
+        this.actions$.dispatch(CustomerAction.deleteCustomer({ id: id }));
       }
     });
   }

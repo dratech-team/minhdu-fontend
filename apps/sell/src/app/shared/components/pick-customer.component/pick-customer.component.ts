@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { Customer } from '../../../pages/customer/+state/customer.interface';
@@ -10,14 +9,16 @@ import { PickCustomerService } from './pick-customer.service';
 import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 import { CustomerResourcesConstant, CustomerTypeConstant } from '@minhdu-fontend/constants';
 import { CustomerAction } from '../../../pages/customer/+state/customer.action';
-import { selectorAllCustomer } from '../../../pages/customer/+state/customer.selector';
+import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   selector: 'app-pick-customer',
   templateUrl: 'pick-customer.component.html'
 })
 export class PickCustomerComponent implements OnInit {
-  customers$ = this.store.pipe(select(selectorAllCustomer));
+  customers$ = this.customerQuery.selectAll();
+
   @Input() customers: Customer[] = [];
   @Input() pickOne = false;
   @Output() checkEvent = new EventEmitter<number[]>();
@@ -40,7 +41,8 @@ export class PickCustomerComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly store: Store,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
     private readonly service: PickCustomerService,
     private dialogRef: MatDialogRef<PickCustomerComponent>
@@ -49,7 +51,7 @@ export class PickCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.customers.length === 0) {
-      this.store.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
+      this.actions$.dispatch(CustomerAction.loadInit({ take: 30, skip: 0 }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });

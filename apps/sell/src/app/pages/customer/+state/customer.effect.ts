@@ -1,31 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerAction } from './customer.action';
 import { CustomerService } from '../service/customer.service';
 import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { select, Store } from '@ngrx/store';
-import { selectorCustomerTotal } from './customer.selector';
+import { CustomerQuery } from './customer.query';
+import { CustomerStore } from './customer.store';
 
 @Injectable()
 export class CustomerEffect {
+  constructor(
+    private readonly action$: Actions,
+    private readonly customerStore: CustomerStore,
+    private readonly customerQuery: CustomerQuery,
+    private readonly customerService: CustomerService,
+    private readonly snackBar: MatSnackBar
+  ) {
+  }
 
   loadCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadInit),
       switchMap((props) => this.customerService.pagination(props)),
-      map((ResponsePaginate) => CustomerAction.loadInitSuccess({
-        customers: ResponsePaginate.data
-      })),
+      tap((ResponsePaginate) => {
+        console.log(ResponsePaginate)
+        this.customerStore.set(ResponsePaginate.data)
+      }),
       catchError((err) => throwError(err))
     )
   );
+
   loadMoreCustomers$ = createEffect(() =>
     this.action$.pipe(
       ofType(CustomerAction.loadMoreCustomers),
-      withLatestFrom(this.store.pipe(select(selectorCustomerTotal))),
+      withLatestFrom(this.customerQuery.selectCount()),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
       ),
@@ -40,7 +50,7 @@ export class CustomerEffect {
               data: { content: 'Đã lấy hết khách hàng' }
             });
           }
-          return CustomerAction.loadCustomersSuccess({ customers: ResponsePaginate.data });
+          this.customerStore.add(ResponsePaginate.data);
         }
       ),
       catchError((err) => throwError(err))
@@ -57,7 +67,7 @@ export class CustomerEffect {
         return this.customerService.addOne(props.customer);
       }),
       map((res) => {
-          return CustomerAction.addCustomerSuccess({ customer: res });
+          this.customerStore.update(res.id, res);
         }
       ),
       catchError((err) => throwError(err))
@@ -68,7 +78,7 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.getCustomer),
       switchMap((props) => this.customerService.getOne(props.id)),
-      map((customer) => CustomerAction.getCustomerSuccess({ customer: customer })),
+      map((customer) => this.customerStore.update(customer.id, customer)),
       catchError((err) => throwError(err))
     )
   );
@@ -77,7 +87,7 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.updateCustomer),
       switchMap((props) => this.customerService.update(props.id, props.customer).pipe(
-        map(() => CustomerAction.getCustomer({ id: props.id })),
+        map((res) => this.customerStore.update(res.id, res)),
         catchError((err) => throwError(err))
       ))
     )
@@ -88,17 +98,9 @@ export class CustomerEffect {
     this.action$.pipe(
       ofType(CustomerAction.deleteCustomer),
       switchMap((props) => this.customerService.delete(props.id).pipe(
-        map(() => CustomerAction.loadInit({ take: 30, skip: 0 })),
+        map(() => this.customerStore.remove(props.id)),
         catchError((err) => throwError(err))
       ))
     )
   );
-
-  constructor(
-    private readonly action$: Actions,
-    private readonly customerService: CustomerService,
-    private readonly snackBar: MatSnackBar,
-    private readonly store: Store
-  ) {
-  }
 }

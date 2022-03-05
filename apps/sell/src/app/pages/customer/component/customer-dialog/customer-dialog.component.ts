@@ -2,11 +2,11 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { select, Store } from '@ngrx/store';
-import { AppState } from 'apps/sell/src/app/reducers';
+import { select } from '@ngrx/store';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
 import { CustomerAction } from '../../+state/customer.action';
-import { selectedCustomerAdded } from '../../+state/customer.selector';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../+state/customer.query';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -25,7 +25,8 @@ export class CustomerDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly dialogRef: MatDialogRef<CustomerDialogComponent>
   ) {
   }
@@ -92,11 +93,11 @@ export class CustomerDialogComponent implements OnInit {
     };
 
     if (this.data) {
-      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
+      this.actions$.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
     } else {
-      this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
+      this.actions$.dispatch(CustomerAction.addCustomer({ customer: customer }));
     }
-    this.store.pipe(select(selectedCustomerAdded)).subscribe(added => {
+    this.customerQuery.selectLoading().subscribe(added => {
       if (added) {
         this.dialogRef.close();
       }

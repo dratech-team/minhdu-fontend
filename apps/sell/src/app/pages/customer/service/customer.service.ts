@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { Customer } from '../+state/customer.interface';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
+import { Customer } from '../+state/customer.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<Customer> {

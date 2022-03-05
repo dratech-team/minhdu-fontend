@@ -1,7 +1,6 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, props } from '@datorama/akita-ng-effects';
 import { Customer } from './customer.interface';
 import { CustomerType, Gender } from '@minhdu-fontend/enums';
-
 
 export const addCustomer = createAction(
   '[ADD_CUSTOMER] Add Customer',
