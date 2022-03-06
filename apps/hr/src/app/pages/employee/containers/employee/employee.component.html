@@ -13,11 +13,12 @@
       </div>
       <div style='width: fit-content'>
         <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
-          <mat-option [value]=''>Tất cả</mat-option>
-          <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
+          <mat-option [value]='""'>Tất cả</mat-option>
+          <mat-option *ngFor='let item of categories$ | async' [value]='item'>{{item.name}}</mat-option>
           <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
+<!--      <button class="btn btn-primary" (click)="updateCategory()">Sửa</button>-->
     </div>
     <div>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -262,6 +263,13 @@
 
   .table-scroll thead th:nth-child(3) {
     z-index: 5;
+  }
+  tr:nth-child(even) th  {
+    background-color: #dddddd;
+  }
+
+  tr:nth-child(odd) th  {
+    background-color: white;
   }
 
 </style>

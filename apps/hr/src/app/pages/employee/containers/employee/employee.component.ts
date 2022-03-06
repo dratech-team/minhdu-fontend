@@ -240,7 +240,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
           ? this.convertBoolean.FALSE
           : val.flatSalary,
-      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
+      categoryId:this.categoryControl.value && this.categoryControl.value !== 0  ? this.categoryControl.value.id : ''
     };
     if (val.workedAt) {
       return employee;
@@ -366,5 +366,15 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         return throwError(err);
       })
     ).subscribe();
+  }
+
+  updateCategory() {
+    this.dialog.open(DialogCategoryComponent, {
+      width: 'fit-content',
+      data: {category:this.categoryControl.value}
+    })
+      .afterClosed().subscribe(() => {
+      this.categories$ = this.categoryService.getAll();
+    });
   }
 }
