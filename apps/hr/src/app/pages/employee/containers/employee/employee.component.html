@@ -13,9 +13,9 @@
       </div>
       <div style='width: fit-content'>
         <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
-          <mat-option [value]='""'>tất cả</mat-option>
+          <mat-option [value]=''>Tất cả</mat-option>
           <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
-          <mat-option [value]='0' (click)="addCategory()">Tạo mới</mat-option>
+          <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
     </div>

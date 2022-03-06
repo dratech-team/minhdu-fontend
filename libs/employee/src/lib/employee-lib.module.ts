@@ -11,7 +11,6 @@ import {EmployeeService} from './+state/service/employee.service';
 import {RelativeService} from './+state/service/relative.service';
 import {NzMessageModule} from "ng-zorro-antd/message";
 
-
 @NgModule({
   imports: [
     NzMessageModule,
@@ -22,7 +21,6 @@ import {NzMessageModule} from "ng-zorro-antd/message";
   ],
   providers: [
     DegreeService,
-    EmployeeService,
     RelativeService,
   ]
 
