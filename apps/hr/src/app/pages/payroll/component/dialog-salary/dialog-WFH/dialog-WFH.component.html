@@ -5,7 +5,7 @@
       <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-        <div class="font-weight-bold font-xl">Chú thích ngày</div>
+        <div class="font-weight-bold font-xl mb-4">Chú thích ngày</div>
         <mat-dialog-content style="width: 300px">
         <form [formGroup]='formGroup' (submit)='onSubmit()'>
           <div>
@@ -29,8 +29,7 @@
             </div>
           </div>
           <div class=' row '>
-            <button *ngIf='data.updateMultiple' class='btn btn-primary mr-2' matStepperPrevious>Trở lại</button>
-            <button class='btn btn-ok '>Lưu</button>
+            <button class='btn btn-ok ml-2'>Lưu</button>
             <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
               ?
             </button>
