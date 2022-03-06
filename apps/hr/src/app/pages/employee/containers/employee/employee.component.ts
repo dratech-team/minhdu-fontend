@@ -29,19 +29,20 @@ import {
 } from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {catchError, debounceTime, startWith} from 'rxjs/operators';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
 import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
-import {Observable, of, Subject} from 'rxjs';
-import {Category, District, Province, Ward} from '@minhdu-fontend/data-models';
+import {Observable, of, Subject, throwError} from 'rxjs';
+import {Category, District, Employee, Province, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from "../../components/category/dialog-category.component";
 import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {EmployeeService} from "../../../../../../../../libs/employee/src/lib/+state/service/employee.service";
 
 
 @Component({
@@ -104,7 +105,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute,
     private readonly categoryService: CategoryService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private employeeService: EmployeeService,
   ) {
     this.store.pipe(select(selectorAllEmployee)).subscribe(
       (employees) => {
@@ -113,9 +115,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     );
   }
 
- ngAfterViewChecked() {
-   this.ref.detectChanges()
- }
+  ngAfterViewChecked() {
+    this.ref.detectChanges()
+  }
 
   ngOnInit(): void {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
@@ -361,11 +363,16 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
     })
-      data: { employeeId: $event.id, leftAt: true }
-    });
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
+    const sort = this.employees.map((employee, i) => ({id: employee.id, stt: i + 1}))
+    this.employeeService.sort(sort).pipe(
+      catchError(err => {
+        moveItemInArray(this.employees, event.currentIndex, event.previousIndex);
+        return throwError(err);
+      })
+    );
   }
 }
