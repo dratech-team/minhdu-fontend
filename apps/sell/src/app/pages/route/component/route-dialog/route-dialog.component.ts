@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
-import {RouteAction} from '../../+state/route.action';
+import {RouteActions} from '../../+state/routeActions';
 import {DatePipe} from '@angular/common';
 import {OrderEntity} from '../../../order/enitities/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -84,10 +84,10 @@ export class RouteDialogComponent implements OnInit {
     };
     if (this.data) {
       this.store.dispatch(
-        RouteAction.updateRoute({updateRouteDto: route, id: this.data.route.id})
+        RouteActions.update({updates: route, id: this.data.route.id})
       );
     } else {
-      this.store.dispatch(RouteAction.addOne( route));
+      this.store.dispatch(RouteActions.addOne( route));
     }
     this.dialogRef.close();
   }

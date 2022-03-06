@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@datorama/akita-ng-effects';
-import {RouteAction} from './route.action';
-import {catchError, map, switchMap, withLatestFrom} from 'rxjs/operators';
-import {RouteService} from '../service/route.service';
-import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {SnackBarComponent} from 'libs/components/src/lib/snackBar/snack-bar.component';
-import {OrderEntity} from '../../order/enitities/order.interface';
-import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
-import {RouteStore} from './route.store';
-import {RouteQuery} from './route.query';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { RouteActions } from './routeActions';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { RouteService } from '../service/route.service';
+import { throwError } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
+import { OrderEntity } from '../../order/enitities/order.interface';
+import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
+import { RouteStore } from './route.store';
+import { RouteQuery } from './route.query';
 
 @Injectable()
 export class RouteEffect {
@@ -22,113 +22,76 @@ export class RouteEffect {
   ) {
   }
 
-  addRoute$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.addOne),
-      switchMap((props) => this.routeService.addOne(props)),
-      map(() => RouteAction.loadInit({take: 30, skip: 0})),
-      catchError((err) => throwError(err))
-    )
+  @Effect()
+  addRoute$ = this.action.pipe(
+    ofType(RouteActions.addOne),
+    switchMap((props) => this.routeService.addOne(props)),
+    tap((res) => this.routeStore.add(res)),
+    catchError((err) => throwError(err))
   );
 
-  loadInit$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.loadInit),
-      switchMap((props) => this.routeService.pagination(props)),
-      map((responsePagination) => {
+  @Effect()
+  loadAll$ = this.action.pipe(
+    ofType(RouteActions.loadAll),
+    switchMap((props) => this.routeService.pagination(props)),
+    map((responsePagination) => {
+      if (responsePagination.data.length === 0) {
+        this.snackBar.openFromComponent(SnackBarComponent, {
+          duration: 2500,
+          panelClass: ['background-snackbar'],
+          data: { content: 'Đã lấy hết Tuyến đường' }
+        });
+      } else {
         responsePagination.data.map(route => {
           route.orders.map((order: OrderEntity) => {
             order.commodityTotal = getTotalCommodity(order.commodities);
           });
-
           route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
-
-          Object.assign(route, {
-            customers: route.orders.map((order: OrderEntity) => order.customer.lastName)
-          });
-        });
-        this.routeStore.set(responsePagination.data);
-      }),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  loadMoreRoutes$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.loadMoreRoutes),
-      withLatestFrom(this.routeQuery.selectCount()),
-      map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), {skip: skip})
-      ),
-      switchMap((props) => {
-        return this.routeService.pagination(props);
-      }),
-      map((responsePagination) => {
-        if (responsePagination.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: {content: 'Đã lấy hết Tuyến đường'}
-          });
-        }
-        responsePagination.data.map(route => {
-          route.orders.map(order => {
-            order.commodityTotal = getTotalCommodity(order.commodities);
-          });
-
-          route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
-
-          Object.assign(route, {
-            customers: route.orders.map((order: OrderEntity) => order.customer.lastName)
-          });
         });
         this.routeStore.add(responsePagination.data);
-      }),
-      catchError((err) => throwError(err))
-    )
+      }
+    }),
+    catchError((err) => throwError(err))
   );
 
-  getRoute$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.getRoute),
-      switchMap((props) => this.routeService.getOne(props.id)),
-      map((route) => {
-          route.orders.forEach(order => {
-            order.totalCommodity = getTotalCommodity(order.commodities);
-          });
-          route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
-          route.orders.map(val => val.expand = false);
-          this.routeStore.upsert(route.id, route);
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  updateRoute$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.updateRoute),
-      switchMap((props) => this.routeService.updateRoute(props.id, props.updateRouteDto)),
-      map((route) => {
+  @Effect()
+  getOne$ = this.action.pipe(
+    ofType(RouteActions.loadOne),
+    switchMap((props) => this.routeService.getOne(props.id)),
+    map((route) => {
         route.orders.forEach(order => {
           order.totalCommodity = getTotalCommodity(order.commodities);
         });
-        route.totalCommodityUniq = route.orders?.reduce((a, b) => a + b.totalCommodity, 0);
-        route.orders?.map(val => val.expand = false);
-        return this.routeStore.update(route.id, route)
-      }),
-      catchError((err) => throwError(err))
-    )
+        route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
+        route.orders.map(val => val.expand = false);
+        this.routeStore.upsert(route.id, route);
+      }
+    ),
+    catchError((err) => throwError(err))
   );
 
-  deleteRoute$ = createEffect(() =>
-    this.action.pipe(
-      ofType(RouteAction.deleteRoute),
-      switchMap((props) =>
-        this.routeService.delete(props.idRoute).pipe(
-          map((_) => this.routeStore.remove(props.idRoute)),
-          catchError((err) => throwError(err))
-        )
+  @Effect()
+  update$ = this.action.pipe(
+    ofType(RouteActions.update),
+    switchMap((props) => this.routeService.update(props.id, props.updates)),
+    map((route) => {
+      route.changes.orders?.forEach(order => {
+        order.totalCommodity = getTotalCommodity(order.commodities);
+      });
+      route.changes.totalCommodityUniq = route.changes.orders?.reduce((a, b) => a + b.totalCommodity, 0);
+      route.changes.orders?.map(val => val.expand = false);
+      return this.routeStore.update(route.id, route);
+    }),
+    catchError((err) => throwError(err))
+  );
+
+  @Effect()
+  delete$ = this.action.pipe(
+    ofType(RouteActions.remove),
+    switchMap((props) =>
+      this.routeService.delete(props.idRoute).pipe(
+        map((_) => this.routeStore.remove(props.idRoute)),
+        catchError((err) => throwError(err))
       )
     )
   );

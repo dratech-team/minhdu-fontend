@@ -8,9 +8,9 @@ import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepi
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
-import { RouteAction, updateRoute } from '../../+state/route.action';
+import { RouteActions } from '../../+state/routeActions';
 import { RouteEntity } from '../../entities/route.entity';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -58,13 +58,13 @@ export class RouteComponent implements OnInit {
       });
     });
     this.actions$.dispatch(
-      RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+      RouteActions.loadAll({ take: this.pageSize, skip: this.pageIndexInit })
     );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteAction.loadInit(this.route(val)));
+          this.actions$.dispatch(RouteActions.loadAll(this.route(val)));
         })
       )
       .subscribe();
@@ -78,7 +78,7 @@ export class RouteComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
+    this.actions$.dispatch(RouteActions.loadAll(this.route(val)));
   }
 
   route(val: RouteEntity) {
@@ -94,7 +94,7 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.actions$.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
+        this.actions$.dispatch(RouteActions.remove({ idRoute: $event.id }));
       }
     });
   }
@@ -107,7 +107,7 @@ export class RouteComponent implements OnInit {
       .subscribe((datetime) => {
         if (datetime) {
           this.actions$.dispatch(
-            updateRoute({ id: event.id, updateRouteDto: { endedAt: datetime } })
+            RouteActions.update({ id: event.id, updates: { endedAt: datetime } })
           );
         }
       });

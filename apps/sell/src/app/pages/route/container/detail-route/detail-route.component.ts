@@ -3,7 +3,7 @@ import { RouteEntity } from '../../entities/route.entity';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteAction } from '../../+state/route.action';
+import { RouteActions } from '../../+state/routeActions';
 import { MenuEnum, PaymentType } from '@minhdu-fontend/enums';
 import { MainAction } from '../../../../states/main.action';
 import { DialogDatePickerComponent } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
@@ -33,7 +33,7 @@ export class DetailRouteComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
-    this.actions$.dispatch(RouteAction.getRoute({ id: this.routeId }));
+    this.actions$.dispatch(RouteActions.loadOne({ id: this.routeId }));
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
@@ -78,7 +78,7 @@ export class DetailRouteComponent implements OnInit {
       .subscribe(val => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.updateRoute({ updateRouteDto: { endedAt: val.day }, id: route.id })
+            RouteActions.update({ updates: { endedAt: val.day }, id: route.id })
           );
         }
       });
@@ -102,9 +102,9 @@ export class DetailRouteComponent implements OnInit {
           const route = {
             commodityIds: commodityIds
           };
-          this.actions$.dispatch(RouteAction.updateRoute({
+          this.actions$.dispatch(RouteActions.update({
             id: this.route.id,
-            updateRouteDto: route
+            updates: route
           }));
         }
       });
@@ -126,9 +126,9 @@ export class DetailRouteComponent implements OnInit {
           const route = {
             orderIds: orderIds
           };
-          this.actions$.dispatch(RouteAction.updateRoute({
+          this.actions$.dispatch(RouteActions.update({
             id: this.route.id,
-            updateRouteDto: route
+            updates: route
           }));
         }
       });

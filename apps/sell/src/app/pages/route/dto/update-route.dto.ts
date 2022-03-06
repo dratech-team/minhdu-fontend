@@ -1,6 +1,3 @@
-import {RouteEntity} from "../entities/route.entity";
+import { AddRouteDto } from './add-route.dto';
 
-export interface UpdateRouteDto extends Omit<RouteEntity, 'id'>{
-  readonly orderIds?: number [],
-  readonly commodityIds?:number []
-}
+export type UpdateRouteDto = Partial<AddRouteDto>
