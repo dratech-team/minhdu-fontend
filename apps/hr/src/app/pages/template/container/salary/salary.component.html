@@ -40,6 +40,10 @@
               <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
               <input type='text' disabled>
             </th>
+            <th>
+              <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị</div>
+              <input type='text' disabled>
+            </th>
             <th style='width: 220px;'>
               <div class='border-top d-flex justify-content-center align-items-center'>Loại bản mẫu</div>
               <mat-select class='form-control border-top' formControlName='type'>
@@ -66,6 +70,15 @@
             </th>
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
               {{templateSalary.unit|transformApp : unitsConstant }}
+            </th>
+            <th class=' pointer p-1' (click)='updateTemplateSalary(templateSalary)'>
+              <mat-chip-list>
+                <mat-chip (click)='updateTemplateSalary(templateSalary)'
+                          [style]='{"background": i%2  === 0? "#dddddd":"white"}'
+                          *ngFor='let branch of templateSalary.branches'>
+                  {{branch.name}}
+                </mat-chip>
+              </mat-chip-list>
             </th>
             <th class='pointer' (click)='updateTemplateSalary(templateSalary)'>
               {{templateSalary.type|transformUBlockSalary: blockSalaries }}

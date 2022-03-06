@@ -19,6 +19,36 @@
           <div><span class='main-title'>Tiêu đề</span><span class='star'>*</span></div>
           <input class='form-control mt-1' type='text' formControlName='title'>
         </div>
+        <div class=' mt-2 d-flex flex-column' [formGroup]='formGroup'>
+          <div>
+            <span class='ml-1 title-item'>Đơn vị</span>
+          </div>
+          <div>
+            <input class='form-control mt-1' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
+                   style='width: 100%'
+                   [matChipInputFor]='chipList'
+                   #branchesInput>
+            <mat-autocomplete #branch='matAutocomplete'>
+              <mat-option *ngFor='let branch of branches$ | async'
+                          [value]='!branch.id ? branchesInput.value : branch.name '
+                          (onSelectionChange)='onSelectBranch($event, branch, branchesInput)'>
+                {{branch.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-chip-list #chipList>
+              <mat-chip
+                *ngFor='let branch of branchesSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removeBranchSelected(branch)'>
+                {{branch.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
         <div class=' main-popup mt-2'>
           <div><span class='main-title'>Mức lương</span></div>
           <input class='form-control mt-1' type='text' formControlName='price' placeholder='200,000' inputCurrency>
