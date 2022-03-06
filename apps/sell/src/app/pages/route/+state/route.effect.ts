@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@datorama/akita-ng-effects';
-import { RouteAction } from './route.action';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { RouteService } from '../service/route.service';
-import { throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
-import { OrderEntity } from '../../order/enitities/order.interface';
-import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
-import { RouteStore } from './route.store';
-import { RouteQuery } from './route.query';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@datorama/akita-ng-effects';
+import {RouteAction} from './route.action';
+import {catchError, map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {RouteService} from '../service/route.service';
+import {throwError} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {SnackBarComponent} from 'libs/components/src/lib/snackBar/snack-bar.component';
+import {OrderEntity} from '../../order/enitities/order.interface';
+import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {RouteStore} from './route.store';
+import {RouteQuery} from './route.query';
 
 @Injectable()
 export class RouteEffect {
@@ -24,9 +24,9 @@ export class RouteEffect {
 
   addRoute$ = createEffect(() =>
     this.action.pipe(
-      ofType(RouteAction.addRoute),
-      switchMap((props) => this.routeService.addOne(props.route)),
-      map(() => RouteAction.loadInit({ take: 30, skip: 0 })),
+      ofType(RouteAction.addOne),
+      switchMap((props) => this.routeService.addOne(props)),
+      map(() => RouteAction.loadInit({take: 30, skip: 0})),
       catchError((err) => throwError(err))
     )
   );
@@ -37,7 +37,7 @@ export class RouteEffect {
       switchMap((props) => this.routeService.pagination(props)),
       map((responsePagination) => {
         responsePagination.data.map(route => {
-          route.orders.map(order => {
+          route.orders.map((order: OrderEntity) => {
             order.commodityTotal = getTotalCommodity(order.commodities);
           });
 
@@ -58,7 +58,7 @@ export class RouteEffect {
       ofType(RouteAction.loadMoreRoutes),
       withLatestFrom(this.routeQuery.selectCount()),
       map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props)), { skip: skip })
+        Object.assign(JSON.parse(JSON.stringify(props)), {skip: skip})
       ),
       switchMap((props) => {
         return this.routeService.pagination(props);
@@ -68,7 +68,7 @@ export class RouteEffect {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
             panelClass: ['background-snackbar'],
-            data: { content: 'Đã lấy hết Tuyến đường' }
+            data: {content: 'Đã lấy hết Tuyến đường'}
           });
         }
         responsePagination.data.map(route => {
@@ -108,15 +108,15 @@ export class RouteEffect {
   updateRoute$ = createEffect(() =>
     this.action.pipe(
       ofType(RouteAction.updateRoute),
-      switchMap((props) => this.routeService.updateOrder(props.id, props.route)),
+      switchMap((props) => this.routeService.updateRoute(props.id, props.updateRouteDto)),
       map((route) => {
-        route.orders?.forEach(order => {
+        route.orders.forEach(order => {
           order.totalCommodity = getTotalCommodity(order.commodities);
         });
         route.totalCommodityUniq = route.orders?.reduce((a, b) => a + b.totalCommodity, 0);
         route.orders?.map(val => val.expand = false);
         return this.routeStore.update(route.id, route)
-        }),
+      }),
       catchError((err) => throwError(err))
     )
   );
@@ -126,7 +126,7 @@ export class RouteEffect {
       ofType(RouteAction.deleteRoute),
       switchMap((props) =>
         this.routeService.delete(props.idRoute).pipe(
-          map((_) =>   this.routeStore.remove(props.idRoute)),
+          map((_) => this.routeStore.remove(props.idRoute)),
           catchError((err) => throwError(err))
         )
       )

@@ -1,15 +1,12 @@
-import { createAction, props } from '@ngrx/store';
-import { Route } from './route.interface';
 import {UpdateNum} from "@ngrx/entity/src/models";
+import {AddRouteDto} from "../dto/add-route.dto";
+import {createAction, props} from "@datorama/akita-ng-effects";
+import {RouteEntity} from "../entities/route.entity";
+import {UpdateRouteDto} from "../dto/update-route.dto";
 
-export const addRoute = createAction(
-  '[ADD_ROUTE] Add Route',
-  props<{ route: any }>()
-);
-
-export const addRouteSuccess = createAction(
-  '[ADD_ROUTE] Add Route Success',
-  props<{ route: Route }>()
+export const addOne = createAction(
+  '[ROUTE] Add One',
+  props<AddRouteDto>()
 );
 
 export const loadInit = createAction(
@@ -29,7 +26,7 @@ export const loadInit = createAction(
 
 export const loadInitSuccess = createAction(
   '[LOAD_ROUTES] Load Route Success',
-  props<{ routes: Route[] }>()
+  props<{ routes: RouteEntity[] }>()
 );
 
 export const loadMoreRoutes = createAction(
@@ -48,7 +45,7 @@ export const loadMoreRoutes = createAction(
 
 export const loadMoreRoutesSuccess = createAction(
   '[LOAD_MORE_ROUTES] Load More Routes success',
-  props<{ routes: Route[] }>()
+  props<{ routes: RouteEntity[] }>()
 );
 
 export const getRoute = createAction(
@@ -58,17 +55,17 @@ export const getRoute = createAction(
 
 export const getRouteSuccess = createAction(
   '[GET_ROUTE] Get route Success',
-  props<{ route: Route }>()
+  props<{ route: RouteEntity }>()
 );
 
 export const updateRoute = createAction(
   '[UPDATE_ROUTE] Update Route',
-  props<{ id: number; route: Omit<Partial<Route>, 'id'> }>()
+  props<{ id: number; updateRouteDto: Partial<UpdateRouteDto> }>()
 );
 
 export const updateRouteSuccess = createAction(
   '[UPDATE_ROUTE] Update Route Success',
-  props<{ route: UpdateNum<Route> }>()
+  props<{ route: UpdateNum<RouteEntity> }>()
 );
 
 export const deleteRoute = createAction(
@@ -77,8 +74,7 @@ export const deleteRoute = createAction(
 );
 
 export const RouteAction = {
-  addRoute,
-  addRouteSuccess,
+  addOne,
   loadInit,
   loadInitSuccess,
   loadMoreRoutes,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Route } from '../../+state/route.interface';
+import { RouteEntity } from '../../entities/route.entity';
 import { MatDialog } from '@angular/material/dialog';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class DetailRouteComponent implements OnInit {
   payType = PaymentType;
 
   route$ = this.routeQuery.selectEntity(this.routeId);
-  route = {} as Route;
+  route = {} as RouteEntity;
 
   constructor(
     private readonly actions$: Actions,
@@ -51,7 +51,7 @@ export class DetailRouteComponent implements OnInit {
     });
   }
 
-  updateRoute(route: Route, selectOrder?: boolean) {
+  updateRoute(route: RouteEntity, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: 'fit-content',
       data: { route: route, selectOrder: selectOrder, isUpdate: true }
@@ -66,7 +66,7 @@ export class DetailRouteComponent implements OnInit {
     this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
   }
 
-  completeRoute(route: Route) {
+  completeRoute(route: RouteEntity) {
     this.dialog.open(DialogDatePickerComponent, {
       width: 'fit-content',
       data: {
@@ -78,7 +78,7 @@ export class DetailRouteComponent implements OnInit {
       .subscribe(val => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.updateRoute({ route: { endedAt: val.day }, id: route.id })
+            RouteAction.updateRoute({ updateRouteDto: { endedAt: val.day }, id: route.id })
           );
         }
       });
@@ -96,7 +96,7 @@ export class DetailRouteComponent implements OnInit {
       .subscribe(val => {
         if (val) {
           const commodityIds: number[] = [];
-          this.route.orders.forEach(val => val.commodities.forEach(val => commodityIds.push(val.id)));
+          this.route.orders.forEach((val:OrderEntity) => val.commodities.forEach(val => commodityIds.push(val.id)));
           const index = commodityIds.indexOf(commodity.id);
           commodityIds.splice(index, 1);
           const route = {
@@ -104,7 +104,7 @@ export class DetailRouteComponent implements OnInit {
           };
           this.actions$.dispatch(RouteAction.updateRoute({
             id: this.route.id,
-            route: route
+            updateRouteDto: route
           }));
         }
       });
@@ -120,7 +120,7 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          const orderIds = this.route.orders.map(e => e.id);
+          const orderIds = this.route.orders.map((e:OrderEntity) => e.id);
           const index = orderIds.indexOf(order.id);
           orderIds.splice(index, 1);
           const route = {
@@ -128,7 +128,7 @@ export class DetailRouteComponent implements OnInit {
           };
           this.actions$.dispatch(RouteAction.updateRoute({
             id: this.route.id,
-            route: route
+            updateRouteDto: route
           }));
         }
       });

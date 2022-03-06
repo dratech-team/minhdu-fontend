@@ -5,27 +5,31 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
-import {Route} from "../+state/route.interface";
+import {RouteEntity} from "../entities/route.entity";
+import {AddRouteDto} from "../dto/add-route.dto";
+import {UpdateRouteDto} from "../dto/update-route.dto";
 
 @Injectable({providedIn: 'root'})
-export  class RouteService extends BaseService<Route>{
+export  class RouteService extends BaseService<RouteEntity>{
   constructor(
     public readonly http: HttpClient
   ) {
     super(Api.SELL.ROUTE.ROUTE , http);
   }
-  addOne(props: Route): Observable<Route> {
+  addOne(props: AddRouteDto): Observable<RouteEntity> {
     return super.addOne(props);
   }
-  pagination(params: any): Observable<ResponsePaginate<Route>> {
+  pagination(params: any): Observable<ResponsePaginate<RouteEntity>> {
     return super.pagination(params);
   }
-  getOne(id: any): Observable<Route> {
+  getOne(id: any): Observable<RouteEntity> {
     return super.getOne(id);
   }
-  updateOrder(id: any, body: any): Observable<Route> {
-    return this.http.patch<Route>(Api.SELL.ROUTE.ROUTE + `/${id}`, body);
+
+  updateRoute(id: number, body:Partial<UpdateRouteDto>): Observable<RouteEntity> {
+     return this.http.patch <RouteEntity>(Api.SELL.ROUTE.ROUTE + `/${id}`, body);
   }
+
   delete(id: number): Observable<void> {
     return super.delete(id);
   }

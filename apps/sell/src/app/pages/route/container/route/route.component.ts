@@ -9,7 +9,7 @@ import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dia
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
 import { RouteAction, updateRoute } from '../../+state/route.action';
-import { Route } from '../../+state/route.interface';
+import { RouteEntity } from '../../entities/route.entity';
 import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
@@ -25,7 +25,7 @@ export class RouteComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
   statusRoute = StatusRoute;
-  routes: Route[] = [];
+  routes: RouteEntity[] = [];
   formGroup = new FormGroup({
     startedAt: new FormControl(''),
     endedAt: new FormControl(''),
@@ -81,7 +81,7 @@ export class RouteComponent implements OnInit {
     this.actions$.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
   }
 
-  route(val: Route) {
+  route(val: RouteEntity) {
     return Object.assign(val, {
       skip: 0,
       take: this.pageSize
@@ -99,7 +99,7 @@ export class RouteComponent implements OnInit {
     });
   }
 
-  onEnd(event: Route) {
+  onEnd(event: RouteEntity) {
     console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent)
@@ -107,7 +107,7 @@ export class RouteComponent implements OnInit {
       .subscribe((datetime) => {
         if (datetime) {
           this.actions$.dispatch(
-            updateRoute({ id: event.id, route: { endedAt: datetime } })
+            updateRoute({ id: event.id, updateRouteDto: { endedAt: datetime } })
           );
         }
       });

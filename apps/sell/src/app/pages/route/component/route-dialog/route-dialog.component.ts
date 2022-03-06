@@ -84,10 +84,10 @@ export class RouteDialogComponent implements OnInit {
     };
     if (this.data) {
       this.store.dispatch(
-        RouteAction.updateRoute({route: route, id: this.data.route.id})
+        RouteAction.updateRoute({updateRouteDto: route, id: this.data.route.id})
       );
     } else {
-      this.store.dispatch(RouteAction.addRoute({route: route}));
+      this.store.dispatch(RouteAction.addOne( route));
     }
     this.dialogRef.close();
   }

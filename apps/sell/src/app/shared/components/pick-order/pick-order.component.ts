@@ -8,7 +8,7 @@ import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
 import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
-import { Route } from '../../../pages/route/+state/route.interface';
+import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
 import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
@@ -224,7 +224,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     return order.commodities.some(val => val.routeId === null);
   }
 
-  getFirstRoute(order: OrderEntity): Route {
+  getFirstRoute(order: OrderEntity): RouteEntity {
     return order?.routes[0];
   }
 
