@@ -40,7 +40,7 @@ export class CompleteRouteDialogComponent implements OnInit {
       return;
     }
       this.store.dispatch(
-        RouteAction.updateRoute({route: {endedAt: this.formGroup.value.endedAt}, id: this.data.route.id})
+        RouteAction.update({route: {endedAt: this.formGroup.value.endedAt}, id: this.data.route.id})
       );
     this.dialogRef.close();
   }

@@ -2,11 +2,11 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { select, Store } from '@ngrx/store';
-import { AppState } from 'apps/sell/src/app/reducers';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectedCustomerAdded } from '../../+state/customer/customer.selector';
+import { CustomerActions } from '../../+state/customer.actions';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../+state/customer.query';
+import { AddCustomerDto } from '../../dto/add-customer.dto';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -25,7 +25,8 @@ export class CustomerDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly dialogRef: MatDialogRef<CustomerDialogComponent>
   ) {
   }
@@ -68,10 +69,9 @@ export class CustomerDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    const customer = {
-      firstName: value.firstName ? value.firstName : undefined,
-      lastName: value.lastName ? value.lastName : undefined,
-      identify: value.identify ? value.identify.toString() : undefined,
+    const customer: AddCustomerDto = {
+      lastName: value.lastName,
+      identify: value?.identify,
       gender: value.gender,
       phone: value.phone,
       issuedBy: value.issuedBy,
@@ -84,19 +84,19 @@ export class CustomerDialogComponent implements OnInit {
       provinceId: this.provinceId || this.data?.customer?.province?.id,
       districtId: this.districtId || this.data?.customer?.district?.id,
       wardId: this.wardId || this.data?.customer?.ward?.id,
-      email: value.email ? value.email : undefined,
-      note: value.note ? value.note : undefined,
-      ethnicity: value.ethnicity ? value.ethnicity : undefined,
-      religion: value.religion ? value.religion : undefined,
-      isPotential: value.isPotential ? value.isPotential : undefined
+      email: value?.email,
+      note: value?.note,
+      ethnicity: value?.ethnicity,
+      religion: value?.religion,
+      isPotential: value?.isPotential
     };
 
     if (this.data) {
-      this.store.dispatch(CustomerAction.updateCustomer({ customer: customer, id: this.data.customer.id }));
+      this.actions$.dispatch(CustomerActions.update({ id: this.data.customer.id, updates: customer }));
     } else {
-      this.store.dispatch(CustomerAction.addCustomer({ customer: customer }));
+      this.actions$.dispatch(CustomerActions.addOne(customer));
     }
-    this.store.pipe(select(selectedCustomerAdded)).subscribe(added => {
+    this.customerQuery.selectLoading().subscribe(added => {
       if (added) {
         this.dialogRef.close();
       }

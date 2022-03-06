@@ -4,14 +4,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { Router } from '@angular/router';
 import { TableRouteService } from './table-route.service';
-import { selectorAllRoute } from '../../../route/+state/route.selector';
+import { RouteQuery } from '../../../route/+state/route.query';
 
 @Component({
-  selector:'app-route-order',
-  templateUrl:'table-route.component.html',
+  selector: 'app-route-order',
+  templateUrl: 'table-route.component.html'
 })
 
-export class TableRouteComponent implements OnInit{
+export class TableRouteComponent implements OnInit {
   formGroup = new FormGroup(
     {
       name: new FormControl(''),
@@ -20,34 +20,40 @@ export class TableRouteComponent implements OnInit{
       paidType: new FormControl('')
     });
   paidType = PaidType;
-  routes$ = this.store.pipe(select(selectorAllRoute))
+  routes$ = this.routeQuery.selectAll();
   @Input() orderId!: number;
   pageSize = 10;
-  pageIndex = 1 ;
+  pageIndex = 1;
+
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Store,
+    private readonly routeQuery: RouteQuery,
     private readonly router: Router,
-    private readonly service: TableRouteService,
+    private readonly service: TableRouteService
   ) {
   }
+
   ngOnInit() {
-    this.service.loadInit(this.orderId)
+    this.service.loadInit(this.orderId);
   }
-  onScroll(){
-    const val = this.formGroup.value
-    this.service.scrollRoutes(this.orders(this.pageSize, this.pageIndex, val))
+
+  onScroll() {
+    const val = this.formGroup.value;
+    this.service.scrollRoutes(this.orders(this.pageSize, this.pageIndex, val));
   }
-  orders(pageSize: number, pageIndex: number, val?: any): any{
+
+  orders(pageSize: number, pageIndex: number, val?: any): any {
     return {
       take: pageSize,
-      skip: pageSize* pageIndex++,
+      skip: pageSize * pageIndex++,
       startedAt: val.startedAt,
       endedAt: val.endedAt,
-      customerId:this.orderId,
+      customerId: this.orderId,
       paidType: val.paidType
-    }
+    };
   }
+
   detailRoutes(id: number) {
-      this.router.navigate(['/ban-hang/tuyen-duong/chi-tiet-tuyen-duong', id]).then()
+    this.router.navigate(['/ban-hang/tuyen-duong/chi-tiet-tuyen-duong', id]).then();
   }
 }

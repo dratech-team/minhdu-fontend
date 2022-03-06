@@ -4,8 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
-import {selectorAllOrders} from '../../../order/+state/order.selector';
-import {Order} from '../../../order/+state/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {MatTabChangeEvent} from "@angular/material/tabs";
@@ -16,7 +15,7 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: Order[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
+  orderIdsOfRoute: OrderEntity[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
   commoditySelected: Commodity[] = []
   isSelectAll = false;
   tabIndex = 0;
@@ -51,7 +50,7 @@ export class RouteDialogComponent implements OnInit {
     });
   }
 
-  pickOrders(orders: Order[]) {
+  pickOrders(orders: OrderEntity[]) {
     this.orderIdsOfRoute = [...orders];
     console.log(this.orderIdsOfRoute)
   }
@@ -85,10 +84,10 @@ export class RouteDialogComponent implements OnInit {
     };
     if (this.data) {
       this.store.dispatch(
-        RouteAction.updateRoute({route: route, id: this.data.route.id})
+        RouteAction.update({updates: route, id: this.data.route.id})
       );
     } else {
-      this.store.dispatch(RouteAction.addRoute({route: route}));
+      this.store.dispatch(RouteAction.addOne( route));
     }
     this.dialogRef.close();
   }

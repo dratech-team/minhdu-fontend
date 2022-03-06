@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllOrders } from '../../../pages/order/+state/order.selector';
-import { OrderAction } from '../../../pages/order/+state/order.action';
+import { OrderActions } from '../../../pages/order/+state/order.actions';
+import { OrderQuery } from '../../../pages/order/+state/order.query';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Injectable({providedIn: 'root'})
 export class TableOrderCustomerService {
-  orders$ = this.store.pipe(select(selectorAllOrders))
+  orders$ = this.orderQuery.selectAll();
+
   constructor(
-    private readonly store: Store,
+    private readonly orderQuery: OrderQuery,
+    private readonly actions$: Actions,
   ) {
   }
 
   searchOrders(val: any){
-    this.store.dispatch(OrderAction.loadInit(val));
+    this.actions$.dispatch(OrderActions.loadAll(val));
   }
 
   searchOrdersAssigned(val: any){
-    this.store.dispatch(OrderAction.loadOrdersAssigned(val));
+    // this.actions$.dispatch(OrderAction.loadOrdersAssigned(val));
   }
 
   scrollOrders(val: any){
-    this.store.dispatch(OrderAction.loadMoreOrders(val));
+    this.actions$.dispatch(OrderActions.loadAll(val));
   }
 
   scrollOrdersAssigned(val: any){
-    this.store.dispatch(OrderAction.loadMoreOrdersAssigned(val));
+    // this.actions$.dispatch(OrderAction.loadMoreOrdersAssigned(val));
   }
 
   getCustomers() {

@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
-import {  selectorCurrentCommodity } from '../../+state/commodity.selector';
 import { CommodityAction } from '../../+state/commodity.action';
 import { Commodity } from '../../+state/commodity.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { CommodityQuery } from '../../+state/commodity.query';
 
 @Component({
   templateUrl:'detail-commodity.component.html'
 })
 export class DetailCommodityComponent implements OnInit{
-  commodity$ = this.store.pipe(select(selectorCurrentCommodity(this.getId)))
+  commodity$ = this.commodityQuery.selectEntity(this.getId);
+
   constructor(
     private readonly store: Store<AppState>,
+    private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute
   ) {

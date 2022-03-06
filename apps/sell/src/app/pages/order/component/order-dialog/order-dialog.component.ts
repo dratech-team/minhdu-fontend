@@ -1,35 +1,38 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {AppState} from '../../../../reducers';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {select, Store} from '@ngrx/store';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PaymentType} from '@minhdu-fontend/enums';
-import {OrderAction} from '../../+state/order.action';
-import {DatePipe} from '@angular/common';
-import {Customer} from '../../../customer/+state/customer/customer.interface';
-import {selectorAllCustomer} from '../../../customer/+state/customer/customer.selector';
-import {CustomerAction} from '../../../customer/+state/customer/customer.action';
-import {selectAllCommodity} from '../../../commodity/+state/commodity.selector';
-import {Commodity} from '../../../commodity/+state/commodity.interface';
-import {CommodityAction} from '../../../commodity/+state/commodity.action';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AppState } from '../../../../reducers';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { select, Store } from '@ngrx/store';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PaymentType } from '@minhdu-fontend/enums';
+import { OrderActions } from '../../+state/order.actions';
+import { DatePipe } from '@angular/common';
+import { CustomerEntity } from '../../../customer/entities/customer.entity';
+import { CustomerActions } from '../../../customer/+state/customer.actions';
+import { Commodity } from '../../../commodity/+state/commodity.interface';
+import { CommodityAction } from '../../../commodity/+state/commodity.action';
+import { CommodityQuery } from '../../../commodity/+state/commodity.query';
+import { CustomerQuery } from '../../../customer/+state/customer.query';
 
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
-  customers$ = this.store.pipe(select(selectorAllCustomer));
-  commodities$ = this.store.pipe(select(selectAllCommodity));
+  customers$ = this.customerQuery.selectAll();
+  commodities$ = this.commodityQuery.selectAll();
+
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
   routes: number[] = [];
-  customers: Customer[] = [];
+  customers: CustomerEntity[] = [];
   commoditiesSelected: Commodity[] = [];
   wardId!: number;
 
   constructor(
     private readonly store: Store<AppState>,
+    private readonly commodityQuery: CommodityQuery,
+    private readonly customerQuery: CustomerQuery,
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<OrderDialogComponent>,
@@ -38,8 +41,8 @@ export class OrderDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(CustomerAction.loadInit({take: 30, skip: 0}));
-    this.store.dispatch(CommodityAction.loadInit({CommodityDTO: {take: 30, skip: 0}}));
+    this.store.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
+    this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
 
     this.customers$.subscribe(val => this.customers = JSON.parse(JSON.stringify(val)));
     this.formGroup = this.formBuilder.group({
@@ -73,15 +76,13 @@ export class OrderDialogComponent implements OnInit {
       deliveredAt: val.deliveredAt,
       typeUpdate: this.data.type
     };
-    console.log(order)
+    console.log(order);
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }
-    this.store.dispatch(OrderAction.updateOrder({
-      updateOrderDto: {
-        order: order,
-        id: this.data.order.id
-      }
+    this.store.dispatch(OrderActions.update({
+      id: this.data.order.id,
+      updates: order
     }));
     this.dialogRef.close();
   }

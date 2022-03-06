@@ -68,7 +68,7 @@
       </th>
     </tr>
     </thead>
-    <tbody *ngIf='(orders$| async) as orders'>
+    <tbody *ngIf='orders?.length'>
     <tr *ngFor='let order of orders' class='pointer'>
       <th *ngIf='order?.createdAt!== null ' (click)='detailOrder(order.id)'>
         {{order?.createdAt | date: 'dd/MM/yyyy'}}
@@ -82,10 +82,10 @@
         {{order?.ward?.district?.province?.name}}
       </th>
       <th (click)='detailOrder(order.id)' style='color: #f86c6b'>
-        {{order.commodityTotal|number:'1.0-0'|notEmpty:'0'}} đ
+        {{order.commodityTotal | number:'1.0-0'|notEmpty:'0'}} đ
       </th>
       <th (click)='detailOrder(order.id)' style='color: #20c997'>
-        {{order?.paymentTotal|number:'1.0-0'|notEmpty:'0'}} đ
+        {{order?.paymentTotal | number:'1.0-0'|notEmpty:'0'}} đ
       </th>
       <th *ngIf='delivered' (click)='detailOrder(order.id)'>
         {{order?.deliveredAt | date: 'dd/MM/yyyy'}}
@@ -97,12 +97,11 @@
         <mat-slide-toggle [checked]='order.hide' (click)='updateOrder(order)' class='m-auto'></mat-slide-toggle>
       </th>
       <th *ngIf='!delivered'>
-        <button  class='btn btn-primary' (click)='confirmOrder(order)'>Đã giao</button>
+        <button class='btn btn-primary' (click)='confirmOrder(order)'>Đã giao</button>
       <th *ngIf='!delivered'>
         <button *ngIf='order.paymentTotal === 0' class='btn btn-danger' (click)='deleteOrder(order)'>Hủy</button>
     </tr>
-    <tr *ngIf='!orders || orders.length === 0 '
-        style='height: 20vh'>
+    <tr *ngIf='!orders?.length' style='height: 20vh'>
       <td colspan='7' class='font-xl font-weight-bold position-relative'>
         <span style='position: absolute;top: 40%;left: 40%'>
             Hiện chưa có đơn hàng nào!

@@ -1,24 +1,29 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectorAllRoute } from '../../../route/+state/route.selector';
 import { RouteAction } from '../../../route/+state/route.action';
+import { Actions } from '@datorama/akita-ng-effects';
+import { RouteQuery } from '../../../route/+state/route.query';
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TableRouteService {
-    routes$ = this.store.pipe(select(selectorAllRoute))
+  routes$ = this.routeQuery.selectAll();
+
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Actions,
+    private readonly routeQuery: RouteQuery,
   ) {
   }
-  loadInit(orderId:number){
-    return this.store.dispatch(RouteAction.loadInit({take:30, skip: 0 ,orderId: orderId }))
+
+  loadInit(orderId: number) {
+    return this.actions$.dispatch(RouteAction.loadAll({ take: 30, skip: 0, orderId: orderId }));
   }
-  scrollRoutes(val: any){
-    this.store.dispatch(RouteAction.loadMoreRoutes(val));
+
+  scrollRoutes(val: any) {
+    this.actions$.dispatch(RouteAction.loadAll(val));
   }
 
   getCommodities() {
-    return this.routes$
+    return this.routes$;
   }
 }

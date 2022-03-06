@@ -3,7 +3,7 @@
   <button (click)='add()' class='btn btn-primary font-lg'>Thêm</button>
   <button (click)='printCustomer()' class='btn btn-primary font-lg mr-5 '>Xuất</button>
 </div>
-<ngx-skeleton-loader *ngIf='!(loaded$ | async); else customer' count='10' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='(loading$ | async); else customer' count='10' appearance='line'></ngx-skeleton-loader>
 <ng-template #customer>
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
        [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true' (scrolled)='onScroll()'>

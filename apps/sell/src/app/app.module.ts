@@ -31,6 +31,7 @@ import {NZ_ICONS} from "ng-zorro-antd/icon";
 import * as AllIcons from "@ant-design/icons-angular/icons";
 import {IconDefinition} from "@ant-design/icons-angular";
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { AkitaDevtools, AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 
 registerLocaleData(localeVi);
@@ -57,6 +58,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
+    AkitaNgDevtools.forRoot(),
     NxModule.forRoot(),
     AppHeaderModule,
     AppSidebarModule,
