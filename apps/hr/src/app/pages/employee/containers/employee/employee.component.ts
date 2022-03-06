@@ -1,8 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {MatMenuTrigger} from '@angular/material/menu';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   EmployeeAction,
   selectEmployeeAdding,
@@ -19,18 +19,19 @@ import {
   ItemContextMenu,
   SearchEmployeeType
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {select, Store} from '@ngrx/store';
-import {debounceTime, startWith} from 'rxjs/operators';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
-import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
-import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
-import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
-import {Observable, of, Subject} from 'rxjs';
-import {District, Province, Ward} from '@minhdu-fontend/data-models';
-import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
-import {DialogExportComponent} from '@minhdu-fontend/components';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { select, Store } from '@ngrx/store';
+import { debounceTime, startWith } from 'rxjs/operators';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
+import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
+import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
+import { ProvinceAction, selectAllProvince } from '@minhdu-fontend/location';
+import { Observable, of, Subject } from 'rxjs';
+import { District, Employee, Province, Ward } from '@minhdu-fontend/data-models';
+import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
+import { DialogExportComponent } from '@minhdu-fontend/components';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -55,10 +56,10 @@ export class EmployeeComponent implements OnInit {
   branchName = '';
   positionName = '';
   eventScrollX = new Subject<any>();
+  employees!: Employee[];
 
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
-  employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
@@ -89,6 +90,11 @@ export class EmployeeComponent implements OnInit {
     private readonly router: Router,
     private readonly activeRouter: ActivatedRoute
   ) {
+    this.store.pipe(select(selectorAllEmployee)).subscribe(
+      (employees) => {
+        this.employees = employees;
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -111,7 +117,7 @@ export class EmployeeComponent implements OnInit {
           isLeft: this.isLeft,
           branch: this.branchName,
           position: this.positionName,
-          employeeType : EmployeeType.EMPLOYEE_FULL_TIME,
+          employeeType: EmployeeType.EMPLOYEE_FULL_TIME
         }
       })
     );
@@ -181,7 +187,7 @@ export class EmployeeComponent implements OnInit {
   delete($event: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employee: $event,  permanentlyDeleted: this.isLeft }
+      data: { employee: $event, permanentlyDeleted: this.isLeft }
     });
   }
 
@@ -318,7 +324,13 @@ export class EmployeeComponent implements OnInit {
   reStore($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employeeId: $event.id,  leftAt: true }
+      data: { employeeId: $event.id, leftAt: true }
     });
+  }
+
+  onDrop(event: CdkDragDrop<Employee[]>) {
+    moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
+
+    /// FIXME: dispatch sort action in here
   }
 }

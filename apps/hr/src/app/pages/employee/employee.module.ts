@@ -29,6 +29,7 @@ import {UpdateContractComponent} from './components/dialog-update-contract/updat
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -52,7 +53,9 @@ import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
     NgxSkeletonLoaderModule.forRoot(),
     MatAutocompleteModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    DragDropModule,
+    CommonModule
   ],
   declarations: [
     AddDegreeComponent,
