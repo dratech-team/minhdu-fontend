@@ -9,7 +9,7 @@
   <mat-dialog-content class='mat-typography'>
     <form [formGroup]='formGroup'>
       <div class='m-4'>
-        <div class=' main-popup mt-2' *ngIf='!data?.isUpdate'>
+        <div class=' main-popup mt-2'>
           <div><span class='main-title'>Khối lương</span><span class='star'>*</span></div>
           <mat-select formControlName='type' class='form-control'>
             <mat-option *ngFor='let item of blockSalary' [value]='item.type'>{{item.title}}</mat-option>
