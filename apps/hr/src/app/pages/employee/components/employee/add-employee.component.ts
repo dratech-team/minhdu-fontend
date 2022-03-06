@@ -146,8 +146,8 @@ export class AddEmployeeComponent implements OnInit {
     this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
       this.branches.setValue(val[0].name)
       this.branchId = val[0].id
-      if(val[0].positions)
-      this.lstPosition = val[0].positions
+      if (val[0].positions)
+        this.lstPosition = val[0].positions
     })
   }
 
@@ -162,6 +162,13 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
 
+    if (!this.branchId && this.branches.value && this.data?.employee) {
+      return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+    }
+
+    if (!this.positionId && this.formPosition.value && this.data?.employee) {
+      return this.snackbar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+    }
     /// FIXME: dummy tạm
     if (!this.data) {
       if (!this.wardId || !this.branchId || !this.positionId) {

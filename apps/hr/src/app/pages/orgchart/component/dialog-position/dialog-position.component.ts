@@ -60,6 +60,9 @@ export class DialogPositionComponent implements OnInit {
   onsubmit(): any {
     this.submitted = true;
     if (this.formGroup.valid) {
+      if(this.branches.value){
+        return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+      }
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
         this.store.dispatch(PositionActions.updatePosition(

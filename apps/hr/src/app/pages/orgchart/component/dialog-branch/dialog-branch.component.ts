@@ -55,9 +55,12 @@ export class DialogBranchComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onsubmit() {
+  onsubmit(): any {
     this.submitted = true;
     if (this.formGroup.valid) {
+      if(this.positions.value){
+        return this.snackBar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+      }
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
         this.store.dispatch(OrgchartActions.updateBranch(

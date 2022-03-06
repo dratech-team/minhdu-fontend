@@ -90,10 +90,20 @@
                  #branchInput>
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async' [value]='!branch.id ? branchInput.value : branch.name'
-                        (onSelectionChange)='onCreateBranch($event, branch)'>
+                        (onSelectionChange)='onCreateBranch($event,branchInput, branch)'>
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
+          <div class="mt-2" *ngIf="branchSelected">
+            <mat-chip-list >
+              <mat-chip
+                [selectable]='true'
+                [removable]='true'>
+                {{branchSelected?.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+
           <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
             <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
           </div> -->

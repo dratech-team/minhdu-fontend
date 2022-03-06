@@ -29,7 +29,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
   numberChars = new RegExp('[^0-9]', 'g');
-  branchId?: number;
+  branchSelected?: Branch;
   positionSelected: Position[] = [];
   positions = new FormControl();
   branches = new FormControl();
@@ -86,7 +86,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     );
     if (this.data?.branch) {
       this.branches.patchValue(this.data?.branch.name);
-      this.branchId = this.data?.branch.id;
+      this.branchSelected = this.data?.branch;
     }
   }
 
@@ -102,6 +102,13 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if(this.positionSelected.length === 0){
       return this.snackbar.open('Chưa chọn chức vụ', '', {duration:1500})
     }
+    if(this.positions.value){
+      return this.snackbar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+    }
+    if(this.branches.value){
+      return this.snackbar.open('đơn vị phải chọn không được nhập', '', {duration: 1500})
+    }
+
     const value = this.formGroup.value;
     const template = {
       isUpdate: !!this.data,
@@ -110,7 +117,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         title: value.title,
         employeeType: value.employeeType,
         positionIds: this.positionSelected.map(val => val.id),
-        branchId: this.branchId,
+        branchId: this.branchSelected?.id,
         price: typeof (value.price) === 'string' ? Number(value.price.replace(this.numberChars, '')) : value.price,
         unit: value.unit,
         note: value.note,
@@ -159,16 +166,21 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     }
   }
 
-  onCreateBranch(event: any, branch?: Branch) {
+  onCreateBranch(event: any,branchInput: HTMLElement, branch?: Branch ) {
     if (event.isUserInput) {
       if (branch?.id === 0) {
         this.branchService
           .addOne({ name: this.branchInput.nativeElement.value })
-          .subscribe((branch) => (this.branchId = branch.id));
+          .subscribe((branch) => (this.branchSelected = branch));
         this.snackbar.open('Đã tạo', '', { duration: 2500 });
       } else {
-        this.branchId = branch?.id;
+        this.branchSelected = branch;
       }
+      setTimeout(() => {
+        this.branches.setValue('')
+        branchInput.blur()
+      });
+
     }
   }
 
