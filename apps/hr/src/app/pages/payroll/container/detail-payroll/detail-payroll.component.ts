@@ -28,6 +28,7 @@ import { DialogSharedComponent } from '../../../../../../../../libs/components/s
 import { DatePipe } from '@angular/common';
 import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
+import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialog-WFH.component";
 
 
 @Component({
@@ -113,6 +114,10 @@ export class DetailPayrollComponent implements OnInit {
       }
       case SalaryTypeEnum.PART_TIME: {
         this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+        break;
+      }
+      case SalaryTypeEnum.WFH: {
+        this.dialog.open(DialogWFHComponent, Object.assign(config, { width: 'fit-content' }));
         break;
       }
       default: {
