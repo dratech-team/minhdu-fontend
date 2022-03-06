@@ -18,7 +18,7 @@
           <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
-<!--      <button class="btn btn-primary" (click)="updateCategory()">Sửa</button>-->
+      <!--      <button class="btn btn-primary" (click)="updateCategory()">Sửa</button>-->
     </div>
     <div>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -264,13 +264,15 @@
   .table-scroll thead th:nth-child(3) {
     z-index: 5;
   }
-  
-  tr:nth-child(even) th  {
+
+  tr:nth-child(even) th {
     background-color: #dddddd;
+    height: 40px;
   }
 
-  tr:nth-child(odd) th  {
+  tr:nth-child(odd) th {
     background-color: white;
+    height: 40px;
   }
 
   .cdk-drag-preview {
@@ -279,6 +281,7 @@
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    height: 40px;
   }
 
   .cdk-drag-placeholder {
