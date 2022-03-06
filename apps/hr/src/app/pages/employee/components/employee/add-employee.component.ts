@@ -54,7 +54,7 @@ export class AddEmployeeComponent implements OnInit {
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant
-  lstCategory: Category[]= []
+  categories$ = this.categoryService.getAll()
 
   constructor(
     public datePipe: DatePipe,
@@ -71,11 +71,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoryService.getAll().subscribe(val => {
-      if(val){
-        this.lstCategory = val
-      }
-    })
     this.store.dispatch(OrgchartActions.init());
     this.store.dispatch(PositionActions.loadPosition());
     if (this.data?.employee) {
@@ -126,7 +121,7 @@ export class AddEmployeeComponent implements OnInit {
       recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
       employeeType: [this.data?.employee ?
         this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      category: [this.data?.employee?.category.id]
+      category: [this.data?.employee?.category?.id]
     });
 
     this.positions$ = this.formPosition.valueChanges.pipe(
