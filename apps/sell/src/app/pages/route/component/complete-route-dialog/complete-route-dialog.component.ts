@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
-import {RouteActions} from '../../+state/routeActions';
+import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
 
 @Component({
@@ -40,7 +40,7 @@ export class CompleteRouteDialogComponent implements OnInit {
       return;
     }
       this.store.dispatch(
-        RouteActions.update({route: {endedAt: this.formGroup.value.endedAt}, id: this.data.route.id})
+        RouteAction.update({route: {endedAt: this.formGroup.value.endedAt}, id: this.data.route.id})
       );
     this.dialogRef.close();
   }

@@ -28,10 +28,4 @@ const remove = createAction(
   props<{ idRoute: number }>()
 );
 
-export const RouteActions = {
-  addOne,
-  loadAll,
-  loadOne,
-  update,
-  remove
-};
+export const RouteAction = { addOne, loadAll, loadOne, update, remove };

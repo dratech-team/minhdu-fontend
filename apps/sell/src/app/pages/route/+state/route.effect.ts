@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { RouteActions } from './routeActions';
+import { RouteAction } from './route.action';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { RouteService } from '../service/route.service';
 import { throwError } from 'rxjs';
@@ -24,7 +24,7 @@ export class RouteEffect {
 
   @Effect()
   addRoute$ = this.action.pipe(
-    ofType(RouteActions.addOne),
+    ofType(RouteAction.addOne),
     switchMap((props) => this.routeService.addOne(props)),
     tap((res) => this.routeStore.add(res)),
     catchError((err) => throwError(err))
@@ -32,7 +32,7 @@ export class RouteEffect {
 
   @Effect()
   loadAll$ = this.action.pipe(
-    ofType(RouteActions.loadAll),
+    ofType(RouteAction.loadAll),
     switchMap((props) => this.routeService.pagination(props)),
     map((responsePagination) => {
       if (responsePagination.data.length === 0) {
@@ -56,7 +56,7 @@ export class RouteEffect {
 
   @Effect()
   getOne$ = this.action.pipe(
-    ofType(RouteActions.loadOne),
+    ofType(RouteAction.loadOne),
     switchMap((props) => this.routeService.getOne(props.id)),
     map((route) => {
         route.orders.forEach(order => {
@@ -72,7 +72,7 @@ export class RouteEffect {
 
   @Effect()
   update$ = this.action.pipe(
-    ofType(RouteActions.update),
+    ofType(RouteAction.update),
     switchMap((props) => this.routeService.update(props.id, props.updates)),
     map((route) => {
       route.changes.orders?.forEach(order => {
@@ -87,7 +87,7 @@ export class RouteEffect {
 
   @Effect()
   delete$ = this.action.pipe(
-    ofType(RouteActions.remove),
+    ofType(RouteAction.remove),
     switchMap((props) =>
       this.routeService.delete(props.idRoute).pipe(
         map((_) => this.routeStore.remove(props.idRoute)),

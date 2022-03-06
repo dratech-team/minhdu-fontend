@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { RouteActions } from '../../../route/+state/routeActions';
+import { RouteAction } from '../../../route/+state/route.action';
 import { Actions } from '@datorama/akita-ng-effects';
 import { RouteQuery } from '../../../route/+state/route.query';
 
@@ -16,11 +16,11 @@ export class TableRouteService {
   }
 
   loadInit(orderId: number) {
-    return this.actions$.dispatch(RouteActions.loadAll({ take: 30, skip: 0, orderId: orderId }));
+    return this.actions$.dispatch(RouteAction.loadAll({ take: 30, skip: 0, orderId: orderId }));
   }
 
   scrollRoutes(val: any) {
-    this.actions$.dispatch(RouteActions.loadAll(val));
+    this.actions$.dispatch(RouteAction.loadAll(val));
   }
 
   getCommodities() {
