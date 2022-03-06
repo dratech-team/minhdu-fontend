@@ -41,6 +41,8 @@ import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from "../../components/category/dialog-category.component";
 import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -66,10 +68,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   positionName = '';
   eventScrollX = new Subject<any>();
   categories$ = this.categoryService.getAll();
+  employees!: Employee[];
+
 
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
-  employees$ = this.store.pipe(select(selectorAllEmployee));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
@@ -103,6 +106,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly categoryService: CategoryService,
     private ref: ChangeDetectorRef
   ) {
+    this.store.pipe(select(selectorAllEmployee)).subscribe(
+      (employees) => {
+        this.employees = employees;
+      }
+    );
   }
 
  ngAfterViewChecked() {
@@ -353,5 +361,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
     })
+      data: { employeeId: $event.id, leftAt: true }
+    });
+  }
+
+  onDrop(event: CdkDragDrop<Employee[]>) {
+    moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
   }
 }

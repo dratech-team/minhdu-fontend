@@ -33,6 +33,7 @@ import {DialogCategoryComponent} from "./components/category/dialog-category.com
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTabsModule} from "@angular/material/tabs";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -60,6 +61,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatChipsModule,
     MatIconModule,
     MatTabsModule,
+    DragDropModule,
+    CommonModule
   ],
   declarations: [
     AddDegreeComponent,

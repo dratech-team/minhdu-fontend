@@ -24,8 +24,8 @@
     </div>
   </div>
   <div class='mx-auto' style='width: 98%'>
-    <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employees' count='18' appearance='line'></ngx-skeleton-loader>
-    <ng-template #employees>
+    <ngx-skeleton-loader *ngIf='!(loaded$ | async); else loaded' count='18' appearance='line'></ngx-skeleton-loader>
+    <ng-template #loaded>
       <div class='my-5'>
         <div class='font-weight-bold mb-2'> Tổng: {{(total$|async)}}</div>
         <div class='table-scroll mx-auto'
@@ -166,9 +166,13 @@
               </th>
             </tr>
             </thead>
-            <tbody *ngIf='(employees$ | async) as employees'>
-            <tr *ngFor='let employee of employees; let i = index'
-                (contextmenu)='child.onContextMenu($event,employee)' (click)='readAndUpdate(employee)'>
+            <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
+            <tr
+              *ngFor='let employee of employees; let i = index'
+              (contextmenu)='child.onContextMenu($event,employee)'
+              (click)='readAndUpdate(employee)'
+              cdkDrag
+            >
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 {{i + 1}}
               </th>
@@ -242,7 +246,7 @@
     [items]='isLeft ? [ItemContextMenu.RESTORE] : []'
     (onAdd)='add()'
     (onDel)='delete($event)'
-    (onRestore)="reStore($event)"
+    (onRestore)='reStore($event)'
     (onUpdate)='readAndUpdate($event,true)'>
   </app-mouse-right>
 </div>
