@@ -11,6 +11,13 @@
           <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
         </mat-select>
       </div>
+      <div style='width: fit-content'>
+        <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
+          <mat-option [value]='""'>tất cả</mat-option>
+          <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
+          <mat-option [value]='0' (click)="addCategory()">Tạo mới</mat-option>
+        </mat-select>
+      </div>
     </div>
     <div>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -185,7 +192,7 @@
                 }}
               </th>
               <th class='pointer'>
-                {{employee?.createdAt ? ( employee?.createdAt|date: 'dd/MM/yyyy'): 'Chưa cập nhật'}}
+                {{employee?.createdAt ? (employee?.createdAt|date: 'dd/MM/yyyy') : 'Chưa cập nhật'}}
               </th>
               <th class='pointer'>
                 {{employee?.isFlatSalary ? 'Lương cố định' : 'Lương không cố định'}}

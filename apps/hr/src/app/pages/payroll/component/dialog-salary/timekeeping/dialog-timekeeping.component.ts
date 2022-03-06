@@ -170,7 +170,6 @@ export class DialogTimekeepingComponent implements OnInit {
 
   nextTab(tab: any) {
     this.tabIndex = tab._selectedIndex + 1;
-
   }
 
   previousTab(tab: any) {

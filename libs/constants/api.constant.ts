@@ -25,7 +25,8 @@ export const Api = {
       POSITION: 'position',
       BRANCH: 'branch',
       DEPARTMENT: 'department',
-      EMPLOYEE_EXPORT: 'payroll/export/employee'
+      EMPLOYEE_EXPORT: 'payroll/export/employee',
+      CATEGORY: 'category'
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',

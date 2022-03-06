@@ -1,0 +1,110 @@
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {DatePipe} from '@angular/common';
+import {getAllOrgchart} from "@minhdu-fontend/orgchart";
+import {Branch, Employee} from "@minhdu-fontend/data-models";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {searchAutocomplete} from "@minhdu-fontend/utils";
+import {startWith} from "rxjs/operators";
+import {ProvinceAction} from "@minhdu-fontend/location";
+import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
+
+
+@Component({
+  templateUrl: 'dialog-category.component.html'
+})
+
+export class DialogCategoryComponent implements OnInit {
+  formGroup!: FormGroup;
+  submitted = false;
+  branches = new FormControl();
+  branches$ = this.store.pipe(select(getAllOrgchart));
+  branchSelected?: Branch
+  tabIndex = 0;
+  employeeSelected: Employee[] = [];
+
+  constructor(
+    public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
+    private readonly snackbar: MatSnackBar,
+    private readonly dialogRef: MatDialogRef<DialogCategoryComponent>,
+    private readonly categoryService: CategoryService
+  ) {
+  }
+
+  ngOnInit() {
+    this.store.dispatch(ProvinceAction.loadAllProvinces());
+    this.formGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      note: []
+    });
+
+    this.branches$ = searchAutocomplete(
+      this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
+      this.branches$
+    );
+  }
+
+
+  get f() {
+    return this.formGroup.controls;
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+    const value = this.formGroup.value;
+    const category = {
+      name: value.name,
+      note: value?.note,
+      branchId: this.branchSelected?.id,
+      employeeIds: this.employeeSelected.map(val => val.id)
+    };
+    this.categoryService.addOne(category).subscribe(val => {
+      if (val) {
+        this.dialogRef.close()
+      }
+    })
+  }
+
+  onSelectBranch(event: any, branch: Branch, branchesInput: HTMLInputElement) {
+    if (event.isUserInput) {
+      this.branchSelected = branch
+      setTimeout(() => {
+        this.branches.setValue('');
+        branchesInput.blur();
+      });
+    }
+  }
+
+  nextTab(tab: any) {
+    this.submitted = true
+    if (this.formGroup.invalid || !this.branchSelected) {
+      return
+    }
+    this.tabIndex = tab._selectedIndex + 1;
+
+  }
+
+  previousTab(tab: any) {
+    this.tabIndex = tab._selectedIndex - 1;
+  }
+
+  pickEmployees(employees: Employee[]) {
+    this.employeeSelected = [...employees]
+  }
+
+  selectTab(tab: any) {
+    if (tab.index !== 0) {
+      this.submitted = true
+      if (this.formGroup.invalid || !this.branchSelected)
+        this.tabIndex = 0
+    }
+  }
+}

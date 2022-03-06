@@ -29,6 +29,10 @@ import {UpdateContractComponent} from './components/dialog-update-contract/updat
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
+import {DialogCategoryComponent} from "./components/category/dialog-category.component";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   imports: [
@@ -52,7 +56,10 @@ import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
     NgxSkeletonLoaderModule.forRoot(),
     MatAutocompleteModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatIconModule,
+    MatTabsModule,
   ],
   declarations: [
     AddDegreeComponent,
@@ -66,6 +73,7 @@ import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
     BHYTComponent,
     UpdateContractComponent,
     FilterDayWorkHistoryPipe,
+    DialogCategoryComponent,
   ],
   providers: [DatePipe]
 })

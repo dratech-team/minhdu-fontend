@@ -17,3 +17,5 @@ export interface EmployeeDto {
   recipeType?: RecipeType,
   overtimeTitle?: string,
 }
+
+

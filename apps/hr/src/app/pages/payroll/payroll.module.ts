@@ -67,7 +67,6 @@ import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll
 import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
 import { SelectAddMultiple } from './component/dialog-select-add-multiple/select-add-multiple';
 import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/select-update-multiple';
-import { TableEmployeeSelectedComponent } from './component/table-employee-selected/table-employee-selected.component';
 import { TableAllowanceEmployeeComponent } from './component/table-allowance-emp-selected/table-allowance-employee.component';
 import { TableSalarySelected } from './component/table-salaries-selected/table-salary-selected';
 import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-overtime.component';
@@ -154,7 +153,6 @@ import {DialogWFHComponent} from "./component/dialog-salary/dialog-WFH/dialog-WF
     PayrollAbsentComponent,
     SelectAddMultiple,
     SelectUpdateMultiple,
-    TableEmployeeSelectedComponent,
     TableAllowanceEmployeeComponent,
     TableSalarySelected,
     DialogNoteComponent,

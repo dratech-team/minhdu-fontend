@@ -27,7 +27,7 @@ import {
 } from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { MatDialogModule } from '@angular/material/dialog';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
@@ -41,7 +41,6 @@ import localeVi from '@angular/common/locales/vi';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
-
 registerLocaleData(localeVi);
 
 @NgModule({
@@ -93,9 +92,10 @@ registerLocaleData(localeVi);
       useClass: ErrorInterceptor,
       multi: true,
     },
-    { provide: LOCALE_ID, useValue: 'vi-VN' },
+    {provide: LOCALE_ID, useValue: 'vi-VN'},
     HashLocationStrategy,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
 })
 export class AppModule {}

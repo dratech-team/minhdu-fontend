@@ -1,4 +1,12 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
@@ -28,14 +36,16 @@ import {AddEmployeeComponent} from '../../components/employee/add-employee.compo
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
 import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
 import {Observable, of, Subject} from 'rxjs';
-import {District, Province, Ward} from '@minhdu-fontend/data-models';
+import {Category, District, Province, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
+import {DialogCategoryComponent} from "../../components/category/dialog-category.component";
+import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
 
 @Component({
   templateUrl: 'employee.component.html'
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, AfterViewChecked {
   @ViewChild('tableEmployee') tableEmployee!: ElementRef;
   @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
 
@@ -55,6 +65,7 @@ export class EmployeeComponent implements OnInit {
   branchName = '';
   positionName = '';
   eventScrollX = new Subject<any>();
+  categories$ = this.categoryService.getAll();
 
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
@@ -66,6 +77,7 @@ export class EmployeeComponent implements OnInit {
   provinces$ = this.store.pipe(select(selectAllProvince));
 
   employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
+  categoryControl = new FormControl('')
   formGroup = new FormGroup({
     name: new FormControl(''),
     birthday: new FormControl(''),
@@ -87,19 +99,25 @@ export class EmployeeComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly activeRouter: ActivatedRoute
+    private readonly activeRouter: ActivatedRoute,
+    private readonly categoryService: CategoryService,
+    private ref: ChangeDetectorRef
   ) {
   }
+
+ ngAfterViewChecked() {
+   this.ref.detectChanges()
+ }
 
   ngOnInit(): void {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
-        this.formGroup.get('branch')?.setValue(val.branch, { emitEvent: false });
+        this.formGroup.get('branch')?.setValue(val.branch, {emitEvent: false});
         this.branchName = val.branch;
       }
       if (val.position) {
-        this.formGroup.get('position')?.setValue(val.position, { emitEvent: false });
+        this.formGroup.get('position')?.setValue(val.position, {emitEvent: false});
         this.positionName = val.position;
       }
     });
@@ -111,7 +129,7 @@ export class EmployeeComponent implements OnInit {
           isLeft: this.isLeft,
           branch: this.branchName,
           position: this.positionName,
-          employeeType : EmployeeType.EMPLOYEE_FULL_TIME,
+          employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
         }
       })
     );
@@ -121,7 +139,7 @@ export class EmployeeComponent implements OnInit {
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
-      this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) }));
+      this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
     });
 
     this.employeeControl.valueChanges.subscribe(val => {
@@ -129,19 +147,19 @@ export class EmployeeComponent implements OnInit {
         case EmployeeType.EMPLOYEE_LEFT_AT:
           this.isLeft = true;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+            employee: {take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft}
           }));
           break;
         case EmployeeType.EMPLOYEE_SEASONAL:
           this.isLeft = false;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit }
+            employee: {take: this.pageSize, skip: this.pageIndexInit}
           }));
           break;
         default:
           this.isLeft = false;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit }
+            employee: {take: this.pageSize, skip: this.pageIndexInit}
           }));
       }
     });
@@ -169,6 +187,13 @@ export class EmployeeComponent implements OnInit {
       }));
     });
 
+    this.categoryControl.valueChanges.subscribe(val => {
+      if (val !== 0) {
+        this.store.dispatch(EmployeeAction.loadInit({
+          employee: this.employee(this.formGroup.value)
+        }))
+      }
+    })
   }
 
   add(): void {
@@ -181,7 +206,7 @@ export class EmployeeComponent implements OnInit {
   delete($event: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employee: $event,  permanentlyDeleted: this.isLeft }
+      data: {employee: $event, permanentlyDeleted: this.isLeft}
     });
   }
 
@@ -211,8 +236,9 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-          ? this.convertBoolean.FALSE
-          : val.flatSalary
+            ? this.convertBoolean.FALSE
+            : val.flatSalary,
+      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
     };
     if (val.workedAt) {
       return employee;
@@ -258,7 +284,7 @@ export class EmployeeComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees({ employee: this.employee(val) }));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees({employee: this.employee(val)}));
   }
 
   readAndUpdate($event: any, isUpdate?: boolean): void {
@@ -283,6 +309,7 @@ export class EmployeeComponent implements OnInit {
   printEmployee() {
     const val = this.formGroup.value;
     const employee = {
+      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       name: val.name,
       birthday: val.birthday,
       phone: val.phone,
@@ -301,8 +328,8 @@ export class EmployeeComponent implements OnInit {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-          ? this.convertBoolean.FALSE
-          : val.flatSalary
+            ? this.convertBoolean.FALSE
+            : val.flatSalary
     };
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -318,7 +345,13 @@ export class EmployeeComponent implements OnInit {
   reStore($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employeeId: $event.id,  leftAt: true }
+      data: {employeeId: $event.id, leftAt: true}
     });
+  }
+
+  addCategory() {
+    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed().subscribe(() => {
+      this.categories$ = this.categoryService.getAll();
+    })
   }
 }

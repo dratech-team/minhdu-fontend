@@ -10,22 +10,7 @@ import {
 import { select, Store } from '@ngrx/store';
 import { SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { Employee } from '@minhdu-fontend/data-models';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, map, startWith, tap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-import {
-  EmployeeAction,
-  selectEmployeeLoaded,
-  selectorAllEmployee,
-  selectorTotalEmployee
-} from '@minhdu-fontend/employee';
-import {
-  getAllPosition,
-  PositionActions
-} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { sortBoolean } from '../../../../../../../../libs/utils/sortByBoolean.ultils';
-import { pickAll, pickOne, someComplete } from '../../../../../../../../libs/utils/pick-item.ultil';
+import { pickAll, pickOne, someComplete } from '../../../../utils/pick-item.ultil';
 
 @Component({
   selector: 'app-table-employee-selected',
@@ -38,7 +23,6 @@ export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
   isSelectAll = true;
   employeesSelected: Employee[] = [];
   employeeId!: number;
-  isEventSearch = false;
   differ: any;
 
   constructor(
