@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { RouteAction } from './route.action';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { RouteService } from '../service/route.service';
-import { throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackBarComponent } from 'libs/components/src/lib/snackBar/snack-bar.component';
-import { OrderEntity } from '../../order/enitities/order.interface';
-import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
-import { RouteStore } from './route.store';
-import { RouteQuery } from './route.query';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {RouteAction} from './route.action';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {RouteService} from '../service/route.service';
+import {throwError} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {SnackBarComponent} from 'libs/components/src/lib/snackBar/snack-bar.component';
+import {OrderEntity} from '../../order/enitities/order.interface';
+import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {RouteStore} from './route.store';
+import {RouteQuery} from './route.query';
 
 @Injectable()
 export class RouteEffect {
@@ -39,7 +39,7 @@ export class RouteEffect {
         this.snackBar.openFromComponent(SnackBarComponent, {
           duration: 2500,
           panelClass: ['background-snackbar'],
-          data: { content: 'Đã lấy hết Tuyến đường' }
+          data: {content: 'Đã lấy hết Tuyến đường'}
         });
       } else {
         responsePagination.data.map(route => {
@@ -75,10 +75,8 @@ export class RouteEffect {
     ofType(RouteAction.update),
     switchMap((props) => this.routeService.update(props.id, props.updates)),
     map((route) => {
-      route.orders?.forEach(order => {
-        order.totalCommodity = getTotalCommodity(order.commodities);
-      });
-      route.totalCommodityUniq = route.orders?.reduce((a, b) => a + b.totalCommodity, 0);
+      this.totalCommodity(route.orders)
+      route.totalCommodityUniq = route.totalCommodityUniq = this.totalCommodityUniq(route.orders)
       route.orders?.map(val => val.expand = false);
       return this.routeStore.update(route.id, route);
     }),
@@ -95,4 +93,32 @@ export class RouteEffect {
       )
     )
   );
+
+  @Effect()
+  cancelCommodity$ = this.action.pipe(
+    ofType(RouteAction.cancel),
+    switchMap((props) =>
+      this.routeService.cancel(props.id, props.cancelDTO)),
+    map((route) => {
+      this.totalCommodity(route.orders)
+      route.totalCommodityUniq = this.totalCommodityUniq(route.orders)
+      route.orders?.map(val => val.expand = false);
+      this.snackBar.open('Cập nhật đơn hàng thành công', '', {duration: 1500})
+      return this.routeStore.update(route.id, route);
+    }),
+    catchError((err) => throwError(err))
+  );
+
+  totalCommodity(orders: OrderEntity []) {
+    orders.forEach(order => {
+      order.totalCommodity = getTotalCommodity(order.commodities);
+    });
+  }
+
+  totalCommodityUniq(orders: OrderEntity []): number {
+    return orders?.reduce((a, b) => a + b.totalCommodity, 0);
+  }
+
 }
+
+
