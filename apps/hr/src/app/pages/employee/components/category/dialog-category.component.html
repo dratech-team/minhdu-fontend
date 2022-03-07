@@ -59,20 +59,20 @@
         </app-pick-employee>
         <div class='mt-2'>
           <button class='btn btn-dark mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
-          <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
+          <button class='btn btn-primary' (click)='onSubmit()'>Đồng ý</button>
         </div>
       </mat-tab>
-      <mat-tab label="Đã chọn">
-        <app-table-employee-selected
-          [employees]="employeeSelected"
-          (EventSelectEmployee)="pickEmployees($event)"
-        >
-        </app-table-employee-selected>
-        <div class="mt-2 d-flex">
-          <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
-          <button class='btn btn-ok mr-2' (click)='onSubmit()'>Xác nhận</button>
-        </div>
-      </mat-tab>
+<!--      <mat-tab label="Đã chọn">-->
+<!--        <app-table-employee-selected-->
+<!--          [employees]="employeeSelected"-->
+<!--          (EventSelectEmployee)="pickEmployees($event)"-->
+<!--        >-->
+<!--        </app-table-employee-selected>-->
+<!--        <div class="mt-2 d-flex">-->
+<!--          <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>-->
+<!--          <button class='btn btn-ok mr-2' (click)='onSubmit()'>Xác nhận</button>-->
+<!--        </div>-->
+<!--      </mat-tab>-->
     </mat-tab-group>
   </mat-dialog-content>
 </div>

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {Employee} from '@minhdu-fontend/data-models';
+import {Category, Employee} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -180,7 +180,6 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
                 employee: {take: this.pageSize, skip: this.pageIndex},
                 isPickEmp: true
               }))
-              this.updateSelect(employee)
             }
           )
         }
