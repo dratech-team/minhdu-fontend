@@ -27,6 +27,10 @@
             <div class=' text-center'>Đơn vị</div>
             <input disabled>
           </th>
+          <th>
+            <div class=' text-center'>Danh mục</div>
+            <input disabled>
+          </th>
           <th style='width: 100px;'>
             <div class=' text-center' style='background: white'>Tất cả</div>
             <div class='border-top border-bottom'>
@@ -43,8 +47,9 @@
         <tr *ngFor='let employee of employees; let i = index'>
           <th class='   pointer'>{{i + 1}}</th>
           <th class='   pointer'>{{employee.lastName}}</th>
-          <th class='   pointer'>{{employee.position?.name}}</th>
-          <th class='   pointer'>{{employee.branch?.name}}</th>
+          <th class='   pointer'>{{employee?.position?.name}}</th>
+          <th class='   pointer'>{{employee?.branch?.name}}</th>
+          <th class='   pointer'>{{employee?.category?.name}}</th>
           <th class='   pointer'>
             <div class='mt-2'>
               <mat-checkbox

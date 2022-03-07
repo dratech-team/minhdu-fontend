@@ -53,11 +53,11 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(PositionActions.loadPosition());
+    this.store.dispatch(OrgchartActions.init());
     if (this.data?.positions) {
       this.positionSelected = [...this.data.positions];
     }
-    this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
     this.formGroup = this.formBuilder.group({
       title: [this.data?.title, Validators.required],
       employeeType: [this.data?.employeeType ?
@@ -81,11 +81,10 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     );
 
     this.branches$ = searchAndAddAutocomplete(
-      this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
+      this.branches.valueChanges.pipe(startWith('')),
       this.branches$
     );
     if (this.data?.branch) {
-      this.branches.patchValue(this.data?.branch.name);
       this.branchSelected = this.data?.branch;
     }
   }
@@ -125,10 +124,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
       } as ReqOvertime
     };
     if (template.isUpdate) {
-      if(!this.branchInput.nativeElement.value){
-        Object.assign(template.data,
-          {branchId: null })
-      }
       this.store.dispatch(TemplateOvertimeAction.updateTemplate({ id: template.id, templateOvertime: template.data }));
     } else {
       this.store.dispatch(TemplateOvertimeAction.AddTemplate({ template: template.data }));

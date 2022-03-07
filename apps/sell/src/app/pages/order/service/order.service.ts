@@ -36,7 +36,7 @@ export class OrderService extends BaseService<OrderEntity> {
     return super.getOne(id);
   }
 
-  update(id: OrderEntity['id'], body: UpdateOrderDto): Observable<UpdateNum<OrderEntity>> {
+  update(id: OrderEntity['id'], body: UpdateOrderDto): Observable<OrderEntity> {
     return super.update(id, body);
   }
 

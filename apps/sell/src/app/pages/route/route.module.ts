@@ -19,6 +19,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import {CompleteRouteDialogComponent} from "./component/complete-route-dialog/complete-route-dialog.component";
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
   declarations: [
     RouteComponent,
     DetailRouteComponent,
-    RouteDialogComponent
+    RouteDialogComponent,
+    CompleteRouteDialogComponent
   ],
   providers: [
     DatePipe

@@ -1,31 +1,31 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Api } from '@minhdu-fontend/constants';
-import { ResponsePaginate, ResponsePaginateOvertimePayroll } from '@minhdu-fontend/data-models';
-import { Update } from '@ngrx/entity';
-import { BaseService } from 'libs/service/base.service';
-import { Observable } from 'rxjs';
-import { Payroll } from '../+state/payroll/payroll.interface';
-import { UpdateNum } from '@ngrx/entity/src/models';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Api} from '@minhdu-fontend/constants';
+import {ResponsePaginate, ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
+import {Update} from '@ngrx/entity';
+import {BaseService} from 'libs/service/base.service';
+import {Observable} from 'rxjs';
+import {Payroll} from '../+state/payroll/payroll.interface';
+import {UpdateNum} from '@ngrx/entity/src/models';
 
 type Params =
   | HttpParams
   | {
-      [param: string]:
-        | string
-        | number
-        | boolean
-        | ReadonlyArray<string | number | boolean>;
-    };
+  [param: string]:
+    | string
+    | number
+    | boolean
+    | ReadonlyArray<string | number | boolean>;
+};
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PayrollService extends BaseService<Payroll> {
   constructor(public readonly http: HttpClient) {
     super(Api.HR.PAYROLL.PAYROLL, http);
   }
 
   addPayroll<R>(body: any, params?: Params): Observable<any> {
-    return this.http.post<any>(this.url, body, { params: params });
+    return this.http.post<any>(this.url, body, {params: params});
   }
 
   getOne(id: any): Observable<Payroll> {
@@ -34,10 +34,10 @@ export class PayrollService extends BaseService<Payroll> {
 
   paginationPayroll(params?: any): Observable<ResponsePaginateOvertimePayroll<Payroll>> {
     return this.http.get<ResponsePaginateOvertimePayroll<Payroll>>(Api.HR.PAYROLL.PAYROLL,
-      { params })
+      {params})
   }
 
-  update(id: any, body: any): Observable<UpdateNum<Payroll>> {
+  update(id: any, body: any): Observable<Payroll> {
     return super.update(id, body);
   }
 
@@ -50,7 +50,7 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   generate(params?: any): Observable<any> {
-    return this.http.get<any>(Api.HR.PAYROLL.GENERATE, { params });
+    return this.http.get<any>(Api.HR.PAYROLL.GENERATE, {params});
   }
 
   scanHoliday(PayrollId: number): Observable<any> {

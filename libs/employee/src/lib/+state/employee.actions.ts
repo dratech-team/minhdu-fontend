@@ -75,7 +75,7 @@ export const updateEmployee = createAction(
 
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: UpdateNum<Employee> }>()
+  props<{ employee: Employee }>()
 );
 
 export const updateRelative = createAction(

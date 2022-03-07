@@ -30,7 +30,7 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.getOne(id);
   }
 
-  update(id: CustomerEntity['id'], body: UpdateCustomerDto): Observable<UpdateNum<CustomerEntity>> {
+  update(id: CustomerEntity['id'], body: UpdateCustomerDto): Observable<CustomerEntity> {
     return super.update(id, body);
   }
 

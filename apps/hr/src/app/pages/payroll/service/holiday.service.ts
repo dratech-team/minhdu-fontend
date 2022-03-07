@@ -27,7 +27,7 @@ export class HolidayService extends BaseService<Holiday>{
   getAll(): Observable<Holiday[]> {
     return super.getAll();
   }
-  update(id: any, body: any): Observable<UpdateNum<Holiday>> {
+  update(id: any, body: any): Observable<Holiday> {
     return super.update(id, body);
   }
 

@@ -43,7 +43,7 @@ export class TableEmployeeSelectedComponent implements OnInit, OnChanges {
     if (this.employees.length === 0) {
       this.isSelectAll = false;
     }
-    this.employeesSelected =[...this.employees]  ;
+    this.employeesSelected =[...this.employees];
   }
 
 

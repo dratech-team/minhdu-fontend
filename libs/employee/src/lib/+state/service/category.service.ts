@@ -23,7 +23,7 @@ export class CategoryService extends BaseService<Category> {
     return super.addOne(category).pipe(tap(val => this.message.success('Tạo danh mục thành công')));
   }
 
-  update(id: any, body: any): Observable<UpdateNum<Category>> {
+  update(id: any, body: any): Observable<Category> {
     return super.update(id, body).pipe(tap(val => this.message.success('Cập nhật mục thành công')));
   }
 

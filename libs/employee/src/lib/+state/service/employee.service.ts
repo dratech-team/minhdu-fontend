@@ -27,13 +27,13 @@ export class EmployeeService extends BaseService<Employee> {
     return super.pagination(params);
   }
 
-  update(id: number, props: any): Observable<UpdateNum<Employee>> {
+  update(id: number, props: any): Observable<Employee> {
     return super.update(id, props).pipe(val => {
       return val;
     });
   }
 
-  updateRelative(employeeId: number, props: any): Observable<UpdateNum<Employee>> {
+  updateRelative(employeeId: number, props: any): Observable<Employee> {
     return super.update(employeeId, props);
   }
 

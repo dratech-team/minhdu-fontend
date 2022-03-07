@@ -42,7 +42,7 @@ export const updateBranch = createAction(
 
 export const updateBranchSuccess = createAction(
   '[Orgchart/API] Update Branch Success',
-  props<{ branch:UpdateNum<Branch>}>()
+  props<{ branch:Branch}>()
 );
 
 export const deleteBranch = createAction(

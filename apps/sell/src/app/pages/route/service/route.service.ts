@@ -29,7 +29,7 @@ export class RouteService extends BaseService<RouteEntity> {
     return super.getOne(id);
   }
 
-  update(id: number, body: UpdateRouteDto): Observable<UpdateNum<RouteEntity>> {
+  update(id: number, body: UpdateRouteDto): Observable<RouteEntity> {
     return super.update(id, body);
   }
 

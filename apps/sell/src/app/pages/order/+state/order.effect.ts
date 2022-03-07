@@ -96,7 +96,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.update(props.id, props.updates).pipe(
         map((response) => {
-          this.orderStore.update(response.id, response.changes);
+          this.orderStore.update(response.id, response);
         }),
         tap(() => {
           this.snackBar.open('Cập nhật thành công');

@@ -170,7 +170,7 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
       width: 'fit-content',
       data: {
         title: 'Xoá nhân viên khỏi danh mục',
-        description: `Bạn có muốn xoá nhân viên ${employee.lastName} khoi dnanh muc ${employee.category?.name} `
+        description: `Bạn có muốn xoá nhân viên ${employee.lastName} khỏi danh muc ${employee.category?.name} `
       }
     }).afterClosed()
       .subscribe(val => {
