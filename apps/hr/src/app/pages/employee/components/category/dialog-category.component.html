@@ -54,7 +54,6 @@
       </mat-tab>
       <mat-tab class='col-12 ' label='Chọn nhân viên'>
         <app-pick-employee
-          [employeesSelected]="employeeSelected"
           (EventSelectEmployee)="pickEmployees($event)">
         </app-pick-employee>
         <div class='mt-2'>

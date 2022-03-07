@@ -44,8 +44,6 @@ export class DialogCategoryComponent implements OnInit {
         if (val) {
           this.categoryInit = val;
           this.branchSelected = val.branch;
-          this.employeeSelected = [...val.employees];
-          console.log(this.employeeSelected)
           this.formGroup.get('name')?.setValue(val.name)
           this.formGroup.get('note')?.setValue(val.note)
         }

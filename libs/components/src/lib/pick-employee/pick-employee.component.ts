@@ -18,16 +18,18 @@ import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someCompl
 import {MatDialog} from "@angular/material/dialog";
 import {DialogSharedComponent} from "../dialog-shared/dialog-shared.component";
 import {CategoryService} from "../../../../employee/src/lib/+state/service/category.service";
+import {EmployeeService} from "../../../../employee/src/lib/+state/service/employee.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-pick-employee',
   templateUrl: './pick-employee.component.html'
 })
-export class PickEmployeeComponent implements OnInit, OnChanges {
-  @Input() employeeInit?: Employee;
-  @Input() employeesSelected: Employee[] = [];
+export class PickEmployeeComponent implements OnInit {
+  // @Input() employeeInit?: Employee;
+  // @Input() employeesSelected: Employee[] = [];
   @Output() EventSelectEmployee = new EventEmitter<Employee[]>();
-
+  employees$ = this.employeeService.pagination({take: 30, skip: 0,})
   pageSize = 30;
   pageIndex = 0;
   type = SalaryTypeEnum;
@@ -35,12 +37,10 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
   employeeId!: number;
   isEventSearch = false;
   isSelectAll = false;
-
-  employees$ = this.store.pipe(select(selectorAllEmployee));
+  employeesSelected: Employee[] = []
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
-  total$ = this.store.pipe(select(selectorTotalEmployee));
 
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -52,45 +52,24 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
     private readonly store: Store,
     private readonly dialog: MatDialog,
     private readonly categoryService: CategoryService,
+    private readonly employeeService: EmployeeService,
+    private readonly snackbar: MatSnackBar,
   ) {
   }
 
 
-  ngOnChanges(changes: SimpleChanges): void {
+  /*ngOnChanges(changes: SimpleChanges): void {
     if (changes.employeesSelected) {
       this.isSelectAll =
         this.employees.length > 1 &&
         this.employees.every((e) => this.employeesSelected.some(item => item.id === e.id));
     }
-  }
+  }*/
 
   ngOnInit(): void {
-    if (this.employeeInit) {
-      this.employeesSelected.push(this.employeeInit);
-      this.EventSelectEmployee.emit(this.employeesSelected);
-    }
-    this.store.dispatch(
-      EmployeeAction.loadInit({
-        employee: {
-          take: 30,
-          skip: 0,
-        },
-        isPickEmp: true
-      })
-    );
-    this.employees$.subscribe((employees) => {
-      if (employees.length === 0) {
-        this.isSelectAll = false;
-      }
-      if (this.isEventSearch) {
-        this.isSelectAll = checkIsSelectAllInit(employees, this.employeesSelected);
-      }
-
-      this.employees = handleValSubPickItems(employees, this.employees, this.employeesSelected, this.isSelectAll);
-      const value = this.formGroup.value;
-    });
+    this.employeeService.pagination({take:this.pageSize, skip:this.pageIndex})
+      .subscribe(val => this.employees = val.data)
     this.store.dispatch(PositionActions.loadPosition());
-
     this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges
@@ -98,16 +77,17 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
         debounceTime(1000),
         tap((val) => {
           this.isEventSearch = true;
-          Object.assign(val, {
+          const param = {
             take: this.pageSize,
             skip: this.pageIndex,
-          });
-          return this.store.dispatch(
-            EmployeeAction.loadInit({employee: val})
-          );
+            name: val.name,
+            branch: val?.branch ? val.branch : '',
+            position: val?.position ? val.position : ''
+          }
+
         })
       )
-      .subscribe();
+      .subscribe(val => this.employees = val.data);
 
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
@@ -146,20 +126,22 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
   onScroll() {
     this.isEventSearch = false;
     const val = this.formGroup.value;
-    this.store.dispatch(
-      EmployeeAction.loadMoreEmployees({employee: this.employee(val)})
-    );
+    const param = {
+      take: this.pageSize,
+      skip: this.employees.length,
+      name: val.name,
+      branch: val?.branch ? val.branch : '',
+      position: val?.position ? val.position : ''
+    }
+    this.employeeService.pagination(param).subscribe(val => {
+      if (val.data.length > 0) {
+        this.employees = this.employees.concat(val.data)
+      } else {
+        this.snackbar.open('Đã lấy hết nhân viên', '', {duration: 1500})
+      }
+    })
   }
 
-  employee(val: any) {
-    return {
-      skip: this.pageIndex,
-      take: this.pageSize,
-      name: val.name,
-      position: val.position,
-      branch: val.branch,
-    };
-  }
 
   checkEmployee(employee: Employee) {
     return this.employeesSelected.some((e) => e.id === employee.id);
@@ -182,6 +164,7 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
               }))
             }
           )
+          delete employee.category
         }
       })
   }

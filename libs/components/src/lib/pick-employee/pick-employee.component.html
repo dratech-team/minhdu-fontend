@@ -1,7 +1,7 @@
 <div style='min-width: 850px'>
   <ngx-skeleton-loader *ngIf='!(loaded$ | async); else employee' count='13' appearance='line'></ngx-skeleton-loader>
   <ng-template #employee>
-    <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{total$|async}})</div>
+    <div class='font-weight-bold mb-1'>Đã chọn:({{this.employeesSelected.length}}/{{(employees$|async)?.total}})</div>
     <div class='fixTableHead' style='height: 40vh'
          infiniteScroll
          [infiniteScrollThrottle]='10'
