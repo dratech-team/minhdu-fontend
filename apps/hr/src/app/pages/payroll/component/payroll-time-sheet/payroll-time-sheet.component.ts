@@ -1,8 +1,8 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, ItemContextMenu } from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, ItemContextMenu, sortTypeEnum} from '@minhdu-fontend/enums';
 import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { Branch, Position } from '@minhdu-fontend/data-models';
 import { Payroll } from '../../+state/payroll/payroll.interface';
 import { DatePipe } from '@angular/common';
 import { checkInputNumber } from '@minhdu-fontend/utils';
+import {MatSort, Sort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-payroll-time-sheet',
@@ -31,6 +32,9 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventHistoryPayroll = new EventEmitter<any>();
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
+  @Output() EventSortPayroll = new EventEmitter<MatSort>();
+  sortEnum = sortTypeEnum;
+  @ViewChild(MatSort) sort!: MatSort;
 
   unit = DatetimeUnitEnum;
   ItemContextMenu = ItemContextMenu;
@@ -91,5 +95,9 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+  sortPayroll() {
+    this.EventSortPayroll.emit(this.sort)
   }
 }

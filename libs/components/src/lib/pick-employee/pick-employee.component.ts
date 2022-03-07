@@ -1,20 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Employee } from '@minhdu-fontend/data-models';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, startWith, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Employee} from '@minhdu-fontend/data-models';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {debounceTime, startWith, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
 import {
   EmployeeAction,
   selectEmployeeLoaded,
   selectorAllEmployee,
   selectorTotalEmployee
 } from '@minhdu-fontend/employee';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAutocomplete } from '@minhdu-fontend/utils';
-import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {searchAutocomplete} from '@minhdu-fontend/utils';
+import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
+import {MatDialog} from "@angular/material/dialog";
+import {DialogSharedComponent} from "../dialog-shared/dialog-shared.component";
+import {CategoryService} from "../../../../employee/src/lib/+state/service/category.service";
 
 @Component({
   selector: 'app-pick-employee',
@@ -47,6 +50,8 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly store: Store,
+    private readonly dialog: MatDialog,
+    private readonly categoryService: CategoryService,
   ) {
   }
 
@@ -64,15 +69,15 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
       this.employeesSelected.push(this.employeeInit);
       this.EventSelectEmployee.emit(this.employeesSelected);
     }
-      this.store.dispatch(
-        EmployeeAction.loadInit({
-          employee: {
-            take: 30,
-            skip: 0,
-          },
-          isPickEmp: true
-        })
-      );
+    this.store.dispatch(
+      EmployeeAction.loadInit({
+        employee: {
+          take: 30,
+          skip: 0,
+        },
+        isPickEmp: true
+      })
+    );
     this.employees$.subscribe((employees) => {
       if (employees.length === 0) {
         this.isSelectAll = false;
@@ -98,7 +103,7 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
             skip: this.pageIndex,
           });
           return this.store.dispatch(
-            EmployeeAction.loadInit({ employee: val })
+            EmployeeAction.loadInit({employee: val})
           );
         })
       )
@@ -142,7 +147,7 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
     this.isEventSearch = false;
     const val = this.formGroup.value;
     this.store.dispatch(
-      EmployeeAction.loadMoreEmployees({ employee: this.employee(val) })
+      EmployeeAction.loadMoreEmployees({employee: this.employee(val)})
     );
   }
 
@@ -158,5 +163,27 @@ export class PickEmployeeComponent implements OnInit, OnChanges {
 
   checkEmployee(employee: Employee) {
     return this.employeesSelected.some((e) => e.id === employee.id);
+  }
+
+  removeEmpInCategory(employee: Employee) {
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá nhân viên khỏi danh mục',
+        description: `Bạn có muốn xoá nhân viên ${employee.lastName} khoi dnanh muc ${employee.category?.name} `
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if (val && employee.category?.id) {
+          this.categoryService.removeEmployee(employee.category.id, {employeeId: employee.id}).subscribe(_ => {
+              this.store.dispatch(EmployeeAction.loadInit({
+                employee: {take: this.pageSize, skip: this.pageIndex},
+                isPickEmp: true
+              }))
+              this.updateSelect(employee)
+            }
+          )
+        }
+      })
   }
 }

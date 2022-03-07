@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {DatePipe} from '@angular/common';
 import {getAllOrgchart} from "@minhdu-fontend/orgchart";
-import {Branch, Employee} from "@minhdu-fontend/data-models";
+import {Branch, Category, Employee} from "@minhdu-fontend/data-models";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {searchAutocomplete} from "@minhdu-fontend/utils";
 import {startWith} from "rxjs/operators";
@@ -24,6 +24,7 @@ export class DialogCategoryComponent implements OnInit {
   branchSelected?: Branch
   tabIndex = 0;
   employeeSelected: Employee[] = [];
+  categoryInit?: Category
 
   constructor(
     public datePipe: DatePipe,
@@ -38,10 +39,27 @@ export class DialogCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(ProvinceAction.loadAllProvinces());
-    this.formGroup = this.formBuilder.group({
-      name: ['', Validators.required],
-      note: []
-    });
+    if (this.data?.isUpdate) {
+      this.categoryService.getOne(this.data.categoryId).subscribe(val => {
+        if (val) {
+          this.categoryInit = val;
+          this.branchSelected = val.branch;
+          this.employeeSelected = val.employees;
+          this.formGroup.get('name')?.setValue(val.name)
+          this.formGroup.get('note')?.setValue(val.note)
+        }
+      })
+      this.formGroup = this.formBuilder.group({
+        name: ['', Validators.required],
+        note: ['']
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        name: ['', Validators.required],
+        note: []
+      });
+    }
+
 
     this.branches$ = searchAutocomplete(
       this.branches.valueChanges.pipe(startWith(this.data?.branch?.name || '')),
@@ -66,11 +84,19 @@ export class DialogCategoryComponent implements OnInit {
       branchId: this.branchSelected?.id,
       employeeIds: this.employeeSelected.map(val => val.id)
     };
-    this.categoryService.addOne(category).subscribe(val => {
-      if (val) {
-        this.dialogRef.close()
-      }
-    })
+    if (this.data?.isUpdate) {
+      this.categoryService.update(this.categoryInit?.id, category).subscribe(val => {
+        if (val) {
+          this.dialogRef.close()
+        }
+      })
+    } else {
+      this.categoryService.addOne(category).subscribe(val => {
+        if (val) {
+          this.dialogRef.close()
+        }
+      })
+    }
   }
 
   onSelectBranch(event: any, branch: Branch, branchesInput: HTMLInputElement) {

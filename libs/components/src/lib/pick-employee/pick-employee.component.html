@@ -47,6 +47,13 @@
               </mat-option>
             </mat-autocomplete>
           </th>
+          <th>
+            <div class='border-top text-center'>Danh mục</div>
+            <input class='form-control  '
+                   type='search'
+                   disabled
+                   >
+          </th>
           <th style='width: 100px;'>
             <div class=' text-center' style='background: white'>Tất cả</div>
             <div class='border-top border-bottom'>
@@ -65,12 +72,16 @@
           <th class='   pointer'>{{employee.lastName}}</th>
           <th class='   pointer'>{{employee.position?.name}}</th>
           <th class='   pointer'>{{employee.branch?.name}}</th>
+          <th class='   pointer'>{{employee.category?.name}}</th>
           <th class='   pointer'>
             <div class='mt-2'>
-              <mat-checkbox
+              <mat-checkbox *ngIf="!employee?.category else category"
                 (change)='updateSelect(employee)'
                 [checked]='checkEmployee(employee)'>
               </mat-checkbox>
+              <ng-template #category>
+                <span (click)="removeEmpInCategory(employee)" style="color: red" >bỏ chọn</span>
+              </ng-template>
             </div>
           </th>
         </tr>

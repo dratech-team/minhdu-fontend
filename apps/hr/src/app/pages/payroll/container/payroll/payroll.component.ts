@@ -7,7 +7,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Api, PayrollConstant} from '@minhdu-fontend/constants';
 import {EmployeeAction} from '@minhdu-fontend/employee';
-import {EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortTypeEnum} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {of, Subject} from 'rxjs';
@@ -42,11 +42,14 @@ import {Payroll} from '../../+state/payroll/payroll.interface';
 import {Category} from "@minhdu-fontend/data-models";
 import {DialogCategoryComponent} from "../../../employee/components/category/dialog-category.component";
 import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
+import {MatSort, Sort} from "@angular/material/sort";
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
+  @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('')
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -105,6 +108,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
   categories$ = this.categoryService.getAll()
+  sortEnum = sortTypeEnum;
+
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -246,7 +251,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME
+          : EmployeeType.EMPLOYEE_FULL_TIME,
+      orderBy: this.sort ? this.sort.active : '',
+      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
     };
   }
 
@@ -553,4 +560,28 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
       .subscribe(() => this.categories$ = this.categoryService.getAll())
   }
+
+  updateCategory():any {
+    if(this.categoryControl.value === 0 || !this.categoryControl.value){
+      return this.snackbar.open('Chưa chọn danh mục để sửa','',{duration:1500})
+    }
+    this.dialog.open(DialogCategoryComponent, {
+      width: 'fit-content',
+      data: {categoryId: this.categoryControl.value, isUpdate: true}
+    })
+      .afterClosed().subscribe(() => {
+      this.categories$ = this.categoryService.getAll();
+    });
+  }
+
+  sortPayroll(sort?: MatSort) {
+    if(sort){
+      this.sort = sort
+    }
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayroll(this.formGroup.value)
+    }))
+  }
+
+
 }

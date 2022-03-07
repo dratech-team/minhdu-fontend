@@ -6,6 +6,7 @@ import {Category, Employee, ResponsePaginate} from '@minhdu-fontend/data-models'
 import { BaseService } from 'libs/service/base.service';
 import {tap} from "rxjs/operators";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {UpdateNum} from "@ngrx/entity/src/models";
 
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +23,21 @@ export class CategoryService extends BaseService<Category> {
     return super.addOne(category).pipe(tap(val => this.message.success('Tạo danh mục thành công')));
   }
 
+  update(id: any, body: any): Observable<UpdateNum<Category>> {
+    return super.update(id, body).pipe(tap(val => this.message.success('Cập nhật mục thành công')));
+  }
+
   getAll(params?: any): Observable<Category[]> {
     return super.getAll(params);
+  }
+  getOne(id: any): Observable<Category> {
+    return super.getOne(id);
+  }
+
+  delete(id: number, params?: any): Observable<void> {
+    return super.delete(id, params);
+  }
+  removeEmployee(id: number, body: any):Observable<any>{
+    return this.http.patch<any>(Api.HR.EMPLOYEE.CATEGORY + `/${id}/employee`,body)
   }
 }
