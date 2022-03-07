@@ -236,7 +236,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   mapPayroll(val: any) {
-    return {
+    const payroll = {
       skip: this.pageIndexInit,
       take: this.pageSize,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
@@ -252,9 +252,15 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
           : EmployeeType.EMPLOYEE_FULL_TIME,
-      orderBy: this.sort ? this.sort.active : '',
-      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+
     };
+    if(this.sort.active){
+      Object.assign(payroll, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
+    return payroll
   }
 
   onScroll() {

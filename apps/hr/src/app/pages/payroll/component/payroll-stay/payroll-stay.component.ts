@@ -375,9 +375,13 @@ export class PayrollStayComponent implements OnInit {
       filterType: FilterTypeEnum.STAY,
       position: value.position,
       branch: value.branch,
-      orderBy: this.sort ? this.sort.active : '',
-      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
     };
+    if(this.sort.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (!value.name) {
       delete params.name;
     }

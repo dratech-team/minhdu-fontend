@@ -295,9 +295,13 @@ export class PayrollOvertimeComponent implements OnInit {
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
       branch: value.branch,
-      orderBy: this.sort ? this.sort.active : '',
-      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
     };
+    if(this.sort.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
