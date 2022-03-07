@@ -307,7 +307,7 @@
             <th width='10%' class=' title text-center '>Thời gian</th>
             <th width='8%' class=' title text-center '>Đơn vị</th>
             <th width='10%' class=' title text-center '>Thành tiền</th>
-            <th width='15%' class=' title text-center '>Quên giấy phép</th>
+            <th width='15%' class=' title text-center '>Vắng có phép</th>
             <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.ABSENT, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
@@ -348,7 +348,7 @@
               <span style='color: red'>{{salary.type === "DEDUCTION" ? salary.price : '-'}} </span>
             </th>
             <th class=' text-center '>
-              {{salary.forgot ? 'Có' : 'Không'}}
+              {{!salary.forgot ? 'Có' : 'Không'}}
             </th>
             <th class=' text-center '>
               <span>{{salary.note}}</span>
