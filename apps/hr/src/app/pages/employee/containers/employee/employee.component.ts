@@ -220,7 +220,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   employee(val: any) {
-    const employee = {
+    let employee = {
       skip: this.pageIndexInit,
       take: this.pageSize,
       name: val.name,
@@ -244,9 +244,14 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
             ? this.convertBoolean.FALSE
             : val.flatSalary,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
-      orderBy: this.sort ? this.sort.active : '',
-      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+
     };
+    if(this.sort.active){
+      Object.assign(employee,{
+        orderBy: this.sort.active ? this.sort.active : '',
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (val.workedAt) {
       return employee;
     } else {
