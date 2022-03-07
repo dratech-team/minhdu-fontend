@@ -111,7 +111,20 @@ export class PickEmployeeComponent implements OnInit {
 
   setAll(select: boolean) {
     this.isSelectAll = select;
-    pickAll(select, this.employees, this.employeesSelected);
+    this.employees.forEach(val => {
+      if (select) {
+        if (!this.employeesSelected.some(x => x.id === val.id)) {
+          if(!val.category){
+            this.employeesSelected.push(val);
+          }
+        }
+      } else {
+          const index = this.employeesSelected.findIndex(x => x.id === val.id);
+          if (index > -1) {
+            this.employeesSelected.splice(index, 1);
+          }
+      }
+    });
     this.EventSelectEmployee.emit(this.employeesSelected);
   }
 
