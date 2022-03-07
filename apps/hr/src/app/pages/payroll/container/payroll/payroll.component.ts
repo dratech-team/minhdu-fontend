@@ -254,7 +254,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           : EmployeeType.EMPLOYEE_FULL_TIME,
 
     };
-    if(this.sort.active){
+    if(this.sort?.active){
       Object.assign(payroll, {
         orderBy: this.sort.active,
         orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',

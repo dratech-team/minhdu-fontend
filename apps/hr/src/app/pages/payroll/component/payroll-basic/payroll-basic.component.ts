@@ -374,7 +374,7 @@ export class PayrollBasicComponent implements OnInit {
       position: value.position,
       branch: value.branch,
     };
-    if(this.sort.active){
+    if(this.sort?.active){
       Object.assign(params, {
         orderBy: this.sort.active,
         orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
