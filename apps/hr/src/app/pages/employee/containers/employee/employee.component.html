@@ -50,7 +50,7 @@
               <input class=' text-center' type='text' disabled>
             </th>
             <th style='background:white'>
-              <div class='border-top text-center'>Mã nhân viên</div>
+              <div mat-sort-header="{{sortEnum.CODE}}" class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='search'>
 
             </th>
@@ -60,18 +60,18 @@
                      placeholder='Trần Gia Hiệu'>
             </th>
             <th>
-              <div class='border-top text-center'>Loại nhân viên</div>
+              <div mat-sort-header="{{sortEnum.EMPLOYEE_TYPE}}" class='border-top text-center'>Loại nhân viên</div>
               <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
                 <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
                 <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
               </mat-select>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Ngày sinh</div>
+              <div mat-sort-header="{{sortEnum.BIRTHDAY}}" class='border-top text-center'>Ngày sinh</div>
               <input class='form-control text-center ' type='date' formControlName='birthday'>
             </th>
             <th>
-              <div class='border-top text-center'>Giới tính</div>
+              <div mat-sort-header="{{sortEnum.GENDER}}" class='border-top text-center'>Giới tính</div>
               <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
                 <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
                 <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
@@ -80,11 +80,11 @@
               </mat-select>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Ngày vào làm</div>
+              <div mat-sort-header="{{sortEnum.WORKED_AT}}" class='border-top text-center'>Ngày vào làm</div>
               <input type='date' class='border' formControlName='workedAt'>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Loại lương</div>
+              <div mat-sort-header="{{sortEnum.FLAT_SALARY}}" class='border-top text-center'>Loại lương</div>
               <mat-select class='select border-top' style='min-width: 170px' required formControlName='flatSalary'>
                 <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
                 <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
@@ -92,12 +92,12 @@
               </mat-select>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Số điện thoại</div>
+              <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>Số điện thoại</div>
               <input class='form-control text-center' (keypress)='checkInputNumber($event)' type='search'
                      formControlName='phone'>
             </th>
             <th>
-              <div mat-sort-header="{{sortEnum.BRANCH}}" class='border-top text-center'>Đơn vị</div>
+              <div  mat-sort-header="{{sortEnum.BRANCH}}" class='border-top text-center'>Đơn vị</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
               <mat-autocomplete #branch='matAutocomplete'>
                 <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
@@ -120,12 +120,12 @@
               </mat-autocomplete>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>CMND / CCCD</div>
+              <div mat-sort-header="{{sortEnum.IDENTITY}}" class='border-top text-center'>CMND / CCCD</div>
               <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
                      formControlName='identity'>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Tỉnh / Thành phố</div>
+              <div mat-sort-header="{{sortEnum.PROVINCE}}" class='border-top text-center'>Tỉnh / Thành phố</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='province'
                      formControlName='province'>
               <mat-autocomplete #province='matAutocomplete'>
@@ -137,7 +137,7 @@
               </mat-autocomplete>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Quận / Huyện</div>
+              <div mat-sort-header="{{sortEnum.DISTRICT}}" class='border-top text-center'>Quận / Huyện</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='district'
                      formControlName='district'>
               <mat-autocomplete #district='matAutocomplete'>
@@ -149,7 +149,7 @@
               </mat-autocomplete>
             </th>
             <th width='7%'>
-              <div class='border-top text-center'>Phường / Xã</div>
+              <div mat-sort-header="{{sortEnum.WARD}}" class='border-top text-center'>Phường / Xã</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='ward' formControlName='ward'>
               <mat-autocomplete #ward='matAutocomplete'>
                 <mat-option *ngFor='let ward of wards$ | async'
@@ -160,11 +160,11 @@
               </mat-autocomplete>
             </th>
             <th width='12%'>
-              <div class='border-top text-center'>Địa chỉ</div>
+              <div mat-sort-header="{{sortEnum.ADDRESS}}" class='border-top text-center'>Địa chỉ</div>
               <input type='search' class='form-control text-center' formControlName='address'>
             </th>
             <th>
-              <div class='border-top text-center'>Chú thích</div>
+              <div mat-sort-header="{{sortEnum.NOTE}}" class='border-top text-center'>Chú thích</div>
               <input disabled type='search'>
             </th>
           </tr>
