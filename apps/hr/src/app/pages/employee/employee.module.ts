@@ -29,31 +29,43 @@ import {UpdateContractComponent} from './components/dialog-update-contract/updat
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
+import {DialogCategoryComponent} from "./components/category/dialog-category.component";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTabsModule} from "@angular/material/tabs";
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
-  imports: [
-    LocationModule,
-    EmployeeLibModule,
-    ComponentsModule,
-    EmployeeRoutingModule,
-    MatExpansionModule,
-    MatMenuModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatRadioModule,
-    StoreModule,
-    EffectsModule,
-    CommonModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    FormsModule,
-    MatCheckboxModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatAutocompleteModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        LocationModule,
+        EmployeeLibModule,
+        ComponentsModule,
+        EmployeeRoutingModule,
+        MatExpansionModule,
+        MatMenuModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatRadioModule,
+        StoreModule,
+        EffectsModule,
+        CommonModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        FormsModule,
+        MatCheckboxModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatAutocompleteModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatChipsModule,
+        MatIconModule,
+        MatTabsModule,
+        DragDropModule,
+        CommonModule,
+        MatSortModule
+    ],
   declarations: [
     AddDegreeComponent,
     EmployeeComponent,
@@ -66,6 +78,7 @@ import {FilterDayWorkHistoryPipe} from "./pipes/filter-day-work-history.pipe";
     BHYTComponent,
     UpdateContractComponent,
     FilterDayWorkHistoryPipe,
+    DialogCategoryComponent,
   ],
   providers: [DatePipe]
 })

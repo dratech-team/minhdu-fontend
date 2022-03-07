@@ -27,7 +27,7 @@ export class DepartmentService extends BaseService<Department> {
     return super.getOne(id);
   }
 
-  update(id: number, body: any): Observable<UpdateNum<Branch>> {
+  update(id: number, body: any): Observable<Department> {
     return super.update(id, body);
   }
 

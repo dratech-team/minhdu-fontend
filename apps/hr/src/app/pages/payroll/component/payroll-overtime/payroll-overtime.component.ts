@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum, sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -47,6 +47,7 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogOvertimeMultipleComponent } from '../dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog-overtime.component';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -57,6 +58,7 @@ export class PayrollOvertimeComponent implements OnInit {
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  @ViewChild(MatSort) sort!: MatSort;
 
   ItemContextMenu = ItemContextMenu;
   salaryType = SalaryTypeEnum;
@@ -70,6 +72,7 @@ export class PayrollOvertimeComponent implements OnInit {
   searchTypeConstant = SearchTypeConstant;
   isSelectSalary = false;
   isEventSearch = false;
+  sortEnum = sortTypeEnum
 
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
@@ -291,8 +294,14 @@ export class PayrollOvertimeComponent implements OnInit {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
+    if(this.sort.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
@@ -556,4 +565,11 @@ export class PayrollOvertimeComponent implements OnInit {
       })
     );
   }
+
+  sortPayroll() {
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayrollOvertime()
+    }))
+  }
+
 }

@@ -1,41 +1,16 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog';
-import {
-  CommodityUnit,
-  CustomerResource,
-  CustomerType
-} from '@minhdu-fontend/enums';
-import {Store} from '@ngrx/store';
-import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import {debounceTime} from 'rxjs/operators';
-import {
-  checkIsSelectAllInit,
-  handleValSubPickItems,
-  pickAll,
-  pickOne,
-  someComplete
-} from '../../../../../../../libs/utils/pick-item.ultil';
-import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
-import {Commodity} from '../../../pages/commodity/+state/commodity.interface';
-import {
-  selectAllCommodity,
-  selectedCommodityNewAdd,
-  selectedTotalCommodity
-} from '../../../pages/commodity/+state/commodity.selector';
-import {CommodityDialogComponent} from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
-import {PickCommodityService} from './pick-commodity.service';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { debounceTime } from 'rxjs/operators';
+import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
+import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
+import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
+import { PickCommodityService } from './pick-commodity.service';
+import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   selector: 'app-pick-commodity',
@@ -53,8 +28,8 @@ export class PickCommodityComponent implements OnInit {
   isEventSearch = true;
   isSelectAll = false;
 
-  commodities$ = this.store.select(selectAllCommodity);
-  total$ = this.store.select(selectedTotalCommodity);
+  commodities$ = this.commodityQuery.selectAll();
+  total$ = this.commodityQuery.selectCount();
   formGroup = new FormGroup({
     code: new FormControl(''),
     name: new FormControl(''),
@@ -62,7 +37,8 @@ export class PickCommodityComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Actions,
+    private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PickCommodityComponent>,
@@ -74,20 +50,21 @@ export class PickCommodityComponent implements OnInit {
     if (this.data?.commoditiesPicked) {
       this.commoditiesSelected = [...this.data?.commoditiesPicked];
     }
-    this.store.select(selectedCommodityNewAdd).subscribe((val) => {
-      if (val) {
-        this.commoditiesSelected.push(val);
-      }
-    });
-    this.store.dispatch(
+    // this.store.select(selectedCommodityNewAdd).subscribe((val) => {
+    //   if (val) {
+    //     this.commoditiesSelected.push(val);
+    //   }
+    // });
+
+    this.actions$.dispatch(
       CommodityAction.loadInit({
-        CommodityDTO: {take: this.pageSize, skip: this.pageIndex}
+        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
       })
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.isEventSearch = true;
-      this.store.dispatch(
-        CommodityAction.loadMoreCommodity({commodityDTO: this.commodity(val)})
+      this.actions$.dispatch(
+        CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
       );
     });
 
@@ -121,7 +98,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, {width: '40%'}).afterClosed().subscribe(val => {
+    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
       console.log('====', val);
     });
   }
@@ -132,7 +109,7 @@ export class PickCommodityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(CommodityAction.deleteCommodity({id: $event.id}));
+        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
       }
     });
   }
@@ -140,7 +117,7 @@ export class PickCommodityComponent implements OnInit {
   updateCommodity(commodity: Commodity) {
     this.dialog.open(CommodityDialogComponent, {
       width: '40%',
-      data: {commodity}
+      data: { commodity }
     });
   }
 
@@ -170,13 +147,13 @@ export class PickCommodityComponent implements OnInit {
   onScroll() {
     this.isEventSearch = false;
     const val = this.formGroup.value;
-    this.store.dispatch(
-      CommodityAction.loadMoreCommodity({commodityDTO: this.commodity(val)})
+    this.actions$.dispatch(
+      CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
     );
   }
 
   closeDialog() {
-    this.store.dispatch(CommodityAction.resetStateCommodityNewAdd());
+    this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
     this.dialogRef.close(this.commoditiesSelected);
   }
 

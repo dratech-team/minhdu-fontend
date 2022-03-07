@@ -1,0 +1,108 @@
+import {DatePipe} from '@angular/common';
+import {Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
+import {AppState} from '../../../../../reducers';
+import * as moment from 'moment';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {SalaryService} from '../../../service/salary.service';
+
+@Component({
+  templateUrl: 'dialog-WFH.component.html'
+})
+export class DialogWFHComponent implements OnInit {
+  @ViewChild('titleAbsent') titleAbsent!: ElementRef;
+  numberChars = new RegExp('[^0-9]', 'g');
+  type = SalaryTypeEnum;
+  datetimeUnit = DatetimeUnitEnum;
+  formGroup!: FormGroup;
+  submitted = false;
+  selectedIndex?: number;
+  unitMinute = false;
+  unitAbsent = false;
+  firstDayInMonth!: string | null;
+  lastDayInMonth!: string | null;
+  salariesSelected: SalaryPayroll[] = [];
+  @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
+
+  constructor(
+    public datePipe: DatePipe,
+    private readonly dialog: MatDialog,
+    private readonly store: Store<AppState>,
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly dialogRef: MatDialogRef<DialogWFHComponent>,
+    private readonly snackbar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data?: any
+  ) {
+  }
+
+  ngOnInit(): void {
+    if (this.data?.isUpdate) {
+      this.formGroup = this.formBuilder.group({
+        title: [this.data.salary.title, Validators.required],
+        datetime: [
+          this.datePipe.transform(this.data.salary?.datetime, 'yyyy-MM-dd')
+        ],
+        note: [this.data.salary?.note],
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        title: ['', Validators.required],
+        datetime: [
+          this.datePipe.transform(
+            this.data.payroll.createdAt, 'yyyy-MM-dd')
+          , Validators.required],
+        note: [],
+      });
+    }
+  }
+
+  get checkValid() {
+    return this.formGroup.controls;
+  }
+
+  onSubmit(): any {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
+    }
+
+    const value = this.formGroup.value;
+    const salary = {
+      title: value.title,
+      type: SalaryTypeEnum.WFH,
+      note: value.note,
+      datetime: value.datetime,
+      unit: DatetimeUnitEnum.DAY,
+      payrollId: this.data.payroll.id
+    };
+    if (this.data.isUpdate) {
+      this.store.dispatch(
+        PayrollAction.updateSalary({
+          id: this.data.salary.id,
+          payrollId: this.data.salary.payrollId,
+          salary: salary
+        })
+      );
+    } else {
+      this.store.dispatch(
+        PayrollAction.addSalary({
+          payrollId: this.data.payroll.id,
+          salary: salary
+        })
+      );
+    }
+    this.store.pipe(select(selectedAddedPayroll)).subscribe((added) => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    });
+  }
+}

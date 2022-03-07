@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum, sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -36,6 +36,7 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-payroll-stay',
@@ -45,6 +46,8 @@ export class PayrollStayComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   @Input() eventExportStay?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
+  @ViewChild(MatSort) sort!: MatSort;
+
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     title: new FormControl(''),
@@ -72,6 +75,7 @@ export class PayrollStayComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   isEventSearch = false;
+  sortEnum = sortTypeEnum
 
   constructor(
     private readonly dialog: MatDialog,
@@ -370,8 +374,14 @@ export class PayrollStayComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
+    if(this.sort?.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (!value.name) {
       delete params.name;
     }
@@ -393,4 +403,11 @@ export class PayrollStayComponent implements OnInit {
   selectSalary(salary: Salary) {
     return this.salariesSelected.some((e) => e.salary.id === salary.id);
   }
+
+  sortPayroll() {
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayrollStay()
+    }))
+  }
+
 }

@@ -1,4 +1,4 @@
-<div class='animated fadeIn container mb-3 '  style='min-height: 80vh!important;'>
+<div class='animated fadeIn container mb-3 ' style='min-height: 80vh!important;'>
 
   <div class='row'>
     <div class='row mt-5'>
@@ -91,12 +91,12 @@
           <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
           <button class='btn btn-primary mr-3' (click)='updateRoute(route, true)'>Thêm đơn hàng</button>
         </div>
-        <div class='fixTableHead my-3' style=' height: 300px; width: 100% ;overflow: auto' infiniteScroll
+        <div class='my-3' style=' height: 350px; width: 100% ;overflow: auto; position: relative;' infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'>
           <nz-table #nestedTable [nzData]="route.orders" [nzShowPagination]="false">
             <thead>
-            <tr style="position: sticky;background: white">
+            <tr style="position: sticky; top: 0px ; background: white; z-index: 20">
               <th></th>
               <th>
                 <div class="ml-2 font-weight-bold">Khách hàng</div>
@@ -119,7 +119,7 @@
                 <input disabled class='form-control' type='text'>
               </th>
               <th>
-                <div class="ml-2 font-weight-bold" >Huỷ</div>
+                <div class="ml-2 font-weight-bold">Huỷ</div>
                 <input disabled class='form-control' type='text'>
               </th>
             </tr>
@@ -150,12 +150,12 @@
                 </td>
               </tr>
               <tr [nzExpand]="order.expand? order.expand: false">
-                <nz-table #innerTable [nzData]="order.commodities"  nzSize="middle" [nzShowPagination]="false">
+                <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
             <thead>
             <th class="text-center">Hàng hoá</th>
             <th class="text-center">Số lượng</th>
             <th class="text-center">Giá</th>
-            <th class="text-center" >Huỷ</th>
+            <th class="text-center">Huỷ</th>
             </thead>
             <tbody>
             <tr *ngFor="let commodity of innerTable.data">
@@ -169,10 +169,10 @@
               </td>
             </tr>
             </tbody>
-                </nz-table>
-              </tr>
-            </ng-template>
-            </tbody>
+          </nz-table>
+          </tr>
+          </ng-template>
+          </tbody>
           </nz-table>
         </div>
 
@@ -180,3 +180,8 @@
     </div>
   </div>
 </div>
+<style>
+  th{
+    padding: 5px!important;
+  }
+</style>

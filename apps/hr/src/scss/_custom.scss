@@ -234,7 +234,15 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
+th div{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+tr:nth-child(even)  {
   background-color: #dddddd;
 }
 

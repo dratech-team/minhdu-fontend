@@ -14,16 +14,16 @@ export class RelativeService extends BaseService<Employee> {
     super(Api.HR.EMPLOYEE.RELATIVE, http);
   }
 
-  addOneRelative(relative: any): Observable<UpdateNum<Employee>> {
-    return this.http.post<UpdateNum<Employee>>(this.url, relative);
+  addOneRelative(relative: any): Observable<Employee> {
+    return this.http.post<Employee>(this.url, relative);
   }
 
-  update(id: number, props: any): Observable<UpdateNum<Employee>> {
+  update(id: number, props: any): Observable<Employee> {
     return super.update(id, props);
   }
 
-  deleteRelative(id: number): Observable<UpdateNum<Employee>> {
-    return this.http.delete<UpdateNum<Employee>>(Api.HR.EMPLOYEE.RELATIVE + `/${id}`);
+  deleteRelative(id: number): Observable<Employee> {
+    return this.http.delete<Employee>(Api.HR.EMPLOYEE.RELATIVE + `/${id}`);
   }
 
 }

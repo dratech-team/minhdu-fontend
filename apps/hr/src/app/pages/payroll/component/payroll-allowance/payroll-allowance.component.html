@@ -1,5 +1,3 @@
-<ngx-skeleton-loader *ngIf='!(loaded$|async) else payrollAllowance ' count='18' appearance='line'></ngx-skeleton-loader>
-<ng-template #payrollAllowance>
   <div class='font-lg font-weight-bold my-2'>
     Đã chọn: {{salariesSelected.length}}/{{totalSalaryAllowance$|async}}
   </div>
@@ -11,11 +9,11 @@
        [scrollWindow]='false'
        (scrolled)='onScroll()'
   >
-    <table [formGroup]='formGroup' class='main-table' style='width: 2000px;'>
+    <table matSort (matSortChange)="sortPayroll()" [formGroup]='formGroup' class='main-table' style='width: 2000px;'>
       <thead>
       <tr>
         <th>
-          <div class='border-top text-center'>stt</div>
+          <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
           <input type='text' disabled>
         </th>
         <th>
@@ -24,7 +22,7 @@
                  formControlName='code'>
         </th>
         <th style='width: 250px'>
-          <div class='border-top text-center'>
+          <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>
             <div class='d-flex justify-content-center' style='height: 100%'>
               <span>Tên nhân viên</span>
               <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
@@ -59,7 +57,7 @@
           </mat-checkbox>
         </th>
         <th style='width: 200px'>
-          <div class='title-profile'>Chức vụ</div>
+          <div mat-sort-header="{{sortEnum.POSITION}}" class='title-profile'>Chức vụ</div>
           <input class='form-control' type='search' matInput [matAutocomplete]='position'
                  formControlName='position'>
           <mat-autocomplete #position='matAutocomplete'>
@@ -70,7 +68,7 @@
           </mat-autocomplete>
         </th>
         <th style='width: 200px'>
-          <div class='title-profile'>Đơn vị</div>
+          <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
           <input class='form-control' type='search' matInput [matAutocomplete]='branchInput' formControlName='branch'>
           <mat-autocomplete #branchInput='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
@@ -104,87 +102,93 @@
       </tr>
       </thead>
       <tbody *ngIf='(payrollAllowance$|async) as payrollsAllowance'>
-      <tr *ngFor='let payrollAllowance of payrollsAllowance; let i = index'
-          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-        <th class='pointer'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{i + 1}}
-        </th>
-        <th class='pointer'
-            (click)='readPayroll(payrollAllowance)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{payrollAllowance?.payrollId}}
-        </th>
-        <th class='pointer'
-            (click)='readPayroll(payrollAllowance)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{payrollAllowance.employee.lastName}}
-        </th>
-        <th class='pointer'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div class=' d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'>
-            <mat-checkbox
-              [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item,payrollAllowance.employee)'>
-            </mat-checkbox>
-          </div>
-        </th>
-        <th class='pointer'
-            (click)='readPayroll(payrollAllowance)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{payrollAllowance.employee.position?.name}}</th>
-        <th class='pointer'
-            (click)='readPayroll(payrollAllowance)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          {{payrollAllowance.employee.branch?.name}}</th>
-        <th class='pointer' style='width: 220px;'>
-          <div class=' d-flex align-items-center justify-content-center  '
-               *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollAllowance)'>
-            {{this.createdAt |date:'yyyy-MM'}}
-          </div>
-        </th>
-        <th class='pointer' style='min-width: 300px;'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollAllowance)'>
-            {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
-          </div>
-        </th>
-        <th class='pointer'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollAllowance)'>
-            {{item?.times}}
-            {{
-            item.unit === "HOUR" ? "Giờ" :
-              item.unit === "MONTH" ? "Tháng" : "Ngày"
-            }}
-          </div>
-        </th>
-        <th class='pointer'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
-               *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
-               (contextmenu)='child.onContextMenu($event,item)'
-               (click)='readPayroll(payrollAllowance)'>
-            {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
-            {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
-          </div>
+      <tr *ngIf='!(loaded$|async) else payrollAllowanceTemp '>
+        <th colspan="100">
+          <ngx-skeleton-loader count='18' appearance='line'></ngx-skeleton-loader>
         </th>
       </tr>
-      <tr *ngIf='!payrollsAllowance || payrollsAllowance.length === 0  ' style='height: 50vh'>
-        <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
-          <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
-        </td>
-      </tr>
+      <ng-template #payrollAllowanceTemp>
+        <tr *ngFor='let payrollAllowance of payrollsAllowance; let i = index'
+            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+          <th class='pointer'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{i + 1}}
+          </th>
+          <th class='pointer'
+              (click)='readPayroll(payrollAllowance)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{payrollAllowance?.payrollId}}
+          </th>
+          <th class='pointer'
+              (click)='readPayroll(payrollAllowance)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{payrollAllowance.employee.lastName}}
+          </th>
+          <th class='pointer'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            <div class=' d-flex align-items-center justify-content-center pointer '
+                 *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'>
+              <mat-checkbox
+                [checked]='selectSalary(item)'
+                (change)='updateSelectSalary(item,payrollAllowance.employee)'>
+              </mat-checkbox>
+            </div>
+          </th>
+          <th class='pointer'
+              (click)='readPayroll(payrollAllowance)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{payrollAllowance.employee.position?.name}}</th>
+          <th class='pointer'
+              (click)='readPayroll(payrollAllowance)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+            {{payrollAllowance.employee.branch?.name}}</th>
+          <th class='pointer' style='width: 220px;'>
+            <div class=' d-flex align-items-center justify-content-center  '
+                 *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
+                 (contextmenu)='child.onContextMenu($event,item)'
+                 (click)='readPayroll(payrollAllowance)'>
+              {{this.createdAt |date:'yyyy-MM'}}
+            </div>
+          </th>
+          <th class='pointer' style='min-width: 300px;'>
+            <div class=' d-flex align-items-center justify-content-center pointer'
+                 *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
+                 (contextmenu)='child.onContextMenu($event,item)'
+                 (click)='readPayroll(payrollAllowance)'>
+              {{item.title}}  {{ item.allowance ? '+ ' + item.allowance.title : '' }}
+            </div>
+          </th>
+          <th class='pointer'>
+            <div class=' d-flex align-items-center justify-content-center pointer'
+                 *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
+                 (contextmenu)='child.onContextMenu($event,item)'
+                 (click)='readPayroll(payrollAllowance)'>
+              {{item?.times}}
+              {{
+              item.unit === "HOUR" ? "Giờ" :
+                item.unit === "MONTH" ? "Tháng" : "Ngày"
+              }}
+            </div>
+          </th>
+          <th class='pointer'>
+            <div class=' d-flex align-items-center justify-content-center pointer'
+                 *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
+                 (contextmenu)='child.onContextMenu($event,item)'
+                 (click)='readPayroll(payrollAllowance)'>
+              {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
+              {{ item.allowance ? '+ ' + (item.allowance.price |number:'1.0-0') + 'VND' : '' }}
+            </div>
+          </th>
+        </tr>
+        <tr *ngIf='!payrollsAllowance || payrollsAllowance.length === 0  ' style='height: 50vh'>
+          <td colspan='11' class='text-center check-content font-weight-bold font-xl '>
+            <span style='position: absolute ; top: 60%; left: 35%'> Hiện không có Phiếu tăng ca nào !</span>
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </table>
   </div>
-</ng-template>
 <app-mouse-right
   #child
   (onAdd)='addSalaryAllowance()'

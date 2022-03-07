@@ -13,4 +13,5 @@ export enum SalaryTypeEnum {
   ALL = '',
   PART_TIME = 'PART_TIME',
   BASIC_TRUST_MANAGER = 'BASIC_TRUST_MANAGER',
+  WFH = 'WFH'
 }

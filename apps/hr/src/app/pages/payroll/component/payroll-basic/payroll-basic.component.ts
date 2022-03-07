@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum, sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -34,6 +34,7 @@ import { AppState } from '../../../../reducers';
 import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -42,6 +43,7 @@ import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic
 export class PayrollBasicComponent implements OnInit {
   @Input() eventExportBasic?: Subject<boolean>;
   @Output() EventSelectMonth = new EventEmitter<Date>();
+  @ViewChild(MatSort) sort!: MatSort;
 
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
@@ -49,7 +51,7 @@ export class PayrollBasicComponent implements OnInit {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
-
+  sortEnum = sortTypeEnum
   pageSize = 30;
   pageIndex = 0;
   salaries: SalaryPayroll[] = [];
@@ -370,8 +372,14 @@ export class PayrollBasicComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
+    if(this.sort?.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (!value.name) {
       delete params.name;
     }
@@ -409,5 +417,11 @@ export class PayrollBasicComponent implements OnInit {
 
   selectSalary(salary: Salary) {
     return this.salariesSelected.some((e) => e.salary.id === salary.id);
+  }
+
+  sortPayroll() {
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayrollBasic()
+    }))
   }
 }

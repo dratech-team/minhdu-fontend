@@ -67,56 +67,58 @@ import { PayrollAllowanceComponent } from './component/payroll-allowance/payroll
 import { PayrollAbsentComponent } from './component/payroll-absent/payroll-absent.component';
 import { SelectAddMultiple } from './component/dialog-select-add-multiple/select-add-multiple';
 import { SelectUpdateMultiple } from './component/dialog-select-update-multiple/select-update-multiple';
-import { TableEmployeeSelectedComponent } from './component/table-employee-selected/table-employee-selected.component';
 import { TableAllowanceEmployeeComponent } from './component/table-allowance-emp-selected/table-allowance-employee.component';
 import { TableSalarySelected } from './component/table-salaries-selected/table-salary-selected';
 import { PayrollOvertimeComponent } from './component/payroll-overtime/payroll-overtime.component';
 import {DialogNoteComponent} from "./component/dialog-note/dialog-note.component";
+import {DialogWFHComponent} from "./component/dialog-salary/dialog-WFH/dialog-WFH.component";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    PayrollRoutingModule,
-    ComponentsModule,
-    MatDialogModule,
-    StoreModule,
-    MatDialogModule,
-    EffectsModule,
-    InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
-    StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
-    StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
-    StoreModule.forFeature(
-      FeatureName.TEMPLATE_OVERTIME,
-      templateOvertimeReducer
-    ),
-    EffectsModule.forFeature([
-      PayrollEffect,
-      HolidayEffect,
-      TemplateOvertimeEffect,
-      TemplateSalaryEffect,
-    ]),
-    CommonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    EmployeeModule,
-    FormsModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatProgressBarModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatStepperModule,
-    MatSlideToggleModule,
-  ],
+    imports: [
+        ComponentsModule,
+        PayrollRoutingModule,
+        ComponentsModule,
+        MatDialogModule,
+        StoreModule,
+        MatDialogModule,
+        EffectsModule,
+        InfiniteScrollModule,
+        StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
+        StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+        StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
+        StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
+        StoreModule.forFeature(
+            FeatureName.TEMPLATE_OVERTIME,
+            templateOvertimeReducer
+        ),
+        EffectsModule.forFeature([
+            PayrollEffect,
+            HolidayEffect,
+            TemplateOvertimeEffect,
+            TemplateSalaryEffect,
+        ]),
+        CommonModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatTabsModule,
+        MatChipsModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        EmployeeModule,
+        FormsModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatProgressBarModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatProgressSpinnerModule,
+        MatStepperModule,
+        MatSlideToggleModule,
+        MatSortModule,
+    ],
   declarations: [
     PayrollComponent,
     DetailPayrollComponent,
@@ -153,10 +155,10 @@ import {DialogNoteComponent} from "./component/dialog-note/dialog-note.component
     PayrollAbsentComponent,
     SelectAddMultiple,
     SelectUpdateMultiple,
-    TableEmployeeSelectedComponent,
     TableAllowanceEmployeeComponent,
     TableSalarySelected,
-    DialogNoteComponent
+    DialogNoteComponent,
+    DialogWFHComponent
   ],
   providers: [MatDatepickerModule],
 })

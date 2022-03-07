@@ -27,7 +27,7 @@ export class TemplateSalaryService extends BaseService<TemplateSalary> {
     return super.getAll();
   }
 
-  update(id: any, body: any): Observable<UpdateNum<TemplateSalary>> {
+  update(id: any, body: any): Observable<TemplateSalary> {
     return super.update(id, body);
   }
 

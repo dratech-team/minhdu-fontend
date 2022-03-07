@@ -12,6 +12,7 @@ import { Branch } from '../orgChart/branch';
 import { Contracts } from './contracts';
 import { RecipeType, EmployeeType } from '../../../enums';
 import { Salary } from '../salary/salary';
+import {Category} from "./category";
 
 
 export interface Employee {
@@ -56,6 +57,7 @@ export interface Employee {
   recipeType: RecipeType,
   salaryHistories: Salary[],
   type: EmployeeType,
-  isSelect?: boolean
+  isSelect?: boolean,
+  category?: Category
 }
 

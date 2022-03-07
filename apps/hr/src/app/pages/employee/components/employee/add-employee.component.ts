@@ -23,7 +23,7 @@ import {
   PositionActions
 } from 'libs/orgchart/src/lib/+state/position';
 import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
-import {Branch, Position} from '@minhdu-fontend/data-models';
+import {Branch, Category, Position} from '@minhdu-fontend/data-models';
 import {first, map, startWith, tap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -32,6 +32,7 @@ import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/servi
 import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
 import {RecipeTypesConstant} from '@minhdu-fontend/constants';
 import {searchAndAddAutocomplete} from '../../../../../../../../libs/utils/orgchart.ultil';
+import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -53,7 +54,7 @@ export class AddEmployeeComponent implements OnInit {
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant
-
+  categories$ = this.categoryService.getAll()
 
   constructor(
     public datePipe: DatePipe,
@@ -64,7 +65,8 @@ export class AddEmployeeComponent implements OnInit {
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
-    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>
+    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>,
+    private readonly categoryService: CategoryService
   ) {
   }
 
@@ -118,7 +120,8 @@ export class AddEmployeeComponent implements OnInit {
       expiredAtContract: [''],
       recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
       employeeType: [this.data?.employee ?
-        this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required]
+        this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+      category: [this.data?.employee?.category?.id]
     });
 
     this.positions$ = this.formPosition.valueChanges.pipe(
@@ -146,8 +149,8 @@ export class AddEmployeeComponent implements OnInit {
     this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
       this.branches.setValue(val[0].name)
       this.branchId = val[0].id
-      if(val[0].positions)
-      this.lstPosition = val[0].positions
+      if (val[0].positions)
+        this.lstPosition = val[0].positions
     })
   }
 
@@ -162,6 +165,13 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
 
+    if (!this.branchId && this.branches.value && this.data?.employee) {
+      return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+    }
+
+    if (!this.positionId && this.formPosition.value && this.data?.employee) {
+      return this.snackbar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+    }
     /// FIXME: dummy tạm
     if (!this.data) {
       if (!this.wardId || !this.branchId || !this.positionId) {
@@ -174,7 +184,6 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     const value = this.formGroup.value;
-    console.log(value.recipeType)
     if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
       && !value.workday
     ) {
@@ -215,7 +224,8 @@ export class AddEmployeeComponent implements OnInit {
           ? new Date(value.expiredAtContract)
           : undefined
       },
-      recipeType: value.recipeType
+      recipeType: value.recipeType,
+      categoryId: value.category
     };
     if (this.data) {
       this.store.dispatch(

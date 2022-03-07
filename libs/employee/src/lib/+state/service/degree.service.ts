@@ -14,16 +14,16 @@ export class DegreeService extends BaseService<Employee> {
     super(Api.HR.EMPLOYEE.DEGREE, http);
   }
 
-  addOneDegree(relative: any): Observable<UpdateNum<Employee>> {
-    return this.http.post<UpdateNum<Employee>>(Api.HR.EMPLOYEE.DEGREE, relative);
+  addOneDegree(relative: any): Observable<Employee> {
+    return this.http.post<Employee>(Api.HR.EMPLOYEE.DEGREE, relative);
   }
 
-  update(id: number, props: any): Observable<UpdateNum<Employee>> {
+  update(id: number, props: any): Observable<Employee> {
     return super.update(id, props);
   }
 
-  deleteDegree(id: number): Observable<UpdateNum<Employee>>{
-    return this.http.delete<UpdateNum<Employee>>(Api.HR.EMPLOYEE.DEGREE + `/${id}`);
+  deleteDegree(id: number): Observable<Employee>{
+    return this.http.delete<Employee>(Api.HR.EMPLOYEE.DEGREE + `/${id}`);
   }
 
   deleteContracts(id: number): Observable<void>{

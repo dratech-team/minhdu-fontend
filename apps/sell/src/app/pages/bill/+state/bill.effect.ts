@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { BillService } from '../service/bill.service';
 import { BillAction } from './bill.action';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { BillStore } from './bill.store';
 
 @Injectable()
-export class BillEffect{
-  loadInit$ = createEffect(()=>
-  this.action.pipe(
-    ofType(BillAction.loadInit),
-    switchMap((props) => this.billService.pagination(props)),
-    map((responsePagination)=> BillAction.loadInitSuccess({bills: responsePagination.data})),
-    catchError(err=> throwError(err))
-  ))
-  loadMore$ = createEffect(()=>
-    this.action.pipe(
-      ofType(BillAction.loadMoreBills),
-      switchMap((props) => this.billService.pagination(props)),
-      map((responsePagination)=> BillAction.loadMoreBillsSuccess({bills: responsePagination.data})),
-      catchError(err=> throwError(err))
-    ))
+export class BillEffect {
   constructor(
-    private readonly action: Actions,
-    private readonly billService: BillService,
+    private readonly actions$: Actions,
+    private readonly billStore: BillStore,
+    private readonly billService: BillService
   ) {
   }
+
+  @Effect()
+  loadInit$ = this.actions$.pipe(
+    ofType(BillAction.loadAll),
+    switchMap((props) => this.billService.pagination(props)),
+    tap((response) => {
+      this.billStore.add(response.data);
+    }),
+    catchError(err => throwError(err))
+  );
 }

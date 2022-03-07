@@ -1,14 +1,11 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {CommodityUnit} from '@minhdu-fontend/enums';
-import {Store} from '@ngrx/store';
-import {CommodityAction} from '../../+state/commodity.action';
-import {AppState} from '../../../../reducers';
-import {CommodityService} from '../../service/commodity.service';
-import {
-  DialogSharedComponent
-} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommodityUnit } from '@minhdu-fontend/enums';
+import { CommodityAction } from '../../+state/commodity.action';
+import { CommodityService } from '../../service/commodity.service';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
@@ -21,7 +18,7 @@ export class CommodityDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<CommodityDialogComponent>,
     private readonly service: CommodityService
@@ -65,12 +62,12 @@ export class CommodityDialogComponent implements OnInit {
             title: 'Lịch sử cập nhât hàng hoá',
             description: 'bạn có muốn ghi lại lịch sử chỉnh sửa cho đơn hàng này ko'
           }
-        })
+        });
         ref.afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, {histored: true})
+            Object.assign(commodity, { histored: true });
           }
-          this.store.dispatch(
+          this.actions$.dispatch(
             CommodityAction.updateCommodity({
               id: this.data.commodity.id,
               commodity: commodity,
@@ -78,11 +75,11 @@ export class CommodityDialogComponent implements OnInit {
             })
           );
           this.dialogRef.close();
-        })
+        });
       }
     } else {
-      this.store.dispatch(
-        CommodityAction.addCommodity({commodity: commodity})
+      this.actions$.dispatch(
+        CommodityAction.addCommodity({ commodity: commodity })
       );
       this.dialogRef.close();
     }

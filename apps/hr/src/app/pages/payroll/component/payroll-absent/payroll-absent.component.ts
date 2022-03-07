@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum, sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -43,6 +43,7 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-payroll-absent',
@@ -55,6 +56,7 @@ export class PayrollAbsentComponent implements OnInit {
   @Input() absentTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   @Output() EventSelectMonth = new EventEmitter<Date>();
+  @ViewChild(MatSort) sort!: MatSort;
 
   pageSize = 30;
   pageIndex = 0;
@@ -68,6 +70,7 @@ export class PayrollAbsentComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
   isSelectSalary = false;
   salaries: SalaryPayroll[] = [];
+  sortEnum = sortTypeEnum
 
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -403,8 +406,14 @@ export class PayrollAbsentComponent implements OnInit {
       unit: value.unit,
       filterType: FilterTypeEnum.ABSENT,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
+    if(this.sort?.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
       moment(value.endedAt).format('YYYY-MM-DD')
@@ -436,5 +445,11 @@ export class PayrollAbsentComponent implements OnInit {
 
   selectSalary(salary: Salary) {
     return this.salariesSelected.some((e) => e.salary.id === salary.id);
+  }
+
+  sortPayroll() {
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayrollAbsent()
+    }))
   }
 }

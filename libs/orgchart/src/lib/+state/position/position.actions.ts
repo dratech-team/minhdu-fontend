@@ -32,7 +32,7 @@ export const updatePosition = createAction(
 
 export const updatePositionSuccess = createAction(
   '[Position/API] Update Position Success',
-  props<{ position: UpdateNum<Position>}>()
+  props<{ position: Position}>()
 );
 
 export const deletePosition = createAction(

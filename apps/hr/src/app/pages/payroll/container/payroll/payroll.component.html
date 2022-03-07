@@ -1,14 +1,21 @@
-
 <div class='main-content'>
   <div class='row h3 ml-3'>
     {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
   </div>
-  <div style='width: fit-content'>
+  <div style='width: fit-content' class='d-flex'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
       <mat-option *ngFor='let item of payrollConstant' [value]='item.value'>
         {{item.name}}
       </mat-option>
     </mat-select>
+    <div style='width: fit-content'>
+      <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
+        <mat-option [value]='""'>Tất cả</mat-option>
+        <mat-option *ngFor='let item of categories$|async' [value]='item.id'>{{item.name}}</mat-option>
+        <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
+      </mat-select>
+    </div>
+    <button class="btn btn-primary ml-1" (click)="updateCategory()">Sửa</button>
   </div>
   <div class='row ml-3 mt-3 d-flex justify-content-between'>
     <div class='d-flex'>
@@ -31,147 +38,152 @@
   </div>
   <div class='mx-auto' style='width: 98%'>
     <div *ngIf='selectedPayroll === filterTypeEnum.PAYROLL'>
-      <ngx-skeleton-loader *ngIf='!(loaded$ | async)  ; else payroll' count='18' appearance='line'>
-      </ngx-skeleton-loader>
-      <ng-template #payroll>
-        <div class='mt-3'>
-          <div class='font-weight-bold'>Tổng: {{total$|async}}</div>
-          <div class='table-scroll mt-2 mx-auto' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-               [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
-            <table [formGroup]='formGroup' class='mt-3' style='width: 3700px '>
-              <thead>
-              <tr>
-                <th>
-                  <div class='border-top text-center'>stt</div>
-                  <input class='form-control text-center' type='text'>
-                </th>
-                <th>
-                  <div class='border-top text-center'>Mã phiếu lương</div>
-                  <input class='form-control text-center' type='search' (keypress)='checkInputNumber($event)'
-                         formControlName='code'>
-                </th>
-                <th style='width: 210px'>
-                  <div class='border-top text-center'>Tên nhân viên</div>
-                  <input class='form-control text-center ' type='search' formControlName='name'
-                         placeholder='Trần Gia Hiệu'>
-                </th>
-                <th style='width: 200px'>
-                  <div class='title-profile'>Chức vụ</div>
-                  <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                         formControlName='position'>
-                  <mat-autocomplete #position='matAutocomplete'>
-                    <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-                                (onSelectionChange)='onSelectPosition(position.name)'>
-                      {{position.name}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </th>
-                <th style='width: 250px'>
-                  <div class='title-profile'>Đơn vị</div>
-                  <input class='form-control' type='search' matInput [matAutocomplete]='branch'
-                         formControlName='branch'>
-                  <mat-autocomplete #branch='matAutocomplete'>
-                    <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                                (onSelectionChange)='onSelectBranch(branch.name)'>
-                      {{branch.name}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-                  <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm thực tế</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết
-                  </div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày công thực nhận
-                  </div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-                  <mat-select class='select border-top' style='min-width: 100px' required
-                              formControlName='accConfirmedAt'>
-                    <mat-option value='TRUE'>Đã xác nhận</mat-option>
-                    <mat-option value='FALSE'>chưa xác nhận</mat-option>
-                    <mat-option value=''>Mặc định</mat-option>
-                  </mat-select>
-                </th>
-                <th width='3.5%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>lương cơ bản</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3.5%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3.5%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp ở lại</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3.5%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Tăng ca</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Lương đi làm ngày lễ</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Lương không đi làm ngày lễ
-                  </div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Khấu trừ</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Thuế</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th width='3.5%'>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Tổng thu nhập</div>
-                  <input class='form-control text-center ' type='number' disabled>
-                </th>
-                <th>
-                  <div class='border-top d-flex justify-content-center align-items-center'>Thanh toán</div>
-                  <mat-select class='select border-top ' style='min-width: 100px' required formControlName='paidAt'>
-                    <mat-option value='TRUE'>Đã Thanh toán</mat-option>
-                    <mat-option value='FALSE'>Chưa thanh toán</mat-option>
-                    <mat-option value=''>Mặc định</mat-option>
-                  </mat-select>
-                </th>
-              </tr>
-              </thead>
-              <tbody *ngIf='(payroll$|async) as payrolls'>
+      <div class='mt-3'>
+        <div class='font-weight-bold'>Tổng: {{total$|async}}</div>
+        <div class='table-scroll mt-2 mx-auto' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
+             [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
+          <table matSort (matSortChange)="sortPayroll()" [formGroup]='formGroup' class='mt-3'
+                 style='width: 3700px '>
+            <thead>
+            <tr>
+              <th>
+                <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
+                <input class='form-control text-center' type='text'>
+              </th>
+              <th>
+                <div class='border-top text-center'>Mã phiếu lương</div>
+                <input class='form-control text-center' type='search' (keypress)='checkInputNumber($event)'
+                       formControlName='code'>
+              </th>
+              <th style='width: 210px'>
+                <div mat-sort-header="{{sortEnum.NAME}}"  class='border-top text-center'>Tên nhân viên</div>
+                <input class='form-control text-center ' type='search' formControlName='name'
+                       placeholder='Trần Gia Hiệu'>
+              </th>
+              <th style='width: 200px'>
+                <div mat-sort-header="{{sortEnum.POSITION}}"  class='title-profile'>Chức vụ</div>
+                <input class='form-control' type='search' matInput [matAutocomplete]='position'
+                       formControlName='position'>
+                <mat-autocomplete #position='matAutocomplete'>
+                  <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+                              (onSelectionChange)='onSelectPosition(position.name)'>
+                    {{position.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th style='width: 250px'>
+                <div mat-sort-header="{{sortEnum.BRANCH}}"  class='title-profile'>Đơn vị</div>
+                <input class='form-control' type='search' matInput [matAutocomplete]='branch'
+                       formControlName='branch'>
+                <mat-autocomplete #branch='matAutocomplete'>
+                  <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                              (onSelectionChange)='onSelectBranch(branch.name)'>
+                    {{branch.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
+                <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm thực tế</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết
+                </div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày công thực nhận
+                </div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
+                <mat-select class='select border-top' style='min-width: 100px' required
+                            formControlName='accConfirmedAt'>
+                  <mat-option value='TRUE'>Đã xác nhận</mat-option>
+                  <mat-option value='FALSE'>chưa xác nhận</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
+              </th>
+              <th width='3.5%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>lương cơ bản</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3.5%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3.5%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp ở lại</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3.5%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Tăng ca</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Lương đi làm ngày lễ</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Lương không đi làm ngày lễ
+                </div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Khấu trừ</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Thuế</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th width='3.5%'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Tổng thu nhập</div>
+                <input class='form-control text-center ' type='number' disabled>
+              </th>
+              <th>
+                <div class='border-top d-flex justify-content-center align-items-center'>Thanh toán</div>
+                <mat-select class='select border-top ' style='min-width: 100px' required formControlName='paidAt'>
+                  <mat-option value='TRUE'>Đã Thanh toán</mat-option>
+                  <mat-option value='FALSE'>Chưa thanh toán</mat-option>
+                  <mat-option value=''>Mặc định</mat-option>
+                </mat-select>
+              </th>
+            </tr>
+            </thead>
+            <tbody *ngIf='(payroll$|async) as payrolls'>
+            <tr *ngIf='!(loaded$ | async)  ; else payroll'>
+              <th colSpan="100">
+                <ngx-skeleton-loader count='10' appearance='line'>
+                </ngx-skeleton-loader>
+              </th>
+            </tr>
+            <ng-template #payroll>
               <tr *ngFor='let payroll of payrolls; let i = index' (contextmenu)='child.onContextMenu($event,payroll)'>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
@@ -267,12 +279,12 @@
                   <span style='position: absolute ; top: 50%; left: 50%'> Hiện không có Phiếu lương nào !</span>
                 </td>
               </tr>
-              </tbody>
-            </table>
-          </div>
+            </ng-template>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-      </ng-template>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.TIME_SHEET'>
       <app-payroll-time-sheet [formGroup]='formGroup' [daysInMonth]='daysInMonth' [loaded$]='loaded$'
@@ -281,7 +293,8 @@
                               (EventSelectBranch)='onSelectBranch($event)' (EventAddPayroll)='addPayroll($event)'
                               (EventReadPayroll)='updatePayroll($event)' (EventRestorePayroll)='restorePayroll($event)'
                               (EventSearchMonth)='selectMonth($event)' (EventDeletePayroll)='deletePayroll($event)'
-                              (EventHistoryPayroll)='historyPayroll($event)'>
+                              (EventHistoryPayroll)='historyPayroll($event)'
+                              (EventSortPayroll)="sortPayroll($event)">
       </app-payroll-time-sheet>
     </div>
 

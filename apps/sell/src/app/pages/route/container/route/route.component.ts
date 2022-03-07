@@ -4,19 +4,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api } from '@minhdu-fontend/constants';
 import { MenuEnum, StatusRoute } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
 import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
 import { debounceTime, tap } from 'rxjs/operators';
-import { RouteAction, updateRoute } from '../../+state/route.action';
-import { Route } from '../../+state/route.interface';
-import { selectedRouteLoaded, selectorAllRoute } from '../../+state/route.selector';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { AppState } from '../../../../reducers';
+import { RouteAction } from '../../+state/route.action';
+import { RouteEntity } from '../../entities/route.entity';
+import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import {Commodity} from "../../../commodity/+state/commodity.interface";
+import { Actions } from '@datorama/akita-ng-effects';
+import { RouteQuery } from '../../+state/route.query';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -27,7 +25,7 @@ export class RouteComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
   statusRoute = StatusRoute;
-  routes: Route[] = [];
+  routes: RouteEntity[] = [];
   formGroup = new FormGroup({
     startedAt: new FormControl(''),
     endedAt: new FormControl(''),
@@ -39,17 +37,18 @@ export class RouteComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly router: Router
   ) {
   }
 
-  routes$ = this.store.pipe(select(selectorAllRoute));
-  loaded$ = this.store.pipe(select(selectedRouteLoaded));
+  routes$ = this.routeQuery.selectAll();
+  loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
     this.routes$.subscribe((val) => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach((item) => {
@@ -58,14 +57,14 @@ export class RouteComponent implements OnInit {
         }
       });
     });
-    this.store.dispatch(
-      RouteAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit })
+    this.actions$.dispatch(
+      RouteAction.loadAll({ take: this.pageSize, skip: this.pageIndexInit })
     );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(RouteAction.loadInit(this.route(val)));
+          this.actions$.dispatch(RouteAction.loadAll(this.route(val)));
         })
       )
       .subscribe();
@@ -79,10 +78,10 @@ export class RouteComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(RouteAction.loadMoreRoutes(this.route(val)));
+    this.actions$.dispatch(RouteAction.loadAll(this.route(val)));
   }
 
-  route(val: Route) {
+  route(val: RouteEntity) {
     return Object.assign(val, {
       skip: 0,
       take: this.pageSize
@@ -95,20 +94,20 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.store.dispatch(RouteAction.deleteRoute({ idRoute: $event.id }));
+        this.actions$.dispatch(RouteAction.remove({ idRoute: $event.id }));
       }
     });
   }
 
-  onEnd(event: Route) {
+  onEnd(event: RouteEntity) {
     console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent)
       .afterClosed()
       .subscribe((datetime) => {
         if (datetime) {
-          this.store.dispatch(
-            updateRoute({ id: event.id, route: { endedAt: datetime } })
+          this.actions$.dispatch(
+            RouteAction.update({ id: event.id, updates: { endedAt: datetime } })
           );
         }
       });

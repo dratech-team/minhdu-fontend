@@ -12,15 +12,15 @@
       </app-table-salaries-selected>
       <button class='btn btn-primary' (click)='changeTab(1)'>Tiếp theo</button>
     </mat-tab>
-    <mat-tab label='Phụ cấp ở lại'>
+    <mat-tab label='Phụ cấp lương'>
       <form [formGroup]='formGroup' style='min-width: 400px'>
         <div class='form-group' [formGroup]='formGroup'>
           <div class=' mb-5 title-popup' *ngIf='false'>
-            <span> Tiền phụ cấp ở lại</span>
+            <span> Tiền phụ cấp chung</span>
           </div>
           <div class='name-allowance mt-2'>
             <div class=' title-item mb-1'>
-              <span>Loại phụ cấp ở lại</span>
+              <span>Tiêu đề</span>
               <span class='star'>*</span>
             </div>
             <div class=' mb-3' [formGroup]='formGroup'>

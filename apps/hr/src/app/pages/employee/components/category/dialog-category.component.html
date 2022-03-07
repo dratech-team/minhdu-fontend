@@ -1,0 +1,78 @@
+<div class='main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+  <mat-dialog-content class='mat-typography'>
+    <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex' dynamicHeight (selectedTabChange)="selectTab(tabGroup)">
+      <mat-tab label='Danh mục'>
+        <form [formGroup]='formGroup'>
+          <div class='col-12 mt-3'>
+            <label for='school'>Tên danh mục</label><span class='star'>*</span>
+            <input type='text' class='form-control' id='school' formControlName='name'
+                   [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+            <div *ngIf='submitted && f.name.errors' class='invalid-feedback'>
+              <div>Chưa nhập Tên danh mục</div>
+            </div>
+          </div>
+          <div class='col-12 mt-2 d-flex flex-column' [formGroup]='formGroup'>
+            <div>
+              <span class='ml-1 title-item'>Đơn vị</span><span class='star'>*</span>
+            </div>
+            <div>
+              <input class='form-control mt-1' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
+                     style='width: 100%'
+                     [matChipInputFor]='chipList'
+                     #branchesInput>
+              <mat-autocomplete #branch='matAutocomplete'>
+                <mat-option *ngFor='let branch of branches$ | async'
+                            [value]='!branch.id ? branchesInput.value : branch.name '
+                            (onSelectionChange)='onSelectBranch($event, branch, branchesInput)'>
+                  {{branch.name}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-chip-list #chipList>
+                <mat-chip *ngIf="branchSelected"
+                          [selectable]='true'
+                          [removable]='true'
+                >
+                  {{branchSelected?.name}}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+          <div class='col-12 mt-2'>
+            <label for='school'>Chú thích</label>
+            <input type='text' class='form-control' id='note' formControlName='note'>
+          </div>
+          <div class='col-12 d-flex mt-3 '>
+            <button (click)='nextTab(tabGroup)' class='btn btn-primary ml-2'>Tiếp thoe</button>
+          </div>
+        </form>
+      </mat-tab>
+      <mat-tab class='col-12 ' label='Chọn nhân viên'>
+        <app-pick-employee
+          (EventSelectEmployee)="pickEmployees($event)">
+        </app-pick-employee>
+        <div class='mt-2'>
+          <button class='btn btn-dark mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
+          <button class='btn btn-primary' (click)='onSubmit()'>Đồng ý</button>
+        </div>
+      </mat-tab>
+<!--      <mat-tab label="Đã chọn">-->
+<!--        <app-table-employee-selected-->
+<!--          [employees]="employeeSelected"-->
+<!--          (EventSelectEmployee)="pickEmployees($event)"-->
+<!--        >-->
+<!--        </app-table-employee-selected>-->
+<!--        <div class="mt-2 d-flex">-->
+<!--          <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>-->
+<!--          <button class='btn btn-ok mr-2' (click)='onSubmit()'>Xác nhận</button>-->
+<!--        </div>-->
+<!--      </mat-tab>-->
+    </mat-tab-group>
+  </mat-dialog-content>
+</div>
+

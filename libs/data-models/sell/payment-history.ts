@@ -1,6 +1,6 @@
 
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
-import { Customer } from 'apps/sell/src/app/pages/customer/+state/customer/customer.interface';
+import { CustomerEntity } from 'apps/sell/src/app/pages/customer/entities/customer.entity';
 
 export interface PaymentHistory {
   id: number;
@@ -8,7 +8,7 @@ export interface PaymentHistory {
   currency?: CurrencyUnit;
   payType?: PaymentType;
   total: number;
-  customer: Customer;
+  customer: CustomerEntity;
   customerId: number;
   orders: any[];
   note: String;

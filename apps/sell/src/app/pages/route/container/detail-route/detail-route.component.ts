@@ -1,23 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../reducers';
-import {Route} from '../../+state/route.interface';
+import {RouteEntity} from '../../entities/route.entity';
 import {MatDialog} from '@angular/material/dialog';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
-import {selectorCurrentRoute} from '../../+state/route.selector';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {MainAction} from '../../../../states/main.action';
-import {getSelectors} from '@minhdu-fontend/utils';
 import {
   DialogDatePickerComponent
-} from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
-import {Commodity} from "../../../commodity/+state/commodity.interface";
+} from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {Commodity} from '../../../commodity/+state/commodity.interface';
 import {
   DialogSharedComponent
-} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
-import {Order} from "../../../order/+state/order.interface";
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {OrderEntity} from '../../../order/enitities/order.interface';
+import {Actions} from '@datorama/akita-ng-effects';
+import {RouteQuery} from '../../+state/route.query';
+import {CancelEnum} from "../../enums/cancel.enum";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -25,11 +24,12 @@ import {Order} from "../../../order/+state/order.interface";
 export class DetailRouteComponent implements OnInit {
   payType = PaymentType;
 
-  route$ = this.store.select(selectorCurrentRoute(this.routeId));
-  route = {} as Route
+  route$ = this.routeQuery.selectEntity(this.routeId);
+  route = {} as RouteEntity;
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router
@@ -37,22 +37,26 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
-    this.store.dispatch(RouteAction.getRoute({id: this.routeId}));
+    this.actions$.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
+    this.actions$.dispatch(RouteAction.loadOne({id: this.routeId}));
     this.route$.subscribe(val => {
       if (val) {
-        this.route = JSON.parse(JSON.stringify(val))
+        this.route = JSON.parse(JSON.stringify(val));
+        console.log(this.route)
       }
-    })
+    });
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
-        this.updateRoute(getSelectors(selectorCurrentRoute(this.routeId), this.store));
+        const route = this.routeQuery.getEntity(this.routeId);
+        if (route) {
+          this.updateRoute(route);
+        }
       }
     });
   }
 
-  updateRoute(route: Route, selectOrder?: boolean) {
+  updateRoute(route: RouteEntity, selectOrder?: boolean) {
     this.dialog.open(RouteDialogComponent, {
       width: 'fit-content',
       data: {route: route, selectOrder: selectOrder, isUpdate: true}
@@ -67,7 +71,7 @@ export class DetailRouteComponent implements OnInit {
     this.router.navigate(['don-hang/chi-tiet-don-hang', orderId]).then();
   }
 
-  completeRoute(route: Route) {
+  completeRoute(route: RouteEntity) {
     this.dialog.open(DialogDatePickerComponent, {
       width: 'fit-content',
       data: {
@@ -78,11 +82,11 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.store.dispatch(
-            RouteAction.updateRoute({route: {endedAt: val.day}, id: route.id})
-          )
+          this.actions$.dispatch(
+            RouteAction.update({updates: {endedAt: val.day}, id: route.id})
+          );
         }
-      })
+      });
   }
 
   cancelCommodity(commodity: Commodity) {
@@ -90,47 +94,34 @@ export class DetailRouteComponent implements OnInit {
       width: 'fit-content',
       data: {
         title: 'Huỷ hàng hoá trong tuyến đường',
-        description: 'Bạn có chắc chắn Huỷ hàng hoá này',
+        description: 'Bạn có chắc chắn Huỷ hàng hoá này'
       }
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          const commodityIds: number[] = []
-          this.route.orders.forEach(val => val.commodities.forEach(val => commodityIds.push(val.id)))
-          const index = commodityIds.indexOf(commodity.id)
-          commodityIds.splice(index, 1)
-          const route = {
-            commodityIds: commodityIds,
-          }
-          this.store.dispatch(RouteAction.updateRoute({
+          this.actions$.dispatch(RouteAction.cancel({
             id: this.route.id,
-            route: route
-          }))
+            cancelDTO: {desId: commodity.id, cancelType: CancelEnum.COMMODITY}
+          }));
         }
-      })
+      });
   }
 
-  cancelOrder(order: Order) {
+  cancelOrder(order: OrderEntity) {
     this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
         title: 'Huỷ đơn hàng trong tuyến đường',
-        description: 'Bạn có chắc chắn uỷ đơn hàng này',
+        description: 'Bạn có chắc chắn uỷ đơn hàng này'
       }
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          const orderIds = this.route.orders.map(e => e.id)
-          const index = orderIds.indexOf(order.id)
-          orderIds.splice(index, 1)
-          const route = {
-            orderIds: orderIds
-          }
-          this.store.dispatch(RouteAction.updateRoute({
+          this.actions$.dispatch(RouteAction.cancel({
             id: this.route.id,
-            route: route
-          }))
+            cancelDTO: {desId: order.id, cancelType: CancelEnum.ORDER}
+          }));
         }
-      })
+      });
   }
 }

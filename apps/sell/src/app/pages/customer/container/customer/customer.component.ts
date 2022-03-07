@@ -3,26 +3,28 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { CustomerType, Gender, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
+import { CustomerType, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
-import { Store } from '@ngrx/store';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerAction } from '../../+state/customer/customer.action';
-import { selectedCustomerLoaded, selectorAllCustomer } from '../../+state/customer/customer.selector';
-import { AppState } from '../../../../reducers';
-import { Order } from '../../../order/+state/order.interface';
+import { CustomerActions } from '../../+state/customer.actions';
+import { OrderEntity } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
 import { MainAction } from '../../../../states/main.action';
 import { PotentialTypes } from '../../constants/potentialTypes';
 import { CustomerTypes } from '../../constants/customer.type';
 import { GenderTypes } from '../../constants/generTypes';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CustomerQuery } from '../../+state/customer.query';
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  customers$ = this.customerQuery.selectAll();
+  loading$ = this.customerQuery.selectLoading();
+
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
@@ -31,10 +33,7 @@ export class CustomerComponent implements OnInit {
   CustomerTypes = CustomerTypes;
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
-  orders?: Order;
-
-  customers$ = this.store.select(selectorAllCustomer);
-  loaded$ = this.store.select(selectedCustomerLoaded);
+  orders?: OrderEntity;
 
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -51,7 +50,8 @@ export class CustomerComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store<AppState>,
+    private readonly actions$: Actions,
+    private readonly customerQuery: CustomerQuery,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService
@@ -59,14 +59,14 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
-    this.store.dispatch(CustomerAction.loadInit({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
+    this.actions$.dispatch(CustomerActions.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.store.dispatch(
-            CustomerAction.loadInit(this.customer(val))
+          this.actions$.dispatch(
+            CustomerActions.loadAll(this.customer(val))
           );
         })
       )
@@ -74,7 +74,7 @@ export class CustomerComponent implements OnInit {
   }
 
   addOrder($event?: any) {
-    console.log()
+    console.log();
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
         data: $event.id
@@ -91,8 +91,8 @@ export class CustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(
-      CustomerAction.loadMoreCustomers(
+    this.actions$.dispatch(
+      CustomerActions.loadAll(
         this.customer(val)
       )
     );
@@ -128,7 +128,7 @@ export class CustomerComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.store.dispatch(CustomerAction.deleteCustomer({ id: $event.id }));
+        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
       }
     });
   }

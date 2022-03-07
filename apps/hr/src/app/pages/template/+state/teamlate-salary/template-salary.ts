@@ -1,5 +1,5 @@
 import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
+import {Branch, PartialDayEnum} from '@minhdu-fontend/data-models';
 
 export interface TemplateSalary {
   id: number,
@@ -7,6 +7,7 @@ export interface TemplateSalary {
   price: number,
   type: SalaryTypeEnum,
   positionId: any,
+  branches?: Branch[]
   partialDay: PartialDayEnum,
   unit: DatetimeUnitEnum
 }

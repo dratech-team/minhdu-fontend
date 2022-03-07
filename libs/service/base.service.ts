@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Update, UpdateNum } from '@ngrx/entity/src/models';
-import { ResponsePaginate } from '../data-models';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ResponsePaginate} from '../data-models';
+import {Api} from "../constants";
 
 export class BaseService<T> {
   constructor(
@@ -10,8 +10,8 @@ export class BaseService<T> {
   ) {
   }
 
-  pagination(params?: any): Observable<ResponsePaginate<T>> {
-    return this.http.get<ResponsePaginate<T>>(this.url, {params})
+  pagination(params?: any): Observable<ResponsePaginate<T> | any> {
+    return this.http.get<ResponsePaginate<T> | any>(this.url, {params});
   }
 
   getAll(params?: any): Observable<T[]> {
@@ -26,11 +26,15 @@ export class BaseService<T> {
     return this.http.post<T>(this.url, props);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<T>> {
-    return this.http.patch<UpdateNum<T>>(this.url + `/${id}`, body);
+  update(id: any, body: any): Observable<T> {
+    return this.http.patch<T>(this.url + `/${id}`, body);
   }
 
   delete(id: number, params?: any): Observable<void> {
-    return this.http.delete<void>(this.url + `/${id}`,{params});
+    return this.http.delete<void>(this.url + `/${id}`, {params});
+  }
+
+  sort(body: any): Observable<any> {
+    return this.http.patch<any>(Api.HR.EMPLOYEE.SORT_STT, body)
   }
 }

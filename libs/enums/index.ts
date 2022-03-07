@@ -13,6 +13,7 @@ export * from './hr/recipeType.enum';
 export * from './hr/filterType.enum';
 export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
+export * from './hr/type-sort';
 
 // sell
 export * from './sell/customer-type';

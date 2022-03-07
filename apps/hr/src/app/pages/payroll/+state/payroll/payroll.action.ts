@@ -1,9 +1,9 @@
-import { ConvertBooleanFrontEnd, FilterTypeEnum } from '@minhdu-fontend/enums';
-import { UpdateNum } from '@ngrx/entity/src/models';
-import { createAction, props } from '@ngrx/store';
-import { PayrollSalary } from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
-import { Payroll, PayrollDTO } from './payroll.interface';
-import { totalSalary } from '@minhdu-fontend/data-models';
+import {ConvertBooleanFrontEnd, FilterTypeEnum} from '@minhdu-fontend/enums';
+import {UpdateNum} from '@ngrx/entity/src/models';
+import {createAction, props} from '@ngrx/store';
+import {PayrollSalary} from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
+import {Payroll, PayrollDTO} from './payroll.interface';
+import {totalSalary} from '@minhdu-fontend/data-models';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -88,7 +88,7 @@ export const confirmPayroll = createAction(
 
 export const updatePayrollSuccess = createAction(
   '[UPDATE_PAYROLL] Update Payroll Success',
-  props<{ payroll: UpdateNum<Payroll> }>()
+  props<{ payroll: Payroll }>()
 );
 
 export const confirmPayrollSuccess = createAction(

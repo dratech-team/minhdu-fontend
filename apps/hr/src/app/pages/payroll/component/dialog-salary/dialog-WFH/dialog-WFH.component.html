@@ -1,0 +1,40 @@
+<div class='px-2  main-popup'>
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
+        <div class="font-weight-bold font-xl mb-4">Chú thích ngày</div>
+        <mat-dialog-content style="width: 300px">
+        <form [formGroup]='formGroup' (submit)='onSubmit()'>
+          <div>
+            <div class='row mb-3'>
+              <div [formGroup]='formGroup' class='col-12'>
+                <span class='title-item'>Tiêu đề</span><span class='star'>*</span>
+                <input class='form-control' type="text" formControlName='title'>
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div [formGroup]='formGroup' class='col-12'>
+                <span class='title-item'>Ngày</span><span class='star'>*</span>
+                <input class='form-control' type="date" formControlName='datetime'>
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div [formGroup]='formGroup' class='col-12'>
+                <span class='title-item'>Chú thích</span>
+                <input class='form-control' placeholder='Nhập chú thích ' formControlName='note'>
+              </div>
+            </div>
+          </div>
+          <div class=' row '>
+            <button class='btn btn-ok ml-2'>Lưu</button>
+            <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
+              ?
+            </button>
+          </div>
+        </form>
+        </mat-dialog-content>
+</div>
+

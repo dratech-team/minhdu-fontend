@@ -25,7 +25,7 @@ export class TemplateOvertimeService extends BaseService<TemplateOvertime>{
   getAll(): Observable<TemplateOvertime[]> {
     return super.getAll();
   }
-  update(id: any, body: any): Observable<UpdateNum<TemplateOvertime>> {
+  update(id: any, body: any): Observable<TemplateOvertime> {
     return super.update(id, body);
   }
 

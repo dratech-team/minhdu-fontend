@@ -37,6 +37,9 @@ import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import {FilterDayPipe} from "./pipes/filter-day.pipe";
+import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
+import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 
 @NgModule({
   imports: [
@@ -44,7 +47,7 @@ import {FilterDayPipe} from "./pipes/filter-day.pipe";
     CommonModule,
     RouterModule,
     MatMenuModule,
-    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
     FormsModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -57,6 +60,7 @@ import {FilterDayPipe} from "./pipes/filter-day.pipe";
     MatDatepickerModule,
     MatNativeDateModule,
     BsDatepickerModule.forRoot(),
+    NgxSkeletonLoaderModule,
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -77,7 +81,9 @@ import {FilterDayPipe} from "./pipes/filter-day.pipe";
     MouseRightChipPositionComponent,
     DialogExportComponent,
     DialogDatePickerComponent,
-    FilterDayPipe
+    FilterDayPipe,
+    PickEmployeeComponent,
+    TableEmployeeSelectedComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -99,6 +105,8 @@ import {FilterDayPipe} from "./pipes/filter-day.pipe";
     DialogExportComponent,
     DialogDatePickerComponent,
     FilterDayPipe,
+    PickEmployeeComponent,
+    TableEmployeeSelectedComponent
   ],
   providers: [
     DecimalPipe,

@@ -6,7 +6,7 @@
   <a (click)='printRouter()' target='_blank' download='data.xlsx'
     class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
 </div>
-<ngx-skeleton-loader *ngIf='!(loaded$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
+<ngx-skeleton-loader *ngIf='(loading$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
 <ng-template #route>
   <div class='table-scroll mx-auto border-top my-5' style='width: 96%' infiniteScroll [alwaysCallback]='true'
     [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>

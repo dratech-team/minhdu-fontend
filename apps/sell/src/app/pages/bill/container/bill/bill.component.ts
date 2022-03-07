@@ -1,27 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { selectorAllBills } from '../../+state/bill.selector';
 import { BillAction } from '../../+state/bill.action';
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
+import { BillQuery } from '../../+state/bill.query';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
-  templateUrl:'bill.component.html'
+  templateUrl: 'bill.component.html'
 })
-export class BillComponent implements OnInit{
-  Bills$ = this.store.pipe(select(selectorAllBills))
+export class BillComponent implements OnInit {
+  Bills$ = this.billQuery.selectAll();
+
   currencyUnit = CurrencyUnit;
   payType = PaymentType;
+
   constructor(
-    private readonly store: Store
+    private readonly actions$: Actions,
+    private readonly billQuery: BillQuery,
   ) {
   }
+
   ngOnInit() {
-    this.store.dispatch(BillAction.loadInit({take:30, skip:0}))
+    this.actions$.dispatch(BillAction.loadAll({ take: 30, skip: 0 }));
   }
-  onScroll(){
+
+  onScroll() {
 
   }
-  detailOrder(){
+
+  detailOrder() {
 
   }
 }

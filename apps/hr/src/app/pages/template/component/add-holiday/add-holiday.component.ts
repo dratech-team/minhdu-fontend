@@ -1,18 +1,18 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { HolidayAction } from '../../+state/holiday/holiday.action';
-import { getAllPosition, PositionActions } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Position } from '@minhdu-fontend/data-models';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {DatePipe} from '@angular/common';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {HolidayAction} from '../../+state/holiday/holiday.action';
+import {getAllPosition, PositionActions} from '../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Position} from '@minhdu-fontend/data-models';
 import * as lodash from 'lodash';
-import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import { startWith } from 'rxjs/operators';
-import { selectHolidayAdded } from '../../+state/holiday/holiday.selector';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import {startWith} from 'rxjs/operators';
+import {selectHolidayAdded} from '../../+state/holiday/holiday.selector';
+import {searchAndAddAutocomplete} from '../../../../../../../../libs/utils/orgchart.ultil';
 
 
 @Component({
@@ -81,7 +81,10 @@ export class AddHolidayComponent implements OnInit {
       return;
     }
     if (this.positionSelected.length === 0) {
-      return this.snackBar.open('chưa chọn chức vụ', '', { duration: 2000 });
+      return this.snackBar.open('chưa chọn chức vụ', '', {duration: 2000});
+    }
+    if (this.positions.value) {
+     return  this.snackBar.open('Chức vụ phải chọn không đqược nhập', '', {duration: 1500})
     }
     const val = this.formGroup.value;
     const holiday = {
@@ -98,9 +101,10 @@ export class AddHolidayComponent implements OnInit {
     };
     if (this.data?.isUpdate) {
       this.store.dispatch(HolidayAction.UpdateHoliday({
-        id: this.data.holiday.id, holiday: holiday, updateDetail: this.data.updateDetail }));
+        id: this.data.holiday.id, holiday: holiday, updateDetail: this.data.updateDetail
+      }));
     } else {
-      this.store.dispatch(HolidayAction.AddHoliday({ holiday: holiday }));
+      this.store.dispatch(HolidayAction.AddHoliday({holiday: holiday}));
     }
     this.store.pipe(select(selectHolidayAdded)).subscribe(added => {
       if (added) {
@@ -113,7 +117,7 @@ export class AddHolidayComponent implements OnInit {
     if (event.isUserInput) {
       if (position.id) {
         if (this.positionSelected.some(item => item.id === position.id)) {
-          this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+          this.snackBar.open('chức vụ đã được chọn', '', {duration: 1000});
         } else {
           this.positionSelected.push(position);
         }
@@ -125,7 +129,7 @@ export class AddHolidayComponent implements OnInit {
           .subscribe((position) => (
             this.positionSelected.push(position)
           ));
-        this.snackBar.open('Đã tạo', '', { duration: 2500 });
+        this.snackBar.open('Đã tạo', '', {duration: 2500});
       }
       setTimeout(() => {
           this.positions.setValue('');

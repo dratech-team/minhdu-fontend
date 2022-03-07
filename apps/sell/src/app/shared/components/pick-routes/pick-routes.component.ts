@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import {  FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Route } from '../../../pages/route/+state/route.interface';
+import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { PickRoutesService } from './pick-routes.service';
 import { RouteDialogComponent } from '../../../pages/route/component/route-dialog/route-dialog.component';
 
@@ -14,7 +14,7 @@ import { RouteDialogComponent } from '../../../pages/route/component/route-dialo
 })
 export class PickRoutesComponent implements OnInit {
   @Input() pickPOne: boolean | undefined;
-  @Input() routes: Route[] = [];
+  @Input() routes: RouteEntity[] = [];
   @Output() checkEvent = new EventEmitter();
   pageIndex = 1;
   pageSize = 30;
@@ -37,7 +37,7 @@ export class PickRoutesComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.routes$) {
       this.data.routes$.subscribe(
-        (val: Route[]) => this.routes = JSON.parse(JSON.stringify(val))
+        (val: RouteEntity[]) => this.routes = JSON.parse(JSON.stringify(val))
       );
     }
     this.formGroup.valueChanges.pipe(

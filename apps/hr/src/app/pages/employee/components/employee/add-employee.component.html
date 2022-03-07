@@ -132,7 +132,17 @@
                 </mat-option>
               </mat-select>
             </div>
+            <div class='col'>
+              <label for='category'>Chọn danh mục </label>
+              <mat-select
+                id='category' class='form-control' formControlName='category'>
+                <mat-option *ngFor='let item of categories$|async' [value]='item.id'>
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </div>
           </div>
+
         </div>
       </form>
     </mat-dialog-content>

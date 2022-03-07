@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { selectorCurrentBill } from '../../+state/bill.selector';
+import { BillQuery } from '../../+state/bill.query';
 
 @Component({
-  templateUrl:'detail-bill.component.html'
+  templateUrl: 'detail-bill.component.html'
 })
-export class DetailBillComponent implements OnInit{
-  bill$ = this.store.pipe(select(selectorCurrentBill(this.BillId)))
+export class DetailBillComponent implements OnInit {
+  bill$ = this.billQuery.selectEntity(this.activatedRoute.snapshot.params.id);
+
   constructor(
-    private readonly store: Store,
+    private readonly billQuery: BillQuery,
     private readonly activatedRoute: ActivatedRoute
   ) {
   }
+
   ngOnInit() {
-  }
-  get BillId(): number {
-    return this.activatedRoute.snapshot.params.id
   }
 }

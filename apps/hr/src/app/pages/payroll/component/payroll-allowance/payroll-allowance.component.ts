@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum
+  SearchTypeEnum, sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { of, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -35,6 +35,7 @@ import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dial
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -46,6 +47,8 @@ export class PayrollAllowanceComponent implements OnInit {
   @Input() allowanceTitle?: string;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  @ViewChild(MatSort) sort!: MatSort;
+
 
   pageSize = 30;
   pageIndex = 0;
@@ -58,6 +61,7 @@ export class PayrollAllowanceComponent implements OnInit {
   unit = DatetimeUnitEnum;
   unitAllowance = UnitAllowanceConstant;
   isEventSearch = false;
+  sortEnum = sortTypeEnum;
 
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -443,8 +447,14 @@ export class PayrollAllowanceComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position,
-      branch: value.branch
+      branch: value.branch,
     };
+    if(this.sort?.active){
+      Object.assign(params, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
+      })
+    }
     if (!value.name) {
       delete params.name;
     }
@@ -466,4 +476,11 @@ export class PayrollAllowanceComponent implements OnInit {
   selectSalary(salary: Salary) {
     return this.salariesSelected.some((e) => e.salary.id === salary.id);
   }
+
+  sortPayroll() {
+    this.store.dispatch(PayrollAction.loadInit({
+      payrollDTO : this.mapPayrollAllowance()
+    }))
+  }
+
 }

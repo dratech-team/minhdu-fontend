@@ -28,7 +28,7 @@ export class BranchService extends BaseService<Branch> {
     return super.getOne(id);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<Branch>> {
+  update(id: any, body: any): Observable<Branch> {
     return super.update(id, body);
   }
 
@@ -37,7 +37,7 @@ export class BranchService extends BaseService<Branch> {
     return super.delete(id);
   }
 
-  deleteAllowanceInBranch(salaryId: number): Observable<UpdateNum<Branch>> {
-    return this.http.delete<UpdateNum<Branch>>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
+  deleteAllowanceInBranch(salaryId: number): Observable<Branch> {
+    return this.http.delete<Branch>(Api.HR.PAYROLL.BRANCH_ALLOWANCE + `/${salaryId}`);
   }
 }

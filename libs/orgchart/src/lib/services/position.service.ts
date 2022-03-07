@@ -26,7 +26,7 @@ export class PositionService extends BaseService<Position> {
     return super.getAll(prams);
   }
 
-  update(id: any, body: any): Observable<UpdateNum<Position>> {
+  update(id: any, body: any): Observable<Position> {
     return super.update(id, body);
   }
 

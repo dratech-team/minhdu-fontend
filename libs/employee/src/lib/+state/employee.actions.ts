@@ -6,7 +6,7 @@ import { EmployeeDto } from './employee.dto';
 
 export const loadInit = createAction(
   '[LOAD_EMPLOYEE] Load Employee',
-  props<{ employee: EmployeeDto }>()
+  props<{ employee: EmployeeDto; isPickEmp?: boolean  }>()
 );
 
 export const loadMoreEmployees = createAction(
@@ -75,7 +75,7 @@ export const updateEmployee = createAction(
 
 export const updateEmployeeSuccess = createAction(
   '[UPDATE_EMPLOYEE] Update Success',
-  props<{ employee: UpdateNum<Employee> }>()
+  props<{ employee: Employee }>()
 );
 
 export const updateRelative = createAction(
@@ -138,6 +138,7 @@ export const deleteWorkHistory = createAction(
   props<{ id: number, employeeId: number }>()
 );
 
+
 export const EmployeeAction = {
   loadMoreEmployees,
   LoadMoreEmployeesSuccess,
@@ -166,5 +167,5 @@ export const EmployeeAction = {
   deleteContract,
   deleteContractSuccess,
   updateStateEmployee,
-  deleteWorkHistory
+  deleteWorkHistory,
 };
