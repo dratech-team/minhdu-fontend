@@ -54,17 +54,8 @@
                 <div class=' title-item mb-2'>
                   <span class='mr-2'> Chức vụ</span>
                 </div>
-                <mat-chip-list #chipList>
-                  <mat-chip style='font-size: 12px ' *ngFor='let position of positionsSelected' [selectable]='true'
-                    [removable]='true' (removed)='removePosition(position)'>
-                    {{position.name}}
-                    <button class='btn' matChipRemove *ngIf='true'>
-                      <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
-                    </button>
-                  </mat-chip>
-                </mat-chip-list>
                 <div>
-                  <input class='form-control row mt-1 mb-3' type='text' matInput [formControl]='positions'
+                  <input class='form-control row mb-2' type='text' matInput [formControl]='positions'
                     style='width: 100%; margin: 0' [matAutocomplete]='position' #positionInput>
                   <mat-autocomplete #position='matAutocomplete'>
                     <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
@@ -73,6 +64,17 @@
                       {{position.name}}
                     </mat-option>
                   </mat-autocomplete>
+                </div>
+                <div *ngIf="positionsSelected.length > 0" class="border p-1 mb-2 " style="height: 70px ; overflow-y: scroll">
+                <mat-chip-list>
+                  <mat-chip style='font-size: 12px ' *ngFor='let position of positionsSelected' [selectable]='true'
+                            [removable]='true' (removed)='removePosition(position)'>
+                    {{position.name}}
+                    <button class='btn' matChipRemove *ngIf='true'>
+                      <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+                </mat-chip-list>
                 </div>
               </div>
               <div>

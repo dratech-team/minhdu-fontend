@@ -26,7 +26,6 @@
         <div>
           <input class='form-control ' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
                  style='width: 100%'
-                 [matChipInputFor]='chipList'
                  #positionInput>
           <mat-autocomplete #position='matAutocomplete'>
             <mat-option *ngFor='let position of positions$ | async'
@@ -36,18 +35,20 @@
               {{position.name}}
             </mat-option>
           </mat-autocomplete>
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor='let position of positionSelected'
-              [selectable]='true'
-              [removable]='true'
-              (removed)='removePosition(position)'>
-              {{position.name}}
-              <button class='btn' matChipRemove *ngIf='true'>
-                <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-list>
+          <div *ngIf="positionSelected.length > 0" class="border p-1 mt-1 " style="height: 70px ; overflow-y: scroll">
+            <mat-chip-list >
+              <mat-chip
+                *ngFor='let position of positionSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removePosition(position)'>
+                {{position.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
         </div>
       </div>
     </div>

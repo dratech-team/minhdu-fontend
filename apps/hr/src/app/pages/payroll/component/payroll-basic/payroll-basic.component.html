@@ -115,23 +115,30 @@
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
+            <div>
+              {{i + 1}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollBasic)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollBasic.payrollId}}
+            <div>
+              {{payrollBasic.payrollId}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollBasic)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollBasic.employee.lastName}}
+            <div>
+              {{payrollBasic.employee.lastName}}
+            </div>
           </th>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div class=' d-flex align-items-center justify-content-center pointer '
                  *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'>
               <mat-checkbox
+                style="margin-top: 5px"
                 [checked]='selectSalary(item)'
                 (change)='updateSelectSalary({salary: item, employee: payrollBasic.employee})'>
               </mat-checkbox>
@@ -140,10 +147,16 @@
           <th style='width: 200px' class='pointer'
               (click)='readPayroll(payrollBasic)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollBasic.employee.position?.name}}</th>
+            <div>
+              {{payrollBasic.employee.position?.name}}
+            </div>
+          </th>
           <th style='width: 200px' class='pointer'
               (click)='readPayroll(payrollBasic)'>
-            {{payrollBasic.employee.branch?.name}}</th>
+            <div>
+              {{payrollBasic.employee.branch?.name}}
+            </div>
+          </th>
           <th class='pointer' style='width: 220px;'>
             <div class=' d-flex align-items-center justify-content-center pointer '
                  *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
@@ -250,6 +263,8 @@
     position: sticky;
     top: 70px;
   }
+
+
 </style>
 
 
