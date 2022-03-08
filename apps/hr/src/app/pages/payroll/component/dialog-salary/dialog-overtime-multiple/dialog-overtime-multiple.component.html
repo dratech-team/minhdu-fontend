@@ -65,7 +65,7 @@
                     </mat-option>
                   </mat-autocomplete>
                 </div>
-                <div *ngIf="positionsSelected.length > 0" class="border p-1 mb-2 " style="height: 70px ; overflow-y: scroll">
+                <div *ngIf="positionsSelected.length > 0" class="border p-1 mb-2 " style="height: 120px ; overflow-y: scroll">
                 <mat-chip-list>
                   <mat-chip style='font-size: 12px ' *ngFor='let position of positionsSelected' [selectable]='true'
                             [removable]='true' (removed)='removePosition(position)'>
