@@ -36,7 +36,6 @@
         <div>
           <input class='form-control mt-1' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
                  style='width: 100%'
-                 [matChipInputFor]='chipList'
                  #branchesInput>
           <mat-autocomplete #branch='matAutocomplete'>
             <mat-option *ngFor='let branch of branches$ | async'
@@ -45,18 +44,20 @@
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor='let branch of branchesSelected'
-              [selectable]='true'
-              [removable]='true'
-              (removed)='removeBranchSelected(branch)'>
-              {{branch.name}}
-              <button class='btn' matChipRemove *ngIf='true'>
-                <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-list>
+          <div *ngIf="branchesSelected.length > 0" class="border p-1 mt-1 " style="height: 70px ; overflow-y: scroll">
+            <mat-chip-list >
+              <mat-chip
+                *ngFor='let branch of branchesSelected'
+                [selectable]='true'
+                [removable]='true'
+                (removed)='removeBranchSelected(branch)'>
+                {{branch.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
         </div>
       </div>
     </div>

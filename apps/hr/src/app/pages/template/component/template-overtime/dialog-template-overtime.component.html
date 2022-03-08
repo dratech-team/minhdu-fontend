@@ -59,7 +59,6 @@
           <div><span class='main-title'>Chức vụ</span><span class='star'>*</span></div>
           <input class='form-control' type='text' matInput [formControl]='positions' [matAutocomplete]='position'
                  style='width: 100%'
-                 [matChipInputFor]='chipList'
                  #positionInput>
           <mat-autocomplete #position='matAutocomplete'>
             <mat-option *ngFor='let position of positions$ | async'
@@ -68,7 +67,8 @@
               {{position.name}}
             </mat-option>
           </mat-autocomplete>
-          <mat-chip-list #chipList>
+          <div *ngIf="positionSelected.length > 0" class="border p-1 mt-1 " style="height: 70px ; overflow-y: scroll">
+          <mat-chip-list>
             <mat-chip
               *ngFor='let position of positionSelected'
               [selectable]='true'
@@ -80,6 +80,7 @@
               </button>
             </mat-chip>
           </mat-chip-list>
+          </div>
           <!-- <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
             <div *ngIf="f.position.errors?.required">Chưa chọn chức vụ</div>
           </div> -->
