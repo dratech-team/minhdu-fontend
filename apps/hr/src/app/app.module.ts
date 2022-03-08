@@ -41,6 +41,7 @@ import localeVi from '@angular/common/locales/vi';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
+import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 registerLocaleData(localeVi);
 
 @NgModule({
@@ -95,7 +96,7 @@ registerLocaleData(localeVi);
     {provide: LOCALE_ID, useValue: 'vi-VN'},
     HashLocationStrategy,
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false} }
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {disableClose: true, hasBackdrop: true} as MatDialogConfig}
   ],
 })
 export class AppModule {}

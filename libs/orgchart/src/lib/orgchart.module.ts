@@ -14,6 +14,7 @@ import { OrgchartService } from './services/orgchart.service';
 import { DepartmentEffects } from './+state/department';
 import { OrgchartEffects } from './+state/Orgchart';
 import { PositionEffects } from './+state/position';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { PositionEffects } from './+state/position';
     StoreModule.forFeature(FeatureName.POSITION, formPosition.reducer),
     StoreModule.forFeature(FeatureName.ORG_CHART, fromOrgchart.reducer),
     StoreModule.forFeature(FeatureName.DEPARTMENT, formDepartment.reducer),
-    EffectsModule.forFeature([OrgchartEffects, DepartmentEffects, PositionEffects])
+    EffectsModule.forFeature([OrgchartEffects, DepartmentEffects, PositionEffects]),
+    NzMessageModule
   ],
   providers: [
     BranchService,
