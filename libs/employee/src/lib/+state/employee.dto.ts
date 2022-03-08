@@ -16,7 +16,8 @@ export interface EmployeeDto {
   employeeType?: EmployeeType,
   recipeType?: RecipeType,
   overtimeTitle?: string,
-  categoryId?:number|''
+  categoryId?:number|'',
+  isFlatSalary?:number,
 }
 
 

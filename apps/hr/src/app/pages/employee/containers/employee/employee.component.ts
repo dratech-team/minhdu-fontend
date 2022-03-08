@@ -134,7 +134,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
           isLeft: this.isLeft,
           branch: this.branchName,
           position: this.positionName,
-          employeeType: EmployeeType.EMPLOYEE_FULL_TIME
+          employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
         }
       })
     );
@@ -220,7 +220,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   employee(val: any) {
-    let employee = {
+    const employee = {
       skip: this.pageIndexInit,
       take: this.pageSize,
       name: val.name,
