@@ -37,6 +37,7 @@ export class CommodityComponent implements OnInit {
   }
 
   add() {
+
     this.dialog.open(CommodityDialogComponent, {
       width: '30%'
     });

@@ -20,7 +20,6 @@ import {UpdateContractComponent} from '../../components/dialog-update-contract/u
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {AddRelativeComponent} from '../../components/relative/add-relative.component';
 import {getSelectors} from '@minhdu-fontend/utils';
-import {employee} from "../../../../../../../../libs/data-models/hr/salary/payroll-salary";
 import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/recipe-salary.constant";
 import {
   DialogSharedComponent

@@ -102,7 +102,7 @@
                  <span class='contain-detail' *ngIf='employee.birthday === null'>
                     Chưa cập nhật
                  </span>
-              <span style=' font-size: 20px' *ngIf='employee.birthday'>
+              <span  *ngIf='employee.birthday'>
                   {{employee.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
@@ -711,13 +711,13 @@
             <th style="background: white" class='text-center border'>Từ ngày</th>
             <th style="background: white" class='text-center border'>Vị trí công việc</th>
             <th style="background: white" class='text-center border'>Đơn vị công tác</th>
-            <th style="background: white" class='text-center border'>Xoá</th>
+            <th style="background: white" class='text-center border not-print'>Xoá</th>
           </tr>
           <tr *ngFor='let workHistory of employee.workHistories|filterDayWorkHistory'>
             <td class='text-center'>{{workHistory?.createdAt|date:'dd/MM/yyyy'}}</td>
             <td class='text-center'>{{workHistory?.position?.name}}</td>
             <td class='text-center'>{{workHistory?.branch?.name}}</td>
-            <td class='text-center' (click)="deleteWorkHistory(workHistory, employee.id)">
+            <td class='text-center not-print' (click)="deleteWorkHistory(workHistory, employee.id)">
               <button class="btn btn-danger">
                 Xoá
               </button>
