@@ -118,23 +118,30 @@
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
+            <div>
+              {{i + 1}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollAbsent)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAbsent.payrollId}}
+            <div>
+              {{payrollAbsent.payrollId}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollAbsent)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAbsent.employee.lastName}}
+            <div>
+              {{payrollAbsent.employee.lastName}}
+            </div>
           </th>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div class=' d-flex align-items-center justify-content-center pointer '
                  *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'>
               <mat-checkbox
+                style="margin-top: 5px"
                 [checked]='selectSalary(item)'
                 (change)='updateSelectSalary(item,payrollAbsent.employee)'>
               </mat-checkbox>
@@ -143,10 +150,16 @@
           <th class='pointer'
               (click)='readPayroll(payrollAbsent)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAbsent.employee.position?.name}}</th>
+            <div>
+              {{payrollAbsent.employee.position?.name}}
+            </div>
+          </th>
           <th class='pointer'
               (click)='readPayroll(payrollAbsent)'>
-            {{payrollAbsent.employee.branch?.name}}</th>
+            <div>
+              {{payrollAbsent.employee.branch?.name}}
+            </div>
+          </th>
           <th class='pointer' style='width: 220px;'>
             <div class=' d-flex align-items-center justify-content-center pointer '
                  *ngFor='let item of payrollAbsent.salaries|filterTypeSalary:["ABSENT","DAY_OFF"]'

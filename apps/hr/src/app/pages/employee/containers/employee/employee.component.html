@@ -18,7 +18,9 @@
           <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
-      <button *ngIf="categoryControl.value && categoryControl.value !==0 " class="btn btn-primary ml-1" (click)="updateCategory()">Sửa</button>
+      <button *ngIf="categoryControl.value && categoryControl.value !==0 " class="btn btn-primary ml-1"
+              (click)="updateCategory()">Sửa
+      </button>
     </div>
     <div>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -50,28 +52,27 @@
               <input class=' text-center' type='text' disabled>
             </th>
             <th style='background:white'>
-              <div  class='border-top text-center'>Mã nhân viên</div>
+              <div class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='search'>
 
             </th>
             <th style='background:white'>
               <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>Tên nhân viên</div>
-              <input class='form-control text-center ' type='search' formControlName='name'
-                     placeholder='Trần Gia Hiệu'>
+              <input class='form-control text-center' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
             </th>
             <th>
-              <div  class='border-top text-center'>Loại nhân viên</div>
+              <div class='border-top text-center'>Loại nhân viên</div>
               <mat-select class='select border-top' style='width: 100%;' formControlName='employeeType'>
                 <mat-option value='{{employeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
                 <mat-option value='{{employeeType.EMPLOYEE_SEASONAL}}'>Nhân viên thời vụ</mat-option>
               </mat-select>
             </th>
             <th width='5%'>
-              <div  class='border-top text-center'>Ngày sinh</div>
-              <input class='form-control text-center ' type='date' formControlName='birthday'>
+              <div class='border-top text-center'>Ngày sinh</div>
+              <input class='text-center' type='date' disabled>
             </th>
             <th>
-              <div  class='border-top text-center'>Giới tính</div>
+              <div class='border-top text-center'>Giới tính</div>
               <mat-select class='select border-top' style='min-width:100px' required formControlName='gender'>
                 <mat-option value='{{genderType.MALE}}'>Nam</mat-option>
                 <mat-option value='{{genderType.FEMALE}}'>Nữ</mat-option>
@@ -80,8 +81,8 @@
               </mat-select>
             </th>
             <th width='5%'>
-              <div  class='border-top text-center'>Ngày vào làm</div>
-              <input type='date' class='border' formControlName='workedAt'>
+              <div class='border-top text-center'>Ngày vào làm</div>
+              <input type='date' class='border' disabled>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Loại lương</div>
@@ -97,7 +98,7 @@
                      formControlName='phone'>
             </th>
             <th>
-              <div  mat-sort-header="{{sortEnum.BRANCH}}" class='border-top text-center'>Đơn vị</div>
+              <div mat-sort-header="{{sortEnum.BRANCH}}" class='border-top text-center'>Đơn vị</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
               <mat-autocomplete #branch='matAutocomplete'>
                 <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
@@ -120,12 +121,12 @@
               </mat-autocomplete>
             </th>
             <th width='5%'>
-              <div  class='border-top text-center'>CMND / CCCD</div>
+              <div class='border-top text-center'>CMND / CCCD</div>
               <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
                      formControlName='identity'>
             </th>
             <th width='5%'>
-              <div  class='border-top text-center'>Tỉnh / Thành phố</div>
+              <div class='border-top text-center'>Tỉnh / Thành phố</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='province'
                      formControlName='province'>
               <mat-autocomplete #province='matAutocomplete'>
@@ -137,7 +138,7 @@
               </mat-autocomplete>
             </th>
             <th width='5%'>
-              <div  class='border-top text-center'>Quận / Huyện</div>
+              <div class='border-top text-center'>Quận / Huyện</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='district'
                      formControlName='district'>
               <mat-autocomplete #district='matAutocomplete'>
@@ -149,7 +150,7 @@
               </mat-autocomplete>
             </th>
             <th width='7%'>
-              <div  class='border-top text-center'>Phường / Xã</div>
+              <div class='border-top text-center'>Phường / Xã</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='ward' formControlName='ward'>
               <mat-autocomplete #ward='matAutocomplete'>
                 <mat-option *ngFor='let ward of wards$ | async'
@@ -160,19 +161,19 @@
               </mat-autocomplete>
             </th>
             <th width='12%'>
-              <div  class='border-top text-center'>Địa chỉ</div>
+              <div class='border-top text-center'>Địa chỉ</div>
               <input type='search' class='form-control text-center' formControlName='address'>
             </th>
             <th>
-              <div  class='border-top text-center'>Chú thích</div>
+              <div class='border-top text-center'>Chú thích</div>
               <input disabled type='search'>
             </th>
           </tr>
           </thead>
           <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
-          <tr *ngIf='!(loaded$|async); else loaded' >
+          <tr *ngIf='!(loaded$|async); else loaded'>
             <th colspan="100">
-              <ngx-skeleton-loader  count='10'
+              <ngx-skeleton-loader count='10'
                                    appearance='line'></ngx-skeleton-loader>
             </th>
           </tr>

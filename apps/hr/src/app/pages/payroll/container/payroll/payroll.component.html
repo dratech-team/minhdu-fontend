@@ -187,89 +187,133 @@
               <tr *ngFor='let payroll of payrolls; let i = index' (contextmenu)='child.onContextMenu($event,payroll)'>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                  {{i + 1}}
+                  <div>
+                    {{i + 1}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                  {{payroll.id}}
+                  <div>
+                    {{payroll.id}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                  {{payroll?.employee?.lastName}}
+                  <div>
+                    {{payroll?.employee?.lastName}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                  {{payroll.employee?.position?.name}}
+                  <div>
+                    {{payroll.employee?.position?.name}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.employee?.branch?.name}}
+                  <div>
+                    {{payroll.employee?.branch?.name}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.createdAt|date:'yyyy-MM'}}
+                  <div>
+                    {{payroll.createdAt|date:'yyyy-MM'}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+                  <div>
+                    {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
+                  <div>
+                    {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
+                  <div>
+                    {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}
+                  <div>
+                    {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'
-                  }}
+                  <div>
+                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.workdayNotInHoliday &&
-                payroll.payslip?.workday
-                  ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}
+                  <div>
+                    {{payroll.payslip?.workdayNotInHoliday &&
+                  payroll.payslip?.workday
+                    ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'
-                  }}
+                  <div>
+                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
+                  <div>
+                    {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
+                  </div>
                 </th>
                 <th class='pointer'>
-                  <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")' style='height: fit-content'>
+                  <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'>
                     <input style='pointer-events: none' disabled type='checkbox'
                            [checked]='payroll.accConfirmedAt !== null'>
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.basic|number:'1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.basic|number:'1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.stay |number:'1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.stay |number:'1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.allowance |number:'1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.allowance |number:'1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{ payroll.payslip?.overtime || 0}} VND
+                  <div>
+                    {{ payroll.payslip?.overtime || 0}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{ payroll.payslip?.payslipInHoliday || 0}} VND
+                  <div>
+                    {{ payroll.payslip?.payslipInHoliday || 0}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{ payroll.payslip?.payslipNotInHoliday || 0}} VND
+                  <div>
+                    {{ payroll.payslip?.payslipNotInHoliday || 0}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.deduction | number: '1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.deduction | number: '1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.tax | number: '1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.tax | number: '1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
-                  {{payroll.payslip?.total| number: '1.0-0'}} VND
+                  <div>
+                    {{payroll.payslip?.total| number: '1.0-0'}} VND
+                  </div>
                 </th>
                 <th class='pointer'>
-                  <div (click)='updateConfirmPayroll(payroll.id,"paidAt")' style='height: fit-content'>
+                  <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'>
                     <input style='pointer-events: none' disabled type='checkbox' [checked]='payroll.paidAt !== null'>
                   </div>
                 </th>
@@ -365,5 +409,9 @@
   .table-scroll thead th:nth-child(3),
   .table-scroll thead th:nth-child(4) {
     z-index: 5;
+  }
+
+  .table-scroll tbody th{
+    height: 40px;
   }
 </style>

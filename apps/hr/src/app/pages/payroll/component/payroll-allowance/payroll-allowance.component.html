@@ -112,23 +112,30 @@
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
+            <div>
+              {{i + 1}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollAllowance)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAllowance?.payrollId}}
+            <div>
+              {{payrollAllowance?.payrollId}}
+            </div>
           </th>
           <th class='pointer'
               (click)='readPayroll(payrollAllowance)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAllowance.employee.lastName}}
+            <div>
+              {{payrollAllowance.employee.lastName}}
+            </div>
           </th>
           <th class='pointer'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div class=' d-flex align-items-center justify-content-center pointer '
                  *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'>
               <mat-checkbox
+                style="margin-top: 5px"
                 [checked]='selectSalary(item)'
                 (change)='updateSelectSalary(item,payrollAllowance.employee)'>
               </mat-checkbox>
@@ -137,17 +144,23 @@
           <th class='pointer'
               (click)='readPayroll(payrollAllowance)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAllowance.employee.position?.name}}</th>
+            <div>
+              {{payrollAllowance.employee.position?.name}}
+            </div>
+          </th>
           <th class='pointer'
               (click)='readPayroll(payrollAllowance)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{payrollAllowance.employee.branch?.name}}</th>
+            <div>
+              {{payrollAllowance.employee.branch?.name}}
+            </div>
+          </th>
           <th class='pointer' style='width: 220px;'>
             <div class=' d-flex align-items-center justify-content-center  '
                  *ngFor='let item of payrollAllowance.salaries|filterTypeSalary:["ALLOWANCE"]'
                  (contextmenu)='child.onContextMenu($event,item)'
                  (click)='readPayroll(payrollAllowance)'>
-              {{this.createdAt |date:'yyyy-MM'}}
+                {{this.createdAt |date:'yyyy-MM'}}
             </div>
           </th>
           <th class='pointer' style='min-width: 300px;'>

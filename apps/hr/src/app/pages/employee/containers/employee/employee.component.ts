@@ -78,7 +78,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   categoryControl = new FormControl('');
   formGroup = new FormGroup({
     name: new FormControl(''),
-    birthday: new FormControl(''),
+    // birthday: new FormControl(''),
     phone: new FormControl(''),
     identity: new FormControl(''),
     address: new FormControl(''),
@@ -86,7 +86,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     district: new FormControl(''),
     ward: new FormControl(''),
     gender: new FormControl(''),
-    workedAt: new FormControl(''),
+    // workedAt: new FormControl(''),
     flatSalary: new FormControl(''),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
@@ -224,7 +224,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       skip: this.pageIndexInit,
       take: this.pageSize,
       name: val.name,
-      birthday: val.birthday,
+      // birthday: val.birthday,
       phone: val.phone,
       identity: val.identity,
       address: val.address,
@@ -234,7 +234,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       gender: val.gender,
       position: val.position,
       branch: val.branch,
-      workedAt: val.workedAt,
+      // workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
       isFlatSalary:

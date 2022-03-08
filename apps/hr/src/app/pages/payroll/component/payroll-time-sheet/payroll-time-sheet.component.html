@@ -83,39 +83,54 @@
               (contextmenu)='child.onContextMenu($event,payroll)'>
             <th class='pointer fixed-side text-center' (click)='readPayroll(payroll)'
                 [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{i + 1}}
+              <div>{{i + 1}}</div>
             </th>
             <th class='pointer fixed-side text-center' (click)='readPayroll(payroll)'
                 [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{payroll.id}}
+              <div>
+                {{payroll.id}}
+              </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'
                 [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{payroll?.employee?.lastName}}
+              <div>
+                {{payroll?.employee?.lastName}}
+              </div>
             </th>
             <th class='pointer fixed-side text-center ' (click)='readPayroll(payroll)'
                 [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{payroll?.employee?.workday}}
+              <div>
+                {{payroll?.employee?.workday}}
+              </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
-              {{payroll.employee?.position?.name}}
+              <div>
+                {{payroll.employee?.position?.name}}
+              </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
-              {{payroll.employee?.branch?.name}}
+              <div>
+                {{payroll.employee?.branch?.name}}
+              </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
-              {{payroll.createdAt | date:'yyyy-MM'}}
+              <div>
+                {{payroll.createdAt | date:'yyyy-MM'}}
+              </div>
             </th>
             <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
                 [ngStyle]='{"color": payroll.timesheet ? payroll.timesheet.datetime[i]["color"] : "black" }'>
-              {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+              <div>
+                {{payroll?.timesheet ? payroll.timesheet.datetime[i][item.key] : ''}}
+              </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
-              {{payroll?.timesheet?.total}}
+              <div>
+                {{payroll?.timesheet?.total}}
+              </div>
             </th>
             <th class='pointer text-center'>
-              <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'
-                   style='height: fit-content'>
+              <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
                 <input style='pointer-events: none' disabled type='checkbox'
                        [checked]='payroll.manConfirmedAt !== null'>
               </div>
@@ -161,5 +176,9 @@
   .table-scroll thead th:nth-child(3),
   .table-scroll thead th:nth-child(4) {
     z-index: 5;
+  }
+
+  .table-scroll tbody th {
+    height: 40px;
   }
 </style>
