@@ -275,6 +275,14 @@ tr:nth-child(even)  {
   color: $base-color
 }
 
+input[type="search"] {
+  -webkit-appearance: searchfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
 //custom class bootstrap
 .form-control.is-invalid {
   background-image: none !important;
