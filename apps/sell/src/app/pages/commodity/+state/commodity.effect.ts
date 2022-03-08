@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { CommodityService } from '../service/commodity.service';
-import { CommodityAction } from './commodity.action';
-import { throwError } from 'rxjs';
-import { OrderActions } from '../../order/+state/order.actions';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommodityQuery } from './commodity.query';
-import { CommodityStore } from './commodity.store';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {CommodityService} from '../service/commodity.service';
+import {CommodityAction} from './commodity.action';
+import {throwError} from 'rxjs';
+import {OrderActions} from '../../order/+state/order.actions';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CommodityQuery} from './commodity.query';
+import {CommodityStore} from './commodity.store';
+import {CommodityEntity} from "../entities/commodity.entity";
 
 @Injectable()
 export class CommodityEffect {
@@ -20,24 +21,12 @@ export class CommodityEffect {
   ) {
   }
 
-  loadCommodity$ = createEffect(() =>
+  addOne$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CommodityAction.loadInit),
-      switchMap((params) => this.commodityService.pagination(params.CommodityDTO)),
-      map((ResponsePaginate) => {
-        this.commodityStore.set(ResponsePaginate.data);
-        this.commodityStore.update((state) => ({ ...state, total: ResponsePaginate.total }));
-      }),
-      catchError((err) => throwError(err))
-    )
-  );
-
-  addCommodity$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CommodityAction.addCommodity),
-      switchMap((props) => this.commodityService.addOne(props.commodity).pipe(
+      ofType(CommodityAction.addOne),
+      switchMap((props) => this.commodityService.addOne(props).pipe(
         map(commodity => {
-            this.snackbar.open('Thêm hàng hóa thành công', '', { duration: 1500 });
+            this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
             this.commodityStore.add(commodity);
           }
         ),
@@ -45,37 +34,25 @@ export class CommodityEffect {
       ))
     ));
 
-  loadAllCommodities$ = createEffect(() =>
+  loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CommodityAction.loadAllCommodities),
-      switchMap((_) => this.commodityService.pagination()),
-      map((ResponsePaginate) => {
-          this.commodityStore.set(ResponsePaginate.data);
-          this.commodityStore.update((state) => ({ ...state, total: ResponsePaginate.total }));
-        }
-      ),
-      catchError((err) => throwError(err))
-    )
-  );
-
-
-  loadMoreCommodity$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CommodityAction.loadMoreCommodity),
-      withLatestFrom(this.commodityQuery.selectCount()),
-      map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props.commodityDTO)), {
-          skip: skip
-        })
-      ),
-      switchMap((params) => this.commodityService.pagination(params)),
-      map((ResponsePaginate) => {
-          this.snackbar.open(ResponsePaginate.data.length > 0 ?
-            'Tải hàng hóa thành công' :
-            'Đã tải hết hành hóa'
-            , '', { duration: 1500 });
-          this.commodityStore.add(ResponsePaginate.data);
-        }
+      ofType(CommodityAction.loadAll),
+      switchMap((params) => this.commodityService.pagination(params).pipe(
+          map((ResponsePaginate) => {
+              if (ResponsePaginate.data.length === 0) {
+                this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
+              } else {
+                if (params?.skip && params.skip > 0) {
+                  this.commodityStore.add(ResponsePaginate.data);
+                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                } else {
+                  this.commodityStore.set(ResponsePaginate.data);
+                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                }
+              }
+            }
+          ),
+        )
       ),
       catchError((err) => throwError(err))
     )
@@ -83,10 +60,10 @@ export class CommodityEffect {
 
   getCommodity$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CommodityAction.getCommodity),
+      ofType(CommodityAction.getOne),
       switchMap((props) => this.commodityService.getOne(props.id)),
       map((commodity) => {
-          this.commodityStore.update(commodity.id, commodity);
+          this.commodityStore.upsert(commodity.id, commodity);
         }
       ),
       catchError((err) => throwError(err))
@@ -95,14 +72,14 @@ export class CommodityEffect {
 
   updateCommodity$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CommodityAction.updateCommodity),
-      switchMap((props) => this.commodityService.update(props.id, props.commodity).pipe(
+      ofType(CommodityAction.update),
+      switchMap((props) => this.commodityService.update(props.id, props.updateCommodityDto).pipe(
         map(_ => {
-            this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
-            if (props.orderId) {
-              this.actions$.dispatch(OrderActions.loadOne({ id: props.orderId }))
+            this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
+            if (props.updateCommodityDto.orderId) {
+              this.actions$.dispatch(OrderActions.loadOne({id: props.updateCommodityDto.orderId}))
             }
-              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
+            return CommodityAction.loadAll({take: 30, skip: 0});
           }
         ),
         catchError((err) => throwError(err))
@@ -112,19 +89,14 @@ export class CommodityEffect {
 
   deleteCommodity$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CommodityAction.deleteCommodity),
+      ofType(CommodityAction.remove),
       switchMap((props) => this.commodityService.delete(props.id).pipe(
         map(_ => {
-            this.snackbar.open('Xóa hàng hóa thành công', '', { duration: 1500 });
-            if (props.orderId) {
-              return OrderActions.loadOne({ id: props.orderId });
-            } else {
-              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
-            }
-          }
-        ),
-        catchError((err) => throwError(err))
-      ))
+          this.snackbar.open('Xóa hàng hóa thành công', '', {duration: 1500});
+          this.commodityStore.remove(props.id)
+        })
+      )),
+      catchError((err) => throwError(err))
     )
   );
 }

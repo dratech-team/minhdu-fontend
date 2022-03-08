@@ -12,6 +12,7 @@ import {OrderEntity} from '../enitities/order.interface';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
+import {CommodityStore} from "../../commodity/+state/commodity.store";
 
 @Injectable()
 export class OrderEffect {
@@ -22,6 +23,7 @@ export class OrderEffect {
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
+    private readonly commodityStore: CommodityStore,
     private readonly orderService: OrderService,
     private readonly router: Router
   ) {
@@ -87,6 +89,7 @@ export class OrderEffect {
     ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id)),
     map((order) => {
+        this.commodityStore.add(order.commodities)
         return this.orderStore.upsert(order.id, order)
       }
     ),

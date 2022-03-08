@@ -7,12 +7,12 @@ import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderActions } from '../../+state/order.actions';
 import { MainAction } from '../../../../states/main.action';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CustomerEntity } from '../../../customer/entities/customer.entity';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
 import { CustomerQuery } from '../../../customer/+state/customer.query';
 import { AddOrderDto } from '../../dto/add-order.dto';
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -22,7 +22,7 @@ export class AddOrderComponent implements OnInit {
 
   customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
-  commoditiesPicked: Commodity [] = [];
+  commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
   customerId: number = this.route.snapshot.params.id;
@@ -97,7 +97,7 @@ export class AddOrderComponent implements OnInit {
     );
   }
 
-  deleteCommodity(commodity: Commodity) {
+  deleteCommodity(commodity: CommodityEntity) {
     const index = this.commoditiesPicked.findIndex(item => item.id === commodity.id);
     this.commoditiesPicked.splice(index, 1);
   }

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../reducers';
 import { CommodityAction } from '../../+state/commodity.action';
-import { Commodity } from '../../+state/commodity.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { CommodityQuery } from '../../+state/commodity.query';
+import {CommodityEntity} from "../../entities/commodity.entity";
 
 @Component({
   templateUrl:'detail-commodity.component.html'
@@ -22,10 +22,10 @@ export class DetailCommodityComponent implements OnInit{
   ) {
   }
   ngOnInit() {
-    this.store.dispatch(CommodityAction.getCommodity({id: this.getId}))
+    this.store.dispatch(CommodityAction.getOne({id: this.getId}))
 
   }
-  updateCommodity(commodity: Commodity){
+  updateCommodity(commodity: CommodityEntity){
     this.dialog.open(CommodityDialogComponent, {
       width: '30%',
       data: commodity

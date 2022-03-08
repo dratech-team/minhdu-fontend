@@ -1,6 +1,6 @@
 import { OrderEntity } from '../enitities/order.interface';
 import { CustomerEntity } from '../../customer/entities/customer.entity';
-import { Commodity } from '../../commodity/+state/commodity.interface';
+import {CommodityEntity} from "../../commodity/entities/commodity.entity";
 
 export interface AddOrderDto extends Pick<OrderEntity, 'createdAt' | 'endedAt' | 'explain'> {
   readonly customerId: CustomerEntity['id'];
@@ -9,5 +9,5 @@ export interface AddOrderDto extends Pick<OrderEntity, 'createdAt' | 'endedAt' |
   readonly districtId?: number;
   readonly wardId?: number;
   readonly note?: string;
-  readonly commodityIds?: Commodity['id'][];
+  readonly commodityIds?: CommodityEntity['id'][];
 }

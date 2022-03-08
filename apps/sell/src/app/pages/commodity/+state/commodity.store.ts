@@ -1,8 +1,8 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { Commodity } from './commodity.interface';
+import {CommodityEntity} from "../entities/commodity.entity";
 
-export interface CommodityState extends EntityState<Commodity> {
+export interface CommodityState extends EntityState<CommodityEntity> {
   readonly loading: boolean;
   readonly total: number;
 }

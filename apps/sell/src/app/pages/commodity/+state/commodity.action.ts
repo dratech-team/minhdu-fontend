@@ -1,70 +1,36 @@
-import { createAction, props } from '@ngrx/store';
-import { Commodity, CommodityDTO } from './commodity.interface';
+import {createAction, props} from '@ngrx/store';
+import {AddCommodityDto} from "../dto/add-commodity.dto";
+import {CommodityEntity} from "../entities/commodity.entity";
+import {CommodityDTO} from "../dto/commodity.dto";
+import {updateCommodityDto} from "../dto/update-commodity.dto";
 
 
-export const addCommodity = createAction(
-  '[ADD_COMMODITY] Add Commodity',
-  props<{ commodity: any }>()
-);
-export const addCommoditySuccess = createAction(
-  '[ADD_COMMODITY] Add Commodity Success',
-  props<{ commodity: Commodity }>()
+export const addOne = createAction(
+  '[COMMODITY] Add One',
+  props<AddCommodityDto>()
 );
 
-export const loadAllCommodities = createAction(
-  '[LOAD_COMMODITY] load All Commodity'
+export const loadAll = createAction(
+  '[COMMODITY] Load All',
+  props<CommodityDTO>()
 );
 
-export const loadInit = createAction(
-  '[LOAD_COMMODITY] Load Commodity',
-  props<{ CommodityDTO : CommodityDTO}>()
-);
-export const loadInitSuccess = createAction(
-  '[LOAD_COMMODITY] Load Commodity Success',
-  props<{ commodity: Commodity[], total: number }>()
+export const getOne = createAction(
+  '[COMMODITY] Get One ',
+  props<{ id: CommodityEntity['id'] }>()
 );
 
-export const loadMoreCommodity = createAction(
-  '[LOAD_MORE_COMMODITY] Load Commodity',
-  props<{ commodityDTO : CommodityDTO }>()
-);
-export const loadMoreCommoditySuccess = createAction(
-  '[LOAD_MORE_COMMODITY] Load More Commodity Success',
-  props<{ commodity: Commodity[], total: number }>()
-);
-export const getCommodity = createAction(
-  '[GET_COMMODITY] Get Commodity ',
-  props<{ id: number }>()
-);
-export const getCommoditySuccess = createAction(
-  '[GET_COMMODITY] Get Commodity Success',
-  props<{ commodity: Commodity }>()
+export const update = createAction(
+  '[COMMODITY] Update',
+  props<{ id: number, updateCommodityDto: updateCommodityDto }>()
 );
 
-export const updateCommodity = createAction(
-  '[UPDATE_COMMODITY] Update Commodity',
-  props<{ id: number, commodity: any, orderId?:number }>()
-);
-
-export const deleteCommodity = createAction(
-  '[DELETE_COMMODITY] Delete Commodity',
+export const remove = createAction(
+  '[COMMODITY] Remove',
   props<{ id: number, orderId?: number }>()
 );
 
 export const resetStateCommodityNewAdd = createAction(
   '[UPDATE_STATE_COMMODITY] Reset State Commodity',
 );
-export const CommodityAction = {
-  loadAllCommodities,
-  addCommodity,
-  addCommoditySuccess,
-  loadInit,
-  loadInitSuccess,
-  loadMoreCommodity,
-  loadMoreCommoditySuccess,
-  getCommodity,
-  getCommoditySuccess,
-  updateCommodity,
-  deleteCommodity,
-  resetStateCommodityNewAdd
-};
+export const CommodityAction = {addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd};

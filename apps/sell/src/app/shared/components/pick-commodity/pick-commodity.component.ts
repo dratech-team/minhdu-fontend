@@ -1,27 +1,26 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { debounceTime } from 'rxjs/operators';
-import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
-import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
-import { CommodityDialogComponent } from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
-import { PickCommodityService } from './pick-commodity.service';
-import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
-import { Actions } from '@datorama/akita-ng-effects';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {CommodityUnit, CustomerType} from '@minhdu-fontend/enums';
+import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {debounceTime} from 'rxjs/operators';
+import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
+import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
+import {CommodityDialogComponent} from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
+import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
-  commodities: Commodity[] = [];
+  commodities: CommodityEntity[] = [];
   commodityUnit = CommodityUnit;
-  @Input() commoditiesSelected: Commodity[] = [];
+  @Input() commoditiesSelected: CommodityEntity[] = [];
   @Input() pickPOne: boolean | undefined;
-  @Output() checkEvent = new EventEmitter<Commodity[]>();
+  @Output() checkEvent = new EventEmitter<CommodityEntity[]>();
   customerType = CustomerType;
   pageIndex = 0;
   pageSize = 30;
@@ -42,7 +41,6 @@ export class PickCommodityComponent implements OnInit {
     private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PickCommodityComponent>,
-    private readonly service: PickCommodityService
   ) {
   }
 
@@ -57,14 +55,12 @@ export class PickCommodityComponent implements OnInit {
     // });
 
     this.actions$.dispatch(
-      CommodityAction.loadInit({
-        CommodityDTO: { take: this.pageSize, skip: this.pageIndex }
-      })
+      CommodityAction.loadAll({take: this.pageSize, skip: this.pageIndex})
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.isEventSearch = true;
       this.actions$.dispatch(
-        CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+        CommodityAction.loadAll(this.commodity(val))
       );
     });
 
@@ -90,7 +86,7 @@ export class PickCommodityComponent implements OnInit {
   commodity(val: any) {
     return {
       take: this.pageSize,
-      skip: this.pageIndex,
+      skip: this.commodityQuery.getCount(),
       name: val.name,
       code: val.code,
       unit: val.unit
@@ -98,7 +94,7 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, { width: '40%' }).afterClosed().subscribe(val => {
+    this.dialog.open(CommodityDialogComponent, {width: '40%'}).afterClosed().subscribe(val => {
       console.log('====', val);
     });
   }
@@ -109,19 +105,19 @@ export class PickCommodityComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: $event.id }));
+        this.actions$.dispatch(CommodityAction.remove({id: $event.id}));
       }
     });
   }
 
-  updateCommodity(commodity: Commodity) {
+  updateCommodity(commodity: CommodityEntity) {
     this.dialog.open(CommodityDialogComponent, {
       width: '40%',
-      data: { commodity }
+      data: {commodity}
     });
   }
 
-  updateAllSelect(commodity: Commodity) {
+  updateAllSelect(commodity: CommodityEntity) {
     this.isSelectAll = pickOne(
       commodity,
       this.commoditiesSelected,
@@ -148,7 +144,7 @@ export class PickCommodityComponent implements OnInit {
     this.isEventSearch = false;
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CommodityAction.loadMoreCommodity({ commodityDTO: this.commodity(val) })
+      CommodityAction.loadAll(this.commodity(val))
     );
   }
 
@@ -157,7 +153,7 @@ export class PickCommodityComponent implements OnInit {
     this.dialogRef.close(this.commoditiesSelected);
   }
 
-  checkedCommodity(commodity: Commodity) {
+  checkedCommodity(commodity: CommodityEntity) {
     return this.commoditiesSelected.some((item) => item.id === commodity.id);
   }
 }

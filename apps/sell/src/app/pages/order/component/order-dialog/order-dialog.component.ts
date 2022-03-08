@@ -8,11 +8,11 @@ import {OrderActions} from '../../+state/order.actions';
 import {DatePipe} from '@angular/common';
 import {CustomerEntity} from '../../../customer/entities/customer.entity';
 import {CustomerActions} from '../../../customer/+state/customer.actions';
-import {Commodity} from '../../../commodity/+state/commodity.interface';
 import {CommodityAction} from '../../../commodity/+state/commodity.action';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {CustomerQuery} from '../../../customer/+state/customer.query';
 import {Actions} from "@datorama/akita-ng-effects";
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 
 
 @Component({
@@ -27,7 +27,7 @@ export class OrderDialogComponent implements OnInit {
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
-  commoditiesSelected: Commodity[] = [];
+  commoditiesSelected: CommodityEntity[] = [];
   wardId!: number;
   districtId!: number;
   provinceId!: number
@@ -91,7 +91,7 @@ export class OrderDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  pickCommodity(commodities: Commodity[]) {
+  pickCommodity(commodities: CommodityEntity[]) {
     this.commoditiesSelected = commodities;
   }
 

@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { MainAction } from '../../../../states/main.action';
-import { Commodity } from '../../../commodity/+state/commodity.interface';
 import { CommodityDialogComponent } from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
 import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
@@ -20,12 +19,17 @@ import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
 import { OrderHistoryEntity } from '../../enitities/order-history.entity';
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {CommodityQuery} from "../../../commodity/+state/commodity.query";
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
+  commodities$ = this.commodityQuery.selectAll({
+    filterBy:[entity => entity.orderId === this.getOrderId]
+  });
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistoryEntity[] = [];
@@ -39,6 +43,7 @@ export class DetailOrderComponent implements OnInit {
   constructor(
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
+    private readonly commodityQuery: CommodityQuery,
     private readonly activatedRoute: ActivatedRoute,
     private readonly dialog: MatDialog,
     private readonly router: Router,
@@ -96,7 +101,7 @@ export class DetailOrderComponent implements OnInit {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id]).then();
   }
 
-  updateCommodity(orderId: number, commodity: Commodity) {
+  updateCommodity(orderId: number, commodity: CommodityEntity) {
     this.dialog.open(CommodityDialogComponent, { data: { commodity, isUpdate: true, orderId: orderId }, width: '30%' });
   }
 
@@ -104,7 +109,7 @@ export class DetailOrderComponent implements OnInit {
     const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.deleteCommodity({ id: commodityId, orderId: this.getOrderId }));
+        this.actions$.dispatch(CommodityAction.remove({ id: commodityId, orderId: this.getOrderId }));
       }
     });
   }
@@ -113,7 +118,7 @@ export class DetailOrderComponent implements OnInit {
     this.router.navigate(['khach-hang/chi-tiet-khach-hang', id]).then();
   }
 
-  closingCommodity(commodity: Commodity, orderId: number) {
+  closingCommodity(commodity: CommodityEntity, orderId: number) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content', data: {
         title: 'Chốt hàng hoá',
@@ -122,10 +127,12 @@ export class DetailOrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.updateCommodity({
-          orderId: orderId,
+        this.actions$.dispatch(CommodityAction.update({
           id: commodity.id,
-          commodity: { closed: !commodity.closed }
+          updateCommodityDto: {
+            orderId: orderId,
+            closed: !commodity.closed
+          }
         }));
       }
     });
