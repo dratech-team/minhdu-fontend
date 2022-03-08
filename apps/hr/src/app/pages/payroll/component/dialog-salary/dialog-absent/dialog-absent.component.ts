@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
@@ -12,6 +11,7 @@ import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
 import { SalaryService } from '../../../service/salary.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-absent.component.html'
@@ -32,14 +32,13 @@ export class DialogAbsentComponent implements OnInit {
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
   constructor(
-    public datePipe: DatePipe,
+    public readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
-    private readonly snackBar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<DialogAbsentComponent>,
     private readonly salaryService: SalaryService,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {
   }
@@ -157,7 +156,7 @@ export class DialogAbsentComponent implements OnInit {
       (typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER)
       && !value.title
     ) {
-      return this.snackbar.open('Chưa nhập tên khấu trừ', '', { duration: 1500 });
+      return this.message.error('Chưa nhập tên khấu trừ');
     }
 
     if (
@@ -165,7 +164,7 @@ export class DialogAbsentComponent implements OnInit {
         this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.OTHER || this.data.salary?.type === 'DEDUCTION')
       && (!value.price)
     ) {
-      return this.snackbar.open('Chưa nhập tiền khấu trừ', '', { duration: 1500 });
+      return this.message.error('Chưa nhập tiền khấu trừ');
     }
 
     if (
@@ -173,14 +172,14 @@ export class DialogAbsentComponent implements OnInit {
         || this.data?.salary?.unit === DatetimeUnitEnum.TIMES)
       && !value.times
     ) {
-      return this.snackBar.open('chưa nhập Số lần', '', { duration: 2000 });
+      return this.message.error('chưa nhập Số lần');
     }
     if (
       typeof this.selectedIndex === 'number' && this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.MINUTE &&
       !value.times &&
       !value.minutes
     ) {
-      return this.snackBar.open('chưa nhập thời gian', '', { duration: 2000 });
+      return this.message.error('chưa nhập thời gian');
     }
 
     if (
@@ -196,8 +195,7 @@ export class DialogAbsentComponent implements OnInit {
         if (this.data.salary?.startedAt) {
           if (moment(value.startedAt).format('YYYY-MM-DD')
             === moment(value.endedAt).format('YYYY-MM-DD')) {
-            return this.snackBar.open('Không được sửa vắng từ ngày đến ngày thành một ngày', '',
-              { duration: 1500 });
+            return this.message.error('Không được sửa vắng từ ngày đến ngày thành một ngày');
           } else {
             Object.assign(salary, {
               times: new Date(value.endedAt).getDate() - new Date(value.startedAt).getDate() + 1,
@@ -245,7 +243,7 @@ export class DialogAbsentComponent implements OnInit {
         this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
-            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.message.success(val.message);
             this.dialogRef.close({
               datetime: value.datetime,
               title: salary.title
@@ -264,26 +262,26 @@ export class DialogAbsentComponent implements OnInit {
 
     } else {
       if (typeof this.selectedIndex !== 'number') {
-        return this.snackBar.open('Chưa chọn Loại', '', { duration: 2000 });
+        return this.message.error('Chưa chọn Loại');
       }
       if (
         this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY && !value.partialDay
       ) {
-        return this.snackBar.open('Chưa chọn buổi ', '', { duration: 2000 });
+        return this.message.error('Chưa chọn buổi');
       }
 
       if (
         this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.MINUTE &&
         !value.datetime
       ) {
-        return this.snackBar.open('Chưa chọn ngày ', '', { duration: 2000 });
+        return this.message.error('Chưa chọn ngày');
       }
       if (
         this.titleAbsents[this.selectedIndex].unit === DatetimeUnitEnum.DAY
         && value.partialDay === PartialDayEnum.ALL_DAY
         && (!value.startedAt || !value.endedAt)
       ) {
-        return this.snackBar.open('Chưa chọn từ ngày đến ngày ', '', { duration: 2000 });
+        return this.message.error('Chưa chọn từ ngày đến ngày');
       }
 
       if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.TIMES) {

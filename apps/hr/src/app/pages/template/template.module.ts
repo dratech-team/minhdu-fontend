@@ -33,6 +33,7 @@ import { SystemModule } from '@minhdu-fontend/system';
 import { TransformBlockSalaryPipe } from './pipes/transform-block-salary.pipe';
 import { DetailHoliday } from './container/detail-holiday/detail-holiday';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     SystemModule,
-    ContextMenuModule
+    ContextMenuModule,
+    NzMessageModule
   ],
   declarations: [
     TemplateOvertimeComponent,

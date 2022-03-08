@@ -12,9 +12,9 @@ import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary
 import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SalaryService } from '../../../service/salary.service';
 import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -32,7 +32,7 @@ export class DialogBasicComponent implements OnInit {
   isManyPeople = false;
   employeeSelected: Employee[] = [];
   salariesSelected: SalaryPayroll[] = [];
-  tabindex = 0
+  tabindex = 0;
   /// FIXME: Dummy data
   salaries = [
     { title: 'Lương cơ bản trích BH', type: SalaryTypeEnum.BASIC_INSURANCE },
@@ -45,7 +45,7 @@ export class DialogBasicComponent implements OnInit {
     public datePipe: DatePipe,
     public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogBasicComponent>,
@@ -94,7 +94,7 @@ export class DialogBasicComponent implements OnInit {
       return;
     }
     if (this.data?.addMultiple && this.employeeSelected.length === 0) {
-      return this.snackbar.open('Chưa chọn nhân viên', 'Đóng');
+      return this.message.error('Chưa chọn nhân viên');
     }
     const value = this.formGroup.value;
     const titleSalary = this.salaries.find((val) => val.type === value.type);
@@ -125,9 +125,9 @@ export class DialogBasicComponent implements OnInit {
               : value.price
           }).subscribe(val => {
           if (val) {
-            this.snackbar.open(val.message, '', { duration: 1500 });
+            this.message.success(val.message);
             this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
-            this.dialogRef.close({title:this.salariesSelected[0].salary.title});
+            this.dialogRef.close({ title: this.salariesSelected[0].salary.title });
           }
         });
       } else {
@@ -193,6 +193,6 @@ export class DialogBasicComponent implements OnInit {
   }
 
   changeTab(indexTab: number) {
-    this.tabindex = indexTab
+    this.tabindex = indexTab;
   }
 }

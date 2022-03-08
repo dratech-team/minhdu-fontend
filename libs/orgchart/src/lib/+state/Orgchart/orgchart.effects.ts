@@ -5,7 +5,6 @@ import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BranchService } from '../../services/branch.service';
 import { throwError } from 'rxjs';
 import { OrgchartService } from '@minhdu-fontend/orgchart';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class OrgchartEffects {
       ofType(OrgchartActions.init),
       switchMap(() => this.orgchartService.getAll()),
       map(branches => {
-        this.message.success('Tải đơn vị thành công');
         return OrgchartActions.loadOrgchartSuccess({ branches });
       }),
       catchError(err => throwError(err))
@@ -27,7 +25,6 @@ export class OrgchartEffects {
       ofType(OrgchartActions.searchBranch),
       mergeMap((params) => this.orgchartService.getAll(params)),
       map(branches => {
-        this.message.success('Tải đơn vị thành công');
         return OrgchartActions.loadOrgchartSuccess({ branches });
       }),
       catchError(err => throwError(err))

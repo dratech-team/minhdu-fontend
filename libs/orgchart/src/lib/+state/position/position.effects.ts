@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, mergeMap, switchMap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {PositionActions} from './position.actions';
-import {PositionService} from '../../services/position.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {OrgchartActions} from '@minhdu-fontend/orgchart';
-import {Store} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { PositionActions } from './position.actions';
+import { PositionService } from '@minhdu-fontend/orgchart';
+import { OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Store } from '@ngrx/store';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class PositionEffects {
@@ -15,8 +15,7 @@ export class PositionEffects {
       ofType(PositionActions.loadPosition),
       mergeMap((prams) => this.positionService.getAll(prams)),
       map(position => {
-          this.snackBar.open('Tải chức vụ thành công', '', {duration: 1000});
-          return PositionActions.loadPositionSuccess({position});
+          return PositionActions.loadPositionSuccess({ position });
         }
       ),
       catchError(err => throwError(err))
@@ -28,8 +27,7 @@ export class PositionEffects {
       ofType(PositionActions.searchPosition),
       mergeMap((props) => this.positionService.getAll(props)),
       map(position => {
-        this.snackBar.open('Tải chức vụ thành công', '', {duration: 1000});
-        return PositionActions.loadPositionSuccess({position});
+        return PositionActions.loadPositionSuccess({ position });
       }),
       catchError(err => throwError(err))
     )
@@ -43,12 +41,12 @@ export class PositionEffects {
           /*if (param.branchId) {
             this.store.dispatch(OrgchartActions.getBranch({id: param.branchId}))
           }*/
-          return res
+          return res;
         })
       )),
       map(position => {
-        this.snackBar.open('Tạo mới chức vụ thành công', '', {duration: 1500});
-        return PositionActions.addPositionSuccess({position});
+        this.message.success('Tạo mới chức vụ thành công');
+        return PositionActions.addPositionSuccess({ position });
       }),
       catchError(err => throwError(err))
     )
@@ -59,12 +57,12 @@ export class PositionEffects {
     this.actions$.pipe(
       ofType(PositionActions.updatePosition),
       switchMap(param => this.positionService.update(param.id,
-        {name: param.name, workday: param.workday, branchesId: param.branchIds}).pipe(
+        { name: param.name, workday: param.workday, branchesId: param.branchIds }).pipe(
         map(position => {
-          this.snackBar.open('Cập nhật chức vụ thành công', '', {duration: 1500});
-          return PositionActions.updatePositionSuccess({position})
+          this.message.success('Cập nhật chức vụ thành công');
+          return PositionActions.updatePositionSuccess({ position });
           /*return OrgchartActions.getBranch({id: param.branchId})*/
-        }),
+        })
       )),
       catchError(err => throwError(err))
     )
@@ -75,11 +73,11 @@ export class PositionEffects {
       ofType(PositionActions.deletePosition),
       switchMap(param => this.positionService.delete(param.id).pipe(
         map(_ => {
-            this.snackBar.open('Xóa chức vụ thành công', '', {duration: 1500});
+            this.message.success('Xóa chức vụ thành công');
             if (param.branchId) {
-              return OrgchartActions.getBranch({id: param.branchId})
+              return OrgchartActions.getBranch({ id: param.branchId });
             } else {
-              return PositionActions.loadPosition()
+              return PositionActions.loadPosition();
             }
           }
         ),
@@ -91,7 +89,7 @@ export class PositionEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private snackBar: MatSnackBar,
+    private message: NzMessageService,
     private positionService: PositionService
   ) {
   }

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Position } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
@@ -23,6 +22,7 @@ import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
 import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
 import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { of } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'template-overtime.component.html'
@@ -52,7 +52,7 @@ export class TemplateOvertimeComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly store: Store<AppState>
   ) {
   }
@@ -148,7 +148,7 @@ export class TemplateOvertimeComponent implements OnInit {
       if (this.positionsSelected.length < 3) {
         if (position.id) {
           if (this.positionsSelected.some((item) => item.id === position.id)) {
-            this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+            this.message.success('chức vụ đã được chọn');
           } else {
             this.positionsSelected.push(position);
             const value = this.formGroup.value;
@@ -160,7 +160,7 @@ export class TemplateOvertimeComponent implements OnInit {
           }
         }
       } else {
-        this.snackbar.open('Chọn tối đa 3 chức vụ', '', { duration: 1500 });
+        this.message.error('Chọn tối đa 3 chức vụ');
       }
       setTimeout(() => {
         this.fCtrlPosition.setValue('');

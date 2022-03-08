@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
 import { selectedConfirmedPayroll } from '../../+state/payroll/payroll.selector';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -37,7 +38,7 @@ export class ConfirmPayrollComponent implements OnInit {
     private readonly payslipService: PayslipService,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>
   ) {
   }
@@ -64,7 +65,7 @@ export class ConfirmPayrollComponent implements OnInit {
         }
       });
     } else {
-      this.snackbar.open('Chưa chọn ngày xác nhận phiếu lương', '', { duration: 1500 });
+      this.message.error('Chưa chọn ngày xác nhận phiếu lương');
     }
   }
 

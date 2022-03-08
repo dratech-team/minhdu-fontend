@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
@@ -12,15 +6,15 @@ import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { Branch, Position } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, EmployeeType } from '@minhdu-fontend/enums';
 import { getAllPosition, PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { map, startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
 import { ReqOvertime } from '../../+state/template-overtime/template-overtime.interface';
 import * as lodash from 'lodash';
 import { selectTemplateAdded } from '../../+state/template-overtime/template-overtime.selector';
 import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-template-overtime.component.html'
@@ -40,7 +34,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
@@ -48,7 +41,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<DialogTemplateOvertimeComponent>,
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
-    private readonly snackbar: MatSnackBar
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -98,14 +91,14 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.positionSelected.length === 0){
-      return this.snackbar.open('Chưa chọn chức vụ', '', {duration:1500})
+    if (this.positionSelected.length === 0) {
+      return this.message.error('Chưa chọn chức vụ');
     }
-    if(this.positions.value){
-      return this.snackbar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+    if (this.positions.value) {
+      return this.message.error('Chức vụ phải chọn không được nhập');
     }
-    if(this.branches.value){
-      return this.snackbar.open('đơn vị phải chọn không được nhập', '', {duration: 1500})
+    if (this.branches.value) {
+      return this.message.error('đơn vị phải chọn không được nhập');
     }
 
     const value = this.formGroup.value;
@@ -139,7 +132,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     if (event.isUserInput) {
       if (position.id) {
         if (this.positionSelected.some(item => item.id === position.id)) {
-          this.snackbar.open('chức vụ đã được chọn', '', { duration: 1000 });
+          this.message.success('chức vụ đã được chọn');
         } else {
           this.positionSelected.push(position);
         }
@@ -151,7 +144,7 @@ export class DialogTemplateOvertimeComponent implements OnInit {
           .subscribe((position) => (
             this.positionSelected.push(position)
           ));
-        this.snackbar.open('Đã tạo', '', { duration: 2500 });
+        this.message.success('Đã tạo');
       }
       setTimeout(() => {
         this.positions.setValue('');
@@ -161,19 +154,19 @@ export class DialogTemplateOvertimeComponent implements OnInit {
     }
   }
 
-  onCreateBranch(event: any,branchInput: HTMLElement, branch?: Branch ) {
+  onCreateBranch(event: any, branchInput: HTMLElement, branch?: Branch) {
     if (event.isUserInput) {
       if (branch?.id === 0) {
         this.branchService
           .addOne({ name: this.branchInput.nativeElement.value })
           .subscribe((branch) => (this.branchSelected = branch));
-        this.snackbar.open('Đã tạo', '', { duration: 2500 });
+        this.message.success('Đã tạo');
       } else {
         this.branchSelected = branch;
       }
       setTimeout(() => {
-        this.branches.setValue('')
-        branchInput.blur()
+        this.branches.setValue('');
+        branchInput.blur();
       });
 
     }
