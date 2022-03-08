@@ -117,11 +117,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.loadInitPayroll();
-
     this.daysInMonth = rageDaysInMonth(this.createdAt);
-
     this.store.dispatch(PositionActions.loadPosition());
-
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
@@ -266,7 +263,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addPayroll($event?: any): void {
-    const ref = this.dialog
+    this.dialog
       .open(AddPayrollComponent, {
         width: '30%',
         data: { employeeId: $event?.employee?.id, addOne: true }
@@ -386,7 +383,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   generate() {
-    const ref = this.dialog.open(AddPayrollComponent, {
+    this.dialog.open(AddPayrollComponent, {
       width: '30%',
       data: {
         employeeType:
@@ -394,8 +391,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             ? EmployeeType.EMPLOYEE_SEASONAL
             : ''
       }
-    });
-    ref.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
@@ -415,10 +411,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   deletePayroll(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
-    });
-    ref.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
           PayrollAction.deletePayroll({
@@ -430,14 +425,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   historyPayroll(event: any) {
-    this.router
-      .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
-        queryParams: {
-          name: event.employee.lastName,
-          employeeType: event.employee.type
-        }
-      })
-      .then();
+    this.router.navigate(['phieu-luong/lich-su-luong', event.employee.id], {
+      queryParams: {
+        name: event.employee.lastName,
+        employeeType: event.employee.type
+      }
+    }).then();
   }
 
   openDialogAddMultiple() {
@@ -504,7 +497,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     return checkInputNumber(event);
   }
 
-
   exportPayroll() {
     const value = this.formGroup.value;
     const payroll = {
@@ -567,8 +559,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogCategoryComponent, {
       width: 'fit-content',
       data: { categoryId: this.categoryControl.value, isUpdate: true }
-    })
-      .afterClosed().subscribe(() => {
+    }).afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
     });
   }
