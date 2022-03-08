@@ -1,38 +1,23 @@
-import {
-  Component,
-  Inject,
-  LOCALE_ID,
-  OnInit,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {AppState} from '../../../../reducers';
-import {FlatSalary, RecipeType, EmployeeType} from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {DatePipe} from '@angular/common';
-import {
-  getAllPosition,
-  PositionActions
-} from 'libs/orgchart/src/lib/+state/position';
-import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
-import {Branch, Category, Position} from '@minhdu-fontend/data-models';
-import {first, map, startWith, tap} from 'rxjs/operators';
-import {combineLatest, Observable} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
-import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
-import {RecipeTypesConstant} from '@minhdu-fontend/constants';
-import {searchAndAddAutocomplete} from '../../../../../../../../libs/utils/orgchart.ultil';
-import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
+import { Component, ElementRef, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../../../reducers';
+import { EmployeeType, FlatSalary, RecipeType } from '@minhdu-fontend/enums';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { DatePipe } from '@angular/common';
+import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
+import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
+import { Branch, Position } from '@minhdu-fontend/data-models';
+import { first, map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
+import { RecipeTypesConstant } from '@minhdu-fontend/constants';
+import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -46,22 +31,22 @@ export class AddEmployeeComponent implements OnInit {
   branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
   formGroup!: FormGroup;
-  lstPosition: Position [] = []
+  lstPosition: Position [] = [];
   positions$ = new Observable<Position[]>();
-  branches$ = this.store.pipe(select(getAllOrgchart))
+  branches$ = this.store.pipe(select(getAllOrgchart));
   submitted = false;
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
-  recipeTypesConstant = RecipeTypesConstant
-  categories$ = this.categoryService.getAll()
+  recipeTypesConstant = RecipeTypesConstant;
+  categories$ = this.categoryService.getAll();
 
   constructor(
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
     private readonly formBuilder: FormBuilder,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
@@ -76,7 +61,7 @@ export class AddEmployeeComponent implements OnInit {
     if (this.data?.employee) {
       this.positionId = this.data.employee.position.id;
       this.branchId = this.data.employee.branch.id;
-      this.wardId = this.data.employee.ward.id
+      this.wardId = this.data.employee.ward.id;
     }
     this.formGroup = this.formBuilder.group({
       identify: [this.data?.employee?.identify],
@@ -147,11 +132,11 @@ export class AddEmployeeComponent implements OnInit {
     });
 
     this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
-      this.branches.setValue(val[0].name)
-      this.branchId = val[0].id
+      this.branches.setValue(val[0].name);
+      this.branchId = val[0].id;
       if (val[0].positions)
-        this.lstPosition = val[0].positions
-    })
+        this.lstPosition = val[0].positions;
+    });
   }
 
   get f() {
@@ -159,35 +144,30 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit(): any {
-
+    const value = this.formGroup.value;
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
 
     if (!this.branchId && this.branches.value && this.data?.employee) {
-      return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+      return this.message.error('Đơn vị phải chọn không được nhập');
     }
 
     if (!this.positionId && this.formPosition.value && this.data?.employee) {
-      return this.snackbar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
+      return this.message.error('Chức vụ phải chọn không được nhập');
     }
     /// FIXME: dummy tạm
     if (!this.data) {
       if (!this.wardId || !this.branchId || !this.positionId) {
-        return this.snackbar.open(
-          'vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn',
-          'Đóng',
-          {duration: 3000}
-        );
+        return this.message.error('vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn');
       }
     }
 
-    const value = this.formGroup.value;
     if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
       && !value.workday
     ) {
-      return this.snackbar.open('Chưa nhập ngày công chuẩn', '', {duration: 1500})
+      return this.message.error('Chưa nhập ngày công chuẩn');
     }
     const employee = {
       id: this?.data?.employee?.id,
@@ -235,7 +215,7 @@ export class AddEmployeeComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(EmployeeAction.addEmployee({employee: employee}));
+      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
     }
 
     this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
@@ -266,7 +246,7 @@ export class AddEmployeeComponent implements OnInit {
         workday: this.formGroup.value.workday
       })
       .subscribe((position) => (this.positionId = position.id));
-    this.snackbar.open('Đã tạo', '', {duration: 2500});
+    this.message.success('Đã tạo');
   }
 
   /// FIXME: Duplicate code
@@ -274,16 +254,16 @@ export class AddEmployeeComponent implements OnInit {
     if (event.isUserInput) {
       if (branch.id === 0) {
         this.branchService
-          .addOne({name: this.branchInput.nativeElement.value})
+          .addOne({ name: this.branchInput.nativeElement.value })
           .subscribe((branch) => (this.branchId = branch.id));
-        this.snackbar.open('Đã tạo', '', {duration: 2500});
+        this.message.success('Đã tạo');
       } else {
         if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
-          this.formGroup.get('recipeType')!.setValue(branch.recipe)
+          this.formGroup.get('recipeType')?.setValue(branch.recipe);
         }
         if (branch.positions) {
-          this.lstPosition = branch.positions
-          this.formPosition.patchValue('')
+          this.lstPosition = branch.positions;
+          this.formPosition.patchValue('');
         }
         this.branchId = branch.id;
       }

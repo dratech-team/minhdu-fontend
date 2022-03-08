@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BranchService } from '../../services/branch.service';
 import { throwError } from 'rxjs';
 import { OrgchartService } from '@minhdu-fontend/orgchart';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class OrgchartEffects {
@@ -14,7 +14,6 @@ export class OrgchartEffects {
       ofType(OrgchartActions.init),
       switchMap(() => this.orgchartService.getAll()),
       map(branches => {
-        this.snackBar.open('Tải đơn vị thành công', '', { duration: 1500 });
         return OrgchartActions.loadOrgchartSuccess({ branches });
       }),
       catchError(err => throwError(err))
@@ -26,7 +25,6 @@ export class OrgchartEffects {
       ofType(OrgchartActions.searchBranch),
       mergeMap((params) => this.orgchartService.getAll(params)),
       map(branches => {
-        this.snackBar.open('Tải đơn vị thành công', '', { duration: 1500 });
         return OrgchartActions.loadOrgchartSuccess({ branches });
       }),
       catchError(err => throwError(err))
@@ -38,7 +36,7 @@ export class OrgchartEffects {
       ofType(OrgchartActions.addBranch),
       switchMap(param => this.branchService.addOne(param.branch)),
       map(branch => {
-          this.snackBar.open('Thêm đơn vị thành công', '', { duration: 1500 });
+          this.message.success('Thêm đơn vị thành công');
           return OrgchartActions.addBranchSuccess({ branch });
         }
       ),
@@ -65,7 +63,7 @@ export class OrgchartEffects {
           positionIds: param.positionIds
         })),
       map(res => {
-        this.snackBar.open('Cập nhật đơn vị thành công', '', { duration: 1500 });
+        this.message.success('Cập nhật đơn vị thành công');
         return OrgchartActions.updateBranchSuccess({ branch: res });
       }),
       catchError(err => throwError(err))
@@ -77,7 +75,7 @@ export class OrgchartEffects {
       ofType(OrgchartActions.deleteBranch),
       switchMap(param => this.branchService.delete(param.id).pipe(
         map(_ => {
-          this.snackBar.open('Xóa đơn vị thành công', '', { duration: 1500 });
+          this.message.success('Xóa đơn vị thành công');
           return OrgchartActions.init();
         }),
         catchError(err => throwError(err))
@@ -90,7 +88,7 @@ export class OrgchartEffects {
       ofType(OrgchartActions.deleteAllowanceInBranch),
       switchMap(param => this.branchService.deleteAllowanceInBranch(param.salaryId).pipe(
         map(res => {
-          this.snackBar.open('Xóa phụ cấp thành công', '', { duration: 1500 });
+          this.message.success('Xóa phụ cấp thành công');
           return OrgchartActions.updateBranchSuccess({ branch: res });
         }),
         catchError(err => throwError(err))
@@ -99,7 +97,7 @@ export class OrgchartEffects {
   );
 
   constructor(
-    private snackBar: MatSnackBar,
+    private message: NzMessageService,
     private actions$: Actions,
     private branchService: BranchService,
     private orgchartService: OrgchartService

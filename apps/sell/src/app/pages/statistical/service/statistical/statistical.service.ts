@@ -3,19 +3,19 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class StatisticalService {
   constructor(
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     public readonly http: HttpClient
   ) {
   }
 
   getAll(url: string, params: any): Observable<any[]> {
     return this.http.get<any[]>(url, { params }).pipe(tap(() => {
-      this.snackbar.open('Thống kê thành công', '', { duration: 1500 });
+      this.message.success('Thống kê thành công');
     }));
   }
 }

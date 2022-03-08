@@ -15,6 +15,7 @@ import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { MainReducer } from '../../states/mainReducer';
 import { StatisticalService } from './service/statistical/statistical.service';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { StatisticalService } from './service/statistical/statistical.service';
     MatDialogModule,
     MatMenuModule,
     MatButtonModule,
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer)
+    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
+    NzMessageModule
   ],
   declarations: [
     PickDayToDayComponent,

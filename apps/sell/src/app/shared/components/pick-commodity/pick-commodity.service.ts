@@ -1,9 +1,10 @@
-import { select, Store } from '@ngrx/store';
-import { CommodityAction } from '../../../pages/commodity/+state/commodity.action';
-import { Injectable } from '@angular/core';
-import { CommodityQuery } from '../../../pages/commodity/+state/commodity.query';
+import {select, Store} from '@ngrx/store';
+import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
+import {Injectable} from '@angular/core';
+import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
+import {CommodityDTO} from "../../../pages/commodity/dto/commodity.dto";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PickCommodityService {
   commodities$ = this.commodityQuery.selectAll();
 
@@ -14,11 +15,11 @@ export class PickCommodityService {
   }
 
   loadInit() {
-    return this.store.dispatch(CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } }));
+    return this.store.dispatch(CommodityAction.loadAll({take: 30, skip: 0}));
   }
 
-  scrollCommodities(val: any) {
-    this.store.dispatch(CommodityAction.loadMoreCommodity(val));
+  scrollCommodities(val: CommodityDTO) {
+    this.store.dispatch(CommodityAction.loadAll(val));
   }
 
   commodities() {

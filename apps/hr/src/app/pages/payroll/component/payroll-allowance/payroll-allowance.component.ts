@@ -1,11 +1,12 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum, sortTypeEnum
+  SearchTypeEnum,
+  sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { of, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -18,7 +19,6 @@ import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
 import { MatDialog } from '@angular/material/dialog';
 import { SalaryService } from '../../service/salary.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
@@ -35,7 +35,8 @@ import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dial
 import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import {MatSort} from "@angular/material/sort";
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -89,9 +90,9 @@ export class PayrollAllowanceComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly store: Store<AppState>,
     private readonly salaryService: SalaryService,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef
   ) {
   }
 
@@ -115,34 +116,26 @@ export class PayrollAllowanceComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     if (this.allowanceTitle) {
-      this.formGroup
-        .get('title')!
-        .setValue(this.allowanceTitle, { emitEvent: false });
+      this.formGroup.get('title')?.setValue(this.allowanceTitle, { emitEvent: false });
 
-      this.formGroup
-        .get('createdAt')!
-        .setValue(
-          this.datePipe.transform(
-            new Date(getSelectors(selectedCreateAtPayroll, this.store)),
-            'yyyy-MM'
-          ),
-          { emitEvent: false }
-        );
+      this.formGroup.get('createdAt')?.setValue(
+        this.datePipe.transform(
+          new Date(getSelectors(selectedCreateAtPayroll, this.store)),
+          'yyyy-MM'
+        ),
+        { emitEvent: false }
+      );
     }
 
     this.eventAddAllowance?.subscribe((val) => {
-      this.formGroup
-        .get('title')!
-        .setValue(val.allowanceTitle, { emitEvent: false });
-      this.formGroup
-        .get('createdAt')!
-        .setValue(
-          this.datePipe.transform(
-            new Date(getSelectors(selectedCreateAtPayroll, this.store)),
-            'yyyy-MM'
-          ),
-          { emitEvent: false }
-        );
+      this.formGroup.get('title')?.setValue(val.allowanceTitle, { emitEvent: false });
+      this.formGroup.get('createdAt')?.setValue(
+        this.datePipe.transform(
+          new Date(getSelectors(selectedCreateAtPayroll, this.store)),
+          'yyyy-MM'
+        ),
+        { emitEvent: false }
+      );
       this.store.dispatch(
         PayrollAction.loadInit({
           payrollDTO: {
@@ -323,9 +316,7 @@ export class PayrollAllowanceComponent implements OnInit {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup
-            .get('title')!
-            .setValue(val.title, { emitEvent: false });
+          this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -346,7 +337,7 @@ export class PayrollAllowanceComponent implements OnInit {
         }
       });
     } else {
-      this.snackbar.open('chưa chọn cùng loại lương', 'Đóng');
+      this.message.error('chưa chọn cùng loại lương');
     }
   }
 
@@ -356,7 +347,7 @@ export class PayrollAllowanceComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        let deleteSuccess = new Subject<number>();
+        const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
             if (val) {
@@ -368,9 +359,7 @@ export class PayrollAllowanceComponent implements OnInit {
           if (val === this.salariesSelected.length - 1) {
             this.isSelectSalary = false;
             this.salariesSelected = [];
-            this.snackbar.open('Xóa lương cơ bản thành công', '', {
-              duration: 1500
-            });
+            this.message.success('Xóa lương cơ bản thành công');
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollAllowance() })
             );
@@ -393,9 +382,7 @@ export class PayrollAllowanceComponent implements OnInit {
                 payrollDTO: this.mapPayrollAllowance()
               })
             );
-            this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500
-            });
+            this.message.success('Xóa phiếu lương thành công');
           }
         });
       }
@@ -447,13 +434,13 @@ export class PayrollAllowanceComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
-    if(this.sort?.active){
+    if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
-      })
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+      });
     }
     if (!value.name) {
       delete params.name;
@@ -466,7 +453,7 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')!?.patchValue(branchName);
+    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {
@@ -479,8 +466,7 @@ export class PayrollAllowanceComponent implements OnInit {
 
   sortPayroll() {
     this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO : this.mapPayrollAllowance()
-    }))
+      payrollDTO: this.mapPayrollAllowance()
+    }));
   }
-
 }

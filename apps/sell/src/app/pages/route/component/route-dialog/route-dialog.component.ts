@@ -6,8 +6,8 @@ import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
 import {OrderEntity} from '../../../order/enitities/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Commodity} from "../../../commodity/+state/commodity.interface";
 import {MatTabChangeEvent} from "@angular/material/tabs";
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -16,7 +16,7 @@ export class RouteDialogComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
   orderIdsOfRoute: OrderEntity[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
-  commoditySelected: Commodity[] = []
+  commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
   tabIndex = 0;
 
@@ -55,7 +55,7 @@ export class RouteDialogComponent implements OnInit {
     console.log(this.orderIdsOfRoute)
   }
 
-  pickCommodity(commodities: Commodity[]) {
+  pickCommodity(commodities: CommodityEntity[]) {
     this.commoditySelected = [...commodities];
   }
 

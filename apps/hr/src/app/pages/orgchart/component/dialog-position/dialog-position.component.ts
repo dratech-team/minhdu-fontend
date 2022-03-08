@@ -5,11 +5,10 @@ import { select, Store } from '@ngrx/store';
 import { PositionActions, selectPositionAdded } from '../../../../../../../../libs/orgchart/src/lib/+state/position';
 import { Branch } from '@minhdu-fontend/data-models';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAndAddAutocomplete, searchAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
+import { searchAutocomplete } from '@minhdu-fontend/utils';
 import { startWith } from 'rxjs/operators';
-import {MatSnackBar} from "@angular/material/snack-bar";
 import * as lodash from 'lodash';
-
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-position.component.html'
@@ -17,15 +16,16 @@ import * as lodash from 'lodash';
 export class DialogPositionComponent implements OnInit {
   formGroup!: FormGroup;
   submitted = false;
-  branchId!: number
+  branchId!: number;
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
-  branchesSelected: Branch[] = []
+  branchesSelected: Branch[] = [];
+
   constructor(
     private readonly dialogRef: MatDialogRef<DialogPositionComponent>,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -33,18 +33,18 @@ export class DialogPositionComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
-      if(this.data.position?.branches){
-        this.branchesSelected = [...this.data.position.branches]
+      if (this.data.position?.branches) {
+        this.branchesSelected = [...this.data.position.branches];
       }
-      this.branchId = this.data.position.branchId
+      this.branchId = this.data.position.branchId;
       this.formGroup = this.formBuilder.group({
         position: [this.data.position.name],
-        workday: [this.data.position.workday],
+        workday: [this.data.position.workday]
       });
     } else {
       this.formGroup = this.formBuilder.group({
         position: [undefined, Validators.required],
-        workday: [undefined, Validators.required],
+        workday: [undefined, Validators.required]
       });
     }
     this.branches$ = searchAutocomplete(
@@ -60,8 +60,8 @@ export class DialogPositionComponent implements OnInit {
   onsubmit(): any {
     this.submitted = true;
     if (this.formGroup.valid) {
-      if(this.branches.value){
-        return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+      if (this.branches.value) {
+        return this.message.error('Đơn vị phải chọn không được nhập');
       }
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
@@ -90,14 +90,14 @@ export class DialogPositionComponent implements OnInit {
   }
 
   selectBranch(branch: Branch) {
-      this.branchId = branch.id;
+    this.branchId = branch.id;
   }
 
   onSelectBranch(event: any, branch: Branch, branchesInput: HTMLInputElement) {
     if (event.isUserInput) {
       if (branch.id) {
         if (this.branchesSelected.some(item => item.id === branch.id)) {
-          this.snackbar.open('Đơn vị đã được chọn', '', { duration: 1000 });
+          this.message.success('Đơn vị đã được chọn');
         } else {
           this.branchesSelected.push(branch);
         }
@@ -111,6 +111,6 @@ export class DialogPositionComponent implements OnInit {
   }
 
   removeBranchSelected(branch: Branch) {
-    lodash.remove(this.branchesSelected, branch)
+    lodash.remove(this.branchesSelected, branch);
   }
 }

@@ -1,8 +1,7 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
 import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
@@ -12,7 +11,8 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum, sortTypeEnum
+  SearchTypeEnum,
+  sortTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -47,7 +47,8 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogOvertimeMultipleComponent } from '../dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
 import { DialogOvertimeComponent } from '../dialog-salary/dialog-overtime/dialog-overtime.component';
-import {MatSort} from "@angular/material/sort";
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -72,7 +73,7 @@ export class PayrollOvertimeComponent implements OnInit {
   searchTypeConstant = SearchTypeConstant;
   isSelectSalary = false;
   isEventSearch = false;
-  sortEnum = sortTypeEnum
+  sortEnum = sortTypeEnum;
 
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
@@ -100,7 +101,7 @@ export class PayrollOvertimeComponent implements OnInit {
   });
 
   constructor(
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
@@ -294,13 +295,13 @@ export class PayrollOvertimeComponent implements OnInit {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
-    if(this.sort.active){
+    if (this.sort.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
-      })
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+      });
     }
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
@@ -348,10 +349,7 @@ export class PayrollOvertimeComponent implements OnInit {
     console.log(uniq, this.mapSalary(this.salariesSelected));
     if (uniq.length === 1) {
       if (!this.salariesSelected[0].salary.unit) {
-        return this.snackbar.open(
-          'Không sửa lương tùy chọn cho nhiều nhân viên được',
-          'Đóng'
-        );
+        return this.message.success('Không sửa lương tùy chọn cho nhiều nhân viên được');
       }
       const ref = this.dialog.open(DialogOvertimeComponent, {
         width: 'fit-content',
@@ -404,7 +402,7 @@ export class PayrollOvertimeComponent implements OnInit {
       //     : ''
       // }
 
-      this.snackbar.open(
+      this.message.error(
         `Sửa đổi hàng loạt phải giống nhau về Loại tăng ca, đơn vị tính, đơn giá và ngày tăng ca. Mục đang bị sai:
          ${
           uniqTitle.length > 1
@@ -420,8 +418,7 @@ export class PayrollOvertimeComponent implements OnInit {
           uniqDatetime.length > 1
             ? 'ngày tăng ca: ' + uniqDatetime.join(', ') + ', '
             : ''
-        }`,
-        'Đã hiểu'
+        }`
       );
     }
   }
@@ -443,10 +440,9 @@ export class PayrollOvertimeComponent implements OnInit {
     }));
 
   deleteMultipleSalaryOvertime(): any {
-    const ref = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
-    });
-    ref.afterClosed().subscribe((value) => {
+    }).afterClosed().subscribe((value) => {
       const deleteSuccess = new Subject<number>();
       if (value) {
         this.salariesSelected.forEach((salary, index) => {
@@ -456,7 +452,7 @@ export class PayrollOvertimeComponent implements OnInit {
         });
         deleteSuccess.subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
-            this.snackbar.open('Xóa tăng ca thành công', 'Đóng');
+            this.message.success('Xóa tăng ca thành công');
             this.salariesSelected = [];
             this.isSelectSalary = false;
             const value = this.formGroup.value;
@@ -483,10 +479,9 @@ export class PayrollOvertimeComponent implements OnInit {
   }
 
   deleteSalaryOvertime(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
-    });
-    ref.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         const value = this.formGroup.value;
         const payrollOvertime = {
@@ -503,9 +498,7 @@ export class PayrollOvertimeComponent implements OnInit {
         }
         this.salaryService.delete(event.id).subscribe((val: any) => {
           if (val) {
-            this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500
-            });
+            this.message.success('Xóa phiếu lương thành công');
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollOvertime() })
             );
@@ -568,8 +561,8 @@ export class PayrollOvertimeComponent implements OnInit {
 
   sortPayroll() {
     this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO : this.mapPayrollOvertime()
-    }))
+      payrollDTO: this.mapPayrollOvertime()
+    }));
   }
 
 }

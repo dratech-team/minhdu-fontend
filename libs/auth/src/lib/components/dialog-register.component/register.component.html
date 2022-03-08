@@ -1,4 +1,10 @@
-<div style='width: 500px'>
+<div style='width: 500px' class="main-popup">
+  <div mat-dialog-close class='close-popup'>
+    <span class='mr-1'> close</span>
+    <div class='x-popup'>
+      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
+    </div>
+  </div>
   <h2 *ngIf='!data?.isUpdate' mat-dialog-title>Tạo tài khoản</h2>
   <h2 *ngIf='data?.isUpdate' mat-dialog-title>Cập nhật tài khoản</h2>
   <mat-dialog-content class='mat-typography' style='max-height: 45vh'>

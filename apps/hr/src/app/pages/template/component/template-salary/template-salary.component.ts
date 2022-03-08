@@ -1,18 +1,18 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {BlockSalariesConstant} from '@minhdu-fontend/constants';
-import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
-import {selectTemplateAdded, selectTemplateLoaded} from '../../+state/teamlate-salary/template-salary.selector';
-import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
-import {Branch} from "@minhdu-fontend/data-models";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import * as lodash from "lodash";
-import {searchAutocomplete} from "@minhdu-fontend/utils";
-import {startWith} from "rxjs/operators";
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { SalaryTypeEnum } from '@minhdu-fontend/enums';
+import { BlockSalariesConstant } from '@minhdu-fontend/constants';
+import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
+import { selectTemplateAdded } from '../../+state/teamlate-salary/template-salary.selector';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { Branch } from '@minhdu-fontend/data-models';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import * as lodash from 'lodash';
+import { searchAutocomplete } from '@minhdu-fontend/utils';
+import { startWith } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'template-salary.component.html'
@@ -25,13 +25,13 @@ export class TemplateSalaryComponent implements OnInit {
   blockSalary = BlockSalariesConstant;
   branches = new FormControl();
   branches$ = this.store.pipe(select(getAllOrgchart));
-  branchesSelected: Branch[] = []
+  branchesSelected: Branch[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<TemplateSalaryComponent>
   ) {
   }
@@ -40,7 +40,7 @@ export class TemplateSalaryComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
     if (this.data?.isUpdate) {
       if (this.data.template?.branches) {
-        this.branchesSelected = [...this.data.template?.branches]
+        this.branchesSelected = [...this.data.template?.branches];
       }
       this.formGroup = this.formBuilder.group({
         type: [this.data.template.type, Validators.required],
@@ -70,7 +70,7 @@ export class TemplateSalaryComponent implements OnInit {
       return;
     }
     if (this.branches.value) {
-      return this.snackbar.open('Đơn vị phải chọn không được nhập', '', {duration: 1500})
+      return this.message.error('Đơn vị phải chọn không được nhập');
     }
     const value = this.formGroup.value;
     const template = {
@@ -87,7 +87,7 @@ export class TemplateSalaryComponent implements OnInit {
         }));
     } else {
       this.store.dispatch(TemplateSalaryAction.AddTemplate(
-        {template: template}));
+        { template: template }));
     }
     this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
       if (added) {
@@ -100,7 +100,7 @@ export class TemplateSalaryComponent implements OnInit {
     if (event.isUserInput) {
       if (branch.id) {
         if (this.branchesSelected.some(item => item.id === branch.id)) {
-          this.snackbar.open('Đơn vị đã được chọn', '', {duration: 1000});
+          this.message.success('Đơn vị đã được chọn');
         } else {
           this.branchesSelected.push(branch);
         }
@@ -113,7 +113,7 @@ export class TemplateSalaryComponent implements OnInit {
   }
 
   removeBranchSelected(branch: Branch) {
-    lodash.remove(this.branchesSelected, branch)
+    lodash.remove(this.branchesSelected, branch);
   }
 
 }

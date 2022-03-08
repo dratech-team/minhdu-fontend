@@ -15,6 +15,7 @@ import { selectorAllTemplate } from '../../../../template/+state/template-overti
 import { startWith } from 'rxjs/operators';
 import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
 import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'dialog-seasonal.component.html'
@@ -38,7 +39,7 @@ export class DialogSeasonalComponent implements OnInit {
   constructor(
     public datePipe: DatePipe,
     private readonly dialog: MatDialog,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<DialogSeasonalComponent>,
@@ -93,10 +94,10 @@ export class DialogSeasonalComponent implements OnInit {
   onSubmit(): any {
     if (this.formGroup.value.unit === DatetimeUnitEnum.HOUR) {
       if (!this.checkTemplate) {
-        return this.snackbar.open('Chưa chọn loại tăng ca', '', { duration: 1500 });
+        return this.message.error('Chưa chọn loại tăng ca');
       }
       if (!this.datetime) {
-        return this.snackbar.open('Chưa nhập ngày tăng ca', '', { duration: 1500 });
+        return this.message.error('Chưa nhập ngày tăng ca');
       }
     }
 

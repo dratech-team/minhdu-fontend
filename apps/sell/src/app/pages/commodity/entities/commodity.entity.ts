@@ -2,7 +2,7 @@ import {CommodityUnit} from '@minhdu-fontend/enums';
 import {OrderEntity} from '../../order/enitities/order.interface';
 import {RouteEntity} from "../../route/entities/route.entity";
 
-export interface Commodity {
+export interface CommodityEntity {
   id: number
   code: string
   name: string
@@ -18,14 +18,8 @@ export interface Commodity {
   },
   closed: boolean,
   routeId?: number
-  route?: RouteEntity
+  route?: RouteEntity,
+  orderId?: number
 }
 
-export interface CommodityDTO {
-  take?: number,
-  skip?: number,
-  orderId?: number,
-  code?: string,
-  name?: string,
-  unit?: string
-}
+

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -43,7 +43,8 @@ import { SalaryService } from '../../service/salary.service';
 import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
 import { DialogAbsentComponent } from '../dialog-salary/dialog-absent/dialog-absent.component';
 import { DialogTimekeepingComponent } from '../dialog-salary/timekeeping/dialog-timekeeping.component';
-import {MatSort} from "@angular/material/sort";
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-payroll-absent',
@@ -70,7 +71,7 @@ export class PayrollAbsentComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
   isSelectSalary = false;
   salaries: SalaryPayroll[] = [];
-  sortEnum = sortTypeEnum
+  sortEnum = sortTypeEnum;
 
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -99,14 +100,14 @@ export class PayrollAbsentComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly store: Store<AppState>,
     private readonly salaryService: SalaryService,
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
-    let paramLoadInit = {
+    const paramLoadInit = {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
@@ -146,29 +147,23 @@ export class PayrollAbsentComponent implements OnInit {
     );
 
     if (this.absentTitle) {
-      this.formGroup
-        .get('title')!
-        .setValue(this.absentTitle);
-      this.formGroup
-        .get('startedAt')!
-        .setValue(
-          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-        );
-      this.formGroup
-        .get('endedAt')!
-        .setValue(
-          this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-        );
+      this.formGroup.get('title')?.setValue(this.absentTitle);
+      this.formGroup.get('startedAt')?.setValue(
+        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+      );
+      this.formGroup.get('endedAt')?.setValue(
+        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
+      );
     }
 
     this.eventAddAbsent?.subscribe((val) => {
       this.formGroup.get('title')?.setValue(val.absentTitle);
       this.formGroup.get('startedAt')?.setValue(
-          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-        );
+        this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+      );
       this.formGroup.get('endedAt')?.setValue(
-          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-        );
+        this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+      );
     });
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
@@ -263,11 +258,11 @@ export class PayrollAbsentComponent implements OnInit {
       if (val) {
         this.formGroup.get('title')?.setValue(val.title);
         this.formGroup.get('startedAt')?.setValue(
-            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-          );
+          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+        );
         this.formGroup.get('endedAt')?.setValue(
-            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-          );
+          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+        );
       }
     });
   }
@@ -302,15 +297,15 @@ export class PayrollAbsentComponent implements OnInit {
           this.salariesSelected = [];
           this.formGroup.get('title')?.setValue(val.title);
           this.formGroup.get('startedAt')?.setValue(
-              this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-            );
+            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+          );
           this.formGroup.get('endedAt')?.setValue(
-              this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-            );
+            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
+          );
         }
       });
     } else {
-      this.snackbar.open('chưa chọn cùng loại lương', 'Đóng');
+      this.message.error('chưa chọn cùng loại lương');
     }
   }
 
@@ -320,7 +315,7 @@ export class PayrollAbsentComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        let deleteSuccess = new Subject<number>();
+        const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
             if (val) {
@@ -332,9 +327,7 @@ export class PayrollAbsentComponent implements OnInit {
           if (val === this.salariesSelected.length - 1) {
             this.isSelectSalary = false;
             this.salariesSelected = [];
-            this.snackbar.open('Xóa khấu trừ thành công', '', {
-              duration: 1500
-            });
+            this.message.success('Xóa khấu trừ thành công');
             this.store.dispatch(
               PayrollAction.loadInit({ payrollDTO: this.mapPayrollAbsent() })
             );
@@ -357,9 +350,7 @@ export class PayrollAbsentComponent implements OnInit {
                 payrollDTO: this.mapPayrollAbsent()
               })
             );
-            this.snackbar.open('Xóa phiếu lương thành công', '', {
-              duration: 1500
-            });
+            this.message.success('Xóa phiếu lương thành công');
           }
         });
       }
@@ -406,13 +397,13 @@ export class PayrollAbsentComponent implements OnInit {
       unit: value.unit,
       filterType: FilterTypeEnum.ABSENT,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch
     };
-    if(this.sort?.active){
+    if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
-      })
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+      });
     }
     if (
       moment(value.startedAt).format('YYYY-MM-DD') ===
@@ -449,7 +440,7 @@ export class PayrollAbsentComponent implements OnInit {
 
   sortPayroll() {
     this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO : this.mapPayrollAbsent()
-    }))
+      payrollDTO: this.mapPayrollAbsent()
+    }));
   }
 }

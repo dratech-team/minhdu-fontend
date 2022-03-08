@@ -9,7 +9,6 @@ import {MainAction} from '../../../../states/main.action';
 import {
   DialogDatePickerComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import {Commodity} from '../../../commodity/+state/commodity.interface';
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
@@ -17,6 +16,7 @@ import {OrderEntity} from '../../../order/enitities/order.interface';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {CancelEnum} from "../../enums/cancel.enum";
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -89,7 +89,7 @@ export class DetailRouteComponent implements OnInit {
       });
   }
 
-  cancelCommodity(commodity: Commodity) {
+  cancelCommodity(commodity: CommodityEntity) {
     this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {

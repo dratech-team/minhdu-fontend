@@ -45,10 +45,14 @@ export class PickLocationComponent implements OnInit {
 
   ngOnInit() {
     if(this.ward){
-      this.formProvince.setValue(this.ward?.district?.province?.name)
+      this.formProvince.setValue( this.ward?.district?.province?.name )
       this.formDistrict.setValue(this.ward?.district?.name)
       this.formWard.setValue(this.ward?.name)
+    }else if(this.province){
+      this.formProvince.setValue( this.province.name);
+      this.formDistrict.setValue(this.district?.name);
     }
+
     this.reload$?.subscribe(val => {
       if (val) {
         this.formGroup.reset();

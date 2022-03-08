@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommodityUnit } from '@minhdu-fontend/enums';
-import { CommodityAction } from '../../+state/commodity.action';
-import { CommodityService } from '../../service/commodity.service';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {CommodityUnit} from '@minhdu-fontend/enums';
+import {CommodityAction} from '../../+state/commodity.action';
+import {CommodityService} from '../../service/commodity.service';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
@@ -65,13 +67,12 @@ export class CommodityDialogComponent implements OnInit {
         });
         ref.afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, { histored: true });
+            Object.assign(commodity, {histored: true, orderId: this.data.orderId});
           }
           this.actions$.dispatch(
-            CommodityAction.updateCommodity({
+            CommodityAction.update({
               id: this.data.commodity.id,
-              commodity: commodity,
-              orderId: this.data.orderId
+              updateCommodityDto: commodity,
             })
           );
           this.dialogRef.close();
@@ -79,7 +80,7 @@ export class CommodityDialogComponent implements OnInit {
       }
     } else {
       this.actions$.dispatch(
-        CommodityAction.addCommodity({ commodity: commodity })
+        CommodityAction.addOne(commodity)
       );
       this.dialogRef.close();
     }

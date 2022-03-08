@@ -1,8 +1,8 @@
 import { CurrencyUnit, PaymentType } from '@minhdu-fontend/enums';
-import { Commodity } from '../../commodity/+state/commodity.interface';
 import { RouteEntity} from '../../route/entities/route.entity';
 import { District, PaymentHistory, Province, Ward } from '@minhdu-fontend/data-models';
 import { CustomerEntity } from '../../customer/entities/customer.entity';
+import {CommodityEntity} from "../../commodity/entities/commodity.entity";
 
 export interface OrderEntity {
   id: number;
@@ -12,7 +12,7 @@ export interface OrderEntity {
   commodityTotal: number;
   paymentTotal: number;
   deliveredAt: Date;
-  commodities: Commodity[];
+  commodities: CommodityEntity[];
   currency: CurrencyUnit;
   routes: RouteEntity[];
   paidAt?: Date;

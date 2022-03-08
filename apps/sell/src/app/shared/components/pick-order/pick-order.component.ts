@@ -7,11 +7,11 @@ import { OrderEntity } from '../../../pages/order/enitities/order.interface';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
 import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
-import { Commodity } from '../../../pages/commodity/+state/commodity.interface';
 import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
 import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
+import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
 
 
 @Component({
@@ -21,7 +21,7 @@ import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
 })
 export class PickOrderComponent implements OnInit, OnChanges {
   @Input() orders: OrderEntity[] = [];
-  @Input() commoditiesSelected: Commodity[] = [];
+  @Input() commoditiesSelected: CommodityEntity[] = [];
   @Input() pickOne = false;
   @Input() isCheckOrderSelected = false;
   @Input() orderIdDefault?: number;
@@ -29,7 +29,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   @Input() orderSelected: OrderEntity[] = [];
   @Input() customerId?: number;
   @Output() checkEvent = new EventEmitter<OrderEntity[]>();
-  @Output() checkCommodityEvent = new EventEmitter<Commodity[]>();
+  @Output() checkCommodityEvent = new EventEmitter<CommodityEntity[]>();
   @Output() checkEventPickOne = new EventEmitter<OrderEntity>();
 
   orders$ = this.orderQuery.selectAll();
@@ -198,11 +198,11 @@ export class PickOrderComponent implements OnInit, OnChanges {
     return this.orderSelected.some((item) => item.id === order.id);
   }
 
-  checkCommodity(commodity: Commodity) {
+  checkCommodity(commodity: CommodityEntity) {
     return this.commoditiesSelected.some((item) => item.id === commodity.id);
   }
 
-  pickCommodity(commodity: Commodity, order: OrderEntity, checkbox: any) {
+  pickCommodity(commodity: CommodityEntity, order: OrderEntity, checkbox: any) {
     const indexOrder = this.orderSelected.findIndex(val => val.id === order.id);
     if (indexOrder <= -1) {
       this.orderSelected.push(order);

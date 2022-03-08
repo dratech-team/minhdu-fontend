@@ -1,29 +1,33 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Employee } from '@minhdu-fontend/data-models';
-import {
-  EmployeeAction,
-  selectorAllEmployee,
-  selectorEmployeeTotal
-} from '@minhdu-fontend/employee';
-import { SlackService } from '@minhdu-fontend/service';
+import { EmployeeAction, selectorEmployeeTotal } from '@minhdu-fontend/employee';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { throwError } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { SnackBarComponent } from '../../../../components/src/lib/snackBar/snack-bar.component';
 import { DegreeService } from './service/degree.service';
 import { EmployeeService } from './service/employee.service';
 import { RelativeService } from './service/relative.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { EmployeeType } from '@minhdu-fontend/enums';
 
 @Injectable()
 export class EmployeeEffect {
+  constructor(
+    private readonly action$: Actions,
+    private readonly employeeService: EmployeeService,
+    private readonly relativeService: RelativeService,
+    private readonly degreeService: DegreeService,
+    private readonly message: NzMessageService,
+    private readonly store: Store
+  ) {
+  }
+
   loadEmployees$ = createEffect(() =>
     this.action$.pipe(
       ofType(EmployeeAction.loadInit),
       switchMap((props) => this.employeeService.pagination(props.employee)),
       map((responsePagination) => {
-        this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
+        this.message.success('Tải nhân viên thành công');
         return EmployeeAction.LoadEmployeesSuccess({
           employees: responsePagination.data,
           total: responsePagination.total
@@ -47,11 +51,7 @@ export class EmployeeEffect {
       }),
       map((responsePagination) => {
         if (responsePagination.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: { content: 'Lấy hết nhân viên' }
-          });
+          this.message.warning('Lấy hết nhân viên');
         }
         return EmployeeAction.LoadMoreEmployeesSuccess({
           employees: responsePagination.data,
@@ -69,7 +69,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.addEmployee),
       switchMap((props) => this.employeeService.addOne(props.employee)),
       map((employee) => {
-        this.snackBar.open('Thêm nhân viên thành công', '', { duration: 1000 });
+        this.message.success('Thêm nhân viên thành công');
         return EmployeeAction.addEmployeeSuccess({ employee: employee });
       }),
       catchError((err) => {
@@ -84,9 +84,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.addRelative),
       switchMap((props) => this.relativeService.addOneRelative(props.relative)),
       map((res) => {
-        this.snackBar.open('Thêm người thân thành công', '', {
-          duration: 1000
-        });
+        this.message.success('Thêm người thân thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => {
@@ -101,7 +99,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.addDegree),
       switchMap((props) => this.degreeService.addOneDegree(props.degree)),
       map((res) => {
-        this.snackBar.open('Thêm bằng cấp thành công', '', { duration: 1000 });
+        this.message.success('Thêm bằng cấp thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => {
@@ -116,7 +114,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.getEmployee),
       switchMap((props) => this.employeeService.getOne(props.id)),
       map((employee) => {
-        this.snackBar.open('Tải nhân viên thành công', '', { duration: 1000 });
+        this.message.success('Tải nhân viên thành công');
         return EmployeeAction.getEmployeeSuccess({ employee: employee });
       }),
       catchError((err) => throwError(err))
@@ -130,9 +128,7 @@ export class EmployeeEffect {
         this.employeeService.update(props.id, props.employee)
       ),
       map((res) => {
-        this.snackBar.open('Cập nhật nhân viên thành công', '', {
-          duration: 1000
-        });
+        this.message.success('Cập nhật nhân viên thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => {
@@ -149,9 +145,7 @@ export class EmployeeEffect {
         this.relativeService.update(props.id, props.relative)
       ),
       map((res) => {
-        this.snackBar.open('Cập nhật người thân thành công', '', {
-          duration: 1000
-        });
+        this.message.success('Cập nhật người thân thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => {
@@ -166,9 +160,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.updateDegree),
       switchMap((props) => this.degreeService.update(props.id, props.degree)),
       map((res) => {
-        this.snackBar.open('Cập nhật bằng cấp thành công', '', {
-          duration: 1000
-        });
+        this.message.success('Cập nhật bằng cấp thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => {
@@ -184,9 +176,7 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.employeeService.delete(props.id).pipe(
           map(() => {
-            this.snackBar.open('Xóa nhân viên vĩnh viễn thành công', '', {
-              duration: 1000
-            });
+            this.message.success('Xóa nhân viên vĩnh viễn thành công');
             return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
           }),
           catchError((err) => throwError(err))
@@ -201,9 +191,7 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map(() => {
-            this.snackBar.open('Xóa nhân viên thành công', '', {
-              duration: 1000
-            });
+            this.message.success('Nhân viên đã nghỉ tạm thời');
             return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
           }),
           catchError((err) => throwError(err))
@@ -217,7 +205,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.deleteRelative),
       switchMap((props) => this.relativeService.deleteRelative(props.id)),
       map((res) => {
-        this.snackBar.open('Xóa người thân thành công', '', { duration: 1000 });
+        this.message.success('Xóa người thân thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => throwError(err))
@@ -229,7 +217,7 @@ export class EmployeeEffect {
       ofType(EmployeeAction.deleteDegree),
       switchMap((props) => this.degreeService.deleteDegree(props.id)),
       map((res) => {
-        this.snackBar.open('Xóa bằng cấp thành công', '', { duration: 1000 });
+        this.message.success('Xóa bằng cấp thành công');
         return EmployeeAction.updateEmployeeSuccess({ employee: res });
       }),
       catchError((err) => throwError(err))
@@ -242,9 +230,7 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.degreeService.deleteContracts(props.id).pipe(
           map((_) => {
-            this.snackBar.open('Xóa bằng hợp đồng thành công', '', {
-              duration: 1000
-            });
+            this.message.success('Xóa bằng hợp đồng thành công');
             return EmployeeAction.deleteContractSuccess({
               employeeId: props.employeeId
             });
@@ -261,9 +247,7 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.employeeService.deleteWorkHistory(props.id).pipe(
           map((_) => {
-            this.snackBar.open('Xóa Lịch sử công tác thành công', '', {
-              duration: 1000
-            });
+            this.message.success('Xóa Lịch sử công tác thành công');
             return EmployeeAction.getEmployee({
               id: props.employeeId
             });
@@ -273,16 +257,4 @@ export class EmployeeEffect {
       catchError((err) => throwError(err))
     )
   );
-
-
-  constructor(
-    private readonly action$: Actions,
-    private readonly employeeService: EmployeeService,
-    private readonly relativeService: RelativeService,
-    private readonly degreeService: DegreeService,
-    private readonly snackBar: MatSnackBar,
-    private readonly store: Store,
-    private readonly slackService: SlackService
-  ) {
-  }
 }

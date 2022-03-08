@@ -1,18 +1,17 @@
-import {DatePipe} from '@angular/common';
-import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {MatMenuTrigger} from '@angular/material/menu';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
-import {Api, PayrollConstant} from '@minhdu-fontend/constants';
-import {EmployeeAction} from '@minhdu-fontend/employee';
-import {EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortTypeEnum} from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {select, Store} from '@ngrx/store';
-import {of, Subject} from 'rxjs';
-import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
-import {PayrollAction} from '../../+state/payroll/payroll.action';
+import { DatePipe } from '@angular/common';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { Api, PayrollConstant } from '@minhdu-fontend/constants';
+import { EmployeeAction } from '@minhdu-fontend/employee';
+import { EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortTypeEnum } from '@minhdu-fontend/enums';
+import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
+import { select, Store } from '@ngrx/store';
+import { of, Subject } from 'rxjs';
+import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
+import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
@@ -22,35 +21,30 @@ import {
   selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors, rageDaysInMonth, searchAutocomplete} from '@minhdu-fontend/utils';
-import {AppState} from '../../../../reducers';
-import {AddPayrollComponent} from '../../component/add-Payroll/add-payroll.component';
-import {
-  DialogAllowanceMultipleComponent
-} from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
-import {
-  DialogOvertimeMultipleComponent
-} from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import {DialogTimekeepingComponent} from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
-import {SelectAddMultiple} from '../../component/dialog-select-add-multiple/select-add-multiple';
-import {SelectUpdateMultiple} from '../../component/dialog-select-update-multiple/select-update-multiple';
-import {RestorePayrollComponent} from '../../component/restore-payroll/restore-payroll.component';
-import {UpdateConfirmComponent} from '../../component/update-comfirm/update-confirm.component';
-import {Payroll} from '../../+state/payroll/payroll.interface';
-import {Category} from "@minhdu-fontend/data-models";
-import {DialogCategoryComponent} from "../../../employee/components/category/dialog-category.component";
-import {CategoryService} from "../../../../../../../../libs/employee/src/lib/+state/service/category.service";
-import {MatSort, Sort} from "@angular/material/sort";
-import {values} from "lodash";
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
+import { checkInputNumber, getSelectors, rageDaysInMonth, searchAutocomplete } from '@minhdu-fontend/utils';
+import { AppState } from '../../../../reducers';
+import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
+import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
+import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
+import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
+import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
+import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
+import { Payroll } from '../../+state/payroll/payroll.interface';
+import { DialogCategoryComponent } from '../../../employee/components/category/dialog-category.component';
+import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import { MatSort } from '@angular/material/sort';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'payroll.component.html'
 })
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
-  categoryControl = new FormControl('')
+  categoryControl = new FormControl('');
   formGroup = new FormGroup({
     name: new FormControl(''),
     code: new FormControl(''),
@@ -107,28 +101,24 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportBasic = new Subject<boolean>();
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
-  categories$ = this.categoryService.getAll()
+  categories$ = this.categoryService.getAll();
   sortEnum = sortTypeEnum;
 
-
   constructor(
-    private readonly snackbar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
-    private readonly categoryService: CategoryService,
+    private readonly categoryService: CategoryService
   ) {
   }
 
   ngOnInit() {
     this.loadInitPayroll();
-
     this.daysInMonth = rageDaysInMonth(this.createdAt);
-
     this.store.dispatch(PositionActions.loadPosition());
-
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
@@ -150,11 +140,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         ) {
           this.positionName = getSelectors(selectedPositionPayroll, this.store);
           this.branchName = getSelectors(selectedBranchPayroll, this.store);
-          this.formGroup.get('position')?.setValue(this.positionName, {emitEvent: false});
-          this.formGroup.get('branch')?.setValue(this.branchName, {emitEvent: false});
+          this.formGroup.get('position')?.setValue(this.positionName, { emitEvent: false });
+          this.formGroup.get('branch')?.setValue(this.branchName, { emitEvent: false });
         }
         this.selectedPayroll = val;
-        this.store.dispatch(PayrollAction.updateStatePayroll({filter: val}));
+        this.store.dispatch(PayrollAction.updateStatePayroll({ filter: val }));
       }
       if (
         val !== FilterTypeEnum.STAY &&
@@ -167,7 +157,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             getSelectors(selectedCreateAtPayroll, this.store),
             'yyyy-MM'
           ),
-          {emitEvent: false}
+          { emitEvent: false }
         );
         return this.loadInitPayroll();
       }
@@ -180,7 +170,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             !val.createdAt &&
             this.selectedPayroll === FilterTypeEnum.TIME_SHEET
           ) {
-            this.snackbar.open('Phiếu chấm công phải chọn tháng', 'Đóng');
+            this.message.error('Phiếu chấm công phải chọn tháng');
             this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(new Date(), 'yyyy-MM'));
             takeUntil(this.stop$);
           } else {
@@ -216,11 +206,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       this.branches$
     );
 
-    this.categoryControl.valueChanges.subscribe(val =>{
-      if(val!== 0){
-        this.loadInitPayroll()
+    this.categoryControl.valueChanges.subscribe(val => {
+      if (val !== 0) {
+        this.loadInitPayroll();
       }
-    })
+    });
   }
 
   ngAfterContentChecked() {
@@ -251,16 +241,16 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
-          : EmployeeType.EMPLOYEE_FULL_TIME,
+          : EmployeeType.EMPLOYEE_FULL_TIME
 
     };
-    if(this.sort?.active){
+    if (this.sort?.active) {
       Object.assign(payroll, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : '',
-      })
+        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+      });
     }
-    return payroll
+    return payroll;
   }
 
   onScroll() {
@@ -273,10 +263,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addPayroll($event?: any): void {
-    const ref = this.dialog
+    this.dialog
       .open(AddPayrollComponent, {
         width: '30%',
-        data: {employeeId: $event?.employee?.id, addOne: true}
+        data: { employeeId: $event?.employee?.id, addOne: true }
       })
       .afterClosed()
       .subscribe((val) => {
@@ -289,7 +279,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: {id, type}
+      data: { id, type }
     });
   }
 
@@ -350,7 +340,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({employee: {}}));
+    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: {
@@ -393,7 +383,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   generate() {
-    const ref = this.dialog.open(AddPayrollComponent, {
+    this.dialog.open(AddPayrollComponent, {
       width: '30%',
       data: {
         employeeType:
@@ -401,8 +391,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             ? EmployeeType.EMPLOYEE_SEASONAL
             : ''
       }
-    });
-    ref.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
@@ -417,15 +406,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(payroll: Payroll) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: {payroll: payroll}
+      data: { payroll: payroll }
     });
   }
 
   deletePayroll(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {
+    this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
-    });
-    ref.afterClosed().subscribe((val) => {
+    }).afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
           PayrollAction.deletePayroll({
@@ -437,18 +425,16 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   historyPayroll(event: any) {
-    this.router
-      .navigate(['phieu-luong/lich-su-luong', event.employee.id], {
-        queryParams: {
-          name: event.employee.lastName,
-          employeeType: event.employee.type
-        }
-      })
-      .then();
+    this.router.navigate(['phieu-luong/lich-su-luong', event.employee.id], {
+      queryParams: {
+        name: event.employee.lastName,
+        employeeType: event.employee.type
+      }
+    }).then();
   }
 
   openDialogAddMultiple() {
-    const ref = this.dialog.open(SelectAddMultiple, {width: 'fit-content'});
+    const ref = this.dialog.open(SelectAddMultiple, { width: 'fit-content' });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         switch (val) {
@@ -511,7 +497,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     return checkInputNumber(event);
   }
 
-
   exportPayroll() {
     const value = this.formGroup.value;
     const payroll = {
@@ -524,7 +509,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.PAYROLL
     };
     if (value.createdAt) {
-      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -548,7 +533,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.TIME_SHEET
     };
     if (value.createdAt) {
-      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
+      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -563,31 +548,28 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addCategory() {
-    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
-      .subscribe(() => this.categories$ = this.categoryService.getAll())
+    this.dialog.open(DialogCategoryComponent, { width: 'fit-content' }).afterClosed()
+      .subscribe(() => this.categories$ = this.categoryService.getAll());
   }
 
-  updateCategory():any {
-    if(this.categoryControl.value === 0 || !this.categoryControl.value){
-      return this.snackbar.open('Chưa chọn danh mục để sửa','',{duration:1500})
+  updateCategory(): any {
+    if (this.categoryControl.value === 0 || !this.categoryControl.value) {
+      return this.message.error('Chưa chọn danh mục để sửa');
     }
     this.dialog.open(DialogCategoryComponent, {
       width: 'fit-content',
-      data: {categoryId: this.categoryControl.value, isUpdate: true}
-    })
-      .afterClosed().subscribe(() => {
+      data: { categoryId: this.categoryControl.value, isUpdate: true }
+    }).afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
     });
   }
 
   sortPayroll(sort?: MatSort) {
-    if(sort){
-      this.sort = sort
+    if (sort) {
+      this.sort = sort;
     }
     this.store.dispatch(PayrollAction.loadInit({
-      payrollDTO : this.mapPayroll(this.formGroup.value)
-    }))
+      payrollDTO: this.mapPayroll(this.formGroup.value)
+    }));
   }
-
-
 }
