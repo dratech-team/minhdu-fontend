@@ -95,7 +95,7 @@ registerLocaleData(localeVi);
     {provide: LOCALE_ID, useValue: 'vi-VN'},
     HashLocationStrategy,
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false} }
   ],
 })
 export class AppModule {}
