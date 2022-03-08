@@ -2,11 +2,12 @@
   <ngx-skeleton-loader *ngIf='!(loaded$ | async) else systemHistory' count='10' appearance='line'></ngx-skeleton-loader>
   <ng-template #systemHistory>
     <div style='width: 96%; min-width: 1300px' class='mx-auto'>
-      <div class='row h3 mt-3'>Lịch sử hệ thống</div>
-      <div class='mt-3 font-weight-bold'>
+      <div class=' h3 mt-3 ml-3'>Lịch sử hệ thống</div>
+      <div class='mt-3 ml-3 font-weight-bold'>
         Tổng: {{total$|async}}
       </div>
       <div class='fixTableHead my-2 mx-auto '
+           style="min-width: 1100px"
            infiniteScroll
            [infiniteScrollDistance]='0.1'
            [infiniteScrollThrottle]='10'
