@@ -40,17 +40,19 @@
               [form]='checkValid'
               [submitted]='submitted'
               (eventSelectWard)='onSelectWard($event)'
+              (eventSelectDistrict)="onSelectDistrict($event)"
+              (eventSelectProvince)="onSelectProvince($event)"
             >
 
             </app-pick-location>
           </div>
         </div>
       </mat-tab>
-      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>
-        <div class='mt-2'>
-          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>
-        </div>
-      </mat-tab>
+<!--      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>-->
+<!--        <div class='mt-2'>-->
+<!--          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>-->
+<!--        </div>-->
+<!--      </mat-tab>-->
     </mat-tab-group>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>

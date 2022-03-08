@@ -100,10 +100,9 @@ export class CommodityEffect {
         map(_ => {
             this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
             if (props.orderId) {
-              return OrderActions.loadOne({ id: props.orderId });
-            } else {
-              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
+              this.actions$.dispatch(OrderActions.loadOne({ id: props.orderId }))
             }
+              return CommodityAction.loadInit({ CommodityDTO: { take: 30, skip: 0 } });
           }
         ),
         catchError((err) => throwError(err))

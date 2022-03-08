@@ -80,12 +80,14 @@ export class DetailOrderComponent implements OnInit {
         width: '60%',
         data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
       }).afterClosed().subscribe((value) => {
-        this.actions$.dispatch(OrderActions.update({
-          id: order.id,
-          updates: {
-            commodityIds: value.map((e: any) => e.id)
-          }
-        }));
+        if(value){
+          this.actions$.dispatch(OrderActions.update({
+            id: order.id,
+            updates: {
+              commodityIds: value.map((e: any) => e.id)
+            }
+          }));
+        }
       });
     }
   }
