@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {ConvertBoolean, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {Category, Employee} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
@@ -82,7 +82,7 @@ export class PickEmployeeComponent implements OnInit {
             skip: this.pageIndex,
             name: val.name,
             branch: val?.branch ? val.branch : '',
-            position: val?.position ? val.position : ''
+            position: val?.position ? val.position : '',
           }
 
         })
@@ -144,11 +144,15 @@ export class PickEmployeeComponent implements OnInit {
       skip: this.employees.length,
       name: val.name,
       branch: val?.branch ? val.branch : '',
-      position: val?.position ? val.position : ''
+      position: val?.position ? val.position : '',
     }
     this.employeeService.pagination(param).subscribe(val => {
       if (val.data.length > 0) {
-        this.employees = this.employees.concat(val.data)
+        val.data.forEach(emp => {
+          if(this.employees.every(e => e.id !== emp.id)){
+            this.employees.push(emp)
+          }
+        })
       } else {
         this.snackbar.open('Đã lấy hết nhân viên', '', {duration: 1500})
       }
