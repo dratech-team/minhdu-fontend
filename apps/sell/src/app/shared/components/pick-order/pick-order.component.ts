@@ -43,7 +43,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   isSelectAll = false;
   formGroup = new FormGroup(
     {
-      isRoute: new FormControl(''),
+      hasRoute: new FormControl(''),
       name: new FormControl(''),
       createdAt: new FormControl(''),
       paidType: new FormControl(''),

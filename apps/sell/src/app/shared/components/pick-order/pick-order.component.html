@@ -1,7 +1,7 @@
 <div style="width: 100px" class=" mt-2" [formGroup]="formGroup">
   <mat-select class="form-control" formControlName="hasRoute">
-    <mat-option value="">Tất cả</mat-option>
-    <mat-option value="true">Lọc</mat-option>
+    <mat-option [value]="''">Tất cả</mat-option>
+    <mat-option [value]="true">Lọc</mat-option>
   </mat-select>
 </div>
 <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>

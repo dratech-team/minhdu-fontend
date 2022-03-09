@@ -76,6 +76,7 @@ export class CustomerEffect {
   getCustomer$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) => this.customerService.getOne(props.id)),
+    map(customer => this.customerStore.upsert(customer.id, customer)),
     catchError((err) => throwError(err))
   );
 

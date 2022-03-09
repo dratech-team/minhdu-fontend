@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { OrderActions } from '../../+state/order.actions';
-import { CustomerEntity } from '../../../customer/entities/customer.entity';
-import { DatePipe } from '@angular/common';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerQuery } from '../../../customer/+state/customer.query';
-import { AddOrderDto } from '../../dto/add-order.dto';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {PickCommodityComponent} from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
+import {
+  PickCustomerComponent
+} from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
+import {OrderActions} from '../../+state/order.actions';
+import {CustomerEntity} from '../../../customer/entities/customer.entity';
+import {DatePipe} from '@angular/common';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CustomerQuery} from '../../../customer/+state/customer.query';
+import {AddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {getSelectors} from "@minhdu-fontend/utils";
+import {selectCurrentEmployee} from "@minhdu-fontend/employee";
+import {CustomerActions} from "../../../customer/+state/customer.actions";
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -40,16 +45,26 @@ export class AddOrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
   ) {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(param => {
+      if (param.data) {
+        this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
+        this.customerQuery.selectEntity(+param.data).subscribe(val => {
+          this.customerPicked = val
+        })
+      }
+    });
+
     this.customerPicked$.subscribe((val: any) => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));
       }
     });
+
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
       endedAt: [],
