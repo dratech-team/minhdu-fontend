@@ -78,7 +78,7 @@ export class CustomerDialogComponent implements OnInit {
       birthday: value.birthday,
       birthplace: value.birthplace,
       idCardAt: value.idCardAt,
-      type: value.type,
+      customerType: value.type,
       resource: value.resource,
       address: value.address,
       provinceId: this.provinceId || this.data?.customer?.province?.id,
