@@ -107,6 +107,7 @@ export class CommodityEffect {
             ),
           )
         }
+
       ),
       catchError((err) => throwError(err))
     )

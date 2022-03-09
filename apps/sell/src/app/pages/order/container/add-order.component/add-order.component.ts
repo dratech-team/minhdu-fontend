@@ -14,8 +14,6 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../../customer/+state/customer.query';
 import {AddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
-import {getSelectors} from "@minhdu-fontend/utils";
-import {selectCurrentEmployee} from "@minhdu-fontend/employee";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
 
 @Component({
@@ -28,7 +26,7 @@ export class AddOrderComponent implements OnInit {
   commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number = this.route.snapshot.params.data;
+  customerId: number|undefined = this.route.snapshot.queryParams.data;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -85,6 +83,7 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCustomerId() {
+    this.customerId = undefined
     this.customerPicked = undefined;
   }
 
