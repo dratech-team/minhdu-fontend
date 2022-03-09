@@ -56,6 +56,7 @@ export class OrderEffect {
       }))
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
+      this.router.navigate(['don-hang']).then()
     }),
     catchError((err) => {
       return throwError(err);

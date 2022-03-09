@@ -15,6 +15,7 @@ import {CustomerQuery} from '../../../customer/+state/customer.query';
 import {AddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
+import {OrderQuery} from "../../+state/order.query";
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -42,6 +43,7 @@ export class AddOrderComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly datePipe: DatePipe,
+    private readonly orderQuery: OrderQuery,
   ) {
   }
 
