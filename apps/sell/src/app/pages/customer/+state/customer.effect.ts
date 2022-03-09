@@ -52,11 +52,9 @@ export class CustomerEffect {
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
-      console.log('ssssss')
       this.customerStore.update(state => ({
         ...state, added: false
       }))
-
       if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
       }
@@ -83,10 +81,21 @@ export class CustomerEffect {
   @Effect()
   updateCustomer$ = this.action$.pipe(
     ofType(CustomerActions.update),
-    switchMap((props) => this.customerService.update(props.id, props.updates).pipe(
-      map((res) => this.customerStore.update(res.id, res)),
-      catchError((err) => throwError(err))
-    ))
+    switchMap((props) => {
+        this.customerStore.update(state => ({
+          ...state, added: false
+        }))
+        return this.customerService.update(props.id, props.updates)
+      }
+    ),
+    map((res) => {
+      this.customerStore.update(state => ({
+        ...state, added: true
+      }))
+      console.log(res)
+      this.customerStore.update(res.id, res)
+    }),
+    catchError((err) => throwError(err))
   );
 
   @Effect()
