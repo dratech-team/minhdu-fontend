@@ -12,13 +12,38 @@ import {AddCustomerDto} from '../../dto/add-customer.dto';
   templateUrl: 'customer-dialog.component.html'
 })
 export class CustomerDialogComponent implements OnInit {
-  formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
   wardId: number | undefined;
+
+  formGroup: FormGroup = this.formBuilder.group({
+    firstName: [this.data?.customer?.firstName],
+    lastName: [this.data?.customer?.lastName, Validators.required],
+    identify: [this.data?.customer?.identify],
+    issuedBy: [this.data?.customer?.issuedBy],
+    birthplace: [this.data?.customer?.birthplace],
+    idCardAt: [
+      this.datePipe.transform(
+        this.data?.customer?.idCardAt, 'yyyy-MM-dd'
+      )],
+    email: [this.data?.customer?.email],
+    phone: [this.data?.customer?.phone, Validators.required],
+    note: [this.data?.customer?.note],
+    address: [this.data?.customer?.address],
+    gender: [this.data?.customer?.gender],
+    birthday: [
+      this.datePipe.transform(
+        this.data?.customer?.birthday, 'yyyy-MM-dd'
+      )],
+    ethnicity: [this.data?.customer?.ethnicity],
+    religion: [this.data?.customer?.religion],
+    type: [this.data?.customer?.type],
+    resource: [this.data?.customer?.resource],
+    isPotential: [this.data?.customer?.isPotential]
+  });
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -32,31 +57,6 @@ export class CustomerDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      firstName: [this.data?.customer?.firstName],
-      lastName: [this.data?.customer?.lastName, Validators.required],
-      identify: [this.data?.customer?.identify],
-      issuedBy: [this.data?.customer?.issuedBy],
-      birthplace: [this.data?.customer?.birthplace],
-      idCardAt: [
-        this.datePipe.transform(
-          this.data?.customer?.idCardAt, 'yyyy-MM-dd'
-        )],
-      email: [this.data?.customer?.email],
-      phone: [this.data?.customer?.phone, Validators.required],
-      note: [this.data?.customer?.note],
-      address: [this.data?.customer?.address],
-      gender: [this.data?.customer?.gender],
-      birthday: [
-        this.datePipe.transform(
-          this.data?.customer?.birthday, 'yyyy-MM-dd'
-        )],
-      ethnicity: [this.data?.customer?.ethnicity],
-      religion: [this.data?.customer?.religion],
-      type: [this.data?.customer?.type],
-      resource: [this.data?.customer?.resource],
-      isPotential: [this.data?.customer?.isPotential]
-    });
   }
 
   get checkValid() {

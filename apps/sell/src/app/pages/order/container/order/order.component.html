@@ -176,7 +176,7 @@
         <!--          {{order.currency | transform:currenciesConstant}}-->
         <!--        </th>-->
         <th>{{order?.explain || 'Chưa cập nhật'}} </th>
-        <th [ngStyle]="{'color': (!order.deliveredAt && order.routes.length) ? '#32863d' : ''}">
+        <th [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
           {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes.length) ? 'Đang giao' : 'Chưa giao')}}
         </th>
       </tr>

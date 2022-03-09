@@ -33,6 +33,8 @@ import { IconDefinition } from '@ant-design/icons-angular';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { RouteGuard } from './route.guard';
+import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 registerLocaleData(localeVi);
 
@@ -70,7 +72,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     MatButtonModule,
     LocationModule,
     MatDialogModule,
-    MatTabsModule
+    MatTabsModule,
+    NzMessageModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [
@@ -90,7 +93,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     { provide: LOCALE_ID, useValue: 'vi-VN' },
     { provide: NZ_I18N, useValue: en_US },
     { provide: NZ_ICONS, useValue: icons },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } as MatDialogConfig }
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } as MatDialogConfig },
+    { provide: NZ_CONFIG, useValue: { message: { nzMaxStack: 1 } } as NzConfig }
   ],
   bootstrap: [AppComponent]
 })
