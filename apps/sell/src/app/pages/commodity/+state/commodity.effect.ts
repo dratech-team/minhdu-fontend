@@ -89,17 +89,26 @@ export class CommodityEffect {
   updateCommodity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.update),
-      switchMap((props) => this.commodityService.update(props.id, props.updateCommodityDto).pipe(
-        map(_ => {
-            this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
-            if (props.updateCommodityDto.orderId) {
-              this.actions$.dispatch(OrderActions.loadOne({id: props.updateCommodityDto.orderId}))
-            }
-            return CommodityAction.loadAll({take: 30, skip: 0});
-          }
-        ),
-        catchError((err) => throwError(err))
-      ))
+      switchMap((props) => {
+          this.commodityStore.update(state => ({
+            ...state, added: false
+          }))
+          return this.commodityService.update(props.id, props.updateCommodityDto).pipe(
+            map(_ => {
+                this.commodityStore.update(state => ({
+                  ...state, added: true
+                }))
+                this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
+                if (props.updateCommodityDto.orderId) {
+                  this.actions$.dispatch(OrderActions.loadOne({id: props.updateCommodityDto.orderId}))
+                }
+                return CommodityAction.loadAll({take: 30, skip: 0});
+              }
+            ),
+          )
+        }
+      ),
+      catchError((err) => throwError(err))
     )
   );
 

@@ -114,9 +114,17 @@ export class OrderEffect {
   @Effect()
   update$ = this.actions$.pipe(
     ofType(OrderActions.update),
-    switchMap((props) =>
-      this.orderService.update(props.id, props.updates)),
+    switchMap((props) => {
+        this.orderStore.update(state => ({
+          ...state, added: false
+        }))
+        return this.orderService.update(props.id, props.updates)
+      }
+    ),
     map((response) => {
+      this.orderStore.update(state => ({
+        ...state, added: true
+      }))
       this.orderStore.update(response.id, response);
     }),
     tap(() => {
