@@ -55,12 +55,12 @@ export class PickCommodityComponent implements OnInit {
     // });
 
     this.actions$.dispatch(
-      CommodityAction.loadAll({take: this.pageSize, skip: this.pageIndex})
+      CommodityAction.loadAll({params: {take: this.pageSize, skip: this.pageIndex}})
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((val) => {
       this.isEventSearch = true;
       this.actions$.dispatch(
-        CommodityAction.loadAll(this.commodity(val))
+        CommodityAction.loadAll({params: this.commodity(val)})
       );
     });
 
@@ -83,10 +83,10 @@ export class PickCommodityComponent implements OnInit {
     });
   }
 
-  commodity(val: any) {
+  commodity(val: any, isScroll?: boolean) {
     return {
       take: this.pageSize,
-      skip: this.commodityQuery.getCount(),
+      skip: isScroll ? this.commodityQuery.getCount() : this.pageIndex,
       name: val.name,
       code: val.code,
       unit: val.unit
@@ -144,7 +144,7 @@ export class PickCommodityComponent implements OnInit {
     this.isEventSearch = false;
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      CommodityAction.loadAll(this.commodity(val))
+      CommodityAction.loadAll({params: this.commodity(val, true), isScroll: true})
     );
   }
 

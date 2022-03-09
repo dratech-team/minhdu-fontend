@@ -33,7 +33,7 @@ export class CommodityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CommodityAction.loadAll({take: 30, skip: 0}));
+    this.actions$.dispatch(CommodityAction.loadAll({params: {take: 30, skip: 0}}));
   }
 
   add() {
@@ -45,7 +45,7 @@ export class CommodityComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(CommodityAction.loadAll( this.commodity(val, this.pageSize, this.pageIndex)));
+    this.actions$.dispatch(CommodityAction.loadAll({params: {take: this.pageSize, skip: this.commodityQuery.getCount()}}));
   }
 
   deleteCommodity($event: any) {
@@ -57,12 +57,6 @@ export class CommodityComponent implements OnInit {
     });
   }
 
-  commodity(val: any, pageSize: number, pageIndex: number) {
-    return {
-      skip: pageSize * pageIndex++,
-      take: this.pageSize
-    };
-  }
 
   UpdateCommodity($event: any) {
 

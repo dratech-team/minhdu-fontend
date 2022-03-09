@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, CustomerResourcesConstant } from '@minhdu-fontend/constants';
-import { CustomerType, ItemContextMenu, MenuEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerActions } from '../../+state/customer.actions';
-import { OrderEntity } from '../../../order/enitities/order.interface';
-import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
-import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { PotentialTypes } from '../../constants/potentialTypes';
-import { CustomerTypes } from '../../constants/customer.type';
-import { GenderTypes } from '../../constants/generTypes';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerQuery } from '../../+state/customer.query';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
+import {CustomerType, ItemContextMenu, MenuEnum} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {debounceTime, tap} from 'rxjs/operators';
+import {CustomerActions} from '../../+state/customer.actions';
+import {OrderEntity} from '../../../order/enitities/order.interface';
+import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
+import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
+import {PotentialTypes} from '../../constants/potentialTypes';
+import {CustomerTypes} from '../../constants/customer.type';
+import {GenderTypes} from '../../constants/generTypes';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CustomerQuery} from '../../+state/customer.query';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -58,13 +58,13 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
+    this.actions$.dispatch(CustomerActions.loadAll({take: this.pageSize, skip: this.pageIndexInit}));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll(this.customer(val))
+            CustomerActions.loadAll(this.customer(val, false))
           );
         })
       )
@@ -91,14 +91,14 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.actions$.dispatch(
       CustomerActions.loadAll(
-        this.customer(val)
+        this.customer(val, true)
       )
     );
   }
 
-  customer(val: any) {
+  customer(val: any, isScroll: boolean) {
     return {
-      skip: 0,
+      skip: isScroll ? this.customerQuery.getCount() : this.pageIndexInit,
       take: this.pageSize,
       resource: val.resource,
       isPotential: val.isPotential,
@@ -110,7 +110,8 @@ export class CustomerComponent implements OnInit {
       gender: val.gender,
       email: val.email.trim(),
       address: val.address.trim(),
-      note: val.note.trim()
+      note: val.note.trim(),
+      isScroll: isScroll
     };
   }
 
@@ -123,10 +124,10 @@ export class CustomerComponent implements OnInit {
   }
 
   deleteCustomer($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%'});
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
+        this.actions$.dispatch(CustomerActions.remove({id: $event.id}));
       }
     });
   }
@@ -134,7 +135,7 @@ export class CustomerComponent implements OnInit {
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: { id: $event.id }
+      data: {id: $event.id}
     });
   }
 

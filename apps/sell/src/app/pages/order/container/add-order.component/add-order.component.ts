@@ -26,7 +26,7 @@ export class AddOrderComponent implements OnInit {
   commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number|undefined = this.route.snapshot.queryParams.data;
+  customerId: number = this.route.snapshot.queryParams.data;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -47,10 +47,9 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(param => {
       if (param.data) {
-       this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
+        this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
       }
     });
     this.customerPicked$.subscribe(val => {
@@ -83,7 +82,6 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCustomerId() {
-    this.customerId = undefined
     this.customerPicked = undefined;
   }
 

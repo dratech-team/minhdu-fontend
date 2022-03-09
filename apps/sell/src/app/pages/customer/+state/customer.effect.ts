@@ -10,6 +10,7 @@ import {CustomerQuery} from './customer.query';
 import {CustomerStore} from './customer.store';
 import {OrderService} from '../../order/service/order.service';
 import {AddCustomerDto} from '../dto/add-customer.dto';
+import {LoadCustomerDto} from "../dto/load-customer.dto";
 
 @Injectable()
 export class CustomerEffect {
@@ -26,25 +27,29 @@ export class CustomerEffect {
   @Effect()
   loadCustomers$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
-    switchMap((props) => {
+    switchMap((props: LoadCustomerDto) => {
       this.customerStore.update(state => ({
         ...state, loading: true
       }))
-      const skip = this.customerQuery.getCount();
-      return this.customerService.pagination(Object.assign(props, {skip: skip}));
+      return this.customerService.pagination(props).pipe(
+        map((response) => {
+          this.customerStore.update(state => ({...state, loading: false}))
+          if (response.data.length === 0) {
+            this.snackBar.openFromComponent(SnackBarComponent, {
+              duration: 2500,
+              panelClass: ['background-snackbar'],
+              data: {content: 'Đã lấy hết khách hàng'}
+            });
+          }
+          if (props.isScroll) {
+            this.customerStore.add(response.data);
+          } else {
+            this.customerStore.set(response.data);
+          }
+        }),
+      );
     }),
-    tap((response) => {
-      this.customerStore.update(state => ({...state, loading: false}))
-      if (response.data.length === 0) {
-        this.snackBar.openFromComponent(SnackBarComponent, {
-          duration: 2500,
-          panelClass: ['background-snackbar'],
-          data: {content: 'Đã lấy hết khách hàng'}
-        });
-      } else {
-        this.customerStore.add(response.data);
-      }
-    }),
+
     catchError((err) => throwError(err))
   );
 

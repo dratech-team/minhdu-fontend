@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@datorama/akita-ng-effects';
+import {Actions, createEffect, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {CommodityService} from '../service/commodity.service';
 import {CommodityAction} from './commodity.action';
@@ -21,6 +21,7 @@ export class CommodityEffect {
   ) {
   }
 
+  @Effect()
   addOne$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.addOne),
@@ -42,28 +43,29 @@ export class CommodityEffect {
       catchError((err) => throwError(err))
     ));
 
+  @Effect()
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.loadAll),
-      switchMap((params) => {
+      switchMap((props) => {
           this.commodityStore.update(state => ({
             ...state, loading: true
           }))
-          return this.commodityService.pagination(params).pipe(
+          return this.commodityService.pagination(props.params).pipe(
             map((ResponsePaginate) => {
                 this.commodityStore.update(state => ({
                   ...state, loading: false
                 }))
-                if (ResponsePaginate.data.length === 0) {
-                  this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
-                } else {
-                  if (params?.skip && params.skip > 0) {
-                    this.commodityStore.add(ResponsePaginate.data);
-                    this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                if (props?.isScroll) {
+                  if (ResponsePaginate.data.length === 0) {
+                    this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
                   } else {
-                    this.commodityStore.set(ResponsePaginate.data);
                     this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
                   }
+                  this.commodityStore.add(ResponsePaginate.data);
+                } else {
+                  this.commodityStore.set(ResponsePaginate.data);
+                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
                 }
               }
             ),
@@ -74,6 +76,7 @@ export class CommodityEffect {
     )
   );
 
+  @Effect()
   getCommodity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.getOne),
@@ -86,6 +89,7 @@ export class CommodityEffect {
     )
   );
 
+  @Effect()
   updateCommodity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.update),
@@ -102,17 +106,17 @@ export class CommodityEffect {
                 if (props.updateCommodityDto.orderId) {
                   this.actions$.dispatch(OrderActions.loadOne({id: props.updateCommodityDto.orderId}))
                 }
-                return CommodityAction.loadAll({take: 30, skip: 0});
+                return CommodityAction.loadAll({params: {take: 30, skip: 0}});
               }
             ),
           )
         }
-
       ),
       catchError((err) => throwError(err))
     )
   );
 
+  @Effect()
   deleteCommodity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.remove),
