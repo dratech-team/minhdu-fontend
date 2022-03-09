@@ -8,7 +8,6 @@ import { CustomerEntity } from '../../entities/customer.entity';
 import { OrderEntity } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { MainAction } from '../../../../states/main.action';
 import { CustomerQuery } from '../../+state/customer.query';
 import { Actions } from '@datorama/akita-ng-effects';
 
@@ -36,7 +35,6 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
     this.actions$.dispatch(CustomerActions.loadOne({ id: this.getId }));
     this.actions$.dispatch(CustomerActions.loadOrderDelivered({take: 20, skip: 0, customerId: this.getId }));
     this.actions$.dispatch(CustomerActions.loadOrderDelivering({take: 20, skip: 0, customerId: this.getId }));

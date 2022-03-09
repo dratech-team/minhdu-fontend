@@ -4,17 +4,16 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';
 import {
-  selectedSystemHistoryLoaded, selectedTotalSystemHistory,
-  selectorAllSystemHistory
+  selectedSystemHistoryLoaded,
+  selectedTotalSystemHistory,
+  selectorAllSystemHistory,
 } from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
-import { MainAction } from '../../../../../../../apps/sell/src/app/states/main.action';
-import { selectTotalTemplateOvertime } from '../../../../../../../apps/hr/src/app/pages/template/+state/template-overtime/template-overtime.selector';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: 'system-history.container.html'
+  templateUrl: 'system-history.container.html',
 })
 export class SystemHistoryContainer implements OnInit {
   app = App;
@@ -30,29 +29,28 @@ export class SystemHistoryContainer implements OnInit {
     activity: new FormControl(''),
     description: new FormControl(''),
     ip: new FormControl(''),
-    createdAt: new FormControl('')
+    createdAt: new FormControl(''),
   });
 
-  constructor(
-    private readonly store: Store
-  ) {
-  }
+  constructor(private readonly store: Store) {}
 
   systemHistory$ = this.store.pipe(select(selectorAllSystemHistory));
   loaded$ = this.store.pipe(select(selectedSystemHistoryLoaded));
   total$ = this.store.pipe(select(selectedTotalSystemHistory));
 
   ngOnInit(): void {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.SYSTEM_HISTORY }));
-    this.store.dispatch(SystemHistoryActions.loadSystemHistory(
-      { take: this.pageSize, skip: this.pageIndexInit }));
+    this.store.dispatch(
+      SystemHistoryActions.loadSystemHistory({
+        take: this.pageSize,
+        skip: this.pageIndexInit,
+      })
+    );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            SystemHistoryActions.loadSystemHistory(
-              this.systemHistory(val))
+            SystemHistoryActions.loadSystemHistory(this.systemHistory(val))
           );
         })
       )
@@ -62,9 +60,7 @@ export class SystemHistoryContainer implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.store.dispatch(
-      SystemHistoryActions.loadMoreSystemHistory(
-        this.systemHistory(val)
-      )
+      SystemHistoryActions.loadMoreSystemHistory(this.systemHistory(val))
     );
   }
 
@@ -78,7 +74,7 @@ export class SystemHistoryContainer implements OnInit {
       activity: val.activity,
       description: val.description,
       ip: val.ip,
-      createdAt: val.createdAt
+      createdAt: val.createdAt,
     };
   }
 }

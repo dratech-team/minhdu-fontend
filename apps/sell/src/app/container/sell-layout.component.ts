@@ -10,8 +10,7 @@ import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.
 import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
 import { menuSell } from '@minhdu-fontend/constants';
-import { selectedTab } from '../states/main.selector';
-import { map, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +21,7 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuSell = menuSell;
-  tab$ = this.store.pipe(select(selectedTab));
+  tab$ = of();
 
   constructor(
     private readonly dialog: MatDialog,

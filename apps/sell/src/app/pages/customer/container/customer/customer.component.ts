@@ -11,7 +11,6 @@ import { CustomerActions } from '../../+state/customer.actions';
 import { OrderEntity } from '../../../order/enitities/order.interface';
 import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
 import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { MainAction } from '../../../../states/main.action';
 import { PotentialTypes } from '../../constants/potentialTypes';
 import { CustomerTypes } from '../../constants/customer.type';
 import { GenderTypes } from '../../constants/generTypes';
@@ -59,7 +58,6 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.CUSTOMER }));
     this.actions$.dispatch(CustomerActions.loadAll({ take: this.pageSize, skip: this.pageIndexInit }));
     this.formGroup.valueChanges
       .pipe(

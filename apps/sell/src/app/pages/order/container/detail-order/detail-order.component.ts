@@ -7,7 +7,6 @@ import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityAction } from '../../../commodity/+state/commodity.action';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { MainAction } from '../../../../states/main.action';
 import { CommodityDialogComponent } from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
 import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
@@ -54,7 +53,6 @@ export class DetailOrderComponent implements OnInit {
 
   ngOnInit() {
     this.loading$.subscribe(val => console.log(val));
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
     this.loadInitOrderHistory();
 

@@ -6,7 +6,6 @@ import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } 
 import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
 import { OrderActions } from '../../+state/order.actions';
-import { MainAction } from '../../../../states/main.action';
 import { CustomerEntity } from '../../../customer/entities/customer.entity';
 import { DatePipe } from '@angular/common';
 import { Actions } from '@datorama/akita-ng-effects';
@@ -46,7 +45,6 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.customerPicked$.subscribe((val: any) => {
       if (val) {
         this.customerPicked = JSON.parse(JSON.stringify(val));

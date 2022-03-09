@@ -9,7 +9,6 @@ import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepi
 import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions } from '../../+state/order.actions';
-import { MainAction } from '../../../../states/main.action';
 import * as _ from 'lodash';
 import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
@@ -67,7 +66,6 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.actions$.dispatch(
       OrderActions.loadAll( { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 })
     );

@@ -26,7 +26,6 @@ import { PaymentHistoryComponent } from './container/payment-history/payment-his
 import { TableRouteComponent } from './component/table-route/table-route.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MainReducer } from '../../states/mainReducer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
@@ -37,7 +36,6 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     AkitaNgEffectsModule.forFeature([OrderEffect]),
     MatInputModule,
     InfiniteScrollModule,

@@ -26,7 +26,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { TablePaymentComponent } from './component/table-payment/table-payment.component';
 import { PaymentReducer } from '../payment/payment/payment.reducer';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MainReducer } from '../../states/mainReducer';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 
 @NgModule({
@@ -40,7 +39,6 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     InfiniteScrollModule,
     CommonModule,
     StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     AkitaNgEffectsModule.forFeature([CustomerEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,

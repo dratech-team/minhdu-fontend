@@ -11,7 +11,6 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { RouteAction } from '../../+state/route.action';
 import { RouteEntity } from '../../entities/route.entity';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { MainAction } from '../../../../states/main.action';
 import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { RouteQuery } from '../../+state/route.query';
@@ -48,7 +47,6 @@ export class RouteComponent implements OnInit {
   loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ROUTE }));
     this.routes$.subscribe((val) => {
       this.routes = JSON.parse(JSON.stringify(val));
       this.routes.forEach((item) => {
