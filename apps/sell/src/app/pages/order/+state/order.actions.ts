@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ORDER] Load Init',
-  props<LoadOrderDto>()
+  props<{param: LoadOrderDto, isScroll?: boolean}>()
 );
 
 const loadOne = createAction(

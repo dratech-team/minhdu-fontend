@@ -49,29 +49,34 @@ export class RouteEffect {
         this.routeStore.update(state => ({
           ...state, loading: true
         }))
-        return this.routeService.pagination(props)
+        return this.routeService.pagination(props).pipe(
+          map((responsePagination) => {
+            this.routeStore.update(state => ({
+              ...state, loading: false
+            }))
+            if (responsePagination.data.length === 0) {
+              this.snackBar.openFromComponent(SnackBarComponent, {
+                duration: 2500,
+                panelClass: ['background-snackbar'],
+                data: {content: 'Đã lấy hết Tuyến đường'}
+              });
+            } else {
+              responsePagination.data.map(route => {
+                route.orders.map((order: OrderEntity) => {
+                  order.commodityTotal = getTotalCommodity(order.commodities);
+                });
+                route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
+              });
+            }
+            if (props.isScroll) {
+              this.routeStore.add(responsePagination.data);
+            } else {
+              this.routeStore.set(responsePagination.data);
+            }
+          }),
+        )
       }
     ),
-    map((responsePagination) => {
-      if (responsePagination.data.length === 0) {
-        this.routeStore.update(state => ({
-          ...state, loading: false
-        }))
-        this.snackBar.openFromComponent(SnackBarComponent, {
-          duration: 2500,
-          panelClass: ['background-snackbar'],
-          data: {content: 'Đã lấy hết Tuyến đường'}
-        });
-      } else {
-        responsePagination.data.map(route => {
-          route.orders.map((order: OrderEntity) => {
-            order.commodityTotal = getTotalCommodity(order.commodities);
-          });
-          route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
-        });
-        this.routeStore.add(responsePagination.data);
-      }
-    }),
     catchError((err) => throwError(err))
   );
 

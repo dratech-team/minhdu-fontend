@@ -69,31 +69,39 @@ export class OrderEffect {
         this.orderStore.update(state => ({
           ...state, loading: true
         }))
-        return this.orderService.pagination(props)
-      }
-    ),
-    map((response) => {
-        this.orderStore.update(state => ({
-          ...state, loading: false
-        }))
-        if (response.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: {content: 'Đã lấy hết đơn hàng'}
-          });
-        } else {
-          response.data.map((order: OrderEntity) => {
-            order.expand = false;
-            order.totalCommodity = getTotalCommodity(order.commodities);
-          });
-          this.orderStore.add(response.data);
-          this.orderStore.update(state => ({
-            ...state,
-            total: response.total,
-            commodityUniq: response.commodityUniq
-          }));
-        }
+        return this.orderService.pagination(props.param).pipe(
+          map((response) => {
+              this.orderStore.update(state => ({
+                ...state, loading: false
+              }))
+              if (response.data.length > 0) {
+                response.data.map((order: OrderEntity) => {
+                  order.expand = false;
+                  order.totalCommodity = getTotalCommodity(order.commodities);
+                  this.orderStore.update(state => ({
+                    ...state,
+                    total: response.total,
+                    commodityUniq: response.commodityUniq
+                  }));
+                });
+              }else{
+                if (response.data.length === 0) {
+                  this.snackBar.openFromComponent(SnackBarComponent, {
+                    duration: 2500,
+                    panelClass: ['background-snackbar'],
+                    data: {content: 'Đã lấy hết đơn hàng'}
+                  });
+                }
+              }
+              if (props.isScroll) {
+                this.orderStore.add(response.data);
+              } else {
+                this.orderStore.set(response.data);
+              }
+
+            }
+          )
+        )
       }
     ),
     catchError((err) => throwError(err))

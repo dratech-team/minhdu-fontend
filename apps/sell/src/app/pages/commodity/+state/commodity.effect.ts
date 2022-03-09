@@ -54,16 +54,14 @@ export class CommodityEffect {
               this.commodityStore.update(state => ({
                 ...state, loading: false
               }))
+              if (ResponsePaginate.data.length === 0) {
+                this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
+              }
+              this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
               if (props?.isScroll) {
-                if (ResponsePaginate.data.length === 0) {
-                  this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
-                } else {
-                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
-                }
                 this.commodityStore.add(ResponsePaginate.data);
               } else {
                 this.commodityStore.set(ResponsePaginate.data);
-                this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
               }
             }
           ),

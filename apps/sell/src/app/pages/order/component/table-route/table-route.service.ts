@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { RouteAction } from '../../../route/+state/route.action';
-import { Actions } from '@datorama/akita-ng-effects';
-import { RouteQuery } from '../../../route/+state/route.query';
+import {Injectable} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {RouteAction} from '../../../route/+state/route.action';
+import {Actions} from '@datorama/akita-ng-effects';
+import {RouteQuery} from '../../../route/+state/route.query';
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class TableRouteService {
   routes$ = this.routeQuery.selectAll();
 
@@ -16,11 +16,11 @@ export class TableRouteService {
   }
 
   loadInit(orderId: number) {
-    return this.actions$.dispatch(RouteAction.loadAll({ take: 30, skip: 0, orderId: orderId }));
+    return this.actions$.dispatch(RouteAction.loadAll({params: {take: 30, skip: 0, orderId: orderId}}));
   }
 
   scrollRoutes(val: any) {
-    this.actions$.dispatch(RouteAction.loadAll(val));
+    this.actions$.dispatch(RouteAction.loadAll({params: val, isScroll: true},));
   }
 
   getCommodities() {
