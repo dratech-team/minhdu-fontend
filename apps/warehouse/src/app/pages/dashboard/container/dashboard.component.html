@@ -1,156 +1,181 @@
 <div class='mx-auto' style='width: 98%'>
   <ngx-skeleton-loader *ngIf='(loading$ | async); else product' count='18' appearance='line'></ngx-skeleton-loader>
   <ng-template #product>
-    <div class='col-3'>
-      <div class='mt-2 d-flex'>
-        <div class='h3 mb-0'>Loại kho</div>
-        <div>
-          <div class='ml-3'>
-            <mat-select style='min-width: 150px' id='type' class='form-control' value='Tất cả'>
-              <mat-option *ngFor='let item of warehouse$ | async' [value]='item.name'
-                          (click)='selectWarehouse(item)'>{{item.name}}</mat-option>
-            </mat-select>
+    <div class="d-flex mt-3">
+      <div>
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="true" >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tổng kho
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div [formGroup]="formGroup" >
+              <mat-radio-group aria-label="Select an option" formControlName="inventoryType" class="d-flex flex-column">
+                <mat-radio-button *ngFor="let item of inventoryTitle" [value]="item.value">{{item.name}}</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="true" >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Loại kho
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+              <mat-radio-group aria-label="Select an option" [formControl]="formControlWareHouse" class="d-flex flex-column">
+              <mat-radio-button *ngFor="let item of warehouse$ | async" [value]="item.id">{{item.name}}</mat-radio-button>
+            </mat-radio-group>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="d-flex flex-column ml-2">
+        <div class="ml-2 d-flex justify-content-between">
+          <div class="font-2xl font-weight-bold"> Hàng hoá</div>
+          <div>
+            <div>
+              <button class='btn btn-primary font-sm mr-2 ' (click)='import()'>
+                Nhập
+              </button>
+              <button class='btn btn-primary font-sm '>
+                Xuất
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <button class='btn btn-primary font-sm mt-2' (click)='import()'>
-          Nhập
-        </button>
-        <button class='btn btn-primary font-sm mt-2 ml-2'>
-          Xuất
-        </button>
-      </div>
-    </div>
-    <div class='table-scroll mt-2 animated fadeIn'
-         infiniteScroll
-         [infiniteScrollDistance]='1'
-         [infiniteScrollThrottle]='10'
-         [scrollWindow]='false'
-         (scrolled)='onScroll()'
-    >
-      <table [formGroup]='formGroup' style='width: 2500px'>
-        <thead>
-        <tr>
-          <th>
-            <div class='border-top text-center'>STT</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Mã hàng</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Tên hàng</div>
-            <input
-              formControlName='name'
-              class='form-control input-profile '
-              type='search'>
-          </th>
-          <th *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
-            <div class='border-top text-center'>Loại kho</div>
-          </th>
-          <th>
-            <div class='border-top text-center'>Đơn giá</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Số lượng</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Tổng tiền</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Mã vạch</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Nhà cung cấp</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Hạn sử dụng</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Chiếc khấu</div>
-            <input disabled>
-          </th>
-          <!--          <th>-->
-          <!--            <div class='border-top text-center'>Số chứng từ</div>-->
-          <!--            <input disabled>-->
-          <!--          </th>-->
-          <th>
-            <div class='border-top text-center'>Đơn vị</div>
-            <input disabled>
-          </th>
-          <th>
-            <div class='border-top text-center'>Ngày nhập kho</div>
-            <input disabled>
-          </th>
-        </tr>
-        </thead>
-        <tbody *ngIf='(products$| async) as products'>
-        <tr *ngFor='let product of products; let i = index'
-            (contextmenu)='child.onContextMenu($event,product)'
-            (click)='updateMedicine(product)'>
-          <th class='pointer'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
-          </th>
-          <th class='pointer'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{product?.code}}
-          </th>
-          <th class='pointer'
-              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{product?.name}}
-          </th>
-          <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
-              *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
-            {{product.warehouse?.name}}
-          </th>
-          <th class='pointer'>
-            {{product.price | number:'1.0'|notEmpty:'0'}} đ
-          </th>
-          <th class='pointer'>
-            {{product?.amount}}
-          </th>
-          <th class='pointer' style='color: #4dbd74'>
-            {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
-          </th>
-          <th class='pointer'>
-            {{product?.code}}
-          </th>
-          <th class='pointer'>
-            {{product?.provider?.name}}
-          </th>
-          <th class='pointer'>
-            {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
-          </th>
-          <th class='pointer' style='color: #4dbd74'>
-            {{(product.discount || 0) * 100 + '%' }}
-          </th>
-          <!--          <th class='pointer'>-->
-          <!--            {{product?.billCode}}-->
-          <!--          </th>-->
-          <th class='pointer'>
-            {{product.unit | transform:medicineConstant}}
-          </th>
-          <th class='pointer'>
-            {{(product?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật'}}
-          </th>
-        </tr>
-        <tr *ngIf='products.length === 0'>
-          <td colspan='20' style='height: 48vh'>
+        <div class='table-scroll mt-2 animated fadeIn'
+             style="width: 80vw; overflow-x: scroll"
+             infiniteScroll
+             [infiniteScrollDistance]='1'
+             [infiniteScrollThrottle]='10'
+             [scrollWindow]='false'
+             (scrolled)='onScroll()'
+        >
+          <table [formGroup]='formGroup' style='width: 2500px'>
+            <thead>
+            <tr>
+              <th>
+                <div class='border-top text-center'>STT</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Mã hàng</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Tên hàng</div>
+                <input
+                  formControlName='name'
+                  class='form-control input-profile '
+                  type='search'>
+              </th>
+              <th *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
+                <div class='border-top text-center'>Loại kho</div>
+              </th>
+              <th>
+                <div class='border-top text-center'>Đơn giá</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Số lượng</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Tổng tiền</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Mã vạch</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Nhà cung cấp</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Hạn sử dụng</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Chiếc khấu</div>
+                <input disabled>
+              </th>
+              <!--          <th>-->
+              <!--            <div class='border-top text-center'>Số chứng từ</div>-->
+              <!--            <input disabled>-->
+              <!--          </th>-->
+              <th>
+                <div class='border-top text-center'>Đơn vị</div>
+                <input disabled>
+              </th>
+              <th>
+                <div class='border-top text-center'>Ngày nhập kho</div>
+                <input disabled>
+              </th>
+            </tr>
+            </thead>
+            <tbody *ngIf='(products$| async) as products'>
+            <tr *ngFor='let product of products; let i = index'
+                (contextmenu)='child.onContextMenu($event,product)'
+                (click)='updateMedicine(product)'>
+              <th class='pointer'
+                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{i + 1}}
+              </th>
+              <th class='pointer'
+                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{product?.code}}
+              </th>
+              <th class='pointer'
+                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+                {{product?.name}}
+              </th>
+              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
+                  *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
+                {{product.warehouse?.name}}
+              </th>
+              <th class='pointer'>
+                {{product.price | number:'1.0'|notEmpty:'0'}} đ
+              </th>
+              <th class='pointer'>
+                {{product?.amount}}
+              </th>
+              <th class='pointer' style='color: #4dbd74'>
+                {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
+              </th>
+              <th class='pointer'>
+                {{product?.code}}
+              </th>
+              <th class='pointer'>
+                {{product?.provider?.name}}
+              </th>
+              <th class='pointer'>
+                {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
+              </th>
+              <th class='pointer' style='color: #4dbd74'>
+                {{(product.discount || 0) * 100 + '%' }}
+              </th>
+              <!--          <th class='pointer'>-->
+              <!--            {{product?.billCode}}-->
+              <!--          </th>-->
+              <th class='pointer'>
+                {{product.unit | transform:medicineConstant}}
+              </th>
+              <th class='pointer'>
+                {{(product?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật'}}
+              </th>
+            </tr>
+            <tr *ngIf='products.length === 0'>
+              <td colspan='20' style='height: 48vh'>
             <span class='d-block font-lg font-weight-bold'
                   style='position: absolute; top: 45%; left: 45%'>Chưa có loại thuốc nào!</span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </ng-template>
 </div>

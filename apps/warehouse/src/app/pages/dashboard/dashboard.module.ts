@@ -17,6 +17,8 @@ import { WarehouseService } from '../warehouse/services/warehouse.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   imports: [
@@ -31,7 +33,9 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
     NgxSkeletonLoaderModule,
     AkitaNgEffectsModule.forFeature([ProductEffect]),
     MatAutocompleteModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    MatExpansionModule,
+    MatRadioModule
   ],
   declarations: [
     ProductDialogComponent,
