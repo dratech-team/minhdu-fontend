@@ -23,23 +23,23 @@ import { NxModule } from '@nrwl/angular';
 import { LocationModule } from '@minhdu-fontend/location';
 import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
-import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { MatTabsModule } from '@angular/material/tabs';
 import localeVi from '@angular/common/locales/vi';
-import {NZ_ICONS} from "ng-zorro-antd/icon";
-import * as AllIcons from "@ant-design/icons-angular/icons";
-import {IconDefinition} from "@ant-design/icons-angular";
-import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
-import { AkitaDevtools, AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+import { IconDefinition } from '@ant-design/icons-angular';
+import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { RouteGuard } from './route.guard';
 
 registerLocaleData(localeVi);
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
 
 @NgModule({
   imports: [
@@ -85,11 +85,12 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
       multi: true
     },
     HashLocationStrategy,
+    RouteGuard,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     { provide: LOCALE_ID, useValue: 'vi-VN' },
     { provide: NZ_I18N, useValue: en_US },
     { provide: NZ_ICONS, useValue: icons },
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, disableClose: true } as MatDialogConfig }
   ],
   bootstrap: [AppComponent]
 })

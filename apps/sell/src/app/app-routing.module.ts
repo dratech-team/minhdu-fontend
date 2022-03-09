@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SellLayoutComponent } from './container/sell-layout.component';
+import { RouteGuard } from './route.guard';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/statistical/statistical.module').then(
             (m) => m.StatisticalModule
-          )
+          ),
+        canActivate: [RouteGuard]
       },
       {
         path: 'khach-hang',
@@ -30,7 +32,8 @@ const routes: Routes = [
           ),
         data: {
           title: 'Khách hàng'
-        }
+        },
+        canActivate: [RouteGuard]
       },
       {
         path: 'hang-hoa',
@@ -40,7 +43,8 @@ const routes: Routes = [
           ),
         data: {
           title: 'Hàng hóa'
-        }
+        },
+        canActivate: [RouteGuard]
       },
       {
         path: 'don-hang',
@@ -48,22 +52,26 @@ const routes: Routes = [
           import('./pages/order/order.module').then((m) => m.OrderModule),
         data: {
           title: 'Đơn hàng'
-        }
+        },
+        canActivate: [RouteGuard]
       },
       {
         path: 'tuyen-duong',
         loadChildren: () =>
-          import('./pages/route/route.module').then((m) => m.RouteModule)
+          import('./pages/route/route.module').then((m) => m.RouteModule),
+        canActivate: [RouteGuard]
       },
       {
         path: 'hoa-don',
         loadChildren: () =>
-          import('./pages/bill/bill.module').then((m) => m.BillModule)
+          import('./pages/bill/bill.module').then((m) => m.BillModule),
+        canActivate: [RouteGuard]
       },
       {
         path: 'he-thong',
         loadChildren: () =>
-          import('@minhdu-fontend/system').then((m) => m.SystemModule)
+          import('@minhdu-fontend/system').then((m) => m.SystemModule),
+        canActivate: [RouteGuard]
       },
       { path: '**', redirectTo: '' }
     ]
@@ -80,5 +88,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
-  
 }
