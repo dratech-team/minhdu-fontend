@@ -75,7 +75,7 @@ export class CustomerComponent implements OnInit {
     console.log();
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
-        data: $event.id
+        customerId: $event.id
       }
     }).then();
   }

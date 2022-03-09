@@ -20,13 +20,12 @@ import {CustomerActions} from "../../../customer/+state/customer.actions";
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot?.queryParams?.data)
   customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number = this.route.snapshot.queryParams.data;
+  customerId: number = this.route.snapshot.queryParams.customerid;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -48,13 +47,13 @@ export class AddOrderComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(param => {
-      if (param.data) {
-        this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
+      if (param.customerId) {
+        this.actions$.dispatch(CustomerActions.loadOne({id: param.customerId}))
+        this.customerQuery.selectEntity(param.customerId).subscribe(val => {
+          this.customerPicked = val
+        })
       }
     });
-    this.customerPicked$.subscribe(val => {
-      this.customerPicked = val
-    })
 
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],

@@ -65,7 +65,7 @@ export class CustomerEffect {
       }
       return this.customerService.addOne(props);
     }),
-    map((res) => {
+    tap((res) => {
         this.customerStore.update(state => ({
           ...state, added: true
         }))

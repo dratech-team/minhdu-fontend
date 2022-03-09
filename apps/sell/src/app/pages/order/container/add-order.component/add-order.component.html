@@ -75,7 +75,7 @@
               <th class='text-center'>Loại khách hàng</th>
               <th class='text-center'>Nguồn khác hàng</th>
               <th class='text-center'>Email</th>
-              <th class='text-center'>Bỏ chọn</th>
+<!--              <th class='text-center'>Bỏ chọn</th>-->
             </tr>
             <tr>
               <td class='text-center'>{{customerPicked.lastName}}</td>
@@ -95,11 +95,11 @@
               </td>
               <td class='text-center' *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
               <td class='text-center' *ngIf='!customerPicked?.email'>Chưa cập nhật</td>
-              <td class='text-center'>
-                <button (click)='deleteCustomerId()' style=' font-size: 10px'
-                        class='btn btn-danger '>Bỏ chọn
-                </button>
-              </td>
+<!--              <td class='text-center'>-->
+<!--                <button (click)='deleteCustomerId()' style=' font-size: 10px'-->
+<!--                        class='btn btn-danger '>Bỏ chọn-->
+<!--                </button>-->
+<!--              </td>-->
             </tr>
           </table>
         </div>
