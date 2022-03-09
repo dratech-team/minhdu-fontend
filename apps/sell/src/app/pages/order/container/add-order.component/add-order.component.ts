@@ -22,14 +22,13 @@ import {CustomerActions} from "../../../customer/+state/customer.actions";
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot.params.id);
-
+  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot?.queryParams?.data)
   customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number = this.route.snapshot.params.id;
+  customerId: number = this.route.snapshot.params.data;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -50,20 +49,15 @@ export class AddOrderComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.route.queryParams.subscribe(param => {
       if (param.data) {
-        this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
-        this.customerQuery.selectEntity(+param.data).subscribe(val => {
-          this.customerPicked = val
-        })
+       this.actions$.dispatch(CustomerActions.loadOne({id: param.data}))
       }
     });
-
-    this.customerPicked$.subscribe((val: any) => {
-      if (val) {
-        this.customerPicked = JSON.parse(JSON.stringify(val));
-      }
-    });
+    this.customerPicked$.subscribe(val => {
+      this.customerPicked = val
+    })
 
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
@@ -76,13 +70,14 @@ export class AddOrderComponent implements OnInit {
     this.dialog.open(PickCustomerComponent, {
       width: '50%',
       data: {
-        pickOne: true
+        pickOne: true,
+        customerInit: this.customerPicked
       }
     }).afterClosed().subscribe(val => {
         if (val) {
           this.customerId = val;
           this.customerQuery.selectEntity(this.customerId).subscribe(val => {
-            this.customerPicked = JSON.parse(JSON.stringify(val));
+            this.customerPicked = val
           });
         }
       }
@@ -90,8 +85,7 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCustomerId() {
-    // this.customerId = undefined;
-    // this.customerPicked = undefined;
+    this.customerPicked = undefined;
   }
 
   pickCommodities() {
