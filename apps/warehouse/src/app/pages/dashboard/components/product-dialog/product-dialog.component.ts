@@ -24,7 +24,7 @@ type InputType = 'branch' | 'warehouse' | 'provider';
   templateUrl: 'product-dialog.component.html'
 })
 export class ProductDialogComponent implements OnInit {
-  branches$ = this.store.select(getAllOrgchart).pipe(map(branches => branches.concat({ id: -1, name: 'Kho tổng' })));
+  branches$ = this.store.select(getAllOrgchart);
   warehouse$ = this.warehouseQuery.selectAll();
   products$ = this.productQuery.selectAll();
 
