@@ -6,21 +6,21 @@
         <mat-accordion>
           <mat-expansion-panel [expanded]="true" >
             <mat-expansion-panel-header>
-              <mat-panel-title>
+              <mat-panel-title class="font-weight-bold">
                 Tổng kho
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div [formGroup]="formGroup" >
+            <div [formGroup]="formGroup">
               <mat-radio-group aria-label="Select an option" formControlName="inventoryType" class="d-flex flex-column">
                 <mat-radio-button *ngFor="let item of inventoryTitle" [value]="item.value">{{item.name}}</mat-radio-button>
               </mat-radio-group>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="true" >
+        <mat-accordion >
+          <mat-expansion-panel class="mt-2" [expanded]="true" >
             <mat-expansion-panel-header>
-              <mat-panel-title>
+              <mat-panel-title class="font-weight-bold">
                 Loại kho
               </mat-panel-title>
             </mat-expansion-panel-header>
