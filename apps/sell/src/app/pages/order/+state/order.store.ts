@@ -4,13 +4,15 @@ import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
 import { OrderEntity } from '../enitities/order.interface';
 
 export interface OrderState extends EntityState<OrderEntity> {
-  readonly loading: boolean;
+  loading: boolean;
+  added:boolean
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];
 }
 
 const createInitState = () => ({
   loading: true,
+  added:false,
   total: 0,
   commodityUniq: []
 });

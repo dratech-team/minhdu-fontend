@@ -33,6 +33,9 @@ export class OrderEffect {
   addOrder$ = this.actions$.pipe(
     ofType(OrderActions.addOne),
     switchMap((props) => {
+      this.orderStore.update(state => ({
+        ...state, added: false
+      }))
       if (!props?.createdAt) {
         throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
       }
@@ -48,6 +51,9 @@ export class OrderEffect {
       return this.orderService.addOne(props);
     }),
     map((res) => {
+      this.orderStore.update(state => ({
+        ...state, added: true
+      }))
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
     }),
@@ -59,8 +65,17 @@ export class OrderEffect {
   @Effect()
   loadAll$ = this.actions$.pipe(
     ofType(OrderActions.loadAll),
-    switchMap((props) => this.orderService.pagination(props)),
+    switchMap((props) => {
+        this.orderStore.update(state => ({
+          ...state, loading: true
+        }))
+        return this.orderService.pagination(props)
+      }
+    ),
     map((response) => {
+        this.orderStore.update(state => ({
+          ...state, loading: false
+        }))
         if (response.data.length === 0) {
           this.snackBar.openFromComponent(SnackBarComponent, {
             duration: 2500,
@@ -107,7 +122,9 @@ export class OrderEffect {
     tap(() => {
       this.snackBar.open('Cập nhật thành công');
     }),
-    catchError((err) => {return throwError(err);})
+    catchError((err) => {
+      return throwError(err);
+    })
   );
 
   @Effect()

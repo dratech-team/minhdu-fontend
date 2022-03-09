@@ -8,6 +8,8 @@ import {OrderEntity} from '../../../order/enitities/order.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {Actions} from "@datorama/akita-ng-effects";
+import {RouteQuery} from "../../+state/route.query";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -23,7 +25,8 @@ export class RouteDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
-    private readonly store: Store,
+    private readonly actions$: Actions,
+    private readonly routeQuery: RouteQuery,
     private readonly datePipe: DatePipe,
     private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
     private readonly snackbar: MatSnackBar
@@ -52,7 +55,6 @@ export class RouteDialogComponent implements OnInit {
 
   pickOrders(orders: OrderEntity[]) {
     this.orderIdsOfRoute = [...orders];
-    console.log(this.orderIdsOfRoute)
   }
 
   pickCommodity(commodities: CommodityEntity[]) {
@@ -83,13 +85,17 @@ export class RouteDialogComponent implements OnInit {
       commodityIds: this.commoditySelected.map((item) => item.id),
     };
     if (this.data) {
-      this.store.dispatch(
+      this.actions$.dispatch(
         RouteAction.update({updates: route, id: this.data.route.id})
       );
     } else {
-      this.store.dispatch(RouteAction.addOne( route));
+      this.actions$.dispatch(RouteAction.addOne(route));
     }
-    this.dialogRef.close();
+    this.routeQuery.select(state => state.added).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    })
   }
 
   nextTab(tab: any) {
@@ -106,10 +112,10 @@ export class RouteDialogComponent implements OnInit {
   }
 
   selectTabChange($event: MatTabChangeEvent) {
-    if($event.index === 1){
+    if ($event.index === 1) {
       this.submitted = true
       if (this.formGroup.invalid)
-        this.tabIndex =  0
+        this.tabIndex = 0
     }
   }
 }

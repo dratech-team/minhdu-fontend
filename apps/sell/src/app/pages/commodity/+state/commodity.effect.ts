@@ -24,35 +24,51 @@ export class CommodityEffect {
   addOne$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.addOne),
-      switchMap((props) => this.commodityService.addOne(props).pipe(
-        map(commodity => {
-            this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
-            this.commodityStore.add(commodity);
-          }
-        ),
-        catchError((err) => throwError(err))
-      ))
+      switchMap((props) => {
+          this.commodityStore.update(state => ({
+            ...state, added: false
+          }))
+          return this.commodityService.addOne(props)
+        }
+      ),
+      map(commodity => {
+          this.commodityStore.update(state => ({
+            ...state, added: true
+          }))
+          this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
+          this.commodityStore.add(commodity);
+        }
+      ),
+      catchError((err) => throwError(err))
     ));
 
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CommodityAction.loadAll),
-      switchMap((params) => this.commodityService.pagination(params).pipe(
-          map((ResponsePaginate) => {
-              if (ResponsePaginate.data.length === 0) {
-                this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
-              } else {
-                if (params?.skip && params.skip > 0) {
-                  this.commodityStore.add(ResponsePaginate.data);
-                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+      switchMap((params) => {
+          this.commodityStore.update(state => ({
+            ...state, loading: true
+          }))
+          return this.commodityService.pagination(params).pipe(
+            map((ResponsePaginate) => {
+                this.commodityStore.update(state => ({
+                  ...state, loading: false
+                }))
+                if (ResponsePaginate.data.length === 0) {
+                  this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
                 } else {
-                  this.commodityStore.set(ResponsePaginate.data);
-                  this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                  if (params?.skip && params.skip > 0) {
+                    this.commodityStore.add(ResponsePaginate.data);
+                    this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                  } else {
+                    this.commodityStore.set(ResponsePaginate.data);
+                    this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+                  }
                 }
               }
-            }
-          ),
-        )
+            ),
+          )
+        }
       ),
       catchError((err) => throwError(err))
     )

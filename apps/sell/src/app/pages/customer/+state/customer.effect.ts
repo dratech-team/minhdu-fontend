@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { CustomerActions } from './customer.actions';
-import { CustomerService } from '../service/customer.service';
-import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CustomerQuery } from './customer.query';
-import { CustomerStore } from './customer.store';
-import { OrderService } from '../../order/service/order.service';
-import { AddCustomerDto } from '../dto/add-customer.dto';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {CustomerActions} from './customer.actions';
+import {CustomerService} from '../service/customer.service';
+import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CustomerQuery} from './customer.query';
+import {CustomerStore} from './customer.store';
+import {OrderService} from '../../order/service/order.service';
+import {AddCustomerDto} from '../dto/add-customer.dto';
 
 @Injectable()
 export class CustomerEffect {
@@ -27,15 +27,19 @@ export class CustomerEffect {
   loadCustomers$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
     switchMap((props) => {
+      this.customerStore.update(state => ({
+        ...state, loading: true
+      }))
       const skip = this.customerQuery.getCount();
-      return this.customerService.pagination(Object.assign(props, { skip: skip }));
+      return this.customerService.pagination(Object.assign(props, {skip: skip}));
     }),
     tap((response) => {
+      this.customerStore.update(state => ({...state, loading: false}))
       if (response.data.length === 0) {
         this.snackBar.openFromComponent(SnackBarComponent, {
           duration: 2500,
           panelClass: ['background-snackbar'],
-          data: { content: 'Đã lấy hết khách hàng' }
+          data: {content: 'Đã lấy hết khách hàng'}
         });
       } else {
         this.customerStore.add(response.data);
@@ -48,16 +52,24 @@ export class CustomerEffect {
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
+      console.log('ssssss')
+      this.customerStore.update(state => ({
+        ...state, added: false
+      }))
+
       if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
       }
       return this.customerService.addOne(props);
     }),
     map((res) => {
-        this.customerStore.update(res.id, res);
+        this.customerStore.update(state => ({
+          ...state, added: true
+        }))
+        this.customerStore.add(res);
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => throwError(err)),
   );
 
   @Effect()
@@ -88,10 +100,10 @@ export class CustomerEffect {
   @Effect()
   orderDelivered$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivered),
-    switchMap(props => this.orderService.pagination(Object.assign(props, { status: 1 })).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 1})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, { delivered: res.data });
-        this.customerStore.update((state) => ({ ...state, deliveredLoading: false }));
+        this.customerStore.update(props.customerId, {delivered: res.data});
+        this.customerStore.update((state) => ({...state, deliveredLoading: false}));
       })
     ))
   );
@@ -99,10 +111,10 @@ export class CustomerEffect {
   @Effect()
   orderDelivering$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivering),
-    switchMap(props => this.orderService.pagination(Object.assign(props, { status: 0 })).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 0})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, { delivering: res.data });
-        this.customerStore.update((state) => ({ ...state, deliveringLoading: false }));
+        this.customerStore.update(props.customerId, {delivering: res.data});
+        this.customerStore.update((state) => ({...state, deliveringLoading: false}));
       })
     ))
   );

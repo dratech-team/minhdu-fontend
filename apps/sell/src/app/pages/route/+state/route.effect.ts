@@ -25,17 +25,38 @@ export class RouteEffect {
   @Effect()
   addRoute$ = this.action.pipe(
     ofType(RouteAction.addOne),
-    switchMap((props) => this.routeService.addOne(props)),
-    tap((res) => this.routeStore.add(res)),
+    switchMap((props) => {
+        this.routeStore.update(state => ({
+          ...state, added: false
+        }))
+        return this.routeService.addOne(props)
+      }
+    ),
+    tap((res) => {
+        this.routeStore.update(state => ({
+          ...state, added: true
+        }))
+        this.routeStore.add(res)
+      }
+    ),
     catchError((err) => throwError(err))
   );
 
   @Effect()
   loadAll$ = this.action.pipe(
     ofType(RouteAction.loadAll),
-    switchMap((props) => this.routeService.pagination(props)),
+    switchMap((props) => {
+        this.routeStore.update(state => ({
+          ...state, loading: true
+        }))
+        return this.routeService.pagination(props)
+      }
+    ),
     map((responsePagination) => {
       if (responsePagination.data.length === 0) {
+        this.routeStore.update(state => ({
+          ...state, loading: false
+        }))
         this.snackBar.openFromComponent(SnackBarComponent, {
           duration: 2500,
           panelClass: ['background-snackbar'],
