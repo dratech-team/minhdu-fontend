@@ -68,7 +68,7 @@
           </th>
         </tr>
         <ng-template #tableBranch>
-          <tr *ngFor="let branch of branches;let i = index"
+          <tr *ngFor="let branch of branches;let i = index" class="pointer"
               (contextmenu)='child.onContextMenu($event,branch)'>
             <th>
               <div>
@@ -103,7 +103,9 @@
           </tr>
           <tr *ngIf='branches.length === 0' style='height: 50vh'>
             <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
-              <span style='position: absolute; top: 50%;left: 50%;'>Hiện không có chi nhánh nào !</span>
+              <div class="d-flex justify-content-center align-items-center">
+                <span >Hiện không có chi nhánh nào !</span>
+              </div>
             </td>
           </tr>
         </ng-template>

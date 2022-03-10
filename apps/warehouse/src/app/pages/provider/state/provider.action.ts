@@ -1,14 +1,27 @@
-import { createAction, props } from '@datorama/akita-ng-effects';
-import { ProviderDtoEntity } from '../entities/provider-dto.entity';
+import {createAction, props} from '@datorama/akita-ng-effects';
+import {AddProviderDto} from "../dto/add-provider.dto";
+import {ProviderDto} from "../dto/provider.dto";
+import {UpdateProviderDto} from "../dto/update-provider.dto";
 
-const addProvider = createAction(
-  '[PROVIDER] Add Provider',
-  props<{ name: ProviderDtoEntity['name'] }>()
+const addOne = createAction(
+  '[PROVIDER] Add One',
+  props<AddProviderDto>()
 );
 
-const loadProviders = createAction('[PROVIDER] Load Providers');
+const loadAll = createAction(
+  '[PROVIDER] Load All',
+  props<{ param: ProviderDto, isScroll?: boolean }>()
+);
 
-export const ProviderActions = {
-  addProvider,
-  loadProviders
-};
+const update = createAction(
+  '[PROVIDER] Update ',
+  props<{ id: number, body: UpdateProviderDto }>()
+);
+
+const remove = createAction(
+  '[PROVIDER] Remove ',
+  props<{ id: number }>()
+);
+
+
+export const ProviderActions = {addOne, loadAll, update, remove};

@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/branch/branch.module').then(m => m.BranchModule),
       },
       {
+        path: 'quan-ly-nha-cung-cap',
+        loadChildren: () => import('./pages/provider/provider.module').then(m => m.ProviderModule),
+      },
+      {
         path: 'he-thong',
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
       },
