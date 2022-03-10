@@ -11,6 +11,9 @@ import {NzTableModule} from "ng-zorro-antd/table";
 import {MatRadioModule} from "@angular/material/radio";
 import {ComponentsModule} from "@minhdu-fontend/components";
 import {DialogBranchComponent} from "./components/dialog-branch/dialog-branch.component";
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import {DialogBranchComponent} from "./components/dialog-branch/dialog-branch.co
     BranchRoutingModule,
     MatExpansionModule,
     NzTableModule,
-    MatRadioModule
+    MatRadioModule,
+    NgxSkeletonLoaderModule,
+    MatCheckboxModule,
+    MatDialogModule
   ],
 
 })

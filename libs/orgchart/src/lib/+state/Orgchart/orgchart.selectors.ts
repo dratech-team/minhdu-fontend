@@ -50,6 +50,11 @@ export const getOrgchartLoaded = createSelector(
   (state: State) => state.loaded
 );
 
+export const getOrgchartTotal = createSelector(
+  getOrgchartState,
+  (state: State) => state.loaded
+);
+
 export const getBranchAdded = createSelector(
   getOrgchartState,
   (state: State) => state.added
