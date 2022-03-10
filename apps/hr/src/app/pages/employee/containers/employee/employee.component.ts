@@ -87,7 +87,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     ward: new FormControl(''),
     gender: new FormControl(''),
     // workedAt: new FormControl(''),
-    flatSalary: new FormControl(-1),
+    flatSalary: new FormControl('-1'),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
