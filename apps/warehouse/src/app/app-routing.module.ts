@@ -15,23 +15,18 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
-        data: {
-          title: 'Hàng hoá'
-        },
       },
       {
         path: 'xuat-nhap-kho',
         loadChildren: () => import('./pages/import-export/import-export.module').then(m => m.ImportExportModule),
-        data: {
-          title: 'Xuất nhập kho'
-        },
+      },
+      {
+        path: 'quan-ly-chi-nhanh',
+        loadChildren: () => import('./pages/branch/branch.module').then(m => m.BranchModule),
       },
       {
         path: 'he-thong',
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
-        data: {
-          title: 'Lịch sử hệ thống'
-        },
       },
     ],
   },
