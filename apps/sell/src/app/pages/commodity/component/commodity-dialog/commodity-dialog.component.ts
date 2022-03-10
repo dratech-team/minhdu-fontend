@@ -8,6 +8,7 @@ import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
+import {CommodityQuery} from "../../+state/commodity.query";
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
@@ -23,7 +24,8 @@ export class CommodityDialogComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<CommodityDialogComponent>,
-    private readonly service: CommodityService
+    private readonly service: CommodityService,
+    private readonly commodityQuery: CommodityQuery,
   ) {
   }
 
@@ -75,14 +77,17 @@ export class CommodityDialogComponent implements OnInit {
               updateCommodityDto: commodity,
             })
           );
-          this.dialogRef.close();
         });
       }
     } else {
       this.actions$.dispatch(
         CommodityAction.addOne(commodity)
       );
-      this.dialogRef.close();
     }
+    this.commodityQuery.select(state => state.added).subscribe(added => {
+      if (added) {
+        this.dialogRef.close();
+      }
+    })
   }
 }

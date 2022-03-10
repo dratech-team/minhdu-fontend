@@ -12,7 +12,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[COMMODITY] Load All',
-  props<CommodityDTO>()
+  props<{params: CommodityDTO, isScroll?: boolean}>()
 );
 
 export const getOne = createAction(

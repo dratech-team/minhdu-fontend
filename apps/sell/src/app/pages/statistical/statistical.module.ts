@@ -13,7 +13,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
-import { MainReducer } from '../../states/mainReducer';
 import { StatisticalService } from './service/statistical/statistical.service';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 
@@ -29,7 +28,6 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     MatDialogModule,
     MatMenuModule,
     MatButtonModule,
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     NzMessageModule
   ],
   declarations: [

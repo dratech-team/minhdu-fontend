@@ -5,7 +5,6 @@ import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.co
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouteAction} from '../../+state/route.action';
 import {MenuEnum, PaymentType} from '@minhdu-fontend/enums';
-import {MainAction} from '../../../../states/main.action';
 import {
   DialogDatePickerComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
@@ -37,7 +36,6 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({tab: MenuEnum.ROUTE}));
     this.actions$.dispatch(RouteAction.loadOne({id: this.routeId}));
     this.route$.subscribe(val => {
       if (val) {

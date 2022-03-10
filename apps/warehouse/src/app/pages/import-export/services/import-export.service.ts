@@ -13,7 +13,7 @@ export class ImportExportService extends BaseService<ImportExportEntity> {
     super(Api.WAREHOUSE.HISTORY, http);
   }
 
-  pagination(params?: SearchImportExportDto): Observable<ResponsePaginate<ImportExportEntity>> {
+  pagination(params?: Partial<SearchImportExportDto>): Observable<ResponsePaginate<ImportExportEntity>> {
     return super.pagination(params);
   }
 }

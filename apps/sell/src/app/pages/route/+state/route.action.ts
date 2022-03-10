@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ROUTE] Load All',
-  props<LoadRouteDto>()
+  props<{params:LoadRouteDto, isScroll?: boolean}>()
 );
 
 const loadOne = createAction(

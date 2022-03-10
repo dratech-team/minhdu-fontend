@@ -314,5 +314,13 @@ tr:nth-child(even) {
   z-index: 2000
 }
 
+input[type="search"] {
+  -webkit-appearance: searchfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
 @import "scss/custom-scroll-table";
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";

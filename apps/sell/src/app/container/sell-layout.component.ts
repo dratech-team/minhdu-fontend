@@ -1,17 +1,15 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PickMenuComponent } from '../components/pick-menu-mobile/pick-menu.component';
-import { document } from 'ngx-bootstrap/utils';
 import { AuthActions } from '@minhdu-fontend/auth';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DevelopmentComponent } from 'libs/components/src/lib/development/development.component';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
 import { menuSell } from '@minhdu-fontend/constants';
-import { selectedTab } from '../states/main.selector';
-import { map, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,13 +20,13 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuSell = menuSell;
-  tab$ = this.store.pipe(select(selectedTab));
+  tab$ = of();
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef
   ) {
   }
 
@@ -38,8 +36,9 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
     //   this.router.navigate(['/']).then();
     // }
   }
+
   ngAfterContentChecked() {
-    this.ref.detectChanges()
+    this.ref.detectChanges();
   }
 
   pickMenuMobile() {
@@ -50,18 +49,18 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DevelopmentComponent, { width: '25%' });
   }
 
-  changeTab(event: any) {
-
-    const btnHeader = document.getElementsByClassName('btn-header');
-    for (let i = 0; i < btnHeader.length; i++) {
-      btnHeader[i].classList.remove('btn-border');
-    }
-    if (event instanceof HTMLImageElement) {
-      event.parentElement?.classList.add('btn-border');
-    } else {
-      event.classList.add('btn-border');
-    }
-  }
+  // changeTab(event: any) {
+  //
+  //   const btnHeader = document.getElementsByClassName('btn-header');
+  //   for (let i = 0; i < btnHeader.length; i++) {
+  //     btnHeader[i].classList.remove('btn-border');
+  //   }
+  //   if (event instanceof HTMLImageElement) {
+  //     event.parentElement?.classList.add('btn-border');
+  //   } else {
+  //     event.classList.add('btn-border');
+  //   }
+  // }
 
   logout() {
     const ref = this.dialog.open(LogoutComponent, { width: '30%' });

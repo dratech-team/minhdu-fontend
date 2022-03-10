@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, tap } from 'rxjs/operators';
-import { document } from 'ngx-bootstrap/utils';
-import { OrderEntity } from '../../../pages/order/enitities/order.interface';
-import { PaidType } from 'libs/enums/paidType.enum';
-import { OrderActions } from '../../../pages/order/+state/order.actions';
-import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
-import { RouteEntity } from '../../../pages/route/entities/route.entity';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderQuery } from '../../../pages/order/+state/order.query';
-import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
+import {Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {debounceTime, tap} from 'rxjs/operators';
+import {document} from 'ngx-bootstrap/utils';
+import {OrderEntity} from '../../../pages/order/enitities/order.interface';
+import {PaidType} from 'libs/enums/paidType.enum';
+import {OrderActions} from '../../../pages/order/+state/order.actions';
+import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
+import {RouteEntity} from '../../../pages/route/entities/route.entity';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderQuery} from '../../../pages/order/+state/order.query';
+import {LoadOrderDto} from '../../../pages/order/dto/load-order.dto';
 import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
 
 
@@ -43,7 +43,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   isSelectAll = false;
   formGroup = new FormGroup(
     {
-      isRoute: new FormControl(''),
+      hasRoute: new FormControl(''),
       name: new FormControl(''),
       createdAt: new FormControl(''),
       paidType: new FormControl(''),
@@ -69,9 +69,11 @@ export class PickOrderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.isSelectAll = this.isCheckOrderSelected;
     this.actions$.dispatch(OrderActions.loadAll({
-      skip: this.pageIndex,
-      take: this.pageSize,
-      customerId: this.customerId
+      param: {
+        skip: this.pageIndex,
+        take: this.pageSize,
+        customerId: this.customerId
+      }
     }));
     if (this.orderIdDefault) {
       this.orderQuery.selectEntity(this.orderIdDefault).subscribe(val => {
@@ -84,7 +86,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         tap((_) => {
           this.eventSearch = true;
           const val = this.formGroup.value;
-          this.actions$.dispatch(OrderActions.loadAll(this.order(val)));
+          this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(val)}));
         })
       ).subscribe();
       this.orders$.subscribe(orders => {
@@ -110,14 +112,14 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
       const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll(this.order(val)));
+      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(val, true), isScroll: true}));
     }
   }
 
-  order(val: any): LoadOrderDto {
+  mapOrder(val: any, isScroll?: boolean): LoadOrderDto {
     return {
       take: this.pageSize,
-      skip: this.pageIndex,
+      skip: isScroll ? this.orderQuery.getCount() : this.pageIndex,
       hasRoute: val.hasRoute,
       customerId: this.customerId,
       customer: val.name.trim(),

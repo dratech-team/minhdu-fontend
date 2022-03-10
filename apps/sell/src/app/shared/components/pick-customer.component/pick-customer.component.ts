@@ -50,11 +50,15 @@ export class PickCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     if (this.customers.length === 0) {
       this.actions$.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
+    }
+    if(this.data.customerInit){
+      this.customerId = this.data.customerInit.id
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

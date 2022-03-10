@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { PickCommodityComponent } from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
-import { PickCustomerComponent } from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
-import { OrderActions } from '../../+state/order.actions';
-import { MainAction } from '../../../../states/main.action';
-import { CustomerEntity } from '../../../customer/entities/customer.entity';
-import { DatePipe } from '@angular/common';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerQuery } from '../../../customer/+state/customer.query';
-import { AddOrderDto } from '../../dto/add-order.dto';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {PickCommodityComponent} from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
+import {
+  PickCustomerComponent
+} from 'apps/sell/src/app/shared/components/pick-customer.component/pick-customer.component';
+import {OrderActions} from '../../+state/order.actions';
+import {CustomerEntity} from '../../../customer/entities/customer.entity';
+import {DatePipe} from '@angular/common';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CustomerQuery} from '../../../customer/+state/customer.query';
+import {AddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {CustomerActions} from "../../../customer/+state/customer.actions";
+import {OrderQuery} from "../../+state/order.query";
 
 @Component({
   templateUrl: 'add-order.component.html'
 })
 export class AddOrderComponent implements OnInit {
-  customerPicked$ = this.customerQuery.selectEntity(this.route.snapshot.params.id);
-
   customers: CustomerEntity [] = [];
   commodityUnit = CommodityUnit;
   commoditiesPicked: CommodityEntity [] = [];
   numberChars = new RegExp('[^0-9]', 'g');
   customerPicked: CustomerEntity | undefined;
-  customerId: number = this.route.snapshot.params.id;
+  customerId: number = this.route.snapshot.queryParams.customerid;
   payType = PaymentType;
   formGroup!: FormGroup;
   customerType = CustomerType;
@@ -41,17 +42,21 @@ export class AddOrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly orderQuery: OrderQuery,
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
-    this.customerPicked$.subscribe((val: any) => {
-      if (val) {
-        this.customerPicked = JSON.parse(JSON.stringify(val));
+    this.route.queryParams.subscribe(param => {
+      if (param.customerId) {
+        this.actions$.dispatch(CustomerActions.loadOne({id: param.customerId}))
+        this.customerQuery.selectEntity(param.customerId).subscribe(val => {
+          this.customerPicked = val
+        })
       }
     });
+
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
       endedAt: [],
@@ -63,13 +68,14 @@ export class AddOrderComponent implements OnInit {
     this.dialog.open(PickCustomerComponent, {
       width: '50%',
       data: {
-        pickOne: true
+        pickOne: true,
+        customerInit: this.customerPicked
       }
     }).afterClosed().subscribe(val => {
         if (val) {
           this.customerId = val;
           this.customerQuery.selectEntity(this.customerId).subscribe(val => {
-            this.customerPicked = JSON.parse(JSON.stringify(val));
+            this.customerPicked = val
           });
         }
       }
@@ -77,8 +83,7 @@ export class AddOrderComponent implements OnInit {
   }
 
   deleteCustomerId() {
-    // this.customerId = undefined;
-    // this.customerPicked = undefined;
+    this.customerPicked = undefined;
   }
 
   pickCommodities() {

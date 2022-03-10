@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
-import { ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderActions } from '../../+state/order.actions';
-import { MainAction } from '../../../../states/main.action';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Api, CurrenciesConstant} from '@minhdu-fontend/constants';
+import {ConvertBoolean, ItemContextMenu, MenuEnum, PaidType, PaymentType, StatusOrder} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderActions} from '../../+state/order.actions';
 import * as _ from 'lodash';
-import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderQuery } from '../../+state/order.query';
-import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
+import {getTotalCommodity} from '../../../../../../../../libs/utils/sell.ultil';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderQuery} from '../../+state/order.query';
+import {CommodityUniq} from '../../../commodity/entities/commodity-uniq.entity';
 
 @Component({
   templateUrl: 'order.component.html'
@@ -67,9 +68,8 @@ export class OrderComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
-    this.actions$.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.ORDER }));
     this.actions$.dispatch(
-      OrderActions.loadAll( { take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0 })
+      OrderActions.loadAll({param: {take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0}})
     );
 
     this.formGroup.valueChanges
@@ -189,7 +189,7 @@ export class OrderComponent implements OnInit {
   }
 
   cancelOrder($event: any) {
-    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
+    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 
   deleteOrder($event: any) {
@@ -202,7 +202,7 @@ export class OrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.actions$.dispatch(OrderActions.remove({id: $event.id}));
       }
     });
   }

@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { ProductDialogComponent } from '../components/product-dialog/product-dialog.component';
-import { debounceTime, map } from 'rxjs/operators';
-import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { Actions } from '@datorama/akita-ng-effects';
-import { ProductAction } from '../state/product.action';
-import { ProductQuery } from '../state/product.query';
-import { WarehouseQuery } from '../../warehouse/state/warehouse.query';
-import { WarehouseAction } from '../../warehouse/state/warehouse.action';
-import { Warehouse } from '../../warehouse/state/entities/product.entity';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {ProductDialogComponent} from '../components/product-dialog/product-dialog.component';
+import {debounceTime, map} from 'rxjs/operators';
+import {PaginationDto, UnitMedicineConstant} from '@minhdu-fontend/constants';
+import {Actions} from '@datorama/akita-ng-effects';
+import {ProductAction} from '../state/product.action';
+import {ProductQuery} from '../state/product.query';
+import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
+import {WarehouseAction} from '../../warehouse/state/warehouse.action';
+import {Warehouse} from '../../warehouse/state/entities/product.entity';
+import {InventoryTitleConstants} from "../../constants/inventory-title.constant";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -18,24 +19,29 @@ import { Warehouse } from '../../warehouse/state/entities/product.entity';
 
 })
 export class DashboardComponent implements OnInit {
-  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({ id: -1, name: 'Tất cả' })));
+  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({id: -1, name: 'Tất cả'})));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
 
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
+  formControlWareHouse = new FormControl(-1)
   formGroup = new FormGroup(
     {
+      inventoryType: new FormControl(-1),
       name: new FormControl('')
     }
   );
+  panelOpenState = false;
+  inventoryTitle = InventoryTitleConstants
 
   constructor(
     private readonly warehouseQuery: WarehouseQuery,
     private readonly productQuery: ProductQuery,
     private readonly actions$: Actions,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly formBuilder: FormBuilder
   ) {
   }
 
@@ -44,7 +50,7 @@ export class DashboardComponent implements OnInit {
       search: {
         take: PaginationDto.take,
         skip: PaginationDto.skip,
-        warehouseId: this.warehouseIdSelected
+        warehouseId: this.warehouseIdSelected ? this.warehouseIdSelected : ''
       }
     }));
 
@@ -57,10 +63,21 @@ export class DashboardComponent implements OnInit {
         }
       )
     ).subscribe();
+
+    this.formControlWareHouse.valueChanges.subscribe(val => {
+      this.actions$.dispatch(WarehouseAction.selectedWarehouseId({warehouseId: val}));
+      this.actions$.dispatch(ProductAction.loadProduct({
+        search: {
+          take: PaginationDto.take,
+          skip: PaginationDto.skip,
+          warehouseId: val ? val : null
+        }
+      }));
+    })
   }
 
   importMedicine() {
-    this.dialog.open(ProductDialogComponent, { width: '40%' });
+    this.dialog.open(ProductDialogComponent, {width: '40%'});
   }
 
   onScroll() {
@@ -77,7 +94,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteMedicine($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
       }
@@ -92,21 +109,9 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  selectWarehouse(warehouse: Warehouse) {
-    this.actions$.dispatch(WarehouseAction.selectedWarehouseId({ warehouseId: warehouse.id }));
-    this.actions$.dispatch(ProductAction.loadProduct({
-      search: {
-        take: PaginationDto.take,
-        skip: PaginationDto.skip,
-        warehouseId: warehouse.id > 0 ? warehouse.id : null
-      }
-    }));
-  }
-
-
   import() {
     this.dialog.open(ProductDialogComponent, {
-      data: { isUpdate: false }
+      data: {isUpdate: false}
     }).afterClosed();
   }
 }

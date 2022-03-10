@@ -3,10 +3,11 @@ import {Injectable} from '@angular/core';
 import {RouteEntity} from '../entities/route.entity';
 
 export interface RouteState extends EntityState<RouteEntity> {
-  readonly loading: boolean;
+  loading: boolean;
+  added: boolean
 }
 
-export const createInitialState = () => ({loading: true});
+export const createInitialState = () => ({loading: true, added: false});
 
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'route'})

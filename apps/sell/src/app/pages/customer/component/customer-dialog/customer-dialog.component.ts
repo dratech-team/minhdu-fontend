@@ -1,24 +1,49 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../+state/customer.actions';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CustomerQuery } from '../../+state/customer.query';
-import { AddCustomerDto } from '../../dto/add-customer.dto';
+import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {DatePipe} from '@angular/common';
+import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
+import {CustomerActions} from '../../+state/customer.actions';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CustomerQuery} from '../../+state/customer.query';
+import {AddCustomerDto} from '../../dto/add-customer.dto';
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
 })
 export class CustomerDialogComponent implements OnInit {
-  formGroup!: FormGroup;
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
   wardId: number | undefined;
+
+  formGroup: FormGroup = this.formBuilder.group({
+    firstName: [this.data?.customer?.firstName],
+    lastName: [this.data?.customer?.lastName, Validators.required],
+    identify: [this.data?.customer?.identify],
+    issuedBy: [this.data?.customer?.issuedBy],
+    birthplace: [this.data?.customer?.birthplace],
+    idCardAt: [
+      this.datePipe.transform(
+        this.data?.customer?.idCardAt, 'yyyy-MM-dd'
+      )],
+    email: [this.data?.customer?.email],
+    phone: [this.data?.customer?.phone, Validators.required],
+    note: [this.data?.customer?.note],
+    address: [this.data?.customer?.address],
+    gender: [this.data?.customer?.gender],
+    birthday: [
+      this.datePipe.transform(
+        this.data?.customer?.birthday, 'yyyy-MM-dd'
+      )],
+    ethnicity: [this.data?.customer?.ethnicity],
+    religion: [this.data?.customer?.religion],
+    type: [this.data?.customer?.type],
+    resource: [this.data?.customer?.resource],
+    isPotential: [this.data?.customer?.isPotential]
+  });
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
@@ -32,31 +57,6 @@ export class CustomerDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      firstName: [this.data?.customer?.firstName],
-      lastName: [this.data?.customer?.lastName, Validators.required],
-      identify: [this.data?.customer?.identify],
-      issuedBy: [this.data?.customer?.issuedBy],
-      birthplace: [this.data?.customer?.birthplace],
-      idCardAt: [
-        this.datePipe.transform(
-          this.data?.customer?.idCardAt, 'yyyy-MM-dd'
-        )],
-      email: [this.data?.customer?.email],
-      phone: [this.data?.customer?.phone, Validators.required],
-      note: [this.data?.customer?.note],
-      address: [this.data?.customer?.address],
-      gender: [this.data?.customer?.gender],
-      birthday: [
-        this.datePipe.transform(
-          this.data?.customer?.birthday, 'yyyy-MM-dd'
-        )],
-      ethnicity: [this.data?.customer?.ethnicity],
-      religion: [this.data?.customer?.religion],
-      type: [this.data?.customer?.type],
-      resource: [this.data?.customer?.resource],
-      isPotential: [this.data?.customer?.isPotential]
-    });
   }
 
   get checkValid() {
@@ -78,7 +78,7 @@ export class CustomerDialogComponent implements OnInit {
       birthday: value.birthday,
       birthplace: value.birthplace,
       idCardAt: value.idCardAt,
-      type: value.type,
+      customerType: value.type,
       resource: value.resource,
       address: value.address,
       provinceId: this.provinceId || this.data?.customer?.province?.id,
@@ -92,11 +92,11 @@ export class CustomerDialogComponent implements OnInit {
     };
 
     if (this.data) {
-      this.actions$.dispatch(CustomerActions.update({ id: this.data.customer.id, updates: customer }));
+      this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
     } else {
       this.actions$.dispatch(CustomerActions.addOne(customer));
     }
-    this.customerQuery.selectLoading().subscribe(added => {
+    this.customerQuery.select(state => state.added).subscribe(added => {
       if (added) {
         this.dialogRef.close();
       }

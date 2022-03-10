@@ -11,7 +11,15 @@ const routes: Routes = [
   {
     path: '',
     component: WarehouseLayoutComponent,
-    children: []
+    children: [
+      {
+        path: 'he-thong',
+        loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
+        data: {
+          title: 'Lịch sử hệ thống'
+        },
+      },
+    ]
   }
 ];
 

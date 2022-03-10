@@ -4,12 +4,12 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CustomerActions } from './customer.actions';
 import { CustomerService } from '../service/customer.service';
-import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerQuery } from './customer.query';
 import { CustomerStore } from './customer.store';
 import { OrderService } from '../../order/service/order.service';
 import { AddCustomerDto } from '../dto/add-customer.dto';
+import { LoadCustomerDto } from '../dto/load-customer.dto';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class CustomerEffect {
@@ -18,7 +18,7 @@ export class CustomerEffect {
     private readonly customerStore: CustomerStore,
     private readonly customerQuery: CustomerQuery,
     private readonly customerService: CustomerService,
-    private readonly snackBar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly orderService: OrderService
   ) {
   }
@@ -26,21 +26,27 @@ export class CustomerEffect {
   @Effect()
   loadCustomers$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
-    switchMap((props) => {
-      const skip = this.customerQuery.getCount();
-      return this.customerService.pagination(Object.assign(props, { skip: skip }));
+    switchMap((props: LoadCustomerDto) => {
+      this.customerStore.update(state => ({
+        ...state, loading: true
+      }));
+      return this.customerService.pagination(props).pipe(
+        map((response) => {
+          this.customerStore.update(state => ({ ...state, loading: false }));
+          if (response.data.length === 0) {
+            this.message.warning('Đã lấy hết khách hàng');
+          } else {
+            this.message.success('Tải danh sách khách hàng thành công!!');
+          }
+          if (props.isScroll) {
+            this.customerStore.add(response.data);
+          } else {
+            this.customerStore.set(response.data);
+          }
+        })
+      );
     }),
-    tap((response) => {
-      if (response.data.length === 0) {
-        this.snackBar.openFromComponent(SnackBarComponent, {
-          duration: 2500,
-          panelClass: ['background-snackbar'],
-          data: { content: 'Đã lấy hết khách hàng' }
-        });
-      } else {
-        this.customerStore.add(response.data);
-      }
-    }),
+
     catchError((err) => throwError(err))
   );
 
@@ -48,13 +54,19 @@ export class CustomerEffect {
   addOne$ = this.action$.pipe(
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
+      this.customerStore.update(state => ({
+        ...state, added: false
+      }));
       if (!props?.provinceId) {
-        throw this.snackBar.open('Tỉnh/Thành phố không được để trống!!');
+        throw this.message.error('Tỉnh/Thành phố không được để trống!!');
       }
       return this.customerService.addOne(props);
     }),
-    map((res) => {
-        this.customerStore.update(res.id, res);
+    tap((res) => {
+        this.customerStore.update(state => ({
+          ...state, added: true
+        }));
+        this.customerStore.add(res);
       }
     ),
     catchError((err) => throwError(err))
@@ -64,16 +76,28 @@ export class CustomerEffect {
   getCustomer$ = this.action$.pipe(
     ofType(CustomerActions.loadOne),
     switchMap((props) => this.customerService.getOne(props.id)),
+    map(customer => this.customerStore.upsert(customer.id, customer)),
     catchError((err) => throwError(err))
   );
 
   @Effect()
   updateCustomer$ = this.action$.pipe(
     ofType(CustomerActions.update),
-    switchMap((props) => this.customerService.update(props.id, props.updates).pipe(
-      map((res) => this.customerStore.update(res.id, res)),
-      catchError((err) => throwError(err))
-    ))
+    switchMap((props) => {
+        this.customerStore.update(state => ({
+          ...state, added: false
+        }));
+        return this.customerService.update(props.id, props.updates);
+      }
+    ),
+    map((res) => {
+      this.customerStore.update(state => ({
+        ...state, added: true
+      }));
+      console.log(res);
+      this.customerStore.update(res.id, res);
+    }),
+    catchError((err) => throwError(err))
   );
 
   @Effect()

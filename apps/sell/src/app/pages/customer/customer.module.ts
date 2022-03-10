@@ -26,8 +26,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { TablePaymentComponent } from './component/table-payment/table-payment.component';
 import { PaymentReducer } from '../payment/payment/payment.reducer';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MainReducer } from '../../states/mainReducer';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 @NgModule({
   imports: [
@@ -40,7 +40,6 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     InfiniteScrollModule,
     CommonModule,
     StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-    StoreModule.forFeature(FeatureName.MAIN, MainReducer),
     AkitaNgEffectsModule.forFeature([CustomerEffect]),
     MatCheckboxModule,
     ReactiveFormsModule,
@@ -52,6 +51,7 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     MatStepperModule,
     SharedModule,
     NgxSkeletonLoaderModule.forRoot(),
+    NzMessageModule
   ],
   declarations: [
     TablePaymentComponent,
@@ -63,7 +63,7 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
-    PickCustomerService,
+    PickCustomerService
   ]
 })
 export class CustomerModule {

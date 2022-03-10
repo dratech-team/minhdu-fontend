@@ -33,6 +33,9 @@ export class OrderEffect {
   addOrder$ = this.actions$.pipe(
     ofType(OrderActions.addOne),
     switchMap((props) => {
+      this.orderStore.update(state => ({
+        ...state, added: false
+      }))
       if (!props?.createdAt) {
         throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
       }
@@ -48,8 +51,12 @@ export class OrderEffect {
       return this.orderService.addOne(props);
     }),
     map((res) => {
+      this.orderStore.update(state => ({
+        ...state, added: true
+      }))
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
+      this.router.navigate(['don-hang']).then()
     }),
     catchError((err) => {
       return throwError(err);
@@ -59,26 +66,43 @@ export class OrderEffect {
   @Effect()
   loadAll$ = this.actions$.pipe(
     ofType(OrderActions.loadAll),
-    switchMap((props) => this.orderService.pagination(props)),
-    map((response) => {
-        if (response.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            duration: 2500,
-            panelClass: ['background-snackbar'],
-            data: {content: 'Đã lấy hết đơn hàng'}
-          });
-        } else {
-          response.data.map((order: OrderEntity) => {
-            order.expand = false;
-            order.totalCommodity = getTotalCommodity(order.commodities);
-          });
-          this.orderStore.add(response.data);
-          this.orderStore.update(state => ({
-            ...state,
-            total: response.total,
-            commodityUniq: response.commodityUniq
-          }));
-        }
+    switchMap((props) => {
+        this.orderStore.update(state => ({
+          ...state, loading: true
+        }))
+        return this.orderService.pagination(props.param).pipe(
+          map((response) => {
+              this.orderStore.update(state => ({
+                ...state, loading: false
+              }))
+              if (response.data.length > 0) {
+                response.data.map((order: OrderEntity) => {
+                  order.expand = false;
+                  order.totalCommodity = getTotalCommodity(order.commodities);
+                  this.orderStore.update(state => ({
+                    ...state,
+                    total: response.total,
+                    commodityUniq: response.commodityUniq
+                  }));
+                });
+              }else{
+                if (response.data.length === 0) {
+                  this.snackBar.openFromComponent(SnackBarComponent, {
+                    duration: 2500,
+                    panelClass: ['background-snackbar'],
+                    data: {content: 'Đã lấy hết đơn hàng'}
+                  });
+                }
+              }
+              if (props.isScroll) {
+                this.orderStore.add(response.data);
+              } else {
+                this.orderStore.set(response.data);
+              }
+
+            }
+          )
+        )
       }
     ),
     catchError((err) => throwError(err))
@@ -99,15 +123,25 @@ export class OrderEffect {
   @Effect()
   update$ = this.actions$.pipe(
     ofType(OrderActions.update),
-    switchMap((props) =>
-      this.orderService.update(props.id, props.updates)),
+    switchMap((props) => {
+        this.orderStore.update(state => ({
+          ...state, added: false
+        }))
+        return this.orderService.update(props.id, props.updates)
+      }
+    ),
     map((response) => {
+      this.orderStore.update(state => ({
+        ...state, added: true
+      }))
       this.orderStore.update(response.id, response);
     }),
     tap(() => {
       this.snackBar.open('Cập nhật thành công');
     }),
-    catchError((err) => {return throwError(err);})
+    catchError((err) => {
+      return throwError(err);
+    })
   );
 
   @Effect()

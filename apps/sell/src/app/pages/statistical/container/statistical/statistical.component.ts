@@ -4,7 +4,6 @@ import { stakedChart } from '@minhdu-fontend/data-models';
 import { DatetimeUnitEnum, FilterOverviewEnum, MenuEnum, OptionOverviewEnum } from '@minhdu-fontend/enums';
 import { ExportService } from '@minhdu-fontend/service';
 import { Store } from '@ngrx/store';
-import { MainAction } from '../../../../states/main.action';
 import { StatisticalService } from '../../service/statistical/statistical.service';
 
 @Component({
@@ -31,7 +30,6 @@ export class StatisticalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MainAction.updateStateMenu({ tab: MenuEnum.HOME }));
     this.onStatistical(this.filterOverview.NATION, {
       option: OptionOverviewEnum.SALES
     });
