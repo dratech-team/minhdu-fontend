@@ -10,6 +10,7 @@ import { OrderService } from '../../order/service/order.service';
 import { AddCustomerDto } from '../dto/add-customer.dto';
 import { LoadCustomerDto } from '../dto/load-customer.dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable()
 export class CustomerEffect {
@@ -19,6 +20,7 @@ export class CustomerEffect {
     private readonly customerQuery: CustomerQuery,
     private readonly customerService: CustomerService,
     private readonly message: NzMessageService,
+    private readonly snackbar: MatSnackBar,
     private readonly orderService: OrderService
   ) {
   }
@@ -57,9 +59,6 @@ export class CustomerEffect {
       this.customerStore.update(state => ({
         ...state, added: false
       }));
-      if (!props?.provinceId) {
-        throw this.message.error('Tỉnh/Thành phố không được để trống!!');
-      }
       return this.customerService.addOne(props);
     }),
     tap((res) => {
