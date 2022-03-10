@@ -20,6 +20,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'xuat-nhap-kho',
+        loadChildren: () => import('./pages/import-export/import-export.module').then(m => m.ImportExportModule),
+        data: {
+          title: 'Xuất nhập kho'
+        },
+      },
+      {
         path: 'he-thong',
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
         data: {

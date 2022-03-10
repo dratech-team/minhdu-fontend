@@ -22,6 +22,7 @@ export class ImportExportComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    console.log('ssss')
     console.log(this.nzTableComponent?.nzScroll?.y)
   }
 }

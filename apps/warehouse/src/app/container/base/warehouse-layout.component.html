@@ -15,9 +15,16 @@
           Thiết lập
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLink]="['he-thong/quan-ly-tai-khoan']">Quản lý tài khoản</button>
-          <button mat-menu-item>Quản lý nhà cung cấp</button>
-          <button mat-menu-item>Quản lý chi nhánh</button>
+          <button mat-menu-item [routerLink]="['he-thong/quan-ly-tai-khoan']">
+            <img height='20px btn' src='/assets/icon/menu/person-circle.svg' alt='account'>
+            Quản lý tài khoản</button>
+          <button mat-menu-item>
+            <img height='20px btn' src='/assets/icon/menu/house.svg' alt='provider'>
+            Quản lý nhà cung cấp
+          </button>
+          <button mat-menu-item>
+            <img height='20px btn' src='/assets/icon/menu/cursor.svg' alt='branch'>
+            Quản lý chi nhánh</button>
         </mat-menu>
         <button type='button' data-toggle='tooltip' data-placement='bottom' title='Facebook'
                 class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
