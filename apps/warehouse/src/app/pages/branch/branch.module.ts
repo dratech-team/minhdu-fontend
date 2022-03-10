@@ -9,11 +9,14 @@ import {BranchComponent} from "./container/branch.component";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {MatRadioModule} from "@angular/material/radio";
+import {ComponentsModule} from "@minhdu-fontend/components";
+import {DialogBranchComponent} from "./components/dialog-branch/dialog-branch.component";
 
 
 @NgModule({
-  declarations: [BranchComponent],
+  declarations: [BranchComponent, DialogBranchComponent],
   imports: [
+    ComponentsModule,
     StoreModule,
     EffectsModule,
     InfiniteScrollModule,

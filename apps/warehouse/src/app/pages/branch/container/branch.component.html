@@ -30,12 +30,7 @@
     </mat-accordion>
     <div class="mt-2"><span class="font-weight-bold">Số bản ghi :</span></div>
   </div>
-  <div class="ml-2" style="width: 80vw ; overflow: auto ; max-height: 70vh ; "
-       infiniteScroll
-       [infiniteScrollDistance]='1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'>
+  <div class="ml-2" style="width: 80vw ; overflow: auto ; max-height: 70vh;">
     <table style="width: 100%;position: relative">
       <thead style="position: sticky; top: 0 ; z-index: 10">
       <tr>
@@ -60,7 +55,8 @@
       </tr>
       </thead>
       <tbody *ngIf="branches$|async as branches">
-      <tr *ngFor="let branch of branches;let i = index">
+      <tr *ngFor="let branch of branches;let i = index"
+          (contextmenu)='child.onContextMenu($event,branches)'>
         <th>
           <div>
             {{i + 1}}
@@ -73,20 +69,22 @@
         </th>
         <th>
           <div>
-
+            {{branch?.address ? branch.address : 'Chưa cập nhật'}}
           </div>
         </th>
         <th>
           <div>
-
+            {{branch?.phone ? branch.phone : 'Chưa cập nhật' }}
           </div>
         </th>
         <th>
-          <div></div>
+          <div>
+            Đang phát triển
+          </div>
         </th>
         <th>
           <div>
-
+            {{branch.status ? 'Đang hoạt động' : 'Ngưng hoạt động'}}
           </div>
         </th>
       </tr>
@@ -105,3 +103,8 @@
     align-content: center;
   }
 </style>
+<app-mouse-right #child
+                 (onAdd)='addBranch()'
+                 (onDel)='deleteBranch($event)'
+                 (onUpdate)='updateBranch($event)'>
+</app-mouse-right>
