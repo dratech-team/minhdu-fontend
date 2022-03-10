@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {WarehouseLayoutComponent} from './container/base/warehouse-layout.component';
 
 const routes: Routes = [
   {
@@ -13,14 +13,22 @@ const routes: Routes = [
     component: WarehouseLayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
+        data: {
+          title: 'Hàng hoá'
+        },
+      },
+      {
         path: 'he-thong',
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
         data: {
           title: 'Lịch sử hệ thống'
         },
       },
-    ]
-  }
+    ],
+  },
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

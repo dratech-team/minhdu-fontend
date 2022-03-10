@@ -28,7 +28,6 @@ import {WarehouseModule} from './pages/warehouse/warehouse.module';
 import {MatTabsModule} from '@angular/material/tabs';
 import {DashboardModule} from './pages/dashboard/dashboard.module';
 import {RouterModule} from '@angular/router';
-import {ImportExportModule} from './pages/import-export/import-export.module';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -58,11 +57,8 @@ import {ImportExportModule} from './pages/import-export/import-export.module';
     MatMenuModule,
     OrgchartModule,
     ProviderModule,
-    WarehouseModule,
-    DashboardModule,
     RouterModule,
     MatTabsModule,
-    ImportExportModule
   ],
   providers: [
     {
