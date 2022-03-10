@@ -87,9 +87,9 @@
             <th width='5%'>
               <div class='border-top text-center'>Loại lương</div>
               <mat-select class='select border-top' style='min-width: 170px' [value]="-1" required formControlName='flatSalary'>
-                <mat-option value="">Tất cả</mat-option>
-                <mat-option value='{{flatSalary.FLAT_SALARY}}'>Lương cố định</mat-option>
-                <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>Lương không cố định</mat-option>
+                <mat-option value="-1">Tất cả</mat-option>
+                <mat-option value='1'>Lương cố định</mat-option>
+                <mat-option value='0'>Lương không cố định</mat-option>
               </mat-select>
             </th>
             <th width='5%'>

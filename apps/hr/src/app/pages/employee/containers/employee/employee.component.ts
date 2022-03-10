@@ -87,7 +87,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     ward: new FormControl(''),
     gender: new FormControl(''),
     // workedAt: new FormControl(''),
-    flatSalary: new FormControl(''),
+    flatSalary: new FormControl('-1'),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
@@ -237,12 +237,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       // workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
-      isFlatSalary:
-        val.flatSalary === this.flatSalary.FLAT_SALARY
-          ? this.convertBoolean.TRUE
-          : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-            ? this.convertBoolean.FALSE
-            : val.flatSalary,
+      isFlatSalary: val.flatSalary,
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : ''
 
     };
