@@ -45,7 +45,9 @@
         mat-button
         *ngFor='let item of menuSell' routerLink='{{item.href}}'
         class='ml-2' routerLinkActive='active'
-        [style]='{"border": (tab$ | async) === item.href ? "solid 2px": "none"}'
+        [style]='{
+        "border": (tab$ | async) === item.href ? "solid 2px": "none"
+        }'
       >
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>
         {{item.name}}
