@@ -1,16 +1,12 @@
 import { AppStore } from './state/app.store';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TabEnum } from './state/app.entity';
 
 @Injectable()
 export class RouteGuard implements CanActivate, CanActivateChild {
 
-  constructor(
-    private appStore: AppStore,
-    private router: Router
-  ) {
+  constructor(private appStore: AppStore) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {

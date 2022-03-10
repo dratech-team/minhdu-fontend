@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SellLayoutComponent } from './container/sell-layout.component';
 import { RouteGuard } from './route.guard';
+import { TabEnum } from './state/app.entity';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: '',
+        path: TabEnum.DASHBOARD,
         loadChildren: () =>
           import('./pages/statistical/statistical.module').then(
             (m) => m.StatisticalModule
@@ -25,7 +26,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'khach-hang',
+        path: TabEnum.CUSTOMER,
         loadChildren: () =>
           import('./pages/customer/customer.module').then(
             (m) => m.CustomerModule
@@ -47,7 +48,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'don-hang',
+        path: TabEnum.ORDER,
         loadChildren: () =>
           import('./pages/order/order.module').then((m) => m.OrderModule),
         data: {
@@ -56,7 +57,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'tuyen-duong',
+        path: TabEnum.ROUTE,
         loadChildren: () =>
           import('./pages/route/route.module').then((m) => m.RouteModule),
         canActivate: [RouteGuard]
@@ -68,7 +69,7 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'he-thong',
+        path: TabEnum.HISTORY,
         loadChildren: () =>
           import('@minhdu-fontend/system').then((m) => m.SystemModule),
         canActivate: [RouteGuard]

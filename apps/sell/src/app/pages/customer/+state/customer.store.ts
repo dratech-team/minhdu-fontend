@@ -1,6 +1,7 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {CustomerEntity} from '../entities/customer.entity';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { CustomerEntity } from '../entities/customer.entity';
+import { StorageName } from '../../../shared/constaints/storage-name.const';
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
@@ -13,11 +14,11 @@ const createInitState = () => ({
   loading: true,
   added: false,
   deliveredLoading: true,
-  deliveringLoading: true,
+  deliveringLoading: true
 });
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'customer'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.CUSTOMER })
 export class CustomerStore extends EntityStore<CustomerState> {
   constructor() {
     super(createInitState);
