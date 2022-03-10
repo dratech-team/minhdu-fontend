@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Role } from 'libs/enums/hr/role.enum';
 import { menuSell } from '@minhdu-fontend/constants';
 import { of } from 'rxjs';
+import { AppQuery } from '../state/app.query';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,12 +21,13 @@ export class SellLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuSell = menuSell;
-  tab$ = of();
+  tab$ = this.appQuery.select(state => state.active);
 
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly router: Router,
+    private readonly appQuery: AppQuery,
     private readonly ref: ChangeDetectorRef
   ) {
   }
