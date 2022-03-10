@@ -1,22 +1,29 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {CommodityUnit} from '@minhdu-fontend/enums';
-import {CommodityAction} from '../../+state/commodity.action';
-import {CommodityService} from '../../service/commodity.service';
-import {
-  DialogSharedComponent
-} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {CommodityQuery} from "../../+state/commodity.query";
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommodityUnit } from '@minhdu-fontend/enums';
+import { CommodityAction } from '../../+state/commodity.action';
+import { CommodityService } from '../../service/commodity.service';
+import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CommodityQuery } from '../../+state/commodity.query';
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
 })
-export class CommodityDialogComponent implements OnInit {
-  formGroup!: FormGroup;
-  CommodityUnit = CommodityUnit;
+export class CommodityDialogComponent {
   commodities$ = this.service.getTemplate();
+
+  CommodityUnit = CommodityUnit;
+  formGroup = this.formBuilder.group({
+    name: [this.data?.commodity?.name, Validators.required],
+    code: [this.data?.commodity?.code, Validators.required],
+    price: [this.data?.commodity?.price, Validators.required],
+    unit: [this.data?.commodity?.unit || CommodityUnit.CON, Validators.required],
+    amount: [this.data?.commodity?.amount, Validators.required],
+    gift: [this.data?.commodity?.gift, Validators.required],
+    more: [this.data?.commodity?.more?.amount, Validators.required]
+  });
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,20 +32,8 @@ export class CommodityDialogComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<CommodityDialogComponent>,
     private readonly service: CommodityService,
-    private readonly commodityQuery: CommodityQuery,
+    private readonly commodityQuery: CommodityQuery
   ) {
-  }
-
-  ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      name: [this.data?.commodity?.name, Validators.required],
-      code: [this.data?.commodity?.code, Validators.required],
-      price: [this.data?.commodity?.price, Validators.required],
-      unit: [this.data?.commodity?.unit || CommodityUnit.CON, Validators.required],
-      amount: [this.data?.commodity?.amount, Validators.required],
-      gift: [this.data?.commodity?.gift, Validators.required],
-      more: [this.data?.commodity?.more?.amount, Validators.required]
-    });
   }
 
   selectCommodity(commodity: any) {
@@ -60,21 +55,20 @@ export class CommodityDialogComponent implements OnInit {
     };
     if (this.data?.isUpdate) {
       if (this.data?.orderId) {
-        const ref = this.dialog.open(DialogSharedComponent, {
+        this.dialog.open(DialogSharedComponent, {
           width: 'fit-content',
           data: {
             title: 'Lịch sử cập nhât hàng hoá',
             description: 'bạn có muốn ghi lại lịch sử chỉnh sửa cho đơn hàng này ko'
           }
-        });
-        ref.afterClosed().subscribe(val => {
+        }).afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, {histored: true, orderId: this.data.orderId});
+            Object.assign(commodity, { histored: true, orderId: this.data.orderId });
           }
           this.actions$.dispatch(
             CommodityAction.update({
               id: this.data.commodity.id,
-              updateCommodityDto: commodity,
+              updates: commodity
             })
           );
         });
@@ -88,6 +82,6 @@ export class CommodityDialogComponent implements OnInit {
       if (added) {
         this.dialogRef.close();
       }
-    })
+    });
   }
 }

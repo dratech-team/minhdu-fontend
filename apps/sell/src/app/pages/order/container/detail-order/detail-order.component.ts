@@ -18,17 +18,14 @@ import { BehaviorSubject } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
 import { OrderHistoryEntity } from '../../enitities/order-history.entity';
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
-import {CommodityQuery} from "../../../commodity/+state/commodity.query";
+import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
+import { CommodityQuery } from '../../../commodity/+state/commodity.query';
 
 @Component({
   templateUrl: 'detail-order.component.html'
 })
 export class DetailOrderComponent implements OnInit {
   order$ = this.orderQuery.selectEntity(this.getOrderId);
-  commodities$ = this.commodityQuery.selectAll({
-    filterBy:[entity => entity.orderId === this.getOrderId]
-  });
   payType = PaymentType;
   commodityUnit = CommodityUnit;
   orderHistories: OrderHistoryEntity[] = [];
@@ -83,7 +80,7 @@ export class DetailOrderComponent implements OnInit {
         width: '60%',
         data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
       }).afterClosed().subscribe((value) => {
-        if(value){
+        if (value) {
           this.actions$.dispatch(OrderActions.update({
             id: order.id,
             updates: {
@@ -104,10 +101,9 @@ export class DetailOrderComponent implements OnInit {
   }
 
   deleteCommodity(commodityId: number) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
-    ref.afterClosed().subscribe(val => {
+    this.dialog.open(DialogDeleteComponent, { width: '30%' }).afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.remove({ id: commodityId, orderId: this.getOrderId }));
+        this.actions$.dispatch(CommodityAction.remove({ id: commodityId }));
       }
     });
   }
@@ -117,17 +113,16 @@ export class DetailOrderComponent implements OnInit {
   }
 
   closingCommodity(commodity: CommodityEntity, orderId: number) {
-    const ref = this.dialog.open(DialogSharedComponent, {
+    this.dialog.open(DialogSharedComponent, {
       width: 'fit-content', data: {
         title: 'Chốt hàng hoá',
         description: 'Bạn có chắc chắn muốn ' + (commodity.closed ? 'bỏ chốt ' : 'chốt ') + commodity.name
       }
-    });
-    ref.afterClosed().subscribe(val => {
+    }).afterClosed().subscribe(val => {
       if (val) {
         this.actions$.dispatch(CommodityAction.update({
           id: commodity.id,
-          updateCommodityDto: {
+          updates: {
             orderId: orderId,
             closed: !commodity.closed
           }

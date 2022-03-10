@@ -22,12 +22,12 @@ export const getOne = createAction(
 
 export const update = createAction(
   '[COMMODITY] Update',
-  props<{ id: number, updateCommodityDto: updateCommodityDto }>()
+  props<{ id: number, updates: updateCommodityDto }>()
 );
 
 export const remove = createAction(
   '[COMMODITY] Remove',
-  props<{ id: number, orderId?: number }>()
+  props<{ id: number}>()
 );
 
 export const resetStateCommodityNewAdd = createAction(
