@@ -67,8 +67,13 @@
       <div class="font-weight-bold font-2xl ml-2">Nhà cung cấp</div>
       <button class="btn btn-primary" (click)="addProvider()">Thêm nhà cung cấp</button>
     </div>
-
-    <div class="ml-2 mt-2" style="width: 78vw ; overflow: auto ; max-height: 70vh;">
+    <div class="ml-2 mt-2" style="width: 78vw ; overflow: auto ; max-height: 70vh;"
+         infiniteScroll
+         [alwaysCallback]='true'
+         [infiniteScrollDistance]='1'
+         [infiniteScrollThrottle]='10'
+         [scrollWindow]='false'
+         (scrolled)='onScroll()'>
       <table style="width: 100%;position: relative">
         <thead style="position: sticky; top: 0 ; z-index: 10">
         <tr>
@@ -93,7 +98,7 @@
         </tr>
         </thead>
         <tbody *ngIf="provider$|async as providers">
-        <tr *ngIf='!(loaded$|async); else tableBranch'>
+        <tr *ngIf='(loading$|async); else tableBranch'>
           <th colspan="100">
             <ngx-skeleton-loader count='10'
                                  appearance='line'></ngx-skeleton-loader>

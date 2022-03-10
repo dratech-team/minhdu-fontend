@@ -21,13 +21,16 @@ export class ProviderEffect {
   loadProviders$ = this.action$.pipe(
     ofType(ProviderActions.loadAll),
     switchMap((props) => {
+      this.providerStore.update(state => ({
+        ...state, loading: true
+      }))
       return this.service.pagination(props.param).pipe(
         tap((res) => {
           if (res.data.length) {
             this.message.info('Đã lấy hết nhà cung cấp')
           }
           this.providerStore.update(state => ({
-            ...state, total: res.total, loading: true
+            ...state, total: res.total, loading: false
           }))
           if (props.isScroll) {
             this.providerStore.add(res.data);

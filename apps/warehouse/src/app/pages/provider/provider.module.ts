@@ -16,6 +16,7 @@ import {ProviderRoutingModule} from "./provider-routing.module";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {DialogProviderComponent} from "./components/dialog-provider/dialog-provider.component";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import {DialogProviderComponent} from "./components/dialog-provider/dialog-provi
     CommonModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    InfiniteScrollModule
   ],
   declarations: [ProviderComponent,DialogProviderComponent],
   providers: [ProviderService]
