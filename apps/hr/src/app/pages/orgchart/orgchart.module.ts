@@ -29,7 +29,6 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 @NgModule({
   imports: [
     ComponentsModule,
-    ComponentsModule,
     StoreModule,
     EffectsModule,
     InfiniteScrollModule,

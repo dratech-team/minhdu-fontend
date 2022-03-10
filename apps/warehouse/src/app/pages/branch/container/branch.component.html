@@ -1,0 +1,107 @@
+<div class="p-2 d-flex">
+  <div class="d-flex flex-column">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="font-weight-bold">
+            Tìm kiếm
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [formGroup]="formGroup">
+          <input class="form-control" type="search" formControlName="search">
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="mt-2" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="font-weight-bold">
+            Trạng thái
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [formGroup]="formGroup">
+          <mat-radio-group aria-label="Select an option" formControlName="status" class="d-flex flex-column">
+            <mat-radio-button [value]="-1">Tất cả</mat-radio-button>
+            <mat-radio-button [value]="1">Đang hoạt động</mat-radio-button>
+            <mat-radio-button [value]="0">Ngưng hoạt động</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="mt-2"><span class="font-weight-bold">Số bản ghi :</span></div>
+  </div>
+  <div class="ml-2" style="width: 80vw ; overflow: auto ; max-height: 70vh ; "
+       infiniteScroll
+       [infiniteScrollDistance]='1'
+       [infiniteScrollThrottle]='10'
+       [scrollWindow]='false'
+       (scrolled)='onScroll()'>
+    <table style="width: 100%;position: relative">
+      <thead style="position: sticky; top: 0 ; z-index: 10">
+      <tr>
+        <td>
+          stt
+        </td>
+        <td>
+          Tên chi nhánh
+        </td>
+        <td>
+          Địa chỉ
+        </td>
+        <td>
+          Điện thoại
+        </td>
+        <td>
+          SL người dùng
+        </td>
+        <td>
+          Trạng thái
+        </td>
+      </tr>
+      </thead>
+      <tbody *ngIf="branches$|async as branches">
+      <tr *ngFor="let branch of branches;let i = index">
+        <th>
+          <div>
+            {{i + 1}}
+          </div>
+        </th>
+        <th>
+          <div>
+            {{branch.name}}
+          </div>
+        </th>
+        <th>
+          <div>
+
+          </div>
+        </th>
+        <th>
+          <div>
+
+          </div>
+        </th>
+        <th>
+          <div></div>
+        </th>
+        <th>
+          <div>
+
+          </div>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<style>
+  table thead td {
+    background: white;
+  }
+
+  table tbody th div {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+</style>
