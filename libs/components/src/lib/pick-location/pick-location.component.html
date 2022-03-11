@@ -14,34 +14,46 @@
     <!--    </div>-->
     <div class='col-sm' [formGroup]='formGroup'>
       <label>Tỉnh/Thành phố </label><span *ngIf='isRequiredProvince' class='star'>*</span>
-      <input class='form-control' type='text' matInput [formControl]='formProvince' [matAutocomplete]='province'>
+      <input class='form-control' type='text' matInput  [matAutocomplete]='province' formControlName="province"
+             [ngClass]="{ 'is-invalid': submitted && form.province.errors?.required }">
       <mat-autocomplete #province='matAutocomplete'>
         <mat-option *ngFor='let province of provinces$ | async' [value]='province.name' (click)='onProvince(province)'
                     (onSelectionChange)='onProvince(province)'>
           {{province.name}}
         </mat-option>
       </mat-autocomplete>
+      <div *ngIf='submitted && form.province.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn tỉnh</div>
+      </div>
     </div>
 
     <div class='col-sm' [formGroup]='formGroup'>
       <label>Quận/Huyện</label><span *ngIf='isRequiredDistrict' class=' star'>*</span>
-      <input class='form-control' type='text' matInput [formControl]='formDistrict' [matAutocomplete]='district'>
+      <input class='form-control' type='text' matInput formControlName="district" [matAutocomplete]='district'
+             [ngClass]="{ 'is-invalid': submitted && form.district.errors?.required }">
       <mat-autocomplete #district='matAutocomplete'>
         <mat-option *ngFor='let district of districts$ | async' [value]='district.name' (click)='onDistrict(district)'
                     (onSelectionChange)='onDistrict(district)'>
           {{district.name}}
         </mat-option>
       </mat-autocomplete>
+      <div *ngIf='submitted && form.district.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn Quận/Huyện</div>
+      </div>
     </div>
     <div class='col-sm' [formGroup]='formGroup'>
       <label>Phường/Xã</label><span *ngIf='isRequiredWard' class='star'>*</span>
-      <input class='form-control' type='text' matInput [formControl]='formWard' [matAutocomplete]='ward'>
+      <input class='form-control' type='text' matInput formControlName="ward" [matAutocomplete]='ward'
+             [ngClass]="{ 'is-invalid': submitted && form.ward.errors?.required }">
       <mat-autocomplete #ward='matAutocomplete'>
         <mat-option *ngFor='let ward of wards$ | async' [value]='ward.name' (click)='onWard(ward)'
                     (onSelectionChange)='onWard(ward)'>
           {{ward.name}}
         </mat-option>
       </mat-autocomplete>
+      <div *ngIf='submitted && form.ward.errors?.required ' class='invalid-feedback'>
+        <div>Chưa chọn Phường/Xã</div>
+      </div>
     </div>
   </div>
 </form>

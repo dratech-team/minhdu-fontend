@@ -106,7 +106,10 @@ export class AddEmployeeComponent implements OnInit {
       recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
       employeeType: [this.data?.employee ?
         this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      category: [this.data?.employee?.category?.id]
+      category: [this.data?.employee?.category?.id],
+      province:  [this.data?.employee?.ward?.district?.province.name,Validators.required],
+      district:  [this.data?.employee?.ward?.district?.name,Validators.required],
+      ward:  [this.data?.employee?.ward?.name,Validators.required],
     });
 
     this.positions$ = this.formPosition.valueChanges.pipe(

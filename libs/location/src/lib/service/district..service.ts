@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DistrictService extends BaseService<District> {
   constructor(
     public readonly http: HttpClient

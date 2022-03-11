@@ -34,6 +34,7 @@ export class AddOrderComponent implements OnInit {
   submitted = false;
   wardId?: number;
   provinceId!: number;
+  districtId?:number
 
   constructor(
     private readonly actions$: Actions,
@@ -60,7 +61,10 @@ export class AddOrderComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
       endedAt: [],
-      explain: ['']
+      explain: [''],
+      province:['',Validators.required],
+      district:[],
+      ward:[],
     });
   }
 
@@ -131,5 +135,8 @@ export class AddOrderComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
+  }
+  onSelectDistrict($event: number) {
+    this.districtId = $event;
   }
 }

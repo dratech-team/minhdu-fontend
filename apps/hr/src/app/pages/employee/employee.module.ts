@@ -21,7 +21,6 @@ import { DeleteEmployeeComponent } from './components/dialog-delete-employee/del
 import { EmployeeComponent } from './containers/employee/employee.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EmployeeLibModule } from '@minhdu-fontend/employee';
-import { LocationModule } from '@minhdu-fontend/location';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BHYTComponent } from './components/bhyt/BHYT.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -36,10 +35,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSortModule } from '@angular/material/sort';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import {NzAutocompleteModule} from "ng-zorro-antd/auto-complete";
 
 @NgModule({
   imports: [
-    LocationModule,
     EmployeeLibModule,
     ComponentsModule,
     EmployeeRoutingModule,
@@ -66,7 +65,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     DragDropModule,
     CommonModule,
     MatSortModule,
-    NzMessageModule
+    NzMessageModule,
+    NzAutocompleteModule
   ],
   declarations: [
     AddDegreeComponent,

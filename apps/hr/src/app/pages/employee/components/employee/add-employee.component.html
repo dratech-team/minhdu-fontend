@@ -20,6 +20,7 @@
         <div class='form-group'>
           <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
           <app-pick-location [ward]='data?.employee?.ward'
+                             [isUpdate]="!!data"
                              [formGroup]='formGroup'
                              [submitted]='submitted'
                              [form]='f'
