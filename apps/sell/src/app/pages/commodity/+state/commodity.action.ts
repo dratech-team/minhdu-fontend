@@ -22,7 +22,7 @@ export const getOne = createAction(
 
 export const update = createAction(
   '[COMMODITY] Update',
-  props<{ id: number, updates: updateCommodityDto }>()
+  props<{ id: number, updates: updateCommodityDto, inOrder?: boolean }>()
 );
 
 export const remove = createAction(

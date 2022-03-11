@@ -125,7 +125,8 @@ export class DetailOrderComponent implements OnInit {
           updates: {
             orderId: orderId,
             closed: !commodity.closed
-          }
+          },
+          inOrder: true
         }));
       }
     });

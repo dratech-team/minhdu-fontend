@@ -51,7 +51,8 @@ export class CommodityDialogComponent {
       gift: value.gift,
       more: value.more,
       unit: value.unit,
-      closed: this.data?.orderId ? this.data.commodity.closed : false
+      closed: this.data?.orderId ? this.data.commodity.closed : false,
+      orderId: this.data?.orderId
     };
     if (this.data?.isUpdate) {
       if (this.data?.orderId) {
@@ -63,12 +64,13 @@ export class CommodityDialogComponent {
           }
         }).afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, { histored: true, orderId: this.data.orderId });
+            Object.assign(commodity, { histored: true});
           }
           this.actions$.dispatch(
             CommodityAction.update({
               id: this.data.commodity.id,
-              updates: commodity
+              updates: commodity,
+              inOrder: !!this.data.orderId
             })
           );
         });
