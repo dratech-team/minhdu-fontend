@@ -115,13 +115,13 @@
               <th class='text-center'>Xóa</th>
             </tr>
             <tr *ngFor='let commodity of order.commodities'>
-              <th class='text-center '> {{commodity.code}} </th>
-              <th class='text-center'> {{commodity.name}} </th>
+              <th class='text-center '>{{commodity.code}}</th>
+              <th class='text-center'>{{commodity.name}}</th>
               <!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
               <th class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</th>
-              <th class='text-center'> {{commodity.amount}}</th>
-              <th class='text-center'> {{commodity.gift || '0'}} </th>
-              <th class='text-center'> {{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
+              <th class='text-center'>{{commodity.amount}}</th>
+              <th class='text-center'>{{commodity.gift || '0'}} </th>
+              <th class='text-center'>{{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
               <th class='text-center'>{{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}}
               </th>
               <th class='text-center'>
