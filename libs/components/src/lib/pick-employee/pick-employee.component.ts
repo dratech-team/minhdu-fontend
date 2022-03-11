@@ -67,7 +67,7 @@ export class PickEmployeeComponent implements OnInit {
   }*/
 
   ngOnInit(): void {
-    this.employeeService.pagination({take:this.pageSize, skip:this.pageIndex})
+    this.employeeService.pagination({take: this.pageSize, skip: this.pageIndex, isFlatSalary: -1})
       .subscribe(val => this.employees = val.data)
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
@@ -83,6 +83,7 @@ export class PickEmployeeComponent implements OnInit {
             name: val.name,
             branch: val?.branch ? val.branch : '',
             position: val?.position ? val.position : '',
+            isFlatSalary: -1,
           }
 
         })
@@ -114,15 +115,15 @@ export class PickEmployeeComponent implements OnInit {
     this.employees.forEach(val => {
       if (select) {
         if (!this.employeesSelected.some(x => x.id === val.id)) {
-          if(!val.category){
+          if (!val.category) {
             this.employeesSelected.push(val);
           }
         }
       } else {
-          const index = this.employeesSelected.findIndex(x => x.id === val.id);
-          if (index > -1) {
-            this.employeesSelected.splice(index, 1);
-          }
+        const index = this.employeesSelected.findIndex(x => x.id === val.id);
+        if (index > -1) {
+          this.employeesSelected.splice(index, 1);
+        }
       }
     });
     this.EventSelectEmployee.emit(this.employeesSelected);
@@ -145,11 +146,12 @@ export class PickEmployeeComponent implements OnInit {
       name: val.name,
       branch: val?.branch ? val.branch : '',
       position: val?.position ? val.position : '',
+      isFlatSalary: -1,
     }
     this.employeeService.pagination(param).subscribe(val => {
       if (val.data.length > 0) {
         val.data.forEach(emp => {
-          if(this.employees.every(e => e.id !== emp.id)){
+          if (this.employees.every(e => e.id !== emp.id)) {
             this.employees.push(emp)
           }
         })
