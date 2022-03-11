@@ -6,6 +6,7 @@ import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.comp
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
 import { Router } from '@angular/router';
+import {MenuWarehouseConstant} from "@minhdu-fontend/constants";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
-
+  menuWarehouse = MenuWarehouseConstant
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,

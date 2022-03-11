@@ -7,6 +7,7 @@ import {CustomerActions} from '../../+state/customer.actions';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
 import {AddCustomerDto} from '../../dto/add-customer.dto';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -43,6 +44,7 @@ export class CustomerDialogComponent implements OnInit {
     type: [this.data?.customer?.type],
     resource: [this.data?.customer?.resource],
     isPotential: [this.data?.customer?.isPotential]
+
   });
 
   constructor(
@@ -52,6 +54,7 @@ export class CustomerDialogComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
+    private readonly snackbar: MatSnackBar,
     private readonly dialogRef: MatDialogRef<CustomerDialogComponent>
   ) {
   }
@@ -63,7 +66,7 @@ export class CustomerDialogComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onSubmit() {
+  onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -90,7 +93,9 @@ export class CustomerDialogComponent implements OnInit {
       religion: value?.religion,
       isPotential: value?.isPotential
     };
-
+    if(!this.provinceId){
+     return this.snackbar.open('Chưa chọn Tỉnh/Thành phố', '', {duration:1500})
+    }
     if (this.data) {
       this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
     } else {

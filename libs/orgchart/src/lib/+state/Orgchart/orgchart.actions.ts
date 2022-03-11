@@ -1,13 +1,15 @@
-import { Branch } from '@minhdu-fontend/data-models';
-import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
-import { UpdateNum } from '@ngrx/entity/src/models';
+import {Branch} from '@minhdu-fontend/data-models';
+import {createAction, props} from '@ngrx/store';
+import {Update} from '@ngrx/entity';
+import {UpdateNum} from '@ngrx/entity/src/models';
+import {UpdateBranchDto} from "./dto/update-branch.dto";
+import {ConvertBoolean} from "@minhdu-fontend/enums";
 
 export const init = createAction('[Orgchart Page] Init');
 
 export const searchBranch = createAction(
   '[Orgchart/API] Search branch',
-  props<{ branch?: string, position?: string, code?: number  }>()
+  props<{ branch?: string, position?: string, code?: number, search?: string, status?: ConvertBoolean }>()
 );
 
 export const loadOrgchartSuccess = createAction(
@@ -26,7 +28,7 @@ export const getBranchSuccess = createAction(
 
 export const addBranch = createAction(
   '[Orgchart/API] Add Branch',
-  props<{ branch: { name: string , positionIds?: number[]} }>()
+  props<{ branch: { name: string, positionIds?: number[] } }>()
 );
 
 export const addBranchSuccess = createAction(
@@ -36,13 +38,13 @@ export const addBranchSuccess = createAction(
 
 export const updateBranch = createAction(
   '[Orgchart/API] Update Branch',
-  props<{ id: number, name: string, positionIds: number[] }>()
+  props<{ id: number, updateBranchDto: UpdateBranchDto }>()
 );
 
 
 export const updateBranchSuccess = createAction(
   '[Orgchart/API] Update Branch Success',
-  props<{ branch:Branch}>()
+  props<{ branch: Branch }>()
 );
 
 export const deleteBranch = createAction(

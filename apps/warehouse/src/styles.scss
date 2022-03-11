@@ -20,8 +20,9 @@ $spinkit-spinner-color: $body-color;
   background: white;
   font-family: Roboto, serif;
 }
-.background-snackbar{
-  background:#f0fff5;
+
+.background-snackbar {
+  background: #f0fff5;
 }
 
 .main-title {
@@ -249,3 +250,9 @@ tr:nth-child(even) {
   line-height: 28px;
   color: #7749F8
 }
+
+.star {
+  margin-left: 5px;
+  color: red;
+}
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";

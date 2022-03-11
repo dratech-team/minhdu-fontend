@@ -1,15 +1,15 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { getBranchAdded, OrgchartActions, PositionService } from '@minhdu-fontend/orgchart';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getBranchAdded, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import * as lodash from 'lodash';
-import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
-import { startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import {searchAndAddAutocomplete} from '@minhdu-fontend/utils';
+import {startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
   templateUrl: 'dialog-branch.component.html'
@@ -58,16 +58,21 @@ export class DialogBranchComponent implements OnInit {
   onsubmit(): any {
     this.submitted = true;
     if (this.formGroup.valid) {
-      if(this.positions.value){
+      if (this.positions.value) {
         return this.snackBar.open('Chức vụ phải chọn không được nhập', '', {duration: 1500})
       }
       const val = this.formGroup.value;
       if (this.data?.isUpdate) {
         this.store.dispatch(OrgchartActions.updateBranch(
-          { id: this.data.branch.id, name: val.branch, positionIds: this.positionSelected.map(val => val.id) }));
+          {
+            id: this.data.branch.id, updateBranchDto: {
+              name: val.branch,
+              positionIds: this.positionSelected.map(val => val.id)
+            }
+          }));
       } else {
         this.store.dispatch(OrgchartActions.addBranch(
-          { branch: { name: val.branch, positionIds: this.positionSelected.map(val => val.id) } }));
+          {branch: {name: val.branch, positionIds: this.positionSelected.map(val => val.id)}}));
       }
     } else {
       return;
@@ -83,7 +88,7 @@ export class DialogBranchComponent implements OnInit {
     if (event.isUserInput) {
       if (position.id) {
         if (this.positionSelected.some(item => item.id === position.id)) {
-          this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
+          this.snackBar.open('chức vụ đã được chọn', '', {duration: 1000});
         } else {
           this.positionSelected.push(position);
         }
@@ -95,7 +100,7 @@ export class DialogBranchComponent implements OnInit {
           .subscribe((position) => (
             this.positionSelected.push(position)
           ));
-        this.snackBar.open('Đã tạo', '', { duration: 2500 });
+        this.snackBar.open('Đã tạo', '', {duration: 2500});
       }
       setTimeout(() => {
           this.positions.setValue('');

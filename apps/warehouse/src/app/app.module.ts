@@ -24,11 +24,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthEffects} from '../../../../libs/auth/src/lib/+state/auth.effects';
 import {OrgchartModule} from '@minhdu-fontend/orgchart';
 import {ProviderModule} from './pages/provider/provider.module';
-import {WarehouseModule} from './pages/warehouse/warehouse.module';
 import {MatTabsModule} from '@angular/material/tabs';
-import {DashboardModule} from './pages/dashboard/dashboard.module';
 import {RouterModule} from '@angular/router';
-import {ImportExportModule} from './pages/import-export/import-export.module';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -58,11 +55,8 @@ import {ImportExportModule} from './pages/import-export/import-export.module';
     MatMenuModule,
     OrgchartModule,
     ProviderModule,
-    WarehouseModule,
-    DashboardModule,
     RouterModule,
     MatTabsModule,
-    ImportExportModule
   ],
   providers: [
     {

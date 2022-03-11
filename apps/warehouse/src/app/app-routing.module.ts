@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { WarehouseLayoutComponent } from './container/base/warehouse-layout.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {WarehouseLayoutComponent} from './container/base/warehouse-layout.component';
 
 const routes: Routes = [
   {
@@ -13,14 +13,28 @@ const routes: Routes = [
     component: WarehouseLayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
+      },
+      {
+        path: 'xuat-nhap-kho',
+        loadChildren: () => import('./pages/import-export/import-export.module').then(m => m.ImportExportModule),
+      },
+      {
+        path: 'quan-ly-chi-nhanh',
+        loadChildren: () => import('./pages/branch/branch.module').then(m => m.BranchModule),
+      },
+      {
+        path: 'quan-ly-nha-cung-cap',
+        loadChildren: () => import('./pages/provider/provider.module').then(m => m.ProviderModule),
+      },
+      {
         path: 'he-thong',
         loadChildren: () => import('@minhdu-fontend/system').then(m => m.SystemModule),
-        data: {
-          title: 'Lịch sử hệ thống'
-        },
       },
-    ]
-  }
+    ],
+  },
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

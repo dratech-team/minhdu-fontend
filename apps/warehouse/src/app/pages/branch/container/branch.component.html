@@ -1,0 +1,134 @@
+<div class="p-2 d-flex">
+  <div class="d-flex flex-column mt-2">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="font-weight-bold">
+            Tìm kiếm
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [formGroup]="formGroup">
+          <input class="form-control" type="search" formControlName="search">
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="mt-2" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="font-weight-bold">
+            Trạng thái
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [formGroup]="formGroup">
+          <mat-radio-group aria-label="Select an option" formControlName="status" class="d-flex flex-column">
+            <mat-radio-button [value]="-1">Tất cả</mat-radio-button>
+            <mat-radio-button [value]="1">Đang hoạt động</mat-radio-button>
+            <mat-radio-button [value]="0">Ngưng hoạt động</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="mt-2"><span class="font-weight-bold">Tổng chi nhánh : {{(branches$|async)?.length}}</span></div>
+  </div>
+  <div class="mt-4">
+    <div class="d-flex justify-content-between">
+      <div class="font-weight-bold font-2xl ml-2">Chi nhánh</div>
+      <button class="btn btn-primary" (click)="addBranch()">Thêm chi nhánh</button>
+    </div>
+
+    <div class="ml-2 mt-2" style="width: 80vw ; overflow: auto ; max-height: 70vh;">
+      <table style="width: 100%;position: relative">
+        <thead style="position: sticky; top: 0 ; z-index: 10">
+        <tr>
+          <td class="font-weight-bold">
+            stt
+          </td>
+          <td class="font-weight-bold">
+            Tên chi nhánh
+          </td>
+          <td class="font-weight-bold">
+            Địa chỉ
+          </td>
+          <td class="font-weight-bold">
+            Điện thoại
+          </td>
+          <td class="font-weight-bold">
+            SL người dùng
+          </td>
+          <td class="font-weight-bold">
+            Trạng thái
+          </td>
+        </tr>
+        </thead>
+        <tbody *ngIf="branches$|async as branches">
+        <tr *ngIf='!(loaded$|async); else tableBranch'>
+          <th colspan="100">
+            <ngx-skeleton-loader count='10'
+                                 appearance='line'></ngx-skeleton-loader>
+          </th>
+        </tr>
+        <ng-template #tableBranch>
+          <tr *ngFor="let branch of branches;let i = index" class="pointer"
+              (contextmenu)='child.onContextMenu($event,branch)'>
+            <th>
+              <div>
+                {{i + 1}}
+              </div>
+            </th>
+            <th>
+              <div>
+                {{branch.name}}
+              </div>
+            </th>
+            <th>
+              <div>
+                {{branch?.address ? branch.address : 'Chưa cập nhật'}}
+              </div>
+            </th>
+            <th>
+              <div>
+                {{branch?.phone ? branch.phone : 'Chưa cập nhật' }}
+              </div>
+            </th>
+            <th>
+              <div>
+                Đang phát triển
+              </div>
+            </th>
+            <th>
+              <div>
+                {{branch.status ? 'Đang hoạt động' : 'Ngưng hoạt động'}}
+              </div>
+            </th>
+          </tr>
+          <tr *ngIf='branches.length === 0' style='height: 50vh'>
+            <td colspan='100' class='text-center check-content font-weight-bold font-xl relative '>
+              <div class="d-flex justify-content-center align-items-center">
+                <span >Hiện không có chi nhánh nào !</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<style>
+  table thead td {
+    background: white;
+  }
+
+  table tbody th div {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+</style>
+<app-mouse-right #child
+                 (onAdd)='addBranch()'
+                 (onDel)='deleteBranch($event)'
+                 (onUpdate)='updateBranch($event)'>
+</app-mouse-right>

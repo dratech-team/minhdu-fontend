@@ -10,8 +10,7 @@ import {ProductAction} from '../state/product.action';
 import {ProductQuery} from '../state/product.query';
 import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
 import {WarehouseAction} from '../../warehouse/state/warehouse.action';
-import {Warehouse} from '../../warehouse/state/entities/product.entity';
-import {InventoryTitleConstants} from "../../constants/inventory-title.constant";
+import {InventoryTitleConstants} from "../constants/inventory-title.constant";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',

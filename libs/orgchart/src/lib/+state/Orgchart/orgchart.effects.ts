@@ -57,11 +57,7 @@ export class OrgchartEffects {
   updateBranch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OrgchartActions.updateBranch),
-      switchMap(param => this.branchService.update(param.id,
-        {
-          name: param.name,
-          positionIds: param.positionIds
-        })),
+      switchMap(param => this.branchService.update(param.id,param.updateBranchDto)),
       map(res => {
         this.message.success('Cập nhật đơn vị thành công');
         return OrgchartActions.updateBranchSuccess({ branch: res });

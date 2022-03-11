@@ -89,14 +89,15 @@ export class CommodityEffect {
         this.commodityStore.update(state => ({
           ...state, added: false
         }))
-        return this.commodityService.update(props.id, props.updateCommodityDto).pipe(
+        return this.commodityService.update(props.id, props.updates).pipe(
           map(_ => {
               this.commodityStore.update(state => ({
                 ...state, added: true
               }))
               this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
-              if (props.updateCommodityDto.orderId) {
-                this.actions$.dispatch(OrderActions.loadOne({id: props.updateCommodityDto.orderId}))
+              console.log(props.inOrder)
+              if (props.inOrder && props.updates.orderId) {
+                this.actions$.dispatch(OrderActions.loadOne({id: props.updates.orderId}))
               }
               return CommodityAction.loadAll({params: {take: 30, skip: 0}});
             }

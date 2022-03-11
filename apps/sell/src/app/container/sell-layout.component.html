@@ -41,9 +41,14 @@
       </div>
     </div>
     <div class=' mt-2 ml-2 row hide-on-mobile '>
-      <button [style]='{"border": item.state === (tab$ | async) ? "solid 2px": "none"}'
-              class='ml-2' *ngFor='let item of menuSell' routerLink='{{item.href}}' routerLinkActive='active'
-              mat-button>
+      <button
+        mat-button
+        *ngFor='let item of menuSell' routerLink='{{item.href}}'
+        class='ml-2' routerLinkActive='active'
+        [style]='{
+        "border": (tab$ | async) === item.href ? "solid 2px": "none"
+        }'
+      >
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>
         {{item.name}}
       </button>

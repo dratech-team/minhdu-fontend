@@ -53,6 +53,11 @@ export class DialogCategoryComponent implements OnInit {
         note: ['']
       });
     } else {
+      this.branches$.subscribe(val =>{
+        if (val.length === 1){
+          this.branchSelected = val[0]
+        }
+      })
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
         note: []

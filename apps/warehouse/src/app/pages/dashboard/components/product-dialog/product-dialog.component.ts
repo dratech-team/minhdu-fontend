@@ -73,7 +73,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.action$.dispatch(ProviderActions.loadProviders());
+    this.action$.dispatch(ProviderActions.loadAll({param:{take: 30, skip: 0}}));
 
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
@@ -116,7 +116,7 @@ export class ProductDialogComponent implements OnInit {
           break;
         }
         case 'provider': {
-          this.action$.dispatch(ProviderActions.addProvider({ name: fg }));
+          // this.action$.dispatch(ProviderActions.addProvider({ name: fg }));
           break;
         }
         case 'warehouse': {

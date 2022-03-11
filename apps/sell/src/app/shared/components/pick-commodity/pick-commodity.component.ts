@@ -113,7 +113,7 @@ export class PickCommodityComponent implements OnInit {
   updateCommodity(commodity: CommodityEntity) {
     this.dialog.open(CommodityDialogComponent, {
       width: '40%',
-      data: {commodity}
+      data: {commodity, isUpdate: true}
     });
   }
 

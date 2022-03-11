@@ -114,20 +114,20 @@
               <th class='text-center'>Sửa</th>
               <th class='text-center'>Xóa</th>
             </tr>
-            <tr *ngFor='let commodity of commodities$|async'>
-              <th class='text-center '> {{commodity.code}} </th>
-              <th class='text-center'> {{commodity.name}} </th>
+            <tr *ngFor='let commodity of order.commodities'>
+              <th class='text-center '>{{commodity.code}}</th>
+              <th class='text-center'>{{commodity.name}}</th>
               <!--              <th class='text-center'>{{commodity.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}} </th>-->
               <th class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</th>
-              <th class='text-center'> {{commodity.amount}}</th>
-              <th class='text-center'> {{commodity.gift || '0'}} </th>
-              <th class='text-center'> {{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
+              <th class='text-center'>{{commodity.amount}}</th>
+              <th class='text-center'>{{commodity.gift || '0'}} </th>
+              <th class='text-center'>{{commodity.more?.amount | number:'1.0-0' | notEmpty:'0'}} </th>
               <th class='text-center'>{{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}}
               </th>
               <th class='text-center'>
-                <div (click)="closingCommodity(commodity, order.id)">
-                  <mat-checkbox style="pointer-events: none"
-                                [checked]="commodity.closed">
+                <div (click)='closingCommodity(commodity, order.id)'>
+                  <mat-checkbox style='pointer-events: none'
+                                [checked]='commodity.closed'>
                   </mat-checkbox>
                 </div>
               </th>
@@ -174,33 +174,34 @@
         <div class='row d-flex align-items-center mb-3 '>
           <div class='row align-items-center title-table mr-4'>Lịch sử chốt đơn</div>
         </div>
-        <div class="d-flex justify-content-end">
-          <img (click)="refreshOrderHistory()" class="border" width="20px" src="assets/icon/share/arrow-clockwise.svg"
-               alt="refresh">
+        <div class='d-flex justify-content-end'>
+          <img (click)='refreshOrderHistory()' class='border' width='20px' src='assets/icon/share/arrow-clockwise.svg'
+               alt='refresh'>
         </div>
-        <div style="height: 250px; overflow:auto; "
-             class="border"
+        <div style='height: 250px; overflow:auto; '
+             class='border'
              infiniteScroll [infiniteScrollDistance]='0.1'
              [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
              (scrolled)='loadMoreOrderHistory()'>
-          <table [formGroup]="formOrderHistory">
-            <thead style="position: sticky; top: 1px; background: white">
+          <table [formGroup]='formOrderHistory'>
+            <thead style='position: sticky; top: 1px; background: white'>
             <tr>
               <th class='text-center border-top'>
                 <div>
                   <div>Thời gian</div>
-                  <input type="search" disabled class="form-control">
+                  <input type='search' disabled class='form-control'>
                 </div>
-               </th>
-              <th class='text-center border-top'> <div>
-                <div>Loại gà</div>
-                <input type="search"  class="form-control" formControlName="commodity">
-              </div>
+              </th>
+              <th class='text-center border-top'>
+                <div>
+                  <div>Loại gà</div>
+                  <input type='search' class='form-control' formControlName='commodity'>
+                </div>
               </th>
               <th class='text-center border-top'>
                 <div>
                   <div>Nội dung</div>
-                  <input type="search" class="form-control" formControlName="content">
+                  <input type='search' class='form-control' formControlName='content'>
                 </div>
               </th>
             </tr>
