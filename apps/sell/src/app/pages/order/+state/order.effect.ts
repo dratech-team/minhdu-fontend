@@ -35,17 +35,8 @@ export class OrderEffect {
       this.orderStore.update(state => ({
         ...state, added: false
       }))
-      if (!props?.createdAt) {
-        throw this.snackBar.open('Ngày tạo đơn hàng không được để trống');
-      }
       if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
-      }
-      if (!props?.customerId) {
-        throw this.snackBar.open('Khách hàng không được để trống');
-      }
-      if (!props?.commodityIds?.length) {
-        throw this.snackBar.open('Vui lòng chọn hàng hóa');
       }
       return this.orderService.addOne(props);
     }),
