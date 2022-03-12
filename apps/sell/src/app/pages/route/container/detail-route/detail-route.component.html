@@ -91,7 +91,7 @@
           <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
           <button class='btn btn-primary mr-3' (click)='updateRoute(route, true)'>Thêm đơn hàng</button>
         </div>
-        <div class='my-3' style=' height: 350px; width: 100% ;overflow: auto; position: relative;' infiniteScroll
+        <div class='mt-3 mb-5' style=' max-height: 500px; width: 100% ;overflow: auto; position: relative;' infiniteScroll
              [alwaysCallback]='true'
              [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false'>
           <nz-table #nestedTable [nzData]="route.orders" [nzShowPagination]="false">
@@ -162,14 +162,16 @@
               <td class="text-center">{{commodity.name}}</td>
               <td class="text-center">{{commodity.amount|number:'1.0-0'}}</td>
               <td class="text-center">{{commodity.price|number:'1.0-0'}}đ</td>
-              <td>
+              <td class="text-center">
                 <div  *ngIf="commodity.routeId === route.id else bsx" class="d-flex justify-content-center align-items-center">
                   <button  class="btn btn-danger " (click)="cancelCommodity(commodity)">Huỷ</button>
                 </div>
                 <ng-template #bsx>
-                  <a [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",commodity?.route?.id]'>
+                  <a *ngIf="commodity.route" [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",commodity?.route?.id]'
+                     target='_blank'>
                     {{commodity?.route?.bsx}}
                   </a>
+                  <button *ngIf="!commodity.route" (click)="addCommodityInRoute(commodity)" class="btn btn-primary"> Thêm</button>
                 </ng-template>
               </td>
             </tr>
