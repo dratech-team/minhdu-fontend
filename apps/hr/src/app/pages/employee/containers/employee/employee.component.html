@@ -283,7 +283,7 @@
     [items]='isLeft ? [ItemContextMenu.RESTORE] : []'
     (onAdd)='add()'
     (onDel)='delete($event)'
-    (onRestore)='reStore($event)'
+    (onRestore)='onRestore($event)'
     (onUpdate)='readAndUpdate($event,true)'>
   </app-mouse-right>
 </div>
