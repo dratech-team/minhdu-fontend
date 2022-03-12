@@ -368,9 +368,10 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   reStore($event: any) {
+    console.log($event)
     this.dialog.open(DeleteEmployeeComponent, {
-      width: 'fit-content',
-      data: {employeeId: $event.id, leftAt: true}
+      width: '300px',
+      data: {employee: $event, leftAt: true}
     });
   }
 
