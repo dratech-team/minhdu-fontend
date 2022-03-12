@@ -1,4 +1,12 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
@@ -25,7 +33,6 @@ import {select, Store} from '@ngrx/store';
 import {catchError, debounceTime, startWith} from 'rxjs/operators';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
-import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
 import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
 import {Observable, of, Subject, throwError} from 'rxjs';
@@ -38,6 +45,8 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
 import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {AddEmployeeComponent} from "../../components/employee/add-employee.component";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -90,7 +99,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     flatSalary: new FormControl('-1'),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
+    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
   });
 
   constructor(
@@ -101,7 +110,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly categoryService: CategoryService,
     private readonly ref: ChangeDetectorRef,
     private readonly employeeService: EmployeeService,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef,
   ) {
     this.store.pipe(select(selectorAllEmployee)).subscribe(
       (employees) => {
@@ -134,7 +145,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
           isLeft: this.isLeft,
           branch: this.branchName,
           position: this.positionName,
-          employeeType: EmployeeType.EMPLOYEE_FULL_TIME,
+          employeeType: EmployeeType.EMPLOYEE_FULL_TIME
         }
       })
     );
@@ -144,6 +155,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
+      console.log(val.branchss.id);
       this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
     });
 
@@ -202,10 +214,13 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   add(): void {
-    this.dialog.open(AddEmployeeComponent, {
-      disableClose: true,
-      width: '60%'
-    });
+    this.modal.create({
+      nzTitle:'Thêm nhân viên',
+      nzContent: AddEmployeeComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw'
+    })
   }
 
   delete($event: any): void {

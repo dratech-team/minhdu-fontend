@@ -43,8 +43,10 @@ export class CustomerDialogComponent implements OnInit {
     religion: [this.data?.customer?.religion],
     type: [this.data?.customer?.type],
     resource: [this.data?.customer?.resource],
-    isPotential: [this.data?.customer?.isPotential]
-
+    isPotential: [this.data?.customer?.isPotential],
+    province:[this.data?.customer?.province?.name,Validators.required],
+    district:[this.data?.customer?.district?.name],
+    ward:[this.data?.customer?.ward?.name]
   });
 
   constructor(
@@ -93,9 +95,6 @@ export class CustomerDialogComponent implements OnInit {
       religion: value?.religion,
       isPotential: value?.isPotential
     };
-    if(!this.provinceId){
-     return this.snackbar.open('Chưa chọn Tỉnh/Thành phố', '', {duration:1500})
-    }
     if (this.data) {
       this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
     } else {

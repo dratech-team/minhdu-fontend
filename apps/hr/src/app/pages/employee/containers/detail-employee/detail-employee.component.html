@@ -102,7 +102,7 @@
                  <span class='contain-detail' *ngIf='employee.birthday === null'>
                     Chưa cập nhật
                  </span>
-              <span  *ngIf='employee.birthday'>
+              <span *ngIf='employee.birthday'>
                   {{employee.birthday|date:'dd/MM/yyyy'}}
                 </span>
             </div>
@@ -695,7 +695,7 @@
             <th style="background: white" class='text-center border'>Mức lương</th>
             <th style="background: white" class='text-center border'>Ngày</th>
           </tr>
-          <tr  *ngFor='let salary of employee.salaryHistories|filterDay'>
+          <tr *ngFor='let salary of employee.salaryHistories|filterDay'>
             <td class='text-center'>{{salary?.title}}</td>
             <td class='text-center'>{{salary?.price ? (salary.price|number:'1.0') : ''}}đ</td>
             <td class='text-center'>{{salary?.datetime|date:'dd/MM/yyyy'}}</td>
@@ -728,11 +728,12 @@
     </div>
   </div>
 </div>
+
 <style>
   @media print {
-    .show-table-print{
+    .show-table-print {
       height: auto !important;
-      overflow: auto!important;
+      overflow: auto !important;
     }
   }
 </style>

@@ -288,6 +288,9 @@ input[type="search"]::-webkit-search-cancel-button {
   background-image: none !important;
 }
 
+.cdk-overlay-connected-position-bounding-box{
+  z-index: 20000 !important;
+}
 
 @media print {
   .not-print {

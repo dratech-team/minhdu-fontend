@@ -80,10 +80,13 @@
           </div>
         </div>
         <app-pick-location
-          [ward]='data?.ward'
+          [ward]='data?.customer?.ward'
+          [province]="data?.customer?.province"
+          [district]="data?.customer?.district"
           [formGroup]='formGroup'
           [submitted]='submitted'
           [form]='checkValid'
+          [isUpdate]="!!data"
           [isRequiredDistrict]='false'
           [isRequiredWard]='false'
           (eventSelectProvince)='provinceId = $event'

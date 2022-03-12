@@ -31,6 +31,7 @@
               </div>
             </div>
             <app-pick-location
+              [isUpdate]="!!data?.order"
               [province]='data.order.province'
               [district]='data.order?.district'
               [ward]='data.order?.ward'
