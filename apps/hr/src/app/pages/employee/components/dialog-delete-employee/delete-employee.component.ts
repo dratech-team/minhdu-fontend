@@ -9,9 +9,11 @@ import { Router } from '@angular/router';
 @Component({
   templateUrl: 'delete-employee.component.html'
 })
-export class DeleteEmployeeComponent implements OnInit {
-  formGroup!: FormGroup;
+export class DeleteEmployeeComponent {
   submitted = false;
+  formGroup = this.formBuilder.group({
+    leftAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')]
+  });
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,12 +23,6 @@ export class DeleteEmployeeComponent implements OnInit {
     private readonly store: Store,
     private readonly router: Router
   ) {
-  }
-
-  ngOnInit(): void {
-    this.formGroup = this.formBuilder.group({
-      leftAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')]
-    });
   }
 
   get f() {
@@ -39,16 +35,12 @@ export class DeleteEmployeeComponent implements OnInit {
       return;
     }
     if (this.data.permanentlyDeleted) {
-      this.store.dispatch(EmployeeAction.deleteEmployee(
-        {
-          id: this.data.employee.id,
-        }));
+      this.store.dispatch(EmployeeAction.deleteEmployee({ id: this.data.employee.id }));
     } else {
-      this.store.dispatch(EmployeeAction.leaveEmployee(
-        {
-          id: this.data.employee.id,
-          body: { leftAt: this.data.leftAt ? '' : new Date(this.formGroup.value.leftAt) }
-        }));
+      this.store.dispatch(EmployeeAction.leaveEmployee({
+        id: this.data.employee.id,
+        body: { leftAt: this.data.leftAt ? '' : new Date(this.formGroup.value.leftAt) }
+      }));
     }
     this.store.pipe(select(selectEmployeeDeleted)).subscribe(deleted => {
       if (deleted) {
