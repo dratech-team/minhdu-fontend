@@ -92,7 +92,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
-    branchss: new FormControl({id: 9, name: 'sssss'})
   });
 
   constructor(
@@ -118,7 +117,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-    console.log(this.formGroup.get('branchss')?.value);
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
