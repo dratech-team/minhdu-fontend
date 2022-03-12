@@ -9,23 +9,22 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { EmployeeType, FlatSalary, RecipeType } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { DatePipe } from '@angular/common';
-import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeAction } from '@minhdu-fontend/employee';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { first } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { RecipeTypesConstant } from '@minhdu-fontend/constants';
-import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {EmployeeType, FlatSalary, RecipeType} from '@minhdu-fontend/enums';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {DatePipe} from '@angular/common';
+import {PositionActions} from 'libs/orgchart/src/lib/+state/position';
+import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
+import {Branch, Employee, Position} from '@minhdu-fontend/data-models';
+import {first} from 'rxjs/operators';
+import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
+import {RecipeTypesConstant} from '@minhdu-fontend/constants';
+import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'minhdu-fontend-employee-dialog',
@@ -34,75 +33,21 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
-  @Input() data!: any;
+  @Input() employeeInit?: Employee;
   @Input() isOpen = false;
-  @Output() eventEmit = new EventEmitter<boolean>();
+  @Output() eventEmit = new EventEmitter<boolean>()
 
-  summitting = false;
   positionId?: number;
-  formPosition = new FormControl(this.data?.employee?.position?.name);
   flatSalary = FlatSalary;
   lstPosition: Position [] = [];
-  positions$ = new Observable<Position[]>();
   branches$ = this.store.pipe(select(getAllOrgchart));
-  submitted = false;
+  submitting = false;
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant;
   categories$ = this.categoryService.getAll();
-
-  formGroup = this.formBuilder.group({
-    identify: [this.data?.employee?.identify],
-    issuedBy: [this.data?.employee?.issuedBy],
-    birthplace: [this.data?.employee?.birthplace],
-    idCardAt: [
-      this?.data?.employee?.idCardAt ?
-        this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd') : ''
-    ],
-    email: [this.data?.employee?.email],
-    workday: [this.data?.employee?.workday],
-    phone: [this.data?.employee?.phone],
-    workPhone: [this.data?.employee?.workPhone],
-    note: [this.data?.employee?.note],
-    workedAt: [
-      this.data?.employee?.workedAt ?
-        this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd') : ''
-    ],
-    createdAt: [
-      this.data?.employee?.createdAt ?
-        this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd') : ''
-    ],
-    isFlatSalary: [
-      this.data?.employee?.isFlatSalary
-        ? this.flatSalary.FLAT_SALARY
-        : this.flatSalary.NOT_FLAT_SALARY
-    ],
-    lastName: [this.data?.employee?.lastName, Validators.required],
-    address: [this.data?.employee?.address, Validators.required],
-    gender: [this.data?.employee?.gender, Validators.required],
-    birthday: [
-      this.data?.employee?.birthday ?
-        this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd') : '',
-      Validators.required
-    ],
-    ethnicity: [this.data?.employee?.ethnicity],
-    religion: [this.data?.employee?.religion],
-    facebook: [this.data?.employee?.facebook],
-    zalo: [this.data?.employee?.zalo],
-    createAtContract: [''],
-    expiredAtContract: [''],
-    recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
-    employeeType: [this.data?.employee ?
-      this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-    category: [this.data?.employee?.category?.id],
-    province: [this.data?.employee?.ward?.district?.province.name, Validators.required],
-    district: [this.data?.employee?.ward?.district?.name, Validators.required],
-    ward: [this.data?.employee?.ward?.name, Validators.required],
-    branch: [this.data?.employee?.branch, Validators.required],
-    position: [this.data?.employee?.position, Validators.required]
-
-  });
+  formGroup!: FormGroup
 
   constructor(
     public datePipe: DatePipe,
@@ -116,23 +61,77 @@ export class AddEmployeeComponent implements OnInit {
   ) {
   }
 
+  //fixme refactor
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
-    this.store.dispatch(PositionActions.loadPosition());
-    if (this.data?.employee) {
-      this.positionId = this.data.employee.position.id;
-      this.wardId = this.data.employee.ward.id;
+    if (this.employeeInit) {
+      this.wardId = this.employeeInit.ward.id;
+      if (this.employeeInit?.branch?.positions) {
+        this.lstPosition = this.employeeInit.branch.positions
+      }
     }
+
+    this.formGroup = this.formBuilder.group({
+      identify: [this.employeeInit?.identify],
+      issuedBy: [this.employeeInit?.issuedBy],
+      birthplace: [this.employeeInit?.birthplace],
+      idCardAt: [
+        this.employeeInit?.idCardAt ?
+          this.datePipe.transform(this?.employeeInit?.idCardAt, 'yyyy-MM-dd') : ''
+      ],
+      email: [this.employeeInit?.email],
+      workday: [this.employeeInit?.workday],
+      phone: [this.employeeInit?.phone],
+      workPhone: [this.employeeInit?.workPhone],
+      note: [this.employeeInit?.note],
+      workedAt: [
+        this.employeeInit?.workedAt ?
+          this.datePipe.transform(this.employeeInit?.workedAt, 'yyyy-MM-dd') : ''
+      ],
+      createdAt: [
+        this.employeeInit?.createdAt ?
+          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : ''
+      ],
+      isFlatSalary: [
+        this.employeeInit?.isFlatSalary
+          ? this.flatSalary.FLAT_SALARY
+          : this.flatSalary.NOT_FLAT_SALARY
+      ],
+      lastName: [this.employeeInit?.lastName, Validators.required],
+      address: [this.employeeInit?.address, Validators.required],
+      gender: [this.employeeInit?.gender, Validators.required],
+      birthday: [
+        this.employeeInit?.birthday ?
+          this.datePipe.transform(this.employeeInit?.birthday, 'yyyy-MM-dd') : '',
+        Validators.required
+      ],
+      ethnicity: [this.employeeInit?.ethnicity],
+      religion: [this.employeeInit?.religion],
+      facebook: [this.employeeInit?.facebook],
+      zalo: [this.employeeInit?.zalo],
+      createAtContract: [''],
+      expiredAtContract: [''],
+      recipeType: [this.employeeInit?.recipeType || this.recipeType.CT2],
+      employeeType: [this.employeeInit ?
+        this.employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+      category: [this.employeeInit?.category?.id],
+      province: [this.employeeInit?.ward?.district?.province.name, Validators.required],
+      district: [this.employeeInit?.ward?.district?.name, Validators.required],
+      ward: [this.employeeInit?.ward?.name, Validators.required],
+      branch: [this.employeeInit?.branch, Validators.required],
+      position: [this.employeeInit?.position, Validators.required]
+
+    })
+
     this.formGroup.get('branch')?.valueChanges.subscribe((val: Branch) => {
       if (val.positions) {
+        this.formGroup.get('position')?.setValue('')
         this.lstPosition = val.positions;
       }
     });
-
     this.formGroup.get('position')?.valueChanges.subscribe((val: Position) => {
       this.formGroup.get('workday')?.patchValue(val.workday);
     });
-
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
@@ -151,14 +150,11 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit(): any {
-    this.summitting = true;
+
+    this.submitting = true;
     const value = this.formGroup.value;
     if (this.formGroup.invalid) {
       return;
-    }
-
-    if (!this.positionId && this.formPosition.value && this.data?.employee) {
-      return this.message.error('Chức vụ phải chọn không được nhập');
     }
 
     if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
@@ -167,19 +163,21 @@ export class AddEmployeeComponent implements OnInit {
 
     const employee = this.mapEmployee(value);
 
-    if (this.data) {
+    if (this.employeeInit) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
-          id: this.data.employee.id,
+          id: this.employeeInit.id,
           employee: employee
         })
       );
     } else {
-      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
+      this.store.dispatch(EmployeeAction.addEmployee({employee: employee}));
     }
-    this.eventEmit.emit();
-    /// FIXME: handle observable added in store
-    this.summitting = false;
+    this.store.select(selectEmployeeAdded).subscribe(added => {
+      if (added) {
+        this.eventEmit.emit(true);
+      }
+    })
   }
 
 
@@ -191,15 +189,16 @@ export class AddEmployeeComponent implements OnInit {
     return checkInputNumber(event);
   }
 
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   onCancel() {
-    this.eventEmit.emit();
+    this.submitting = false
+    this.eventEmit.emit(true);
   }
 
   private mapEmployee(value: any) {
     return {
-      id: this?.data?.employee?.id,
+      id: this.employeeInit?.id,
       isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
         value.isFlatSalary === this.flatSalary.FLAT_SALARY : false,
       positionId: value.position.id,
@@ -215,7 +214,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
-      wardId: this.wardId || this.data.employee.wardId,
+      wardId: this.wardId || this.employeeInit?.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,

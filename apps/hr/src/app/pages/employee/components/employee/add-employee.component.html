@@ -1,15 +1,21 @@
-<nz-modal [(nzVisible)]='isOpen' (nzOnCancel)='onCancel()' (nzOnOk)='onSubmit()' [nzOkLoading]='summitting'>
-  <ng-container *nzModalContent>
+<nz-modal
+  nzTitle="Thông tin nhân viên"
+  [(nzVisible)]='isOpen'
+  nzWidth="60vw"
+  (nzOnCancel)='onCancel()'
+  (nzOnOk)='onSubmit()'>
+
+  <ng-container *nzModalContent class="p-1">
     <div class='main-popup'>
       <div class='mat-typography' style='height:45vh; overflow-y: scroll'>
         <form [formGroup]='formGroup'>
           <div class='form-group'>
-            <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
+            <app-add-profile [formGroup]='formGroup' [submitted]='submitting' [form]='f'></app-add-profile>
             <app-pick-location
-              [ward]='data?.employee?.ward'
-              [isUpdate]='!!data'
+              [ward]='employeeInit?.ward'
+              [isUpdate]='!!employeeInit'
               [formGroup]='formGroup'
-              [submitted]='submitted'
+              [submitted]='submitting'
               [form]='f'
               (eventSelectWard)='onSelectWard($event)'
             >
@@ -25,6 +31,7 @@
                     formControlName='branch'
                     nzPlaceHolder='chọn đơn vị'
                     [compareWith]='compareFN'
+                    [ngClass]="{ 'is-invalid': submitting && f.branch.errors?.required }"
                   >
                     <nz-option
                       *ngFor='let branch of branches$ | async'
@@ -33,8 +40,8 @@
                     >
                     </nz-option>
                   </nz-select>
-                  <div *ngIf='submitted && !f.branch.errors?.required' class='invalid-feedback'>
-                    <div *ngIf=' !f.branch.errors?.required'>Chưa chọn đơn vị</div>
+                  <div *ngIf='submitting && f.branch.errors?.required' class='invalid-feedback'>
+                    <div *ngIf=' f.branch.errors?.required'>Chưa chọn đơn vị</div>
                   </div>
                 </div>
               </div>
@@ -43,22 +50,26 @@
                 <label>Ngày công chuẩn </label><span class='star'>*</span>
                 <input class='form-control' type='number' formControlName='workday' min='0'
                        (keypress)='checkNumberInput($event)'
-                       [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
+                       [ngClass]="{ 'is-invalid': submitting && f.workday.errors }"
                 >
-                <div *ngIf='submitted && f.workday.errors' class='invalid-feedback'>
+                <div *ngIf='submitting && f.workday.errors' class='invalid-feedback'>
                   <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
                 </div>
               </div>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label>Chức vụ </label><span class='star'>*</span>
                 <div>
-                  <nz-select [compareWith]='compareFN' style='width:100%;' formControlName='position' nzShowSearch
-                             nzAllowClear nzPlaceHolder='chọn chức vụ'>
+                  <nz-select [compareWith]='compareFN'
+                             style='width:100%;'
+                             formControlName='position'
+                             nzShowSearch
+                             nzAllowClear
+                             nzPlaceHolder='chọn chức vụ'>
                     <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
                                [nzValue]='position'></nz-option>
                   </nz-select>
-                  <div *ngIf='submitted && !f.position.errors?.required' class='invalid-feedback'>
-                    <div *ngIf=' !f.position.errors?.required'>Chưa chọn chức vụ</div>
+                  <div *ngIf='submitting && f.position.errors?.required' class='invalid-feedback'>
+                    <div *ngIf=' f.position.errors?.required'>Chưa chọn chức vụ</div>
                   </div>
                 </div>
               </div>
@@ -68,7 +79,7 @@
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
                 <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
-                            [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
+                            [ngClass]="{ 'is-invalid': submitting && f.isFlatSalary.errors }">
                   <mat-option value='{{flatSalary.FLAT_SALARY}}'>
                     Lương cố định
                   </mat-option>
@@ -76,7 +87,7 @@
                     Lương không cố định
                   </mat-option>
                 </mat-select>
-                <div *ngIf='submitted && f.isFlatSalary.errors' class='invalid-feedback'>
+                <div *ngIf='submitting && f.isFlatSalary.errors' class='invalid-feedback'>
                   <div *ngIf='f.isFlatSalary.errors?.required'>Chưa chọn loại lương</div>
                 </div>
               </div>
@@ -89,13 +100,17 @@
               <div class='col-sm'>
                 <label for='createdAt'>Ngày vào làm </label>
                 <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
+                <div *ngIf='submitting && f.createdAt.errors' class='invalid-feedback'
+                     [ngClass]="{ 'is-invalid': submitting && f.createdAt.errors }">
+                  <div *ngIf='f.createdAt.errors?.required'>Chưa nhập ngày vào làm</div>
+                </div>
               </div>
               <div class='col-sm'>
                 <label for='workedAt'>Ngày vào làm chính thức</label>
                 <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
               </div>
             </div>
-            <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
+            <div class='row mt-3' *ngIf='employeeInit !== null' [formGroup]='formGroup'>
               <div class='col-sm'>
                 <label for='facebook'>Facebook</label>
                 <input id='facebook' type='text' class='form-control' formControlName='facebook'>
@@ -105,7 +120,7 @@
                 <input id='zalo' type='number' class='form-control' formControlName='zalo'>
               </div>
             </div>
-            <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
+            <div class='row mt-3' *ngIf='employeeInit === null' [formGroup]='formGroup'>
               <div class='col-sm'>
                 <label for='facebook'>Ngày kí hợp đồng</label>
                 <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
@@ -145,3 +160,8 @@
     </div>
   </ng-container>
 </nz-modal>
+<style>
+  .invalid-feedback {
+    display: block !important;
+  }
+</style>

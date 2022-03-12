@@ -39,6 +39,7 @@ export class DetailEmployeeComponent implements OnInit {
   recipeConstant = RecipeSalaryConstant
   employee$ = this.store.select(selectCurrentEmployee(this.employeeId));
   adding$ = this.store.select(selectEmployeeAdding);
+  isOpen = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -53,7 +54,7 @@ export class DetailEmployeeComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate) {
-        this.updateEmployee(getSelectors(selectCurrentEmployee(this.employeeId), this.store));
+        this.updateEmployee();
       }
     });
   }
@@ -62,12 +63,8 @@ export class DetailEmployeeComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateEmployee(employee: Employee): void {
-    this.dialog.open(AddEmployeeComponent, {
-      disableClose: true,
-      width: '60%',
-      data: {employee: employee}
-    });
+  updateEmployee(): void {
+    this.isOpen = true
   }
 
   deleteEmployee(employee: Employee, leftAt?: Date): void {
@@ -144,17 +141,23 @@ export class DetailEmployeeComponent implements OnInit {
 
   deleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
     console.log(workHistory)
-    this.dialog.open(DialogSharedComponent,{
-      width:'fit-content',
-      data:{
-        title:'Xoá lịch sử công tác',
-        description:'Bạn có chắc chắn muốn xoá lịch sử công tác này không'
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá lịch sử công tác',
+        description: 'Bạn có chắc chắn muốn xoá lịch sử công tác này không'
       }
     }).afterClosed()
       .subscribe(val => {
-        if(val){
+        if (val) {
           this.store.dispatch(EmployeeAction.deleteWorkHistory({id: workHistory.id, employeeId}))
         }
       })
+  }
+
+  eventEmit(event: boolean) {
+    if (event) {
+      this.isOpen = false;
+    }
   }
 }
