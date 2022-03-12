@@ -35,8 +35,11 @@
         <img class='mr-1' src='../../../../../assets/img/share/arrow-counterclockwise.svg' alt='history'><span>xem lịch sử lương</span>
       </button>
     </div>
-    <minhdu-fontend-employee-dialog [isOpen]='isOpen' [employeeInit]="employee"
-                                    (eventEmit)='eventEmit($event)'></minhdu-fontend-employee-dialog>
+    <div *ngIf="isOpen">
+      <minhdu-fontend-employee-dialog [isOpen]='isOpen' [employeeInit]="employee"
+                                      (eventEmit)='eventEmit($event)'></minhdu-fontend-employee-dialog>
+    </div>
+
   </div>
   <div class='row mt-3' style='color:#80828B' *ngIf='(employee$ | async)  as employee'>
     <div class='col-12'>
