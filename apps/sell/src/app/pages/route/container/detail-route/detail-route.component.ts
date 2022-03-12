@@ -92,7 +92,7 @@ export class DetailRouteComponent implements OnInit {
       width: 'fit-content',
       data: {
         title: 'Huỷ hàng hoá trong tuyến đường',
-        description: 'Bạn có chắc chắn Huỷ hàng hoá này'
+        description: `Bạn có chắc chắn Huỷ ${commodity.name}`
       }
     }).afterClosed()
       .subscribe(val => {
