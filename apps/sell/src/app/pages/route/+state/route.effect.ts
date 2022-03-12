@@ -94,8 +94,17 @@ export class RouteEffect {
   @Effect()
   update$ = this.action.pipe(
     ofType(RouteAction.update),
-    switchMap((props) => this.routeService.update(props.id, props.updates)),
+    switchMap((props) => {
+        this.routeStore.update(state => ({
+          ...state, added: false
+        }))
+        return this.routeService.update(props.id, props.updates)
+      }
+    ),
     map((route) => {
+      this.routeStore.update(state => ({
+        ...state, added: true
+      }))
       this.totalCommodity(route.orders)
       route.totalCommodityUniq = route.totalCommodityUniq = this.totalCommodityUniq(route.orders)
       route.orders?.map(val => val.expand = false);

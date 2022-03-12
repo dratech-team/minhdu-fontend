@@ -40,7 +40,6 @@ export class DetailRouteComponent implements OnInit {
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
-        console.log(this.route)
       }
     });
 
