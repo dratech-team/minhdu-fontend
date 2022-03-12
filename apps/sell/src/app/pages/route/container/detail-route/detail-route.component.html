@@ -163,9 +163,14 @@
               <td class="text-center">{{commodity.amount|number:'1.0-0'}}</td>
               <td class="text-center">{{commodity.price|number:'1.0-0'}}đ</td>
               <td>
-                <div class="d-flex justify-content-center align-items-center">
-                  <button class="btn btn-danger " (click)="cancelCommodity(commodity)">Huỷ</button>
+                <div  *ngIf="commodity.routeId === route.id else bsx" class="d-flex justify-content-center align-items-center">
+                  <button  class="btn btn-danger " (click)="cancelCommodity(commodity)">Huỷ</button>
                 </div>
+                <ng-template #bsx>
+                  <a [routerLink]='["/tuyen-duong/chi-tiet-tuyen-duong/",commodity?.route?.id]'>
+                    {{commodity?.route?.bsx}}
+                  </a>
+                </ng-template>
               </td>
             </tr>
             </tbody>
@@ -175,7 +180,6 @@
           </tbody>
           </nz-table>
         </div>
-
       </div>
     </div>
   </div>
