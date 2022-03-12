@@ -36,6 +36,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSortModule } from '@angular/material/sort';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import {NzAutocompleteModule} from "ng-zorro-antd/auto-complete";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 @NgModule({
   imports: [
@@ -66,7 +70,11 @@ import {NzAutocompleteModule} from "ng-zorro-antd/auto-complete";
     CommonModule,
     MatSortModule,
     NzMessageModule,
-    NzAutocompleteModule
+    NzAutocompleteModule,
+    NzSelectModule,
+    NzIconModule,
+    NzModalModule,
+    NzButtonModule
   ],
   declarations: [
     AddDegreeComponent,

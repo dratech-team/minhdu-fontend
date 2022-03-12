@@ -1,4 +1,4 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
@@ -29,7 +29,7 @@ import {AddEmployeeComponent} from '../../components/employee/add-employee.compo
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
 import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
 import {Observable, of, Subject, throwError} from 'rxjs';
-import {District, Employee, Province, Ward} from '@minhdu-fontend/data-models';
+import {Branch, District, Employee, Province, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
@@ -38,6 +38,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
 import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -64,6 +65,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   eventScrollX = new Subject<any>();
   categories$ = this.categoryService.getAll();
   employees!: Employee[];
+  isVisible = false;
 
 
   scrollX$ = this.store.select(selectorScrollXTotal);
@@ -90,7 +92,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     flatSalary: new FormControl('-1'),
     position: new FormControl(this.positionName),
     branch: new FormControl(this.branchName),
-    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
+    employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME),
+    branchss: new FormControl({id: 9, name: 'sssss'})
   });
 
   constructor(
@@ -101,7 +104,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly categoryService: CategoryService,
     private readonly ref: ChangeDetectorRef,
     private readonly employeeService: EmployeeService,
-    private readonly message: NzMessageService
+    private readonly message: NzMessageService,
+    private readonly modal: NzModalService,
   ) {
     this.store.pipe(select(selectorAllEmployee)).subscribe(
       (employees) => {
@@ -115,6 +119,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    console.log(this.formGroup.get('branchss')?.value)
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
@@ -144,6 +149,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
+      console.log(val.branchss.id)
       this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
     });
 
@@ -202,10 +208,14 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   add(): void {
-    this.dialog.open(AddEmployeeComponent, {
-      disableClose: true,
-      width: '60%'
-    });
+    this.modal.create({
+      nzTitle: 'Thêm nhân viên',
+      nzContent: AddEmployeeComponent,
+      nzFooter:null,
+      nzWidth: '70vw'
+    }).afterClose.subscribe(val => {
+      console.log(val)
+    })
   }
 
   delete($event: any): void {
@@ -308,6 +318,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   //     data: { employee: $event, permanentlyDeleted: true }
   //   });
   // }
+  compareFN = (o1: any, o2: any) => (o1 && o2 ?
+    o1.id === o2.id : o1 === o2);
+
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
