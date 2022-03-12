@@ -1,27 +1,40 @@
- <div class='main-popup'>
+<nz-modal [(nzVisible)]='isOpen' (nzOnCancel)='onCancel()' (nzOnOk)='onSubmit()' [nzOkLoading]='summitting'>
+  <ng-container *nzModalContent>
+    <div class='main-popup'>
       <div class='mat-typography' style='height:45vh; overflow-y: scroll'>
         <form [formGroup]='formGroup'>
           <div class='form-group'>
             <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
-            <app-pick-location [ward]='data?.employee?.ward'
-                               [isUpdate]="!!data"
-                               [formGroup]='formGroup'
-                               [submitted]='submitted'
-                               [form]='f'
-                               (eventSelectWard)='onSelectWard($event)'
+            <app-pick-location
+              [ward]='data?.employee?.ward'
+              [isUpdate]='!!data'
+              [formGroup]='formGroup'
+              [submitted]='submitted'
+              [form]='f'
+              (eventSelectWard)='onSelectWard($event)'
             >
             </app-pick-location>
             <div class='row mt-3 d-flex'>
               <div class='col-sm'>
                 <label>Đơn vị </label><span class='star'>*</span>
                 <div>
-                  <nz-select [compareWith]="compareFN" style="width:100%;" formControlName="branch" nzShowSearch
-                             nzAllowClear nzPlaceHolder="chọn đơn vị">
-                    <nz-option *ngFor="let branch of branches$|async" [nzLabel]="branch.name"
-                               [nzValue]="branch"></nz-option>
+                  <nz-select
+                    nzShowSearch
+                    nzAllowClear
+                    style='width:100%'
+                    formControlName='branch'
+                    nzPlaceHolder='chọn đơn vị'
+                    [compareWith]='compareFN'
+                  >
+                    <nz-option
+                      *ngFor='let branch of branches$ | async'
+                      [nzLabel]='branch.name'
+                      [nzValue]='branch'
+                    >
+                    </nz-option>
                   </nz-select>
-                  <div *ngIf="submitted && !f.branch.errors?.required" class="invalid-feedback">
-                    <div *ngIf=" !f.branch.errors?.required">Chưa chọn đơn vị</div>
+                  <div *ngIf='submitted && !f.branch.errors?.required' class='invalid-feedback'>
+                    <div *ngIf=' !f.branch.errors?.required'>Chưa chọn đơn vị</div>
                   </div>
                 </div>
               </div>
@@ -39,13 +52,13 @@
               <div class='col-sm' [formGroup]='formGroup'>
                 <label>Chức vụ </label><span class='star'>*</span>
                 <div>
-                  <nz-select [compareWith]="compareFN" style="width:100%;" formControlName="position" nzShowSearch
-                             nzAllowClear nzPlaceHolder="chọn chức vụ">
-                    <nz-option *ngFor="let position of lstPosition" [nzLabel]="position.name"
-                               [nzValue]="position"></nz-option>
+                  <nz-select [compareWith]='compareFN' style='width:100%;' formControlName='position' nzShowSearch
+                             nzAllowClear nzPlaceHolder='chọn chức vụ'>
+                    <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
+                               [nzValue]='position'></nz-option>
                   </nz-select>
-                  <div *ngIf="submitted && !f.position.errors?.required" class="invalid-feedback">
-                    <div *ngIf=" !f.position.errors?.required">Chưa chọn chức vụ</div>
+                  <div *ngIf='submitted && !f.position.errors?.required' class='invalid-feedback'>
+                    <div *ngIf=' !f.position.errors?.required'>Chưa chọn chức vụ</div>
                   </div>
                 </div>
               </div>
@@ -120,18 +133,15 @@
                 <label for='category'>Chọn danh mục </label>
                 <mat-select
                   id='category' class='form-control' formControlName='category'>
-                  <mat-option *ngFor='let item of categories$|async' [value]='item.id'>
+                  <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>
                     {{item.name}}
                   </mat-option>
                 </mat-select>
               </div>
             </div>
-            <button  class="btn btn-ok mt-2" (click)="onSubmit()">Xác nhận</button>
           </div>
         </form>
       </div>
     </div>
-
-
-
-
+  </ng-container>
+</nz-modal>
