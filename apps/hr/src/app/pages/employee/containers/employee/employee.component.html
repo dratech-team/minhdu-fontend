@@ -18,8 +18,8 @@
           <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
-      <button *ngIf="categoryControl.value && categoryControl.value !==0 " class="btn btn-primary ml-1"
-              (click)="updateCategory()">Sửa
+      <button *ngIf='categoryControl.value && categoryControl.value !==0 ' class='btn btn-primary ml-1'
+              (click)='updateCategory()'>Sửa
       </button>
     </div>
     <div>
@@ -41,14 +41,14 @@
            (scrolled)='onScroll()'
       >
         <table matSort
-               (matSortChange)="sortEmployee($event)"
+               (matSortChange)='sortEmployee($event)'
                [formGroup]='formGroup'
                class='main-table'
                style='width: 3200px '>
           <thead>
           <tr>
             <th style='background:white'>
-              <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
+              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>STT</div>
               <input class=' text-center' type='text' disabled>
             </th>
             <th style='background:white'>
@@ -57,7 +57,7 @@
 
             </th>
             <th style='background:white'>
-              <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>Tên nhân viên</div>
+              <div mat-sort-header='{{sortEnum.NAME}}' class='border-top text-center'>Tên nhân viên</div>
               <input class='form-control text-center' type='search' formControlName='name' placeholder='Trần Gia Hiệu'>
             </th>
             <th>
@@ -86,8 +86,9 @@
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Loại lương</div>
-              <mat-select class='select border-top' style='min-width: 170px' [value]="-1" required formControlName='flatSalary'>
-                <mat-option value="-1">Tất cả</mat-option>
+              <mat-select class='select border-top' style='min-width: 170px' [value]='-1' required
+                          formControlName='flatSalary'>
+                <mat-option value='-1'>Tất cả</mat-option>
                 <mat-option value='1'>Lương cố định</mat-option>
                 <mat-option value='0'>Lương không cố định</mat-option>
               </mat-select>
@@ -98,7 +99,7 @@
                      formControlName='phone'>
             </th>
             <th>
-              <div mat-sort-header="{{sortEnum.BRANCH}}" class='border-top text-center'>Đơn vị</div>
+              <div mat-sort-header='{{sortEnum.BRANCH}}' class='border-top text-center'>Đơn vị</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
               <mat-autocomplete #branch='matAutocomplete'>
                 <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
@@ -109,7 +110,7 @@
               </mat-autocomplete>
             </th>
             <th>
-              <div mat-sort-header="{{sortEnum.POSITION}}" class='border-top text-center'>Chức vụ</div>
+              <div mat-sort-header='{{sortEnum.POSITION}}' class='border-top text-center'>Chức vụ</div>
               <input class='form-control' type='search' matInput [matAutocomplete]='position'
                      formControlName='position'>
               <mat-autocomplete #position='matAutocomplete'>
@@ -172,7 +173,7 @@
           </thead>
           <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
           <tr *ngIf='!(loaded$|async); else loaded'>
-            <th colspan="100">
+            <th colspan='100'>
               <ngx-skeleton-loader count='10'
                                    appearance='line'></ngx-skeleton-loader>
             </th>
@@ -185,7 +186,7 @@
               cdkDrag
             >
               <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                <div>{{i + 1}}</div>
+                <div>{{employee.stt}}</div>
               </th>
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{employee?.id}}</div>
@@ -282,7 +283,7 @@
     [items]='isLeft ? [ItemContextMenu.RESTORE] : []'
     (onAdd)='add()'
     (onDel)='delete($event)'
-    (onRestore)='reStore($event)'
+    (onRestore)='onRestore($event)'
     (onUpdate)='readAndUpdate($event,true)'>
   </app-mouse-right>
 </div>
@@ -330,5 +331,7 @@
   .cdk-drop-list-dragging :not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
+
+  .ant
 
 </style>

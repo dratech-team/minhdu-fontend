@@ -1,154 +1,160 @@
 <div class='main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='../../../../../assets/img/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
-  <div class='d-flex justify-content-between'>
-    <h2 mat-dialog-title>Thông tin nhân viên</h2>
-    <div class='col-3 mr-5 mt-4' [formGroup]='formGroup'>
-      <mat-select class='form-control ' formControlName='employeeType'>
-        <mat-option [value]='typeEmployee.EMPLOYEE_FULL_TIME'>Nhân viên công ty</mat-option>
-        <mat-option [value]='typeEmployee.EMPLOYEE_SEASONAL'>Nhân viên công nhật</mat-option>
-      </mat-select>
-    </div>
-  </div>
-  <div>
-    <mat-dialog-content class='mat-typography' style='max-height: 45vh'>
-      <form [formGroup]='formGroup'>
-        <div class='form-group'>
-          <app-add-profile [formGroup]='formGroup' [submitted]='submitted' [form]='f'></app-add-profile>
-          <app-pick-location [ward]='data?.employee?.ward'
-                             [formGroup]='formGroup'
-                             [submitted]='submitted'
-                             [form]='f'
-                             (eventSelectWard)='onSelectWard($event)'
-          >
-          </app-pick-location>
-          <div class='row mt-3 d-flex'>
-            <div class='col-sm'>
-              <label>Đơn vị </label><span class='star'>*</span>
-              <input class='form-control' type='text' matInput [formControl]='branches' [matAutocomplete]='branch'
-                     #branchInput>
-              <mat-autocomplete #branch='matAutocomplete'>
-                <mat-option *ngFor='let branch of branches$ | async'
-                            [value]='!branch.id ? branchInput.value : branch.name'
-                            (onSelectionChange)='onCreateBranch($event,branch)'>
-                  {{branch.name}}
-                </mat-option>
-              </mat-autocomplete>
-              <!-- <div *ngIf="submitted && f.branch.errors" class="invalid-feedback">
-                <div *ngIf="f.branch.errors?.required">Chưa chọn đơn vị</div>
-              </div> -->
-            </div>
-            <div class='col-sm' [formGroup]='formGroup'
-                 [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
-              <label>Ngày công chuẩn </label><span class='star'>*</span>
-              <input class='form-control' type='number' formControlName='workday' min='0'
-                     (keypress)='checkNumberInput($event)'
-                     [ngClass]="{ 'is-invalid': submitted && f.workday.errors }"
+  <div class='mat-typography' style='height:45vh; overflow-y: scroll ; overflow-x: hidden' >
+    <form [formGroup]='formGroup'>
+      <div class='form-group'>
+        <app-add-profile [formGroup]='formGroup' [submitted]='submitting' [form]='f'></app-add-profile>
+        <app-pick-location
+          [ward]='employeeInit?.ward'
+          [isUpdate]='!!employeeInit'
+          [formGroup]='formGroup'
+          [submitted]='submitting'
+          [form]='f'
+          (eventSelectWard)='onSelectWard($event)'
+        >
+        </app-pick-location>
+        <div class='row mt-3 d-flex'>
+          <div class='col-sm'>
+            <label>Đơn vị </label><span class='star'>*</span>
+            <div>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='branch'
+                nzPlaceHolder='chọn đơn vị'
+                [compareWith]='compareFN'
+                [ngClass]="{ 'is-invalid': submitting && f.branch.errors?.required }"
               >
-              <div *ngIf='submitted && f.workday.errors' class='invalid-feedback'>
-                <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
+                <nz-option
+                  *ngFor='let branch of branches$ | async'
+                  [nzLabel]='branch.name'
+                  [nzValue]='branch'
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf='submitting && f.branch.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' f.branch.errors?.required'>Chưa chọn đơn vị</div>
               </div>
             </div>
-            <div class='col-sm' [formGroup]='formGroup'>
-              <label>Chức vụ </label><span class='star'>*</span>
-              <input class='form-control' type='text' matInput [formControl]='formPosition' [matAutocomplete]='position'
-                     #positionInput>
-              <mat-autocomplete #position='matAutocomplete'>
-                <mat-option *ngFor='let position of positions$ | async'
-                            [value]='position.id ? position.name : positionInput.value '
-                            (onSelectionChange)='onSelectPosition( $event,position)'>
-                  {{position.name}}
-                </mat-option>
-              </mat-autocomplete>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'
+               [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
+            <label>Ngày công chuẩn </label><span class='star'>*</span>
+            <input class='form-control' type='number' formControlName='workday' min='0'
+                   (keypress)='checkNumberInput($event)'
+                   [ngClass]="{ 'is-invalid': submitting && f.workday.errors }"
+            >
+            <div *ngIf='submitting && f.workday.errors' class='invalid-feedback'>
+              <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
             </div>
           </div>
-          <div class='row mt-3'
-               *ngIf='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_FULL_TIME'>
-            <div class='col-sm' [formGroup]='formGroup'>
-              <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
-              <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
-                          [ngClass]="{ 'is-invalid': submitted && f.isFlatSalary.errors }">
-                <mat-option value='{{flatSalary.FLAT_SALARY}}'>
-                  Lương cố định
-                </mat-option>
-                <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>
-                  Lương không cố định
-                </mat-option>
-              </mat-select>
-              <div *ngIf='submitted && f.isFlatSalary.errors' class='invalid-feedback'>
-                <div *ngIf='f.isFlatSalary.errors?.required'>Chưa chọn loại lương</div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Chức vụ </label><span class='star'>*</span>
+            <div>
+              <nz-select [compareWith]='compareFN'
+                         style='width:100%;'
+                         formControlName='position'
+                         nzShowSearch
+                         nzAllowClear
+                         nzPlaceHolder='chọn chức vụ'>
+                <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
+                           [nzValue]='position'></nz-option>
+              </nz-select>
+              <div *ngIf='submitting && f.position.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' f.position.errors?.required'>Chưa chọn chức vụ</div>
               </div>
             </div>
-            <div class='col-sm' [formGroup]='formGroup'>
-              <label>Email </label>
-              <input class='form-control' type='text' formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3'
+             *ngIf='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_FULL_TIME'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label for='isFlatSalary'>Loại lương </label><span class='star'>*</span>
+            <mat-select id='isFlatSalary' class='form-control' formControlName='isFlatSalary'
+                        [ngClass]="{ 'is-invalid': submitting && f.isFlatSalary.errors }">
+              <mat-option value='{{flatSalary.FLAT_SALARY}}'>
+                Lương cố định
+              </mat-option>
+              <mat-option value='{{flatSalary.NOT_FLAT_SALARY}}'>
+                Lương không cố định
+              </mat-option>
+            </mat-select>
+            <div *ngIf='submitting && f.isFlatSalary.errors' class='invalid-feedback'>
+              <div *ngIf='f.isFlatSalary.errors?.required'>Chưa chọn loại lương</div>
             </div>
           </div>
-          <div class='row mt-3' [formGroup]='formGroup'>
-            <div class='col-sm'>
-              <label for='createdAt'>Ngày vào làm </label>
-              <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
-            </div>
-            <div class='col-sm'>
-              <label for='workedAt'>Ngày vào làm chính thức</label>
-              <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Email </label>
+            <input class='form-control' type='text' formControlName='email'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='createdAt'>Ngày vào làm </label>
+            <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
+            <div *ngIf='submitting && f.createdAt.errors' class='invalid-feedback'
+                 [ngClass]="{ 'is-invalid': submitting && f.createdAt.errors }">
+              <div *ngIf='f.createdAt.errors?.required'>Chưa nhập ngày vào làm</div>
             </div>
           </div>
-          <div class='row mt-3' *ngIf='data !== null' [formGroup]='formGroup'>
-            <div class='col-sm'>
-              <label for='facebook'>Facebook</label>
-              <input id='facebook' type='text' class='form-control' formControlName='facebook'>
-            </div>
-            <div class='col-sm'>
-              <label for='zalo'>Zalo</label>
-              <input id='zalo' type='number' class='form-control' formControlName='zalo'>
-            </div>
+          <div class='col-sm'>
+            <label for='workedAt'>Ngày vào làm chính thức</label>
+            <input id='workedAt' type='date' class='form-control' formControlName='workedAt'>
           </div>
-          <div class='row mt-3' *ngIf='data === null' [formGroup]='formGroup'>
-            <div class='col-sm'>
-              <label for='facebook'>Ngày kí hợp đồng</label>
-              <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
-            </div>
-            <div class='col-sm'>
-              <label for='zalo'>ngày hết hạn hợp đồng</label>
-              <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
-            </div>
+        </div>
+        <div class='row mt-3' *ngIf='employeeInit !== null' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Facebook</label>
+            <input id='facebook' type='text' class='form-control' formControlName='facebook'>
           </div>
-          <div class='row mt-3' [formGroup]='formGroup'>
-            <div class='col'>
-              <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
-              <mat-select
-                [ngStyle]='{
+          <div class='col-sm'>
+            <label for='zalo'>Zalo</label>
+            <input id='zalo' type='number' class='form-control' formControlName='zalo'>
+          </div>
+        </div>
+        <div class='row mt-3' *ngIf='employeeInit === null' [formGroup]='formGroup'>
+          <div class='col-sm'>
+            <label for='facebook'>Ngày kí hợp đồng</label>
+            <input id='createAtContract' type='date' class='form-control' formControlName='createAtContract'>
+          </div>
+          <div class='col-sm'>
+            <label for='zalo'>ngày hết hạn hợp đồng</label>
+            <input id='expiredAtContract' type='date' class='form-control' formControlName='expiredAtContract'>
+          </div>
+        </div>
+        <div class='row mt-3' [formGroup]='formGroup'>
+          <div class='col'>
+            <label for='recipeType'>Chọn loại công thức <span class='star'>*</span></label>
+            <mat-select
+              [ngStyle]='{
                 "background": this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL ? "#dddddd":"white" ,
                 "pointer-events": this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL ? "none":"auto"
                 }'
-                id='recipeType' class='form-control' formControlName='recipeType'>
-                <mat-option *ngFor='let item of recipeTypesConstant' [value]='item.value'>
-                  {{item.name}}
-                </mat-option>
-              </mat-select>
-            </div>
-            <div class='col'>
-              <label for='category'>Chọn danh mục </label>
-              <mat-select
-                id='category' class='form-control' formControlName='category'>
-                <mat-option *ngFor='let item of categories$|async' [value]='item.id'>
-                  {{item.name}}
-                </mat-option>
-              </mat-select>
-            </div>
+              id='recipeType' class='form-control' formControlName='recipeType'>
+              <mat-option *ngFor='let item of recipeTypesConstant' [value]='item.value'>
+                {{item.name}}
+              </mat-option>
+            </mat-select>
           </div>
-
+          <div class='col'>
+            <label for='category'>Chọn danh mục </label>
+            <mat-select
+              id='category' class='form-control' formControlName='category'>
+              <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>
+                {{item.name}}
+              </mat-option>
+            </mat-select>
+          </div>
         </div>
-      </form>
-    </mat-dialog-content>
-    <div class='row d-flex mt-3 justify-content-center'>
-      <button (click)='onSubmit()' class='btn btn-dark ml-2'> Xác nhận</button>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
-
+<div class="d-flex justify-content-center align-items-center mt-2">
+  <button class="btn btn-primary" (click)="onSubmit()">Xác nhận</button>
+</div>
+<style>
+  .invalid-feedback {
+    display: block !important;
+  }
+</style>

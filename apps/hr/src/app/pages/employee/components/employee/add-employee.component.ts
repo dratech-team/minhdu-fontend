@@ -1,23 +1,31 @@
-import { Component, ElementRef, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { EmployeeType, FlatSalary, RecipeType } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { DatePipe } from '@angular/common';
-import { PositionActions } from 'libs/orgchart/src/lib/+state/position';
-import { EmployeeAction, selectEmployeeAdded } from '@minhdu-fontend/employee';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { first, map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { PositionService } from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
-import { BranchService } from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
-import { checkInputNumber } from '../../../../../../../../libs/utils/checkInputNumber.util';
-import { RecipeTypesConstant } from '@minhdu-fontend/constants';
-import { searchAndAddAutocomplete } from '../../../../../../../../libs/utils/orgchart.ultil';
-import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {EmployeeType, FlatSalary, RecipeType} from '@minhdu-fontend/enums';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {DatePipe} from '@angular/common';
+import {PositionActions} from 'libs/orgchart/src/lib/+state/position';
+import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
+import {Branch, Employee, Position} from '@minhdu-fontend/data-models';
+import {first} from 'rxjs/operators';
+import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
+import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
+import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
+import {RecipeTypesConstant} from '@minhdu-fontend/constants';
+import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -25,117 +33,113 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
-  branchId?: number;
+  @Input() employeeInit?: Employee;
+
   positionId?: number;
-  formPosition = new FormControl(this.data?.employee?.position?.name);
-  branches = new FormControl(this.data?.employee?.branch?.name);
   flatSalary = FlatSalary;
-  formGroup!: FormGroup;
   lstPosition: Position [] = [];
-  positions$ = new Observable<Position[]>();
   branches$ = this.store.pipe(select(getAllOrgchart));
-  submitted = false;
+  submitting = false;
   wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant;
   categories$ = this.categoryService.getAll();
+  formGroup!: FormGroup
 
   constructor(
     public datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) private locale: string,
     private readonly formBuilder: FormBuilder,
     private readonly message: NzMessageService,
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
-    private readonly dialogRef: MatDialogRef<AddEmployeeComponent>,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly modalRef: NzModalRef
   ) {
   }
 
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
-    this.store.dispatch(PositionActions.loadPosition());
-    if (this.data?.employee) {
-      this.positionId = this.data.employee.position.id;
-      this.branchId = this.data.employee.branch.id;
-      this.wardId = this.data.employee.ward.id;
+    if (this.employeeInit) {
+      this.wardId = this.employeeInit.ward.id;
+      if (this.employeeInit?.branch?.positions) {
+        this.lstPosition = this.employeeInit.branch.positions
+      }
     }
+
     this.formGroup = this.formBuilder.group({
-      identify: [this.data?.employee?.identify],
-      issuedBy: [this.data?.employee?.issuedBy],
-      birthplace: [this.data?.employee?.birthplace],
+      identify: [this.employeeInit?.identify],
+      issuedBy: [this.employeeInit?.issuedBy],
+      birthplace: [this.employeeInit?.birthplace],
       idCardAt: [
-        this?.data?.employee?.idCardAt ?
-          this.datePipe.transform(this?.data?.employee?.idCardAt, 'yyyy-MM-dd') : ''
+        this.employeeInit?.idCardAt ?
+          this.datePipe.transform(this?.employeeInit?.idCardAt, 'yyyy-MM-dd') : ''
       ],
-      email: [this.data?.employee?.email],
-      workday: [this.data?.employee?.workday],
-      phone: [this.data?.employee?.phone],
-      workPhone: [this.data?.employee?.workPhone],
-      note: [this.data?.employee?.note],
+      email: [this.employeeInit?.email],
+      workday: [this.employeeInit?.workday],
+      phone: [this.employeeInit?.phone],
+      workPhone: [this.employeeInit?.workPhone],
+      note: [this.employeeInit?.note],
       workedAt: [
-        this.data?.employee?.workedAt ?
-          this.datePipe.transform(this.data?.employee?.workedAt, 'yyyy-MM-dd') : ''
+        this.employeeInit?.workedAt ?
+          this.datePipe.transform(this.employeeInit?.workedAt, 'yyyy-MM-dd') : ''
       ],
       createdAt: [
-        this.data?.employee?.createdAt ?
-          this.datePipe.transform(this.data?.employee?.createdAt, 'yyyy-MM-dd') : ''
+        this.employeeInit?.createdAt ?
+          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : ''
       ],
       isFlatSalary: [
-        this.data?.employee?.isFlatSalary
+        this.employeeInit?.isFlatSalary
           ? this.flatSalary.FLAT_SALARY
           : this.flatSalary.NOT_FLAT_SALARY
       ],
-      lastName: [this.data?.employee?.lastName, Validators.required],
-      address: [this.data?.employee?.address, Validators.required],
-      gender: [this.data?.employee?.gender, Validators.required],
+      lastName: [this.employeeInit?.lastName, Validators.required],
+      address: [this.employeeInit?.address, Validators.required],
+      gender: [this.employeeInit?.gender, Validators.required],
       birthday: [
-        this.data?.employee?.birthday ?
-          this.datePipe.transform(this.data?.employee?.birthday, 'yyyy-MM-dd') : '',
+        this.employeeInit?.birthday ?
+          this.datePipe.transform(this.employeeInit?.birthday, 'yyyy-MM-dd') : '',
         Validators.required
       ],
-      ethnicity: [this.data?.employee?.ethnicity],
-      religion: [this.data?.employee?.religion],
-      facebook: [this.data?.employee?.facebook],
-      zalo: [this.data?.employee?.zalo],
+      ethnicity: [this.employeeInit?.ethnicity],
+      religion: [this.employeeInit?.religion],
+      facebook: [this.employeeInit?.facebook],
+      zalo: [this.employeeInit?.zalo],
       createAtContract: [''],
       expiredAtContract: [''],
-      recipeType: [this.data?.employee?.recipeType || this.recipeType.CT2],
-      employeeType: [this.data?.employee ?
-        this.data.employee.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      category: [this.data?.employee?.category?.id]
+      recipeType: [this.employeeInit?.recipeType || this.recipeType.CT2],
+      employeeType: [this.employeeInit ?
+        this.employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
+      category: [this.employeeInit?.category?.id],
+      province: [this.employeeInit?.ward?.district?.province.name, Validators.required],
+      district: [this.employeeInit?.ward?.district?.name, Validators.required],
+      ward: [this.employeeInit?.ward?.name, Validators.required],
+      branch: [this.employeeInit?.branch, Validators.required],
+      position: [this.employeeInit?.position, Validators.required]
+
+    })
+
+    this.formGroup.get('branch')?.valueChanges.subscribe((val: Branch) => {
+      if (val.positions) {
+        this.formGroup.get('position')?.setValue('')
+        this.lstPosition = val.positions;
+      }
     });
-
-    this.positions$ = this.formPosition.valueChanges.pipe(
-      startWith(''),
-      map(branch => {
-          if (branch) {
-            return this.lstPosition.filter(item => item.name.toLowerCase().includes(branch.toLowerCase()));
-          } else {
-            return this.lstPosition;
-          }
-        }
-      ));
-
-    this.branches$ = searchAndAddAutocomplete(
-      this.branches.valueChanges.pipe(startWith('')),
-      this.branches$
-    );
-
+    this.formGroup.get('position')?.valueChanges.subscribe((val: Position) => {
+      this.formGroup.get('workday')?.patchValue(val.workday);
+    });
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
       if (val === EmployeeType.EMPLOYEE_SEASONAL) {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
-
     this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
-      this.branches.setValue(val[0].name);
-      this.branchId = val[0].id;
-      if (val[0].positions)
+      this.formGroup.get('branch')?.setValue(val);
+      if (val[0].positions) {
         this.lstPosition = val[0].positions;
+      }
     });
   }
 
@@ -144,37 +148,54 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit(): any {
+
+    this.submitting = true;
     const value = this.formGroup.value;
-    this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
 
-    if (!this.branchId && this.branches.value && this.data?.employee) {
-      return this.message.error('Đơn vị phải chọn không được nhập');
-    }
-
-    if (!this.positionId && this.formPosition.value && this.data?.employee) {
-      return this.message.error('Chức vụ phải chọn không được nhập');
-    }
-    /// FIXME: dummy tạm
-    if (!this.data) {
-      if (!this.wardId || !this.branchId || !this.positionId) {
-        return this.message.error('vui lòng nhập đầy đủ thông tin tỉnh/thành phố, quận/huyện, phường/xã hoặc chức vụ, đơn vị. Xin cảm ơn');
-      }
-    }
-
-    if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME
-      && !value.workday
-    ) {
+    if (value.typeEmployee === EmployeeType.EMPLOYEE_FULL_TIME && !value.workday) {
       return this.message.error('Chưa nhập ngày công chuẩn');
     }
-    const employee = {
-      id: this?.data?.employee?.id,
+
+    const employee = this.mapEmployee(value);
+
+    if (this.employeeInit) {
+      this.store.dispatch(
+        EmployeeAction.updateEmployee({
+          id: this.employeeInit.id,
+          employee: employee
+        })
+      );
+    } else {
+      this.store.dispatch(EmployeeAction.addEmployee({employee: employee}));
+    }
+    this.store.select(selectEmployeeAdded).subscribe(added => {
+      if (added) {
+        this.modalRef.close()
+      }
+    })
+  }
+
+
+  onSelectWard($event: number) {
+    this.wardId = $event;
+  }
+
+  checkNumberInput(event: any) {
+    return checkInputNumber(event);
+  }
+
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
+  private mapEmployee(value: any) {
+    return {
+      id: this.employeeInit?.id,
       isFlatSalary: value.employeeType === EmployeeType.EMPLOYEE_FULL_TIME ?
         value.isFlatSalary === this.flatSalary.FLAT_SALARY : false,
-      positionId: this.positionId || this.data?.employee.positionId,
-      branchId: this.branchId || this.data?.employee.branchId,
+      positionId: value.position.id,
+      branchId: value.branch.id,
       workedAt: value.workedAt ? new Date(value.workedAt) : undefined,
       createdAt: value.createdAt ? new Date(value.createdAt) : undefined,
       lastName: value.lastName,
@@ -186,7 +207,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
-      wardId: this.wardId || this.data.employee.wardId,
+      wardId: this.wardId || this.employeeInit?.wardId,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,
@@ -207,74 +228,5 @@ export class AddEmployeeComponent implements OnInit {
       recipeType: value.recipeType,
       categoryId: value.category
     };
-    if (this.data) {
-      this.store.dispatch(
-        EmployeeAction.updateEmployee({
-          id: this.data.employee.id,
-          employee: employee
-        })
-      );
-    } else {
-      this.store.dispatch(EmployeeAction.addEmployee({ employee: employee }));
-    }
-
-    this.store.pipe(select(selectEmployeeAdded)).subscribe((added) => {
-      if (added) {
-        this.dialogRef.close();
-      }
-    });
-  }
-
-  onSelectPosition(event: any, position: Position) {
-    if (event.isUserInput) {
-      if (position.id) {
-        this.positionId = position.id;
-        this.formGroup.patchValue({
-          workday: position.workday,
-          position: position.name
-        });
-      } else {
-        this.onCreatePosition();
-      }
-    }
-  }
-
-  onCreatePosition() {
-    this.positionService
-      .addOne({
-        name: this.inputPosition.nativeElement.value,
-        workday: this.formGroup.value.workday
-      })
-      .subscribe((position) => (this.positionId = position.id));
-    this.message.success('Đã tạo');
-  }
-
-  /// FIXME: Duplicate code
-  onCreateBranch(event: any, branch: Branch) {
-    if (event.isUserInput) {
-      if (branch.id === 0) {
-        this.branchService
-          .addOne({ name: this.branchInput.nativeElement.value })
-          .subscribe((branch) => (this.branchId = branch.id));
-        this.message.success('Đã tạo');
-      } else {
-        if (this.formGroup.value.employeeType !== this.typeEmployee.EMPLOYEE_SEASONAL) {
-          this.formGroup.get('recipeType')?.setValue(branch.recipe);
-        }
-        if (branch.positions) {
-          this.lstPosition = branch.positions;
-          this.formPosition.patchValue('');
-        }
-        this.branchId = branch.id;
-      }
-    }
-  }
-
-  onSelectWard($event: number) {
-    this.wardId = $event;
-  }
-
-  checkNumberInput(event: any) {
-    return checkInputNumber(event);
   }
 }

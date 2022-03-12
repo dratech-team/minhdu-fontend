@@ -20,7 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { NxModule } from '@nrwl/angular';
-import { LocationModule } from '@minhdu-fontend/location';
 import { SharedModule } from './shared/shared.module';
 import { PickMenuComponent } from './components/pick-menu-mobile/pick-menu.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -35,6 +34,8 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { RouteGuard } from './route.guard';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {OrderEffect} from "./pages/order/+state/order.effect";
 
 registerLocaleData(localeVi);
 
@@ -70,7 +71,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    LocationModule,
     MatDialogModule,
     MatTabsModule,
     NzMessageModule

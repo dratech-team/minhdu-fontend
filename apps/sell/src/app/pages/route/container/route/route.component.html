@@ -6,8 +6,6 @@
   <a (click)='printRouter()' target='_blank' download='data.xlsx'
     class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
 </div>
-<ngx-skeleton-loader *ngIf='(loading$ | async); else route' count='20' appearance='line'></ngx-skeleton-loader>
-<ng-template #route>
   <div class='table-scroll mx-auto border-top my-5' style='width: 96%' infiniteScroll [alwaysCallback]='true'
     [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
     <table [formGroup]='formGroup'>
@@ -53,6 +51,12 @@
         </tr>
       </thead>
       <tbody>
+      <tr *ngIf='(loading$ | async); else route'>
+        <th colSpan="100">
+          <ngx-skeleton-loader  count='10' appearance='line'></ngx-skeleton-loader>
+        </th>
+      </tr>
+      <ng-template #route>
         <tr
           *ngFor='let route of routes'
           (click)='detailRoute(route.id, false)'
@@ -85,10 +89,10 @@
             </span>
           </td>
         </tr>
+      </ng-template>
       </tbody>
     </table>
   </div>
-</ng-template>
 <app-mouse-right
   #child
   [items]="[ItemContextMenu.ENDED_AT]"

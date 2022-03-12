@@ -113,6 +113,9 @@ export class CommodityEffect {
     ofType(CommodityAction.remove),
     switchMap((props) => this.commodityService.delete(props.id).pipe(
       map(_ => {
+        if(props.inOrder){
+          this.actions$.dispatch(OrderActions.loadOne({id: props.inOrder.orderId}))
+        }
         this.snackbar.open('Xóa hàng hóa thành công', '', {duration: 1500});
         this.commodityStore.remove(props.id)
       })

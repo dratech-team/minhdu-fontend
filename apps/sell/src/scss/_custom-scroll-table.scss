@@ -147,3 +147,8 @@
 .table-scroll table tbody th {
   padding: 5px;
 }
+.table-scroll table tbody th div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

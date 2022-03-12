@@ -20,10 +20,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import {CompleteRouteDialogComponent} from "./component/complete-route-dialog/complete-route-dialog.component";
+import {OrderEffect} from "../order/+state/order.effect";
+import {CustomerEffect} from "../customer/+state/customer.effect";
+import {CommodityEffect} from "../commodity/+state/commodity.effect";
 
 @NgModule({
   imports: [
-    AkitaNgEffectsModule.forFeature([RouteEffect]),
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
     ComponentsModule,
     RouteRoutingModule,
     MatDialogModule,

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Degree, Employee, Relative, WorkHistory} from '@minhdu-fontend/data-models';
@@ -24,6 +24,7 @@ import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/re
 import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -39,12 +40,15 @@ export class DetailEmployeeComponent implements OnInit {
   recipeConstant = RecipeSalaryConstant
   employee$ = this.store.select(selectCurrentEmployee(this.employeeId));
   adding$ = this.store.select(selectEmployeeAdding);
+  isOpen = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef,
   ) {
   }
 
@@ -62,12 +66,17 @@ export class DetailEmployeeComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateEmployee(employee: Employee): void {
-    this.dialog.open(AddEmployeeComponent, {
-      disableClose: true,
-      width: '60%',
-      data: {employee: employee}
-    });
+  updateEmployee(employee:Employee): void {
+    this.modal.create({
+      nzTitle: 'Sửa nhân viên',
+      nzContent: AddEmployeeComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzComponentParams:{
+        employeeInit: employee
+      },
+      nzFooter: null,
+      nzMaskClosable: false
+    })
   }
 
   deleteEmployee(employee: Employee, leftAt?: Date): void {
@@ -144,17 +153,23 @@ export class DetailEmployeeComponent implements OnInit {
 
   deleteWorkHistory(workHistory: WorkHistory, employeeId: number) {
     console.log(workHistory)
-    this.dialog.open(DialogSharedComponent,{
-      width:'fit-content',
-      data:{
-        title:'Xoá lịch sử công tác',
-        description:'Bạn có chắc chắn muốn xoá lịch sử công tác này không'
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá lịch sử công tác',
+        description: 'Bạn có chắc chắn muốn xoá lịch sử công tác này không'
       }
     }).afterClosed()
       .subscribe(val => {
-        if(val){
+        if (val) {
           this.store.dispatch(EmployeeAction.deleteWorkHistory({id: workHistory.id, employeeId}))
         }
       })
+  }
+
+  eventEmit(event: boolean) {
+    if (event) {
+      this.isOpen = false;
+    }
   }
 }

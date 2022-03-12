@@ -1,14 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {select, Store} from '@ngrx/store';
 import {getAllDistrict, getAllWard, selectAllProvince, selectDistrictByProvinceId} from '@minhdu-fontend/location';
-import { District, Province, Ward } from '@minhdu-fontend/data-models';
-import { AppState } from '../../../../../apps/sell/src/app/reducers';
-import { ProvinceAction } from 'libs/location/src/lib/+state/province/nation.action';
-import { WardAction } from 'libs/location/src/lib/+state/ward/ward.action';
-import { DistrictAction } from 'libs/location/src/lib/+state/district/district.action';
-import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import {District, Province, Ward} from '@minhdu-fontend/data-models';
+import {AppState} from '../../../../../apps/sell/src/app/reducers';
+import {ProvinceAction} from 'libs/location/src/lib/+state/province/nation.action';
+import {WardAction} from 'libs/location/src/lib/+state/ward/ward.action';
+import {DistrictAction} from 'libs/location/src/lib/+state/district/district.action';
+import {ControlContainer, FormControl, FormGroup} from '@angular/forms';
+import {combineLatest, Observable, Subject} from 'rxjs';
+import {map, startWith, tap} from 'rxjs/operators';
+import {ProvinceService} from "../../../../location/src/lib/service/province.service";
+import {DistrictService} from "../../../../location/src/lib/service/district..service";
+import {WardService} from "../../../../location/src/lib/service/ward.service";
 
 @Component({
   selector: 'app-pick-location',
@@ -17,59 +20,44 @@ import { map, startWith } from 'rxjs/operators';
 export class PickLocationComponent implements OnInit {
   @Input() form: any;
   @Input() submitted!: boolean;
+  @Input() isRequiredWard: boolean = true;
   @Input() isRequiredProvince: boolean = true;
   @Input() isRequiredDistrict: boolean = true;
-  @Input() isRequiredWard: boolean = true;
+  @Input() isUpdate: boolean = false;
   @Input() province?: any;
   @Input() district?: any;
-  @Input() ward?: Ward ;
+  @Input() ward?: Ward;
   @Input() reload$?: Subject<boolean>;
   @Output() eventSelectProvince = new EventEmitter<any>();
   @Output() eventSelectDistrict = new EventEmitter<any>();
   @Output() eventSelectWard = new EventEmitter<any>();
-  provinces$ = this.store.pipe(select(selectAllProvince));
-  districts$ = this.store.pipe(select(getAllDistrict));
-  wards$ = this.store.pipe(select(getAllWard)) ;
+  formGroup!: FormGroup;
+  provinces$ = this.provinceService.getAll().pipe()
+  districts$ = new Observable<District[]>()
+  wards$ = new Observable<Ward[]>();
   lstDistrict: District[] = [];
   lstWard: Ward [] = [];
-  formProvince = new FormControl();
   formDistrict = new FormControl();
   formWard = new FormControl();
-  formGroup!: FormGroup;
 
   constructor(
     private controlContainer: ControlContainer,
-    readonly store: Store<AppState>
+    readonly provinceService: ProvinceService,
+    readonly districtService: DistrictService,
+    readonly wardService: WardService,
   ) {
   }
 
   ngOnInit() {
-    if(this.ward){
-      this.formProvince.setValue( this.ward?.district?.province?.name )
-      this.formDistrict.setValue(this.ward?.district?.name)
-      this.formWard.setValue(this.ward?.name)
-    }else if(this.province){
-      this.formProvince.setValue( this.province.name);
-      this.formDistrict.setValue(this.district?.name);
-    }
-
+    this.formGroup = <FormGroup>this.controlContainer.control;
     this.reload$?.subscribe(val => {
       if (val) {
         this.formGroup.reset();
       }
     });
-    this.store.dispatch(ProvinceAction.loadAllProvinces());
-    if (this.ward) {
-      this.store.dispatch(DistrictAction.getDistrictsByProvinceId({ provinceId: this.ward.district.province.id }));
-      this.store.dispatch(WardAction.getWardsByDistrictId({ districtId: this.ward.district.id }));
-      this.districts$.subscribe(val =>this.lstDistrict = val)
-      this.wards$.subscribe(val => this.lstWard = val)
-    }
-
-    this.formGroup = <FormGroup>this.controlContainer.control;
     this.provinces$ = combineLatest([
-      this.formProvince.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(selectAllProvince))
+      this.formGroup.get('province')!.valueChanges.pipe(startWith('')),
+      this.provinces$
     ]).pipe(
       map(([province, provinces]) => {
         if (province) {
@@ -82,7 +70,7 @@ export class PickLocationComponent implements OnInit {
       })
     );
 
-    this.districts$ = this.formDistrict.valueChanges.pipe(
+    this.districts$ = this.formGroup.get('district')!.valueChanges.pipe(
       startWith(''),
       map(district => {
           if (district) {
@@ -93,7 +81,7 @@ export class PickLocationComponent implements OnInit {
         }
       ));
 
-    this.wards$ = this.formWard.valueChanges.pipe(
+    this.wards$ = this.formGroup.get('ward')!.valueChanges.pipe(
       startWith(''),
       map(ward => {
           if (ward) {
@@ -103,19 +91,37 @@ export class PickLocationComponent implements OnInit {
           }
         }
       ));
+
+    if (this.isUpdate) {
+      if (this.ward) {
+        console.log(this.ward)
+        this.districts$ = this.districtService.getAll({provinceId: this.ward.district.province.id})
+        this.wards$ = this.wardService.getAll({districtId: this.ward.district.id})
+      }else {
+        if (this.province) {
+          this.districts$ = this.districtService.getAll({provinceId: this.province?.id})
+
+          if (this.district) {
+            this.wards$ = this.wardService.getAll({districtId: this.district?.id})
+          }
+        }
+      }
+    }
+    this.districts$.subscribe(val => this.lstDistrict = val)
+    this.wards$.subscribe(val => this.lstWard = val)
   }
 
 
   onProvince(province: Province) {
     this.lstDistrict = province.districts;
-    this.formDistrict.patchValue('');
-    this.formWard.patchValue('');
+    this.formGroup.get('district')?.patchValue('');
+    this.formGroup.get('ward')?.patchValue('');
     this.eventSelectProvince.emit(province.id);
   }
 
   onDistrict(district: District) {
     this.lstWard = district.wards;
-    this.formWard.patchValue('');
+    this.formGroup.get('ward')?.patchValue('');
     this.eventSelectDistrict.emit(district.id);
   }
 

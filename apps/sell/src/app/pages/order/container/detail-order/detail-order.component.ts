@@ -1,25 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OrderEntity } from '../../enitities/order.interface';
-import { CommodityUnit, MenuEnum, PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions } from '../../+state/order.actions';
-import { OrderDialogComponent } from '../../component/order-dialog/order-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { CommodityAction } from '../../../commodity/+state/commodity.action';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { CommodityDialogComponent } from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
-import { PickCommodityComponent } from '../../../../shared/components/pick-commodity/pick-commodity.component';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { OrderHistoryService } from '../../service/order-history.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderQuery } from '../../+state/order.query';
-import { OrderHistoryEntity } from '../../enitities/order-history.entity';
-import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
-import { CommodityQuery } from '../../../commodity/+state/commodity.query';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {OrderEntity} from '../../enitities/order.interface';
+import {CommodityUnit, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {OrderActions} from '../../+state/order.actions';
+import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {CommodityAction} from '../../../commodity/+state/commodity.action';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {CommodityDialogComponent} from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
+import {PickCommodityComponent} from '../../../../shared/components/pick-commodity/pick-commodity.component';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {OrderHistoryService} from '../../service/order-history.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {FormControl, FormGroup} from '@angular/forms';
+import {debounceTime} from 'rxjs/operators';
+import {BehaviorSubject} from 'rxjs';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderQuery} from '../../+state/order.query';
+import {OrderHistoryEntity} from '../../enitities/order-history.entity';
+import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
+import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 
 @Component({
   templateUrl: 'detail-order.component.html'
@@ -50,7 +52,7 @@ export class DetailOrderComponent implements OnInit {
 
   ngOnInit() {
     this.loading$.subscribe(val => console.log(val));
-    this.actions$.dispatch(OrderActions.loadOne({ id: this.getOrderId }));
+    this.actions$.dispatch(OrderActions.loadOne({id: this.getOrderId}));
     this.loadInitOrderHistory();
 
     this.activatedRoute.queryParams.subscribe(param => {
@@ -74,11 +76,11 @@ export class DetailOrderComponent implements OnInit {
 
   updateOrder(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
-      this.dialog.open(OrderDialogComponent, { width: '60%', data: { order: order, tab: 1, type: 'UPDATE' } });
+      this.dialog.open(OrderDialogComponent, {width: '60%', data: {order: order, tab: 1, type: 'UPDATE'}});
     } else {
       this.dialog.open(PickCommodityComponent, {
         width: '60%',
-        data: { commoditiesSelected: order.commodities, type: 'DIALOG' }
+        data: {commoditiesSelected: order.commodities, type: 'DIALOG'}
       }).afterClosed().subscribe((value) => {
         if (value) {
           this.actions$.dispatch(OrderActions.update({
@@ -97,13 +99,21 @@ export class DetailOrderComponent implements OnInit {
   }
 
   updateCommodity(orderId: number, commodity: CommodityEntity) {
-    this.dialog.open(CommodityDialogComponent, { data: { commodity, isUpdate: true, orderId: orderId }, width: '30%' });
+    this.dialog.open(CommodityDialogComponent, {data: {commodity, isUpdate: true, orderId: orderId}, width: '30%'});
   }
 
-  deleteCommodity(commodityId: number) {
-    this.dialog.open(DialogDeleteComponent, { width: '30%' }).afterClosed().subscribe(val => {
+  deleteCommodity(commodity: CommodityEntity) {
+    this.dialog.open(DialogSharedComponent, {
+        width: 'fit-content',
+        data: {
+          title: 'Xoá hàng hoá',
+          description: `Bạn có chắc chắn muốn xoá hàng hoá ${commodity.name}`
+        }
+      }
+    ).afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.remove({ id: commodityId }));
+        if (commodity.orderId)
+          this.actions$.dispatch(CommodityAction.remove({id: commodity.id, inOrder: {orderId: commodity.orderId}}));
       }
     });
   }
@@ -143,7 +153,7 @@ export class DetailOrderComponent implements OnInit {
       if (val.data.length > 0) {
         this.orderHistories = this.orderHistories.concat(val.data);
       } else {
-        this.snackBar.open('Đã lấy hết lịch sử chỉnh sửa đơn hàng', '', { duration: 1500 });
+        this.snackBar.open('Đã lấy hết lịch sử chỉnh sửa đơn hàng', '', {duration: 1500});
       }
     });
   }
@@ -164,7 +174,7 @@ export class DetailOrderComponent implements OnInit {
       if (val) {
         this.orderHistories = val.data;
         this.loading$.next(false);
-        this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', { duration: 1500 });
+        this.snackBar.open('Tải lịch sử chỉnh sửa đơn hàng thành công', '', {duration: 1500});
       }
     });
   }

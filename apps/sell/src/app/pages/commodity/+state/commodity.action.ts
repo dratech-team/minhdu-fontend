@@ -12,7 +12,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[COMMODITY] Load All',
-  props<{params: CommodityDTO, isScroll?: boolean}>()
+  props<{ params: CommodityDTO, isScroll?: boolean }>()
 );
 
 export const getOne = createAction(
@@ -27,7 +27,7 @@ export const update = createAction(
 
 export const remove = createAction(
   '[COMMODITY] Remove',
-  props<{ id: number}>()
+  props<{ id: number, inOrder?: { orderId: number } }>()
 );
 
 export const resetStateCommodityNewAdd = createAction(

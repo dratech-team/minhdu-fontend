@@ -17,6 +17,7 @@ import {Category} from "./category";
 
 export interface Employee {
   id: number,
+  stt?: number,
   code: string,
   lastName: string,
   avt?: string,

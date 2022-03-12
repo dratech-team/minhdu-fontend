@@ -16,6 +16,7 @@ import {AddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
 import {OrderQuery} from "../../+state/order.query";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -34,6 +35,7 @@ export class AddOrderComponent implements OnInit {
   submitted = false;
   wardId?: number;
   provinceId!: number;
+  districtId?: number
 
   constructor(
     private readonly actions$: Actions,
@@ -44,6 +46,7 @@ export class AddOrderComponent implements OnInit {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly orderQuery: OrderQuery,
+    private readonly snackbar: MatSnackBar
   ) {
   }
 
@@ -60,7 +63,10 @@ export class AddOrderComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       createdAt: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
       endedAt: [],
-      explain: ['']
+      explain: [''],
+      province: ['', Validators.required],
+      district: [],
+      ward: [],
     });
   }
 
@@ -111,11 +117,18 @@ export class AddOrderComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  onSubmit() {
+  onSubmit(): any {
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
     }
+    if (!this.customerId) {
+      return this.snackbar.open('Khách hàng không được để trống');
+    }
+    if (this.commoditiesPicked.length === 0) {
+      return this.snackbar.open('Vui lòng chọn hàng hóa');
+    }
+
     const val = this.formGroup.value;
     const order: AddOrderDto = {
       createdAt: val.createdAt,
@@ -131,5 +144,9 @@ export class AddOrderComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
+  }
+
+  onSelectDistrict($event: number) {
+    this.districtId = $event;
   }
 }

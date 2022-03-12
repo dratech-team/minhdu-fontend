@@ -40,7 +40,6 @@ export class DetailRouteComponent implements OnInit {
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
-        console.log(this.route)
       }
     });
 
@@ -92,7 +91,7 @@ export class DetailRouteComponent implements OnInit {
       width: 'fit-content',
       data: {
         title: 'Huỷ hàng hoá trong tuyến đường',
-        description: 'Bạn có chắc chắn Huỷ hàng hoá này'
+        description: `Bạn có chắc chắn Huỷ ${commodity.name}`
       }
     }).afterClosed()
       .subscribe(val => {
@@ -121,5 +120,20 @@ export class DetailRouteComponent implements OnInit {
           }));
         }
       });
+  }
+
+  addCommodityInRoute(commodity: CommodityEntity){
+    this.dialog.open(DialogSharedComponent,{
+      width:'fit-content',
+      data:{
+        title:'Thêm hàng hoá cho tuyến đương',
+        description:`Bạn có muốn thêm ${commodity.name} cho tuyến đường ${this.route.name} `
+      }
+    }).afterClosed()
+      .subscribe(val => {
+        if(val){
+          this.actions$.dispatch(RouteAction.update({id: this.route.id , updates: {commodityIds : [commodity.id]}}))
+        }
+      })
   }
 }

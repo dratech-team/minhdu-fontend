@@ -55,9 +55,9 @@ export class OrderDialogComponent implements OnInit {
       deliveredAt: [this.datePipe.transform(
         this.data?.order?.deliveredAt, 'yyyy-MM-dd')],
       explain: [this.data?.order?.explain],
-      province: [this.data?.order?.province?.id, Validators.required],
-      district: [this.data?.order?.district?.id],
-      ward: [this.data?.order?.ward?.id]
+      province: [this.data?.order?.province?.name, Validators.required],
+      district: [this.data?.order?.district?.name],
+      ward: [this.data?.order?.ward?.name]
     });
   }
 
