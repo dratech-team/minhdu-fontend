@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Degree, Employee, Relative, WorkHistory} from '@minhdu-fontend/data-models';
@@ -24,6 +24,7 @@ import {RecipeSalaryConstant} from "../../../../../../../../libs/constants/HR/re
 import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -45,7 +46,9 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef,
   ) {
   }
 
@@ -54,7 +57,7 @@ export class DetailEmployeeComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate) {
-        this.updateEmployee();
+        this.updateEmployee(getSelectors(selectCurrentEmployee(this.employeeId), this.store));
       }
     });
   }
@@ -63,8 +66,16 @@ export class DetailEmployeeComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateEmployee(): void {
-    this.isOpen = true
+  updateEmployee(employee:Employee): void {
+    this.modal.create({
+      nzTitle: 'Sửa nhân viên',
+      nzContent: AddEmployeeComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzComponentParams:{
+        employeeInit: employee
+      },
+      nzFooter: null
+    })
   }
 
   deleteEmployee(employee: Employee, leftAt?: Date): void {

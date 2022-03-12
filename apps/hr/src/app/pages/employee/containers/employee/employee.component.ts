@@ -1,4 +1,12 @@
-import {AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
@@ -38,6 +46,7 @@ import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+st
 import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
+import {AddEmployeeComponent} from "../../components/employee/add-employee.component";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -64,7 +73,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   eventScrollX = new Subject<any>();
   categories$ = this.categoryService.getAll();
   employees!: Employee[];
-  isOpen = false;
 
 
   scrollX$ = this.store.select(selectorScrollXTotal);
@@ -103,7 +111,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly ref: ChangeDetectorRef,
     private readonly employeeService: EmployeeService,
     private readonly message: NzMessageService,
-    private readonly modal: NzModalService
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef,
   ) {
     this.store.pipe(select(selectorAllEmployee)).subscribe(
       (employees) => {
@@ -205,7 +214,13 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   add(): void {
-    this.isOpen = true;
+    this.modal.create({
+      nzTitle:'Thêm nhân viên',
+      nzContent: AddEmployeeComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw'
+    })
   }
 
   delete($event: any): void {
@@ -308,9 +323,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   //     data: { employee: $event, permanentlyDeleted: true }
   //   });
   // }
-  compareFN = (o1: any, o2: any) => (o1 && o2 ?
-    o1.id === o2.id : o1 === o2);
-
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
@@ -396,11 +408,5 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(EmployeeAction.loadInit({
       employee: this.employee(this.formGroup.value)
     }));
-  }
-
-  eventEmit(event: boolean) {
-    if (event) {
-      this.isOpen = false;
-    }
   }
 }

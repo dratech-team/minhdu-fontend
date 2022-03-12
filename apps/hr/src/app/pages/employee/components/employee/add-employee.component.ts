@@ -25,17 +25,15 @@ import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNum
 import {RecipeTypesConstant} from '@minhdu-fontend/constants';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
-  selector: 'minhdu-fontend-employee-dialog',
   templateUrl: 'add-employee.component.html'
 })
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
   @Input() employeeInit?: Employee;
-  @Input() isOpen = false;
-  @Output() eventEmit = new EventEmitter<boolean>()
 
   positionId?: number;
   flatSalary = FlatSalary;
@@ -57,11 +55,11 @@ export class AddEmployeeComponent implements OnInit {
     private readonly positionService: PositionService,
     private readonly branchService: BranchService,
     private readonly store: Store<AppState>,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly modalRef: NzModalRef
   ) {
   }
-
-  //fixme refactor
+  
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     if (this.employeeInit) {
@@ -175,7 +173,7 @@ export class AddEmployeeComponent implements OnInit {
     }
     this.store.select(selectEmployeeAdded).subscribe(added => {
       if (added) {
-        this.eventEmit.emit(true);
+        this.modalRef.close()
       }
     })
   }
@@ -190,11 +188,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
-
-  onCancel() {
-    this.submitting = false
-    this.eventEmit.emit(true);
-  }
 
   private mapEmployee(value: any) {
     return {
