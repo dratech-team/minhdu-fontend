@@ -36,7 +36,6 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
     ReactiveFormsModule,
     ComponentsModule,
     OrderRoutingModule,
-    AkitaNgEffectsModule.forFeature([OrderEffect]),
     MatInputModule,
     InfiniteScrollModule,
     MatDialogModule,

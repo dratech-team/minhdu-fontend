@@ -3,5 +3,5 @@ export enum TabEnum {
   CUSTOMER = 'khach-hang',
   ORDER = 'don-hang',
   ROUTE = 'tuyen-duong',
-  HISTORY = 'lich-su-he-thong'
+  HISTORY = 'he-thong/lich-su-he-thong'
 }

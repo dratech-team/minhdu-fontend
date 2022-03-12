@@ -34,6 +34,8 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { RouteGuard } from './route.guard';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
+import {OrderEffect} from "./pages/order/+state/order.effect";
 
 registerLocaleData(localeVi);
 
@@ -59,6 +61,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
+    AkitaNgEffectsModule.forRoot([OrderEffect]),
     AkitaNgDevtools.forRoot(),
     NxModule.forRoot(),
     AppHeaderModule,

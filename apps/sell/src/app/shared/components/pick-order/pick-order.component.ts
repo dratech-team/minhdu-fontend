@@ -68,13 +68,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.isSelectAll = this.isCheckOrderSelected;
-    this.actions$.dispatch(OrderActions.loadAll({
-      param: {
-        skip: this.pageIndex,
-        take: this.pageSize,
-        customerId: this.customerId
-      }
-    }));
+    this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder()}));
     if (this.orderIdDefault) {
       this.orderQuery.selectEntity(this.orderIdDefault).subscribe(val => {
         this.orderPickOne = JSON.parse(JSON.stringify(val));
@@ -100,7 +94,6 @@ export class PickOrderComponent implements OnInit, OnChanges {
         this.orders.map(val => {
             if (this.checkCommodityRoute(val)) {
               this.ordersFilter.push(val);
-              console.log(this.ordersFilter);
             }
           }
         );
@@ -112,20 +105,24 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
       const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(val, true), isScroll: true}));
+      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isScroll: true}));
     }
   }
 
-  mapOrder(val: any, isScroll?: boolean): LoadOrderDto {
-    return {
+  mapOrder(isScroll?: boolean): LoadOrderDto {
+    const val = this.formGroup.value
+    const param = {
       take: this.pageSize,
       skip: isScroll ? this.orderQuery.getCount() : this.pageIndex,
       hasRoute: val.hasRoute,
-      customerId: this.customerId,
       customer: val.name.trim(),
       explain: val.explain.trim(),
       createdAt: val.createdAt ? new Date(val.createdAt) : ''
     };
+    if (this.customerId) {
+      Object.assign(param, {customerId: this.customerId,})
+    }
+    return param
   }
 
   updateAllSelect(order: OrderEntity, checkBox?: any) {

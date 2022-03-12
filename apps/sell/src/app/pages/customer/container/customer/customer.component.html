@@ -3,8 +3,6 @@
   <button (click)='add()' class='btn btn-primary font-lg'>Thêm</button>
   <button (click)='printCustomer()' class='btn btn-primary font-lg mr-5 '>Xuất</button>
 </div>
-<ngx-skeleton-loader *ngIf='(loading$ | async); else customer' count='10' appearance='line'></ngx-skeleton-loader>
-<ng-template #customer>
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
        [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true' (scrolled)='onScroll()'>
     <table [formGroup]='formGroup' style='width: 2400px'>
@@ -75,40 +73,46 @@
       </tr>
       </thead>
       <tbody *ngIf='(customers$ | async) as customers'>
-      <tr
-        class='pointer'
-        *ngFor='let customer of customers; let i = index'
-        (click)='readAndUpdate(customer, false)'
-        (contextmenu)='child.onContextMenu($event, customer)'
-      >
-        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
-        <th>{{customer?.phone || 'Chưa cập nhật'}}</th>
-        <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
-        <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
-        <th>
-          <input type='checkbox' disabled [checked]='customer.isPotential'>
+      <tr *ngIf='(loading$ | async); else customerTable'>
+        <th colSpan="100">
+          <ngx-skeleton-loader  count='10' appearance='line'></ngx-skeleton-loader>
         </th>
-        <!--        <th>-->
-        <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
-        <!--          'Chưa cập nhật'}}-->
-        <!--        </th>-->
-        <th>{{ customer.resource | transform: resourceTypes}}</th>
-        <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
-        <th>{{customer?.email || 'Chưa cập nhật'}}</th>
-        <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>
-        <th> {{customer?.note || 'Chưa cập nhật'}}</th>
       </tr>
-      <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
-        <td colspan='15' class='position-relative font-weight-bold'>
+      <ng-template #customerTable>
+        <tr
+          class='pointer'
+          *ngFor='let customer of customers; let i = index'
+          (click)='readAndUpdate(customer, false)'
+          (contextmenu)='child.onContextMenu($event, customer)'
+        >
+          <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
+          <th>{{customer?.phone || 'Chưa cập nhật'}}</th>
+          <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
+          <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
+          <th>
+            <input type='checkbox' disabled [checked]='customer.isPotential'>
+          </th>
+          <!--        <th>-->
+          <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
+          <!--          'Chưa cập nhật'}}-->
+          <!--        </th>-->
+          <th>{{ customer.resource | transform: resourceTypes}}</th>
+          <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
+          <th>{{customer?.email || 'Chưa cập nhật'}}</th>
+          <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>
+          <th> {{customer?.note || 'Chưa cập nhật'}}</th>
+        </tr>
+        <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
+          <td colspan='15' class='position-relative font-weight-bold'>
             <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
               Hiện chưa có Khách hàng nào!
             </span>
-        </td>
-      </tr>
+          </td>
+        </tr>
+      </ng-template>
       </tbody>
     </table>
   </div>
-</ng-template>
 
 <app-mouse-right
   #child

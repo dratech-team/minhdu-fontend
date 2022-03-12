@@ -4,12 +4,11 @@ import {RouteAction} from './route.action';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
 import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {SnackBarComponent} from 'libs/components/src/lib/snackBar/snack-bar.component';
 import {OrderEntity} from '../../order/enitities/order.interface';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
 import {RouteQuery} from './route.query';
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
 export class RouteEffect {
@@ -18,7 +17,7 @@ export class RouteEffect {
     private readonly routeQuery: RouteQuery,
     private readonly routeStore: RouteStore,
     private readonly routeService: RouteService,
-    private readonly snackBar: MatSnackBar
+    private readonly message: NzMessageService
   ) {
   }
 
@@ -55,11 +54,7 @@ export class RouteEffect {
               ...state, loading: false
             }))
             if (responsePagination.data.length === 0) {
-              this.snackBar.openFromComponent(SnackBarComponent, {
-                duration: 2500,
-                panelClass: ['background-snackbar'],
-                data: {content: 'Đã lấy hết Tuyến đường'}
-              });
+              this.message.success('Đã lấy hết tuyến đường')
             } else {
               responsePagination.data.map(route => {
                 route.orders.map((order: OrderEntity) => {
@@ -129,7 +124,7 @@ export class RouteEffect {
       this.totalCommodity(route.orders)
       route.totalCommodityUniq = this.totalCommodityUniq(route.orders)
       route.orders?.map(val => val.expand = false);
-      this.snackBar.open('Cập nhật đơn hàng thành công', '', {duration: 1500})
+      this.message.success('Cập nhật đơn hàng thành công')
       return this.routeStore.update(route.id, route);
     }),
     catchError((err) => throwError(err))
