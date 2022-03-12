@@ -63,13 +63,13 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'hoa-don',
+        path: 'bill',
         loadChildren: () =>
           import('./pages/bill/bill.module').then((m) => m.BillModule),
         canActivate: [RouteGuard]
       },
       {
-        path: TabEnum.HISTORY,
+        path: 'he-thong',
         loadChildren: () =>
           import('@minhdu-fontend/system').then((m) => m.SystemModule),
         canActivate: [RouteGuard]
