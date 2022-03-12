@@ -135,7 +135,7 @@
                 <button class='btn btn-edit' (click)='updateCommodity(order.id,commodity)'>Sửa</button>
               </th>
               <th class='text-center'>
-                <button class='btn btn-danger' (click)='deleteCommodity(commodity.id)'>Xóa</button>
+                <button class='btn btn-danger' (click)='deleteCommodity(commodity)'>Xóa</button>
               </th>
             </tr>
             <tr *ngIf='order.commodities.length === 0' class='font-lg my-4'>
