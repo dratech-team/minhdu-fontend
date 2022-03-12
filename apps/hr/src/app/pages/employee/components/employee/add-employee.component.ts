@@ -59,7 +59,7 @@ export class AddEmployeeComponent implements OnInit {
     private readonly modalRef: NzModalRef
   ) {
   }
-  
+
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     if (this.employeeInit) {

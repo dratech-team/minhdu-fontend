@@ -219,7 +219,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       nzContent: AddEmployeeComponent,
       nzViewContainerRef: this.viewContentRef,
       nzFooter: null,
-      nzWidth: '65vw'
+      nzWidth: '65vw',
+      nzMaskClosable: false
     })
   }
 

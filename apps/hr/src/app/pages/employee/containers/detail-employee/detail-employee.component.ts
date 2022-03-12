@@ -74,7 +74,8 @@ export class DetailEmployeeComponent implements OnInit {
       nzComponentParams:{
         employeeInit: employee
       },
-      nzFooter: null
+      nzFooter: null,
+      nzMaskClosable: false
     })
   }
 
