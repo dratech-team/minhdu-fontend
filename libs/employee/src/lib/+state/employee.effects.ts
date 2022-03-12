@@ -196,7 +196,9 @@ export class EmployeeEffect {
       switchMap((props) =>
         this.employeeService.leaveEmployee(props.id, props.body).pipe(
           map(() => {
-            this.message.success('Nhân viên đã nghỉ tạm thời');
+            this.message.success(props.body?.leftAt ?
+              'Nhân viên đã nghỉ tạm thời':
+            'Đã khôi phục nhân viên thành công');
             return EmployeeAction.deleteEmployeeSuccess({id: props.id});
           }),
           catchError((err) => throwError(err))
