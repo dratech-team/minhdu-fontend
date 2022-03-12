@@ -61,7 +61,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    AkitaNgEffectsModule.forRoot([OrderEffect]),
     AkitaNgDevtools.forRoot(),
     NxModule.forRoot(),
     AppHeaderModule,

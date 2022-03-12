@@ -29,9 +29,18 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import {CustomerEffect} from "../customer/+state/customer.effect";
+import {CommodityEffect} from "../commodity/+state/commodity.effect";
+import {RouteEffect} from "../route/+state/route.effect";
 
 @NgModule({
   imports: [
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
     MatSnackBarModule,
     ReactiveFormsModule,
     ComponentsModule,

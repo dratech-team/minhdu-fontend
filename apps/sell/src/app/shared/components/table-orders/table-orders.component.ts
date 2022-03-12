@@ -1,16 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { PaidType } from 'libs/enums/paidType.enum';
-import { Router } from '@angular/router';
-import { TableOrderCustomerService } from './table-order-customer.service';
-import { OrderEntity } from '../../../pages/order/enitities/order.interface';
-import { OrderActions } from '../../../pages/order/+state/order.actions';
-import { MatDialog } from '@angular/material/dialog';
-import { debounceTime, tap } from 'rxjs/operators';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { DialogSharedComponent } from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { DialogDatePickerComponent } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {FormControl, FormGroup} from '@angular/forms';
+import {PaidType} from 'libs/enums/paidType.enum';
+import {Router} from '@angular/router';
+import {TableOrderCustomerService} from './table-order-customer.service';
+import {OrderEntity} from '../../../pages/order/enitities/order.interface';
+import {OrderActions} from '../../../pages/order/+state/order.actions';
+import {MatDialog} from '@angular/material/dialog';
+import {debounceTime, tap} from 'rxjs/operators';
+import {ConvertBoolean} from '@minhdu-fontend/enums';
+import {
+  DialogSharedComponent
+} from '../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {
+  DialogDatePickerComponent
+} from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {Actions} from "@datorama/akita-ng-effects";
 
 @Component({
   selector: 'app-table-order',
@@ -33,7 +38,7 @@ export class TableOrdersComponent implements OnInit {
   convertBoolean = ConvertBoolean;
 
   constructor(
-    private readonly store: Store,
+    private readonly actions$: Actions,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly customerService: TableOrderCustomerService
@@ -59,7 +64,7 @@ export class TableOrdersComponent implements OnInit {
     if (this.delivered) {
       this.customerService.scrollOrdersAssigned(this.mapOrders(val));
     } else {
-      this.store.dispatch(OrderActions.loadAll(this.mapOrders(val)));
+      this.actions$.dispatch(OrderActions.loadAll(this.mapOrders(val)));
     }
   }
 
@@ -81,9 +86,9 @@ export class TableOrdersComponent implements OnInit {
   }
 
   updateOrder(order: OrderEntity) {
-    this.store.dispatch(OrderActions.hide({
+    this.actions$.dispatch(OrderActions.hide({
       id: order.id,
-      hide: { hide: !order.hide }
+      hide: {hide: !order.hide}
     }));
   }
 
@@ -98,7 +103,7 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderActions.remove({ id: order.id }));
+        this.actions$.dispatch(OrderActions.remove({id: order.id}));
       }
     });
   }
@@ -112,7 +117,7 @@ export class TableOrdersComponent implements OnInit {
       }
     }).afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(OrderActions.update({
+        this.actions$.dispatch(OrderActions.update({
           id: order.id,
           updates: {
             deliveredAt: val.day,

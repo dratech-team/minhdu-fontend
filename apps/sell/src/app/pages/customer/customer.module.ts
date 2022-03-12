@@ -27,6 +27,9 @@ import {PaymentReducer} from '../payment/payment/payment.reducer';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
 import {NzMessageModule} from 'ng-zorro-antd/message';
+import {OrderEffect} from "../order/+state/order.effect";
+import {CommodityEffect} from "../commodity/+state/commodity.effect";
+import {RouteEffect} from "../route/+state/route.effect";
 
 @NgModule({
   imports: [
@@ -38,7 +41,12 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
     InfiniteScrollModule,
     CommonModule,
     StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-    AkitaNgEffectsModule.forFeature([CustomerEffect]),
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
     MatCheckboxModule,
     ReactiveFormsModule,
     MatSelectModule,
