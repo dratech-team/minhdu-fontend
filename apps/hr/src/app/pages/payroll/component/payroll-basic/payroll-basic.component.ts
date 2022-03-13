@@ -1,10 +1,10 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
-import { Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
+import {DatePipe} from '@angular/common';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
+import {Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -14,11 +14,11 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { of, Subject } from 'rxjs';
-import { debounceTime, startWith } from 'rxjs/operators';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {of, Subject} from 'rxjs';
+import {debounceTime, startWith} from 'rxjs/operators';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
@@ -27,15 +27,15 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
-import { AppState } from '../../../../reducers';
-import { SalaryService } from '../../service/salary.service';
-import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
-import { DialogBasicComponent } from '../dialog-salary/dialog-basic/dialog-basic.component';
-import { MatSort } from '@angular/material/sort';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {AppState} from '../../../../reducers';
+import {SalaryService} from '../../service/salary.service';
+import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
+import {DialogBasicComponent} from '../dialog-salary/dialog-basic/dialog-basic.component';
+import {MatSort} from '@angular/material/sort';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -89,11 +89,11 @@ export class PayrollBasicComponent implements OnInit {
 
   //dummy
   salaryBasic = [
-    { title: 'Lương cơ bản trích BH', value: 'Lương cơ bản trích BH' },
-    { title: 'Lương theo PL.HD', value: 'Lương theo PL.HD' },
-    { title: 'Lương Tín nhiệm', value: 'Lương Tín nhiệm' },
-    { title: 'Lương TN quản lý thêm', value: 'Lương TN quản lý thêm' },
-    { title: 'Tất cả', value: '' }
+    {title: 'Lương cơ bản trích BH', value: 'Lương cơ bản trích BH'},
+    {title: 'Lương theo PL.HD', value: 'Lương theo PL.HD'},
+    {title: 'Lương Tín nhiệm', value: 'Lương Tín nhiệm'},
+    {title: 'Lương TN quản lý thêm', value: 'Lương TN quản lý thêm'},
+    {title: 'Tất cả', value: ''}
   ];
 
 
@@ -166,9 +166,9 @@ export class PayrollBasicComponent implements OnInit {
                   !this.salariesSelected.some(item => item.salary.id === salary.id)
                   && !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({ salary, employee: payroll.employee });
+                  this.salariesSelected.push({salary, employee: payroll.employee});
                 }
-                this.salaries.push({ salary, employee: payroll.employee });
+                this.salaries.push({salary, employee: payroll.employee});
               }
             });
           }
@@ -188,7 +188,7 @@ export class PayrollBasicComponent implements OnInit {
           title: value.title
         };
         if (value.createdAt) {
-          Object.assign(payrollBASIC, { createdAt: value.createdAt });
+          Object.assign(payrollBASIC, {createdAt: value.createdAt});
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -220,7 +220,7 @@ export class PayrollBasicComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: {
@@ -269,7 +269,7 @@ export class PayrollBasicComponent implements OnInit {
           }
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
           const params = {
             take: this.pageSize,
             skip: this.pageIndex,
@@ -318,7 +318,7 @@ export class PayrollBasicComponent implements OnInit {
             this.salariesSelected = [];
             this.message.success('Xóa lương cơ bản thành công');
             this.store.dispatch(
-              PayrollAction.loadInit({ payrollDTO: this.mapPayrollBasic() })
+              PayrollAction.loadInit({payrollDTO: this.mapPayrollBasic()})
             );
           }
         });
@@ -374,7 +374,7 @@ export class PayrollBasicComponent implements OnInit {
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+        orderType: this.sort ? this.sort.direction : ''
       });
     }
     if (!value.name) {
