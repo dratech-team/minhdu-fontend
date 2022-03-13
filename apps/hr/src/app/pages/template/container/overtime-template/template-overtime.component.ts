@@ -183,6 +183,7 @@ export class TemplateOvertimeComponent implements OnInit {
     if (position) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
+          branch: template.branch.name,
           position: position.name,
           filter: FilterTypeEnum.OVERTIME
         })
@@ -190,6 +191,7 @@ export class TemplateOvertimeComponent implements OnInit {
     } else {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
+          branch: template.branch.name,
           filter: FilterTypeEnum.OVERTIME
         })
       );
