@@ -98,7 +98,6 @@ export class PayrollOvertimeComponent implements OnInit {
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
 
@@ -134,11 +133,6 @@ export class PayrollOvertimeComponent implements OnInit {
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
     );
 
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
@@ -204,7 +198,8 @@ export class PayrollOvertimeComponent implements OnInit {
           filename: val,
           exportType: 'RANGE_DATETIME',
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : '',
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -230,7 +225,6 @@ export class PayrollOvertimeComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.startedAt),
           position: value.position,
-          branch: value.branch
         })
       );
       this.store.dispatch(
@@ -297,7 +291,8 @@ export class PayrollOvertimeComponent implements OnInit {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ?
+        getSelectors(selectedBranchPayroll, this.store) : '',
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -466,7 +461,8 @@ export class PayrollOvertimeComponent implements OnInit {
               title: value.title,
               name: value.name,
               position: value.position,
-              branch: value.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             };
             if (!value.name) {
               delete payrollOvertime.name;
@@ -493,7 +489,8 @@ export class PayrollOvertimeComponent implements OnInit {
           title: value.title,
           name: value.name,
           position: value.position,
-          branch: value.branch
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : ''
         };
         if (!value.name) {
           delete payrollOvertime.name;
@@ -538,10 +535,6 @@ export class PayrollOvertimeComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

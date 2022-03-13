@@ -13,8 +13,7 @@
         <input class='form-control ml-2' type='search' matInput [matAutocomplete]='branch'
                formControlName='branch' placeholder="Chọn đơn vị">
         <mat-autocomplete #branch='matAutocomplete'>
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (onSelectionChange)='onSelectBranch(branch.name)'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'>
             {{branch.name}}
           </mat-option>
         </mat-autocomplete>

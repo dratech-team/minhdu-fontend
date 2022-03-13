@@ -73,7 +73,6 @@ export class PayrollBasicComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
 
   constructor(
@@ -120,7 +119,6 @@ export class PayrollBasicComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
-          branch: value.branch,
           position: value.position
         })
       );
@@ -183,7 +181,8 @@ export class PayrollBasicComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store)?
+            getSelectors(selectedBranchPayroll, this.store):'',
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
@@ -230,7 +229,8 @@ export class PayrollBasicComponent implements OnInit {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: val.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             }
           })
         );
@@ -280,7 +280,8 @@ export class PayrollBasicComponent implements OnInit {
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position,
-            branch: value.branch
+            branch: getSelectors(selectedBranchPayroll, this.store) ?
+              getSelectors(selectedBranchPayroll, this.store) : ''
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
@@ -369,7 +370,7 @@ export class PayrollBasicComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ? getSelectors(selectedBranchPayroll, this.store) : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {

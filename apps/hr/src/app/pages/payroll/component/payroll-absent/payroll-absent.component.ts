@@ -92,7 +92,6 @@ export class PayrollAbsentComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
 
   constructor(
@@ -172,7 +171,6 @@ export class PayrollAbsentComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.startedAt),
           position: value.position,
-          branch: value.branch
         })
       );
       this.store.dispatch(
@@ -223,7 +221,7 @@ export class PayrollAbsentComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors<string>(selectedBranchPayroll, this.store),
           exportType: 'RANGE_DATETIME',
           title: value.title,
           startedAt: value.startedAt,
@@ -388,17 +386,19 @@ export class PayrollAbsentComponent implements OnInit {
   mapPayrollAbsent() {
     const value = this.formGroup.value;
     const params = {
-      take: this.pageSize,
-      skip: this.pageIndex,
-      code: value.code,
-      searchType: value.searchType,
-      salaryTitle: value.title ? value.title : '',
-      name: value.name,
-      unit: value.unit,
-      filterType: FilterTypeEnum.ABSENT,
-      position: value.position,
-      branch: value.branch
-    };
+        take: this.pageSize,
+        skip: this.pageIndex,
+        code: value.code,
+        searchType: value.searchType,
+        salaryTitle: value.title ? value.title : '',
+        name: value.name,
+        unit: value.unit,
+        filterType: FilterTypeEnum.ABSENT,
+        position: value.position,
+        branch: getSelectors(selectedBranchPayroll, this.store) ?
+          getSelectors(selectedBranchPayroll, this.store) : ''
+      }
+    ;
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,

@@ -59,7 +59,6 @@ export class PayrollStayComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -115,7 +114,6 @@ export class PayrollStayComponent implements OnInit {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
-          branch: value.branch,
           position: value.position
         })
       );
@@ -174,7 +172,8 @@ export class PayrollStayComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : '',
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
@@ -223,7 +222,8 @@ export class PayrollStayComponent implements OnInit {
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position,
-              branch: val.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             }
           })
         );
@@ -270,7 +270,8 @@ export class PayrollStayComponent implements OnInit {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: val.branch
+                branch: getSelectors(selectedBranchPayroll, this.store) ?
+                  getSelectors(selectedBranchPayroll, this.store) : ''
               }
             })
           );
@@ -369,7 +370,8 @@ export class PayrollStayComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ?
+        getSelectors(selectedBranchPayroll, this.store) : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
@@ -385,10 +387,6 @@ export class PayrollStayComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

@@ -82,7 +82,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     selectedTypePayroll,
     this.store
   );
-  branchName = getSelectors<string>(selectedBranchPayroll, this.store);
   positionName = getSelectors<string>(selectedPositionPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
@@ -159,9 +158,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           val === FilterTypeEnum.TIME_SHEET
         ) {
           this.positionName = getSelectors(selectedPositionPayroll, this.store);
-          this.branchName = getSelectors(selectedBranchPayroll, this.store);
           this.formGroup.get('position')?.setValue(this.positionName, {emitEvent: false});
-          this.formGroup.get('branch')?.setValue(this.branchName, {emitEvent: false});
+          this.formGroup.get('branch')?.setValue(getSelectors<string>(selectedBranchPayroll, this.store),
+            {emitEvent: false});
         }
         this.selectedPayroll = val;
         this.store.dispatch(PayrollAction.updateStatePayroll({filter: val}));
@@ -201,7 +200,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.branchName = val?.branch;
           this.positionName = val?.position;
           this.createdAt = val?.createdAt;
           this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
@@ -216,14 +214,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         }
       });
 
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
-
     this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
+    );
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
+      this.positions$
     );
 
     this.categoryControl.valueChanges.subscribe(val => {
@@ -233,7 +231,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
 
     this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      this.categories$ = this.categoryService.getAll({branch: this.formGroup.value.branch})
+      this.categories$ = this.categoryService.getAll({branch: val})
     })
   }
 
@@ -257,7 +255,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: this.positionName,
-      branch: this.branchName,
+      branch: val.branch,
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,

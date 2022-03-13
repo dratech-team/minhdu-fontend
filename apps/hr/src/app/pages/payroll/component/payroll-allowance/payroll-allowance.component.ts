@@ -84,7 +84,6 @@ export class PayrollAllowanceComponent implements OnInit {
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
 
   constructor(
@@ -161,7 +160,6 @@ export class PayrollAllowanceComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
           position: value.position,
-          branch: value.branch
         })
       );
       this.store.dispatch(
@@ -174,11 +172,6 @@ export class PayrollAllowanceComponent implements OnInit {
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
     );
 
     this.payrollAllowance$.subscribe((payrolls) => {
@@ -229,7 +222,8 @@ export class PayrollAllowanceComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : '',
           exportType: FilterTypeEnum.ALLOWANCE,
           title: value.title
         };
@@ -276,7 +270,8 @@ export class PayrollAllowanceComponent implements OnInit {
               title: val.title,
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position,
-              branch: val.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             }
           })
         );
@@ -332,7 +327,8 @@ export class PayrollAllowanceComponent implements OnInit {
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
-                branch: val.branch
+                branch: getSelectors(selectedBranchPayroll, this.store) ?
+                  getSelectors(selectedBranchPayroll, this.store) : ''
               }
             })
           );
@@ -436,7 +432,8 @@ export class PayrollAllowanceComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ?
+        getSelectors(selectedBranchPayroll, this.store) : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
