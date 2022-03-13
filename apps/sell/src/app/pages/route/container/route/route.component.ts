@@ -110,10 +110,10 @@ export class RouteComponent implements OnInit {
         }
       })
       .afterClosed()
-      .subscribe((datetime) => {
-        if (datetime) {
+      .subscribe((val) => {
+        if (val) {
           this.actions$.dispatch(
-            RouteAction.update({id: event.id, updates: {endedAt: datetime}})
+            RouteAction.update({id: event.id, updates: {endedAt: val.day}})
           );
         }
       });

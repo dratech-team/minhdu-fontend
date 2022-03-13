@@ -105,6 +105,7 @@ export class RouteEffect {
       this.routeStore.update(state => ({
         ...state, added: true
       }))
+      this.message.success('Cập nhật thành công')
       this.totalCommodity(route.orders)
       route.totalCommodityUniq = route.totalCommodityUniq = this.totalCommodityUniq(route.orders)
       route.orders?.map(val => val.expand = false);
