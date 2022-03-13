@@ -11,16 +11,29 @@
           <mat-option *ngFor='let item of employeeContain' [value]='item.value'>{{item.name}}</mat-option>
         </mat-select>
       </div>
-      <div style='width: fit-content'>
-        <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
-          <mat-option [value]='""'>Tất cả</mat-option>
-          <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
-          <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
-        </mat-select>
+      <div class="ml-2" [formGroup]="formGroup">
+        <input class='form-control' type='search' matInput [matAutocomplete]='branch' placeholder="Chọn đơn vị" formControlName='branch'>
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+          >
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
       </div>
-      <button *ngIf='categoryControl.value && categoryControl.value !==0 ' class='btn btn-primary ml-1'
-              (click)='updateCategory()'>Sửa
-      </button>
+      <div class="d-flex">
+        <div style='width: fit-content'>
+          <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
+            <mat-option [value]='""'>Tất cả</mat-option>
+            <mat-option *ngFor='let item of categories$ | async' [value]='item.id'>{{item.name}}</mat-option>
+            <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
+          </mat-select>
+        </div>
+        <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
+                class='btn btn-primary ml-2'
+                (click)='updateCategory()'>Sửa
+        </button>
+      </div>
     </div>
     <div>
       <button class='btn btn-primary mr-4' (click)='printEmployee()'>Xuất</button>
@@ -51,10 +64,10 @@
               <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>STT</div>
               <input class=' text-center' type='text' disabled>
             </th>
-<!--            <th style='background:white'>-->
-<!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
-<!--              <input class=' text-center' type='text' disabled>-->
-<!--            </th>-->
+            <!--            <th style='background:white'>-->
+            <!--              <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>Sort</div>-->
+            <!--              <input class=' text-center' type='text' disabled>-->
+            <!--            </th>-->
             <th style='background:white'>
               <div class='border-top text-center'>Mã nhân viên</div>
               <input class='form-control text-center' type='search'>
@@ -85,7 +98,7 @@
               </mat-select>
             </th>
             <th width='5%'>
-              <div class='border-top text-center'>Ngày vào làm</div>
+              <div mat-sort-header='{{sortEnum.CREATE}}' class='border-top text-center'>Ngày vào làm</div>
               <input type='date' class='border' disabled>
             </th>
             <th width='5%'>
@@ -104,14 +117,7 @@
             </th>
             <th>
               <div mat-sort-header='{{sortEnum.BRANCH}}' class='border-top text-center'>Đơn vị</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-              <mat-autocomplete #branch='matAutocomplete'>
-                <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                            (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-                >
-                  {{branch.name}}
-                </mat-option>
-              </mat-autocomplete>
+              <input class='form-control' type='search' disabled>
             </th>
             <th>
               <div mat-sort-header='{{sortEnum.POSITION}}' class='border-top text-center'>Chức vụ</div>
@@ -192,9 +198,9 @@
               <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{i + 1}}</div>
               </th>
-<!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
-<!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
-<!--              </th>-->
+              <!--              <th class='pointer ' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>-->
+              <!--                <div>{{employee.stt || 'Not sorted'}}</div>-->
+              <!--              </th>-->
               <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                 <div>{{employee?.id}}</div>
               </th>

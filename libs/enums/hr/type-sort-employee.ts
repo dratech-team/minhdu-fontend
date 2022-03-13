@@ -1,4 +1,4 @@
-export enum sortTypeEnum {
+export enum sortEmployeeTypeEnum {
   NAME = 'NAME',
   STT = 'STT',
   BRANCH = 'BRANCH',
@@ -16,5 +16,6 @@ export enum sortTypeEnum {
   FLAT_SALARY = "FLAT_SALARY",
   EMPLOYEE_TYPE = "EMPLOYEE_TYPE",
   CODE = "CODE",
-  NOTE = 'NOTE'
+  NOTE = 'NOTE',
+  CREATE = "CREATE"
 }

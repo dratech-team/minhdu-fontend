@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[CUSTOMER] Load All',
-  props<LoadCustomerDto>()
+  props<{params: LoadCustomerDto, isScroll?: boolean}>()
 );
 
 const loadOne = createAction(
@@ -35,7 +35,7 @@ const loadOrderDelivered = createAction(
 );
 
 const loadOrderDelivering = createAction(
-  `[CUSTOMER] Load Order Delivered`,
+  `[CUSTOMER] Load Order Delivering`,
   props<LoadOrderDto>()
 );
 

@@ -3,116 +3,121 @@
   <button (click)='add()' class='btn btn-primary font-lg'>Thêm</button>
   <button (click)='printCustomer()' class='btn btn-primary font-lg mr-5 '>Xuất</button>
 </div>
-  <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
-       [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true' (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' style='width: 2400px'>
-      <thead>
-      <tr>
-        <th style='min-width: 300px'>
-          <div class=''>Tên khách hàng</div>
-          <input class='form-control' type='search' placeholder='Trần Văn A' formControlName='name'>
-        </th>
-        <th style='width: 150px'>
-          <div class=''>Số điện thoại</div>
-          <input formControlName='phone' class='form-control' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
-                 maxlength='12'>
-        </th>
-        <th style='width: 150px'>
-          <div class=''>Ngày sinh</div>
-          <input formControlName='birthDay' class='form-control' type='date'>
-        </th>
-        <th>
-          <div class=''>Giới tính</div>
-          <mat-select
-            class='select border-top'
-            style='width: 100%'
-            matNativeControl
-            required
-            formControlName='gender'
-          >
-            <mat-option *ngFor='let item of GenderTypes' [value]='item.type'>{{item.name}}</mat-option>
-          </mat-select>
-        </th>
-        <th style='width: 150px'>
-          <div>Tiềm năng</div>
-          <mat-select class='select border-top' style='width: 100%' matNativeControl required
-                      formControlName='isPotential'>
-            <mat-option *ngFor='let item of PotentialType' [value]='item.type'>{{item.name}}</mat-option>
-          </mat-select>
-        </th>
-        <!--        <th style='width: 200px'>-->
-        <!--          <div class=''>Quốc gia</div>-->
-        <!--          <input formControlName='nationId' class='form-control' type='text'>-->
-        <!--        </th>-->
-        <th>
-          <div class=''>Nguồn khách hàng</div>
-          <mat-select class='select border-top' style='width: 100%' matNativeControl required
-                      formControlName='resource'>
-            <mat-option *ngFor='let item of resourceTypes' [value]='item.type'>{{item.name}}</mat-option>
-          </mat-select>
-        </th>
-        <th>
-          <div class=''>Loại khách hàng</div>
-          <mat-select class='select border-top' style='width: 100%' matNativeControl required
-                      formControlName='customerType'>
-            <mat-option *ngFor='let item of CustomerTypes' [value]='item?.type'>{{item.name}}</mat-option>
-          </mat-select>
-        </th>
-        <th>
-          <div class=''>Email</div>
-          <input formControlName='email' class='form-control' type='text'>
-        </th>
-        <th>
-          <div class=''>Địa chỉ</div>
-          <input formControlName='address' class='form-control' type='search'>
-        </th>
-        <th>
-          <div class=''>Chú thích</div>
-          <input formControlName='note' class='form-control' type='search'>
-        </th>
-      </tr>
-      </thead>
-      <tbody *ngIf='(customers$ | async) as customers'>
-      <tr *ngIf='(loading$ | async); else customerTable'>
-        <th colSpan="100">
-          <ngx-skeleton-loader  count='10' appearance='line'></ngx-skeleton-loader>
-        </th>
-      </tr>
-      <ng-template #customerTable>
-        <tr
-          class='pointer'
-          *ngFor='let customer of customers; let i = index'
-          (click)='readAndUpdate(customer, false)'
-          (contextmenu)='child.onContextMenu($event, customer)'
+<div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
+     [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true' (scrolled)='onScroll()'>
+  <table matSort
+         (matSortChange)='sortCustomer()'
+         [formGroup]='formGroup' style='width: 2400px'>
+    <thead>
+    <tr>
+      <th style='min-width: 300px'>
+        <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.NAME}}'>Tên khách hàng</div>
+        <input class='form-control' type='search' placeholder='Trần Văn A' formControlName='name'>
+      </th>
+      <th style='width: 150px'>
+        <div class="d-flex justify-content-center align-items-center">Số điện thoại</div>
+        <input formControlName='phone' class='form-control' type='tel' pattern='[0-9]{3} [0-9]{3} [0-9]{4}'
+               maxlength='12'>
+      </th>
+      <th style='width: 150px'>
+        <div class="d-flex justify-content-center align-items-center">Ngày sinh</div>
+        <input formControlName='birthDay' class='form-control' type='date'>
+      </th>
+      <th>
+        <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.GENDER}}'>Giới tính</div>
+        <mat-select
+          class='select border-top'
+          style='width: 100%'
+          matNativeControl
+          required
+          formControlName='gender'
         >
-          <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
-          <th>{{customer?.phone || 'Chưa cập nhật'}}</th>
-          <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
-          <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
-          <th>
-            <input type='checkbox' disabled [checked]='customer.isPotential'>
-          </th>
-          <!--        <th>-->
-          <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
-          <!--          'Chưa cập nhật'}}-->
-          <!--        </th>-->
-          <th>{{ customer.resource | transform: resourceTypes}}</th>
-          <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
-          <th>{{customer?.email || 'Chưa cập nhật'}}</th>
-          <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>
-          <th> {{customer?.note || 'Chưa cập nhật'}}</th>
-        </tr>
-        <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
-          <td colspan='15' class='position-relative font-weight-bold'>
+          <mat-option *ngFor='let item of GenderTypes' [value]='item.type'>{{item.name}}</mat-option>
+        </mat-select>
+      </th>
+      <th style='width: 150px'>
+        <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.IS_POTENTIAL}}'>Tiềm năng</div>
+        <mat-select class='select border-top' style='width: 100%' matNativeControl required
+                    formControlName='isPotential'>
+          <mat-option *ngFor='let item of PotentialType' [value]='item.type'>{{item.name}}</mat-option>
+        </mat-select>
+      </th>
+      <!--        <th style='width: 200px'>-->
+      <!--          <div class=''>Quốc gia</div>-->
+      <!--          <input formControlName='nationId' class='form-control' type='text'>-->
+      <!--        </th>-->
+      <th>
+        <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.RESOURCE}}'>Nguồn khách hàng
+        </div>
+        <mat-select class='select border-top' style='width: 100%' matNativeControl required
+                    formControlName='resource'>
+          <mat-option *ngFor='let item of resourceTypes' [value]='item.type'>{{item.name}}</mat-option>
+        </mat-select>
+      </th>
+      <th>
+        <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.CUSTOMER_TYPE}}'>Loại khách
+          hàng
+        </div>
+        <mat-select class='select border-top' style='width: 100%' matNativeControl required
+                    formControlName='customerType'>
+          <mat-option *ngFor='let item of CustomerTypes' [value]='item?.type'>{{item.name}}</mat-option>
+        </mat-select>
+      </th>
+      <th>
+        <div class="d-flex justify-content-center align-items-center">Email</div>
+        <input formControlName='email' class='form-control' type='text'>
+      </th>
+      <th>
+        <div class="d-flex justify-content-center align-items-center">Địa chỉ</div>
+        <input formControlName='address' class='form-control' type='search'>
+      </th>
+      <th>
+        <div class="d-flex justify-content-center align-items-center">Chú thích</div>
+        <input formControlName='note' class='form-control' type='search'>
+      </th>
+    </tr>
+    </thead>
+    <tbody *ngIf='(customers$ | async) as customers'>
+    <tr *ngIf='(loading$ | async); else customerTable'>
+      <th colSpan="100">
+        <ngx-skeleton-loader count='10' appearance='line'></ngx-skeleton-loader>
+      </th>
+    </tr>
+    <ng-template #customerTable>
+      <tr
+        class='pointer'
+        *ngFor='let customer of customers; let i = index'
+        (click)='readAndUpdate(customer, false)'
+        (contextmenu)='child.onContextMenu($event, customer)'
+      >
+        <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>{{customer?.lastName}} </th>
+        <th>{{customer?.phone || 'Chưa cập nhật'}}</th>
+        <th>{{customer?.birthday | date:'dd/MM/yyyy'}}</th>
+        <th> {{customer?.gender === 'MALE' ? 'Nam' : customer?.gender === 'FEMALE' ? 'Nữ' : 'Chưa cập nhật'}}</th>
+        <th>
+          <input type='checkbox' disabled [checked]='customer.isPotential'>
+        </th>
+        <!--        <th>-->
+        <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
+        <!--          'Chưa cập nhật'}}-->
+        <!--        </th>-->
+        <th>{{ customer.resource | transform: resourceTypes}}</th>
+        <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
+        <th>{{customer?.email || 'Chưa cập nhật'}}</th>
+        <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>
+        <th> {{customer?.note || 'Chưa cập nhật'}}</th>
+      </tr>
+      <tr *ngIf='!customers || customers.length === 0' style='height:60vh; '>
+        <td colspan='15' class='position-relative font-weight-bold'>
             <span style='position: absolute; top: 40%; left: 40% ; font-size: 23px'>
               Hiện chưa có Khách hàng nào!
             </span>
-          </td>
-        </tr>
-      </ng-template>
-      </tbody>
-    </table>
-  </div>
+        </td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </table>
+</div>
 
 <app-mouse-right
   #child

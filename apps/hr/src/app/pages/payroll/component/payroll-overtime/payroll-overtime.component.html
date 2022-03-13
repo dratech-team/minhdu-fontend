@@ -67,13 +67,13 @@
       </th>
       <th style='width: 200px'>
         <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-        <mat-autocomplete #branch='matAutocomplete'>
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (onSelectionChange)='onSelectBranch(branch.name)'>
-            {{branch.name}}
-          </mat-option>
-        </mat-autocomplete>
+        <input class='form-control' type='search' matInput disabled>
+<!--        <mat-autocomplete #branch='matAutocomplete'>-->
+<!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
+<!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
+<!--            {{branch.name}}-->
+<!--          </mat-option>-->
+<!--        </mat-autocomplete>-->
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>

@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
-import { CustomerEntity } from '../../../pages/customer/entities/customer.entity';
-import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { document } from 'ngx-bootstrap/utils';
-import { PickCustomerService } from './pick-customer.service';
-import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
-import { CustomerResourcesConstant, CustomerTypeConstant } from '@minhdu-fontend/constants';
-import { CustomerActions } from '../../../pages/customer/+state/customer.actions';
-import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
-import { Actions } from '@datorama/akita-ng-effects';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {debounceTime, tap} from 'rxjs/operators';
+import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
+import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {document} from 'ngx-bootstrap/utils';
+import {PickCustomerService} from './pick-customer.service';
+import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
+import {CustomerResourcesConstant, CustomerTypeConstant} from '@minhdu-fontend/constants';
+import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
+import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
+import {Actions} from '@datorama/akita-ng-effects';
 
 @Component({
   selector: 'app-pick-customer',
@@ -52,12 +52,12 @@ export class PickCustomerComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerActions.loadAll({ take: 30, skip: 0 }));
+      this.actions$.dispatch(CustomerActions.loadAll({params: {take: 30, skip: 0}}));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
     }
-    if(this.data.customerInit){
+    if (this.data.customerInit) {
       this.customerId = this.data.customerInit.id
     }
     this.formGroup.valueChanges.pipe(
@@ -70,12 +70,12 @@ export class PickCustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val));
+    this.service.scrollCustomer(this.customer(val, true));
   }
 
-  customer(val: any) {
+  customer(val: any, isScroll?: boolean) {
     return {
-      skip: 0,
+      skip: isScroll ? this.customerQuery.getCount() : 0,
       take: this.pageSize,
       customer: val.name.trim(),
       customerType: val.type,

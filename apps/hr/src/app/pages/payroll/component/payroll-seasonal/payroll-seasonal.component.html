@@ -19,7 +19,7 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search' (keypress)='checkInputNumber($event)'>
+            <input class='form-control text-center' type='search' formControlName="code" (keypress)='checkInputNumber($event)'>
           </th>
           <th style='width: 210px'>
             <div class='border-top text-center'>Tên nhân viên</div>
@@ -39,13 +39,7 @@
           </th>
           <th>
             <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (onSelectionChange)='onSelectBranch(branch.name)'>
-                {{branch.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <input class='form-control' type='search' matInput disabled>
           </th>
           <th>
             <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>

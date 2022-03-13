@@ -13,5 +13,5 @@ export interface LoadOrderDto extends Omit<Partial<OrderEntity>, 'createdAt' | '
     endedAt: Date,
   } | Date | string;
   status?: 0 | 1;
-  hasRoute?: boolean
+  filterRoute?: boolean
 }

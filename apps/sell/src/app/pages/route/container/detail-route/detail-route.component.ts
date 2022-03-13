@@ -16,6 +16,7 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {CancelEnum} from "../../enums/cancel.enum";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {OrderActions} from "../../../order/+state/order.actions";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -122,18 +123,38 @@ export class DetailRouteComponent implements OnInit {
       });
   }
 
-  addCommodityInRoute(commodity: CommodityEntity){
-    this.dialog.open(DialogSharedComponent,{
-      width:'fit-content',
-      data:{
-        title:'Thêm hàng hoá cho tuyến đương',
-        description:`Bạn có muốn thêm ${commodity.name} cho tuyến đường ${this.route.name} `
+  addCommodityInRoute(commodity: CommodityEntity) {
+    this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Thêm hàng hoá cho tuyến đương',
+        description: `Bạn có muốn thêm ${commodity.name} cho tuyến đường ${this.route.name} `
       }
     }).afterClosed()
       .subscribe(val => {
-        if(val){
-          this.actions$.dispatch(RouteAction.update({id: this.route.id , updates: {commodityIds : [commodity.id]}}))
+        if (val) {
+          this.actions$.dispatch(RouteAction.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}))
         }
       })
+  }
+
+  updateOrder(order: OrderEntity) {
+    this.dialog.open(DialogDatePickerComponent, {
+      width: 'fit-content',
+      data: {
+        titlePopup: 'Xác nhận giao hàng',
+        title: 'Ngày giao hàng'
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(OrderActions.update({
+          id: order.id,
+          updates: {
+            deliveredAt: val.day,
+          },
+          inRoute: {routeId: this.routeId}
+        }));
+      }
+    });
   }
 }

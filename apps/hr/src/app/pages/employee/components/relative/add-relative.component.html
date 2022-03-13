@@ -11,8 +11,7 @@
       <div>
         <app-add-profile [formGroup]='formGroup' [form]='f' [submitted]='submitted'></app-add-profile>
         <app-pick-location [ward]='data?.relative?.ward' [formGroup]='formGroup' [form]='f'
-                           [submitted]='submitted'
-                           (eventSelectWard)='onSelectWard($event)'
+                           [submitting]='submitted'
         >
 
         </app-pick-location>

@@ -1,17 +1,22 @@
-import { DatePipe } from '@angular/common';
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
-import { Api, PayrollConstant } from '@minhdu-fontend/constants';
-import { EmployeeAction } from '@minhdu-fontend/employee';
-import { EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortTypeEnum } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { of, Subject } from 'rxjs';
-import { debounceTime, map, startWith, takeUntil } from 'rxjs/operators';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
+import {DatePipe} from '@angular/common';
+import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {Router} from '@angular/router';
+import {Api, PayrollConstant} from '@minhdu-fontend/constants';
+import {
+  EmployeeType,
+  FilterTypeEnum,
+  ItemContextMenu,
+  SalaryTypeEnum,
+  sortEmployeeTypeEnum
+} from '@minhdu-fontend/enums';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {Observable, of, Subject} from 'rxjs';
+import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
@@ -21,23 +26,29 @@ import {
   selectedTypePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { checkInputNumber, getSelectors, rageDaysInMonth, searchAutocomplete } from '@minhdu-fontend/utils';
-import { AppState } from '../../../../reducers';
-import { AddPayrollComponent } from '../../component/add-Payroll/add-payroll.component';
-import { DialogAllowanceMultipleComponent } from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
-import { DialogOvertimeMultipleComponent } from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
-import { DialogTimekeepingComponent } from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
-import { SelectAddMultiple } from '../../component/dialog-select-add-multiple/select-add-multiple';
-import { SelectUpdateMultiple } from '../../component/dialog-select-update-multiple/select-update-multiple';
-import { RestorePayrollComponent } from '../../component/restore-payroll/restore-payroll.component';
-import { UpdateConfirmComponent } from '../../component/update-comfirm/update-confirm.component';
-import { Payroll } from '../../+state/payroll/payroll.interface';
-import { DialogCategoryComponent } from '../../../employee/components/category/dialog-category.component';
-import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
-import { MatSort } from '@angular/material/sort';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getSelectors, rageDaysInMonth, searchAutocomplete} from '@minhdu-fontend/utils';
+import {AppState} from '../../../../reducers';
+import {AddPayrollComponent} from '../../component/add-Payroll/add-payroll.component';
+import {
+  DialogAllowanceMultipleComponent
+} from '../../component/dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import {
+  DialogOvertimeMultipleComponent
+} from '../../component/dialog-salary/dialog-overtime-multiple/dialog-overtime-multiple.component';
+import {DialogTimekeepingComponent} from '../../component/dialog-salary/timekeeping/dialog-timekeeping.component';
+import {SelectAddMultiple} from '../../component/dialog-select-add-multiple/select-add-multiple';
+import {SelectUpdateMultiple} from '../../component/dialog-select-update-multiple/select-update-multiple';
+import {RestorePayrollComponent} from '../../component/restore-payroll/restore-payroll.component';
+import {UpdateConfirmComponent} from '../../component/update-comfirm/update-confirm.component';
+import {Payroll} from '../../+state/payroll/payroll.interface';
+import {DialogCategoryComponent} from '../../../employee/components/category/dialog-category.component';
+import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import {MatSort} from '@angular/material/sort';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {Category} from "@minhdu-fontend/data-models";
+import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -71,7 +82,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     selectedTypePayroll,
     this.store
   );
-  branchName = getSelectors<string>(selectedBranchPayroll, this.store);
   positionName = getSelectors<string>(selectedPositionPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
@@ -83,7 +93,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
+    if (branches.length === 1) {
+      this.categories$ = this.categoryService.getAll({branch: branches[0].name})
+      this.formGroup.get('branch')?.patchValue(branches[0].name, {emitEvent: false})
+    }
+    return branches
+  }));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
   allowanceTitle?: string;
@@ -101,8 +117,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportBasic = new Subject<boolean>();
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
-  categories$ = this.categoryService.getAll();
-  sortEnum = sortTypeEnum;
+  categories$ = new Observable<Category[]>();
+  sortEnum = sortEmployeeTypeEnum;
+  role!: string | null
+  roleEnum = Role
 
   constructor(
     private readonly message: NzMessageService,
@@ -116,6 +134,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.role = window.localStorage.getItem('role')
     this.loadInitPayroll();
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(PositionActions.loadPosition());
@@ -139,12 +158,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           val === FilterTypeEnum.TIME_SHEET
         ) {
           this.positionName = getSelectors(selectedPositionPayroll, this.store);
-          this.branchName = getSelectors(selectedBranchPayroll, this.store);
-          this.formGroup.get('position')?.setValue(this.positionName, { emitEvent: false });
-          this.formGroup.get('branch')?.setValue(this.branchName, { emitEvent: false });
+          this.formGroup.get('position')?.setValue(this.positionName, {emitEvent: false});
+          this.formGroup.get('branch')?.setValue(getSelectors<string>(selectedBranchPayroll, this.store),
+            {emitEvent: false});
         }
         this.selectedPayroll = val;
-        this.store.dispatch(PayrollAction.updateStatePayroll({ filter: val }));
+        this.store.dispatch(PayrollAction.updateStatePayroll({filter: val}));
       }
       if (
         val !== FilterTypeEnum.STAY &&
@@ -157,7 +176,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             getSelectors(selectedCreateAtPayroll, this.store),
             'yyyy-MM'
           ),
-          { emitEvent: false }
+          {emitEvent: false}
         );
         return this.loadInitPayroll();
       }
@@ -181,7 +200,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.branchName = val?.branch;
           this.positionName = val?.position;
           this.createdAt = val?.createdAt;
           this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
@@ -196,14 +214,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         }
       });
 
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
-
     this.branches$ = searchAutocomplete(
       this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
+    );
+
+    this.positions$ = searchAutocomplete(
+      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
+      this.positions$
     );
 
     this.categoryControl.valueChanges.subscribe(val => {
@@ -211,6 +229,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.loadInitPayroll();
       }
     });
+
+    this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
+      this.categories$ = this.categoryService.getAll({branch: val})
+    })
   }
 
   ngAfterContentChecked() {
@@ -233,7 +255,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: this.positionName,
-      branch: this.branchName,
+      branch: val.branch,
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
@@ -247,7 +269,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     if (this.sort?.active) {
       Object.assign(payroll, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+        orderType: this.sort ? this.sort.direction : ''
       });
     }
     return payroll;
@@ -266,7 +288,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog
       .open(AddPayrollComponent, {
         width: '30%',
-        data: { employeeId: $event?.employee?.id, addOne: true }
+        data: {employeeId: $event?.employee?.id, addOne: true}
       })
       .afterClosed()
       .subscribe((val) => {
@@ -279,7 +301,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   updateConfirmPayroll(id: number, type: string) {
     this.dialog.open(UpdateConfirmComponent, {
       width: '25%',
-      data: { id, type }
+      data: {id, type}
     });
   }
 
@@ -340,7 +362,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({ employee: {} }));
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: {
@@ -406,7 +427,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   restorePayroll(payroll: Payroll) {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
-      data: { payroll: payroll }
+      data: {payroll: payroll}
     });
   }
 
@@ -434,7 +455,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   openDialogAddMultiple() {
-    const ref = this.dialog.open(SelectAddMultiple, { width: 'fit-content' });
+    const ref = this.dialog.open(SelectAddMultiple, {width: 'fit-content'});
     ref.afterClosed().subscribe((val) => {
       if (val) {
         switch (val) {
@@ -509,7 +530,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.PAYROLL
     };
     if (value.createdAt) {
-      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -533,7 +554,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.TIME_SHEET
     };
     if (value.createdAt) {
-      Object.assign(payroll, { createdAt: new Date(value.createdAt) });
+      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
@@ -548,8 +569,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   addCategory() {
-    this.dialog.open(DialogCategoryComponent, { width: 'fit-content' }).afterClosed()
-      .subscribe(() => this.categories$ = this.categoryService.getAll());
+    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
+      .subscribe(() => this.categories$ = this.categoryService.getAll(
+        {branch: this.formGroup.value.branch}));
   }
 
   updateCategory(): any {
@@ -558,9 +580,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     }
     this.dialog.open(DialogCategoryComponent, {
       width: 'fit-content',
-      data: { categoryId: this.categoryControl.value, isUpdate: true }
+      data: {categoryId: this.categoryControl.value, isUpdate: true}
     }).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll();
+      this.categories$ = this.categoryService.getAll({branch: this.formGroup.value.branch});
     });
   }
 

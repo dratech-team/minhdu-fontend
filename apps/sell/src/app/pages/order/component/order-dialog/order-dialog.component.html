@@ -1,11 +1,4 @@
-<div class=' py-3 main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='./assets/icon/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
-  <form [formGroup]='formGroup'>
+<form [formGroup]='formGroup'>
     <mat-tab-group dynamicHeight>
       <mat-tab class='col-12' label='Thông tin đơn hàng' *ngIf='data?.tab === 1'>
         <div [formGroup]='formGroup' style='height: 30vh'>
@@ -39,21 +32,18 @@
               [isRequiredWard]='false'
               [formGroup]='formGroup'
               [form]='checkValid'
-              [submitted]='submitted'
-              (eventSelectWard)='onSelectWard($event)'
-              (eventSelectDistrict)="onSelectDistrict($event)"
-              (eventSelectProvince)="onSelectProvince($event)"
+              [submitting]='submitted'
             >
 
             </app-pick-location>
           </div>
         </div>
       </mat-tab>
-<!--      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>-->
-<!--        <div class='mt-2'>-->
-<!--          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>-->
-<!--        </div>-->
-<!--      </mat-tab>-->
+      <!--      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>-->
+      <!--        <div class='mt-2'>-->
+      <!--          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>-->
+      <!--        </div>-->
+      <!--      </mat-tab>-->
     </mat-tab-group>
     <div class='footer-popup row ml-4'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
@@ -64,4 +54,4 @@
       </button>
     </div>
   </form>
-</div>
+

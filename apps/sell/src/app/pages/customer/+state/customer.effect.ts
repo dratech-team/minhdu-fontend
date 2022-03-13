@@ -28,11 +28,11 @@ export class CustomerEffect {
   @Effect()
   loadCustomers$ = this.action$.pipe(
     ofType(CustomerActions.loadAll),
-    switchMap((props: LoadCustomerDto) => {
+    switchMap((props) => {
       this.customerStore.update(state => ({
         ...state, loading: true
       }));
-      return this.customerService.pagination(props).pipe(
+      return this.customerService.pagination(props.params).pipe(
         map((response) => {
           this.customerStore.update(state => ({ ...state, loading: false }));
           if (response.data.length === 0) {

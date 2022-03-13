@@ -8,6 +8,18 @@
         {{item.name}}
       </mat-option>
     </mat-select>
+    <div>
+      <div [formGroup]="formGroup">
+        <input class='form-control ml-2' type='search' matInput [matAutocomplete]='branch'
+               formControlName='branch' placeholder="Chọn đơn vị">
+        <mat-autocomplete #branch='matAutocomplete'>
+          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'>
+            {{branch.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+
+    </div>
     <div style='width: fit-content'>
       <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
         <mat-option [value]='""'>Tất cả</mat-option>
@@ -15,7 +27,9 @@
         <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
       </mat-select>
     </div>
-    <button class="btn btn-primary ml-1" (click)="updateCategory()">Sửa</button>
+    <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
+            class="btn btn-primary ml-1" (click)="updateCategory()">Sửa
+    </button>
   </div>
   <div class='row ml-3 mt-3 d-flex justify-content-between'>
     <div class='d-flex'>
@@ -56,12 +70,12 @@
                        formControlName='code'>
               </th>
               <th style='width: 210px'>
-                <div mat-sort-header="{{sortEnum.NAME}}"  class='border-top text-center'>Tên nhân viên</div>
+                <div mat-sort-header="{{sortEnum.NAME}}" class='border-top text-center'>Tên nhân viên</div>
                 <input class='form-control text-center ' type='search' formControlName='name'
                        placeholder='Trần Gia Hiệu'>
               </th>
               <th style='width: 200px'>
-                <div mat-sort-header="{{sortEnum.POSITION}}"  class='title-profile'>Chức vụ</div>
+                <div mat-sort-header="{{sortEnum.POSITION}}" class='title-profile'>Chức vụ</div>
                 <input class='form-control' type='search' matInput [matAutocomplete]='position'
                        formControlName='position'>
                 <mat-autocomplete #position='matAutocomplete'>
@@ -72,15 +86,8 @@
                 </mat-autocomplete>
               </th>
               <th style='width: 250px'>
-                <div mat-sort-header="{{sortEnum.BRANCH}}"  class='title-profile'>Đơn vị</div>
-                <input class='form-control' type='search' matInput [matAutocomplete]='branch'
-                       formControlName='branch'>
-                <mat-autocomplete #branch='matAutocomplete'>
-                  <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                              (onSelectionChange)='onSelectBranch(branch.name)'>
-                    {{branch.name}}
-                  </mat-option>
-                </mat-autocomplete>
+                <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
+                <input class='form-control' type='search' matInput disabled>
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -411,7 +418,7 @@
     z-index: 5;
   }
 
-  .table-scroll tbody th{
+  .table-scroll tbody th {
     height: 40px;
   }
 </style>

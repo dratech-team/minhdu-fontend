@@ -30,6 +30,8 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
 import {OrderEffect} from "../order/+state/order.effect";
 import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {RouteEffect} from "../route/+state/route.effect";
+import {MatSortModule} from "@angular/material/sort";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 @NgModule({
   imports: [
@@ -57,7 +59,9 @@ import {RouteEffect} from "../route/+state/route.effect";
     MatStepperModule,
     SharedModule,
     NgxSkeletonLoaderModule.forRoot(),
-    NzMessageModule
+    NzMessageModule,
+    MatSortModule,
+    NzModalModule,
   ],
   declarations: [
     TablePaymentComponent,
@@ -67,7 +71,7 @@ import {RouteEffect} from "../route/+state/route.effect";
     PaymentDialogComponent
   ],
   providers: [
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     DatePipe,
     PickCustomerService
   ]

@@ -33,9 +33,6 @@ export class AddOrderComponent implements OnInit {
   customerType = CustomerType;
   resourceType = CustomerResource;
   submitted = false;
-  wardId?: number;
-  provinceId!: number;
-  districtId?: number
 
   constructor(
     private readonly actions$: Actions,
@@ -134,19 +131,12 @@ export class AddOrderComponent implements OnInit {
       createdAt: val.createdAt,
       endedAt: val.endedAt,
       explain: val.explain,
-      wardId: this.wardId,
-      provinceId: this.provinceId,
+      wardId: val?.ward?.id,
+      districtId: val?.district?.id,
+      provinceId: val.province.id,
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
     this.actions$.dispatch(OrderActions.addOne(order));
-  }
-
-  onSelectWard($event: number) {
-    this.wardId = $event;
-  }
-
-  onSelectDistrict($event: number) {
-    this.districtId = $event;
   }
 }

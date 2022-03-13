@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -6,21 +6,21 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortTypeEnum
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import { of, Subject } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Api, SearchTypeConstant, UnitAllowanceConstant } from '@minhdu-fontend/constants';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { debounceTime, startWith } from 'rxjs/operators';
-import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
-import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { MatDialog } from '@angular/material/dialog';
-import { SalaryService } from '../../service/salary.service';
-import { DatePipe } from '@angular/common';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
+import {of, Subject} from 'rxjs';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/constants';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {debounceTime, startWith} from 'rxjs/operators';
+import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {MatDialog} from '@angular/material/dialog';
+import {SalaryService} from '../../service/salary.service';
+import {DatePipe} from '@angular/common';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
@@ -29,14 +29,16 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { Router } from '@angular/router';
-import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
-import { DialogAllowanceComponent } from '../dialog-salary/dialog-allowance/dialog-allowance.component';
-import { DialogAllowanceMultipleComponent } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { MatSort } from '@angular/material/sort';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Router} from '@angular/router';
+import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {DialogAllowanceComponent} from '../dialog-salary/dialog-allowance/dialog-allowance.component';
+import {
+  DialogAllowanceMultipleComponent
+} from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {MatSort} from '@angular/material/sort';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -62,7 +64,7 @@ export class PayrollAllowanceComponent implements OnInit {
   unit = DatetimeUnitEnum;
   unitAllowance = UnitAllowanceConstant;
   isEventSearch = false;
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
@@ -82,7 +84,6 @@ export class PayrollAllowanceComponent implements OnInit {
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
 
   constructor(
@@ -116,25 +117,25 @@ export class PayrollAllowanceComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     if (this.allowanceTitle) {
-      this.formGroup.get('title')?.setValue(this.allowanceTitle, { emitEvent: false });
+      this.formGroup.get('title')?.setValue(this.allowanceTitle, {emitEvent: false});
 
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
           new Date(getSelectors(selectedCreateAtPayroll, this.store)),
           'yyyy-MM'
         ),
-        { emitEvent: false }
+        {emitEvent: false}
       );
     }
 
     this.eventAddAllowance?.subscribe((val) => {
-      this.formGroup.get('title')?.setValue(val.allowanceTitle, { emitEvent: false });
+      this.formGroup.get('title')?.setValue(val.allowanceTitle, {emitEvent: false});
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
           new Date(getSelectors(selectedCreateAtPayroll, this.store)),
           'yyyy-MM'
         ),
-        { emitEvent: false }
+        {emitEvent: false}
       );
       this.store.dispatch(
         PayrollAction.loadInit({
@@ -159,7 +160,6 @@ export class PayrollAllowanceComponent implements OnInit {
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
           position: value.position,
-          branch: value.branch
         })
       );
       this.store.dispatch(
@@ -172,11 +172,6 @@ export class PayrollAllowanceComponent implements OnInit {
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
     );
 
     this.payrollAllowance$.subscribe((payrolls) => {
@@ -212,7 +207,7 @@ export class PayrollAllowanceComponent implements OnInit {
                     employee: payroll.employee
                   });
                 }
-                this.salaries.push({ salary, employee: payroll.employee });
+                this.salaries.push({salary, employee: payroll.employee});
               }
             });
           }
@@ -227,12 +222,13 @@ export class PayrollAllowanceComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : '',
           exportType: FilterTypeEnum.ALLOWANCE,
           title: value.title
         };
         if (value.createdAt) {
-          Object.assign(payrollAllowance, { createdAt: value.createdAt });
+          Object.assign(payrollAllowance, {createdAt: value.createdAt});
         }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -260,8 +256,8 @@ export class PayrollAllowanceComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
-        this.formGroup.get('createdAt')?.setValue(val.datetime, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('createdAt')?.setValue(val.datetime, {emitEvent: false});
         const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
@@ -274,7 +270,8 @@ export class PayrollAllowanceComponent implements OnInit {
               title: val.title,
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position,
-              branch: val.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             }
           })
         );
@@ -316,7 +313,7 @@ export class PayrollAllowanceComponent implements OnInit {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -330,7 +327,8 @@ export class PayrollAllowanceComponent implements OnInit {
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
-                branch: val.branch
+                branch: getSelectors(selectedBranchPayroll, this.store) ?
+                  getSelectors(selectedBranchPayroll, this.store) : ''
               }
             })
           );
@@ -361,7 +359,7 @@ export class PayrollAllowanceComponent implements OnInit {
             this.salariesSelected = [];
             this.message.success('Xóa lương cơ bản thành công');
             this.store.dispatch(
-              PayrollAction.loadInit({ payrollDTO: this.mapPayrollAllowance() })
+              PayrollAction.loadInit({payrollDTO: this.mapPayrollAllowance()})
             );
           }
         });
@@ -400,7 +398,7 @@ export class PayrollAllowanceComponent implements OnInit {
   }
 
   updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = { salary, employee };
+    const salarySelected = {salary, employee};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,
@@ -434,12 +432,13 @@ export class PayrollAllowanceComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ?
+        getSelectors(selectedBranchPayroll, this.store) : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+        orderType: this.sort ? this.sort.direction : ''
       });
     }
     if (!value.name) {

@@ -1,10 +1,10 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, SearchTypeConstant } from '@minhdu-fontend/constants';
-import { Employee, Salary, SalaryPayroll } from '@minhdu-fontend/data-models';
+import {DatePipe} from '@angular/common';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
+import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -12,13 +12,13 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortTypeEnum
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { of, Subject } from 'rxjs';
-import { debounceTime, startWith } from 'rxjs/operators';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {of, Subject} from 'rxjs';
+import {debounceTime, startWith} from 'rxjs/operators';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
   selectedCreateAtPayroll,
@@ -27,17 +27,17 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { checkInputNumber, getSelectors, searchAutocomplete } from '@minhdu-fontend/utils';
-import { AppState } from '../../../../reducers';
-import { TemplateSalaryAction } from '../../../template/+state/teamlate-salary/template-salary.action';
-import { selectorAllTemplate } from '../../../template/+state/teamlate-salary/template-salary.selector';
-import { SalaryService } from '../../service/salary.service';
-import { setAll, someComplete, updateSelect } from '../../utils/pick-salary';
-import { DialogStayComponent } from '../dialog-salary/dialog-stay/dialog-stay.component';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { MatSort } from '@angular/material/sort';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {AppState} from '../../../../reducers';
+import {TemplateSalaryAction} from '../../../template/+state/teamlate-salary/template-salary.action';
+import {selectorAllTemplate} from '../../../template/+state/teamlate-salary/template-salary.selector';
+import {SalaryService} from '../../service/salary.service';
+import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
+import {DialogStayComponent} from '../dialog-salary/dialog-stay/dialog-stay.component';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {MatSort} from '@angular/material/sort';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-payroll-stay',
@@ -59,7 +59,6 @@ export class PayrollStayComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
-    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store))
   });
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -76,7 +75,7 @@ export class PayrollStayComponent implements OnInit {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   isEventSearch = false;
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -108,14 +107,13 @@ export class PayrollStayComponent implements OnInit {
     this.store.dispatch(OrgchartActions.init());
 
     this.store.dispatch(
-      TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY })
+      TemplateSalaryAction.loadALlTemplate({salaryType: SalaryTypeEnum.STAY})
     );
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
-          branch: value.branch,
           position: value.position
         })
       );
@@ -157,9 +155,9 @@ export class PayrollStayComponent implements OnInit {
                   !this.salariesSelected.some(item => item.salary.id === salary.id) &&
                   !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({ salary, employee: payroll.employee });
+                  this.salariesSelected.push({salary, employee: payroll.employee});
                 }
-                this.salaries.push({ salary, employee: payroll.employee });
+                this.salaries.push({salary, employee: payroll.employee});
               }
             });
           }
@@ -174,12 +172,13 @@ export class PayrollStayComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: getSelectors(selectedBranchPayroll, this.store) ?
+            getSelectors(selectedBranchPayroll, this.store) : '',
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
         if (value.createdAt) {
-          Object.assign(payrollStay, { createdAt: value.createdAt });
+          Object.assign(payrollStay, {createdAt: value.createdAt});
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -211,7 +210,7 @@ export class PayrollStayComponent implements OnInit {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
         const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
@@ -223,7 +222,8 @@ export class PayrollStayComponent implements OnInit {
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position,
-              branch: val.branch
+              branch: getSelectors(selectedBranchPayroll, this.store) ?
+                getSelectors(selectedBranchPayroll, this.store) : ''
             }
           })
         );
@@ -257,7 +257,7 @@ export class PayrollStayComponent implements OnInit {
           this.isSelectSalary = false;
           this.salariesSelected = [];
           const value = this.formGroup.value;
-          this.formGroup.get('title')?.setValue(val.title, { emitEvent: false });
+          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -270,7 +270,8 @@ export class PayrollStayComponent implements OnInit {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: val.branch
+                branch: getSelectors(selectedBranchPayroll, this.store) ?
+                  getSelectors(selectedBranchPayroll, this.store) : ''
               }
             })
           );
@@ -301,7 +302,7 @@ export class PayrollStayComponent implements OnInit {
             this.salariesSelected = [];
             this.message.success('Xóa phụ cấp lương thành công');
             this.store.dispatch(
-              PayrollAction.loadInit({ payrollDTO: this.mapPayrollStay() })
+              PayrollAction.loadInit({payrollDTO: this.mapPayrollStay()})
             );
           }
         });
@@ -340,7 +341,7 @@ export class PayrollStayComponent implements OnInit {
   }
 
   updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = { salary, employee };
+    const salarySelected = {salary, employee};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,
@@ -369,12 +370,13 @@ export class PayrollStayComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position,
-      branch: value.branch
+      branch: getSelectors(selectedBranchPayroll, this.store) ?
+        getSelectors(selectedBranchPayroll, this.store) : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
-        orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+        orderType: this.sort ? this.sort.direction : ''
       });
     }
     if (!value.name) {
@@ -385,10 +387,6 @@ export class PayrollStayComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

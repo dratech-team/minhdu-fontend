@@ -1,18 +1,18 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {OrderService} from '../service/order.service';
-import {OrderActions} from './order.actions';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
-import {Router} from '@angular/router';
-import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import {OrderEntity} from '../enitities/order.interface';
-import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
-import {OrderQuery} from './order.query';
-import {OrderStore} from './order.store';
-import {CommodityStore} from "../../commodity/+state/commodity.store";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { OrderService } from '../service/order.service';
+import { OrderActions } from './order.actions';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { Router } from '@angular/router';
+import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { OrderEntity } from '../enitities/order.interface';
+import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
+import { OrderQuery } from './order.query';
+import { OrderStore } from './order.store';
+import { RouteAction } from '../../route/+state/route.action';
 
 @Injectable()
 export class OrderEffect {
@@ -34,7 +34,7 @@ export class OrderEffect {
     switchMap((props) => {
       this.orderStore.update(state => ({
         ...state, added: false
-      }))
+      }));
       if (!props?.provinceId) {
         throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
       }
@@ -43,10 +43,10 @@ export class OrderEffect {
     map((res) => {
       this.orderStore.update(state => ({
         ...state, added: true
-      }))
-      this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
+      }));
+      this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
       this.orderStore.add(res);
-      this.router.navigate(['don-hang']).then()
+      this.router.navigate(['don-hang']).then();
     }),
     catchError((err) => {
       return throwError(err);
@@ -59,12 +59,16 @@ export class OrderEffect {
     switchMap((props) => {
         this.orderStore.update(state => ({
           ...state, loading: true
-        }))
-        return this.orderService.pagination(props.param).pipe(
+        }));
+        return this.orderService.pagination(Object.assign(
+          props.param,
+          (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
+        ).pipe(
           map((response) => {
               this.orderStore.update(state => ({
                 ...state, loading: false
-              }))
+              }));
+
               if (response.data.length > 0) {
                 response.data.map((order: OrderEntity) => {
                   order.expand = false;
@@ -75,12 +79,12 @@ export class OrderEffect {
                     commodityUniq: response.commodityUniq
                   }));
                 });
-              }else{
+              } else {
                 if (response.data.length === 0) {
                   this.snackBar.openFromComponent(SnackBarComponent, {
                     duration: 2500,
                     panelClass: ['background-snackbar'],
-                    data: {content: 'Đã lấy hết đơn hàng'}
+                    data: { content: 'Đã lấy hết đơn hàng' }
                   });
                 }
               }
@@ -92,7 +96,7 @@ export class OrderEffect {
 
             }
           )
-        )
+        );
       }
     ),
     catchError((err) => throwError(err))
@@ -103,7 +107,7 @@ export class OrderEffect {
     ofType(OrderActions.loadOne),
     switchMap((props) => this.orderService.getOne(props.id)),
     map((order) => {
-        return this.orderStore.upsert(order.id, order)
+        return this.orderStore.upsert(order.id, order);
       }
     ),
     catchError((err) => throwError(err))
@@ -115,19 +119,22 @@ export class OrderEffect {
     switchMap((props) => {
         this.orderStore.update(state => ({
           ...state, added: false
-        }))
-        return this.orderService.update(props.id, props.updates)
+        }));
+        return this.orderService.update(props.id, props.updates).pipe(
+          map((response) => {
+
+            this.orderStore.update(state => ({
+              ...state, added: true
+            }));
+            if (props.inRoute) {
+              this.actions$.dispatch(RouteAction.loadOne({ id: props.inRoute.routeId }));
+            }
+            this.snackBar.open('Cập nhật thành công');
+            this.orderStore.update(response.id, response);
+          })
+        );
       }
     ),
-    map((response) => {
-      this.orderStore.update(state => ({
-        ...state, added: true
-      }))
-      this.orderStore.update(response.id, response);
-    }),
-    tap(() => {
-      this.snackBar.open('Cập nhật thành công');
-    }),
     catchError((err) => {
       return throwError(err);
     })
@@ -151,7 +158,7 @@ export class OrderEffect {
     ofType(OrderActions.payment),
     switchMap((props) =>
       this.orderService.payment(props.id, props.order).pipe(
-        map((_) => OrderActions.loadOne({id: props.id})),
+        map((_) => OrderActions.loadOne({ id: props.id })),
         catchError((err) => throwError(err))
       )
     )
@@ -163,7 +170,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.delete(props.id).pipe(
         map((_) => {
-          this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
+          this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
           this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))
@@ -176,8 +183,8 @@ export class OrderEffect {
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
     map((res) => {
-        this.snackBar.open('Huỷ đơn hàng thành công', '', {duration: 1500});
-        this.orderStore.remove(res.id)
+        this.snackBar.open('Huỷ đơn hàng thành công', '', { duration: 1500 });
+        this.orderStore.remove(res.id);
       }
     ),
     catchError((err) => throwError(err))

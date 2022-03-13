@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { EmployeeAction, selectorEmployeeTotal } from '@minhdu-fontend/employee';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { throwError } from 'rxjs';
-import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { DegreeService } from './service/degree.service';
-import { EmployeeService } from './service/employee.service';
-import { RelativeService } from './service/relative.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Injectable} from '@angular/core';
+import {EmployeeAction, selectorEmployeeTotal} from '@minhdu-fontend/employee';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {select, Store} from '@ngrx/store';
+import {throwError} from 'rxjs';
+import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {DegreeService} from './service/degree.service';
+import {EmployeeService} from './service/employee.service';
+import {RelativeService} from './service/relative.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable()
 export class EmployeeEffect {
@@ -27,7 +27,7 @@ export class EmployeeEffect {
       switchMap((props) => {
         return this.employeeService.pagination(
           Object.assign({}, props.employee,
-            (props?.employee?.isFlatSalary === undefined || props?.employee?.isFlatSalary === null) ? { isFlatSalary: -1 } : {})
+            (props?.employee?.isFlatSalary === undefined || props?.employee?.isFlatSalary === null) ? {isFlatSalary: -1} : {})
         );
       }),
       map((responsePagination) => {
@@ -47,7 +47,10 @@ export class EmployeeEffect {
       withLatestFrom(this.store.pipe(select(selectorEmployeeTotal))),
       map(([props, skip]) =>
         Object.assign(JSON.parse(JSON.stringify(props.employee)), {
-          skip: skip
+          skip: skip,
+          isFlatSalary: (props.employee?.isFlatSalary === undefined || props?.employee?.isFlatSalary === null) ?
+            -1 :
+            props.employee.isFlatSalary
         })
       ),
       switchMap((props) => {
@@ -74,7 +77,7 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.addOne(props.employee)),
       map((employee) => {
         this.message.success('Thêm nhân viên thành công');
-        return EmployeeAction.addEmployeeSuccess({ employee: employee });
+        return EmployeeAction.addEmployeeSuccess({employee: employee});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleEmployeeError());
@@ -89,7 +92,7 @@ export class EmployeeEffect {
       switchMap((props) => this.relativeService.addOneRelative(props.relative)),
       map((res) => {
         this.message.success('Thêm người thân thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleRelativeError());
@@ -104,7 +107,7 @@ export class EmployeeEffect {
       switchMap((props) => this.degreeService.addOneDegree(props.degree)),
       map((res) => {
         this.message.success('Thêm bằng cấp thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleDegreeError());
@@ -119,7 +122,7 @@ export class EmployeeEffect {
       switchMap((props) => this.employeeService.getOne(props.id)),
       map((employee) => {
         this.message.success('Tải nhân viên thành công');
-        return EmployeeAction.getEmployeeSuccess({ employee: employee });
+        return EmployeeAction.getEmployeeSuccess({employee: employee});
       }),
       catchError((err) => throwError(err))
     )
@@ -133,7 +136,7 @@ export class EmployeeEffect {
       ),
       map((res) => {
         this.message.success('Cập nhật nhân viên thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleEmployeeError());
@@ -150,7 +153,7 @@ export class EmployeeEffect {
       ),
       map((res) => {
         this.message.success('Cập nhật người thân thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleDegreeError());
@@ -165,7 +168,7 @@ export class EmployeeEffect {
       switchMap((props) => this.degreeService.update(props.id, props.degree)),
       map((res) => {
         this.message.success('Cập nhật bằng cấp thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => {
         this.store.dispatch(EmployeeAction.handleDegreeError());
@@ -181,7 +184,7 @@ export class EmployeeEffect {
         this.employeeService.delete(props.id).pipe(
           map(() => {
             this.message.success('Xóa nhân viên vĩnh viễn thành công');
-            return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
+            return EmployeeAction.deleteEmployeeSuccess({id: props.id});
           }),
           catchError((err) => throwError(err))
         )
@@ -198,7 +201,7 @@ export class EmployeeEffect {
             this.message.success(props.body?.leftAt ?
               'Nhân viên đã nghỉ tạm thời' :
               'Đã khôi phục nhân viên thành công');
-            return EmployeeAction.deleteEmployeeSuccess({ id: props.id });
+            return EmployeeAction.deleteEmployeeSuccess({id: props.id});
           }),
           catchError((err) => throwError(err))
         )
@@ -212,7 +215,7 @@ export class EmployeeEffect {
       switchMap((props) => this.relativeService.deleteRelative(props.id)),
       map((res) => {
         this.message.success('Xóa người thân thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => throwError(err))
     )
@@ -224,7 +227,7 @@ export class EmployeeEffect {
       switchMap((props) => this.degreeService.deleteDegree(props.id)),
       map((res) => {
         this.message.success('Xóa bằng cấp thành công');
-        return EmployeeAction.updateEmployeeSuccess({ employee: res });
+        return EmployeeAction.updateEmployeeSuccess({employee: res});
       }),
       catchError((err) => throwError(err))
     )

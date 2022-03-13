@@ -30,7 +30,7 @@ export interface Payroll {
   }
   note?: string
 }
-
+ //fix me
 export interface PayrollDTO{
   take?: number,
   skip?: number,
@@ -40,7 +40,7 @@ export interface PayrollDTO{
   unit?: string,
   position?: string,
   department?: string,
-  branch?: string,
+  branch?: string|unknown,
   paidAt?: boolean,
   accConfirmedAt?: boolean,
   filterType?: FilterTypeEnum,

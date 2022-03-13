@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, MenuEnum} from '@minhdu-fontend/enums';
+import {CustomerType, ItemContextMenu, MenuEnum, SortCustomerEnum, SortRouteEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {debounceTime, tap} from 'rxjs/operators';
@@ -16,11 +16,17 @@ import {CustomerTypes} from '../../constants/customer.type';
 import {GenderTypes} from '../../constants/generTypes';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
+import {RouteAction} from "../../../route/+state/route.action";
+import {MatSort} from "@angular/material/sort";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {OrderDialogComponent} from "../../../order/component/order-dialog/order-dialog.component";
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  @ViewChild(MatSort) sort!: MatSort
+
   customers$ = this.customerQuery.selectAll();
   loading$ = this.customerQuery.selectLoading();
 
@@ -33,6 +39,7 @@ export class CustomerComponent implements OnInit {
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
+  sortCustomerEnum = SortCustomerEnum
 
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -53,18 +60,20 @@ export class CustomerComponent implements OnInit {
     private readonly customerQuery: CustomerQuery,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({take: this.pageSize, skip: this.pageIndexInit}));
+    this.actions$.dispatch(CustomerActions.loadAll({params: {take: this.pageSize, skip: this.pageIndexInit}}));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll(this.customer(val, false))
+            CustomerActions.loadAll({params: this.mapCustomer(val, false)})
           );
         })
       )
@@ -72,7 +81,6 @@ export class CustomerComponent implements OnInit {
   }
 
   addOrder($event?: any) {
-    console.log();
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
         customerId: $event.id
@@ -81,9 +89,13 @@ export class CustomerComponent implements OnInit {
   }
 
   add($event?: any) {
-    this.dialog.open(CustomerDialogComponent, {
-      width: '50%',
-      data: $event
+    this.modal.create({
+      nzTitle: 'Thêm khách hàng',
+      nzContent: CustomerDialogComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
     });
   }
 
@@ -91,13 +103,16 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.actions$.dispatch(
       CustomerActions.loadAll(
-        this.customer(val, true)
+        {
+          params: this.mapCustomer(val, true),
+          isScroll: true
+        }
       )
     );
   }
 
-  customer(val: any, isScroll: boolean) {
-    return {
+  mapCustomer(val: any, isScroll: boolean) {
+    const params = {
       skip: isScroll ? this.customerQuery.getCount() : this.pageIndexInit,
       take: this.pageSize,
       resource: val.resource,
@@ -111,8 +126,14 @@ export class CustomerComponent implements OnInit {
       email: val.email.trim(),
       address: val.address.trim(),
       note: val.note.trim(),
-      isScroll: isScroll
     };
+    if (this.sort.active) {
+      Object.assign(params, {
+        orderBy: this.sort.active ? this.sort.active : '',
+        orderType: this.sort ? this.sort.direction : ''
+      });
+    }
+    return params
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -163,5 +184,11 @@ export class CustomerComponent implements OnInit {
         api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
       }
     });
+  }
+
+  sortCustomer() {
+    this.actions$.dispatch(RouteAction.loadAll({
+      params: this.mapCustomer(this.formGroup.value, false)
+    }));
   }
 }
