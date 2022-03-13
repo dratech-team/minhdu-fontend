@@ -69,7 +69,7 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
     this.actions$.dispatch(
-      OrderActions.loadAll({param: {take: this.pageSize, skip: this.pageIndexInit, status: params.status || 0}})
+      OrderActions.loadAll({param: {take: this.pageSize, skip: this.pageIndexInit, status: params.status || -1}})
     );
 
     this.formGroup.valueChanges
@@ -98,7 +98,7 @@ export class OrderComponent implements OnInit {
   order(val: any) {
     const value = Object.assign(JSON.parse(JSON.stringify(val)), {
       skip: this.pageIndexInit,
-      take: this.pageSize
+      take: this.pageSize,
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
       delete value?.createStartedAt;
