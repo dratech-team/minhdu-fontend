@@ -350,7 +350,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   timekeeping() {
-    this.store.dispatch(EmployeeAction.loadInit({employee: {}}));
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: {
