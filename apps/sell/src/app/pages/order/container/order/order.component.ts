@@ -68,7 +68,7 @@ export class OrderComponent implements OnInit {
     deliveryEndedAt: new FormControl(),
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
-    ward: new FormControl(''),
+    province: new FormControl(''),
     bsx: new FormControl('')
   });
 
