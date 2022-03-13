@@ -5,7 +5,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {Router} from '@angular/router';
 import {Api, PayrollConstant} from '@minhdu-fontend/constants';
-import {EmployeeAction} from '@minhdu-fontend/employee';
 import {
   EmployeeType,
   FilterTypeEnum,
@@ -15,7 +14,7 @@ import {
 } from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {of, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -48,6 +47,8 @@ import {DialogCategoryComponent} from '../../../employee/components/category/dia
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {Category} from "@minhdu-fontend/data-models";
+import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -93,7 +94,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
+    if (branches.length === 1) {
+      this.categories$ = this.categoryService.getAll({branch: branches[0].name})
+      this.formGroup.get('branch')?.patchValue(branches[0].name, {emitEvent: false})
+    }
+    return branches
+  }));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
   allowanceTitle?: string;
@@ -111,8 +118,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportBasic = new Subject<boolean>();
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
-  categories$ = this.categoryService.getAll();
+  categories$ = new Observable<Category[]>();
   sortEnum = sortEmployeeTypeEnum;
+  role!: string | null
+  roleEnum = Role
 
   constructor(
     private readonly message: NzMessageService,
@@ -126,6 +135,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.role = window.localStorage.getItem('role')
     this.loadInitPayroll();
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(PositionActions.loadPosition());
@@ -221,6 +231,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.loadInitPayroll();
       }
     });
+
+    this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
+      this.categories$ = this.categoryService.getAll({branch: this.formGroup.value.branch})
+    })
   }
 
   ngAfterContentChecked() {
@@ -558,7 +572,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
 
   addCategory() {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
-      .subscribe(() => this.categories$ = this.categoryService.getAll());
+      .subscribe(() => this.categories$ = this.categoryService.getAll(
+        {branch: this.formGroup.value.branch}));
   }
 
   updateCategory(): any {
@@ -569,7 +584,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {categoryId: this.categoryControl.value, isUpdate: true}
     }).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll();
+      this.categories$ = this.categoryService.getAll({branch: this.formGroup.value.branch});
     });
   }
 
