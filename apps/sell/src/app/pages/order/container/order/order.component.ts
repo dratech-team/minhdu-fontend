@@ -57,8 +57,8 @@ export class OrderComponent implements OnInit {
 
   formGroup = new FormGroup({
     paidType: new FormControl(''),
-    name: new FormControl(''),
-    status: new FormControl(0),
+    customer: new FormControl(''),
+    status: new FormControl(-1),
     explain: new FormControl(''),
     startedAt: new FormControl(),
     endedAt: new FormControl(),
@@ -93,7 +93,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll(this.mapOrder(val))
+            OrderActions.loadAll({param:this.mapOrder(val)})
           );
         })
       )
