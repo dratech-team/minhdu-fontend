@@ -30,7 +30,7 @@ import {
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
-import { catchError, debounceTime, map, startWith } from 'rxjs/operators';
+import { catchError, debounceTime, map, startWith, tap } from 'rxjs/operators';
 import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
 import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
 import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
@@ -123,11 +123,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef
   ) {
-    this.store.pipe(select(selectorAllEmployee)).subscribe(
-      (employees) => {
-        this.employees = employees
-      }
-    );
+    this.store.pipe(select(selectorAllEmployee))
+      .pipe(tap(employees => this.employees = employees))
+      .subscribe();
   }
 
   ngAfterViewChecked() {
