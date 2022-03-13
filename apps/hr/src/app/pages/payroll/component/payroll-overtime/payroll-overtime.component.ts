@@ -12,7 +12,7 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortTypeEnum
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -73,7 +73,7 @@ export class PayrollOvertimeComponent implements OnInit {
   searchTypeConstant = SearchTypeConstant;
   isSelectSalary = false;
   isEventSearch = false;
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));

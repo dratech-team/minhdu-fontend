@@ -9,11 +9,13 @@
   <div class='table-scroll mx-auto my-5' style='width: 96%;' infiniteScroll [infiniteScrollDistance]='0.1'
        [infiniteScrollThrottle]='10' [alwaysCallback]='true' [immediateCheck]='true' [scrollWindow]='false'
        (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup' style='min-width: 3000px'>
+    <table matSort
+           (matSortChange)='sortOrder()'
+      [formGroup]='formGroup' style='min-width: 3150px'>
       <thead>
       <tr>
         <th style='width: 200px'>
-          <div>Ngày hẹn giao</div>
+          <div class="d-flex justify-content-center" mat-sort-header='{{sortOrderEnum.END}}'>Ngày hẹn giao</div>
           <div class='d-flex border-top'>
             <mat-date-range-input [rangePicker]='rangePicker'>
               <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
@@ -29,15 +31,15 @@
           </div>
         </th>
         <th style='width: 250px'>
-          <div class=''>Khách hàng</div>
+          <div class="d-flex justify-content-center" mat-sort-header='{{sortOrderEnum.CUSTOMER}}'>Khách hàng</div>
           <input formControlName='name' class='form-control' type='search'>
         </th>
         <th style='min-width: 250px'>
-          <div class=''>Điểm đến</div>
+          <div class="d-flex justify-content-center" mat-sort-header='{{sortOrderEnum.WARD}}'>Điểm đến</div>
           <input formControlName='ward' class='form-control' type='search'>
         </th>
-        <th>
-          <div class=''>Ngày tạo</div>
+        <th style="width: 150px">
+          <div class="d-flex justify-content-center" mat-sort-header='{{sortOrderEnum.CREATED_AT}}'>Ngày tạo</div>
           <div class='d-flex border-top'>
             <!--            <mat-date-range-input [rangePicker]='picker'>-->
             <!--              <input matStartDate formControlName='createStartedAt' placeholder='Từ ngày'>-->
@@ -53,11 +55,11 @@
           </div>
         </th>
         <th>
-          <div class=''>Xe xuất</div>
-          <input formControlName='ward' class='form-control' type='text'>
+          <div class="d-flex justify-content-center align-items-center">Xe xuất</div>
+          <input formControlName='bsx' class='form-control' type='search'>
         </th>
         <th style="width: 150px;">
-          <div>Hàng hóa</div>
+          <div class="d-flex justify-content-center align-items-center">Hàng hóa</div>
           <div class='d-flex'>
             <div class='d-flex flex-column w-100 ' *ngFor='let item of commodities$ | async'>
               <div class='border' style='width: 401px'>
@@ -72,17 +74,17 @@
           </div>
         </th>
         <th style="width: 150px">
-          <div style="color: red">Tổng</div>
+          <div class="d-flex justify-content-center align-items-center" style="color: red">Tổng</div>
           <div class="border">
             Số lượng
           </div>
         </th>
         <th>
-          <div class=''>Tiền hàng</div>
+          <div class="d-flex justify-content-center align-items-center">Tiền hàng</div>
           <input formControlName='commodityTotal' class='form-control' type='number'>
         </th>
         <th>
-          <div class=''> Thanh toán</div>
+          <div class="d-flex justify-content-center align-items-center"> Thanh toán</div>
           <select class='select border-top' style='width: 100%' matNativeControl required formControlName='paidType'>
             <option value='{{paidType.PAID}}'>Có thanh toán</option>
             <option value='{{paidType.UNPAID}}'>Chưa thanh toán</option>
@@ -94,11 +96,11 @@
         <!--          <input class='form-control' [disabled]='true'>-->
         <!--        </th>-->
         <th>
-          <div class=''>Diễn giải</div>
+          <div class="d-flex justify-content-center align-items-center">Diễn giải</div>
           <input formControlName='explain' class='form-control' type='text' [disabled]='true'>
         </th>
         <th>
-          <div class=''> Trạng thái đơn hàng</div>
+          <div class="d-flex justify-content-center align-items-center"> Trạng thái đơn hàng</div>
           <mat-select class='select border-top' style='width: 100%' required formControlName='status'>
             <mat-option value='{{statusOrder.DELIVERED}}'>Đã giao</mat-option>
             <mat-option value='{{statusOrder.DELIVERING}}'>Đang giao</mat-option>

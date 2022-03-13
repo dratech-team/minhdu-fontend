@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, ItemContextMenu, sortTypeEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, ItemContextMenu, sortEmployeeTypeEnum } from '@minhdu-fontend/enums';
 import { OvertimeService } from '../../service/overtime.service';
 import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
 import { Observable } from 'rxjs';
@@ -41,7 +41,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
   @Output() EventSortPayroll = new EventEmitter<MatSort>();
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
   @ViewChild(MatSort) sort!: MatSort;
 
   unit = DatetimeUnitEnum;

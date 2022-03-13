@@ -13,7 +13,7 @@ export * from './hr/recipeType.enum';
 export * from './hr/filterType.enum';
 export * from './hr/type-employee';
 export * from './hr/overviewFilter.enum';
-export * from './hr/type-sort';
+export * from './hr/type-sort-employee';
 
 // sell
 export * from './sell/customer-type';
@@ -27,6 +27,8 @@ export * from './sell/menuEnum';
 export * from './sell/overview.enum';
 export * from './sell/status-route';
 export * from './sell/page-type.enum';
+export * from './sell/sort-route.enum';
+export * from './sell/sort-order.enum';
 
 // warehouse
 export * from './warehouse/medicine/medicine-unit.enum';

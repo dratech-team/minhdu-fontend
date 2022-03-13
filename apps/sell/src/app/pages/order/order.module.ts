@@ -32,36 +32,38 @@ import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import {CustomerEffect} from "../customer/+state/customer.effect";
 import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {RouteEffect} from "../route/+state/route.effect";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
-  imports: [
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect,
-      RouteEffect
-    ]),
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    ComponentsModule,
-    OrderRoutingModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatTabsModule,
-    CustomerModule,
-    MatCheckboxModule,
-    CommodityModule,
-    NgxMatSelectSearchModule,
-    MatAutocompleteModule,
-    RouteModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatDatepickerModule,
-    CommonModule,
-    MatProgressSpinnerModule
-  ],
+    imports: [
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect,
+            RouteEffect
+        ]),
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+        OrderRoutingModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatTabsModule,
+        CustomerModule,
+        MatCheckboxModule,
+        CommodityModule,
+        NgxMatSelectSearchModule,
+        MatAutocompleteModule,
+        RouteModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatDatepickerModule,
+        CommonModule,
+        MatProgressSpinnerModule,
+        MatSortModule
+    ],
   declarations: [
     TableRouteComponent,
     PaymentHistoryComponent,

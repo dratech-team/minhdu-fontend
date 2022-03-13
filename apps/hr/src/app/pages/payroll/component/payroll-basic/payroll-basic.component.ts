@@ -12,7 +12,7 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortTypeEnum
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -52,7 +52,7 @@ export class PayrollBasicComponent implements OnInit {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
   pageSize = 30;
   pageIndex = 0;
   salaries: SalaryPayroll[] = [];

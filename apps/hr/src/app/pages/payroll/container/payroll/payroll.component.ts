@@ -6,7 +6,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { Api, PayrollConstant } from '@minhdu-fontend/constants';
 import { EmployeeAction } from '@minhdu-fontend/employee';
-import { EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortTypeEnum } from '@minhdu-fontend/enums';
+import { EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum, sortEmployeeTypeEnum } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
 import { of, Subject } from 'rxjs';
@@ -102,7 +102,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   eventExportStay = new Subject<boolean>();
   eventExportAllowance = new Subject<boolean>();
   categories$ = this.categoryService.getAll();
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   constructor(
     private readonly message: NzMessageService,

@@ -12,7 +12,7 @@ import {
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum, sortTypeEnum
+  SearchTypeEnum, sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { select, Store } from '@ngrx/store';
@@ -71,7 +71,7 @@ export class PayrollAbsentComponent implements OnInit {
   salariesSelected: SalaryPayroll[] = [];
   isSelectSalary = false;
   salaries: SalaryPayroll[] = [];
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);

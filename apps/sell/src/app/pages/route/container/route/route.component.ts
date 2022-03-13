@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api} from '@minhdu-fontend/constants';
-import {MenuEnum, StatusRoute} from '@minhdu-fontend/enums';
+import {MenuEnum, SortRouteEnum, StatusRoute} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
@@ -15,20 +15,26 @@ import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.co
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from "@angular/common";
+import {MatSort, Sort} from "@angular/material/sort";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
+  @ViewChild(MatSort) sort!: MatSort
   pageSize = 30;
   pageIndexInit = 0;
   ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
   statusRoute = StatusRoute;
   routes: RouteEntity[] = [];
+  sortRouteEnum = SortRouteEnum
   formGroup = new FormGroup({
-    startedAt: new FormControl(),
-    endedAt: new FormControl(''),
+    startedAt: new FormControl(
+      this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
+    endedAt: new FormControl(
+      this.datePipe.transform(getLastDayInMonth(new Date()), 'yyyy-MM-dd')),
     driver: new FormControl(''),
     name: new FormControl(''),
     bsx: new FormControl(''),
@@ -58,13 +64,20 @@ export class RouteComponent implements OnInit {
       });
     });
     this.actions$.dispatch(
-      RouteAction.loadAll({params: {take: this.pageSize, skip: this.pageIndexInit}})
+      RouteAction.loadAll({
+        params: {
+          take: this.pageSize,
+          skip: this.pageIndexInit,
+          startedAt: getFirstDayInMonth(new Date()),
+          endedAt: getLastDayInMonth(new Date())
+        }
+      })
     );
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteAction.loadAll({params: this.route(val)}));
+          this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val)}));
         })
       )
       .subscribe();
@@ -78,13 +91,20 @@ export class RouteComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(RouteAction.loadAll({params: this.route(val), isScroll: true}));
+    this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val), isScroll: true}));
   }
 
-  route(val: RouteEntity, isScroll?: boolean) {
+  mapRoute(val: RouteEntity, isScroll?: boolean) {
+    if (this.sort.active) {
+      Object.assign(val, {
+        orderBy: this.sort.active ? this.sort.active : '',
+        orderType: this.sort ? this.sort.direction : ''
+      });
+    }
     return Object.assign(val, {
       skip: isScroll ? this.routeQuery.getCount() : 0,
       take: this.pageSize
+
     });
   }
 
@@ -143,4 +163,11 @@ export class RouteComponent implements OnInit {
       }
     });
   }
+
+  sortRoute() {
+    this.actions$.dispatch(RouteAction.loadAll({
+      params: this.mapRoute(this.formGroup.value)
+    }));
+  }
+
 }

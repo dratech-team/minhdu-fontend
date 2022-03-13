@@ -6,7 +6,7 @@ import {
   ItemContextMenu,
   SalaryTypeEnum,
   SearchTypeEnum,
-  sortTypeEnum
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import { of, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -62,7 +62,7 @@ export class PayrollAllowanceComponent implements OnInit {
   unit = DatetimeUnitEnum;
   unitAllowance = UnitAllowanceConstant;
   isEventSearch = false;
-  sortEnum = sortTypeEnum;
+  sortEnum = sortEmployeeTypeEnum;
 
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);

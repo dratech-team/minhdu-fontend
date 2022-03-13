@@ -1,4 +1,4 @@
-export enum sortTypeEnum {
+export enum sortEmployeeTypeEnum {
   NAME = 'NAME',
   STT = 'STT',
   BRANCH = 'BRANCH',
