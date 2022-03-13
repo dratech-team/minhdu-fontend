@@ -4,4 +4,5 @@ export interface LoadRouteDto extends Pick<Partial<RouteEntity>, 'name' | 'start
   take: number;
   skip: number;
   orderId?: number;
+  status?: number;
 }
