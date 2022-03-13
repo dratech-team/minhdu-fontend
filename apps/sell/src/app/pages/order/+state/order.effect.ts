@@ -65,6 +65,7 @@ export class OrderEffect {
               this.orderStore.update(state => ({
                 ...state, loading: false
               }))
+
               if (response.data.length > 0) {
                 response.data.map((order: OrderEntity) => {
                   order.expand = false;

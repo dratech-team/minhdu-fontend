@@ -80,7 +80,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         tap((_) => {
           this.eventSearch = true;
           const val = this.formGroup.value;
-          this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(val)}));
+          this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder()}));
         })
       ).subscribe();
       this.orders$.subscribe(orders => {
