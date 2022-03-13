@@ -16,5 +16,6 @@ export enum sortEmployeeTypeEnum {
   FLAT_SALARY = "FLAT_SALARY",
   EMPLOYEE_TYPE = "EMPLOYEE_TYPE",
   CODE = "CODE",
-  NOTE = 'NOTE'
+  NOTE = 'NOTE',
+  CREATE = "CREATE"
 }
