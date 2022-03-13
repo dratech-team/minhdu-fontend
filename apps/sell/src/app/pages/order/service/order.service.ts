@@ -25,6 +25,7 @@ export class OrderService extends BaseService<OrderEntity> {
   }
 
   pagination(params?: LoadOrderDto): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
+    console.log(params)
     return super.pagination(params);
   }
 
