@@ -40,28 +40,30 @@ import {FilterDayPipe} from "./pipes/filter-day.pipe";
 import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
 import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @NgModule({
-  imports: [
-    MatSnackBarModule,
-    CommonModule,
-    RouterModule,
-    MatMenuModule,
-    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
-    FormsModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    InfiniteScrollModule,
-    ReactiveFormsModule,
-    NgxChartsModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    BsDatepickerModule.forRoot(),
-    NgxSkeletonLoaderModule,
-  ],
+    imports: [
+        MatSnackBarModule,
+        CommonModule,
+        RouterModule,
+        MatMenuModule,
+        ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
+        FormsModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        InfiniteScrollModule,
+        ReactiveFormsModule,
+        NgxChartsModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        BsDatepickerModule.forRoot(),
+        NgxSkeletonLoaderModule,
+        NzSelectModule,
+    ],
   declarations: [
     SwimLaneChartComponent,
     SnackBarComponent,

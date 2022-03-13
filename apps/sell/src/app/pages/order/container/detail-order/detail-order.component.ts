@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OrderEntity} from '../../enitities/order.interface';
 import {CommodityUnit, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
@@ -6,7 +6,6 @@ import {OrderActions} from '../../+state/order.actions';
 import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {CommodityAction} from '../../../commodity/+state/commodity.action';
-import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {CommodityDialogComponent} from '../../../commodity/component/commodity-dialog/commodity-dialog.component';
 import {PickCommodityComponent} from '../../../../shared/components/pick-commodity/pick-commodity.component';
 import {
@@ -22,7 +21,7 @@ import {OrderQuery} from '../../+state/order.query';
 import {OrderHistoryEntity} from '../../enitities/order-history.entity';
 import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
-
+import {NzModalService} from "ng-zorro-antd/modal";
 @Component({
   templateUrl: 'detail-order.component.html'
 })
@@ -46,7 +45,9 @@ export class DetailOrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
-    private readonly orderHistoryService: OrderHistoryService
+    private readonly orderHistoryService: OrderHistoryService,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
@@ -76,7 +77,17 @@ export class DetailOrderComponent implements OnInit {
 
   updateOrder(order: OrderEntity, type?: 'GENERAL' | 'COMMODITY') {
     if (type === 'GENERAL') {
-      this.dialog.open(OrderDialogComponent, {width: '60%', data: {order: order, tab: 1, type: 'UPDATE'}});
+      this.modal.create({
+        nzTitle: 'Sửa đơn hàng',
+        nzContent: OrderDialogComponent,
+        nzViewContainerRef: this.viewContentRef,
+        nzComponentParams: {
+          data: {order: order, tab: 1, type: 'UPDATE'}
+        },
+        nzFooter: null,
+        nzWidth: '65vw',
+        nzMaskClosable: false
+      });
     } else {
       this.dialog.open(PickCommodityComponent, {
         width: '60%',

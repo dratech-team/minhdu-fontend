@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { DevelopmentComponent, DialogDeleteComponent } from '@minhdu-fontend/components';
-import { ConvertBoolean, MenuEnum, PaidType } from '@minhdu-fontend/enums';
-import { CustomerActions } from '../../+state/customer.actions';
-import { CustomerEntity } from '../../entities/customer.entity';
-import { OrderEntity } from '../../../order/enitities/order.interface';
-import { CustomerDialogComponent } from '../../component/customer-dialog/customer-dialog.component';
-import { PaymentDialogComponent } from '../../component/payment-dialog/payment-dialog.component';
-import { CustomerQuery } from '../../+state/customer.query';
-import { Actions } from '@datorama/akita-ng-effects';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
+import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/components';
+import {ConvertBoolean, MenuEnum, PaidType} from '@minhdu-fontend/enums';
+import {CustomerActions} from '../../+state/customer.actions';
+import {CustomerEntity} from '../../entities/customer.entity';
+import {OrderEntity} from '../../../order/enitities/order.interface';
+import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
+import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
+import {CustomerQuery} from '../../+state/customer.query';
+import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -30,14 +31,16 @@ export class DetailCustomerComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadOne({ id: this.getId }));
-    this.actions$.dispatch(CustomerActions.loadOrderDelivered({take: 20, skip: 0, customerId: this.getId }));
-    this.actions$.dispatch(CustomerActions.loadOrderDelivering({take: 20, skip: 0, customerId: this.getId }));
+    this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
+    this.actions$.dispatch(CustomerActions.loadOrderDelivered({take: 20, skip: 0, customerId: this.getId}));
+    this.actions$.dispatch(CustomerActions.loadOrderDelivering({take: 20, skip: 0, customerId: this.getId}));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
@@ -50,10 +53,18 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   updateCustomer(customer: CustomerEntity) {
-    this.dialog.open(CustomerDialogComponent, {
-      data: { customer, isUpdate: true },
-      width: '50%'
+    this.modal.create({
+      nzTitle: 'Sửa khách hàng',
+      nzContent: CustomerDialogComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzComponentParams: {
+        data: {customer, isUpdate: true}
+      },
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
     });
+
   }
 
   get getId(): number {
@@ -66,7 +77,7 @@ export class DetailCustomerComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerActions.remove({ id: id }));
+        this.actions$.dispatch(CustomerActions.remove({id: id}));
       }
     });
   }
@@ -74,11 +85,11 @@ export class DetailCustomerComponent implements OnInit {
   payment(id: number) {
     this.dialog.open(PaymentDialogComponent, {
       width: 'fit-content',
-      data: { id: id }
+      data: {id: id}
     });
   }
 
   development() {
-    this.dialog.open(DevelopmentComponent, { width: '25%' });
+    this.dialog.open(DevelopmentComponent, {width: '25%'});
   }
 }

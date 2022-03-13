@@ -45,10 +45,7 @@
               class='col-9'
               [formGroup]='formGroup'
               [form]='checkValid'
-              [submitted]='submitted'
-              (eventSelectWard)='onSelectWard($event)'
-              (eventSelectDistrict)="onSelectDistrict($event)"
-              (eventSelectProvince)='provinceId =$event'
+              [submitting]='submitted'
               [isRequiredDistrict]='false'
               [isRequiredWard]='false'
             ></app-pick-location>

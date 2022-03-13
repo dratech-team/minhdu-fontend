@@ -156,7 +156,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
-      console.log(val.branchss.id);
       this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
     });
 

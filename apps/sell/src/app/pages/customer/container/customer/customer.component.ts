@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -18,6 +18,8 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
 import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {OrderDialogComponent} from "../../../order/component/order-dialog/order-dialog.component";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -58,7 +60,9 @@ export class CustomerComponent implements OnInit {
     private readonly customerQuery: CustomerQuery,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
@@ -77,7 +81,6 @@ export class CustomerComponent implements OnInit {
   }
 
   addOrder($event?: any) {
-    console.log();
     this.router.navigate(['/don-hang/them-don-hang'], {
       queryParams: {
         customerId: $event.id
@@ -86,9 +89,13 @@ export class CustomerComponent implements OnInit {
   }
 
   add($event?: any) {
-    this.dialog.open(CustomerDialogComponent, {
-      width: '50%',
-      data: $event
+    this.modal.create({
+      nzTitle: 'Thêm khách hàng',
+      nzContent: CustomerDialogComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
     });
   }
 

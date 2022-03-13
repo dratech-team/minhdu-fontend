@@ -4,12 +4,12 @@
       <div class='form-group'>
         <app-add-profile [formGroup]='formGroup' [submitted]='submitting' [form]='f'></app-add-profile>
         <app-pick-location
+          [isUpdateEmployee]="true"
           [ward]='employeeInit?.ward'
           [isUpdate]='!!employeeInit'
           [formGroup]='formGroup'
-          [submitted]='submitting'
+          [submitting]='submitting'
           [form]='f'
-          (eventSelectWard)='onSelectWard($event)'
         >
         </app-pick-location>
         <div class='row mt-3 d-flex'>

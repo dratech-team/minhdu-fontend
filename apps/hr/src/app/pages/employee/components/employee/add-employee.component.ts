@@ -15,7 +15,6 @@ import {AppState} from '../../../../reducers';
 import {EmployeeType, FlatSalary, RecipeType} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {DatePipe} from '@angular/common';
-import {PositionActions} from 'libs/orgchart/src/lib/+state/position';
 import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
 import {Branch, Employee, Position} from '@minhdu-fontend/data-models';
 import {first} from 'rxjs/operators';
@@ -40,7 +39,6 @@ export class AddEmployeeComponent implements OnInit {
   lstPosition: Position [] = [];
   branches$ = this.store.pipe(select(getAllOrgchart));
   submitting = false;
-  wardId!: number;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
   recipeTypesConstant = RecipeTypesConstant;
@@ -63,7 +61,6 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(OrgchartActions.init());
     if (this.employeeInit) {
-      this.wardId = this.employeeInit.ward.id;
       if (this.employeeInit?.branch?.positions) {
         this.lstPosition = this.employeeInit.branch.positions
       }
@@ -113,9 +110,9 @@ export class AddEmployeeComponent implements OnInit {
       employeeType: [this.employeeInit ?
         this.employeeInit.type : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
       category: [this.employeeInit?.category?.id],
-      province: [this.employeeInit?.ward?.district?.province.name, Validators.required],
-      district: [this.employeeInit?.ward?.district?.name, Validators.required],
-      ward: [this.employeeInit?.ward?.name, Validators.required],
+      province: [this.employeeInit?.ward?.district?.province, Validators.required],
+      district: [this.employeeInit?.ward?.district, Validators.required],
+      ward: [this.employeeInit?.ward, Validators.required],
       branch: [this.employeeInit?.branch, Validators.required],
       position: [this.employeeInit?.position, Validators.required]
 
@@ -178,11 +175,6 @@ export class AddEmployeeComponent implements OnInit {
     })
   }
 
-
-  onSelectWard($event: number) {
-    this.wardId = $event;
-  }
-
   checkNumberInput(event: any) {
     return checkInputNumber(event);
   }
@@ -207,7 +199,7 @@ export class AddEmployeeComponent implements OnInit {
       identify: value?.identify?.toString(),
       idCardAt: value.idCardAt ? new Date(value.idCardAt) : undefined,
       issuedBy: value.issuedBy,
-      wardId: this.wardId || this.employeeInit?.wardId,
+      wardId: value.ward.id,
       address: value.address,
       religion: value.religion ? value.religion : undefined,
       ethnicity: value.ethnicity ? value.ethnicity : undefined,

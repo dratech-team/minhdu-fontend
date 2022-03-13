@@ -31,36 +31,38 @@ import {OrderEffect} from "../order/+state/order.effect";
 import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {RouteEffect} from "../route/+state/route.effect";
 import {MatSortModule} from "@angular/material/sort";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 @NgModule({
-    imports: [
-        ComponentsModule,
-        MatSnackBarModule,
-        HttpClientModule,
-        CustomerRoutingModule,
-        MatInputModule,
-        InfiniteScrollModule,
-        CommonModule,
-        StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-        AkitaNgEffectsModule.forFeature([
-            OrderEffect,
-            CustomerEffect,
-            CommodityEffect,
-            RouteEffect
-        ]),
-        MatCheckboxModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatDialogModule,
-        FormsModule,
-        MatTabsModule,
-        MatStepperModule,
-        SharedModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        NzMessageModule,
-        MatSortModule
-    ],
+  imports: [
+    ComponentsModule,
+    MatSnackBarModule,
+    HttpClientModule,
+    CustomerRoutingModule,
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule,
+    StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatDialogModule,
+    FormsModule,
+    MatTabsModule,
+    MatStepperModule,
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    NzMessageModule,
+    MatSortModule,
+    NzModalModule,
+  ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,
@@ -69,7 +71,7 @@ import {MatSortModule} from "@angular/material/sort";
     PaymentDialogComponent
   ],
   providers: [
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     DatePipe,
     PickCustomerService
   ]
