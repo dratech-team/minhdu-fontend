@@ -30,13 +30,13 @@ import {
 } from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {catchError, debounceTime, startWith} from 'rxjs/operators';
+import {catchError, debounceTime, map, startWith} from 'rxjs/operators';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
 import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
 import {Observable, of, Subject, throwError} from 'rxjs';
-import {District, Employee, Province, Ward} from '@minhdu-fontend/data-models';
+import {Category, District, Employee, Province, Ward} from '@minhdu-fontend/data-models';
 import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
@@ -48,6 +48,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -65,7 +66,13 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
+    if (branches.length === 1) {
+      this.categories$ = this.categoryService.getAll({branch: branches[0].name})
+      this.formGroup.get('branch')?.setValue(branches[0].name,{emitEvent: false})
+    }
+    return branches
+  }));
   provinces$ = this.store.pipe(select(selectAllProvince));
 
   roleEnum = Role
@@ -83,11 +90,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   branchName = '';
   positionName = '';
   eventScrollX = new Subject<any>();
-  categories$ = this.categoryService.getAll();
+  categories$ = new Observable<Category[]>();
   employees: Employee[] = [];
   employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   categoryControl = new FormControl('');
-  role!: string|null
+  role!: string | null
   formGroup = new FormGroup({
     name: new FormControl(''),
     // birthday: new FormControl(''),
@@ -214,6 +221,10 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         }));
       }
     });
+
+    this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+      this.categories$ = this.categoryService.getAll({branch: branch})
+    })
   }
 
   add(): void {
