@@ -14,47 +14,47 @@
     <thead>
     <tr>
       <th style='min-width: 200px'>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.NAME}}'>Tên Tuyến đường</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.NAME}}'>Tên Tuyến đường</div>
         <input formControlName='name' class='form-control' type='search' placeholder=''>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.START}}'>Ngày bắt đầu</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.START}}'>Ngày bắt đầu</div>
         <input formControlName='startedAt' class=' form-control' type='date'>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.END}}'>Ngày Kết thúc</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.END}}'>Ngày Kết thúc</div>
         <input formControlName='endedAt' class='form-control' type='date'>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.DRIVER}}'>Tên Tài xế</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.DRIVER}}'>Tên Tài xế</div>
         <input formControlName='driver' class=' form-control' type='search' placeholder='Trần Gia Hiệu'>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.CUSTOMER}}'>Khách hàng</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.CUSTOMER}}'>Khách hàng</div>
         <input formControlName='driver' class=' form-control' type='search' placeholder='Trần Gia Hiệu'>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.BSX}}'>Biển số xe</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.BSX}}'>Biển số xe</div>
         <input formControlName='bsx' class='form-control' type='search' placeholder='77G1-55555'>
       </th>
       <th>
-        <div class="d-flex justify-content-center" mat-sort-header='{{sortRouteEnum.GARAGE}}'>Nhà xe</div>
+        <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.GARAGE}}'>Nhà xe</div>
         <input type='search' class='form-control' placeholder='Nhập nhà xe' formControlName='garage'>
       </th>
       <th>
-        <div class="d-flex justify-content-center">Trạng thái chuyến xe</div>
+        <div class='d-flex justify-content-center'>Trạng thái chuyến xe</div>
         <select class='select border-top' style='width: 100%' matNativeControl required
-                formControlName='statusRoute'>
-          <option value='{{statusRoute.RUNNING}}'>Đang chạy</option>
-          <option value='{{statusRoute.COMPLETE}}'>Hoàn thành</option>
-          <option value=''>Tất cả</option>
+                formControlName='status'>
+          <option value='0'>Đang chạy</option>
+          <option value='1'>Hoàn thành</option>
+          <option value='-1'>Tất cả</option>
         </select>
       </th>
     </tr>
     </thead>
     <tbody>
     <tr *ngIf='(loading$ | async); else route'>
-      <th colSpan="100">
+      <th colSpan='100'>
         <ngx-skeleton-loader count='10' appearance='line'></ngx-skeleton-loader>
       </th>
     </tr>
@@ -97,10 +97,10 @@
 </div>
 <app-mouse-right
   #child
-  [items]="[ItemContextMenu.ENDED_AT]"
+  [items]='[ItemContextMenu.ENDED_AT]'
   (onAdd)='add()'
   (onDel)='deleteRoute($event)'
   (onUpdate)='detailRoute($event.id, true)'
-  (onEnd)="onEnd($event)"
+  (onEnd)='onEnd($event)'
 >
 </app-mouse-right>
