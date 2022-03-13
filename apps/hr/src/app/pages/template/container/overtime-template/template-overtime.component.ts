@@ -1,28 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Position } from '@minhdu-fontend/data-models';
-import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Position} from '@minhdu-fontend/data-models';
+import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import * as lodash from 'lodash';
-import { debounceTime, startWith, tap } from 'rxjs/operators';
-import { TemplateOvertimeAction } from '../../+state/template-overtime/template-overtime.action';
+import {debounceTime, startWith, tap} from 'rxjs/operators';
+import {TemplateOvertimeAction} from '../../+state/template-overtime/template-overtime.action';
 import {
   selectorAllTemplate,
   selectTemplateAdding,
   selectTemplateLoaded,
   selectTotalTemplateOvertime
 } from '../../+state/template-overtime/template-overtime.selector';
-import { searchAutocomplete } from '@minhdu-fontend/utils';
-import { AppState } from '../../../../reducers';
-import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
-import { DialogTemplateOvertimeComponent } from '../../component/template-overtime/dialog-template-overtime.component';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { of } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {searchAutocomplete} from '@minhdu-fontend/utils';
+import {AppState} from '../../../../reducers';
+import {PayrollAction} from '../../../payroll/+state/payroll/payroll.action';
+import {DialogTemplateOvertimeComponent} from '../../component/template-overtime/dialog-template-overtime.component';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {of} from 'rxjs';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'template-overtime.component.html'
@@ -103,11 +103,11 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   deleteOvertime($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(
-          TemplateOvertimeAction.deleteTemplate({ id: $event.id })
+          TemplateOvertimeAction.deleteTemplate({id: $event.id})
         );
       }
     });
@@ -183,19 +183,24 @@ export class TemplateOvertimeComponent implements OnInit {
     if (position) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          branch: template.branch.name,
           position: position.name,
           filter: FilterTypeEnum.OVERTIME
         })
       );
-    } else {
+    }
+    if(template?.branch){
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          branch: template.branch.name,
-          filter: FilterTypeEnum.OVERTIME
+          branch: template.branch.name
         })
       );
     }
+    this.store.dispatch(
+      PayrollAction.updateStatePayroll({
+        filter: FilterTypeEnum.OVERTIME
+      })
+    );
+
     this.router
       .navigate(['phieu-luong'], {
         queryParams: {
