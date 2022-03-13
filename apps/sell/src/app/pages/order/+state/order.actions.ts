@@ -21,7 +21,7 @@ const loadOne = createAction(
 
 const update = createAction(
   '[ORDER] Update',
-  props<{ id: OrderEntity['id'], updates: UpdateOrderDto }>()
+  props<{ id: OrderEntity['id'], updates: UpdateOrderDto , inRoute?: {routeId: number}}>()
 );
 
 const hide = createAction(

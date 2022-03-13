@@ -13,6 +13,7 @@ import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
 import {CommodityStore} from "../../commodity/+state/commodity.store";
+import {RouteAction} from "../../route/+state/route.action";
 
 @Injectable()
 export class OrderEffect {
@@ -76,7 +77,7 @@ export class OrderEffect {
                     commodityUniq: response.commodityUniq
                   }));
                 });
-              }else{
+              } else {
                 if (response.data.length === 0) {
                   this.snackBar.openFromComponent(SnackBarComponent, {
                     duration: 2500,
@@ -117,18 +118,21 @@ export class OrderEffect {
         this.orderStore.update(state => ({
           ...state, added: false
         }))
-        return this.orderService.update(props.id, props.updates)
+        return this.orderService.update(props.id, props.updates).pipe(
+          map((response) => {
+
+            this.orderStore.update(state => ({
+              ...state, added: true
+            }))
+            if (props.inRoute) {
+              this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}))
+            }
+            this.snackBar.open('Cập nhật thành công');
+            this.orderStore.update(response.id, response);
+          }),
+        )
       }
     ),
-    map((response) => {
-      this.orderStore.update(state => ({
-        ...state, added: true
-      }))
-      this.orderStore.update(response.id, response);
-    }),
-    tap(() => {
-      this.snackBar.open('Cập nhật thành công');
-    }),
     catchError((err) => {
       return throwError(err);
     })
