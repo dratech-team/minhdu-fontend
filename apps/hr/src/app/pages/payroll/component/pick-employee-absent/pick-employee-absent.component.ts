@@ -84,17 +84,6 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       this.employeesSelected.push(this.employeeInit);
       this.EventSelectEmployee.emit(this.employeesSelected);
     }
-    if (this.createdPayroll) {
-      this.store.dispatch(
-        EmployeeAction.loadInit({
-          employee: {
-            take: 30,
-            skip: 0,
-            createdPayroll: new Date(this.createdPayroll)
-          }
-        })
-      );
-    }
     this.employees$.subscribe((employees) => {
       if (employees.length === 0) {
         this.isSelectAll = false;
@@ -176,7 +165,8 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       name: val.name,
       position: val.position,
       branch: val.branch,
-      createdPayroll: new Date(this.createdPayroll)
+      createdPayroll: new Date(this.createdPayroll),
+      isFlatSalary: -1
     };
   }
 
