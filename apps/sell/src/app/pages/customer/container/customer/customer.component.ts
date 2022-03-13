@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, MenuEnum} from '@minhdu-fontend/enums';
+import {CustomerType, ItemContextMenu, MenuEnum, SortCustomerEnum, SortRouteEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {debounceTime, tap} from 'rxjs/operators';
@@ -16,11 +16,15 @@ import {CustomerTypes} from '../../constants/customer.type';
 import {GenderTypes} from '../../constants/generTypes';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
+import {RouteAction} from "../../../route/+state/route.action";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  @ViewChild(MatSort) sort!: MatSort
+
   customers$ = this.customerQuery.selectAll();
   loading$ = this.customerQuery.selectLoading();
 
@@ -33,6 +37,7 @@ export class CustomerComponent implements OnInit {
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
+  sortCustomerEnum = SortCustomerEnum
 
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -64,7 +69,7 @@ export class CustomerComponent implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll({params: this.customer(val, false)})
+            CustomerActions.loadAll({params: this.mapCustomer(val, false)})
           );
         })
       )
@@ -92,15 +97,15 @@ export class CustomerComponent implements OnInit {
     this.actions$.dispatch(
       CustomerActions.loadAll(
         {
-          params: this.customer(val, true),
+          params: this.mapCustomer(val, true),
           isScroll: true
         }
       )
     );
   }
 
-  customer(val: any, isScroll: boolean) {
-    return {
+  mapCustomer(val: any, isScroll: boolean) {
+    const params = {
       skip: isScroll ? this.customerQuery.getCount() : this.pageIndexInit,
       take: this.pageSize,
       resource: val.resource,
@@ -115,6 +120,13 @@ export class CustomerComponent implements OnInit {
       address: val.address.trim(),
       note: val.note.trim(),
     };
+    if (this.sort.active) {
+      Object.assign(params, {
+        orderBy: this.sort.active ? this.sort.active : '',
+        orderType: this.sort ? this.sort.direction : ''
+      });
+    }
+    return params
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -165,5 +177,11 @@ export class CustomerComponent implements OnInit {
         api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
       }
     });
+  }
+
+  sortCustomer() {
+    this.actions$.dispatch(RouteAction.loadAll({
+      params: this.mapCustomer(this.formGroup.value, false)
+    }));
   }
 }

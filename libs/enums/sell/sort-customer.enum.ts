@@ -1,0 +1,7 @@
+export enum SortCustomerEnum {
+  NAME = 'NAME',
+  GENDER = 'GENDER',
+  IS_POTENTIAL = "IS_POTENTIAL",
+  RESOURCE = "RESOURCE",
+  CUSTOMER_TYPE = "CUSTOMER_TYPE"
+}

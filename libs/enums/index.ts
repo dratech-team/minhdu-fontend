@@ -29,6 +29,7 @@ export * from './sell/status-route';
 export * from './sell/page-type.enum';
 export * from './sell/sort-route.enum';
 export * from './sell/sort-order.enum';
+export * from './sell/sort-customer.enum';
 
 // warehouse
 export * from './warehouse/medicine/medicine-unit.enum';

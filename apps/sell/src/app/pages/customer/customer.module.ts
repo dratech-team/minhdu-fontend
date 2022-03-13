@@ -30,35 +30,37 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
 import {OrderEffect} from "../order/+state/order.effect";
 import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {RouteEffect} from "../route/+state/route.effect";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    MatSnackBarModule,
-    HttpClientModule,
-    CustomerRoutingModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect,
-      RouteEffect
-    ]),
-    MatCheckboxModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatDialogModule,
-    FormsModule,
-    MatTabsModule,
-    MatStepperModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    NzMessageModule
-  ],
+    imports: [
+        ComponentsModule,
+        MatSnackBarModule,
+        HttpClientModule,
+        CustomerRoutingModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        StoreModule.forFeature(FeatureName.PAYMENT, PaymentReducer),
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect,
+            RouteEffect
+        ]),
+        MatCheckboxModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatDialogModule,
+        FormsModule,
+        MatTabsModule,
+        MatStepperModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        NzMessageModule,
+        MatSortModule
+    ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,
