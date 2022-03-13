@@ -47,6 +47,7 @@ import {MatSort, Sort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
+import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -67,6 +68,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   branches$ = this.store.pipe(select(getAllOrgchart));
   provinces$ = this.store.pipe(select(selectAllProvince));
 
+  roleEnum = Role
   sortEnum = sortEmployeeTypeEnum;
   pageSize = 35;
   pageIndexInit = 0;
@@ -85,7 +87,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   employees: Employee[] = [];
   employeeControl = new FormControl(EmployeeType.EMPLOYEE_FULL_TIME);
   categoryControl = new FormControl('');
-
+  role!: string|null
   formGroup = new FormGroup({
     name: new FormControl(''),
     // birthday: new FormControl(''),
@@ -127,6 +129,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.role = window.localStorage.getItem('role')
     this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {

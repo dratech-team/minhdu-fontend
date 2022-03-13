@@ -18,7 +18,7 @@
           <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
         </mat-select>
       </div>
-      <button *ngIf='categoryControl.value && categoryControl.value !==0 ' class='btn btn-primary ml-1'
+      <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE ' class='btn btn-primary ml-1'
               (click)='updateCategory()'>Sửa
       </button>
     </div>
