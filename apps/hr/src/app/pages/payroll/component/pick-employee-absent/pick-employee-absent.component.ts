@@ -166,7 +166,6 @@ export class PickEmployeeAbsentComponent implements OnInit, OnChanges, OnChanges
       position: val.position,
       branch: val.branch,
       createdPayroll: new Date(this.createdPayroll),
-      isFlatSalary: -1
     };
   }
 
