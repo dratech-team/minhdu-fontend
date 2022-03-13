@@ -43,7 +43,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   isSelectAll = false;
   formGroup = new FormGroup(
     {
-      hasRoute: new FormControl(''),
+      filterRoute: new FormControl(false),
       name: new FormControl(''),
       createdAt: new FormControl(''),
       paidType: new FormControl(''),
@@ -114,7 +114,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     const param = {
       take: this.pageSize,
       skip: isScroll ? this.orderQuery.getCount() : this.pageIndex,
-      hasRoute: val.hasRoute,
+      filterRoute: val.filterRoute,
       customer: val.name.trim(),
       explain: val.explain.trim(),
       createdAt: val.createdAt ? new Date(val.createdAt) : ''
