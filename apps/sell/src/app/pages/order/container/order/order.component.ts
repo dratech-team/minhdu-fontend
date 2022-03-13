@@ -17,6 +17,8 @@ import {
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
 import {CommodityUniq} from '../../../commodity/entities/commodity-uniq.entity';
+import {getFirstDayInMonth} from "@minhdu-fontend/utils";
+import {DatePipe} from "@angular/common";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -62,7 +64,7 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
   ) {
   }
 

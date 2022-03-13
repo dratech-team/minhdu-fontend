@@ -48,7 +48,7 @@ export class RouteEffect {
         this.routeStore.update(state => ({
           ...state, loading: true
         }))
-        return this.routeService.pagination(props).pipe(
+        return this.routeService.pagination(props.params).pipe(
           map((responsePagination) => {
             this.routeStore.update(state => ({
               ...state, loading: false

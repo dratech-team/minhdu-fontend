@@ -14,6 +14,7 @@ import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
+import {DatePipe} from "@angular/common";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -26,7 +27,7 @@ export class RouteComponent implements OnInit {
   statusRoute = StatusRoute;
   routes: RouteEntity[] = [];
   formGroup = new FormGroup({
-    startedAt: new FormControl(''),
+    startedAt: new FormControl(),
     endedAt: new FormControl(''),
     driver: new FormControl(''),
     name: new FormControl(''),
@@ -39,7 +40,8 @@ export class RouteComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly datePipe: DatePipe,
   ) {
   }
 

@@ -58,13 +58,13 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({take: this.pageSize, skip: this.pageIndexInit}));
+    this.actions$.dispatch(CustomerActions.loadAll({params: {take: this.pageSize, skip: this.pageIndexInit}}));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll(this.customer(val, false))
+            CustomerActions.loadAll({params: this.customer(val, false)})
           );
         })
       )
@@ -91,7 +91,10 @@ export class CustomerComponent implements OnInit {
     const val = this.formGroup.value;
     this.actions$.dispatch(
       CustomerActions.loadAll(
-        this.customer(val, true)
+        {
+          params: this.customer(val, true),
+          isScroll: true
+        }
       )
     );
   }
@@ -111,7 +114,6 @@ export class CustomerComponent implements OnInit {
       email: val.email.trim(),
       address: val.address.trim(),
       note: val.note.trim(),
-      isScroll: isScroll
     };
   }
 
