@@ -1,17 +1,18 @@
-import { getDayInPreviousMonth, getFirstDayInMonth} from "../utils";
+import { getDayInPreviousMonth, getFirstDayInMonth } from '../utils';
 import * as moment from 'moment';
 
-export interface optionDataPicker{
+export interface OptionDataPicker {
   title: string,
   children: children []
 }
+
 interface children {
   title: string,
   startedAt: Date,
   endedAt: Date
 }
 
-export const OptionDataPickerConstant : optionDataPicker [] = [
+export const OptionDataPickerConstant: OptionDataPicker[] = [
   {
     title: 'Theo ngày và tuần',
     children: [
@@ -32,7 +33,7 @@ export const OptionDataPickerConstant : optionDataPicker [] = [
       },
       {
         title: '7 ngày qua',
-        startedAt:  moment().subtract(7, 'days').toDate(),
+        startedAt: moment().subtract(7, 'days').toDate(),
         endedAt: new Date()
       }
     ]
@@ -53,7 +54,7 @@ export const OptionDataPickerConstant : optionDataPicker [] = [
       {
         title: '30 ngày qua',
         startedAt: moment().add(-30, 'days').toDate(),
-        endedAt: new Date(),
+        endedAt: new Date()
       },
       {
         title: 'quí này',
@@ -67,5 +68,4 @@ export const OptionDataPickerConstant : optionDataPicker [] = [
       }
     ]
   }
-
-]
+];
