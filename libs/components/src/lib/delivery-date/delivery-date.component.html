@@ -1,0 +1,15 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="font-weight-bold">
+        {{title}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>
+      <mat-radio-group aria-label="Select an option"  class="d-flex flex-column">
+        <mat-radio-button (click)="selectOptionDataPicker()" [value]="0">Tháng này</mat-radio-button>
+        <mat-radio-button (click)="selectOtherOptionDataPicker()" [value]="1">Lựa chọn khác</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

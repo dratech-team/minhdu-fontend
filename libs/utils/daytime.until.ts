@@ -45,3 +45,29 @@ export const sortDatetime = (array: any[]) => {
     return array;
   }
 };
+
+export const getYesterday = () => {
+  const timeStamp = new Date().getTime();
+  const yesterdayTimeStamp = timeStamp - 24 * 60 * 60 * 1000;
+  return new Date(yesterdayTimeStamp);
+}
+
+
+export const getDayInPreviousMonth = () => {
+  const fistDay = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  const lastDay = getLastDayInMonth(fistDay)
+  return {
+    fistDay,
+    lastDay
+  }
+}
+
+export const getDateIn30Day = () => {
+  const curr = new Date;
+  const last = curr.getDate() - 30;
+
+  return {
+    firstDay: curr,
+    lastDay: new Date(curr.setDate(last)).toUTCString()
+  }
+}

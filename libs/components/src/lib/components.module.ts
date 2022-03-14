@@ -41,29 +41,38 @@ import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
 import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {NzSelectModule} from "ng-zorro-antd/select";
+import {DeliveryDateComponent} from "./delivery-date/delivery-date.component";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatRadioModule} from "@angular/material/radio";
+import {OptionDataPickerComponent} from "./option-datapicker/option-data-picker.component";
+import {OptionRangeDataPickerComponent} from "./option-range-datapicker/option-range-data-picker.component";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
-    imports: [
-        MatSnackBarModule,
-        CommonModule,
-        RouterModule,
-        MatMenuModule,
-        ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
-        FormsModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        InfiniteScrollModule,
-        ReactiveFormsModule,
-        NgxChartsModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        BsDatepickerModule.forRoot(),
-        NgxSkeletonLoaderModule,
-        NzSelectModule,
-    ],
+  imports: [
+    MatSnackBarModule,
+    CommonModule,
+    RouterModule,
+    MatMenuModule,
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
+    FormsModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    ReactiveFormsModule,
+    NgxChartsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BsDatepickerModule.forRoot(),
+    NgxSkeletonLoaderModule,
+    NzSelectModule,
+    MatExpansionModule,
+    MatRadioModule,
+    NzDatePickerModule,
+  ],
   declarations: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -85,7 +94,10 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     DialogDatePickerComponent,
     FilterDayPipe,
     PickEmployeeComponent,
-    TableEmployeeSelectedComponent
+    TableEmployeeSelectedComponent,
+    DeliveryDateComponent,
+    OptionDataPickerComponent,
+    OptionRangeDataPickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -108,7 +120,10 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     DialogDatePickerComponent,
     FilterDayPipe,
     PickEmployeeComponent,
-    TableEmployeeSelectedComponent
+    TableEmployeeSelectedComponent,
+    DeliveryDateComponent,
+    OptionDataPickerComponent,
+    OptionRangeDataPickerComponent
   ],
   providers: [
     DecimalPipe,

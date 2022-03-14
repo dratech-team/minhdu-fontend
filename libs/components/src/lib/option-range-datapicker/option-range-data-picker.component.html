@@ -1,0 +1,9 @@
+<div class="main-popup ">
+  <div class="d-flex flex-column">
+    <div class="font-weight-bold font-lg mb-3 ">Chọn từ ngày đến ngày</div>
+    <nz-range-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+  </div>
+</div>
+<div>
+  <button matDialogClose class="btn btn-cancel ml-4 mt-3">Huỷ</button>
+</div>

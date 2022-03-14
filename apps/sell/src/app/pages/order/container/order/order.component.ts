@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Api, CurrenciesConstant } from '@minhdu-fontend/constants';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Api, CurrenciesConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -11,19 +11,24 @@ import {
   SortOrderEnum,
   StatusOrder
 } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderActions } from '../../+state/order.actions';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderActions} from '../../+state/order.actions';
 import * as _ from 'lodash';
-import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderQuery } from '../../+state/order.query';
-import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
-import { MatSort } from '@angular/material/sort';
-import { RouteAction } from '../../../route/+state/route.action';
+import {getTotalCommodity} from '../../../../../../../../libs/utils/sell.ultil';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderQuery} from '../../+state/order.query';
+import {CommodityUniq} from '../../../commodity/entities/commodity-uniq.entity';
+import {MatSort} from '@angular/material/sort';
+import {RouteAction} from '../../../route/+state/route.action';
+import {OrderEntity} from "../../enitities/order.interface";
+import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {NzTableComponent} from "ng-zorro-antd/table";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -39,7 +44,8 @@ export class OrderComponent implements OnInit {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
-
+  orders: OrderEntity[] = []
+  commodities: CommodityEntity[] = []
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
@@ -49,14 +55,16 @@ export class OrderComponent implements OnInit {
   pageSize = 40;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
+  totalCommodity!: number
 
   formGroup = new FormGroup({
+    search: new FormControl(''),
     paidType: new FormControl(''),
     customer: new FormControl(''),
-    status: new FormControl('0'),
+    status: new FormControl(-1),
     explain: new FormControl(''),
-    startedAt: new FormControl(),
-    endedAt: new FormControl(),
+    startedAt: new FormControl(''),
+    endedAt: new FormControl(''),
     createStartedAt: new FormControl(),
     createEndedAt: new FormControl(),
     deliveryStartedAt: new FormControl(),
@@ -64,7 +72,8 @@ export class OrderComponent implements OnInit {
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
     province: new FormControl(''),
-    bsx: new FormControl('')
+    bsx: new FormControl(''),
+    commodity: new FormControl(''),
   });
 
   constructor(
@@ -78,9 +87,12 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.CommodityUniq$.subscribe(val => {
+      this.totalCommodity = val.reduce((x, y) => x + y.amount, 0)
+    })
     const params = this.route.snapshot.queryParams;
     this.actions$.dispatch(
-      OrderActions.loadAll({ param: { take: this.pageSize, skip: this.pageIndexInit, status: params.status } })
+      OrderActions.loadAll({param: {take: this.pageSize, skip: this.pageIndexInit, status: params.status}})
     );
 
     this.formGroup.valueChanges
@@ -88,12 +100,22 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ param: this.mapOrder(val) })
+            OrderActions.loadAll({param: this.mapOrder(val)})
           );
         })
       )
       .subscribe();
+
+    this.orders$.subscribe(val => {
+      this.orders = JSON.parse(JSON.stringify(val))
+    })
+
+    this.commodities$.subscribe(val => {
+      this.commodities = val
+    })
+
   }
+
 
   add() {
     this.router.navigate(['don-hang/them-don-hang']).then();
@@ -102,23 +124,22 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(val))
+      OrderActions.loadAll(this.mapOrder(val, true))
     );
   }
 
-  mapOrder(val: any) {
+  mapOrder(val: any, isScroll?: boolean) {
     const value = Object.assign(JSON.parse(JSON.stringify(val)), {
-      skip: this.pageIndexInit,
+      skip: isScroll ? this.orderQuery.getCount(): 0,
       take: this.pageSize
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
       delete value?.createStartedAt;
       delete value?.createEndedAt;
     }
-
-    if (!value?.deliveryStartedAt && !value?.deliveryEndedAt) {
+    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
       delete value?.deliveryStartedAt;
-      delete value?.deliveryEndedAt;
+      delete value?.deliveryEndedAt
     }
 
     if (!value?.startedAt && !value?.endedAt) {
@@ -126,10 +147,16 @@ export class OrderComponent implements OnInit {
       delete value?.endedAt;
     }
 
+    if (!value?.deliveredAt) {
+      delete value?.deliveredAt;
+    }
+
     if (value?.startedAt && !value?.endedAt) {
       value.endedAt = value?.startedAt;
       this.formGroup.get('endedAt')?.patchValue(value.endedAt);
     }
+
+
     if (this.sort.active) {
       Object.assign(value, {
         orderBy: this.sort.active ? this.sort.active : '',
@@ -206,7 +233,7 @@ export class OrderComponent implements OnInit {
   }
 
   cancelOrder($event: any) {
-    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
+    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 
   deleteOrder($event: any) {
@@ -219,7 +246,7 @@ export class OrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.actions$.dispatch(OrderActions.remove({id: $event.id}));
       }
     });
   }
@@ -228,5 +255,16 @@ export class OrderComponent implements OnInit {
     this.actions$.dispatch(RouteAction.loadAll({
       params: this.mapOrder(this.formGroup.value)
     }));
+  }
+
+  pickDeliveryDay($event: any) {
+    this.formGroup.get('deliveryStartedAt')?.setValue($event.startedAt);
+    this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt)
+  }
+
+  pickCreatedAt($event: any) {
+    console.log($event)
+    this.formGroup.get('createStartedAt')?.setValue($event.startedAt);
+    this.formGroup.get('createEndedAt')?.setValue($event.endedAt)
   }
 }
