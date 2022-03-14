@@ -47,6 +47,12 @@ import {MatRadioModule} from "@angular/material/radio";
 import {OptionDataPickerComponent} from "./option-datapicker/option-data-picker.component";
 import {OptionRangeDataPickerComponent} from "./option-range-datapicker/option-range-data-picker.component";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzTypographyModule} from "ng-zorro-antd/typography";
+import {NzWaveModule} from "ng-zorro-antd/core/wave";
 
 @NgModule({
   imports: [
@@ -72,6 +78,11 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     MatExpansionModule,
     MatRadioModule,
     NzDatePickerModule,
+    NzPopoverModule,
+    NzCollapseModule,
+    NzTypographyModule,
+    NzWaveModule,
+    NzButtonModule,
   ],
   declarations: [
     SwimLaneChartComponent,

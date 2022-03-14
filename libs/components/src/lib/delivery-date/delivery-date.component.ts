@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewContainerRef} from "@angular/core";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OptionDataPickerComponent} from "../option-datapicker/option-data-picker.component";
-import {MatDialog} from "@angular/material/dialog";
 import {OptionRangeDataPickerComponent} from "../option-range-datapicker/option-range-data-picker.component";
 
 @Component({
@@ -10,26 +9,37 @@ import {OptionRangeDataPickerComponent} from "../option-range-datapicker/option-
 })
 export class DeliveryDateComponent {
   @Input() title: string = ''
-  @Output() eventDataPicker = new EventEmitter<any>()
+  @Output() eventDatePicker = new EventEmitter<any>()
 
   constructor(
     private readonly modal: NzModalService,
-    private readonly dialog: MatDialog,
   ) {
   }
 
   selectOptionDataPicker() {
-    this.dialog.open(OptionDataPickerComponent).afterClosed().subscribe(val => {
-      if (val) {
-        this.eventDataPicker.emit(val)
+    this.modal.create({
+      nzTitle: 'Ngày giao hàng',
+      nzContent: OptionDataPickerComponent,
+      nzFooter: null,
+      nzWidth: 'fit-content',
+      nzMaskClosable: false
+    }).afterClose.subscribe(val =>{
+      if (val){
+        this.eventDatePicker.emit(val)
       }
     })
   }
 
   selectOtherOptionDataPicker() {
-    this.dialog.open(OptionRangeDataPickerComponent).afterClosed().subscribe(val => {
-      if (val) {
-        this.eventDataPicker.emit(val)
+    this.modal.create({
+      nzTitle: 'Chọn từ ngày đến ngày',
+      nzContent: OptionRangeDataPickerComponent,
+      nzFooter: null,
+      nzWidth: 'fit-content',
+      nzMaskClosable: false
+    }).afterClose.subscribe(val =>{
+      if (val){
+        this.eventDatePicker.emit(val)
       }
     })
   }

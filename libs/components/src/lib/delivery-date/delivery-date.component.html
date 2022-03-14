@@ -1,15 +1,10 @@
-<mat-accordion>
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="font-weight-bold">
-        {{title}}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div>
-      <mat-radio-group aria-label="Select an option"  class="d-flex flex-column">
-        <mat-radio-button (click)="selectOptionDataPicker()" [value]="0">Tháng này</mat-radio-button>
-        <mat-radio-button (click)="selectOtherOptionDataPicker()" [value]="1">Lựa chọn khác</mat-radio-button>
-      </mat-radio-group>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+
+<nz-collapse>
+  <nz-collapse-panel
+  nzHeader="{{title}}"
+  nzActive="true">
+    <button class="mb-2" nz-button nzType="primary" (click)="selectOptionDataPicker()">Chọn ngày</button>
+    <button nz-button nzType="primary" (click)="selectOtherOptionDataPicker()">Lựa chọn khác</button>
+  </nz-collapse-panel>
+</nz-collapse>
+

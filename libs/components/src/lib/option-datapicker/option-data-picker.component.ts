@@ -4,18 +4,19 @@ import {OptionDataPicker, OptionDataPickerConstant} from "@minhdu-fontend/consta
 import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
+  selector:'option-data-picker',
   templateUrl: 'option-data-picker.component.html'
 })
 export class OptionDataPickerComponent{
   optionDataPicker: OptionDataPicker[] = OptionDataPickerConstant
 
   constructor(
-    private readonly dlaogRef: MatDialogRef<OptionDataPickerComponent>
+    private readonly modalRef: NzModalRef
   ) {
   }
 
   onSubmit(startAt: Date, endedAt: Date) {
-    this.dlaogRef.close({
+    this.modalRef.close({
       startAt, endedAt
     })
   }

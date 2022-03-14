@@ -1,53 +1,45 @@
 <div class="d-flex">
   <div class="d-flex flex-column ml-3 border p-2" style="height: 70vh;overflow-y: scroll">
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="font-weight-bold">
-            Tìm kiếm
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader="Tìm kiếm"
+        nzActive="true">
         <div [formGroup]="formGroup">
-          <input class="form-control" type="search" formControlName="search">
+          <input nz-input class="form-control" type="search" formControlName="search">
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+      </nz-collapse-panel>
+    </nz-collapse>
     <div class="mt-2">
-      <app-delivery-date title="Ngày hẹn giao" (eventDataPicker)="pickDeliveryDay($event)"></app-delivery-date>
+      <app-delivery-date title="Ngày hẹn giao" (eventDatePicker)="pickDeliveryDay($event)"></app-delivery-date>
     </div>
     <div class="mt-2">
-      <app-delivery-date title="Ngày tạo" (eventDataPicker)="pickCreatedAt($event)"></app-delivery-date>
+      <app-delivery-date title="Ngày tạo" (eventDatePicker)="pickCreatedAt($event)"></app-delivery-date>
     </div>
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="false" class="mt-2">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="font-weight-bold">
-            Trạng thái đơn hàng
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        nzHeader="Trạng thái đơn hàng"
+        nzActive="false">
         <div [formGroup]="formGroup">
-          <mat-radio-group aria-label="Select an option" formControlName="status" class="d-flex flex-column">
-            <mat-radio-button [value]="0">Đã giao</mat-radio-button>
-            <mat-radio-button [value]="1">Đang giao</mat-radio-button>
-            <mat-radio-button [value]="-1">Tất cả</mat-radio-button>
-          </mat-radio-group>
+          <nz-radio-group formControlName="status">
+            <label nz-radio [nzValue]="0">Đã giao</label>
+            <label nz-radio [nzValue]="1">Đang giao</label>
+            <label nz-radio [nzValue]="-1">tất cả</label>
+          </nz-radio-group>
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="false" class="mt-2">
-        <mat-expansion-panel-header>
-          <mat-panel-title class="font-weight-bold">
-            Hàng hoá
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <nz-collapse class="mt-2">
+      <nz-collapse-panel
+        nzHeader="Hàng hoá"
+        nzActive="false">
         <div [formGroup]="formGroup">
-          <mat-radio-group aria-label="Select an option" formControlName="commodity" class="d-flex flex-column">
-            <mat-radio-button *ngFor="let item of commodities" [value]="item.name">{{item.name}}</mat-radio-button>
-          </mat-radio-group>
+          <nz-radio-group formControlName="commodity">
+            <label nz-radio *ngFor="let item of commodities" [nzValue]="item.name">{{item.name}}</label>
+
+          </nz-radio-group>
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+      </nz-collapse-panel>
+    </nz-collapse>
   </div>
   <div class="ml-2 " style="width: 83vw">
     <div class="d-flex justify-content-between mb-2">
@@ -65,7 +57,7 @@
          (scrolled)='onScroll()'>
       <nz-table
         matSort
-        [nzScroll]="{ x: '2000px' , y:'50px'}"
+        [nzScroll]="{ x: '2000px' , y:'60vh'}"
         nzSize="middle"
         #tableOrder
         [nzData]="orders"
@@ -186,7 +178,8 @@
                                                                         style="color: red">{{item.amount}}</span>
       </div>
     </div>
-
+    <div>
+    </div>
   </div>
 </div>
 
