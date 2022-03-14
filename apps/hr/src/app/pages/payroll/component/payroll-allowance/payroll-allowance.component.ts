@@ -17,13 +17,13 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {of, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/constants';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {debounceTime, startWith} from 'rxjs/operators';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatDialog} from '@angular/material/dialog';
@@ -45,7 +45,7 @@ import {
   DialogAllowanceMultipleComponent
 } from '../dialog-salary/dialog-allowance-multiple/dialog-allowance-multiple.component';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 
@@ -53,7 +53,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'app-payroll-allowance',
   templateUrl: 'payroll-allowance.component.html'
 })
-export class PayrollAllowanceComponent implements OnInit , OnChanges{
+export class PayrollAllowanceComponent implements OnInit, OnChanges {
   @Input() eventAddAllowance?: Subject<any>;
   @Input() eventSearchBranch?: string;
   @Input() eventExportAllowance?: Subject<any>;
@@ -61,7 +61,6 @@ export class PayrollAllowanceComponent implements OnInit , OnChanges{
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   @ViewChild(MatSort) sort!: MatSort;
-
 
   pageSize = 30;
   pageIndex = 0;
@@ -79,7 +78,9 @@ export class PayrollAllowanceComponent implements OnInit , OnChanges{
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = getSelectors(selectedBranchPayroll, this.store) ?
+    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store)}) :
+    new Observable<Position[]>()
 
   formGroup = new FormGroup({
     title: new FormControl(''),
@@ -105,13 +106,15 @@ export class PayrollAllowanceComponent implements OnInit , OnChanges{
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,
     private readonly router: Router,
-    private readonly ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef,
+    private readonly positionService: PositionService,
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+      this.positions$ = this.positionService.getAll({branch: changes.eventSearchBranch.currentValue})
     }
   }
 
@@ -129,11 +132,6 @@ export class PayrollAllowanceComponent implements OnInit , OnChanges{
         }
       })
     );
-
-    this.store.dispatch(PositionActions.loadPosition());
-
-    this.store.dispatch(OrgchartActions.init());
-
     if (this.allowanceTitle) {
       this.formGroup.get('title')?.setValue(this.allowanceTitle, {emitEvent: false});
 

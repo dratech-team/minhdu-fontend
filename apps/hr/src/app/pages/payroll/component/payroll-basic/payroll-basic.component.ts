@@ -13,7 +13,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,9 +23,9 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {of, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {debounceTime, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -56,7 +56,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = getSelectors(selectedBranchPayroll, this.store) ?
+    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store)}) :
+    new Observable<Position[]>()
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
@@ -92,7 +94,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private readonly positionService: PositionService
   ) {
   }
 
@@ -106,8 +109,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   ];
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+      this.positions$ = this.positionService.getAll({branch: changes.eventSearchBranch.currentValue})
     }
   }
 
@@ -124,10 +128,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         }
       })
     );
-
-    this.store.dispatch(PositionActions.loadPosition());
-
-    this.store.dispatch(OrgchartActions.init());
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
@@ -191,7 +191,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch:value.branch,
+          branch: value.branch,
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };

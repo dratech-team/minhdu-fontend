@@ -12,7 +12,7 @@ import {
   SalaryTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {Observable, of, Subject} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
@@ -47,7 +47,7 @@ import {DialogCategoryComponent} from '../../../employee/components/category/dia
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Category} from "@minhdu-fontend/data-models";
+import {Category, Position} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
@@ -91,11 +91,15 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   total$ = this.store.pipe(select(selectedTotalPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = new Observable<Position[]>();
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
+      this.store.dispatch(PayrollAction.updateStatePayroll({
+        branch: branches[0].name
+      }))
       this.categories$ = this.categoryService.getAll({branch: branches[0].name})
       this.formCtrlBranch.patchValue(branches[0].name, {emitEvent: false})
+      this.positions$ = this.positionService.getAll({branchId: branches[0].id})
     }
     return branches
   }));
@@ -133,7 +137,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly positionService: PositionService
   ) {
   }
 
@@ -141,7 +146,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.role = window.localStorage.getItem('role')
     this.loadInitPayroll();
     this.daysInMonth = rageDaysInMonth(this.createdAt);
-    this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
@@ -237,7 +241,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       this.store.dispatch(PayrollAction.updateStatePayroll({
         branch: val
       }))
-
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
           this.searchBranchAbsent = val
@@ -255,6 +258,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.searchBranchAllowance = val
           break;
         default :
+          this.branches$ = this.positionService.getAll({branch: val})
           this.store.dispatch(PayrollAction.loadInit({
             payrollDTO: this.mapPayroll(this.formGroup.value)
           }))

@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -14,11 +14,11 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {combineLatest, of, Subject} from 'rxjs';
+import {combineLatest, Observable, of, Subject} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -81,8 +81,9 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  positions$ =  getSelectors(selectedBranchPayroll, this.store) ?
+    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store) }):
+    new Observable<Position[]>()
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
 
@@ -113,12 +114,14 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
     private readonly datePipe: DatePipe,
     private readonly salaryService: SalaryService,
     private readonly activeRouter: ActivatedRoute,
-    private readonly ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef,
+    private readonly positionService: PositionService
   ) {
   }
   ngOnChanges(changes: SimpleChanges) {
     if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+      this.positions$ = this.positionService.getAll({branch:changes.eventSearchBranch.currentValue })
     }
   }
 
@@ -136,9 +139,6 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
         Object.assign(paramLoadInit, {title: val.titleOvertime});
       }
     });
-    this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
-
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$

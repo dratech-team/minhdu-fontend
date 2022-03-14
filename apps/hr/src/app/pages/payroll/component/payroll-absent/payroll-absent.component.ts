@@ -14,7 +14,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,10 +23,10 @@ import {
   SalaryTypeEnum,
   SearchTypeEnum, sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {of, Subject} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import {debounceTime, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -86,7 +86,9 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = getSelectors(selectedBranchPayroll, this.store) ?
+    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store) }):
+    new Observable<Position[]>()
 
   formGroup = new FormGroup({
     title: new FormControl(''),
@@ -111,13 +113,15 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,
     private readonly router: Router,
-    private readonly ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef,
+    private readonly positionService: PositionService,
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+      this.positions$ = this.positionService.getAll({branch: changes.eventSearchBranch.currentValue})
     }
   }
 
@@ -129,10 +133,6 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
       position: getSelectors<string>(selectedPositionPayroll, this.store),
       branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
-
-    this.store.dispatch(PositionActions.loadPosition());
-
-    this.store.dispatch(OrgchartActions.init());
 
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
