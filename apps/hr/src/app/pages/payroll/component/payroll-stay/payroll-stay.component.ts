@@ -1,5 +1,14 @@
 import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input, OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -43,9 +52,10 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'app-payroll-stay',
   templateUrl: 'payroll-stay.component.html'
 })
-export class PayrollStayComponent implements OnInit {
+export class PayrollStayComponent implements OnInit, OnChanges {
   ItemContextMenu = ItemContextMenu;
-  @Input() eventExportStay?: Subject<boolean>;
+  @Input() eventExportStay?: Subject<boolean>
+  @Input() eventSearchBranch?: string;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -59,6 +69,7 @@ export class PayrollStayComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
   totalSalaryStay$ = this.store.select(selectedTotalPayroll);
   searchTypeConstant = SearchTypeConstant;
@@ -73,7 +84,6 @@ export class PayrollStayComponent implements OnInit {
   pageSize = 30;
   pageIndex = 0;
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
 
@@ -86,6 +96,11 @@ export class PayrollStayComponent implements OnInit {
     private readonly router: Router,
     private ref: ChangeDetectorRef
   ) {
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+      this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
   }
 
   ngOnInit() {
@@ -129,11 +144,6 @@ export class PayrollStayComponent implements OnInit {
       this.positions$
     );
 
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
-
     this.payrollStay$.subscribe((payrolls) => {
       if (payrolls) {
         if (payrolls.length === 0) {
@@ -172,8 +182,7 @@ export class PayrollStayComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: getSelectors(selectedBranchPayroll, this.store) ?
-            getSelectors(selectedBranchPayroll, this.store) : '',
+          branch: value.branch,
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
@@ -218,12 +227,11 @@ export class PayrollStayComponent implements OnInit {
               take: this.pageSize,
               skip: this.pageIndex,
               code: value.code,
-              createdAt: this.formGroup.get('createdAt')?.value,
+              createdAt: value.createdAt,
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position,
-              branch: getSelectors(selectedBranchPayroll, this.store) ?
-                getSelectors(selectedBranchPayroll, this.store) : ''
+              branch: value.branch
             }
           })
         );
@@ -270,8 +278,7 @@ export class PayrollStayComponent implements OnInit {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: getSelectors(selectedBranchPayroll, this.store) ?
-                  getSelectors(selectedBranchPayroll, this.store) : ''
+                branch: value.branch
               }
             })
           );
@@ -370,8 +377,7 @@ export class PayrollStayComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position,
-      branch: getSelectors(selectedBranchPayroll, this.store) ?
-        getSelectors(selectedBranchPayroll, this.store) : ''
+      branch:value.branch
     };
     if (this.sort?.active) {
       Object.assign(params, {
@@ -402,5 +408,4 @@ export class PayrollStayComponent implements OnInit {
       payrollDTO: this.mapPayrollStay()
     }));
   }
-
 }

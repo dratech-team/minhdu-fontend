@@ -1,5 +1,14 @@
 import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input, OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -41,13 +50,13 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'minhdu-fontend-payroll-basic',
   templateUrl: 'payroll-basic.component.html'
 })
-export class PayrollBasicComponent implements OnInit {
+export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
+  @Input() eventSearchBranch?: string;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
   positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
@@ -73,6 +82,7 @@ export class PayrollBasicComponent implements OnInit {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
+    branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
 
   constructor(
@@ -95,6 +105,11 @@ export class PayrollBasicComponent implements OnInit {
     {title: 'Tất cả', value: ''}
   ];
 
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+      this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
+  }
 
   ngOnInit() {
     this.store.dispatch(
@@ -132,11 +147,6 @@ export class PayrollBasicComponent implements OnInit {
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ?? of(''),
       this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) ?? of(''),
-      this.branches$
     );
 
     this.payrollBasic$.subscribe((payrolls) => {
@@ -181,8 +191,7 @@ export class PayrollBasicComponent implements OnInit {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: getSelectors(selectedBranchPayroll, this.store)?
-            getSelectors(selectedBranchPayroll, this.store):'',
+          branch:value.branch,
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
@@ -229,8 +238,7 @@ export class PayrollBasicComponent implements OnInit {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: getSelectors(selectedBranchPayroll, this.store) ?
-                getSelectors(selectedBranchPayroll, this.store) : ''
+              branch: this.formGroup.value.branch
             }
           })
         );
@@ -280,13 +288,11 @@ export class PayrollBasicComponent implements OnInit {
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position,
-            branch: getSelectors(selectedBranchPayroll, this.store) ?
-              getSelectors(selectedBranchPayroll, this.store) : ''
+            branch: value.branch
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
           }
-          console.log(params);
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: params
@@ -370,7 +376,7 @@ export class PayrollBasicComponent implements OnInit {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position,
-      branch: getSelectors(selectedBranchPayroll, this.store) ? getSelectors(selectedBranchPayroll, this.store) : ''
+      branch: value.branch
     };
     if (this.sort?.active) {
       Object.assign(params, {
@@ -403,10 +409,6 @@ export class PayrollBasicComponent implements OnInit {
 
   onSelectPosition(positionName: string) {
     this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
   }
 
   checkInputNumber(event: any) {

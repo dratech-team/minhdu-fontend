@@ -1,5 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -56,8 +56,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'minhdu-fontend-payroll-overtime',
   templateUrl: 'payroll-overtime.component.html'
 })
-export class PayrollOvertimeComponent implements OnInit {
+export class PayrollOvertimeComponent implements OnInit , OnChanges {
   @Input() eventAddOvertime?: Subject<any>;
+  @Input() eventSearchBranch?: string;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -98,6 +99,9 @@ export class PayrollOvertimeComponent implements OnInit {
     position: new FormControl(
       getSelectors(selectedPositionPayroll, this.store)
     ),
+    branch: new FormControl(
+      getSelectors(selectedBranchPayroll, this.store)
+    ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
 
@@ -111,6 +115,11 @@ export class PayrollOvertimeComponent implements OnInit {
     private readonly activeRouter: ActivatedRoute,
     private readonly ref: ChangeDetectorRef
   ) {
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+      this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
   }
 
   ngOnInit() {
@@ -198,8 +207,7 @@ export class PayrollOvertimeComponent implements OnInit {
           filename: val,
           exportType: 'RANGE_DATETIME',
           position: value.position,
-          branch: getSelectors(selectedBranchPayroll, this.store) ?
-            getSelectors(selectedBranchPayroll, this.store) : '',
+          branch: value.branch,
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -291,8 +299,7 @@ export class PayrollOvertimeComponent implements OnInit {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: getSelectors(selectedBranchPayroll, this.store) ?
-        getSelectors(selectedBranchPayroll, this.store) : '',
+      branch: value.branch,
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -461,8 +468,7 @@ export class PayrollOvertimeComponent implements OnInit {
               title: value.title,
               name: value.name,
               position: value.position,
-              branch: getSelectors(selectedBranchPayroll, this.store) ?
-                getSelectors(selectedBranchPayroll, this.store) : ''
+              branch: value.branch
             };
             if (!value.name) {
               delete payrollOvertime.name;
@@ -489,8 +495,7 @@ export class PayrollOvertimeComponent implements OnInit {
           title: value.title,
           name: value.name,
           position: value.position,
-          branch: getSelectors(selectedBranchPayroll, this.store) ?
-            getSelectors(selectedBranchPayroll, this.store) : ''
+          branch:value.branch
         };
         if (!value.name) {
           delete payrollOvertime.name;
