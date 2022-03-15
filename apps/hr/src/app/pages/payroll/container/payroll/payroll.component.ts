@@ -233,7 +233,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
 
     this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
-      this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
+      if(branch){
+        this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
+      }
       this.store.dispatch(PayrollAction.updateStatePayroll({
         branch: branch
       }))
@@ -282,7 +284,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: this.positionName,
-      branch: this.formCtrlBranch.value.name,
+      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name: '',
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
