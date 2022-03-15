@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -14,11 +14,11 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {combineLatest, Observable, of, Subject} from 'rxjs';
+import {combineLatest, of, Subject} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -32,7 +32,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {
   checkInputNumber,
   getFirstDayInMonth,
@@ -113,7 +113,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     private readonly salaryService: SalaryService,
     private readonly activeRouter: ActivatedRoute,
     private readonly ref: ChangeDetectorRef,
-    private readonly positionService: PositionService
   ) {
   }
 
@@ -205,7 +204,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           filename: val,
           exportType: 'RANGE_DATETIME',
           position: value.position,
-          branch: value.branch.name,
+          branch: value.branch ? value.branch.name : '',
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -297,7 +296,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch.name,
+      branch: value.branch ? value.branch.name : '',
     };
     if (this.sort.active) {
       Object.assign(params, {

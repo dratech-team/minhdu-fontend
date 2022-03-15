@@ -233,7 +233,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     });
 
     this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
-      if(branch){
+      if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
       this.store.dispatch(PayrollAction.updateStatePayroll({
@@ -284,7 +284,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: this.positionName,
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name: '',
+      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
@@ -549,7 +549,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position,
-      branch: this.formCtrlBranch.value.name,
+      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL
@@ -575,7 +575,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position,
-      branch: this.formCtrlBranch.value.name,
+      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       exportType: FilterTypeEnum.TIME_SHEET
     };
     if (value.createdAt) {
@@ -596,7 +596,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   addCategory() {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
       .subscribe(() => this.categories$ = this.categoryService.getAll(
-        {branch: this.formCtrlBranch.value.name}));
+        {branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : ''}));
   }
 
   updateCategory(): any {
@@ -607,7 +607,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {categoryId: this.categoryControl.value, isUpdate: true}
     }).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll({branch: this.formCtrlBranch.value.name});
+      this.categories$ = this.categoryService.getAll({
+        branch: this.formCtrlBranch.value ?
+          this.formCtrlBranch.value.name : ''
+      });
     });
   }
 

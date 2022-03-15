@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { throwError } from 'rxjs';
-import { catchError, concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { OvertimeService } from '../../service/overtime.service';
-import { PayrollService } from '../../service/payroll.service';
-import { SalaryService } from '../../service/salary.service';
-import { PayrollAction } from './payroll.action';
-import { AddPayroll } from './payroll.interface';
-import { selectorPayrollTotal } from './payroll.selector';
-import { OrgchartActions } from '@minhdu-fontend/orgchart';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {select, Store} from '@ngrx/store';
+import {throwError} from 'rxjs';
+import {catchError, concatMap, map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {OvertimeService} from '../../service/overtime.service';
+import {PayrollService} from '../../service/payroll.service';
+import {SalaryService} from '../../service/salary.service';
+import {PayrollAction} from './payroll.action';
+import {AddPayroll} from './payroll.interface';
+import {selectorPayrollTotal} from './payroll.selector';
+import {OrgchartActions} from '@minhdu-fontend/orgchart';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable()
 export class PayrollEffect {
@@ -28,6 +28,9 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
+        if (!requestPaginate.payrollDTO.branch) {
+          delete requestPaginate.payrollDTO.branch
+        }
         return this.payrollService.paginationPayroll(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
@@ -46,8 +49,12 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
-      map(([props, skip]) =>
-        Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), { skip: skip })
+      map(([props, skip]) => {
+          if (!props.payrollDTO.branch) {
+            delete props.payrollDTO.branch
+          }
+          Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
+        }
       ),
       switchMap((props) => {
         return this.payrollService.paginationPayroll(props);
@@ -94,7 +101,7 @@ export class PayrollEffect {
               createdAt: props.generate.createdAt,
               employeeId: props.generate.employeeId
             },
-            { employeeType: props.generate.employeeType }
+            {employeeType: props.generate.employeeType}
           )
           .pipe(
             map((res) => {
@@ -133,10 +140,10 @@ export class PayrollEffect {
                 this.message.success('Thao tác thành công');
               }
               if (props.branchId) {
-                return OrgchartActions.getBranch({ id: props.branchId });
+                return OrgchartActions.getBranch({id: props.branchId});
               } else {
                 return props.payrollId
-                  ? PayrollAction.getPayroll({ id: props.payrollId })
+                  ? PayrollAction.getPayroll({id: props.payrollId})
                   : PayrollAction.addSalaryMultipleSuccess();
               }
             }),
@@ -156,7 +163,7 @@ export class PayrollEffect {
       switchMap((props) => this.payrollService.getOne(props.id)),
       map((payroll) => {
         this.message.success('Tải phiếu lương thành công');
-        return PayrollAction.getPayrollSuccess({ payroll: payroll });
+        return PayrollAction.getPayrollSuccess({payroll: payroll});
       }),
       catchError((err) => throwError(err))
     )
@@ -167,7 +174,7 @@ export class PayrollEffect {
       ofType(PayrollAction.updatePayroll),
       switchMap((props) => this.payrollService.update(props.id, props.payroll)),
       map((payroll) => {
-        return PayrollAction.updatePayrollSuccess({ payroll: payroll });
+        return PayrollAction.updatePayrollSuccess({payroll: payroll});
       }),
       catchError((err) => throwError(err))
     )
@@ -181,7 +188,7 @@ export class PayrollEffect {
           map((Payroll) => {
             console.log(Payroll);
             this.message.success('Xác nhận thành công');
-            return PayrollAction.confirmPayrollSuccess({ payroll: Payroll });
+            return PayrollAction.confirmPayrollSuccess({payroll: Payroll});
           }),
           catchError((err) => throwError(err))
         )
@@ -197,12 +204,12 @@ export class PayrollEffect {
           map((_) => {
             this.message.success('Cập nhật thành công');
             if (props.branchId) {
-              return OrgchartActions.getBranch({ id: props.branchId });
+              return OrgchartActions.getBranch({id: props.branchId});
             } else {
               if (props.multiple) {
                 return PayrollAction.updateSalaryMultipleSuccess();
               } else {
-                return PayrollAction.getPayroll({ id: props.payrollId });
+                return PayrollAction.getPayroll({id: props.payrollId});
               }
             }
           })
@@ -222,7 +229,7 @@ export class PayrollEffect {
         this.payrollService.delete(props.id).pipe(
           map(() => {
             this.message.success('xóa phiếu lương thành công');
-            return PayrollAction.deletePayrollSuccess({ id: props.id });
+            return PayrollAction.deletePayrollSuccess({id: props.id});
           }),
           catchError((err) => {
               this.store.dispatch(PayrollAction.handlePayrollError());
@@ -240,7 +247,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.salaryService.delete(props.id).pipe(
           map(() => {
-            return PayrollAction.getPayroll({ id: props.PayrollId });
+            return PayrollAction.getPayroll({id: props.PayrollId});
           })
         )
       ),
@@ -254,7 +261,7 @@ export class PayrollEffect {
       switchMap((props) =>
         this.payrollService.scanHoliday(props.PayrollId).pipe(
           map((_) => {
-            return PayrollAction.getPayroll({ id: props.PayrollId });
+            return PayrollAction.getPayroll({id: props.PayrollId});
           }),
           catchError((err) => {
             this.store.dispatch(PayrollAction.scanHolidayError());

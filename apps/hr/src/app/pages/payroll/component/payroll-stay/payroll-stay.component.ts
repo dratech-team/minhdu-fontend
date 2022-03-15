@@ -97,8 +97,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     private ref: ChangeDetectorRef
   ) {
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
   }
@@ -182,7 +183,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
@@ -231,7 +232,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position,
-              branch: value.branch
+              branch: value.branch ? value.branch.name : ''
             }
           })
         );
@@ -278,7 +279,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: value.branch
+                branch: value.branch ? value.branch.name : ''
               }
             })
           );
@@ -377,7 +378,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position,
-      branch:value.branch
+      branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {

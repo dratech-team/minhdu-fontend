@@ -233,7 +233,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch.name,
+          branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.ALLOWANCE,
           title: value.title
         };
@@ -280,7 +280,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               title: val.title,
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position,
-              branch: val.branch.name
+              branch: val.branch ? value.branch.name : ''
             }
           })
         );
@@ -336,7 +336,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
-                branch: this.formGroup.value.branch.name
+                branch: this.formGroup.value.branch ? this.formGroup.value.name : ''
 
               }
             })
@@ -441,7 +441,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position,
-      branch: value.branch.name
+      branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {

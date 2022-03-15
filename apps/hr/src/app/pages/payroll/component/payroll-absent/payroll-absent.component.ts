@@ -61,7 +61,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   templateUrl: 'payroll-absent.component.html'
 })
 
-export class PayrollAbsentComponent implements OnInit , OnChanges {
+export class PayrollAbsentComponent implements OnInit, OnChanges {
   @Input() eventAddAbsent?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
   @Input() eventExportAbsent?: Subject<boolean>;
@@ -118,7 +118,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
   }
@@ -230,7 +230,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch.name,
+          branch: value.branch ? value.branch.name : '',
           exportType: 'RANGE_DATETIME',
           title: value.title,
           startedAt: value.startedAt,
@@ -404,7 +404,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
         position: value.position,
-        branch: value.branch.name
+        branch: value.branch ? value.branch.name : ''
       }
     ;
     if (this.sort?.active) {
