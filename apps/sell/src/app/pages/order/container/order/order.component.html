@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <div class="d-flex flex-column ml-3 border p-2" style="height: 70vh;overflow-y: scroll">
+  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll">
     <nz-collapse>
       <nz-collapse-panel
         nzHeader="Tìm kiếm"
@@ -43,7 +43,7 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class="ml-2 " style="width: 83vw">
+  <div class="ml-2 " style="width: 83vw; height: 80vh">
     <div class="d-flex justify-content-between mb-2">
       <div class='h3'>
         Danh sách đơn hàng
@@ -60,7 +60,7 @@
         #tableOrder
         [nzData]="(orders$|async)||[]"
         [nzFrontPagination]="true"
-        [nzShowPagination]="true"
+        [nzShowPagination]="false"
         [formGroup]='formGroup'
         (nzQueryParams)="paramChange($event)"
       >
@@ -147,7 +147,7 @@
             </td>
           </tr>
           <tr [nzExpand]="order.expand">
-            <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
+            <nz-table #innerTable [nzData]="order.commodities" nzSize="small" [nzShowPagination]="false">
               <thead>
               <tr>
                 <th class="text-center">Hàng hoá</th>
@@ -157,9 +157,9 @@
               </thead>
               <tbody>
               <tr *ngFor="let commodity of innerTable.data">
-                <td>{{commodity.name}}</td>
-                <td>{{commodity.amount}}</td>
-                <td>{{commodity.price}}</td>
+                <td class="text-center">{{commodity.name}}</td>
+                <td class="text-center">{{commodity.amount}}</td>
+                <td class="text-center">{{commodity.price}}</td>
               </tr>
               </tbody>
       </nz-table>
@@ -168,15 +168,15 @@
       </tbody>
       </nz-table>
     </div>
-    <div class="d-flex mt-3">
+    <div>
+    </div>
+    <div class="d-flex mt-2">
       <div><span class="font-weight-bold">Tổng hàng hoá:</span> <span class="ml-1"
                                                                       style="color: red">{{totalCommodity}}</span></div>
       <div class="ml-3 " *ngFor="let item of CommodityUniq$|async">
         <span class="font-weight-bold">Tổng {{item.name}}:</span> <span class="ml-1"
                                                                         style="color: red">{{item.amount}}</span>
       </div>
-    </div>
-    <div>
     </div>
   </div>
 </div>
