@@ -29,7 +29,7 @@ import localeVi from '@angular/common/locales/vi';
 import {NZ_ICONS} from 'ng-zorro-antd/icon';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import {IconDefinition} from '@ant-design/icons-angular';
-import {en_US, NZ_I18N} from 'ng-zorro-antd/i18n';
+import { en_US, NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 import {AkitaNgDevtools} from '@datorama/akita-ngdevtools';
 import {RouteGuard} from './route.guard';
 import {NZ_CONFIG, NzConfig} from 'ng-zorro-antd/core/config';
@@ -89,7 +89,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     RouteGuard,
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     {provide: LOCALE_ID, useValue: 'vi-VN'},
-    {provide: NZ_I18N, useValue: en_US},
+    {provide: NZ_I18N, useValue: vi_VN},
     {provide: NZ_ICONS, useValue: icons},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true, disableClose: true} as MatDialogConfig},
     {provide: NZ_CONFIG, useValue: {message: {nzMaxStack: 1}} as NzConfig}
