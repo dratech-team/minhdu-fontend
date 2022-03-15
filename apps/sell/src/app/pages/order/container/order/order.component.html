@@ -63,22 +63,22 @@
         [nzData]="orders"
         [nzFrontPagination]="false"
         [nzShowPagination]="false"
-        (matSortChange)='sortOrder()'
         [formGroup]='formGroup'
+        (nzQueryParams)="paramChange($event)"
       >
         <thead>
         <tr>
-          <th nzLeft></th>
-          <th class="text-center font-weight-bold" nzLeft mat-sort-header='{{sortOrderEnum.END}}'>
+          <th style="width: 100px" nzLeft></th>
+          <th nzLeft class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.END}}">
             Ngày hẹn giao
           </th>
-          <th class="text-center font-weight-bold" mat-sort-header='{{sortOrderEnum.CUSTOMER}}'>
+          <th [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.CUSTOMER}}" class="text-center font-weight-bold">
             Khách hàng
           </th>
-          <th class="text-center font-weight-bold" mat-sort-header='{{sortOrderEnum.WARD}}'>
+          <th class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.PROVINCE}}">
             Điểm đến
           </th>
-          <th class="text-center font-weight-bold" mat-sort-header='{{sortOrderEnum.CREATED_AT}}'>
+          <th class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.CREATED_AT}}">
             Ngày tạo
           </th>
           <th class="text-center font-weight-bold">

@@ -28,7 +28,7 @@ import {MatSort} from '@angular/material/sort';
 import {RouteAction} from '../../../route/+state/route.action';
 import {OrderEntity} from "../../enitities/order.interface";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
-import {NzTableComponent} from "ng-zorro-antd/table";
+import {NzTableQueryParams} from "ng-zorro-antd/table";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -82,7 +82,7 @@ export class OrderComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly exportService: ExportService
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -130,7 +130,7 @@ export class OrderComponent implements OnInit {
 
   mapOrder(val: any, isScroll?: boolean) {
     const value = Object.assign(JSON.parse(JSON.stringify(val)), {
-      skip: isScroll ? this.orderQuery.getCount(): 0,
+      skip: isScroll ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
@@ -154,14 +154,6 @@ export class OrderComponent implements OnInit {
     if (value?.startedAt && !value?.endedAt) {
       value.endedAt = value?.startedAt;
       this.formGroup.get('endedAt')?.patchValue(value.endedAt);
-    }
-
-
-    if (this.sort.active) {
-      Object.assign(value, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
     }
     return value;
   }
@@ -251,20 +243,29 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  sortOrder() {
-    this.actions$.dispatch(RouteAction.loadAll({
-      params: this.mapOrder(this.formGroup.value)
-    }));
+  paramChange(params: NzTableQueryParams) {
+    const value = this.formGroup.value
+    params.sort.map(val => {
+      if (val.value) {
+        Object.assign(value, {
+          orderBy: val.key,
+          orderType: val.value === 'ascend' ? 'asc' : 'des'
+        })
+        this.actions$.dispatch(OrderActions.loadAll({
+          param: this.mapOrder(value)
+        }))
+      }
+    })
   }
 
   pickDeliveryDay($event: any) {
-    this.formGroup.get('deliveryStartedAt')?.setValue($event.startedAt);
+    this.formGroup.get('deliveryStartedAt')?.setValue($event.startAt, {emitEvent: false});
     this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt)
   }
 
   pickCreatedAt($event: any) {
     console.log($event)
-    this.formGroup.get('createStartedAt')?.setValue($event.startedAt);
+    this.formGroup.get('createStartedAt')?.setValue($event.startAt,{emitEvent: false});
     this.formGroup.get('createEndedAt')?.setValue($event.endedAt)
   }
 }
