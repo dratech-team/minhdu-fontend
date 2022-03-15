@@ -158,7 +158,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         }
       })
     );
-    this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(

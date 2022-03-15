@@ -98,9 +98,14 @@
           <div class="mt-2" *ngIf="branchSelected">
             <mat-chip-list >
               <mat-chip
+                [removable]='true'
+                (removed)='onRemoveBranch(branchSelected)'
                 [selectable]='true'
                 [removable]='true'>
                 {{branchSelected?.name}}
+                <button class='btn' matChipRemove *ngIf='true'>
+                  <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
+                </button>
               </mat-chip>
             </mat-chip-list>
           </div>
