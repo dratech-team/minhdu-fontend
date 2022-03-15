@@ -126,4 +126,13 @@ export class OrderStore extends EntityStore<OrderState> {
   constructor() {
     super(createInitState());
   }
+
+  updateUI(type: OrderVisibleEntity) {
+    return this.update(state => {
+      return {
+        ...state,
+        ui: type
+      };
+    });
+  }
 }
