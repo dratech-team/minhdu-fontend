@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -14,7 +14,6 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -32,14 +31,8 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors,
-  searchAutocomplete
-} from '@minhdu-fontend/utils';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {TemplateOvertimeAction} from '../../../template/+state/template-overtime/template-overtime.action';
 import {selectorAllTemplate} from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -56,9 +49,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'minhdu-fontend-payroll-overtime',
   templateUrl: 'payroll-overtime.component.html'
 })
-export class PayrollOvertimeComponent implements OnInit , OnChanges {
+export class PayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() eventAddOvertime?: Subject<any>;
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -81,8 +74,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  positions$ = this.store.pipe(select(getAllPosition));
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  positions$ = this.store.pipe(select(getAllPosition))
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
 
@@ -104,6 +96,8 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
 
   constructor(
     private readonly message: NzMessageService,
@@ -113,11 +107,12 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
     private readonly datePipe: DatePipe,
     private readonly salaryService: SalaryService,
     private readonly activeRouter: ActivatedRoute,
-    private readonly ref: ChangeDetectorRef
+    private readonly ref: ChangeDetectorRef,
   ) {
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
   }
@@ -136,13 +131,6 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
         Object.assign(paramLoadInit, {title: val.titleOvertime});
       }
     });
-    this.store.dispatch(PositionActions.loadPosition());
-    this.store.dispatch(OrgchartActions.init());
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
 
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
 
@@ -206,8 +194,8 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
           title: value.title || '',
           filename: val,
           exportType: 'RANGE_DATETIME',
-          position: value.position,
-          branch: value.branch,
+          position: value.position?.name || '',
+          branch: value.branch ? value.branch.name : '',
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -298,8 +286,8 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
       name: value.name,
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
-      position: value.position,
-      branch: value.branch,
+      position: value.position?.name || '',
+      branch: value.branch ? value.branch.name : '',
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -467,8 +455,8 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
               endAt: new Date(value.endAt),
               title: value.title,
               name: value.name,
-              position: value.position,
-              branch: value.branch
+              position: value.position?.name || '',
+              branch: value.branch.name
             };
             if (!value.name) {
               delete payrollOvertime.name;
@@ -494,8 +482,8 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
           endAt: new Date(value.endAt),
           title: value.title,
           name: value.name,
-          position: value.position,
-          branch:value.branch
+          position: value.position?.name || '',
+          branch: value.branch.name
         };
         if (!value.name) {
           delete payrollOvertime.name;
@@ -536,10 +524,6 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
 
   detailPayroll(id: number) {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', id]).then();
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

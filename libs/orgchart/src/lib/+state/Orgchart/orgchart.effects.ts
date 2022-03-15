@@ -16,6 +16,12 @@ export class OrgchartEffects {
       ofType(OrgchartActions.init),
       switchMap(() => this.orgchartService.getAll()),
       map(branches => {
+        if(branches.length === 1){
+          if(branches[0].positions)
+          this.store.dispatch(PositionActions.loadPositionSuccess({
+            position: branches[0].positions
+          }))
+        }
         return OrgchartActions.loadOrgchartSuccess({branches});
       }),
       catchError(err => throwError(err))
@@ -51,10 +57,9 @@ export class OrgchartEffects {
       ofType(OrgchartActions.getBranch),
       switchMap(param => this.branchService.getOne(param.id)),
       map((branch) => {
-          if(branch.positions)
-          this.store.dispatch(PositionActions.loadPositionSuccess({
-            position: branch.positions
-          }))
+          if (branch.positions) {
+            this.store.dispatch(PositionActions.loadPositionSuccess({position: branch.positions}))
+          }
           return OrgchartActions.getBranchSuccess({branch: branch})
         }
       ),

@@ -28,14 +28,21 @@
           </th>
           <th style='width: 210px'>
             <div class='title-profile'>Chức vụ</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                   formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              style='width:100%'
+              formControlName='position'
+              nzPlaceHolder='chọn chức vụ'
+              [compareWith]="compareFN"
+            >
+              <nz-option
+                *ngFor='let position of positions$|async'
+                [nzLabel]='position.name'
+                [nzValue]='position'
+              >
+              </nz-option>
+            </nz-select>
           </th>
           <th>
             <div class='title-profile'>Đơn vị</div>

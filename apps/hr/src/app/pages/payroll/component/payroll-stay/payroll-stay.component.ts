@@ -13,7 +13,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -55,7 +55,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class PayrollStayComponent implements OnInit, OnChanges {
   ItemContextMenu = ItemContextMenu;
   @Input() eventExportStay?: Subject<boolean>
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -86,6 +86,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -97,8 +98,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     private ref: ChangeDetectorRef
   ) {
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
   }
@@ -116,8 +118,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         }
       })
     );
-
-    this.store.dispatch(PositionActions.loadPosition());
 
     this.store.dispatch(OrgchartActions.init());
 
@@ -138,11 +138,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         })
       );
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
 
     this.payrollStay$.subscribe((payrolls) => {
       if (payrolls) {
@@ -181,8 +176,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         const payrollStay = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
-          branch: value.branch,
+          position: value.position?.name || '',
+          branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.STAY,
           title: value.title
         };
@@ -230,8 +225,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               createdAt: value.createdAt,
               title: val.title,
               filterType: FilterTypeEnum.STAY,
-              position: val.position,
-              branch: value.branch
+              position: val.position?.name || '',
+              branch: value.branch ? value.branch.name : ''
             }
           })
         );
@@ -278,7 +273,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: value.branch
+                branch: value.branch ? value.branch.name : ''
               }
             })
           );
@@ -376,8 +371,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.STAY,
-      position: value.position,
-      branch:value.branch
+      position: value.position?.name || '',
+      branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
@@ -389,10 +384,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       delete params.name;
     }
     return params;
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

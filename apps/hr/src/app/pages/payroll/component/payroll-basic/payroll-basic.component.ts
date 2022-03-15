@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -13,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,7 +24,7 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {of, Subject} from 'rxjs';
 import {debounceTime, startWith} from 'rxjs/operators';
@@ -37,7 +38,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
@@ -52,11 +53,11 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 })
 export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = this.store.pipe(select(getAllPosition))
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
@@ -84,6 +85,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -92,7 +94,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private readonly positionService: PositionService
   ) {
   }
 
@@ -106,7 +109,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   ];
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
   }
@@ -125,16 +128,12 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       })
     );
 
-    this.store.dispatch(PositionActions.loadPosition());
-
-    this.store.dispatch(OrgchartActions.init());
-
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
-          position: value.position
+          position: value.positions
         })
       );
       this.store.dispatch(
@@ -143,11 +142,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         })
       );
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ?? of(''),
-      this.positions$
-    );
 
     this.payrollBasic$.subscribe((payrolls) => {
       console.log(Number(getSelectors(selectedTotalPayroll, this.store)));
@@ -190,8 +184,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         const payrollBASIC = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
-          branch:value.branch,
+          position: value.position?.name || '',
+          branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
@@ -238,7 +232,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: this.formGroup.value.branch
+              branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : ''
             }
           })
         );
@@ -287,8 +281,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             salaryTitle: val.title,
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
-            position: value.position,
-            branch: value.branch
+            position: value.position?.name || '',
+            branch: value.branch ? value.branch.name : ''
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
@@ -375,8 +369,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
-      position: value.position,
-      branch: value.branch
+      position: value.position?.name || '',
+      branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {
@@ -405,10 +399,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

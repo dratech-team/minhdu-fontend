@@ -74,53 +74,55 @@ import { DialogNoteComponent } from './component/dialog-note/dialog-note.compone
 import { DialogWFHComponent } from './component/dialog-salary/dialog-WFH/dialog-WFH.component';
 import { MatSortModule } from '@angular/material/sort';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    PayrollRoutingModule,
-    ComponentsModule,
-    MatDialogModule,
-    StoreModule,
-    MatDialogModule,
-    EffectsModule,
-    InfiniteScrollModule,
-    StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
-    StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
-    StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
-    StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
-    StoreModule.forFeature(
-      FeatureName.TEMPLATE_OVERTIME,
-      templateOvertimeReducer
-    ),
-    EffectsModule.forFeature([
-      PayrollEffect,
-      HolidayEffect,
-      TemplateOvertimeEffect,
-      TemplateSalaryEffect
-    ]),
-    CommonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    EmployeeModule,
-    FormsModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatProgressBarModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatStepperModule,
-    MatSlideToggleModule,
-    MatSortModule,
-    NzMessageModule
-  ],
+    imports: [
+        ComponentsModule,
+        PayrollRoutingModule,
+        ComponentsModule,
+        MatDialogModule,
+        StoreModule,
+        MatDialogModule,
+        EffectsModule,
+        InfiniteScrollModule,
+        StoreModule.forFeature(FeatureName.TEMPLATE_SALARY, templateSalaryReducer),
+        StoreModule.forFeature(FeatureName.PAYROLL, payrollReducer),
+        StoreModule.forFeature(FeatureName.OVERTIME, OvertimeReducer),
+        StoreModule.forFeature(FeatureName.HOLIDAY, HolidayReducer),
+        StoreModule.forFeature(
+            FeatureName.TEMPLATE_OVERTIME,
+            templateOvertimeReducer
+        ),
+        EffectsModule.forFeature([
+            PayrollEffect,
+            HolidayEffect,
+            TemplateOvertimeEffect,
+            TemplateSalaryEffect
+        ]),
+        CommonModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatTabsModule,
+        MatChipsModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        EmployeeModule,
+        FormsModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatProgressBarModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatProgressSpinnerModule,
+        MatStepperModule,
+        MatSlideToggleModule,
+        MatSortModule,
+        NzMessageModule,
+        NzSelectModule
+    ],
   declarations: [
     PayrollComponent,
     DetailPayrollComponent,
