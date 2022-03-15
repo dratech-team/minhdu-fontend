@@ -41,18 +41,17 @@ import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
 import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {NzSelectModule} from "ng-zorro-antd/select";
-import {DeliveryDateComponent} from "./delivery-date/delivery-date.component";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
-import {OptionDataPickerComponent} from "./option-datapicker/option-data-picker.component";
-import {OptionRangeDataPickerComponent} from "./option-range-datapicker/option-range-data-picker.component";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
 import {NzButtonModule} from "ng-zorro-antd/button";
-import {NzInputModule} from "ng-zorro-antd/input";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzTypographyModule} from "ng-zorro-antd/typography";
 import {NzWaveModule} from "ng-zorro-antd/core/wave";
+import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
+import { RagePickerComponent } from './range-datapicker/rage-picker.component';
+import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
 
 @NgModule({
   imports: [
@@ -83,6 +82,7 @@ import {NzWaveModule} from "ng-zorro-antd/core/wave";
     NzTypographyModule,
     NzWaveModule,
     NzButtonModule,
+
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -106,9 +106,9 @@ import {NzWaveModule} from "ng-zorro-antd/core/wave";
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    DeliveryDateComponent,
-    OptionDataPickerComponent,
-    OptionRangeDataPickerComponent
+    CollapseDatepickerComponent,
+    TitleDatepickerComponent,
+    RagePickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -132,9 +132,9 @@ import {NzWaveModule} from "ng-zorro-antd/core/wave";
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    DeliveryDateComponent,
-    OptionDataPickerComponent,
-    OptionRangeDataPickerComponent
+    CollapseDatepickerComponent,
+    TitleDatepickerComponent,
+    RagePickerComponent
   ],
   providers: [
     DecimalPipe,

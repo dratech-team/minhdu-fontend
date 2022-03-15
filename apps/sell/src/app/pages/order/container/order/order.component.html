@@ -10,10 +10,10 @@
       </nz-collapse-panel>
     </nz-collapse>
     <div class="mt-2">
-      <app-delivery-date title="Ngày hẹn giao" (eventDatePicker)="pickDeliveryDay($event)"></app-delivery-date>
+      <minhdu-fontend-collapse-datepicker title="Ngày hẹn giao" (onPicker)='pickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class="mt-2">
-      <app-delivery-date title="Ngày tạo" (eventDatePicker)="pickCreatedAt($event)"></app-delivery-date>
+      <minhdu-fontend-collapse-datepicker title="Ngày tạo" (onPicker)='pickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <nz-collapse class="mt-2">
       <nz-collapse-panel

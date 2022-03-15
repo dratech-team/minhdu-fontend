@@ -4,10 +4,10 @@ import {OptionDataPicker, OptionDataPickerConstant} from "@minhdu-fontend/consta
 import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
-  selector:'option-data-picker',
-  templateUrl: 'option-data-picker.component.html'
+  selector:'minhdu-fontend-title-datepicker',
+  templateUrl: 'title-datepicker.component.html'
 })
-export class OptionDataPickerComponent{
+export class TitleDatepickerComponent {
   optionDataPicker: OptionDataPicker[] = OptionDataPickerConstant
 
   constructor(
