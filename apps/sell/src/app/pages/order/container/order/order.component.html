@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll">
+  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh; width:280px; overflow-y: scroll">
     <nz-collapse>
       <nz-collapse-panel
         nzHeader="Tìm kiếm"
@@ -10,8 +10,8 @@
       </nz-collapse-panel>
     </nz-collapse>
     <div class="mt-2">
-      <minhdu-fontend-collapse-datepicker title="Ngày hẹn giao"
-                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"
+        (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class="mt-2">
       <minhdu-fontend-collapse-datepicker title="Ngày tạo"
@@ -43,7 +43,7 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class="ml-2 " style="width: 83vw; height: 80vh">
+  <div class="ml-2 " style="width: 76vw; height: 80vh">
     <div class="d-flex justify-content-between mb-2">
       <div class='h3'>
         Danh sách đơn hàng
@@ -67,7 +67,7 @@
         <thead>
         <tr>
           <th nzWidth="50px" nzLeft></th>
-          <th nzWidth="50px" nzLeft class="text-center font-weight-bold" >Stt</th>
+          <th nzWidth="50px" nzLeft class="text-center font-weight-bold" >STT</th>
           <th nzLeft class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.END}}">
             Ngày hẹn giao
           </th>

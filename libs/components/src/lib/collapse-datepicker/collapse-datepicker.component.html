@@ -2,9 +2,9 @@
   <nz-collapse-panel
     nzHeader='{{title}}'
     nzActive='true'>
-    <nz-radio-group>
-      <label nz-radio nzValue="0">
-        <input
+    <nz-radio-group [formControl]="formRadio">
+      <label nz-radio [nzValue]="0">
+        <input style="width: 190px"
           [formControl]="formTitlePicker"
           nz-input
           nz-popover
@@ -16,8 +16,10 @@
           [nzPopoverContent]='contentTemplate'
         />
       </label>
-      <label nz-radio nzValue="1">
-        <button nz-button nzType='primary' (click)='onRage()'>Lựa chọn khác</button>
+      <label nz-radio [nzValue]="1">
+        <nz-range-picker
+          [formControl]="formRange">
+        </nz-range-picker>
       </label>
     </nz-radio-group>
 
@@ -26,6 +28,11 @@
 </nz-collapse>
 
 <ng-template #contentTemplate>
+  <i nz-icon nzType='check'></i>
+  <minhdu-fontend-title-datepicker (pickTitle)="onTitlePicker($event)"></minhdu-fontend-title-datepicker>
+</ng-template>
+
+<ng-template #contentRange>
   <i nz-icon nzType='check'></i>
   <minhdu-fontend-title-datepicker (pickTitle)="onTitlePicker($event)"></minhdu-fontend-title-datepicker>
 </ng-template>
