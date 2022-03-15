@@ -9,10 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -36,34 +33,43 @@ import { TransformPipe } from './pipes/transform.pipe';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import {FilterDayPipe} from "./pipes/filter-day.pipe";
-import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
-import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
-import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
-import {NzSelectModule} from "ng-zorro-antd/select";
+import { FilterDayPipe } from './pipes/filter-day.pipe';
+import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
+import { TableEmployeeSelectedComponent } from './table-employee-selected/table-employee-selected.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
+import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
+import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
+import {NzPopoverModule} from "ng-zorro-antd/popover"
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 @NgModule({
-    imports: [
-        MatSnackBarModule,
-        CommonModule,
-        RouterModule,
-        MatMenuModule,
-        ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
-        FormsModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        InfiniteScrollModule,
-        ReactiveFormsModule,
-        NgxChartsModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        BsDatepickerModule.forRoot(),
-        NgxSkeletonLoaderModule,
-        NzSelectModule,
-    ],
+  imports: [
+    MatSnackBarModule,
+    CommonModule,
+    RouterModule,
+    MatMenuModule,
+    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
+    FormsModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    ReactiveFormsModule,
+    NgxChartsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BsDatepickerModule.forRoot(),
+    NgxSkeletonLoaderModule,
+    NzSelectModule,
+    NzPopoverModule,
+    NzInputModule,
+    NzCollapseModule
+  ],
   declarations: [
     SwimLaneChartComponent,
     SnackBarComponent,
@@ -85,7 +91,10 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     DialogDatePickerComponent,
     FilterDayPipe,
     PickEmployeeComponent,
-    TableEmployeeSelectedComponent
+    TableEmployeeSelectedComponent,
+    TitleDatepickerComponent,
+    RagePickerComponent,
+    CollapseDatepickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -108,12 +117,15 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     DialogDatePickerComponent,
     FilterDayPipe,
     PickEmployeeComponent,
-    TableEmployeeSelectedComponent
+    TableEmployeeSelectedComponent,
+    TitleDatepickerComponent,
+    RagePickerComponent,
   ],
   providers: [
     DecimalPipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}

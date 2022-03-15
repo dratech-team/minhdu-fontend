@@ -4,11 +4,13 @@
   "license": "MIT",
   "scripts": {
     "build:prod:hr": "npx nx build hr --prod",
+    "build:prod:hrv2": "npx nx build hrv2 --prod",
     "build:prod:sell": "npx nx build sell --prod",
     "build:prod:warehouse": "npx nx build warehouse --prod",
     "build:prod:admin": "npx nx build admin --prod",
     "build:prod:breed": "npx nx build breed --prod",
     "dev:hr": "nx run hr:serve --open",
+    "dev:hrv2": "nx run hrv2:serve --open",
     "dev:sell": "nx run sell:serve --open",
     "dev:warehouse": "nx run warehouse:serve --open",
     "dev:breed": "nx run breed:serve --open",
