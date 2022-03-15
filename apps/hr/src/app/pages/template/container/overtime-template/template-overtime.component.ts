@@ -191,7 +191,7 @@ export class TemplateOvertimeComponent implements OnInit {
     if(template?.branch){
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          branch: template.branch.name
+          branch: template.branch
         })
       );
     }

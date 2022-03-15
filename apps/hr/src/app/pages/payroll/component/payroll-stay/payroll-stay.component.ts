@@ -13,7 +13,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -55,7 +55,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class PayrollStayComponent implements OnInit, OnChanges {
   ItemContextMenu = ItemContextMenu;
   @Input() eventExportStay?: Subject<boolean>
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 

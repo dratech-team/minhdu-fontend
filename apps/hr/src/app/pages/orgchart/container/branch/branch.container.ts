@@ -78,12 +78,12 @@ export class BranchContainer implements OnInit {
   }
 
   onPayroll(event: any) {
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name}));
+    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event}));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertime(event: any) {
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event.name, filter: FilterTypeEnum.OVERTIME}));
+    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event, filter: FilterTypeEnum.OVERTIME}));
     this.router.navigate(['phieu-luong']).then();
   }
 
@@ -116,7 +116,7 @@ export class BranchContainer implements OnInit {
 
   onPayrollPositionChip(item: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      {branch: item.branch.name, position: item.position.name}
+      {branch: item.branch, position: item.position.name}
     ));
     this.router.navigate(['phieu-luong']).then();
   }

@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { PayrollAction, updateStatePayroll } from './payroll.action';
 import { Payroll } from './payroll.interface';
 import { ConvertBoolean, ConvertBooleanFrontEnd, FilterTypeEnum } from '@minhdu-fontend/enums';
-import { totalSalary } from '@minhdu-fontend/data-models';
+import {Branch, totalSalary} from '@minhdu-fontend/data-models';
 
 export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
@@ -15,7 +15,7 @@ export interface PayrollState extends EntityState<Payroll> {
   selectedPayrollId: number,
   createdAt: Date,
   filter: FilterTypeEnum,
-  branch: string,
+  branch: Branch,
   position: string,
   total: number,
   totalOvertime?: totalSalary
@@ -26,7 +26,7 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: FilterTypeEnum.TIME_SHEET, branch: '', position: '', total: 0,
+  createdAt: new Date(), filter: FilterTypeEnum.TIME_SHEET, branch: {} as Branch, position: '', total: 0,
   totalOvertime: { total: 0, unit: { days: 0, hours: 0 } }
 });
 

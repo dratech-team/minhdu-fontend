@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -56,9 +56,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   selector: 'minhdu-fontend-payroll-overtime',
   templateUrl: 'payroll-overtime.component.html'
 })
-export class PayrollOvertimeComponent implements OnInit , OnChanges {
+export class PayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() eventAddOvertime?: Subject<any>;
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -81,9 +81,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  positions$ =  getSelectors(selectedBranchPayroll, this.store) ?
-    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store) }):
-    new Observable<Position[]>()
+  positions$ = this.store.pipe(select(getAllPosition))
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
 
@@ -118,10 +116,10 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
     private readonly positionService: PositionService
   ) {
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
+    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
-      this.positions$ = this.positionService.getAll({branch:changes.eventSearchBranch.currentValue })
     }
   }
 
@@ -207,7 +205,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
           filename: val,
           exportType: 'RANGE_DATETIME',
           position: value.position,
-          branch: value.branch,
+          branch: value.branch.name,
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -299,7 +297,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position,
-      branch: value.branch,
+      branch: value.branch.name,
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -468,7 +466,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
               title: value.title,
               name: value.name,
               position: value.position,
-              branch: value.branch
+              branch: value.branch.name
             };
             if (!value.name) {
               delete payrollOvertime.name;
@@ -495,7 +493,7 @@ export class PayrollOvertimeComponent implements OnInit , OnChanges {
           title: value.title,
           name: value.name,
           position: value.position,
-          branch:value.branch
+          branch: value.branch.name
         };
         if (!value.name) {
           delete payrollOvertime.name;

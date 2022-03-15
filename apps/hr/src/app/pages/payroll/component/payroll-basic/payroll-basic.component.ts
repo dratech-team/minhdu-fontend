@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -13,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,9 +24,9 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {Observable, of, Subject} from 'rxjs';
+import {of, Subject} from 'rxjs';
 import {debounceTime, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -37,7 +38,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
@@ -52,13 +53,11 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 })
 export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
-  positions$ = getSelectors(selectedBranchPayroll, this.store) ?
-    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store)}) :
-    new Observable<Position[]>()
+  positions$ = this.store.pipe(select(getAllPosition))
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
@@ -111,7 +110,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
-      this.positions$ = this.positionService.getAll({branch: changes.eventSearchBranch.currentValue})
     }
   }
 
@@ -191,7 +189,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: value.branch.name,
           exportType: FilterTypeEnum.BASIC,
           title: value.title
         };
@@ -238,7 +236,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: this.formGroup.value.branch
+              branch: this.formGroup.value.branch.name
             }
           })
         );
@@ -288,7 +286,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position,
-            branch: value.branch
+            branch: value.branch.name
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
@@ -376,7 +374,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position,
-      branch: value.branch
+      branch: value.branch.name
     };
     if (this.sort?.active) {
       Object.assign(params, {

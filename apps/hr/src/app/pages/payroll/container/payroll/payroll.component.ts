@@ -47,7 +47,7 @@ import {DialogCategoryComponent} from '../../../employee/components/category/dia
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Category, Position} from "@minhdu-fontend/data-models";
+import {Branch, Category, Position} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
@@ -80,7 +80,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.store
   );
 
-  formCtrlBranch = new FormControl(getSelectors<string>(selectedBranchPayroll, this.store))
+  formCtrlBranch = new FormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
   positionName = getSelectors<string>(selectedPositionPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
@@ -91,15 +91,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   total$ = this.store.pipe(select(selectedTotalPayroll));
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   code?: string;
-  positions$ = new Observable<Position[]>();
+  positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
       this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: branches[0].name
+        branch: branches[0]
       }))
       this.categories$ = this.categoryService.getAll({branch: branches[0].name})
-      this.formCtrlBranch.patchValue(branches[0].name, {emitEvent: false})
-      this.positions$ = this.positionService.getAll({branchId: branches[0].id})
+      this.formCtrlBranch.patchValue(branches[0], {emitEvent: false})
     }
     return branches
   }));
@@ -124,11 +123,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   sortEnum = sortEmployeeTypeEnum;
   role!: string | null
   roleEnum = Role
-  searchBranchOvertime?: string;
-  searchBranchBasic?: string;
-  searchBranchAllowance?: string;
-  searchBranchStay?: string;
-  searchBranchAbsent?: string;
+  searchBranchOvertime?: Branch;
+  searchBranchBasic?: Branch;
+  searchBranchAllowance?: Branch;
+  searchBranchStay?: Branch;
+  searchBranchAbsent?: Branch;
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly message: NzMessageService,
@@ -221,11 +221,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         }
       });
 
-    this.branches$ = searchAutocomplete(
-      this.formCtrlBranch.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
-
     this.positions$ = searchAutocomplete(
       this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
       this.positions$
@@ -237,33 +232,33 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
     });
 
-    this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
+    this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+      this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: val
+        branch: branch
       }))
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
-          this.searchBranchAbsent = val
+          this.searchBranchAbsent = branch
           break;
         case FilterTypeEnum.BASIC:
-          this.searchBranchBasic = val
+          this.searchBranchBasic = branch
           break;
         case FilterTypeEnum.STAY:
-          this.searchBranchStay = val
+          this.searchBranchStay = branch
           break;
         case FilterTypeEnum.OVERTIME:
-          this.searchBranchOvertime = val
+          this.searchBranchOvertime = branch
           break;
         case FilterTypeEnum.ALLOWANCE:
-          this.searchBranchAllowance = val
+          this.searchBranchAllowance = branch
           break;
         default :
-          this.branches$ = this.positionService.getAll({branch: val})
           this.store.dispatch(PayrollAction.loadInit({
             payrollDTO: this.mapPayroll(this.formGroup.value)
           }))
       }
-      this.categories$ = this.categoryService.getAll({branch: val})
+      this.categories$ = this.categoryService.getAll({branch: branch})
     })
   }
 
@@ -287,7 +282,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: this.positionName,
-      branch: this.formCtrlBranch.value,
+      branch: this.formCtrlBranch.value.name,
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
@@ -552,7 +547,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position,
-      branch: this.formCtrlBranch.value,
+      branch: this.formCtrlBranch.value.name,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL
@@ -578,7 +573,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position,
-      branch: this.formCtrlBranch.value,
+      branch: this.formCtrlBranch.value.name,
       exportType: FilterTypeEnum.TIME_SHEET
     };
     if (value.createdAt) {
@@ -599,7 +594,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   addCategory() {
     this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed()
       .subscribe(() => this.categories$ = this.categoryService.getAll(
-        {branch: this.formCtrlBranch.value}));
+        {branch: this.formCtrlBranch.value.name}));
   }
 
   updateCategory(): any {
@@ -610,7 +605,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {categoryId: this.categoryControl.value, isUpdate: true}
     }).afterClosed().subscribe(() => {
-      this.categories$ = this.categoryService.getAll({branch: this.formCtrlBranch.value});
+      this.categories$ = this.categoryService.getAll({branch: this.formCtrlBranch.value.name});
     });
   }
 

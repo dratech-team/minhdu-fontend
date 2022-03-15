@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -11,22 +12,22 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
   Gender,
   ItemContextMenu,
   SalaryTypeEnum,
-  SearchTypeEnum, sortEmployeeTypeEnum
+  SearchTypeEnum,
+  sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {Observable, of, Subject} from 'rxjs';
+import {of, Subject} from 'rxjs';
 import {debounceTime, startWith} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
@@ -39,7 +40,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {UnitAbsentConstant} from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {
   checkInputNumber,
   getFirstDayInMonth,
@@ -62,7 +63,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 
 export class PayrollAbsentComponent implements OnInit , OnChanges {
   @Input() eventAddAbsent?: Subject<any>;
-  @Input() eventSearchBranch?: string;
+  @Input() eventSearchBranch?: Branch;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -86,9 +87,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
-  positions$ = getSelectors(selectedBranchPayroll, this.store) ?
-    this.positionService.getAll({branch: getSelectors(selectedBranchPayroll, this.store) }):
-    new Observable<Position[]>()
+  positions$ = this.store.pipe(select(getAllPosition))
 
   formGroup = new FormGroup({
     title: new FormControl(''),
@@ -121,7 +120,6 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue){
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
-      this.positions$ = this.positionService.getAll({branch: changes.eventSearchBranch.currentValue})
     }
   }
 
@@ -232,7 +230,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position,
-          branch: value.branch,
+          branch: value.branch.name,
           exportType: 'RANGE_DATETIME',
           title: value.title,
           startedAt: value.startedAt,
@@ -406,7 +404,7 @@ export class PayrollAbsentComponent implements OnInit , OnChanges {
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
         position: value.position,
-        branch: value.branch
+        branch: value.branch.name
       }
     ;
     if (this.sort?.active) {

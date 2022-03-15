@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { FilterTypeEnum, ItemContextMenu, OrgchartEnum } from '@minhdu-fontend/enums';
-import { MatDialog } from '@angular/material/dialog';
-import { getAllPosition, getPositionLoaded, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogPositionComponent } from '../../component/dialog-position/dialog-position.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PayrollAction } from '../../../payroll/+state/payroll/payroll.action';
-import { getBranchById, getOrgchartLoaded, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { Observable } from 'rxjs';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { DialogExportComponent } from '@minhdu-fontend/components';
-import { Api } from '@minhdu-fontend/constants';
+import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {FilterTypeEnum, ItemContextMenu, OrgchartEnum} from '@minhdu-fontend/enums';
+import {MatDialog} from '@angular/material/dialog';
+import {getAllPosition, getPositionLoaded, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {FormControl} from '@angular/forms';
+import {debounceTime} from 'rxjs/operators';
+import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {DialogPositionComponent} from '../../component/dialog-position/dialog-position.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PayrollAction} from '../../../payroll/+state/payroll/payroll.action';
+import {getBranchById, getOrgchartLoaded, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {Observable} from 'rxjs';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {DialogExportComponent} from '@minhdu-fontend/components';
+import {Api} from '@minhdu-fontend/constants';
 
 @Component({
   templateUrl: 'position.container.html'
@@ -45,7 +45,7 @@ export class PositionContainer implements OnInit {
         this.branchId = val.branchId;
         if (this.branchId) {
           this.branch$ = this.store.select(getBranchById(this.branchId));
-          this.store.dispatch(OrgchartActions.getBranch({ id: this.branchId }));
+          this.store.dispatch(OrgchartActions.getBranch({id: this.branchId}));
         }
       } else {
         this.branchId = undefined;
@@ -54,22 +54,22 @@ export class PositionContainer implements OnInit {
     });
 
     this.positions.valueChanges.pipe(debounceTime(1000)).subscribe(val => {
-      this.store.dispatch(PositionActions.searchPosition({ position: val }));
+      this.store.dispatch(PositionActions.searchPosition({position: val}));
     });
   }
 
   addPosition() {
-    this.dialog.open(DialogPositionComponent, { width: 'fit-content', data: { branchId: this.branchId } });
+    this.dialog.open(DialogPositionComponent, {width: 'fit-content', data: {branchId: this.branchId}});
   }
 
   updatePosition($event: Position) {
     this.dialog.open(DialogPositionComponent, {
-      width: 'fit-content', data: { position: $event, isUpdate: true, branchId: this.branchId }
+      width: 'fit-content', data: {position: $event, isUpdate: true, branchId: this.branchId}
     });
   }
 
   deletePosition($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(PositionActions.deletePosition({
@@ -91,15 +91,14 @@ export class PositionContainer implements OnInit {
 
   onPayroll(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      { position: event.position.name, branch: event.branch ? event.branch.name : '' }));
+      {position: event.position.name, branch: event.branch}));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertime(event: any) {
     this.store.dispatch(PayrollAction.updateStatePayroll(
       {
-        position: event.position.name, branch:
-          event.branch ? event.branch.name : '',
+        position: event.position.name, branch: event.branch,
         filter: FilterTypeEnum.OVERTIME
       }));
     this.router.navigate(['phieu-luong']).then();
@@ -111,7 +110,7 @@ export class PositionContainer implements OnInit {
       data: {
         title: 'Xuất bảng chức vụ',
         exportType: 'POSITION',
-        params: this.branchId ? { branchId: this.branchId } : undefined,
+        params: this.branchId ? {branchId: this.branchId} : undefined,
         api: Api.HR.POSITION_EXPORT
       }
     });
