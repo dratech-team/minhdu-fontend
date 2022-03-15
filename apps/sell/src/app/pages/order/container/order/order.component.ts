@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,29 +17,24 @@ import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dia
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions } from '../../+state/order.actions';
 import * as _ from 'lodash';
-import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
-import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
-import { MatSort } from '@angular/material/sort';
-import { RouteAction } from '../../../route/+state/route.action';
+import { NzTableQueryParams} from 'ng-zorro-antd/table';
 
 @Component({
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
-
-  orders$ = this.orderQuery.selectAll();
+  orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
-  CommodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
+  commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
+  totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
     map(orders => {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
-
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
@@ -51,12 +46,13 @@ export class OrderComponent implements OnInit {
   sortOrderEnum = SortOrderEnum;
 
   formGroup = new FormGroup({
+    search: new FormControl(''),
     paidType: new FormControl(''),
     customer: new FormControl(''),
-    status: new FormControl('0'),
+    status: new FormControl(-1),
     explain: new FormControl(''),
-    startedAt: new FormControl(),
-    endedAt: new FormControl(),
+    startedAt: new FormControl(''),
+    endedAt: new FormControl(''),
     createStartedAt: new FormControl(),
     createEndedAt: new FormControl(),
     deliveryStartedAt: new FormControl(),
@@ -64,7 +60,8 @@ export class OrderComponent implements OnInit {
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
     province: new FormControl(''),
-    bsx: new FormControl('')
+    bsx: new FormControl(''),
+    commodity: new FormControl('')
   });
 
   constructor(
@@ -95,6 +92,7 @@ export class OrderComponent implements OnInit {
       .subscribe();
   }
 
+
   add() {
     this.router.navigate(['don-hang/them-don-hang']).then();
   }
@@ -102,21 +100,20 @@ export class OrderComponent implements OnInit {
   onScroll() {
     const val = this.formGroup.value;
     this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(val))
+      OrderActions.loadAll(this.mapOrder(val, true))
     );
   }
 
-  mapOrder(val: any) {
+  mapOrder(val: any, isScroll?: boolean) {
     const value = Object.assign(JSON.parse(JSON.stringify(val)), {
-      skip: this.pageIndexInit,
+      skip: isScroll ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
       delete value?.createStartedAt;
       delete value?.createEndedAt;
     }
-
-    if (!value?.deliveryStartedAt && !value?.deliveryEndedAt) {
+    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
       delete value?.deliveryStartedAt;
       delete value?.deliveryEndedAt;
     }
@@ -126,15 +123,13 @@ export class OrderComponent implements OnInit {
       delete value?.endedAt;
     }
 
+    if (!value?.deliveredAt) {
+      delete value?.deliveredAt;
+    }
+
     if (value?.startedAt && !value?.endedAt) {
       value.endedAt = value?.startedAt;
       this.formGroup.get('endedAt')?.patchValue(value.endedAt);
-    }
-    if (this.sort.active) {
-      Object.assign(value, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
     }
     return value;
   }
@@ -201,10 +196,6 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
-    return getTotalCommodity(CommodityUniq);
-  }
-
   cancelOrder($event: any) {
     this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
   }
@@ -224,9 +215,28 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  sortOrder() {
-    this.actions$.dispatch(RouteAction.loadAll({
-      params: this.mapOrder(this.formGroup.value)
-    }));
+  paramChange(params: NzTableQueryParams) {
+    const value = this.formGroup.value;
+    params.sort.map(val => {
+      if (val.value) {
+        Object.assign(value, {
+          orderBy: val.key,
+          orderType: val.value === 'ascend' ? 'asc' : 'des'
+        });
+        this.actions$.dispatch(OrderActions.loadAll({
+          param: this.mapOrder(value)
+        }));
+      }
+    });
+  }
+
+  onPickDeliveryDay($event: any) {
+    this.formGroup.get('deliveryStartedAt')?.setValue($event.startedAt, { emitEvent: false });
+    this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt);
+  }
+
+  onPickCreatedAt($event: any) {
+    this.formGroup.get('createStartedAt')?.setValue($event.startedAt, { emitEvent: false });
+    this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
   }
 }

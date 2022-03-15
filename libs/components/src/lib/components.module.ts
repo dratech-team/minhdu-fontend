@@ -33,17 +33,24 @@ import { TransformPipe } from './pipes/transform.pipe';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { FilterDayPipe } from './pipes/filter-day.pipe';
 import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
 import { TableEmployeeSelectedComponent } from './table-employee-selected/table-employee-selected.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatRadioModule } from '@angular/material/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
 import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
 import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
-import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
-import {NzPopoverModule} from "ng-zorro-antd/popover"
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @NgModule({
   imports: [
@@ -51,7 +58,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
     CommonModule,
     RouterModule,
     MatMenuModule,
-    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
     FormsModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -68,7 +75,16 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
     NzSelectModule,
     NzPopoverModule,
     NzInputModule,
-    NzCollapseModule
+    NzCollapseModule,
+    MatExpansionModule,
+    MatRadioModule,
+    NzDatePickerModule,
+    NzPopoverModule,
+    NzCollapseModule,
+    NzTypographyModule,
+    NzWaveModule,
+    NzButtonModule,
+    NzRadioModule
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -93,8 +109,8 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
     TitleDatepickerComponent,
-    RagePickerComponent,
-    CollapseDatepickerComponent
+    CollapseDatepickerComponent,
+    RagePickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -119,7 +135,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
     TitleDatepickerComponent,
-    RagePickerComponent,
+    CollapseDatepickerComponent
   ],
   providers: [
     DecimalPipe,

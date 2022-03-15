@@ -32,6 +32,15 @@ import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {RouteEffect} from "../route/+state/route.effect";
 import {MatSortModule} from "@angular/material/sort";
 import {NzModalModule} from "ng-zorro-antd/modal";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatRadioModule} from "@angular/material/radio";
+import {NzTableModule} from "ng-zorro-antd/table";
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzRadioModule} from "ng-zorro-antd/radio";
+
 
 @NgModule({
   imports: [
@@ -63,6 +72,14 @@ import {NzModalModule} from "ng-zorro-antd/modal";
     MatProgressSpinnerModule,
     MatSortModule,
     NzModalModule,
+    MatExpansionModule,
+    MatRadioModule,
+    NzTableModule,
+    NzPopoverModule,
+    NzButtonModule,
+    NzCollapseModule,
+    NzInputModule,
+    NzRadioModule
   ],
   declarations: [
     TableRouteComponent,
