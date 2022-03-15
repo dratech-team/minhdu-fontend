@@ -5,6 +5,7 @@ interface VisibleEntity {
 
 export interface OrderVisibleEntity {
   readonly id: VisibleEntity;
+  readonly stt: VisibleEntity;
   readonly customer: VisibleEntity;
   readonly createdAt: VisibleEntity;
   readonly explain: VisibleEntity;

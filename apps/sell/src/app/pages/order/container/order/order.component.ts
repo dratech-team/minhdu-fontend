@@ -26,6 +26,7 @@ import { NzTableQueryParams} from 'ng-zorro-antd/table';
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
+  ui$ = this.orderQuery.select(state => state.ui);
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
   commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
@@ -35,6 +36,7 @@ export class OrderComponent implements OnInit {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
+
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;

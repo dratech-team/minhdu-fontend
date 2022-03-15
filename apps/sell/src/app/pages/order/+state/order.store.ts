@@ -28,6 +28,10 @@ function createInitState(): OrderState {
         pinned: false,
         visible: false
       },
+      stt: {
+        pinned: true,
+        visible: true
+      },
       customer: {
         pinned: true,
         visible: true

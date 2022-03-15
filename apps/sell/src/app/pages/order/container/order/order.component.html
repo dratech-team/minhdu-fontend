@@ -1,167 +1,170 @@
-<div class="d-flex">
-  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh; width:280px; overflow-y: scroll">
+<div class='d-flex'>
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:280px; overflow-y: scroll'>
     <nz-collapse>
       <nz-collapse-panel
-        nzHeader="Tìm kiếm"
-        nzActive="true">
-        <div [formGroup]="formGroup">
-          <input nz-input class="form-control" type="search" formControlName="search">
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <div class="mt-2">
+    <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"
-        (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
+                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class="mt-2">
-      <minhdu-fontend-collapse-datepicker title="Ngày tạo"
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-datepicker title='Ngày tạo'
                                           (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
-    <nz-collapse class="mt-2">
+    <nz-collapse class='mt-2'>
       <nz-collapse-panel
-        nzHeader="Trạng thái đơn hàng"
-        nzActive="false">
-        <div [formGroup]="formGroup">
-          <nz-radio-group formControlName="status">
-            <label nz-radio [nzValue]="0">Đã giao</label>
-            <label nz-radio [nzValue]="1">Đang giao</label>
-            <label nz-radio [nzValue]="-1">tất cả</label>
+        nzHeader='Trạng thái đơn hàng'
+        nzActive='false'>
+        <div [formGroup]='formGroup'>
+          <nz-radio-group formControlName='status'>
+            <label nz-radio [nzValue]='0'>Đã giao</label>
+            <label nz-radio [nzValue]='1'>Đang giao</label>
+            <label nz-radio [nzValue]='-1'>tất cả</label>
           </nz-radio-group>
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <nz-collapse class="mt-2">
+    <nz-collapse class='mt-2'>
       <nz-collapse-panel
-        nzHeader="Hàng hoá"
-        nzActive="false">
-        <div [formGroup]="formGroup">
-          <nz-radio-group formControlName="commodity">
-            <label nz-radio *ngFor="let item of (commodities$|async)" [nzValue]="item.name">{{item.name}}</label>
+        nzHeader='Hàng hoá'
+        nzActive='false'>
+        <div [formGroup]='formGroup'>
+          <nz-radio-group formControlName='commodity'>
+            <label nz-radio *ngFor='let item of (commodities$|async)' [nzValue]='item.name'>{{item.name}}</label>
 
           </nz-radio-group>
         </div>
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class="ml-2 " style="width: 76vw; height: 80vh">
-    <div class="d-flex justify-content-between mb-2">
+  <div class='ml-2 ' style='width: 76vw; height: 80vh'>
+    <div class='d-flex justify-content-between mb-2'>
       <div class='h3'>
         Danh sách đơn hàng
       </div>
       <div class='d-flex justify-content-between'>
-        <button (click)='add()' class='btn btn-primary font-lg '>Thêm</button>
-        <button (click)='printOrder()' class='btn btn-primary font-lg mx-3 '>Xuất</button>
+        <button (click)='add()' class='btn btn-primary font-lg'>Thêm</button>
+        <button (click)='printOrder()' class='btn btn-secondary font-lg mx-3'>Xuất</button>
+        <button (click)='printOrder()' class='btn btn-primary font-lg mx-3'>Custom</button>
       </div>
     </div>
     <div>
       <nz-table
         [nzScroll]="{ x: '2000px',y: '70vh'}"
-        nzSize="middle"
+        nzSize='middle'
         #tableOrder
-        [nzData]="(orders$|async)||[]"
-        [nzFrontPagination]="true"
-        [nzShowPagination]="false"
+        [nzData]='(orders$|async)||[]'
+        [nzFrontPagination]='true'
+        [nzShowPagination]='false'
         [formGroup]='formGroup'
-        (nzQueryParams)="paramChange($event)"
+        (nzQueryParams)='paramChange($event)'
       >
         <thead>
         <tr>
-          <th nzWidth="50px" nzLeft></th>
-          <th nzWidth="50px" nzLeft class="text-center font-weight-bold" >STT</th>
-          <th nzLeft class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.END}}">
+          <th nzWidth='50px' nzLeft></th>
+          <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
+              class='text-center font-weight-bold'>STT
+          </th>
+          <th nzLeft class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
             Ngày hẹn giao
           </th>
-          <th [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.CUSTOMER}}" class="text-center font-weight-bold">
+          <th [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CUSTOMER}}' class='text-center font-weight-bold'>
             Khách hàng
           </th>
-          <th class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.PROVINCE}}">
+          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.PROVINCE}}'>
             Điểm đến
           </th>
-          <th class="text-center font-weight-bold" [nzSortFn]="true" nzColumnKey="{{sortOrderEnum.CREATED_AT}}">
+          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CREATED_AT}}'>
             Ngày tạo
           </th>
-          <th class="text-center font-weight-bold">
+          <th class='text-center font-weight-bold'>
             Xe xuất
           </th>
-          <th class="text-center font-weight-bold" style="color: red">
+          <th class='text-center font-weight-bold' style='color: red'>
             Tổng số lượng
           </th>
-          <th class="text-center font-weight-bold">
+          <th class='text-center font-weight-bold'>
             Tiền hàng
           </th>
-          <th class="text-center font-weight-bold">
+          <th class='text-center font-weight-bold'>
             Thanh toán
           </th>
-          <th class="text-center font-weight-bold">
+          <th class='text-center font-weight-bold'>
             Diễn giải
           </th>
-          <th class="text-center font-weight-bold">
+          <th class='text-center font-weight-bold'>
             Trạng thái đơn hàng
           </th>
         </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-order [ngForOf]="tableOrder.data" let-i='index'>
+        <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
           <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)'>
-            <td nzLeft [(nzExpand)]="order.expand"></td>
-            <td nzLeft class="text-center">{{i+1}}</td>
-            <td class="text-center" nzLeft (click)='readAndUpdate(order.id, false)' nzLeft>
+            <td nzLeft [(nzExpand)]='order.expand'></td>
+            <td nzLeft class='text-center'>{{i + 1}}</td>
+            <td class='text-center' nzLeft (click)='readAndUpdate(order.id, false)' nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
               {{order.customer?.lastName}}
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
               {{order?.province?.name}}
               {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
               {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
               {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)' *ngIf='order?.routes?.length; else notCar'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)' *ngIf='order?.routes?.length; else notCar'>
           <span *ngFor='let route of order?.routes'>
               {{route?.bsx}},
           </span>
             </td>
             <ng-template #notCar>
-              <td class="text-center" (click)='readAndUpdate(order.id, false)'>
+              <td class='text-center' (click)='readAndUpdate(order.id, false)'>
                 -
               </td>
             </ng-template>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)' style="color: red">
+            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: red'>
               {{order.totalCommodity| number:'1.0-0' | notEmpty:'0'}}
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)' style='color: #f86c6b'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: #f86c6b'>
               {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
             </td>
-            <td class="text-center" (click)='readAndUpdate(order.id, false)' style='color: #20c997'>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: #20c997'>
               {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
             </td>
             <!--        <th>-->
             <!--          {{order.currency | transform:currenciesConstant}}-->
             <!--        </th>-->
-            <td class="text-center" (click)='readAndUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
+            <td class='text-center' (click)='readAndUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
             <td [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
               {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes?.length) ? 'Đang giao' : 'Chưa giao')}}
             </td>
           </tr>
-          <tr [nzExpand]="order.expand">
-            <nz-table #innerTable [nzData]="order.commodities" nzSize="small" [nzShowPagination]="false">
-              <thead>
-              <tr>
-                <th class="text-center">Hàng hoá</th>
-                <th class="text-center">Số lượng</th>
-                <th class="text-center">Giá</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let commodity of innerTable.data">
-                <td class="text-center">{{commodity.name}}</td>
-                <td class="text-center">{{commodity.amount}}</td>
-                <td class="text-center">{{commodity.price}}</td>
-              </tr>
-              </tbody>
+          <tr [nzExpand]='order.expand'>
+            <nz-table #innerTable [nzData]='order.commodities' nzSize='small' [nzShowPagination]='false'>
+        <thead>
+        <tr>
+          <th class='text-center'>Hàng hoá</th>
+          <th class='text-center'>Số lượng</th>
+          <th class='text-center'>Giá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let commodity of innerTable.data'>
+          <td class='text-center'>{{commodity.name}}</td>
+          <td class='text-center'>{{commodity.amount}}</td>
+          <td class='text-center'>{{commodity.price}}</td>
+        </tr>
+        </tbody>
       </nz-table>
       </tr>
       </ng-template>
@@ -170,12 +173,13 @@
     </div>
     <div>
     </div>
-    <div class="d-flex mt-2">
-      <div><span class="font-weight-bold">Tổng hàng hoá:</span> <span class="ml-1"
-                                                                      style="color: red">{{totalCommodity$|async}}</span></div>
-      <div class="ml-3 " *ngFor="let item of commodityUniq$|async">
-        <span class="font-weight-bold">Tổng {{item.name}}:</span> <span class="ml-1"
-                                                                        style="color: red">{{item.amount}}</span>
+    <div class='d-flex mt-2'>
+      <div><span class='font-weight-bold'>Tổng hàng hoá:</span> <span class='ml-1'
+                                                                      style='color: red'>{{totalCommodity$|async}}</span>
+      </div>
+      <div class='ml-3 ' *ngFor='let item of commodityUniq$|async'>
+        <span class='font-weight-bold'>Tổng {{item.name}}:</span> <span class='ml-1'
+                                                                        style='color: red'>{{item.amount}}</span>
       </div>
     </div>
   </div>
@@ -186,6 +190,6 @@
   (onAdd)='addOrder()'
   (onUpdate)='readAndUpdate($event.id, true)'
   (onEnd)='UpdateOrder($event)'
-  (onCancel)="cancelOrder($event)"
-  (onDelPerm)="deleteOrder($event)"
+  (onCancel)='cancelOrder($event)'
+  (onDelPerm)='deleteOrder($event)'
 ></app-mouse-right>
