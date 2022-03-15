@@ -236,7 +236,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: this.formGroup.value.branc
+              branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : ''
             }
           })
         );
@@ -286,7 +286,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position,
-            branch: value.branch.name
+            branch: value.branch ? value.branch.name : ''
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
@@ -374,7 +374,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position,
-      branch: value.branch.name
+      branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
       Object.assign(params, {

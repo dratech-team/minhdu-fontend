@@ -28,9 +28,6 @@ export class PayrollEffect {
     this.action$.pipe(
       ofType(PayrollAction.loadInit),
       concatMap((requestPaginate) => {
-        if (!requestPaginate.payrollDTO.branch) {
-          delete requestPaginate.payrollDTO.branch
-        }
         return this.payrollService.paginationPayroll(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
@@ -50,9 +47,6 @@ export class PayrollEffect {
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
       map(([props, skip]) => {
-          if (!props.payrollDTO.branch) {
-            delete props.payrollDTO.branch
-          }
           Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
         }
       ),
