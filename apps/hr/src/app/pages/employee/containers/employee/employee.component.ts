@@ -157,7 +157,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         }
       })
     );
-    this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
@@ -220,6 +219,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     });
 
     this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+      this.store.dispatch(OrgchartActions.getBranch({branch: branch}))
       this.categories$ = this.categoryService.getAll({ branch: branch });
     });
   }
