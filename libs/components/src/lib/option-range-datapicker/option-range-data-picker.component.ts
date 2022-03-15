@@ -9,12 +9,12 @@ import {MatDialogRef} from "@angular/material/dialog";
 export class OptionRangeDataPickerComponent{
   date = null
   constructor(
-    private readonly dlaogRef: MatDialogRef<OptionRangeDataPickerComponent>
+    private readonly modalRef:NzModalRef
   ) {
   }
 
   onChange(result: Date[]): void {
-    this.dlaogRef.close({
+    this.modalRef.close({
       startAt : result[0], endedAt: result[1]
     })
   }
