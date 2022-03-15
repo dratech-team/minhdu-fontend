@@ -11,5 +11,6 @@ module.exports = {
     '<rootDir>/apps/admin',
     '<rootDir>/libs/system-history',
     '<rootDir>/apps/breed',
+    '<rootDir>/apps/hrv2',
   ],
 };

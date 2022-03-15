@@ -38,7 +38,7 @@ export const rageDaysInMonth = (datetime: Date) => {
 
 export const sortDatetime = (array: any[]) => {
   if (array.every(e => e.datetime)) {
-    return array.sort(function (a, b) {
+    return array.sort(function(a, b) {
       return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
     });
   } else {
@@ -52,22 +52,21 @@ export const getYesterday = () => {
   return new Date(yesterdayTimeStamp);
 }
 
-
-export const getDayInPreviousMonth = () => {
-  const fistDay = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
-  const lastDay = getLastDayInMonth(fistDay)
+export const getDateInPreviousMonth = () => {
+  const fistDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+  const lastDate = getLastDayInMonth(fistDate);
   return {
-    fistDay,
-    lastDay
-  }
-}
+    fistDate,
+    lastDate
+  };
+};
 
 export const getDateIn30Day = () => {
   const curr = new Date;
   const last = curr.getDate() - 30;
 
   return {
-    firstDay: curr,
-    lastDay: new Date(curr.setDate(last)).toUTCString()
+    firstDate: curr,
+    lastDate: new Date(curr.setDate(last)).toUTCString()
   }
 }

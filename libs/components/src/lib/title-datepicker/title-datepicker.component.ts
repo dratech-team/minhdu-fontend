@@ -1,14 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {OptionDataPicker, OptionDataPickerConstant} from "@minhdu-fontend/constants";
-import {MatDialogRef} from "@angular/material/dialog";
+import { Component } from '@angular/core';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { TitleDatePicker, titleDatepicker } from '../../../../constants/title-picker.constant';
 
 @Component({
-  selector:'minhdu-fontend-title-datepicker',
+  selector: 'minhdu-fontend-title-datepicker',
   templateUrl: 'title-datepicker.component.html'
 })
 export class TitleDatepickerComponent {
-  optionDataPicker: OptionDataPicker[] = OptionDataPickerConstant
+  optionDataPicker: TitleDatePicker[] = titleDatepicker;
 
   constructor(
     private readonly modalRef: NzModalRef
@@ -18,6 +17,6 @@ export class TitleDatepickerComponent {
   onSubmit(startAt: Date, endedAt: Date) {
     this.modalRef.close({
       startAt, endedAt
-    })
+    });
   }
 }

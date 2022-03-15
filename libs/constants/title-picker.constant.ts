@@ -1,18 +1,18 @@
 import { getDateInPreviousMonth, getFirstDayInMonth } from '../utils';
 import * as moment from 'moment';
 
-export interface OptionDataPicker {
+export interface TitleDatePicker {
   title: string,
-  children: children []
+  children: Children []
 }
 
-interface children {
+interface Children {
   title: string,
   startedAt: Date,
   endedAt: Date
 }
 
-export const OptionDataPickerConstant: OptionDataPicker[] = [
+export const titleDatepicker: TitleDatePicker[] = [
   {
     title: 'Theo ngày và tuần',
     children: [

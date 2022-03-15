@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { TitleDatepickerComponent } from '../title-datepicker/title-datepicker.component';
-import { RagePickerComponent } from '../range-datapicker/rage-picker.component';
+import { RagePickerComponent } from '../range-datepicker/range-datepicker.component';
 
 @Component({
   selector: 'minhdu-fontend-collapse-datepicker',
@@ -16,7 +16,7 @@ export class CollapseDatepickerComponent {
   ) {
   }
 
-  selectOptionDataPicker() {
+  onTitlePicker() {
     this.modal.create({
       nzTitle: 'Ngày giao hàng',
       nzContent: TitleDatepickerComponent,

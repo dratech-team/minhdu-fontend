@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, tap} from 'rxjs/operators';
 import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
@@ -11,6 +11,7 @@ import {CustomerResourcesConstant, CustomerTypeConstant} from '@minhdu-fontend/c
 import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
 import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-pick-customer',
@@ -45,7 +46,9 @@ export class PickCustomerComponent implements OnInit {
     private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
     private readonly service: PickCustomerService,
-    private dialogRef: MatDialogRef<PickCustomerComponent>
+    private dialogRef: MatDialogRef<PickCustomerComponent>,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
@@ -145,8 +148,13 @@ export class PickCustomerComponent implements OnInit {
   }
 
   addCustomer() {
-    this.dialog.open(CustomerDialogComponent, {
-      width: '40%'
+    this.modal.create({
+      nzTitle: 'Thêm khách hàng',
+      nzContent: CustomerDialogComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
     });
   }
 }

@@ -9,10 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-} from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -36,22 +33,23 @@ import { TransformPipe } from './pipes/transform.pipe';
 import { ShowAlertComponent } from './show-alert/show-alert.component';
 import { SnackBarComponent } from './snackBar/snack-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import {FilterDayPipe} from "./pipes/filter-day.pipe";
-import {PickEmployeeComponent} from "./pick-employee/pick-employee.component";
-import {TableEmployeeSelectedComponent} from "./table-employee-selected/table-employee-selected.component";
-import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
-import {NzSelectModule} from "ng-zorro-antd/select";
-import {MatExpansionModule} from "@angular/material/expansion";
-import {MatRadioModule} from "@angular/material/radio";
-import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
-import {NzPopoverModule} from "ng-zorro-antd/popover";
-import {NzButtonModule} from "ng-zorro-antd/button";
-import {NzCollapseModule} from "ng-zorro-antd/collapse";
-import {NzTypographyModule} from "ng-zorro-antd/typography";
-import {NzWaveModule} from "ng-zorro-antd/core/wave";
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { FilterDayPipe } from './pipes/filter-day.pipe';
+import { PickEmployeeComponent } from './pick-employee/pick-employee.component';
+import { TableEmployeeSelectedComponent } from './table-employee-selected/table-employee-selected.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatRadioModule } from '@angular/material/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
-import { RagePickerComponent } from './range-datapicker/rage-picker.component';
 import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
+import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
 
 @NgModule({
   imports: [
@@ -59,7 +57,7 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     CommonModule,
     RouterModule,
     MatMenuModule,
-    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
+    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
     FormsModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -74,6 +72,9 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     BsDatepickerModule.forRoot(),
     NgxSkeletonLoaderModule,
     NzSelectModule,
+    NzPopoverModule,
+    NzInputModule,
+    NzCollapseModule,
     MatExpansionModule,
     MatRadioModule,
     NzDatePickerModule,
@@ -81,8 +82,7 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     NzCollapseModule,
     NzTypographyModule,
     NzWaveModule,
-    NzButtonModule,
-
+    NzButtonModule
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -106,8 +106,8 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    CollapseDatepickerComponent,
     TitleDatepickerComponent,
+    CollapseDatepickerComponent,
     RagePickerComponent
   ],
   exports: [
@@ -132,14 +132,13 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    CollapseDatepickerComponent,
     TitleDatepickerComponent,
-    RagePickerComponent
   ],
   providers: [
     DecimalPipe,
     MatDatepickerModule,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-  ],
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+  ]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}

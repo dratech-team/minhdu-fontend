@@ -58,6 +58,13 @@
     "breed-e2e": {
       "tags": [],
       "implicitDependencies": ["breed"]
+    },
+    "hrv2": {
+      "tags": []
+    },
+    "hrv2-e2e": {
+      "tags": [],
+      "implicitDependencies": ["hrv2"]
     }
   }
 }

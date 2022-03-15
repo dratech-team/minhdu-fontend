@@ -3,7 +3,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'minhdu-fontend-rage-picker',
-  templateUrl: 'rage-picker.component.html'
+  templateUrl: 'range-datepicker.component.html'
 })
 export class RagePickerComponent {
   date = null;
