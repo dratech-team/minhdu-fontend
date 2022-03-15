@@ -3,22 +3,18 @@
     nzHeader='{{title}}'
     nzActive='true'>
     <input
+      [formControl]="formTitlePicker"
       nz-input
       nz-popover
       class='mb-2'
       nzType='primary'
-      [nzPopoverTitle]='titleTemplate'
       [nzPopoverContent]='contentTemplate'
     />
     <button nz-button nzType='primary' (click)='onRage()'>Lựa chọn khác</button>
   </nz-collapse-panel>
 </nz-collapse>
 
-<ng-template #titleTemplate>
-  <i nz-icon nzType='close'></i>
-  Title
-</ng-template>
 <ng-template #contentTemplate>
   <i nz-icon nzType='check'></i>
-  Content
+  <minhdu-fontend-title-datepicker (pickTitle)="onTitlePicker($event)"></minhdu-fontend-title-datepicker>
 </ng-template>

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { TitleDatepickerComponent } from '../title-datepicker/title-datepicker.component';
-import { RagePickerComponent } from '../range-datepicker/range-datepicker.component';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {TitleDatepickerComponent} from '../title-datepicker/title-datepicker.component';
+import {RagePickerComponent} from '../range-datepicker/range-datepicker.component';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'minhdu-fontend-collapse-datepicker',
@@ -10,23 +11,20 @@ import { RagePickerComponent } from '../range-datepicker/range-datepicker.compon
 export class CollapseDatepickerComponent {
   @Input() title: string = '';
   @Output() onPicker = new EventEmitter<any>();
+  formTitlePicker = new FormControl();
 
   constructor(
     private readonly modal: NzModalService
   ) {
   }
 
-  onTitlePicker() {
-    this.modal.create({
-      nzTitle: 'Ngày giao hàng',
-      nzContent: TitleDatepickerComponent,
-      nzFooter: null,
-      nzWidth: 'fit-content',
-      nzMaskClosable: false
-    }).afterClose.subscribe(val => {
-      if (val) {
-        this.onPicker.emit(val);
-      }
+  onTitlePicker($event: any) {
+    console.log($event.titleDatepicker)
+
+    this.formTitlePicker.setValue($event.titleDatepicker.title)
+    this.onPicker.emit({
+      startAt: $event.titleDatepicker.startedAt,
+      endedAt: $event.titleDatepicker.endedAt
     });
   }
 
@@ -39,6 +37,7 @@ export class CollapseDatepickerComponent {
       nzMaskClosable: false
     }).afterClose.subscribe(val => {
       if (val) {
+        this.formTitlePicker.setValue('')
         this.onPicker.emit(val);
       }
     });
