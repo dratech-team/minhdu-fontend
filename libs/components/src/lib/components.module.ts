@@ -133,6 +133,7 @@ import { RagePickerComponent } from './range-datepicker/range-datepicker.compone
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
     TitleDatepickerComponent,
+    CollapseDatepickerComponent
   ],
   providers: [
     DecimalPipe,
