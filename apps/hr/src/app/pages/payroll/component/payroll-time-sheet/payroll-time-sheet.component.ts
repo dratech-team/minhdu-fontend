@@ -7,23 +7,24 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, ItemContextMenu, sortEmployeeTypeEnum } from '@minhdu-fontend/enums';
-import { OvertimeService } from '../../service/overtime.service';
-import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { Observable } from 'rxjs';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { Payroll } from '../../+state/payroll/payroll.interface';
-import { DatePipe } from '@angular/common';
-import { checkInputNumber } from '@minhdu-fontend/utils';
-import { MatSort } from '@angular/material/sort';
+import {FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {DatetimeUnitEnum, ItemContextMenu, sortEmployeeTypeEnum} from '@minhdu-fontend/enums';
+import {OvertimeService} from '../../service/overtime.service';
+import {DialogManConfirmedAtComponent} from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import {Observable} from 'rxjs';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {Payroll} from '../../+state/payroll/payroll.interface';
+import {DatePipe} from '@angular/common';
+import {checkInputNumber} from '@minhdu-fontend/utils';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-payroll-time-sheet',
   templateUrl: 'payroll-time-sheet.component.html'
 })
 export class PayrollTimeSheetComponent implements AfterContentChecked {
+  @Input() formGroup!: FormGroup;
   @Input() loaded$?: Observable<boolean>;
   @Input() total$?: Observable<number>;
   @Input() daysInMonth: any[] = [];
@@ -31,7 +32,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Input() branches$!: Observable<Branch[]>;
   @Input() payroll$!: Observable<Payroll[]>;
   @Output() EventScroll = new EventEmitter<any>();
-  @Output() EventSelectPosition = new EventEmitter<string>();
   @Output() EventSelectBranch = new EventEmitter<string>();
   @Output() EventAddPayroll = new EventEmitter<any>();
   @Output() EventReadPayroll = new EventEmitter<any>();
@@ -40,12 +40,12 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
   @Output() EventSortPayroll = new EventEmitter<MatSort>();
-  sortEnum = sortEmployeeTypeEnum;
   @ViewChild(MatSort) sort!: MatSort;
 
+  sortEnum = sortEmployeeTypeEnum;
   unit = DatetimeUnitEnum;
   ItemContextMenu = ItemContextMenu;
-  @Input() formGroup!: FormGroup;
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly overtimeService: OvertimeService,
@@ -63,10 +63,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
     this.EventScroll.emit();
   }
 
-  onSelectPosition(positionName: string) {
-    this.EventSelectPosition.emit(positionName);
-  }
-
   addPayroll($event?: any): void {
     this.EventAddPayroll.emit($event);
   }
@@ -78,7 +74,7 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   updateManConfirm(id: number, manConfirmedAt: any, createdAt?: Date) {
     this.dialog.open(DialogManConfirmedAtComponent, {
       width: 'fit-content',
-      data: { id, createdAt, manConfirmedAt: !!manConfirmedAt }
+      data: {id, createdAt, manConfirmedAt: !!manConfirmedAt}
     });
   }
 

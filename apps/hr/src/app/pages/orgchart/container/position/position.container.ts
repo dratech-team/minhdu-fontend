@@ -90,15 +90,21 @@ export class PositionContainer implements OnInit {
   }
 
   onPayroll(event: any) {
+    if (event.branch){
+      this.store.dispatch(OrgchartActions.getBranch({id: event.branch.id}))
+    }
     this.store.dispatch(PayrollAction.updateStatePayroll(
-      {position: event.position.name, branch: event.branch}));
+      {position: event.position, branch: event.branch}));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertime(event: any) {
+    if (event.branch){
+      this.store.dispatch(OrgchartActions.getBranch({id: event.branch.id}))
+    }
     this.store.dispatch(PayrollAction.updateStatePayroll(
       {
-        position: event.position.name, branch: event.branch,
+        position: event.position, branch: event.branch,
         filter: FilterTypeEnum.OVERTIME
       }));
     this.router.navigate(['phieu-luong']).then();

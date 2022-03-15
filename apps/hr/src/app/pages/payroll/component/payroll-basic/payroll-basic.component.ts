@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -85,6 +85,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -132,7 +133,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
-          position: value.position
+          position: value.positions
         })
       );
       this.store.dispatch(
@@ -141,11 +142,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         })
       );
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) ?? of(''),
-      this.positions$
-    );
 
     this.payrollBasic$.subscribe((payrolls) => {
       console.log(Number(getSelectors(selectedTotalPayroll, this.store)));
@@ -188,7 +184,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         const payrollBASIC = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.BASIC,
           title: value.title
@@ -285,7 +281,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             salaryTitle: val.title,
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
-            position: value.position,
+            position: value.position?.name || '',
             branch: value.branch ? value.branch.name : ''
           };
           if (this.formGroup.get('name')?.value === '') {
@@ -373,7 +369,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
-      position: value.position,
+      position: value.position?.name || '',
       branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
@@ -403,10 +399,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
 
   setAllSalary(select: boolean) {
     this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

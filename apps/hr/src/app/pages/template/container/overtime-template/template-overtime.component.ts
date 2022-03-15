@@ -183,7 +183,7 @@ export class TemplateOvertimeComponent implements OnInit {
     if (position) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          position: position.name,
+          position: position,
           filter: FilterTypeEnum.OVERTIME
         })
       );

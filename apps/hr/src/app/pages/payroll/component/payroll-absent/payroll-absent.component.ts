@@ -104,6 +104,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
 
   constructor(
     private readonly dialog: MatDialog,
@@ -131,11 +133,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       position: getSelectors<string>(selectedPositionPayroll, this.store),
       branch: getSelectors<string>(selectedBranchPayroll, this.store)
     };
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
 
     if (this.absentTitle) {
       Object.assign(paramLoadInit, {
@@ -229,7 +226,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         const payrollAbsent = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: 'RANGE_DATETIME',
           title: value.title,
@@ -403,7 +400,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         name: value.name,
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
-        position: value.position,
+        position: value.position?.name || '',
         branch: value.branch ? value.branch.name : ''
       }
     ;
@@ -428,10 +425,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       delete params.name;
     }
     return params;
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

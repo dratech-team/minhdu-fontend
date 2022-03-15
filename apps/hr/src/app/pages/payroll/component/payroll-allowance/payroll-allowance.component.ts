@@ -95,6 +95,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       getSelectors(selectedBranchPayroll, this.store)
     ),
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
 
   constructor(
     private readonly dialog: MatDialog,
@@ -180,11 +182,6 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       );
     });
 
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
-
     this.payrollAllowance$.subscribe((payrolls) => {
       if (payrolls) {
         if (payrolls.length === 0) {
@@ -232,7 +229,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         const payrollAllowance = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.ALLOWANCE,
           title: value.title
@@ -279,7 +276,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               createdAt: new Date(val.datetime),
               title: val.title,
               filterType: FilterTypeEnum.ALLOWANCE,
-              position: val.position,
+              position: val.position?.name || '',
               branch: val.branch ? value.branch.name : ''
             }
           })
@@ -440,7 +437,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
-      position: value.position,
+      position: value.position?.name || '',
       branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
@@ -453,10 +450,6 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       delete params.name;
     }
     return params;
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

@@ -14,8 +14,8 @@ import {
 } from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {Observable, of, Subject} from 'rxjs';
-import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, map, takeUntil} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -27,8 +27,8 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors, rageDaysInMonth, searchAutocomplete} from '@minhdu-fontend/utils';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getSelectors, rageDaysInMonth} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {AddPayrollComponent} from '../../component/add-Payroll/add-payroll.component';
 import {
@@ -81,7 +81,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   );
 
   formCtrlBranch = new FormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
-  positionName = getSelectors<string>(selectedPositionPayroll, this.store);
   salaryType = SalaryTypeEnum;
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
@@ -165,8 +164,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           val === FilterTypeEnum.PAYROLL ||
           val === FilterTypeEnum.TIME_SHEET
         ) {
-          this.positionName = getSelectors(selectedPositionPayroll, this.store);
-          this.formGroup.get('position')?.setValue(this.positionName, {emitEvent: false});
+          this.formGroup.get('position')?.setValue(getSelectors<Position>(selectedPositionPayroll, this.store), {emitEvent: false});
           this.formCtrlBranch.setValue(getSelectors<string>(selectedBranchPayroll, this.store),
             {emitEvent: false});
         }
@@ -208,7 +206,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.positionName = val?.position;
           this.createdAt = val?.createdAt;
           this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
           this.store.dispatch(
@@ -221,11 +218,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         }
       });
 
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
-
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
         this.loadInitPayroll();
@@ -237,7 +229,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
       this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: branch
+        branch: branch ? branch: ' '
       }))
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
@@ -283,7 +275,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       code: val.code,
       name: val.name,
-      position: this.positionName,
+      position: val.position?.name || '',
       branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
@@ -424,10 +416,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     }).then();
   }
 
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
-  }
-
   generate() {
     this.dialog.open(AddPayrollComponent, {
       width: '30%',
@@ -548,7 +536,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const payroll = {
       code: value.code || '',
       name: value.name,
-      position: value.position,
+      position: value.position?.name || '',
       branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
@@ -574,7 +562,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const payroll = {
       code: value.code || '',
       name: value.name,
-      position: value.position,
+      position: value.position?.name || '',
       branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
       exportType: FilterTypeEnum.TIME_SHEET
     };
@@ -621,5 +609,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayroll(this.formGroup.value)
     }));
+  }
+
+  onSelectPosition($event: Position) {
+    this.formGroup.get('position')?.setValue($event,{emitEvent: false})
   }
 }

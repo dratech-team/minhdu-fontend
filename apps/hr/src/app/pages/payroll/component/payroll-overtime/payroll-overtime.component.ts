@@ -14,7 +14,6 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -33,13 +32,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors,
-  searchAutocomplete
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {TemplateOvertimeAction} from '../../../template/+state/template-overtime/template-overtime.action';
 import {selectorAllTemplate} from '../../../template/+state/template-overtime/template-overtime.selector';
@@ -103,6 +96,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
 
   constructor(
     private readonly message: NzMessageService,
@@ -136,10 +131,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         Object.assign(paramLoadInit, {title: val.titleOvertime});
       }
     });
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
 
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
 
@@ -203,7 +194,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           title: value.title || '',
           filename: val,
           exportType: 'RANGE_DATETIME',
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           startedAt: value.startedAt,
           endedAt: value.endedAt
@@ -295,7 +286,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       name: value.name,
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
-      position: value.position,
+      position: value.position?.name || '',
       branch: value.branch ? value.branch.name : '',
     };
     if (this.sort.active) {
@@ -464,7 +455,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
               endAt: new Date(value.endAt),
               title: value.title,
               name: value.name,
-              position: value.position,
+              position: value.position?.name || '',
               branch: value.branch.name
             };
             if (!value.name) {
@@ -491,7 +482,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           endAt: new Date(value.endAt),
           title: value.title,
           name: value.name,
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch.name
         };
         if (!value.name) {
@@ -533,10 +524,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
   detailPayroll(id: number) {
     this.router.navigate(['phieu-luong/chi-tiet-phieu-luong', id]).then();
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {

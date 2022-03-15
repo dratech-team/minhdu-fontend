@@ -86,6 +86,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -118,8 +119,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       })
     );
 
-    this.store.dispatch(PositionActions.loadPosition());
-
     this.store.dispatch(OrgchartActions.init());
 
     this.store.dispatch(
@@ -139,11 +138,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         })
       );
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
 
     this.payrollStay$.subscribe((payrolls) => {
       if (payrolls) {
@@ -182,7 +176,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         const payrollStay = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
+          position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.STAY,
           title: value.title
@@ -231,7 +225,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               createdAt: value.createdAt,
               title: val.title,
               filterType: FilterTypeEnum.STAY,
-              position: val.position,
+              position: val.position?.name || '',
               branch: value.branch ? value.branch.name : ''
             }
           })
@@ -377,7 +371,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       salaryTitle: value.title ? value.title : '',
       name: value.name,
       filterType: FilterTypeEnum.STAY,
-      position: value.position,
+      position: value.position?.name || '',
       branch: value.branch ? value.branch.name : ''
     };
     if (this.sort?.active) {
@@ -390,10 +384,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       delete params.name;
     }
     return params;
-  }
-
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
   }
 
   checkInputNumber(event: any) {
