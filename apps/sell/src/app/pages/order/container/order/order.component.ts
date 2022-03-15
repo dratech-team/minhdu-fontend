@@ -24,8 +24,6 @@ import {
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
 import {CommodityUniq} from '../../../commodity/entities/commodity-uniq.entity';
-import {MatSort} from '@angular/material/sort';
-import {RouteAction} from '../../../route/+state/route.action';
 import {OrderEntity} from "../../enitities/order.interface";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {NzTableQueryParams} from "ng-zorro-antd/table";
@@ -34,8 +32,6 @@ import {NzTableQueryParams} from "ng-zorro-antd/table";
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
-
   orders$ = this.orderQuery.selectAll();
   loading$ = this.orderQuery.selectLoading();
   CommodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
