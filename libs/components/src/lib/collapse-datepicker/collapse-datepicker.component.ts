@@ -12,6 +12,7 @@ export class CollapseDatepickerComponent {
   @Input() title: string = '';
   @Output() onPicker = new EventEmitter<any>();
   formTitlePicker = new FormControl();
+  visible = false
 
   constructor(
     private readonly modal: NzModalService
@@ -19,8 +20,7 @@ export class CollapseDatepickerComponent {
   }
 
   onTitlePicker($event: any) {
-    console.log($event.titleDatepicker)
-
+    this.visible = false
     this.formTitlePicker.setValue($event.titleDatepicker.title)
     this.onPicker.emit({
       startAt: $event.titleDatepicker.startedAt,

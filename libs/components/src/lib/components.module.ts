@@ -50,6 +50,7 @@ import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
 import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
 import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @NgModule({
   imports: [
@@ -57,7 +58,7 @@ import { RagePickerComponent } from './range-datepicker/range-datepicker.compone
     CommonModule,
     RouterModule,
     MatMenuModule,
-    ContextMenuModule.forRoot({ useBootstrap4: true, autoFocus: true }),
+    ContextMenuModule.forRoot({useBootstrap4: true, autoFocus: true}),
     FormsModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -82,7 +83,8 @@ import { RagePickerComponent } from './range-datepicker/range-datepicker.compone
     NzCollapseModule,
     NzTypographyModule,
     NzWaveModule,
-    NzButtonModule
+    NzButtonModule,
+    NzRadioModule
   ],
   declarations: [
     SwimLaneChartComponent,

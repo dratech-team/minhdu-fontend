@@ -23,14 +23,13 @@ import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
 import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
 import { OrderEntity } from '../../enitities/order.interface';
-import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
 import { NzTableQueryParams} from 'ng-zorro-antd/table';
 
 @Component({
   templateUrl: 'order.component.html'
 })
 export class OrderComponent implements OnInit {
-  orders$ = this.orderQuery.selectAll();
+  orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
   CommodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
   commodities$ = this.orderQuery.selectAll().pipe(
@@ -39,7 +38,6 @@ export class OrderComponent implements OnInit {
     })
   );
   orders: OrderEntity[] = [];
-  commodities: CommodityEntity[] = [];
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
@@ -103,11 +101,6 @@ export class OrderComponent implements OnInit {
     this.orders$.subscribe(val => {
       this.orders = JSON.parse(JSON.stringify(val));
     });
-
-    this.commodities$.subscribe(val => {
-      this.commodities = val;
-    });
-
   }
 
 
@@ -214,10 +207,6 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  getTotalCommodity(CommodityUniq: CommodityUniq[]): number {
-    return getTotalCommodity(CommodityUniq);
-  }
-
   cancelOrder($event: any) {
     this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
   }
@@ -252,13 +241,12 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  pickDeliveryDay($event: any) {
+  onPickDeliveryDay($event: any) {
     this.formGroup.get('deliveryStartedAt')?.setValue($event.startAt, { emitEvent: false });
     this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt);
   }
 
-  pickCreatedAt($event: any) {
-    console.log($event);
+  onPickCreatedAt($event: any) {
     this.formGroup.get('createStartedAt')?.setValue($event.startAt, { emitEvent: false });
     this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
   }

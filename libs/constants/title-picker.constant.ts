@@ -8,8 +8,8 @@ export interface TitleDatePicker {
 
 interface Children {
   title: string,
-  startedAt: Date,
-  endedAt: Date
+  startedAt: Date|null,
+  endedAt: Date|null
 }
 
 export const titleDatepicker: TitleDatePicker[] = [
@@ -35,6 +35,11 @@ export const titleDatepicker: TitleDatePicker[] = [
         title: '7 ngày qua',
         startedAt: moment().subtract(7, 'days').toDate(),
         endedAt: new Date()
+      },
+      {
+        title: 'tất cả',
+        startedAt: null,
+        endedAt: null
       }
     ]
   },

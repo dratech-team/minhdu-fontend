@@ -2,15 +2,26 @@
   <nz-collapse-panel
     nzHeader='{{title}}'
     nzActive='true'>
-    <input
-      [formControl]="formTitlePicker"
-      nz-input
-      nz-popover
-      class='mb-2'
-      nzType='primary'
-      [nzPopoverContent]='contentTemplate'
-    />
-    <button nz-button nzType='primary' (click)='onRage()'>Lựa chọn khác</button>
+    <nz-radio-group>
+      <label nz-radio nzValue="0">
+        <input
+          [formControl]="formTitlePicker"
+          nz-input
+          nz-popover
+          class='mb-2'
+          nzType='primary'
+          readonly
+          [(nzPopoverVisible)]="visible"
+          nzPopoverTrigger="click"
+          [nzPopoverContent]='contentTemplate'
+        />
+      </label>
+      <label nz-radio nzValue="1">
+        <button nz-button nzType='primary' (click)='onRage()'>Lựa chọn khác</button>
+      </label>
+    </nz-radio-group>
+
+
   </nz-collapse-panel>
 </nz-collapse>
 

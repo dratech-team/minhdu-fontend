@@ -11,11 +11,11 @@
     </nz-collapse>
     <div class="mt-2">
       <minhdu-fontend-collapse-datepicker title="Ngày hẹn giao"
-                                          (onPicker)='pickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
+                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class="mt-2">
       <minhdu-fontend-collapse-datepicker title="Ngày tạo"
-                                          (onPicker)='pickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
+                                          (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <nz-collapse class="mt-2">
       <nz-collapse-panel
@@ -36,7 +36,7 @@
         nzActive="false">
         <div [formGroup]="formGroup">
           <nz-radio-group formControlName="commodity">
-            <label nz-radio *ngFor="let item of commodities" [nzValue]="item.name">{{item.name}}</label>
+            <label nz-radio *ngFor="let item of (commodities$|async)" [nzValue]="item.name">{{item.name}}</label>
 
           </nz-radio-group>
         </div>
@@ -58,7 +58,7 @@
         [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize="middle"
         #tableOrder
-        [nzData]="orders"
+        [nzData]="(orders$|async)||[]"
         [nzFrontPagination]="true"
         [nzShowPagination]="true"
         [formGroup]='formGroup'
@@ -146,20 +146,20 @@
           </tr>
           <tr [nzExpand]="order.expand">
             <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
-        <thead>
-        <tr>
-          <th class="text-center">Hàng hoá</th>
-          <th class="text-center">Số lượng</th>
-          <th class="text-center">Giá</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let commodity of innerTable.data">
-          <td>{{commodity.name}}</td>
-          <td>{{commodity.amount}}</td>
-          <td>{{commodity.price}}</td>
-        </tr>
-        </tbody>
+              <thead>
+              <tr>
+                <th class="text-center">Hàng hoá</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Giá</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let commodity of innerTable.data">
+                <td>{{commodity.name}}</td>
+                <td>{{commodity.amount}}</td>
+                <td>{{commodity.price}}</td>
+              </tr>
+              </tbody>
       </nz-table>
       </tr>
       </ng-template>
