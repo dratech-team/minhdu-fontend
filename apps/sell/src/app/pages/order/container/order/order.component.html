@@ -10,10 +10,12 @@
       </nz-collapse-panel>
     </nz-collapse>
     <div class="mt-2">
-      <minhdu-fontend-collapse-datepicker title="Ngày hẹn giao" (onPicker)='pickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-datepicker title="Ngày hẹn giao"
+                                          (onPicker)='pickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class="mt-2">
-      <minhdu-fontend-collapse-datepicker title="Ngày tạo" (onPicker)='pickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-datepicker title="Ngày tạo"
+                                          (onPicker)='pickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <nz-collapse class="mt-2">
       <nz-collapse-panel
@@ -51,17 +53,14 @@
         <button (click)='printOrder()' class='btn btn-primary font-lg mx-3 '>Xuất</button>
       </div>
     </div>
-    <div style="width: 100%" infinite-scroll
-         [infiniteScrollDistance]='0.1'
-         [infiniteScrollThrottle]='10' [scrollWindow]='false' [alwaysCallback]='true'
-         (scrolled)='onScroll()'>
+    <div>
       <nz-table
-        [nzScroll]="{ x: '2000px' , y:'60vh'}"
+        [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize="middle"
         #tableOrder
         [nzData]="orders"
-        [nzFrontPagination]="false"
-        [nzShowPagination]="false"
+        [nzFrontPagination]="true"
+        [nzShowPagination]="true"
         [formGroup]='formGroup'
         (nzQueryParams)="paramChange($event)"
       >

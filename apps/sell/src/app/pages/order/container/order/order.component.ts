@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +24,7 @@ import { OrderQuery } from '../../+state/order.query';
 import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
 import { OrderEntity } from '../../enitities/order.interface';
 import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzTableQueryParams} from 'ng-zorro-antd/table';
 
 @Component({
   templateUrl: 'order.component.html'
