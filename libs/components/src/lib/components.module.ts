@@ -39,6 +39,11 @@ import { TableEmployeeSelectedComponent } from './table-employee-selected/table-
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
+import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
+import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-datepicker.component';
+import {NzPopoverModule} from "ng-zorro-antd/popover"
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 @NgModule({
   imports: [
@@ -60,7 +65,10 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     MatNativeDateModule,
     BsDatepickerModule.forRoot(),
     NgxSkeletonLoaderModule,
-    NzSelectModule
+    NzSelectModule,
+    NzPopoverModule,
+    NzInputModule,
+    NzCollapseModule
   ],
   declarations: [
     SwimLaneChartComponent,
@@ -84,7 +92,9 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    TitleDatepickerComponent
+    TitleDatepickerComponent,
+    RagePickerComponent,
+    CollapseDatepickerComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -108,7 +118,8 @@ import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.co
     FilterDayPipe,
     PickEmployeeComponent,
     TableEmployeeSelectedComponent,
-    TitleDatepickerComponent
+    TitleDatepickerComponent,
+    RagePickerComponent,
   ],
   providers: [
     DecimalPipe,
