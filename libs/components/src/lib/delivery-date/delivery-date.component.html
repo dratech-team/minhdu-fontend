@@ -3,8 +3,16 @@
   <nz-collapse-panel
   nzHeader="{{title}}"
   nzActive="true">
-    <button class="mb-2" nz-button nzType="primary" (click)="selectOptionDataPicker()">Chọn ngày</button>
+    <input class="mb-2" nz-input  nz-popover nzType="primary" [nzPopoverTitle]="titleTemplate" [nzPopoverContent]="contentTemplate" />
     <button nz-button nzType="primary" (click)="selectOtherOptionDataPicker()">Lựa chọn khác</button>
   </nz-collapse-panel>
 </nz-collapse>
 
+<ng-template #titleTemplate>
+  <i nz-icon nzType="close"></i>
+  Title
+</ng-template>
+<ng-template #contentTemplate>
+  <i nz-icon nzType="check"></i>
+  Content
+</ng-template>
