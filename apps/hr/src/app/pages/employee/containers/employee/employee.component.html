@@ -137,7 +137,7 @@
                 [compareWith]='compareFN'
               >
                 <nz-option
-                  *ngFor='let position of lstPosition'
+                  *ngFor='let position of positions$|async'
                   [nzLabel]='position.name'
                   [nzValue]='position'
                 >

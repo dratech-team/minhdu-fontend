@@ -64,12 +64,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   total$ = this.store.select(selectorTotalEmployee);
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
-  lstPosition: Position[] = [];
+  positions$ = this.store.pipe(select(getAllPosition))
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
       this.categories$ = this.categoryService.getAll({branchId: branches[0].name});
       this.formGroup.get('branch')?.setValue(branches[0].name, {emitEvent: false});
-      this.lstPosition = branches[0].positions ? branches[0].positions : []
     }
     return branches;
   }));
@@ -139,7 +138,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.activeRouter.queryParams.subscribe(val => {
       if(val.branch){
         this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
-        this.lstPosition = JSON.parse(val.branch).positions
         this.categories$ = this.categoryService.getAll({branchId: JSON.parse(val.branch).id})
       }
       if (val.position) {
@@ -210,8 +208,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     });
 
     this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+      if(branch){
+        this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
+      }
+
       this.categories$ = this.categoryService.getAll({branch: branch.name});
-      this.lstPosition = branch.positions
     });
   }
 
