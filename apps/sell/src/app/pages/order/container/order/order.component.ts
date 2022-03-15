@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,12 +17,9 @@ import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dia
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions } from '../../+state/order.actions';
 import * as _ from 'lodash';
-import { getTotalCommodity } from '../../../../../../../../libs/utils/sell.ultil';
 import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../+state/order.query';
-import { CommodityUniq } from '../../../commodity/entities/commodity-uniq.entity';
-import { OrderEntity } from '../../enitities/order.interface';
 import { NzTableQueryParams} from 'ng-zorro-antd/table';
 
 @Component({
@@ -31,13 +28,13 @@ import { NzTableQueryParams} from 'ng-zorro-antd/table';
 export class OrderComponent implements OnInit {
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
-  CommodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
+  commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
+  totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
     map(orders => {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
-  orders: OrderEntity[] = [];
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
@@ -47,7 +44,6 @@ export class OrderComponent implements OnInit {
   pageSize = 40;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
-  totalCommodity!: number;
 
   formGroup = new FormGroup({
     search: new FormControl(''),
@@ -79,9 +75,6 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.CommodityUniq$.subscribe(val => {
-      this.totalCommodity = val.reduce((x, y) => x + y.amount, 0);
-    });
     const params = this.route.snapshot.queryParams;
     this.actions$.dispatch(
       OrderActions.loadAll({ param: { take: this.pageSize, skip: this.pageIndexInit, status: params.status } })
@@ -97,10 +90,6 @@ export class OrderComponent implements OnInit {
         })
       )
       .subscribe();
-
-    this.orders$.subscribe(val => {
-      this.orders = JSON.parse(JSON.stringify(val));
-    });
   }
 
 

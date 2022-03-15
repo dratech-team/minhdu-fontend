@@ -55,7 +55,7 @@
     </div>
     <div>
       <nz-table
-        [nzScroll]="{ x: '2000px',y: '60vh'}"
+        [nzScroll]="{ x: '2000px',y: '70vh'}"
         nzSize="middle"
         #tableOrder
         [nzData]="(orders$|async)||[]"
@@ -172,8 +172,8 @@
     </div>
     <div class="d-flex mt-2">
       <div><span class="font-weight-bold">Tổng hàng hoá:</span> <span class="ml-1"
-                                                                      style="color: red">{{totalCommodity}}</span></div>
-      <div class="ml-3 " *ngFor="let item of CommodityUniq$|async">
+                                                                      style="color: red">{{totalCommodity$|async}}</span></div>
+      <div class="ml-3 " *ngFor="let item of commodityUniq$|async">
         <span class="font-weight-bold">Tổng {{item.name}}:</span> <span class="ml-1"
                                                                         style="color: red">{{item.amount}}</span>
       </div>

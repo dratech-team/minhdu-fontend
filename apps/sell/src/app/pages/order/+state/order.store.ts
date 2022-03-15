@@ -9,6 +9,7 @@ export interface OrderState extends EntityState<OrderEntity> {
   added: boolean
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];
+  readonly totalCommodity: number
 }
 
 const createInitState = () => ({
