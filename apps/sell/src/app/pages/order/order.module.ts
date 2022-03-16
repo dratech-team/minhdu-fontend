@@ -40,7 +40,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzRadioModule} from "ng-zorro-antd/radio";
-import {PinColumnComponent} from "./component/pin-conlumn/pin-column.component";
+import {VisibleOrderComponent} from "./component/custom-visible/visible-order.component";
 
 
 @NgModule({
@@ -89,7 +89,7 @@ import {PinColumnComponent} from "./component/pin-conlumn/pin-column.component";
     DetailOrderComponent,
     OrderDialogComponent,
     AddOrderComponent,
-    PinColumnComponent
+    VisibleOrderComponent
   ],
   providers: [
     {provide: MatDialogRef, useValue: {}},

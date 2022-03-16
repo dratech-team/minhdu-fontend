@@ -5,9 +5,9 @@ import {OrderStore} from "../../+state/order.store";
 
 @Component({
   selector: 'minhdu-fontend-pin-column-order',
-  templateUrl: 'pin-column.component.html'
+  templateUrl: 'visible-order.component.html'
 })
-export class PinColumnComponent {
+export class VisibleOrderComponent {
   @Input() ui!: OrderVisibleEntity
   @Output() closePopover = new EventEmitter()
   formGroup!: FormGroup
