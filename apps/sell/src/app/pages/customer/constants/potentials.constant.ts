@@ -1,4 +1,4 @@
-export const PotentialTypes = [
+export const PotentialsConstant = [
   {
     title: 'Tìm năng',
     value: 1

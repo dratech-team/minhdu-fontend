@@ -11,7 +11,7 @@ import {CustomerActions} from '../../+state/customer.actions';
 import {OrderEntity} from '../../../order/enitities/order.interface';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
-import {PotentialTypes} from '../../constants/potentialTypes';
+import {PotentialsConstant} from '../../constants/potentials.constant';
 import {GenderTypes} from '../../constants/generTypes';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
@@ -38,7 +38,7 @@ export class CustomerComponent implements OnInit {
   orders?: OrderEntity;
   sortCustomerEnum = SortCustomerEnum
   radiosGender = RadiosStatusRouteConstant
-  radiosPotential = PotentialTypes
+  radiosPotential = PotentialsConstant
   resourcesConstant = ResourcesConstant
   customerConstant = CustomerConstant
 
