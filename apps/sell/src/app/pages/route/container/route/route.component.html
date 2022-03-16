@@ -10,7 +10,8 @@
       </nz-collapse-panel>
     </nz-collapse>
     <div class="mt-2">
-      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" [active]="true"  header="Trạng thái tuyến xe" [radios]="radios">
+      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" [active]="true"
+                                      header="Trạng thái tuyến xe" [radios]="radios">
       </minhdu-fontend-collapse-radios>
     </div>
     <div class='mt-2'>
@@ -39,30 +40,32 @@
                 nzSize='default'
                 [nzFrontPagination]='true'
                 [nzShowPagination]='false'
-                [nzData]="(routes$|async)">
+                [nzData]="(routes$|async)"
+                (nzQueryParams)='paramChange($event)'
+      >
         <thead>
         <tr>
           <th nzWidth="50px"></th>
           <th nzWidth="70px">STT</th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.NAME}}'>
             Tên Tuyến đường
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.START}}'>
             Ngày bắt đầu
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.END}}'>
             Ngày Kết thúc
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
             Tên Tài xế
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.CUSTOMER}}'>
             Khách hàng
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.BSX}}'>
             Biển số xe
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
             Nhà xe
           </th>
           <th>

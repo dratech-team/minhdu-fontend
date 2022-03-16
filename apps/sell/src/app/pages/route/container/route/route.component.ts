@@ -18,6 +18,8 @@ import {DatePipe} from '@angular/common';
 import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {routes} from "../../../bill/bill-routing.module";
+import {NzTableQueryParams} from "ng-zorro-antd/table";
+import {OrderActions} from "../../../order/+state/order.actions";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -87,16 +89,9 @@ export class RouteComponent implements OnInit {
   }
 
   mapRoute(val: RouteEntity, isScroll?: boolean) {
-    if (this.sort.active) {
-      Object.assign(val, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
-    }
     return Object.assign(val, {
       skip: isScroll ? this.routeQuery.getCount() : 0,
       take: this.pageSize
-
     });
   }
 
@@ -166,5 +161,20 @@ export class RouteComponent implements OnInit {
   }
 
   onPickEndedAtDay($event: any) {
+  }
+
+  paramChange(params: NzTableQueryParams) {
+    const value = this.formGroup.value;
+    params.sort.map(val => {
+      if (val.value) {
+        Object.assign(value, {
+          orderBy: val.key,
+          orderType: val.value === 'ascend' ? 'asc' : 'des'
+        });
+        this.actions$.dispatch(RouteAction.loadAll({
+          params: this.mapRoute(value)
+        }));
+      }
+    });
   }
 }
