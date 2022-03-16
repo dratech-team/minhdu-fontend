@@ -3,7 +3,7 @@
     nzHeader='{{header}}'
     nzActive='{{active}}'>
     <div [formGroup]='formGroup'>
-      <nz-radio-group formControlName='status'>
+      <nz-radio-group [formControlName]="controlName">
         <label *ngFor="let radio of radios" nz-radio [nzValue]='radio.value'>{{radio.title}}</label>
       </nz-radio-group>
     </div>

@@ -52,7 +52,8 @@ export class CustomerComponent implements OnInit {
     gender: new FormControl(''),
     email: new FormControl(''),
     address: new FormControl(''),
-    note: new FormControl('')
+    note: new FormControl(''),
+    search: new FormControl('')
   });
 
   constructor(
