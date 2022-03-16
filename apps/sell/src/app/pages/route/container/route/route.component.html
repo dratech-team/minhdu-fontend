@@ -1,4 +1,3 @@
-
 <div class="d-flex">
   <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll; width:250px ">
     <nz-collapse>
@@ -42,96 +41,103 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div>
-    <div class=' h3 mt-3 ml-5 '>
+  <div class="ml-3">
+    <div class=' h3 mt-3 '>
       Danh sách tuyến đường
     </div>
-    <div class='d-flex justify-content-between mt-3  ml-5'>
+    <div class='d-flex justify-content-between mt-3'>
       <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
       <a (click)='printRouter()' target='_blank' download='data.xlsx'
          class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
     </div>
-    <div class='table-scroll mx-auto border-top my-5' style='width: 96%' infiniteScroll [alwaysCallback]='true'
-         [infiniteScrollDistance]='1' [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
-      <table matSort
-             (matSortChange)='sortRoute()'
-             [formGroup]='formGroup'>
+    <div class='my-3'>
+      <nz-table #tableRoute
+                [nzData]="(routes$|async)">
         <thead>
         <tr>
-          <th style='min-width: 200px'>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.NAME}}'>Tên Tuyến đường</div>
-            <input formControlName='name' class='form-control' type='search' placeholder=''>
+          <th nzWidth="50px">STT</th>
+          <th>
+            Tên Tuyến đường
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.START}}'>Ngày bắt đầu</div>
-            <input formControlName='startedAt' class=' form-control' type='date'>
+            Ngày bắt đầu
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.END}}'>Ngày Kết thúc</div>
-            <input formControlName='endedAt' class='form-control' type='date'>
+            Ngày Kết thúc
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.DRIVER}}'>Tên Tài xế</div>
-            <input formControlName='driver' class=' form-control' type='search' placeholder='Trần Gia Hiệu'>
+            Tên Tài xế
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.CUSTOMER}}'>Khách hàng</div>
-            <input formControlName='driver' class=' form-control' type='search' placeholder='Trần Gia Hiệu'>
+            Khách hàng
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.BSX}}'>Biển số xe</div>
-            <input formControlName='bsx' class='form-control' type='search' placeholder='77G1-55555'>
+            Biển số xe
           </th>
           <th>
-            <div class='d-flex justify-content-center' mat-sort-header='{{sortRouteEnum.GARAGE}}'>Nhà xe</div>
-            <input type='search' class='form-control' placeholder='Nhập nhà xe' formControlName='garage'>
+            Nhà xe
           </th>
           <th>
-            <div class='d-flex justify-content-center'>Trạng thái chuyến xe</div>
-            <select class='select border-top' style='width: 100%' matNativeControl required
-                    formControlName='status'>
-              <option value='0'>Đang chạy</option>
-              <option value='1'>Hoàn thành</option>
-              <option value='-1'>Tất cả</option>
-            </select>
+            Trạng thái chuyến xe
           </th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngIf='(loading$ | async); else route'>
-          <th colSpan='100'>
-            <ngx-skeleton-loader count='10' appearance='line'></ngx-skeleton-loader>
-          </th>
-        </tr>
-        <ng-template #route>
+        <ng-template ngFor let-route [ngForOf]="tableRoute.data" let-i='index'>
           <tr
-            *ngFor='let route of routes$|async'
             (click)='detailRoute(route.id, false)'
             (contextmenu)='child.onContextMenu($event, route)' class='pointer'
           >
-            <th>{{route?.name || 'Chưa cập nhật'}}</th>
-            <th>
+            <td>{{i + 1}}</td>
+            <td>{{route?.name || 'Chưa cập nhật'}}</td>
+            <td>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-            </th>
-            <th>
+            </td>
+            <td>
               {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-            </th>
-            <th>{{route?.driver || route?.employee?.lastName}}</th>
-            <th>
+            </td>
+            <td>{{route?.driver || route?.employee?.lastName}}</td>
+            <td>
               <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
               "border-top": route.orders.length > 1 && index  !== 0
               }' *ngFor='let order of route.orders; let index = index'>
                 {{order.customer.lastName}}
               </div>
-            </th>
-            <th>{{route?.bsx || 'Chưa cập nhật'}}</th>
-            <th>{{route?.garage || 'Chưa cập nhật'}}</th>
-            <th>{{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
-            </th>
+            </td>
+            <td>{{route?.bsx || 'Chưa cập nhật'}}</td>
+            <td>{{route?.garage || 'Chưa cập nhật'}}</td>
+            <td>
+              {{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
+            </td>
           </tr>
         </ng-template>
+        <tr
+          *ngFor='let route of routes$|async'
+          (click)='detailRoute(route.id, false)'
+          (contextmenu)='child.onContextMenu($event, route)' class='pointer'
+        >
+          <th>{{route?.name || 'Chưa cập nhật'}}</th>
+          <th>
+            {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
+          </th>
+          <th>
+            {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
+          </th>
+          <th>{{route?.driver || route?.employee?.lastName}}</th>
+          <th>
+            <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
+              "border-top": route.orders.length > 1 && index  !== 0
+              }' *ngFor='let order of route.orders; let index = index'>
+              {{order.customer.lastName}}
+            </div>
+          </th>
+          <th>{{route?.bsx || 'Chưa cập nhật'}}</th>
+          <th>{{route?.garage || 'Chưa cập nhật'}}</th>
+          <th>{{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
+          </th>
+        </tr>
         </tbody>
-      </table>
+      </nz-table>
     </div>
   </div>
 </div>
