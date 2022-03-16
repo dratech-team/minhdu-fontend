@@ -35,6 +35,7 @@ export class RouteEffect {
         if (res.endedAt) {
           res.endedAt = new Date(res.endedAt)
         }
+        res.expand = false
         this.routeStore.update(state => ({
           ...state, added: true
         }));
@@ -65,6 +66,7 @@ export class RouteEffect {
                 if (route.endedAt) {
                   route.endedAt = new Date(route.endedAt)
                 }
+                route.expand = false
                 route.orders.map((order: OrderEntity) => {
                   order.commodityTotal = getTotalCommodity(order.commodities);
                 });
@@ -94,6 +96,7 @@ export class RouteEffect {
         route.orders.forEach(order => {
           order.totalCommodity = getTotalCommodity(order.commodities);
         });
+        route.expand = false
         route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
         route.orders.map(val => val.expand = false);
         this.routeStore.upsert(route.id, route);
@@ -122,6 +125,7 @@ export class RouteEffect {
       if (route.endedAt) {
         route.endedAt = new Date(route.endedAt)
       }
+      route.expand = false
       route.orders?.map(val => val.expand = false);
       return this.routeStore.update(route.id, route);
     }),

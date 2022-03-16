@@ -55,6 +55,7 @@
                 [nzData]="(routes$|async)">
         <thead>
         <tr>
+          <th nzWidth="50px"></th>
           <th nzWidth="50px">STT</th>
           <th>
             Tên Tuyến đường
@@ -88,6 +89,7 @@
             (click)='detailRoute(route.id, false)'
             (contextmenu)='child.onContextMenu($event, route)' class='pointer'
           >
+            <td [(nzExpand)]='route.expand'></td>
             <td>{{i + 1}}</td>
             <td>{{route?.name || 'Chưa cập nhật'}}</td>
             <td>
@@ -111,31 +113,6 @@
             </td>
           </tr>
         </ng-template>
-        <tr
-          *ngFor='let route of routes$|async'
-          (click)='detailRoute(route.id, false)'
-          (contextmenu)='child.onContextMenu($event, route)' class='pointer'
-        >
-          <th>{{route?.name || 'Chưa cập nhật'}}</th>
-          <th>
-            {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-          </th>
-          <th>
-            {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
-          </th>
-          <th>{{route?.driver || route?.employee?.lastName}}</th>
-          <th>
-            <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
-              "border-top": route.orders.length > 1 && index  !== 0
-              }' *ngFor='let order of route.orders; let index = index'>
-              {{order.customer.lastName}}
-            </div>
-          </th>
-          <th>{{route?.bsx || 'Chưa cập nhật'}}</th>
-          <th>{{route?.garage || 'Chưa cập nhật'}}</th>
-          <th>{{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
-          </th>
-        </tr>
         </tbody>
       </nz-table>
     </div>
