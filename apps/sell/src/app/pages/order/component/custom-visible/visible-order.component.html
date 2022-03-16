@@ -1,6 +1,5 @@
 <div class="d-flex flex-column">
-  <div class="grid-container" style="max-height: 220px">
-
+  <div class="grid-container" style="max-height: 220px" *ngIf='(ui$ | async) as ui'>
     <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
          (nzPopoverVisibleChange)="$event && onVisibleChange($event, {customer: ui.customer })">Khách hàng
     </div>
@@ -20,7 +19,6 @@
          (nzPopoverVisibleChange)="$event && onVisibleChange($event,{vans: ui.vans}  )">Xe xuất
     </div>
   </div>
-  <button class="ml-4" style="width: 100px" nz-button nzType="primary" (click)="onClose()">Đóng</button>
 </div>
 
 

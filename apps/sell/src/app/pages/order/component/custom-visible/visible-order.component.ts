@@ -1,25 +1,21 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {OrderVisibleEntity} from "../../enitities/order-visible.entity";
-import {FormGroup} from "@angular/forms";
-import {OrderStore} from "../../+state/order.store";
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { OrderStore } from '../../+state/order.store';
+import { OrderQuery } from '../../+state/order.query';
 
 @Component({
   selector: 'minhdu-fontend-pin-column-order',
   templateUrl: 'visible-order.component.html'
 })
 export class VisibleOrderComponent {
-  @Input() ui!: OrderVisibleEntity
-  @Output() closePopover = new EventEmitter()
-  formGroup!: FormGroup
+  ui$ = this.orderQuery.select(state => state.ui);
+  formGroup!: FormGroup;
   visibleEntity: any = {};
 
   constructor(
-    private readonly orderStore: OrderStore,
+    private readonly orderQuery: OrderQuery,
+    private readonly orderStore: OrderStore
   ) {
-  }
-
-  onClose() {
-    this.closePopover.emit()
   }
 
   onVisibleChange(visible: boolean, visibleEntity: any) {
@@ -27,8 +23,8 @@ export class VisibleOrderComponent {
   }
 
   onUpdateVisible(visible: boolean) {
-    this.visibleEntity.visible = !visible
-    this.orderStore.updateUI(this.visibleEntity)
+    this.visibleEntity.visible = !visible;
+    this.orderStore.updateUI(this.visibleEntity);
   }
 
   visible(key: 'visible' | 'pinned'): boolean {
