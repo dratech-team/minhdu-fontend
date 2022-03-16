@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
+import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
 import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
@@ -33,8 +33,6 @@ export class CustomerComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
-  resourceTypes = CustomerResourcesConstant;
-  PotentialType = PotentialTypes;
   CustomerTypes = CustomerTypes;
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
@@ -42,6 +40,7 @@ export class CustomerComponent implements OnInit {
   sortCustomerEnum = SortCustomerEnum
   radiosGender = RadiosStatusRouteConstant
   radiosPotential = PotentialTypes
+  resourcesConstant = ResourcesConstant
 
   formGroup = new FormGroup({
     name: new FormControl(''),

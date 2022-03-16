@@ -27,6 +27,15 @@
       >
       </minhdu-fontend-collapse-radios>
     </div>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-radios
+        [formGroup]="formGroup" header="Nguồn khác hàng"
+        [controlName]="'resource'"
+        [active]="true"
+        [radios]="resourcesConstant"
+      >
+      </minhdu-fontend-collapse-radios>
+    </div>
     <!--    <div class='mt-2'>-->
     <!--      <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"-->
     <!--                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>-->
@@ -91,10 +100,6 @@
           <th>
             <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.RESOURCE}}'>Nguồn khách hàng
             </div>
-            <mat-select class='select border-top' style='width: 100%' matNativeControl required
-                        formControlName='resource'>
-              <mat-option *ngFor='let item of resourceTypes' [value]='item.type'>{{item.name}}</mat-option>
-            </mat-select>
           </th>
           <th>
             <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.CUSTOMER_TYPE}}'>Loại khách
@@ -143,7 +148,7 @@
             <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
             <!--          'Chưa cập nhật'}}-->
             <!--        </th>-->
-            <th>{{ customer.resource | transform: resourceTypes}}</th>
+            <th>{{ customer.resource | transform: resourcesConstant}}</th>
             <th> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</th>
             <th>{{customer?.email || 'Chưa cập nhật'}}</th>
             <th>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</th>

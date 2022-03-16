@@ -7,7 +7,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {document} from 'ngx-bootstrap/utils';
 import {PickCustomerService} from './pick-customer.service';
 import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
-import {CustomerResourcesConstant, CustomerTypeConstant} from '@minhdu-fontend/constants';
+import {ResourcesConstant, CustomerTypeConstant} from '@minhdu-fontend/constants';
 import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
 import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -26,7 +26,7 @@ export class PickCustomerComponent implements OnInit {
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
-  customerResourcesConstant = CustomerResourcesConstant;
+  customerResourcesConstant = ResourcesConstant;
   CustomerTypeConstant = CustomerTypeConstant;
   customerType = CustomerType;
   pageSize = 30;
