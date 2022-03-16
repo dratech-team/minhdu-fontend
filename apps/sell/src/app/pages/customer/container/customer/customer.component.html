@@ -61,13 +61,14 @@
                 [nzScroll]="{ x: '2500px',y: '70vh'}"
                 [nzFrontPagination]='true'
                 [nzShowPagination]='false'
+                (nzQueryParams)='paramChange($event)'
       >
         <thead>
         <tr>
           <th nzLeft nzWidth='60px'>
             STT
           </th>
-          <th nzLeft>
+          <th nzLeft [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.NAME}}'>
             Tên khách hàng
           </th>
           <th>
@@ -76,20 +77,20 @@
           <th>
             Ngày sinh
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.GENDER}}'>
             Giới tính
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.IS_POTENTIAL}}'>
             Tiềm năng
           </th>
           <!--        <th style='width: 200px'>-->
           <!--          <div class=''>Quốc gia</div>-->
           <!--          <input formControlName='nationId' class='form-control' type='text'>-->
           <!--        </th>-->
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.RESOURCE}}'>
             Nguồn khách hàng
           </th>
-          <th>
+          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.CUSTOMER_TYPE}}'>
             Loại khách hàng
           </th>
           <th>
@@ -122,7 +123,7 @@
             <!--          {{customer?.ward?.district?.province?.nation?.name ? customer?.ward?.district?.province?.nation?.name :-->
             <!--          'Chưa cập nhật'}}-->
             <!--        </th>-->
-            <td>{{ customer.resource | transform: resourcesConstant}}</td>
+            <td>{{ customer?.resource | transform: resourcesConstant}}</td>
             <td> {{customer?.type === customerType.AGENCY ? 'Đại lý' : customer?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</td>
             <td>{{customer?.email || 'Chưa cập nhật'}}</td>
             <td>{{(customer?.address || '') + ' ' + (customer.ward?.name || '') + ' ' + (customer.district?.name || '') + ' ' + customer.province.name}}</td>

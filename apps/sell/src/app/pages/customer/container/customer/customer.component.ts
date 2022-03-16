@@ -13,19 +13,17 @@ import {CustomerDialogComponent} from '../../component/customer-dialog/customer-
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
-import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/gender.constant";
 import {CustomerConstant} from "../../constants/customer.constant";
 import {PotentialsConstant} from "../../constants/potentials.constant";
+import {NzTableQueryParams} from "ng-zorro-antd/table";
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort
-
   customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
 
@@ -112,28 +110,11 @@ export class CustomerComponent implements OnInit {
   }
 
   mapCustomer(val: any, isScroll: boolean) {
-    const params = {
-      skip: isScroll ? this.customerQuery.getCount() : this.pageIndexInit,
+    Object.assign(val, {
       take: this.pageSize,
-      resource: val.resource,
-      isPotential: val.isPotential,
-      customerType: val.customerType,
-      nationId: val.nationId,
-      phone: val.phone.trim(),
-      name: val.name.trim(),
-      birthDay: val.birthDay,
-      gender: val.gender,
-      email: val.email.trim(),
-      address: val.address.trim(),
-      note: val.note.trim(),
-    };
-    if (this.sort.active) {
-      Object.assign(params, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
-    }
-    return params
+      skip: isScroll ? this.customerQuery.getCount() : 0
+    })
+    return val
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -186,9 +167,18 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  sortCustomer() {
-    this.actions$.dispatch(RouteAction.loadAll({
-      params: this.mapCustomer(this.formGroup.value, false)
-    }));
+  paramChange(params: NzTableQueryParams) {
+    const value = this.formGroup.value;
+    params.sort.map(val => {
+      if (val.value) {
+        Object.assign(value, {
+          orderBy: val.key,
+          orderType: val.value === 'ascend' ? 'asc' : 'des'
+        });
+        this.actions$.dispatch(CustomerActions.loadAll({
+          params: this.mapCustomer(value, false)
+        }));
+      }
+    });
   }
 }
