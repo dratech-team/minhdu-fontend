@@ -12,7 +12,6 @@ import {OrderEntity} from '../../../order/enitities/order.interface';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {PotentialTypes} from '../../constants/potentialTypes';
-import {CustomerTypes} from '../../constants/customer.type';
 import {GenderTypes} from '../../constants/generTypes';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
@@ -20,6 +19,7 @@ import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/radios-gender.constant";
+import {CustomerConstant} from "../../constants/customer.constant";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -33,7 +33,6 @@ export class CustomerComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
-  CustomerTypes = CustomerTypes;
   GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
@@ -41,6 +40,7 @@ export class CustomerComponent implements OnInit {
   radiosGender = RadiosStatusRouteConstant
   radiosPotential = PotentialTypes
   resourcesConstant = ResourcesConstant
+  customerConstant = CustomerConstant
 
   formGroup = new FormGroup({
     name: new FormControl(''),
