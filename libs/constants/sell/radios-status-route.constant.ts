@@ -1,14 +1,14 @@
 export const RadiosStatusRouteConstant = [
   {
-    title: 'hoàn thành',
+    name: 'hoàn thành',
     value: 0
   },
   {
-    title: 'Đang chạy',
+    name: 'Đang chạy',
     value: 1
   },
   {
-    title: 'tất cả',
+    name: 'tất cả',
     value: -1
   }
 ]

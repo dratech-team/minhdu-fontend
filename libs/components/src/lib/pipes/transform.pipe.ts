@@ -1,13 +1,13 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { DatetimeUnitEnum } from '@minhdu-fontend/enums';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DatetimeUnitEnum} from '@minhdu-fontend/enums';
 
 @Pipe({
   name: 'transform'
 })
 export class TransformPipe implements PipeTransform {
-  transform(name: string | undefined, data: any[]): any {
+  transform(name: string | undefined, data: { name: string; value: any }[]): any {
     if (name) {
-      return data.find((item: any) => (item.type || item.value) === name).name;
+      return data.find((item: any) => item.value === name)?.name;
     } else {
       return 'Chưa cập nhật';
     }

@@ -2,49 +2,46 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, MenuEnum, SortCustomerEnum, SortRouteEnum} from '@minhdu-fontend/enums';
+import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
+import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {debounceTime, tap} from 'rxjs/operators';
+import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions} from '../../+state/customer.actions';
 import {OrderEntity} from '../../../order/enitities/order.interface';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
-import {PotentialTypes} from '../../constants/potentialTypes';
-import {CustomerTypes} from '../../constants/customer.type';
-import {GenderTypes} from '../../constants/generTypes';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
-import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {OrderDialogComponent} from "../../../order/component/order-dialog/order-dialog.component";
+import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/gender.constant";
+import {CustomerConstant} from "../../constants/customer.constant";
+import {PotentialsConstant} from "../../constants/potentials.constant";
+import {NzTableQueryParams} from "ng-zorro-antd/table";
 
 @Component({
   templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort
-
-  customers$ = this.customerQuery.selectAll();
+  customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
 
   pageSize = 30;
   pageIndexInit = 0;
   customerType = CustomerType;
-  resourceTypes = CustomerResourcesConstant;
-  PotentialType = PotentialTypes;
-  CustomerTypes = CustomerTypes;
-  GenderTypes = GenderTypes;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
   sortCustomerEnum = SortCustomerEnum
+  radiosGender = RadiosStatusRouteConstant
+  potentialsConstant = PotentialsConstant
+  resourcesConstant = ResourcesConstant
+  customerConstant = CustomerConstant
 
   formGroup = new FormGroup({
     name: new FormControl(''),
     resource: new FormControl(''),
-    isPotential: new FormControl(),
+    isPotential: new FormControl(-1),
     customerType: new FormControl(''),
     nationId: new FormControl(''),
     phone: new FormControl(''),
@@ -52,7 +49,8 @@ export class CustomerComponent implements OnInit {
     gender: new FormControl(''),
     email: new FormControl(''),
     address: new FormControl(''),
-    note: new FormControl('')
+    note: new FormControl(''),
+    search: new FormControl('')
   });
 
   constructor(
@@ -112,28 +110,11 @@ export class CustomerComponent implements OnInit {
   }
 
   mapCustomer(val: any, isScroll: boolean) {
-    const params = {
-      skip: isScroll ? this.customerQuery.getCount() : this.pageIndexInit,
+    Object.assign(val, {
       take: this.pageSize,
-      resource: val.resource,
-      isPotential: val.isPotential,
-      customerType: val.customerType,
-      nationId: val.nationId,
-      phone: val.phone.trim(),
-      name: val.name.trim(),
-      birthDay: val.birthDay,
-      gender: val.gender,
-      email: val.email.trim(),
-      address: val.address.trim(),
-      note: val.note.trim(),
-    };
-    if (this.sort.active) {
-      Object.assign(params, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
-    }
-    return params
+      skip: isScroll ? this.customerQuery.getCount() : 0
+    })
+    return val
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -186,9 +167,18 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  sortCustomer() {
-    this.actions$.dispatch(RouteAction.loadAll({
-      params: this.mapCustomer(this.formGroup.value, false)
-    }));
+  paramChange(params: NzTableQueryParams) {
+    const value = this.formGroup.value;
+    params.sort.map(val => {
+      if (val.value) {
+        Object.assign(value, {
+          orderBy: val.key,
+          orderType: val.value === 'ascend' ? 'asc' : 'des'
+        });
+        this.actions$.dispatch(CustomerActions.loadAll({
+          params: this.mapCustomer(value, false)
+        }));
+      }
+    });
   }
 }
