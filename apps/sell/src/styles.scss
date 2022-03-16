@@ -319,7 +319,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 table td,
 table th {
-  text-align: center;
+  text-align:center !important;
 }
 
 table thead tr th{
