@@ -27,7 +27,6 @@ export class RouteComponent implements OnInit {
   pageIndexInit = 0;
   ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
-  routes: RouteEntity[] = [];
   sortRouteEnum = SortRouteEnum;
   formGroup = new FormGroup({
     startedAt: new FormControl(
@@ -54,14 +53,6 @@ export class RouteComponent implements OnInit {
   loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {
-    this.routes$.subscribe((val) => {
-      this.routes = JSON.parse(JSON.stringify(val));
-      this.routes.forEach((item) => {
-        if (item.endedAt) {
-          item.endedAt = new Date(item.endedAt);
-        }
-      });
-    });
     this.actions$.dispatch(RouteAction.loadAll({
         params: {
           take: this.pageSize,

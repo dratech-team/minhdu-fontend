@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { RouteAction } from './route.action';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { RouteService } from '../service/route.service';
-import { throwError } from 'rxjs';
-import { OrderEntity } from '../../order/enitities/order.interface';
-import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
-import { RouteStore } from './route.store';
-import { RouteQuery } from './route.query';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {RouteAction} from './route.action';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {RouteService} from '../service/route.service';
+import {throwError} from 'rxjs';
+import {OrderEntity} from '../../order/enitities/order.interface';
+import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {RouteStore} from './route.store';
+import {RouteQuery} from './route.query';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable()
 export class RouteEffect {
@@ -32,6 +32,7 @@ export class RouteEffect {
       }
     ),
     tap((res) => {
+        res.endedAt = new Date(res.endedAt)
         this.routeStore.update(state => ({
           ...state, added: true
         }));
@@ -49,7 +50,7 @@ export class RouteEffect {
           ...state, loading: true
         }));
         return this.routeService.pagination(Object.assign(
-          props.params, (props.params?.status === null || props.params?.status === undefined) ? { status: 0 } : {})
+          props.params, (props.params?.status === null || props.params?.status === undefined) ? {status: 0} : {})
         ).pipe(
           map((responsePagination) => {
             this.routeStore.update(state => ({
@@ -59,6 +60,7 @@ export class RouteEffect {
               this.message.success('Đã lấy hết tuyến đường');
             } else {
               responsePagination.data.map(route => {
+                route.endedAt = new Date(route.endedAt)
                 route.orders.map((order: OrderEntity) => {
                   order.commodityTotal = getTotalCommodity(order.commodities);
                 });
@@ -82,6 +84,7 @@ export class RouteEffect {
     ofType(RouteAction.loadOne),
     switchMap((props) => this.routeService.getOne(props.id)),
     map((route) => {
+        route.endedAt = new Date(route.endedAt)
         route.orders.forEach(order => {
           order.totalCommodity = getTotalCommodity(order.commodities);
         });
@@ -110,6 +113,7 @@ export class RouteEffect {
       this.message.success('Cập nhật thành công');
       this.totalCommodity(route.orders);
       route.totalCommodityUniq = route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
+      route.endedAt = new Date(route.endedAt)
       route.orders?.map(val => val.expand = false);
       return this.routeStore.update(route.id, route);
     }),

@@ -60,7 +60,7 @@
     </tr>
     <ng-template #route>
       <tr
-        *ngFor='let route of routes'
+        *ngFor='let route of routes$|async'
         (click)='detailRoute(route.id, false)'
         (contextmenu)='child.onContextMenu($event, route)' class='pointer'
       >
@@ -83,13 +83,6 @@
         <th>{{route?.garage || 'Chưa cập nhật'}}</th>
         <th>{{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
         </th>
-      </tr>
-      <tr *ngIf='!routes || routes.length === 0' style='height: 50vh'>
-        <td colspan='10' class='position-relative font-weight-bold font-lg'>
-            <span style='position: absolute; top:40%; left: 40% '>
-              Hiện tại chưa có đơn Tuyến đường nào
-            </span>
-        </td>
       </tr>
     </ng-template>
     </tbody>
