@@ -1,17 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { ControlContainer, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'minhdu-fontend-collapse-radios',
-  templateUrl: 'collapse-radios.component.html'
+  templateUrl: 'collapse-radio.component.html'
 })
-export class CollapseRadiosComponent implements OnInit{
+export class CollapseRadioComponent implements OnInit {
   @Input() header = '';
   @Input() active = false;
   @Input() controlName = '';
   @Input() radios: { name: string; value: any }[] = [];
 
-  formGroup !: FormGroup
+  formGroup !: FormGroup;
 
   constructor(private controlContainer: ControlContainer) {
   }
