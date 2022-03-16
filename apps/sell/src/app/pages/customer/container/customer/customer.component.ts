@@ -6,12 +6,11 @@ import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
 import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {debounceTime, tap} from 'rxjs/operators';
+import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions} from '../../+state/customer.actions';
 import {OrderEntity} from '../../../order/enitities/order.interface';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
-import {PotentialsConstant} from '../../constants/potentials.constant';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
 import {RouteAction} from "../../../route/+state/route.action";
@@ -19,6 +18,7 @@ import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/gender.constant";
 import {CustomerConstant} from "../../constants/customer.constant";
+import {PotentialsConstant} from "../../constants/potentials.constant";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -26,7 +26,7 @@ import {CustomerConstant} from "../../constants/customer.constant";
 export class CustomerComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort
 
-  customers$ = this.customerQuery.selectAll();
+  customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
 
   pageSize = 30;
@@ -36,7 +36,7 @@ export class CustomerComponent implements OnInit {
   orders?: OrderEntity;
   sortCustomerEnum = SortCustomerEnum
   radiosGender = RadiosStatusRouteConstant
-  radiosPotential = PotentialsConstant
+  potentialsConstant = PotentialsConstant
   resourcesConstant = ResourcesConstant
   customerConstant = CustomerConstant
 
