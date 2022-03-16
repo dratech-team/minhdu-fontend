@@ -36,7 +36,7 @@ export class RouteEffect {
           res.endedAt = new Date(res.endedAt)
         }
         res.expand = false
-        this.handelCommodityInOrder(res.orders)
+        this.handelOrder(res.orders)
         this.routeStore.update(state => ({
           ...state, added: true
         }));
@@ -68,7 +68,7 @@ export class RouteEffect {
                   route.endedAt = new Date(route.endedAt)
                 }
                 route.expand = false
-                this.handelCommodityInOrder(route.orders)
+                this.handelOrder(route.orders)
                 route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
               });
             }
@@ -92,7 +92,7 @@ export class RouteEffect {
         if (route.endedAt) {
           route.endedAt = new Date(route.endedAt)
         }
-        this.handelCommodityInOrder(route.orders)
+        this.handelOrder(route.orders)
         route.expand = false
         route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
         this.routeStore.upsert(route.id, route);
@@ -116,7 +116,7 @@ export class RouteEffect {
         ...state, added: true
       }));
       this.message.success('Cập nhật thành công');
-      this.handelCommodityInOrder(route.orders);
+      this.handelOrder(route.orders);
       route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
       if (route.endedAt) {
         route.endedAt = new Date(route.endedAt)
@@ -144,7 +144,7 @@ export class RouteEffect {
     switchMap((props) =>
       this.routeService.cancel(props.id, props.cancelDTO)),
     map((route) => {
-      this.handelCommodityInOrder(route.orders);
+      this.handelOrder(route.orders);
       route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
       this.message.success('Cập nhật đơn hàng thành công');
       return this.routeStore.update(route.id, route);
@@ -152,7 +152,7 @@ export class RouteEffect {
     catchError((err) => throwError(err))
   );
 
-  handelCommodityInOrder(orders: OrderEntity []) {
+  handelOrder(orders: OrderEntity []) {
     orders.forEach(order => {
       order.expand = false
       order.commodityTotal = getCommodityTotal(order.commodities)
