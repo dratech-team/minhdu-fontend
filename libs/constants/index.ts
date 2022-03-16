@@ -18,6 +18,7 @@ export * from './HR/block-salary.constant';
 export * from './HR/payroll.constant';
 //sell
 export * from './sell/radios-status-order.constant';
+export * from './sell/radios-status-route.constant';
 export * from './sell/customerResources.constant';
 export * from './sell/customer-type.constant';
 //warehouse
