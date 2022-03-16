@@ -51,7 +51,7 @@ import { CollapseDatepickerComponent } from './collapse-datepicker/collapse-date
 import { TitleDatepickerComponent } from './title-datepicker/title-datepicker.component';
 import { RagePickerComponent } from './range-datepicker/range-datepicker.component';
 import {NzRadioModule} from "ng-zorro-antd/radio";
-import {CollapseComponent} from "./collapse-status/collapse.component";
+import { CollapseStatusComponent } from './collapse-status/collapse-status.component';
 
 @NgModule({
   imports: [
@@ -112,7 +112,7 @@ import {CollapseComponent} from "./collapse-status/collapse.component";
     TitleDatepickerComponent,
     CollapseDatepickerComponent,
     RagePickerComponent,
-    CollapseComponent
+    CollapseStatusComponent
   ],
   exports: [
     SwimLaneChartComponent,
@@ -138,7 +138,7 @@ import {CollapseComponent} from "./collapse-status/collapse.component";
     TableEmployeeSelectedComponent,
     TitleDatepickerComponent,
     CollapseDatepickerComponent,
-    CollapseComponent
+    CollapseStatusComponent
   ],
   providers: [
     DecimalPipe,
