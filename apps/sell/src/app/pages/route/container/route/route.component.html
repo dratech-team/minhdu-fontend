@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll; width:250px ">
+  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll; width:280px ">
     <nz-collapse>
       <nz-collapse-panel
         nzHeader="Tìm kiếm"
@@ -22,24 +22,14 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <nz-collapse class="mt-2">
-      <nz-collapse-panel
-        nzHeader="Ngày bắt đầu"
-        nzActive="true">
-        <div [formGroup]="formGroup">
-          <input type="date" nz-input formControlNames="startedAt">
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
-    <nz-collapse class="mt-2">
-      <nz-collapse-panel
-        nzHeader="Ngày kết thúc"
-        nzActive="true">
-        <div [formGroup]="formGroup">
-          <input type="date" nz-input formControlNames="endedAt">
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-datepicker [title]="'Ngày bắt đầu'"
+                                          (onPicker)='onPickStartedDay($event)'></minhdu-fontend-collapse-datepicker>
+    </div>
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-datepicker title='Ngày kết thúc'
+                                          (onPicker)='onPickEndedAtDay($event)'></minhdu-fontend-collapse-datepicker>
+    </div>
   </div>
   <div class="ml-3" style='width: 78vw; height: 80vh'>
     <div class="d-flex justify-content-between">

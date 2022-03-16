@@ -161,4 +161,9 @@ export class RouteComponent implements OnInit {
     }));
   }
 
+  onPickStartedDay($event: any) {
+  }
+
+  onPickEndedAtDay($event: any) {
+  }
 }
