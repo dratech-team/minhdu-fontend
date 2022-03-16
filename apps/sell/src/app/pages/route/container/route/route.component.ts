@@ -50,7 +50,8 @@ export class RouteComponent implements OnInit {
   ) {
   }
 
-  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
+  routes$ = this.routeQuery.selectAll().pipe(map(routes =>
+    JSON.parse(JSON.stringify(Object.assign(routes, {expand: false})))));
   loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {
