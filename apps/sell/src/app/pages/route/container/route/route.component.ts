@@ -37,7 +37,7 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
-    status: new FormControl('0')
+    status: new FormControl(-1)
   });
 
   constructor(
