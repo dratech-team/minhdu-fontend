@@ -5,7 +5,7 @@ import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
 import {throwError} from 'rxjs';
 import {OrderEntity} from '../../order/enitities/order.interface';
-import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
 import {RouteQuery} from './route.query';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -36,6 +36,7 @@ export class RouteEffect {
           res.endedAt = new Date(res.endedAt)
         }
         res.expand = false
+        this.handelCommodityInOrder(res.orders)
         this.routeStore.update(state => ({
           ...state, added: true
         }));
@@ -67,9 +68,7 @@ export class RouteEffect {
                   route.endedAt = new Date(route.endedAt)
                 }
                 route.expand = false
-                route.orders.map((order: OrderEntity) => {
-                  order.commodityTotal = getTotalCommodity(order.commodities);
-                });
+                this.handelCommodityInOrder(route.orders)
                 route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
               });
             }
@@ -93,12 +92,9 @@ export class RouteEffect {
         if (route.endedAt) {
           route.endedAt = new Date(route.endedAt)
         }
-        route.orders.forEach(order => {
-          order.totalCommodity = getTotalCommodity(order.commodities);
-        });
+        this.handelCommodityInOrder(route.orders)
         route.expand = false
         route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
-        route.orders.map(val => val.expand = false);
         this.routeStore.upsert(route.id, route);
       }
     ),
@@ -120,13 +116,12 @@ export class RouteEffect {
         ...state, added: true
       }));
       this.message.success('Cập nhật thành công');
-      this.totalCommodity(route.orders);
-      route.totalCommodityUniq = route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
+      this.handelCommodityInOrder(route.orders);
+      route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
       if (route.endedAt) {
         route.endedAt = new Date(route.endedAt)
       }
       route.expand = false
-      route.orders?.map(val => val.expand = false);
       return this.routeStore.update(route.id, route);
     }),
     catchError((err) => throwError(err))
@@ -149,17 +144,18 @@ export class RouteEffect {
     switchMap((props) =>
       this.routeService.cancel(props.id, props.cancelDTO)),
     map((route) => {
-      this.totalCommodity(route.orders);
+      this.handelCommodityInOrder(route.orders);
       route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
-      route.orders?.map(val => val.expand = false);
       this.message.success('Cập nhật đơn hàng thành công');
       return this.routeStore.update(route.id, route);
     }),
     catchError((err) => throwError(err))
   );
 
-  totalCommodity(orders: OrderEntity []) {
+  handelCommodityInOrder(orders: OrderEntity []) {
     orders.forEach(order => {
+      order.expand = false
+      order.commodityTotal = getCommodityTotal(order.commodities)
       order.totalCommodity = getTotalCommodity(order.commodities);
     });
   }
@@ -167,7 +163,6 @@ export class RouteEffect {
   totalCommodityUniq(orders: OrderEntity []): number {
     return orders?.reduce((a, b) => a + b.totalCommodity, 0);
   }
-
 }
 
 

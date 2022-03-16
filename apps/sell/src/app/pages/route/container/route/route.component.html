@@ -41,7 +41,7 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class="ml-3">
+  <div class="ml-3" style='width: 78vw; height: 80vh'>
     <div class=' h3 mt-3 '>
       Danh sách tuyến đường
     </div>
@@ -50,13 +50,17 @@
       <a (click)='printRouter()' target='_blank' download='data.xlsx'
          class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
     </div>
-    <div class='my-3'>
+    <div class='my-3' >
       <nz-table #tableRoute
+                [nzScroll]="{ x: '2000px',y: '70vh'}"
+                nzSize='default'
+                [nzFrontPagination]='true'
+                [nzShowPagination]='false'
                 [nzData]="(routes$|async)">
         <thead>
         <tr>
           <th nzWidth="50px"></th>
-          <th nzWidth="50px">STT</th>
+          <th nzWidth="70px">STT</th>
           <th>
             Tên Tuyến đường
           </th>
@@ -85,32 +89,51 @@
         </thead>
         <tbody>
         <ng-template ngFor let-route [ngForOf]="tableRoute.data" let-i='index'>
-          <tr
-            (click)='detailRoute(route.id, false)'
-            (contextmenu)='child.onContextMenu($event, route)' class='pointer'
-          >
+          <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
             <td [(nzExpand)]='route.expand'></td>
-            <td>{{i + 1}}</td>
-            <td>{{route?.name || 'Chưa cập nhật'}}</td>
-            <td>
+            <td (click)='detailRoute(route.id, false)'>{{i + 1}}</td>
+            <td (click)='detailRoute(route.id, false)'>{{route?.name || 'Chưa cập nhật'}}</td>
+            <td (click)='detailRoute(route.id, false)'>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
-            <td>
+            <td (click)='detailRoute(route.id, false)'>
               {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
-            <td>{{route?.driver || route?.employee?.lastName}}</td>
-            <td>
+            <td (click)='detailRoute(route.id, false)'>{{route?.driver || route?.employee?.lastName}}</td>
+            <td (click)='detailRoute(route.id, false)'>
               <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
               "border-top": route.orders.length > 1 && index  !== 0
               }' *ngFor='let order of route.orders; let index = index'>
                 {{order.customer.lastName}}
               </div>
             </td>
-            <td>{{route?.bsx || 'Chưa cập nhật'}}</td>
-            <td>{{route?.garage || 'Chưa cập nhật'}}</td>
-            <td>
+            <td (click)='detailRoute(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
+            <td (click)='detailRoute(route.id, false)'>{{route?.garage || 'Chưa cập nhật'}}</td>
+            <td (click)='detailRoute(route.id, false)'>
               {{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
             </td>
+          </tr>
+          <tr [nzExpand]='route.expand'>
+            <nz-table #innerTable [nzData]='route.orders' nzSize='small' [nzShowPagination]='false'>
+              <thead>
+                <tr>
+                  <th>Tên khách hàng</th>
+                  <th>Ngày tạo</th>
+                  <th>Điểm đến</th>
+                  <th>Tiền hàng</th>
+                  <th>Tổng hàng hoá</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of innerTable.data">
+                  <td>{{order.customer.lastName}}</td>
+                  <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
+                  <td>{{order?.province?.name - order?.district?.name - order?.ward?.name}}</td>
+                  <td>{{order?.commodityTotal|number:'1.0-0'}} đ</td>
+                  <td>{{order?.totalCommodity|number:'1.0-0'}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
           </tr>
         </ng-template>
         </tbody>
