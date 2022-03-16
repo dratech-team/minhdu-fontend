@@ -1,9 +1,9 @@
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Injectable } from '@angular/core';
-import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
-import { OrderEntity } from '../enitities/order.interface';
-import { StorageName } from '../../../shared/constaints/storage-name.const';
-import { OrderVisibleEntity } from '../enitities/order-visible.entity';
+import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
+import {Injectable} from '@angular/core';
+import {CommodityUniq} from '../../commodity/entities/commodity-uniq.entity';
+import {OrderEntity} from '../enitities/order.interface';
+import {StorageName} from '../../../shared/constaints/storage-name.const';
+import {OrderVisibleEntity} from '../enitities/order-visible.entity';
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
@@ -24,10 +24,6 @@ function createInitState(): OrderState {
     ids: [],
     totalCommodity: 0,
     ui: {
-      id: {
-        pinned: false,
-        visible: false
-      },
       stt: {
         pinned: true,
         visible: true
@@ -37,7 +33,7 @@ function createInitState(): OrderState {
         visible: true
       },
       createdAt: {
-        pinned: true,
+        pinned: false,
         visible: true
       },
       explain: {
@@ -64,10 +60,6 @@ function createInitState(): OrderState {
         pinned: false,
         visible: false
       },
-      routes: {
-        pinned: false,
-        visible: true
-      },
       paidAt: {
         pinned: false,
         visible: false
@@ -84,29 +76,13 @@ function createInitState(): OrderState {
         pinned: false,
         visible: false
       },
-      province: {
+      destination: {
         pinned: false,
         visible: true
       },
-      district: {
-        pinned: false,
-        visible: false
-      },
-      ward: {
-        pinned: false,
-        visible: false
-      },
-      isSelect: {
-        pinned: false,
-        visible: false
-      },
       endedAt: {
-        pinned: false,
-        visible: false
-      },
-      hide: {
-        pinned: false,
-        visible: false
+        pinned: true,
+        visible: true
       },
       totalCommodity: {
         pinned: false,
@@ -119,19 +95,23 @@ function createInitState(): OrderState {
       paymentHistories: {
         pinned: false,
         visible: false
+      },
+      vans:{
+        pinned: false,
+        visible: false
       }
     }
   };
 }
 
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ORDER })
+@Injectable({providedIn: 'root'})
+@StoreConfig({name: StorageName.ORDER})
 export class OrderStore extends EntityStore<OrderState> {
   constructor() {
     super(createInitState());
   }
 
-  updateUI(type: OrderVisibleEntity) {
+  updateUI(type: Partial<OrderVisibleEntity>) {
     return this.update(state => {
       return {
         ...state,

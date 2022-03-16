@@ -50,7 +50,7 @@ export class OrderComponent implements OnInit {
   pageSize = 40;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
-
+  visible = false
   formGroup = new FormGroup({
     search: new FormControl(''),
     paidType: new FormControl(''),
@@ -244,5 +244,9 @@ export class OrderComponent implements OnInit {
   onPickCreatedAt($event: any) {
     this.formGroup.get('createStartedAt')?.setValue($event.startedAt, {emitEvent: false});
     this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
+  }
+
+  onClosePopover() {
+    this.visible = false
   }
 }

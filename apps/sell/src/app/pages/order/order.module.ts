@@ -40,6 +40,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {PinColumnComponent} from "./component/pin-conlumn/pin-column.component";
 
 
 @NgModule({
@@ -79,7 +80,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     NzButtonModule,
     NzCollapseModule,
     NzInputModule,
-    NzRadioModule
+    NzRadioModule,
   ],
   declarations: [
     TableRouteComponent,
@@ -87,7 +88,8 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
-    AddOrderComponent
+    AddOrderComponent,
+    PinColumnComponent
   ],
   providers: [
     {provide: MatDialogRef, useValue: {}},

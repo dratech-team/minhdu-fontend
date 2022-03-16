@@ -18,7 +18,8 @@
                                           (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class="mt-2">
-      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" header="Trạng thái đơn hàng" [radios]="radios">
+      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" header="Trạng thái đơn hàng"
+                                      [radios]="radios">
       </minhdu-fontend-collapse-radios>
     </div>
     <nz-collapse class='mt-2'>
@@ -40,9 +41,15 @@
         Danh sách đơn hàng
       </div>
       <div class='d-flex justify-content-between'>
-        <button (click)='add()' class='btn btn-primary font-lg'>Thêm</button>
-        <button (click)='printOrder()' class='btn btn-secondary font-lg mx-3'>Xuất</button>
-        <button (click)='printOrder()' class='btn btn-primary font-lg mx-3'>Custom</button>
+        <button (click)='add()' nz-button nzType="primary">Thêm</button>
+        <button (click)='printOrder()' class="ml-2" nz-button nzType="primary">Xuất</button>
+        <button class="ml-2" nz-button nz-popover nzPopoverTitle="Thêm cột"
+                [(nzPopoverVisible)]="visible"
+                nzPopoverPlacement="bottomRight"
+                [nzPopoverContent]="pinColumn"
+                nzPopoverTrigger="click"
+        >Custom
+        </button>
       </div>
     </div>
     <div>
@@ -57,9 +64,9 @@
         (nzQueryParams)='paramChange($event)'
       >
         <thead>
-        <tr>
+        <tr *ngIf="(ui$|async) as ui">
           <th nzWidth='50px' nzLeft></th>
-          <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
+          <th nzWidth='50px' *ngIf='ui.stt?.visible' [nzLeft]='true'
               class='text-center font-weight-bold'>STT
           </th>
           <th nzLeft class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
@@ -184,3 +191,10 @@
   (onCancel)='cancelOrder($event)'
   (onDelPerm)='deleteOrder($event)'
 ></app-mouse-right>
+<ng-template #pinColumn>
+  <div *ngIf="ui$|async as ui">
+    <minhdu-fontend-pin-column-order [ui]="ui" (closePopover)="onClosePopover()"></minhdu-fontend-pin-column-order>
+  </div>
+</ng-template>
+
+
