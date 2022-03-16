@@ -42,15 +42,17 @@
     </nz-collapse>
   </div>
   <div class="ml-3" style='width: 78vw; height: 80vh'>
-    <div class=' h3 mt-3 '>
-      Danh sách tuyến đường
+    <div class="d-flex justify-content-between">
+      <div class=' h3 mt-3 '>
+        Danh sách tuyến đường
+      </div>
+      <div class='d-flex justify-content-between mt-3'>
+        <button (click)='add()' class='btn btn-primary font-lg '>Thêm</button>
+        <a (click)='printRouter()' target='_blank' download='data.xlsx'
+           class='btn text-white btn-primary font-lg ml-3'>Xuất</a>
+      </div>
     </div>
-    <div class='d-flex justify-content-between mt-3'>
-      <button (click)='add()' class='btn btn-primary font-lg '>Thêm Tuyến đường</button>
-      <a (click)='printRouter()' target='_blank' download='data.xlsx'
-         class='btn text-white btn-primary font-lg mr-3'>Xuất</a>
-    </div>
-    <div class='my-3' >
+    <div class='my-3'>
       <nz-table #tableRoute
                 [nzScroll]="{ x: '2000px',y: '70vh'}"
                 nzSize='default'
@@ -115,28 +117,28 @@
           </tr>
           <tr [nzExpand]='route.expand'>
             <nz-table #innerTable [nzData]='route.orders' nzSize='small' [nzShowPagination]='false'>
-              <thead>
-                <tr>
-                  <th>Tên khách hàng</th>
-                  <th>Ngày tạo</th>
-                  <th>Điểm đến</th>
-                  <th>Tiền hàng</th>
-                  <th>Tổng hàng hoá</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of innerTable.data">
-                  <td>{{order.customer.lastName}}</td>
-                  <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
-                  <td>{{order?.province?.name - order?.district?.name - order?.ward?.name}}</td>
-                  <td>{{order?.commodityTotal|number:'1.0-0'}} đ</td>
-                  <td>{{order?.totalCommodity|number:'1.0-0'}}</td>
-                </tr>
-              </tbody>
-            </nz-table>
-          </tr>
-        </ng-template>
+        <thead>
+        <tr>
+          <th class="text-center">Tên khách hàng</th>
+          <th class="text-center">Ngày tạo</th>
+          <th class="text-center">Điểm đến</th>
+          <th class="text-center">Tiền hàng</th>
+          <th class="text-center">Tổng hàng hoá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of innerTable.data">
+          <td>{{order.customer.lastName}}</td>
+          <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
+          <td>{{order?.province?.name}} - {{order?.district?.name}} - {{order?.ward?.name}}</td>
+          <td>{{order?.commodityTotal|number:'1.0-0'}} đ</td>
+          <td>{{order?.totalCommodity|number:'1.0-0'}}</td>
+        </tr>
         </tbody>
+      </nz-table>
+      </tr>
+      </ng-template>
+      </tbody>
       </nz-table>
     </div>
   </div>
