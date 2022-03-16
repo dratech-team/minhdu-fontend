@@ -10,8 +10,13 @@
       </nz-collapse-panel>
     </nz-collapse>
         <div class="mt-2">
-          <minhdu-fontend-collapse-status [formGroup]="formGroup" header="Trạng thái đơn hàng">
-          </minhdu-fontend-collapse-status>
+          <minhdu-fontend-collapse-radios
+            [formGroup]="formGroup" header="Giới tính"
+            [controlName]="'gender'"
+            [active]="true"
+            [radios]="radiosGender"
+          >
+          </minhdu-fontend-collapse-radios>
         </div>
 <!--    <div class='mt-2'>-->
 <!--      <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"-->

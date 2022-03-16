@@ -20,6 +20,7 @@ import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component/order-dialog/order-dialog.component";
+import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/radios-gender.constant";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -40,7 +41,7 @@ export class CustomerComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
   sortCustomerEnum = SortCustomerEnum
-
+  radiosGender = RadiosStatusRouteConstant
   formGroup = new FormGroup({
     name: new FormControl(''),
     resource: new FormControl(''),
