@@ -17,8 +17,9 @@
       <minhdu-fontend-collapse-datepicker title='Ngày tạo'
                                           (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
-    <div class="mt-2">
-      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" header="Trạng thái đơn hàng" [radios]="radios">
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-radios [formGroup]='formGroup' [controlName]="'status'" header='Trạng thái đơn hàng'
+                                      [radios]='radios'>
       </minhdu-fontend-collapse-radios>
     </div>
     <nz-collapse class='mt-2'>
@@ -47,10 +48,10 @@
     </div>
     <div>
       <nz-table
+        #tableOrder
         [nzScroll]="{ x: '2000px',y: '70vh'}"
         nzSize='middle'
-        #tableOrder
-        [nzData]='(orders$|async)||[]'
+        [nzData]='(orders$ | async) || []'
         [nzFrontPagination]='true'
         [nzShowPagination]='false'
         [formGroup]='formGroup'
