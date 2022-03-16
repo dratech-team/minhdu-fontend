@@ -88,15 +88,6 @@
           </th>
           <th>
             <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.GENDER}}'>Giới tính</div>
-            <mat-select
-              class='select border-top'
-              style='width: 100%'
-              matNativeControl
-              required
-              formControlName='gender'
-            >
-              <mat-option *ngFor='let item of GenderTypes' [value]='item.type'>{{item.name}}</mat-option>
-            </mat-select>
           </th>
           <th style='width: 150px'>
             <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.IS_POTENTIAL}}'>Tiềm năng
