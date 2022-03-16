@@ -17,6 +17,7 @@ import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from '@angular/common';
 import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {routes} from "../../../bill/bill-routing.module";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -50,8 +51,7 @@ export class RouteComponent implements OnInit {
   ) {
   }
 
-  routes$ = this.routeQuery.selectAll().pipe(map(routes =>
-    JSON.parse(JSON.stringify(Object.assign(routes, {expand: false})))));
+  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {

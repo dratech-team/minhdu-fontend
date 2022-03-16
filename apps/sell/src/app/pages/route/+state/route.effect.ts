@@ -32,9 +32,7 @@ export class RouteEffect {
       }
     ),
     tap((res) => {
-        if (res.endedAt) {
-          res.endedAt = new Date(res.endedAt)
-        }
+        res.expand = false
         this.handelOrder(res.orders)
         this.routeStore.update(state => ({
           ...state, added: true
@@ -63,9 +61,7 @@ export class RouteEffect {
               this.message.success('Đã lấy hết tuyến đường');
             } else {
               responsePagination.data.map(route => {
-                if (route.endedAt) {
-                  route.endedAt = new Date(route.endedAt)
-                }
+                route.expand = false
                 this.handelOrder(route.orders)
                 route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
               });
@@ -87,10 +83,8 @@ export class RouteEffect {
     ofType(RouteAction.loadOne),
     switchMap((props) => this.routeService.getOne(props.id)),
     map((route) => {
-        if (route.endedAt) {
-          route.endedAt = new Date(route.endedAt)
-        }
         this.handelOrder(route.orders)
+        route.expand = false
         route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
         this.routeStore.upsert(route.id, route);
       }
@@ -115,9 +109,7 @@ export class RouteEffect {
       this.message.success('Cập nhật thành công');
       this.handelOrder(route.orders);
       route.totalCommodityUniq = this.totalCommodityUniq(route.orders);
-      if (route.endedAt) {
-        route.endedAt = new Date(route.endedAt)
-      }
+      route.expand = false
       return this.routeStore.update(route.id, route);
     }),
     catchError((err) => throwError(err))
