@@ -1,19 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { ControlContainer, FormGroup } from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {ControlContainer, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'minhdu-fontend-collapse-status',
   templateUrl: 'collapse-status.component.html'
 })
-export class CollapseStatusComponent {
+export class CollapseStatusComponent implements OnInit{
   @Input() header = '';
   @Input() active = false;
   @Input() radios: { title: string; value: any }[] = [];
-  formGroup = <FormGroup>this.controlContainer.control;
+  formGroup !: FormGroup
 
   constructor(private controlContainer: ControlContainer) {
   }
 
-  onChange(result: Date[]): void {
+  ngOnInit() {
+    this.formGroup = <FormGroup>this.controlContainer.control;
   }
 }

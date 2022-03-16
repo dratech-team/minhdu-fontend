@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-import {Api} from '@minhdu-fontend/constants';
+import {Api, RadiosStatusRouteConstant} from '@minhdu-fontend/constants';
 import {SortRouteEnum} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
@@ -41,6 +41,7 @@ export class RouteComponent implements OnInit {
     garage: new FormControl(''),
     status: new FormControl(-1)
   });
+  radios = RadiosStatusRouteConstant
 
   constructor(
     private readonly actions$: Actions,

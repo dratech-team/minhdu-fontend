@@ -9,19 +9,10 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <nz-collapse class="mt-2">
-      <nz-collapse-panel
-        nzHeader="Trạng thái tuyến xe"
-        nzActive="true">
-        <div [formGroup]="formGroup">
-          <nz-radio-group formControlName="status">
-            <label nz-radio [nzValue]="0">Hoàn thành</label>
-            <label nz-radio [nzValue]="1">Đang chạy</label>
-            <label nz-radio [nzValue]="-1">tất cả</label>
-          </nz-radio-group>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-status [formGroup]="formGroup" [active]="true"  header="Trạng thái tuyến xe" [radios]="radios">
+      </minhdu-fontend-collapse-status>
+    </div>
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker [title]="'Ngày bắt đầu'"
                                           (onPicker)='onPickStartedDay($event)'></minhdu-fontend-collapse-datepicker>

@@ -17,19 +17,10 @@
       <minhdu-fontend-collapse-datepicker title='Ngày tạo'
                                           (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
-    <nz-collapse class='mt-2'>
-      <nz-collapse-panel
-        nzHeader='Trạng thái đơn hàng'
-        nzActive='false'>
-        <div [formGroup]='formGroup'>
-          <nz-radio-group formControlName='status'>
-            <label nz-radio [nzValue]='0'>Đã giao</label>
-            <label nz-radio [nzValue]='1'>Đang giao</label>
-            <label nz-radio [nzValue]='-1'>tất cả</label>
-          </nz-radio-group>
-        </div>
-      </nz-collapse-panel>
-    </nz-collapse>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-status [formGroup]="formGroup" header="Trạng thái đơn hàng" [radios]="radios">
+      </minhdu-fontend-collapse-status>
+    </div>
     <nz-collapse class='mt-2'>
       <nz-collapse-panel
         nzHeader='Hàng hoá'
