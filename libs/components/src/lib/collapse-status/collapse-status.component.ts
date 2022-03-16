@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { ControlContainer, FormGroup } from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {ControlContainer, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'minhdu-fontend-collapse-status',
@@ -12,8 +12,5 @@ export class CollapseStatusComponent {
   formGroup = <FormGroup>this.controlContainer.control;
 
   constructor(private controlContainer: ControlContainer) {
-  }
-
-  onChange(result: Date[]): void {
   }
 }
