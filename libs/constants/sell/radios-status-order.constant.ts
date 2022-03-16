@@ -1,14 +1,14 @@
 export const radiosStatusOrderConstant = [
   {
-    title: 'Đang giao',
+    name: 'Đang giao',
     value: 1
   },
   {
-    title: 'Đã giao',
+    name: 'Đã giao',
     value: 0
   },
   {
-    title: 'tất cả',
+    name: 'tất cả',
     value: -1
   }
 ]

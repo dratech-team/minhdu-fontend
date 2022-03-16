@@ -20,7 +20,6 @@ export * from './HR/payroll.constant';
 export * from './sell/radios-status-order.constant';
 export * from './sell/radios-status-route.constant';
 export * from '../../apps/sell/src/app/pages/customer/constants/resources.constant';
-export * from './sell/customer-type.constant';
 //warehouse
 export * from './ware-house/menu-warehouse.constant';
 export * from './ware-house/warehouse.constant';

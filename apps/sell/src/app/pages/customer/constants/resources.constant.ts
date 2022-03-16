@@ -2,23 +2,23 @@ import {CustomerResource} from '@minhdu-fontend/enums';
 
 export const ResourcesConstant = [
   {
-    title: 'Tra Cứu',
+    name: 'Tra Cứu',
     value: CustomerResource.RESEARCH
   },
   {
-    title: 'Giới thiệu',
+    name: 'Giới thiệu',
     value: CustomerResource.INTRODUCED
   },
   {
-    title: 'Tự tìm',
+    name: 'Tự tìm',
     value: CustomerResource.SELF_FIND
   },
   {
-    title: 'Khác',
+    name: 'Khác',
     value: CustomerResource.OTHER
   },
   {
-    title: 'Tất cả',
+    name: 'Tất cả',
     value: ''
   }
 ];

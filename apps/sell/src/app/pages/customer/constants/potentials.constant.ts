@@ -1,14 +1,14 @@
 export const PotentialsConstant = [
   {
-    title: 'Tìm năng',
+    name: 'Tìm năng',
     value: 1
   },
   {
-    title: 'Không tìm năng',
+    name: 'Không tìm năng',
     value: 0
   },
   {
-    title: 'Tất cả',
+    name: 'Tất cả',
     value: -1
   }
 ];

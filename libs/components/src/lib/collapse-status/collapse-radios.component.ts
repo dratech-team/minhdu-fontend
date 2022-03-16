@@ -9,7 +9,7 @@ export class CollapseRadiosComponent implements OnInit{
   @Input() header = '';
   @Input() active = false;
   @Input() controlName = '';
-  @Input() radios: { title: string; value: any }[] = [];
+  @Input() radios: { name: string; value: any }[] = [];
 
   formGroup !: FormGroup
 
