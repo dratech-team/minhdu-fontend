@@ -9,27 +9,36 @@
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-        <div class="mt-2">
-          <minhdu-fontend-collapse-radios
-            [formGroup]="formGroup" header="Giới tính"
-            [controlName]="'gender'"
-            [active]="true"
-            [radios]="radiosGender"
-          >
-          </minhdu-fontend-collapse-radios>
-        </div>
-<!--    <div class='mt-2'>-->
-<!--      <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"-->
-<!--                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>-->
-<!--    </div>-->
-<!--    <div class='mt-2'>-->
-<!--      <minhdu-fontend-collapse-datepicker title='Ngày tạo'-->
-<!--                                          (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>-->
-<!--    </div>-->
-<!--    <div class="mt-2">-->
-<!--      <minhdu-fontend-collapse-status [formGroup]="formGroup" header="Trạng thái đơn hàng" [radios]="radios">-->
-<!--      </minhdu-fontend-collapse-status>-->
-<!--    </div>-->
+    <div class="mt-2">
+      <minhdu-fontend-collapse-radios
+        [formGroup]="formGroup" header="Giới tính"
+        [controlName]="'gender'"
+        [active]="true"
+        [radios]="radiosGender"
+      >
+      </minhdu-fontend-collapse-radios>
+    </div>
+    <div class="mt-2">
+      <minhdu-fontend-collapse-radios
+        [formGroup]="formGroup" header="Tiềm năng"
+        [controlName]="'isPotential'"
+        [active]="true"
+        [radios]="radiosPotential"
+      >
+      </minhdu-fontend-collapse-radios>
+    </div>
+    <!--    <div class='mt-2'>-->
+    <!--      <minhdu-fontend-collapse-datepicker [title]="'Ngày hẹn giao'"-->
+    <!--                                          (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>-->
+    <!--    </div>-->
+    <!--    <div class='mt-2'>-->
+    <!--      <minhdu-fontend-collapse-datepicker title='Ngày tạo'-->
+    <!--                                          (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>-->
+    <!--    </div>-->
+    <!--    <div class="mt-2">-->
+    <!--      <minhdu-fontend-collapse-status [formGroup]="formGroup" header="Trạng thái đơn hàng" [radios]="radios">-->
+    <!--      </minhdu-fontend-collapse-status>-->
+    <!--    </div>-->
   </div>
   <div style="width: 76vw">
     <div class="d-flex">
@@ -72,11 +81,8 @@
             </mat-select>
           </th>
           <th style='width: 150px'>
-            <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.IS_POTENTIAL}}'>Tiềm năng</div>
-            <mat-select class='select border-top' style='width: 100%' matNativeControl required
-                        formControlName='isPotential'>
-              <mat-option *ngFor='let item of PotentialType' [value]='item.type'>{{item.name}}</mat-option>
-            </mat-select>
+            <div class="d-flex justify-content-center" mat-sort-header='{{sortCustomerEnum.IS_POTENTIAL}}'>Tiềm năng
+            </div>
           </th>
           <!--        <th style='width: 200px'>-->
           <!--          <div class=''>Quốc gia</div>-->
@@ -156,7 +162,6 @@
     </div>
   </div>
 </div>
-
 
 
 <app-mouse-right

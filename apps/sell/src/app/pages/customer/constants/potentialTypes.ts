@@ -1,14 +1,14 @@
 export const PotentialTypes = [
   {
-    name: 'Tìm năng',
-    type: 1
+    title: 'Tìm năng',
+    value: 1
   },
   {
-    name: 'Không tìm năng',
-    type: 0
+    title: 'Không tìm năng',
+    value: 0
   },
   {
-    name: 'Tất cả',
-    type: 3
+    title: 'Tất cả',
+    value: -1
   }
 ];

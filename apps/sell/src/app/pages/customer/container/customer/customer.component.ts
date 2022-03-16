@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, CustomerResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, MenuEnum, SortCustomerEnum, SortRouteEnum} from '@minhdu-fontend/enums';
+import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {debounceTime, tap} from 'rxjs/operators';
@@ -19,7 +19,6 @@ import {CustomerQuery} from '../../+state/customer.query';
 import {RouteAction} from "../../../route/+state/route.action";
 import {MatSort} from "@angular/material/sort";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {OrderDialogComponent} from "../../../order/component/order-dialog/order-dialog.component";
 import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/radios-gender.constant";
 
 @Component({
@@ -42,10 +41,12 @@ export class CustomerComponent implements OnInit {
   orders?: OrderEntity;
   sortCustomerEnum = SortCustomerEnum
   radiosGender = RadiosStatusRouteConstant
+  radiosPotential = PotentialTypes
+
   formGroup = new FormGroup({
     name: new FormControl(''),
     resource: new FormControl(''),
-    isPotential: new FormControl(),
+    isPotential: new FormControl(-1),
     customerType: new FormControl(''),
     nationId: new FormControl(''),
     phone: new FormControl(''),
