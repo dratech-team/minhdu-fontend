@@ -25,6 +25,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
 import {CustomerEffect} from "../pages/customer/+state/customer.effect";
 import {CommodityEffect} from "../pages/commodity/+state/commodity.effect";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @NgModule({
   imports: [
@@ -47,7 +49,9 @@ import {CommodityEffect} from "../pages/commodity/+state/commodity.effect";
     MatOptionModule,
     MatSelectModule,
     MatSlideToggleModule,
-    NzTableModule
+    NzTableModule,
+    NzButtonModule,
+    NzInputModule
   ],
   declarations: [
     TableOrdersComponent,
