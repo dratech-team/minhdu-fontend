@@ -14,7 +14,6 @@ import { PickCommodityComponent } from './components/pick-commodity/pick-commodi
 import { PickCustomerComponent } from './components/pick-customer.component/pick-customer.component';
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
-import { PickCustomerService } from './components/pick-customer.component/pick-customer.service';
 import { PickCommodityService } from './components/pick-commodity/pick-commodity.service';
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
@@ -27,6 +26,7 @@ import {CustomerEffect} from "../pages/customer/+state/customer.effect";
 import {CommodityEffect} from "../pages/commodity/+state/commodity.effect";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @NgModule({
   imports: [
@@ -51,7 +51,8 @@ import {NzInputModule} from "ng-zorro-antd/input";
     MatSlideToggleModule,
     NzTableModule,
     NzButtonModule,
-    NzInputModule
+    NzInputModule,
+    NzSelectModule
   ],
   declarations: [
     TableOrdersComponent,
@@ -63,7 +64,6 @@ import {NzInputModule} from "ng-zorro-antd/input";
   ],
   providers: [
     DecimalPipe,
-    PickCustomerService,
     PickCommodityService,
     PickRoutesService
 

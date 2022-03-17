@@ -17,7 +17,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {CustomerDialogComponent} from './component/customer-dialog/customer-dialog.component';
-import {PickCustomerService} from '../../shared/components/pick-customer.component/pick-customer.service';
 import {PaymentDialogComponent} from './component/payment-dialog/payment-dialog.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -81,7 +80,6 @@ import {NzInputModule} from "ng-zorro-antd/input";
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     DatePipe,
-    PickCustomerService
   ]
 })
 export class CustomerModule {

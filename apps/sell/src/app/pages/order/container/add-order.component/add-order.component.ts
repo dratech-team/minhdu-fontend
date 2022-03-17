@@ -69,7 +69,7 @@ export class AddOrderComponent implements OnInit {
 
   pickCustomer() {
     this.dialog.open(PickCustomerComponent, {
-      width: '50%',
+      width: '70vw',
       data: {
         pickOne: true,
         customerInit: this.customerPicked
