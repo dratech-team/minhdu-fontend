@@ -31,6 +31,7 @@ export class PayrollEffect {
         return this.payrollService.paginationPayroll(requestPaginate.payrollDTO);
       }),
       map((ResponsePaginate) => {
+        console.log(res)
         this.message.success('Tải bảng lương thành công!!');
         return PayrollAction.loadInitSuccess({
           payrolls: ResponsePaginate.data,

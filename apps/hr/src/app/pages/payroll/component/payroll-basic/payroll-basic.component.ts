@@ -123,7 +123,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           filterType: FilterTypeEnum.BASIC,
           createdAt: new Date(this.createdAt),
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name||'',
-          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)||''
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||''
         }
       })
     );
