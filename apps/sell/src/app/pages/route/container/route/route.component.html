@@ -45,7 +45,7 @@
       >
         <thead>
         <tr>
-          <th nzWidth="50px" (click)="onExpandAll(tableRoute.data)">
+          <th nzLeft nzWidth="50px" (click)="onExpandAll(tableRoute.data)">
             <img *ngIf="expandAll else dash_square"  src="assets/icon/share/dash-square.svg">
             <ng-template #dash_square>
               <img src="assets/icon/share/plus-square.svg">
@@ -81,7 +81,7 @@
         <tbody>
         <ng-template ngFor let-route [ngForOf]="tableRoute.data" let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
-            <td [(nzExpand)]='route.expand'></td>
+            <td nzLeft [(nzExpand)]='route.expand'></td>
             <td (click)='detailRoute(route.id, false)'>{{i + 1}}</td>
             <td (click)='detailRoute(route.id, false)'>{{route?.name || 'Chưa cập nhật'}}</td>
             <td (click)='detailRoute(route.id, false)'>
