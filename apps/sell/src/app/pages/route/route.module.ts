@@ -26,6 +26,7 @@ import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {MatSortModule} from "@angular/material/sort";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     NzTableModule,
     MatSortModule,
     NzCollapseModule,
-    NzRadioModule
+    NzRadioModule,
+    NzModalModule
   ],
   declarations: [
     RouteComponent,

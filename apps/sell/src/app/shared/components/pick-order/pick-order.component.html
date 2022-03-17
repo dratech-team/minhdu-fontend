@@ -5,25 +5,25 @@
   </mat-select>
 </div>
 <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
-<div style='height: 60vh ; overflow: auto'
-     infiniteScroll
-     [infiniteScrollThrottle]='10'
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'>
-  <nz-table #nestedTable [nzData]="orders" [nzShowPagination]="false">
+<div>
+  <nz-table
+    #nestedTable
+    [nzData]="orders"
+    [nzShowPagination]="false"
+    nzSize="small"
+    [nzScroll]="{y:'40vh'}"
+  >
     <thead [formGroup]="formGroup">
-    <tr style="position: sticky; top: 0px; z-index: 10">
-      <th></th>
+    <tr>
+      <th nzWidth="50px"></th>
       <th *ngIf='!payment'>
         <div>Khách hàng</div>
-        <input class='form-control '
+        <input nz-input
                *ngIf="!isCheckOrderSelected"
                type='search'
                formControlName='name'
         >
-        <input class='form-control '
+        <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'
                disabled
@@ -31,11 +31,11 @@
       </th>
       <th>
         <div>Ngày tạo</div>
-        <input class='form-control '
+        <input nz-input
                *ngIf="!isCheckOrderSelected"
                type='date' formControlName='createdAt'
         >
-        <input class='form-control '
+        <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'
                disabled
@@ -43,11 +43,11 @@
       </th>
       <th>
         <div>Tiền hàng</div>
-        <input type='number' class="form-control" disabled>
+        <input type='number' nz-input disabled>
       </th>
       <th>
         <div>Tổng số hàng</div>
-        <input type='number' class="form-control" disabled>
+        <input type='number' nz-input disabled>
       </th>
       <th>
         <div>Thanh toán</div>
@@ -166,13 +166,14 @@
         </td>
       </tr>
       <tr [nzExpand]="order.expand? order.expand: false">
-        <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
-
+        <nz-table #innerTable [nzData]="order.commodities" nzSize="small" [nzShowPagination]="false">
     <thead>
-    <th class="text-center">Hàng hoá</th>
-    <th class="text-center">Số lượng</th>
-    <th class="text-center">Giá</th>
-    <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
+    <tr>
+      <th class="text-center">Hàng hoá</th>
+      <th class="text-center">Số lượng</th>
+      <th class="text-center">Giá</th>
+      <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
+    </tr>
     </thead>
     <tbody>
     <tr *ngFor="let commodity of innerTable.data">

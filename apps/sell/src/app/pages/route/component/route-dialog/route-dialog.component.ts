@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
@@ -15,15 +15,15 @@ import {RouteQuery} from "../../+state/route.query";
   templateUrl: 'route-dialog.component.html',
 })
 export class RouteDialogComponent implements OnInit {
+  @Input() data?: any
   formGroup!: FormGroup;
   submitted = false;
-  orderIdsOfRoute: OrderEntity[] = this.data?.isUpdate ? [...this.data?.route?.orders] : [];
+  orderIdsOfRoute: OrderEntity[] = [];
   commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
   tabIndex = 0;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
@@ -36,6 +36,10 @@ export class RouteDialogComponent implements OnInit {
   ngOnInit() {
     if (this.data?.selectOrder) {
       this.tabIndex = 1;
+    }
+
+    if (this.data.isUpdate) {
+      this.orderIdsOfRoute = [...this.data.route.orders]
     }
 
     this.formGroup = this.formBuilder.group({

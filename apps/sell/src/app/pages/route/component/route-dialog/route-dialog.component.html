@@ -1,10 +1,4 @@
-<div class='px-2 py-3 main-popup'>
-  <div mat-dialog-close class='close-popup'>
-    <span class='mr-1'> close</span>
-    <div class='x-popup'>
-      <img src='assets/icon/share/x2-lg.svg' alt='cancel'>
-    </div>
-  </div>
+<div>
   <form [formGroup]='formGroup'>
     <mat-tab-group dynamicHeight #tab [(selectedIndex)]='tabIndex' (selectedTabChange)="selectTabChange($event)">
       <mat-tab class='col-12 ' label='Thông tin tuyến đường'>
