@@ -141,11 +141,13 @@ export class RouteEffect {
   );
 
   handelOrder(orders: OrderEntity []) {
-    orders.forEach(order => {
-      order.expand = false
-      order.commodityTotal = getCommodityTotal(order.commodities)
-      order.totalCommodity = getTotalCommodity(order.commodities);
-    });
+    if(orders){
+      orders.forEach(order => {
+        order.expand = false
+        order.commodityTotal = getCommodityTotal(order.commodities)
+        order.totalCommodity = getTotalCommodity(order.commodities);
+      });
+    }
   }
 
   totalCommodityUniq(orders: OrderEntity []): number {

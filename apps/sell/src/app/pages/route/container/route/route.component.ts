@@ -168,6 +168,9 @@ export class RouteComponent implements OnInit {
   onPickStartedDay($event: any) {
   }
 
+  onPickEndedAtDay($event: any) {
+  }
+
 
   paramChange(params: NzTableQueryParams) {
     const value = this.formGroup.value;
