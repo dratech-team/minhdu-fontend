@@ -1,8 +1,6 @@
 <form [formGroup]='formGroup'>
-    <mat-tab-group dynamicHeight>
-      <mat-tab class='col-12' label='Thông tin đơn hàng' *ngIf='data?.tab === 1'>
-        <div [formGroup]='formGroup' style='height: 30vh'>
-          <div class='form-group' style='margin: 5% 10%'>
+        <div [formGroup]='formGroup'>
+          <div>
             <div class='row'>
               <div class='col-sm' [formGroup]='formGroup'>
                 <label for='createdAt'>Ngày tạo đơn hàng<span class='star'>*</span>
@@ -38,17 +36,10 @@
             </app-pick-location>
           </div>
         </div>
-      </mat-tab>
-      <!--      <mat-tab class='col-12 pt-2 ' label='Chọn hàng hóa' *ngIf='data?.tab === 2'>-->
-      <!--        <div class='mt-2'>-->
-      <!--          <app-pick-commodity (checkEvent)='pickCommodity($event)'></app-pick-commodity>-->
-      <!--        </div>-->
-      <!--      </mat-tab>-->
-    </mat-tab-group>
-    <div class='footer-popup row ml-4'>
+    <div class='footer-popup mt-3 d-flex'>
       <button mat-dialog-close class='btn btn-cancel mr-3 '>Hủy</button>
-      <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
-      <button type='button' class='btn award' data-toggle='tooltip'
+      <button nz-button nzType="primary" (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
+      <button nz-button nzType="default" data-toggle='tooltip'
               data-placement='left'
               title='xóa'>
       </button>

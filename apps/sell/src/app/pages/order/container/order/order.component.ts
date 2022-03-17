@@ -24,6 +24,8 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
 import {NzTableQueryParams} from 'ng-zorro-antd/table';
 import {radiosStatusOrderConstant} from "../../../../../../../../libs/constants/sell/radios-status-order.constant";
+import {OrderEntity} from "../../enitities/order.interface";
+import {OrderStore} from "../../+state/order.store";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -69,10 +71,12 @@ export class OrderComponent implements OnInit {
     bsx: new FormControl(''),
     commodity: new FormControl('')
   });
+  nzExpandAll = false;
 
   constructor(
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
+    private readonly orderStore: OrderStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -244,5 +248,11 @@ export class OrderComponent implements OnInit {
   onPickCreatedAt($event: any) {
     this.formGroup.get('createStartedAt')?.setValue($event.startedAt, {emitEvent: false});
     this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
+  }
+
+  onExpandAll(orders: any) {
+    orders.forEach((order: OrderEntity) => order.expand = !this.nzExpandAll)
+    this.orderStore.set(orders)
+    this.nzExpandAll = !this.nzExpandAll
   }
 }

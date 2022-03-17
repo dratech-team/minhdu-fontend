@@ -5,21 +5,19 @@
       <img src='assets/icon/share/x2-lg.svg' alt='cancel'>
     </div>
   </div>
-  <button (click)='addCustomer()' class='btn border  mt-2 d-flex align-items-center'>
-    <img src='../../../../assets/icon/share/plus-lg.svg' alt='add'>
-    <span class=' font-xl ml-1' style='color:#20a8d8;'> Thêm khách hàng</span>
+  <button nz-button nzType="primary" (click)='addCustomer()'>
+    Thêm khách hàng
   </button>
-  <div class='fixTableHead mt-2 border-top' style='width: 100%; max-height: 40vh'
-       infiniteScroll
-       [alwaysCallback]='true'
-       [infiniteScrollDistance]='0.1'
-       [infiniteScrollThrottle]='10'
-       [scrollWindow]='false'
-       (scrolled)='onScroll()'>
-    <table [formGroup]='formGroup'>
+  <div class="mt-2">
+    <nz-table #tablePickCustomer
+              [formGroup]='formGroup'
+              [nzData]="customers"
+              [nzScroll]="{y: '500px'}"
+              nzSize='middle'
+    >
       <thead>
       <tr>
-        <th style='width: 150px'>
+        <th>
           <div>Tất cả</div>
           <mat-checkbox
             *ngIf='data.pickMore'
@@ -33,68 +31,61 @@
         <th>
           <div>Tên Khách hàng</div>
           <input
-            class='form-control input-profile'
-            type='text'
-            placeholder='PN10001'
+            nz-input
+            type='search'
+            placeholder='tran gia hieu'
             formControlName='name'
           >
         </th>
         <th>
           <div>Số điện thoại</div>
           <input
-            [disabled]='true'
-            class='form-control input-profile'
-            type='text'
-            placeholder='0123456789'
-            formControlName='name'
+            disabled
+            type='search'
+            nz-input
           >
         </th>
         <th>
           <div>Loại khách hàng</div>
-          <select class='select border-top border-bottom' style='width: 100%' matNativeControl required
-                  formControlName='type'>
-            <option value='{{customerType.RETAIL}}'>Bán lẻ</option>
-            <option value='{{customerType.AGENCY}}'>Đại lý</option>
-            <option value=''>Tất cả</option>
-          </select>
+          <nz-select  style='width: 100%' formControlName='type'>
+            <nz-option nzValue='{{customerType.RETAIL}}' nzLabel="Bán lẻ"></nz-option>
+            <nz-option nzValue='{{customerType.AGENCY}}' nzLabel="Đại lý"></nz-option>
+            <nz-option nzValue='' nzLabel="tất cả"></nz-option>
+          </nz-select>
         </th>
         <th>
-          <div class=' border-top'>Nguồn khách hàng</div>
+          <div>Nguồn khách hàng</div>
+          <input disabled nz-input>
         </th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor='let customer of customers'>
-        <th class='py-2'>
-          <mat-checkbox
-            *ngIf='data.pickMore'
-            class='checkID'
-            [checked]='customerIds.includes(customer.id)'
-            (change)='updateAllSelect(customer.id)'>
-          </mat-checkbox>
-          <input
-            style='height: 12px ; margin: auto'
-            (change)='pickOneCustomer()'
-            [checked]='customer.id === customerId'
-            *ngIf='data.pickOne || pickOne'
-            type='radio' name='pick-one'
-            value='{{customer.id}}'>
-        </th>
-        <th class='pointer'>{{customer.lastName}}</th>
-        <th class='pointer'>{{customer.phone}}</th>
-        <th>{{customer?.type  | transform:CustomerTypeConstant }} </th>
-        <th> {{customer?.resource | transform:customerResourcesConstant}}</th>
-      </tr>
-      <tr *ngIf='!customers || customers.length === 0 ' style='height: 150px'
-          class=' d-flex justify-content-center align-content-center'>
-        <td colspan='10'>
-          Hiện chưa có khách hàng nào!
-        </td>
-      </tr>
+      <ng-template ngFor let-customer [ngForOf]="tablePickCustomer.data">
+        <tr>
+          <td class='py-2'>
+            <mat-checkbox
+              *ngIf='data.pickMore'
+              class='checkID'
+              [checked]='customerIds.includes(customer.id)'
+              (change)='updateAllSelect(customer.id)'>
+            </mat-checkbox>
+            <input
+              style='height: 12px ; margin: auto'
+              (change)='pickOneCustomer(customer.id)'
+              [checked]='customer.id === customerId'
+              *ngIf='data.pickOne || pickOne'
+              type='radio' name='pick-one'>
+          </td>
+          <td class='pointer'>{{customer.lastName}}</td>
+          <td class='pointer'>{{customer.phone}}</td>
+          <td>{{customer?.type  | transform:CustomerTypeConstant }} </td>
+          <td> {{customer?.resource | transform:customerResourcesConstant}}</td>
+        </tr>
+      </ng-template>
       </tbody>
-    </table>
+    </nz-table>
   </div>
-  <button *ngIf='data.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận
+  <button *ngIf='data.pickOne' nz-button nzType="primary" (click)='closeDialog()' mat-dialog-close> xác nhận
   </button>
 </div>
 

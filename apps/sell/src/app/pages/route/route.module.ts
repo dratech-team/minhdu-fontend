@@ -28,6 +28,7 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzInputModule} from "ng-zorro-antd/input";
 import {NzButtonModule} from "ng-zorro-antd/button";
 
 @NgModule({
@@ -59,6 +60,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
     NzRadioModule,
     NzModalModule,
     NzStepsModule,
+    NzInputModule,
     NzButtonModule
   ],
   declarations: [
