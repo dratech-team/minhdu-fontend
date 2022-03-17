@@ -13,7 +13,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -113,8 +113,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           skip: this.pageIndex,
           createdAt: new Date(this.createdAt),
           filterType: FilterTypeEnum.STAY,
-          position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
+          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || ''
         }
       })
     );
@@ -188,8 +188,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng phụ cấp lương',
-            exportType: FilterTypeEnum.STAY,
             params: payrollStay,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });

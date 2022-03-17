@@ -28,7 +28,7 @@ export class DialogExportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group(this.data.exportType === 'RANGE_DATETIME' ? {
+    this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
         name: new FormControl('', Validators.required),
         startedAt: this.data?.params?.startedAt ? new FormControl(
           this.datePipe.transform(
@@ -54,9 +54,8 @@ export class DialogExportComponent implements OnInit {
     );
 
     this.itemExportService
-      .getItemExport({ api: this.data.api, exportType: this.data.exportType })
+      .getItemExport({exportType: this.data.params.exportType})
       .subscribe((val: any[]) => {
-        console.log(val, "====")
         val?.map((e, i) => {
           Object.assign(e, { index: i });
         });
@@ -74,15 +73,15 @@ export class DialogExportComponent implements OnInit {
     this.itemSelected.sort((a, b) => {
       return a.index - b.index;
     });
-    console.log(new Date(value.startedAt).toUTCString());
-    if (this.data.exportType === FilterTypeEnum.OVERTIME || this.data.exportType === FilterTypeEnum.ABSENT) {
+    console.log(this.data.params.exportType)
+    if (this.data.params.exportType === FilterTypeEnum.OVERTIME || this.data.params.exportType === FilterTypeEnum.ABSENT) {
       Object.assign(this.data.params, {
-        startedAt: new Date(value.startedAt).toUTCString(),
-        endedAt: new Date(value.endedAt).toUTCString()
+        startedAt: new Date(value.startedAt),
+        endedAt: new Date(value.endedAt)
       });
     } else {
       Object.assign(this.data.params, {
-        createdAt: new Date(value.createdAt).toUTCString()
+        createdAt: new Date(value.createdAt)
       });
     }
     this.exportService.print(

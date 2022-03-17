@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -122,8 +122,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.OVERTIME,
-      position: getSelectors<string>(selectedPositionPayroll, this.store),
-      branch: getSelectors<string>(selectedBranchPayroll, this.store)
+      position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name|| ''
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
@@ -193,9 +193,9 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           code: value.code,
           title: value.title || '',
           filename: val,
-          exportType: 'RANGE_DATETIME',
+          exportType: FilterTypeEnum.OVERTIME,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
+          branch: value.branch?.name || '',
           startedAt: value.startedAt,
           endedAt: value.endedAt
         };
@@ -207,7 +207,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           data: {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
-            exportType: 'RANGE_DATETIME',
+            typeDate: 'RANGE_DATETIME',
             isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }

@@ -122,8 +122,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           skip: this.pageIndex,
           filterType: FilterTypeEnum.BASIC,
           createdAt: new Date(this.createdAt),
-          position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
+          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name||'',
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)||''
         }
       })
     );
@@ -196,8 +196,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng lương cơ bản',
-            exportType: FilterTypeEnum.BASIC,
             params: payrollBASIC,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });

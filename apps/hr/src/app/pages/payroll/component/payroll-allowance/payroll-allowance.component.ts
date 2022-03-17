@@ -24,7 +24,7 @@ import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/co
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {debounceTime, startWith} from 'rxjs/operators';
-import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatDialog} from '@angular/material/dialog';
@@ -124,8 +124,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           createdAt: new Date(this.createdAt),
           title: this.allowanceTitle ? this.allowanceTitle : '',
           filterType: FilterTypeEnum.ALLOWANCE,
-          position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
+          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || ''
         }
       })
     );
@@ -241,7 +241,6 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng phụ cấp khác',
-            exportType: FilterTypeEnum.ALLOWANCE,
             params: payrollAllowance,
             isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT

@@ -229,7 +229,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
       this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: branch ? branch: ' '
+        branch: branch ? branch : ' '
       }))
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
@@ -276,7 +276,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: val.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
+      branch: this.formCtrlBranch.value?.name || '',
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
@@ -537,7 +537,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
+      branch: this.formCtrlBranch?.value?.name || '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL
@@ -549,7 +549,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.PAYROLL,
         params: payroll,
         isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
@@ -563,7 +562,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
+      branch: this.formCtrlBranch?.value?.name || '',
       exportType: FilterTypeEnum.TIME_SHEET
     };
     if (value.createdAt) {
@@ -573,7 +572,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng chấm công',
-        exportType: FilterTypeEnum.TIME_SHEET,
         params: payroll,
         isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
@@ -612,6 +610,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   onSelectPosition($event: Position) {
-    this.formGroup.get('position')?.setValue($event,{emitEvent: false})
+    this.formGroup.get('position')?.setValue($event, {emitEvent: false})
   }
 }

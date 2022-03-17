@@ -9,6 +9,7 @@ export class ItemExportService {
   }
 
   getItemExport(params: any): Observable<any[]> {
-    return this.http.get<any>(params.api || Api.HR.PAYROLL.ITEMS_EXPORT, { params });
+    console.log(params)
+    return this.http.get<any>(params?.api || Api.HR.PAYROLL.ITEMS_EXPORT,{params});
   }
 }

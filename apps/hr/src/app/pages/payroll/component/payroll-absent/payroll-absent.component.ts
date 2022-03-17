@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -130,8 +130,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
-      position: getSelectors<string>(selectedPositionPayroll, this.store),
-      branch: getSelectors<string>(selectedBranchPayroll, this.store)
+      position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||''
     };
 
     if (this.absentTitle) {
@@ -228,7 +228,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           name: value.name,
           position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
-          exportType: 'RANGE_DATETIME',
+          exportType: FilterTypeEnum.ABSENT ,
           title: value.title,
           startedAt: value.startedAt,
           endedAt: value.endedAt
@@ -237,7 +237,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng khấu trừ',
-            exportType: 'RANGE_DATETIME',
+            typeDate: 'RANGE_DATETIME',
             params: payrollAbsent,
             isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
