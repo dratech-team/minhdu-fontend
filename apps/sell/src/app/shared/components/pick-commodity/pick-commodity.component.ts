@@ -16,6 +16,7 @@ import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entit
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
+  @Input() data: any
   commodities: CommodityEntity[] = [];
   commodityUnit = CommodityUnit;
   @Input() commoditiesSelected: CommodityEntity[] = [];
@@ -39,7 +40,6 @@ export class PickCommodityComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PickCommodityComponent>,
   ) {
   }

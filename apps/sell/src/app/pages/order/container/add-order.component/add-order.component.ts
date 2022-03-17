@@ -17,6 +17,7 @@ import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
 import {OrderQuery} from "../../+state/order.query";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'add-order.component.html'
@@ -43,7 +44,8 @@ export class AddOrderComponent implements OnInit {
     private readonly router: Router,
     private readonly datePipe: DatePipe,
     private readonly orderQuery: OrderQuery,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly modal: NzModalService
   ) {
   }
 
@@ -90,19 +92,23 @@ export class AddOrderComponent implements OnInit {
   }
 
   pickCommodities() {
-    this.dialog.open(PickCommodityComponent, {
-      width: '65%',
-      data: {
-        pickMore: true,
-        type: 'DIALOG',
-        commoditiesPicked: this.commoditiesPicked
-      }
-    }).afterClosed().subscribe(val => {
-        if (val) {
-          this.commoditiesPicked = val;
+    this.modal.create({
+      nzTitle:'Chọn hàng hoá',
+      nzContent: PickCommodityComponent,
+      nzWidth: '70vw',
+      nzComponentParams: {
+        data: {
+          pickMore: true,
+          type: 'DIALOG',
+          commoditiesPicked: this.commoditiesPicked,
         }
+      },
+      nzFooter: null
+    }).afterClose.subscribe(val => {
+      if (val) {
+        this.commoditiesPicked = val;
       }
-    );
+    })
   }
 
   deleteCommodity(commodity: CommodityEntity) {
