@@ -251,7 +251,7 @@ export class OrderComponent implements OnInit {
   }
 
   onExpandAll(orders: any) {
-    orders.map((order: OrderEntity) => order.expand = !this.nzExpandAll)
+    orders.forEach((order: OrderEntity) => order.expand = !this.nzExpandAll)
     this.orderStore.set(orders)
     this.nzExpandAll = !this.nzExpandAll
   }
