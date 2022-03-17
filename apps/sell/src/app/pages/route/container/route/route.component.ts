@@ -18,6 +18,8 @@ import {DatePipe} from '@angular/common';
 import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {NzTableQueryParams} from "ng-zorro-antd/table";
+import {OrderActions} from "../../../order/+state/order.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderEntity} from "../../../order/enitities/order.interface";
 import {RouteStore} from "../../+state/route.store";
 
@@ -52,7 +54,8 @@ export class RouteComponent implements OnInit {
     private readonly routeStore: RouteStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -80,9 +83,12 @@ export class RouteComponent implements OnInit {
   }
 
   add() {
-    this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content'
-    });
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: 'Cập nhật tuyến đường',
+      nzContent: RouteDialogComponent,
+      nzFooter: null
+    })
   }
 
   onScroll() {
@@ -164,6 +170,7 @@ export class RouteComponent implements OnInit {
 
   onPickEndedAtDay($event: any) {
   }
+
 
   paramChange(params: NzTableQueryParams) {
     const value = this.formGroup.value;

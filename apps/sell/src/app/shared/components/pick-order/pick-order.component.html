@@ -1,29 +1,31 @@
-<div style="width: 100px" class=" mt-2" [formGroup]="formGroup">
-  <mat-select class="form-control" formControlName="filterRoute">
-    <mat-option [value]="false">Tất cả</mat-option>
-    <mat-option [value]="true">Lọc</mat-option>
-  </mat-select>
-</div>
-<div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
-<div style='height: 60vh ; overflow: auto'
-     infiniteScroll
-     [infiniteScrollThrottle]='10'
-     [alwaysCallback]='true'
-     [infiniteScrollDistance]='1'
-     [scrollWindow]='false'
-     (scrolled)='onScroll()'>
-  <nz-table #nestedTable [nzData]="orders" [nzShowPagination]="false">
+<div [formGroup]="formGroup">
+  <div class="d-flex justify-content-between mb-2">
+    <nz-select style="width: 100px" formControlName="filterRoute">
+      <nz-option [nzValue]="false" nzLabel="Tất cả"></nz-option>
+      <nz-option [nzValue]="true" nzLabel="lọc"></nz-option>
+    </nz-select>
+    <div class='mb-2 font-weight-bold' *ngIf='!pickOne'>Đã chọn: ({{orderSelected.length}}/{{total$ | async}})</div>
+  </div>
+  </div>
+<div>
+  <nz-table
+    #nestedTable
+    [nzData]="orders"
+    [nzShowPagination]="false"
+    nzSize="small"
+    [nzScroll]="{y:'35vh'}"
+  >
     <thead [formGroup]="formGroup">
-    <tr style="position: sticky; top: 0px; z-index: 10">
-      <th></th>
+    <tr>
+      <th nzWidth="50px"></th>
       <th *ngIf='!payment'>
         <div>Khách hàng</div>
-        <input class='form-control '
+        <input nz-input
                *ngIf="!isCheckOrderSelected"
                type='search'
                formControlName='name'
         >
-        <input class='form-control '
+        <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'
                disabled
@@ -31,11 +33,11 @@
       </th>
       <th>
         <div>Ngày tạo</div>
-        <input class='form-control '
+        <input nz-input
                *ngIf="!isCheckOrderSelected"
                type='date' formControlName='createdAt'
         >
-        <input class='form-control '
+        <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'
                disabled
@@ -43,21 +45,21 @@
       </th>
       <th>
         <div>Tiền hàng</div>
-        <input type='number' class="form-control" disabled>
+        <input type='number' nz-input disabled>
       </th>
       <th>
         <div>Tổng số hàng</div>
-        <input type='number' class="form-control" disabled>
+        <input type='number' nz-input disabled>
       </th>
       <th>
         <div>Thanh toán</div>
-        <select *ngIf="!isCheckOrderSelected"
-                class='select border-top' style='width: 100%' formControlName='paidType'>
-          <option value='{{paidType.PAID}}'>Có thanh toán</option>
-          <option value='{{paidType.DEBT}}'>Chưa thanh toán</option>
-          <option value=''>tất cả</option>
-        </select>
-        <input class='form-control '
+        <nz-select *ngIf="!isCheckOrderSelected"
+                   formControlName='paidType'>
+          <nz-option [nzValue]='paidType.PAID' nzLabel="Có thanh toán"></nz-option>
+          <nz-option [nzValue]='paidType.DEBT' nzLabel="Chưa thanh toán"></nz-option>
+          <nz-option nzValue='' nzLabel="tất cả"></nz-option>
+        </nz-select>
+        <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'
                disabled
@@ -66,7 +68,7 @@
       <th>
         <div>lần thanh toán</div>
         <input
-          disabled class="form-control" type='number'>
+          disabled nz-input type='number'>
       </th>
       <th *ngIf='payment'>
         <div class=' '>Diễn giải</div>
@@ -74,9 +76,9 @@
                type='text' formControlName='explain'
         >
       </th>
-      <th style='z-index: 2;width: 100px'>
+      <th>
         <div>Tất cả</div>
-        <div class='d-flex justify-content-center border-top align-items-center'>
+        <div class='d-flex justify-content-center align-items-center'>
           <mat-checkbox *ngIf='data?.pickMore|| !pickOne'
                         class='checkID'
                         [checked]='isSelectAll'
@@ -166,13 +168,14 @@
         </td>
       </tr>
       <tr [nzExpand]="order.expand? order.expand: false">
-        <nz-table #innerTable [nzData]="order.commodities" nzSize="middle" [nzShowPagination]="false">
-
+        <nz-table #innerTable [nzData]="order.commodities" nzSize="small" [nzShowPagination]="false">
     <thead>
-    <th class="text-center">Hàng hoá</th>
-    <th class="text-center">Số lượng</th>
-    <th class="text-center">Giá</th>
-    <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
+    <tr>
+      <th class="text-center">Hàng hoá</th>
+      <th class="text-center">Số lượng</th>
+      <th class="text-center">Giá</th>
+      <th class="text-center" *ngIf='!pickOne||data?.pickMore'>Chọn</th>
+    </tr>
     </thead>
     <tbody>
     <tr *ngFor="let commodity of innerTable.data">
@@ -205,18 +208,6 @@
   </nz-table>
 </div>
 <button *ngIf='data?.pickOne' class='btn btn-primary mt-2' (click)='closeDialog()' mat-dialog-close> xác nhận</button>
-<style>
-  ::ng-deep .mat-step-header[aria-selected="true"] {
-    height: 30px !important;
-  }
 
-  th {
-    padding: 5px !important;
-  }
-
-  td {
-    padding: 5px !important;
-  }
-</style>
 
 

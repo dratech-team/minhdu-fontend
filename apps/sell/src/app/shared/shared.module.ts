@@ -52,7 +52,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     NzTableModule,
     NzButtonModule,
     NzInputModule,
-    NzSelectModule
+    NzSelectModule,
   ],
   declarations: [
     TableOrdersComponent,
