@@ -22,6 +22,7 @@ export class PickCustomerService {
   }
 
   searchCustomer(val: any) {
+    console.log(val)
     this.actions$.dispatch(CustomerActions.loadAll(val));
   }
 

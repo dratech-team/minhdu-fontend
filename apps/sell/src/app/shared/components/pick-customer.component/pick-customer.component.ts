@@ -67,7 +67,7 @@ export class PickCustomerComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.service.searchCustomer(this.customer(value));
+        this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(value)}))
       })
     ).subscribe();
   }
@@ -128,23 +128,12 @@ export class PickCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  pickOneCustomer() {
-    const pickCustomer = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickCustomer.length; i++) {
-      if (pickCustomer[i].checked) {
-        this.customerId = parseInt(pickCustomer[i].value);
-      }
-    }
+  pickOneCustomer(customerId: number) {
+    this.customerId = customerId
     this.checkEventPickOne.emit(this.customerId);
   }
 
   closeDialog() {
-    const pickCustomer = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickCustomer.length; i++) {
-      if (pickCustomer[i].checked) {
-        this.customerId = parseInt(pickCustomer[i].value);
-      }
-    }
     this.dialogRef.close(this.customerId);
   }
 
