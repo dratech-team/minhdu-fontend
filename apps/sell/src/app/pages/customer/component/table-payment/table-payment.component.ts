@@ -1,17 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { debounceTime, tap } from 'rxjs/operators';
-import { TablePaymentRouteService } from './table-payment-route.service';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { PaymentHistory } from '@minhdu-fontend/data-models';
-import { selectorAllPayment } from '../../../payment/payment/payment.selector';
-import { PaymentAction } from '../../../payment/payment/payment.action';
-import { ItemContextMenu } from '../../../../../../../../libs/enums/sell/page-type.enum';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteComponent } from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {TablePaymentRouteService} from './table-payment-route.service';
+import {PaymentType} from '@minhdu-fontend/enums';
+import {PaymentHistory} from '@minhdu-fontend/data-models';
+import {selectorAllPayment} from '../../../payment/payment/payment.selector';
+import {PaymentAction} from '../../../payment/payment/payment.action';
+import {ItemContextMenu} from '../../../../../../../../libs/enums/sell/page-type.enum';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  DialogDeleteComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {PaymentDialogComponent} from '../payment-dialog/payment-dialog.component';
 
 @Component({
   selector: 'app-table-payment',
@@ -31,7 +33,7 @@ export class TablePaymentComponent implements OnInit {
   pageSize = 10;
   pageIndex = 1;
   pageIndexInit = 0;
-  paymentHistories$ = this.store.pipe(select(selectorAllPayment));
+  paymentHistories$ = this.store.pipe(select(selectorAllPayment)).pipe(map(value => JSON.parse(JSON.stringify(value))));
 
   constructor(
     private readonly store: Store,
@@ -42,7 +44,7 @@ export class TablePaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(PaymentAction.loadInit({ take: 10, skip: 0, customerId: this.customerId }));
+    this.store.dispatch(PaymentAction.loadInit({take: 10, skip: 0, customerId: this.customerId}));
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
@@ -65,10 +67,10 @@ export class TablePaymentComponent implements OnInit {
   }
 
   deletePayment(id: number) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: 'fit-content'});
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(PaymentAction.deletePayment({ id: id, customerId: this.customerId }));
+        this.store.dispatch(PaymentAction.deletePayment({id: id, customerId: this.customerId}));
       }
     });
   }
