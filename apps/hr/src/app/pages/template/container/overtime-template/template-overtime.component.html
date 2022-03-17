@@ -17,8 +17,8 @@
          [scrollWindow]='false'
          [alwaysCallback]='true'
          (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup' style='width: 1700px'>
-        <thead>
+      <table [formGroup]='formGroup' style='width: 2000px'>
+        <thead style="z-index: 5">
         <tr>
           <th style='width: 50px'>
             <div class='border-top text-center'>stt</div>
@@ -206,7 +206,11 @@
     position: -webkit-sticky;
     position: sticky;
     left: 50px;
-    min-width: 250px;
     z-index: 2;
+  }
+
+  .table-scroll thead th:nth-child(2),
+  .table-scroll thead th:nth-child(7){
+    z-index: 5;
   }
 </style>
