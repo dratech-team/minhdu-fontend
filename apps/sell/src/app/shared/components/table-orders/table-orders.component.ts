@@ -98,7 +98,8 @@ export class TableOrdersComponent implements OnInit {
         width: 'fit-content',
         data: {
           title: 'Đơn hàng đang giao',
-          description: `hủy đơn hàng đang giao ${order?.ward?.name} ${order?.ward?.district?.name} ${order?.ward?.district?.province?.name}`
+          description: `hủy đơn hàng đang giao ${order?.ward ? order.ward.name : ''}
+          ${order?.district ? order.district.name : ''} ${order?.province?.name}`
         }
       });
     ref.afterClosed().subscribe(val => {
