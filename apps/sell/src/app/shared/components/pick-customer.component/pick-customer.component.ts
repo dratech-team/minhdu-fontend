@@ -4,8 +4,6 @@ import {debounceTime, tap} from 'rxjs/operators';
 import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {document} from 'ngx-bootstrap/utils';
-import {PickCustomerService} from './pick-customer.service';
 import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 import {ResourcesConstant} from '@minhdu-fontend/constants';
 import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
@@ -46,7 +44,6 @@ export class PickCustomerComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
-    private readonly service: PickCustomerService,
     private dialogRef: MatDialogRef<PickCustomerComponent>,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef
@@ -74,7 +71,7 @@ export class PickCustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val, true));
+    this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(val, true), isScroll: true}))
   }
 
   customer(val: any, isScroll?: boolean) {

@@ -14,7 +14,6 @@ import { PickCommodityComponent } from './components/pick-commodity/pick-commodi
 import { PickCustomerComponent } from './components/pick-customer.component/pick-customer.component';
 import { MatInputModule } from '@angular/material/input';
 import { PickRoutesComponent } from './components/pick-routes/pick-routes.component';
-import { PickCustomerService } from './components/pick-customer.component/pick-customer.service';
 import { PickCommodityService } from './components/pick-commodity/pick-commodity.service';
 import { PickRoutesService } from './components/pick-routes/pick-routes.service';
 import { MatOptionModule } from '@angular/material/core';
@@ -65,7 +64,6 @@ import {NzSelectModule} from "ng-zorro-antd/select";
   ],
   providers: [
     DecimalPipe,
-    PickCustomerService,
     PickCommodityService,
     PickRoutesService
 
