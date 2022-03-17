@@ -231,7 +231,6 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   selectPartialDay(partialDay: any) {
-    console.log(partialDay);
     this.title = 'Tăng ca ' + partialDay.title;
     this.partialDay = partialDay;
   }
