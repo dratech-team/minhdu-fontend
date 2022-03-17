@@ -51,7 +51,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
     MatSlideToggleModule,
     NzTableModule,
     NzButtonModule,
-    NzInputModule
+    NzInputModule,
   ],
   declarations: [
     TableOrdersComponent,

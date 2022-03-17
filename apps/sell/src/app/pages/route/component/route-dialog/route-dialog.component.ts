@@ -10,6 +10,7 @@ import {MatTabChangeEvent} from "@angular/material/tabs";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -21,21 +22,21 @@ export class RouteDialogComponent implements OnInit {
   orderIdsOfRoute: OrderEntity[] = [];
   commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
-  tabIndex = 0;
+  stepIndex = 0;
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
     private readonly datePipe: DatePipe,
-    private readonly dialogRef: MatDialogRef<RouteDialogComponent>,
+    private readonly modalRef: NzModalRef,
     private readonly snackbar: MatSnackBar
   ) {
   }
 
   ngOnInit() {
     if (this.data?.selectOrder) {
-      this.tabIndex = 1;
+      this.stepIndex = 1;
     }
 
     if (this.data.isUpdate) {
@@ -70,10 +71,6 @@ export class RouteDialogComponent implements OnInit {
   }
 
   onSubmit(): any {
-    this.submitted = true;
-    if (this.formGroup.invalid) {
-      return;
-    }
     if (this.orderIdsOfRoute.length === 0) {
       return this.snackbar.open('Chưa chọn đơn hàng', '', {duration: 1500});
     }
@@ -97,29 +94,20 @@ export class RouteDialogComponent implements OnInit {
     }
     this.routeQuery.select(state => state.added).subscribe(added => {
       if (added) {
-        this.dialogRef.close();
+        this.modalRef.close();
       }
     })
   }
 
-  nextTab(tab: any) {
-    if (this.tabIndex === 0) {
-      this.submitted = true
-      if (this.formGroup.invalid)
-        return
-    }
-    this.tabIndex = tab._selectedIndex + 1;
+  pre(): void {
+    this.stepIndex -= 1;
   }
 
-  previousTab(tab: any) {
-    this.tabIndex = tab._selectedIndex - 1;
-  }
-
-  selectTabChange($event: MatTabChangeEvent) {
-    if ($event.index === 1) {
-      this.submitted = true
-      if (this.formGroup.invalid)
-        this.tabIndex = 0
+  next(): void {
+    this.submitted = true;
+    if (this.formGroup.invalid) {
+      return;
     }
+    this.stepIndex += 1;
   }
 }
