@@ -20,6 +20,7 @@ import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {routes} from "../../../bill/bill-routing.module";
 import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {OrderActions} from "../../../order/+state/order.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -50,7 +51,8 @@ export class RouteComponent implements OnInit {
     private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly modal: NzModalService,
   ) {
   }
 
@@ -78,9 +80,12 @@ export class RouteComponent implements OnInit {
   }
 
   add() {
-    this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content'
-    });
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: 'Cập nhật tuyến đường',
+      nzContent: RouteDialogComponent,
+      nzFooter: null
+    })
   }
 
   onScroll() {
