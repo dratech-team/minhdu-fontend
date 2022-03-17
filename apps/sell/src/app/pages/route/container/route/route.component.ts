@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
+import {Route, Router} from '@angular/router';
 import {Api, RadiosStatusRouteConstant} from '@minhdu-fontend/constants';
 import {SortRouteEnum} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
@@ -17,9 +17,9 @@ import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from '@angular/common';
 import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {routes} from "../../../bill/bill-routing.module";
 import {NzTableQueryParams} from "ng-zorro-antd/table";
-import {OrderActions} from "../../../order/+state/order.actions";
+import {OrderEntity} from "../../../order/enitities/order.interface";
+import {RouteStore} from "../../+state/route.store";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -44,10 +44,12 @@ export class RouteComponent implements OnInit {
     status: new FormControl(-1)
   });
   radios = RadiosStatusRouteConstant
+  expandAll = false;
 
   constructor(
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
+    private readonly routeStore: RouteStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly datePipe: DatePipe
@@ -176,5 +178,11 @@ export class RouteComponent implements OnInit {
         }));
       }
     });
+  }
+
+  onExpandAll(routes: any) {
+    routes.forEach((route: RouteEntity) => route.expand = !this.expandAll)
+    this.routeStore.set(routes)
+    this.expandAll = !this.expandAll
   }
 }

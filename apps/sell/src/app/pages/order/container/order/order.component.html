@@ -35,7 +35,7 @@
       </nz-collapse-panel>
     </nz-collapse>
   </div>
-  <div class='ml-2 ' style='width: 76vw; height: 80vh'>
+  <div class='ml-2 ' style='width: 76vw'>
     <div class='d-flex justify-content-between mb-2'>
       <div class='h3'>
         Danh sách đơn hàng
@@ -49,7 +49,7 @@
     <div>
       <nz-table
         #tableOrder
-        [nzScroll]="{ x: '2000px',y: '70vh'}"
+        [nzScroll]="{ x: '2000px',y: '62vh'}"
         nzSize='middle'
         [nzData]='(orders$ | async) || []'
         [nzFrontPagination]='true'
@@ -59,7 +59,12 @@
       >
         <thead>
         <tr>
-          <th nzWidth='50px' nzLeft></th>
+          <th nzWidth='50px' nzLeft (click)="onExpandAll(tableOrder.data)">
+            <img *ngIf="nzExpandAll else dash_square"  src="assets/icon/share/dash-square.svg">
+            <ng-template #dash_square>
+              <img src="assets/icon/share/plus-square.svg">
+            </ng-template>
+          </th>
           <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
               class='text-center font-weight-bold'>STT
           </th>
@@ -98,7 +103,7 @@
         <tbody>
         <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
           <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)'>
-            <td nzLeft [(nzExpand)]='order.expand'></td>
+            <td style="padding-left: 15px" nzLeft [(nzExpand)]='order.expand'></td>
             <td nzLeft class='text-center'>{{i + 1}}</td>
             <td class='text-center' nzLeft (click)='readAndUpdate(order.id, false)' nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
