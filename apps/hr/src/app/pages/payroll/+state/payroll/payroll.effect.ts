@@ -47,10 +47,11 @@ export class PayrollEffect {
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
       map(([props, skip]) => {
-          Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
+         return  Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
         }
       ),
       switchMap((props) => {
+        console.log(props)
         return this.payrollService.paginationPayroll(props);
       }),
       map((ResponsePaginate) => {
