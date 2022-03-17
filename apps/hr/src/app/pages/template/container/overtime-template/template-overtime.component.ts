@@ -123,7 +123,7 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   template(val: any) {
-    return {
+    const result = {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
@@ -133,6 +133,10 @@ export class TemplateOvertimeComponent implements OnInit {
       branch: val.branch,
       positionIds: this.positionsSelected.map((val) => val.id)
     };
+    if(!val.unit){
+      delete result.unit
+    }
+    return result
   }
 
   onSelectBranch(branchName: string) {
@@ -188,7 +192,7 @@ export class TemplateOvertimeComponent implements OnInit {
         })
       );
     }
-    if(template?.branch){
+    if (template?.branch) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           branch: template.branch,
