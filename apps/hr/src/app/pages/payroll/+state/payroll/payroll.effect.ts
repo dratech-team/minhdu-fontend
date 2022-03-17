@@ -51,7 +51,6 @@ export class PayrollEffect {
         }
       ),
       switchMap((props) => {
-        console.log(props)
         return this.payrollService.paginationPayroll(props);
       }),
       map((ResponsePaginate) => {
