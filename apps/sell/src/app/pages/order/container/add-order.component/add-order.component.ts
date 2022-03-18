@@ -93,7 +93,7 @@ export class AddOrderComponent implements OnInit {
 
   pickCommodities() {
     this.modal.create({
-      nzTitle:'Chọn hàng hoá',
+      nzTitle:'Chon đơn hàng',
       nzContent: PickCommodityComponent,
       nzWidth: '70vw',
       nzComponentParams: {

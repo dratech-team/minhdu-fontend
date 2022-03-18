@@ -45,17 +45,19 @@
         <button (click)='printOrder()' nz-button nzType="default">Xuất</button>
       </div>
     </div>
+    <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
     <div>
-      <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
       <nz-table
         #tableOrder
         [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize='middle'
+        [nzPageSize]="pageSizeTable"
+        [nzPageIndex]="pageIndexTable"
         [nzLoading]="loading$|async"
-        nzFrontPagination="false"
         [nzData]='(orders$ | async) || []'
+        nzShowPagination="true"
         [formGroup]='formGroup'
-        (nzQueryParams)='paramChange($event)'
+        (nzQueryParams)='onQueryParams($event)'
       >
         <thead>
         <tr>
