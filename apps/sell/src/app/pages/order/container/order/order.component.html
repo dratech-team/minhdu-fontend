@@ -71,16 +71,19 @@
           </th>
           <th nzLeft class='text-center font-weight-bold'
               (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.END ,orderType:$event})"
-              [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
+              [nzSortFn]='true'>
             Ngày hẹn giao
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CUSTOMER}}' class='text-center font-weight-bold'>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})"class='text-center font-weight-bold'>
             Khách hàng
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.PROVINCE}}'>
+          <th class='text-center font-weight-bold' [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})">
             Điểm đến
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CREATED_AT}}'>
+          <th class='text-center font-weight-bold' [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})">
             Ngày tạo
           </th>
           <th class='text-center font-weight-bold'>
