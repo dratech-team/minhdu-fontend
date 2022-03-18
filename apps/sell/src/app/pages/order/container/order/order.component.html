@@ -52,17 +52,16 @@
         [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize='middle'
         [nzPageSize]="pageSizeTable"
-        [nzPageIndex]="pageIndexTable"
         [nzLoading]="loading$|async"
         [nzData]='(orders$ | async) || []'
         nzShowPagination="true"
         [formGroup]='formGroup'
-        (nzQueryParams)='onQueryParams($event)'
+        (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
           <th nzWidth='50px' nzLeft (click)="onExpandAll(tableOrder.data)">
-            <img *ngIf="nzExpandAll else dash_square"  src="assets/icon/share/dash-square.svg">
+            <img *ngIf="nzExpandAll else dash_square" src="assets/icon/share/dash-square.svg">
             <ng-template #dash_square>
               <img src="assets/icon/share/plus-square.svg">
             </ng-template>
@@ -70,7 +69,9 @@
           <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
               class='text-center font-weight-bold'>STT
           </th>
-          <th nzLeft class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
+          <th nzLeft class='text-center font-weight-bold'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.END ,orderType:$event})"
+              [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
             Ngày hẹn giao
           </th>
           <th [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CUSTOMER}}' class='text-center font-weight-bold'>

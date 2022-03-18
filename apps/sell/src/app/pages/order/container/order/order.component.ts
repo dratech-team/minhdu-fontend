@@ -25,6 +25,7 @@ import {OrderQuery} from '../../+state/order.query';
 import {NzTableComponent, NzTableQueryParams, NzTableSortOrder} from 'ng-zorro-antd/table';
 import {OrderEntity} from "../../enitities/order.interface";
 import {OrderStore} from "../../+state/order.store";
+import {Sort} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -56,8 +57,7 @@ export class OrderComponent implements OnInit {
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
   pageSizeTable = 10
-  pageIndexTable = 1
-  valueSort?: { orderBy: NzTableSortOrder | undefined; orderType: string }
+  valueSort?: Sort
   formGroup = new FormGroup({
     search: new FormControl(''),
     paidType: new FormControl(''),
@@ -111,9 +111,9 @@ export class OrderComponent implements OnInit {
     this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
-  mapOrder(dataFG: any, isScroll?: boolean) {
+  mapOrder(dataFG: any, isPagination?: boolean) {
     const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isScroll ? this.orderQuery.getCount() : 0,
+      skip: isPagination ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
@@ -226,31 +226,16 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  onQueryParams(params: NzTableQueryParams) {
+  onPagination(pageIndex: number) {
     const value = this.formGroup.value
-    if (params.pageIndex !== this.pageIndexTable) {
-      this.pageIndexTable = params.pageIndex
-      const count = this.orderQuery.getCount();
-      if (params.pageIndex * this.pageSizeTable >= count && params.pageIndex > 1) {
-        this.actions$.dispatch(OrderActions.loadAll({
-          param: this.mapOrder(value, true),
-          isScroll: true
-        }))
-      }
-    } else {
-      const valueSort = params.sort.find(valSort => valSort.value)
-      if (valueSort) {
-        this.valueSort = {
-          orderBy: valueSort?.key,
-          orderType: valueSort?.value === 'ascend' ? 'asc' : 'des'
-        }
-      } else {
-        this.valueSort = undefined
-      }
+    const count = this.orderQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(OrderActions.loadAll({
-        param: this.mapOrder(value)
+        param: this.mapOrder(value, true),
+        isPagination: true
       }))
     }
+
   }
 
   onPickDeliveryDay($event: any) {
@@ -267,5 +252,12 @@ export class OrderComponent implements OnInit {
     orders.forEach((order: OrderEntity) => order.expand = !this.nzExpandAll)
     this.orderStore.set(orders)
     this.nzExpandAll = !this.nzExpandAll
+  }
+
+  onSortOrder(sort: Sort) {
+    this.valueSort = sort
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroup.value)
+    }))
   }
 }
