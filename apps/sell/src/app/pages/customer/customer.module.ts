@@ -35,6 +35,7 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 @NgModule({
     imports: [
@@ -69,6 +70,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
         NzRadioModule,
         NzTableModule,
         NzInputModule,
+        NzButtonModule,
     ],
   declarations: [
     TablePaymentComponent,
