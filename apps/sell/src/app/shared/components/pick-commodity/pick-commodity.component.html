@@ -80,9 +80,8 @@
       </ng-template>
       </tbody>
     </nz-table>
-
   </div>
-  <button *ngIf='data?.type === "DIALOG"' (click)='closeDialog()' nz-button nzType="primary">xác nhận</button>
+  <button class="mt-1" *ngIf='data?.type === "DIALOG"' (click)='closeDialog()' nz-button nzType="primary">xác nhận</button>
 </div>
 <app-mouse-right #child (onAdd)='addCommodity()' (onDel)='deleteCommodity($event)'
                  (onUpdate)='updateCommodity($event)'></app-mouse-right>
