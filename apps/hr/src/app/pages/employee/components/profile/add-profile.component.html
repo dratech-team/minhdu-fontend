@@ -73,7 +73,7 @@
     <div class='row mt-3'>
       <div class='col-sm' [formGroup]='formGroup'>
         <label for='identify'>CMND/CCCD</label>
-        <input type='number' class='form-control not-arrow-input' id='identify'
+        <input type='tel' class='form-control not-arrow-input' id='identify'
                (keypress)="checkInputNumber($event)"
                min='0'
                placeholder='215421236' formControlName='identify'>
