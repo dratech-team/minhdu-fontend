@@ -46,13 +46,14 @@
       </div>
     </div>
     <div>
+      <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
       <nz-table
         #tableOrder
-        [nzScroll]="{ x: '2000px',y: '62vh'}"
+        [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize='middle'
+        [nzLoading]="loading$|async"
+        nzFrontPagination="false"
         [nzData]='(orders$ | async) || []'
-        [nzFrontPagination]='true'
-        [nzShowPagination]='false'
         [formGroup]='formGroup'
         (nzQueryParams)='paramChange($event)'
       >
@@ -169,7 +170,7 @@
     </div>
     <div>
     </div>
-    <div class='d-flex mt-2'>
+    <div class='d-flex'>
       <div><span class='font-weight-bold'>Tổng hàng hoá:</span> <span class='ml-1'
                                                                       style='color: red'>{{totalCommodity$|async}}</span>
       </div>

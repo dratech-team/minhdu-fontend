@@ -34,6 +34,7 @@ export class OrderComponent implements OnInit {
   ui$ = this.orderQuery.select(state => state.ui);
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
+  totalOrder$ = this.orderQuery.select(state => state.total)
   commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
@@ -226,6 +227,7 @@ export class OrderComponent implements OnInit {
   }
 
   paramChange(params: NzTableQueryParams) {
+    console.log(params)
     const value = this.formGroup.value;
     params.sort.map(val => {
       if (val.value) {

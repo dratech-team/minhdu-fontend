@@ -172,6 +172,9 @@ export class OrderEffect {
       this.orderService.delete(props.id).pipe(
         map((_) => {
           this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
+          this.orderStore.update(state => ({
+            ...state, total: state.total ? state.total - 1 : state.total
+          }))
           this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))
