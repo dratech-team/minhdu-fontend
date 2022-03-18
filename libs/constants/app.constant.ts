@@ -21,4 +21,8 @@ export const appConstant = [
     name: 'Chưa xác định',
     app: App.UNKNOWN,
   },
+  {
+    name: 'Tất cả',
+    app: '',
+  },
 ]

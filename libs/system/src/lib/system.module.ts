@@ -23,6 +23,9 @@ import { SystemHistoryReducer } from './+state/system-history/system-history/sys
 import { TransformAppPipe } from './pipes/transform-app.pipe';
 import { TransformMethodPipe } from './pipes/transform-method.pipe';
 import { LimitedAccessContainer } from './containers/limited-access/limited-access.container';
+import {NzTableModule} from "ng-zorro-antd/table";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import { LimitedAccessContainer } from './containers/limited-access/limited-acce
     HttpClientModule,
     MatInputModule,
     InfiniteScrollModule,
-    NgxSkeletonLoaderModule.forRoot()
+    NgxSkeletonLoaderModule.forRoot(),
+    NzTableModule,
+    NzInputModule,
+    NzSelectModule
   ],
   declarations: [
     SystemHistoryContainer,
