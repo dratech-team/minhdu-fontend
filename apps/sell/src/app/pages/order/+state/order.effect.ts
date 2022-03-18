@@ -60,9 +60,12 @@ export class OrderEffect {
         this.orderStore.update(state => ({
           ...state, loading: true
         }));
+        if (props.param?.orderType) {
+          Object.assign(props.param, {orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'})
+        }
         return this.orderService.pagination(Object.assign(
           props.param,
-          (props.param?.status === undefined || props.param?.status === null) ? {status: 0} : {})
+          (props.param?.status === undefined || props.param?.status === null) ? {status: 0} : {}),
         ).pipe(
           map((response) => {
               this.orderStore.update(state => ({
@@ -89,7 +92,7 @@ export class OrderEffect {
                   });
                 }
               }
-              if (props.isScroll) {
+              if (props.isPagination) {
                 this.orderStore.add(response.data);
               } else {
                 this.orderStore.set(response.data);

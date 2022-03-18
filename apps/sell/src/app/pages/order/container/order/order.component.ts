@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Api, CurrenciesConstant} from '@minhdu-fontend/constants';
+import {Api, CurrenciesConstant, radiosStatusOrderConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -22,14 +22,16 @@ import {
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
-import {NzTableQueryParams} from 'ng-zorro-antd/table';
-import {radiosStatusOrderConstant} from "../../../../../../../../libs/constants/sell/radios-status-order.constant";
+import {NzTableComponent, NzTableQueryParams, NzTableSortOrder} from 'ng-zorro-antd/table';
 import {OrderEntity} from "../../enitities/order.interface";
 import {OrderStore} from "../../+state/order.store";
+import {Sort} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'order.component.html'
 })
+
+
 export class OrderComponent implements OnInit {
   ui$ = this.orderQuery.select(state => state.ui);
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
@@ -50,10 +52,11 @@ export class OrderComponent implements OnInit {
   currenciesConstant = CurrenciesConstant;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  pageSize = 40;
+  pageSize = 25;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
-
+  pageSizeTable = 10
+  valueSort?: Sort
   formGroup = new FormGroup({
     search: new FormControl(''),
     paidType: new FormControl(''),
@@ -86,10 +89,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    const params = this.route.snapshot.queryParams;
-    this.actions$.dispatch(
-      OrderActions.loadAll({param: {take: this.pageSize, skip: this.pageIndexInit, status: params.status}})
-    );
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroup.value)
+    }))
 
     this.formGroup.valueChanges
       .pipe(
@@ -108,16 +110,9 @@ export class OrderComponent implements OnInit {
     this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(val, true))
-    );
-  }
-
-  mapOrder(val: any, isScroll?: boolean) {
-    const value = Object.assign(JSON.parse(JSON.stringify(val)), {
-      skip: isScroll ? this.orderQuery.getCount() : 0,
+  mapOrder(dataFG: any, isPagination?: boolean) {
+    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
+      skip: isPagination ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
     if (!value?.createStartedAt && !value?.createEndedAt) {
@@ -141,6 +136,10 @@ export class OrderComponent implements OnInit {
     if (value?.startedAt && !value?.endedAt) {
       value.endedAt = value?.startedAt;
       this.formGroup.get('endedAt')?.patchValue(value.endedAt);
+    }
+
+    if (this.valueSort?.orderType) {
+      Object.assign(value, this.valueSort)
     }
     return value;
   }
@@ -226,20 +225,16 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  paramChange(params: NzTableQueryParams) {
-    console.log(params)
-    const value = this.formGroup.value;
-    params.sort.map(val => {
-      if (val.value) {
-        Object.assign(value, {
-          orderBy: val.key,
-          orderType: val.value === 'ascend' ? 'asc' : 'des'
-        });
-        this.actions$.dispatch(OrderActions.loadAll({
-          param: this.mapOrder(value)
-        }));
-      }
-    });
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value
+    const count = this.orderQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(OrderActions.loadAll({
+        param: this.mapOrder(value, true),
+        isPagination: true
+      }))
+    }
+
   }
 
   onPickDeliveryDay($event: any) {
@@ -256,5 +251,12 @@ export class OrderComponent implements OnInit {
     orders.forEach((order: OrderEntity) => order.expand = !this.nzExpandAll)
     this.orderStore.set(orders)
     this.nzExpandAll = !this.nzExpandAll
+  }
+
+  onSortOrder(sort: Sort) {
+    this.valueSort = sort
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroup.value)
+    }))
   }
 }

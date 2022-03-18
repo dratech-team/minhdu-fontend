@@ -45,22 +45,23 @@
         <button (click)='printOrder()' nz-button nzType="default">Xuất</button>
       </div>
     </div>
+    <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
     <div>
-      <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
       <nz-table
         #tableOrder
         [nzScroll]="{ x: '2000px',y: '60vh'}"
         nzSize='middle'
+        [nzPageSize]="pageSizeTable"
         [nzLoading]="loading$|async"
-        nzFrontPagination="false"
         [nzData]='(orders$ | async) || []'
+        nzShowPagination="true"
         [formGroup]='formGroup'
-        (nzQueryParams)='paramChange($event)'
+        (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
           <th nzWidth='50px' nzLeft (click)="onExpandAll(tableOrder.data)">
-            <img *ngIf="nzExpandAll else dash_square"  src="assets/icon/share/dash-square.svg">
+            <img *ngIf="nzExpandAll else dash_square" src="assets/icon/share/dash-square.svg">
             <ng-template #dash_square>
               <img src="assets/icon/share/plus-square.svg">
             </ng-template>
@@ -68,16 +69,22 @@
           <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
               class='text-center font-weight-bold'>STT
           </th>
-          <th nzLeft class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.END}}'>
+          <th nzLeft class='text-center font-weight-bold'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.END ,orderType:$event})"
+              [nzSortFn]='true'>
             Ngày hẹn giao
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CUSTOMER}}' class='text-center font-weight-bold'>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})"
+              class='text-center font-weight-bold'>
             Khách hàng
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.PROVINCE}}'>
+          <th class='text-center font-weight-bold' [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})">
             Điểm đến
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true' nzColumnKey='{{sortOrderEnum.CREATED_AT}}'>
+          <th class='text-center font-weight-bold' [nzSortFn]='true'
+              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})">
             Ngày tạo
           </th>
           <th class='text-center font-weight-bold'>

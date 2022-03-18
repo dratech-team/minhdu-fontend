@@ -104,7 +104,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
       const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isScroll: true}));
+      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isPagination: true}));
     }
   }
 
