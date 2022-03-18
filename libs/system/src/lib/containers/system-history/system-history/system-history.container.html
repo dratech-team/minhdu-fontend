@@ -28,7 +28,7 @@
             <div class='font-weight-bold'>Tài khoản</div>
             <input nz-input placeholder='Nhập tên đăng nhập' type='search' formControlName='name'>
           </th>
-          <th>
+          <th nzWidth="200px">
             <div class='font-weight-bold'>Hành động</div>
             <nz-select style="width: 100%" formControlName='activity'>
               <nz-option *ngFor='let item of methods ' [nzValue]="item.method" [nzLabel]="item.name"></nz-option>
@@ -38,11 +38,11 @@
             <div class='text-center'>mô tả</div>
             <input nz-input type='text' disabled>
           </th>
-          <th>
+          <th nzWidth="200px">
             <div class='text-center'>Địa chỉ máy</div>
             <input nz-input type='search' formControlName='ip'>
           </th>
-          <th>
+          <th nzWidth="200px">
             <div class='text-center'>Ngày</div>
             <input nz-input type='date' formControlName='createdAt'>
           </th>
@@ -51,25 +51,25 @@
         <tbody>
         <ng-template ngFor let-systemHistory [ngForOf]="tableSystemHistory.data" let-i='index'>
           <tr class="pointer">
-            <td nzLeft>
+            <td nzLeft class="text-center">
               {{i + 1}}
             </td>
-            <td nzLeft>
+            <td nzLeft class="text-center">
               {{systemHistory?.appName ? (systemHistory.appName |transformApp:apps) : 'Chưa xác định'}}
             </td>
-            <td nzLeft>
+            <td nzLeft class="text-center">
               {{systemHistory.name}}
             </td>
-            <td>
+            <td class="text-center">
               {{systemHistory.activity|transformMethod: methods}}
             </td>
             <td>
               {{systemHistory.description}}
             </td>
-            <td>
+            <td class="text-center">
               {{systemHistory.ip}}
             </td>
-            <td>
+            <td class="text-center">
               {{systemHistory.createdAt|date:'h:mm:ss a, dd-MM-yyyy'}}
             </td>
           </tr>
