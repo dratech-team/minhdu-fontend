@@ -33,7 +33,6 @@ import {Sort} from "@minhdu-fontend/data-models";
 
 
 export class OrderComponent implements OnInit {
-  @ViewChild('tableOrder') tableOrder!: NzTableComponent<OrderEntity>
   ui$ = this.orderQuery.select(state => state.ui);
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))))
   loading$ = this.orderQuery.selectLoading();
