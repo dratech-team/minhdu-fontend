@@ -89,10 +89,16 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   payment(id: number) {
-    this.dialog.open(PaymentDialogComponent, {
-      width: 'fit-content',
-      data: {id: id}
-    });
+    this.modal.create({
+      nzWidth:'70vw',
+      nzTitle: 'Thanh toán',
+      nzContent: PaymentDialogComponent,
+      nzComponentParams: {
+        data: {id: id}
+      },
+      nzFooter: null,
+
+    })
   }
 
   development() {
