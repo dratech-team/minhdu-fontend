@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
 import {FormControl, FormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {Router} from '@angular/router';
@@ -53,9 +52,15 @@ export class TableOrdersComponent implements OnInit {
       debounceTime(1000),
       tap((val) => {
           if (this.delivered) {
-            this.actions$.dispatch(CustomerActions.loadOrderDelivered({params: this.mapOrders(val)}));
+            this.actions$.dispatch(CustomerActions.loadOrder({
+              params: this.mapOrders(val),
+              typeOrder: 'delivered'
+            }));
           } else {
-            this.actions$.dispatch(CustomerActions.loadOrderDelivering({params: this.mapOrders(val)}));
+            this.actions$.dispatch(CustomerActions.loadOrder({
+              params: this.mapOrders(val),
+              typeOrder: 'delivering'
+            }));
           }
         }
       )
@@ -66,13 +71,15 @@ export class TableOrdersComponent implements OnInit {
     if (pageIndex * this.pageSizeTable >= this.orders.length) {
       const val = this.formGroup.value;
       if (this.delivered) {
-        this.actions$.dispatch(CustomerActions.loadOrderDelivered({
+        this.actions$.dispatch(CustomerActions.loadOrder({
           params: this.mapOrders(val, true),
+          typeOrder: 'delivered',
           isPagination: true
         }));
       } else {
-        this.actions$.dispatch(CustomerActions.loadOrderDelivering({
+        this.actions$.dispatch(CustomerActions.loadOrder({
           params: this.mapOrders(val, true),
+          typeOrder: 'delivering',
           isPagination: true
         }));
       }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {CustomerActions} from './customer.actions';
 import {CustomerService} from '../service/customer.service';
@@ -111,49 +111,45 @@ export class CustomerEffect {
     ))
   );
 
-  @Effect()
-  orderDelivered$ = this.action$.pipe(
-    ofType(CustomerActions.loadOrderDelivered),
-    switchMap(props => {
-        this.customerStore.update(state => ({...state, deliveredLoading: true}))
-        return this.orderService.pagination(Object.assign(props.params, {status: 1})).pipe(
-          tap(res => {
-            if (res.data.length === 0) {
-              this.message.warning('Đã lấy hết đơn hàng đã giao')
-            }
-            if (props?.isPagination) {
-              this.customerStore.update(props.params.customerId, {
-                  delivered: this.customerQuery.getEntity(props.params.customerId)?.delivered.concat(res.data),
-                }
-              );
-            } else {
-              this.customerStore.update(props.params.customerId, {delivered: res.data});
-            }
-            this.customerStore.update((state) => ({...state, deliveredLoading: false}));
-          })
-        )
-      }
-    ), catchError((err) => throwError(err))
-  );
 
   @Effect()
-  orderDelivering$ = this.action$.pipe(
-    ofType(CustomerActions.loadOrderDelivering),
-    switchMap(props => {
-        this.customerStore.update((state) => ({...state, deliveringLoading: true}));
-        return this.orderService.pagination(Object.assign(props.params, {status: 0})).pipe(
+  loadOrder$ = this.action$.pipe(
+    ofType(CustomerActions.loadOrder),
+    concatMap(props => {
+        this.customerStore.update((state) => ({
+          ...state,
+          deliveringLoading: props?.typeOrder === 'delivering' ? true : state.deliveringLoading,
+          deliveredLoading: props?.typeOrder === 'delivered' ? true : state.deliveredLoading,
+        }));
+        return this.orderService.pagination(Object.assign(props.params,
+          {status: props.typeOrder === 'delivered' ? 1 : 0})
+        ).pipe(
           tap(res => {
             if (res.data.length === 0) {
-              this.message.warning('Đã lấy hết đơn hàng chưa giao')
+              this.message.warning('Đã lấy hết đơn hàng')
             }
             if (props?.isPagination) {
-              this.customerStore.update(props.params.customerId, {
-                delivering: this.customerQuery.getEntity(props.params.customerId)?.delivering.concat(res.data)
-              });
+              if (props.typeOrder === 'delivering') {
+                this.customerStore.update(props.params.customerId, {
+                  delivering: this.customerQuery.getEntity(props.params.customerId)?.delivering.concat(res.data)
+                });
+              } else {
+                this.customerStore.update(props.params.customerId, {
+                  delivered: this.customerQuery.getEntity(props.params.customerId)?.delivered.concat(res.data)
+                });
+              }
             } else {
-              this.customerStore.update(props.params.customerId, {delivering: res.data});
+              if (props.typeOrder === 'delivering') {
+                this.customerStore.update(props.params.customerId, {delivering: res.data});
+              } else {
+                this.customerStore.update(props.params.customerId, {delivered: res.data});
+              }
             }
-            this.customerStore.update((state) => ({...state, deliveringLoading: false}));
+            this.customerStore.update((state) => ({
+              ...state,
+              deliveringLoading:false,
+              deliveredLoading:false,
+            }));
           })
         )
       }

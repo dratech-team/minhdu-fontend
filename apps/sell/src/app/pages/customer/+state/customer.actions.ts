@@ -29,14 +29,9 @@ const remove = createAction(
   props<{ id: number }>()
 );
 
-const loadOrderDelivered = createAction(
-  `[CUSTOMER] Load Order Delivered`,
-  props<{ params: LoadOrderDto, isPagination?: boolean }>()
-);
-
-const loadOrderDelivering = createAction(
-  `[CUSTOMER] Load Order Delivering`,
-  props<{ params: LoadOrderDto, isPagination?: boolean }>()
+const loadOrder = createAction(
+  '[CUSTOMER] Load Order',
+  props<{ params: LoadOrderDto, typeOrder: 'delivered' | 'delivering', isPagination?: boolean }>()
 );
 
 export const CustomerActions = {
@@ -45,7 +40,6 @@ export const CustomerActions = {
   loadOne,
   update,
   remove,
-  loadOrderDelivered,
-  loadOrderDelivering
+  loadOrder,
 };
 
