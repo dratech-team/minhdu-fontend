@@ -110,41 +110,7 @@ export class OrderComponent implements OnInit {
     this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
-  mapOrder(dataFG: any, isPagination?: boolean) {
-    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
-      skip: isPagination ? this.orderQuery.getCount() : 0,
-      take: this.pageSize
-    });
-    if (!value?.createStartedAt && !value?.createEndedAt) {
-      delete value?.createStartedAt;
-      delete value?.createEndedAt;
-    }
-    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
-      delete value?.deliveryStartedAt;
-      delete value?.deliveryEndedAt;
-    }
-
-    if (!value?.startedAt && !value?.endedAt) {
-      delete value?.startedAt;
-      delete value?.endedAt;
-    }
-
-    if (!value?.deliveredAt) {
-      delete value?.deliveredAt;
-    }
-
-    if (value?.startedAt && !value?.endedAt) {
-      value.endedAt = value?.startedAt;
-      this.formGroup.get('endedAt')?.patchValue(value.endedAt);
-    }
-
-    if (this.valueSort?.orderType) {
-      Object.assign(value, this.valueSort)
-    }
-    return value;
-  }
-
-  readAndUpdate(id: number, isUpdate: boolean) {
+  readOrUpdate(id: number, isUpdate: boolean) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id], {
       queryParams: {
         isUpdate: isUpdate
@@ -152,7 +118,7 @@ export class OrderComponent implements OnInit {
     }).then();
   }
 
-  UpdateOrder($event: any) {
+  update($event: any) {
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
@@ -176,41 +142,11 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  addOrder() {
-    this.router.navigate(['/don-hang/them-don-hang']).then();
-  }
-
-  printOrder() {
-    const val = this.formGroup.value;
-    const order = {
-      paidType: val.paidType,
-      customer: val.name?.trim(),
-      ward: val.ward?.trim(),
-      commodityTotal: val.commodityTotal?.trim(),
-      explain: val.explain?.trim(),
-      startedAt: val.createStartedAt?.trim(),
-      endedAt: val.createEndedAt?.trim(),
-      status:
-        val.deliveredAt === this.statusOrder.DELIVERED
-          ? this.convertBoolean.TRUE
-          : this.convertBoolean.FALSE
-    };
-    this.dialog.open(DialogExportComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xuất bảng đơn hàng',
-        exportType: 'RANGE_DATETIME',
-        params: order,
-        api: Api.SELL.ORDER.EXPORT_ITEMS
-      }
-    });
-  }
-
-  cancelOrder($event: any) {
+  cancel($event: any) {
     this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 
-  deleteOrder($event: any) {
+  delete($event: any) {
     const ref = this.dialog.open(DialogSharedComponent, {
       width: 'fit-content',
       data: {
@@ -253,10 +189,70 @@ export class OrderComponent implements OnInit {
     this.nzExpandAll = !this.nzExpandAll
   }
 
-  onSortOrder(sort: Sort) {
+  onSort(sort: Sort) {
     this.valueSort = sort
     this.actions$.dispatch(OrderActions.loadAll({
       param: this.mapOrder(this.formGroup.value)
     }))
+  }
+
+  mapOrder(dataFG: any, isPagination?: boolean) {
+    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
+      skip: isPagination ? this.orderQuery.getCount() : 0,
+      take: this.pageSize
+    });
+    if (!value?.createStartedAt && !value?.createEndedAt) {
+      delete value?.createStartedAt;
+      delete value?.createEndedAt;
+    }
+    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
+      delete value?.deliveryStartedAt;
+      delete value?.deliveryEndedAt;
+    }
+
+    if (!value?.startedAt && !value?.endedAt) {
+      delete value?.startedAt;
+      delete value?.endedAt;
+    }
+
+    if (!value?.deliveredAt) {
+      delete value?.deliveredAt;
+    }
+
+    if (value?.startedAt && !value?.endedAt) {
+      value.endedAt = value?.startedAt;
+      this.formGroup.get('endedAt')?.patchValue(value.endedAt);
+    }
+
+    if (this.valueSort?.orderType) {
+      Object.assign(value, this.valueSort)
+    }
+    return value;
+  }
+
+  onPrint() {
+    const val = this.formGroup.value;
+    const order = {
+      paidType: val.paidType,
+      customer: val.name?.trim(),
+      ward: val.ward?.trim(),
+      commodityTotal: val.commodityTotal?.trim(),
+      explain: val.explain?.trim(),
+      startedAt: val.createStartedAt?.trim(),
+      endedAt: val.createEndedAt?.trim(),
+      status:
+        val.deliveredAt === this.statusOrder.DELIVERED
+          ? this.convertBoolean.TRUE
+          : this.convertBoolean.FALSE
+    };
+    this.dialog.open(DialogExportComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xuất bảng đơn hàng',
+        exportType: 'RANGE_DATETIME',
+        params: order,
+        api: Api.SELL.ORDER.EXPORT_ITEMS
+      }
+    });
   }
 }

@@ -42,7 +42,7 @@
       </div>
       <div class='d-flex justify-content-between'>
         <button (click)='add()' class="mr-2" nz-button nzType="primary">Thêm</button>
-        <button (click)='printOrder()' nz-button nzType="default">Xuất</button>
+        <button (click)='onPrint()' nz-button nzType="default">Xuất</button>
       </div>
     </div>
     <div><span class="font-weight-bold">Tổng đơn hàng:</span> {{totalOrder$|async}}</div>
@@ -70,21 +70,21 @@
               class='text-center font-weight-bold'>STT
           </th>
           <th nzLeft class='text-center font-weight-bold'
-              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.END ,orderType:$event})"
+              (nzSortOrderChange)="onSort({orderBy:sortOrderEnum.END ,orderType:$event})"
               [nzSortFn]='true'>
             Ngày hẹn giao
           </th>
           <th [nzSortFn]='true'
-              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})"
+              (nzSortOrderChange)="onSort({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})"
               class='text-center font-weight-bold'>
             Khách hàng
           </th>
           <th class='text-center font-weight-bold' [nzSortFn]='true'
-              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})">
+              (nzSortOrderChange)="onSort({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})">
             Điểm đến
           </th>
           <th class='text-center font-weight-bold' [nzSortFn]='true'
-              (nzSortOrderChange)="onSortOrder({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})">
+              (nzSortOrderChange)="onSort({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})">
             Ngày tạo
           </th>
           <th class='text-center font-weight-bold'>
@@ -112,43 +112,43 @@
           <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)'>
             <td style="padding-left: 15px" nzLeft [(nzExpand)]='order.expand'></td>
             <td nzLeft class='text-center'>{{i + 1}}</td>
-            <td class='text-center' nzLeft (click)='readAndUpdate(order.id, false)' nzLeft>
+            <td class='text-center' nzLeft (click)='readOrUpdate(order.id, false)' nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
               {{order.customer?.lastName}}
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
               {{order?.province?.name}}
               {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
               {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
               {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)' *ngIf='order?.routes?.length; else notCar'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)' *ngIf='order?.routes?.length; else notCar'>
           <span *ngFor='let route of order?.routes'>
               {{route?.bsx}},
           </span>
             </td>
             <ng-template #notCar>
-              <td class='text-center' (click)='readAndUpdate(order.id, false)'>
+              <td class='text-center' (click)='readOrUpdate(order.id, false)'>
                 -
               </td>
             </ng-template>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: red'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: red'>
               {{order.totalCommodity| number:'1.0-0' | notEmpty:'0'}}
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: #f86c6b'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #f86c6b'>
               {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
             </td>
-            <td class='text-center' (click)='readAndUpdate(order.id, false)' style='color: #20c997'>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #20c997'>
               {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
             </td>
             <!--        <th>-->
             <!--          {{order.currency | transform:currenciesConstant}}-->
             <!--        </th>-->
-            <td class='text-center' (click)='readAndUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
             <td [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
               {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes?.length) ? 'Đang giao' : 'Chưa giao')}}
             </td>
@@ -191,9 +191,9 @@
 <app-mouse-right
   #child
   [items]='[ItemContextMenu.ENDED_AT,ItemContextMenu.CANCEL_ORDER,ItemContextMenu.PERMANENTLY]'
-  (onAdd)='addOrder()'
-  (onUpdate)='readAndUpdate($event.id, true)'
-  (onEnd)='UpdateOrder($event)'
-  (onCancel)='cancelOrder($event)'
-  (onDelPerm)='deleteOrder($event)'
+  (onAdd)='add()'
+  (onUpdate)='readOrUpdate($event.id, true)'
+  (onEnd)='update($event)'
+  (onCancel)='cancel($event)'
+  (onDelPerm)='delete($event)'
 ></app-mouse-right>
