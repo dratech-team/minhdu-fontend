@@ -60,8 +60,8 @@
       >
         <thead>
         <tr>
-          <th nzWidth='50px' nzLeft (click)="onExpandAll(tableOrder.data)">
-            <img *ngIf="nzExpandAll else dash_square" src="assets/icon/share/dash-square.svg">
+          <th nzWidth='50px' nzLeft (click)="onExpandAll()">
+            <img *ngIf="(expanedAll$ | async) else dash_square" src="assets/icon/share/dash-square.svg">
             <ng-template #dash_square>
               <img src="assets/icon/share/plus-square.svg">
             </ng-template>

@@ -8,6 +8,7 @@ import { OrderVisibleEntity } from '../enitities/order-visible.entity';
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
   readonly added?: boolean
+  readonly expandedAll?: boolean
   readonly total?: number;
   readonly commodityUniq?: CommodityUniq[];
   readonly totalCommodity?: number;
@@ -18,6 +19,7 @@ function createInitState(): OrderState {
   return {
     loading: true,
     added: false,
+    expandedAll: false,
     total: 0,
     commodityUniq: [],
     entities: undefined,

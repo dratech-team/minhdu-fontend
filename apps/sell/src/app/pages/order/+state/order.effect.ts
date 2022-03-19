@@ -68,6 +68,8 @@ export class OrderEffect {
           (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
         ).pipe(
           map((response) => {
+              const expanedAll = this.orderQuery.getValue().expandedAll;
+
               this.orderStore.update(state => ({
                 ...state,
                 loading: false,
@@ -83,7 +85,7 @@ export class OrderEffect {
                 });
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
-                  expand: order.expand = false,
+                  expand: expanedAll,
                   totalcommodity: order.totalCommodity = getTotalCommodity(order.commodities)
                 }));
                 if (props.isPagination) {
