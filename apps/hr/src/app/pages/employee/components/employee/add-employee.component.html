@@ -37,17 +37,6 @@
               </div>
             </div>
           </div>
-          <div class='col-sm' [formGroup]='formGroup'
-               [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
-            <label>Ngày công chuẩn </label><span class='star'>*</span>
-            <input class='form-control' type='number' formControlName='workday' min='0'
-                   (keypress)='checkNumberInput($event)'
-                   [ngClass]="{ 'is-invalid': submitting && f.workday.errors }"
-            >
-            <div *ngIf='submitting && f.workday.errors' class='invalid-feedback'>
-              <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
-            </div>
-          </div>
           <div class='col-sm' [formGroup]='formGroup'>
             <label>Chức vụ </label><span class='star'>*</span>
             <div>
@@ -63,6 +52,17 @@
               <div *ngIf='submitting && f.position.errors?.required' class='invalid-feedback'>
                 <div *ngIf=' f.position.errors?.required'>Chưa chọn chức vụ</div>
               </div>
+            </div>
+          </div>
+          <div class='col-sm' [formGroup]='formGroup'
+               [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
+            <label>Ngày công chuẩn </label><span class='star'>*</span>
+            <input class='form-control' type='number' formControlName='workday' min='0'
+                   (keypress)='checkNumberInput($event)'
+                   [ngClass]="{ 'is-invalid': submitting && f.workday.errors }"
+            >
+            <div *ngIf='submitting && f.workday.errors' class='invalid-feedback'>
+              <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
             </div>
           </div>
         </div>
