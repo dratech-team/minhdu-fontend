@@ -149,13 +149,13 @@
               (click)='readPayroll(payrollBasic)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div>
-              {{payrollBasic.employee.position?.name}}
+              {{payrollBasic.position}}
             </div>
           </th>
           <th style='width: 200px' class='pointer'
               (click)='readPayroll(payrollBasic)'>
             <div>
-              {{payrollBasic.employee.branch?.name}}
+              {{payrollBasic.branch}}
             </div>
           </th>
           <th class='pointer' style='width: 220px;'>

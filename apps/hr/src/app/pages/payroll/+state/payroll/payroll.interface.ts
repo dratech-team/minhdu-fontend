@@ -29,6 +29,8 @@ export interface Payroll {
     }
   }
   note?: string
+  branch?: string,
+  position?:string
 }
  //fix me
 export interface PayrollDTO{

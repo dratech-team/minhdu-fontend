@@ -156,10 +156,10 @@
               {{payroll.createdAt | date:'MM/yyyy'}}
             </th>
             <th class='pointer' (click)='readPayroll(payroll)' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{payroll?.employee?.position?.name}}
+              {{payroll.position}}
             </th>
             <th class='pointer' (click)='readPayroll(payroll)'>
-              {{payroll.employee?.branch?.name}}
+              {{payroll.branch}}
             </th>
             <th class='pointer' (click)='readPayroll(payroll)'>
               {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
