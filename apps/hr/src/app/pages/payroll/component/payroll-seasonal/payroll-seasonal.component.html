@@ -49,8 +49,8 @@
             <input class='form-control' type='search' matInput disabled>
           </th>
           <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-            <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
+            <input class='form-control text-center ' disabled>
           </th>
           <th>
             <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày làm</div>
@@ -133,7 +133,7 @@
           </th>
           <th class='pointer' (click)='readPayroll(payroll)'>
             <div>
-              {{payroll.createdAt | date:'yyyy-MM'}}
+              {{payroll.createdAt | date:'dd-MM-yyyy'}}
             </div>
           </th>
           <th class='pointer' (click)='readPayroll(payroll)'>

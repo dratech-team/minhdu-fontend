@@ -129,7 +129,7 @@
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
               <div>
-                {{payroll.createdAt | date:'yyyy-MM-dd'}}
+                {{payroll.createdAt | date:'dd-MM-yyyy'}}
               </div>
             </th>
             <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
