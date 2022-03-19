@@ -111,7 +111,7 @@
         <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
           <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)'>
             <td style="padding-left: 15px" nzLeft [(nzExpand)]='order.expand'></td>
-            <td nzLeft class='text-center'>{{i + 1}}</td>
+            <td nzLeft class='text-center'>{{(i + 1) * tableOrder.nzPageIndex}}</td>
             <td class='text-center' nzLeft (click)='readOrUpdate(order.id, false)' nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
