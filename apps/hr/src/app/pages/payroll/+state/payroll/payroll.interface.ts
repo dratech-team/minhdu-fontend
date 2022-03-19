@@ -1,6 +1,6 @@
-import { Employee, Salary } from '@minhdu-fontend/data-models';
-import { EmployeeType, FilterTypeEnum, SalaryTypeEnum, SearchTypeEnum } from '@minhdu-fontend/enums';
-import { Payslip } from '../payslip/payslip.interface';
+import {Employee, Salary} from '@minhdu-fontend/data-models';
+import {EmployeeType, FilterTypeEnum, SalaryTypeEnum, SearchTypeEnum} from '@minhdu-fontend/enums';
+import {Payslip} from '../payslip/payslip.interface';
 
 export type AddPayroll = Pick<Payroll, 'createdAt'> & {
   employeeId: number;
@@ -23,17 +23,18 @@ export interface Payroll {
   timesheet: { datetime: any[]; total: number };
   salary?: {
     total: number,
-    unit:{
+    unit: {
       days: number,
       hours: number
     }
   }
   note?: string
   branch?: string,
-  position?:string
+  position?: string
 }
- //fix me
-export interface PayrollDTO{
+
+//fix me
+export interface PayrollDTO {
   take?: number,
   skip?: number,
   createdAt?: Date,
@@ -52,4 +53,5 @@ export interface PayrollDTO{
   startedAt?: Date,
   endedAt?: Date,
   employeeType?: string
+  isLeave?: boolean
 }

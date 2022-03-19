@@ -53,6 +53,7 @@ import {PayrollService} from "../../service/payroll.service";
 export class PayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() eventAddOvertime?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
+  @Input() eventSelectIsLeave?: boolean;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -88,6 +89,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     title: new FormControl(''),
     code: new FormControl(''),
     name: new FormControl(''),
+    isLeave: new FormControl(false),
     startedAt: new FormControl(
       this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd')
     ),
@@ -103,6 +105,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
   constructor(
     private readonly message: NzMessageService,
     private readonly dialog: MatDialog,
@@ -117,8 +120,11 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
+    if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.setValue(changes.eventSearchBranch.currentValue)
+    }
+    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
+      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
     }
   }
 
@@ -128,7 +134,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       filterType: FilterTypeEnum.OVERTIME,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || ''
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+      isLeave: false
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
@@ -282,6 +289,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position?.name || '',
       branch: value.branch?.name || '',
+      isLeave: value.isLeave
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -332,7 +340,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
   updateMultipleSalaryOvertime(): any {
     const uniq = _.uniqWith(this.mapSalary(this.salariesSelected), _.isEqual);
-    console.log(uniq, this.mapSalary(this.salariesSelected));
     if (uniq.length === 1) {
       if (!this.salariesSelected[0].salary.unit) {
         return this.message.success('Không sửa lương tùy chọn cho nhiều nhân viên được');
@@ -450,7 +457,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
               title: value.title,
               name: value.name,
               position: value.position?.name || '',
-              branch: value.branch.name
+              branch: value.branch.name,
+              isLeave: value.isLeave
             };
             if (!value.name) {
               delete payrollOvertime.name;

@@ -12,7 +12,7 @@ import {
   SalaryTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, map, takeUntil} from 'rxjs/operators';
@@ -56,6 +56,7 @@ import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('');
+  formIsLeave = new FormControl(false)
   formGroup = new FormGroup({
     name: new FormControl(''),
     code: new FormControl(''),
@@ -127,6 +128,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   searchBranchAllowance?: Branch;
   searchBranchStay?: Branch;
   searchBranchAbsent?: Branch;
+  selectIsLeaveOvertime?: boolean
+  selectIsLeaveAbsent?: boolean
+  selectIsLeaveBasic?: boolean
+  selectIsLeaveAllowance?: boolean
+  selectIsLeaveStay?: boolean
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -225,8 +231,35 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
         this.loadInitPayroll();
+      } else {
+        this.addCategory()
       }
     });
+
+    this.formIsLeave.valueChanges.subscribe(isLeave => {
+      switch (this.selectPayroll.value) {
+        case FilterTypeEnum.ABSENT:
+          this.selectIsLeaveAbsent = isLeave
+          break;
+        case FilterTypeEnum.BASIC:
+          this.selectIsLeaveBasic = isLeave
+          break;
+        case FilterTypeEnum.STAY:
+          this.selectIsLeaveStay = isLeave
+          break;
+        case FilterTypeEnum.OVERTIME:
+          this.selectIsLeaveOvertime = isLeave
+          break;
+        case FilterTypeEnum.ALLOWANCE:
+          this.selectIsLeaveAllowance = isLeave
+          break;
+        default :
+          this.store.dispatch(PayrollAction.loadInit({
+            payrollDTO: this.mapPayroll(this.formGroup.value)
+          }))
+      }
+    })
+
 
     this.formCtrlBranch.valueChanges.pipe().subscribe(branch => {
       if (branch) {
@@ -285,6 +318,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
+      isLeave: this.formIsLeave.value,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
@@ -544,7 +578,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       branch: this.formCtrlBranch?.value?.name || '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      exportType: FilterTypeEnum.PAYROLL
+      exportType: FilterTypeEnum.PAYROLL,
+      isLeave: this.formIsLeave.value,
     };
     if (value.createdAt) {
       Object.assign(payroll, {createdAt: new Date(value.createdAt)});
@@ -567,7 +602,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: value.name,
       position: value.position?.name || '',
       branch: this.formCtrlBranch?.value?.name || '',
-      exportType: FilterTypeEnum.TIME_SHEET
+      exportType: FilterTypeEnum.TIME_SHEET,
+      isLeave: this.formIsLeave.value,
     };
     if (value.createdAt) {
       Object.assign(payroll, {createdAt: new Date(value.createdAt)});

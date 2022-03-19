@@ -29,12 +29,24 @@
       </div>
 
     </div>
-    <div style='width: fit-content'>
-      <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
-        <mat-option [value]='""'>Tất cả</mat-option>
-        <mat-option *ngFor='let item of categories$|async' [value]='item.id'>{{item.name}}</mat-option>
-        <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
-      </mat-select>
+    <div style='width: fit-content' class="ml-2">
+      <nz-select style='width:200px' [formControl]='categoryControl'>
+        <nz-option [nzValue]="''" nzLabel="tất cả">Tất cả</nz-option>
+        <nz-option *ngFor='let item of categories$|async' [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+        <nz-option [nzValue]="0" nzLabel="Tạo mới"></nz-option>
+      </nz-select>
+    </div>
+    <div>
+      <nz-select
+        [formControl]="formIsLeave"
+        class="ml-2"
+        nzShowSearch
+        style='width:200px'
+        nzPlaceHolder='Chọn loại nhân viên'
+      >
+        <nz-option [nzValue]="false" [nzLabel]='"Nhân viên còn làm"'></nz-option>
+        <nz-option [nzValue]="true" [nzLabel]='"Nhân viên đã nghỉ"'></nz-option>
+      </nz-select>
     </div>
     <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
             class="btn btn-primary ml-1" (click)="updateCategory()">Sửa
@@ -367,6 +379,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME '>
       <minhdu-fontend-payroll-overtime [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
+                                       [eventSelectIsLeave]="selectIsLeaveOvertime"
                                        [eventSearchBranch]="searchBranchOvertime"
                                        [eventAddOvertime]='eventAddOvertime'
                                        [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
@@ -386,16 +399,22 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <minhdu-fontend-payroll-basic
+        [eventSelectIsLeave]="selectIsLeaveBasic"
         [eventSearchBranch]="searchBranchBasic"
         [eventExportBasic]='eventExportBasic'
       ></minhdu-fontend-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
-      <app-payroll-stay [eventExportStay]='eventExportStay' [eventSearchBranch]="searchBranchStay"></app-payroll-stay>
+      <app-payroll-stay [eventExportStay]='eventExportStay'
+                        [eventSelectIsLeave]="selectIsLeaveStay"
+                        [eventSearchBranch]="searchBranchStay">
+
+      </app-payroll-stay>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance [createdAt]='this.createdAt' [allowanceTitle]='allowanceTitle'
+                             [eventSelectIsLeave]="selectIsLeaveAllowance"
                              [eventAddAllowance]='eventAddAllowance'
                              [eventSearchBranch]="searchBranchAllowance"
                              [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
@@ -403,6 +422,7 @@
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent [absentTitle]='absentTitle' [createdAt]='this.createdAt' [eventAddAbsent]='eventAddAbsent'
                           [eventSearchBranch]="searchBranchAbsent"
+                          [eventSelectIsLeave]="selectIsLeaveAbsent"
                           [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
     </div>
   </div>
