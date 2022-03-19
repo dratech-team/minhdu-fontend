@@ -28,16 +28,18 @@
             <!--                height='64px'-->
             <!--              />-->
             <!--            </div>-->
-            <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='row d-flex flex-column '
-                 style='width: 100%; color: black'>
-              <div class='col-12 d-flex justify-content-start font-weight-bold'>
+            <div class='row d-flex flex-column '>
+              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
+                   class='col-12 d-flex justify-content-start font-weight-bold'>
                 {{payroll.employee.lastName}}
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
-                <span class='d-inline-block font-weight-bold'>Ngày vào làm: </span>
-                <span class='ml-1'>{{payroll.employee.createdAt|date: 'dd/MM/yyyy'}}</span>
+                <span class='d-inline-block font-weight-bold'>Ngày tạo phiếu lương: </span>
+                <span (click)="updateCreatedAt(payroll.id,payroll.createdAt)"
+                      class='ml-2 pointer border px-1 rounded'>{{payroll.createdAt|date: 'dd/MM/yyyy'}}</span>
               </div>
-              <div class='col-12 d-flex justify-content-start ' style='color: black'>
+              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
+                   class='col-12 d-flex justify-content-start ' style='color: black'>
                 <span class='d-inline-block font-weight-bold'>Đơn vị: </span>
                 <span class='ml-1'>{{payroll.branch}}</span>
               </div>
@@ -49,7 +51,8 @@
                   <div class='col-md position btn btn-primary'>{{payroll.position}}</div>
                 </div>
               </div>
-              <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
+              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='col-6 '
+                   style='border-radius: 20px;height: 24px ;min-width: 150px;'>
                 <div class='col-md position btn btn-primary'>
                   <span class='mr-2'>{{payroll.employee.recipeType}}</span>
                   |

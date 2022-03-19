@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../reducers';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../reducers';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   selectCurrentPayroll,
   selectedAddingPayroll,
@@ -9,26 +9,32 @@ import {
   selectedLoadedPayroll,
   selectedScannedPayroll
 } from '../../+state/payroll/payroll.selector';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Salary } from '@minhdu-fontend/data-models';
-import { Payroll } from '../../+state/payroll/payroll.interface';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { DialogOvertimeComponent } from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
-import { DialogBasicComponent } from '../../component/dialog-salary/dialog-basic/dialog-basic.component';
-import { DialogAbsentComponent } from '../../component/dialog-salary/dialog-absent/dialog-absent.component';
-import { DialogStayComponent } from '../../component/dialog-salary/dialog-stay/dialog-stay.component';
-import { DialogAllowanceComponent } from '../../component/dialog-salary/dialog-allowance/dialog-allowance.component';
-import { ConfirmPayrollComponent } from '../../component/confirm-payroll/confirm-payroll.component';
-import { getDaysInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { LoadingComponent } from '../../component/popup-loading/loading.component';
-import { DialogSeasonalComponent } from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { DatePipe } from '@angular/common';
-import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
+import {MatDialog} from '@angular/material/dialog';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Salary} from '@minhdu-fontend/data-models';
+import {Payroll} from '../../+state/payroll/payroll.interface';
+import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {DialogOvertimeComponent} from '../../component/dialog-salary/dialog-overtime/dialog-overtime.component';
+import {DialogBasicComponent} from '../../component/dialog-salary/dialog-basic/dialog-basic.component';
+import {DialogAbsentComponent} from '../../component/dialog-salary/dialog-absent/dialog-absent.component';
+import {DialogStayComponent} from '../../component/dialog-salary/dialog-stay/dialog-stay.component';
+import {DialogAllowanceComponent} from '../../component/dialog-salary/dialog-allowance/dialog-allowance.component';
+import {ConfirmPayrollComponent} from '../../component/confirm-payroll/confirm-payroll.component';
+import {getDaysInMonth} from '../../../../../../../../libs/utils/daytime.until';
+import {LoadingComponent} from '../../component/popup-loading/loading.component';
+import {DialogSeasonalComponent} from '../../component/dialog-salary/dialog-seasonal/dialog-seasonal.component';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {DatePipe} from '@angular/common';
+import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
 import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialog-WFH.component";
+import {FormControl} from "@angular/forms";
+import {
+  DialogDatePickerComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
 
 
 @Component({
@@ -53,13 +59,13 @@ export class DetailPayrollComponent implements OnInit {
     private readonly router: Router,
     private readonly datePipe: DatePipe
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
   }
 
   ngOnInit() {
-    this.store.dispatch(PayrollAction.getPayroll({ id: this.getPayrollId }));
+    this.store.dispatch(PayrollAction.getPayroll({id: this.getPayrollId}));
     this.payroll$.subscribe(val => {
         if (val) {
           this.daysInMonth = getDaysInMonth(val.createdAt);
@@ -77,7 +83,7 @@ export class DetailPayrollComponent implements OnInit {
   addSalary(type: SalaryTypeEnum, payroll: Payroll) {
     const config = {
       width: '700px',
-      data: { type, payroll, isUpdate: false }
+      data: {type, payroll, isUpdate: false}
     };
     this.openSalary(type, config);
   }
@@ -85,7 +91,7 @@ export class DetailPayrollComponent implements OnInit {
   updateSalary(type: SalaryTypeEnum, salary: Salary, payroll?: Payroll) {
     const config = {
       width: '40%',
-      data: { type, salary, isUpdate: true, payroll: payroll }
+      data: {type, salary, isUpdate: true, payroll: payroll}
     };
     this.openSalary(type, config);
   }
@@ -93,11 +99,11 @@ export class DetailPayrollComponent implements OnInit {
   openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
     switch (type) {
       case SalaryTypeEnum.BASIC : {
-        this.dialog.open(DialogBasicComponent, Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogBasicComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       case SalaryTypeEnum.STAY: {
-        this.dialog.open(DialogStayComponent, Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogStayComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       case SalaryTypeEnum.ALLOWANCE: {
@@ -109,15 +115,15 @@ export class DetailPayrollComponent implements OnInit {
         break;
       }
       case SalaryTypeEnum.ABSENT: {
-        this.dialog.open(DialogAbsentComponent, Object.assign(config, { width: '600px' }));
+        this.dialog.open(DialogAbsentComponent, Object.assign(config, {width: '600px'}));
         break;
       }
       case SalaryTypeEnum.PART_TIME: {
-        this.dialog.open(DialogSeasonalComponent, Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogSeasonalComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       case SalaryTypeEnum.WFH: {
-        this.dialog.open(DialogWFHComponent, Object.assign(config, { width: 'fit-content' }));
+        this.dialog.open(DialogWFHComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       default: {
@@ -128,9 +134,9 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   removeSalary(id: number, payrollId: number) {
-    this.dialog.open(DialogDeleteComponent, { width: 'fit-content' }).afterClosed().subscribe((value) => {
+    this.dialog.open(DialogDeleteComponent, {width: 'fit-content'}).afterClosed().subscribe((value) => {
       if (value) {
-        this.store.dispatch(PayrollAction.deleteSalary({ id: id, PayrollId: payrollId }));
+        this.store.dispatch(PayrollAction.deleteSalary({id: id, PayrollId: payrollId}));
       }
     });
   }
@@ -177,18 +183,18 @@ export class DetailPayrollComponent implements OnInit {
   scanHoliday(payrollId: number) {
     const ref = this.dialog.open(LoadingComponent, {
       width: 'fit-content',
-      data: { content: 'Đang quét ngày lễ...' }
+      data: {content: 'Đang quét ngày lễ...'}
     });
     this.scanned$.subscribe(val => {
       if (val) {
         ref.close();
       }
     });
-    this.store.dispatch(PayrollAction.scanHoliday({ PayrollId: payrollId }));
+    this.store.dispatch(PayrollAction.scanHoliday({PayrollId: payrollId}));
   }
 
   scroll(target: HTMLElement, sticky: HTMLElement) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.scrollIntoView({behavior: 'smooth', block: 'center'});
     this.onSticky(sticky);
   }
 
@@ -204,7 +210,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   deletePayroll(event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: 'fit-content' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: 'fit-content'});
     ref.afterClosed().subscribe(val => {
       if (val) {
         this.store.dispatch(PayrollAction.deletePayroll(
@@ -233,13 +239,30 @@ export class DetailPayrollComponent implements OnInit {
       if (val) {
         this.store.dispatch(PayrollAction.updatePayroll({
           id: payroll.id,
-          payroll: { taxed: !payroll.taxed }
+          payroll: {taxed: !payroll.taxed}
         }));
       }
     });
   }
 
   addNote(payroll: Payroll) {
-    this.dialog.open(DialogNoteComponent, {width: 'fit-content', data:{payroll}})
+    this.dialog.open(DialogNoteComponent, {width: 'fit-content', data: {payroll}})
+  }
+
+  updateCreatedAt(id: number, createdAt: Date) {
+    this.dialog.open(DialogDatePickerComponent, {
+      width: 'fit-content',
+      data: {
+        titlePopup: 'Cập nhật ngày tạo phiếu lương',
+        title: 'Ngày tạo',
+        dayInit: createdAt
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.updatePayroll({
+          id: id, payroll:{createdAt:val.day}
+        }))
+      }
+    })
   }
 }
