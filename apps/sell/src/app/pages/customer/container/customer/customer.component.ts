@@ -41,7 +41,7 @@ export class CustomerComponent implements OnInit {
   potentialsConstant = PotentialsConstant
   resourcesConstant = ResourcesConstant
   customerConstant = CustomerConstant
-  pageSizeTable = 1
+  pageSizeTable = 10
   valueSort?: Sort
 
   formGroup = new FormGroup({

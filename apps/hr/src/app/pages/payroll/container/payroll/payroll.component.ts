@@ -148,7 +148,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.loadInitPayroll();
       }
     });
-
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(OrgchartActions.init());
 

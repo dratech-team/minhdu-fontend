@@ -13,6 +13,8 @@
               [formGroup]='formGroup'
               [nzData]="customers"
               [nzScroll]="{y: '500px'}"
+              [nzPageSize]="pageSizeTable"
+              (nzPageIndexChange)="onPagination($event)"
               nzSize='middle'
     >
       <thead>
