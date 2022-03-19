@@ -1,0 +1,30 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: "[BUG] From Server - "
+labels: bug, HR
+assignees: uranussolutions
+
+---
+
+**Mô tả vấn đề mà bạn đang gặp phải**
+Mô tả ngắn gọn rõ ràng lỗi mà bạn đang gặp phải trên hệ thống
+
+**Các bước bạn thực hiện trên hệ thống là như thế nào?**
+Các bước để thực hiện lại hành vi:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
+
+**Hành vi mong đợi**
+Mô tả ngắn gọn và rõ ràng hành vi mong đợi mà bạn muốn nó sẽ xảy ra.
+
+**Đính kèm hình ảnh hoặc video**
+Nếu có thể, hãy thêm ảnh chụp màn hình  hoặc video để giúp giải thích sự cố của bạn
+
+**Ngày bạn gặp sự cố**
+Ngày/tháng/năm
+
+**Bổ sung**
+Thêm bất kỳ điều gì khác của bạn ở đây
