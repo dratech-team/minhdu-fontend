@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { CustomerActions } from './customer.actions';
-import { CustomerService } from '../service/customer.service';
-import { CustomerQuery } from './customer.query';
-import { CustomerStore } from './customer.store';
-import { OrderService } from '../../order/service/order.service';
-import { AddCustomerDto } from '../dto/add-customer.dto';
-import { LoadCustomerDto } from '../dto/load-customer.dto';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {CustomerActions} from './customer.actions';
+import {CustomerService} from '../service/customer.service';
+import {CustomerQuery} from './customer.query';
+import {CustomerStore} from './customer.store';
+import {OrderService} from '../../order/service/order.service';
+import {AddCustomerDto} from '../dto/add-customer.dto';
+import {LoadCustomerDto} from '../dto/load-customer.dto';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable()
@@ -32,15 +32,18 @@ export class CustomerEffect {
       this.customerStore.update(state => ({
         ...state, loading: true
       }));
+      if (props.params?.orderType) {
+        props.params.orderType = props.params.orderType === 'ascend' ? 'asc' : 'des'
+      }
       return this.customerService.pagination(props.params).pipe(
         map((response) => {
-          this.customerStore.update(state => ({ ...state, loading: false }));
+          this.customerStore.update(state => ({...state, loading: false, total: response.total}));
           if (response.data.length === 0) {
             this.message.warning('Đã lấy hết khách hàng');
           } else {
             this.message.success('Tải danh sách khách hàng thành công!!');
           }
-          if (props.isScroll) {
+          if (props.isPagination) {
             this.customerStore.add(response.data);
           } else {
             this.customerStore.set(response.data);
@@ -111,10 +114,10 @@ export class CustomerEffect {
   @Effect()
   orderDelivered$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivered),
-    switchMap(props => this.orderService.pagination(Object.assign(props, { status: 1 })).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 1})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, { delivered: res.data });
-        this.customerStore.update((state) => ({ ...state, deliveredLoading: false }));
+        this.customerStore.update(props.customerId, {delivered: res.data});
+        this.customerStore.update((state) => ({...state, deliveredLoading: false}));
       })
     ))
   );
@@ -122,10 +125,10 @@ export class CustomerEffect {
   @Effect()
   orderDelivering$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivering),
-    switchMap(props => this.orderService.pagination(Object.assign(props, { status: 0 })).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 0})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, { delivering: res.data });
-        this.customerStore.update((state) => ({ ...state, deliveringLoading: false }));
+        this.customerStore.update(props.customerId, {delivering: res.data});
+        this.customerStore.update((state) => ({...state, deliveringLoading: false}));
       })
     ))
   );

@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[CUSTOMER] Load All',
-  props<{params: LoadCustomerDto, isScroll?: boolean}>()
+  props<{params: LoadCustomerDto, isPagination?: boolean}>()
 );
 
 const loadOne = createAction(

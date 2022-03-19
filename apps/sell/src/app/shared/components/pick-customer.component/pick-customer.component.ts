@@ -71,7 +71,7 @@ export class PickCustomerComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(val, true), isScroll: true}))
+    this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(val, true), isPagination: true}))
   }
 
   customer(val: any, isScroll?: boolean) {

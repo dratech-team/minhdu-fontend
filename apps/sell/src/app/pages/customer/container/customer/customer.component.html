@@ -55,20 +55,22 @@
       </div>
     </div>
     <div class="mt-3">
+      <div class="mb-1"><span class="font-weight-bold">Tổng khách hàng:</span> {{total$|async}}</div>
       <nz-table #tableCustomer
                 nzSize="middle"
                 [nzData]="(customers$|async)"
                 [nzScroll]="{ x: '2500px',y: '70vh'}"
-                [nzFrontPagination]='true'
-                [nzShowPagination]='false'
-                (nzQueryParams)='paramChange($event)'
+                [nzShowPagination]='true'
+                (nzPageIndexChange)="onPagination($event)"
+                [nzPageSize]="pageSizeTable"
+                [nzLoading]="loading$|async"
       >
         <thead>
         <tr>
           <th nzLeft nzWidth='60px'>
             STT
           </th>
-          <th nzLeft [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.NAME}}'>
+          <th nzLeft [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy: sortCustomerEnum.NAME, orderType:$event})">
             Tên khách hàng
           </th>
           <th>
@@ -77,20 +79,22 @@
           <th>
             Ngày sinh
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.GENDER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy: sortCustomerEnum.GENDER, orderType:$event})">
             Giới tính
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.IS_POTENTIAL}}'>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)="onSort({orderBy: sortCustomerEnum.IS_POTENTIAL, orderType:$event})">
             Tiềm năng
           </th>
           <!--        <th style='width: 200px'>-->
           <!--          <div class=''>Quốc gia</div>-->
           <!--          <input formControlName='nationId' class='form-control' type='text'>-->
           <!--        </th>-->
-          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.RESOURCE}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy: sortCustomerEnum.RESOURCE, orderType:$event})">
             Nguồn khách hàng
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortCustomerEnum.CUSTOMER_TYPE}}'>
+          <th [nzSortFn]='true'
+              (nzSortOrderChange)="onSort({orderBy: sortCustomerEnum.CUSTOMER_TYPE, orderType:$event})">
             Loại khách hàng
           </th>
           <th>

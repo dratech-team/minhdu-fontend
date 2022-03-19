@@ -118,7 +118,6 @@ export class RouteComponent implements OnInit {
   }
 
   onEnd(event: RouteEntity) {
-    console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
