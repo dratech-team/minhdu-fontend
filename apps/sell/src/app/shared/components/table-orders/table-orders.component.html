@@ -3,6 +3,9 @@
             [nzScroll]="{y: '300px'}"
             nzSize='middle'
             [nzData]="orders"
+            [nzLoading]="(loading$|async)"
+            [nzPageSize]="pageSizeTable"
+            (nzPageIndexChange)="isPagination($event)"
   >
     <thead [formGroup]='formGroup'>
     <tr>

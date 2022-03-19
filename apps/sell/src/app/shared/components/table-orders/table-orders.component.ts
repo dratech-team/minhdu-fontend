@@ -3,7 +3,6 @@ import {Store} from '@ngrx/store';
 import {FormControl, FormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {Router} from '@angular/router';
-import {TableOrderCustomerService} from './table-order-customer.service';
 import {OrderEntity} from '../../../pages/order/enitities/order.interface';
 import {OrderActions} from '../../../pages/order/+state/order.actions';
 import {MatDialog} from '@angular/material/dialog';
@@ -16,6 +15,8 @@ import {
   DialogDatePickerComponent
 } from '../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {Actions} from "@datorama/akita-ng-effects";
+import {CustomerActions} from "../../../pages/customer/+state/customer.actions";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-table-order',
@@ -25,6 +26,8 @@ import {Actions} from "@datorama/akita-ng-effects";
 export class TableOrdersComponent implements OnInit {
   @Input() orders!: OrderEntity[];
   @Input() delivered: boolean = false;
+  @Input() loading$!: Observable<boolean>
+  @Input() customerId?: number
 
   formGroup = new FormGroup(
     {
@@ -36,12 +39,12 @@ export class TableOrdersComponent implements OnInit {
   pageSize = 10;
   pageIndexInit = 0;
   convertBoolean = ConvertBoolean;
+  pageSizeTable = 4
 
   constructor(
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly customerService: TableOrderCustomerService
   ) {
   }
 
@@ -50,34 +53,43 @@ export class TableOrdersComponent implements OnInit {
       debounceTime(1000),
       tap((val) => {
           if (this.delivered) {
-            this.customerService.searchOrdersAssigned(this.mapOrders(val));
+            this.actions$.dispatch(CustomerActions.loadOrderDelivered({params: this.mapOrders(val)}));
           } else {
-            this.customerService.searchOrders(this.mapOrders(val));
+            this.actions$.dispatch(CustomerActions.loadOrderDelivering({params: this.mapOrders(val)}));
           }
         }
       )
     ).subscribe();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    if (this.delivered) {
-      this.customerService.scrollOrdersAssigned(this.mapOrders(val));
-    } else {
-      this.actions$.dispatch(OrderActions.loadAll(this.mapOrders(val)));
+  isPagination(pageIndex: number) {
+    if (pageIndex * this.pageSizeTable >= this.orders.length) {
+      const val = this.formGroup.value;
+      if (this.delivered) {
+        this.actions$.dispatch(CustomerActions.loadOrderDelivered({
+          params: this.mapOrders(val, true),
+          isPagination: true
+        }));
+      } else {
+        this.actions$.dispatch(CustomerActions.loadOrderDelivering({
+          params: this.mapOrders(val, true),
+          isPagination: true
+        }));
+      }
     }
   }
 
-  mapOrders(val: any): any {
+  mapOrders(val: any, isPagination?: boolean): any {
     return {
-      skip: this.pageIndexInit,
+      skip: isPagination ? this.orders.length : this.pageIndexInit,
       take: this.pageSize,
       delivered: this.delivered ?
         this.convertBoolean.TRUE :
         this.convertBoolean.FALSE,
       createdAt: val.createdAt,
       ward: val.ward,
-      explain: val.explain
+      explain: val.explain,
+      customerId: this.customerId ? this.customerId : ''
     };
   }
 

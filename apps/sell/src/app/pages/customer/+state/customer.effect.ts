@@ -114,9 +114,15 @@ export class CustomerEffect {
   @Effect()
   orderDelivered$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivered),
-    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 1})).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props.params, {status: 1})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, {delivered: res.data});
+        if (props?.isPagination) {
+          this.customerStore.update(props.params.customerId, {
+            delivered: this.customerQuery.getEntity(props.params.customerId)?.delivered.concat(res.data)
+          });
+        } else {
+          this.customerStore.update(props.params.customerId, {delivered: res.data});
+        }
         this.customerStore.update((state) => ({...state, deliveredLoading: false}));
       })
     ))
@@ -125,9 +131,15 @@ export class CustomerEffect {
   @Effect()
   orderDelivering$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivering),
-    switchMap(props => this.orderService.pagination(Object.assign(props, {status: 0})).pipe(
+    switchMap(props => this.orderService.pagination(Object.assign(props.params, {status: 0})).pipe(
       tap(res => {
-        this.customerStore.update(props.customerId, {delivering: res.data});
+        if (props?.isPagination) {
+          this.customerStore.update(props.params.customerId, {
+            delivering: this.customerQuery.getEntity(props.params.customerId)?.delivering.concat(res.data)
+          });
+        } else {
+          this.customerStore.update(props.params.customerId, {delivering: res.data});
+        }
         this.customerStore.update((state) => ({...state, deliveringLoading: false}));
       })
     ))

@@ -39,8 +39,12 @@ export class DetailCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
-    this.actions$.dispatch(CustomerActions.loadOrderDelivered({take: 20, skip: 0, customerId: +this.getId}));
-    this.actions$.dispatch(CustomerActions.loadOrderDelivering({take: 20, skip: 0, customerId: +this.getId}));
+    this.actions$.dispatch(CustomerActions.loadOrderDelivered({
+      params: {take: 20, skip: 0, customerId: +this.getId}
+    }));
+    this.actions$.dispatch(CustomerActions.loadOrderDelivering({
+      params: {take: 20, skip: 0, customerId: +this.getId}
+    }));
 
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate === 'true') {
