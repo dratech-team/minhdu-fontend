@@ -85,7 +85,7 @@ export class AddEmployeeComponent implements OnInit {
       ],
       createdAt: [
         this.employeeInit?.createdAt ?
-          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : ''
+          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : '',Validators.required
       ],
       isFlatSalary: [
         this.employeeInit?.isFlatSalary
