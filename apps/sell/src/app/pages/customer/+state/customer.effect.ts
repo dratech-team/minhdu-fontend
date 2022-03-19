@@ -114,34 +114,50 @@ export class CustomerEffect {
   @Effect()
   orderDelivered$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivered),
-    switchMap(props => this.orderService.pagination(Object.assign(props.params, {status: 1})).pipe(
-      tap(res => {
-        if (props?.isPagination) {
-          this.customerStore.update(props.params.customerId, {
-            delivered: this.customerQuery.getEntity(props.params.customerId)?.delivered.concat(res.data)
-          });
-        } else {
-          this.customerStore.update(props.params.customerId, {delivered: res.data});
-        }
-        this.customerStore.update((state) => ({...state, deliveredLoading: false}));
-      })
-    ))
+    switchMap(props => {
+        this.customerStore.update(state => ({...state, deliveredLoading: true}))
+        return this.orderService.pagination(Object.assign(props.params, {status: 1})).pipe(
+          tap(res => {
+            if (res.data.length === 0) {
+              this.message.warning('Đã lấy hết đơn hàng đã giao')
+            }
+            if (props?.isPagination) {
+              this.customerStore.update(props.params.customerId, {
+                  delivered: this.customerQuery.getEntity(props.params.customerId)?.delivered.concat(res.data),
+                }
+              );
+            } else {
+              this.customerStore.update(props.params.customerId, {delivered: res.data});
+            }
+            this.customerStore.update((state) => ({...state, deliveredLoading: false}));
+          })
+        )
+      }
+    ), catchError((err) => throwError(err))
   );
 
   @Effect()
   orderDelivering$ = this.action$.pipe(
     ofType(CustomerActions.loadOrderDelivering),
-    switchMap(props => this.orderService.pagination(Object.assign(props.params, {status: 0})).pipe(
-      tap(res => {
-        if (props?.isPagination) {
-          this.customerStore.update(props.params.customerId, {
-            delivering: this.customerQuery.getEntity(props.params.customerId)?.delivering.concat(res.data)
-          });
-        } else {
-          this.customerStore.update(props.params.customerId, {delivering: res.data});
-        }
-        this.customerStore.update((state) => ({...state, deliveringLoading: false}));
-      })
-    ))
+    switchMap(props => {
+        this.customerStore.update((state) => ({...state, deliveringLoading: true}));
+        return this.orderService.pagination(Object.assign(props.params, {status: 0})).pipe(
+          tap(res => {
+            if (res.data.length === 0) {
+              this.message.warning('Đã lấy hết đơn hàng chưa giao')
+            }
+            if (props?.isPagination) {
+              this.customerStore.update(props.params.customerId, {
+                delivering: this.customerQuery.getEntity(props.params.customerId)?.delivering.concat(res.data)
+              });
+            } else {
+              this.customerStore.update(props.params.customerId, {delivering: res.data});
+            }
+            this.customerStore.update((state) => ({...state, deliveringLoading: false}));
+          })
+        )
+      }
+    ),
+    catchError(err => throwError(err))
   );
 }
