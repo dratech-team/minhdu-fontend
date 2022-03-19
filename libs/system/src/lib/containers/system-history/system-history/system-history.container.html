@@ -9,8 +9,11 @@
       <nz-table [nzData]="(systemHistory$|async)||[]"
                 #tableSystemHistory
                 [formGroup]='formGroup'
+                [nzLoading]="!(loaded$|async)"
                 nzSize="small"
-                [nzScroll]="{x:'2000px',y:'60vh'}"
+                [nzPageSize]="pageSizeTable"
+                (nzPageIndexChange)="onPagination($event)"
+                [nzScroll]="{x:'2000px',y:'55vh'}"
       >
         <thead>
         <tr>

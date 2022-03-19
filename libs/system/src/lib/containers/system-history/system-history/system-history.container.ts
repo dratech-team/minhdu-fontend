@@ -6,10 +6,15 @@ import { debounceTime, tap } from 'rxjs/operators';
 import {
   selectedSystemHistoryLoaded,
   selectedTotalSystemHistory,
-  selectorAllSystemHistory,
+  selectorAllSystemHistory, selectorSystemHistoryTotal,
 } from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
+import {RouteAction} from "../../../../../../../apps/sell/src/app/pages/route/+state/route.action";
+import {getSelectors} from "@minhdu-fontend/utils";
+import {
+  selectedCreateAtPayroll
+} from "../../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.selector";
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +36,7 @@ export class SystemHistoryContainer implements OnInit {
     ip: new FormControl(''),
     createdAt: new FormControl(''),
   });
+  pageSizeTable = 15
 
   constructor(private readonly store: Store) {}
 
@@ -50,21 +56,26 @@ export class SystemHistoryContainer implements OnInit {
         debounceTime(1000),
         tap((val) => {
           this.store.dispatch(
-            SystemHistoryActions.loadSystemHistory(this.systemHistory(val))
+            SystemHistoryActions.loadSystemHistory(this.mapSystemHistory(val))
           );
         })
       )
       .subscribe();
   }
 
-  onScroll() {
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value
+    const count =   getSelectors<number>(selectorSystemHistoryTotal, this.store)
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.store.dispatch(
+        SystemHistoryActions.loadMoreSystemHistory(this.mapSystemHistory(value))
+      );
+    }
     const val = this.formGroup.value;
-    this.store.dispatch(
-      SystemHistoryActions.loadMoreSystemHistory(this.systemHistory(val))
-    );
+
   }
 
-  systemHistory(val: any) {
+  mapSystemHistory(val: any) {
     return {
       take: this.pageSize,
       skip: this.pageIndexInit,
