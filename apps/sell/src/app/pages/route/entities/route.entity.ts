@@ -1,11 +1,11 @@
-import {Employee} from '@minhdu-fontend/data-models';
-import {OrderEntity} from '../../order/enitities/order.interface';
+import { Employee } from '@minhdu-fontend/data-models';
+import { OrderEntity } from '../../order/enitities/order.interface';
 
 export interface RouteEntity {
   readonly id: number,
   readonly name: string,
   readonly startedAt: Date,
-  endedAt: Date,
+  readonly  endedAt: Date,
   readonly driver: string,
   readonly employee: Employee,
   readonly orders: OrderEntity[],
@@ -14,6 +14,6 @@ export interface RouteEntity {
   readonly latitude: string,
   readonly longitude: string,
   isSelect?: boolean,
-  totalCommodityUniq: number,
-  expand: boolean
+  readonly totalCommodityUniq: number,
+  readonly expand: boolean
 }
