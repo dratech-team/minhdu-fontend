@@ -1,9 +1,9 @@
 ---
 name: Bug report HR
 about: Create a report to help us improve
-title: "[BUG] From Server - "
+title: ''
 labels: bug, HR
-assignees: uranussolutions
+assignees: giahieu123456
 
 ---
 
