@@ -263,7 +263,7 @@
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
+                    {{payroll.workday || 'Đang cập nhật'}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
