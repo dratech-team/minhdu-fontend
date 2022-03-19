@@ -7,8 +7,8 @@ export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
   added: boolean;
   total: number
-  readonly deliveredLoading: boolean;
-  readonly deliveringLoading: boolean;
+  deliveredLoading: boolean;
+  deliveringLoading: boolean;
 }
 
 const createInitState = () => ({
