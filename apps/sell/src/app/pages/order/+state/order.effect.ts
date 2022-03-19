@@ -68,7 +68,6 @@ export class OrderEffect {
           (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
         ).pipe(
           map((response) => {
-            console.log(response)
               this.orderStore.update(state => ({
                 ...state,
                 loading: false,
