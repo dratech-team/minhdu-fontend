@@ -58,8 +58,8 @@
 <!--            </mat-autocomplete>-->
           </th>
           <th width='3%'>
-            <div class='text-center'>Tháng</div>
-            <input class='form-control' type='month' formControlName='createdAt' min='2021-01'>
+            <div class='text-center'>Ngày tạo phiếu lương</div>
+            <input class='form-control' disabled>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
           <th width='3%'>
@@ -120,7 +120,7 @@
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
               <div>
-                {{payroll.createdAt | date:'yyyy-MM'}}
+                {{payroll.createdAt | date:'yyyy-MM-dd'}}
               </div>
             </th>
             <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'

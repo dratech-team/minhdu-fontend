@@ -1,6 +1,17 @@
 <div class='main-content'>
-  <div class='row h3 ml-3'>
-    {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
+  <div class='row h3 ml-3 d-flex' [formGroup]="formGroup">
+    <div>
+      {{selectedPayroll|transform:payrollConstant}} tháng
+    </div>
+    <input
+      *ngIf="selectedPayroll === filterTypeEnum.SEASONAL ||
+      selectedPayroll === filterTypeEnum.PAYROLL ||
+      selectedPayroll === filterTypeEnum.TIME_SHEET else createdAtPayroll"
+      type="month" class="form-control ml-2" style="width: 200px" formControlName="createdAt">
+    <ng-template #createdAtPayroll>
+      <div class="ml-2">{{createdAt|date: 'MM/yyyy'}}</div>
+    </ng-template>
+
   </div>
   <div style='width: fit-content' class='d-flex'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -118,8 +129,8 @@
                 <input class='form-control' type='search' matInput disabled>
               </th>
               <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-                <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
+                <input class='form-control text-center ' disabled>
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
@@ -251,7 +262,7 @@
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.createdAt|date:'yyyy-MM'}}
+                    {{payroll.createdAt|date:'yyyy-MM-dd'}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
