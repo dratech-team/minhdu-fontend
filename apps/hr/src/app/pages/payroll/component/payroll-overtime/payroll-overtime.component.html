@@ -95,14 +95,20 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
-        <input class='form-control' type='search' matInput [matAutocomplete]='templateOvertime'
-               formControlName='title'>
-        <mat-autocomplete #templateOvertime='matAutocomplete'>
-          <mat-option *ngFor='let template of templateOvertime$ | async' [value]='template.title'
-                      (onSelectionChange)='onSelectTemplateOvertime($event, template.title)'>
-            {{template.title}}
-          </mat-option>
-        </mat-autocomplete>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          style='width:100%'
+          formControlName='title'
+          nzPlaceHolder='Chọn loại tăng ca'
+        >
+          <nz-option
+            *ngFor='let template of templateOvertime$|async'
+            [nzLabel]='template'
+            [nzValue]='template'
+          >
+          </nz-option>
+        </nz-select>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>

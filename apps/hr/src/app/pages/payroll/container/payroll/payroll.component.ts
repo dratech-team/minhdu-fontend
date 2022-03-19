@@ -3,7 +3,7 @@ import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} fr
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Api, PayrollConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
@@ -137,13 +137,18 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
     private readonly categoryService: CategoryService,
-    private readonly positionService: PositionService
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
     this.role = window.localStorage.getItem('role')
-    this.loadInitPayroll();
+    this.activeRouter.queryParams.subscribe((val) => {
+      if (!val.titleOvertime) {
+        this.loadInitPayroll();
+      }
+    });
+
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(OrgchartActions.init());
 
@@ -224,7 +229,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
     });
 
-    this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+    this.formCtrlBranch.valueChanges.pipe().subscribe(branch => {
       if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }

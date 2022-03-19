@@ -44,6 +44,7 @@ import {
 import {DialogOvertimeComponent} from '../dialog-salary/dialog-overtime/dialog-overtime.component';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {PayrollService} from "../../service/payroll.service";
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -73,7 +74,12 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
-  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  templateOvertime$ = this.payrollService.getAllTempLate({
+    branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+    position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+    startedAt: this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd'),
+    endedAt: this.datePipe.transform(getLastDayInMonth(this.createdAt), 'yyyy-MM-dd'),
+  })
   positions$ = this.store.pipe(select(getAllPosition))
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
@@ -97,8 +103,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     searchType: new FormControl(SearchTypeEnum.CONTAINS)
   });
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
-
-
   constructor(
     private readonly message: NzMessageService,
     private readonly dialog: MatDialog,
@@ -108,12 +112,13 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     private readonly salaryService: SalaryService,
     private readonly activeRouter: ActivatedRoute,
     private readonly ref: ChangeDetectorRef,
+    private readonly payrollService: PayrollService,
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
-      this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+      this.formGroup.get('branch')?.setValue(changes.eventSearchBranch.currentValue)
     }
   }
 
@@ -123,31 +128,14 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       filterType: FilterTypeEnum.OVERTIME,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name|| ''
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || ''
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
-        this.formGroup.get('title')?.setValue(JSON.parse(JSON.stringify(val.titleOvertime)));
+        this.formGroup.get('title')?.setValue(val.titleOvertime);
         Object.assign(paramLoadInit, {title: val.titleOvertime});
       }
     });
-
-    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
-
-    this.templateOvertime$ = combineLatest([
-      this.formGroup.get('title')?.valueChanges.pipe(startWith('')) || of(''),
-      this.store.pipe(select(selectorAllTemplate))
-    ]).pipe(
-      map(([title, templateOvertimes]) => {
-        if (title) {
-          return templateOvertimes.filter((template) => {
-            return template.title.toLowerCase().includes(title?.toLowerCase());
-          });
-        } else {
-          return templateOvertimes;
-        }
-      })
-    );
 
     if (this.overtimeTitle) {
       Object.assign(paramLoadInit, {
@@ -216,6 +204,12 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
+      this.templateOvertime$ = this.payrollService.getAllTempLate({
+        branch: value.branch?.name || '',
+        position: value.position?.name || '',
+        startedAt: value.startedAt || '',
+        endedAt: value.endedAt || '',
+      })
       this.isEventSearch = true;
       this.store.dispatch(
         PayrollAction.updateStatePayroll({

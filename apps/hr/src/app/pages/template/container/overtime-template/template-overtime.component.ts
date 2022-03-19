@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Position} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
@@ -48,6 +48,8 @@ export class TemplateOvertimeComponent implements OnInit {
   positionsSelected: Position[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  itemContextMenu = ItemContextMenu
+  ;
 
   constructor(
     private readonly dialog: MatDialog,
