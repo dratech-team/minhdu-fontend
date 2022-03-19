@@ -60,40 +60,40 @@ export class OrderEffect {
         this.orderStore.update(state => ({
           ...state, loading: true
         }));
+        if (props.param?.orderType) {
+          Object.assign(props.param, { orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des' });
+        }
         return this.orderService.pagination(Object.assign(
           props.param,
           (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
         ).pipe(
           map((response) => {
-              this.orderStore.update(state => ({
-                ...state, loading: false
-              }));
+              const expanedAll = this.orderQuery.getValue().expandedAll;
 
-              if (response.data.length > 0) {
-                response.data.map((order: OrderEntity) => {
-                  order.expand = false;
-                  order.totalCommodity = getTotalCommodity(order.commodities);
-                  this.orderStore.update(state => ({
-                    ...state,
-                    total: response.total,
-                    commodityUniq: response.commodityUniq
-                  }));
+              this.orderStore.update(state => ({
+                ...state,
+                loading: false,
+                total: response.total,
+                totalCommodity: response.commodityUniq.reduce((x, y) => x + y.amount, 0),
+                commodityUniq: response.commodityUniq
+              }));
+              if (!response.data.length) {
+                this.snackBar.openFromComponent(SnackBarComponent, {
+                  duration: 2500,
+                  panelClass: ['background-snackbar'],
+                  data: { content: 'Đã lấy hết đơn hàng' }
                 });
               } else {
-                if (response.data.length === 0) {
-                  this.snackBar.openFromComponent(SnackBarComponent, {
-                    duration: 2500,
-                    panelClass: ['background-snackbar'],
-                    data: { content: 'Đã lấy hết đơn hàng' }
-                  });
+                const data = response.data.map((order: OrderEntity) => Object.assign(order, {
+                  expand: expanedAll,
+                  totalcommodity: order.totalCommodity = getTotalCommodity(order.commodities)
+                }));
+                if (props.isPagination) {
+                  this.orderStore.add(data);
+                } else {
+                  this.orderStore.set(data);
                 }
               }
-              if (props.isScroll) {
-                this.orderStore.add(response.data);
-              } else {
-                this.orderStore.set(response.data);
-              }
-
             }
           )
         );
@@ -171,6 +171,9 @@ export class OrderEffect {
       this.orderService.delete(props.id).pipe(
         map((_) => {
           this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
+          this.orderStore.update(state => ({
+            ...state, total: state.total ? state.total - 1 : state.total
+          }));
           this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))

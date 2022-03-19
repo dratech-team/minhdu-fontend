@@ -1,35 +1,38 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api } from '@minhdu-fontend/constants';
-import { SortRouteEnum } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, tap } from 'rxjs/operators';
-import { RouteAction } from '../../+state/route.action';
-import { RouteEntity } from '../../entities/route.entity';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { RouteQuery } from '../../+state/route.query';
-import { DatePipe } from '@angular/common';
-import { MatSort } from '@angular/material/sort';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, RadiosStatusRouteConstant} from '@minhdu-fontend/constants';
+import {SortRouteEnum} from '@minhdu-fontend/enums';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {RouteAction} from '../../+state/route.action';
+import {RouteEntity} from '../../entities/route.entity';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {RouteQuery} from '../../+state/route.query';
+import {DatePipe} from '@angular/common';
+import {MatSort} from '@angular/material/sort';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {OrderActions} from "../../../order/+state/order.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {RouteStore} from "../../+state/route.store";
+import {Sort} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
   pageSize = 30;
   pageIndexInit = 0;
   ItemContextMenu = ItemContextMenu;
   today = new Date().getTime();
-  routes: RouteEntity[] = [];
   sortRouteEnum = SortRouteEnum;
   formGroup = new FormGroup({
+    search: new FormControl(),
     startedAt: new FormControl(
       this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
     endedAt: new FormControl(
@@ -38,30 +41,29 @@ export class RouteComponent implements OnInit {
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
-    status: new FormControl('0')
+    status: new FormControl(-1)
   });
+  radios = RadiosStatusRouteConstant
+  expandAll = false;
+  pageSizeTable = 10;
+  valueSort?: Sort
 
   constructor(
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
+    private readonly routeStore: RouteStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly modal: NzModalService,
   ) {
   }
 
-  routes$ = this.routeQuery.selectAll();
+  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
+  total$ = this.routeQuery.select(state => state.total)
 
   ngOnInit() {
-    this.routes$.subscribe((val) => {
-      this.routes = JSON.parse(JSON.stringify(val));
-      this.routes.forEach((item) => {
-        if (item.endedAt) {
-          item.endedAt = new Date(item.endedAt);
-        }
-      });
-    });
     this.actions$.dispatch(RouteAction.loadAll({
         params: {
           take: this.pageSize,
@@ -75,35 +77,33 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteAction.loadAll({ params: this.mapRoute(val) }));
+          this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val)}));
         })
       )
       .subscribe();
   }
 
   add() {
-    this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content'
-    });
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: 'Cập nhật tuyến đường',
+      nzContent: RouteDialogComponent,
+      nzFooter: null
+    })
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(RouteAction.loadAll({ params: this.mapRoute(val), isScroll: true }));
-  }
-
-  mapRoute(val: RouteEntity, isScroll?: boolean) {
-    if (this.sort.active) {
-      Object.assign(val, {
-        orderBy: this.sort.active ? this.sort.active : '',
-        orderType: this.sort ? this.sort.direction : ''
-      });
+  mapRoute(val:any, isPagination?: boolean) {
+    if (this.valueSort?.orderType) {
+      Object.assign(val, this.valueSort)
+    }else{
+      delete val.orderType
+      delete val.orderBy
     }
     return Object.assign(val, {
-      skip: isScroll ? this.routeQuery.getCount() : 0,
+      skip: isPagination ? this.routeQuery.getCount() : 0,
       take: this.pageSize
-
     });
+    return val
   }
 
   deleteRoute($event: any) {
@@ -112,13 +112,12 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.actions$.dispatch(RouteAction.remove({ idRoute: $event.id }));
+        this.actions$.dispatch(RouteAction.remove({idRoute: $event.id}));
       }
     });
   }
 
   onEnd(event: RouteEntity) {
-    console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
@@ -131,14 +130,14 @@ export class RouteComponent implements OnInit {
       .subscribe((val) => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.update({ id: event.id, updates: { endedAt: val.day } })
+            RouteAction.update({id: event.id, updates: {endedAt: val.day}})
           );
         }
       });
   }
 
   detailRoute(id: number, isUpdate: boolean) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], { queryParams: { isUpdate } }).then();
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
   printRouter() {
@@ -168,4 +167,33 @@ export class RouteComponent implements OnInit {
     }));
   }
 
+  onPickStartedDay($event: any) {
+  }
+
+  onPickEndedAtDay($event: any) {
+  }
+
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value
+    const count = this.routeQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(RouteAction.loadAll({
+        params: this.mapRoute(value, true),
+        isPagination: true
+      }))
+    }
+  }
+
+  onExpandAll(routes: any) {
+    routes.forEach((route: RouteEntity) => route.expand = !this.expandAll)
+    this.routeStore.set(routes)
+    this.expandAll = !this.expandAll
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapRoute(this.formGroup.value)
+    }))
+  }
 }

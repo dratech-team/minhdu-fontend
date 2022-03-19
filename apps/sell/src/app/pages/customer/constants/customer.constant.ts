@@ -1,16 +1,16 @@
 import { CustomerType } from '@minhdu-fontend/enums';
 
-export const CustomerTypes = [
+export const CustomerConstant = [
   {
     name: 'Đại lý',
-    type: CustomerType.AGENCY
+    value: CustomerType.AGENCY
   },
   {
     name: 'Khách lẻ',
-    type: CustomerType.RETAIL
+    value: CustomerType.RETAIL
   },
   {
     name: 'Tất cả',
-    type: ''
+    value: ''
   }
 ];

@@ -263,15 +263,7 @@ table {
   width: 100%;
 }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
 
 .pointer {
   cursor: pointer;
@@ -321,6 +313,17 @@ input[type="search"] {
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
+.mat-typography{
+  background: #eee!important;
+}
 
+table td,
+table th {
+  text-align:center !important;
+}
+
+table thead tr th{
+  font-weight: 700 !important;
+}
 @import "scss/custom-scroll-table";
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";

@@ -21,7 +21,7 @@ export class PickRoutesService {
     const skip = this.routeQuery.getCount();
     return this.actions$.dispatch(RouteAction.loadAll({
       params: {take: 30, skip: this.routeQuery.getCount()},
-      isScroll: true
+      isPagination: true
     }));
   }
 

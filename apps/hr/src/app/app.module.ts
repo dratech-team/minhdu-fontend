@@ -39,6 +39,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
 import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
+import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';
 
 registerLocaleData(localeVi);
 
@@ -81,6 +82,7 @@ registerLocaleData(localeVi);
   declarations: [AppComponent, DefaultLayoutComponent],
   bootstrap: [AppComponent],
   providers: [
+    HashLocationStrategy,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
@@ -92,10 +94,10 @@ registerLocaleData(localeVi);
       multi: true
     },
     { provide: LOCALE_ID, useValue: 'vi-VN' },
-    HashLocationStrategy,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { disableClose: true, hasBackdrop: true } as MatDialogConfig },
-    { provide: NZ_CONFIG, useValue: { message: { nzMaxStack: 1 } } as NzConfig }
+    { provide: NZ_CONFIG, useValue: { message: { nzMaxStack: 1 } } as NzConfig },
+    {provide: NZ_I18N, useValue: vi_VN},
   ]
 })
 export class AppModule {

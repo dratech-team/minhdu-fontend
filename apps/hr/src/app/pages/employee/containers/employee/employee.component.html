@@ -12,14 +12,21 @@
         </mat-select>
       </div>
       <div class="ml-2" [formGroup]="formGroup">
-        <input class='form-control' type='search' matInput [matAutocomplete]='branch' placeholder="Chọn đơn vị" formControlName='branch'>
-        <mat-autocomplete #branch='matAutocomplete'>
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                      (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          style="width: 230px"
+          formControlName='branch'
+          nzPlaceHolder='Chọn đơn vị'
+          [compareWith]='compareFN'
+        >
+          <nz-option
+            *ngFor='let branch of branches$ | async'
+            [nzLabel]='branch.name'
+            [nzValue]='branch'
           >
-            {{branch.name}}
-          </mat-option>
-        </mat-autocomplete>
+          </nz-option>
+        </nz-select>
       </div>
       <div class="d-flex">
         <div style='width: fit-content'>
@@ -121,55 +128,77 @@
             </th>
             <th>
               <div mat-sort-header='{{sortEnum.POSITION}}' class='border-top text-center'>Chức vụ</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                     formControlName='position'>
-              <mat-autocomplete #position='matAutocomplete'>
-                <mat-option *ngFor='let position of positions$ | async'
-                            [value]='position.name' (click)='onSelectPosition(position.name)'
-                            (onSelectionChange)='onSelectPosition(position.name)'>
-                  {{position.name}}
-                </mat-option>
-              </mat-autocomplete>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='position'
+                nzPlaceHolder='Chọn chức vụ'
+                [compareWith]='compareFN'
+              >
+                <nz-option
+                  *ngFor='let position of positions$|async'
+                  [nzLabel]='position.name'
+                  [nzValue]='position'
+                >
+                </nz-option>
+              </nz-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>CMND / CCCD</div>
               <input type='search' (keypress)='checkInputNumber($event)' class='form-control text-center'
                      formControlName='identity'>
             </th>
-            <th width='5%'>
+            <th>
               <div class='border-top text-center'>Tỉnh / Thành phố</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='province'
-                     formControlName='province'>
-              <mat-autocomplete #province='matAutocomplete'>
-                <mat-option *ngFor='let province of provinces$ | async'
-                            [value]='province.name' (click)='onSelectProvince(province)'
-                            (onSelectionChange)='onSelectProvince(province)'>
-                  {{province.name}}
-                </mat-option>
-              </mat-autocomplete>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='province'
+                nzPlaceHolder='Chọn tỉnh thành'
+              >
+                <nz-option
+                  *ngFor='let province of provinces$|async'
+                  [nzLabel]='province.name'
+                  [nzValue]='province'
+                >
+                </nz-option>
+              </nz-select>
             </th>
             <th width='5%'>
               <div class='border-top text-center'>Quận / Huyện</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='district'
-                     formControlName='district'>
-              <mat-autocomplete #district='matAutocomplete'>
-                <mat-option *ngFor='let district of districts$ | async'
-                            [value]='district.name' (click)='onSelectDistrict(district)'
-                            (onSelectionChange)='onSelectDistrict(district)'>
-                  {{district.name}}
-                </mat-option>
-              </mat-autocomplete>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='district'
+                nzPlaceHolder='Chọn Quận/Huyện'
+              >
+                <nz-option
+                  *ngFor='let district of districts'
+                  [nzLabel]='district.name'
+                  [nzValue]='district'
+                >
+                </nz-option>
+              </nz-select>
             </th>
             <th width='7%'>
               <div class='border-top text-center'>Phường / Xã</div>
-              <input class='form-control' type='search' matInput [matAutocomplete]='ward' formControlName='ward'>
-              <mat-autocomplete #ward='matAutocomplete'>
-                <mat-option *ngFor='let ward of wards$ | async'
-                            [value]='ward.name' (click)='onSelectWard(ward.name)'
-                            (onSelectionChange)='onSelectWard(ward.name)'>
-                  {{ward.name}}
-                </mat-option>
-              </mat-autocomplete>
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                style='width:100%'
+                formControlName='ward'
+                nzPlaceHolder='Chọn Quận/Huyện'
+              >
+                <nz-option
+                  *ngFor='let ward of wards'
+                  [nzLabel]='ward.name'
+                  [nzValue]='ward'
+                >
+                </nz-option>
+              </nz-select>
             </th>
             <th width='12%'>
               <div class='border-top text-center'>Địa chỉ</div>

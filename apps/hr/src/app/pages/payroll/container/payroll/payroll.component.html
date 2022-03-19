@@ -9,14 +9,23 @@
       </mat-option>
     </mat-select>
     <div>
-      <div [formGroup]="formGroup">
-        <input class='form-control ml-2' type='search' matInput [matAutocomplete]='branch'
-               formControlName='branch' placeholder="Chọn đơn vị">
-        <mat-autocomplete #branch='matAutocomplete'>
-          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'>
-            {{branch.name}}
-          </mat-option>
-        </mat-autocomplete>
+      <div>
+        <nz-select
+          class="ml-2"
+          nzShowSearch
+          nzAllowClear
+          style='width:250px'
+          nzPlaceHolder='Chọn đơn vị'
+          [compareWith]='compareFN'
+          [formControl]="formCtrlBranch"
+        >
+          <nz-option
+            *ngFor='let branch of branches$ | async'
+            [nzLabel]='branch.name'
+            [nzValue]='branch'
+          >
+          </nz-option>
+        </nz-select>
       </div>
 
     </div>
@@ -74,16 +83,23 @@
                 <input class='form-control text-center ' type='search' formControlName='name'
                        placeholder='Trần Gia Hiệu'>
               </th>
-              <th style='width: 200px'>
+              <th style='width: 200px' [formGroup]="formGroup">
                 <div mat-sort-header="{{sortEnum.POSITION}}" class='title-profile'>Chức vụ</div>
-                <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                       formControlName='position'>
-                <mat-autocomplete #position='matAutocomplete'>
-                  <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-                              (onSelectionChange)='onSelectPosition(position.name)'>
-                    {{position.name}}
-                  </mat-option>
-                </mat-autocomplete>
+                <nz-select
+                  nzShowSearch
+                  nzAllowClear
+                  style='width:100%'
+                  formControlName='position'
+                  nzPlaceHolder='chọn chức vụ'
+                  [compareWith]="compareFN"
+                >
+                  <nz-option
+                    *ngFor='let position of positions$|async'
+                    [nzLabel]='position.name'
+                    [nzValue]='position'
+                  >
+                  </nz-option>
+                </nz-select>
               </th>
               <th style='width: 250px'>
                 <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
@@ -340,8 +356,8 @@
     <div *ngIf='selectedPayroll === filterTypeEnum.TIME_SHEET'>
       <app-payroll-time-sheet [formGroup]='formGroup' [daysInMonth]='daysInMonth' [loaded$]='loaded$'
                               [positions$]='positions$' [branches$]='branches$' [payroll$]='payroll$' [total$]='total$'
-                              (EventScroll)='onScroll()' (EventSelectPosition)='onSelectPosition($event)'
-                              (EventSelectBranch)='onSelectBranch($event)' (EventAddPayroll)='addPayroll($event)'
+                              (EventScroll)='onScroll()'
+                              (EventAddPayroll)='addPayroll($event)'
                               (EventReadPayroll)='updatePayroll($event)' (EventRestorePayroll)='restorePayroll($event)'
                               (EventSearchMonth)='selectMonth($event)' (EventDeletePayroll)='deletePayroll($event)'
                               (EventHistoryPayroll)='historyPayroll($event)'
@@ -351,6 +367,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME '>
       <minhdu-fontend-payroll-overtime [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
+                                       [eventSearchBranch]="searchBranchOvertime"
                                        [eventAddOvertime]='eventAddOvertime'
                                        [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
     </div>
@@ -364,24 +381,28 @@
                                        (EventReadPayroll)='updatePayroll($event)'
                                        (EventHistoryPayroll)='historyPayroll($event)'
                                        (EventRestorePayroll)='restorePayroll($event)'
-                                       (EventSelectBranch)='onSelectBranch($event)'
-                                       (EventSelectPosition)='onSelectPosition($event)'></minhdu-fontend-payroll-seasonal>
+      ></minhdu-fontend-payroll-seasonal>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
-      <minhdu-fontend-payroll-basic [eventExportBasic]='eventExportBasic'></minhdu-fontend-payroll-basic>
+      <minhdu-fontend-payroll-basic
+        [eventSearchBranch]="searchBranchBasic"
+        [eventExportBasic]='eventExportBasic'
+      ></minhdu-fontend-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
-      <app-payroll-stay [eventExportStay]='eventExportStay'></app-payroll-stay>
+      <app-payroll-stay [eventExportStay]='eventExportStay' [eventSearchBranch]="searchBranchStay"></app-payroll-stay>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance [createdAt]='this.createdAt' [allowanceTitle]='allowanceTitle'
                              [eventAddAllowance]='eventAddAllowance'
+                             [eventSearchBranch]="searchBranchAllowance"
                              [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent [absentTitle]='absentTitle' [createdAt]='this.createdAt' [eventAddAbsent]='eventAddAbsent'
+                          [eventSearchBranch]="searchBranchAbsent"
                           [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
     </div>
   </div>

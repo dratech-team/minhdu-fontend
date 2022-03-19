@@ -1,64 +1,61 @@
-<div class='fixTableHead mt-3' style='width: 100%;
-         max-height: 32vh;' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
-  [infiniteScrollThrottle]='100' [scrollWindow]='false' (scrolled)='onScroll()'>
-  <table>
+<div>
+  <nz-table #tablePaymentHistory
+            [nzData]="paymentHistories$|async"
+            [nzScroll]="{ y: '300px'}"
+            nzSize='middle'
+  >
     <thead [formGroup]='formGroup'>
-      <tr>
-        <th>
-          <div>Ngày Thanh toán</div>
-          <input formControlName='paidAt' class='form-control ' type='date'>
-        </th>
-        <th>
-          <div>Số tiền thanh toán</div>
-          <input [disabled]='true' type='number'>
-        </th>
-        <th>
-          <div>Đơn vị</div>
-          <input [disabled]='true' type='number'>
-        </th>
-        <th>
-          <div>Loại thanh toán</div>
-          <input [disabled]='true' type='number'>
-        </th>
-        <th>
-          <div>Chú thích</div>
-          <input [disabled]='true' type='number'>
-        </th>
-      </tr>
+    <tr>
+      <th>
+        <div>Ngày Thanh toán</div>
+        <input formControlName='paidAt' nz-input type='date'>
+      </th>
+      <th>
+        <div>Số tiền thanh toán</div>
+        <input [disabled]='true' nz-input type='number'>
+      </th>
+      <th>
+        <div>Đơn vị</div>
+        <input [disabled]='true' nz-input type='number'>
+      </th>
+      <th>
+        <div>Loại thanh toán</div>
+        <input [disabled]='true' nz-input type='number'>
+      </th>
+      <th>
+        <div>Chú thích</div>
+        <input [disabled]='true' nz-input type='number'>
+      </th>
+    </tr>
     </thead>
-    <tbody *ngIf='(paymentHistories$|async) as paymentHistories'>
-      <tr class='pointer' *ngFor='let paymentHistory of paymentHistories' (click)='updatePayment(paymentHistory)'
-        (contextmenu)='child.onContextMenu($event,paymentHistory)'>
-        <th>
+    <tbody>
+    <ng-template ngFor let-paymentHistory [ngForOf]="tablePaymentHistory.data">
+      <tr class='pointer' (click)='updatePayment(paymentHistory)'
+          (contextmenu)='child.onContextMenu($event,paymentHistory)'>
+        <td>
           {{paymentHistory?.paidAt | date: 'dd/MM/yyyy'}}
-        </th>
-        <th>
+        </td>
+        <td>
           {{paymentHistory.total|number:'1.0-0'|notEmpty:'0'}}
-        </th>
-        <th>
+        </td>
+        <td>
           Việt nam đồng
-        </th>
-        <th *ngIf='paymentHistory?.payType === payType.CASH'>
+        </td>
+        <td *ngIf='paymentHistory?.payType === payType.CASH'>
           Tiền mặt
-        </th>
-        <th *ngIf='paymentHistory?.payType === payType.TRANSFER'>
+        </td>
+        <td *ngIf='paymentHistory?.payType === payType.TRANSFER'>
           Chuyển khoản
-        </th>
-        <th>
+        </td>
+        <td>
           {{paymentHistory?.note }}
-        </th>
-      </tr>
-      <tr *ngIf='!paymentHistories || paymentHistories.length === 0 ' style='height: 20vh'>
-        <td colspan='5' class='font-xl font-weight-bold position-relative '>
-          <span style='position: absolute; top: 40%; left: 40%'>
-            Hiện chưa có lịch sử thanh toán nào!
-          </span>
         </td>
       </tr>
+    </ng-template>
     </tbody>
-  </table>
+  </nz-table>
 </div>
 <app-mouse-right (onDel)='deletePayment($event.id)' (onDetail)='updatePayment($event)' #child
-  [items]='[pageTypeEnum.PERMANENTLY]'>
+                 [items]='[pageTypeEnum.PERMANENTLY]'>
 
 </app-mouse-right>

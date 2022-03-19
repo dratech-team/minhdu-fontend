@@ -17,6 +17,7 @@ import {RouteQuery} from '../../+state/route.query';
 import {CancelEnum} from "../../enums/cancel.enum";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {OrderActions} from "../../../order/+state/order.actions";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -32,7 +33,8 @@ export class DetailRouteComponent implements OnInit {
     private readonly routeQuery: RouteQuery,
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modal: NzModalService
   ) {
   }
 
@@ -55,10 +57,15 @@ export class DetailRouteComponent implements OnInit {
   }
 
   updateRoute(route: RouteEntity, selectOrder?: boolean) {
-    this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content',
-      data: {route: route, selectOrder: selectOrder, isUpdate: true}
-    });
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: 'Cập nhật tuyến đường',
+      nzContent: RouteDialogComponent,
+      nzComponentParams: {
+        data: {route: route, selectOrder: selectOrder, isUpdate: true}
+      },
+      nzFooter: null
+    })
   }
 
   get routeId(): number {

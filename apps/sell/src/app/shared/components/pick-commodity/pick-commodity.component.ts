@@ -10,12 +10,14 @@ import {CommodityDialogComponent} from '../../../pages/commodity/component/commo
 import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-pick-commodity',
   templateUrl: 'pick-commodity.component.html'
 })
 export class PickCommodityComponent implements OnInit {
+  @Input() data: any
   commodities: CommodityEntity[] = [];
   commodityUnit = CommodityUnit;
   @Input() commoditiesSelected: CommodityEntity[] = [];
@@ -39,8 +41,8 @@ export class PickCommodityComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly commodityQuery: CommodityQuery,
     private readonly dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<PickCommodityComponent>,
+    private readonly modal: NzModalService,
+    private modalRef: NzModalRef,
   ) {
   }
 
@@ -94,9 +96,12 @@ export class PickCommodityComponent implements OnInit {
   }
 
   addCommodity() {
-    this.dialog.open(CommodityDialogComponent, {width: '40%'}).afterClosed().subscribe(val => {
-      console.log('====', val);
-    });
+    this.modal.create({
+      nzTitle: 'Thêm hàngh hoá',
+      nzContent: CommodityDialogComponent,
+      nzFooter: null,
+    }).afterClose.subscribe((value => {
+    }))
   }
 
   deleteCommodity($event: any) {
@@ -111,10 +116,14 @@ export class PickCommodityComponent implements OnInit {
   }
 
   updateCommodity(commodity: CommodityEntity) {
-    this.dialog.open(CommodityDialogComponent, {
-      width: '40%',
-      data: {commodity, isUpdate: true}
-    });
+    this.modal.create({
+      nzTitle: 'Cập nhật hàngh hoá',
+      nzContent: CommodityDialogComponent,
+      nzComponentParams: {
+        data: {commodity, isUpdate: true}
+      },
+      nzFooter: null,
+    })
   }
 
   updateAllSelect(commodity: CommodityEntity) {
@@ -150,7 +159,7 @@ export class PickCommodityComponent implements OnInit {
 
   closeDialog() {
     this.actions$.dispatch(CommodityAction.resetStateCommodityNewAdd());
-    this.dialogRef.close(this.commoditiesSelected);
+    this.modalRef.close(this.commoditiesSelected);
   }
 
   checkedCommodity(commodity: CommodityEntity) {

@@ -24,33 +24,45 @@ import {OrderEffect} from "../order/+state/order.effect";
 import {CustomerEffect} from "../customer/+state/customer.effect";
 import {CommodityEffect} from "../commodity/+state/commodity.effect";
 import {MatSortModule} from "@angular/material/sort";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 @NgModule({
-    imports: [
-        AkitaNgEffectsModule.forFeature([
-            OrderEffect,
-            CustomerEffect,
-            CommodityEffect,
-            RouteEffect
-        ]),
-        ComponentsModule,
-        RouteRoutingModule,
-        MatDialogModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatInputModule,
-        InfiniteScrollModule,
-        CommonModule,
-        MatRadioModule,
-        MatTabsModule,
-        MatCheckboxModule,
-        FormsModule,
-        SharedModule,
-        NgxSkeletonLoaderModule.forRoot(),
-        MatDatepickerModule,
-        NzTableModule,
-        MatSortModule
-    ],
+  imports: [
+    AkitaNgEffectsModule.forFeature([
+      OrderEffect,
+      CustomerEffect,
+      CommodityEffect,
+      RouteEffect
+    ]),
+    ComponentsModule,
+    RouteRoutingModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    FormsModule,
+    SharedModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    MatDatepickerModule,
+    NzTableModule,
+    MatSortModule,
+    NzCollapseModule,
+    NzRadioModule,
+    NzModalModule,
+    NzStepsModule,
+    NzInputModule,
+    NzButtonModule
+  ],
   declarations: [
     RouteComponent,
     DetailRouteComponent,

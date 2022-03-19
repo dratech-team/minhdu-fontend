@@ -3,7 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Position} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
@@ -48,6 +48,8 @@ export class TemplateOvertimeComponent implements OnInit {
   positionsSelected: Position[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  itemContextMenu = ItemContextMenu
+  ;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -123,7 +125,7 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   template(val: any) {
-    return {
+    const result = {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
@@ -133,6 +135,10 @@ export class TemplateOvertimeComponent implements OnInit {
       branch: val.branch,
       positionIds: this.positionsSelected.map((val) => val.id)
     };
+    if(!val.unit){
+      delete result.unit
+    }
+    return result
   }
 
   onSelectBranch(branchName: string) {
@@ -183,15 +189,16 @@ export class TemplateOvertimeComponent implements OnInit {
     if (position) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          position: position.name,
+          position: position,
           filter: FilterTypeEnum.OVERTIME
         })
       );
     }
-    if(template?.branch){
+    if (template?.branch) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          branch: template.branch.name
+          branch: template.branch,
+          filter: FilterTypeEnum.OVERTIME
         })
       );
     }

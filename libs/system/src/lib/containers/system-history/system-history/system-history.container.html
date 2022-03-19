@@ -1,90 +1,84 @@
 <div style='min-height: 80vh'>
-  <ngx-skeleton-loader *ngIf='!(loaded$ | async) else systemHistory' count='10' appearance='line'></ngx-skeleton-loader>
-  <ng-template #systemHistory>
-    <div style='width: 96%; min-width: 1300px' class='mx-auto'>
-      <div class=' h3 mt-3 ml-3'>Lịch sử hệ thống</div>
-      <div class='mt-3 ml-3 font-weight-bold'>
-        Tổng: {{total$|async}}
-      </div>
-      <div class='fixTableHead my-2 mx-auto '
-           style="min-width: 1100px"
-           infiniteScroll
-           [infiniteScrollDistance]='0.1'
-           [infiniteScrollThrottle]='10'
-           [scrollWindow]='false'
-           [alwaysCallback]='true'
-           (scrolled)='onScroll()'
-           *ngIf='(loaded$ | async)'
+  <div style='width: 96%' class='mx-auto'>
+    <div class=' h3 mt-3 ml-3'>Lịch sử hệ thống</div>
+    <div class='mt-3 ml-3 font-weight-bold'>
+      Tổng: {{total$|async}}
+    </div>
+    <div
+    >
+      <nz-table [nzData]="(systemHistory$|async)||[]"
+                #tableSystemHistory
+                [formGroup]='formGroup'
+                [nzLoading]="!(loaded$|async)"
+                nzSize="small"
+                [nzPageSize]="pageSizeTable"
+                (nzPageIndexChange)="onPagination($event)"
+                [nzScroll]="{x:'2000px',y:'55vh'}"
       >
-        <table [formGroup]='formGroup' class='mt-3'>
-          <thead>
-          <tr>
-            <th style='width:50px; min-width: 50px '>
-              <div class=' border-top border-left font-weight-bold'>stt</div>
-              <input disabled>
-            </th>
-            <th style='width: 10%'>
-              <div class=' border-top border-left font-weight-bold'>Ứng dụng</div>
-              <select class='select border' style='width: 100%' matNativeControl required formControlName='appName'>
-                <option *ngFor='let item of apps' [value]='item.app'>{{item.name}}</option>
-              </select>
-            </th>
-            <th style='width: 10%'>
-              <div class=' border-top font-weight-bold'>Tài khoản</div>
-              <input class='border text-center ' placeholder='Nhập tên đăng nhập' type='search' formControlName='name'>
-            </th>
-            <th style='width: 10%'>
-              <div class='font-weight-bold border-top'>Hành động</div>
-              <select class='select border-top' style='width: 100%' matNativeControl required
-                      formControlName='activity'>
-                <option *ngFor='let item of methods ' [value]='item.method'>{{item.name}}</option>
-              </select>
-            </th>
-            <th>
-              <div class='border-top text-center'>mô tả</div>
-              <input type='text' disabled>
-            </th>
-            <th style='width: 10%'>
-              <div class='border-top text-center'>Địa chỉ máy</div>
-              <input type='search' class='border' formControlName='ip'>
-            </th>
-            <th style='width: 10%'>
-              <div class='border-top text-center'>Ngày</div>
-              <input class='border' type='date' formControlName='createdAt'>
-            </th>
-          </tr>
-          </thead>
-          <tbody *ngIf='(systemHistory$| async) as systemHistories'>
-          <tr *ngFor='let systemHistory of systemHistories; let i = index'>
-            <th class='pointer'>
+        <thead>
+        <tr>
+          <th nzLeft nzWidth="60px">
+            <div class='font-weight-bold'>stt</div>
+            <input nz-input disabled>
+          </th>
+          <th nzLeft nzWidth="200px">
+            <div>Ứng dụng</div>
+            <nz-select style='width: 100%' formControlName='appName'>
+              <nz-option *ngFor='let item of apps' [nzValue]="item.app" [nzLabel]="item.name"></nz-option>
+            </nz-select>
+          </th>
+          <th nzLeft nzWidth="200px">
+            <div class='font-weight-bold'>Tài khoản</div>
+            <input nz-input placeholder='Nhập tên đăng nhập' type='search' formControlName='name'>
+          </th>
+          <th nzWidth="200px">
+            <div class='font-weight-bold'>Hành động</div>
+            <nz-select style="width: 100%" formControlName='activity'>
+              <nz-option *ngFor='let item of methods ' [nzValue]="item.method" [nzLabel]="item.name"></nz-option>
+            </nz-select>
+          </th>
+          <th>
+            <div class='text-center'>mô tả</div>
+            <input nz-input type='text' disabled>
+          </th>
+          <th nzWidth="200px">
+            <div class='text-center'>Địa chỉ máy</div>
+            <input nz-input type='search' formControlName='ip'>
+          </th>
+          <th nzWidth="200px">
+            <div class='text-center'>Ngày</div>
+            <input nz-input type='date' formControlName='createdAt'>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-systemHistory [ngForOf]="tableSystemHistory.data" let-i='index'>
+          <tr class="pointer">
+            <td nzLeft class="text-center">
               {{i + 1}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td nzLeft class="text-center">
               {{systemHistory?.appName ? (systemHistory.appName |transformApp:apps) : 'Chưa xác định'}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td nzLeft class="text-center">
               {{systemHistory.name}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class="text-center">
               {{systemHistory.activity|transformMethod: methods}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td>
               {{systemHistory.description}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class="text-center">
               {{systemHistory.ip}}
-            </th>
-            <th class='pointer'>
+            </td>
+            <td class="text-center">
               {{systemHistory.createdAt|date:'h:mm:ss a, dd-MM-yyyy'}}
-            </th>
-          </tr>
-          <tr *ngIf='systemHistories.length === 0' style='height: 50vh'>
-            <td colspan='7' class='text-center check-content font-weight-bold font-xl '>Hiện không có tài khoản nào
             </td>
           </tr>
-          </tbody>
-        </table>
-      </div>
+        </ng-template>
+        </tbody>
+      </nz-table>
     </div>
-  </ng-template>
+  </div>
 </div>

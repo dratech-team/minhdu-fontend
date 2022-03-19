@@ -1,14 +1,14 @@
-export const PotentialTypes = [
+export const PotentialsConstant = [
   {
     name: 'Tìm năng',
-    type: 1
+    value: 1
   },
   {
     name: 'Không tìm năng',
-    type: 0
+    value: 0
   },
   {
     name: 'Tất cả',
-    type: 3
+    value: -1
   }
 ];

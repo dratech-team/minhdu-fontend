@@ -81,7 +81,7 @@ export class AddHolidayComponent implements OnInit {
       return;
     }
     if (this.positionSelected.length === 0) {
-      return this.snackBar.open('chưa chọn chức vụ', '', {duration: 2000});
+      return this.snackBar.open('Chưa chọn chức vụ', '', {duration: 2000});
     }
     if (this.positions.value) {
      return  this.snackBar.open('Chức vụ phải chọn không đqược nhập', '', {duration: 1500})

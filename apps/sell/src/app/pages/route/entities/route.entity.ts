@@ -1,5 +1,5 @@
-import { Employee } from '@minhdu-fontend/data-models';
-import { OrderEntity } from '../../order/enitities/order.interface';
+import {Employee} from '@minhdu-fontend/data-models';
+import {OrderEntity} from '../../order/enitities/order.interface';
 
 export interface RouteEntity {
   readonly id: number,
@@ -15,4 +15,5 @@ export interface RouteEntity {
   readonly longitude: string,
   isSelect?: boolean,
   totalCommodityUniq: number,
+  expand: boolean
 }

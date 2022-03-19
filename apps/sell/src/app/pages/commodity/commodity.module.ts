@@ -21,24 +21,26 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    CommodityRoutingModule,
-    AkitaNgEffectsModule.forFeature([CommodityEffect]),
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    FormsModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    MatAutocompleteModule
-  ],
+    imports: [
+        ComponentsModule,
+        CommodityRoutingModule,
+        AkitaNgEffectsModule.forFeature([CommodityEffect]),
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        FormsModule,
+        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+        MatAutocompleteModule,
+        NzButtonModule
+    ],
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,

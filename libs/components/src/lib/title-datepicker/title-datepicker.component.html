@@ -1,0 +1,10 @@
+<div class="d-flex">
+  <div class="mx-2 " *ngFor="let item of optionDataPicker">
+    <div class="d-flex flex-column">
+      <div class=" font-lg" style="font-weight: 500">{{item.title}}</div>
+      <div class="my-1" *ngFor="let child of item.children " (click)="onSubmit(child)">
+        <span class="ml-3 pointer " style="color: #40a9ff; font-size: 15px ">{{child.title}}</span>
+      </div>
+    </div>
+  </div>
+</div>

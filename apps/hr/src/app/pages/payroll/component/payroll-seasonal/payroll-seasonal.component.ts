@@ -32,7 +32,6 @@ export class PayrollSeasonalComponent implements OnInit {
   @Output() EventReadPayroll = new EventEmitter<any>();
   @Output() EventUpdateConfirm = new EventEmitter<any>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
-  @Output() EventSelectPosition = new EventEmitter<string>();
   @Output() EventSelectBranch = new EventEmitter<string>();
   @Output() EventScroll = new EventEmitter<any>();
 
@@ -42,6 +41,7 @@ export class PayrollSeasonalComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly snackbar: MatSnackBar,
@@ -59,7 +59,7 @@ export class PayrollSeasonalComponent implements OnInit {
         const payrollSeasonal = {
           code: value.code || '',
           name: value.name,
-          position: value.position,
+          position: value.position?.name||'',
           branch: value.branch,
           exportType: FilterTypeEnum.SEASONAL,
           paidAt: value.paidAt,
@@ -96,10 +96,6 @@ export class PayrollSeasonalComponent implements OnInit {
         this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
       }
     });
-  }
-
-  onSelectPosition(positionName: string) {
-    this.EventSelectPosition.emit(positionName);
   }
 
   onSelectBranch(branchName: string) {

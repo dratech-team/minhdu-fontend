@@ -15,7 +15,9 @@ export const Api = {
       PAYSLIP: 'payslip',
       BRANCH_ALLOWANCE: 'branch/allowance',
       GENERATE_HOLIDAY: 'generate-holiday',
-      ITEMS_EXPORT: 'payroll/export/items'
+      ITEMS_EXPORT: 'payroll/export/items',
+      TEMPLATE_OVERTIME: 'payroll/overtime/template'
+
     },
     EMPLOYEE: {
       EMPLOYEE: 'employee',
@@ -27,7 +29,7 @@ export const Api = {
       DEPARTMENT: 'department',
       EMPLOYEE_EXPORT: 'payroll/export/employee',
       CATEGORY: 'category',
-      SORT_STT:'employee/sort/stt'
+      SORT_STT: 'employee/sort/stt'
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',

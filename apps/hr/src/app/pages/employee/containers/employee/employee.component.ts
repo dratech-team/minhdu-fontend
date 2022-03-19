@@ -7,10 +7,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { ActivatedRoute, Router } from '@angular/router';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   EmployeeAction,
   selectEmployeeAdding,
@@ -28,26 +28,27 @@ import {
   SearchEmployeeType,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { select, Store } from '@ngrx/store';
-import { catchError, debounceTime, map, startWith, tap } from 'rxjs/operators';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { DeleteEmployeeComponent } from '../../components/dialog-delete-employee/delete-employee.component';
-import { Api, EmployeeConstant } from '@minhdu-fontend/constants';
-import { ProvinceAction, selectAllProvince } from '@minhdu-fontend/location';
-import { Observable, of, Subject, throwError } from 'rxjs';
-import { Category, District, Employee, Province, Ward } from '@minhdu-fontend/data-models';
-import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
-import { DialogExportComponent } from '@minhdu-fontend/components';
-import { DialogCategoryComponent } from '../../components/category/dialog-category.component';
-import { CategoryService } from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { EmployeeService } from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
-import { MatSort, Sort } from '@angular/material/sort';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { AddEmployeeComponent } from '../../components/employee/add-employee.component';
-import { Role } from '../../../../../../../../libs/enums/hr/role.enum';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {select, Store} from '@ngrx/store';
+import {catchError, debounceTime, map, startWith, tap} from 'rxjs/operators';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
+import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
+import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
+import {Observable, of, Subject, throwError} from 'rxjs';
+import {Category, District, Employee, Position, Province, Ward} from '@minhdu-fontend/data-models';
+import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
+import {DialogExportComponent} from '@minhdu-fontend/components';
+import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
+import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {EmployeeService} from '../../../../../../../../libs/employee/src/lib/+state/service/employee.service';
+import {MatSort, Sort} from '@angular/material/sort';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
+import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
+import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -57,22 +58,22 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
   @ViewChild(MatSort) sort!: MatSort;
 
-  districts$!: Observable<District[]>;
-  wards$!: Observable<Ward[]>;
+  districts: District[] = []
+  wards: Ward[] = []
 
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
   loaded$ = this.store.pipe(select(selectEmployeeLoaded));
   adding$ = this.store.pipe(select(selectEmployeeAdding));
-  positions$ = this.store.pipe(select(getAllPosition));
+  positions$ = this.store.pipe(select(getAllPosition))
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.categories$ = this.categoryService.getAll({ branch: branches[0].name });
-      this.formGroup.get('branch')?.setValue(branches[0].name, { emitEvent: false });
+      this.categories$ = this.categoryService.getAll({branchId: branches[0].name});
+      this.formGroup.get('branch')?.setValue(branches[0].name, {emitEvent: false});
     }
     return branches;
   }));
-  provinces$ = this.store.pipe(select(selectAllProvince));
+  provinces$ = this.provinceService.getAll()
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
@@ -86,8 +87,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   employeeContain = EmployeeConstant;
   employeeType = EmployeeType;
   isLeft = false;
-  branchName = '';
-  positionName = '';
   eventScrollX = new Subject<any>();
   categories$ = new Observable<Category[]>();
   employees: Employee[] = [];
@@ -106,10 +105,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     gender: new FormControl(''),
     // workedAt: new FormControl(''),
     flatSalary: new FormControl('-1'),
-    position: new FormControl(this.positionName),
-    branch: new FormControl(this.branchName),
+    position: new FormControl(''),
+    branch: new FormControl(''),
     employeeType: new FormControl(EmployeeType.EMPLOYEE_FULL_TIME)
   });
+
+  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
     private readonly dialog: MatDialog,
@@ -121,7 +122,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly employeeService: EmployeeService,
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly provinceService: ProvinceService,
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -134,15 +136,13 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.role = window.localStorage.getItem('role');
-    this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
       if (val.branch) {
-        this.formGroup.get('branch')?.setValue(val.branch, { emitEvent: false });
-        this.branchName = val.branch;
+        this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
+        this.categories$ = this.categoryService.getAll({branchId: JSON.parse(val.branch).id})
       }
       if (val.position) {
-        this.formGroup.get('position')?.setValue(val.position, { emitEvent: false });
-        this.positionName = val.position;
+        this.formGroup.get('position')?.setValue(JSON.parse(val.position), {emitEvent: false});
       }
     });
     this.store.dispatch(
@@ -151,19 +151,18 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
           take: this.pageSize,
           skip: this.pageIndexInit,
           isLeft: this.isLeft,
-          branch: this.branchName,
-          position: this.positionName,
+          branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
+          position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
           employeeType: EmployeeType.EMPLOYEE_FULL_TIME
         }
       })
     );
-    this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1500)
       ).subscribe(val => {
-      this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(val) }));
+      this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(val)}));
     });
 
     this.employeeControl.valueChanges.subscribe(val => {
@@ -171,37 +170,22 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         case EmployeeType.EMPLOYEE_LEFT_AT:
           this.isLeft = true;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft }
+            employee: {take: this.pageSize, skip: this.pageIndexInit, isLeft: this.isLeft}
           }));
           break;
         case EmployeeType.EMPLOYEE_SEASONAL:
           this.isLeft = false;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit }
+            employee: {take: this.pageSize, skip: this.pageIndexInit}
           }));
           break;
         default:
           this.isLeft = false;
           this.store.dispatch(EmployeeAction.loadInit({
-            employee: { take: this.pageSize, skip: this.pageIndexInit }
+            employee: {take: this.pageSize, skip: this.pageIndexInit}
           }));
       }
     });
-
-    this.positions$ = searchAutocomplete(
-      this.formGroup.get('position')?.valueChanges.pipe(startWith('')) || of(''),
-      this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
-
-    this.provinces$ = searchAutocomplete(
-      this.formGroup.get('province')?.valueChanges.pipe(startWith('')) || of(''),
-      this.provinces$
-    );
 
     this.eventScrollX.pipe(
       debounceTime(200)
@@ -219,8 +203,21 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       }
     });
 
-    this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
-      this.categories$ = this.categoryService.getAll({ branch: branch });
+    this.formGroup.get('branch')?.valueChanges.subscribe(branch => {
+      if (branch) {
+        this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
+      }
+      this.categories$ = this.categoryService.getAll({branch: branch.name});
+    });
+
+    this.formGroup.get('province')?.valueChanges.subscribe(province => {
+      this.formGroup.get('district')?.setValue('')
+      this.formGroup.get('ward')?.setValue('')
+      this.districts = province?.districts || []
+    });
+    this.formGroup.get('district')?.valueChanges.subscribe(district => {
+      this.formGroup.get('ward')?.setValue('')
+      this.wards = district?.wards || []
     });
   }
 
@@ -238,7 +235,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   delete(employeeId: any): void {
     this.dialog.open(DeleteEmployeeComponent, {
       width: 'fit-content',
-      data: { employee: employeeId, permanentlyDeleted: this.isLeft }
+      data: {employee: employeeId, permanentlyDeleted: this.isLeft}
     }).afterClosed().subscribe(() => {
       this.store.dispatch(
         EmployeeAction.loadInit({
@@ -246,8 +243,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
             take: this.pageSize,
             skip: this.pageIndexInit,
             isLeft: this.isLeft,
-            branch: this.branchName,
-            position: this.positionName,
+            branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
+            position: this.formGroup.value.position ? this.formGroup.value.position.name : '',
             employeeType: EmployeeType.EMPLOYEE_FULL_TIME
           }
         })
@@ -268,12 +265,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       phone: val.phone,
       identity: val.identity,
       address: val.address,
-      province: val.province,
-      district: val.district,
-      ward: val.ward,
+      province: val.province?.name || '',
+      district: val.district?.name || '',
+      ward: val.ward?.name || '',
       gender: val.gender,
-      position: val.position,
-      branch: val.branch,
+      position: val.position ? val.position.name : '',
+      branch: val.branch ? val.branch.name : '',
       // workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
@@ -295,43 +292,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onSelectPosition(positionName: string) {
-    this.formGroup.get('position')?.patchValue(positionName);
-  }
-
-  onSelectBranch(branchName: string) {
-    this.formGroup.get('branch')?.patchValue(branchName);
-  }
-
-  onSelectProvince(province: Province) {
-    this.districts$ = new Observable(sub => {
-      sub.next(province.districts);
-    });
-    this.districts$ = searchAutocomplete(
-      this.formGroup.get('district')?.valueChanges.pipe(startWith('')) || of(''),
-      this.districts$
-    );
-    this.formGroup.get('province')?.patchValue(province.name);
-  }
-
-  onSelectDistrict(district: District) {
-    this.wards$ = new Observable(sub => {
-      sub.next(district.wards);
-    });
-    this.wards$ = searchAutocomplete(
-      this.formGroup.get('ward')?.valueChanges.pipe(startWith('')) || of(''),
-      this.wards$
-    );
-    this.formGroup.get('district')?.patchValue(district.name);
-  }
-
-  onSelectWard(wardName: string) {
-    this.formGroup.get('ward')?.patchValue(wardName);
-  }
-
   onScroll() {
     const val = this.formGroup.value;
-    this.store.dispatch(EmployeeAction.loadMoreEmployees({ employee: this.employee(val) }));
+    this.store.dispatch(EmployeeAction.loadMoreEmployees({employee: this.employee(val)}));
   }
 
   readAndUpdate($event: any, isUpdate?: boolean): void {
@@ -366,8 +329,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       district: val.district,
       ward: val.ward,
       gender: val.gender,
-      position: val.position,
-      branch: val.branch,
+      position: val.position ? val.position.name : '',
+      branch: val.branch ? val.branch.name : '',
       workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
@@ -375,8 +338,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         val.flatSalary === this.flatSalary.FLAT_SALARY
           ? this.convertBoolean.TRUE
           : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-          ? this.convertBoolean.FALSE
-          : val.flatSalary,
+            ? this.convertBoolean.FALSE
+            : val.flatSalary,
       orderBy: this.sort ? this.sort.active : '',
       orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
     };
@@ -394,20 +357,20 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   onRestore($event: any) {
     this.dialog.open(DeleteEmployeeComponent, {
       width: '300px',
-      data: { employee: $event, leftAt: true }
+      data: {employee: $event, leftAt: true}
     });
   }
 
   addCategory() {
-    this.dialog.open(DialogCategoryComponent, { width: 'fit-content' }).afterClosed().subscribe(() => {
+    this.dialog.open(DialogCategoryComponent, {width: 'fit-content'}).afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
     });
   }
 
   onDrop(event: CdkDragDrop<Employee[]>) {
     moveItemInArray(this.employees, event.previousIndex, event.currentIndex);
-    const sort = this.employees.map((employee, i) => ({ id: employee.id, stt: i + 1 }));
-    this.employeeService.sort({ sort: sort }).pipe(
+    const sort = this.employees.map((employee, i) => ({id: employee.id, stt: i + 1}));
+    this.employeeService.sort({sort: sort}).pipe(
       catchError(err => {
         moveItemInArray(this.employees, event.currentIndex, event.previousIndex);
         return throwError(err);
@@ -421,11 +384,11 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     }
     this.dialog.open(DialogCategoryComponent, {
       width: 'fit-content',
-      data: { categoryId: this.categoryControl.value, isUpdate: true }
+      data: {categoryId: this.categoryControl.value, isUpdate: true}
     })
       .afterClosed().subscribe(() => {
       this.categories$ = this.categoryService.getAll();
-      this.store.dispatch(EmployeeAction.loadInit({ employee: this.employee(this.formGroup.value) }));
+      this.store.dispatch(EmployeeAction.loadInit({employee: this.employee(this.formGroup.value)}));
     });
   }
 

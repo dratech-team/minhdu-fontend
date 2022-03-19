@@ -62,4 +62,8 @@ export class PayrollService extends BaseService<Payroll> {
   restorePayroll(id: number, body?: any): Observable<any> {
     return this.http.patch<any>(Api.HR.PAYROLL.RESTORE_PAYROLL + `/${id}`, body);
   }
+
+  getAllTempLate(params?: any): Observable<string[]> {
+    return this.http.get<string[]>(Api.HR.PAYROLL.TEMPLATE_OVERTIME, {params});
+  }
 }

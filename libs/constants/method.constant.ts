@@ -17,5 +17,10 @@ export const MethodConstant = [
   {
     name: 'Xem dữ liệu',
     method: ActivityType.GET
+  },
+  {
+    name: 'tất cả',
+    method: ''
   }
+
 ];

@@ -26,6 +26,6 @@ export interface OrderEntity {
   endedAt: Date;
   hide: boolean;
   totalCommodity: number,
-  expand?: boolean,
+  expand: boolean,
   paymentHistories: PaymentHistory[];
 }

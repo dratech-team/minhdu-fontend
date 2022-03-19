@@ -175,4 +175,8 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   removePosition(position: Position) {
     lodash.remove(this.positionSelected, position);
   }
+
+  onRemoveBranch(branch: Branch) {
+    this.branchSelected = undefined
+  }
 }

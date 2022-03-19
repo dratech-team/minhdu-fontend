@@ -40,7 +40,7 @@ export interface PayrollDTO{
   unit?: string,
   position?: string,
   department?: string,
-  branch?: string|unknown,
+  branch?: string,
   paidAt?: boolean,
   accConfirmedAt?: boolean,
   filterType?: FilterTypeEnum,

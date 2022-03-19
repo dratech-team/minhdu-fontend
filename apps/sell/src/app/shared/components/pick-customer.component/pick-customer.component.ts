@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, tap} from 'rxjs/operators';
 import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {document} from 'ngx-bootstrap/utils';
-import {PickCustomerService} from './pick-customer.service';
 import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
-import {CustomerResourcesConstant, CustomerTypeConstant} from '@minhdu-fontend/constants';
+import {ResourcesConstant} from '@minhdu-fontend/constants';
 import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
 import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from "ng-zorro-antd/modal";
+import {CustomerConstant} from "../../../pages/customer/constants/customer.constant";
 
 @Component({
   selector: 'app-pick-customer',
@@ -25,8 +25,8 @@ export class PickCustomerComponent implements OnInit {
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
   resourceType = CustomerResource;
-  customerResourcesConstant = CustomerResourcesConstant;
-  CustomerTypeConstant = CustomerTypeConstant;
+  customerResourcesConstant = ResourcesConstant;
+  CustomerTypeConstant = CustomerConstant;
   customerType = CustomerType;
   pageSize = 30;
   pageIndexInit = 0;
@@ -44,8 +44,9 @@ export class PickCustomerComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
-    private readonly service: PickCustomerService,
-    private dialogRef: MatDialogRef<PickCustomerComponent>
+    private dialogRef: MatDialogRef<PickCustomerComponent>,
+    private readonly modal: NzModalService,
+    private readonly viewContentRef: ViewContainerRef
   ) {
   }
 
@@ -63,14 +64,14 @@ export class PickCustomerComponent implements OnInit {
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.service.searchCustomer(this.customer(value));
+        this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(value)}))
       })
     ).subscribe();
   }
 
   onScroll() {
     const val = this.formGroup.value;
-    this.service.scrollCustomer(this.customer(val, true));
+    this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(val, true), isPagination: true}))
   }
 
   customer(val: any, isScroll?: boolean) {
@@ -124,29 +125,23 @@ export class PickCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  pickOneCustomer() {
-    const pickCustomer = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickCustomer.length; i++) {
-      if (pickCustomer[i].checked) {
-        this.customerId = parseInt(pickCustomer[i].value);
-      }
-    }
+  pickOneCustomer(customerId: number) {
+    this.customerId = customerId
     this.checkEventPickOne.emit(this.customerId);
   }
 
   closeDialog() {
-    const pickCustomer = document.getElementsByName('pick-one');
-    for (let i = 0; i < pickCustomer.length; i++) {
-      if (pickCustomer[i].checked) {
-        this.customerId = parseInt(pickCustomer[i].value);
-      }
-    }
     this.dialogRef.close(this.customerId);
   }
 
   addCustomer() {
-    this.dialog.open(CustomerDialogComponent, {
-      width: '40%'
+    this.modal.create({
+      nzTitle: 'Thêm khách hàng',
+      nzContent: CustomerDialogComponent,
+      nzViewContainerRef: this.viewContentRef,
+      nzFooter: null,
+      nzWidth: '65vw',
+      nzMaskClosable: false
     });
   }
 }
