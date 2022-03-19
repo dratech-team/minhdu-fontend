@@ -5,10 +5,11 @@ import { StorageName } from '../../../shared/constaints/storage-name.const';
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
-  added: boolean
+  added: boolean,
+  total: number
 }
 
-export const createInitialState = () => ({ loading: true, added: false });
+export const createInitialState = () => ({ loading: true, added: false, total: 0 });
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: StorageName.ROUTE })

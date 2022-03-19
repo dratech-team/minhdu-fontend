@@ -34,42 +34,44 @@
       </div>
     </div>
     <div class='mt-2'>
+      <div class="mb-1"><span class="font-weight-bold">Tổng tuyến đường:</span> {{total$|async}}</div>
       <nz-table #tableRoute
+                [nzLoading]="loading$|async"
                 [nzScroll]="{ x: '2000px',y: '70vh'}"
                 nzSize='default'
-                [nzFrontPagination]='true'
-                [nzShowPagination]='false'
+                [nzShowPagination]='true'
                 [nzData]="(routes$|async)"
-                (nzQueryParams)='paramChange($event)'
+                [nzPageSize]="pageSizeTable"
+                (nzPageIndexChange)="onPagination($event)"
       >
         <thead>
         <tr>
           <th nzLeft nzWidth="50px" (click)="onExpandAll(tableRoute.data)">
-            <img *ngIf="expandAll else dash_square"  src="assets/icon/share/dash-square.svg">
+            <img *ngIf="expandAll else dash_square" src="assets/icon/share/dash-square.svg">
             <ng-template #dash_square>
               <img src="assets/icon/share/plus-square.svg">
             </ng-template>
           </th>
           <th nzWidth="70px">STT</th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.NAME}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.NAME ,orderType:$event})">
             Tên Tuyến đường
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.START}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.START ,orderType:$event})">
             Ngày bắt đầu
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.END}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.END ,orderType:$event})">
             Ngày Kết thúc
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})">
             Tên Tài xế
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.CUSTOMER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})">
             Khách hàng
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.BSX}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})">
             Biển số xe
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)="onSort({orderBy:sortRouteEnum.GARAGE ,orderType:$event})">
             Nhà xe
           </th>
           <th>

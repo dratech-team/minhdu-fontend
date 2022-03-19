@@ -50,12 +50,15 @@ export class RouteEffect {
         this.routeStore.update(state => ({
           ...state, loading: true
         }));
+        if (props.params.orderType) {
+          props.params.orderType = props.params.orderType === 'ascend' ? 'asc' : 'des'
+        }
         return this.routeService.pagination(Object.assign(
           props.params, (props.params?.status === null || props.params?.status === undefined) ? {status: 0} : {})
         ).pipe(
           map((responsePagination) => {
             this.routeStore.update(state => ({
-              ...state, loading: false
+              ...state, loading: false, total: responsePagination.total
             }));
             if (responsePagination.data.length === 0) {
               this.message.success('Đã lấy hết tuyến đường');
@@ -66,7 +69,7 @@ export class RouteEffect {
                 route.totalCommodityUniq = route.orders.reduce((a, b) => a + b.totalCommodity, 0);
               });
             }
-            if (props.isScroll) {
+            if (props.isPagination) {
               this.routeStore.add(responsePagination.data);
             } else {
               this.routeStore.set(responsePagination.data);
@@ -141,7 +144,7 @@ export class RouteEffect {
   );
 
   handelOrder(orders: OrderEntity []) {
-    if(orders){
+    if (orders) {
       orders.forEach(order => {
         order.expand = false
         order.commodityTotal = getCommodityTotal(order.commodities)

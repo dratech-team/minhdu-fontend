@@ -20,7 +20,7 @@ export class TableRouteService {
   }
 
   scrollRoutes(val: any) {
-    this.actions$.dispatch(RouteAction.loadAll({params: val, isScroll: true},));
+    this.actions$.dispatch(RouteAction.loadAll({params: val, isPagination: true},));
   }
 
   getCommodities() {

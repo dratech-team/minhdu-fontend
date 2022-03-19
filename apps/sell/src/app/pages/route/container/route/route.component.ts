@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {Route, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Api, RadiosStatusRouteConstant} from '@minhdu-fontend/constants';
 import {SortRouteEnum} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
@@ -17,17 +17,15 @@ import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from '@angular/common';
 import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {OrderActions} from "../../../order/+state/order.actions";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {OrderEntity} from "../../../order/enitities/order.interface";
 import {RouteStore} from "../../+state/route.store";
+import {Sort} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
   pageSize = 30;
   pageIndexInit = 0;
   ItemContextMenu = ItemContextMenu;
@@ -47,6 +45,8 @@ export class RouteComponent implements OnInit {
   });
   radios = RadiosStatusRouteConstant
   expandAll = false;
+  pageSizeTable = 10;
+  valueSort?: Sort
 
   constructor(
     private readonly actions$: Actions,
@@ -61,6 +61,7 @@ export class RouteComponent implements OnInit {
 
   routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
+  total$ = this.routeQuery.select(state => state.total)
 
   ngOnInit() {
     this.actions$.dispatch(RouteAction.loadAll({
@@ -91,16 +92,18 @@ export class RouteComponent implements OnInit {
     })
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val), isScroll: true}));
-  }
-
-  mapRoute(val: RouteEntity, isScroll?: boolean) {
+  mapRoute(val:any, isPagination?: boolean) {
+    if (this.valueSort?.orderType) {
+      Object.assign(val, this.valueSort)
+    }else{
+      delete val.orderType
+      delete val.orderBy
+    }
     return Object.assign(val, {
-      skip: isScroll ? this.routeQuery.getCount() : 0,
+      skip: isPagination ? this.routeQuery.getCount() : 0,
       take: this.pageSize
     });
+    return val
   }
 
   deleteRoute($event: any) {
@@ -171,24 +174,27 @@ export class RouteComponent implements OnInit {
   onPickEndedAtDay($event: any) {
   }
 
-  paramChange(params: NzTableQueryParams) {
-    const value = this.formGroup.value;
-    params.sort.map(val => {
-      if (val.value) {
-        Object.assign(value, {
-          orderBy: val.key,
-          orderType: val.value === 'ascend' ? 'asc' : 'des'
-        });
-        this.actions$.dispatch(RouteAction.loadAll({
-          params: this.mapRoute(value)
-        }));
-      }
-    });
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value
+    const count = this.routeQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(RouteAction.loadAll({
+        params: this.mapRoute(value, true),
+        isPagination: true
+      }))
+    }
   }
 
   onExpandAll(routes: any) {
     routes.forEach((route: RouteEntity) => route.expand = !this.expandAll)
     this.routeStore.set(routes)
     this.expandAll = !this.expandAll
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapRoute(this.formGroup.value)
+    }))
   }
 }
