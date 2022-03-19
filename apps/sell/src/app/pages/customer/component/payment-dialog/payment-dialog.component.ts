@@ -1,20 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { AppState } from '../../../../reducers';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderEntity } from '../../../order/enitities/order.interface';
-import { DatePipe } from '@angular/common';
-import { PaymentAction } from '../../../payment/payment/payment.action';
-import { tap } from 'rxjs/operators';
-import { selectedAdded } from '../../../payment/payment/payment.selector';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {AppState} from '../../../../reducers';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {select, Store} from '@ngrx/store';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {PaymentType} from '@minhdu-fontend/enums';
+import {OrderEntity} from '../../../order/enitities/order.interface';
+import {DatePipe} from '@angular/common';
+import {PaymentAction} from '../../../payment/payment/payment.action';
+import {tap} from 'rxjs/operators';
+import {selectedAdded} from '../../../payment/payment/payment.selector';
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
   templateUrl: 'payment-dialog.component.html'
 })
 
 export class PaymentDialogComponent implements OnInit {
+  @Input() data: any
   numberChars = new RegExp('[^0-9]', 'g');
   orderPicked!: OrderEntity;
   payType = PaymentType;
@@ -24,10 +26,9 @@ export class PaymentDialogComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    public dialogRef: MatDialogRef<PaymentDialogComponent>,
+    public modalRef: NzModalRef,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
@@ -80,12 +81,12 @@ export class PaymentDialogComponent implements OnInit {
         })
       );
     } else {
-      this.store.dispatch(PaymentAction.payment({ infoPayment: infoPayment }));
+      this.store.dispatch(PaymentAction.payment({infoPayment: infoPayment}));
     }
 
     this.store.select(selectedAdded).subscribe(val => {
       if (val) {
-        this.dialogRef.close();
+        this.modalRef.close();
       }
     });
   }
@@ -96,7 +97,7 @@ export class PaymentDialogComponent implements OnInit {
       spanTotal?.classList.add('required');
       const inputTotal = document.getElementById('input-total');
       inputTotal?.classList.add('required-input');
-      setTimeout(function() {
+      setTimeout(function () {
         spanTotal?.classList.remove('required');
         inputTotal?.classList.remove('required-input');
       }, 500);
@@ -107,7 +108,7 @@ export class PaymentDialogComponent implements OnInit {
     this.orderPicked = $event;
     if (this.orderPicked) {
       this.secondFormGroup = this.formBuilder.group({
-        pick: [true,Validators.required]
+        pick: [true, Validators.required]
       });
     } else {
       this.secondFormGroup = this.formBuilder.group({

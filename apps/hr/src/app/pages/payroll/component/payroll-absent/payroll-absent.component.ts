@@ -64,6 +64,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class PayrollAbsentComponent implements OnInit, OnChanges {
   @Input() eventAddAbsent?: Subject<any>;
   @Input() eventSearchBranch?: Branch;
+  @Input() eventSelectIsLeave?: boolean;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
   @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
@@ -94,6 +95,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     code: new FormControl(''),
     name: new FormControl(''),
     unit: new FormControl(''),
+    isLeave: new FormControl(false),
     startedAt: new FormControl(
       this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd')
     ),
@@ -120,8 +122,11 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
+    if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
+    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
+      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
     }
   }
 
@@ -131,7 +136,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||''
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||'',
+      isLeave: false
     };
 
     if (this.absentTitle) {
@@ -231,7 +237,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           exportType: FilterTypeEnum.ABSENT ,
           title: value.title,
           startedAt: value.startedAt,
-          endedAt: value.endedAt
+          endedAt: value.endedAt,
+          isLeave: value.isLeave
         };
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -401,7 +408,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
         position: value.position?.name || '',
-        branch: value.branch ? value.branch.name : ''
+        branch: value.branch ? value.branch.name : '',
+        isLeave: value.isLeave
       }
     ;
     if (this.sort?.active) {

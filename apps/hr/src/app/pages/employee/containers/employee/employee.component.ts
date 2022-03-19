@@ -68,8 +68,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   positions$ = this.store.pipe(select(getAllPosition))
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.categories$ = this.categoryService.getAll({branchId: branches[0].name});
-      this.formGroup.get('branch')?.setValue(branches[0].name, {emitEvent: false});
+      this.categories$ = this.categoryService.getAll({branchId: branches[0].id});
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
     }
     return branches;
   }));

@@ -30,6 +30,7 @@ export class PickCustomerComponent implements OnInit {
   customerType = CustomerType;
   pageSize = 30;
   pageIndexInit = 0;
+  pageSizeTable = 5
   isSelectAll = false;
   customerIds: number[] = [];
   formGroup = new FormGroup(
@@ -69,9 +70,15 @@ export class PickCustomerComponent implements OnInit {
     ).subscribe();
   }
 
-  onScroll() {
+  onPagination(pageIndex: number) {
+    const count = this.customerQuery.getCount()
     const val = this.formGroup.value;
-    this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(val, true), isPagination: true}))
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(CustomerActions.loadAll({
+        params: this.customer(val, true),
+        isPagination: true
+      }))
+    }
   }
 
   customer(val: any, isScroll?: boolean) {

@@ -18,7 +18,7 @@ export interface PayrollState extends EntityState<Payroll> {
   branch: Branch,
   position: Position,
   total: number,
-  totalOvertime?: totalSalary
+  totalOvertime?: totalSalary,
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();

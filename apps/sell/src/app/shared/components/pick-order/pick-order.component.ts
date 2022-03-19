@@ -42,6 +42,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   orderPickOne!: OrderEntity;
   paidType = PaidType;
   isSelectAll = false;
+  pageSizeTable = 7
   formGroup = new FormGroup(
     {
       filterRoute: new FormControl(false),
@@ -100,20 +101,23 @@ export class PickOrderComponent implements OnInit, OnChanges {
     }
   }
 
-  onScroll() {
+  onPagination(pageIndex: number) {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
-      const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isPagination: true}));
+      const count = this.orderQuery.getCount()
+      if (pageIndex * this.pageSizeTable >= count) {
+        const val = this.formGroup.value;
+        this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isPagination: true}));
+      }
     }
   }
 
-  mapOrder(isScroll?: boolean): LoadOrderDto {
+  mapOrder(isPagination?: boolean): LoadOrderDto {
     const val = this.formGroup.value
     const param = {
       take: this.pageSize,
       paidType: val.paidType,
-      skip: isScroll ? this.orderQuery.getCount() : this.pageIndex,
+      skip: isPagination ? this.orderQuery.getCount() : this.pageIndex,
       filterRoute: val.filterRoute,
       customer: val.name.trim(),
       explain: val.explain.trim(),

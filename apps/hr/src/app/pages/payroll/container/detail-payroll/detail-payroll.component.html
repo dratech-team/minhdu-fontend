@@ -1,5 +1,5 @@
 <mat-spinner *ngIf='adding$|async' class='loading'></mat-spinner>
-<div class='row animated fadeIn   ' *ngIf='(payroll$ | async) as payroll'>
+<div class='row animated fadeIn' *ngIf='(payroll$ | async) as payroll'>
   <div class='container'>
     <div class='row' style='display: flex; justify-content: space-between'>
       <button (click)='prePayroll(payroll)' class='mb-5 create-salary'>
@@ -28,28 +28,39 @@
             <!--                height='64px'-->
             <!--              />-->
             <!--            </div>-->
-            <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='row d-flex flex-column '
-                 style='width: 100%; color: black'>
-              <div class='col-12 d-flex justify-content-start font-weight-bold'>
-                {{payroll.employee.lastName}}
+            <div class='row d-flex flex-column '>
+              <div class='d-flex justify-content-between font-weight-bold'>
+                <div class="ml-3" routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'>{{payroll.employee.lastName}}</div>
+                <div style="background: #1b8eb7" class="p-1 rounded">
+                  <img style='height: 10px; width:15px' src='/assets/img/share/pencil-fill.svg' alt='edit icon'>
+                </div>
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
-                <span class='d-inline-block font-weight-bold'>Ngày vào làm: </span>
-                <span class='ml-1'>{{payroll.employee.createdAt|date: 'dd/MM/yyyy'}}</span>
+                <span class='d-inline-block font-weight-bold'>Ngày tạo phiếu lương: </span>
+                <span (click)="updateCreatedAt(payroll.id,payroll.createdAt)"
+                      class='ml-2 pointer border px-1 rounded'>{{payroll.createdAt|date: 'dd/MM/yyyy'}}</span>
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
+                <span class='d-inline-block font-weight-bold'>Ngày xác nhận phiếu lương: </span>
+                <span class='ml-2 pointer  px-1 rounded'>
+                  {{payroll.accConfirmedAt ? (payroll.accConfirmedAt|date: 'dd/MM/yyyy') :'Chưa xác nhận'}}
+                </span>
+              </div>
+              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
+                   class='col-12 d-flex justify-content-start ' style='color: black'>
                 <span class='d-inline-block font-weight-bold'>Đơn vị: </span>
-                <span class='ml-1'>{{payroll.employee.branch.name}}</span>
+                <span class='ml-1'>{{payroll.branch}}</span>
               </div>
             </div>
             <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'
                  class='col-12 d-flex align-items-center mt-2'>
               <div class='row' style='width: 100%;'>
                 <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
-                  <div class='col-md position btn btn-primary'>{{payroll.employee.position.name}}</div>
+                  <div class='col-md position btn btn-primary'>{{payroll.position}}</div>
                 </div>
               </div>
-              <div class='col-6 ' style='border-radius: 20px;height: 24px ;min-width: 150px;'>
+              <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='col-6 '
+                   style='border-radius: 20px;height: 24px ;min-width: 150px;'>
                 <div class='col-md position btn btn-primary'>
                   <span class='mr-2'>{{payroll.employee.recipeType}}</span>
                   |

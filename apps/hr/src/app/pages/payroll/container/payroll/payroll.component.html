@@ -1,6 +1,17 @@
 <div class='main-content'>
-  <div class='row h3 ml-3'>
-    {{selectedPayroll|transform:payrollConstant}} tháng {{createdAt| date: 'MM/yyyy'}}
+  <div class='row h3 ml-3 d-flex' [formGroup]="formGroup">
+    <div>
+      {{selectedPayroll|transform:payrollConstant}} tháng
+    </div>
+    <input
+      *ngIf="selectedPayroll === filterTypeEnum.SEASONAL ||
+      selectedPayroll === filterTypeEnum.PAYROLL ||
+      selectedPayroll === filterTypeEnum.TIME_SHEET else createdAtPayroll"
+      type="month" class="form-control ml-2" style="width: 200px" formControlName="createdAt">
+    <ng-template #createdAtPayroll>
+      <div class="ml-2">{{createdAt|date: 'MM/yyyy'}}</div>
+    </ng-template>
+
   </div>
   <div style='width: fit-content' class='d-flex'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -29,12 +40,24 @@
       </div>
 
     </div>
-    <div style='width: fit-content'>
-      <mat-select class='form-control ml-3 border px-2' style='width:200px' [formControl]='categoryControl'>
-        <mat-option [value]='""'>Tất cả</mat-option>
-        <mat-option *ngFor='let item of categories$|async' [value]='item.id'>{{item.name}}</mat-option>
-        <mat-option [value]='0' (click)='addCategory()'>Tạo mới</mat-option>
-      </mat-select>
+    <div style='width: fit-content' class="ml-2">
+      <nz-select style='width:200px' [formControl]='categoryControl'>
+        <nz-option [nzValue]="''" nzLabel="tất cả">Tất cả</nz-option>
+        <nz-option *ngFor='let item of categories$|async' [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+        <nz-option [nzValue]="0" nzLabel="Tạo mới"></nz-option>
+      </nz-select>
+    </div>
+    <div>
+      <nz-select
+        [formControl]="formIsLeave"
+        class="ml-2"
+        nzShowSearch
+        style='width:200px'
+        nzPlaceHolder='Chọn loại nhân viên'
+      >
+        <nz-option [nzValue]="false" [nzLabel]='"Nhân viên còn làm"'></nz-option>
+        <nz-option [nzValue]="true" [nzLabel]='"Nhân viên đã nghỉ"'></nz-option>
+      </nz-select>
     </div>
     <button *ngIf='categoryControl.value && categoryControl.value !==0 && this.role !== roleEnum.HUMAN_RESOURCE '
             class="btn btn-primary ml-1" (click)="updateCategory()">Sửa
@@ -106,15 +129,11 @@
                 <input class='form-control' type='search' matInput disabled>
               </th>
               <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-                <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
+                <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
+                <input class='form-control text-center ' disabled>
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm thực tế</div>
                 <input class='form-control text-center ' type='number' disabled>
               </th>
               <th>
@@ -143,13 +162,13 @@
                 </div>
                 <input class='form-control text-center ' type='number' disabled>
               </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-                <mat-select class='select border-top' style='min-width: 100px' required
-                            formControlName='accConfirmedAt'>
-                  <mat-option value='TRUE'>Đã xác nhận</mat-option>
-                  <mat-option value='FALSE'>chưa xác nhận</mat-option>
-                  <mat-option value=''>Mặc định</mat-option>
+              <th width="150px" >
+                <div class='border-top d-flex justify-content-center align-items-center'>kế toán xác nhận</div>
+                <mat-select class='select border-top' style='min-width: 150px' requifred
+                            formControlName='accConfirmed'>
+                  <mat-option [value]="1">Đã xác nhận</mat-option>
+                  <mat-option [value]="0">chưa xác nhận</mat-option>
+                  <mat-option [value]="-1">tất cả</mat-option>
                 </mat-select>
               </th>
               <th width='3.5%'>
@@ -229,27 +248,22 @@
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                   <div>
-                    {{payroll.employee?.position?.name}}
+                    {{payroll?.position}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.employee?.branch?.name}}
+                    {{payroll?.branch}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.createdAt|date:'yyyy-MM'}}
+                    {{payroll.createdAt|date:'dd-MM-yyyy'}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.employee?.workday ? payroll.employee?.workday : 'Đang cập nhật'}}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
+                    {{payroll.workday || 'Đang cập nhật'}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
@@ -285,10 +299,7 @@
                   </div>
                 </th>
                 <th class='pointer'>
-                  <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'>
-                    <input style='pointer-events: none' disabled type='checkbox'
-                           [checked]='payroll.accConfirmedAt !== null'>
-                  </div>
+                  {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
@@ -367,6 +378,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME '>
       <minhdu-fontend-payroll-overtime [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
+                                       [eventSelectIsLeave]="selectIsLeaveOvertime"
                                        [eventSearchBranch]="searchBranchOvertime"
                                        [eventAddOvertime]='eventAddOvertime'
                                        [eventExportOvertime]='eventExportOvertime'></minhdu-fontend-payroll-overtime>
@@ -386,16 +398,22 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <minhdu-fontend-payroll-basic
+        [eventSelectIsLeave]="selectIsLeaveBasic"
         [eventSearchBranch]="searchBranchBasic"
         [eventExportBasic]='eventExportBasic'
       ></minhdu-fontend-payroll-basic>
     </div>
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
-      <app-payroll-stay [eventExportStay]='eventExportStay' [eventSearchBranch]="searchBranchStay"></app-payroll-stay>
+      <app-payroll-stay [eventExportStay]='eventExportStay'
+                        [eventSelectIsLeave]="selectIsLeaveStay"
+                        [eventSearchBranch]="searchBranchStay">
+
+      </app-payroll-stay>
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance [createdAt]='this.createdAt' [allowanceTitle]='allowanceTitle'
+                             [eventSelectIsLeave]="selectIsLeaveAllowance"
                              [eventAddAllowance]='eventAddAllowance'
                              [eventSearchBranch]="searchBranchAllowance"
                              [eventExportAllowance]='eventExportAllowance'></app-payroll-allowance>
@@ -403,6 +421,7 @@
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent [absentTitle]='absentTitle' [createdAt]='this.createdAt' [eventAddAbsent]='eventAddAbsent'
                           [eventSearchBranch]="searchBranchAbsent"
+                          [eventSelectIsLeave]="selectIsLeaveAbsent"
                           [eventExportAbsent]='eventExportAbsent'></app-payroll-absent>
     </div>
   </div>

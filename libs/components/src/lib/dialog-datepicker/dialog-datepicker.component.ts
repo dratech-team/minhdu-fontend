@@ -23,8 +23,8 @@ export class DialogDatePickerComponent {
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       day: [
-        this.datePipe.transform(this.data?.route?.endedAt ?
-          this.data?.dayInit : new Date(), 'yyyy-MM-dd'),
+        this.datePipe.transform(
+          this.data?.dayInit? this.data.dayInit : new Date(), 'yyyy-MM-dd'),
       ]
     });
   }

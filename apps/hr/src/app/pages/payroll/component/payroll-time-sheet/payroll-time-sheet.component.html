@@ -8,7 +8,7 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'>
       <table matSort (matSortChange)="sortPayroll()"
-             [formGroup]='formGroup' class='main-table' style='width: 4300px'>
+             [formGroup]='formGroup' class='main-table' style='width: 4400px'>
         <thead>
         <tr>
           <th>
@@ -57,13 +57,22 @@
 <!--              </mat-option>-->
 <!--            </mat-autocomplete>-->
           </th>
-          <th width='3%'>
-            <div class='text-center'>Tháng</div>
-            <input class='form-control' type='month' formControlName='createdAt' min='2021-01'>
+          <th width='4%'>
+            <div class='text-center'>Ngày tạo phiếu lương</div>
+            <input class='form-control' disabled>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
           <th width='3%'>
             <div class='text-center'>Tổng công</div>
+          </th>
+          <th width='4%'>
+            <div class='text-center'>Kế toán xác nhận</div>
+            <select style='width: 100%' class='select border-top' matNativeControl required
+                    formControlName='accConfirmed'>
+              <option [value]="1">Đã xác nhận</option>
+              <option [value]="0">Chưa xác nhận</option>
+              <option [value]="-1">Tất cả</option>
+            </select>
           </th>
           <th width='4%'>
             <div class='text-center'>Quản lý xác nhận</div>
@@ -110,17 +119,17 @@
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
               <div>
-                {{payroll.employee?.position?.name}}
+                {{payroll.position}}
               </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
               <div>
-                {{payroll.employee?.branch?.name}}
+                {{payroll.branch}}
               </div>
             </th>
             <th class='pointer text-center' (click)='readPayroll(payroll)'>
               <div>
-                {{payroll.createdAt | date:'yyyy-MM'}}
+                {{payroll.createdAt | date:'dd-MM-yyyy'}}
               </div>
             </th>
             <th class='text-center' *ngFor='let item of daysInMonth ; let i = index' (click)='readPayroll(payroll)'
@@ -133,6 +142,9 @@
               <div>
                 {{payroll?.timesheet?.total}}
               </div>
+            </th>
+            <th>
+              {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
             </th>
             <th class='pointer text-center'>
               <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
