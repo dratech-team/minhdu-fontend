@@ -281,7 +281,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : '',
+      branch: value.branch?.name || '',
     };
     if (this.sort.active) {
       Object.assign(params, {
