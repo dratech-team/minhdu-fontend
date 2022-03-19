@@ -16,6 +16,7 @@ export interface Payroll {
   manConfirmedAt: Date;
   paidAt: Date;
   accConfirmedAt: Date;
+  workday?: number;
   totalWorkday: number;
   payrollIds: number[];
   payslip: Payslip;
