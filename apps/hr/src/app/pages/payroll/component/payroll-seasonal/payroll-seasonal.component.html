@@ -73,11 +73,11 @@
             <input class='form-control text-center ' type='number' disabled>
           </th>
           <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-            <select class='select border-top' matNativeControl required formControlName='accConfirmedAt'>
-              <option value='TRUE'>Đã xác nhận</option>
-              <option value='FALSE'>chưa xác nhận</option>
-              <option value=''>Mặc định</option>
+            <div class='border-top d-flex justify-content-center align-items-center'>Kế toán xác nhận</div>
+            <select class='select border-top' style="width: 100%" matNativeControl required formControlName='accConfirmed'>
+              <option [value]="1">Đã xác nhận</option>
+              <option [value]="0">chưa xác nhận</option>
+              <option [value]="-1">Mặc định</option>
             </select>
           </th>
           <th>
@@ -177,10 +177,7 @@
             </div>
           </th>
           <th class='pointer text-center'>
-            <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
-              <input style='pointer-events: none' disabled type='checkbox'
-                     [checked]='payroll.manConfirmedAt !== null'>
-            </div>
+            {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
           </th>
           <th class='pointer'>
             <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'>

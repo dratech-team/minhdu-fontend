@@ -58,6 +58,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   categoryControl = new FormControl('');
   formIsLeave = new FormControl(false)
   formGroup = new FormGroup({
+    accConfirmed: new FormControl(-1),
     name: new FormControl(''),
     code: new FormControl(''),
     paidAt: new FormControl(''),
@@ -319,6 +320,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
       isLeave: this.formIsLeave.value,
+      accConfirmed: val.accConfirmed,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL

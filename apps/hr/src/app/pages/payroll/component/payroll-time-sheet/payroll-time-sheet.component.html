@@ -8,7 +8,7 @@
          [scrollWindow]='false'
          (scrolled)='onScroll()'>
       <table matSort (matSortChange)="sortPayroll()"
-             [formGroup]='formGroup' class='main-table' style='width: 4300px'>
+             [formGroup]='formGroup' class='main-table' style='width: 4400px'>
         <thead>
         <tr>
           <th>
@@ -57,13 +57,22 @@
 <!--              </mat-option>-->
 <!--            </mat-autocomplete>-->
           </th>
-          <th width='3%'>
+          <th width='4%'>
             <div class='text-center'>Ngày tạo phiếu lương</div>
             <input class='form-control' disabled>
           </th>
           <th *ngFor='let item of daysInMonth'> {{item.title|date:'EEE dd/MM'}}</th>
           <th width='3%'>
             <div class='text-center'>Tổng công</div>
+          </th>
+          <th width='4%'>
+            <div class='text-center'>Kế toán xác nhận</div>
+            <select style='width: 100%' class='select border-top' matNativeControl required
+                    formControlName='accConfirmed'>
+              <option [value]="1">Đã xác nhận</option>
+              <option [value]="0">Chưa xác nhận</option>
+              <option [value]="-1">Tất cả</option>
+            </select>
           </th>
           <th width='4%'>
             <div class='text-center'>Quản lý xác nhận</div>
@@ -133,6 +142,9 @@
               <div>
                 {{payroll?.timesheet?.total}}
               </div>
+            </th>
+            <th>
+              {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
             </th>
             <th class='pointer text-center'>
               <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>

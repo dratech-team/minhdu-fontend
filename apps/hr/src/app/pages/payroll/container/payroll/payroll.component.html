@@ -137,10 +137,6 @@
                 <input class='form-control text-center ' type='number' disabled>
               </th>
               <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm thực tế</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết
                 </div>
                 <input class='form-control text-center ' type='number' disabled>
@@ -166,13 +162,13 @@
                 </div>
                 <input class='form-control text-center ' type='number' disabled>
               </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-                <mat-select class='select border-top' style='min-width: 100px' required
-                            formControlName='accConfirmedAt'>
-                  <mat-option value='TRUE'>Đã xác nhận</mat-option>
-                  <mat-option value='FALSE'>chưa xác nhận</mat-option>
-                  <mat-option value=''>Mặc định</mat-option>
+              <th width="150px" >
+                <div class='border-top d-flex justify-content-center align-items-center'>kế toán xác nhận</div>
+                <mat-select class='select border-top' style='min-width: 150px' requifred
+                            formControlName='accConfirmed'>
+                  <mat-option [value]="1">Đã xác nhận</mat-option>
+                  <mat-option [value]="0">chưa xác nhận</mat-option>
+                  <mat-option [value]="-1">tất cả</mat-option>
                 </mat-select>
               </th>
               <th width='3.5%'>
@@ -272,11 +268,6 @@
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{payroll.payslip?.actualDay ? payroll.payslip?.actualDay : 'Đang cập nhật' }}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
                     {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
                   </div>
                 </th>
@@ -308,10 +299,7 @@
                   </div>
                 </th>
                 <th class='pointer'>
-                  <div (click)='updateConfirmPayroll(payroll.id,"accConfirmedAt")'>
-                    <input style='pointer-events: none' disabled type='checkbox'
-                           [checked]='payroll.accConfirmedAt !== null'>
-                  </div>
+                  {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
