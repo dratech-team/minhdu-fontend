@@ -88,7 +88,7 @@
         <ng-template ngFor let-route [ngForOf]='tableRoute.data' let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
             <td nzLeft [(nzExpand)]='route.expand'></td>
-            <td (click)='detailRoute(route.id, false)'>{{i + 1}}</td>
+            <td (click)='detailRoute(route.id, false)'>{{(i + 1) + ((tableRoute.nzPageIndex - 1) * 10)}}</td>
             <td (click)='detailRoute(route.id, false)'>{{route?.name || 'Chưa cập nhật'}}</td>
             <td (click)='detailRoute(route.id, false)'>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
