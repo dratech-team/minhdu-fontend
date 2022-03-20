@@ -18,6 +18,7 @@ export interface Payroll {
   accConfirmedAt: Date;
   workday?: number;
   totalWorkday: number;
+  actualday?: number;
   payrollIds: number[];
   payslip: Payslip;
   taxed: boolean;

@@ -33,7 +33,7 @@
               <input class='form-control text-center' type='text'>
             </th>
             <th style='width: 250px'>
-              <div class='border-top text-center '>Tháng</div>
+              <div class='border-top text-center '>Ngày tạo</div>
               <input class='text-center border ' type='month' formControlName='createdAt' min='2021-01'>
             </th>
             <th style='width: 250px'>
@@ -153,7 +153,7 @@
               {{payroll.id}}
             </th>
             <th class='pointer' (click)='readPayroll(payroll)' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-              {{payroll.createdAt | date:'MM/yyyy'}}
+              {{payroll.createdAt | date:'dd/MM/yyyy'}}
             </th>
             <th class='pointer' (click)='readPayroll(payroll)' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
               {{payroll.position}}
