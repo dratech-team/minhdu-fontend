@@ -244,37 +244,44 @@
           </div>
         </div>
       </mat-dialog-content>
-      <button *ngIf='employeesSelected.length === 0 && !data.isUpdate' class='btn btn-primary mt-2' (click)='check()'>
+      <button *ngIf='payrollsSelected.length === 0 && !data.isUpdate' class='btn btn-primary mt-2' (click)='check()'>
         Tiếp theo
       </button>
-      <button *ngIf='employeesSelected.length > 0 || data.isUpdate' class='btn btn-primary mt-2'
-        (click)='onSubmit()'>Lưu
+      <button *ngIf='payrollsSelected.length > 0 || data.isUpdate' class='btn btn-primary mt-2'
+              (click)='onSubmit()'>Lưu
       </button>
     </mat-step>
     <mat-step *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'>
       <ng-template matStepLabel>
         <span (click)='check()'>Chọn nhân viên</span>
       </ng-template>
-      <app-pick-employee-overtime *ngIf='!data?.isUpdate' [employeesSelected]='employeesSelected'
-        [allowEmployeesSelected]='allowEmpSelected' [checkAllowance]='onAllowanceOvertime' [search]='{templateId: templateId ,
+      <app-pick-payroll-overtime *ngIf='!data?.isUpdate' [payrollsSelected]="payrollsSelected",
+                                 [allowPayrollsSelected]="allowPayrollSelected" [checkAllowance]="onAllowanceOvertime"
+                                 [search]='{templateId: templateId ,
                                              createdPayroll:  formGroup.get("month")?.value?
                                               formGroup.get("month")?.value : formGroup.get("datetime")?.value,
                                              employeeType: this.employeeType,
                                              recipeType: this.recipeType
-                                             }' (EventSelectAllowance)='pickAllowance($event)'
-        (EventSelectEmployee)='pickEmployees($event)'>
-      </app-pick-employee-overtime>
+                                             }'
+                                 (EventSelectAllowance)="pickAllowance($event)"
+                                 (EventSelectPayroll)="pickPayrolls($event)"
+      >
+
+      </app-pick-payroll-overtime >
       <button class='btn btn-primary mr-2' matStepperPrevious>Trở lại
       </button>
       <button class='btn btn-primary' matStepperNext>Tiếp theo
       </button>
     </mat-step>
     <mat-step *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'
-      label='Nhân viên đã chọn ({{employeesSelected.length}})'>
-      <app-table-allowance-employee [checkAllowance]='onAllowanceOvertime' [employees]='employeesSelected'
-        [allowEmployeesSelected]='allowEmpSelected' (EventSelectAllowance)='pickAllowance($event)'
-        (EventSelectEmployee)='pickEmployees($event)'>
-      </app-table-allowance-employee>
+      label='Phiếu lương đã chọn ({{payrollsSelected.length}})'>
+      <app-table-allowance-Payroll [checkAllowance]="onAllowanceOvertime" [payrolls]="payrollsSelected"
+                                   [allowancePayrollSelected]="allowPayrollSelected" (EventSelectPayroll)="pickPayrolls($event)"
+                                   (EventSelectAllowance)="pickAllowance($event)"
+      >
+
+      </app-table-allowance-Payroll>
+
       <button class='btn btn-primary mr-2' matStepperPrevious>Trở lại
       </button>
       <button class='btn btn-primary' (click)='onSubmit()'>Lưu

@@ -75,6 +75,12 @@ import { DialogWFHComponent } from './component/dialog-salary/dialog-WFH/dialog-
 import { MatSortModule } from '@angular/material/sort';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import {NzSelectModule} from "ng-zorro-antd/select";
+import {
+  PickPayrollOvertimeComponent
+} from "./component/dialog-salary/pick-payroll-overtime/pick-payroll-overtime.component";
+import {
+  TableAllowancePayrollComponent
+} from "./component/dialog-salary/table-allowance-Payroll-selected/table-allowance-payroll.component";
 
 @NgModule({
     imports: [
@@ -162,7 +168,9 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     TableAllowanceEmployeeComponent,
     TableSalarySelected,
     DialogNoteComponent,
-    DialogWFHComponent
+    DialogWFHComponent,
+    PickPayrollOvertimeComponent,
+    TableAllowancePayrollComponent
   ],
   providers: [MatDatepickerModule]
 })
