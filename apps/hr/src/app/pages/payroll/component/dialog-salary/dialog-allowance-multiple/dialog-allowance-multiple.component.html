@@ -64,12 +64,11 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]='!formGroup.get("month")?.value' class='col-12 ' label='Chọn nhân viên'>
-          <app-pick-employee-absent
-            [createdPayroll]='formGroup.get("month")?.value'
-            (EventSelectEmployee)='pickEmployees($event)'
+        <mat-tab [disabled]='!formGroup.get("month")?.value' class='col-12 ' label='Chọn phiếu lương'>
+          <app-pick-payroll [createdPayroll]='formGroup.get("month")?.value'
+                            (EventSelectPayroll)="pickPayroll($event)"
           >
-          </app-pick-employee-absent>
+          </app-pick-payroll>
         </mat-tab>
       </mat-tab-group>
       <div class='row  mt-2 ml-2'>

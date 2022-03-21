@@ -16,6 +16,8 @@ import {getAllPosition, PositionActions} from "@minhdu-fontend/orgchart-position
 import {checkIsSelectAllInit, pickAll, pickOne, searchAutocomplete} from "@minhdu-fontend/utils";
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../../service/payroll.service";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {da_DK} from "ng-zorro-antd/i18n";
 
 
 @Component({
@@ -34,23 +36,23 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     position: new FormControl(''),
     code: new FormControl('')
   });
-  pageSize = 30;
+  pageSize = 20;
   pageIndex = 0;
-  payrolls$ = new Observable<ResponsePaginateOvertimePayroll<Payroll>>()
-  loaded$ = this.store.pipe(select(selectEmployeeLoaded));
+  pageSizeTable = 5
+  loading = false
   totalPayroll = 0
   type = SalaryTypeEnum;
 
-  isSelectAllEmployee = false;
+  isSelectAllPayroll = false;
   isSelectAllowance = false;
   payrolls: Payroll[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
-  isEventSearch = false;
   differ: any;
 
   constructor(
     private readonly store: Store,
     private readonly snackBar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly payrollService: PayrollService
   ) {
   }
@@ -58,10 +60,10 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.payrollsSelected) {
       if (changes.payrollsSelected.currentValue.length === 0) {
-        this.isSelectAllEmployee = false;
+        this.isSelectAllPayroll = false;
         this.isSelectAllowance = false;
       } else {
-        this.isSelectAllEmployee =
+        this.isSelectAllPayroll =
           this.payrolls !== null &&
           this.payrolls.every((e) => this.payrollsSelected.some(item => item.id === e.id));
       }
@@ -91,39 +93,23 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       this.payrollsSelected = [];
       this.allowPayrollsSelected = [];
       this.isSelectAllowance = false;
-      this.isSelectAllEmployee = false;
+      this.isSelectAllPayroll = false;
       this.EventSelectAllowance.emit(this.allowPayrollsSelected);
       this.EventSelectPayroll.emit(this.payrollsSelected);
-      this.payrolls$ = this.payrollService.paginationPayroll(
+      this.loading = true
+      this.payrollService.paginationPayroll(
         Object.assign(this.mapPayroll(this.formGroup.value), {take: this.pageSize, skip: this.pageIndex}))
+        .subscribe(res => {
+          this.loading = false
+          if (res.data.length > 0) {
+            this.totalPayroll = res.total
+            this.payrolls = res.data
+          }
+        })
     }
   }
 
   ngOnInit(): void {
-    this.payrolls$.subscribe((respone) => {
-      this.totalPayroll = respone.total
-      if (respone.data.length === 0) {
-        this.isSelectAllEmployee = false;
-      }
-      if (this.isEventSearch) {
-        this.isSelectAllEmployee = checkIsSelectAllInit(respone.data, this.payrollsSelected);
-        this.isSelectAllowance = checkIsSelectAllInit(respone.data, this.allowPayrollsSelected);
-      }
-      respone.data.forEach((payroll: Payroll) => {
-        if (this.isSelectAllEmployee) {
-          if (!this.payrollsSelected.some((e) => e.id === payroll.id)) {
-            this.payrollsSelected.push(payroll);
-          }
-          if (this.isSelectAllowance) {
-            if (!this.allowPayrollsSelected.some((e) => e.id === payroll.id)) {
-              this.allowPayrollsSelected.push(payroll);
-            }
-          }
-        }
-      });
-      this.payrolls = JSON.parse(JSON.stringify(respone.data));
-    });
-
     this.store.dispatch(PositionActions.loadPosition());
 
     this.positions$ = searchAutocomplete(
@@ -135,22 +121,45 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.isEventSearch = true;
-          this.payrolls$ = this.payrollService.paginationPayroll(
+          this.loading = true;
+          this.payrollService.paginationPayroll(
             Object.assign(this.mapPayroll(this.formGroup.value), {
               take: this.pageSize,
               skip: this.pageIndex
             })
-          )
+          ).subscribe(res => {
+            this.loading = false
+            this.totalPayroll = res.total
+            this.isSelectAllPayroll = checkIsSelectAllInit(res.data, this.payrollsSelected);
+            this.isSelectAllowance = checkIsSelectAllInit(res.data, this.allowPayrollsSelected);
+            this.payrolls = res.data;
+            if (res.data.length > 0) {
+              res.data.forEach((payroll: Payroll) => {
+                if (this.isSelectAllPayroll) {
+                  if (!this.payrollsSelected.some((e) => e.id === payroll.id)) {
+                    this.payrollsSelected.push(payroll);
+                  }
+                  if (this.isSelectAllowance) {
+                    if (!this.allowPayrollsSelected.some((e) => e.id === payroll.id)) {
+                      this.allowPayrollsSelected.push(payroll);
+                    }
+                  }
+                }
+              });
+            } else {
+              this.isSelectAllPayroll = false;
+              this.isSelectAllowance = false
+            }
+          })
         })
       )
       .subscribe();
   }
 
   //check-box-payroll
-  updateSelectEmployee(payroll: Payroll) {
+  updateSelectPayroll(payroll: Payroll) {
     const val = pickOne(payroll, this.payrollsSelected, this.payrolls, this.allowPayrollsSelected);
-    this.isSelectAllEmployee = val.isSelectAll;
+    this.isSelectAllPayroll = val.isSelectAll;
     this.isSelectAllowance = val.isSelectAllowance;
     this.EventSelectPayroll.emit(this.payrollsSelected);
     this.EventSelectAllowance.emit(this.allowPayrollsSelected);
@@ -159,12 +168,12 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   someCompleteEmployee(): boolean {
     return (
       this.payrolls.filter((e) => this.payrollsSelected.some(item => item.id === e.id)).length >
-      0 && !this.isSelectAllEmployee
+      0 && !this.isSelectAllPayroll
     );
   }
 
   setAllEmployee(select: boolean) {
-    this.isSelectAllEmployee = select;
+    this.isSelectAllPayroll = select;
     if (this.payrolls.length === 0) {
       return;
     }
@@ -193,7 +202,20 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
 
   setAllAllowance(select: boolean) {
     this.isSelectAllowance = select;
-    pickAll(select, this.payrolls, this.allowPayrollsSelected);
+    if (select) {
+      this.payrolls.forEach(payroll => {
+        if (this.allowPayrollsSelected.every(val => val.id !== payroll.id)) {
+          this.allowPayrollsSelected.push(payroll)
+        }
+      })
+    } else {
+      this.payrolls.forEach(payroll => {
+        const indexAllowance = this.allowPayrollsSelected.findIndex(emp => emp.id === payroll.id);
+        if(indexAllowance > -1){
+          this.allowPayrollsSelected.splice(indexAllowance, 1)
+        }
+      })
+    }
     this.EventSelectAllowance.emit(this.allowPayrollsSelected);
   }
 
@@ -209,15 +231,41 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     return this.allowPayrollsSelected.some((e) => e.id === payroll.id);
   }
 
-  onScroll() {
-    this.isEventSearch = false;
-    const val = this.formGroup.value;
-    this.payrolls$ = this.payrollService.paginationPayroll(
-      this.mapPayroll(Object.assign(this.mapPayroll(this.formGroup.value), {
-        take: this.pageSize,
-        skip: this.payrolls.length
-      }))
-    )
+  onPagination(pageIndex: number) {
+    if (pageIndex * this.pageSizeTable >= this.payrolls.length) {
+      const val = this.formGroup.value;
+      this.loading = true
+      this.payrollService.paginationPayroll(Object.assign(val, {
+          take: this.pageSize,
+          skip: this.payrolls.length
+        }
+      )).subscribe(respone => {
+        this.loading = false
+        if (respone.data.length > 0) {
+          respone.data.map(payroll => {
+            if (this.payrolls.every(val => val.id !== payroll.id)) {
+              this.payrolls.push(payroll)
+            }
+            if (this.isSelectAllPayroll) {
+              if (this.payrollsSelected.every(val => val.id !== payroll.id)) {
+                this.payrollsSelected.push(payroll)
+              }
+              if (this.isSelectAllowance) {
+                if (this.allowPayrollsSelected.every(val => val.id !== payroll.id)) {
+                  this.allowPayrollsSelected.push(payroll)
+                }
+              }
+            }
+          })
+          this.payrolls = [...this.payrolls]
+          this.EventSelectAllowance.emit(this.allowPayrollsSelected)
+          this.EventSelectPayroll.emit(this.payrollsSelected)
+        } else {
+          this.message.warning('Đã lấy hết phiếu lương')
+        }
+      })
+    }
+
   }
 
   mapPayroll(val: any) {
@@ -228,7 +276,8 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       createdPayroll: new Date(this.search.createdPayroll),
       templateId: this.search.templateId || '',
       employeeType: this.search.employeeType || '',
-      recipeType: this.search.recipeType || ''
+      recipeType: this.search.recipeType || '',
+      isLeave: false
     };
   }
 }

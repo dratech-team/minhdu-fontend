@@ -38,7 +38,6 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
@@ -112,11 +111,15 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
           if (!val) {
             this.positionOfTempOver = [];
           }
+         const param = {
+           positionIds: this.positionsSelected.map(val => val.id),
+           unit: this.unit
+         }
+          if(!this.unit){
+            delete param.unit
+          }
           this.store.dispatch(
-            TemplateOvertimeAction.loadALlTemplate({
-              positionIds: this.positionsSelected.map(val => val.id),
-              unit: this.unit ? this.unit : ''
-            })
+            TemplateOvertimeAction.loadALlTemplate(param)
           );
         })
       )
@@ -257,7 +260,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
-        allowEmpIds: this.allowPayrollSelected.map(e => e.id),
+        allowPayrollIds: this.allowPayrollSelected.map(e => e.id),
         allowance:
           {
             title: value.titleAllowance,
@@ -296,7 +299,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
           duration: 1000
         });
       }
-      Object.assign(salary, {employeeIds: this.payrollsSelected.map(e => e.id)});
+      Object.assign(salary, {payrollIds: this.payrollsSelected.map(e => e.id)});
       this.store.dispatch(PayrollAction.addSalary({salary: salary, isTimesheet: this.data?.isTimesheet}));
       this.dialogRef.close(
         {

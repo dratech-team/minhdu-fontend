@@ -253,9 +253,9 @@
     </mat-step>
     <mat-step *ngIf='unit &&  (formGroup.get("month")?.value || formGroup.get("datetime")?.value)'>
       <ng-template matStepLabel>
-        <span (click)='check()'>Chọn nhân viên</span>
+        <span (click)='check()'>Chọn phiếu lương</span>
       </ng-template>
-      <app-pick-payroll-overtime *ngIf='!data?.isUpdate' [payrollsSelected]="payrollsSelected",
+      <app-pick-payroll-overtime *ngIf='!data?.isUpdate' [payrollsSelected]="payrollsSelected"
                                  [allowPayrollsSelected]="allowPayrollSelected" [checkAllowance]="onAllowanceOvertime"
                                  [search]='{templateId: templateId ,
                                              createdPayroll:  formGroup.get("month")?.value?

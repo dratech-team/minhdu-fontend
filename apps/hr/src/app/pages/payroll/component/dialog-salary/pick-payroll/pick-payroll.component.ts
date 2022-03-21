@@ -157,8 +157,13 @@ export class PickPayrollComponent implements OnInit, OnChanges {
         this.loading = false
         this.total = res.total
         if (res.data.length > 0) {
-          this.payrollS = this.payrollS.concat(
-            handleValSubPickItems(res.data, this.payrollS, this.payrollsSelected, this.isSelectAll))
+          this.payrollS = this.payrollS.concat(res.data)
+          if (this.isSelectAll) {
+            res.data.forEach((payroll: Payroll) => {
+              if (this.payrollsSelected.every(val => val.id !== payroll.id))
+                this.payrollsSelected.push(payroll)
+            })
+          }
           this.EventSelectPayroll.emit(this.payrollsSelected);
         } else {
           this.message.warning('Đã lấy hết phiếu lương')
