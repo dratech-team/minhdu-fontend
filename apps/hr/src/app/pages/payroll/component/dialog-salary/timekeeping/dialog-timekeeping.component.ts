@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
 import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 
 @Component({
@@ -22,7 +23,7 @@ export class DialogTimekeepingComponent implements OnInit {
   submitted = false;
   selectedIndex = 0;
   unitMinute = false;
-  employeeSelected: Employee[] = [];
+  payrollSelected: Payroll[] = [];
   isManyPeople = false;
   tabIndex = 0;
 
@@ -102,14 +103,14 @@ export class DialogTimekeepingComponent implements OnInit {
       note: value.note,
       unit: this.titleAbsents[this.selectedIndex].unit ? this.titleAbsents[this.selectedIndex].unit : undefined,
       times: value.times,
-      employeeIds: this.employeeSelected.length > 0 ? this.employeeSelected.map(e => e.id) : undefined
+      payrollIds: this.payrollSelected.length > 0 ? this.payrollSelected.map(e => e.id) : undefined
     };
 
     if (this.titleAbsents[this.selectedIndex]?.unit === DatetimeUnitEnum.DAY && typeof value.partialDay !== 'number') {
       return this.snackBar.open('Chưa chọn buổi', '', { duration: 2000 });
     }
 
-    if (this.employeeSelected.length === 0) {
+    if (this.payrollSelected.length === 0) {
       return this.snackBar.open('Chưa chọn nhân viên', '', { duration: 2000 });
     }
 
@@ -162,8 +163,8 @@ export class DialogTimekeepingComponent implements OnInit {
     this.selectedIndex = index;
   }
 
-  pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees];
+  pickPayroll(payrolls: Payroll[]) {
+    this.payrollSelected = [...payrolls];
   }
 
   nextTab(tab: any) {
