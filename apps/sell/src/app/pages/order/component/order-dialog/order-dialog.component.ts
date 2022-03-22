@@ -77,9 +77,10 @@ export class OrderDialogComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log('ssss')
-    if (this.commodities.length === 0) {
-      return this.message.warning('Chưa chọn hàng hoá')
+    if(!this.data?.isUpdate){
+      if (this.commodities.length === 0) {
+        return this.message.warning('Chưa chọn hàng hoá')
+      }
     }
     const val = this.formGroup.value;
     const order = {
