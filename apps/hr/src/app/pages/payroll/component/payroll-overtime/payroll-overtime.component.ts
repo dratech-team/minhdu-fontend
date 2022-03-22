@@ -393,17 +393,17 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         `Sửa đổi hàng loạt phải giống nhau về Loại tăng ca, đơn vị tính, đơn giá và ngày tăng ca. Mục đang bị sai:
          ${
           uniqTitle.length > 1
-            ? ' loại tăng ca: ' + uniqTitle.join(', ') + `` + ', '
+            ? ' loại tăng ca: ' + uniqTitle.join(' + ') + `` + ', '
             : ''
         } ${
           uniqUnit.length > 1
-            ? 'đơn vị tính: ' + uniqUnit.join(', ') + ', '
+            ? 'đơn vị tính: ' + uniqUnit.join(' + ') + ', '
             : ''
         } ${
-          uniqPrice.length > 1 ? 'đơn giá: ' + uniqPrice.join(', ') + ', ' : ''
+          uniqPrice.length > 1 ? 'đơn giá: ' + uniqPrice.join(' + ') + ', ' : ''
         } ${
           uniqDatetime.length > 1
-            ? 'ngày tăng ca: ' + uniqDatetime.join(', ') + ', '
+            ? 'ngày tăng ca: ' + uniqDatetime.join(' + ') + ', '
             : ''
         }`
       );

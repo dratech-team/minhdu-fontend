@@ -56,7 +56,7 @@ export class DialogExportComponent implements OnInit {
 
     if (this.data.params.exportType === FilterTypeEnum.OVERTIME) {
       if (this.data?.params?.titles?.length > 0) {let name!:string
-        this.formGroup.get('name')?.setValue(this.data.params.titles.join(', '))
+        this.formGroup.get('name')?.setValue(this.data.params.titles.join(' + '))
       }else{
         this.formGroup.get('name')?.setValue(
           `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt,'dd-MM-yyyy')}`
