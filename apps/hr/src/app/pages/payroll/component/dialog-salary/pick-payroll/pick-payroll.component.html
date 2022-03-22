@@ -1,82 +1,82 @@
 <div>
-    <div class='font-weight-bold mb-1'>Đã chọn:({{this.payrollsSelected.length}}/{{total}})</div>
-    <div>
-      <nz-table [formGroup]='formGroup'
-                [nzData]="payrollS"
-                [nzScroll]="{x:'850px'}"
-                nzSize="small"
-                [nzPageSize]="pageSizeTable"
-                (nzPageIndexChange)="onPagination($event)"
-                [nzLoading]="loading"
-                #tablePayroll
-      >
-        <thead>
+  <div class='font-weight-bold mb-1'>Đã chọn:({{this.payrollsSelected.length}}/{{total}})</div>
+  <div>
+    <nz-table [formGroup]='formGroup'
+              [nzData]="payrollS"
+              [nzScroll]="{x:'850px'}"
+              nzSize="small"
+              [nzPageSize]="pageSizeTable"
+              (nzPageIndexChange)="onPagination($event)"
+              [nzLoading]="loading"
+              #tablePayroll
+    >
+      <thead>
+      <tr>
+        <th nzWidth="55px">
+          <div>stt</div>
+        </th>
+        <th>
+          <div class='text-center'>Tên nhân viên</div>
+          <input nz-input type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
+        </th>
+        <th>
+          <div class='text-center'>Đơn vị</div>
+          <input nz-input type='search' [matAutocomplete]='branch' formControlName='branch'>
+          <mat-autocomplete #branch='matAutocomplete'>
+            <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
+                        (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
+            >
+              {{branch.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='text-center'>Chức vụ</div>
+          <input nz-input type='search' [matAutocomplete]='position' formControlName='position'>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async'
+                        [value]='position.name' (click)='onSelectPosition(position.name)'
+                        (onSelectionChange)='onSelectPosition(position.name)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='text-center'>Ngày tạo phiếu lương</div>
+          <input nz-input type='search' disabled>
+        </th>
+        <th style='width: 100px;'>
+          <div class='text-center' style='background: white'>Tất cả</div>
+          <div>
+            <mat-checkbox class='example-margin  mt-2 mx-auto'
+                          [checked]='isSelectAll'
+                          [indeterminate]='someComplete()'
+                          (change)='setAll($event.checked)'>
+            </mat-checkbox>
+          </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
         <tr>
-          <th nzWidth="55px">
-            <div>stt</div>
-          </th>
-          <th>
-            <div class='text-center'>Tên nhân viên</div>
-            <input nz-input type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
-          </th>
-          <th>
-            <div class='text-center'>Chức vụ</div>
-            <input nz-input type='search' [matAutocomplete]='position' formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async'
-                          [value]='position.name' (click)='onSelectPosition(position.name)'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
-            <div class='text-center'>Đơn vị</div>
-            <input nz-input type='search' [matAutocomplete]='branch' formControlName='branch'>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'
-                          (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
-              >
-                {{branch.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
-            <div class='text-center'>Ngày tạo phiếu lương</div>
-            <input nz-input type='search' disabled>
-          </th>
-          <th style='width: 100px;'>
-            <div class='text-center' style='background: white'>Tất cả</div>
-            <div>
-              <mat-checkbox class='example-margin  mt-2 mx-auto'
-                            [checked]='isSelectAll'
-                            [indeterminate]='someComplete()'
-                            (change)='setAll($event.checked)'>
+          <td class='text-center pointer'>{{i + 1}}</td>
+          <td class='text-center pointer'>{{payroll.employee.lastName}}</td>
+          <td class='text-center pointer'>{{payroll.branch}}</td>
+          <td class='text-center pointer'>{{payroll.position}}</td>
+          <td class='text-center pointer'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</td>
+          <td class='text-center pointer'>
+            <div class='mt-2'>
+              <mat-checkbox
+                (change)='updateSelect(payroll)'
+                [checked]='checkEmployee(payroll)'>
               </mat-checkbox>
             </div>
-          </th>
+          </td>
         </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
-          <tr>
-            <td class='text-center pointer'>{{i + 1}}</td>
-            <td class='text-center pointer'>{{payroll.employee.lastName}}</td>
-            <td class='text-center pointer'>{{payroll.position}}</td>
-            <td class='text-center pointer'>{{payroll.branch}}</td>
-            <td class='text-center pointer'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</td>
-            <td class='text-center pointer'>
-              <div class='mt-2'>
-                <mat-checkbox
-                  (change)='updateSelect(payroll)'
-                  [checked]='checkEmployee(payroll)'>
-                </mat-checkbox>
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-        </tbody>
-      </nz-table>
-    </div>
+      </ng-template>
+      </tbody>
+    </nz-table>
+  </div>
 </div>
 

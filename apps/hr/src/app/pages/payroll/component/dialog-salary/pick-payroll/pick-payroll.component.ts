@@ -1,20 +1,19 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
-import {Employee, ResponsePaginate, ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {debounceTime, map, startWith, switchMap, tap} from 'rxjs/operators';
-import {Observable, of, Subscription} from 'rxjs';
-import {
-  EmployeeAction,
-  selectEmployeeLoaded,
-  selectorAllEmployee,
-  selectorTotalEmployee
-} from '@minhdu-fontend/employee';
+import {debounceTime, startWith, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
-import {searchAutocomplete} from '@minhdu-fontend/utils';
-import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
+import {
+  checkIsSelectAllInit,
+  handleValSubPickItems,
+  pickAll,
+  pickOne,
+  searchAutocomplete,
+  someComplete
+} from '@minhdu-fontend/utils';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../../service/payroll.service";
 import {NzMessageService} from "ng-zorro-antd/message";
