@@ -17,7 +17,7 @@ export class DialogExportComponent implements OnInit {
   isSelectAll = true;
   itemsExport: any[] = [];
   itemSelected: any[] = [];
-
+  loading = true
   constructor(
     private readonly dialogRef: MatDialogRef<DialogExportComponent>,
     private readonly itemExportService: ItemExportService,
@@ -66,6 +66,7 @@ export class DialogExportComponent implements OnInit {
     this.itemExportService
       .getItemExport({exportType: this.data.params.exportType})
       .subscribe((val: any[]) => {
+        this.loading = false
         val?.map((e, i) => {
           Object.assign(e, {index: i});
         });

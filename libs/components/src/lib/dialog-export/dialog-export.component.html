@@ -60,10 +60,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-
+        <tr *ngIf="loading else lstitem" style="height: 100px">
+          <td colspan="2">
+            <ngx-skeleton-loader count='18' appearance='line'></ngx-skeleton-loader>
+          </td>
         </tr>
-<!--        <ng-template #lstitem>-->
+        <ng-template #lstitem>
           <tr *ngFor='let item of itemsExport'>
             <td>
               {{item.value}}
@@ -78,7 +80,7 @@
               </div>
             </td>
           </tr>
-<!--        </ng-template>-->
+        </ng-template>
 
         </tbody>
       </table>
@@ -88,6 +90,7 @@
   </div>
   <div class='row mt-4 ml-1 '>
     <button (click)='onSubmit()'
+            [disabled]="loading"
             style='font-size: 12px'
             class=' col-md-3 btn btn-ok d-flex justify-content-center'>Đồng ý
     </button>
