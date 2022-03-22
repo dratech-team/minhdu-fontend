@@ -18,6 +18,7 @@ export class DialogExportComponent implements OnInit {
   itemsExport: any[] = [];
   itemSelected: any[] = [];
   loading = true
+
   constructor(
     private readonly dialogRef: MatDialogRef<DialogExportComponent>,
     private readonly itemExportService: ItemExportService,
@@ -55,11 +56,12 @@ export class DialogExportComponent implements OnInit {
     );
 
     if (this.data.params.exportType === FilterTypeEnum.OVERTIME) {
-      if (this.data?.params?.titles?.length > 0) {let name!:string
+      if (this.data?.params?.titles?.length > 0) {
+        let name!: string
         this.formGroup.get('name')?.setValue(this.data.params.titles.join(' + '))
-      }else{
+      } else {
         this.formGroup.get('name')?.setValue(
-          `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt,'dd-MM-yyyy')}`
+          `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.data.params.endedAt, 'dd-MM-yyyy')}`
         )
       }
     }
