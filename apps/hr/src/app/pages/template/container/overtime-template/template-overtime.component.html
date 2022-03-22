@@ -17,7 +17,7 @@
          [scrollWindow]='false'
          [alwaysCallback]='true'
          (scrolled)='onScroll()'>
-      <table [formGroup]='formGroup' style='width: 2000px'>
+      <table [formGroup]='formGroup' style='width: 2100px'>
         <thead style="z-index: 5">
         <tr>
           <th style='width: 50px'>
@@ -27,7 +27,7 @@
               disabled
             >
           </th>
-          <th>
+          <th style="width: 300px">
             <div class='border-top text-center'>Tên bản mẫu</div>
             <input
               class='form-control '
@@ -35,13 +35,13 @@
               formControlName='title'
             >
           </th>
-          <th>
+          <th style="width: 200px">
             <div class='border-top text-center'>Giá</div>
             <input
               class='form-control  '
               type='text' formControlName='price'>
           </th>
-          <th>
+          <th style="width: 200px !important;">
             <div class='border-top text-center'>Loại nhân viên</div>
             <mat-select class='form-control' style='width:100%' formControlName='employeeType'>
               <mat-option value='{{EmployeeType.EMPLOYEE_FULL_TIME}}'>Nhân viên chính thức</mat-option>
@@ -49,7 +49,7 @@
               <mat-option value=''>Tất cả</mat-option>
             </mat-select>
           </th>
-          <th>
+          <th style="width: 150px">
             <div class='border-top text-center'>Đơn vị tính</div>
             <select class='select border-top' style='width: 100%' matNativeControl required formControlName='unit'>
               <option value='{{unit.DAY}}'>Ngày</option>
@@ -57,29 +57,29 @@
               <option value="''">Tất cả</option>
             </select>
           </th>
-          <th style="min-width:200px ">
+          <th>
             <div class='border-top text-center'>Đơn vị</div>
             <nz-select style="width: 100%"
-              [nzMaxTagCount]="3"
-              [nzMaxTagPlaceholder]="tagPlaceHolder"
-              nzMode="multiple"
-              nzPlaceHolder="Chọn đơn vị"
-              formControlName="branch"
+                       [nzMaxTagCount]="3"
+                       [nzMaxTagPlaceholder]="tagPlaceHolder"
+                       nzMode="multiple"
+                       nzPlaceHolder="Chọn đơn vị"
+                       formControlName="branch"
             >
               <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
             </nz-select>
             <ng-template #tagPlaceHolder let-branchSelect>và {{ branchSelect.length }} đã chọn</ng-template>
-<!--            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>-->
-<!--            <mat-autocomplete #branch='matAutocomplete'>-->
-<!--              <mat-option-->
-<!--                *ngFor='let branch of branches$ | async'-->
-<!--                [value]='branch.name'-->
-<!--                (onSelectionChange)='onSelectBranch(branch.name)'>-->
-<!--                {{branch.name}}-->
-<!--              </mat-option>-->
-<!--            </mat-autocomplete>-->
+            <!--            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>-->
+            <!--            <mat-autocomplete #branch='matAutocomplete'>-->
+            <!--              <mat-option-->
+            <!--                *ngFor='let branch of branches$ | async'-->
+            <!--                [value]='branch.name'-->
+            <!--                (onSelectionChange)='onSelectBranch(branch.name)'>-->
+            <!--                {{branch.name}}-->
+            <!--              </mat-option>-->
+            <!--            </mat-autocomplete>-->
           </th>
-          <th style=' width:500px'>
+          <th>
             <div class='border-top text-center'>Chức vụ</div>
             <nz-select style="width: 100%"
                        [nzMaxTagCount]="3"
@@ -90,9 +90,10 @@
             >
               <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
             </nz-select>
-            <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
+            <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn
+            </ng-template>
           </th>
-          <th>
+          <th style="width:250px">
             <div class='border-top text-center'>Chú ý</div>
             <input
               class='form-control '
@@ -207,7 +208,7 @@
   }
 
   .table-scroll thead th:nth-child(2),
-  .table-scroll thead th:nth-child(7){
+  .table-scroll thead th:nth-child(7) {
     z-index: 5;
   }
 </style>
