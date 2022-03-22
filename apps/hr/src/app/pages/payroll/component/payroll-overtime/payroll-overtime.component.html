@@ -95,20 +95,16 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          style='width:100%'
-          formControlName='title'
-          nzPlaceHolder='Chọn loại tăng ca'
+        <nz-select style="width: 100%"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn loại tăng ca"
+                   formControlName="titles"
         >
-          <nz-option
-            *ngFor='let template of templateOvertime$|async'
-            [nzLabel]='template'
-            [nzValue]='template'
-          >
-          </nz-option>
+          <nz-option *ngFor="let item of templateOvertime$|async" [nzLabel]="item" [nzValue]="item"></nz-option>
         </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>

@@ -86,7 +86,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   adding$ = this.store.pipe(select(selectedAddingPayroll));
 
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
     isLeave: new FormControl(false),
@@ -139,8 +139,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     };
     this.activeRouter.queryParams.subscribe((val) => {
       if (val.titleOvertime) {
-        this.formGroup.get('title')?.setValue(val.titleOvertime);
-        Object.assign(paramLoadInit, {title: val.titleOvertime});
+        this.formGroup.get('titles')?.setValue([val.titleOvertime]);
+        Object.assign(paramLoadInit, {titles: [val.titleOvertime]});
       }
     });
 
@@ -148,7 +148,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       Object.assign(paramLoadInit, {
         createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd')
       });
-      this.formGroup.get('title')?.setValue(this.overtimeTitle);
+      this.formGroup.get('titles')?.setValue([this.overtimeTitle]);
       this.formGroup.get('startedAt')?.setValue(
         this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
       );
@@ -170,7 +170,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
     this.eventAddOvertime?.subscribe((val) => {
       if (val.overtimeTitle) {
-        this.formGroup.get('title')?.setValue(val.overtimeTitle);
+        this.formGroup.get('titles')?.setValue([val.overtimeTitle]);
       }
       this.formGroup.get('startAt')?.setValue(
         this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
@@ -186,7 +186,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         const overtime = {
           searchType: value.searchType,
           code: value.code,
-          title: value.title || '',
+          titles: value.titles ? value.titles : [],
           filename: val,
           exportType: FilterTypeEnum.OVERTIME,
           position: value.position?.name || '',
@@ -283,7 +283,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      title: value?.title || '',
+      titles: value.titles ? value.titles : [],
       name: value.name,
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,
@@ -314,12 +314,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       delete params.name;
     }
     return params;
-  }
-
-  onSelectTemplateOvertime(event: any, title: string) {
-    if (event.isUserInput) {
-      this.formGroup.get('title')?.patchValue(title);
-    }
   }
 
   addSalaryOvertime() {
@@ -369,7 +363,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title);
+          this.formGroup.get('titles')?.setValue([val.title]);
           this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
           this.formGroup.get('endedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
         }
@@ -448,21 +442,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
             this.message.success('Xóa tăng ca thành công');
             this.salariesSelected = [];
             this.isSelectSalary = false;
-            const value = this.formGroup.value;
-            const payrollOvertime = {
-              searchType: value.searchType,
-              code: value.code,
-              startAt: new Date(value.startAt),
-              endAt: new Date(value.endAt),
-              title: value.title,
-              name: value.name,
-              position: value.position?.name || '',
-              branch: value.branch.name,
-              isLeave: value.isLeave
-            };
-            if (!value.name) {
-              delete payrollOvertime.name;
-            }
             this.store.dispatch(
               PayrollAction.loadInit({payrollDTO: this.mapPayrollOvertime()})
             );
@@ -482,7 +461,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           searchType: value.searchType,
           startAt: new Date(value.startAt),
           endAt: new Date(value.endAt),
-          title: value.title,
+          titles: value.titles ? value.titles : [],
           name: value.name,
           position: value.position?.name || '',
           branch: value.branch.name
