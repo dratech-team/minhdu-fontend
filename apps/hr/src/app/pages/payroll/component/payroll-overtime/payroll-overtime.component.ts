@@ -283,7 +283,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      titles: value.titles ? value.titles : [],
+      titles: value.titles || [],
       name: value.name,
       unit: value?.unit || '',
       filterType: FilterTypeEnum.OVERTIME,

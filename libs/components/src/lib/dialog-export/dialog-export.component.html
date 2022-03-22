@@ -60,20 +60,26 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let item of itemsExport'>
-          <td>
-            {{item.value}}
-          </td>
-          <td>
-            <div class='d-flex justify-content-center align-items-center'>
-              <mat-checkbox
-                class='mx-auto'
-                (change)='updateSelect(item)'
-                [checked]='selectItem(item)'>
-              </mat-checkbox>
-            </div>
-          </td>
+        <tr>
+
         </tr>
+<!--        <ng-template #lstitem>-->
+          <tr *ngFor='let item of itemsExport'>
+            <td>
+              {{item.value}}
+            </td>
+            <td>
+              <div class='d-flex justify-content-center align-items-center'>
+                <mat-checkbox
+                  class='mx-auto'
+                  (change)='updateSelect(item)'
+                  [checked]='selectItem(item)'>
+                </mat-checkbox>
+              </div>
+            </td>
+          </tr>
+<!--        </ng-template>-->
+
         </tbody>
       </table>
     </div>

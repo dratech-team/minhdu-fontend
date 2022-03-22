@@ -1,10 +1,11 @@
-import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilterTypeEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { ItemExportService } from './item-export.service';
+import {DatePipe} from '@angular/common';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilterTypeEnum} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {ItemExportService} from './item-export.service';
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'dialog-export.component.html'
@@ -53,11 +54,20 @@ export class DialogExportComponent implements OnInit {
       }
     );
 
+    if (this.data.params.exportType === FilterTypeEnum.OVERTIME) {
+      if (this.data?.params?.titles?.length > 0) {let name!:string
+        this.formGroup.get('name')?.setValue(this.data.params.titles.join(', '))
+      }else{
+        this.formGroup.get('name')?.setValue(
+          `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt,'dd-MM-yyyy')}`
+        )
+      }
+    }
     this.itemExportService
       .getItemExport({exportType: this.data.params.exportType})
       .subscribe((val: any[]) => {
         val?.map((e, i) => {
-          Object.assign(e, { index: i });
+          Object.assign(e, {index: i});
         });
         this.itemsExport = val;
         this.itemSelected = [...this.itemsExport];
@@ -87,9 +97,9 @@ export class DialogExportComponent implements OnInit {
     this.exportService.print(
       this.data.api,
       this.data?.params
-        ? Object.assign(this.data.params, { filename: value.name })
-        : { filename: value.name },
-      { items: this.itemSelected }
+        ? Object.assign(this.data.params, {filename: value.name})
+        : {filename: value.name},
+      {items: this.itemSelected}
     );
     this.dialogRef.close();
   }
