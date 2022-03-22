@@ -53,6 +53,16 @@
         </div>
       </th>
       <th style='width: 200px'>
+        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
+        <input class='form-control' type='search' matInput disabled>
+        <!--        <mat-autocomplete #branch='matAutocomplete'>-->
+        <!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
+        <!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
+        <!--            {{branch.name}}-->
+        <!--          </mat-option>-->
+        <!--        </mat-autocomplete>-->
+      </th>
+      <th style='width: 200px'>
         <div mat-sort-header="{{sortEnum.POSITION}}"
              class='border-top d-flex justify-content-center align-items-center'>Chức vụ
         </div>
@@ -71,16 +81,6 @@
           >
           </nz-option>
         </nz-select>
-      </th>
-      <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='search' matInput disabled>
-<!--        <mat-autocomplete #branch='matAutocomplete'>-->
-<!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
-<!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
-<!--            {{branch.name}}-->
-<!--          </mat-option>-->
-<!--        </mat-autocomplete>-->
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -219,14 +219,14 @@
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div>
-            {{payrollOvertime.position}}
+            {{payrollOvertime.branch}}
           </div>
         </th>
         <th style='width: 200px' class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div>
-            {{payrollOvertime.branch}}
+            {{payrollOvertime.position}}
           </div>
         </th>
         <th class='pointer' style='width: 220px;'>
@@ -359,7 +359,8 @@
     position: sticky;
     top: 70px;
   }
-  .table-scroll tbody th{
+
+  .table-scroll tbody th {
     height: 40px;
   }
 </style>

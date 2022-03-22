@@ -56,6 +56,10 @@
           </mat-checkbox>
         </th>
         <th style='width: 200px'>
+          <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
+          <input class='form-control' type='search' matInput disabled>
+        </th>
+        <th style='width: 200px'>
           <div mat-sort-header="{{sortEnum.POSITION}}" class='title-profile'>Chức vụ</div>
           <nz-select
             nzShowSearch
@@ -72,10 +76,6 @@
             >
             </nz-option>
           </nz-select>
-        </th>
-        <th style='width: 200px'>
-          <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-          <input class='form-control' type='search' matInput disabled>
         </th>
         <th style='width: 220px;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -149,16 +149,16 @@
             </div>
           </th>
           <th class='pointer'
+              (click)='readPayroll(payrollAbsent)'>
+            <div>
+              {{payrollAbsent.branch}}
+            </div>
+          </th>
+          <th class='pointer'
               (click)='readPayroll(payrollAbsent)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div>
               {{payrollAbsent.position}}
-            </div>
-          </th>
-          <th class='pointer'
-              (click)='readPayroll(payrollAbsent)'>
-            <div>
-              {{payrollAbsent.branch}}
             </div>
           </th>
           <th class='pointer' style='width: 220px;'>

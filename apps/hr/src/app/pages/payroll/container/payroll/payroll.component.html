@@ -107,6 +107,10 @@
                 <input class='form-control text-center ' type='search' formControlName='name'
                        placeholder='Trần Gia Hiệu'>
               </th>
+              <th style='width: 250px'>
+                <div mat-sort-header='{{sortEnum.BRANCH}}' class='title-profile'>Đơn vị</div>
+                <input class='form-control' type='search' matInput disabled>
+              </th>
               <th style='width: 200px' [formGroup]='formGroup'>
                 <div mat-sort-header='{{sortEnum.POSITION}}' class='title-profile'>Chức vụ</div>
                 <nz-select
@@ -124,10 +128,6 @@
                   >
                   </nz-option>
                 </nz-select>
-              </th>
-              <th style='width: 250px'>
-                <div mat-sort-header='{{sortEnum.BRANCH}}' class='title-profile'>Đơn vị</div>
-                <input class='form-control' type='search' matInput disabled>
               </th>
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
@@ -246,15 +246,15 @@
                     {{payroll?.employee?.lastName}}
                   </div>
                 </th>
+                <th class='pointer' (click)='updatePayroll(payroll)'>
+                  <div>
+                    {{payroll?.branch}}
+                  </div>
+                </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'
                     [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
                   <div>
                     {{payroll?.position}}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll?.branch}}
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>

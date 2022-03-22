@@ -19,12 +19,17 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search' formControlName="code" (keypress)='checkInputNumber($event)'>
+            <input class='form-control text-center' type='search' formControlName="code"
+                   (keypress)='checkInputNumber($event)'>
           </th>
           <th style='width: 210px'>
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control text-center ' type='search' formControlName='name'
                    placeholder='Trần Gia Hiệu'>
+          </th>
+          <th>
+            <div class='title-profile'>Đơn vị</div>
+            <input class='form-control' type='search' matInput disabled>
           </th>
           <th style='width: 210px'>
             <div class='title-profile'>Chức vụ</div>
@@ -43,10 +48,6 @@
               >
               </nz-option>
             </nz-select>
-          </th>
-          <th>
-            <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type='search' matInput disabled>
           </th>
           <th>
             <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
@@ -74,7 +75,8 @@
           </th>
           <th>
             <div class='border-top d-flex justify-content-center align-items-center'>Kế toán xác nhận</div>
-            <select class='select border-top' style="width: 100%" matNativeControl required formControlName='accConfirmed'>
+            <select class='select border-top' style="width: 100%" matNativeControl required
+                    formControlName='accConfirmed'>
               <option [value]="1">Đã xác nhận</option>
               <option [value]="0">chưa xác nhận</option>
               <option [value]="-1">Mặc định</option>
@@ -120,15 +122,15 @@
               {{payroll?.employee?.lastName}}
             </div>
           </th>
+          <th class='pointer' (click)='readPayroll(payroll)'>
+            <div>
+              {{payroll.branch}}
+            </div>
+          </th>
           <th class='pointer' (click)='readPayroll(payroll)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div>
               {{payroll.position}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.branch}}
             </div>
           </th>
           <th class='pointer' (click)='readPayroll(payroll)'>
@@ -161,7 +163,7 @@
             </div>
           </th>
           <th class='pointer'
-            (click)='readPayroll(payroll)'>
+              (click)='readPayroll(payroll)'>
             <div>
               {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
             </div>
@@ -177,7 +179,7 @@
             </div>
           </th>
           <th class='pointer text-center'>
-            {{payroll?.accConfirmedAt ?(payroll.accConfirmedAt|date:'dd-MM-yyyy'):'Chưa xác nhận'}}
+            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </th>
           <th class='pointer'>
             <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'>
@@ -225,7 +227,8 @@
   .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
-  .table-scroll tbody th{
+
+  .table-scroll tbody th {
     height: 40px;
   }
 </style>
