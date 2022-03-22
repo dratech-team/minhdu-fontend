@@ -36,16 +36,15 @@ export class TemplateOvertimeComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   EmployeeType = EmployeeType;
-  fCtrlPosition = new FormControl('');
   formGroup = new FormGroup({
     title: new FormControl(''),
     price: new FormControl(''),
     unit: new FormControl(''),
     note: new FormControl(''),
     branch: new FormControl([]),
+    position: new FormControl([]),
     employeeType: new FormControl('')
   });
-  positionsSelected: Position[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
   itemContextMenu = ItemContextMenu
@@ -85,11 +84,6 @@ export class TemplateOvertimeComponent implements OnInit {
         })
       )
       .subscribe();
-
-    this.positions$ = searchAutocomplete(
-      this.fCtrlPosition.valueChanges.pipe(startWith('')),
-      this.positions$
-    );
   }
 
   templateOvertime($event?: any) {
@@ -128,7 +122,7 @@ export class TemplateOvertimeComponent implements OnInit {
       unit: val.unit,
       note: val.note,
       branchIds: val.branch ? val.branch.map((val: Branch) => val.id) : [],
-      positionIds: this.positionsSelected.map((val) => val.id)
+      positionIds: val.position ? val.position.map((val: Position) => val.id) : []
     };
     if (!val.unit) {
       delete result.unit
@@ -138,46 +132,6 @@ export class TemplateOvertimeComponent implements OnInit {
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('position')?.patchValue(branchName);
-  }
-
-  onSelectPosition(
-    position: Position,
-    event: any,
-    positionInput: HTMLElement
-  ): any {
-    if (event.isUserInput) {
-      if (this.positionsSelected.length < 3) {
-        if (position.id) {
-          if (this.positionsSelected.some((item) => item.id === position.id)) {
-            this.message.success('chức vụ đã được chọn');
-          } else {
-            this.positionsSelected.push(position);
-            const value = this.formGroup.value;
-            this.store.dispatch(
-              TemplateOvertimeAction.loadInit({
-                templateOvertimeDTO: this.template(value)
-              })
-            );
-          }
-        }
-      } else {
-        this.message.error('Chọn tối đa 3 chức vụ');
-      }
-      setTimeout(() => {
-        this.fCtrlPosition.setValue('');
-        positionInput.blur();
-      });
-    }
-  }
-
-  removePosition(position: Position) {
-    lodash.remove(this.positionsSelected, position);
-    const value = this.formGroup.value;
-    this.store.dispatch(
-      TemplateOvertimeAction.loadInit({
-        templateOvertimeDTO: this.template(value)
-      })
-    );
   }
 
   onOvertime(template: any, position?: Position) {

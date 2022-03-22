@@ -80,33 +80,17 @@
 <!--            </mat-autocomplete>-->
           </th>
           <th style=' width:500px'>
-            <div *ngIf='this.positionsSelected.length === 0 else chip' class='border-top text-center'>Chức vụ</div>
-            <ng-template #chip>
-              <mat-chip-list #chipList>
-                <mat-chip
-                  style='font-size: 12px '
-                  *ngFor='let position of positionsSelected'
-                  [selectable]='true'
-                  [removable]='true'
-                  (removed)='removePosition(position)'>
-                  {{position.name}}
-                  <button class='btn' matChipRemove *ngIf='true'>
-                    <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
-                  </button>
-                </mat-chip>
-              </mat-chip-list>
-            </ng-template>
-            <input class='form-control' type='search' matInput [matAutocomplete]='position'
-                   [formControl]='fCtrlPosition' #positionInput>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option
-                *ngFor='let position of positions$ | async'
-                [value]='position.name'
-                (click)='onSelectPosition(position,$event,positionInput)'
-                (onSelectionChange)='onSelectPosition(position,$event,positionInput)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <div class='border-top text-center'>Chức vụ</div>
+            <nz-select style="width: 100%"
+                       [nzMaxTagCount]="3"
+                       [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                       nzMode="multiple"
+                       nzPlaceHolder="Chọn chức vụ"
+                       formControlName="position"
+            >
+              <nz-option *ngFor="let item of positions$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
           </th>
           <th>
             <div class='border-top text-center'>Chú ý</div>
