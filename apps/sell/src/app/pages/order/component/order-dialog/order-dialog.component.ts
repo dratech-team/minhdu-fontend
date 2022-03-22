@@ -10,6 +10,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {OrderQuery} from "../../+state/order.query";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 
 @Component({
@@ -17,6 +18,7 @@ import {OrderQuery} from "../../+state/order.query";
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data: any
+  customerId!: number
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
@@ -25,6 +27,8 @@ export class OrderDialogComponent implements OnInit {
   commoditiesSelected: CommodityEntity[] = [];
   districtId!: number;
   provinceId!: number
+  stepIndex = 0
+  commodities: CommodityEntity[] = []
 
   constructor(
     private readonly actions$: Actions,
@@ -33,55 +37,102 @@ export class OrderDialogComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly datePipe: DatePipe,
     private readonly orderQuery: OrderQuery,
-    private readonly modalRef: NzModalRef
+    private readonly modalRef: NzModalRef,
+    private readonly message: NzMessageService
   ) {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      createdAt: [this.datePipe.transform(
-        this.data?.order?.createdAt, 'yyyy-MM-dd')
-        , Validators.required],
-      deliveredAt: [this.datePipe.transform(
-        this.data?.order?.deliveredAt, 'yyyy-MM-dd')],
-      explain: [this.data?.order?.explain],
-      province: [this.data?.order?.province, Validators.required],
-      district: [this.data?.order?.district],
-      ward: [this.data?.order?.ward]
-    });
+    if (this.data?.isUpdate) {
+      this.customerId = this.data.order.customerId
+      this.formGroup = this.formBuilder.group({
+        createdAt: [this.datePipe.transform(
+          this.data.order.createdAt, 'yyyy-MM-dd')
+          , Validators.required],
+        endedAt: [this.datePipe.transform(
+          this.data.order?.endedAt, 'yyyy-MM-dd')],
+        deliveredAt: [this.datePipe.transform(
+          this.data.order?.deliveredAt, 'yyyy-MM-dd')],
+        explain: [this.data.order?.explain],
+        province: [this.data.order.province, Validators.required],
+        district: [this.data.order?.district],
+        ward: [this.data.order?.ward]
+      });
+    } else {
+      this.formGroup = this.formBuilder.group({
+        createdAt: ['', Validators.required],
+        deliveredAt: [],
+        endedAt: [],
+        explain: [],
+        province: ['', Validators.required],
+        district: [],
+        ward: []
+      });
+    }
+
   }
 
   get checkValid() {
     return this.formGroup.controls;
   }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.formGroup.invalid) {
-      return;
+  onSubmit(): any {
+    console.log('ssss')
+    if (this.commodities.length === 0) {
+      return this.message.warning('Chưa chọn hàng hoá')
     }
     const val = this.formGroup.value;
     const order = {
-      customerId: this.data.order.customerId,
+      customerId: this.customerId,
       commodityIds: this.commoditiesSelected.map(item => item.id),
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
       explain: val.explain,
       deliveredAt: val.deliveredAt,
-      typeUpdate: this.data.type
+      createdAt: val.createdAt,
+      endedAt: val.endedAt
     };
     if (!val.deliveredAt) {
       delete order.deliveredAt;
     }
-    this.actions$.dispatch(OrderActions.update({
-      id: this.data.order.id,
-      updates: order
-    }));
+    if (this.data?.isUpdate) {
+      this.actions$.dispatch(OrderActions.update({
+        id: this.data.order.id,
+        updates: order
+      }));
+    } else {
+      this.actions$.dispatch(OrderActions.addOne(order))
+    }
     this.orderQuery.select(state => state.added).subscribe(added => {
       if (added) {
         this.modalRef.close()
       }
     })
+  }
+
+  pre(): void {
+    this.stepIndex -= 1;
+  }
+
+  next(): any {
+    this.submitted = true;
+    if (this.stepIndex === 0) {
+      if (this.formGroup.invalid) {
+        return;
+      }
+    }
+    if (this.stepIndex === 1 && !this.customerId) {
+      return this.message.warning('Chưa chọn khách hàng')
+    }
+    this.stepIndex += 1;
+  }
+
+  onPickCustomer(id: number) {
+    this.customerId = id
+  }
+
+  onPickCommodity(commodities: CommodityEntity[]) {
+    this.commodities = commodities
   }
 }

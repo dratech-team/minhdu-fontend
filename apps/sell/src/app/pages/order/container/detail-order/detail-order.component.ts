@@ -22,6 +22,7 @@ import {OrderHistoryEntity} from '../../enitities/order-history.entity';
 import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {NzModalService} from "ng-zorro-antd/modal";
+
 @Component({
   templateUrl: 'detail-order.component.html'
 })
@@ -82,7 +83,7 @@ export class DetailOrderComponent implements OnInit {
         nzContent: OrderDialogComponent,
         nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
-          data: {order: order, tab: 1, type: 'UPDATE'}
+          data: {order: order, tab: 1, isUpdate: true}
         },
         nzFooter: null,
         nzWidth: '65vw',

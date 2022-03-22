@@ -35,9 +35,6 @@ export class OrderEffect {
       this.orderStore.update(state => ({
         ...state, added: false
       }));
-      if (!props?.provinceId) {
-        throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
-      }
       return this.orderService.addOne(props);
     }),
     map((res) => {
@@ -69,7 +66,6 @@ export class OrderEffect {
         ).pipe(
           map((response) => {
               const expanedAll = this.orderQuery.getValue().expandedAll;
-
               this.orderStore.update(state => ({
                 ...state,
                 loading: false,
