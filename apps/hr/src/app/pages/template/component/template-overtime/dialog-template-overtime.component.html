@@ -95,14 +95,15 @@
               {{branch.name}}
             </mat-option>
           </mat-autocomplete>
-          <div class="mt-2" *ngIf="branchSelected">
+          <div class="mt-2" *ngIf="branchesSelected.length > 0" class="border p-1 mt-1 " style="height: 120px ; overflow-y: scroll">
             <mat-chip-list >
               <mat-chip
+                *ngFor="let branch of branchesSelected"
                 [removable]='true'
-                (removed)='onRemoveBranch(branchSelected)'
+                (removed)='onRemoveBranch(branch)'
                 [selectable]='true'
                 [removable]='true'>
-                {{branchSelected?.name}}
+                {{branch?.name}}
                 <button class='btn' matChipRemove *ngIf='true'>
                   <mat-icon style='position: absolute; top:4px ; right: 5px'>cancel</mat-icon>
                 </button>

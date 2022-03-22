@@ -1,5 +1,5 @@
-import { DatetimeUnitEnum, EmployeeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { Branch, Position } from '@minhdu-fontend/data-models';
+import {DatetimeUnitEnum, EmployeeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Branch, Position} from '@minhdu-fontend/data-models';
 
 export interface TemplateOvertime {
   id: number,
@@ -9,13 +9,14 @@ export interface TemplateOvertime {
   unit: DatetimeUnitEnum;
   note?: string;
   positions?: Position [];
-  branch: Branch;
+  branches: Branch [];
   rate: number;
   employeeType: EmployeeType,
 }
+
 export interface ReqOvertime extends Omit<TemplateOvertime, "position" | "branch"> {
   positionIds: number[];
-  branchId: number;
+  branchIds: number[];
 
 }
 
@@ -28,5 +29,5 @@ export interface TemplateOvertimeDTO {
   note?: string,
   positionIds?: number[],
   department?: string,
-  branch?: string
+  branchIds?: number[]
 }

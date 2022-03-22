@@ -57,17 +57,27 @@
               <option value="''">Tất cả</option>
             </select>
           </th>
-          <th>
+          <th style="min-width:200px ">
             <div class='border-top text-center'>Đơn vị</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
-            <mat-autocomplete #branch='matAutocomplete'>
-              <mat-option
-                *ngFor='let branch of branches$ | async'
-                [value]='branch.name'
-                (onSelectionChange)='onSelectBranch(branch.name)'>
-                {{branch.name}}
-              </mat-option>
-            </mat-autocomplete>
+            <nz-select style="width: 100%"
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              nzPlaceHolder="Chọn đơn vị"
+              formControlName="branch"
+            >
+              <nz-option *ngFor="let item of branches$|async" [nzLabel]="item.name" [nzValue]="item"></nz-option>
+            </nz-select>
+            <ng-template #tagPlaceHolder let-branchSelect>và {{ branchSelect.length }} đã chọn</ng-template>
+<!--            <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>-->
+<!--            <mat-autocomplete #branch='matAutocomplete'>-->
+<!--              <mat-option-->
+<!--                *ngFor='let branch of branches$ | async'-->
+<!--                [value]='branch.name'-->
+<!--                (onSelectionChange)='onSelectBranch(branch.name)'>-->
+<!--                {{branch.name}}-->
+<!--              </mat-option>-->
+<!--            </mat-autocomplete>-->
           </th>
           <th style=' width:500px'>
             <div *ngIf='this.positionsSelected.length === 0 else chip' class='border-top text-center'>Chức vụ</div>
@@ -152,14 +162,16 @@
           </th>
           <th
             class='pointer '
-            (click)='templateOvertime(template)'
-            *ngIf='template?.branch'>
-            {{template?.branch?.name}}
-          </th>
-          <th
-            class='pointer '
-            (click)='templateOvertime(template)'
-            *ngIf='!template?.branch'>
+            (click)='templateOvertime(template)'>
+            <mat-chip-list>
+              <mat-chip
+                [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                *ngFor='let branch of template.branches'
+                [selectable]='false'
+                [removable]='false'>
+                {{branch.name}}
+              </mat-chip>
+            </mat-chip-list>
           </th>
           <th
             class='pointer p-1 '

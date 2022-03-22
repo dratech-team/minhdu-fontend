@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-import {Position} from '@minhdu-fontend/data-models';
+import {Branch, Position} from '@minhdu-fontend/data-models';
 import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
@@ -42,7 +42,7 @@ export class TemplateOvertimeComponent implements OnInit {
     price: new FormControl(''),
     unit: new FormControl(''),
     note: new FormControl(''),
-    branch: new FormControl(''),
+    branch: new FormControl([]),
     employeeType: new FormControl('')
   });
   positionsSelected: Position[] = [];
@@ -90,11 +90,6 @@ export class TemplateOvertimeComponent implements OnInit {
       this.fCtrlPosition.valueChanges.pipe(startWith('')),
       this.positions$
     );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
   }
 
   templateOvertime($event?: any) {
@@ -132,10 +127,10 @@ export class TemplateOvertimeComponent implements OnInit {
       price: val.price,
       unit: val.unit,
       note: val.note,
-      branch: val.branch,
+      branchIds: val.branch ? val.branch.map((val: Branch) => val.id) : [],
       positionIds: this.positionsSelected.map((val) => val.id)
     };
-    if(!val.unit){
+    if (!val.unit) {
       delete result.unit
     }
     return result
