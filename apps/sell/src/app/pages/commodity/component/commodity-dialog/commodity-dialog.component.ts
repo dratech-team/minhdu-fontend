@@ -70,7 +70,8 @@ export class CommodityDialogComponent implements OnInit {
           }
         }).afterClosed().subscribe(val => {
           if (val) {
-            Object.assign(commodity, {histored: true});
+            Object.
+            assign(commodity, {histored: true});
           }
           this.actions$.dispatch(
             CommodityAction.update({
