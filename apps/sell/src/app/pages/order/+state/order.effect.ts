@@ -201,15 +201,16 @@ export class OrderEffect {
   );
 
   handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
-    return commodities.map(value => {
-      const index = commoditiesUniq.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
+    const result = JSON.parse(JSON.stringify(commoditiesUniq))
+    commodities.map(value => {
+      const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
       if (index > -1) {
-       Object.assign(commoditiesUniq[index].amount, {amount: commoditiesUniq[index].amount + value.amount})
-        return commoditiesUniq
+        result[index].amount = result[index].amount + value.amount
       } else {
-        return [...commoditiesUniq].concat([{name: value.name, amount:value.amount, code: value.code}])
+        result.push({name: value.name, code: value.code, amount: value.amount})
       }
     })
+    return result
   }
 }
 
