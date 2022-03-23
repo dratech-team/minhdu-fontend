@@ -111,7 +111,14 @@ export class DetailOrderComponent implements OnInit {
   }
 
   updateCommodity(orderId: number, commodity: CommodityEntity) {
-    this.dialog.open(CommodityDialogComponent, {data: {commodity, isUpdate: true, orderId: orderId}, width: '30%'});
+    this.modal.create({
+      nzTitle:'Cập nhật hàng hoá',
+      nzContent:CommodityDialogComponent,
+      nzComponentParams:{
+        data: {commodity, isUpdate: true, orderId: orderId}
+      },
+      nzFooter:null,
+    })
   }
 
   deleteCommodity(commodity: CommodityEntity) {
