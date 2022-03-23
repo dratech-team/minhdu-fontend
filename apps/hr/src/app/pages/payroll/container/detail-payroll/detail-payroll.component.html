@@ -31,14 +31,13 @@
             <div class='row d-flex flex-column '>
               <div class='d-flex justify-content-between font-weight-bold'>
                 <div class="ml-3" routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}'>{{payroll.employee.lastName}}</div>
-                <div style="background: #1b8eb7" class="p-1 rounded">
+                <div (click)="updatePayroll(payroll)" style="background: #1b8eb7" class="p-1 rounded">
                   <img style='height: 10px; width:15px' src='/assets/img/share/pencil-fill.svg' alt='edit icon'>
                 </div>
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
                 <span class='d-inline-block font-weight-bold'>Ngày tạo phiếu lương: </span>
-                <span (click)="updateCreatedAt(payroll.id,payroll.createdAt)"
-                      class='ml-2 pointer border px-1 rounded'>{{payroll.createdAt|date: 'dd/MM/yyyy'}}</span>
+                <span class='ml-2 pointer border px-1 rounded'>{{payroll.createdAt|date: 'dd/MM/yyyy'}}</span>
               </div>
               <div class='col-12 d-flex justify-content-start ' style='color: black'>
                 <span class='d-inline-block font-weight-bold'>Ngày xác nhận phiếu lương: </span>
@@ -62,8 +61,7 @@
               <div routerLink='/ho-so/chi-tiet-nhan-vien/{{payroll.employee.id}}' class='col-6 '
                    style='border-radius: 20px;height: 24px ;min-width: 150px;'>
                 <div class='col-md position btn btn-primary'>
-                  <span class='mr-2'>{{payroll.employee.recipeType}}</span>
-                  |
+                  <span class='mr-2'>{{payroll.recipeType}}</span>
                   <span class='ml-2'>{{payroll.employee.id}}</span>
                 </div>
               </div>
@@ -75,7 +73,7 @@
           <div class='col' style='min-width: 170px'>
             <div class='row d-flex justify-content-center '>Ngày làm việc chuẩn</div>
             <div class='row content-title'>
-              {{payroll.employee.workday}}
+              {{payroll.workday}}
             </div>
           </div>
           <div class='col' style='min-width: 170px'>
