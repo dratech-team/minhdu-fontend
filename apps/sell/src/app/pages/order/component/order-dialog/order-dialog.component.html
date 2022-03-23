@@ -1,7 +1,7 @@
 <nz-steps *ngIf="!data?.isUpdate"  nzSize="small" [nzCurrent]="stepIndex">
   <nz-step nzTitle="Thông tin đơn hàng"></nz-step>
   <nz-step  nzTitle="Chọn khách hàng"></nz-step>
-  <nz-step nzTitle="Chọn đơn hàng"></nz-step>
+  <nz-step nzTitle="Chọn hàng hoá"></nz-step>
 </nz-steps>
 <ng-template [ngIf]="stepIndex === 0">
   <form [formGroup]='formGroup' class="py-4">
