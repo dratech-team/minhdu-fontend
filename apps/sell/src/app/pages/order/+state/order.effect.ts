@@ -15,6 +15,8 @@ import {OrderStore} from './order.store';
 import {RouteAction} from '../../route/+state/route.action';
 import {CommodityUniq} from "../../commodity/entities/commodity-uniq.entity";
 import {CommodityEntity} from "../../commodity/entities/commodity.entity";
+import {arrayUpdate} from "@datorama/akita";
+import {updateCommodityDto} from "../../commodity/dto/update-commodity.dto";
 
 @Injectable()
 export class OrderEffect {
@@ -40,16 +42,16 @@ export class OrderEffect {
       return this.orderService.addOne(props);
     }),
     map((res) => {
-      console.log(res)
       this.orderStore.update(state => ({
         ...state, added: true,
         total: state.total + 1,
-        totalCommodity: state.totalCommodity + (res.totalCommodity || 0),
-        commodityUniq: res.commodities.length > 0 ?
+        totalCommodity: res.commodities.length > 0 ?
+          state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+        commodityUniq: res.commodities?.length > 0 ?
           this.handleCommodityUniq(state.commodityUniq, res.commodities) :
           state.commodityUniq
       }));
-      res.expand = false
+      res.expand = this.orderQuery.getValue().expandedAll || false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
@@ -199,12 +201,16 @@ export class OrderEffect {
   );
 
   handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
-    return commoditiesUniq.map(commodity => {
-      return commodities.map(value => {
-        return Object.assign(commodity, commodity.code === value.code ?
-          {amount: commodity.amount + value.amount} : {})
-      })
+    const result = JSON.parse(JSON.stringify(commoditiesUniq))
+    commodities.forEach(value => {
+      const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
+      if (index > -1) {
+        result[index].amount = result[index].amount + value.amount
+      } else {
+        result.push({name: value.name, code: value.code, amount: value.amount})
+      }
     })
+    return result
   }
 }
 
