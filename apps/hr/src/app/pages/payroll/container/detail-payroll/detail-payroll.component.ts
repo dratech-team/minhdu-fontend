@@ -31,10 +31,10 @@ import {DatePipe} from '@angular/common';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
 import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialog-WFH.component";
-import {FormControl} from "@angular/forms";
 import {
   DialogDatePickerComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
+import {UpdatePayrollComponent} from "../../component/update-payroll/update-payroll.component";
 
 
 @Component({
@@ -249,20 +249,9 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(DialogNoteComponent, {width: 'fit-content', data: {payroll}})
   }
 
-  updateCreatedAt(id: number, createdAt: Date) {
-    this.dialog.open(DialogDatePickerComponent, {
-      width: 'fit-content',
-      data: {
-        titlePopup: 'Cập nhật ngày tạo phiếu lương',
-        title: 'Ngày tạo',
-        dayInit: createdAt
-      }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.store.dispatch(PayrollAction.updatePayroll({
-          id: id, payroll:{createdAt:val.day}
-        }))
-      }
+  updatePayroll(payroll: Payroll) {
+    this.dialog.open(UpdatePayrollComponent, {
+      data: {payroll}
     })
   }
 }

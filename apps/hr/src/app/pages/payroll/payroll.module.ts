@@ -97,6 +97,7 @@ import {
 } from "./component/dialog-salary/table-payroll-selected/table-payroll-selected.component";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {UpdatePayrollComponent} from "./component/update-payroll/update-payroll.component";
 
 @NgModule({
   imports: [
@@ -190,7 +191,8 @@ import {NzInputModule} from "ng-zorro-antd/input";
     PickPayrollOvertimeComponent,
     TableAllowancePayrollComponent,
     PickPayrollComponent,
-    TablePayrollSelectedComponent
+    TablePayrollSelectedComponent,
+    UpdatePayrollComponent
   ],
   providers: [MatDatepickerModule]
 })
