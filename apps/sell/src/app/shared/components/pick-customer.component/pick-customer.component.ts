@@ -18,9 +18,9 @@ import {CustomerConstant} from "../../../pages/customer/constants/customer.const
 })
 export class PickCustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
-
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
+  @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
   customerId!: number;
