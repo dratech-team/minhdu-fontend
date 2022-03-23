@@ -133,6 +133,6 @@ export class OrderDialogComponent implements OnInit {
   }
 
   onPickCommodity(commodities: CommodityEntity[]) {
-    this.commoditiesSelected = [...commodities]
+    this.commoditiesSelected = commodities
   }
 }
