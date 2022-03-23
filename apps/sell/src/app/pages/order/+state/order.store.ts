@@ -9,9 +9,9 @@ export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
   readonly added?: boolean
   readonly expandedAll?: boolean
-  readonly total?: number;
-  readonly commodityUniq?: CommodityUniq[];
-  readonly totalCommodity?: number;
+  readonly total: number;
+  readonly commodityUniq: CommodityUniq[];
+  readonly totalCommodity: number;
   readonly ui?: OrderVisibleEntity;
 }
 
