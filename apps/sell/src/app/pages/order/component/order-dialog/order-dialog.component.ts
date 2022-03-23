@@ -28,7 +28,6 @@ export class OrderDialogComponent implements OnInit {
   districtId!: number;
   provinceId!: number
   stepIndex = 0
-  commodities: CommodityEntity[] = []
 
   constructor(
     private readonly actions$: Actions,
@@ -78,7 +77,7 @@ export class OrderDialogComponent implements OnInit {
 
   onSubmit(): any {
     if(!this.data?.isUpdate){
-      if (this.commodities.length === 0) {
+      if (this.commoditiesSelected.length === 0) {
         return this.message.warning('Chưa chọn hàng hoá')
       }
     }
@@ -134,6 +133,6 @@ export class OrderDialogComponent implements OnInit {
   }
 
   onPickCommodity(commodities: CommodityEntity[]) {
-    this.commodities = commodities
+    this.commoditiesSelected = [...commodities]
   }
 }
