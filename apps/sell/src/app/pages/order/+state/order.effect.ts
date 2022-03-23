@@ -13,6 +13,8 @@ import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
 import {RouteAction} from '../../route/+state/route.action';
+import {CommodityUniq} from "../../commodity/entities/commodity-uniq.entity";
+import {CommodityEntity} from "../../commodity/entities/commodity.entity";
 
 @Injectable()
 export class OrderEffect {
@@ -42,14 +44,10 @@ export class OrderEffect {
       this.orderStore.update(state => ({
         ...state, added: true,
         total: state.total + 1,
-        totalCommodity: res.totalCommodity ? state.totalCommodity + res.totalCommodity: state.totalCommodity ,
-        commodityUniq: res.commodities.length > 0 ? state.commodityUniq.map(val => {
-          res.commodities?.forEach(commodity => {
-            if (commodity.code === val.code) {
-              val.amount = val.amount + commodity.amount
-            }
-          })
-        }) : state.commodityUniq
+        totalCommodity: state.totalCommodity + (res.totalCommodity || 0),
+        commodityUniq: res.commodities.length > 0 ?
+          this.handelCommodityUniq(state.commodityUniq, res.commodities) :
+          state.commodityUniq
       }));
       res.expand = false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
@@ -199,4 +197,16 @@ export class OrderEffect {
     ),
     catchError((err) => throwError(err))
   );
+
+  handelCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
+    return commoditiesUniq.map(commodity => {
+      commodities.forEach(value => {
+          if (commodity.code === value.code) {
+            commodity.amount = commodity.amount + value.amount
+          }
+        }
+      )
+    })
+  }
 }
+
