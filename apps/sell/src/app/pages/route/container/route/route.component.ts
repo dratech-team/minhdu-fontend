@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, RadiosStatusRouteConstant } from '@minhdu-fontend/constants';
-import { SortRouteEnum } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { ItemContextMenu } from 'libs/enums/sell/page-type.enum';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { RouteAction } from '../../+state/route.action';
-import { RouteEntity } from '../../entities/route.entity';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { RouteQuery } from '../../+state/route.query';
-import { DatePipe } from '@angular/common';
-import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
-import { OrderActions } from '../../../order/+state/order.actions';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { RouteStore } from '../../+state/route.store';
-import { Sort } from '@minhdu-fontend/data-models';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, RadiosStatusRouteConstant} from '@minhdu-fontend/constants';
+import {SortRouteEnum} from '@minhdu-fontend/enums';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {RouteAction} from '../../+state/route.action';
+import {RouteEntity} from '../../entities/route.entity';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {RouteQuery} from '../../+state/route.query';
+import {DatePipe} from '@angular/common';
+import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
+import {OrderActions} from '../../../order/+state/order.actions';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {RouteStore} from '../../+state/route.store';
+import {Sort} from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -40,10 +40,14 @@ export class RouteComponent implements OnInit {
 
   formGroup = new FormGroup({
     search: new FormControl(),
-    startedAt: new FormControl(
-      this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
-    endedAt: new FormControl(
-      this.datePipe.transform(getLastDayInMonth(new Date()), 'yyyy-MM-dd')),
+    startedAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
+    endedAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
     driver: new FormControl(''),
     name: new FormControl(''),
     bsx: new FormControl(''),
@@ -78,7 +82,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteAction.loadAll({ params: this.mapRoute(val) }));
+          this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val)}));
         })
       )
       .subscribe();
@@ -99,7 +103,7 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.actions$.dispatch(RouteAction.remove({ idRoute: $event.id }));
+        this.actions$.dispatch(RouteAction.remove({idRoute: $event.id}));
       }
     });
   }
@@ -117,20 +121,22 @@ export class RouteComponent implements OnInit {
       .subscribe((val) => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.update({ id: event.id, updates: { endedAt: val.day } })
+            RouteAction.update({id: event.id, updates: {endedAt: val.day}})
           );
         }
       });
   }
 
   detailRoute(id: number, isUpdate: boolean) {
-    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], { queryParams: { isUpdate } }).then();
+    this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
   onPickStartedDay($event: any) {
+    this.formGroup.get('startedAt')?.setValue($event)
   }
 
   onPickEndedAtDay($event: any) {
+    this.formGroup.get('endedAt')?.setValue($event)
   }
 
   onPagination(pageIndex: number) {
@@ -147,9 +153,9 @@ export class RouteComponent implements OnInit {
   onExpandAll() {
     const expanedAll = this.routeQuery.getValue().expandedAll;
     this.routeQuery.getAll().forEach((route: RouteEntity) => {
-      this.routeStore.update(route.id, { expand: !expanedAll });
+      this.routeStore.update(route.id, {expand: !expanedAll});
     });
-    this.routeStore.update(state => ({ ...state, expandedAll: !expanedAll }));
+    this.routeStore.update(state => ({...state, expandedAll: !expanedAll}));
   }
 
   onSort(sort: Sort) {

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Api, CurrenciesConstant, radiosStatusOrderConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
@@ -27,6 +27,7 @@ import {OrderStore} from '../../+state/order.store';
 import {Sort} from '@minhdu-fontend/data-models';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../component/order-dialog/order-dialog.component";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -66,12 +67,14 @@ export class OrderComponent implements OnInit {
     customer: new FormControl(''),
     status: new FormControl(-1),
     explain: new FormControl(''),
-    startedAt: new FormControl(''),
-    endedAt: new FormControl(''),
-    createStartedAt: new FormControl(),
-    createEndedAt: new FormControl(),
-    deliveryStartedAt: new FormControl(),
-    deliveryEndedAt: new FormControl(),
+    endedAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
+    createdAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
     deliveredAt: new FormControl(),
     commodityTotal: new FormControl(''),
     province: new FormControl(''),
@@ -112,7 +115,7 @@ export class OrderComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Thêm đơn hàng',
       nzContent: OrderDialogComponent,
-      nzWidth:'80vw',
+      nzWidth: '80vw',
       nzFooter: null
     })
     // this.router.navigate(['don-hang/them-don-hang']).then();
@@ -182,13 +185,16 @@ export class OrderComponent implements OnInit {
   }
 
   onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveryStartedAt')?.setValue($event.startedAt, {emitEvent: false});
-    this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt);
+    this.formGroup.get('deliveredAt')?.setValue($event);
   }
 
   onPickCreatedAt($event: any) {
-    this.formGroup.get('createStartedAt')?.setValue($event.startedAt, {emitEvent: false});
-    this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
+    this.formGroup.get('createdAt')?.setValue($event);
+
+  }
+
+  onPickEndedAt($event: any) {
+    this.formGroup.get('endedAt')?.setValue($event);
   }
 
   onExpandAll() {
@@ -211,27 +217,8 @@ export class OrderComponent implements OnInit {
       skip: isPagination ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
-    if (!value?.createStartedAt && !value?.createEndedAt) {
-      delete value?.createStartedAt;
-      delete value?.createEndedAt;
-    }
-    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
-      delete value?.deliveryStartedAt;
-      delete value?.deliveryEndedAt;
-    }
-
-    if (!value?.startedAt && !value?.endedAt) {
-      delete value?.startedAt;
-      delete value?.endedAt;
-    }
-
-    if (!value?.deliveredAt) {
-      delete value?.deliveredAt;
-    }
-
-    if (value?.startedAt && !value?.endedAt) {
-      value.endedAt = value?.startedAt;
-      this.formGroup.get('endedAt')?.patchValue(value.endedAt);
+    if (value?.status !== 1) {
+      delete value.deliveredAt;
     }
 
     if (this.valueSort?.orderType) {

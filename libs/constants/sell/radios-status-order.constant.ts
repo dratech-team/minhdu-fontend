@@ -1,11 +1,11 @@
 export const radiosStatusOrderConstant = [
   {
     name: 'Đang giao',
-    value: 1
+    value: 0
   },
   {
     name: 'Đã giao',
-    value: 0
+    value: 1
   },
   {
     name: 'tất cả',
