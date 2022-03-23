@@ -95,7 +95,6 @@ export class CommodityEffect {
                 ...state, added: true
               }))
               this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
-              console.log(props.inOrder)
               if (props.inOrder && props.updates.orderId) {
                 this.actions$.dispatch(OrderActions.loadOne({id: props.updates.orderId}))
               }
