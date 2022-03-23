@@ -118,7 +118,7 @@ export class DetailOrderComponent implements OnInit {
       nzTitle: 'Cập nhật hàng hoá',
       nzContent: CommodityDialogComponent,
       nzComponentParams: {
-        data: {commodity, isUpdate: true, orderId: orderId}
+        data: {commodity, isUpdate: true,}
       },
       nzFooter: null,
     })
@@ -158,7 +158,6 @@ export class DetailOrderComponent implements OnInit {
             orderId: orderId,
             closed: !commodity.closed
           },
-          inOrder: true
         }));
       }
     });

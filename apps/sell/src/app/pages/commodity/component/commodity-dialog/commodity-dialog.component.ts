@@ -57,11 +57,9 @@ export class CommodityDialogComponent implements OnInit {
       gift: value.gift,
       more: value.more,
       unit: value.unit,
-      closed: this.data?.orderId ? this.data.commodity.closed : false,
-      orderId: this.data?.orderId
     };
     if (this.data?.isUpdate) {
-      if (this.data?.orderId) {
+      if (this.data?.commodity?.orderId) {
         this.dialog.open(DialogSharedComponent, {
           width: 'fit-content',
           data: {
@@ -72,14 +70,24 @@ export class CommodityDialogComponent implements OnInit {
           if (val) {
             Object.assign(commodity, {histored: true});
           }
+          Object.assign(commodity, {
+            closed: this.data.commodity.closed || false,
+            orderId: this.data.commodity?.orderId
+          })
           this.actions$.dispatch(
             CommodityAction.update({
               id: this.data.commodity.id,
               updates: commodity,
-              inOrder: !!this.data.orderId
             })
-          );
+          )
         });
+      }else {
+        this.actions$.dispatch(
+          CommodityAction.update({
+            id: this.data.commodity.id,
+            updates: commodity,
+          })
+        );
       }
     } else {
       this.actions$.dispatch(
