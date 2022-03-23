@@ -94,7 +94,6 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.commodityUniq$.subscribe(val => console.log(val))
     this.actions$.dispatch(OrderActions.loadAll({
       param: this.mapOrder(this.formGroup.value)
     }));
