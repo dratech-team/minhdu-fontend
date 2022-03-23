@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Api, CurrenciesConstant, radiosStatusOrderConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
