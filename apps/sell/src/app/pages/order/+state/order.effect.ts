@@ -49,7 +49,7 @@ export class OrderEffect {
           this.handleCommodityUniq(state.commodityUniq, res.commodities) :
           state.commodityUniq
       }));
-      res.expand = false
+      res.expand = this.orderQuery.getValue().expandedAll || false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
