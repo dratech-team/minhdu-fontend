@@ -202,7 +202,7 @@ export class OrderEffect {
 
   handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
     const result = JSON.parse(JSON.stringify(commoditiesUniq))
-    commodities.map(value => {
+    commodities.forEach(value => {
       const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
       if (index > -1) {
         result[index].amount = result[index].amount + value.amount
