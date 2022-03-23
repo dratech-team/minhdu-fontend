@@ -46,7 +46,7 @@ export class OrderEffect {
         total: state.total + 1,
         totalCommodity: state.totalCommodity + (res.totalCommodity || 0),
         commodityUniq: res.commodities.length > 0 ?
-          this.handelCommodityUniq(state.commodityUniq, res.commodities) :
+          this.handleCommodityUniq(state.commodityUniq, res.commodities) :
           state.commodityUniq
       }));
       res.expand = false
@@ -198,14 +198,12 @@ export class OrderEffect {
     catchError((err) => throwError(err))
   );
 
-  handelCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
+  handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
     return commoditiesUniq.map(commodity => {
-      commodities.forEach(value => {
-          if (commodity.code === value.code) {
-            commodity.amount = commodity.amount + value.amount
-          }
-        }
-      )
+      return commodities.map(value => {
+        return Object.assign(commodity, commodity.code === value.code ?
+          {amount: commodity.amount + value.amount} : {})
+      })
     })
   }
 }
