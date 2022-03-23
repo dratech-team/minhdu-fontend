@@ -95,7 +95,7 @@
       </div>
     </ng-template>
     <ng-template [ngIf]="stepIndex === 1">
-      <div style="max-width: 80vw">
+      <div class="pt-2" style="max-width: 80vw">
         <app-pick-order [orderSelected]='orderIdsOfRoute'
                         (checkCommodityEvent)="pickCommodity($event)"
                         [commoditiesSelected]="commoditySelected"
