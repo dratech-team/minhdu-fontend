@@ -11,6 +11,7 @@ import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {OrderQuery} from "../../+state/order.query";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -134,5 +135,9 @@ export class OrderDialogComponent implements OnInit {
 
   onPickCommodity(commodities: CommodityEntity[]) {
     this.commoditiesSelected = commodities
+  }
+
+  adding(): Observable<boolean> {
+    return this.orderQuery.select(state => state.adding)
   }
 }

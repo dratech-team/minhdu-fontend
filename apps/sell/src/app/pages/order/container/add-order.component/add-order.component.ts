@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CommodityUnit, CustomerResource, CustomerType, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {CommodityUnit, CustomerResource, CustomerType, PaymentType} from '@minhdu-fontend/enums';
 import {PickCommodityComponent} from 'apps/sell/src/app/shared/components/pick-commodity/pick-commodity.component';
 import {
   PickCustomerComponent
