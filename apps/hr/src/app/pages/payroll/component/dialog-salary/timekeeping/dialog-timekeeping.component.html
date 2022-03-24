@@ -100,7 +100,7 @@
           </div>
           <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
         </mat-tab>
-        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn phiếu lương'>
+        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-payroll [payrollsSelected]="payrollSelected"
                             [createdPayroll]='formGroup.get("datetime")?.value'
                             (EventSelectPayroll)="pickPayroll($event)"
@@ -113,7 +113,7 @@
           </div>
         </mat-tab>
         <mat-tab
-          label='Phiếu lương đã chọn ({{this.payrollSelected.length}})'>
+          label='Nhân viên đã chọn ({{this.payrollSelected.length}})'>
           <app-table-payroll-selected
             [payrolls]="payrollSelected"
             (EventSelectPayroll)="pickPayroll($event)"

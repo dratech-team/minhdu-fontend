@@ -11,7 +11,7 @@ import {TemplateOvertimeAction} from '../../../../template/+state/template-overt
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {map, startWith} from 'rxjs/operators';
 import {TemplateOvertime} from '../../../../template/+state/template-overtime/template-overtime.interface';
-import {getAllPosition} from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {getAllPosition, PositionActions} from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import {MatStepper} from '@angular/material/stepper';
 import {Employee, PartialDayEnum, Position} from '@minhdu-fontend/data-models';
 import {searchAutocomplete} from '../../../../../../../../../libs/utils/orgchart.ultil';
@@ -73,6 +73,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   ];
 
   ngOnInit(): void {
+    this.store.dispatch(PositionActions.loadPosition())
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
     if (this.data.isUpdate) {
       this.firstDayInMonth = this.datePipe.transform(
@@ -111,11 +112,11 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
           if (!val) {
             this.positionOfTempOver = [];
           }
-         const param = {
-           positionIds: this.positionsSelected.map(val => val.id),
-           unit: this.unit
-         }
-          if(!this.unit){
+          const param = {
+            positionIds: this.positionsSelected.map(val => val.id),
+            unit: this.unit
+          }
+          if (!this.unit) {
             delete param.unit
           }
           this.store.dispatch(
@@ -131,7 +132,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
 
     this.positions$ = searchAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(getAllPosition))
+      this.positions$
     );
 
     this.formGroup.get('days')?.valueChanges.subscribe(days => {

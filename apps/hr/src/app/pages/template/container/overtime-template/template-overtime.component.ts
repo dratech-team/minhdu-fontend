@@ -7,8 +7,7 @@ import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryT
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
-import * as lodash from 'lodash';
-import {debounceTime, startWith, tap} from 'rxjs/operators';
+import {debounceTime, tap} from 'rxjs/operators';
 import {TemplateOvertimeAction} from '../../+state/template-overtime/template-overtime.action';
 import {
   selectorAllTemplate,
@@ -16,12 +15,10 @@ import {
   selectTemplateLoaded,
   selectTotalTemplateOvertime
 } from '../../+state/template-overtime/template-overtime.selector';
-import {searchAutocomplete} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {PayrollAction} from '../../../payroll/+state/payroll/payroll.action';
 import {DialogTemplateOvertimeComponent} from '../../component/template-overtime/dialog-template-overtime.component';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {of} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({

@@ -70,7 +70,8 @@ export class PickPayrollComponent implements OnInit, OnChanges {
       this.payrollService.paginationPayroll(
         Object.assign(this.mapPayroll(this.formGroup.value), {
           take: this.pageSize,
-          skip: this.pageIndex
+          skip: this.pageIndex,
+          createdAt: changes.createdPayroll.currentValue
         })
       ).subscribe(res => {
         if (res.data.length === 0) {
