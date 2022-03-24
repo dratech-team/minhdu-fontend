@@ -8,6 +8,7 @@ import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -106,5 +107,9 @@ export class RouteDialogComponent implements OnInit {
       return;
     }
     this.stepIndex += 1;
+  }
+
+  adding(): Observable<boolean> {
+    return this.routeQuery.select(state => state.adding)
   }
 }

@@ -96,7 +96,6 @@ export class CustomerEffect {
       this.customerStore.update(state => ({
         ...state, added: true, adding: false
       }));
-      console.log(res);
       this.customerStore.update(res.id, res);
     }),
     catchError((err) => throwError(err))
