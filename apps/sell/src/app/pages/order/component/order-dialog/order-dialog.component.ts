@@ -29,6 +29,7 @@ export class OrderDialogComponent implements OnInit {
   districtId!: number;
   provinceId!: number
   stepIndex = 0
+  added$ = this.orderQuery.select(state => state.added)
 
   constructor(
     private readonly actions$: Actions,
@@ -77,7 +78,7 @@ export class OrderDialogComponent implements OnInit {
   }
 
   onSubmit(): any {
-    if(!this.data?.isUpdate){
+    if (!this.data?.isUpdate) {
       if (this.commoditiesSelected.length === 0) {
         return this.message.warning('Chưa chọn hàng hoá')
       }
@@ -105,7 +106,7 @@ export class OrderDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(OrderActions.addOne(order))
     }
-    this.orderQuery.select(state => state.added).subscribe(added => {
+   this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close()
       }
@@ -135,9 +136,5 @@ export class OrderDialogComponent implements OnInit {
 
   onPickCommodity(commodities: CommodityEntity[]) {
     this.commoditiesSelected = commodities
-  }
-
-  adding(): Observable<boolean> {
-    return this.orderQuery.select(state => state.adding)
   }
 }

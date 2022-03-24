@@ -21,7 +21,7 @@ export class RouteDialogComponent implements OnInit {
   commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
   stepIndex = 0;
-
+  added$ = this.routeQuery.select(state => state.added)
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -90,7 +90,7 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(RouteAction.addOne(route));
     }
-    this.routeQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }
@@ -107,9 +107,5 @@ export class RouteDialogComponent implements OnInit {
       return;
     }
     this.stepIndex += 1;
-  }
-
-  adding(): Observable<boolean> {
-    return this.routeQuery.select(state => state.adding)
   }
 }

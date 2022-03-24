@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Actions, createEffect, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {CommodityService} from '../service/commodity.service';
 import {CommodityAction} from './commodity.action';
 import {throwError} from 'rxjs';
@@ -8,7 +8,6 @@ import {OrderActions} from '../../order/+state/order.actions';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityQuery} from './commodity.query';
 import {CommodityStore} from './commodity.store';
-import {CommodityEntity} from "../entities/commodity.entity";
 
 @Injectable()
 export class CommodityEffect {
@@ -26,14 +25,14 @@ export class CommodityEffect {
     ofType(CommodityAction.addOne),
     switchMap((props) => {
         this.commodityStore.update(state => ({
-          ...state, added: false, adding: true
+          ...state, added: false
         }))
         return this.commodityService.addOne(props)
       }
     ),
     map(commodity => {
         this.commodityStore.update(state => ({
-          ...state, added: true, adding: false
+          ...state, added: true
         }))
         this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
         this.commodityStore.add(commodity);
@@ -87,12 +86,12 @@ export class CommodityEffect {
     ofType(CommodityAction.update),
     switchMap((props) => {
         this.commodityStore.update(state => ({
-          ...state, added: false, adding: true
+          ...state, added: false
         }))
         return this.commodityService.update(props.id, props.updates).pipe(
           map(commodity => {
               this.commodityStore.update(state => ({
-                ...state, added: true, adding: false
+                ...state, added: true
               }))
               this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
               if (props.updates?.orderId) {

@@ -20,7 +20,7 @@ export class CommodityDialogComponent implements OnInit {
   commodities$ = this.service.getTemplate();
   CommodityUnit = CommodityUnit;
   formGroup!: FormGroup
-
+  added$ = this.commodityQuery.select(state => state.added)
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -95,14 +95,10 @@ export class CommodityDialogComponent implements OnInit {
         CommodityAction.addOne(commodity)
       );
     }
-    this.commodityQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }
     });
-  }
-
-  loading(): Observable<boolean>{
-    return this.commodityQuery.select(state => state.adding)
   }
 }

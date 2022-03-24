@@ -111,7 +111,6 @@ export class RouteEffect {
       this.routeStore.update(state => ({
         ...state,
         added: false,
-        adding: true
       }));
       return this.routeService.update(props.id, props.updates)
     }),
@@ -120,7 +119,6 @@ export class RouteEffect {
       this.routeStore.update(state => ({
         ...state,
         added: true,
-        adding: false
       }));
       this.message.success('Cập nhật thành công');
       return this.routeStore.update(route.id, Object.assign(route, {

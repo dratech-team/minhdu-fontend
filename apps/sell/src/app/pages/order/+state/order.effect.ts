@@ -37,14 +37,13 @@ export class OrderEffect {
     ofType(OrderActions.addOne),
     switchMap((props) => {
       this.orderStore.update(state => ({
-        ...state, added: false, adding: true
+        ...state, added: false
       }));
       return this.orderService.addOne(props);
     }),
     map((res) => {
       this.orderStore.update(state => ({
         ...state, added: true,
-        adding: false,
         total: state.total + 1,
         totalCommodity: res.commodities.length > 0 ?
           state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
@@ -126,13 +125,13 @@ export class OrderEffect {
     ofType(OrderActions.update),
     switchMap((props) => {
         this.orderStore.update(state => ({
-          ...state, added: false, adding: true
+          ...state, added: false
         }));
         return this.orderService.update(props.id, props.updates).pipe(
           map((response) => {
 
             this.orderStore.update(state => ({
-              ...state, added: true, adding: false
+              ...state, added: true
             }));
             if (props.inRoute) {
               this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));

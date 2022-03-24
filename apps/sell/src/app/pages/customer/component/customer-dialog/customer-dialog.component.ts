@@ -8,7 +8,6 @@ import {CustomerQuery} from '../../+state/customer.query';
 import {AddCustomerDto} from '../../dto/add-customer.dto';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -17,6 +16,7 @@ export class CustomerDialogComponent implements OnInit {
   @Input() data: any
   customerType = CustomerType;
   resourceType = CustomerResource;
+  added$ = this.customerQuery.select(state => state.added)
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
@@ -102,7 +102,7 @@ export class CustomerDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(CustomerActions.addOne(customer));
     }
-    this.customerQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }
@@ -111,10 +111,6 @@ export class CustomerDialogComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
-  }
-
-  adding(): Observable<boolean> {
-    return this.customerQuery.select(state => state.adding)
   }
 }
 
