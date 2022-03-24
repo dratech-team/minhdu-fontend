@@ -143,7 +143,6 @@ export class OrderStore extends EntityStore<OrderState> {
   }
 
   updateUI(type: Partial<OrderVisibleEntity>) {
-
     return this.update(state => {
       return {
         ...state,

@@ -28,6 +28,7 @@ export class CustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
   total$ = this.customerQuery.select(state => state.total)
+  ui$ = this.customerQuery.select(state => state.ui)
 
   pageSize = 25;
   pageIndexInit = 0;
@@ -49,6 +50,7 @@ export class CustomerComponent implements OnInit {
     gender: new FormControl(this.stateSearch.gender),
     search: new FormControl(this.stateSearch.search)
   });
+  visible = false
 
   constructor(
     private readonly actions$: Actions,

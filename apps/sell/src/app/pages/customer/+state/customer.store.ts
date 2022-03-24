@@ -4,6 +4,7 @@ import {CustomerEntity} from '../entities/customer.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {SearchCustomerEntity} from "../entities/search-customer.entity";
 import {CustomerResource, CustomerType, Gender} from "@minhdu-fontend/enums";
+import {CustomerVisibleEntity} from "../entities/customer-visible.entity";
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
@@ -11,7 +12,8 @@ export interface CustomerState extends EntityState<CustomerEntity> {
   total: number
   deliveredLoading: boolean;
   deliveringLoading: boolean;
-  search: SearchCustomerEntity
+  search: SearchCustomerEntity;
+  ui: CustomerVisibleEntity
 }
 
 const createInitState = () => ({
@@ -26,6 +28,52 @@ const createInitState = () => ({
     customerType: CustomerType.ALL,
     gender: Gender.ALL,
     search: ''
+  },
+  ui: {
+    stt: {
+      pinned: true,
+      visible: true
+    },
+    name: {
+      pinned: true,
+      visible: true
+    },
+    phone: {
+      pinned: false,
+      visible: true
+    },
+    birthday: {
+      pinned: false,
+      visible: true
+    },
+    gender: {
+      pinned: false,
+      visible: true
+    },
+    resource: {
+      pinned: false,
+      visible: true
+    },
+    potential: {
+      pinned: false,
+      visible: true
+    },
+    customerType: {
+      pinned: false,
+      visible: true
+    },
+    email: {
+      pinned: false,
+      visible: true
+    },
+    address: {
+      pinned: false,
+      visible: true
+    },
+    note: {
+      pinned: false,
+      visible: true
+    },
   }
 });
 
@@ -34,5 +82,14 @@ const createInitState = () => ({
 export class CustomerStore extends EntityStore<CustomerState> {
   constructor() {
     super(createInitState());
+  }
+
+  updateUI(type: Partial<CustomerVisibleEntity>) {
+    return this.update(state => {
+      return {
+        ...state,
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+      };
+    });
   }
 }
