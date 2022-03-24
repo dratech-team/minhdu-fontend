@@ -51,7 +51,6 @@ export class OrderEffect {
           this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
           state.commodityUniq
       }));
-      console.log(res)
       res.expand = this.orderQuery.getValue().expandedAll || false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
