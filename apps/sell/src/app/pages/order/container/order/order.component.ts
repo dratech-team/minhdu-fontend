@@ -11,11 +11,11 @@ import {
   SortOrderEnum,
   StatusOrder
 } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderActions } from '../../+state/order.actions';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderActions} from '../../+state/order.actions';
 import * as _ from 'lodash';
 import {
   DialogSharedComponent
@@ -27,7 +27,6 @@ import {OrderStore} from '../../+state/order.store';
 import {Sort} from '@minhdu-fontend/data-models';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../component/order-dialog/order-dialog.component";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -98,7 +97,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ param: this.mapOrder(val) })
+            OrderActions.loadAll({param: this.mapOrder(val)})
           );
         })
       )
