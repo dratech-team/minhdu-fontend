@@ -12,10 +12,12 @@
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker
         [title]="'Ngày hẹn giao'"
+        [rangeDayInit]="stateSearch.endedAt"
         (onPicker)='onPickEndedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker
+        [rangeDayInit]="stateSearch.createdAt"
         title='Ngày tạo'
         (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
@@ -27,6 +29,7 @@
     </div>
     <div class='mt-2' *ngIf="formGroup.get('status')?.value === 1">
       <minhdu-fontend-collapse-datepicker
+        [rangeDayInit]="stateSearch?.deliveredAt"
         title='Ngày giao hàng'
         (onPicker)='onPickDeliveryDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>

@@ -1,9 +1,11 @@
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Injectable } from '@angular/core';
-import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
-import { OrderEntity } from '../enitities/order.interface';
-import { StorageName } from '../../../shared/constaints/storage-name.const';
-import { OrderVisibleEntity } from '../enitities/order-visible.entity';
+import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
+import {Injectable} from '@angular/core';
+import {CommodityUniq} from '../../commodity/entities/commodity-uniq.entity';
+import {OrderEntity} from '../enitities/order.interface';
+import {StorageName} from '../../../shared/constaints/storage-name.const';
+import {OrderVisibleEntity} from '../enitities/order-visible.entity';
+import {OrderSearchEntity} from "../enitities/order-search.entity";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
@@ -13,6 +15,7 @@ export interface OrderState extends EntityState<OrderEntity> {
   readonly commodityUniq: CommodityUniq[];
   readonly totalCommodity: number;
   readonly ui?: OrderVisibleEntity;
+  readonly search: OrderSearchEntity
 }
 
 function createInitState(): OrderState {
@@ -25,6 +28,28 @@ function createInitState(): OrderState {
     entities: undefined,
     ids: [],
     totalCommodity: 0,
+    search: {
+      search: '',
+      paidType: '',
+      customer: '',
+      status: -1,
+      explain: '',
+      endedAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      createdAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      deliveredAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      province: '',
+      bsx: '',
+      commodity: ''
+    },
     ui: {
       id: {
         pinned: false,
@@ -126,8 +151,8 @@ function createInitState(): OrderState {
   };
 }
 
-@Injectable({ providedIn: 'root' })
-@StoreConfig({ name: StorageName.ORDER })
+@Injectable({providedIn: 'root'})
+@StoreConfig({name: StorageName.ORDER})
 export class OrderStore extends EntityStore<OrderState> {
   constructor() {
     super(createInitState());
