@@ -150,6 +150,7 @@
             (click)='templateOvertime(template)'>
             <mat-chip-list>
               <mat-chip
+                style="z-index: -1!important;"
                 [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
                 *ngFor='let branch of template.branches'
                 [selectable]='false'
@@ -209,8 +210,5 @@
 
   .table-scroll thead th:nth-child(2){
     z-index: 5;
-  }
-  .table-scroll thead th:nth-child(7){
-    z-index: 4;
   }
 </style>
