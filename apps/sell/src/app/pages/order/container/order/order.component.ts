@@ -27,7 +27,6 @@ import {OrderStore} from '../../+state/order.store';
 import {Sort} from '@minhdu-fontend/data-models';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../component/order-dialog/order-dialog.component";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'order.component.html'
@@ -57,6 +56,7 @@ export class OrderComponent implements OnInit {
   pageSize = 25;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
+  visible = false;
   pageSizeTable = 10;
   expanedAll$ = this.orderQuery.select(state => state.expandedAll);
   stateSearch = this.orderQuery.getValue().search

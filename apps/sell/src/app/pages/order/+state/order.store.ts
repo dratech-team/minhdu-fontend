@@ -8,7 +8,7 @@ import {OrderSearchEntity} from "../enitities/order-search.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
-  readonly loading: boolean;
+  readonly loading: boolean
   readonly added?: boolean | null
   readonly expandedAll?: boolean
   readonly total: number;
@@ -51,10 +51,6 @@ function createInitState(): OrderState {
       commodity: ''
     },
     ui: {
-      id: {
-        pinned: false,
-        visible: false
-      },
       stt: {
         pinned: true,
         visible: true
@@ -64,7 +60,7 @@ function createInitState(): OrderState {
         visible: true
       },
       createdAt: {
-        pinned: true,
+        pinned: false,
         visible: true
       },
       explain: {
@@ -72,12 +68,12 @@ function createInitState(): OrderState {
         visible: false
       },
       commodityTotal: {
-        pinned: true,
+        pinned: false,
         visible: true
       },
       paymentTotal: {
         pinned: false,
-        visible: false
+        visible: true
       },
       deliveredAt: {
         pinned: true,
@@ -90,10 +86,6 @@ function createInitState(): OrderState {
       currency: {
         pinned: false,
         visible: false
-      },
-      routes: {
-        pinned: false,
-        visible: true
       },
       paidAt: {
         pinned: false,
@@ -111,41 +103,33 @@ function createInitState(): OrderState {
         pinned: false,
         visible: false
       },
-      province: {
+      destination: {
         pinned: false,
         visible: true
       },
-      district: {
-        pinned: false,
-        visible: false
-      },
-      ward: {
-        pinned: false,
-        visible: false
-      },
-      isSelect: {
-        pinned: false,
-        visible: false
-      },
       endedAt: {
-        pinned: false,
-        visible: false
-      },
-      hide: {
-        pinned: false,
-        visible: false
+        pinned: true,
+        visible: true
       },
       totalCommodity: {
         pinned: false,
-        visible: false
+        visible: true
       },
       expand: {
         pinned: false,
-        visible: false
+        visible: true
       },
       paymentHistories: {
         pinned: false,
         visible: false
+      },
+      vans: {
+        pinned: false,
+        visible: true
+      },
+      status: {
+        pinned: false,
+        visible: true
       }
     }
   };
@@ -158,11 +142,12 @@ export class OrderStore extends EntityStore<OrderState> {
     super(createInitState());
   }
 
-  updateUI(type: OrderVisibleEntity) {
+  updateUI(type: Partial<OrderVisibleEntity>) {
+
     return this.update(state => {
       return {
         ...state,
-        ui: type
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
       };
     });
   }
