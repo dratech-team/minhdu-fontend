@@ -3,15 +3,16 @@ import {Injectable} from '@angular/core';
 import {RouteEntity} from '../entities/route.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {SearchRouteEntity} from "../entities/search-route.entity";
-import {RangeDay} from "@minhdu-fontend/data-models";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {routeVisible} from "../entities/route-visible.entity";
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
   added: boolean | null,
   total: number,
   expandedAll: boolean,
-  search: SearchRouteEntity
+  search: SearchRouteEntity,
+  readonly ui?: routeVisible;
 }
 
 export const createInitialState = () => ({
@@ -30,6 +31,44 @@ export const createInitialState = () => ({
       end: getLastDayInMonth(new Date())
     },
     status: -1
+  },
+  ui: {
+    stt: {
+      pinned: true,
+      visible: true
+    },
+    name: {
+      pinned: false,
+      visible: true
+    },
+    startedAt: {
+      pinned: false,
+      visible: true
+    },
+    endedAt: {
+      pinned: false,
+      visible: true
+    },
+    driver: {
+      pinned: false,
+      visible: true
+    },
+    customer: {
+      pinned: false,
+      visible: true
+    },
+    BSX: {
+      pinned: false,
+      visible: true
+    },
+    garage: {
+      pinned: false,
+      visible: true
+    },
+    status: {
+      pinned: false,
+      visible: true
+    }
   }
 });
 
@@ -38,5 +77,15 @@ export const createInitialState = () => ({
 export class RouteStore extends EntityStore<RouteState> {
   constructor() {
     super(createInitialState());
+  }
+
+  updateUI(type: Partial<routeVisible>) {
+
+    return this.update(state => {
+      return {
+        ...state,
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+      };
+    });
   }
 }

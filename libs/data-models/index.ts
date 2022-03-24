@@ -25,6 +25,7 @@ export  * from './partial-day.enum'
 export  * from './hr/employee/category'
 export  * from './sort'
 export  * from './range-day'
+export  * from './visible'
 
 
 

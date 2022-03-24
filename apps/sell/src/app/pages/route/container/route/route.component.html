@@ -39,6 +39,13 @@
       <div class='d-flex justify-content-between mt-3'>
         <button (click)='add()' nz-button nzType='primary' class='mr-2'>Thêm</button>
         <button (click)='printRouter()' nz-button nzType='default'>Xuất</button>
+        <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
+                [(nzPopoverVisible)]='visible'
+                nzPopoverPlacement='bottomRight'
+                [nzPopoverContent]='pinColumn'
+                nzPopoverTrigger='click'
+        >Ghim
+        </button>
       </div>
     </div>
     <div class='mt-2'>
@@ -52,6 +59,7 @@
         [nzData]='(routes$ | async)'
         [nzPageSize]='pageSizeTable'
         (nzPageIndexChange)='onPagination($event)'
+        *ngIf="(ui$|async) as ui"
       >
         <thead>
         <tr>
@@ -61,29 +69,36 @@
               <img src='assets/icon/share/plus-square.svg'>
             </ng-template>
           </th>
-          <th nzWidth='70px'>STT</th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.NAME ,orderType:$event})'>
+          <th *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false' nzWidth='70px'>STT</th>
+          <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.NAME ,orderType:$event})'>
             Tên Tuyến đường
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.START ,orderType:$event})'>
+          <th *ngIf="ui.startedAt.visible" [nzLeft]='ui.startedAt?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.START ,orderType:$event})'>
             Ngày bắt đầu
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.END ,orderType:$event})'>
+          <th *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.END ,orderType:$event})'>
             Ngày Kết thúc
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})'>
+          <th *ngIf="ui.driver.visible" [nzLeft]='ui.driver?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})'>
             Tên Tài xế
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>
+          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>
             Khách hàng
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
+          <th *ngIf="ui.BSX.visible" [nzLeft]='ui.BSX?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
             Biển số xe
           </th>
-          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.GARAGE ,orderType:$event})'>
+          <th *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'
+              [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.GARAGE ,orderType:$event})'>
             Nhà xe
           </th>
-          <th>
+          <th *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'>
             Trạng thái chuyến xe
           </th>
         </tr>
@@ -92,25 +107,42 @@
         <ng-template ngFor let-route [ngForOf]='tableRoute.data' let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
             <td nzLeft [(nzExpand)]='route.expand'></td>
-            <td (click)='detailRoute(route.id, false)'>{{(i + 1) + ((tableRoute.nzPageIndex - 1) * 10)}}</td>
-            <td (click)='detailRoute(route.id, false)'>{{route?.name || 'Chưa cập nhật'}}</td>
-            <td (click)='detailRoute(route.id, false)'>
+            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
+              {{(i + 1) + ((tableRoute.nzPageIndex - 1) * 10)}}
+            </td>
+            <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
+              {{route?.name || 'Chưa cập nhật'}}
+            </td>
+            <td *ngIf="ui.startedAt.visible" [nzLeft]='ui.startedAt?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
-            <td (click)='detailRoute(route.id, false)'>
+            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
               {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
-            <td (click)='detailRoute(route.id, false)'>{{route?.driver || route?.employee?.lastName}}</td>
-            <td (click)='detailRoute(route.id, false)'>
+            <td *ngIf="ui.driver.visible" [nzLeft]='ui.driver?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
+              {{route?.driver || route?.employee?.lastName}}
+            </td>
+            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
               <div class=' d-flex align-items-center justify-content-center pointer ' [ngClass]='{
               "border-top": route.orders.length > 1 && index  !== 0
               }' *ngFor='let order of route.orders; let index = index'>
                 {{order.customer.lastName}}
               </div>
             </td>
-            <td (click)='detailRoute(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
-            <td (click)='detailRoute(route.id, false)'>{{route?.garage || 'Chưa cập nhật'}}</td>
-            <td (click)='detailRoute(route.id, false)'>
+            <td *ngIf="ui.BSX.visible" [nzLeft]='ui.BSX?.pinned||false'
+                (click)='detailRoute(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
+            <td *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
+              {{route?.garage || 'Chưa cập nhật'}}
+            </td>
+            <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
+                (click)='detailRoute(route.id, false)'>
               {{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
             </td>
           </tr>
@@ -143,6 +175,9 @@
   </div>
 </div>
 
+<ng-template #pinColumn>
+  <minhdu-fontend-pinned-route></minhdu-fontend-pinned-route>
+</ng-template>
 
 <app-mouse-right
   #child
