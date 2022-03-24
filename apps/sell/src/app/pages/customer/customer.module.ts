@@ -36,6 +36,8 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {VisibleCustomerComponent} from "./component/custom-visible/visible-customer.component";
 
 @NgModule({
     imports: [
@@ -71,13 +73,15 @@ import {NzButtonModule} from "ng-zorro-antd/button";
         NzTableModule,
         NzInputModule,
         NzButtonModule,
+        NzPopoverModule,
     ],
   declarations: [
     TablePaymentComponent,
     CustomerComponent,
     DetailCustomerComponent,
     CustomerDialogComponent,
-    PaymentDialogComponent
+    PaymentDialogComponent,
+    VisibleCustomerComponent
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
