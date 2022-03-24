@@ -3,7 +3,7 @@ import {AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild} fr
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Api, PayrollConstant} from '@minhdu-fontend/constants';
 import {
   EmployeeType,
@@ -12,7 +12,7 @@ import {
   SalaryTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions, PositionService} from '@minhdu-fontend/orgchart';
+import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, map, takeUntil} from 'rxjs/operators';
@@ -56,7 +56,9 @@ import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 export class PayrollComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatSort) sort!: MatSort;
   categoryControl = new FormControl('');
+  formIsLeave = new FormControl(false)
   formGroup = new FormGroup({
+    accConfirmed: new FormControl(-1),
     name: new FormControl(''),
     code: new FormControl(''),
     paidAt: new FormControl(''),
@@ -127,6 +129,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   searchBranchAllowance?: Branch;
   searchBranchStay?: Branch;
   searchBranchAbsent?: Branch;
+  selectIsLeaveOvertime?: boolean
+  selectIsLeaveAbsent?: boolean
+  selectIsLeaveBasic?: boolean
+  selectIsLeaveAllowance?: boolean
+  selectIsLeaveStay?: boolean
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -137,13 +144,17 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
     private readonly categoryService: CategoryService,
-    private readonly positionService: PositionService
+    private readonly activeRouter: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
     this.role = window.localStorage.getItem('role')
-    this.loadInitPayroll();
+    this.activeRouter.queryParams.subscribe((val) => {
+      if (!val.titleOvertime) {
+        this.loadInitPayroll();
+      }
+    });
     this.daysInMonth = rageDaysInMonth(this.createdAt);
     this.store.dispatch(OrgchartActions.init());
 
@@ -221,15 +232,42 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
         this.loadInitPayroll();
+      } else {
+        this.addCategory()
       }
     });
 
-    this.formCtrlBranch.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
+    this.formIsLeave.valueChanges.subscribe(isLeave => {
+      switch (this.selectPayroll.value) {
+        case FilterTypeEnum.ABSENT:
+          this.selectIsLeaveAbsent = isLeave
+          break;
+        case FilterTypeEnum.BASIC:
+          this.selectIsLeaveBasic = isLeave
+          break;
+        case FilterTypeEnum.STAY:
+          this.selectIsLeaveStay = isLeave
+          break;
+        case FilterTypeEnum.OVERTIME:
+          this.selectIsLeaveOvertime = isLeave
+          break;
+        case FilterTypeEnum.ALLOWANCE:
+          this.selectIsLeaveAllowance = isLeave
+          break;
+        default :
+          this.store.dispatch(PayrollAction.loadInit({
+            payrollDTO: this.mapPayroll(this.formGroup.value)
+          }))
+      }
+    })
+
+
+    this.formCtrlBranch.valueChanges.pipe().subscribe(branch => {
       if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
       this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: branch ? branch: ' '
+        branch: branch ? branch : ' '
       }))
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:
@@ -276,11 +314,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: val.code,
       name: val.name,
       position: val.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
+      branch: this.formCtrlBranch.value?.name || '',
       createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
+      isLeave: this.formIsLeave.value,
+      accConfirmed: val.accConfirmed,
       employeeType:
         this.selectedPayroll === FilterTypeEnum.SEASONAL
           ? EmployeeType.EMPLOYEE_SEASONAL
@@ -537,10 +577,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
+      branch: this.formCtrlBranch?.value?.name || '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      exportType: FilterTypeEnum.PAYROLL
+      exportType: FilterTypeEnum.PAYROLL,
+      isLeave: this.formIsLeave.value,
     };
     if (value.createdAt) {
       Object.assign(payroll, {createdAt: new Date(value.createdAt)});
@@ -549,7 +590,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng lương',
-        exportType: FilterTypeEnum.PAYROLL,
         params: payroll,
         isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
@@ -563,8 +603,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
-      branch: this.formCtrlBranch.value ? this.formCtrlBranch.value.name : '',
-      exportType: FilterTypeEnum.TIME_SHEET
+      branch: this.formCtrlBranch?.value?.name || '',
+      exportType: FilterTypeEnum.TIME_SHEET,
+      isLeave: this.formIsLeave.value,
     };
     if (value.createdAt) {
       Object.assign(payroll, {createdAt: new Date(value.createdAt)});
@@ -573,7 +614,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       width: 'fit-content',
       data: {
         title: 'Xuât bảng chấm công',
-        exportType: FilterTypeEnum.TIME_SHEET,
         params: payroll,
         isPayroll: true,
         api: Api.HR.PAYROLL.EXPORT
@@ -612,6 +652,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   onSelectPosition($event: Position) {
-    this.formGroup.get('position')?.setValue($event,{emitEvent: false})
+    this.formGroup.get('position')?.setValue($event, {emitEvent: false})
   }
 }

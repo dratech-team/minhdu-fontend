@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {debounceTime, tap} from 'rxjs/operators';
 import {document} from 'ngx-bootstrap/utils';
 import {OrderEntity} from '../../../pages/order/enitities/order.interface';
@@ -12,6 +11,7 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../../pages/order/+state/order.query';
 import {LoadOrderDto} from '../../../pages/order/dto/load-order.dto';
 import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 
 @Component({
@@ -20,6 +20,7 @@ import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entit
   styleUrls: ['pick-route.component.scss']
 })
 export class PickOrderComponent implements OnInit, OnChanges {
+  @Input() data: any
   @Input() orders: OrderEntity[] = [];
   @Input() commoditiesSelected: CommodityEntity[] = [];
   @Input() pickOne = false;
@@ -41,6 +42,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   orderPickOne!: OrderEntity;
   paidType = PaidType;
   isSelectAll = false;
+  pageSizeTable = 7
   formGroup = new FormGroup(
     {
       filterRoute: new FormControl(false),
@@ -52,11 +54,9 @@ export class PickOrderComponent implements OnInit, OnChanges {
   eventSearch = true;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
-    private readonly dialog: MatDialog,
-    private dialogRef: MatDialogRef<PickOrderComponent>
+    private readonly modalRef: NzModalRef
   ) {
   }
 
@@ -101,19 +101,23 @@ export class PickOrderComponent implements OnInit, OnChanges {
     }
   }
 
-  onScroll() {
+  onPagination(pageIndex: number) {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
-      const val = this.formGroup.value;
-      this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isScroll: true}));
+      const count = this.orderQuery.getCount()
+      if (pageIndex * this.pageSizeTable >= count) {
+        const val = this.formGroup.value;
+        this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isPagination: true}));
+      }
     }
   }
 
-  mapOrder(isScroll?: boolean): LoadOrderDto {
+  mapOrder(isPagination?: boolean): LoadOrderDto {
     const val = this.formGroup.value
     const param = {
       take: this.pageSize,
-      skip: isScroll ? this.orderQuery.getCount() : this.pageIndex,
+      paidType: val.paidType,
+      skip: isPagination ? this.orderQuery.getCount() : this.pageIndex,
       filterRoute: val.filterRoute,
       customer: val.name.trim(),
       explain: val.explain.trim(),
@@ -189,8 +193,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         this.orderPickOne = pickOrder[i].value;
       }
     }
-    //case: pick multiple
-    this.dialogRef.close(this.orderPickOne);
+    this.modalRef.close(this.orderPickOne);
   }
 
   checkOrder(order: OrderEntity) {

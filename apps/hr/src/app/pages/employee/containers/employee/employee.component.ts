@@ -48,6 +48,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
+import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -57,8 +58,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
   @ViewChild(MatSort) sort!: MatSort;
 
-  districts$!: Observable<District[]>;
-  wards$!: Observable<Ward[]>;
+  districts: District[] = []
+  wards: Ward[] = []
 
   scrollX$ = this.store.select(selectorScrollXTotal);
   total$ = this.store.select(selectorTotalEmployee);
@@ -67,12 +68,12 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
   positions$ = this.store.pipe(select(getAllPosition))
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.categories$ = this.categoryService.getAll({branchId: branches[0].name});
-      this.formGroup.get('branch')?.setValue(branches[0].name, {emitEvent: false});
+      this.categories$ = this.categoryService.getAll({branchId: branches[0].id});
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false});
     }
     return branches;
   }));
-  provinces$ = this.store.pipe(select(selectAllProvince));
+  provinces$ = this.provinceService.getAll()
 
   roleEnum = Role;
   sortEnum = sortEmployeeTypeEnum;
@@ -122,6 +123,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly message: NzMessageService,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
+    private readonly provinceService: ProvinceService,
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -134,9 +136,8 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.role = window.localStorage.getItem('role');
-    this.store.dispatch(ProvinceAction.loadAllProvinces());
     this.activeRouter.queryParams.subscribe(val => {
-      if(val.branch){
+      if (val.branch) {
         this.formGroup.get('branch')?.setValue(JSON.parse(val.branch), {emitEvent: false});
         this.categories$ = this.categoryService.getAll({branchId: JSON.parse(val.branch).id})
       }
@@ -186,11 +187,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       }
     });
 
-    this.provinces$ = searchAutocomplete(
-      this.formGroup.get('province')?.valueChanges.pipe(startWith('')) || of(''),
-      this.provinces$
-    );
-
     this.eventScrollX.pipe(
       debounceTime(200)
     ).subscribe(event => {
@@ -207,12 +203,21 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       }
     });
 
-    this.formGroup.get('branch')?.valueChanges.pipe(debounceTime(1500)).subscribe(branch => {
-      if(branch){
+    this.formGroup.get('branch')?.valueChanges.subscribe(branch => {
+      if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
-
       this.categories$ = this.categoryService.getAll({branch: branch.name});
+    });
+
+    this.formGroup.get('province')?.valueChanges.subscribe(province => {
+      this.formGroup.get('district')?.setValue('')
+      this.formGroup.get('ward')?.setValue('')
+      this.districts = province?.districts || []
+    });
+    this.formGroup.get('district')?.valueChanges.subscribe(district => {
+      this.formGroup.get('ward')?.setValue('')
+      this.wards = district?.wards || []
     });
   }
 
@@ -260,9 +265,9 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       phone: val.phone,
       identity: val.identity,
       address: val.address,
-      province: val.province,
-      district: val.district,
-      ward: val.ward,
+      province: val.province?.name || '',
+      district: val.district?.name || '',
+      ward: val.ward?.name || '',
       gender: val.gender,
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
@@ -285,32 +290,6 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       // delete employee.workedAt;
       return employee;
     }
-  }
-
-  onSelectProvince(province: Province) {
-    this.districts$ = new Observable(sub => {
-      sub.next(province.districts);
-    });
-    this.districts$ = searchAutocomplete(
-      this.formGroup.get('district')?.valueChanges.pipe(startWith('')) || of(''),
-      this.districts$
-    );
-    this.formGroup.get('province')?.patchValue(province.name);
-  }
-
-  onSelectDistrict(district: District) {
-    this.wards$ = new Observable(sub => {
-      sub.next(district.wards);
-    });
-    this.wards$ = searchAutocomplete(
-      this.formGroup.get('ward')?.valueChanges.pipe(startWith('')) || of(''),
-      this.wards$
-    );
-    this.formGroup.get('district')?.patchValue(district.name);
-  }
-
-  onSelectWard(wardName: string) {
-    this.formGroup.get('ward')?.patchValue(wardName);
   }
 
   onScroll() {

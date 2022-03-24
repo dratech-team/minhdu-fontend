@@ -35,30 +35,32 @@
             <input type='text' class='form-control' id='explain' formControlName='explain'>
           </div>
         </div>
-        <div class='row mt-3 ml-2 d-flex flex-column'>
-          <div class='d-flex'>
-            <div>
+        <div class='mt-3 d-flex'>
+          <div class='d-flex ml-2'>
+            <div class="col-3">
               <label for='deliveriedAt' class='h5'>Ngày hẹn giao</label>
               <input type='date' class='form-control' id='deliveriedAt' formControlName='endedAt'>
             </div>
-            <app-pick-location
-              class='col-9'
-              [formGroup]='formGroup'
-              [form]='checkValid'
-              [submitting]='submitted'
-              [isRequiredDistrict]='false'
-              [isRequiredWard]='false'
-            ></app-pick-location>
+            <div class="col-9">
+              <app-pick-location
+                [formGroup]='formGroup'
+                [form]='checkValid'
+                [submitting]='submitted'
+                [isRequiredDistrict]='false'
+                [isRequiredWard]='false'
+              ></app-pick-location>
+            </div>
+
           </div>
         </div>
-        <div *ngIf='customerPicked' class='animated fadeIn'>
+        <div *ngIf='customerPicked'  class='animated fadeIn mt-3'>
           <div class='h5 ml-4'> Khách hàng</div>
-          <div class='mt-2 ml-4 pointer' (click)='pickCustomer()'>
+          <div class='mt-2 mb-1 ml-4 pointer' (click)='pickCustomer()'>
             <div
               class='d-flex justify-content-center align-items-center '
               style='width: 200px;
                         height: 40px;
-                        background-color: #f0f2f4;
+                        background-color: white;
                         border: 1px solid #d3d7de;
                         border-radius: 4px;'>
               <span class='h5' style='color: #20a8d8; margin-bottom: 0'>
@@ -66,46 +68,54 @@
               </span>
             </div>
           </div>
-          <table class='mb-1 ml-4' style='width:98%'>
+          <nz-table class="ml-4" nzShowPagination="false" [nzData]="[customerPicked]" #tableCustomer>
+            <thead>
             <tr>
-              <th class='text-center'>Tên khách hàng</th>
-              <th class='text-center'>Số điện thoại</th>
-              <th class='text-center'>Loại khách hàng</th>
-              <th class='text-center'>Nguồn khác hàng</th>
-              <th class='text-center'>Email</th>
+              <th>Tên khách hàng</th>
+              <th>Số điện thoại</th>
+              <th>Loại khách hàng</th>
+              <th>Nguồn khác hàng</th>
+              <th>Email</th>
               <!--              <th class='text-center'>Bỏ chọn</th>-->
             </tr>
-            <tr>
-              <td class='text-center'>{{customerPicked.lastName}}</td>
-              <td class='text-center'>{{customerPicked?.phone}}</td>
-              <td
-                class='text-center'> {{customerPicked?.type === customerType.AGENCY ? 'Đại lý' : customerPicked?.type === customerType.RETAIL ? 'Khách lẻ' : 'Chưa cập nhật'}}</td>
-              <td class='text-center'>
-                {{
-                customerPicked?.resource === resourceType.SELF_FIND
-                  ? 'Tự tìm'
-                  : customerPicked?.resource === resourceType.RESEARCH
-                    ? 'Tra cứu'
-                    : customerPicked?.resource === resourceType.INTRODUCED
-                      ? 'Giới thiệu'
-                      : 'Khác'
-                }}
-              </td>
-              <td class='text-center' *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
-              <td class='text-center' *ngIf='!customerPicked?.email'>Chưa cập nhật</td>
-              <!--              <td class='text-center'>-->
-              <!--                <button (click)='deleteCustomerId()' style=' font-size: 10px'-->
-              <!--                        class='btn btn-danger '>Bỏ chọn-->
-              <!--                </button>-->
-              <!--              </td>-->
-            </tr>
-          </table>
-        </div>
+            </thead>
+            <tbody>
+            <ng-template let-customerPicked ngFor [ngForOf]="tableCustomer.data">
+              <tr>
+                <td>{{customerPicked.lastName}}</td>
+                <td>{{customerPicked?.phone}}</td>
+                <td> {{customerPicked?.type === customerType.AGENCY ?
+                  'Đại lý' : customerPicked?.type === customerType.RETAIL ?
+                    'Khách lẻ' : 'Chưa cập nhật'}}
+                </td>
+                <td>
+                  {{
+                  customerPicked?.resource === resourceType.SELF_FIND
+                    ? 'Tự tìm'
+                    : customerPicked?.resource === resourceType.RESEARCH
+                      ? 'Tra cứu'
+                      : customerPicked?.resource === resourceType.INTRODUCED
+                        ? 'Giới thiệu'
+                        : 'Khác'
+                  }}
+                </td>
+                <td *ngIf='customerPicked?.email'>{{customerPicked.email}} </td>
+                <td *ngIf='!customerPicked?.email'>Chưa cập nhật</td>
+                <!--              <td class='text-center'>-->
+                <!--                <button (click)='deleteCustomerId()' style=' font-size: 10px'-->
+                <!--                        class='btn btn-danger '>Bỏ chọn-->
+                <!--                </button>-->
+                <!--              </td>-->
+              </tr>
+            </ng-template>
 
-        <div class='mt-5 ml-4 pointer animated fadeIn' *ngIf='!customerPicked' (click)='pickCustomer()'
-             style='width:98%'>
+            </tbody>
+
+          </nz-table>
+        </div>
+        <div class='mt-5 ml-4 pointer animated fadeIn' *ngIf='!customerPicked' (click)='pickCustomer()'>
           <div class=' d-flex justify-content-center align-items-center ' style=' height: 63px;
-                  background-color: #f0f2f4;
+                  background-color: white;
                   border: 1px solid #d3d7de;
                   border-radius: 4px;'><span class='h5' style='color: #20a8d8;  margin-bottom: 0'>Chọn Khách hàng <img
             class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
@@ -117,15 +127,18 @@
             <div class=' ml-4  my-2' (click)='pickCommodities()'>
               <div class=' d-flex justify-content-center align-items-center ' style=' width: 200px;
                         height: 40px;
-                        background-color: #f0f2f4;
+                        background-color: white;
                         border: 1px solid #d3d7de;
                         border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8 ; margin-bottom: 0'>
                 Chọn hàng hóa <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>
               </div>
             </div>
-            <table class='mb-1 ml-4'>
+            <nz-table [nzData]="commoditiesPicked"
+                      #tableCommodities
+                      nzShowPagination="false"
+              class='mb-1 ml-4'>
               <thead>
-              <tr style='height: 35px' class='border-top border-bottom'>
+              <tr style='height: 35px'>
                 <th class='text-center'>Mã hàng hóa</th>
                 <th class='text-center'>Tên hàng hóa</th>
                 <th class='text-center'>Đơn giá</th>
@@ -138,29 +151,32 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor='let commodity of commoditiesPicked'>
-                <td class='text-center'> {{commodity.code}} </td>
-                <td class='text-center'> {{commodity.name}} </td>
-                <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</td>
-                <td class='text-center'>{{commodity.amount | number :'1.0-0'}} </td>
-                <td class='text-center'>{{commodity.gift | number :'1.0-0' | notEmpty:'0'}} </td>
-                <td class='text-center'>{{commodity.more?.amount | number :'1.0-0' | notEmpty:'0'}} </td>
-                <td class='text-center'> {{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}} đ</td>
-                <!--                <td class='text-center '> {{commodity?.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}}</td>-->
-                <td class='text-center'>
-                  <button (click)='deleteCommodity(commodity)' style=' font-size: 10px' class='btn btn-danger'>
-                    Bỏ chọn
-                  </button>
-                </td>
-              </tr>
+              <ng-template ngFor let-commodity [ngForOf]="tableCommodities.data">
+                <tr>
+                  <td class='text-center'> {{commodity.code}} </td>
+                  <td class='text-center'> {{commodity.name}} </td>
+                  <td class='text-center'>{{commodity.price | number:'1.0-0' | notEmpty:'Theo thời giá'}}</td>
+                  <td class='text-center'>{{commodity.amount | number :'1.0-0'}} </td>
+                  <td class='text-center'>{{commodity.gift | number :'1.0-0' | notEmpty:'0'}} </td>
+                  <td class='text-center'>{{commodity.more?.amount | number :'1.0-0' | notEmpty:'0'}} </td>
+                  <td class='text-center'> {{commodity.more?.price | number:'1.0-0' | notEmpty:'0'}} đ</td>
+                  <!--                <td class='text-center '> {{commodity?.unit === commodityUnit.KG ? 'Kilogam' : 'Con'}}</td>-->
+                  <td class='text-center'>
+                    <button (click)='deleteCommodity(commodity)' nzDanger nz-button nzType="default">
+                      Bỏ chọn
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+
               </tbody>
-            </table>
+            </nz-table>
           </div>
         </div>
         <div class=' ml-4  my-5 animated fadeIn ' *ngIf='commoditiesPicked.length === 0' style='width:98%'
              (click)='pickCommodities()'>
           <div class=' d-flex justify-content-center align-items-center ' style=' height: 63px;
-                  background-color: #f0f2f4;
+                  background-color: white;
                   border: 1px solid #d3d7de;
                   border-radius: 4px;'><span class='h5 pointer' style='color: #20a8d8;  margin-bottom: 0'>Chọn hàng hóa
               <img class='ml-2' src='assets/icon/share/plus-lg.svg' alt='plus'> </span>

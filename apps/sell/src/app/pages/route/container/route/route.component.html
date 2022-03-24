@@ -1,71 +1,82 @@
-<div class="d-flex">
-  <div class="d-flex flex-column ml-3 border p-2" style="height: 80vh;overflow-y: scroll; width:280px ">
+<div class='d-flex'>
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh;overflow-y: scroll; width:280px '>
     <nz-collapse>
       <nz-collapse-panel
-        nzHeader="Tìm kiếm"
-        nzActive="true">
-        <div [formGroup]="formGroup">
-          <input nz-input class="form-control" type="search" formControlName="search">
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-    <div class="mt-2">
-      <minhdu-fontend-collapse-radios [formGroup]="formGroup" [controlName]="'status'" [active]="true"
-                                      header="Trạng thái tuyến xe" [radios]="radios">
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-radios
+        [formGroup]='formGroup' [controlName]="'status'" [active]='true'
+        header='Trạng thái tuyến xe' [radios]='radios'>
       </minhdu-fontend-collapse-radios>
     </div>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-datepicker [title]="'Ngày bắt đầu'"
-                                          (onPicker)='onPickStartedDay($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-datepicker
+        [title]="'Ngày bắt đầu'"
+        (onPicker)='onPickStartedDay($event)'>
+      </minhdu-fontend-collapse-datepicker>
     </div>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-datepicker title='Ngày kết thúc'
-                                          (onPicker)='onPickEndedAtDay($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-datepicker
+        title='Ngày kết thúc'
+        (onPicker)='onPickEndedAtDay($event)'></minhdu-fontend-collapse-datepicker>
     </div>
   </div>
-  <div class="ml-3" style='width: 76vw; height: 80vh'>
-    <div class="d-flex justify-content-between">
+  <div class='ml-3' style='width: 76vw; height: 80vh'>
+    <div class='d-flex justify-content-between'>
       <div class=' h3 mt-3 '>
         Danh sách tuyến đường
       </div>
       <div class='d-flex justify-content-between mt-3'>
-        <button (click)='add()' class='btn btn-primary font-lg '>Thêm</button>
-        <a (click)='printRouter()' target='_blank' download='data.xlsx'
-           class='btn text-white btn-primary font-lg ml-3'>Xuất</a>
+        <button (click)='add()' nz-button nzType='primary' class='mr-2'>Thêm</button>
+        <button (click)='printRouter()' nz-button nzType='default'>Xuất</button>
       </div>
     </div>
-    <div class='my-3'>
-      <nz-table #tableRoute
-                [nzScroll]="{ x: '2000px',y: '70vh'}"
-                nzSize='default'
-                [nzFrontPagination]='true'
-                [nzShowPagination]='false'
-                [nzData]="(routes$|async)"
-                (nzQueryParams)='paramChange($event)'
+    <div class='mt-2'>
+      <div class='mb-1'><span class='font-weight-bold'>Tổng tuyến đường:</span> {{total$ | async}}</div>
+      <nz-table
+        #tableRoute
+        [nzLoading]='loading$ | async'
+        [nzScroll]="{ x: '2000px',y: '70vh'}"
+        nzSize='default'
+        [nzShowPagination]='true'
+        [nzData]='(routes$ | async)'
+        [nzPageSize]='pageSizeTable'
+        (nzPageIndexChange)='onPagination($event)'
       >
         <thead>
         <tr>
-          <th nzWidth="50px"></th>
-          <th nzWidth="70px">STT</th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.NAME}}'>
+          <th nzLeft nzWidth='50px' (click)='onExpandAll()'>
+            <img *ngIf='(expandAll$ | async) else dash_square' src='assets/icon/share/dash-square.svg'>
+            <ng-template #dash_square>
+              <img src='assets/icon/share/plus-square.svg'>
+            </ng-template>
+          </th>
+          <th nzWidth='70px'>STT</th>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.NAME ,orderType:$event})'>
             Tên Tuyến đường
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.START}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.START ,orderType:$event})'>
             Ngày bắt đầu
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.END}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.END ,orderType:$event})'>
             Ngày Kết thúc
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.DRIVER ,orderType:$event})'>
             Tên Tài xế
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.CUSTOMER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>
             Khách hàng
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.BSX}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
             Biển số xe
           </th>
-          <th [nzSortFn]='true' nzColumnKey='{{sortRouteEnum.DRIVER}}'>
+          <th [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.GARAGE ,orderType:$event})'>
             Nhà xe
           </th>
           <th>
@@ -74,10 +85,10 @@
         </tr>
         </thead>
         <tbody>
-        <ng-template ngFor let-route [ngForOf]="tableRoute.data" let-i='index'>
+        <ng-template ngFor let-route [ngForOf]='tableRoute.data' let-i='index'>
           <tr (contextmenu)='child.onContextMenu($event, route)' class='pointer'>
-            <td [(nzExpand)]='route.expand'></td>
-            <td (click)='detailRoute(route.id, false)'>{{i + 1}}</td>
+            <td nzLeft [(nzExpand)]='route.expand'></td>
+            <td (click)='detailRoute(route.id, false)'>{{(i + 1) + ((tableRoute.nzPageIndex - 1) * 10)}}</td>
             <td (click)='detailRoute(route.id, false)'>{{route?.name || 'Chưa cập nhật'}}</td>
             <td (click)='detailRoute(route.id, false)'>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
@@ -103,15 +114,15 @@
             <nz-table #innerTable [nzData]='route.orders' nzSize='small' [nzShowPagination]='false'>
         <thead>
         <tr>
-          <th class="text-center">Tên khách hàng</th>
-          <th class="text-center">Ngày tạo</th>
-          <th class="text-center">Điểm đến</th>
-          <th class="text-center">Tiền hàng</th>
-          <th class="text-center">Tổng hàng hoá</th>
+          <th class='text-center'>Tên khách hàng</th>
+          <th class='text-center'>Ngày tạo</th>
+          <th class='text-center'>Điểm đến</th>
+          <th class='text-center'>Tiền hàng</th>
+          <th class='text-center'>Tổng hàng hoá</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let order of innerTable.data">
+        <tr *ngFor='let order of innerTable.data'>
           <td>{{order.customer.lastName}}</td>
           <td>{{order.createdAt|date:'dd-MM-yyyy'}}</td>
           <td>{{order?.province?.name}} - {{order?.district?.name}} - {{order?.ward?.name}}</td>

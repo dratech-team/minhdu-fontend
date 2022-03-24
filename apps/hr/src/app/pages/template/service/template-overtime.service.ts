@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { UpdateNum } from '@ngrx/entity/src/models';
 
 @Injectable({providedIn:'root'})
 export class TemplateOvertimeService extends BaseService<TemplateOvertime>{

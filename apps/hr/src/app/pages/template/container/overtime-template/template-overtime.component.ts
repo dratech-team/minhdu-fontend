@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-import {Position} from '@minhdu-fontend/data-models';
-import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
@@ -36,18 +36,19 @@ export class TemplateOvertimeComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   EmployeeType = EmployeeType;
-  fCtrlPosition = new FormControl('');
   formGroup = new FormGroup({
     title: new FormControl(''),
     price: new FormControl(''),
     unit: new FormControl(''),
     note: new FormControl(''),
-    branch: new FormControl(''),
+    branch: new FormControl([]),
+    position: new FormControl([]),
     employeeType: new FormControl('')
   });
-  positionsSelected: Position[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart));
+  itemContextMenu = ItemContextMenu
+  ;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -83,16 +84,6 @@ export class TemplateOvertimeComponent implements OnInit {
         })
       )
       .subscribe();
-
-    this.positions$ = searchAutocomplete(
-      this.fCtrlPosition.valueChanges.pipe(startWith('')),
-      this.positions$
-    );
-
-    this.branches$ = searchAutocomplete(
-      this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
-      this.branches$
-    );
   }
 
   templateOvertime($event?: any) {
@@ -123,60 +114,24 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   template(val: any) {
-    return {
+    const result = {
       take: this.pageSize,
       skip: this.pageIndexInit,
       title: val.title,
       price: val.price,
       unit: val.unit,
       note: val.note,
-      branch: val.branch,
-      positionIds: this.positionsSelected.map((val) => val.id)
+      branchIds: val.branch ? val.branch.map((val: Branch) => val.id) : [],
+      positionIds: val.position ? val.position.map((val: Position) => val.id) : []
     };
+    if (!val.unit) {
+      delete result.unit
+    }
+    return result
   }
 
   onSelectBranch(branchName: string) {
     this.formGroup.get('position')?.patchValue(branchName);
-  }
-
-  onSelectPosition(
-    position: Position,
-    event: any,
-    positionInput: HTMLElement
-  ): any {
-    if (event.isUserInput) {
-      if (this.positionsSelected.length < 3) {
-        if (position.id) {
-          if (this.positionsSelected.some((item) => item.id === position.id)) {
-            this.message.success('chức vụ đã được chọn');
-          } else {
-            this.positionsSelected.push(position);
-            const value = this.formGroup.value;
-            this.store.dispatch(
-              TemplateOvertimeAction.loadInit({
-                templateOvertimeDTO: this.template(value)
-              })
-            );
-          }
-        }
-      } else {
-        this.message.error('Chọn tối đa 3 chức vụ');
-      }
-      setTimeout(() => {
-        this.fCtrlPosition.setValue('');
-        positionInput.blur();
-      });
-    }
-  }
-
-  removePosition(position: Position) {
-    lodash.remove(this.positionsSelected, position);
-    const value = this.formGroup.value;
-    this.store.dispatch(
-      TemplateOvertimeAction.loadInit({
-        templateOvertimeDTO: this.template(value)
-      })
-    );
   }
 
   onOvertime(template: any, position?: Position) {
@@ -188,10 +143,11 @@ export class TemplateOvertimeComponent implements OnInit {
         })
       );
     }
-    if(template?.branch){
+    if (template?.branch) {
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
-          branch: template.branch
+          branch: template.branch,
+          filter: FilterTypeEnum.OVERTIME
         })
       );
     }

@@ -46,6 +46,7 @@ import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogBasicComponent} from '../dialog-salary/dialog-basic/dialog-basic.component';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {values} from "lodash";
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -54,6 +55,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
   @Input() eventSearchBranch?: Branch;
+  @Input() eventSelectIsLeave?: boolean;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -78,6 +80,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     title: new FormControl(''),
     code: new FormControl(''),
     name: new FormControl(''),
+    isLeave: new FormControl(false),
     createdAt: new FormControl(
       this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM')
     ),
@@ -109,8 +112,11 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   ];
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
+    if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
+    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
+      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
     }
   }
 
@@ -122,8 +128,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           skip: this.pageIndex,
           filterType: FilterTypeEnum.BASIC,
           createdAt: new Date(this.createdAt),
-          position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
+          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+          isLeave: false
         }
       })
     );
@@ -144,7 +151,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     });
 
     this.payrollBasic$.subscribe((payrolls) => {
-      console.log(Number(getSelectors(selectedTotalPayroll, this.store)));
       if (payrolls) {
         this.salaries = [];
         if (payrolls.length === 0) {
@@ -187,7 +193,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.BASIC,
-          title: value.title
+          title: value.title,
+          isLeave: value.isLeave
         };
         if (value.createdAt) {
           Object.assign(payrollBASIC, {createdAt: value.createdAt});
@@ -196,8 +203,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng lương cơ bản',
-            exportType: FilterTypeEnum.BASIC,
             params: payrollBASIC,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });
@@ -232,7 +239,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               createdAt: this.formGroup.get('createdAt')?.value,
               title: val.title,
               position: val.position,
-              branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : ''
+              branch: this.formGroup.value.branch ? this.formGroup.value.branch.name : '',
+              isLeave: this.formGroup.value.isLeave
             }
           })
         );
@@ -282,7 +290,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position?.name || '',
-            branch: value.branch ? value.branch.name : ''
+            branch: value.branch ? value.branch.name : '',
+            isLeave: value.isLeave
           };
           if (this.formGroup.get('name')?.value === '') {
             delete params.name;
@@ -370,7 +379,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : ''
+      branch: value.branch ? value.branch.name : '',
+      isLeave: value.isLeave
     };
     if (this.sort?.active) {
       Object.assign(params, {

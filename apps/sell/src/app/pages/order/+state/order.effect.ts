@@ -13,6 +13,10 @@ import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
 import {RouteAction} from '../../route/+state/route.action';
+import {CommodityUniq} from "../../commodity/entities/commodity-uniq.entity";
+import {CommodityEntity} from "../../commodity/entities/commodity.entity";
+import {arrayUpdate} from "@datorama/akita";
+import {updateCommodityDto} from "../../commodity/dto/update-commodity.dto";
 
 @Injectable()
 export class OrderEffect {
@@ -35,15 +39,19 @@ export class OrderEffect {
       this.orderStore.update(state => ({
         ...state, added: false
       }));
-      if (!props?.provinceId) {
-        throw this.snackBar.open('Tỉnh/Thành phố không được để trống');
-      }
       return this.orderService.addOne(props);
     }),
     map((res) => {
       this.orderStore.update(state => ({
-        ...state, added: true
+        ...state, added: true,
+        total: state.total + 1,
+        totalCommodity: res.commodities.length > 0 ?
+          state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+        commodityUniq: res.commodities?.length > 0 ?
+          this.handleCommodityUniq(state.commodityUniq, res.commodities) :
+          state.commodityUniq
       }));
+      res.expand = this.orderQuery.getValue().expandedAll || false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
@@ -60,41 +68,39 @@ export class OrderEffect {
         this.orderStore.update(state => ({
           ...state, loading: true
         }));
+        if (props.param?.orderType) {
+          Object.assign(props.param, {orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'});
+        }
         return this.orderService.pagination(Object.assign(
           props.param,
           (props.param?.status === undefined || props.param?.status === null) ? {status: 0} : {})
         ).pipe(
           map((response) => {
+              const expanedAll = this.orderQuery.getValue().expandedAll;
               this.orderStore.update(state => ({
-                ...state, loading: false
+                ...state,
+                loading: false,
+                total: response.total,
+                totalCommodity: response.commodityUniq.reduce((x, y) => x + y.amount, 0),
+                commodityUniq: response.commodityUniq
               }));
-
-              if (response.data.length > 0) {
-                response.data.map((order: OrderEntity) => {
-                  order.expand = false;
-                  order.totalCommodity = getTotalCommodity(order.commodities);
-                  this.orderStore.update(state => ({
-                    ...state,
-                    total: response.total,
-                    totalCommodity: response.commodityUniq.reduce((x, y) => x + y.amount, 0),
-                    commodityUniq: response.commodityUniq
-                  }));
+              if (!response.data.length) {
+                this.snackBar.openFromComponent(SnackBarComponent, {
+                  duration: 2500,
+                  panelClass: ['background-snackbar'],
+                  data: {content: 'Đã lấy hết đơn hàng'}
                 });
               } else {
-                if (response.data.length === 0) {
-                  this.snackBar.openFromComponent(SnackBarComponent, {
-                    duration: 2500,
-                    panelClass: ['background-snackbar'],
-                    data: {content: 'Đã lấy hết đơn hàng'}
-                  });
+                const data = response.data.map((order: OrderEntity) => Object.assign(order, {
+                  expand: expanedAll,
+                  totalcommodity: order.totalCommodity = getTotalCommodity(order.commodities)
+                }));
+                if (props.isPagination) {
+                  this.orderStore.add(data);
+                } else {
+                  this.orderStore.set(data);
                 }
               }
-              if (props.isScroll) {
-                this.orderStore.add(response.data);
-              } else {
-                this.orderStore.set(response.data);
-              }
-
             }
           )
         );
@@ -172,6 +178,9 @@ export class OrderEffect {
       this.orderService.delete(props.id).pipe(
         map((_) => {
           this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
+          this.orderStore.update(state => ({
+            ...state, total: state.total ? state.total - 1 : state.total
+          }));
           this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))
@@ -190,4 +199,18 @@ export class OrderEffect {
     ),
     catchError((err) => throwError(err))
   );
+
+  handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
+    const result = JSON.parse(JSON.stringify(commoditiesUniq))
+    commodities.forEach(value => {
+      const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
+      if (index > -1) {
+        result[index].amount = result[index].amount + value.amount
+      } else {
+        result.push({name: value.name, code: value.code, amount: value.amount})
+      }
+    })
+    return result
+  }
 }
+

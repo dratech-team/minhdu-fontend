@@ -53,6 +53,16 @@
         </div>
       </th>
       <th style='width: 200px'>
+        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
+        <input class='form-control' type='search' matInput disabled>
+        <!--        <mat-autocomplete #branch='matAutocomplete'>-->
+        <!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
+        <!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
+        <!--            {{branch.name}}-->
+        <!--          </mat-option>-->
+        <!--        </mat-autocomplete>-->
+      </th>
+      <th style='width: 200px'>
         <div mat-sort-header="{{sortEnum.POSITION}}"
              class='border-top d-flex justify-content-center align-items-center'>Chức vụ
         </div>
@@ -61,7 +71,7 @@
           nzAllowClear
           style='width:100%'
           formControlName='position'
-          nzPlaceHolder='chọn chức vụ'
+          nzPlaceHolder='Chọn chức vụ'
           [compareWith]="compareFN"
         >
           <nz-option
@@ -71,16 +81,6 @@
           >
           </nz-option>
         </nz-select>
-      </th>
-      <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='search' matInput disabled>
-<!--        <mat-autocomplete #branch='matAutocomplete'>-->
-<!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
-<!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
-<!--            {{branch.name}}-->
-<!--          </mat-option>-->
-<!--        </mat-autocomplete>-->
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
@@ -95,14 +95,16 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
-        <input class='form-control' type='search' matInput [matAutocomplete]='templateOvertime'
-               formControlName='title'>
-        <mat-autocomplete #templateOvertime='matAutocomplete'>
-          <mat-option *ngFor='let template of templateOvertime$ | async' [value]='template.title'
-                      (onSelectionChange)='onSelectTemplateOvertime($event, template.title)'>
-            {{template.title}}
-          </mat-option>
-        </mat-autocomplete>
+        <nz-select style="width: 100%"
+                   [nzMaxTagCount]="3"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn loại tăng ca"
+                   formControlName="titles"
+        >
+          <nz-option *ngFor="let item of templateOvertime$|async" [nzLabel]="item" [nzValue]="item"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
@@ -217,14 +219,14 @@
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div>
-            {{payrollOvertime.employee.position?.name}}
+            {{payrollOvertime.branch}}
           </div>
         </th>
         <th style='width: 200px' class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
           <div>
-            {{payrollOvertime.employee.branch?.name}}
+            {{payrollOvertime.position}}
           </div>
         </th>
         <th class='pointer' style='width: 220px;'>
@@ -357,7 +359,8 @@
     position: sticky;
     top: 70px;
   }
-  .table-scroll tbody th{
+
+  .table-scroll tbody th {
     height: 40px;
   }
 </style>

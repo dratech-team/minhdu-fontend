@@ -1,10 +1,11 @@
-import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilterTypeEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { ItemExportService } from './item-export.service';
+import {DatePipe} from '@angular/common';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilterTypeEnum} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {ItemExportService} from './item-export.service';
+import {values} from "lodash";
 
 @Component({
   templateUrl: 'dialog-export.component.html'
@@ -16,6 +17,7 @@ export class DialogExportComponent implements OnInit {
   isSelectAll = true;
   itemsExport: any[] = [];
   itemSelected: any[] = [];
+  loading = true
 
   constructor(
     private readonly dialogRef: MatDialogRef<DialogExportComponent>,
@@ -28,7 +30,7 @@ export class DialogExportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group(this.data.exportType === 'RANGE_DATETIME' ? {
+    this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
         name: new FormControl('', Validators.required),
         startedAt: this.data?.params?.startedAt ? new FormControl(
           this.datePipe.transform(
@@ -53,12 +55,22 @@ export class DialogExportComponent implements OnInit {
       }
     );
 
+    if (this.data.params.exportType === FilterTypeEnum.OVERTIME) {
+      if (this.data?.params?.titles?.length > 0) {
+        let name!: string
+        this.formGroup.get('name')?.setValue(this.data.params.titles.join(' + '))
+      } else {
+        this.formGroup.get('name')?.setValue(
+          `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.data.params.endedAt, 'dd-MM-yyyy')}`
+        )
+      }
+    }
     this.itemExportService
-      .getItemExport({ api: this.data.api, exportType: this.data.exportType })
+      .getItemExport({exportType: this.data.params.exportType})
       .subscribe((val: any[]) => {
-        console.log(val, "====")
+        this.loading = false
         val?.map((e, i) => {
-          Object.assign(e, { index: i });
+          Object.assign(e, {index: i});
         });
         this.itemsExport = val;
         this.itemSelected = [...this.itemsExport];
@@ -74,23 +86,23 @@ export class DialogExportComponent implements OnInit {
     this.itemSelected.sort((a, b) => {
       return a.index - b.index;
     });
-    console.log(new Date(value.startedAt).toUTCString());
-    if (this.data.exportType === FilterTypeEnum.OVERTIME || this.data.exportType === FilterTypeEnum.ABSENT) {
+    console.log(this.data.params.exportType)
+    if (this.data.params.exportType === FilterTypeEnum.OVERTIME || this.data.params.exportType === FilterTypeEnum.ABSENT) {
       Object.assign(this.data.params, {
-        startedAt: new Date(value.startedAt).toUTCString(),
-        endedAt: new Date(value.endedAt).toUTCString()
+        startedAt: new Date(value.startedAt),
+        endedAt: new Date(value.endedAt)
       });
     } else {
       Object.assign(this.data.params, {
-        createdAt: new Date(value.createdAt).toUTCString()
+        createdAt: new Date(value.createdAt)
       });
     }
     this.exportService.print(
       this.data.api,
       this.data?.params
-        ? Object.assign(this.data.params, { filename: value.name })
-        : { filename: value.name },
-      { items: this.itemSelected }
+        ? Object.assign(this.data.params, {filename: value.name})
+        : {filename: value.name},
+      {items: this.itemSelected}
     );
     this.dialogRef.close();
   }

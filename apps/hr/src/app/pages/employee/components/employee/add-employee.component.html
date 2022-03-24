@@ -21,7 +21,7 @@
                 nzAllowClear
                 style='width:100%'
                 formControlName='branch'
-                nzPlaceHolder='chọn đơn vị'
+                nzPlaceHolder='Chọn đơn vị'
                 [compareWith]='compareFN'
                 [ngClass]="{ 'is-invalid': submitting && f.branch.errors?.required }"
               >
@@ -37,6 +37,23 @@
               </div>
             </div>
           </div>
+          <div class='col-sm' [formGroup]='formGroup'>
+            <label>Chức vụ </label><span class='star'>*</span>
+            <div>
+              <nz-select [compareWith]='compareFN'
+                         style='width:100%;'
+                         formControlName='position'
+                         nzShowSearch
+                         nzAllowClear
+                         nzPlaceHolder='Chọn chức vụ'>
+                <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
+                           [nzValue]='position'></nz-option>
+              </nz-select>
+              <div *ngIf='submitting && f.position.errors?.required' class='invalid-feedback'>
+                <div *ngIf=' f.position.errors?.required'>Chưa chọn chức vụ</div>
+              </div>
+            </div>
+          </div>
           <div class='col-sm' [formGroup]='formGroup'
                [hidden]='this.formGroup.value.employeeType === typeEmployee.EMPLOYEE_SEASONAL'>
             <label>Ngày công chuẩn </label><span class='star'>*</span>
@@ -46,23 +63,6 @@
             >
             <div *ngIf='submitting && f.workday.errors' class='invalid-feedback'>
               <div *ngIf='f.workday.errors?.required'>Chưa nhập ngày công chuẩn</div>
-            </div>
-          </div>
-          <div class='col-sm' [formGroup]='formGroup'>
-            <label>Chức vụ </label><span class='star'>*</span>
-            <div>
-              <nz-select [compareWith]='compareFN'
-                         style='width:100%;'
-                         formControlName='position'
-                         nzShowSearch
-                         nzAllowClear
-                         nzPlaceHolder='chọn chức vụ'>
-                <nz-option *ngFor='let position of lstPosition' [nzLabel]='position.name'
-                           [nzValue]='position'></nz-option>
-              </nz-select>
-              <div *ngIf='submitting && f.position.errors?.required' class='invalid-feedback'>
-                <div *ngIf=' f.position.errors?.required'>Chưa chọn chức vụ</div>
-              </div>
             </div>
           </div>
         </div>
@@ -90,10 +90,11 @@
         </div>
         <div class='row mt-3' [formGroup]='formGroup'>
           <div class='col-sm'>
-            <label for='createdAt'>Ngày vào làm </label>
-            <input id='createdAt' type='date' class='form-control' formControlName='createdAt'>
-            <div *ngIf='submitting && f.createdAt.errors' class='invalid-feedback'
-                 [ngClass]="{ 'is-invalid': submitting && f.createdAt.errors }">
+            <label for='createdAt'>Ngày vào làm </label><span class="star">*</span>
+            <input id='createdAt' type='date' class='form-control' formControlName='createdAt'
+                   [ngClass]="{ 'is-invalid': submitting && f.createdAt.errors }"
+            >
+            <div *ngIf='submitting && f.createdAt.errors' class='invalid-feedback'>
               <div *ngIf='f.createdAt.errors?.required'>Chưa nhập ngày vào làm</div>
             </div>
           </div>

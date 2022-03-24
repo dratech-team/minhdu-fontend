@@ -1,7 +1,5 @@
 import {Branch} from '@minhdu-fontend/data-models';
 import {createAction, props} from '@ngrx/store';
-import {Update} from '@ngrx/entity';
-import {UpdateNum} from '@ngrx/entity/src/models';
 import {UpdateBranchDto} from "./dto/update-branch.dto";
 import {ConvertBoolean} from "@minhdu-fontend/enums";
 

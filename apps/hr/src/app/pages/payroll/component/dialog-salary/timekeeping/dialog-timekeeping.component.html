@@ -7,7 +7,7 @@
   </div>
   <mat-dialog-content class='mat-typography'>
     <form [formGroup]='formGroup'>
-      <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex'  dynamicHeight>
+      <mat-tab-group #tabGroup [(selectedIndex)]='tabIndex' dynamicHeight>
         <mat-tab label='Khấu trừ'>
           <div style='min-width: 600px'>
             <div class=' mb-3 title-popup'>
@@ -75,8 +75,9 @@
                 <input class='form-control' type='number' formControlName='times'>
               </div>
             </div>
-            <div *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.OTHER)'>
-              <div class=' mb-3' >
+            <div
+              *ngIf='( (selectedIndex || selectedIndex === 0)  && titleAbsents[selectedIndex]?.unit === datetimeUnit.OTHER)'>
+              <div class=' mb-3'>
                 <div [formGroup]='formGroup' class='col-12'>
                   <span class='title-item'>Tên khấu trừ</span> <span class='star'>*</span>
                   <input class='form-control' type='text' formControlName='title'>
@@ -99,25 +100,26 @@
           </div>
           <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
         </mat-tab>
-        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
-          <app-pick-employee-absent
-            [employeesSelected]='employeeSelected'
-            [createdPayroll]='formGroup.get("datetime")?.value'
-            (EventSelectEmployee)='pickEmployees($event)'
+        <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn phiếu lương'>
+          <app-pick-payroll [payrollsSelected]="payrollSelected"
+                            [createdPayroll]='formGroup.get("datetime")?.value'
+                            (EventSelectPayroll)="pickPayroll($event)"
           >
-          </app-pick-employee-absent>
+
+          </app-pick-payroll>
           <div class='mt-2'>
             <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
             <button class='btn btn-primary' (click)='nextTab(tabGroup)'>Tiếp theo</button>
           </div>
         </mat-tab>
         <mat-tab
-          label='Nhân viên đã chọn ({{this.employeeSelected.length}})'>
-          <app-table-employee-selected
-            [employees]='employeeSelected'
-            (EventSelectEmployee)='pickEmployees($event)'
+          label='Phiếu lương đã chọn ({{this.payrollSelected.length}})'>
+          <app-table-payroll-selected
+            [payrolls]="payrollSelected"
+            (EventSelectPayroll)="pickPayroll($event)"
           >
-          </app-table-employee-selected>
+
+          </app-table-payroll-selected>
           <div class='row  mt-2 ml-2'>
             <button class='btn btn-primary mr-2' (click)='previousTab(tabGroup)'>Trở lại</button>
             <button class='btn btn-ok ' (click)='onSubmit()'>Lưu</button>

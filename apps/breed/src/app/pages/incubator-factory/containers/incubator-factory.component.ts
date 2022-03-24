@@ -17,7 +17,6 @@ import { Branch } from '@minhdu-fontend/data-models';
 import { getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { IncubatorFactoryActions } from '../state/incubator-factory.action';
 import { EggTypeEntity } from '../../egg-type/entities/egg-type.entity';
-import { Egg } from '../entities/incubator-factory.entity';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { IncubatorFactoryStore } from '../state/incubator-factory.store';
 
@@ -33,7 +32,7 @@ export class IncubatorFactoryComponent implements OnInit {
     stt: 5,
     added: false
   }).sort((a, b) => (a.stt || 0) - (b.stt || 1))));
-  egg$ = this.incubatorFactoryQuery.selectAll();
+  incubator$ = this.incubatorFactoryQuery.selectAll();
 
   pageSize = 30;
   pageIndex = 0;
@@ -109,7 +108,7 @@ export class IncubatorFactoryComponent implements OnInit {
     });
   }
 
-  checkEgg(eggTypes: (EggTypeEntity | undefined)[], egg: Egg): boolean {
+  checkEgg(eggTypes: (EggTypeEntity | undefined)[], egg: any): boolean {
     return !eggTypes.some(e => e?.id == egg.type.id);
   }
 }

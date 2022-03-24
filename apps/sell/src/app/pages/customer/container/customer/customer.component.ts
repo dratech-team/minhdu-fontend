@@ -19,6 +19,9 @@ import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/
 import {CustomerConstant} from "../../constants/customer.constant";
 import {PotentialsConstant} from "../../constants/potentials.constant";
 import {NzTableQueryParams} from "ng-zorro-antd/table";
+import {RouteAction} from "../../../route/+state/route.action";
+import {Sort} from "@minhdu-fontend/data-models";
+import {OrderActions} from "../../../order/+state/order.actions";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -26,8 +29,9 @@ import {NzTableQueryParams} from "ng-zorro-antd/table";
 export class CustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
+  total$ = this.customerQuery.select(state => state.total)
 
-  pageSize = 30;
+  pageSize = 25;
   pageIndexInit = 0;
   customerType = CustomerType;
   ItemContextMenu = ItemContextMenu;
@@ -37,6 +41,8 @@ export class CustomerComponent implements OnInit {
   potentialsConstant = PotentialsConstant
   resourcesConstant = ResourcesConstant
   customerConstant = CustomerConstant
+  pageSizeTable = 10
+  valueSort?: Sort
 
   formGroup = new FormGroup({
     name: new FormControl(''),
@@ -97,22 +103,17 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(
-      CustomerActions.loadAll(
-        {
-          params: this.mapCustomer(val, true),
-          isScroll: true
-        }
-      )
-    );
-  }
+  mapCustomer(val: any, isPagination: boolean) {
+    if (this.valueSort?.orderType) {
+      Object.assign(val, this.valueSort)
+    } else {
+      delete val.orderBy
+      delete val.orderType
+    }
 
-  mapCustomer(val: any, isScroll: boolean) {
     Object.assign(val, {
       take: this.pageSize,
-      skip: isScroll ? this.customerQuery.getCount() : 0
+      skip: isPagination ? this.customerQuery.getCount() : 0
     })
     return val
   }
@@ -167,18 +168,21 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  paramChange(params: NzTableQueryParams) {
-    const value = this.formGroup.value;
-    params.sort.map(val => {
-      if (val.value) {
-        Object.assign(value, {
-          orderBy: val.key,
-          orderType: val.value === 'ascend' ? 'asc' : 'des'
-        });
-        this.actions$.dispatch(CustomerActions.loadAll({
-          params: this.mapCustomer(value, false)
-        }));
-      }
-    });
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value
+    const count = this.customerQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(CustomerActions.loadAll({
+        params: this.mapCustomer(value, true),
+        isPagination: true
+      }))
+    }
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapCustomer(this.formGroup.value, false)
+    }))
   }
 }

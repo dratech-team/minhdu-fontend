@@ -13,7 +13,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -56,6 +56,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   ItemContextMenu = ItemContextMenu;
   @Input() eventExportStay?: Subject<boolean>
   @Input() eventSearchBranch?: Branch;
+  @Input() eventSelectIsLeave?: boolean;
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -64,6 +65,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     title: new FormControl(''),
     code: new FormControl(''),
     name: new FormControl(''),
+    isLeave: new FormControl(false),
     createdAt: new FormControl(
       this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM')
     ),
@@ -100,8 +102,11 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventSearchBranch.currentValue !== changes.eventSearchBranch.previousValue) {
+    if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
+    }
+    if (changes.eventSelectIsLeave?.currentValue !== changes.eventSelectIsLeave?.previousValue) {
+      this.formGroup.get('isLeave')?.setValue(changes.eventSelectIsLeave.currentValue)
     }
   }
 
@@ -113,8 +118,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           skip: this.pageIndex,
           createdAt: new Date(this.createdAt),
           filterType: FilterTypeEnum.STAY,
-          position: getSelectors(selectedPositionPayroll, this.store),
-          branch: getSelectors(selectedBranchPayroll, this.store)
+          position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+          branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+          isLeave: false
         }
       })
     );
@@ -179,7 +185,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch ? value.branch.name : '',
           exportType: FilterTypeEnum.STAY,
-          title: value.title
+          title: value.title,
+          isLeave: value.isLeave
         };
         if (value.createdAt) {
           Object.assign(payrollStay, {createdAt: value.createdAt});
@@ -188,8 +195,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           width: 'fit-content',
           data: {
             title: 'Xuât bảng phụ cấp lương',
-            exportType: FilterTypeEnum.STAY,
             params: payrollStay,
+            isPayroll: true,
             api: Api.HR.PAYROLL.EXPORT
           }
         });
@@ -226,7 +233,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position?.name || '',
-              branch: value.branch ? value.branch.name : ''
+              branch: value.branch ? value.branch.name : '',
+              isLeave: value.isLeave
             }
           })
         );
@@ -273,7 +281,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: value.branch ? value.branch.name : ''
+                branch: value.branch ? value.branch.name : '',
+                isLeave: value.isLeave
               }
             })
           );
@@ -372,7 +381,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : ''
+      branch: value.branch ? value.branch.name : '',
+      isLeave: value.isLeave
     };
     if (this.sort?.active) {
       Object.assign(params, {

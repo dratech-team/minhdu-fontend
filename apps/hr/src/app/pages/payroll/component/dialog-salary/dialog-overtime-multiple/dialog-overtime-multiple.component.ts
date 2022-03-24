@@ -1,43 +1,43 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatetimeUnitEnum, EmployeeType, partialDay, RecipeType, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../reducers';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { map, startWith } from 'rxjs/operators';
-import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
-import { getAllPosition } from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
-import { MatStepper } from '@angular/material/stepper';
-import { Employee, PartialDayEnum, Position } from '@minhdu-fontend/data-models';
-import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
-import { SalaryService } from '../../../service/salary.service';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
+import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DatetimeUnitEnum, EmployeeType, partialDay, RecipeType, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {DatePipe} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {selectorAllTemplate} from '../../../../template/+state/template-overtime/template-overtime.selector';
+import {TemplateOvertimeAction} from '../../../../template/+state/template-overtime/template-overtime.action';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {map, startWith} from 'rxjs/operators';
+import {TemplateOvertime} from '../../../../template/+state/template-overtime/template-overtime.interface';
+import {getAllPosition} from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
+import {MatStepper} from '@angular/material/stepper';
+import {Employee, PartialDayEnum, Position} from '@minhdu-fontend/data-models';
+import {searchAutocomplete} from '../../../../../../../../../libs/utils/orgchart.ultil';
+import {SalaryService} from '../../../service/salary.service';
+import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../../libs/utils/daytime.until';
 import * as lodash from 'lodash';
+import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
 })
-export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChecked{
+export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatStepper) stepper!: MatStepper;
   positions = new FormControl();
   positions$ = this.store.pipe(select(getAllPosition));
   titleOvertimes = new FormControl();
   onAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
-  employeesSelected: Employee[] = [];
-  allowEmpSelected: Employee[] = [];
+  payrollsSelected: Payroll[] = [];
+  allowPayrollSelected: Payroll[] = [];
   price!: number;
   title!: string;
   unit?: DatetimeUnitEnum;
   rate!: number;
   times?: number;
   templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
-  isManyPeople = false;
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
@@ -66,10 +66,10 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
 
   //Dummy data select các buổi trong ngày
   titleSession = [
-    { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL },
-    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL },
-    { title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL },
-    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY }
+    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
+    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
+    {title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL},
+    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
   ];
 
   ngOnInit(): void {
@@ -111,11 +111,15 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
           if (!val) {
             this.positionOfTempOver = [];
           }
+         const param = {
+           positionIds: this.positionsSelected.map(val => val.id),
+           unit: this.unit
+         }
+          if(!this.unit){
+            delete param.unit
+          }
           this.store.dispatch(
-            TemplateOvertimeAction.loadALlTemplate({
-              positionIds: this.positionsSelected.map(val => val.id),
-              unit: this.unit ? this.unit : ''
-            })
+            TemplateOvertimeAction.loadALlTemplate(param)
           );
         })
       )
@@ -151,14 +155,14 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
     return this.formGroup.controls;
   }
 
-  onSelectPosition(position: Position,event: any, positionInput: HTMLElement ) {
-    if(event.isUserInput){
-      if(position.id){
+  onSelectPosition(position: Position, event: any, positionInput: HTMLElement) {
+    if (event.isUserInput) {
+      if (position.id) {
         if (this.positionsSelected.some(item => item.id === position.id)) {
-          this.snackBar.open('chức vụ đã được chọn', '', { duration: 1000 });
-        }else{
+          this.snackBar.open('chức vụ đã được chọn', '', {duration: 1000});
+        } else {
           this.positionOfTempOver = [];
-          this.positionsSelected.push(position) ;
+          this.positionsSelected.push(position);
           this.templateId = undefined;
           this.titleOvertimes.patchValue('');
         }
@@ -171,12 +175,12 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
     );
   }
 
-  pickAllowance(employees: Employee[]): any {
-    this.allowEmpSelected = [...employees] ;
+  pickAllowance(employees: Payroll[]): any {
+    this.allowPayrollSelected = [...employees];
   }
 
-  pickEmployees(employees: Employee[]): any {
-    this.employeesSelected = [...employees]
+  pickPayrolls(employees: Payroll[]): any {
+    this.payrollsSelected = [...employees]
   }
 
   pickOverTime(data: TemplateOvertime) {
@@ -211,9 +215,9 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
       }
       if (!value.datetime && !value.month) {
         if (value.days <= 1) {
-          return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+          return this.snackBar.open('Chưa chọn ngày tăng ca', '', {duration: 2000});
         } else {
-          return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
+          return this.snackBar.open('Chưa chọn tháng tăng ca', '', {duration: 2000});
         }
       }
     }
@@ -233,9 +237,9 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
     }
     if (!value.datetime && !value.month) {
       if (this.unit === DatetimeUnitEnum.HOUR) {
-        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', {duration: 2000});
       } else {
-        return this.snackBar.open('Chưa chọn tháng tăng ca', '', { duration: 2000 });
+        return this.snackBar.open('Chưa chọn tháng tăng ca', '', {duration: 2000});
       }
     }
     if (this.unit && !value.times) {
@@ -256,7 +260,7 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
     };
     if (this.onAllowanceOvertime) {
       Object.assign(salary, {
-        allowEmpIds: this.allowEmpSelected.map(e => e.id),
+        allowPayrollIds: this.allowPayrollSelected.map(e => e.id),
         allowance:
           {
             title: value.titleAllowance,
@@ -278,10 +282,10 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
       delete salary.unit;
     }
     if (this.data?.isUpdate) {
-      Object.assign(salary, { salaryIds: this.data.salaryIds });
+      Object.assign(salary, {salaryIds: this.data.salaryIds});
       this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
         if (val) {
-          this.snackBar.open(val.message, '', { duration: 1500 });
+          this.snackBar.open(val.message, '', {duration: 1500});
           this.dialogRef.close(
             {
               title: this.title,
@@ -290,13 +294,13 @@ export class DialogOvertimeMultipleComponent implements OnInit , AfterContentChe
         }
       });
     } else {
-      if (this.employeesSelected.length === 0) {
+      if (this.payrollsSelected.length === 0) {
         return this.snackBar.open('chưa chọn nhân viên', 'Đã hiểu', {
           duration: 1000
         });
       }
-      Object.assign(salary, { employeeIds: this.employeesSelected.map(e => e.id) });
-      this.store.dispatch(PayrollAction.addSalary({ salary: salary, isTimesheet: this.data?.isTimesheet }));
+      Object.assign(salary, {payrollIds: this.payrollsSelected.map(e => e.id)});
+      this.store.dispatch(PayrollAction.addSalary({salary: salary, isTimesheet: this.data?.isTimesheet}));
       this.dialogRef.close(
         {
           datetime: value.datetime,

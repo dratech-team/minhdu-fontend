@@ -22,6 +22,7 @@ import {OrderHistoryEntity} from '../../enitities/order-history.entity';
 import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {NzModalService} from "ng-zorro-antd/modal";
+
 @Component({
   templateUrl: 'detail-order.component.html'
 })
@@ -82,26 +83,29 @@ export class DetailOrderComponent implements OnInit {
         nzContent: OrderDialogComponent,
         nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
-          data: {order: order, tab: 1, type: 'UPDATE'}
+          data: {order: order, tab: 1, isUpdate: true}
         },
         nzFooter: null,
         nzWidth: '65vw',
         nzMaskClosable: false
       });
     } else {
-      this.dialog.open(PickCommodityComponent, {
-        width: '60%',
-        data: {commoditiesSelected: order.commodities, type: 'DIALOG'}
-      }).afterClosed().subscribe((value) => {
-        if (value) {
-          this.actions$.dispatch(OrderActions.update({
-            id: order.id,
-            updates: {
-              commodityIds: value.map((e: any) => e.id)
-            }
-          }));
-        }
-      });
+      this.modal.create({
+        nzTitle: 'Chọn hàng hoá',
+        nzContent: PickCommodityComponent,
+        nzComponentParams: {
+          data: {commoditiesSelected: order.commodities, type: 'DIALOG'}
+        },
+        nzWidth:'70vw',
+        nzFooter: null
+      }).afterClose.subscribe(value => {
+        this.actions$.dispatch(OrderActions.update({
+          id: order.id,
+          updates: {
+            commodityIds: value.map((e: any) => e.id)
+          },
+        }));
+      })
     }
   }
 
@@ -110,7 +114,14 @@ export class DetailOrderComponent implements OnInit {
   }
 
   updateCommodity(orderId: number, commodity: CommodityEntity) {
-    this.dialog.open(CommodityDialogComponent, {data: {commodity, isUpdate: true, orderId: orderId}, width: '30%'});
+    this.modal.create({
+      nzTitle: 'Cập nhật hàng hoá',
+      nzContent: CommodityDialogComponent,
+      nzComponentParams: {
+        data: {commodity, isUpdate: true,}
+      },
+      nzFooter: null,
+    })
   }
 
   deleteCommodity(commodity: CommodityEntity) {
@@ -147,7 +158,6 @@ export class DetailOrderComponent implements OnInit {
             orderId: orderId,
             closed: !commodity.closed
           },
-          inOrder: true
         }));
       }
     });

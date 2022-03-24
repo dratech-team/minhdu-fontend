@@ -24,17 +24,6 @@
                    formControlName='name'>
           </th>
           <th>
-            <div class=' text-center'>Chức vụ</div>
-            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async'
-                          [value]='position.name' (click)='onSelectPosition(position.name)'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
             <div class=' text-center'>Đơn vị</div>
             <input class='form-control' type='search' matInput [matAutocomplete]='branch' formControlName='branch'>
             <mat-autocomplete #branch='matAutocomplete'>
@@ -42,6 +31,17 @@
                           (click)='onSelectBranch(branch.name)' (onSelectionChange)='onSelectBranch(branch.name)'
               >
                 {{branch.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </th>
+          <th>
+            <div class=' text-center'>Chức vụ</div>
+            <input class='form-control' type='search' matInput [matAutocomplete]='position' formControlName='position'>
+            <mat-autocomplete #position='matAutocomplete'>
+              <mat-option *ngFor='let position of positions$ | async'
+                          [value]='position.name' (click)='onSelectPosition(position.name)'
+                          (onSelectionChange)='onSelectPosition(position.name)'>
+                {{position.name}}
               </mat-option>
             </mat-autocomplete>
           </th>
@@ -68,8 +68,8 @@
         <tr *ngFor='let employee of employees; let i = index'>
           <th class='   pointer'>{{i + 1}}</th>
           <th class='   pointer'>{{employee.lastName}}</th>
-          <th class='   pointer'>{{employee.position?.name}}</th>
           <th class='   pointer'>{{employee.branch?.name}}</th>
+          <th class='   pointer'>{{employee.position?.name}}</th>
           <th class='   pointer'>{{employee.category?.name}}</th>
           <th class='   pointer'>
             <div class='mt-2'>

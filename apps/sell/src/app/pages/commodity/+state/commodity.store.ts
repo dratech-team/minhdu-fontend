@@ -5,11 +5,11 @@ import { StorageName } from '../../../shared/constaints/storage-name.const';
 
 export interface CommodityState extends EntityState<CommodityEntity> {
   loading: boolean;
-  added: boolean
+  added: boolean|null,
   readonly total: number;
 }
 
-export const createInitialState = () => ({ loading: true, total: 0, added: false });
+export const createInitialState = () => ({ loading: true, total: 0, added: null});
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: StorageName.COMMODITY })

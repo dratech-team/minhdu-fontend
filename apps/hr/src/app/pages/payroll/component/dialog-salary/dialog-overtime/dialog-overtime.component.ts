@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   ConvertBooleanFrontEnd,
   DatetimeUnitEnum,
@@ -8,20 +8,20 @@ import {
   RecipeType,
   SalaryTypeEnum
 } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../reducers';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
-import { TemplateOvertimeAction } from '../../../../template/+state/template-overtime/template-overtime.action';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { startWith } from 'rxjs/operators';
-import { TemplateOvertime } from '../../../../template/+state/template-overtime/template-overtime.interface';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../../libs/utils/daytime.until';
-import { searchAutocomplete } from '../../../../../../../../../libs/utils/orgchart.ultil';
-import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
-import { SalaryService } from '../../../service/salary.service';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {DatePipe} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {selectorAllTemplate} from '../../../../template/+state/template-overtime/template-overtime.selector';
+import {TemplateOvertimeAction} from '../../../../template/+state/template-overtime/template-overtime.action';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {startWith} from 'rxjs/operators';
+import {TemplateOvertime} from '../../../../template/+state/template-overtime/template-overtime.interface';
+import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../../libs/utils/daytime.until';
+import {searchAutocomplete} from '../../../../../../../../../libs/utils/orgchart.ultil';
+import {PartialDayEnum, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {SalaryService} from '../../../service/salary.service';
+import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
 
 @Component({
   templateUrl: 'dialog-overtime.component.html'
@@ -62,10 +62,10 @@ export class DialogOvertimeComponent implements OnInit {
 
   //Dummy data select các buổi trong ngày
   titleSession = [
-    { title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL },
-    { title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL },
-    { title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL },
-    { title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY }
+    {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
+    {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
+    {title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL},
+    {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
   ];
 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class DialogOvertimeComponent implements OnInit {
       if ((this.data?.isUpdate && this.data.salary.allowance)) {
         this.onAllowanceOvertime = true;
       }
-    }else{
+    } else {
       this.salariesSelected = this.data.salariesSelected
     }
     if (this.data?.isUpdate) {
@@ -165,7 +165,7 @@ export class DialogOvertimeComponent implements OnInit {
       delete salary.datetime;
     }
     if (this.data?.isUpdate) {
-      this.store.dispatch(PayrollAction.updateStatePayroll({ added: ConvertBooleanFrontEnd.FALSE }));
+      this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}));
       this.unit = this.data.salary.unit;
       this.title = this.data.salary.title;
       if (this.data?.updateMultiple) {
@@ -176,14 +176,14 @@ export class DialogOvertimeComponent implements OnInit {
         });
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
-            this.snackBar.open(val.message, '', { duration: 1500 });
-            this.dialogRef.close({ title: this.title, datetime: value.datetime });
+            this.snackBar.open(val.message, '', {duration: 1500});
+            this.dialogRef.close({title: this.title, datetime: value.datetime});
           }
         });
       } else {
         if (!this.onAllowanceOvertime && this.data.salary.allowance) {
           this.store.dispatch(PayrollAction.deleteSalary(
-            { id: this.data.salary.allowance.id, PayrollId: this.data.salary.payrollId }));
+            {id: this.data.salary.allowance.id, PayrollId: this.data.salary.payrollId}));
         }
         this.store.dispatch(PayrollAction.updateSalary({
           payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
@@ -192,15 +192,15 @@ export class DialogOvertimeComponent implements OnInit {
       }
     } else {
       if (!this.title) {
-        return this.snackBar.open('Chưa chọn loại tăng ca', '', { duration: 2000 });
+        return this.snackBar.open('Chưa chọn loại tăng ca', '', {duration: 2000});
       }
       if (value.days <= 1 && !value.datetime) {
-        return this.snackBar.open('Chưa chọn ngày tăng ca', '', { duration: 2000 });
+        return this.snackBar.open('Chưa chọn ngày tăng ca', '', {duration: 2000});
       }
       if (this.unit === DatetimeUnitEnum.HOUR && !value.times) {
-        return this.snackBar.open('chưa nhập số giờ tăng ca', '', { duration: 2000 });
+        return this.snackBar.open('chưa nhập số giờ tăng ca', '', {duration: 2000});
       }
-      this.store.dispatch(PayrollAction.addSalary({ payrollId: this.data.payroll.id, salary: salary }));
+      this.store.dispatch(PayrollAction.addSalary({payrollId: this.data.payroll.id, salary: salary}));
     }
     this.store.select(selectedAddedPayroll).subscribe(val => {
       if (val) {
@@ -231,18 +231,22 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   selectPartialDay(partialDay: any) {
-    console.log(partialDay);
     this.title = 'Tăng ca ' + partialDay.title;
     this.partialDay = partialDay;
   }
 
   loadTemplateOvertime(unit?: DatetimeUnitEnum) {
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
-      {
-        branchId: this.data.payroll.employee.branch.id,
-        positionIds: [this.data?.payroll.employee.position.id],
-        unit: unit ? this.unit : ''
-      }));
+      unit ?
+        {
+          branchId: this.data.payroll.employee.branch.id,
+          positionIds: [this.data?.payroll.employee.position.id],
+          unit: this.unit
+        } : {
+          branchId: this.data.payroll.employee.branch.id,
+          positionIds: [this.data?.payroll.employee.position.id],
+        }
+    ));
     this.titleOvertimes.patchValue('');
   }
 

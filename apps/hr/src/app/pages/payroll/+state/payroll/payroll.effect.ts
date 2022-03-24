@@ -47,7 +47,7 @@ export class PayrollEffect {
       ofType(PayrollAction.loadMorePayrolls),
       withLatestFrom(this.store.pipe(select(selectorPayrollTotal))),
       map(([props, skip]) => {
-          Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
+          return Object.assign(JSON.parse(JSON.stringify(props.payrollDTO)), {skip: skip})
         }
       ),
       switchMap((props) => {
@@ -168,9 +168,13 @@ export class PayrollEffect {
       ofType(PayrollAction.updatePayroll),
       switchMap((props) => this.payrollService.update(props.id, props.payroll)),
       map((payroll) => {
+        this.message.success('Cập nhật phiếul lương thành công')
         return PayrollAction.updatePayrollSuccess({payroll: payroll});
       }),
-      catchError((err) => throwError(err))
+      catchError((err) => {
+        this.store.dispatch(PayrollAction.handlePayrollError());
+        return throwError(err)
+      })
     )
   );
 
@@ -184,7 +188,9 @@ export class PayrollEffect {
             this.message.success('Xác nhận thành công');
             return PayrollAction.confirmPayrollSuccess({payroll: Payroll});
           }),
-          catchError((err) => throwError(err))
+          catchError((err) => {
+            return throwError(err)
+          })
         )
       )
     )

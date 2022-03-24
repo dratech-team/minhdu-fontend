@@ -19,7 +19,7 @@
         </div>
       </div>
       <div *ngIf='data.isPayroll'>
-        <div class=' mt-1 mb-3 ' *ngIf='data.exportType === "RANGE_DATETIME" else createdAt'>
+        <div class=' mt-1 mb-3 ' *ngIf='data?.typeDate === "RANGE_DATETIME" else createdAt'>
           <span class='title-item'>Từ ngày đến ngày</span><span class='star'>*</span>
           <div class='form-control d-flex align-items-center'>
             <mat-date-range-input [rangePicker]='picker'>
@@ -60,20 +60,27 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor='let item of itemsExport'>
-          <td>
-            {{item.value}}
-          </td>
-          <td>
-            <div class='d-flex justify-content-center align-items-center'>
-              <mat-checkbox
-                class='mx-auto'
-                (change)='updateSelect(item)'
-                [checked]='selectItem(item)'>
-              </mat-checkbox>
-            </div>
+        <tr *ngIf="loading else lstitem" style="height: 100px">
+          <td colspan="2">
+            <ngx-skeleton-loader count='18' appearance='line'></ngx-skeleton-loader>
           </td>
         </tr>
+        <ng-template #lstitem>
+          <tr *ngFor='let item of itemsExport'>
+            <td>
+              {{item.value}}
+            </td>
+            <td>
+              <div class='d-flex justify-content-center align-items-center'>
+                <mat-checkbox
+                  class='mx-auto'
+                  (change)='updateSelect(item)'
+                  [checked]='selectItem(item)'>
+                </mat-checkbox>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
         </tbody>
       </table>
     </div>
@@ -82,6 +89,7 @@
   </div>
   <div class='row mt-4 ml-1 '>
     <button (click)='onSubmit()'
+            [disabled]="loading"
             style='font-size: 12px'
             class=' col-md-3 btn btn-ok d-flex justify-content-center'>Đồng ý
     </button>

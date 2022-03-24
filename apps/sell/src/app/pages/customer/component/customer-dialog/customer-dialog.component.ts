@@ -1,6 +1,5 @@
 import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DatePipe} from '@angular/common';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
@@ -17,12 +16,12 @@ export class CustomerDialogComponent implements OnInit {
   @Input() data: any
   customerType = CustomerType;
   resourceType = CustomerResource;
+  added$ = this.customerQuery.select(state => state.added)
   submitted = false;
   provinceId: number | undefined;
   districtId: number | undefined;
   wardId: number | undefined;
   formGroup!: FormGroup
-
 
 
   constructor(
@@ -103,7 +102,7 @@ export class CustomerDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(CustomerActions.addOne(customer));
     }
-    this.customerQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }

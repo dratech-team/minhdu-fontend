@@ -19,12 +19,17 @@
           </th>
           <th>
             <div class='border-top text-center'>Mã nhân viên</div>
-            <input class='form-control text-center' type='search' formControlName="code" (keypress)='checkInputNumber($event)'>
+            <input class='form-control text-center' type='search' formControlName="code"
+                   (keypress)='checkInputNumber($event)'>
           </th>
           <th style='width: 210px'>
             <div class='border-top text-center'>Tên nhân viên</div>
             <input class='form-control text-center ' type='search' formControlName='name'
                    placeholder='Trần Gia Hiệu'>
+          </th>
+          <th>
+            <div class='title-profile'>Đơn vị</div>
+            <input class='form-control' type='search' matInput disabled>
           </th>
           <th style='width: 210px'>
             <div class='title-profile'>Chức vụ</div>
@@ -33,7 +38,7 @@
               nzAllowClear
               style='width:100%'
               formControlName='position'
-              nzPlaceHolder='chọn chức vụ'
+              nzPlaceHolder='Chọn chức vụ'
               [compareWith]="compareFN"
             >
               <nz-option
@@ -45,12 +50,8 @@
             </nz-select>
           </th>
           <th>
-            <div class='title-profile'>Đơn vị</div>
-            <input class='form-control' type='search' matInput disabled>
-          </th>
-          <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-            <input class='form-control text-center ' type='month' formControlName='createdAt' min='2021-01'>
+            <div class='border-top d-flex justify-content-center align-items-center'>Ngày tạo phiếu lương</div>
+            <input class='form-control text-center ' disabled>
           </th>
           <th>
             <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày làm</div>
@@ -73,11 +74,12 @@
             <input class='form-control text-center ' type='number' disabled>
           </th>
           <th>
-            <div class='border-top d-flex justify-content-center align-items-center'>Xác nhận</div>
-            <select class='select border-top' matNativeControl required formControlName='accConfirmedAt'>
-              <option value='TRUE'>Đã xác nhận</option>
-              <option value='FALSE'>chưa xác nhận</option>
-              <option value=''>Mặc định</option>
+            <div class='border-top d-flex justify-content-center align-items-center'>Kế toán xác nhận</div>
+            <select class='select border-top' style="width: 100%" matNativeControl required
+                    formControlName='accConfirmed'>
+              <option [value]="1">Đã xác nhận</option>
+              <option [value]="0">chưa xác nhận</option>
+              <option [value]="-1">Mặc định</option>
             </select>
           </th>
           <th>
@@ -120,20 +122,20 @@
               {{payroll?.employee?.lastName}}
             </div>
           </th>
+          <th class='pointer' (click)='readPayroll(payroll)'>
+            <div>
+              {{payroll.branch}}
+            </div>
+          </th>
           <th class='pointer' (click)='readPayroll(payroll)'
               [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
             <div>
-              {{payroll.employee?.position?.name}}
+              {{payroll.position}}
             </div>
           </th>
           <th class='pointer' (click)='readPayroll(payroll)'>
             <div>
-              {{payroll.employee?.branch?.name}}
-            </div>
-          </th>
-          <th class='pointer' (click)='readPayroll(payroll)'>
-            <div>
-              {{payroll.createdAt | date:'yyyy-MM'}}
+              {{payroll.createdAt | date:'dd-MM-yyyy'}}
             </div>
           </th>
           <th class='pointer' (click)='readPayroll(payroll)'>
@@ -161,7 +163,7 @@
             </div>
           </th>
           <th class='pointer'
-            (click)='readPayroll(payroll)'>
+              (click)='readPayroll(payroll)'>
             <div>
               {{payroll?.payslip?.total ? (payroll?.payslip?.total | number:'1.0-0') + 'đ' : 'Đang cập nhật'}}
             </div>
@@ -177,10 +179,7 @@
             </div>
           </th>
           <th class='pointer text-center'>
-            <div (click)='updateManConfirm(payroll.id,payroll.manConfirmedAt, payroll.createdAt)'>
-              <input style='pointer-events: none' disabled type='checkbox'
-                     [checked]='payroll.manConfirmedAt !== null'>
-            </div>
+            {{payroll?.accConfirmedAt ? (payroll.accConfirmedAt|date:'dd-MM-yyyy') : 'Chưa xác nhận'}}
           </th>
           <th class='pointer'>
             <div (click)='updateConfirmPayroll(payroll.id,"paidAt")'>
@@ -228,7 +227,8 @@
   .table-scroll thead th:nth-child(4) {
     z-index: 5;
   }
-  .table-scroll tbody th{
+
+  .table-scroll tbody th {
     height: 40px;
   }
 </style>

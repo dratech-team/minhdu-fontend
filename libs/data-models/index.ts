@@ -23,6 +23,8 @@ export  * from './sell/payment-history'
 export  * from './warehouse/warehouse'
 export  * from './partial-day.enum'
 export  * from './hr/employee/category'
+export  * from './sort'
+export  * from './range-day'
 
 
 

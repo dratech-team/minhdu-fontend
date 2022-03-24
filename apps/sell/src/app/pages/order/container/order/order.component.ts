@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Api, CurrenciesConstant, radiosStatusOrderConstant } from '@minhdu-fontend/constants';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, CurrenciesConstant, radiosStatusOrderConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -17,18 +17,28 @@ import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dia
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { OrderActions } from '../../+state/order.actions';
 import * as _ from 'lodash';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderQuery } from '../../+state/order.query';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderQuery} from '../../+state/order.query';
+import {OrderEntity} from '../../enitities/order.interface';
+import {OrderStore} from '../../+state/order.store';
+import {Sort} from '@minhdu-fontend/data-models';
+import {NzModalService} from "ng-zorro-antd/modal";
+import {OrderDialogComponent} from "../../component/order-dialog/order-dialog.component";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'order.component.html'
 })
+
+
 export class OrderComponent implements OnInit {
   ui$ = this.orderQuery.select(state => state.ui);
   orders$ = this.orderQuery.selectAll().pipe(map(value => JSON.parse(JSON.stringify(value))));
   loading$ = this.orderQuery.selectLoading();
+  totalOrder$ = this.orderQuery.select(state => state.total);
   commodityUniq$ = this.orderQuery.select(state => state.commodityUniq);
   totalCommodity$ = this.orderQuery.select(state => state.totalCommodity);
   commodities$ = this.orderQuery.selectAll().pipe(
@@ -36,52 +46,52 @@ export class OrderComponent implements OnInit {
       return _.uniqBy(_.flattenDeep(orders.map(order => order.commodities)), 'code');
     })
   );
-  radios = radiosStatusOrderConstant;
 
+  radios = radiosStatusOrderConstant;
   ItemContextMenu = ItemContextMenu;
   paidType = PaidType;
   statusOrder = StatusOrder;
   currenciesConstant = CurrenciesConstant;
   convertBoolean = ConvertBoolean;
   payType = PaymentType;
-  pageSize = 40;
+  pageSize = 25;
   pageIndexInit = 0;
   sortOrderEnum = SortOrderEnum;
   visible = false;
+  pageSizeTable = 10;
+  expanedAll$ = this.orderQuery.select(state => state.expandedAll);
+  stateSearch = this.orderQuery.getValue().search
+  valueSort?: Sort;
   formGroup = new FormGroup({
-    search: new FormControl(''),
-    paidType: new FormControl(''),
-    customer: new FormControl(''),
-    status: new FormControl(-1),
-    explain: new FormControl(''),
-    startedAt: new FormControl(''),
-    endedAt: new FormControl(''),
-    createStartedAt: new FormControl(),
-    createEndedAt: new FormControl(),
-    deliveryStartedAt: new FormControl(),
-    deliveryEndedAt: new FormControl(),
-    deliveredAt: new FormControl(),
-    commodityTotal: new FormControl(''),
-    province: new FormControl(''),
-    bsx: new FormControl(''),
-    commodity: new FormControl('')
+    search: new FormControl(this.stateSearch.search),
+    paidType: new FormControl(this.stateSearch.paidType),
+    customer: new FormControl(this.stateSearch.customer),
+    status: new FormControl(this.stateSearch.status),
+    explain: new FormControl(this.stateSearch.explain),
+    endedAt: new FormControl(this.stateSearch.endedAt),
+    createdAt: new FormControl(this.stateSearch.createdAt),
+    deliveredAt: new FormControl(this.stateSearch.deliveredAt),
+    commodityTotal: new FormControl(this.stateSearch.commodityTotal),
+    province: new FormControl(this.stateSearch.province),
+    bsx: new FormControl(this.stateSearch.bsx),
+    commodity: new FormControl(this.stateSearch.commodity)
   });
 
   constructor(
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
+    private readonly orderStore: OrderStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
+    private readonly modal: NzModalService,
     private readonly exportService: ExportService
   ) {
   }
 
   ngOnInit() {
-    const params = this.route.snapshot.queryParams;
-    this.actions$.dispatch(
-      OrderActions.loadAll({ param: { take: this.pageSize, skip: this.pageIndexInit, status: params.status } })
-    );
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroup.value)
+    }));
 
     this.formGroup.valueChanges
       .pipe(
@@ -97,47 +107,16 @@ export class OrderComponent implements OnInit {
 
 
   add() {
-    this.router.navigate(['don-hang/them-don-hang']).then();
+    this.modal.create({
+      nzTitle: 'Thêm đơn hàng',
+      nzContent: OrderDialogComponent,
+      nzWidth: '80vw',
+      nzFooter: null
+    })
+    // this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(
-      OrderActions.loadAll(this.mapOrder(val, true))
-    );
-  }
-
-  mapOrder(val: any, isScroll?: boolean) {
-    const value = Object.assign(JSON.parse(JSON.stringify(val)), {
-      skip: isScroll ? this.orderQuery.getCount() : 0,
-      take: this.pageSize
-    });
-    if (!value?.createStartedAt && !value?.createEndedAt) {
-      delete value?.createStartedAt;
-      delete value?.createEndedAt;
-    }
-    if (!value?.deliveryStartedAt && !value.deliveryEndedAt) {
-      delete value?.deliveryStartedAt;
-      delete value?.deliveryEndedAt;
-    }
-
-    if (!value?.startedAt && !value?.endedAt) {
-      delete value?.startedAt;
-      delete value?.endedAt;
-    }
-
-    if (!value?.deliveredAt) {
-      delete value?.deliveredAt;
-    }
-
-    if (value?.startedAt && !value?.endedAt) {
-      value.endedAt = value?.startedAt;
-      this.formGroup.get('endedAt')?.patchValue(value.endedAt);
-    }
-    return value;
-  }
-
-  readAndUpdate(id: number, isUpdate: boolean) {
+  readOrUpdate(id: number, isUpdate: boolean) {
     this.router.navigate(['don-hang/chi-tiet-don-hang', id], {
       queryParams: {
         isUpdate: isUpdate
@@ -145,7 +124,7 @@ export class OrderComponent implements OnInit {
     }).then();
   }
 
-  UpdateOrder($event: any) {
+  update($event: any) {
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
@@ -169,11 +148,84 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  addOrder() {
-    this.router.navigate(['/don-hang/them-don-hang']).then();
+  cancel($event: any) {
+    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 
-  printOrder() {
+  delete($event: any) {
+    const ref = this.dialog.open(DialogSharedComponent, {
+      width: 'fit-content',
+      data: {
+        title: 'Xoá đơn hàng',
+        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
+      }
+    });
+    ref.afterClosed().subscribe(val => {
+      if (val) {
+        this.actions$.dispatch(OrderActions.remove({id: $event.id}));
+      }
+    });
+  }
+
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value;
+    const count = this.orderQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(OrderActions.loadAll({
+        param: this.mapOrder(value, true),
+        isPagination: true
+      }));
+    }
+
+  }
+
+  onPickDeliveryDay($event: any) {
+    this.formGroup.get('deliveredAt')?.setValue($event);
+  }
+
+  onPickCreatedAt($event: any) {
+    this.formGroup.get('createdAt')?.setValue($event);
+
+  }
+
+  onPickEndedAt($event: any) {
+    this.formGroup.get('endedAt')?.setValue($event);
+  }
+
+  onExpandAll() {
+    const expanedAll = this.orderQuery.getValue().expandedAll;
+    this.orderQuery.getAll().forEach((order: OrderEntity) => {
+      this.orderStore.update(order.id, {expand: !expanedAll});
+    });
+    this.orderStore.update(state => ({...state, expandedAll: !expanedAll}));
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapOrder(this.formGroup.value)
+    }));
+  }
+
+  mapOrder(dataFG: any, isPagination?: boolean) {
+    this.orderStore.update(state => ({
+      ...state, search: dataFG
+    }))
+    const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
+      skip: isPagination ? this.orderQuery.getCount() : 0,
+      take: this.pageSize
+    });
+    if (value?.status !== 1) {
+      delete value.deliveredAt;
+    }
+
+    if (this.valueSort?.orderType) {
+      Object.assign(value, this.valueSort);
+    }
+    return value;
+  }
+
+  onPrint() {
     const val = this.formGroup.value;
     const order = {
       paidType: val.paidType,
@@ -197,53 +249,5 @@ export class OrderComponent implements OnInit {
         api: Api.SELL.ORDER.EXPORT_ITEMS
       }
     });
-  }
-
-  cancelOrder($event: any) {
-    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
-  }
-
-  deleteOrder($event: any) {
-    const ref = this.dialog.open(DialogSharedComponent, {
-      width: 'fit-content',
-      data: {
-        title: 'Xoá đơn hàng',
-        description: 'Bạn có chắc chắn muốn xoá đơn hàng này vĩnh viễn'
-      }
-    });
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
-      }
-    });
-  }
-
-  paramChange(params: NzTableQueryParams) {
-    const value = this.formGroup.value;
-    params.sort.map(val => {
-      if (val.value) {
-        Object.assign(value, {
-          orderBy: val.key,
-          orderType: val.value === 'ascend' ? 'asc' : 'des'
-        });
-        this.actions$.dispatch(OrderActions.loadAll({
-          param: this.mapOrder(value)
-        }));
-      }
-    });
-  }
-
-  onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveryStartedAt')?.setValue($event.startedAt, { emitEvent: false });
-    this.formGroup.get('deliveryEndedAt')?.setValue($event.endedAt);
-  }
-
-  onPickCreatedAt($event: any) {
-    this.formGroup.get('createStartedAt')?.setValue($event.startedAt, { emitEvent: false });
-    this.formGroup.get('createEndedAt')?.setValue($event.endedAt);
-  }
-
-  onClosePopover() {
-    this.visible = false;
   }
 }

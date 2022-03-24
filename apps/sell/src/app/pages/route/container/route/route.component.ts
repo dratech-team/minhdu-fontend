@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -15,47 +15,58 @@ import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.co
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from '@angular/common';
-import {MatSort} from '@angular/material/sort';
 import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
-import {routes} from "../../../bill/bill-routing.module";
-import {NzTableQueryParams} from "ng-zorro-antd/table";
-import {OrderActions} from "../../../order/+state/order.actions";
+import {OrderActions} from '../../../order/+state/order.actions';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {RouteStore} from '../../+state/route.store';
+import {Sort} from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'route.component.html'
 })
 export class RouteComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
+  expandAll$ = this.routeQuery.select(state => state.expandedAll);
+  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
+  loading$ = this.routeQuery.selectLoading();
+  total$ = this.routeQuery.select(state => state.total);
+
   pageSize = 30;
   pageIndexInit = 0;
-  ItemContextMenu = ItemContextMenu;
+  pageSizeTable = 10;
   today = new Date().getTime();
+  ItemContextMenu = ItemContextMenu;
+  radios = RadiosStatusRouteConstant;
   sortRouteEnum = SortRouteEnum;
+
   formGroup = new FormGroup({
     search: new FormControl(),
-    startedAt: new FormControl(
-      this.datePipe.transform(getFirstDayInMonth(new Date()), 'yyyy-MM-dd')),
-    endedAt: new FormControl(
-      this.datePipe.transform(getLastDayInMonth(new Date()), 'yyyy-MM-dd')),
+    startedAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
+    endedAt: new FormControl({
+      start: getFirstDayInMonth(new Date()),
+      end: getLastDayInMonth(new Date())
+    }),
     driver: new FormControl(''),
     name: new FormControl(''),
     bsx: new FormControl(''),
     garage: new FormControl(''),
     status: new FormControl(-1)
   });
-  radios = RadiosStatusRouteConstant
+
+  valueSort?: Sort;
 
   constructor(
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
+    private readonly routeStore: RouteStore,
     private readonly dialog: MatDialog,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly modal: NzModalService
   ) {
   }
-
-  routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
-  loading$ = this.routeQuery.selectLoading();
 
   ngOnInit() {
     this.actions$.dispatch(RouteAction.loadAll({
@@ -78,20 +89,11 @@ export class RouteComponent implements OnInit {
   }
 
   add() {
-    this.dialog.open(RouteDialogComponent, {
-      width: 'fit-content'
-    });
-  }
-
-  onScroll() {
-    const val = this.formGroup.value;
-    this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val), isScroll: true}));
-  }
-
-  mapRoute(val: RouteEntity, isScroll?: boolean) {
-    return Object.assign(val, {
-      skip: isScroll ? this.routeQuery.getCount() : 0,
-      take: this.pageSize
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle: 'Cập nhật tuyến đường',
+      nzContent: RouteDialogComponent,
+      nzFooter: null
     });
   }
 
@@ -107,7 +109,6 @@ export class RouteComponent implements OnInit {
   }
 
   onEnd(event: RouteEntity) {
-    console.log('route ', event);
     this.dialog
       .open(DialogDatePickerComponent, {
         width: 'fit-content',
@@ -130,6 +131,53 @@ export class RouteComponent implements OnInit {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
+  onPickStartedDay($event: any) {
+    this.formGroup.get('startedAt')?.setValue($event)
+  }
+
+  onPickEndedAtDay($event: any) {
+    this.formGroup.get('endedAt')?.setValue($event)
+  }
+
+  onPagination(pageIndex: number) {
+    const value = this.formGroup.value;
+    const count = this.routeQuery.getCount();
+    if (pageIndex * this.pageSizeTable >= count) {
+      this.actions$.dispatch(RouteAction.loadAll({
+        params: this.mapRoute(value, true),
+        isPagination: true
+      }));
+    }
+  }
+
+  onExpandAll() {
+    const expanedAll = this.routeQuery.getValue().expandedAll;
+    this.routeQuery.getAll().forEach((route: RouteEntity) => {
+      this.routeStore.update(route.id, {expand: !expanedAll});
+    });
+    this.routeStore.update(state => ({...state, expandedAll: !expanedAll}));
+  }
+
+  onSort(sort: Sort) {
+    this.valueSort = sort;
+    this.actions$.dispatch(OrderActions.loadAll({
+      param: this.mapRoute(this.formGroup.value)
+    }));
+  }
+
+  mapRoute(val: any, isPagination?: boolean) {
+    if (this.valueSort?.orderType) {
+      Object.assign(val, this.valueSort);
+    } else {
+      delete val.orderType;
+      delete val.orderBy;
+    }
+    return Object.assign(val, {
+      skip: isPagination ? this.routeQuery.getCount() : 0,
+      take: this.pageSize
+    });
+  }
+
   printRouter() {
     const val = this.formGroup.value;
     const route = {
@@ -147,33 +195,6 @@ export class RouteComponent implements OnInit {
         exportType: 'ORDER',
         params: route,
         api: Api.SELL.ROUTE.ROUTE_EXPORT
-      }
-    });
-  }
-
-  sortRoute() {
-    this.actions$.dispatch(RouteAction.loadAll({
-      params: this.mapRoute(this.formGroup.value)
-    }));
-  }
-
-  onPickStartedDay($event: any) {
-  }
-
-  onPickEndedAtDay($event: any) {
-  }
-
-  paramChange(params: NzTableQueryParams) {
-    const value = this.formGroup.value;
-    params.sort.map(val => {
-      if (val.value) {
-        Object.assign(value, {
-          orderBy: val.key,
-          orderType: val.value === 'ascend' ? 'asc' : 'des'
-        });
-        this.actions$.dispatch(RouteAction.loadAll({
-          params: this.mapRoute(value)
-        }));
       }
     });
   }

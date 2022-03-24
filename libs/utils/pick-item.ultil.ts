@@ -7,7 +7,9 @@ export const pickOne = (item: any, itemSelected: any [], items: any[], allowEmpl
     itemSelected.splice(index, 1);
     if (allowEmployeesSelected) {
       const indexAllowance = allowEmployeesSelected.findIndex(emp => emp.id === item.id);
-      allowEmployeesSelected.splice(indexAllowance, 1);
+      if(indexAllowance > -1){
+        allowEmployeesSelected.splice(indexAllowance, 1);
+      }
     }
   } else {
     itemSelected.push(item);

@@ -18,7 +18,7 @@ export interface PayrollState extends EntityState<Payroll> {
   branch: Branch,
   position: Position,
   total: number,
-  totalOvertime?: totalSalary
+  totalOvertime?: totalSalary,
 }
 
 export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
@@ -80,8 +80,13 @@ export const payrollReducer = createReducer(
     adapter.upsertOne(action.payroll, {...state, loaded: true, added: true, adding: false, scanned: true})
   ),
 
+
+  on(PayrollAction.updatePayroll, (state, _) => {
+    return {...state, added: false, adding: true};
+  }),
+
   on(PayrollAction.updatePayrollSuccess, (state, {payroll}) => {
-      return adapter.updateOne({id: payroll.id, changes: payroll}, {...state, loaded: true});
+      return adapter.updateOne({id: payroll.id, changes: payroll}, {...state, loaded: true, added: true, adding: false});
     }
   ),
 

@@ -35,12 +35,13 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
 import {NzTableModule} from "ng-zorro-antd/table";
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import {NzPopoverModule} from 'ng-zorro-antd/popover';
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {VisibleOrderComponent} from "./component/custom-visible/visible-order.component";
+import {NzStepsModule} from "ng-zorro-antd/steps";
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import {VisibleOrderComponent} from "./component/custom-visible/visible-order.co
     NzCollapseModule,
     NzInputModule,
     NzRadioModule,
+    NzStepsModule
   ],
   declarations: [
     TableRouteComponent,

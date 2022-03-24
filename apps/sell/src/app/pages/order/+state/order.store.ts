@@ -6,23 +6,47 @@ import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {OrderVisibleEntity} from '../enitities/order-visible.entity';
 
 export interface OrderState extends EntityState<OrderEntity> {
-  readonly loading: boolean;
-  readonly added?: boolean
-  readonly total?: number;
-  readonly commodityUniq?: CommodityUniq[];
-  readonly totalCommodity?: number;
+  readonly added?: boolean | null
+  readonly expandedAll?: boolean
+  readonly total: number;
+  readonly commodityUniq: CommodityUniq[];
+  readonly totalCommodity: number;
   readonly ui?: OrderVisibleEntity;
+  readonly search: OrderSearchEntity
 }
 
 function createInitState(): OrderState {
   return {
     loading: true,
-    added: false,
+    added: null,
+    expandedAll: false,
     total: 0,
     commodityUniq: [],
     entities: undefined,
     ids: [],
     totalCommodity: 0,
+    search: {
+      search: '',
+      paidType: '',
+      customer: '',
+      status: -1,
+      explain: '',
+      endedAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      createdAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      deliveredAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
+      },
+      province: '',
+      bsx: '',
+      commodity: ''
+    },
     ui: {
       stt: {
         pinned: true,
