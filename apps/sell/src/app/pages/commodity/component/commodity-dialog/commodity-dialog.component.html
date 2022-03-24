@@ -72,7 +72,7 @@
       </div>
     </form>
   <div class='row d-flex mt-3 justify-content-center'>
-    <button nz-button nzType="primary" (click)="onSubmit()"> Xác nhận</button>
+    <button nz-button nzType="primary" [nzLoading]="loading()|async" (click)="onSubmit()"> Xác nhận</button>
   </div>
 </div>
 

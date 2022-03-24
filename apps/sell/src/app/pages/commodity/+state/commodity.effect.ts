@@ -26,14 +26,14 @@ export class CommodityEffect {
     ofType(CommodityAction.addOne),
     switchMap((props) => {
         this.commodityStore.update(state => ({
-          ...state, added: false
+          ...state, added: false, adding: true
         }))
         return this.commodityService.addOne(props)
       }
     ),
     map(commodity => {
         this.commodityStore.update(state => ({
-          ...state, added: true
+          ...state, added: true, adding: false
         }))
         this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
         this.commodityStore.add(commodity);
@@ -87,12 +87,12 @@ export class CommodityEffect {
     ofType(CommodityAction.update),
     switchMap((props) => {
         this.commodityStore.update(state => ({
-          ...state, added: false
+          ...state, added: false, adding: true
         }))
         return this.commodityService.update(props.id, props.updates).pipe(
           map(commodity => {
               this.commodityStore.update(state => ({
-                ...state, added: true
+                ...state, added: true, adding: false
               }))
               this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
               if (props.updates?.orderId) {
@@ -112,7 +112,7 @@ export class CommodityEffect {
     ofType(CommodityAction.remove),
     switchMap((props) => this.commodityService.delete(props.id).pipe(
       map(_ => {
-        if(props.inOrder){
+        if (props.inOrder) {
           this.actions$.dispatch(OrderActions.loadOne({id: props.inOrder.orderId}))
         }
         this.snackbar.open('Xóa hàng hóa thành công', '', {duration: 1500});

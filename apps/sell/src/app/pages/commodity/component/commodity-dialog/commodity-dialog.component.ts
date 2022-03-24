@@ -10,6 +10,7 @@ import {
 import {Actions} from '@datorama/akita-ng-effects';
 import {CommodityQuery} from '../../+state/commodity.query';
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
@@ -99,5 +100,9 @@ export class CommodityDialogComponent implements OnInit {
         this.modalRef.close();
       }
     });
+  }
+
+  loading(): Observable<boolean>{
+    return this.commodityQuery.select(state => state.adding)
   }
 }
