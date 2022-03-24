@@ -5,6 +5,7 @@ import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {SearchCustomerEntity} from "../entities/search-customer.entity";
 import {CustomerResource, CustomerType, Gender} from "@minhdu-fontend/enums";
 import {CustomerVisibleEntity} from "../entities/customer-visible.entity";
+import {UpdateStateUiUtil} from "../../../utils/update-state-ui.util";
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
@@ -85,19 +86,10 @@ export class CustomerStore extends EntityStore<CustomerState> {
   }
 
   updateUI(newState: Partial<CustomerVisibleEntity>, type: 'visible' | 'pinned') {
-    const newStateClone = JSON.parse(JSON.stringify(newState))
-    switch (type) {
-      case 'visible':
-        newStateClone[Object.keys(newState).toString()].visible = !newStateClone[Object.keys(newState).toString()].visible
-        break;
-      case "pinned":
-        newStateClone[Object.keys(newState).toString()].pinned = !newStateClone[Object.keys(newState).toString()].pinned
-        break;
-    }
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), newStateClone) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), UpdateStateUiUtil(newState, type)) : state.ui
       };
     });
   }

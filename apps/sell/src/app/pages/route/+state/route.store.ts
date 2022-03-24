@@ -5,6 +5,8 @@ import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {SearchRouteEntity} from "../entities/search-route.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {routeVisible} from "../entities/route-visible.entity";
+import {CustomerVisibleEntity} from "../../customer/entities/customer-visible.entity";
+import {UpdateStateUiUtil} from "../../../utils/update-state-ui.util";
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
@@ -79,12 +81,11 @@ export class RouteStore extends EntityStore<RouteState> {
     super(createInitialState());
   }
 
-  updateUI(type: Partial<routeVisible>) {
-
+  updateUI(newState: Partial<CustomerVisibleEntity>, type: 'visible' | 'pinned') {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), UpdateStateUiUtil(newState, type)) : state.ui
       };
     });
   }
