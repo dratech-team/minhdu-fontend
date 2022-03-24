@@ -4,6 +4,8 @@ import {CommodityUniq} from '../../commodity/entities/commodity-uniq.entity';
 import {OrderEntity} from '../enitities/order.interface';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {OrderVisibleEntity} from '../enitities/order-visible.entity';
+import {OrderSearchEntity} from "../enitities/order-search.entity";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly added?: boolean | null
@@ -65,12 +67,12 @@ function createInitState(): OrderState {
         visible: false
       },
       commodityTotal: {
-        pinned: true,
+        pinned: false,
         visible: true
       },
       paymentTotal: {
         pinned: false,
-        visible: false
+        visible: true
       },
       deliveredAt: {
         pinned: true,
@@ -110,19 +112,23 @@ function createInitState(): OrderState {
       },
       totalCommodity: {
         pinned: false,
-        visible: false
+        visible: true
       },
       expand: {
         pinned: false,
-        visible: false
+        visible: true
       },
       paymentHistories: {
         pinned: false,
         visible: false
       },
-      vans:{
+      vans: {
         pinned: false,
-        visible: false
+        visible: true
+      },
+      status: {
+        pinned: false,
+        visible: true
       }
     }
   };
@@ -136,10 +142,11 @@ export class OrderStore extends EntityStore<OrderState> {
   }
 
   updateUI(type: Partial<OrderVisibleEntity>) {
+
     return this.update(state => {
       return {
         ...state,
-        ui: type
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
       };
     });
   }

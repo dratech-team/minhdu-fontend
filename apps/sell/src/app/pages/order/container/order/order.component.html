@@ -52,13 +52,13 @@
       </div>
       <div class='d-flex justify-content-between'>
         <button (click)='add()' nz-button nzType='primary'>Thêm</button>
-        <button (click)='printOrder()' class='ml-2' nz-button nzType='primary'>Xuất</button>
+        <button (click)='onPrint()' class='ml-2' nz-button nzType='primary'>Xuất</button>
         <button class='ml-2' nz-button nz-popover nzPopoverTitle='Thêm cột'
                 [(nzPopoverVisible)]='visible'
                 nzPopoverPlacement='bottomRight'
                 [nzPopoverContent]='pinColumn'
                 nzPopoverTrigger='click'
-        >Custom
+        >Ghim
         </button>
       </div>
     </div>
@@ -76,17 +76,17 @@
         (nzPageIndexChange)='onPagination($event)'
       >
         <thead>
-        <tr>
+        <tr *ngIf="(ui$|async) as ui">
           <th nzWidth='50px' nzLeft (click)='onExpandAll()'>
             <img *ngIf='(expanedAll$ | async) else dash_square' src='assets/icon/share/dash-square.svg'>
             <ng-template #dash_square>
               <img src='assets/icon/share/plus-square.svg'>
             </ng-template>
           </th>
-          <th nzWidth='50px' *ngIf='(ui$ | async)?.stt?.visible' [nzLeft]='(ui$ | async)?.stt?.pinned || true'
+          <th nzWidth='50px' *ngIf='ui.stt?.visible' [nzLeft]='ui.stt?.pinned||false'
               class='text-center font-weight-bold'>STT
           </th>
-          <th nzLeft class='text-center font-weight-bold'
+          <th *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' class='text-center font-weight-bold'
               (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.END ,orderType:$event})'
               [nzSortFn]='true'>
             Ngày hẹn giao
@@ -126,10 +126,10 @@
         </thead>
         <tbody>
         <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
-          <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)'>
+          <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)' *ngIf="(ui$|async) as ui">
             <td style='padding-left: 15px' nzLeft [(nzExpand)]='order.expand'></td>
-            <td nzLeft class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
-            <td class='text-center' nzLeft (click)='readOrUpdate(order.id, false)' nzLeft>
+            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false' class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
+            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' (click)='readOrUpdate(order.id, false)' nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
             <td class='text-center' (click)='readOrUpdate(order.id, false)'>

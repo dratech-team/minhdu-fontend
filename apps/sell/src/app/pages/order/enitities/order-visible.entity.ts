@@ -23,4 +23,5 @@ export interface OrderVisibleEntity {
   readonly expand: VisibleEntity,
   readonly paymentHistories: VisibleEntity,
   readonly vans:VisibleEntity,
+  readonly status:VisibleEntity,
 }
