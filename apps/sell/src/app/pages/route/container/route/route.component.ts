@@ -28,7 +28,7 @@ export class RouteComponent implements OnInit {
   routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
   total$ = this.routeQuery.select(state => state.total);
-
+  ui$ = this.routeQuery.select(state => state.ui)
   pageSize = 30;
   pageIndexInit = 0;
   pageSizeTable = 10;
@@ -45,6 +45,7 @@ export class RouteComponent implements OnInit {
   });
 
   valueSort?: Sort;
+  visible = false;
 
   constructor(
     private readonly actions$: Actions,

@@ -1,7 +1,4 @@
-export interface VisibleEntity {
-  readonly pinned: boolean;
-  readonly visible: boolean;
-}
+import {VisibleEntity} from "@minhdu-fontend/data-models";
 
 export interface OrderVisibleEntity {
   readonly stt: VisibleEntity;
