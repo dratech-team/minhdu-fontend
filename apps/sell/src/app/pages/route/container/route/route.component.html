@@ -18,13 +18,17 @@
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker
         [title]="'Ngày bắt đầu'"
+        [rangeDayInit]="stateSearch.startedAt"
         (onPicker)='onPickStartedDay($event)'>
       </minhdu-fontend-collapse-datepicker>
     </div>
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker
         title='Ngày kết thúc'
-        (onPicker)='onPickEndedAtDay($event)'></minhdu-fontend-collapse-datepicker>
+        [rangeDayInit]="stateSearch.endedAt"
+        (onPicker)='onPickEndedAtDay($event)'>
+
+      </minhdu-fontend-collapse-datepicker>
     </div>
   </div>
   <div class='ml-3' style='width: 76vw; height: 80vh'>
