@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Actions, createEffect, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {CommodityService} from '../service/commodity.service';
 import {CommodityAction} from './commodity.action';
 import {throwError} from 'rxjs';
@@ -8,7 +8,6 @@ import {OrderActions} from '../../order/+state/order.actions';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityQuery} from './commodity.query';
 import {CommodityStore} from './commodity.store';
-import {CommodityEntity} from "../entities/commodity.entity";
 
 @Injectable()
 export class CommodityEffect {
@@ -112,7 +111,7 @@ export class CommodityEffect {
     ofType(CommodityAction.remove),
     switchMap((props) => this.commodityService.delete(props.id).pipe(
       map(_ => {
-        if(props.inOrder){
+        if (props.inOrder) {
           this.actions$.dispatch(OrderActions.loadOne({id: props.inOrder.orderId}))
         }
         this.snackbar.open('Xóa hàng hóa thành công', '', {duration: 1500});

@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { RouteAction } from './route.action';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { RouteService } from '../service/route.service';
-import { throwError } from 'rxjs';
-import { OrderEntity } from '../../order/enitities/order.interface';
-import { getCommodityTotal, getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
-import { RouteStore } from './route.store';
-import { RouteQuery } from './route.query';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {RouteAction} from './route.action';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {RouteService} from '../service/route.service';
+import {throwError} from 'rxjs';
+import {OrderEntity} from '../../order/enitities/order.interface';
+import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {RouteStore} from './route.store';
+import {RouteQuery} from './route.query';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Injectable()
 export class RouteEffect {
@@ -24,15 +24,23 @@ export class RouteEffect {
   @Effect()
   addRoute$ = this.action.pipe(
     ofType(RouteAction.addOne),
-    switchMap((props) => this.routeService.addOne(props)),
+    switchMap((props) => {
+      this.routeStore.update(state => ({
+        ...state,
+        added: false,
+        adding: true
+      }));
+      return this.routeService.addOne(props)
+    }),
     tap((res) => {
         const expanedAll = this.routeQuery.getValue().expandedAll;
         const orders = this.handelOrder(res.orders);
         this.routeStore.update(state => ({
           ...state,
-          added: true
+          added: true,
+          adding: false
         }));
-        this.routeStore.add(Object.assign(res, { orders, expand: expanedAll }));
+        this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
       }
     ),
     catchError((err) => throwError(err))
@@ -49,7 +57,7 @@ export class RouteEffect {
           props.params.orderType = props.params.orderType === 'ascend' ? 'asc' : 'des';
         }
         return this.routeService.pagination(Object.assign(
-          props.params, (props.params?.status === null || props.params?.status === undefined) ? { status: 0 } : {})
+          props.params, (props.params?.status === null || props.params?.status === undefined) ? {status: 0} : {})
         ).pipe(
           map((response) => {
             const expanedAll = this.routeQuery.getValue().expandedAll;
@@ -99,13 +107,18 @@ export class RouteEffect {
   @Effect()
   update$ = this.action.pipe(
     ofType(RouteAction.update),
-    switchMap((props) => this.routeService.update(props.id, props.updates)),
-    map((route) => {
-      const expanedAll = this.routeQuery.getValue().expandedAll;
-
+    switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
-        added: true
+        added: false,
+      }));
+      return this.routeService.update(props.id, props.updates)
+    }),
+    map((route) => {
+      const expanedAll = this.routeQuery.getValue().expandedAll;
+      this.routeStore.update(state => ({
+        ...state,
+        added: true,
       }));
       this.message.success('Cập nhật thành công');
       return this.routeStore.update(route.id, Object.assign(route, {

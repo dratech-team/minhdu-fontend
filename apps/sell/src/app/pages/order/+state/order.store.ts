@@ -9,7 +9,7 @@ import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
-  readonly added?: boolean
+  readonly added?: boolean | null
   readonly expandedAll?: boolean
   readonly total: number;
   readonly commodityUniq: CommodityUniq[];
@@ -21,7 +21,7 @@ export interface OrderState extends EntityState<OrderEntity> {
 function createInitState(): OrderState {
   return {
     loading: true,
-    added: false,
+    added: null,
     expandedAll: false,
     total: 0,
     commodityUniq: [],

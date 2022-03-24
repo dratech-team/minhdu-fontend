@@ -8,6 +8,7 @@ import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -20,7 +21,7 @@ export class RouteDialogComponent implements OnInit {
   commoditySelected: CommodityEntity[] = []
   isSelectAll = false;
   stepIndex = 0;
-
+  added$ = this.routeQuery.select(state => state.added)
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -89,7 +90,7 @@ export class RouteDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(RouteAction.addOne(route));
     }
-    this.routeQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }

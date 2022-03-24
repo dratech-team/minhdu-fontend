@@ -10,6 +10,7 @@ import {
 import {Actions} from '@datorama/akita-ng-effects';
 import {CommodityQuery} from '../../+state/commodity.query';
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'commodity-dialog.component.html'
@@ -19,7 +20,7 @@ export class CommodityDialogComponent implements OnInit {
   commodities$ = this.service.getTemplate();
   CommodityUnit = CommodityUnit;
   formGroup!: FormGroup
-
+  added$ = this.commodityQuery.select(state => state.added)
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -94,7 +95,7 @@ export class CommodityDialogComponent implements OnInit {
         CommodityAction.addOne(commodity)
       );
     }
-    this.commodityQuery.select(state => state.added).subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close();
       }
