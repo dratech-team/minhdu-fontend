@@ -84,11 +84,20 @@ export class CustomerStore extends EntityStore<CustomerState> {
     super(createInitState());
   }
 
-  updateUI(type: Partial<CustomerVisibleEntity>) {
+  updateUI(newState: Partial<CustomerVisibleEntity>, type: 'visible' | 'pinned') {
+    const newStateClone = JSON.parse(JSON.stringify(newState))
+    switch (type) {
+      case 'visible':
+        newStateClone[Object.keys(newState).toString()].visible = !newStateClone[Object.keys(newState).toString()].visible
+        break;
+      case "pinned":
+        newStateClone[Object.keys(newState).toString()].pinned = !newStateClone[Object.keys(newState).toString()].pinned
+        break;
+    }
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), newStateClone) : state.ui
       };
     });
   }

@@ -19,18 +19,15 @@ export class VisibleCustomerComponent {
   }
 
   onVisibleChange(visible: boolean, visibleEntity: any) {
-    this.visibleEntity = JSON.parse(JSON.stringify(visibleEntity));
+    this.visibleEntity = visibleEntity;
   }
 
   onUpdateVisible() {
-    this.visibleEntity[Object.keys(this.visibleEntity).toString()].visible = !this.visibleEntity[Object.keys(this.visibleEntity).toString()].visible
-    this.customerStore.updateUI(this.visibleEntity);
+    this.customerStore.updateUI(this.visibleEntity, "visible");
   }
 
   onUpdatePinned() {
-    this.visibleEntity[Object.keys(this.visibleEntity)
-      .toString()].pinned = !this.visibleEntity[Object.keys(this.visibleEntity).toString()].pinned
-    this.customerStore.updateUI(this.visibleEntity);
+    this.customerStore.updateUI(this.visibleEntity, "pinned");
   }
 
   visible(key: 'visible' | 'pinned'): boolean {
