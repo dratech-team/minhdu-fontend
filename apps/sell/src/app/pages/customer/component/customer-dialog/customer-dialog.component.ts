@@ -113,7 +113,7 @@ export class CustomerDialogComponent implements OnInit {
     this.wardId = $event;
   }
 
-  loading(): Observable<boolean> {
+  adding(): Observable<boolean> {
     return this.customerQuery.select(state => state.adding)
   }
 }
