@@ -16,7 +16,6 @@ export class CollapseDatepickerComponent implements OnInit {
   visible = false
 
   ngOnInit() {
-    console.log(this.rangeDayInit)
     this.formRange.valueChanges.subscribe(val => {
       this.formRadio.setValue(1)
       this.onPicker.emit({
