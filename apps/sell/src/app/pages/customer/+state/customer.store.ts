@@ -89,7 +89,7 @@ export class CustomerStore extends EntityStore<CustomerState> {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil(newState, type)) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<CustomerVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

@@ -147,7 +147,7 @@ export class OrderStore extends EntityStore<OrderState> {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil(newState, type)) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<OrderVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

@@ -1,6 +1,5 @@
-import {CustomerVisibleEntity} from "../pages/customer/entities/customer-visible.entity";
 
-export const updateStateUiUtil = (newState: Partial<CustomerVisibleEntity>, type: 'visible' | 'pinned') => {
+export const updateStateUiUtil = <T>(newState: Partial<T>, type: 'visible' | 'pinned') => {
   const newStateClone = JSON.parse(JSON.stringify(newState))
   switch (type) {
     case 'visible':
