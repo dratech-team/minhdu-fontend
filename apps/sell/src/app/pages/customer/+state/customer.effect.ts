@@ -87,14 +87,14 @@ export class CustomerEffect {
     ofType(CustomerActions.update),
     switchMap((props) => {
         this.customerStore.update(state => ({
-          ...state, added: false
+          ...state, added: false, adding: true
         }));
         return this.customerService.update(props.id, props.updates);
       }
     ),
     map((res) => {
       this.customerStore.update(state => ({
-        ...state, added: true
+        ...state, added: true, adding: false
       }));
       console.log(res);
       this.customerStore.update(res.id, res);
