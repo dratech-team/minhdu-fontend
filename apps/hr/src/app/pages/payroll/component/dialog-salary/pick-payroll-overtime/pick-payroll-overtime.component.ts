@@ -211,7 +211,7 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     } else {
       this.payrolls.forEach(payroll => {
         const indexAllowance = this.allowPayrollsSelected.findIndex(emp => emp.id === payroll.id);
-        if(indexAllowance > -1){
+        if (indexAllowance > -1) {
           this.allowPayrollsSelected.splice(indexAllowance, 1)
         }
       })
