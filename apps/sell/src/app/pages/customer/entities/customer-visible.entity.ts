@@ -1,7 +1,5 @@
-import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
-import { Bank, PaymentHistory, Ward } from '@minhdu-fontend/data-models';
-import { OrderEntity } from '../../order/enitities/order.interface';
-import {VisibleEntity} from "../../order/enitities/order-visible.entity";
+import {VisibleEntity} from "@minhdu-fontend/data-models";
+
 
 export interface CustomerVisibleEntity {
   readonly stt:VisibleEntity,

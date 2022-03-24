@@ -6,6 +6,7 @@ import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {OrderVisibleEntity} from '../enitities/order-visible.entity';
 import {OrderSearchEntity} from "../enitities/order-search.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
+import {updateStateUiUtil} from "../../../utils/update-state-ui.util";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean
@@ -142,11 +143,11 @@ export class OrderStore extends EntityStore<OrderState> {
     super(createInitState());
   }
 
-  updateUI(type: Partial<OrderVisibleEntity>) {
+  updateUI(newState: Partial<OrderVisibleEntity>, type: 'visible' | 'pinned') {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<OrderVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

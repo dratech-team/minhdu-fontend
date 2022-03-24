@@ -4,7 +4,9 @@ import {RouteEntity} from '../entities/route.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {SearchRouteEntity} from "../entities/search-route.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {routeVisible} from "../entities/route-visible.entity";
+import {routeVisibleEntity} from "../entities/route-visible.entity";
+import {CustomerVisibleEntity} from "../../customer/entities/customer-visible.entity";
+import {updateStateUiUtil} from "../../../utils/update-state-ui.util";
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
@@ -12,7 +14,7 @@ export interface RouteState extends EntityState<RouteEntity> {
   total: number,
   expandedAll: boolean,
   search: SearchRouteEntity,
-  readonly ui?: routeVisible;
+  readonly ui?: routeVisibleEntity;
 }
 
 export const createInitialState = () => ({
@@ -79,12 +81,11 @@ export class RouteStore extends EntityStore<RouteState> {
     super(createInitialState());
   }
 
-  updateUI(type: Partial<routeVisible>) {
-
+  updateUI(newState: Partial<routeVisibleEntity>, type: 'visible' | 'pinned') {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), type) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<routeVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

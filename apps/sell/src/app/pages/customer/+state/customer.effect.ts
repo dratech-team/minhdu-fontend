@@ -8,7 +8,6 @@ import {CustomerQuery} from './customer.query';
 import {CustomerStore} from './customer.store';
 import {OrderService} from '../../order/service/order.service';
 import {AddCustomerDto} from '../dto/add-customer.dto';
-import {LoadCustomerDto} from '../dto/load-customer.dto';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {MatSnackBar} from "@angular/material/snack-bar";
 

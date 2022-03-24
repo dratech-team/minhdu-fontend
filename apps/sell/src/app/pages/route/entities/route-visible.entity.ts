@@ -1,6 +1,6 @@
 import {VisibleEntity} from "@minhdu-fontend/data-models";
 
-export interface routeVisible {
+export interface routeVisibleEntity {
   readonly stt: VisibleEntity;
   readonly name: VisibleEntity;
   readonly startedAt: VisibleEntity;
