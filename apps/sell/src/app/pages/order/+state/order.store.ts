@@ -8,6 +8,7 @@ import {OrderSearchEntity} from "../enitities/order-search.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
+  readonly loading: boolean
   readonly added?: boolean | null
   readonly expandedAll?: boolean
   readonly total: number;
