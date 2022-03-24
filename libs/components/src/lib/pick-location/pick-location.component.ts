@@ -5,6 +5,7 @@ import {Subject} from 'rxjs';
 import {ProvinceService} from "../../../../location/src/lib/service/province.service";
 import {DistrictService} from "../../../../location/src/lib/service/district..service";
 import {WardService} from "../../../../location/src/lib/service/ward.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-pick-location',
@@ -23,7 +24,7 @@ export class PickLocationComponent implements OnInit {
   @Input() ward?: Ward;
   @Input() reload$?: Subject<boolean>;
   formGroup!: FormGroup;
-  provinces$ = this.provinceService.getAll().pipe()
+  provinces$ = this.provinceService.getAll()
   lstDistrict: District[] = [];
   lstWard: Ward [] = [];
   formDistrict = new FormControl();

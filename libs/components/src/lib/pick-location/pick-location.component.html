@@ -15,6 +15,7 @@
     <div class='col-sm' [formGroup]='formGroup'>
       <label>Tỉnh/Thành phố</label><span *ngIf='isRequiredProvince' class=' star'>*</span>
       <nz-select
+        [nzLoading]="!(provinces$|async)"
         nzShowSearch
         nzAllowClear
         style='width:100%'
