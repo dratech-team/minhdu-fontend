@@ -91,35 +91,44 @@
               [nzSortFn]='true'>
             Ngày hẹn giao
           </th>
-          <th [nzSortFn]='true'
+          <th *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false'
+              [nzSortFn]='true'
               (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.CUSTOMER ,orderType:$event})'
               class='text-center font-weight-bold'>
             Khách hàng
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true'
+          <th *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false'
+              class='text-center font-weight-bold' [nzSortFn]='true'
               (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.PROVINCE ,orderType:$event})'>
             Điểm đến
           </th>
-          <th class='text-center font-weight-bold' [nzSortFn]='true'
+          <th *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false'
+              class='text-center font-weight-bold' [nzSortFn]='true'
               (nzSortOrderChange)='onSort({orderBy:sortOrderEnum.CREATED_AT ,orderType:$event})'>
             Ngày tạo
           </th>
-          <th class='text-center font-weight-bold'>
+          <th *ngIf="ui.vans.visible" [nzLeft]='ui.vans?.pinned||false'
+              class='text-center font-weight-bold'>
             Xe xuất
           </th>
-          <th class='text-center font-weight-bold' style='color: red'>
+          <th *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
+              class='text-center font-weight-bold' style='color: red'>
             Tổng số lượng
           </th>
-          <th class='text-center font-weight-bold'>
+          <th *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
+              class='text-center font-weight-bold'>
             Tiền hàng
           </th>
-          <th class='text-center font-weight-bold'>
+          <th *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false'
+              class='text-center font-weight-bold'>
             Thanh toán
           </th>
-          <th class='text-center font-weight-bold'>
+          <th *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false'
+              class='text-center font-weight-bold'>
             Diễn giải
           </th>
-          <th class='text-center font-weight-bold'>
+          <th *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
+              class='text-center font-weight-bold'>
             Trạng thái đơn hàng
           </th>
         </tr>
@@ -128,45 +137,58 @@
         <ng-template ngFor let-order [ngForOf]='tableOrder.data' let-i='index'>
           <tr class='pointer' (contextmenu)='child.onContextMenu($event, order)' *ngIf="(ui$|async) as ui">
             <td style='padding-left: 15px' nzLeft [(nzExpand)]='order.expand'></td>
-            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false' class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
-            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' (click)='readOrUpdate(order.id, false)' nzLeft>
+            <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'
+                class='text-center'>{{(i + 1) + ((tableOrder.nzPageIndex - 1) * 10)}}</td>
+            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false' (click)='readOrUpdate(order.id, false)'
+                nzLeft>
               {{(order?.endedAt ? (order?.endedAt | date: 'dd/MM/yyyy') : 'Chưa cập nhật')}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.customer.visible" [nzLeft]='ui.customer?.pinned||false' class='text-center'
+                (click)='readOrUpdate(order.id, false)'>
               {{order.customer?.lastName}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.destination.visible" [nzLeft]='ui.destination?.pinned||false' class='text-center'
+                (click)='readOrUpdate(order.id, false)'>
               {{order?.province?.name}}
               {{order?.district?.name ? ' - ' + order?.district?.name : ''}}
               {{order?.ward?.name ? ' - ' + order?.ward?.name : ''}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)'>
+            <td *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false' class='text-center'
+                (click)='readOrUpdate(order.id, false)'>
               {{(order?.createdAt | date: 'dd/MM/yyyy' || 'Chưa cập nhật')}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)' *ngIf='order?.routes?.length; else notCar'>
-          <span *ngFor='let route of order?.routes'>
-              {{route?.bsx}},
-          </span>
+            <td class='text-center' (click)='readOrUpdate(order.id, false)' *ngIf="ui.vans.visible"
+                [nzLeft]='ui.vans?.pinned||false'>
+              <div *ngIf="order?.routes?.length > 0 else notCar">
+                 <span *ngFor='let route of order?.routes'>{{route?.bsx}},
+                </span>
+              </div>
+              <ng-template #notCar>
+                <div class='text-center'>
+                  -
+                </div>
+              </ng-template>
             </td>
-            <ng-template #notCar>
-              <td class='text-center' (click)='readOrUpdate(order.id, false)'>
-                -
-              </td>
-            </ng-template>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: red'>
+            <td *ngIf="ui.totalCommodity.visible" [nzLeft]='ui.totalCommodity?.pinned||false'
+                class='text-center'
+                (click)='readOrUpdate(order.id, false)' style='color: red'>
               {{order.totalCommodity| number:'1.0-0' | notEmpty:'0'}}
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #f86c6b'>
+            <td *ngIf="ui.commodityTotal.visible" [nzLeft]='ui.commodityTotal?.pinned||false'
+                class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #f86c6b'>
               {{order.commodityTotal | number:'1.0-0' | notEmpty:'0'}} đ
             </td>
-            <td class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #20c997'>
+            <td *ngIf="ui.paymentTotal.visible" [nzLeft]='ui.paymentTotal?.pinned||false'
+                class='text-center' (click)='readOrUpdate(order.id, false)' style='color: #20c997'>
               {{order?.paymentTotal | number:'1.0-0' | notEmpty:'0'}}
             </td>
             <!--        <th>-->
             <!--          {{order.currency | transform:currenciesConstant}}-->
             <!--        </th>-->
-            <td class='text-center' (click)='readOrUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
-            <td [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
+            <td *ngIf="ui.explain.visible" [nzLeft]='ui.explain?.pinned||false'
+                class='text-center' (click)='readOrUpdate(order.id, false)'>{{order?.explain || 'Chưa cập nhật'}} </td>
+            <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
+                [ngStyle]="{'color': (!order.deliveredAt && order.routes?.length) ? '#32863d' : ''}">
               {{(order.deliveredAt | date: 'dd/MM/YYYY') || ((!order.deliveredAt && order.routes?.length) ? 'Đang giao' : 'Chưa giao')}}
             </td>
           </tr>

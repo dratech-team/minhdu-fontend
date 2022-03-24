@@ -4,13 +4,10 @@
          (nzPopoverVisibleChange)="$event && onVisibleChange($event, {stt: ui.stt })">STT
     </div>
     <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event, {customer: ui.customer })">Khách hàng
-    </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
-         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{explain: ui.explain}  )">Diễn giải
-    </div>
-    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
          (nzPopoverVisibleChange)="$event && onVisibleChange($event,{endedAt: ui.endedAt}  )">Ngày hẹn giao
+    </div>
+    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
+         (nzPopoverVisibleChange)="$event && onVisibleChange($event, {customer: ui.customer })">Khách hàng
     </div>
     <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
          (nzPopoverVisibleChange)="$event && onVisibleChange($event,{destination: ui.destination}  )">Điểm đến
@@ -29,6 +26,9 @@
     </div>
     <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
          (nzPopoverVisibleChange)="$event && onVisibleChange($event,{paymentTotal: ui.paymentTotal}  )">Thanh toán
+    </div>
+    <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
+         (nzPopoverVisibleChange)="$event && onVisibleChange($event,{explain: ui.explain}  )">Diễn giải
     </div>
     <div nz-popover [nzPopoverContent]="selectOption" class="px-3 py-2 pointer"
          (nzPopoverVisibleChange)="$event && onVisibleChange($event,{status: ui.status}  )">Trạng thái đơn hàng
