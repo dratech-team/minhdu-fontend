@@ -60,13 +60,13 @@ export class CustomerEffect {
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
       this.customerStore.update(state => ({
-        ...state, added: false, adding: true
+        ...state, added: false
       }));
       return this.customerService.addOne(props);
     }),
     tap((res) => {
         this.customerStore.update(state => ({
-          ...state, added: true, adding: false
+          ...state, added: true
         }));
         this.customerStore.add(res);
       }
