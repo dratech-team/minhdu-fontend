@@ -1,4 +1,5 @@
 export enum CustomerType {
   RETAIL = 'RETAIL',
-  AGENCY = 'AGENCY'
+  AGENCY = 'AGENCY',
+  ALL = ''
 }

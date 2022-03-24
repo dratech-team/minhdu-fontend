@@ -2,6 +2,8 @@ import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {CustomerEntity} from '../entities/customer.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
+import {SearchCustomerEntity} from "../entities/search-customer.entity";
+import {CustomerResource, CustomerType, Gender} from "@minhdu-fontend/enums";
 
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
@@ -9,6 +11,7 @@ export interface CustomerState extends EntityState<CustomerEntity> {
   total: number
   deliveredLoading: boolean;
   deliveringLoading: boolean;
+  search: SearchCustomerEntity
 }
 
 const createInitState = () => ({
@@ -16,7 +19,14 @@ const createInitState = () => ({
   added: null,
   total: 0,
   deliveredLoading: true,
-  deliveringLoading: true
+  deliveringLoading: true,
+  search: {
+    resource: CustomerResource.ALL,
+    isPotential: -1,
+    customerType: CustomerType.ALL,
+    gender: Gender.ALL,
+    search: ''
+  }
 });
 
 @Injectable({providedIn: 'root'})
