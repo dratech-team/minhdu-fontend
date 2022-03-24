@@ -5,7 +5,7 @@ import {OrderEntity} from '../enitities/order.interface';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {OrderVisibleEntity} from '../enitities/order-visible.entity';
 import {OrderSearchEntity} from "../enitities/order-search.entity";
-import {getFirstDayInMonth} from "@minhdu-fontend/utils";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface OrderState extends EntityState<OrderEntity> {
   readonly loading: boolean;
@@ -36,11 +36,15 @@ function createInitState(): OrderState {
       explain: '',
       endedAt: {
         start: getFirstDayInMonth(new Date()),
-        end: getFirstDayInMonth(new Date())
+        end: getLastDayInMonth(new Date())
       },
       createdAt: {
         start: getFirstDayInMonth(new Date()),
-        end: getFirstDayInMonth(new Date())
+        end: getLastDayInMonth(new Date())
+      },
+      deliveredAt: {
+        start: getFirstDayInMonth(new Date()),
+        end: getLastDayInMonth(new Date())
       },
       province: '',
       bsx: '',

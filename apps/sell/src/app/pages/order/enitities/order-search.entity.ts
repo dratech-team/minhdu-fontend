@@ -1,5 +1,5 @@
 import {PaidType} from "@minhdu-fontend/enums";
-import {rangeDay} from "@minhdu-fontend/data-models";
+import {RangeDay} from "@minhdu-fontend/data-models";
 
 export interface OrderSearchEntity {
   search: string,
@@ -7,9 +7,9 @@ export interface OrderSearchEntity {
   customer: string,
   status: number,
   explain: string,
-  endedAt: rangeDay,
-  createdAt: rangeDay,
-  deliveredAt?: rangeDay,
+  endedAt: RangeDay,
+  createdAt: RangeDay,
+  deliveredAt?: RangeDay,
   commodityTotal?: number,
   province?: string,
   bsx?: string,

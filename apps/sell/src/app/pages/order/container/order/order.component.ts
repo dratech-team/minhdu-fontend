@@ -59,27 +59,21 @@ export class OrderComponent implements OnInit {
   sortOrderEnum = SortOrderEnum;
   pageSizeTable = 10;
   expanedAll$ = this.orderQuery.select(state => state.expandedAll);
-
+  stateSearch = this.orderQuery.getValue().search
   valueSort?: Sort;
   formGroup = new FormGroup({
-    search: new FormControl(''),
-    paidType: new FormControl(''),
-    customer: new FormControl(''),
-    status: new FormControl(-1),
-    explain: new FormControl(''),
-    endedAt: new FormControl({
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    }),
-    createdAt: new FormControl({
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    }),
-    deliveredAt: new FormControl(),
-    commodityTotal: new FormControl(''),
-    province: new FormControl(''),
-    bsx: new FormControl(''),
-    commodity: new FormControl('')
+    search: new FormControl(this.stateSearch.search),
+    paidType: new FormControl(this.stateSearch.paidType),
+    customer: new FormControl(this.stateSearch.customer),
+    status: new FormControl(this.stateSearch.status),
+    explain: new FormControl(this.stateSearch.explain),
+    endedAt: new FormControl(this.stateSearch.endedAt),
+    createdAt: new FormControl(this.stateSearch.createdAt),
+    deliveredAt: new FormControl(this.stateSearch.deliveredAt),
+    commodityTotal: new FormControl(this.stateSearch.commodityTotal),
+    province: new FormControl(this.stateSearch.province),
+    bsx: new FormControl(this.stateSearch.bsx),
+    commodity: new FormControl(this.stateSearch.commodity)
   });
 
   constructor(
@@ -213,6 +207,9 @@ export class OrderComponent implements OnInit {
   }
 
   mapOrder(dataFG: any, isPagination?: boolean) {
+    this.orderStore.update(state => ({
+      ...state, search: dataFG
+    }))
     const value = Object.assign(JSON.parse(JSON.stringify(dataFG)), {
       skip: isPagination ? this.orderQuery.getCount() : 0,
       take: this.pageSize

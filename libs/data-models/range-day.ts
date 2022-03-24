@@ -1,4 +1,4 @@
-export interface rangeDay{
+export interface RangeDay {
   start: Date,
   end: Date
 }

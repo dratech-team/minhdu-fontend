@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {DatePipe} from "@angular/common";
+import {RangeDay} from "@minhdu-fontend/data-models";
 
 @Component({
   selector: 'minhdu-fontend-collapse-datepicker',
@@ -9,21 +8,15 @@ import {DatePipe} from "@angular/common";
 })
 export class CollapseDatepickerComponent implements OnInit {
   @Input() title: string = '';
-  @Input() endedAtInit: Date = getFirstDayInMonth(new Date());
-  @Input() startedAtInit: Date = getLastDayInMonth(new Date());
+  @Input() rangeDayInit?: RangeDay
   @Output() onPicker = new EventEmitter<any>();
   formTitlePicker = new FormControl();
   formRange = new FormControl();
   formRadio = new FormControl()
   visible = false
 
-  constructor(
-    private readonly datePipe: DatePipe
-  ) {
-  }
-
   ngOnInit() {
-    console.log(getFirstDayInMonth(new Date()))
+    console.log(this.rangeDayInit)
     this.formRange.valueChanges.subscribe(val => {
       this.formRadio.setValue(1)
       this.onPicker.emit({
