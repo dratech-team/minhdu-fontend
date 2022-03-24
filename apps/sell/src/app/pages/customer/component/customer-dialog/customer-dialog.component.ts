@@ -1,6 +1,5 @@
 import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DatePipe} from '@angular/common';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
@@ -9,6 +8,7 @@ import {CustomerQuery} from '../../+state/customer.query';
 import {AddCustomerDto} from '../../dto/add-customer.dto';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {Observable} from "rxjs";
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -22,7 +22,6 @@ export class CustomerDialogComponent implements OnInit {
   districtId: number | undefined;
   wardId: number | undefined;
   formGroup!: FormGroup
-
 
 
   constructor(
@@ -112,6 +111,10 @@ export class CustomerDialogComponent implements OnInit {
 
   onSelectWard($event: number) {
     this.wardId = $event;
+  }
+
+  loading(): Observable<boolean> {
+    return this.customerQuery.select(state => state.adding)
   }
 }
 

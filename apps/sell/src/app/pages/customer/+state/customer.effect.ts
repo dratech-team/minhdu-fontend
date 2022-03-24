@@ -60,13 +60,13 @@ export class CustomerEffect {
     ofType(CustomerActions.addOne),
     switchMap((props: AddCustomerDto) => {
       this.customerStore.update(state => ({
-        ...state, added: false
+        ...state, added: false, adding: true
       }));
       return this.customerService.addOne(props);
     }),
     tap((res) => {
         this.customerStore.update(state => ({
-          ...state, added: true
+          ...state, added: true, adding: false
         }));
         this.customerStore.add(res);
       }
@@ -147,8 +147,8 @@ export class CustomerEffect {
             }
             this.customerStore.update((state) => ({
               ...state,
-              deliveringLoading:false,
-              deliveredLoading:false,
+              deliveringLoading: false,
+              deliveredLoading: false,
             }));
           })
         )

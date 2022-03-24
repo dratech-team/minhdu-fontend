@@ -6,6 +6,7 @@ import {StorageName} from '../../../shared/constaints/storage-name.const';
 export interface CustomerState extends EntityState<CustomerEntity> {
   loading: boolean;
   added: boolean;
+  adding: boolean
   total: number
   deliveredLoading: boolean;
   deliveringLoading: boolean;
@@ -15,6 +16,7 @@ const createInitState = () => ({
   loading: true,
   added: false,
   total: 0,
+  adding: false,
   deliveredLoading: true,
   deliveringLoading: true
 });
