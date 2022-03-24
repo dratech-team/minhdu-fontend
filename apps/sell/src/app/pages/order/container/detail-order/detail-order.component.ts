@@ -61,8 +61,7 @@ export class DetailOrderComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const order = this.orderQuery.getEntity(this.getOrderId);
         if (order) {
-          this.updateOrder(order);
-
+          this.updateOrder(order,"GENERAL");
         }
       }
     });
@@ -83,7 +82,7 @@ export class DetailOrderComponent implements OnInit {
         nzContent: OrderDialogComponent,
         nzViewContainerRef: this.viewContentRef,
         nzComponentParams: {
-          data: {order: order, tab: 1, isUpdate: true}
+          data: {order: order, tab: 0, isUpdate: true}
         },
         nzFooter: null,
         nzWidth: '65vw',

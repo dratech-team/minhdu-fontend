@@ -48,9 +48,10 @@ export class OrderEffect {
         totalCommodity: res.commodities.length > 0 ?
           state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
         commodityUniq: res.commodities?.length > 0 ?
-          this.handleCommodityUniq(state.commodityUniq, res.commodities) :
+          this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
           state.commodityUniq
       }));
+      console.log(res)
       res.expand = this.orderQuery.getValue().expandedAll || false
       this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
@@ -125,14 +126,17 @@ export class OrderEffect {
     ofType(OrderActions.update),
     switchMap((props) => {
         this.orderStore.update(state => ({
-          ...state, added: false
+          ...state,
+          added: false
         }));
         return this.orderService.update(props.id, props.updates).pipe(
           map((response) => {
-
-            this.orderStore.update(state => ({
-              ...state, added: true
-            }));
+            const orderBefore = this.orderQuery.getEntity(response.id)
+            if (orderBefore)
+              this.orderStore.update(state => ({
+                ...state,
+                added: true,
+              }));
             if (props.inRoute) {
               this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));
             }
@@ -178,9 +182,17 @@ export class OrderEffect {
       this.orderService.delete(props.id).pipe(
         map((_) => {
           this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
-          this.orderStore.update(state => ({
-            ...state, total: state.total ? state.total - 1 : state.total
-          }));
+          const orderDelete = this.orderQuery.getEntity(props.id)
+          if (orderDelete)
+            this.orderStore.update(state => ({
+              ...state,
+              total: state.total ? state.total - 1 : state.total,
+              totalCommodity: orderDelete.commodities?.length > 0 ?
+                state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+              commodityUniq: orderDelete.commodities?.length > 0 ?
+                this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, "delete") :
+                state.commodityUniq
+            }));
           this.orderStore.remove(props.id);
         }),
         catchError((err) => throwError(err))
@@ -200,14 +212,29 @@ export class OrderEffect {
     catchError((err) => throwError(err))
   );
 
-  handleCommodityUniq(commoditiesUniq: CommodityUniq[], commodities: CommodityEntity[]) {
+  handleCommodityUniq(
+    commoditiesUniq: CommodityUniq[],
+    commodities: CommodityEntity[],
+    action: 'delete' | 'add',
+  ) {
     const result = JSON.parse(JSON.stringify(commoditiesUniq))
     commodities.forEach(value => {
       const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
-      if (index > -1) {
-        result[index].amount = result[index].amount + value.amount
-      } else {
-        result.push({name: value.name, code: value.code, amount: value.amount})
+      switch (action) {
+        case "add":
+          if (index > -1) {
+            result[index].amount = result[index].amount + value.amount
+          } else {
+            result.push({name: value.name, code: value.code, amount: value.amount})
+          }
+          break
+        case "delete":
+          if (result[index].amount - value.amount === 0) {
+            result.splice(index, 1)
+          } else {
+            result[index].amount = result[index].amount - value.amount
+          }
+          break
       }
     })
     return result
