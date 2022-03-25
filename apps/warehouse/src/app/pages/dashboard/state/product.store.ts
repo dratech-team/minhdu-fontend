@@ -1,16 +1,23 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {Product} from '../entities/product.entity';
+import {ProviderEntity} from "../../provider/entities/search-provider.entity";
 
 export interface ProductState extends EntityState<Product> {
   loading: boolean;
-  added: boolean
+  added: boolean;
+  search:ProviderEntity;
 }
 
 export function createInitialState(): ProductState {
   return {
     loading: true,
-    added: false
+    added: false,
+    search:{
+      search: '',
+      inventoryType: -1,
+      warehouseType: -1
+    }
   };
 }
 

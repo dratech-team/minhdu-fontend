@@ -12,6 +12,7 @@ import {WarehouseAction} from '../../warehouse/state/warehouse.action';
 import {InventoryTitleConstants} from "../constants/inventory-title.constant";
 import {Actions} from "@datorama/akita-ng-effects";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {ProductStore} from "../state/product.store";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -30,13 +31,15 @@ export class DashboardComponent implements OnInit {
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
+  stateSearch = this.productQuery.getValue().search
+
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
     {
-      inventoryType: new FormControl(-1),
-      search: new FormControl(''),
-      warehouseType: new FormControl(-1)
+      inventoryType: new FormControl(this.stateSearch.inventoryType),
+      search: new FormControl(this.stateSearch.search),
+      warehouseType: new FormControl(this.stateSearch.warehouseType)
     }
   );
   panelOpenState = false;
@@ -49,6 +52,7 @@ export class DashboardComponent implements OnInit {
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
+    private readonly productStore: ProductStore,
   ) {
   }
 
@@ -100,6 +104,9 @@ export class DashboardComponent implements OnInit {
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
+    this.productStore.update(state => ({
+      ...state, search: dataFG
+    }))
     Object.assign(dataFG, {
       take: PaginationDto.take,
       skip: isPagination ? this.productQuery.getCount() : PaginationDto.skip
