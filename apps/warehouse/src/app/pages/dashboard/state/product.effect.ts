@@ -2,7 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {ProductActions} from './product.Actions';
+import {ProductActions} from './product.actions';
 import {ProductStore} from './product.store';
 import {ProductService} from '../services/product.service';
 import {NzMessageService} from "ng-zorro-antd/message";

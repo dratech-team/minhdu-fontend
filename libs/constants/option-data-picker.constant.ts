@@ -57,12 +57,12 @@ export const OptionDataPickerConstant: OptionDataPicker[] = [
         endedAt: new Date()
       },
       {
-        title: 'quí này',
+        title: 'Quí này',
         startedAt: moment().startOf('quarter').toDate(),
         endedAt: new Date()
       },
       {
-        title: 'quí trước',
+        title: 'Quí trước',
         startedAt: moment().startOf('quarter').toDate(),
         endedAt: new Date()
       }

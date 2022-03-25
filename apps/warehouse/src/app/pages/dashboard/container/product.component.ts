@@ -5,7 +5,7 @@ import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {ProductDialogComponent} from '../components/product-dialog/product-dialog.component';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto, UnitMedicineConstant} from '@minhdu-fontend/constants';
-import {ProductActions} from '../state/product.Actions';
+import {ProductActions} from '../state/product.actions';
 import {ProductQuery} from '../state/product.query';
 import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
 import {WarehouseAction} from '../../warehouse/state/warehouse.action';
@@ -16,10 +16,10 @@ import {ProductStore} from "../state/product.store";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'product.component.html'
 
 })
-export class DashboardComponent implements OnInit {
+export class ProductComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => {
       return warehouses.map(warehouse => ({value: warehouse.id, name: warehouse.name})).concat({
         value: -1,

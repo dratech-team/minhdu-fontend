@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {DashboardComponent} from './container/dashboard.component';
+import {ProductComponent} from './container/product.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
@@ -19,7 +19,7 @@ import {customCurrencyMaskConfig} from '@minhdu-fontend/config';
 import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
-import {DashboardRoutingModule} from "./dashboard-routing.module";
+import {ProductRoutingModule} from "./product-routing.module";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {WarehouseEffect} from "../warehouse/state/warehouse.effect";
@@ -32,7 +32,7 @@ import {VisibleProductComponent} from "./components/custom-visible/visible-produ
 
 @NgModule({
   imports: [
-    DashboardRoutingModule,
+    ProductRoutingModule,
     NzAutocompleteModule,
     ComponentsModule,
     ReactiveFormsModule,
@@ -57,7 +57,7 @@ import {VisibleProductComponent} from "./components/custom-visible/visible-produ
   ],
   declarations: [
     ProductDialogComponent,
-    DashboardComponent,
+    ProductComponent,
     VisibleProductComponent
   ],
   providers: [
@@ -66,5 +66,5 @@ import {VisibleProductComponent} from "./components/custom-visible/visible-produ
     ProductService
   ]
 })
-export class DashboardModule {
+export class ProductModule {
 }

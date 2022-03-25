@@ -16,7 +16,7 @@ import {ProviderQuery} from '../../../provider/state/provider.query';
 import {ProviderActions} from '../../../provider/state/provider.action';
 import {WarehouseAction} from '../../../warehouse/state/warehouse.action';
 import {ProductService} from '../../services/product.service';
-import {ProductActions} from '../../state/product.Actions';
+import {ProductActions} from '../../state/product.actions';
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
