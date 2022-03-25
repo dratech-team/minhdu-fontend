@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {ProductDialogComponent} from '../components/product-dialog/product-dialog.component';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto, UnitMedicineConstant} from '@minhdu-fontend/constants';
-import {Actions} from '@datorama/akita-ng-effects';
-import {ProductActions} from '../state/productActions';
+import {ProductActions} from '../state/product.Actions';
 import {ProductQuery} from '../state/product.query';
 import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
 import {WarehouseAction} from '../../warehouse/state/warehouse.action';
 import {InventoryTitleConstants} from "../constants/inventory-title.constant";
+import {Actions} from "@datorama/akita-ng-effects";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
@@ -47,49 +48,54 @@ export class DashboardComponent implements OnInit {
     private readonly productQuery: ProductQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, false)));
+    this.actions$.dispatch(ProductActions.loadAll({
+      params: this.mapProduct(this.formGroup.value, false)
+    }));
 
-    this.actions$.dispatch(WarehouseAction.loadWarehouses);
+    this.actions$.dispatch(WarehouseAction.loadWarehouses());
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
-          this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, false)))
+          this.actions$.dispatch(ProductActions.loadAll({
+            params: this.mapProduct(this.formGroup.value, false)
+          }))
         }
       )
     ).subscribe();
   }
 
-  importMedicine() {
-    this.dialog.open(ProductDialogComponent, {width: '40%'});
-  }
-
   onPagination(index: number) {
     const count = this.productQuery.getCount()
     if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, true)))
+      this.actions$.dispatch(ProductActions.loadAll({
+        params: this.mapProduct(this.formGroup.value, true),
+        isPagination: true
+      }))
     }
 
 
   }
 
-  deleteMedicine($event: any) {
+  onDelete($event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
+        this.actions$.dispatch(ProductActions.remove({id: $event.id}))
       }
     });
   }
 
-  updateMedicine(medicine: any) {
+  onUpdate(Product: any) {
     this.dialog.open(ProductDialogComponent,
       {
         width: '40%',
-        data: medicine
+        data: Product
       });
   }
 
@@ -102,8 +108,15 @@ export class DashboardComponent implements OnInit {
   }
 
   import() {
-    this.dialog.open(ProductDialogComponent, {
-      data: {isUpdate: false}
-    }).afterClosed();
+    this.modal.create({
+      nzTitle:'Nhập hàng hoá',
+      nzContent: ProductDialogComponent,
+      nzComponentParams:{
+        data: {
+          wareHouse : this.formGroup.value.wareHouse
+        }
+      },
+      nzFooter: null,
+    })
   }
 }

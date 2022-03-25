@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {ProductActions} from './productActions';
+import {ProductActions} from './product.Actions';
 import {ProductStore} from './product.store';
 import {ProductService} from '../services/product.service';
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -20,14 +20,15 @@ export class ProductEffect {
   @Effect()
   addOne$ = this.action$.pipe(
     ofType(ProductActions.addOne),
-    switchMap(product => {
+    switchMap(props => {
+      console.log(props)
       this.productStore.update(state => ({
         ...state, added: true
       }))
-      if (product.product?.branch === 'Kho tổng') {
-        return this.service.addOne(Object.assign(product.product, {branch: null}));
+      if (props.product?.branch === 'Kho tổng') {
+        return this.service.addOne(Object.assign(props.product, {branch: null}));
       }
-      return this.service.addOne(product.product);
+      return this.service.addOne(props.product);
     }),
     tap(res => {
       this.productStore.update(state => ({
@@ -37,6 +38,7 @@ export class ProductEffect {
     })
   );
 
+  @Effect()
   loadAll$ = this.action$.pipe(
     ofType(ProductActions.loadAll),
     switchMap((props) => {
@@ -58,6 +60,7 @@ export class ProductEffect {
     catchError((err) => throwError(err))
   );
 
+  @Effect()
   getOne$ = this.action$.pipe(
     ofType(ProductActions.getOne),
     switchMap(props => {
@@ -71,6 +74,7 @@ export class ProductEffect {
     })
   );
 
+  @Effect()
   update$ = this.action$.pipe(
     ofType(ProductActions.update),
     switchMap(props => {
@@ -90,6 +94,7 @@ export class ProductEffect {
     })
   );
 
+  @Effect()
   delete$ = this.action$.pipe(
     ofType(ProductActions.remove),
     switchMap(props => {

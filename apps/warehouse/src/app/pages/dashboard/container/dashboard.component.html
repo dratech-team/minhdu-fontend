@@ -68,7 +68,7 @@
       </thead>
       <tbody>
       <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
-        <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='updateMedicine(product)'>
+        <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
           <td>{{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}</td>
           <td>{{product?.code}}</td>
           <td>{{product?.name}}</td>
@@ -97,9 +97,9 @@
   </div>
 </div>
 <app-mouse-right #child
-                 (onAdd)='importMedicine()'
-                 (onDel)='deleteMedicine($event)'
-                 (onUpdate)='updateMedicine($event)'></app-mouse-right>
+                 (onAdd)='import()'
+                 (onDel)='onDelete($event)'
+                 (onUpdate)='onUpdate($event)'></app-mouse-right>
 <style>
   .table-scroll th:nth-child(3) {
     position: -webkit-sticky;

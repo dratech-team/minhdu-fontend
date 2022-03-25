@@ -22,6 +22,10 @@ import {MatRadioModule} from "@angular/material/radio";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzTableModule} from "ng-zorro-antd/table";
+import {WarehouseEffect} from "../warehouse/state/warehouse.effect";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @NgModule({
   imports: [
@@ -35,13 +39,16 @@ import {NzTableModule} from "ng-zorro-antd/table";
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect]),
+    AkitaNgEffectsModule.forFeature([ProductEffect, WarehouseEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
     MatRadioModule,
     NzCollapseModule,
     NzTableModule,
+    NzModalModule,
+    NzSelectModule,
+    NzInputModule
   ],
   declarations: [
     ProductDialogComponent,
