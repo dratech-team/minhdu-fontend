@@ -145,8 +145,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
     this.formGroup.get('branch')?.patchValue(branchName);
   }
 
-  onPagination(pageIndex: number) {
-    if (pageIndex * this.pageSizeTable >= this.payrollS.length) {
+  onScroll() {
       const val = this.formGroup.value;
       this.payrollService.paginationPayroll(
         Object.assign(this.mapPayroll(val), {
@@ -169,9 +168,6 @@ export class PickPayrollComponent implements OnInit, OnChanges {
           this.message.warning('Đã lấy hết phiếu lương')
         }
       })
-    }
-
-
   }
 
   mapPayroll(val: any) {
