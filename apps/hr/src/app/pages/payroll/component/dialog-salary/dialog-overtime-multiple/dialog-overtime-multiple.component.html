@@ -258,7 +258,7 @@
       <app-pick-payroll-overtime *ngIf='!data?.isUpdate' [payrollsSelected]="payrollsSelected"
                                  [allowPayrollsSelected]="allowPayrollSelected" [checkAllowance]="onAllowanceOvertime"
                                  [search]='{templateId: templateId ,
-                                             createdPayroll:  formGroup.get("month")?.value?
+                                             createdAt:  formGroup.get("month")?.value?
                                               formGroup.get("month")?.value : formGroup.get("datetime")?.value,
                                              employeeType: this.employeeType,
                                              recipeType: this.recipeType

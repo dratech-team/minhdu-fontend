@@ -24,7 +24,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 })
 export class PickPayrollComponent implements OnInit, OnChanges {
   @Input() payrollInit?: Payroll;
-  @Input() createdPayroll!: Date;
+  @Input() createdAt!: Date;
   @Input() payrollsSelected: Payroll[] = [];
   @Output() EventSelectPayroll = new EventEmitter<Payroll[]>();
 
@@ -61,8 +61,8 @@ export class PickPayrollComponent implements OnInit, OnChanges {
     }
 
     if (
-      changes.createdPayroll?.previousValue !==
-      changes.createdPayroll?.currentValue
+      changes.createdAt?.previousValue !==
+      changes.createdAt?.currentValue
     ) {
       this.isSelectAll = false;
       this.payrollsSelected = [];
@@ -72,7 +72,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
         Object.assign(this.mapPayroll(this.formGroup.value), {
           take: this.pageSize,
           skip: this.pageIndex,
-          createdAt: changes.createdPayroll.currentValue
+          createdAt: changes.createdAt.currentValue
         })
       ).subscribe(res => {
         if (res.data.length === 0) {
@@ -101,7 +101,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
           Object.assign(val, {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdPayroll: new Date(this.createdPayroll)
+            createdAt: new Date(this.createdAt)
           });
           this.payrollService.paginationPayroll(val).subscribe(res => {
             this.isSelectAll = checkIsSelectAllInit(res.data, this.payrollsSelected);
@@ -178,7 +178,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
       name: val.name,
       position: val.position,
       branch: val.branch,
-      createdPayroll: new Date(this.createdPayroll),
+      createdAt: new Date(this.createdAt),
     };
   }
 

@@ -102,7 +102,7 @@
         </mat-tab>
         <mat-tab [disabled]='!formGroup.get("datetime")?.value' class='col-12 ' label='Chọn nhân viên'>
           <app-pick-payroll [payrollsSelected]="payrollSelected"
-                            [createdPayroll]='formGroup.get("datetime")?.value'
+                            [createdAt]='formGroup.get("datetime")?.value'
                             (EventSelectPayroll)="pickPayroll($event)"
           >
 

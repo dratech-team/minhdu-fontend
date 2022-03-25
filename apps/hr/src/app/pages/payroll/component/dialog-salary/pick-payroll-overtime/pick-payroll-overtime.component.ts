@@ -72,14 +72,14 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     }
     const currentTemplateId = changes.search?.currentValue?.templateId;
     const previousTemplateId = changes.search?.previousValue?.templateId;
-    const currentCreatedPayroll = changes.search?.currentValue?.createdPayroll;
-    const previousCreatedPayroll = changes.search?.previousValue?.createdPayroll;
+    const currentCreatedAt = changes.search?.currentValue?.createdAt;
+    const previousCreatedAt = changes.search?.previousValue?.createdAt;
     const currentEmployeeType = changes.search?.currentValue?.templateId;
     const previousEmployeeType = changes.search?.previousValue?.templateId;
     const currentRecipeType = changes.search?.currentValue?.templateId;
-    if (currentCreatedPayroll &&
+    if (currentCreatedAt &&
       (currentTemplateId !== previousTemplateId
-        || currentCreatedPayroll !== previousCreatedPayroll
+        || currentCreatedAt !== previousCreatedAt
         || currentEmployeeType !== previousEmployeeType
         || currentRecipeType)
     ) {
@@ -230,7 +230,12 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     this.loadMore = true
     this.payrollService.paginationPayroll(Object.assign(val, {
         take: this.pageSize,
-        skip: this.payrolls.length
+        skip: this.payrolls.length,
+        templateId: this.search.templateId || '',
+        employeeType: this.search.employeeType || '',
+        recipeType: this.search.recipeType || '',
+        isLeave: false,
+        createdAt: new Date(this.search.createdAt),
       }
     )).subscribe(respone => {
       if (respone.data.length > 0) {
@@ -261,7 +266,7 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       name: val.name,
       position: val.position,
       code: val.code,
-      createdPayroll: new Date(this.search.createdPayroll),
+      createdAt: new Date(this.search.createdAt),
       templateId: this.search.templateId || '',
       employeeType: this.search.employeeType || '',
       recipeType: this.search.recipeType || '',

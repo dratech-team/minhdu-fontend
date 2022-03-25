@@ -65,7 +65,7 @@
           </div>
         </mat-tab>
         <mat-tab [disabled]='!formGroup.get("month")?.value' class='col-12 ' label='Chọn phiếu lương'>
-          <app-pick-payroll [createdPayroll]='formGroup.get("month")?.value'
+          <app-pick-payroll [createdAt]='formGroup.get("month")?.value'
                             (EventSelectPayroll)="pickPayroll($event)"
           >
           </app-pick-payroll>
