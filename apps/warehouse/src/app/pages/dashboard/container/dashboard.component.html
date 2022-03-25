@@ -1,197 +1,133 @@
-<div class='mx-auto' style='width: 98%'>
-  <ngx-skeleton-loader *ngIf='(loading$ | async); else product' count='18' appearance='line'></ngx-skeleton-loader>
-  <ng-template #product>
-    <div class="d-flex mt-3">
-      <div>
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="true" >
-            <mat-expansion-panel-header>
-              <mat-panel-title class="font-weight-bold">
-                Tổng kho
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div [formGroup]="formGroup">
-              <mat-radio-group aria-label="Select an option" formControlName="inventoryType" class="d-flex flex-column">
-                <mat-radio-button *ngFor="let item of inventoryTitle" [value]="item.value">{{item.name}}</mat-radio-button>
-              </mat-radio-group>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <mat-accordion >
-          <mat-expansion-panel class="mt-2" [expanded]="true" >
-            <mat-expansion-panel-header>
-              <mat-panel-title class="font-weight-bold">
-                Loại kho
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-              <mat-radio-group aria-label="Select an option" [formControl]="formControlWareHouse" class="d-flex flex-column">
-              <mat-radio-button *ngFor="let item of warehouse$ | async" [value]="item.id">{{item.name}}</mat-radio-button>
-            </mat-radio-group>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
-      <div class="d-flex flex-column ml-2">
-        <div class="ml-2 d-flex justify-content-between">
-          <div class="font-2xl font-weight-bold"> Hàng hoá</div>
-          <div>
-            <div>
-              <button class='btn btn-primary font-sm mr-2 ' (click)='import()'>
-                Nhập
-              </button>
-              <button class='btn btn-primary font-sm '>
-                Xuất
-              </button>
-            </div>
-          </div>
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
         </div>
-        <div class='table-scroll mt-2 animated fadeIn'
-             style="width: 80vw; overflow-x: scroll"
-             infiniteScroll
-             [infiniteScrollDistance]='1'
-             [infiniteScrollThrottle]='10'
-             [scrollWindow]='false'
-             (scrolled)='onScroll()'
-        >
-          <table [formGroup]='formGroup' style='width: 2500px'>
-            <thead>
-            <tr>
-              <th>
-                <div class='border-top text-center'>STT</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Mã hàng</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Tên hàng</div>
-                <input
-                  formControlName='name'
-                  class='form-control input-profile '
-                  type='search'>
-              </th>
-              <th *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
-                <div class='border-top text-center'>Loại kho</div>
-              </th>
-              <th>
-                <div class='border-top text-center'>Đơn giá</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Số lượng</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Tổng tiền</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Mã vạch</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Nhà cung cấp</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Hạn sử dụng</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Chiếc khấu</div>
-                <input disabled>
-              </th>
-              <!--          <th>-->
-              <!--            <div class='border-top text-center'>Số chứng từ</div>-->
-              <!--            <input disabled>-->
-              <!--          </th>-->
-              <th>
-                <div class='border-top text-center'>Đơn vị</div>
-                <input disabled>
-              </th>
-              <th>
-                <div class='border-top text-center'>Ngày nhập kho</div>
-                <input disabled>
-              </th>
-            </tr>
-            </thead>
-            <tbody *ngIf='(products$| async) as products'>
-            <tr *ngFor='let product of products; let i = index'
-                (contextmenu)='child.onContextMenu($event,product)'
-                (click)='updateMedicine(product)'>
-              <th class='pointer'
-                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                {{i + 1}}
-              </th>
-              <th class='pointer'
-                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                {{product?.code}}
-              </th>
-              <th class='pointer'
-                  [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-                {{product?.name}}
-              </th>
-              <th class='pointer' [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
-                  *ngIf='!(warehouseSelected$ | async) || (warehouseSelected$ | async) === -1'>
-                {{product.warehouse?.name}}
-              </th>
-              <th class='pointer'>
-                {{product.price | number:'1.0'|notEmpty:'0'}} đ
-              </th>
-              <th class='pointer'>
-                {{product?.amount}}
-              </th>
-              <th class='pointer' style='color: #4dbd74'>
-                {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
-              </th>
-              <th class='pointer'>
-                {{product?.code}}
-              </th>
-              <th class='pointer'>
-                {{product?.provider?.name}}
-              </th>
-              <th class='pointer'>
-                {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
-              </th>
-              <th class='pointer' style='color: #4dbd74'>
-                {{(product.discount || 0) * 100 + '%' }}
-              </th>
-              <!--          <th class='pointer'>-->
-              <!--            {{product?.billCode}}-->
-              <!--          </th>-->
-              <th class='pointer'>
-                {{product.unit | transform:medicineConstant}}
-              </th>
-              <th class='pointer'>
-                {{(product?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật'}}
-              </th>
-            </tr>
-            <tr *ngIf='products.length === 0'>
-              <td colspan='20' style='height: 48vh'>
-            <span class='d-block font-lg font-weight-bold'
-                  style='position: absolute; top: 45%; left: 45%'>Chưa có loại thuốc nào!</span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <div>
+      <minhdu-fontend-collapse-radios
+        [formGroup]='formGroup' [controlName]="'inventoryType'" header='Tổng kho'
+        [active]="true"
+        [radios]='inventoryTitle'>
+      </minhdu-fontend-collapse-radios>
+    </div>
+    <div>
+      <minhdu-fontend-collapse-radios
+        [formGroup]='formGroup' [controlName]="'warehouseType'" header='Loại kho'
+        [active]="true"
+        [radios]='(warehouse$|async)||[]'>
+      </minhdu-fontend-collapse-radios>
+    </div>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="ml-2 d-flex justify-content-between">
+      <div class="font-2xl font-weight-bold"> Hàng hoá</div>
+      <div>
+        <div>
+          <button nz-button nzType="primary" (click)='import()'>Nhập</button>
+          <button nz-button nzType="primary" class="ml-2">Xuất</button>
+          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
+                  [(nzPopoverVisible)]='visible'
+                  nzPopoverPlacement='bottomRight'
+                  [nzPopoverContent]='pinned'
+                  nzPopoverTrigger='click'>Ghim
+          </button>
         </div>
       </div>
     </div>
-  </ng-template>
-</div>
-<app-mouse-right #child
-                 (onAdd)='importMedicine()'
-                 (onDel)='deleteMedicine($event)'
-                 (onUpdate)='updateMedicine($event)'></app-mouse-right>
-<style>
-  .table-scroll th:nth-child(3) {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 170px;
-    z-index: 2;
-  }
+    <nz-table #tableDashBoard class="mt-2"
+              nzSize='small'
+              [nzData]="(products$|async)|| []"
+              [formGroup]='formGroup'
+              (nzPageIndexChange)="onPagination($event)"
+              [nzLoading]="(loading$|async)"
+              [nzScroll]="{ x: '2000px',y: '60vh'}"
+              [nzPageSize]="pageSizeTable"
+              *ngIf="(ui$|async) as ui"
+    >
+      <thead>
+      <tr>
+        <th [nzWidth]="'60px'" *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>STT</th>
+        <th *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>Mã hàng</th>
+        <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>Tên hàng</th>
+        <th *ngIf="ui.warehouseType.visible" [nzLeft]='ui.warehouseType?.pinned||false'>Loại kho</th>
+        <th *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>Đơn giá</th>
+        <th *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>Số lượng</th>
+        <th *ngIf="ui.totalCash.visible" [nzLeft]='ui.totalCash?.pinned||false'>Tổng tiền</th>
+        <th *ngIf="ui.barcode.visible" [nzLeft]='ui.barcode?.pinned||false'>Mã vạch</th>
+        <th *ngIf="ui.provider.visible" [nzLeft]='ui.provider?.pinned||false'>Nhà cung cấp</th>
+        <th *ngIf="ui.exp.visible" [nzLeft]='ui.exp?.pinned||false'>Hạn sử dụng</th>
+        <th *ngIf="ui.discount.visible" [nzLeft]='ui.discount?.pinned||false'>Chiếc khấu</th>
+        <!--          <th>-->
+        <!--            <div class='border-top text-center'>Số chứng từ</div>-->
+        <!--            <input disabled>-->
+        <!--          </th>-->
+        <th *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>Đơn vị</th>
+        <th *ngIf="ui.createdAt.visible" [nzLeft]='ui.createdAt?.pinned||false'>Ngày nhập kho</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
+        <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
+          <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
+            {{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}
+          </td>
+          <td *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>
+            {{product?.code}}
+          </td>
+          <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>
+            {{product?.name}}
+          </td>
+          <td *ngIf="ui.warehouseType.visible" [nzLeft]='ui.warehouseType?.pinned||false'>
+            {{product.warehouse?.name}}
+          </td>
+          <td *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>
+            {{product.price | number:'1.0'|notEmpty:'0'}} đ
+          </td>
+          <td *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>
+            {{product?.amount}}
+          </td>
+          <td *ngIf="ui.totalCash.visible" [nzLeft]='ui.totalCash?.pinned||false' style='color: #4dbd74'>
+            {{(product.price * product.amount) - ((product.price + product.amount) * (product?.discount || 0)) | number:'1.0'|notEmpty:'0'}}
+          </td>
+          <td *ngIf="ui.barcode.visible" [nzLeft]='ui.barcode?.pinned||false'>
+            {{product?.barcode}}
+          </td>
+          <td *ngIf="ui.provider.visible" [nzLeft]='ui.provider?.pinned||false'>
+            {{product?.provider?.name}}
+          </td>
+          <td *ngIf="ui.exp.visible" [nzLeft]='ui.exp?.pinned||false'>
+            {{(product?.exp | date: 'dd/MM/yyyy') || 'Chưa có thông tin'}}
+          </td>
+          <td *ngIf="ui.discount.visible" [nzLeft]='ui.discount?.pinned||false' style='color: #4dbd74'>
+            {{(product.discount || 0) * 100 + '%' }}
+          </td>
+          <!--          <th class='pointer'>-->
+          <!--            {{product?.billCode}}-->
+          <!--          </th>-->
+          <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
+            {{product.unit | transform:medicineConstant}}
+          </td>
+          <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
+            {{(product?.createdAt | date: 'dd/MM/yyyy') || 'Đang cập nhật'}}
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </nz-table>
 
-  .table-scroll thead th:nth-child(3) {
-    z-index: 5;
-  }
-</style>
+  </div>
+</div>
+<ng-template #pinned>
+  <minhdu-fontend-pinned-product></minhdu-fontend-pinned-product>
+</ng-template>
+<app-mouse-right #child
+                 (onAdd)='import()'
+                 (onDel)='onDelete($event)'
+                 (onUpdate)='onUpdate($event)'></app-mouse-right>
+

@@ -66,16 +66,19 @@ import {VisibleRouteComponent} from "./component/custom-visible/visible-route.co
         NzButtonModule,
         NzPopoverModule
     ],
-  declarations: [
-    RouteComponent,
-    DetailRouteComponent,
-    RouteDialogComponent,
-    CompleteRouteDialogComponent,
-    VisibleRouteComponent
-  ],
-  providers: [
-    DatePipe
-  ]
+    declarations: [
+        RouteComponent,
+        DetailRouteComponent,
+        RouteDialogComponent,
+        CompleteRouteDialogComponent,
+        VisibleRouteComponent
+    ],
+    exports: [
+        VisibleRouteComponent
+    ],
+    providers: [
+        DatePipe
+    ]
 
 })
 export class RouteModule {
