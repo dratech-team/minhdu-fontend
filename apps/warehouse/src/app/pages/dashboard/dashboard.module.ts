@@ -20,25 +20,27 @@ import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
 
 @NgModule({
-  imports: [
-    DashboardRoutingModule,
-    NzAutocompleteModule,
-    ComponentsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    MatSelectModule,
-    MatDialogModule,
-    NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect]),
-    MatAutocompleteModule,
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    MatExpansionModule,
-    MatRadioModule,
-  ],
+    imports: [
+        DashboardRoutingModule,
+        NzAutocompleteModule,
+        ComponentsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        MatSelectModule,
+        MatDialogModule,
+        NgxSkeletonLoaderModule,
+        AkitaNgEffectsModule.forFeature([ProductEffect]),
+        MatAutocompleteModule,
+        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+        MatExpansionModule,
+        MatRadioModule,
+        NzCollapseModule,
+    ],
   declarations: [
     ProductDialogComponent,
     DashboardComponent

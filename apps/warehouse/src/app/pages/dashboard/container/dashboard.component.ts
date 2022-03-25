@@ -18,18 +18,26 @@ import {InventoryTitleConstants} from "../constants/inventory-title.constant";
 
 })
 export class DashboardComponent implements OnInit {
-  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => warehouses.concat({id: -1, name: 'Tất cả'})));
+  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => {
+      const convertWarehouseType: { value: number, name: string }[] = [{value: -1, name: 'Tất cả'}]
+      warehouses.forEach(warehouse => {
+        convertWarehouseType.push({value: warehouse.id, name: warehouse.name});
+      })
+      return convertWarehouseType
+    }
+  ));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
-
+  formControlWareHouse = new FormGroup({
+    warehouseType: new FormControl(-1)
+  })
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
-  formControlWareHouse = new FormControl(-1)
   formGroup = new FormGroup(
     {
       inventoryType: new FormControl(-1),
-      name: new FormControl('')
+      search: new FormControl(''),
     }
   );
   panelOpenState = false;
