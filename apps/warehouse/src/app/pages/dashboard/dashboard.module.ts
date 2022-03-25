@@ -26,6 +26,9 @@ import {WarehouseEffect} from "../warehouse/state/warehouse.effect";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {VisibleProductComponent} from "./components/custom-visible/visible-product.component";
 
 @NgModule({
   imports: [
@@ -48,11 +51,14 @@ import {NzInputModule} from "ng-zorro-antd/input";
     NzTableModule,
     NzModalModule,
     NzSelectModule,
-    NzInputModule
+    NzInputModule,
+    NzPopoverModule,
+    NzButtonModule
   ],
   declarations: [
     ProductDialogComponent,
-    DashboardComponent
+    DashboardComponent,
+    VisibleProductComponent
   ],
   providers: [
     DatePipe,

@@ -10,7 +10,7 @@ export interface Product {
   readonly exp?: Date;
   readonly accountedAt?: Date;
   readonly billedAt?: Date;
-  readonly billCode?: string;
+  readonly barcode?: string;
   readonly branch?: Branch;
   readonly warehouse: Warehouse;
   readonly price: number;

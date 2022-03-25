@@ -31,8 +31,9 @@ export class DashboardComponent implements OnInit {
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
-  stateSearch = this.productQuery.getValue().search
+  ui$ = this.productQuery.select(state => state.ui);
 
+  stateSearch = this.productQuery.getValue().search
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
@@ -45,6 +46,7 @@ export class DashboardComponent implements OnInit {
   panelOpenState = false;
   inventoryTitle = InventoryTitleConstants
   pageSizeTable = 10;
+  visible = false;
 
   constructor(
     private readonly warehouseQuery: WarehouseQuery,
