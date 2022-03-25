@@ -44,6 +44,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
     position: new FormControl('', Validators.required),
     branch: new FormControl('', Validators.required)
   });
+  loadMore = false
 
   constructor(
     private readonly store: Store,
@@ -147,6 +148,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
 
   onScroll() {
       const val = this.formGroup.value;
+      this.loadMore = true
       this.payrollService.paginationPayroll(
         Object.assign(this.mapPayroll(val), {
           take: this.pageSize,
@@ -167,6 +169,7 @@ export class PickPayrollComponent implements OnInit, OnChanges {
         } else {
           this.message.warning('Đã lấy hết phiếu lương')
         }
+        this.loadMore = false
       })
   }
 
