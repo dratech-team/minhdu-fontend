@@ -6,7 +6,7 @@ import {ProductDialogComponent} from '../components/product-dialog/product-dialo
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto, UnitMedicineConstant} from '@minhdu-fontend/constants';
 import {Actions} from '@datorama/akita-ng-effects';
-import {ProductAction} from '../state/product.action';
+import {ProductActions} from '../state/productActions';
 import {ProductQuery} from '../state/product.query';
 import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
 import {WarehouseAction} from '../../warehouse/state/warehouse.action';
@@ -47,19 +47,18 @@ export class DashboardComponent implements OnInit {
     private readonly productQuery: ProductQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
-    private readonly formBuilder: FormBuilder
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, false)));
+    this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, false)));
 
     this.actions$.dispatch(WarehouseAction.loadWarehouses);
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
-          this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, false)))
+          this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, false)))
         }
       )
     ).subscribe();
@@ -72,7 +71,7 @@ export class DashboardComponent implements OnInit {
   onPagination(index: number) {
     const count = this.productQuery.getCount()
     if (index * this.pageSizeTable >= count) {
-      this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, true)))
+      this.actions$.dispatch(ProductActions.loadAll(this.mapProduct(this.formGroup.value, true)))
     }
 
 

@@ -16,7 +16,7 @@ import { ProviderQuery } from '../../../provider/state/provider.query';
 import { ProviderActions } from '../../../provider/state/provider.action';
 import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
 import { ProductService } from '../../services/product.service';
-import { ProductAction } from '../../state/product.action';
+import { ProductActions } from '../../state/productActions';
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
@@ -97,7 +97,7 @@ export class ProductDialogComponent implements OnInit {
     }
     const value = this.formGroup.value;
 
-    this.action$.dispatch(ProductAction.addProduct({ product: value }));
+    this.action$.dispatch(ProductActions.addOne({ product: value }));
     // if (this.data?.isUpdate) {
     //   console.log("update product")
     //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));

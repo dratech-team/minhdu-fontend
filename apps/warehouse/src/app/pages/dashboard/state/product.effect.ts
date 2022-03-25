@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { ProductAction } from './product.action';
+import { ProductActions } from './productActions';
 import { ProductStore } from './product.store';
 import { ProductService } from '../services/product.service';
 
@@ -17,7 +17,7 @@ export class ProductEffect {
 
   @Effect()
   loadProducts$ = this.action$.pipe(
-    ofType(ProductAction.loadProduct),
+    ofType(ProductActions.loadAll),
     switchMap((props) => {
       this.productStore.update(state=> ({...state, loading: true}))
       return this.service.pagination(props);
@@ -31,7 +31,7 @@ export class ProductEffect {
 
   @Effect()
   addProduct$ = this.action$.pipe(
-    ofType(ProductAction.addProduct),
+    ofType(ProductActions.addOne),
     switchMap(product => {
       if (product.product?.branch === 'Kho tổng') {
         return this.service.addOne(Object.assign(product.product, { branch: null }));
