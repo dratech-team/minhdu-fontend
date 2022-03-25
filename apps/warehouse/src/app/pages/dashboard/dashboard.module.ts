@@ -20,6 +20,15 @@ import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {NzTableModule} from "ng-zorro-antd/table";
+import {WarehouseEffect} from "../warehouse/state/warehouse.effect";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {VisibleProductComponent} from "./components/custom-visible/visible-product.component";
 
 @NgModule({
   imports: [
@@ -33,15 +42,23 @@ import {DashboardRoutingModule} from "./dashboard-routing.module";
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect]),
+    AkitaNgEffectsModule.forFeature([ProductEffect, WarehouseEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
     MatRadioModule,
+    NzCollapseModule,
+    NzTableModule,
+    NzModalModule,
+    NzSelectModule,
+    NzInputModule,
+    NzPopoverModule,
+    NzButtonModule
   ],
   declarations: [
     ProductDialogComponent,
-    DashboardComponent
+    DashboardComponent,
+    VisibleProductComponent
   ],
   providers: [
     DatePipe,

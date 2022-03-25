@@ -1,22 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { UnitMedicineConstant } from '@minhdu-fontend/constants';
-import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
-import { debounceTime, map, startWith } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { Actions } from '@datorama/akita-ng-effects';
-import { ProductQuery } from '../../state/product.query';
-import { AppState } from '../../../../reducers';
-import { WarehouseQuery } from '../../../warehouse/state/warehouse.query';
-import { ProviderQuery } from '../../../provider/state/provider.query';
-import { ProviderActions } from '../../../provider/state/provider.action';
-import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
-import { ProductService } from '../../services/product.service';
-import { ProductAction } from '../../state/product.action';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {DatePipe} from '@angular/common';
+import {Store} from '@ngrx/store';
+import {UnitMedicineConstant} from '@minhdu-fontend/constants';
+import {addBranch, getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {searchAndAddAutocomplete} from '@minhdu-fontend/utils';
+import {debounceTime, map, startWith} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {Actions} from '@datorama/akita-ng-effects';
+import {ProductQuery} from '../../state/product.query';
+import {AppState} from '../../../../reducers';
+import {WarehouseQuery} from '../../../warehouse/state/warehouse.query';
+import {ProviderQuery} from '../../../provider/state/provider.query';
+import {ProviderActions} from '../../../provider/state/provider.action';
+import {WarehouseAction} from '../../../warehouse/state/warehouse.action';
+import {ProductService} from '../../services/product.service';
+import {ProductActions} from '../../state/product.Actions';
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
@@ -30,7 +30,7 @@ export class ProductDialogComponent implements OnInit {
 
   medicineConstant = UnitMedicineConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
-  providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
+  providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({label: e.name, value: e.id}));
 
   formGroup = this.formBuilder.group({
     name: [this.data?.name, Validators.required],
@@ -73,7 +73,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.action$.dispatch(ProviderActions.loadAll({param:{take: 30, skip: 0}}));
+    this.action$.dispatch(ProviderActions.loadAll({param: {take: 30, skip: 0}}));
 
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
@@ -83,7 +83,7 @@ export class ProductDialogComponent implements OnInit {
     this.formGroup.get('product')?.valueChanges.pipe(
       debounceTime(1500)
     ).subscribe((val => {
-      this.products$ = this.productService.pagination({ take: 10, skip: 0, name: val }).pipe(map(data => data.data));
+      this.products$ = this.productService.pagination({take: 10, skip: 0, name: val}).pipe(map(data => data.data));
     }));
   }
 
@@ -97,7 +97,7 @@ export class ProductDialogComponent implements OnInit {
     }
     const value = this.formGroup.value;
 
-    this.action$.dispatch(ProductAction.addProduct({ product: value }));
+    this.action$.dispatch(ProductActions.addOne({product: value}));
     // if (this.data?.isUpdate) {
     //   console.log("update product")
     //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
@@ -112,7 +112,7 @@ export class ProductDialogComponent implements OnInit {
     if (!value?.id) {
       switch (type) {
         case 'branch': {
-          this.store.dispatch(addBranch({ branch: { name: fg } }));
+          this.store.dispatch(addBranch({branch: {name: fg}}));
           break;
         }
         case 'provider': {
@@ -120,7 +120,7 @@ export class ProductDialogComponent implements OnInit {
           break;
         }
         case 'warehouse': {
-          this.action$.dispatch(WarehouseAction.addWarehouse({ warehouse: { name: fg } }));
+          this.action$.dispatch(WarehouseAction.addWarehouse({warehouse: {name: fg}}));
           break;
         }
         default: {
@@ -135,8 +135,8 @@ export class ProductDialogComponent implements OnInit {
 
   onChangeProvider(value: string): void {
     this.providerOptions = this.providerQuery
-      .getAll({ filterBy: [entity => entity.name.toLowerCase().indexOf(value.toLowerCase()) !== -1] })
-      .map(e => ({ label: e.name, value: e.id }));
+      .getAll({filterBy: [entity => entity.name.toLowerCase().indexOf(value.toLowerCase()) !== -1]})
+      .map(e => ({label: e.name, value: e.id}));
   }
 
   onSelectItem(event: any) {
