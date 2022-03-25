@@ -40,6 +40,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {VisibleOrderComponent} from "./component/custom-visible/visible-order.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 
 
@@ -89,7 +90,8 @@ import {NzStepsModule} from "ng-zorro-antd/steps";
     OrderComponent,
     DetailOrderComponent,
     OrderDialogComponent,
-    AddOrderComponent
+    AddOrderComponent,
+    VisibleOrderComponent
   ],
   providers: [
     {provide: MatDialogRef, useValue: {}},

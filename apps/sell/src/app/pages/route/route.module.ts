@@ -30,44 +30,48 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {VisibleRouteComponent} from "./component/custom-visible/visible-route.component";
 
 @NgModule({
-  imports: [
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect,
-      RouteEffect
-    ]),
-    ComponentsModule,
-    RouteRoutingModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatInputModule,
-    InfiniteScrollModule,
-    CommonModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCheckboxModule,
-    FormsModule,
-    SharedModule,
-    NgxSkeletonLoaderModule.forRoot(),
-    MatDatepickerModule,
-    NzTableModule,
-    MatSortModule,
-    NzCollapseModule,
-    NzRadioModule,
-    NzModalModule,
-    NzStepsModule,
-    NzInputModule,
-    NzButtonModule
-  ],
+    imports: [
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect,
+            RouteEffect
+        ]),
+        ComponentsModule,
+        RouteRoutingModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatInputModule,
+        InfiniteScrollModule,
+        CommonModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCheckboxModule,
+        FormsModule,
+        SharedModule,
+        NgxSkeletonLoaderModule.forRoot(),
+        MatDatepickerModule,
+        NzTableModule,
+        MatSortModule,
+        NzCollapseModule,
+        NzRadioModule,
+        NzModalModule,
+        NzStepsModule,
+        NzInputModule,
+        NzButtonModule,
+        NzPopoverModule
+    ],
   declarations: [
     RouteComponent,
     DetailRouteComponent,
     RouteDialogComponent,
-    CompleteRouteDialogComponent
+    CompleteRouteDialogComponent,
+    VisibleRouteComponent
   ],
   providers: [
     DatePipe

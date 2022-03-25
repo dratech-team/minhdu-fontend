@@ -1,94 +1,104 @@
-<div >
-    <div class='font-weight-bold mb-1'>Đã chọn:({{this.payrollsSelected.length}}/{{totalPayroll}})</div>
-    <div>
-      <nz-table [formGroup]='formGroup'
-                #tablePayroll
-                [nzLoading]="loading"
-                nzSize="small"
-                [nzData]="payrolls"
-                (nzPageIndexChange)="onPagination($event)"
-                [nzPageSize]="pageSizeTable"
-                [nzScroll]="{x:'950px'}"
-      >
-        <thead>
-        <tr>
-          <th nzWidth="50px">
-            <div class='text-center'>stt</div>
-          </th>
-          <th nzWidth="120px">
-            <div class='text-center'>Mã nhân Viên</div>
-            <input nz-input type='search' formControlName='code'>
-          </th>
-          <th>
-            <div class='text-center'>Tên nhân viên</div>
-            <input nz-input type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
-          </th>
-          <th>
-            <div class='title-profile'>Chức vụ</div>
-            <input nz-input type='search' [matAutocomplete]='position'
-                   formControlName='position'>
-            <mat-autocomplete #position='matAutocomplete'>
-              <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
-                          (onSelectionChange)='onSelectPosition(position.name)'>
-                {{position.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </th>
-          <th>
-            <div class='text-center'>Ngày tạo phiếu lương</div>
-            <input nz-input disabled>
-          </th>
-          <th style='width: 120px' class='border-bottom '>
-            <div class='text-center'>Tất cả</div>
-            <div class="d-flex justify-content-center align-items-center">
-              <mat-checkbox class='example-margin mt-2 mx-auto '
-                            [checked]='isSelectAllPayroll'
-                            [indeterminate]='someCompleteEmployee()'
-                            (change)='setAllEmployee($event.checked)'>
-              </mat-checkbox>
-            </div>
-          </th>
-          <th style='width: 120px' *ngIf='checkAllowance'>
-            <div class='text-center'>Phụ cấp thêm</div>
-            <div class="d-flex justify-content-center align-items-center">
-              <mat-checkbox class='example-margin mt-2 mx-auto'
-                            [checked]='isSelectAllowance'
-                            [disabled]='!isSelectAllPayroll'
-                            [indeterminate]='someCompleteAllowance()'
-                            (change)='setAllAllowance($event.checked)'>
-              </mat-checkbox>
-            </div>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-payroll [ngForOf]="tablePayroll.data" let-i='index'>
-          <tr class="pointer">
-            <td class='text-center'> {{i + 1}}</td>
-            <td class='text-center'> {{payroll.id}}</td>
-            <td class='text-center'>{{payroll.employee.lastName}}</td>
-            <td class='text-center'>{{payroll.position}}</td>
-            <td class='text-center'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</td>
-            <td class='text-center'>
+<mat-spinner *ngIf='loadMore' class='loading'></mat-spinner>
+<div>
+  <div class='font-weight-bold mb-1'>Đã chọn:({{this.payrollsSelected.length}}/{{totalPayroll}})</div>
+  <div class="table-scroll" style="max-height: 35vh"
+       infiniteScroll [alwaysCallback]='false' [infiniteScrollDistance]='0'
+       [infiniteScrollThrottle]='0' [scrollWindow]='false' (scrolled)='onScroll()'>
+    <table [formGroup]='formGroup'>
+      <thead>
+      <tr>
+        <th style="width: 50px">
+          <div class='text-center'>stt</div>
+          <input nz-input type='search' disabled>
+        </th>
+        <th nzWidth="120px">
+          <div class='text-center'>Mã nhân Viên</div>
+          <input nz-input type='search' formControlName='code'>
+        </th>
+        <th>
+          <div class='text-center'>Tên nhân viên</div>
+          <input nz-input type='search' placeholder='Trần Gia Hiệu' formControlName='name'>
+        </th>
+        <th>
+          <div class='title-profile'>Chức vụ</div>
+          <input nz-input type='search' [matAutocomplete]='position'
+                 formControlName='position'>
+          <mat-autocomplete #position='matAutocomplete'>
+            <mat-option *ngFor='let position of positions$ | async' [value]='position.name'
+                        (onSelectionChange)='onSelectPosition(position.name)'>
+              {{position.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </th>
+        <th>
+          <div class='text-center'>Ngày tạo phiếu lương</div>
+          <input nz-input disabled>
+        </th>
+        <th style='width: 120px;background: white ;z-index: 1' class='border-bottom '>
+          <div class='text-center'>Tất cả</div>
+          <div class="d-flex justify-content-center align-items-center">
+            <mat-checkbox class='example-margin mt-2 mx-auto '
+                          [checked]='isSelectAllPayroll'
+                          [indeterminate]='someCompleteEmployee()'
+                          (change)='setAllEmployee($event.checked)'>
+            </mat-checkbox>
+          </div>
+        </th>
+        <th style='width: 120px;background: white; z-index: 1' *ngIf='checkAllowance'>
+          <div class='text-center'>Phụ cấp thêm</div>
+          <div class="d-flex justify-content-center align-items-center">
+            <mat-checkbox class='example-margin mt-2 mx-auto'
+                          [checked]='isSelectAllowance'
+                          [disabled]='!isSelectAllPayroll'
+                          [indeterminate]='someCompleteAllowance()'
+                          (change)='setAllAllowance($event.checked)'>
+            </mat-checkbox>
+          </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf='loading; else table'>
+        <th colSpan='100' style="z-index: -1">
+          <ngx-skeleton-loader count='10' appearance='line'>
+          </ngx-skeleton-loader>
+        </th>
+      </tr>
+      <ng-template #table>
+        <tr style="z-index: -1" class="pointer" *ngFor="let payroll of payrolls; let i = index">
+          <td class='text-center'> {{i + 1}}</td>
+          <td class='text-center'> {{payroll.id}}</td>
+          <td class='text-center'>{{payroll.employee.lastName}}</td>
+          <td class='text-center'>{{payroll.position}}</td>
+          <td class='text-center'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</td>
+          <td class='text-center'>
+            <div class="d-flex justify-content-center align-items-center pt-2">
               <mat-checkbox class='checkID'
                             [checked]='selectEmployee(payroll)'
                             (change)='updateSelectPayroll(payroll)'>
               </mat-checkbox>
-            </td>
-            <td class='text-center' *ngIf='checkAllowance'>
+            </div>
+
+          </td>
+          <td class='text-center' *ngIf='checkAllowance'>
+            <div class="d-flex justify-content-center align-items-center pt-2 ">
               <mat-checkbox class='checkID'
                             [disabled]='!selectEmployee(payroll)'
                             [checked]='selectAllowanceEmployee(payroll)'
                             (change)='updateSelectAllowance(payroll)'>
               </mat-checkbox>
-            </td>
-          </tr>
-        </ng-template>
-        </tbody>
-      </nz-table>
-    </div>
-    <div class='row d-flex flex-column my-2'>
-      <div class='ml-2 font-lg'>Tổng phiếu lương được chọn : {{payrollsSelected.length}}</div>
-      <div class='ml-2 font-lg' *ngIf='checkAllowance'>Tổng phiếu lương được thêm phụ cấp : {{allowPayrollsSelected.length}}</div>
-    </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      </tbody>
+    </table>
+  </div>
+  <div class='row d-flex flex-column my-2'>
+    <div class='ml-2 font-lg'>Tổng phiếu lương được chọn : {{payrollsSelected.length}}</div>
+    <div class='ml-2 font-lg' *ngIf='checkAllowance'>Tổng phiếu lương được thêm phụ cấp
+      : {{allowPayrollsSelected.length}}</div>
+  </div>
 </div>
+

@@ -15,7 +15,6 @@ import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.co
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {DatePipe} from '@angular/common';
-import {getFirstDayInMonth, getLastDayInMonth} from '@minhdu-fontend/utils';
 import {OrderActions} from '../../../order/+state/order.actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {RouteStore} from '../../+state/route.store';
@@ -29,7 +28,7 @@ export class RouteComponent implements OnInit {
   routes$ = this.routeQuery.selectAll().pipe(map(routes => JSON.parse(JSON.stringify(routes))));
   loading$ = this.routeQuery.selectLoading();
   total$ = this.routeQuery.select(state => state.total);
-
+  ui$ = this.routeQuery.select(state => state.ui)
   pageSize = 30;
   pageIndexInit = 0;
   pageSizeTable = 10;
@@ -37,25 +36,16 @@ export class RouteComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   radios = RadiosStatusRouteConstant;
   sortRouteEnum = SortRouteEnum;
-
+  stateSearch = this.routeQuery.getValue().search
   formGroup = new FormGroup({
-    search: new FormControl(),
-    startedAt: new FormControl({
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    }),
-    endedAt: new FormControl({
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    }),
-    driver: new FormControl(''),
-    name: new FormControl(''),
-    bsx: new FormControl(''),
-    garage: new FormControl(''),
-    status: new FormControl(-1)
+    search: new FormControl(this.stateSearch.search),
+    startedAt: new FormControl(this.stateSearch.startedAt),
+    endedAt: new FormControl(this.stateSearch.endedAt),
+    status: new FormControl(this.stateSearch.status)
   });
 
   valueSort?: Sort;
+  visible = false;
 
   constructor(
     private readonly actions$: Actions,
@@ -69,15 +59,9 @@ export class RouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(RouteAction.loadAll({
-        params: {
-          take: this.pageSize,
-          skip: this.pageIndexInit,
-          startedAt: getFirstDayInMonth(new Date()),
-          endedAt: getLastDayInMonth(new Date())
-        }
-      })
-    );
+    this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(this.formGroup.value)})
+    )
+
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -166,6 +150,9 @@ export class RouteComponent implements OnInit {
   }
 
   mapRoute(val: any, isPagination?: boolean) {
+    this.routeStore.update(state => ({
+      ...state, search: val
+    }))
     if (this.valueSort?.orderType) {
       Object.assign(val, this.valueSort);
     } else {

@@ -1,23 +1,15 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Employee, ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
-import {
-  EmployeeAction,
-  selectEmployeeLoaded,
-  selectorAllEmployee,
-  selectorTotalEmployee
-} from '@minhdu-fontend/employee';
 import {SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {of} from 'rxjs';
 import {getAllPosition, PositionActions} from "@minhdu-fontend/orgchart-position";
 import {checkIsSelectAllInit, pickAll, pickOne, searchAutocomplete} from "@minhdu-fontend/utils";
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../../service/payroll.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {da_DK} from "ng-zorro-antd/i18n";
 
 
 @Component({
@@ -48,6 +40,7 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   payrolls: Payroll[] = [];
   positions$ = this.store.pipe(select(getAllPosition));
   differ: any;
+  loadMore = false;
 
   constructor(
     private readonly store: Store,
@@ -188,6 +181,7 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   //check-box-allowance
+
   updateSelectAllowance(payroll: Payroll) {
     this.isSelectAllowance = pickOne(payroll, this.allowPayrollsSelected, this.payrolls).isSelectAll;
     this.EventSelectAllowance.emit(this.allowPayrollsSelected);
@@ -231,41 +225,35 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     return this.allowPayrollsSelected.some((e) => e.id === payroll.id);
   }
 
-  onPagination(pageIndex: number) {
-    if (pageIndex * this.pageSizeTable >= this.payrolls.length) {
-      const val = this.formGroup.value;
-      this.loading = true
-      this.payrollService.paginationPayroll(Object.assign(val, {
-          take: this.pageSize,
-          skip: this.payrolls.length
-        }
-      )).subscribe(respone => {
-        this.loading = false
-        if (respone.data.length > 0) {
-          respone.data.map(payroll => {
-            if (this.payrolls.every(val => val.id !== payroll.id)) {
-              this.payrolls.push(payroll)
+  onScroll() {
+    const val = this.formGroup.value;
+    this.loadMore = true
+    this.payrollService.paginationPayroll(Object.assign(val, {
+        take: this.pageSize,
+        skip: this.payrolls.length
+      }
+    )).subscribe(respone => {
+      if (respone.data.length > 0) {
+        respone.data.map(payroll => {
+          if (this.isSelectAllPayroll) {
+            if (this.payrollsSelected.every(val => val.id !== payroll.id)) {
+              this.payrollsSelected.push(payroll)
             }
-            if (this.isSelectAllPayroll) {
-              if (this.payrollsSelected.every(val => val.id !== payroll.id)) {
-                this.payrollsSelected.push(payroll)
-              }
-              if (this.isSelectAllowance) {
-                if (this.allowPayrollsSelected.every(val => val.id !== payroll.id)) {
-                  this.allowPayrollsSelected.push(payroll)
-                }
+            if (this.isSelectAllowance) {
+              if (this.allowPayrollsSelected.every(val => val.id !== payroll.id)) {
+                this.allowPayrollsSelected.push(payroll)
               }
             }
-          })
-          this.payrolls = [...this.payrolls]
-          this.EventSelectAllowance.emit(this.allowPayrollsSelected)
-          this.EventSelectPayroll.emit(this.payrollsSelected)
-        } else {
-          this.message.warning('Đã lấy hết phiếu lương')
-        }
-      })
-    }
-
+          }
+        })
+        this.payrolls = this.payrolls.concat(respone.data)
+        this.EventSelectAllowance.emit(this.allowPayrollsSelected)
+        this.EventSelectPayroll.emit(this.payrollsSelected)
+      } else {
+        this.message.warning('Đã lấy hết phiếu lương')
+      }
+      this.loadMore = false
+    })
   }
 
   mapPayroll(val: any) {
