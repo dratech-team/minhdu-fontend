@@ -21,16 +21,14 @@ import {ProductStore} from "../state/product.store";
 })
 export class DashboardComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => {
-      const convertWarehouseType: { value: number, name: string }[] = [{value: -1, name: 'Tất cả'}]
-      warehouses.forEach(warehouse => {
-        convertWarehouseType.push({value: warehouse.id, name: warehouse.name});
+      return warehouses.map(warehouse => ({value: warehouse.id, name: warehouse.name})).concat({
+        value: -1,
+        name: 'Tất cả'
       })
-      return convertWarehouseType
     }
   ));
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
-  warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
   ui$ = this.productQuery.select(state => state.ui);
 
   stateSearch = this.productQuery.getValue().search
@@ -118,11 +116,11 @@ export class DashboardComponent implements OnInit {
 
   import() {
     this.modal.create({
-      nzTitle:'Nhập hàng hoá',
+      nzTitle: 'Nhập hàng hoá',
       nzContent: ProductDialogComponent,
-      nzComponentParams:{
+      nzComponentParams: {
         data: {
-          wareHouse : this.formGroup.value.wareHouse
+          wareHouse: this.formGroup.value.wareHouse
         }
       },
       nzFooter: null,
