@@ -35,18 +35,12 @@ function createInitState(): OrderState {
       customer: '',
       status: -1,
       explain: '',
-      endedAt: {
-        start: getFirstDayInMonth(new Date()),
-        end: getLastDayInMonth(new Date())
-      },
-      createdAt: {
-        start: getFirstDayInMonth(new Date()),
-        end: getLastDayInMonth(new Date())
-      },
-      deliveredAt: {
-        start: getFirstDayInMonth(new Date()),
-        end: getLastDayInMonth(new Date())
-      },
+      endedAt_start: getFirstDayInMonth(new Date()),
+      endedAt_end: getLastDayInMonth(new Date()),
+      createdAt_start: getFirstDayInMonth(new Date()),
+      createdAt_end: getLastDayInMonth(new Date()),
+      deliveredAt_start: getFirstDayInMonth(new Date()),
+      deliveredAt_end: getLastDayInMonth(new Date()),
       province: '',
       bsx: '',
       commodity: ''

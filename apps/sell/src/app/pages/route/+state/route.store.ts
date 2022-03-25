@@ -24,14 +24,10 @@ export const createInitialState = () => ({
   expandedAll: false,
   search: {
     search: '',
-    startedAt: {
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    },
-    endedAt: {
-      start: getFirstDayInMonth(new Date()),
-      end: getLastDayInMonth(new Date())
-    },
+    startedAt_start: getFirstDayInMonth(new Date()),
+    startedAt_end: getLastDayInMonth(new Date()),
+    endedAt_start: getFirstDayInMonth(new Date()),
+    endedAt_end: getLastDayInMonth(new Date()),
     status: -1
   },
   ui: {
