@@ -21,7 +21,6 @@ export class ProductEffect {
   addOne$ = this.action$.pipe(
     ofType(ProductActions.addOne),
     switchMap(props => {
-      console.log(props)
       this.productStore.update(state => ({
         ...state, added: true
       }))
