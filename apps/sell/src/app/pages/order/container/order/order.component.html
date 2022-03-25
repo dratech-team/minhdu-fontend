@@ -10,10 +10,11 @@
       </nz-collapse-panel>
     </nz-collapse>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-datepicker
-        [title]="'Ngày hẹn giao'"
-        [rangeDayInit]="stateSearch.endedAt"
-        (onPicker)='onPickEndedAt($event)'></minhdu-fontend-collapse-datepicker>
+      <minhdu-fontend-collapse-radios
+        [active]="true"
+        [formGroup]='formGroup' [controlName]="'status'" header='Trạng thái đơn hàng'
+        [radios]='radios'>
+      </minhdu-fontend-collapse-radios>
     </div>
     <div class='mt-2'>
       <minhdu-fontend-collapse-datepicker
@@ -22,10 +23,10 @@
         (onPicker)='onPickCreatedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class='mt-2'>
-      <minhdu-fontend-collapse-radios
-        [formGroup]='formGroup' [controlName]="'status'" header='Trạng thái đơn hàng'
-        [radios]='radios'>
-      </minhdu-fontend-collapse-radios>
+      <minhdu-fontend-collapse-datepicker
+        [title]="'Ngày hẹn giao'"
+        [rangeDayInit]="stateSearch.endedAt"
+        (onPicker)='onPickEndedAt($event)'></minhdu-fontend-collapse-datepicker>
     </div>
     <div class='mt-2' *ngIf="formGroup.get('status')?.value === 1">
       <minhdu-fontend-collapse-datepicker
@@ -66,7 +67,7 @@
     <div>
       <nz-table
         #tableOrder
-        [nzScroll]="{ x: '2000px',y: '60vh'}"
+        [nzScroll]="{ x: '2000px',y: '58vh'}"
         nzSize='middle'
         [nzPageSize]='pageSizeTable'
         [nzLoading]='loading$ | async'
