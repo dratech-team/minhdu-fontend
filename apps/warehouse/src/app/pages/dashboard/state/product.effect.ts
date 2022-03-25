@@ -19,9 +19,11 @@ export class ProductEffect {
   loadProducts$ = this.action$.pipe(
     ofType(ProductAction.loadProduct),
     switchMap((props) => {
-      return this.service.pagination(props.search);
+      this.productStore.update(state=> ({...state, loading: true}))
+      return this.service.pagination(props);
     }),
     tap((data) => {
+      this.productStore.update(state=> ({...state, loading: false}))
       this.productStore.set(data.data);
     }),
     catchError((err) => throwError(err))

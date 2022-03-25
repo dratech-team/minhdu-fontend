@@ -29,19 +29,18 @@ export class DashboardComponent implements OnInit {
   products$ = this.productQuery.selectAll();
   loading$ = this.productQuery.selectLoading();
   warehouseSelected$ = this.warehouseQuery.select(state => state.selected);
-  formControlWareHouse = new FormGroup({
-    warehouseType: new FormControl(-1)
-  })
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
     {
       inventoryType: new FormControl(-1),
       search: new FormControl(''),
+      warehouseType: new FormControl(-1)
     }
   );
   panelOpenState = false;
   inventoryTitle = InventoryTitleConstants
+  pageSizeTable = 10;
 
   constructor(
     private readonly warehouseQuery: WarehouseQuery,
@@ -53,51 +52,30 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(ProductAction.loadProduct({
-      search: {
-        take: PaginationDto.take,
-        skip: PaginationDto.skip,
-        warehouseId: this.warehouseIdSelected ? this.warehouseIdSelected : ''
-      }
-    }));
+    this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, false)));
 
     this.actions$.dispatch(WarehouseAction.loadWarehouses);
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
       map(value => {
-          // this.store.dispatch(MedicineAction.loadInit(this.medicine(30, 0, value)));
+          this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, false)))
         }
       )
     ).subscribe();
-
-    this.formControlWareHouse.valueChanges.subscribe(val => {
-      this.actions$.dispatch(WarehouseAction.selectedWarehouseId({warehouseId: val}));
-      this.actions$.dispatch(ProductAction.loadProduct({
-        search: {
-          take: PaginationDto.take,
-          skip: PaginationDto.skip,
-          warehouseId: val ? val : null
-        }
-      }));
-    })
   }
 
   importMedicine() {
     this.dialog.open(ProductDialogComponent, {width: '40%'});
   }
 
-  onScroll() {
-    const val = this.formGroup.value;
-    // this.store.dispatch(MedicineAction.loadMoreMedicines(this.medicine(this.pageSize,this.pageIndex,val)))
-  }
+  onPagination(index: number) {
+    const count = this.productQuery.getCount()
+    if (index * this.pageSizeTable >= count) {
+      this.actions$.dispatch(ProductAction.loadProduct(this.mapProduct(this.formGroup.value, true)))
+    }
 
-  medicine(pageSize: number, pageIndex: number, value: any) {
-    return {
-      take: pageSize,
-      skip: pageSize * pageIndex++,
-      name: value.name
-    };
+
   }
 
   deleteMedicine($event: any) {
@@ -114,6 +92,14 @@ export class DashboardComponent implements OnInit {
         width: '40%',
         data: medicine
       });
+  }
+
+  mapProduct(dataFG: any, isPagination: boolean) {
+    Object.assign(dataFG, {
+      take: PaginationDto.take,
+      skip: isPagination ? this.productQuery.getCount() : PaginationDto.skip
+    })
+    return dataFG
   }
 
   import() {
