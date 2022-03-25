@@ -9,6 +9,7 @@ import {map} from "rxjs/operators";
 import {selectedAddedPayroll} from "../../+state/payroll/payroll.selector";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {PayrollAction} from "../../+state/payroll/payroll.action";
+import {PositionActions} from "@minhdu-fontend/orgchart-position";
 
 @Component({
   templateUrl: 'update-payroll.component.html'
@@ -19,15 +20,15 @@ export class UpdatePayrollComponent implements OnInit {
   recipeTypeConstant = RecipeTypesConstant
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.formGroup.get('branch')?.setValue(branches[0])
       this.positions = branches[0].positions
-    } else {
+    }else{
       this.positions = branches.find(branch => branch.name === this.data.payroll.branch)?.positions
     }
+
     return branches
   }));
-  compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 == o2.name : o1.id === o2.id);
-  compareRecipe = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 == o2.value : o1.value === o2.value);
+  compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
+  compareRecipe = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.value : o1.value === o2.value);
 
   constructor(
     private readonly datePipe: DatePipe,
