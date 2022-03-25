@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { Localhost } from '../../../../enums/localhost.enum';
 import { Api } from '@minhdu-fontend/constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, } from 'rxjs/operators';
+import { catchError, retry, } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {
@@ -48,6 +48,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request = request.clone({ url });
     console.log(request)
       return next.handle(request).pipe(
+        retry(5),
         catchError(err => throwError(err))
       );
   }
