@@ -25,13 +25,6 @@ export class WarehouseEffect {
     })
   );
 
-
-  @Effect({ dispatch: false })
-  selectWarehouse$ = this.action$.pipe(
-    ofType(WarehouseAction.selectedWarehouseId),
-    tap((v) => this.warehouseStore.update(state => ({ ...state, selected: v.warehouseId })))
-  );
-
   @Effect()
   addWarehouse$ = this.action$.pipe(
     ofType(WarehouseAction.addOne),
