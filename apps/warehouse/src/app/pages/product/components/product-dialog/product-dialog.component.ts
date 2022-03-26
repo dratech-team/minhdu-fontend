@@ -120,7 +120,7 @@ export class ProductDialogComponent implements OnInit {
           break;
         }
         case 'warehouse': {
-          this.action$.dispatch(WarehouseAction.addOne({ warehouse: { name: fg } }));
+          this.action$.dispatch(WarehouseAction.addOne({ body: { name: fg } }));
           break;
         }
         default: {

@@ -1,1 +1,2 @@
-export * from './product.entity';
+export * from './warehouse.entity';
+export * from './base-warehouse.entity';

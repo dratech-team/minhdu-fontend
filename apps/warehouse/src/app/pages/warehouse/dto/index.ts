@@ -1,1 +1,1 @@
-export * from './warehouse-dto.entity';
+export * from './add-warehouse.dto';
