@@ -1,5 +1,5 @@
 import { Product } from '../../dashboard/entities/product.entity';
-import { ImportExportEnum } from './import-export.enum';
+import { ImportExportEnum } from '../enums/import-export.enum';
 
 export interface ImportExportEntity {
   readonly id: number;

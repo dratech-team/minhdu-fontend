@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ImportExportService } from '../../services/import-export.service';
 import { map } from 'rxjs/operators';
-import { ImportExportEnum } from '../../entities/import-export.enum';
+import { ImportExportEnum } from '../../enums/import-export.enum';
 import { NzTableComponent } from 'ng-zorro-antd/table';
 import { ImportExportEntity } from '../../entities/import-export.entity';
 

@@ -1,7 +1,7 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {Product} from '../entities/product.entity';
-import {ProviderEntity} from "../../provider/entities/search-provider.entity";
+import {ProviderEntity} from "../../provider/dto/search-provider.entity";
 import {ProductVisibleEntity} from "../entities/product-visible.entity";
 import {updateStateUiUtil} from "../../../../../../sell/src/app/utils/update-state-ui.util";
 

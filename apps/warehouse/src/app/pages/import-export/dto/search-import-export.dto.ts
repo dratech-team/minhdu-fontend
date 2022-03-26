@@ -1,4 +1,4 @@
-import { ImportExportEnum } from '../entities/import-export.enum';
+import { ImportExportEnum } from '../enums/import-export.enum';
 
 export interface SearchImportExportDto {
   readonly take: number;
