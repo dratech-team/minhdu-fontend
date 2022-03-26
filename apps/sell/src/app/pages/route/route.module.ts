@@ -35,6 +35,7 @@ import { VisibleRouteComponent } from './component/custom-visible/visible-route.
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouteService } from './service/route.service';
 import { RouteMiddleware } from './middlewares/route.middleware';
+import { JwtInterceptor } from '@minhdu-fontend/auth';
 
 @NgModule({
   imports: [
@@ -82,6 +83,11 @@ import { RouteMiddleware } from './middlewares/route.middleware';
   providers: [
     DatePipe,
     RouteService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RouteMiddleware,
+      multi: true,
+    },
   ]
 
 })

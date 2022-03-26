@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class RouteGuard implements CanActivate, CanActivateChild {
-
   constructor(private appStore: AppStore) {
   }
 

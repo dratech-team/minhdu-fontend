@@ -17,7 +17,6 @@ import { CommodityModule } from '../commodity/commodity.module';
 import { AddOrderComponent } from './container/add-order.component/add-order.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RouteModule } from '../route/route.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PaymentHistoryComponent } from './container/payment-history/payment-history.component';
 import { TableRouteComponent } from './component/table-route/table-route.component';
@@ -65,7 +64,6 @@ import { OrderService } from './service/order.service';
     CommodityModule,
     NgxMatSelectSearchModule,
     MatAutocompleteModule,
-    RouteModule,
     SharedModule,
     NgxSkeletonLoaderModule.forRoot(),
     MatDatepickerModule,

@@ -35,6 +35,7 @@ import { RouteGuard } from './route.guard';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { CommodityTemplateModule } from './pages/commodity-template/commodity-template.module';
+import { RouteModule } from './pages/route/route.module';
 
 registerLocaleData(localeVi);
 
@@ -73,7 +74,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     MatDialogModule,
     MatTabsModule,
     NzMessageModule,
-    CommodityTemplateModule
+    CommodityTemplateModule,
+    RouteModule
   ],
   declarations: [PickMenuComponent, AppComponent, SellLayoutComponent],
   providers: [
