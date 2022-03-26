@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CommodityRoutingModule } from './commodity-routing.module';
 import { CommodityComponent } from './container/commodity/commodity.component';
-import { StoreModule } from '@ngrx/store';
-import { FeatureName } from '@minhdu-fontend/constants';
-import { EffectsModule } from '@ngrx/effects';
 import { CommodityEffect } from './+state/commodity.effect';
 import { MatInputModule } from '@angular/material/input';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -21,31 +18,33 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
-import {NzButtonModule} from "ng-zorro-antd/button";
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { CommodityService } from './service/commodity.service';
 
 @NgModule({
-    imports: [
-        ComponentsModule,
-        CommodityRoutingModule,
-        AkitaNgEffectsModule.forFeature([CommodityEffect]),
-        MatInputModule,
-        InfiniteScrollModule,
-        CommonModule,
-        MatDialogModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatCheckboxModule,
-        FormsModule,
-        NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-        MatAutocompleteModule,
-        NzButtonModule
-    ],
+  imports: [
+    ComponentsModule,
+    CommodityRoutingModule,
+    AkitaNgEffectsModule.forFeature([CommodityEffect]),
+    MatInputModule,
+    InfiniteScrollModule,
+    CommonModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    FormsModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    MatAutocompleteModule,
+    NzButtonModule
+  ],
   declarations: [
     CommodityComponent,
     CommodityDialogComponent,
-    DetailCommodityComponent,
+    DetailCommodityComponent
   ],
-  providers: [DatePipe, PickCommodityService],
+  providers: [DatePipe, PickCommodityService, CommodityService]
 })
-export class CommodityModule {}
+export class CommodityModule {
+}

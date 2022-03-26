@@ -1,18 +1,16 @@
-import {Injectable} from '@angular/core';
-import {BaseService} from '@minhdu-fontend/service';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
-import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {UpdateNum} from '@ngrx/entity/src/models';
-import {AddCommodityDto} from "../dto/add-commodity.dto";
-import {CommodityEntity} from "../entities/commodity.entity";
-import {LoadCommodityDto} from "../dto/load-commodity.dto";
-import {updateCommodityDto} from "../dto/update-commodity.dto";
+import { Injectable } from '@angular/core';
+import { BaseService } from '@minhdu-fontend/service';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { Observable } from 'rxjs';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { UpdateNum } from '@ngrx/entity/src/models';
+import { AddCommodityDto } from '../dto/add-commodity.dto';
+import { CommodityEntity } from '../entities/commodity.entity';
+import { LoadCommodityDto } from '../dto/load-commodity.dto';
+import { updateCommodityDto } from '../dto/update-commodity.dto';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CommodityService extends BaseService<CommodityEntity> {
   constructor(
     public readonly http: HttpClient

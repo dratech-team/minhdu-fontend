@@ -19,14 +19,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly store: Store<AuthState>,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar,
-    private readonly http: HttpClient
+    private readonly snackBar: MatSnackBar
   ) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err) => {
         if ([401].indexOf(err.status) !== -1) {
@@ -80,15 +76,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           duration: 3000,
         });
         return throwError(error);
-
-        /// FIXME: Chưa work. (postman đã work). Check mail join channel in slack. Keywork: Slack webhook. Tắt vpn để error rơi vào case này
-        // this.http
-        //   .post(Api.SLACK_WEBHOOK, {
-        //     username: 'Bug Report',
-        //     text: err?.message.toString() || 'Lỗi Không kết nối được server',
-        //     icon_emoji: ':ladybug:',
-        //   })
-        //   .subscribe((v) => console.log('send report bug to slack', v)).unsubscribe();
       })
     );
   }

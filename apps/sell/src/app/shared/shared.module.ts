@@ -21,12 +21,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { TableOrdersComponent } from './components/table-orders/table-orders.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import {AkitaNgEffectsModule} from "@datorama/akita-ng-effects";
-import {CustomerEffect} from "../pages/customer/+state/customer.effect";
-import {CommodityEffect} from "../pages/commodity/+state/commodity.effect";
-import {NzButtonModule} from "ng-zorro-antd/button";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {NzSelectModule} from "ng-zorro-antd/select";
+import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
+import { CustomerEffect } from '../pages/customer/+state/customer.effect';
+import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
   imports: [
@@ -52,7 +52,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     NzTableModule,
     NzButtonModule,
     NzInputModule,
-    NzSelectModule,
+    NzSelectModule
   ],
   declarations: [
     TableOrdersComponent,

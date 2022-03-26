@@ -1,25 +1,12 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpHeaders,
-  HttpInterceptor,
-  HttpRequest
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { envDev, envProd } from '@minhdu-fontend/environment';
 import { Observable, throwError } from 'rxjs';
-import { Localhost } from '../../../../enums/localhost.enum';
 import { Api } from '@minhdu-fontend/constants';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, retry, } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private readonly snackBar: MatSnackBar) {
-  }
-
-  localhost = Localhost;
-
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -46,10 +33,10 @@ export class JwtInterceptor implements HttpInterceptor {
       request = request.clone({ url });
     }
     request = request.clone({ url });
-    console.log(request)
-      return next.handle(request).pipe(
-        retry(5),
-        catchError(err => throwError(err))
-      );
+    console.log(request);
+    return next.handle(request).pipe(
+      retry(5),
+      catchError(err => throwError(err))
+    );
   }
 }

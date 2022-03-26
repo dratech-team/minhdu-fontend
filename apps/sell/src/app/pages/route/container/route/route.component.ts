@@ -7,7 +7,7 @@ import {SortRouteEnum} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
-import {debounceTime, map, tap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
 import {RouteAction} from '../../+state/route.action';
 import {RouteEntity} from '../../entities/route.entity';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
@@ -61,9 +61,6 @@ export class RouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(this.formGroup.value)})
-    )
-
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
@@ -74,7 +71,7 @@ export class RouteComponent implements OnInit {
       .subscribe();
   }
 
-  add() {
+  onAdd() {
     this.modal.create({
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
@@ -83,7 +80,7 @@ export class RouteComponent implements OnInit {
     });
   }
 
-  deleteRoute($event: any) {
+  onRemove($event: any) {
     const ref = this.dialog.open(DialogDeleteComponent, {
       width: 'fit-content'
     });
@@ -113,7 +110,7 @@ export class RouteComponent implements OnInit {
       });
   }
 
-  detailRoute(id: number, isUpdate: boolean) {
+  onDetail(id: number, isUpdate: boolean) {
     this.router.navigate(['tuyen-duong/chi-tiet-tuyen-duong', id], {queryParams: {isUpdate}}).then();
   }
 
