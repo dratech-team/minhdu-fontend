@@ -1,6 +1,6 @@
 import { Branch } from '@minhdu-fontend/data-models';
-import { WarehouseUnit } from '../../warehouse/state/entities/warehouse-unit.entity';
-import { Provider, Warehouse } from '../../warehouse/state/entities/product.entity';
+import { Provider, Warehouse } from '../../warehouse/entities/product.entity';
+import { WarehouseUnit } from '../../warehouse/enums';
 
 export interface Product {
   readonly id: number;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { WarehouseService } from '../services/warehouse.service';
+import { WarehouseService } from '../services';
 import { WarehouseStore } from './warehouse.store';
 import { WarehouseAction } from './warehouse.action';
 import { switchMap, tap } from 'rxjs/operators';

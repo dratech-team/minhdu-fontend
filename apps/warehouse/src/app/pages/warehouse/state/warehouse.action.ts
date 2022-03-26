@@ -1,6 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { Warehouse } from './entities/product.entity';
-import { WarehouseDtoEntity } from './entities/warehouse-dto.entity';
+import { Warehouse } from '../entities';
+import { WarehouseDtoEntity } from '../dto';
 
 const loadWarehouses = createAction('[WAREHOUSE] Load Warehouses');
 

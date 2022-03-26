@@ -1,4 +1,4 @@
-import { Warehouse } from './entities/product.entity';
+import { Warehouse } from '../entities';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 
