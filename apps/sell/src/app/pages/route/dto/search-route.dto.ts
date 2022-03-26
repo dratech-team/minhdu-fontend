@@ -1,4 +1,4 @@
-export interface SearchRouteEntity {
+export interface SearchRouteDto {
   search: string,
   startedAt_start: Date,
   startedAt_end: Date,
