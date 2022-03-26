@@ -1,10 +1,10 @@
-import { ImportExportEnum } from '../enums/import-export.enum';
+import { MigrateEnum } from '../enums/migrate.enum';
 import { Product } from '../../product/entities/product.entity';
 
-export interface ImportExportEntity {
+export interface MigrateEntity {
   readonly id: number;
   readonly product: Product;
-  readonly type: ImportExportEnum;
+  readonly type: MigrateEnum;
   readonly amount: number;
   readonly timestamp: Date;
 }

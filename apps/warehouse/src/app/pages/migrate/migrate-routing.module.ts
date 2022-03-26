@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ImportExportComponent} from "./containers/import-export/import-export.component";
+import { MigrateComponent } from './containers';
 
 const routes: Routes = [
   {
     path: '',
-    component: ImportExportComponent,
+    component: MigrateComponent,
   }
 ];
 
@@ -13,5 +13,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ImportExportRoutingModule {
+export class MigrateRoutingModule {
 }

@@ -11,7 +11,7 @@
     <tbody>
     <tr *ngFor='let data of columnTable.data'>
       <td nzLeft>{{ data.product.name }}</td>
-      <td nzLeft>{{ data.type === ImportExportEnum.IMPORT ? 'Nhập kho' : 'Xuất kho' }}</td>
+      <td nzLeft>{{ data.type === MigrateEnum.IMPORT ? 'Nhập kho' : 'Xuất kho' }}</td>
       <td>{{ data.amount }}</td>
       <td>{{ data.timestamp | date: 'hh:mm:ss - dd/MM/YYYY'}}</td>
     </tr>
