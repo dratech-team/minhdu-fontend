@@ -61,7 +61,7 @@ export class ProductComponent implements OnInit {
       params: this.mapProduct(this.formGroup.value, false)
     }));
 
-    this.actions$.dispatch(WarehouseAction.loadWarehouses());
+    this.actions$.dispatch(WarehouseAction.loadAll());
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

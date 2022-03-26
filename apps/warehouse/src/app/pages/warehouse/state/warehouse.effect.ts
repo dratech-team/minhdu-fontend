@@ -16,7 +16,7 @@ export class WarehouseEffect {
 
   @Effect({ dispatch: false })
   loadWarehouses$ = this.action$.pipe(
-    ofType(WarehouseAction.loadWarehouses),
+    ofType(WarehouseAction.loadAll),
     switchMap(() => {
       return this.service.getAll();
     }),
@@ -34,7 +34,7 @@ export class WarehouseEffect {
 
   @Effect()
   addWarehouse$ = this.action$.pipe(
-    ofType(WarehouseAction.addWarehouse),
+    ofType(WarehouseAction.addOne),
     switchMap((warehouse) => this.service.addOne(warehouse)),
     tap(warehouse => this.warehouseStore.add(warehouse))
   );

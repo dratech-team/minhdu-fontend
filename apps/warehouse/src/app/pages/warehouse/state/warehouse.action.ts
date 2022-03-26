@@ -2,9 +2,9 @@ import { createAction, props } from '@datorama/akita-ng-effects';
 import { Warehouse } from '../entities';
 import { WarehouseDtoEntity } from '../dto';
 
-const loadWarehouses = createAction('[WAREHOUSE] Load Warehouses');
+const loadAll = createAction('[WAREHOUSE] Load Warehouses');
 
-const addWarehouse = createAction(
+const addOne = createAction(
   '[WAREHOUSE] Add Warehouses',
   props<{ warehouse: WarehouseDtoEntity }>()
 );
@@ -14,8 +14,4 @@ const selectedWarehouseId = createAction(
   props<{ warehouseId: Warehouse['id'] }>()
 );
 
-export const WarehouseAction = {
-  loadWarehouses,
-  selectedWarehouseId,
-  addWarehouse
-};
+export const WarehouseAction = { loadAll, selectedWarehouseId, addOne };
