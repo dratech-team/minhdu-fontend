@@ -74,7 +74,7 @@
             <input
               style='height: 12px ; margin: auto'
               (change)='pickOneCustomer(customer.id)'
-              [checked]='customer.id === customerId'
+              [checked]='customer.id === customerIdSelected'
               *ngIf='data.pickOne || pickOne'
               type='radio' name='pick-one'>
           </td>

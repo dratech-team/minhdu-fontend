@@ -23,7 +23,7 @@ export class PickCustomerComponent implements OnInit {
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Output() checkEventPickOne = new EventEmitter<number>();
-  customerId!: number;
+  @Input()customerIdSelected?: number;
   resourceType = CustomerResource;
   customerResourcesConstant = ResourcesConstant;
   CustomerTypeConstant = CustomerConstant;
@@ -60,7 +60,7 @@ export class PickCustomerComponent implements OnInit {
       });
     }
     if (this.data.customerInit) {
-      this.customerId = this.data.customerInit.id
+      this.customerIdSelected = this.data.customerInit.id
     }
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),
@@ -133,12 +133,12 @@ export class PickCustomerComponent implements OnInit {
   }
 
   pickOneCustomer(customerId: number) {
-    this.customerId = customerId
-    this.checkEventPickOne.emit(this.customerId);
+    this.customerIdSelected = customerId
+    this.checkEventPickOne.emit(this.customerIdSelected);
   }
 
   closeDialog() {
-    this.dialogRef.close(this.customerId);
+    this.dialogRef.close(this.customerIdSelected);
   }
 
   addCustomer() {
