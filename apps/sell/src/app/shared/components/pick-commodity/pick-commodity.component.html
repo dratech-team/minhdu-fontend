@@ -1,6 +1,6 @@
 <div>
   <div class="d-flex justify-content-between mb-2">
-    <button (click)='addCommodity()' nz-button nzType="primary" >Thêm hàng hóa</button>
+    <button (click)='addCommodity()' nz-button nzType="primary">Thêm hàng hóa</button>
     <div class=' mr-5'>
       <span class='font-weight-bold'>Đã chọn ({{setOfCheckedId.size}} / {{total$ | async}})</span>
     </div>
@@ -60,8 +60,8 @@
         <tr (contextmenu)='child.onContextMenu($event,commodity)'
             class="pointer">
           <td nzWidth="70px" nzLeft
-            [nzChecked]="setOfCheckedId.has(commodity.id)"
-            (nzCheckedChange)="onItemChecked(commodity.id, $event)"
+              [nzChecked]="setOfCheckedId.has(commodity.id)"
+              (nzCheckedChange)="onItemChecked(commodity.id, $event)"
           ></td>
           <td>{{commodity.code}} </td>
           <td>{{commodity.name}} </td>
@@ -80,7 +80,8 @@
       </tbody>
     </nz-table>
   </div>
-  <button class="mt-1" *ngIf='data?.type === "DIALOG"' (click)='closeDialog()' nz-button nzType="primary">xác nhận</button>
+  <button class="mt-1" *ngIf='data?.type === "DIALOG"' (click)='closeDialog()' nz-button nzType="primary">xác nhận
+  </button>
 </div>
 <app-mouse-right #child (onAdd)='addCommodity()' (onDel)='deleteCommodity($event)'
                  (onUpdate)='updateCommodity($event)'></app-mouse-right>

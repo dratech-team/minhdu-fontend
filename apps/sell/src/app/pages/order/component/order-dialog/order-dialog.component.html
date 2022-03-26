@@ -61,8 +61,7 @@
 <ng-template [ngIf]="stepIndex === 2">
   <div class="pt-2">
     <app-pick-commodity
-      [setOfCheckedId]="setOfCheckedId"
-      (checkEvent)="onSelectCommodityIds($event)">
+      [formGroup]="formGroup">
     </app-pick-commodity>
   </div>
 </ng-template>

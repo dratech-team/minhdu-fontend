@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {ControlContainer, FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {CommodityUnit, CustomerType} from '@minhdu-fontend/enums';
 import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -18,8 +18,7 @@ import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 export class PickCommodityComponent implements OnInit {
   @Input() data: any
   @Input() pickPOne: boolean | undefined;
-  @Output() checkEvent = new EventEmitter<Set<number>>();
-  @Input() setOfCheckedId = new Set<number>();
+  setOfCheckedId = new Set<number>();
   commodityUnit = CommodityUnit;
   customerType = CustomerType;
   pageIndex = 0;
@@ -44,10 +43,15 @@ export class PickCommodityComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private modalRef: NzModalRef,
+    private controlContainer: ControlContainer,
   ) {
   }
 
   ngOnInit(): void {
+    this.formGroup = <FormGroup>this.controlContainer.control;
+    this.formGroup.get('commodityIds')?.value.forEach((id:number) => {
+      this.setOfCheckedId.add(id)
+    })
     this.actions$.dispatch(
       CommodityAction.loadAll({params: {take: this.pageSize, skip: this.pageIndex}})
     );
@@ -117,7 +121,7 @@ export class PickCommodityComponent implements OnInit {
   onAllChecked(checked: boolean): void {
     this.listOfCurrentPageData.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
-    this.checkEvent.emit(this.setOfCheckedId)
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId))
   }
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -126,7 +130,7 @@ export class PickCommodityComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
-    this.checkEvent.emit(this.setOfCheckedId)
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId))
   }
 
   refreshCheckedStatus(): void {
@@ -137,7 +141,7 @@ export class PickCommodityComponent implements OnInit {
   onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
-    this.checkEvent.emit(this.setOfCheckedId)
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.setOfCheckedId))
   }
 
   onCurrentPageDataChange(listOfCurrentPageData: readonly CommodityEntity[]): void {

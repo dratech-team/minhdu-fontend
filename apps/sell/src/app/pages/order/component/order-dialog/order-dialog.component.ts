@@ -55,7 +55,8 @@ export class OrderDialogComponent implements OnInit {
         province: [this.data.order.province, Validators.required],
         district: [this.data.order?.district],
         ward: [this.data.order?.ward],
-        customerId:[this.data.order.customerId,Validators.required]
+        customerId:[this.data.order.customerId],
+        commodityIds: [this.data.order?.commodities.map((val:CommodityEntity )=> val.id)]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -66,7 +67,8 @@ export class OrderDialogComponent implements OnInit {
         province: ['', Validators.required],
         district: [],
         ward: [],
-        customerId:['']
+        customerId:[''],
+        commodityIds:[[]],
       });
     }
 
@@ -85,7 +87,7 @@ export class OrderDialogComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       customerId: val.customerId,
-      commodityIds:Array.from(this.setOfCheckedId) ,
+      commodityIds:val.commodityIds ,
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -124,9 +126,5 @@ export class OrderDialogComponent implements OnInit {
       }
     }
     this.stepIndex += 1;
-  }
-
-  onSelectCommodityIds(ids: Set<number>) {
-    this.setOfCheckedId = ids
   }
 }
