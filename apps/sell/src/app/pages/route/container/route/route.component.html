@@ -90,7 +90,7 @@
               [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.CUSTOMER ,orderType:$event})'>
             Khách hàng
           </th>
-          <th *ngIf="ui.BSX.visible" [nzLeft]='ui.BSX?.pinned||false'
+          <th *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
               [nzSortFn]='true' (nzSortOrderChange)='onSort({orderBy:sortRouteEnum.BSX ,orderType:$event})'>
             Biển số xe
           </th>
@@ -135,7 +135,7 @@
                 {{order.customer.lastName}}
               </div>
             </td>
-            <td *ngIf="ui.BSX.visible" [nzLeft]='ui.BSX?.pinned||false'
+            <td *ngIf="ui.bsx.visible" [nzLeft]='ui.bsx?.pinned||false'
                 (click)='onDetail(route.id, false)'>{{route?.bsx || 'Chưa cập nhật'}}</td>
             <td *ngIf="ui.garage.visible" [nzLeft]='ui.garage?.pinned||false'
                 (click)='onDetail(route.id, false)'>

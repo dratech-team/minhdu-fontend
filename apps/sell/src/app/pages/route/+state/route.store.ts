@@ -2,7 +2,7 @@ import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {RouteEntity} from '../entities/route.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
-import {SearchRouteEntity} from "../entities/search-route.entity";
+import {SearchRouteEntity} from "../dto/search-route.entity";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 import {routeVisibleEntity} from "../entities/route-visible.entity";
 import {CustomerVisibleEntity} from "../../customer/entities/customer-visible.entity";
@@ -55,7 +55,7 @@ export const createInitialState = () => ({
       pinned: false,
       visible: true
     },
-    BSX: {
+    bsx: {
       pinned: false,
       visible: true
     },
