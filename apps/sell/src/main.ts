@@ -6,17 +6,19 @@ import { environment } from './environments/environment';
 import { persistState, PersistStateSelectFn } from '@datorama/akita';
 import { StorageName } from './app/shared/constaints/storage-name.const';
 import { OrderState } from './app/pages/order/+state/order.store';
+import { RouteState } from './app/pages/route/+state/route.store';
 
 if (environment.production) {
   enableProdMode();
 }
 
-const selectOrder: PersistStateSelectFn<OrderState> = (state) => ({ token: state.token });
+const selectOrder: PersistStateSelectFn<OrderState> = (state) => ({ ui: state.ui });
+const selectRoute: PersistStateSelectFn<RouteState> = (state) => ({ ui: state.ui });
 selectOrder.storeName = StorageName.ORDER;
+selectRoute.storeName = StorageName.ROUTE;
 
 const storage = persistState({
-  include: [StorageName.APP],
-  select: [selectOrder]
+  select: [selectOrder, selectRoute]
 });
 
 const providers = [{ provide: 'persistStorage', useValue: storage }];
