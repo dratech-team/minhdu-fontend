@@ -2,17 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
-import {ProductDialogComponent} from '../components/product-dialog/product-dialog.component';
+import {ProductDialogComponent} from '../../components/product-dialog/product-dialog.component';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto, UnitMedicineConstant} from '@minhdu-fontend/constants';
-import {ProductActions} from '../state/product.actions';
-import {ProductQuery} from '../state/product.query';
-import {WarehouseQuery} from '../../warehouse/state/warehouse.query';
-import {WarehouseAction} from '../../warehouse/state/warehouse.action';
-import {InventoryTitleConstants} from "../constants/inventory-title.constant";
+import {ProductActions} from '../../state/product.actions';
+import {ProductQuery} from '../../state/product.query';
+import {WarehouseQuery} from '../../../warehouse/state/warehouse.query';
+import {WarehouseAction} from '../../../warehouse/state/warehouse.action';
+import {InventoryTitleConstants} from "../../constants/inventory-title.constant";
 import {Actions} from "@datorama/akita-ng-effects";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {ProductStore} from "../state/product.store";
+import {ProductStore} from "../../state/product.store";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
