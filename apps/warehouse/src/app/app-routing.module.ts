@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/dashboard/product.module').then(m => m.ProductModule),
+        loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule),
       },
       {
         path: 'xuat-nhap-kho',
