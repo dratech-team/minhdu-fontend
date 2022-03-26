@@ -1,14 +1,13 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {Product} from '../entities/product.entity';
-import {ProviderEntity} from "../../provider/dto/search-provider.entity";
-import {ProductVisibleEntity} from "../entities/product-visible.entity";
-import {updateStateUiUtil} from "../../../../../../sell/src/app/utils/update-state-ui.util";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { Product, ProductVisibleEntity } from '../entities';
+import { updateStateUiUtil } from '../../../../../../sell/src/app/utils/update-state-ui.util';
+import { ProviderEntity } from '../../provider/entities';
 
 export interface ProductState extends EntityState<Product> {
   loading: boolean;
   added: boolean;
-  search: ProviderEntity;
+  search: Partial<ProviderEntity>;
   ui: ProductVisibleEntity;
 }
 
@@ -17,9 +16,10 @@ export function createInitialState(): ProductState {
     loading: true,
     added: false,
     search: {
-      search: '',
-      inventoryType: -1,
-      warehouseType: -1
+      /// FIXME:
+      // search: '',
+      // inventoryType: -1,
+      // warehouseType: -1
     },
     ui: {
       stt: {
@@ -78,8 +78,8 @@ export function createInitialState(): ProductState {
   };
 }
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: 'product'})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'product' })
 export class ProductStore extends EntityStore<ProductState> {
   constructor() {
     super(createInitialState());

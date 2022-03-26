@@ -7,6 +7,7 @@ import { ProviderEntity } from '../../entities';
 import { ProviderActions, ProviderQuery } from '../../state';
 import { DialogProviderComponent } from '../../components/dialog-provider/dialog-provider.component';
 import { Actions } from '@datorama/akita-ng-effects';
+import { SearchProviderDto } from '../../dto/search-provider.dto';
 
 @Component({
   templateUrl: 'provider.component.html'
@@ -29,9 +30,9 @@ export class ProviderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(ProviderActions.loadAll({ param: { take: 30, skip: 0 } }));
+    this.actions$.dispatch(ProviderActions.loadAll({ take: 30, skip: 0 }));
     this.formGroup.valueChanges.pipe(debounceTime(1500)).subscribe(val => {
-      this.actions$.dispatch(ProviderActions.loadAll({ param: this.mapProvider(false) }));
+      this.actions$.dispatch(ProviderActions.loadAll(this.mapProvider(false) ));
     });
   }
 
@@ -71,13 +72,13 @@ export class ProviderComponent implements OnInit {
     return {
       take: 30,
       skip: isScroll ? this.providerQuery.getCount() : 0,
-      name: value?.name,
-      startedAt: value?.startedAt,
-      endedAt: value?.endedAt
-    };
+      search: {
+        name: value?.name,
+      }
+    } as SearchProviderDto;
   }
 
   onScroll() {
-    this.actions$.dispatch(ProviderActions.loadAll({ param: this.mapProvider(true), isScroll: true }));
+    this.actions$.dispatch(ProviderActions.loadAll(this.mapProvider(true)));
   }
 }

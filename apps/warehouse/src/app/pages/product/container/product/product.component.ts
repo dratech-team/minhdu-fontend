@@ -35,10 +35,11 @@ export class ProductComponent implements OnInit {
   medicineConstant = UnitMedicineConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
+    /// FIXME:
     {
-      inventoryType: new FormControl(this.stateSearch.inventoryType),
-      search: new FormControl(this.stateSearch.search),
-      warehouseType: new FormControl(this.stateSearch.warehouseType)
+      // inventoryType: new FormControl(this.stateSearch.inventoryType),
+      // search: new FormControl(this.stateSearch.search),
+      // warehouseType: new FormControl(this.stateSearch.warehouseType)
     }
   );
   panelOpenState = false;

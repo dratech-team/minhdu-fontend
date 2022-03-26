@@ -24,7 +24,7 @@ export class ProviderEffect {
       this.providerStore.update(state => ({
         ...state, loading: true
       }))
-      return this.service.pagination(props.param).pipe(
+      return this.service.pagination(props).pipe(
         tap((res) => {
           if (res.data.length) {
             this.message.info('Đã lấy hết nhà cung cấp')
@@ -32,7 +32,7 @@ export class ProviderEffect {
           this.providerStore.update(state => ({
             ...state, total: res.total, loading: false
           }))
-          if (props.isScroll) {
+          if (props.isPaginate) {
             this.providerStore.add(res.data);
           } else {
             this.providerStore.set(res.data);
@@ -70,7 +70,7 @@ export class ProviderEffect {
       this.providerStore.update(state => ({
         ...state, added: false
       }))
-      return this.service.update(props.id, props.body).pipe(
+      return this.service.update(props.id, props.updates).pipe(
         map((provider) => {
           this.message.success('Cập nhật nhà cung cấp thành công')
           this.providerStore.update(state => ({
