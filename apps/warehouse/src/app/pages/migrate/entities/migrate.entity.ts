@@ -1,8 +1,8 @@
-import { MigrateEnum } from '../enums/migrate.enum';
-import { Product } from '../../product/entities/product.entity';
+import { MigrateEnum } from '../enums';
+import { Product } from '../../product/entities';
+import { BaseMigrateEntity } from './base-migrate.entity';
 
-export interface MigrateEntity {
-  readonly id: number;
+export interface MigrateEntity extends BaseMigrateEntity {
   readonly product: Product;
   readonly type: MigrateEnum;
   readonly amount: number;
