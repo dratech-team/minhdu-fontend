@@ -1,4 +1,4 @@
-import {ProviderEntity} from "../entities/provider.entity";
+import {ProviderEntity} from '../entities';
 
 export interface ProviderDto extends Partial<Omit<ProviderEntity, 'id'>>{
  readonly take?: number;

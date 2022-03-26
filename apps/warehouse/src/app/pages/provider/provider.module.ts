@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {ProviderService} from './services/provider.service';
 import {AkitaNgEffectsModule} from '@datorama/akita-ng-effects';
 import {ProviderEffect} from './state/provider.effect';
-import {ProviderComponent} from "./container/provider.component";
+import {ProviderComponent} from "./container/provider/provider.component";
 import {ComponentsModule} from "@minhdu-fontend/components";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {NzTableModule} from "ng-zorro-antd/table";
