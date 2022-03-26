@@ -1,10 +1,10 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { CreateProductDto, SearchProductDto, UpdateProductDto } from '../dto';
+import { AddProductDto, SearchProductDto, UpdateProductDto } from '../dto';
 import { Product } from '../entities';
 
 const addOne = createAction(
   '[PRODUCT] Add One',
-  props<{ product: CreateProductDto }>()
+  props<{ product: AddProductDto }>()
 );
 
 const loadAll = createAction(

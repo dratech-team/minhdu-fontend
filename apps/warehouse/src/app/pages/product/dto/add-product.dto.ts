@@ -1,6 +1,6 @@
 import { Product } from '../entities';
 
-export interface CreateProductDto extends Omit<Product, 'branch' | 'warehouse' | 'provider'> {
+export interface AddProductDto extends Omit<Product, 'branch' | 'warehouse' | 'provider'> {
   readonly branchId: number;
   readonly branch: string;
   readonly warehouseId: number | null;

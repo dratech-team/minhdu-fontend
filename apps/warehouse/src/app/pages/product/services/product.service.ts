@@ -5,7 +5,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { Product } from '../entities';
-import { CreateProductDto, SearchProductDto, UpdateProductDto } from '../dto';
+import { AddProductDto, SearchProductDto, UpdateProductDto } from '../dto';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {
@@ -13,7 +13,7 @@ export class ProductService extends BaseService<Product> {
     super(Api.WAREHOUSE.PRODUCT, http);
   }
 
-  addOne(props: CreateProductDto): Observable<Product> {
+  addOne(props: AddProductDto): Observable<Product> {
     return super.addOne(props);
   }
 
