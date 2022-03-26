@@ -23,7 +23,6 @@ export class OrderDialogComponent implements OnInit {
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
-  setOfCheckedId= new Set<number>();
   districtId!: number;
   provinceId!: number
   stepIndex = 0
@@ -55,8 +54,8 @@ export class OrderDialogComponent implements OnInit {
         province: [this.data.order.province, Validators.required],
         district: [this.data.order?.district],
         ward: [this.data.order?.ward],
-        customerId:[this.data.order.customerId],
-        commodityIds: [this.data.order?.commodities.map((val:CommodityEntity )=> val.id)]
+        customerId: [this.data.order.customerId],
+        commodityIds: [this.data.order?.commodities.map((val: CommodityEntity) => val.id)]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -67,8 +66,8 @@ export class OrderDialogComponent implements OnInit {
         province: ['', Validators.required],
         district: [],
         ward: [],
-        customerId:[''],
-        commodityIds:[[]],
+        customerId: [''],
+        commodityIds: [[]],
       });
     }
 
@@ -80,14 +79,14 @@ export class OrderDialogComponent implements OnInit {
 
   onSubmit(): any {
     if (!this.data?.isUpdate) {
-      if (this.setOfCheckedId.size === 0) {
+      if(this.formGroup.value.commodityIds.length == 0 ){
         return this.message.warning('Chưa chọn hàng hoá')
       }
     }
     const val = this.formGroup.value;
     const order = {
       customerId: val.customerId,
-      commodityIds:val.commodityIds ,
+      commodityIds: val.commodityIds,
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -107,7 +106,7 @@ export class OrderDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(OrderActions.addOne(order))
     }
-   this.added$.subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close()
       }
@@ -119,11 +118,14 @@ export class OrderDialogComponent implements OnInit {
   }
 
   next(): any {
+
     this.submitted = true;
-    if (this.stepIndex === 0) {
-      if (this.formGroup.invalid) {
-        return;
-      }
+    if (this.formGroup.invalid) {
+      return;
+    }
+
+    if(this.stepIndex  > 0 && !this.formGroup.value.customerId ){
+      return this.message.warning('Chưa chọn khách hàng')
     }
     this.stepIndex += 1;
   }
