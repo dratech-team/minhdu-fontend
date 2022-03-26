@@ -1,4 +1,4 @@
-import { OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.entity';
 import { CustomerEntity } from '../../customer/entities/customer.entity';
 import {CommodityEntity} from "../../commodity/entities/commodity.entity";
 

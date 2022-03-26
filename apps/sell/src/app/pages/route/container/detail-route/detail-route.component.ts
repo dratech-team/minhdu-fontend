@@ -11,7 +11,7 @@ import {
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {OrderEntity} from '../../../order/enitities/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {CancelEnum} from "../../enums/cancel.enum";

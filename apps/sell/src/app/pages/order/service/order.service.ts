@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.entity';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';

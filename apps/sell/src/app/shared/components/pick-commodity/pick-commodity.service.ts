@@ -2,7 +2,7 @@ import {select, Store} from '@ngrx/store';
 import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
 import {Injectable} from '@angular/core';
 import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
-import {CommodityDTO} from "../../../pages/commodity/dto/commodity.dto";
+import {LoadCommodityDto} from "../../../pages/commodity/dto/load-commodity.dto";
 
 @Injectable({providedIn: 'root'})
 export class PickCommodityService {
@@ -18,7 +18,7 @@ export class PickCommodityService {
     return this.store.dispatch(CommodityAction.loadAll({params: {take: 30, skip: 0}}));
   }
 
-  scrollCommodities(val: CommodityDTO) {
+  scrollCommodities(val: LoadCommodityDto) {
     this.store.dispatch(CommodityAction.loadAll({params: val, isScroll: true}));
   }
 

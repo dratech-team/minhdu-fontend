@@ -1,5 +1,5 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto } from '../dto/add-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { LoadOrderDto } from '../dto/load-order.dto';

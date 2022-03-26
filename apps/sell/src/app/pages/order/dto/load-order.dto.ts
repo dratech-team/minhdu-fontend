@@ -1,4 +1,4 @@
-import { OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.entity';
 
 export interface LoadOrderDto extends Omit<Partial<OrderEntity>, 'createdAt' | 'deliveredAt'> {
   readonly take: number;

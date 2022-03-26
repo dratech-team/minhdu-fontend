@@ -1,17 +1,17 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {debounceTime, tap} from 'rxjs/operators';
-import {document} from 'ngx-bootstrap/utils';
-import {OrderEntity} from '../../../pages/order/enitities/order.interface';
-import {PaidType} from 'libs/enums/paidType.enum';
-import {OrderActions} from '../../../pages/order/+state/order.actions';
-import {checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete} from '@minhdu-fontend/utils';
-import {RouteEntity} from '../../../pages/route/entities/route.entity';
-import {Actions} from '@datorama/akita-ng-effects';
-import {OrderQuery} from '../../../pages/order/+state/order.query';
-import {LoadOrderDto} from '../../../pages/order/dto/load-order.dto';
-import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
-import {NzModalRef} from "ng-zorro-antd/modal";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, tap } from 'rxjs/operators';
+import { document } from 'ngx-bootstrap/utils';
+import { OrderEntity } from '../../../pages/order/enitities/order.entity';
+import { PaidType } from 'libs/enums/paidType.enum';
+import { OrderActions } from '../../../pages/order/+state/order.actions';
+import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import { RouteEntity } from '../../../pages/route/entities/route.entity';
+import { Actions } from '@datorama/akita-ng-effects';
+import { OrderQuery } from '../../../pages/order/+state/order.query';
+import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
+import { CommodityEntity } from '../../../pages/commodity/entities/commodity.entity';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -20,7 +20,7 @@ import {NzModalRef} from "ng-zorro-antd/modal";
   styleUrls: ['pick-route.component.scss']
 })
 export class PickOrderComponent implements OnInit, OnChanges {
-  @Input() data: any
+  @Input() data: any;
   @Input() orders: OrderEntity[] = [];
   @Input() commoditiesSelected: CommodityEntity[] = [];
   @Input() pickOne = false;
@@ -42,7 +42,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
   orderPickOne!: OrderEntity;
   paidType = PaidType;
   isSelectAll = false;
-  pageSizeTable = 7
+  pageSizeTable = 7;
   formGroup = new FormGroup(
     {
       filterRoute: new FormControl(false),
@@ -68,7 +68,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.isSelectAll = this.isCheckOrderSelected;
-    this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder()}));
+    this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder() }));
     if (this.orderIdDefault) {
       this.orderQuery.selectEntity(this.orderIdDefault).subscribe(val => {
         this.orderPickOne = JSON.parse(JSON.stringify(val));
@@ -80,7 +80,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
         tap((_) => {
           this.eventSearch = true;
           const val = this.formGroup.value;
-          this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder()}));
+          this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder() }));
         })
       ).subscribe();
       this.orders$.subscribe(orders => {
@@ -104,16 +104,15 @@ export class PickOrderComponent implements OnInit, OnChanges {
   onPagination(pageIndex: number) {
     if (!this.isCheckOrderSelected) {
       this.eventSearch = false;
-      const count = this.orderQuery.getCount()
+      const count = this.orderQuery.getCount();
       if (pageIndex * this.pageSizeTable >= count) {
-        const val = this.formGroup.value;
-        this.actions$.dispatch(OrderActions.loadAll({param: this.mapOrder(true), isPagination: true}));
+        this.actions$.dispatch(OrderActions.loadAll({ param: this.mapOrder(true), isPagination: true }));
       }
     }
   }
 
   mapOrder(isPagination?: boolean): LoadOrderDto {
-    const val = this.formGroup.value
+    const val = this.formGroup.value;
     const param = {
       take: this.pageSize,
       paidType: val.paidType,
@@ -123,10 +122,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
       explain: val.explain.trim(),
       createdAt: val.createdAt ? new Date(val.createdAt) : ''
     };
-    if (this.customerId) {
-      Object.assign(param, {customerId: this.customerId,})
-    }
-    return param
+    return Object.assign(param, this.customerId ? { customerId: this.customerId } : {});
   }
 
   updateAllSelect(order: OrderEntity, checkBox?: any) {

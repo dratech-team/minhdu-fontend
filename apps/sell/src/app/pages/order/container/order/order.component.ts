@@ -22,7 +22,7 @@ import {
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
-import {OrderEntity} from '../../enitities/order.interface';
+import {OrderEntity} from '../../enitities/order.entity';
 import {OrderStore} from '../../+state/order.store';
 import {Sort} from '@minhdu-fontend/data-models';
 import {NzModalService} from "ng-zorro-antd/modal";

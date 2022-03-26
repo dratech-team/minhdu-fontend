@@ -8,7 +8,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
 import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import {OrderEntity} from '../enitities/order.interface';
+import {OrderEntity} from '../enitities/order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';

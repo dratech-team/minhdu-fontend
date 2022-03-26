@@ -1,4 +1,4 @@
-export interface CommodityDTO {
+export interface LoadCommodityDto {
   take?: number,
   skip?: number,
   orderId?: number,

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {OrderEntity} from '../../enitities/order.interface';
+import {OrderEntity} from '../../enitities/order.entity';
 import {CommodityUnit, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
 import {OrderActions} from '../../+state/order.actions';
 import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';

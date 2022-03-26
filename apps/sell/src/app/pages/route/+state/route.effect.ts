@@ -4,7 +4,7 @@ import {RouteAction} from './route.action';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
 import {throwError} from 'rxjs';
-import {OrderEntity} from '../../order/enitities/order.interface';
+import {OrderEntity} from '../../order/enitities/order.entity';
 import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
 import {RouteQuery} from './route.query';

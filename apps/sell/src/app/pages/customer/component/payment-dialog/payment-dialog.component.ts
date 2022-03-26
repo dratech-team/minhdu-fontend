@@ -4,7 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {select, Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentType} from '@minhdu-fontend/enums';
-import {OrderEntity} from '../../../order/enitities/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {DatePipe} from '@angular/common';
 import {PaymentAction} from '../../../payment/payment/payment.action';
 import {tap} from 'rxjs/operators';

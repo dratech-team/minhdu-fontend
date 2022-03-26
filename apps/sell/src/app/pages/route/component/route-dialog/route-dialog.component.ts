@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
-import {OrderEntity} from '../../../order/enitities/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";

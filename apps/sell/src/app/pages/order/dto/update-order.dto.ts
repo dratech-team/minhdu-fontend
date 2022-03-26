@@ -1,4 +1,4 @@
-import { OrderEntity } from '../enitities/order.interface';
+import { OrderEntity } from '../enitities/order.entity';
 import { AddOrderDto } from './add-order.dto';
 import {CommodityEntity} from "../../commodity/entities/commodity.entity";
 

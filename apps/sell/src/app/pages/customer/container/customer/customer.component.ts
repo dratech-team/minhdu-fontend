@@ -8,7 +8,7 @@ import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions} from '../../+state/customer.actions';
-import {OrderEntity} from '../../../order/enitities/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {Actions} from '@datorama/akita-ng-effects';

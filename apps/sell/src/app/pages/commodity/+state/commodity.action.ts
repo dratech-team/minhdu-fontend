@@ -1,7 +1,7 @@
 import {createAction, props} from '@ngrx/store';
 import {AddCommodityDto} from "../dto/add-commodity.dto";
 import {CommodityEntity} from "../entities/commodity.entity";
-import {CommodityDTO} from "../dto/commodity.dto";
+import {LoadCommodityDto} from "../dto/load-commodity.dto";
 import {updateCommodityDto} from "../dto/update-commodity.dto";
 
 
@@ -12,7 +12,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[COMMODITY] Load All',
-  props<{ params: CommodityDTO, isScroll?: boolean }>()
+  props<{ params: LoadCommodityDto, isScroll?: boolean }>()
 );
 
 export const getOne = createAction(

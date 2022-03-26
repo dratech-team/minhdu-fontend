@@ -1,5 +1,5 @@
 import {CommodityUnit} from '@minhdu-fontend/enums';
-import {OrderEntity} from '../../order/enitities/order.interface';
+import {OrderEntity} from '../../order/enitities/order.entity';
 import {RouteEntity} from "../../route/entities/route.entity";
 
 export interface CommodityEntity {

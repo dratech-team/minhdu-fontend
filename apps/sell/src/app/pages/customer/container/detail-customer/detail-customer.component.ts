@@ -5,7 +5,7 @@ import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/compo
 import {ConvertBoolean, MenuEnum, PaidType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
 import {CustomerEntity} from '../../entities/customer.entity';
-import {OrderEntity} from '../../../order/enitities/order.interface';
+import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {CustomerQuery} from '../../+state/customer.query';

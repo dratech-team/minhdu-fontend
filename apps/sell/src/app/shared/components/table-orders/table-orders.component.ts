@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {PaidType} from 'libs/enums/paidType.enum';
 import {Router} from '@angular/router';
-import {OrderEntity} from '../../../pages/order/enitities/order.interface';
+import {OrderEntity} from '../../../pages/order/enitities/order.entity';
 import {OrderActions} from '../../../pages/order/+state/order.actions';
 import {MatDialog} from '@angular/material/dialog';
 import {debounceTime, tap} from 'rxjs/operators';
