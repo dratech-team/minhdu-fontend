@@ -1,8 +1,6 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
-import {CreateProductDto} from '../dto/create-product.dto';
-import {LoadProductDto} from '../dto/load-product.dto';
-import {UpdateProductDto} from "../dto/update-product.dto";
-import {Product} from "../entities/product.entity";
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { CreateProductDto, SearchProductDto, UpdateProductDto } from '../dto';
+import { Product } from '../entities';
 
 const addOne = createAction(
   '[PRODUCT] Add One',
@@ -11,22 +9,22 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[PRODUCT] Load All',
-  props< {params:LoadProductDto, isPagination?: boolean}>()
+  props<{ params: SearchProductDto, isPagination?: boolean }>()
 );
 
 const getOne = createAction(
   '[PRODUCT] Get One',
-  props<{ id: Product["id"] }>()
-)
+  props<{ id: Product['id'] }>()
+);
 
 const update = createAction(
   '[PRODUCT] Update',
-  props<{ id: Product["id"], body: UpdateProductDto }>()
+  props<{ id: Product['id'], body: UpdateProductDto }>()
 );
 
 const remove = createAction(
   '[PRODUCT] Delete',
-  props<{ id: Product["id"] }>()
-)
+  props<{ id: Product['id'] }>()
+);
 
-export const ProductActions = {addOne, loadAll, getOne, update, remove};
+export const ProductActions = { addOne, loadAll, getOne, update, remove };

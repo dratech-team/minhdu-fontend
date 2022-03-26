@@ -1,4 +1,4 @@
 import { BaseEntity } from '../../../../shared/entities';
 
-export interface BaseWarehouseEntity extends BaseEntity {
+export interface BaseProductEntity extends BaseEntity {
 }

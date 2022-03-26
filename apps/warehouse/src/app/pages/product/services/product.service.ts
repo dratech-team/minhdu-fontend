@@ -4,10 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { Product } from '../entities/product.entity';
-import {CreateProductDto} from "../dto/create-product.dto";
-import {LoadProductDto} from "../dto/load-product.dto";
-import {UpdateProductDto} from "../dto/update-product.dto";
+import { Product } from '../entities';
+import { CreateProductDto, SearchProductDto, UpdateProductDto } from '../dto';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {
@@ -19,15 +17,15 @@ export class ProductService extends BaseService<Product> {
     return super.addOne(props);
   }
 
-  pagination(params?: LoadProductDto): Observable<ResponsePaginate<Product>> {
+  pagination(params?: SearchProductDto): Observable<ResponsePaginate<Product>> {
     return super.pagination(params);
   }
 
-  getAll(params?: LoadProductDto): Observable<Product[]> {
+  getAll(params?: SearchProductDto): Observable<Product[]> {
     return super.getAll(params);
   }
 
-  getOne(id: Product["id"]): Observable<Product> {
+  getOne(id: Product['id']): Observable<Product> {
     return super.getOne(id);
   }
 
@@ -35,7 +33,7 @@ export class ProductService extends BaseService<Product> {
     return super.update(id, body);
   }
 
-  delete(id: Product["id"], params?: any): Observable<void> {
+  delete(id: Product['id'], params?: any): Observable<void> {
     return super.delete(id, params);
   }
 
