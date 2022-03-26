@@ -5,7 +5,7 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BranchRoutingModule} from "./branch-routing.module";
-import {BranchComponent} from "./container/branch.component";
+import {BranchComponent} from "./container/branch/branch.component";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {MatRadioModule} from "@angular/material/radio";
