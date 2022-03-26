@@ -67,9 +67,12 @@ export class OrderComponent implements OnInit {
     customer: new FormControl(this.stateSearch.customer),
     status: new FormControl(this.stateSearch.status),
     explain: new FormControl(this.stateSearch.explain),
-    endedAt: new FormControl(this.stateSearch.endedAt),
-    createdAt: new FormControl(this.stateSearch.createdAt),
-    deliveredAt: new FormControl(this.stateSearch.deliveredAt),
+    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
+    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
+    createdAt_end: new FormControl(this.stateSearch.createdAt_start),
+    createdAt_start: new FormControl(this.stateSearch.createdAt_end),
+    deliveredAt_start: new FormControl(this.stateSearch.deliveredAt_start),
+    deliveredAt_end: new FormControl(this.stateSearch.deliveredAt_end),
     commodityTotal: new FormControl(this.stateSearch.commodityTotal),
     province: new FormControl(this.stateSearch.province),
     bsx: new FormControl(this.stateSearch.bsx),
@@ -179,16 +182,18 @@ export class OrderComponent implements OnInit {
   }
 
   onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveredAt')?.setValue($event);
+    this.formGroup.get('deliveredAt_start')?.setValue($event.start, {emitEvent: false});
+    this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
   onPickCreatedAt($event: any) {
-    this.formGroup.get('createdAt')?.setValue($event);
-
+    this.formGroup.get('createdAt_start')?.setValue($event.start, {emitEvent: false});
+    this.formGroup.get('createdAt_end')?.setValue($event.end);
   }
 
   onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt')?.setValue($event);
+    this.formGroup.get('endedAt_start')?.setValue($event.start), {emitEvent: false};
+    this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
   onExpandAll() {

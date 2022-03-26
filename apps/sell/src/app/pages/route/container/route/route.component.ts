@@ -39,8 +39,10 @@ export class RouteComponent implements OnInit {
   stateSearch = this.routeQuery.getValue().search
   formGroup = new FormGroup({
     search: new FormControl(this.stateSearch.search),
-    startedAt: new FormControl(this.stateSearch.startedAt),
-    endedAt: new FormControl(this.stateSearch.endedAt),
+    startedAt_start: new FormControl(this.stateSearch.startedAt_start),
+    startedAt_end: new FormControl(this.stateSearch.startedAt_end),
+    endedAt_start: new FormControl(this.stateSearch.endedAt_start),
+    endedAt_end: new FormControl(this.stateSearch.endedAt_end),
     status: new FormControl(this.stateSearch.status)
   });
 
@@ -116,11 +118,13 @@ export class RouteComponent implements OnInit {
   }
 
   onPickStartedDay($event: any) {
-    this.formGroup.get('startedAt')?.setValue($event)
+    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false})
+    this.formGroup.get('startedAt_end')?.setValue($event.end)
   }
 
   onPickEndedAtDay($event: any) {
-    this.formGroup.get('endedAt')?.setValue($event)
+    this.formGroup.get('endedAt_start')?.setValue($event.start, {emitEvent: false})
+    this.formGroup.get('endedAt_end')?.setValue($event.end)
   }
 
   onPagination(pageIndex: number) {
