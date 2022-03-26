@@ -18,7 +18,6 @@ import {NzMessageService} from "ng-zorro-antd/message";
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data: any
-  customerId!: number
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
@@ -44,7 +43,6 @@ export class OrderDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data?.isUpdate) {
-      this.customerId = this.data.order.customerId
       this.formGroup = this.formBuilder.group({
         createdAt: [this.datePipe.transform(
           this.data.order.createdAt, 'yyyy-MM-dd')
@@ -56,7 +54,8 @@ export class OrderDialogComponent implements OnInit {
         explain: [this.data.order?.explain],
         province: [this.data.order.province, Validators.required],
         district: [this.data.order?.district],
-        ward: [this.data.order?.ward]
+        ward: [this.data.order?.ward],
+        customerId:[this.data.order.customerId,Validators.required]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -66,7 +65,8 @@ export class OrderDialogComponent implements OnInit {
         explain: [],
         province: ['', Validators.required],
         district: [],
-        ward: []
+        ward: [],
+        customerId:['']
       });
     }
 
@@ -84,7 +84,7 @@ export class OrderDialogComponent implements OnInit {
     }
     const val = this.formGroup.value;
     const order = {
-      customerId: this.customerId,
+      customerId: val.customerId,
       commodityIds: this.commoditiesSelected.map(item => item.id),
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
@@ -123,14 +123,7 @@ export class OrderDialogComponent implements OnInit {
         return;
       }
     }
-    if (this.stepIndex === 1 && !this.customerId) {
-      return this.message.warning('Chưa chọn khách hàng')
-    }
     this.stepIndex += 1;
-  }
-
-  onPickCustomer(id: number) {
-    this.customerId = id
   }
 
   onPickCommodity(commodities: CommodityEntity[]) {

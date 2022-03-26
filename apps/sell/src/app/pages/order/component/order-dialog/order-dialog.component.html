@@ -53,9 +53,7 @@
 <ng-template [ngIf]="stepIndex === 1">
   <div class="pt-2">
     <app-pick-customer [pickOne]="true"
-                       [customerIdSelected]="customerId"
-                       (checkEventPickOne)="onPickCustomer($event)"
-    >
+                       [formGroup]="formGroup">
 
     </app-pick-customer>
   </div>
