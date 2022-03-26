@@ -23,7 +23,7 @@ export class OrderDialogComponent implements OnInit {
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
-  commoditiesSelected: CommodityEntity[] = [];
+  setOfCheckedId= new Set<number>();
   districtId!: number;
   provinceId!: number
   stepIndex = 0
@@ -78,14 +78,14 @@ export class OrderDialogComponent implements OnInit {
 
   onSubmit(): any {
     if (!this.data?.isUpdate) {
-      if (this.commoditiesSelected.length === 0) {
+      if (this.setOfCheckedId.size === 0) {
         return this.message.warning('Chưa chọn hàng hoá')
       }
     }
     const val = this.formGroup.value;
     const order = {
       customerId: val.customerId,
-      commodityIds: this.commoditiesSelected.map(item => item.id),
+      commodityIds:Array.from(this.setOfCheckedId) ,
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -126,7 +126,7 @@ export class OrderDialogComponent implements OnInit {
     this.stepIndex += 1;
   }
 
-  onPickCommodity(commodities: CommodityEntity[]) {
-    this.commoditiesSelected = commodities
+  onSelectCommodityIds(ids: Set<number>) {
+    this.setOfCheckedId = ids
   }
 }
