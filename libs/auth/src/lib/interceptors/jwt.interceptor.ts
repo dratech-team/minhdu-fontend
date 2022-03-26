@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
 import { envDev, envProd } from '@minhdu-fontend/environment';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Api } from '@minhdu-fontend/constants';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -35,8 +35,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request = request.clone({ url });
     console.log(request);
     return next.handle(request).pipe(
-      retry(5),
-      catchError(err => throwError(err))
+      catchError(err => retry(5))
     );
   }
 }
