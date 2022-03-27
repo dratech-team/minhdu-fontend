@@ -18,7 +18,7 @@
       </label>
       <label nz-radio [nzValue]="1">
         <nz-range-picker [formControl]="formRange"
-                         [ngModel]="[rangeDayInit?.start, rangeDayInit?.end]"
+                         [ngModel]="rangeDayInit?.start && rangeDayInit?.end ? [rangeDayInit?.start, rangeDayInit?.end] : []"
         >
         </nz-range-picker>
       </label>

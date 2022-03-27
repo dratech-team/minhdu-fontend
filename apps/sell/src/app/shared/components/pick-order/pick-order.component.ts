@@ -35,6 +35,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   orders$ = this.orderQuery.selectAll();
   total$ = this.orderQuery.selectCount();
+  loading$ = this.orderQuery.select(state => state.loading);
 
   ordersFilter: OrderEntity[] = [];
   pageSize = 30;

@@ -11,6 +11,7 @@
   <nz-table
     #nestedTable
     [nzData]="orders"
+    [nzLoading]="(loading$|async)"
     nzSize="small"
     [nzScroll]="{y:'32vh'}"
     [nzPageSize]="pageSizeTable"
