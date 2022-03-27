@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { CustomerEntity } from '../entities/customer.entity';
 import { AddCustomerDto } from '../dto/add-customer.dto';
+import { LoadCustomerDto } from '../dto/load-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
-import {SearchCustomerDto} from "../dto/search-customer.dto";
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {
@@ -21,7 +21,7 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.addOne(props);
   }
 
-  pagination(params: SearchCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
+  pagination(params: LoadCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
     return super.pagination(params);
   }
 

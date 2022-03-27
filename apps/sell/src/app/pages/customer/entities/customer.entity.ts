@@ -1,8 +1,9 @@
+import { CustomerResource, CustomerType, Gender } from '@minhdu-fontend/enums';
 import { Bank, PaymentHistory, Ward } from '@minhdu-fontend/data-models';
 import { OrderEntity } from '../../order/enitities/order.entity';
-import {BaseCustomerEntity} from "./base-customer.entity";
 
-export interface CustomerEntity extends BaseCustomerEntity {
+export interface CustomerEntity {
+  id: number,
   avt?: string,
   lastName: string,
   birthplace: string,
@@ -16,10 +17,15 @@ export interface CustomerEntity extends BaseCustomerEntity {
   identify?: string,
   idCardAt?: Date,
   issuedBy?: string,
+  phone: string,
   birthday: Date,
+  gender: Gender,
+  type?: CustomerType,
+  resource?: CustomerResource,
   workPhone?: string,
   email?: string,
   mst?: string,
+  isPotential?: boolean,
   bank?: Bank,
   facebook?: string,
   zalo?: string

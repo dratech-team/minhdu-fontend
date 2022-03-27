@@ -86,7 +86,7 @@ export class CustomerComponent implements OnInit {
     }).then();
   }
 
-  add() {
+  add($event?: any) {
     this.modal.create({
       nzTitle: 'Thêm khách hàng',
       nzContent: CustomerDialogComponent,

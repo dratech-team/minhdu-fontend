@@ -1,3 +1,3 @@
 export * from './customer-visible.entity';
-export * from '../dto/search-customer.dto';
+export * from './search-customer.entity';
 export * from './customer.entity';
