@@ -1,5 +1,5 @@
 import { ProviderEntity } from '../entities';
-import { BaseAddDto } from '../../../../shared/dto';
+import { BaseAddDto } from '../../../../../../../libs/dto';
 
 export interface AddProviderDto extends BaseAddDto<ProviderEntity> {
 }

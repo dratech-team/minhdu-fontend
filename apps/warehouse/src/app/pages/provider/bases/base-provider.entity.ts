@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../../shared/entities';
+import { BaseEntity } from '../../../../../../../libs/entities';
 
 export interface BaseProviderEntity extends BaseEntity {
 }
