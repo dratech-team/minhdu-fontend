@@ -77,7 +77,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   searchTypeConstant = SearchTypeConstant;
 
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
     isLeave: new FormControl(false),
@@ -104,11 +104,11 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
 
   //dummy
   salaryBasic = [
-    {title: 'Lương cơ bản trích BH', value: 'Lương cơ bản trích BH'},
-    {title: 'Lương theo PL.HD', value: 'Lương theo PL.HD'},
-    {title: 'Lương Tín nhiệm', value: 'Lương Tín nhiệm'},
-    {title: 'Lương TN quản lý thêm', value: 'Lương TN quản lý thêm'},
-    {title: 'Tất cả', value: ''}
+    {title: 'Lương cơ bản trích BH', value: ['Lương cơ bản trích BH']},
+    {title: 'Lương theo PL.HD', value: ['Lương theo PL.HD']},
+    {title: 'Lương Tín nhiệm', value: ['Lương Tín nhiệm']},
+    {title: 'Lương TN quản lý thêm', value: ['Lương TN quản lý thêm']},
+    {title: 'Tất cả', value: []}
   ];
 
   ngOnChanges(changes: SimpleChanges) {
@@ -193,7 +193,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.BASIC,
-          title: value.title,
+          titles: value.titles,
           isLeave: value.isLeave
         };
         if (value.createdAt) {
@@ -229,7 +229,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: {
@@ -237,7 +237,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               skip: this.pageSize,
               code: this.formGroup.get('code')?.value,
               createdAt: this.formGroup.get('createdAt')?.value,
-              title: val.title,
+              titles: [val.title],
               position: val.position,
               branch:this.formGroup.value.branch.name ||'',
               isLeave: this.formGroup.value.isLeave
@@ -279,14 +279,14 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           }
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+          this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
           const params = {
             take: this.pageSize,
             skip: this.pageIndex,
             code: this.formGroup.get('code')?.value,
             searchType: value.searchType,
             createdAt: value.createdAt,
-            salaryTitle: val.title,
+            titles: [val.title],
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
             position: value.position?.name || '',
@@ -375,7 +375,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       code: value.code,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
-      salaryTitle: value.title ? value.title : '',
+      titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
       position: value.position?.name || '',
