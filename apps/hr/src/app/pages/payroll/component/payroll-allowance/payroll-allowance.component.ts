@@ -82,7 +82,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
   positions$ = this.store.pipe(select(getAllPosition))
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl(''),
     code: new FormControl(''),
     unit: new FormControl(''),
     name: new FormControl(''),
@@ -128,7 +128,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: new Date(this.createdAt),
-          title: this.allowanceTitle ? this.allowanceTitle : '',
+          titles: this.allowanceTitle ? [this.allowanceTitle] : [],
           filterType: FilterTypeEnum.ALLOWANCE,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
@@ -137,7 +137,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       })
     );
     if (this.allowanceTitle) {
-      this.formGroup.get('title')?.setValue(this.allowanceTitle, {emitEvent: false});
+      this.formGroup.get('titles')?.setValue(this.allowanceTitle, {emitEvent: false});
 
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
@@ -149,7 +149,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     }
 
     this.eventAddAllowance?.subscribe((val) => {
-      this.formGroup.get('title')?.setValue(val.allowanceTitle, {emitEvent: false});
+      this.formGroup.get('titles')?.setValue(val.allowanceTitle, {emitEvent: false});
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
           new Date(getSelectors(selectedCreateAtPayroll, this.store)),
@@ -165,7 +165,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
             createdAt: new Date(
               getSelectors(selectedCreateAtPayroll, this.store)
             ),
-            title: val.allowanceTitle ? val.allowanceTitle : '',
+            titles: val.allowanceTitle ? [val.allowanceTitle] : [],
             filterType: FilterTypeEnum.ALLOWANCE,
             position: getSelectors(selectedPositionPayroll, this.store),
             branch: getSelectors(selectedBranchPayroll, this.store),
@@ -240,7 +240,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
-          title: value.title,
+          titles: [value.titles],
           isLeave: value.isLeave
         };
         if (value.createdAt) {
@@ -271,7 +271,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
         this.formGroup.get('createdAt')?.setValue(val.datetime, {emitEvent: false});
         const value = this.formGroup.value;
         this.store.dispatch(
@@ -282,7 +282,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               code: value.code,
               unit: value.unit,
               createdAt: new Date(val.datetime),
-              title: val.title,
+              titles: [val.title],
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position?.name || '',
               branch: value.branch.name || '',
@@ -328,7 +328,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+          this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -338,7 +338,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 unit: this.formGroup.get('unit')?.value,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
-                title: val.title,
+                titles: [val.title],
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
@@ -443,7 +443,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       unit: value.unit,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
-      salaryTitle: value.title ? value.title : '',
+      titles: value.titles ? [value.titles] : [],
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position?.name || '',

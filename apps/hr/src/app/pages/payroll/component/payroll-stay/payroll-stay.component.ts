@@ -208,7 +208,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
   readPayroll(event: any) {
     this.router
-      .navigate(['phieu-luong/chi-tiet-phieu-luong', event.payrollId])
+      .navigate(['phieu-luong/chi-tiet-phieu-luong', event.id])
       .then();
   }
 
