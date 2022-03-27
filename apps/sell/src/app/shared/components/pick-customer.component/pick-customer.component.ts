@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output, ViewContainerRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output, ViewContainerRef} from '@angular/core';
+import {ControlContainer, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, tap} from 'rxjs/operators';
 import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
 import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
 import {ResourcesConstant} from '@minhdu-fontend/constants';
 import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
 import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalService} from "ng-zorro-antd/modal";
+import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {CustomerConstant} from "../../../pages/customer/constants/customer.constant";
 
 @Component({
@@ -22,8 +21,7 @@ export class PickCustomerComponent implements OnInit {
   @Input() pickOne = false;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
-  @Output() checkEventPickOne = new EventEmitter<number>();
-  customerId!: number;
+  @Input() data!: any
   resourceType = CustomerResource;
   customerResourcesConstant = ResourcesConstant;
   CustomerTypeConstant = CustomerConstant;
@@ -33,36 +31,33 @@ export class PickCustomerComponent implements OnInit {
   pageSizeTable = 5
   isSelectAll = false;
   customerIds: number[] = [];
-  formGroup = new FormGroup(
+  formGroupCustomer = new FormGroup(
     {
       name: new FormControl(''),
       type: new FormControl(''),
       resource: new FormControl('')
     });
+  formGroup!: FormGroup
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
-    private readonly dialog: MatDialog,
-    private dialogRef: MatDialogRef<PickCustomerComponent>,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly modalRef: NzModalRef,
+    private controlContainer: ControlContainer,
   ) {
   }
 
   ngOnInit(): void {
-
+    this.formGroup = <FormGroup>this.controlContainer.control;
     if (this.customers.length === 0) {
       this.actions$.dispatch(CustomerActions.loadAll({params: {take: 30, skip: 0}}));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
     }
-    if (this.data.customerInit) {
-      this.customerId = this.data.customerInit.id
-    }
-    this.formGroup.valueChanges.pipe(
+    this.formGroupCustomer.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
         this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(value)}))
@@ -72,7 +67,7 @@ export class PickCustomerComponent implements OnInit {
 
   onPagination(pageIndex: number) {
     const count = this.customerQuery.getCount()
-    const val = this.formGroup.value;
+    const val = this.formGroupCustomer.value;
     if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(CustomerActions.loadAll({
         params: this.customer(val, true),
@@ -132,13 +127,9 @@ export class PickCustomerComponent implements OnInit {
     this.checkEvent.emit(this.customerIds);
   }
 
-  pickOneCustomer(customerId: number) {
-    this.customerId = customerId
-    this.checkEventPickOne.emit(this.customerId);
-  }
 
   closeDialog() {
-    this.dialogRef.close(this.customerId);
+    this.modalRef.close(this.formGroupCustomer.value);
   }
 
   addCustomer() {

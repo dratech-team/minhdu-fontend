@@ -57,7 +57,7 @@ export class CommodityEffect {
                 this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
               }
               this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
-              if (props?.isScroll) {
+              if (props?.isPagination) {
                 this.commodityStore.add(ResponsePaginate.data);
               } else {
                 this.commodityStore.set(ResponsePaginate.data);
