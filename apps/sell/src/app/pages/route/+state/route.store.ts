@@ -26,8 +26,6 @@ export const createInitialState = () => ({
     search: '',
     startedAt_start: getFirstDayInMonth(new Date()),
     startedAt_end: getLastDayInMonth(new Date()),
-    endedAt_start: getFirstDayInMonth(new Date()),
-    endedAt_end: getLastDayInMonth(new Date()),
     status: -1
   },
   ui: {

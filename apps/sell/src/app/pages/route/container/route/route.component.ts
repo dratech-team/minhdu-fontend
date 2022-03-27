@@ -7,7 +7,7 @@ import {SortRouteEnum} from '@minhdu-fontend/enums';
 import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
 import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
-import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {RouteAction} from '../../+state/route.action';
 import {RouteEntity} from '../../entities/route.entity';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
@@ -154,6 +154,10 @@ export class RouteComponent implements OnInit {
     this.routeStore.update(state => ({
       ...state, search: val
     }))
+    if (!val.endedAt_start || !val.endedAt_end) {
+      delete val.endedAt_end
+      delete val.endedAt_start
+    }
     if (this.valueSort?.orderType) {
       Object.assign(val, this.valueSort);
     } else {
@@ -187,7 +191,7 @@ export class RouteComponent implements OnInit {
     });
   }
 
-  compareDay(date: Date) : boolean{
-   return  moment(date).isAfter(new Date(),'day')
+  compareDay(date: Date): boolean {
+    return moment(date).isAfter(new Date(), 'day')
   }
 }
