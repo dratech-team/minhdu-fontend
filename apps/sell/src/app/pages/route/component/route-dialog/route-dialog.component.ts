@@ -39,9 +39,6 @@ export class RouteDialogComponent implements OnInit {
     this.routeStore.update(state => ({
       ...state, added: null
     }))
-    if (this.data?.selectOrder) {
-      this.stepIndex = 1;
-    }
 
     if (this.data?.isUpdate) {
       this.orderIdsOfRoute = [...this.data.route.orders]
