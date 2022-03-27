@@ -337,12 +337,12 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       if (!this.salariesSelected[0].salary.unit) {
         return this.message.success('Không sửa lương tùy chọn cho nhiều nhân viên được');
       }
-      console.log(this.salariesSelected)
       const ref = this.dialog.open(DialogOvertimeComponent, {
         width: 'fit-content',
         data: {
           type: SalaryTypeEnum.OVERTIME,
           salary: this.salariesSelected[0].salary,
+          payroll:this.salariesSelected[0].payroll,
           createdAt: this.salariesSelected[0].salary?.datetime
             ? this.salariesSelected[0].salary?.datetime
             : this.formGroup.get('startAt')?.value,
@@ -362,6 +362,12 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
+          this.templateOvertime$ = this.payrollService.getAllTempLate({
+            branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
+            position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
+            startedAt: this.formGroup.value.startedAt,
+            endedAt: this.formGroup.value.endedAt,
+          })
           this.salariesSelected = [];
           this.formGroup.get('titles')?.setValue([val.title]);
           this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');

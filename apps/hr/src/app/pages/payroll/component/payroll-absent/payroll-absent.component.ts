@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -27,8 +27,8 @@ import {
 import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {of, Subject} from 'rxjs';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -41,13 +41,7 @@ import {
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {UnitAbsentConstant} from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors,
-  searchAutocomplete
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
@@ -137,7 +131,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||'',
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
       isLeave: false
     };
 
@@ -234,8 +228,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
-          exportType: FilterTypeEnum.ABSENT ,
+          branch: value.branch.name || '',
+          exportType: FilterTypeEnum.ABSENT,
           title: value.title,
           startedAt: value.startedAt,
           endedAt: value.endedAt,
@@ -409,7 +403,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
         position: value.position?.name || '',
-        branch: value.branch ? value.branch.name : '',
+        branch: value.branch.name || '',
         isLeave: value.isLeave
       }
     ;

@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -13,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,10 +24,10 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {of, Subject} from 'rxjs';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -36,8 +37,8 @@ import {
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
+import {checkInputNumber, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {TemplateSalaryAction} from '../../../template/+state/teamlate-salary/template-salary.action';
 import {selectorAllTemplate} from '../../../template/+state/teamlate-salary/template-salary.selector';
@@ -184,7 +185,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
+          branch: value.branch.name || '',
           exportType: FilterTypeEnum.STAY,
           title: value.title,
           isLeave: value.isLeave
@@ -234,7 +235,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               title: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position?.name || '',
-              branch: value.branch ? value.branch.name : '',
+              branch: value.branch.name || '',
               isLeave: value.isLeave
             }
           })
@@ -282,7 +283,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
-                branch: value.branch ? value.branch.name : '',
+                branch: value.branch.name || '',
                 isLeave: value.isLeave
               }
             })
@@ -382,7 +383,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : '',
+      branch: value.branch.name || '',
       isLeave: value.isLeave
     };
     if (this.sort?.active) {
