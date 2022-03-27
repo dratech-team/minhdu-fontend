@@ -19,7 +19,7 @@ import {BehaviorSubject} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
 import {OrderHistoryEntity} from '../../enitities/order-history.entity';
-import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
+import {CommodityEntity} from '../../../commodity/entities/commodities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {NzModalService} from "ng-zorro-antd/modal";
 
@@ -61,7 +61,7 @@ export class DetailOrderComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const order = this.orderQuery.getEntity(this.getOrderId);
         if (order) {
-          this.updateOrder(order,"GENERAL");
+          this.updateOrder(order, "GENERAL");
         }
       }
     });
@@ -93,15 +93,15 @@ export class DetailOrderComponent implements OnInit {
         nzTitle: 'Chọn hàng hoá',
         nzContent: PickCommodityComponent,
         nzComponentParams: {
-          data: {commoditiesSelected: order.commodities, type: 'DIALOG'}
+          data: {type: 'DIALOG'}
         },
-        nzWidth:'70vw',
+        nzWidth: '70vw',
         nzFooter: null
       }).afterClose.subscribe(value => {
         this.actions$.dispatch(OrderActions.update({
           id: order.id,
           updates: {
-            commodityIds: value.map((e: any) => e.id)
+            commodityIds: Array.from(value)
           },
         }));
       })

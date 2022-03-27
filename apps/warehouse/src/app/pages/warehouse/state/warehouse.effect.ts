@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { WarehouseService } from '../services/warehouse.service';
+import { WarehouseService } from '../services';
 import { WarehouseStore } from './warehouse.store';
 import { WarehouseAction } from './warehouse.action';
 import { switchMap, tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class WarehouseEffect {
 
   @Effect({ dispatch: false })
   loadWarehouses$ = this.action$.pipe(
-    ofType(WarehouseAction.loadWarehouses),
+    ofType(WarehouseAction.loadAll),
     switchMap(() => {
       return this.service.getAll();
     }),
@@ -25,16 +25,9 @@ export class WarehouseEffect {
     })
   );
 
-
-  @Effect({ dispatch: false })
-  selectWarehouse$ = this.action$.pipe(
-    ofType(WarehouseAction.selectedWarehouseId),
-    tap((v) => this.warehouseStore.update(state => ({ ...state, selected: v.warehouseId })))
-  );
-
   @Effect()
   addWarehouse$ = this.action$.pipe(
-    ofType(WarehouseAction.addWarehouse),
+    ofType(WarehouseAction.addOne),
     switchMap((warehouse) => this.service.addOne(warehouse)),
     tap(warehouse => this.warehouseStore.add(warehouse))
   );

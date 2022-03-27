@@ -4,11 +4,12 @@ import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
 import {OrderEntity} from '../../../order/enitities/order.entity';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {CommodityEntity} from "../../../commodity/entities/commodities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Observable} from "rxjs";
+import {RouteStore} from "../../+state/route.store";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -22,10 +23,12 @@ export class RouteDialogComponent implements OnInit {
   isSelectAll = false;
   stepIndex = 0;
   added$ = this.routeQuery.select(state => state.added)
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
+    private readonly routeStore: RouteStore,
     private readonly datePipe: DatePipe,
     private readonly modalRef: NzModalRef,
     private readonly snackbar: MatSnackBar
@@ -33,9 +36,9 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data?.selectOrder) {
-      this.stepIndex = 1;
-    }
+    this.routeStore.update(state => ({
+      ...state, added: null
+    }))
 
     if (this.data?.isUpdate) {
       this.orderIdsOfRoute = [...this.data.route.orders]

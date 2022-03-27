@@ -1,18 +1,18 @@
-import {Component, Inject, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Store} from "@ngrx/store";
-import {getBranchAdded, OrgchartActions} from "@minhdu-fontend/orgchart";
-import {Actions} from "@datorama/akita-ng-effects";
-import {ProviderActions} from "../../state/provider.action";
-import {ProviderQuery} from "../../state/provider.query";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Actions } from '@datorama/akita-ng-effects';
+import { ProviderActions } from '../../state/provider.action';
+import { ProviderQuery } from '../../state/provider.query';
+import { ProviderEntity } from '../../entities';
 
 @Component({
   templateUrl: 'dialog-provider.component.html'
 })
 export class DialogProviderComponent implements OnInit {
-  formGroup!: FormGroup
-  submitted = false
+  formGroup!: FormGroup;
+  submitted = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,7 +20,7 @@ export class DialogProviderComponent implements OnInit {
     private readonly store: Store,
     private readonly actions$: Actions,
     private readonly providerQuery: ProviderQuery,
-    private readonly dialogRef: MatDialogRef<DialogProviderComponent>,
+    private readonly dialogRef: MatDialogRef<DialogProviderComponent>
   ) {
   }
 
@@ -29,39 +29,39 @@ export class DialogProviderComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         name: [this.data.provider.name, Validators.required],
         phone: [this.data.provider?.phone],
-        email: [this.data.provider?.email],
-      })
+        email: [this.data.provider?.email]
+      });
     } else {
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
         phone: [],
-        email: [],
-      })
+        email: []
+      });
     }
   }
 
   onSubmit() {
-    this.submitted = true
+    this.submitted = true;
     if (this.formGroup.invalid) {
-      return
+      return;
     }
-    const value = this.formGroup.value
-    const provider = {
+    const value = this.formGroup.value;
+    const provider: Partial<ProviderEntity> = {
       name: value.name,
       phone: value?.phone,
-      email: value?.address,
-    }
+      email: value?.address
+    };
     if (this.data?.isUpdate) {
-      this.actions$.dispatch(ProviderActions.update({id: this.data.provider.id, body: provider}))
+      this.actions$.dispatch(ProviderActions.update({ id: this.data.provider.id, updates: provider }));
     } else {
-      this.actions$.dispatch(ProviderActions.addOne(provider))
+      this.actions$.dispatch(ProviderActions.addOne({ body: provider }));
     }
 
     this.providerQuery.select(state => state.added).subscribe(added => {
       if (added) {
-        this.dialogRef.close()
+        this.dialogRef.close();
       }
-    })
+    });
   }
 
   get checkValid() {

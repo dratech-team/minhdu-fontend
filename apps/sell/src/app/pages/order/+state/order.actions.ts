@@ -1,8 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { OrderEntity } from '../enitities/order.entity';
-import { AddOrderDto } from '../dto/add-order.dto';
-import { UpdateOrderDto } from '../dto/update-order.dto';
-import { LoadOrderDto } from '../dto/load-order.dto';
+import { OrderEntity } from '../enitities';
+import { AddOrderDto, LoadOrderDto, UpdateOrderDto } from '../dto';
 
 const addOne = createAction(
   '[ORDER] Add One',
@@ -11,7 +9,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ORDER] Load Init',
-  props<{param: LoadOrderDto, isPagination?: boolean}>()
+  props<{ param: LoadOrderDto, isPagination?: boolean }>()
 );
 
 const loadOne = createAction(
@@ -21,7 +19,7 @@ const loadOne = createAction(
 
 const update = createAction(
   '[ORDER] Update',
-  props<{ id: OrderEntity['id'], updates: UpdateOrderDto , inRoute?: {routeId: number}}>()
+  props<{ id: OrderEntity['id'], updates: UpdateOrderDto, inRoute?: { routeId: number } }>()
 );
 
 const hide = createAction(

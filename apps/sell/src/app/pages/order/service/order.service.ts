@@ -8,7 +8,7 @@ import { Update } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { AddOrderDto } from '../dto/add-order.dto';
-import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
+import { CommodityUniq } from '../../commodity/entities/commodities/commodity-uniq.entity';
 import { LoadOrderDto } from '../dto/load-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 

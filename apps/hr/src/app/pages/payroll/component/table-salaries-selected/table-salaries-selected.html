@@ -34,9 +34,9 @@
       <tbody>
       <tr *ngFor='let item of salariesSelected; let i = index'>
         <th class='   pointer'>{{i + 1}}</th>
-        <th class='   pointer'>{{item.employee.lastName}}</th>
-        <th class='   pointer'>{{item.employee.position.name}}</th>
-        <th class='   pointer'>{{item.employee.branch.name}}</th>
+        <th class='   pointer'>{{item.payroll.employee.lastName}}</th>
+        <th class='   pointer'>{{item.payroll.position}}</th>
+        <th class='   pointer'>{{item.payroll.branch}}</th>
         <th class='   pointer'>
           <div class='mt-2'>
             <mat-checkbox

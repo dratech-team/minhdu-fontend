@@ -1,5 +1,11 @@
-import {CommodityEntity} from "../entities/commodity.entity";
+import { BaseCommodityEntity } from '../entities';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
-export interface updateCommodityDto extends Partial<Omit<CommodityEntity, 'id'>>{
-  readonly orderId?: number
+interface BaseUpdateCommodityDto extends BaseCommodityEntity {
+  readonly orderId: number;
+  readonly closed: boolean;
+}
+
+export interface UpdateCommodityDto extends BaseUpdateDto<BaseUpdateCommodityDto> {
+
 }

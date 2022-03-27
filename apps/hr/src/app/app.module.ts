@@ -36,7 +36,7 @@ import { PayrollModule } from './pages/payroll/payroll.module';
 import localeVi from '@angular/common/locales/vi';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { NgxCurrencyModule } from 'ngx-currency';
-import { customCurrencyMaskConfig2 } from '@minhdu-fontend/config';
+import {customCurrencyMaskConfig, customCurrencyMaskConfig2} from '@minhdu-fontend/config';
 import { MatDialogConfig } from '@angular/material/dialog/dialog-config';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 import { NZ_I18N, vi_VN } from 'ng-zorro-antd/i18n';

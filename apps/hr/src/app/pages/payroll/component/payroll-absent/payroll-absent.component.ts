@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -27,8 +27,8 @@ import {
 import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {of, Subject} from 'rxjs';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -41,13 +41,7 @@ import {
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {UnitAbsentConstant} from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors,
-  searchAutocomplete
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
@@ -55,6 +49,7 @@ import {DialogAbsentComponent} from '../dialog-salary/dialog-absent/dialog-absen
 import {DialogTimekeepingComponent} from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'app-payroll-absent',
@@ -91,7 +86,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition))
 
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl(''),
     code: new FormControl(''),
     name: new FormControl(''),
     unit: new FormControl(''),
@@ -136,7 +131,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name||'',
+      branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
       isLeave: false
     };
 
@@ -158,7 +153,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     );
 
     if (this.absentTitle) {
-      this.formGroup.get('title')?.setValue(this.absentTitle);
+      this.formGroup.get('titles')?.setValue(this.absentTitle);
       this.formGroup.get('startedAt')?.setValue(
         this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
       );
@@ -168,7 +163,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     }
 
     this.eventAddAbsent?.subscribe((val) => {
-      this.formGroup.get('title')?.setValue(val.absentTitle);
+      this.formGroup.get('titles')?.setValue(val.absentTitle);
       this.formGroup.get('startedAt')?.setValue(
         this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
       );
@@ -216,9 +211,9 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
                   !this.salariesSelected.some(item => item.salary.id === salary.id) &&
                   !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({salary: salary, employee: payroll.employee});
+                  this.salariesSelected.push({salary: salary, payroll: payroll});
                 }
-                this.salaries.push({salary: salary, employee: payroll.employee});
+                this.salaries.push({salary: salary, payroll: payroll});
               }
             });
           }
@@ -233,9 +228,9 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
-          exportType: FilterTypeEnum.ABSENT ,
-          title: value.title,
+          branch: value.branch.name || '',
+          exportType: FilterTypeEnum.ABSENT,
+          titles: [value.title],
           startedAt: value.startedAt,
           endedAt: value.endedAt,
           isLeave: value.isLeave
@@ -267,7 +262,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title);
+        this.formGroup.get('titles')?.setValue(val.title);
         this.formGroup.get('startedAt')?.setValue(
           this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
         );
@@ -306,7 +301,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title);
+          this.formGroup.get('titles')?.setValue(val.title);
           this.formGroup.get('startedAt')?.setValue(
             this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
           );
@@ -370,7 +365,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
   onScroll() {
     this.isEventSearch = false;
-    const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
         payrollDTO: this.mapPayrollAbsent()
@@ -378,8 +372,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = {salary, employee};
+  updateSelectSalary(salary: Salary, payroll: Payroll) {
+    const salarySelected = {salary, payroll};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,
@@ -403,12 +397,12 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         skip: this.pageIndex,
         code: value.code,
         searchType: value.searchType,
-        salaryTitle: value.title ? value.title : '',
+        titles: value.titles ? [value.titles] : [],
         name: value.name,
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
         position: value.position?.name || '',
-        branch: value.branch ? value.branch.name : '',
+        branch: value.branch.name || '',
         isLeave: value.isLeave
       }
     ;

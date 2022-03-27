@@ -1,3 +1,6 @@
-import {ProviderEntity} from "../entities/provider.entity";
+import { ProviderEntity } from '../entities';
+import { BaseUpdateDto } from '../../../../../../../libs/dto';
 
-export type UpdateProviderDto = Partial<Omit<ProviderEntity, 'id'>>
+export interface UpdateProviderDto extends BaseUpdateDto<ProviderEntity> {
+
+}

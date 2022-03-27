@@ -4,11 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import { UpdateNum } from '@ngrx/entity/src/models';
 import { CustomerEntity } from '../entities/customer.entity';
 import { AddCustomerDto } from '../dto/add-customer.dto';
-import { LoadCustomerDto } from '../dto/load-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
+import {SearchCustomerDto} from "../dto/search-customer.dto";
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseService<CustomerEntity> {
@@ -22,7 +21,7 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.addOne(props);
   }
 
-  pagination(params: LoadCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
+  pagination(params: SearchCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
     return super.pagination(params);
   }
 

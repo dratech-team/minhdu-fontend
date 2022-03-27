@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { BillService } from '../service/bill.service';
+import { BillService } from '../service';
 import { BillAction } from './bill.action';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';

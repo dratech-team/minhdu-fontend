@@ -18,13 +18,13 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {of, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/constants';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
-import {debounceTime, startWith} from 'rxjs/operators';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {debounceTime} from 'rxjs/operators';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatDialog} from '@angular/material/dialog';
@@ -40,7 +40,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {Router} from '@angular/router';
-import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {checkInputNumber, getSelectors} from '@minhdu-fontend/utils';
 import {DialogAllowanceComponent} from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import {
   DialogAllowanceMultipleComponent
@@ -48,6 +48,7 @@ import {
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -81,7 +82,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
   positions$ = this.store.pipe(select(getAllPosition))
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl(''),
     code: new FormControl(''),
     unit: new FormControl(''),
     name: new FormControl(''),
@@ -127,7 +128,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           take: this.pageSize,
           skip: this.pageIndex,
           createdAt: new Date(this.createdAt),
-          title: this.allowanceTitle ? this.allowanceTitle : '',
+          titles: this.allowanceTitle ? [this.allowanceTitle] : [],
           filterType: FilterTypeEnum.ALLOWANCE,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
@@ -136,7 +137,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       })
     );
     if (this.allowanceTitle) {
-      this.formGroup.get('title')?.setValue(this.allowanceTitle, {emitEvent: false});
+      this.formGroup.get('titles')?.setValue(this.allowanceTitle, {emitEvent: false});
 
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
@@ -148,7 +149,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     }
 
     this.eventAddAllowance?.subscribe((val) => {
-      this.formGroup.get('title')?.setValue(val.allowanceTitle, {emitEvent: false});
+      this.formGroup.get('titles')?.setValue(val.allowanceTitle, {emitEvent: false});
       this.formGroup.get('createdAt')?.setValue(
         this.datePipe.transform(
           new Date(getSelectors(selectedCreateAtPayroll, this.store)),
@@ -164,7 +165,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
             createdAt: new Date(
               getSelectors(selectedCreateAtPayroll, this.store)
             ),
-            title: val.allowanceTitle ? val.allowanceTitle : '',
+            titles: val.allowanceTitle ? [val.allowanceTitle] : [],
             filterType: FilterTypeEnum.ALLOWANCE,
             position: getSelectors(selectedPositionPayroll, this.store),
             branch: getSelectors(selectedBranchPayroll, this.store),
@@ -219,10 +220,10 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 ) {
                   this.salariesSelected.push({
                     salary,
-                    employee: payroll.employee
+                    payroll: payroll
                   });
                 }
-                this.salaries.push({salary, employee: payroll.employee});
+                this.salaries.push({salary, payroll: payroll});
               }
             });
           }
@@ -237,9 +238,9 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
+          branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
-          title: value.title,
+          titles: [value.titles],
           isLeave: value.isLeave
         };
         if (value.createdAt) {
@@ -270,7 +271,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
         this.formGroup.get('createdAt')?.setValue(val.datetime, {emitEvent: false});
         const value = this.formGroup.value;
         this.store.dispatch(
@@ -281,10 +282,10 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               code: value.code,
               unit: value.unit,
               createdAt: new Date(val.datetime),
-              title: val.title,
+              titles: [val.title],
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position?.name || '',
-              branch: val.branch ? value.branch.name : '',
+              branch: value.branch.name || '',
               isLeave: val.isLeave
             }
           })
@@ -327,7 +328,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+          this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -337,11 +338,11 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 unit: this.formGroup.get('unit')?.value,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
-                title: val.title,
+                titles: [val.title],
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
-                branch: this.formGroup.value.branch ? this.formGroup.value.name : '',
+                branch: this.formGroup.value.name || '',
                 isLeave: this.formGroup.value.isLeave
               }
             })
@@ -411,8 +412,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = {salary, employee};
+  updateSelectSalary(salary: Salary, payroll: Payroll) {
+    const salarySelected = {salary, payroll};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,
@@ -442,11 +443,11 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       unit: value.unit,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
-      salaryTitle: value.title ? value.title : '',
+      titles: value.titles ? [value.titles] : [],
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : '',
+      branch: value.branch.name || '',
       isLeave: value.isLeave
     };
     if (this.sort?.active) {

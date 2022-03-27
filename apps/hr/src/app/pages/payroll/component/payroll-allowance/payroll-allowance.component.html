@@ -84,9 +84,9 @@
         </th>
         <th style='min-width: 300px;'>
           <div class='border-top d-flex justify-content-center align-items-center'>Loại phụ cấp</div>
-          <input class='form-control' type='text'
+          <input class='form-control' type='search'
                  placeholder='Nhập têm phụ cấp'
-                 formControlName='title'>
+                 formControlName='titles'>
         </th>
         <th>
           <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
@@ -138,7 +138,7 @@
               <mat-checkbox
                 style="margin-top: 5px"
                 [checked]='selectSalary(item)'
-                (change)='updateSelectSalary(item,payrollAllowance.employee)'>
+                (change)='updateSelectSalary(item,payrollAllowance)'>
               </mat-checkbox>
             </div>
           </th>

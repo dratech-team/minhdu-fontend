@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {CommodityService} from '../service/commodity.service';
+import {CommodityService} from '../service';
 import {CommodityAction} from './commodity.action';
 import {throwError} from 'rxjs';
 import {OrderActions} from '../../order/+state/order.actions';
@@ -57,7 +57,7 @@ export class CommodityEffect {
                 this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500})
               }
               this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
-              if (props?.isScroll) {
+              if (props?.isPagination) {
                 this.commodityStore.add(ResponsePaginate.data);
               } else {
                 this.commodityStore.set(ResponsePaginate.data);

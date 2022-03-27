@@ -85,14 +85,17 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Phụ cấp lương</div>
-        <mat-select class='form-control col' formControlName='title'>
-          <mat-option *ngFor='let item of (salariesStay$|async)' [value]='item.title'>
-            {{item.title}}
-          </mat-option>
-          <mat-option value=''>
-            Tất cả
-          </mat-option>
-        </mat-select>
+        <nz-select style="width: 100%"
+                   [nzMaxTagCount]="1"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn loại phụ cấp"
+                   formControlName="titles"
+        >
+          <nz-option *ngFor="let item of salariesStay$|async" [nzLabel]="item.title" [nzValue]="item.title"></nz-option>
+          <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
@@ -140,7 +143,7 @@
             <mat-checkbox
               style="margin-top: 5px"
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item,payrollStay.employee)'>
+              (change)='updateSelectSalary(item,payrollStay)'>
             </mat-checkbox>
           </div>
         </th>

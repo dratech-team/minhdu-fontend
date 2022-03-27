@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommodityDialogComponent } from '../../component/commodity-dialog/commodity-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { CommodityQuery } from '../../+state/commodity.query';
-import {CommodityEntity} from "../../entities/commodity.entity";
+import {CommodityEntity} from "../../entities/commodities/commodity.entity";
 
 @Component({
   templateUrl:'detail-commodity.component.html'

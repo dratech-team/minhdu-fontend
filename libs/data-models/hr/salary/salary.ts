@@ -31,7 +31,7 @@ export interface Salary {
 
 export interface SalaryPayroll {
   salary: Salary,
-  employee: Employee | employee
+  payroll: Payroll
 }
 
 export interface totalSalary {
