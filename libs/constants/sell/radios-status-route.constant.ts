@@ -1,11 +1,11 @@
 export const RadiosStatusRouteConstant = [
   {
     name: 'hoàn thành',
-    value: 0
+    value: 1
   },
   {
     name: 'Đang chạy',
-    value: 1
+    value: 0
   },
   {
     name: 'tất cả',

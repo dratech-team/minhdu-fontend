@@ -1,6 +1,6 @@
-import {BaseCustomerEntity} from "../entities/base-customer.entity";
+import { BaseCustomerEntity } from '../entities/base-customer.entity';
 
-export interface SearchCustomerDto extends Omit<BaseCustomerEntity,'id'|'isPotential'> {
+export interface SearchCustomerDto extends Omit<BaseCustomerEntity, 'id' | 'isPotential'> {
   readonly skip?: number,
   readonly take?: number,
   isPotential?: number,

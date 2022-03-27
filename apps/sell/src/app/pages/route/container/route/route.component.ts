@@ -36,7 +36,7 @@ export class RouteComponent implements OnInit {
   ItemContextMenu = ItemContextMenu;
   radios = RadiosStatusRouteConstant;
   sortRouteEnum = SortRouteEnum;
-  stateSearch = this.routeQuery.getValue().search
+  stateSearch = this.routeQuery.getValue().search;
   formGroup = new FormGroup({
     search: new FormControl(this.stateSearch.search),
     startedAt_start: new FormControl(this.stateSearch.startedAt_start),

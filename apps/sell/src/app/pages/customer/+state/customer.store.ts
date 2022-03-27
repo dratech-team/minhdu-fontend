@@ -24,7 +24,7 @@ const createInitState = () => ({
   search: {
     resource: CustomerResource.ALL,
     isPotential: -1,
-    customerType: CustomerType.ALL,
+    type: CustomerType.ALL,
     gender: Gender.ALL,
     search: ''
   },

@@ -52,7 +52,7 @@ export const createInitialState = () => ({
       pinned: false,
       visible: true
     },
-    BSX: {
+    bsx: {
       pinned: false,
       visible: true
     },
