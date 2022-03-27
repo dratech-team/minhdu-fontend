@@ -55,6 +55,7 @@ import {DialogAbsentComponent} from '../dialog-salary/dialog-absent/dialog-absen
 import {DialogTimekeepingComponent} from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'app-payroll-absent',
@@ -216,9 +217,9 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
                   !this.salariesSelected.some(item => item.salary.id === salary.id) &&
                   !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({salary: salary, employee: payroll.employee});
+                  this.salariesSelected.push({salary: salary, payroll: payroll});
                 }
-                this.salaries.push({salary: salary, employee: payroll.employee});
+                this.salaries.push({salary: salary, payroll: payroll});
               }
             });
           }
@@ -378,8 +379,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = {salary, employee};
+  updateSelectSalary(salary: Salary, payroll: Payroll) {
+    const salarySelected = {salary, payroll};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,

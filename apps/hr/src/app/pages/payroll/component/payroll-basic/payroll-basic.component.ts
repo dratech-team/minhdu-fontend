@@ -174,9 +174,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
                   !this.salariesSelected.some(item => item.salary.id === salary.id)
                   && !this.salaries.find((e) => e.salary.id === salary.id)
                 ) {
-                  this.salariesSelected.push({salary, employee: payroll.employee});
+                  this.salariesSelected.push({salary, payroll: payroll});
                 }
-                this.salaries.push({salary, employee: payroll.employee});
+                this.salaries.push({salary, payroll: payroll});
               }
             });
           }
