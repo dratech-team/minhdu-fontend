@@ -17,8 +17,8 @@ import {
 import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {combineLatest, of, Subject} from 'rxjs';
-import {debounceTime, map, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
@@ -34,8 +34,6 @@ import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/comp
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
-import {TemplateOvertimeAction} from '../../../template/+state/template-overtime/template-overtime.action';
-import {selectorAllTemplate} from '../../../template/+state/template-overtime/template-overtime.selector';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {
@@ -45,6 +43,7 @@ import {DialogOvertimeComponent} from '../dialog-salary/dialog-overtime/dialog-o
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -261,12 +260,12 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
                 ) {
                   this.salariesSelected.push({
                     salary: salary,
-                    employee: payroll.employee
+                    payroll: payroll
                   });
                 }
                 this.salaries.push({
                   salary: salary,
-                  employee: payroll.employee
+                  payroll: payroll
                 });
               }
             });
@@ -338,6 +337,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       if (!this.salariesSelected[0].salary.unit) {
         return this.message.success('Không sửa lương tùy chọn cho nhiều nhân viên được');
       }
+      console.log(this.salariesSelected)
       const ref = this.dialog.open(DialogOvertimeComponent, {
         width: 'fit-content',
         data: {
@@ -481,8 +481,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
   }
 
-  updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = {salary, employee};
+  updateSelectSalary(salary: Salary, payroll: Payroll) {
+    const salarySelected = {salary, payroll};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,

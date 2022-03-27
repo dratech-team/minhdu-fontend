@@ -1,3 +1,5 @@
-import {ProviderEntity} from "../entities/provider.entity";
+import { ProviderEntity } from '../entities';
+import { BaseAddDto } from '../../../../shared/dto';
 
-export type AddProviderDto = Omit<ProviderEntity, 'id'>
+export interface AddProviderDto extends BaseAddDto<ProviderEntity> {
+}

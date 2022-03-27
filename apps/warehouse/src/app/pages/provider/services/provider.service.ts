@@ -1,12 +1,12 @@
-import {BaseService} from '@minhdu-fontend/service';
-import {ProviderEntity} from '../entities/provider.entity';
-import {HttpClient} from '@angular/common/http';
-import {Api} from '@minhdu-fontend/constants';
-import {ResponsePaginate} from '@minhdu-fontend/data-models';
-import {Observable} from 'rxjs';
-import {Injectable} from '@angular/core';
-import {AddProviderDto} from "../dto/add-provider.dto";
-import {UpdateProviderDto} from "../dto/update-provider.dto";
+import { BaseService } from '@minhdu-fontend/service';
+import { ProviderEntity } from '../entities/provider.entity';
+import { HttpClient } from '@angular/common/http';
+import { Api } from '@minhdu-fontend/constants';
+import { ResponsePaginate } from '@minhdu-fontend/data-models';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { AddProviderDto } from '../dto/add-provider.dto';
+import { UpdateProviderDto } from '../dto/update-provider.dto';
 
 @Injectable()
 export class ProviderService extends BaseService<ProviderEntity> {
@@ -26,8 +26,8 @@ export class ProviderService extends BaseService<ProviderEntity> {
     return super.pagination(params);
   }
 
-  update(id: number, body: UpdateProviderDto): Observable<ProviderEntity> {
-    return super.update(id, body);
+  update(id: number, updates: Partial<UpdateProviderDto>): Observable<ProviderEntity> {
+    return super.update(id, updates);
   }
 
   delete(id: number, params?: any): Observable<void> {

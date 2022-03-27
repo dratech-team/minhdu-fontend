@@ -48,6 +48,7 @@ import {
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -219,10 +220,10 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 ) {
                   this.salariesSelected.push({
                     salary,
-                    employee: payroll.employee
+                    payroll: payroll
                   });
                 }
-                this.salaries.push({salary, employee: payroll.employee});
+                this.salaries.push({salary, payroll: payroll});
               }
             });
           }
@@ -411,8 +412,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, employee: Employee) {
-    const salarySelected = {salary, employee};
+  updateSelectSalary(salary: Salary, payroll: Payroll) {
+    const salarySelected = {salary, payroll};
     this.isSelectSalary = updateSelect(
       salarySelected,
       this.salariesSelected,

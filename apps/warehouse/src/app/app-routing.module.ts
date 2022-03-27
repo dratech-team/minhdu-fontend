@@ -14,11 +14,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/dashboard/product.module').then(m => m.ProductModule),
+        loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule),
       },
       {
         path: 'xuat-nhap-kho',
-        loadChildren: () => import('./pages/import-export/import-export.module').then(m => m.ImportExportModule),
+        loadChildren: () => import('./pages/migrate/migrate.module').then(m => m.MigrateModule),
       },
       {
         path: 'quan-ly-chi-nhanh',
