@@ -1,8 +1,11 @@
-export interface SearchRouteDto {
-  search: string,
-  startedAt_start: Date,
-  startedAt_end: Date,
-  endedAt_start?: Date,
-  endedAt_end?: Date,
-  status: number
+import {SearchRangeDto} from "../../../shared/dto";
+
+export interface SearchRouteDto  extends SearchRangeDto{
+  take?: number;
+  skip?: number;
+  orderId?: number;
+  status?: number;
+  orderBy?: string,
+  orderType?: string
+  search?: string,
 }

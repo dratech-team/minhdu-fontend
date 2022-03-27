@@ -1,7 +1,7 @@
 import {AddRouteDto} from '../dto/add-route.dto';
 import {createAction, props} from '@datorama/akita-ng-effects';
 import {UpdateRouteDto} from '../dto/update-route.dto';
-import {LoadRouteDto} from '../dto/load-route.dto';
+import {SearchRouteDto} from '../dto/search-route.dto';
 import {CancelDto} from "../dto/cancel-commodity.dto";
 
 const addOne = createAction(
@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ROUTE] Load All',
-  props<{params:LoadRouteDto, isPagination?: boolean}>()
+  props<{params:SearchRouteDto, isPagination?: boolean}>()
 );
 
 const loadOne = createAction(

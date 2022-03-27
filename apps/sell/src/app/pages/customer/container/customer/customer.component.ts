@@ -46,7 +46,7 @@ export class CustomerComponent implements OnInit {
   formGroup = new FormGroup({
     resource: new FormControl(this.stateSearch.resource),
     isPotential: new FormControl(this.stateSearch.isPotential),
-    customerType: new FormControl(this.stateSearch.customerType),
+    type: new FormControl(this.stateSearch.type),
     gender: new FormControl(this.stateSearch.gender),
     search: new FormControl(this.stateSearch.search)
   });
@@ -65,6 +65,7 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.stateSearch)
     this.actions$.dispatch(CustomerActions.loadAll({params: this.mapCustomer(this.formGroup.value, false)}));
     this.formGroup.valueChanges
       .pipe(

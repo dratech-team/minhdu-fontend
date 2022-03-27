@@ -1,6 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
 import { OrderEntity } from '../enitities';
-import { AddOrderDto, LoadOrderDto, UpdateOrderDto } from '../dto';
+import { AddOrderDto, SearchOrderDto, UpdateOrderDto } from '../dto';
 
 const addOne = createAction(
   '[ORDER] Add One',
@@ -9,7 +9,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ORDER] Load Init',
-  props<{ param: LoadOrderDto, isPagination?: boolean }>()
+  props<{ param: SearchOrderDto, isPagination?: boolean }>()
 );
 
 const loadOne = createAction(
