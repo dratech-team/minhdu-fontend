@@ -13,7 +13,7 @@ import {DatePipe} from '@angular/common';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../../customer/+state/customer.query';
 import {AddOrderDto} from '../../dto/add-order.dto';
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {CommodityEntity} from "../../../commodity/entities/commodities/commodity.entity";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
 import {OrderQuery} from "../../+state/order.query";
 import {MatSnackBar} from "@angular/material/snack-bar";

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { AddCommodityDto } from '../dto/add-commodity.dto';
-import { CommodityEntity } from '../entities/commodity.entity';
-import { LoadCommodityDto } from '../dto/load-commodity.dto';
-import { updateCommodityDto } from '../dto/update-commodity.dto';
+import { CommodityEntity } from '../entities/commodities/commodity.entity';
+import { SearchCommodityDto } from '../dto/search-commodity.dto';
+import { UpdateCommodityDto } from '../dto/update-commodity.dto';
 
 @Injectable({ providedIn: 'root' })
 export class CommodityService extends BaseService<CommodityEntity> {
@@ -30,7 +30,7 @@ export class CommodityService extends BaseService<CommodityEntity> {
     return this.http.get(Api.SELL.COMMODITY_TEMPLATE);
   }
 
-  pagination(params?: LoadCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
+  pagination(params?: SearchCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
     return super.pagination(params);
   }
 
@@ -38,7 +38,7 @@ export class CommodityService extends BaseService<CommodityEntity> {
     return super.getOne(id);
   }
 
-  update(id: any, body: updateCommodityDto): Observable<CommodityEntity> {
+  update(id: any, body: Partial<UpdateCommodityDto>): Observable<CommodityEntity> {
     return super.update(id, body);
   }
 

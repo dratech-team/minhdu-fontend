@@ -4,7 +4,7 @@ import {RouteAction} from '../../+state/route.action';
 import {DatePipe} from '@angular/common';
 import {OrderEntity} from '../../../order/enitities/order.entity';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
+import {CommodityEntity} from "../../../commodity/entities/commodities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";

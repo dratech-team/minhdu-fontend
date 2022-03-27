@@ -10,7 +10,7 @@ import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
 import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
-import { CommodityEntity } from '../../../pages/commodity/entities/commodity.entity';
+import { CommodityEntity } from '../../../pages/commodity/entities/commodities/commodity.entity';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
 

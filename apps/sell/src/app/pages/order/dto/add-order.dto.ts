@@ -1,6 +1,6 @@
 import { OrderEntity } from '../enitities/order.entity';
 import { CustomerEntity } from '../../customer/entities/customer.entity';
-import {CommodityEntity} from "../../commodity/entities/commodity.entity";
+import {CommodityEntity} from "../../commodity/entities/commodities/commodity.entity";
 
 export interface AddOrderDto extends Pick<OrderEntity, 'createdAt' | 'endedAt' | 'explain'> {
   readonly customerId: CustomerEntity['id'];

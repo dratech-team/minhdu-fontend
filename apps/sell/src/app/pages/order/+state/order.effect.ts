@@ -14,7 +14,7 @@ import { OrderQuery } from './order.query';
 import { OrderStore } from './order.store';
 import { RouteAction } from '../../route/+state/route.action';
 import { CommodityEntity, CommodityUniq } from '../../commodity/entities';
-import { updateCommodityDto } from '../../commodity/dto';
+import { UpdateCommodityDto } from '../../commodity/dto';
 
 @Injectable()
 export class OrderEffect {
@@ -216,7 +216,7 @@ export class OrderEffect {
   ) {
     const result = JSON.parse(JSON.stringify(commoditiesUniq));
     commodities.forEach(value => {
-      const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
+      const index = result.findIndex((commodity: UpdateCommodityDto) => commodity.updates.code === value.code);
       switch (action) {
         case 'add':
           if (index > -1) {

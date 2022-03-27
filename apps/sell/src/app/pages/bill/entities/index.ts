@@ -1,1 +1,1 @@
-export * from './bill.entity';
+export * from './bill/bill.entity';

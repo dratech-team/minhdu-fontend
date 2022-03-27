@@ -1,6 +1,6 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {CommodityUniq} from '../../commodity/entities/commodity-uniq.entity';
+import {CommodityUniq} from '../../commodity/entities/commodities/commodity-uniq.entity';
 import {OrderEntity} from '../enitities/order.entity';
 import {StorageName} from '../../../shared/constaints/storage-name.const';
 import {OrderVisibleEntity} from '../enitities/order-visible.entity';

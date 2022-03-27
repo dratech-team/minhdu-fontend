@@ -121,7 +121,6 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/hr"],
           "options": {
             "jestConfig": "apps/hr/jest.config.js",
             "passWithNoTests": true
@@ -161,7 +160,6 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/auth"],
           "options": {
             "jestConfig": "libs/auth/jest.config.js",
             "passWithNoTests": true
@@ -186,7 +184,6 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/orgchart"],
           "options": {
             "jestConfig": "libs/orgchart/jest.config.js",
             "passWithNoTests": true
@@ -211,7 +208,6 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/sell",
             "index": "apps/sell/src/index.html",
