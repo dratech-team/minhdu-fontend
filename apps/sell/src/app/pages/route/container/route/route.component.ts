@@ -19,6 +19,7 @@ import {OrderActions} from '../../../order/+state/order.actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {RouteStore} from '../../+state/route.store';
 import {Sort} from '@minhdu-fontend/data-models';
+import * as moment from "moment";
 
 @Component({
   templateUrl: 'route.component.html'
@@ -32,7 +33,6 @@ export class RouteComponent implements OnInit {
   pageSize = 30;
   pageIndexInit = 0;
   pageSizeTable = 10;
-  today = new Date().getTime();
   ItemContextMenu = ItemContextMenu;
   radios = RadiosStatusRouteConstant;
   sortRouteEnum = SortRouteEnum;
@@ -185,5 +185,9 @@ export class RouteComponent implements OnInit {
         api: Api.SELL.ROUTE.ROUTE_EXPORT
       }
     });
+  }
+
+  compareDay(date: Date) : boolean{
+   return  moment(date).isAfter(new Date(),'day')
   }
 }

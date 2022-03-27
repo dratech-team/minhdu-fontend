@@ -119,8 +119,10 @@
                 (click)='onDetail(route.id, false)'>
               {{(route?.startedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
-            <td *ngIf="ui.endedAt.visible" [nzLeft]='ui.endedAt?.pinned||false'
+            <td *ngIf="ui.endedAt.visible"
+                [nzLeft]='ui.endedAt?.pinned||false'
                 (click)='onDetail(route.id, false)'>
+
               {{(route?.endedAt | date:'dd/MM/yyyy') || 'Chưa cập nhật'}}
             </td>
             <td *ngIf="ui.driver.visible" [nzLeft]='ui.driver?.pinned||false'
@@ -143,7 +145,7 @@
             </td>
             <td *ngIf="ui.status.visible" [nzLeft]='ui.status?.pinned||false'
                 (click)='onDetail(route.id, false)'>
-              {{route.endedAt && route.endedAt.getTime() < today ? 'Hoàn thành' : 'Đang chạy' }}
+              {{!route.endedAt ? 'Đang chạy' : compareDay(route.endedAt) ? (route.endedAt|date:'dd-MM-yyyy') : 'Hoàn thành'}}
             </td>
           </tr>
           <tr [nzExpand]='route.expand'>
