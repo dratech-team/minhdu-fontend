@@ -1,25 +1,21 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
-import {ExportService} from '@minhdu-fontend/service';
-import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
-import {debounceTime, map, tap} from 'rxjs/operators';
-import {CustomerActions} from '../../+state/customer.actions';
-import {OrderEntity} from '../../../order/enitities/order.entity';
-import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
-import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
-import {Actions} from '@datorama/akita-ng-effects';
-import {CustomerQuery} from '../../+state/customer.query';
-import {NzModalService} from "ng-zorro-antd/modal";
-import {RadiosStatusRouteConstant} from "../../../../../../../../libs/constants/gender.constant";
-import {CustomerConstant} from "../../constants/customer.constant";
-import {PotentialsConstant} from "../../constants/potentials.constant";
-import {Sort} from "@minhdu-fontend/data-models";
-import {OrderActions} from "../../../order/+state/order.actions";
-import {CustomerStore} from "../../+state/customer.store";
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Api, ResourcesConstant } from '@minhdu-fontend/constants';
+import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
+import { ExportService } from '@minhdu-fontend/service';
+import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
+import { debounceTime, map, tap } from 'rxjs/operators';
+import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
+import { OrderEntity } from '../../../order/enitities';
+import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { RadiosStatusRouteConstant } from '../../../../../../../../libs/constants/gender.constant';
+import { CustomerConstant, PotentialsConstant } from '../../constants';
+import { Sort } from '@minhdu-fontend/data-models';
+import { OrderActions } from '../../../order/+state';
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -27,30 +23,31 @@ import {CustomerStore} from "../../+state/customer.store";
 export class CustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll().pipe(map(customers => JSON.parse(JSON.stringify(customers))));
   loading$ = this.customerQuery.selectLoading();
-  total$ = this.customerQuery.select(state => state.total)
-  ui$ = this.customerQuery.select(state => state.ui)
+  total$ = this.customerQuery.select(state => state.total);
+  ui$ = this.customerQuery.select(state => state.ui);
 
   pageSize = 25;
   pageIndexInit = 0;
   customerType = CustomerType;
   ItemContextMenu = ItemContextMenu;
   orders?: OrderEntity;
-  sortCustomerEnum = SortCustomerEnum
-  radiosGender = RadiosStatusRouteConstant
-  potentialsConstant = PotentialsConstant
-  resourcesConstant = ResourcesConstant
-  customerConstant = CustomerConstant
-  pageSizeTable = 10
-  valueSort?: Sort
-  stateSearch = this.customerQuery.getValue().search
+  sortCustomerEnum = SortCustomerEnum;
+  radiosGender = RadiosStatusRouteConstant;
+  potentialsConstant = PotentialsConstant;
+  resourcesConstant = ResourcesConstant;
+  customerConstant = CustomerConstant;
+  pageSizeTable = 10;
+  valueSort?: Sort;
+  visible = false;
+  stateSearch = this.customerQuery.getValue().search;
+
   formGroup = new FormGroup({
     resource: new FormControl(this.stateSearch.resource),
     isPotential: new FormControl(this.stateSearch.isPotential),
-    type: new FormControl(this.stateSearch.type? this.stateSearch.type:''),
+    type: new FormControl(this.stateSearch.type || ''),
     gender: new FormControl(this.stateSearch.gender),
     search: new FormControl(this.stateSearch.search)
   });
-  visible = false
 
   constructor(
     private readonly actions$: Actions,
@@ -65,14 +62,13 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.stateSearch)
-    this.actions$.dispatch(CustomerActions.loadAll({params: this.mapCustomer(this.formGroup.value, false)}));
+    this.actions$.dispatch(CustomerActions.loadAll({ params: this.mapCustomer(this.formGroup.value, false) }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll({params: this.mapCustomer(val, false)})
+            CustomerActions.loadAll({ params: this.mapCustomer(val, false) })
           );
         })
       )
@@ -101,19 +97,19 @@ export class CustomerComponent implements OnInit {
   mapCustomer(val: any, isPagination: boolean) {
     this.customerStore.update(state => ({
       ...state, search: val
-    }))
+    }));
     if (this.valueSort?.orderType) {
-      Object.assign(val, this.valueSort)
+      Object.assign(val, this.valueSort);
     } else {
-      delete val.orderBy
-      delete val.orderType
+      delete val.orderBy;
+      delete val.orderType;
     }
 
     Object.assign(val, {
       take: this.pageSize,
       skip: isPagination ? this.customerQuery.getCount() : 0
-    })
-    return val
+    });
+    return val;
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -125,10 +121,10 @@ export class CustomerComponent implements OnInit {
   }
 
   deleteCustomer($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%'});
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerActions.remove({id: $event.id}));
+        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
       }
     });
   }
@@ -136,7 +132,7 @@ export class CustomerComponent implements OnInit {
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: {id: $event.id}
+      data: { id: $event.id }
     });
   }
 
@@ -167,20 +163,20 @@ export class CustomerComponent implements OnInit {
   }
 
   onPagination(pageIndex: number) {
-    const value = this.formGroup.value
+    const value = this.formGroup.value;
     const count = this.customerQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(CustomerActions.loadAll({
         params: this.mapCustomer(value, true),
         isPagination: true
-      }))
+      }));
     }
   }
 
   onSort(sort: Sort) {
-    this.valueSort = sort
+    this.valueSort = sort;
     this.actions$.dispatch(OrderActions.loadAll({
       param: this.mapCustomer(this.formGroup.value, false)
-    }))
+    }));
   }
 }
