@@ -98,11 +98,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     private readonly message: NzMessageService,
     private readonly router: Router,
     private ref: ChangeDetectorRef,
-    private readonly positionService: PositionService
   ) {
   }
 
-  //dummy
   salaryBasic = ['Lương cơ bản trích BH', 'Lương theo PL.HD', 'Lương Tín nhiệm', 'Lương TN quản lý thêm'];
 
   ngOnChanges(changes: SimpleChanges) {

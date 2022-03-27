@@ -86,7 +86,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition))
 
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl(''),
     code: new FormControl(''),
     name: new FormControl(''),
     unit: new FormControl(''),
@@ -153,7 +153,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     );
 
     if (this.absentTitle) {
-      this.formGroup.get('title')?.setValue(this.absentTitle);
+      this.formGroup.get('titles')?.setValue(this.absentTitle);
       this.formGroup.get('startedAt')?.setValue(
         this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
       );
@@ -163,7 +163,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     }
 
     this.eventAddAbsent?.subscribe((val) => {
-      this.formGroup.get('title')?.setValue(val.absentTitle);
+      this.formGroup.get('titles')?.setValue(val.absentTitle);
       this.formGroup.get('startedAt')?.setValue(
         this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
       );
@@ -230,7 +230,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ABSENT,
-          title: value.title,
+          titles: [value.title],
           startedAt: value.startedAt,
           endedAt: value.endedAt,
           isLeave: value.isLeave
@@ -262,7 +262,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title);
+        this.formGroup.get('titles')?.setValue(val.title);
         this.formGroup.get('startedAt')?.setValue(
           this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
         );
@@ -301,7 +301,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         if (val) {
           this.isSelectSalary = false;
           this.salariesSelected = [];
-          this.formGroup.get('title')?.setValue(val.title);
+          this.formGroup.get('titles')?.setValue(val.title);
           this.formGroup.get('startedAt')?.setValue(
             this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
           );
@@ -365,7 +365,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
   onScroll() {
     this.isEventSearch = false;
-    const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
         payrollDTO: this.mapPayrollAbsent()
@@ -398,7 +397,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         skip: this.pageIndex,
         code: value.code,
         searchType: value.searchType,
-        salaryTitle: value.title ? value.title : '',
+        titles: value.titles ? [value.titles] : [],
         name: value.name,
         unit: value.unit,
         filterType: FilterTypeEnum.ABSENT,
