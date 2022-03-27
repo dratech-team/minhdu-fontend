@@ -1,9 +1,13 @@
-import {CustomerEntity} from '../entities';
-import {CustomerType} from "@minhdu-fontend/enums";
+import { CustomerType } from '@minhdu-fontend/enums';
+import { BaseCustomerEntity } from '../entities/base-customer.entity';
+import { BaseAddDto } from '@minhdu-fontend/base-dto';
 
-export interface AddCustomerDto extends Omit<CustomerEntity, 'id' | 'delivered' | 'delivering' | 'paymentHistories' | 'province' | 'district' | 'ward' | 'Type'> {
+interface BaseAddCustomer extends BaseCustomerEntity {
   readonly provinceId: number;
   readonly districtId?: number;
   readonly wardId?: number;
   readonly customerType?: CustomerType;
+}
+
+export interface AddCustomerDto extends BaseAddDto<BaseAddCustomer> {
 }

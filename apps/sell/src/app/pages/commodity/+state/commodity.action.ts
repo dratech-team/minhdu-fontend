@@ -9,7 +9,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[COMMODITY] Load All',
-  props<{ params: SearchCommodityDto, isPagination?: boolean }>()
+  props<SearchCommodityDto>()
 );
 
 export const getOne = createAction(

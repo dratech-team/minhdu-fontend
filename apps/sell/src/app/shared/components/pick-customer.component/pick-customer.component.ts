@@ -1,15 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewContainerRef} from '@angular/core';
-import {ControlContainer, FormControl, FormGroup} from '@angular/forms';
-import {debounceTime, tap} from 'rxjs/operators';
-import {CustomerEntity} from '../../../pages/customer/entities/customer.entity';
-import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
-import {CustomerDialogComponent} from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
-import {ResourcesConstant} from '@minhdu-fontend/constants';
-import {CustomerActions} from '../../../pages/customer/+state/customer.actions';
-import {CustomerQuery} from '../../../pages/customer/+state/customer.query';
-import {Actions} from '@datorama/akita-ng-effects';
-import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
-import {CustomerConstant} from "../../../pages/customer/constants/customer.constant";
+import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, tap } from 'rxjs/operators';
+import { CustomerEntity } from '../../../pages/customer/entities/customer.entity';
+import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
+import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
+import { ResourcesConstant } from '@minhdu-fontend/constants';
+import { CustomerActions } from '../../../pages/customer/+state/customer.actions';
+import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
+import { Actions } from '@datorama/akita-ng-effects';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { CustomerConstant } from '../../../pages/customer/constants/customer.constant';
 
 @Component({
   selector: 'app-pick-customer',
@@ -21,14 +21,14 @@ export class PickCustomerComponent implements OnInit {
   @Input() pickOne = false;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
-  @Input() data!: any
+  @Input() data!: any;
   resourceType = CustomerResource;
   customerResourcesConstant = ResourcesConstant;
   CustomerTypeConstant = CustomerConstant;
   customerType = CustomerType;
   pageSize = 30;
   pageIndexInit = 0;
-  pageSizeTable = 5
+  pageSizeTable = 5;
   isSelectAll = false;
   customerIds: number[] = [];
   formGroupCustomer = new FormGroup(
@@ -37,7 +37,7 @@ export class PickCustomerComponent implements OnInit {
       type: new FormControl(''),
       resource: new FormControl('')
     });
-  formGroup!: FormGroup
+  formGroup!: FormGroup;
 
   constructor(
     private readonly actions$: Actions,
@@ -45,14 +45,14 @@ export class PickCustomerComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly modalRef: NzModalRef,
-    private controlContainer: ControlContainer,
+    private controlContainer: ControlContainer
   ) {
   }
 
   ngOnInit(): void {
     this.formGroup = <FormGroup>this.controlContainer.control;
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerActions.loadAll({params: {take: 30, skip: 0}}));
+      this.actions$.dispatch(CustomerActions.loadAll({ search: { take: 30, skip: 0 } }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
@@ -60,19 +60,19 @@ export class PickCustomerComponent implements OnInit {
     this.formGroupCustomer.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.actions$.dispatch(CustomerActions.loadAll({params: this.customer(value)}))
+        this.actions$.dispatch(CustomerActions.loadAll({ search: this.customer(value) }));
       })
     ).subscribe();
   }
 
   onPagination(pageIndex: number) {
-    const count = this.customerQuery.getCount()
+    const count = this.customerQuery.getCount();
     const val = this.formGroupCustomer.value;
     if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(CustomerActions.loadAll({
-        params: this.customer(val, true),
-        isPagination: true
-      }))
+        search: this.customer(val, true),
+        isPaginate: true
+      }));
     }
   }
 
@@ -80,8 +80,8 @@ export class PickCustomerComponent implements OnInit {
     return {
       skip: isScroll ? this.customerQuery.getCount() : 0,
       take: this.pageSize,
-      customer: val.name.trim(),
-      customerType: val.type,
+      lastName: val.name.trim(),
+      type: val.type,
       resource: val.resource
     };
   }

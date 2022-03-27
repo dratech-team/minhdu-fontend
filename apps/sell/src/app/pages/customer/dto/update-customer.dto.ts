@@ -1,3 +1,9 @@
-import { AddCustomerDto } from './add-customer.dto';
+import { BaseCustomerEntity } from '../entities/base-customer.entity';
+import { BaseUpdateDto } from '@minhdu-fontend/base-dto';
 
-export type UpdateCustomerDto = Partial<AddCustomerDto>;
+interface BaseUpdateCustomerDto extends BaseCustomerEntity {
+
+}
+
+export interface UpdateCustomerDto extends BaseUpdateDto<BaseUpdateCustomerDto> {
+}

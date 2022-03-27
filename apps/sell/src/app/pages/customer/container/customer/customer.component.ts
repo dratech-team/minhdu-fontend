@@ -62,13 +62,13 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({ params: this.mapCustomer(this.formGroup.value, false) }));
+    this.actions$.dispatch(CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value, false) }));
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
           this.actions$.dispatch(
-            CustomerActions.loadAll({ params: this.mapCustomer(val, false) })
+            CustomerActions.loadAll({ search: this.mapCustomer(val, false) })
           );
         })
       )
@@ -167,8 +167,8 @@ export class CustomerComponent implements OnInit {
     const count = this.customerQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
       this.actions$.dispatch(CustomerActions.loadAll({
-        params: this.mapCustomer(value, true),
-        isPagination: true
+        search: this.mapCustomer(value, true),
+        isPaginate: true
       }));
     }
   }

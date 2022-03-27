@@ -30,7 +30,7 @@ export class CommodityService extends BaseService<CommodityEntity> {
     return this.http.get(Api.SELL.COMMODITY_TEMPLATE);
   }
 
-  pagination(params?: SearchCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
+  pagination(params: SearchCommodityDto): Observable<ResponsePaginate<CommodityEntity>> {
     return super.pagination(params);
   }
 

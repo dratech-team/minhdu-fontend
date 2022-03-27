@@ -1,12 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {CommodityAction} from '../../+state/commodity.action';
-import {MatDialog} from '@angular/material/dialog';
-import {CommodityDialogComponent} from '../../component/commodity-dialog/commodity-dialog.component';
-import {CommodityUnit} from '@minhdu-fontend/enums';
-import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import {FormControl, FormGroup} from '@angular/forms';
-import {Actions} from '@datorama/akita-ng-effects';
-import {CommodityQuery} from '../../+state/commodity.query';
+import { Component, OnInit } from '@angular/core';
+import { CommodityAction, CommodityQuery } from '../../+state';
+import { MatDialog } from '@angular/material/dialog';
+import { CommodityDialogComponent } from '../../component';
+import { CommodityUnit } from '@minhdu-fontend/enums';
+import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Actions } from '@datorama/akita-ng-effects';
 
 @Component({
   templateUrl: 'commodity.component.html'
@@ -33,7 +32,7 @@ export class CommodityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CommodityAction.loadAll({params: {take: 30, skip: 0}}));
+    this.actions$.dispatch(CommodityAction.loadAll({ search: { take: 30, skip: 0 } }));
   }
 
   add() {
@@ -45,14 +44,19 @@ export class CommodityComponent implements OnInit {
 
   onScroll() {
     const val = this.formGroup.value;
-    this.actions$.dispatch(CommodityAction.loadAll({params: {take: this.pageSize, skip: this.commodityQuery.getCount()}}));
+    this.actions$.dispatch(CommodityAction.loadAll({
+      search: {
+        take: this.pageSize,
+        skip: this.commodityQuery.getCount()
+      }
+    }));
   }
 
   deleteCommodity($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%'});
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(CommodityAction.remove({id: $event.id}));
+        this.actions$.dispatch(CommodityAction.remove({ id: $event.id }));
       }
     });
   }

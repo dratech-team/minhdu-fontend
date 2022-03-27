@@ -10,7 +10,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[CUSTOMER] Load All',
-  props<{ params: SearchCustomerDto, isPagination?: boolean }>()
+  props<SearchCustomerDto>()
 );
 
 const loadOne = createAction(
@@ -20,7 +20,7 @@ const loadOne = createAction(
 
 const update = createAction(
   '[CUSTOMER] Update',
-  props<{ id: number, updates: UpdateCustomerDto }>()
+  props<UpdateCustomerDto>()
 );
 
 const remove = createAction(
