@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {CommodityService} from '../service/commodity.service';
+import {CommodityService} from '../service';
 import {CommodityAction} from './commodity.action';
 import {throwError} from 'rxjs';
 import {OrderActions} from '../../order/+state/order.actions';

@@ -1,32 +1,30 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PaymentType} from '@minhdu-fontend/enums';
-import {OrderActions} from '../../+state/order.actions';
-import {DatePipe} from '@angular/common';
-import {CustomerEntity} from '../../../customer/entities/customer.entity';
-import {CommodityQuery} from '../../../commodity/+state/commodity.query';
-import {CustomerQuery} from '../../../customer/+state/customer.query';
-import {Actions} from "@datorama/akita-ng-effects";
-import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
-import {NzModalRef} from "ng-zorro-antd/modal";
-import {OrderQuery} from "../../+state/order.query";
-import {NzMessageService} from "ng-zorro-antd/message";
-
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PaymentType } from '@minhdu-fontend/enums';
+import { OrderActions, OrderQuery } from '../../+state';
+import { DatePipe } from '@angular/common';
+import { CustomerEntity } from '../../../customer/entities';
+import { CommodityQuery } from '../../../commodity/+state';
+import { CustomerQuery } from '../../../customer/+state';
+import { Actions } from '@datorama/akita-ng-effects';
+import { CommodityEntity } from '../../../commodity/entities';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'order-dialog.component.html'
 })
 export class OrderDialogComponent implements OnInit {
-  @Input() data: any
+  @Input() data: any;
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
   districtId!: number;
-  provinceId!: number
-  stepIndex = 0
-  added$ = this.orderQuery.select(state => state.added)
+  provinceId!: number;
+  stepIndex = 0;
+  added$ = this.orderQuery.select(state => state.added);
 
   constructor(
     private readonly actions$: Actions,
@@ -67,7 +65,7 @@ export class OrderDialogComponent implements OnInit {
         district: [],
         ward: [],
         customerId: [''],
-        commodityIds: [[]],
+        commodityIds: [[]]
       });
     }
 
@@ -79,8 +77,8 @@ export class OrderDialogComponent implements OnInit {
 
   onSubmit(): any {
     if (!this.data?.isUpdate) {
-      if(this.formGroup.value.commodityIds.length == 0 ){
-        return this.message.warning('Chưa chọn hàng hoá')
+      if (this.formGroup.value.commodityIds.length == 0) {
+        return this.message.warning('Chưa chọn hàng hoá');
       }
     }
     const val = this.formGroup.value;
@@ -104,13 +102,13 @@ export class OrderDialogComponent implements OnInit {
         updates: order
       }));
     } else {
-      this.actions$.dispatch(OrderActions.addOne(order))
+      this.actions$.dispatch(OrderActions.addOne(order));
     }
     this.added$.subscribe(added => {
       if (added) {
-        this.modalRef.close()
+        this.modalRef.close();
       }
-    })
+    });
   }
 
   pre(): void {
@@ -124,8 +122,8 @@ export class OrderDialogComponent implements OnInit {
       return;
     }
 
-    if(this.stepIndex  > 0 && !this.formGroup.value.customerId ){
-      return this.message.warning('Chưa chọn khách hàng')
+    if (this.stepIndex > 0 && !this.formGroup.value.customerId) {
+      return this.message.warning('Chưa chọn khách hàng');
     }
     this.stepIndex += 1;
   }

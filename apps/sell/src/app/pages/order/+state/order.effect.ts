@@ -1,22 +1,20 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {OrderService} from '../service/order.service';
-import {OrderActions} from './order.actions';
-import {catchError, map, switchMap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ConvertBoolean} from '@minhdu-fontend/enums';
-import {Router} from '@angular/router';
-import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import {OrderEntity} from '../enitities/order.entity';
-import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
-import {OrderQuery} from './order.query';
-import {OrderStore} from './order.store';
-import {RouteAction} from '../../route/+state/route.action';
-import {CommodityUniq} from "../../commodity/entities/commodity-uniq.entity";
-import {CommodityEntity} from "../../commodity/entities/commodity.entity";
-import {arrayUpdate} from "@datorama/akita";
-import {updateCommodityDto} from "../../commodity/dto/update-commodity.dto";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { OrderService } from '../service/order.service';
+import { OrderActions } from './order.actions';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConvertBoolean } from '@minhdu-fontend/enums';
+import { Router } from '@angular/router';
+import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import { OrderEntity } from '../enitities/order.entity';
+import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
+import { OrderQuery } from './order.query';
+import { OrderStore } from './order.store';
+import { RouteAction } from '../../route/+state/route.action';
+import { CommodityEntity, CommodityUniq } from '../../commodity/entities';
+import { updateCommodityDto } from '../../commodity/dto';
 
 @Injectable()
 export class OrderEffect {
@@ -51,8 +49,8 @@ export class OrderEffect {
           this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
           state.commodityUniq
       }));
-      res.expand = this.orderQuery.getValue().expandedAll || false
-      this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
+      res.expand = this.orderQuery.getValue().expandedAll || false;
+      this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
     }),
@@ -69,11 +67,11 @@ export class OrderEffect {
           ...state, loading: true
         }));
         if (props.param?.orderType) {
-          Object.assign(props.param, {orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'});
+          Object.assign(props.param, { orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des' });
         }
         return this.orderService.pagination(Object.assign(
           props.param,
-          (props.param?.status === undefined || props.param?.status === null) ? {status: 0} : {})
+          (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
         ).pipe(
           map((response) => {
               const expanedAll = this.orderQuery.getValue().expandedAll;
@@ -88,7 +86,7 @@ export class OrderEffect {
                 this.snackBar.openFromComponent(SnackBarComponent, {
                   duration: 2500,
                   panelClass: ['background-snackbar'],
-                  data: {content: 'Đã lấy hết đơn hàng'}
+                  data: { content: 'Đã lấy hết đơn hàng' }
                 });
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
@@ -130,14 +128,14 @@ export class OrderEffect {
         }));
         return this.orderService.update(props.id, props.updates).pipe(
           map((response) => {
-            const orderBefore = this.orderQuery.getEntity(response.id)
+            const orderBefore = this.orderQuery.getEntity(response.id);
             if (orderBefore)
               this.orderStore.update(state => ({
                 ...state,
-                added: true,
+                added: true
               }));
             if (props.inRoute) {
-              this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));
+              this.actions$.dispatch(RouteAction.loadOne({ id: props.inRoute.routeId }));
             }
             this.snackBar.open('Cập nhật thành công');
             this.orderStore.update(response.id, response);
@@ -168,7 +166,7 @@ export class OrderEffect {
     ofType(OrderActions.payment),
     switchMap((props) =>
       this.orderService.payment(props.id, props.order).pipe(
-        map((_) => OrderActions.loadOne({id: props.id})),
+        map((_) => OrderActions.loadOne({ id: props.id })),
         catchError((err) => throwError(err))
       )
     )
@@ -180,8 +178,8 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.delete(props.id).pipe(
         map((_) => {
-          this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
-          const orderDelete = this.orderQuery.getEntity(props.id)
+          this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
+          const orderDelete = this.orderQuery.getEntity(props.id);
           if (orderDelete)
             this.orderStore.update(state => ({
               ...state,
@@ -189,7 +187,7 @@ export class OrderEffect {
               totalCommodity: orderDelete.commodities?.length > 0 ?
                 state.totalCommodity - orderDelete.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
               commodityUniq: orderDelete.commodities?.length > 0 ?
-                this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, "delete") :
+                this.handleCommodityUniq(state.commodityUniq, orderDelete.commodities, 'delete') :
                 state.commodityUniq
             }));
           this.orderStore.remove(props.id);
@@ -204,7 +202,7 @@ export class OrderEffect {
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
     map((res) => {
-        this.snackBar.open('Huỷ đơn hàng thành công', '', {duration: 1500});
+        this.snackBar.open('Huỷ đơn hàng thành công', '', { duration: 1500 });
         this.orderStore.remove(res.id);
       }
     ),
@@ -214,29 +212,29 @@ export class OrderEffect {
   handleCommodityUniq(
     commoditiesUniq: CommodityUniq[],
     commodities: CommodityEntity[],
-    action: 'delete' | 'add',
+    action: 'delete' | 'add'
   ) {
-    const result = JSON.parse(JSON.stringify(commoditiesUniq))
+    const result = JSON.parse(JSON.stringify(commoditiesUniq));
     commodities.forEach(value => {
       const index = result.findIndex((commodity: updateCommodityDto) => commodity.code === value.code);
       switch (action) {
-        case "add":
+        case 'add':
           if (index > -1) {
-            result[index].amount = result[index].amount + value.amount
+            result[index].amount = result[index].amount + value.amount;
           } else {
-            result.push({name: value.name, code: value.code, amount: value.amount})
+            result.push({ name: value.name, code: value.code, amount: value.amount });
           }
-          break
-        case "delete":
+          break;
+        case 'delete':
           if (result[index].amount - value.amount === 0) {
-            result.splice(index, 1)
+            result.splice(index, 1);
           } else {
-            result[index].amount = result[index].amount - value.amount
+            result[index].amount = result[index].amount - value.amount;
           }
-          break
+          break;
       }
-    })
-    return result
+    });
+    return result;
   }
 }
 

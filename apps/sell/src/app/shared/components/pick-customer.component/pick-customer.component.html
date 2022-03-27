@@ -85,9 +85,6 @@
       </ng-template>
       </tbody>
     </nz-table>
-    <div *ngIf='checkValid.createdAt.errors?.required' class='invalid-feedback'>
-      <div>Chưa chọn khách hàng</div>
-    </div>
   </div>
   <button *ngIf='data?.isDialog' nz-button nzType="primary" (click)='closeDialog()' mat-dialog-close> xác nhận
   </button>

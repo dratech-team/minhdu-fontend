@@ -1,4 +1,4 @@
-import {CommodityEntity} from "../entities/commodity.entity";
+import {CommodityEntity} from '../entities';
 
 export interface updateCommodityDto extends Partial<Omit<CommodityEntity, 'id'>>{
   readonly orderId?: number

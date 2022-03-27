@@ -1,3 +1,3 @@
-import {CommodityEntity} from "../entities/commodity.entity";
+import {CommodityEntity} from '../entities';
 
 export type AddCommodityDto = Partial<Omit<CommodityEntity, 'id'>>
