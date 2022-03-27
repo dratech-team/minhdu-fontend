@@ -9,6 +9,7 @@ import {Actions} from "@datorama/akita-ng-effects";
 import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Observable} from "rxjs";
+import {RouteStore} from "../../+state/route.store";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -22,10 +23,12 @@ export class RouteDialogComponent implements OnInit {
   isSelectAll = false;
   stepIndex = 0;
   added$ = this.routeQuery.select(state => state.added)
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
     private readonly routeQuery: RouteQuery,
+    private readonly routeStore: RouteStore,
     private readonly datePipe: DatePipe,
     private readonly modalRef: NzModalRef,
     private readonly snackbar: MatSnackBar
@@ -33,6 +36,9 @@ export class RouteDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.routeStore.update(state => ({
+      ...state, added: null
+    }))
     if (this.data?.selectOrder) {
       this.stepIndex = 1;
     }
