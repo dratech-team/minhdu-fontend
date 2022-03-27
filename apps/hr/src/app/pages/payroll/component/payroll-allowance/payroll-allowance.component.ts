@@ -18,13 +18,13 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {of, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Api, SearchTypeConstant, UnitAllowanceConstant} from '@minhdu-fontend/constants';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
-import {debounceTime, startWith} from 'rxjs/operators';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {debounceTime} from 'rxjs/operators';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatDialog} from '@angular/material/dialog';
@@ -40,7 +40,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {Router} from '@angular/router';
-import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {checkInputNumber, getSelectors} from '@minhdu-fontend/utils';
 import {DialogAllowanceComponent} from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import {
   DialogAllowanceMultipleComponent
@@ -238,7 +238,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           code: value.code || '',
           name: value.name,
           position: value.position?.name || '',
-          branch: value.branch ? value.branch.name : '',
+          branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
           title: value.title,
           isLeave: value.isLeave
@@ -285,7 +285,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               title: val.title,
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position?.name || '',
-              branch: val.branch ? value.branch.name : '',
+              branch: value.branch.name || '',
               isLeave: val.isLeave
             }
           })
@@ -342,7 +342,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
                 position: val.position,
-                branch: this.formGroup.value.branch ? this.formGroup.value.name : '',
+                branch: this.formGroup.value.name || '',
                 isLeave: this.formGroup.value.isLeave
               }
             })
@@ -447,7 +447,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,
       position: value.position?.name || '',
-      branch: value.branch ? value.branch.name : '',
+      branch: value.branch.name || '',
       isLeave: value.isLeave
     };
     if (this.sort?.active) {
