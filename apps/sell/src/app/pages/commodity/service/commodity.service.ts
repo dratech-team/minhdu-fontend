@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { AddCommodityDto } from '../dto/add-commodity.dto';
-import { CommodityEntity } from '../entities/commodities/commodity.entity';
+import { CommodityEntity } from '../entities/commodity.entity';
 import { SearchCommodityDto } from '../dto/search-commodity.dto';
 import { UpdateCommodityDto } from '../dto/update-commodity.dto';
 

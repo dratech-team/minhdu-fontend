@@ -11,7 +11,7 @@ import { OrderEntity } from '../../../order/enitities/order.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { RouteQuery } from '../../+state/route.query';
 import { CancelEnum } from '../../enums/cancel.enum';
-import { CommodityEntity } from '../../../commodity/entities/commodities/commodity.entity';
+import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
 import { OrderActions } from '../../../order/+state/order.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 

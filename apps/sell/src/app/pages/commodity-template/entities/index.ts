@@ -1,1 +1,1 @@
-export * from './commodities-template/commodity-template.entity';
+export * from './commodity-template.entity';

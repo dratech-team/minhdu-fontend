@@ -19,7 +19,7 @@ import {BehaviorSubject} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
 import {OrderQuery} from '../../+state/order.query';
 import {OrderHistoryEntity} from '../../enitities/order-history.entity';
-import {CommodityEntity} from '../../../commodity/entities/commodities/commodity.entity';
+import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {NzModalService} from "ng-zorro-antd/modal";
 

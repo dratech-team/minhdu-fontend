@@ -8,7 +8,7 @@ import {CommodityAction} from '../../../pages/commodity/+state/commodity.action'
 import {CommodityDialogComponent} from '../../../pages/commodity/component/commodity-dialog/commodity-dialog.component';
 import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
 import {Actions} from '@datorama/akita-ng-effects';
-import {CommodityEntity} from "../../../pages/commodity/entities/commodities/commodity.entity";
+import {CommodityEntity} from "../../../pages/commodity/entities/commodity.entity";
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 
 @Component({

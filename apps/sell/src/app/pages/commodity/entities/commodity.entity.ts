@@ -1,6 +1,6 @@
-import { OrderEntity } from '../../../order/enitities';
-import { RouteEntity } from '../../../route/entities/route.entity';
-import { BaseCommodityEntity } from '../base-commodity-entity';
+import { OrderEntity } from '../../order/enitities';
+import { RouteEntity } from '../../route/entities';
+import { BaseCommodityEntity } from './base-commodity.entity';
 
 export interface CommodityEntity extends BaseCommodityEntity {
   orders: OrderEntity[]
