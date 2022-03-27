@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@minhdu-fontend/service';
-import { CommodityTemplateEntity } from '../entities/commodity-template.entity';
+import { CommodityTemplateEntity } from '../entities/commodities-template/commodity-template.entity';
 import { HttpClient } from '@angular/common/http';
 import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
