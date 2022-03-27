@@ -64,7 +64,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
-    title: new FormControl(''),
+    titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
     isLeave: new FormControl(false),
@@ -187,7 +187,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.STAY,
-          title: value.title,
+          titles: value.titles,
           isLeave: value.isLeave
         };
         if (value.createdAt) {
@@ -223,7 +223,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+        this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
         const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
@@ -232,7 +232,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               skip: this.pageIndex,
               code: value.code,
               createdAt: value.createdAt,
-              title: val.title,
+              titles: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position?.name || '',
               branch: value.branch.name || '',
@@ -270,7 +270,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           this.isSelectSalary = false;
           this.salariesSelected = [];
           const value = this.formGroup.value;
-          this.formGroup.get('title')?.setValue(val.title, {emitEvent: false});
+          this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+          console.log(this.formGroup.value.titles)
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -279,7 +280,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 code: value.code,
                 searchType: value.searchType,
                 createdAt: new Date(value.createdAt),
-                title: val.title,
+                titles: [val.title],
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
                 position: val.position,
@@ -379,7 +380,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       code: value.code,
       searchType: value.searchType,
       createdAt: new Date(value.createdAt),
-      salaryTitle: value.title ? value.title : '',
+      titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.STAY,
       position: value.position?.name || '',

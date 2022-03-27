@@ -83,17 +83,17 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
-        <mat-select class='border-top' formControlName='titles'>
-          <mat-option *ngFor='let item of salaryBasic' [value]='item.value'> {{item.title}}</mat-option>
-        </mat-select>
-        <!--        <input class='form-control' type='text' matInput-->
-        <!--               formControlName='title'>-->
-        <!--        <mat-autocomplete #templateOvertime='matAutocomplete'>-->
-        <!--          <mat-option *ngFor='let template of templateBasic$ | async' [value]='template.title'-->
-        <!--                      (onSelectionChange)='onSelectTemplateBasic($event, template.title)'>-->
-        <!--            {{template.title}}-->
-        <!--          </mat-option>-->
-        <!--        </mat-autocomplete>-->
+        <nz-select style="width: 100%"
+                   [nzMaxTagCount]="1"
+                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
+                   nzMode="multiple"
+                   nzPlaceHolder="Chọn loại phụ cấp"
+                   formControlName="titles"
+        >
+          <nz-option *ngFor="let item of salaryBasic" [nzLabel]="item" [nzValue]="item"></nz-option>
+          <nz-option [nzLabel]="'Tất cả'" [nzValue]="''"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>
       <th>
         <div class='border-top d-flex justify-content-center align-items-center'>Đơn vị tính</div>
