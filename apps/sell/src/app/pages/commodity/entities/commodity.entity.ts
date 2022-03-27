@@ -1,14 +1,8 @@
-import {CommodityUnit} from '@minhdu-fontend/enums';
-import {OrderEntity} from '../../order/enitities/order.entity';
-import {RouteEntity} from "../../route/entities/route.entity";
+import { OrderEntity } from '../../order/enitities';
+import { RouteEntity } from '../../route/entities';
+import { BaseCommodityEntity } from './base-commodity.entity';
 
-export interface CommodityEntity {
-  id: number
-  code: string
-  name: string
-  unit: CommodityUnit,
-  price: number
-  amount: number
+export interface CommodityEntity extends BaseCommodityEntity {
   orders: OrderEntity[]
   isSelect: boolean;
   gift: number;

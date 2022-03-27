@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {OrderStore} from '../../+state/order.store';
-import {OrderQuery} from '../../+state/order.query';
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { OrderQuery, OrderStore } from '../../+state';
 
 @Component({
   selector: 'minhdu-fontend-pin-column-order',
@@ -23,11 +22,11 @@ export class VisibleOrderComponent {
   }
 
   onUpdateVisible() {
-    this.orderStore.updateUI(this.visibleEntity,'visible');
+    this.orderStore.updateUI(this.visibleEntity, 'visible');
   }
 
   onUpdatePinned() {
-    this.orderStore.updateUI(this.visibleEntity,'pinned');
+    this.orderStore.updateUI(this.visibleEntity, 'pinned');
   }
 
   visible(key: 'visible' | 'pinned'): boolean {

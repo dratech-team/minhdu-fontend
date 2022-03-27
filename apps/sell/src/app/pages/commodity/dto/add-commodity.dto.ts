@@ -1,3 +1,6 @@
-import {CommodityEntity} from "../entities/commodity.entity";
+import { BaseCommodityEntity } from '../entities';
+import { BaseAddDto } from '@minhdu-fontend/base-dto';
 
-export type AddCommodityDto = Partial<Omit<CommodityEntity, 'id'>>
+export interface AddCommodityDto extends BaseAddDto<BaseCommodityEntity> {
+
+}

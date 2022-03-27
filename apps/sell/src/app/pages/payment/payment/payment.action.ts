@@ -1,7 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Payment } from './payment.interface';
 import { PaymentHistory } from '@minhdu-fontend/data-models';
-import { UpdateNum } from '@ngrx/entity/src/models';
 
 
 export const loadInit = createAction(
@@ -49,7 +47,7 @@ export const updatePayment = createAction(
 
 export const updatePaymentSuccess = createAction(
   '[PAYMENT] Update Payment Success',
-  props<{ payment: PaymentHistory}>()
+  props<{ payment: PaymentHistory }>()
 );
 
 export const deletePayment = createAction(
@@ -62,7 +60,7 @@ export const deletePaymentSuccess = createAction(
   props<{ id: number }>()
 );
 export const handlePaymentError = createAction(
-  '[PAYMENT] Handle Payment Error',
+  '[PAYMENT] Handle Payment Error'
 );
 export const PaymentAction = {
   loadMorePayment,

@@ -1,5 +1,4 @@
-export interface CommodityUniq {
-  readonly code: string,
-  readonly name: string,
-  readonly amount: number
+import { BaseCommodityEntity } from './base-commodity.entity';
+
+export interface CommodityUniq extends BaseCommodityEntity {
 }

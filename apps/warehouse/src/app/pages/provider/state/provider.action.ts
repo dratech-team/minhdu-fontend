@@ -1,7 +1,6 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
-import {AddProviderDto} from "../dto/add-provider.dto";
-import {ProviderDto} from "../dto/provider.dto";
-import {UpdateProviderDto} from "../dto/update-provider.dto";
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddProviderDto, UpdateProviderDto } from '../dto';
+import { SearchProviderDto } from '../dto/search-provider.dto';
 
 const addOne = createAction(
   '[PROVIDER] Add One',
@@ -10,12 +9,12 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[PROVIDER] Load All',
-  props<{ param: ProviderDto, isScroll?: boolean }>()
+  props<SearchProviderDto>()
 );
 
 const update = createAction(
   '[PROVIDER] Update ',
-  props<{ id: number, body: UpdateProviderDto }>()
+  props<UpdateProviderDto>()
 );
 
 const remove = createAction(
@@ -24,4 +23,4 @@ const remove = createAction(
 );
 
 
-export const ProviderActions = {addOne, loadAll, update, remove};
+export const ProviderActions = { addOne, loadAll, update, remove };

@@ -1,19 +1,18 @@
-import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
-import {Injectable} from '@angular/core';
-import {RouteEntity} from '../entities/route.entity';
-import {StorageName} from '../../../shared/constaints/storage-name.const';
-import {SearchRouteEntity} from "../dto/search-route.entity";
-import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
-import {routeVisibleEntity} from "../entities/route-visible.entity";
-import {CustomerVisibleEntity} from "../../customer/entities/customer-visible.entity";
-import {updateStateUiUtil} from "../../../utils/update-state-ui.util";
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { RouteEntity } from '../entities/route.entity';
+import { StorageName } from '../../../shared/constaints/storage-name.const';
+import { SearchRouteDto } from '../dto/search-route.dto';
+import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
+import { routeVisibleEntity } from '../entities/route-visible.entity';
+import { updateStateUiUtil } from '../../../utils/update-state-ui.util';
 
 export interface RouteState extends EntityState<RouteEntity> {
   loading: boolean;
   added: boolean | null,
   total: number,
   expandedAll: boolean,
-  search: SearchRouteEntity,
+  search: SearchRouteDto,
   readonly ui?: routeVisibleEntity;
 }
 
@@ -26,8 +25,6 @@ export const createInitialState = () => ({
     search: '',
     startedAt_start: getFirstDayInMonth(new Date()),
     startedAt_end: getLastDayInMonth(new Date()),
-    endedAt_start: getFirstDayInMonth(new Date()),
-    endedAt_end: getLastDayInMonth(new Date()),
     status: -1
   },
   ui: {
@@ -70,8 +67,8 @@ export const createInitialState = () => ({
   }
 });
 
-@Injectable({providedIn: 'root'})
-@StoreConfig({name: StorageName.ROUTE})
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: StorageName.ROUTE })
 export class RouteStore extends EntityStore<RouteState> {
   constructor() {
     super(createInitialState());

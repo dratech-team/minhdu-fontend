@@ -9,7 +9,7 @@ import { UpdateNum } from '@ngrx/entity/src/models';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { AddOrderDto } from '../dto/add-order.dto';
 import { CommodityUniq } from '../../commodity/entities/commodity-uniq.entity';
-import { LoadOrderDto } from '../dto/load-order.dto';
+import { SearchOrderDto } from '../dto/search-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +24,7 @@ export class OrderService extends BaseService<OrderEntity> {
     return super.addOne(props);
   }
 
-  pagination(params?: LoadOrderDto): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
+  pagination(params?: SearchOrderDto): Observable<ResponsePaginate<OrderEntity> & { commodityUniq: CommodityUniq[] }> {
     return super.pagination(params);
   }
 

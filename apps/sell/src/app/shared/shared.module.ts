@@ -27,33 +27,35 @@ import { CommodityEffect } from '../pages/commodity/+state/commodity.effect';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @NgModule({
-  imports: [
-    ComponentsModule,
-    AkitaNgEffectsModule.forFeature([
-      OrderEffect,
-      CustomerEffect,
-      CommodityEffect
-    ]),
-    CommonModule,
-    RouterModule,
-    MatMenuModule,
-    FormsModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    InfiniteScrollModule,
-    ReactiveFormsModule,
-    NgxChartsModule,
-    MatInputModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    NzTableModule,
-    NzButtonModule,
-    NzInputModule,
-    NzSelectModule
-  ],
+    imports: [
+        ComponentsModule,
+        AkitaNgEffectsModule.forFeature([
+            OrderEffect,
+            CustomerEffect,
+            CommodityEffect
+        ]),
+        CommonModule,
+        RouterModule,
+        MatMenuModule,
+        FormsModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        InfiniteScrollModule,
+        ReactiveFormsModule,
+        NgxChartsModule,
+        MatInputModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        NzTableModule,
+        NzButtonModule,
+        NzInputModule,
+        NzSelectModule,
+        NzRadioModule
+    ],
   declarations: [
     TableOrdersComponent,
     PickOrderComponent,

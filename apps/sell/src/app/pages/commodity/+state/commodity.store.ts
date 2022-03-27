@@ -1,15 +1,15 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { CommodityEntity } from '../entities/commodity.entity';
+import { CommodityEntity } from '../entities';
 import { StorageName } from '../../../shared/constaints/storage-name.const';
 
 export interface CommodityState extends EntityState<CommodityEntity> {
   loading: boolean;
-  added: boolean|null,
+  added: boolean | null,
   readonly total: number;
 }
 
-export const createInitialState = () => ({ loading: true, total: 0, added: null});
+export const createInitialState = () => ({ loading: true, total: 0, added: null });
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: StorageName.COMMODITY })

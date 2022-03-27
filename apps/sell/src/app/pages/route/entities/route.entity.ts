@@ -5,7 +5,7 @@ export interface RouteEntity {
   readonly id: number,
   readonly name: string,
   readonly startedAt: Date,
-  readonly  endedAt: Date,
+  readonly endedAt: Date,
   readonly driver: string,
   readonly employee: Employee,
   readonly orders: OrderEntity[],

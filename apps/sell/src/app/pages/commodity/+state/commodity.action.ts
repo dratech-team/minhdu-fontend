@@ -1,9 +1,6 @@
-import {createAction, props} from '@ngrx/store';
-import {AddCommodityDto} from "../dto/add-commodity.dto";
-import {CommodityEntity} from "../entities/commodity.entity";
-import {LoadCommodityDto} from "../dto/load-commodity.dto";
-import {updateCommodityDto} from "../dto/update-commodity.dto";
-
+import { createAction, props } from '@ngrx/store';
+import { AddCommodityDto, SearchCommodityDto, UpdateCommodityDto } from '../dto';
+import { CommodityEntity } from '../entities';
 
 export const addOne = createAction(
   '[COMMODITY] Add One',
@@ -12,7 +9,7 @@ export const addOne = createAction(
 
 export const loadAll = createAction(
   '[COMMODITY] Load All',
-  props<{ params: LoadCommodityDto, isScroll?: boolean }>()
+  props<SearchCommodityDto>()
 );
 
 export const getOne = createAction(
@@ -22,7 +19,7 @@ export const getOne = createAction(
 
 export const update = createAction(
   '[COMMODITY] Update',
-  props<{ id: number, updates: updateCommodityDto}>()
+  props<UpdateCommodityDto>()
 );
 
 export const remove = createAction(
@@ -31,6 +28,6 @@ export const remove = createAction(
 );
 
 export const resetStateCommodityNewAdd = createAction(
-  '[UPDATE_STATE_COMMODITY] Reset State Commodity',
+  '[UPDATE_STATE_COMMODITY] Reset State Commodity'
 );
-export const CommodityAction = {addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd};
+export const CommodityAction = { addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd };

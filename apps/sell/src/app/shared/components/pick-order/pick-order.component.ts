@@ -9,7 +9,7 @@ import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComp
 import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
-import { LoadOrderDto } from '../../../pages/order/dto/load-order.dto';
+import { SearchOrderDto } from '../../../pages/order/dto/search-order.dto';
 import { CommodityEntity } from '../../../pages/commodity/entities/commodity.entity';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
@@ -35,6 +35,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
 
   orders$ = this.orderQuery.selectAll();
   total$ = this.orderQuery.selectCount();
+  loading$ = this.orderQuery.select(state => state.loading);
 
   ordersFilter: OrderEntity[] = [];
   pageSize = 30;
@@ -111,7 +112,7 @@ export class PickOrderComponent implements OnInit, OnChanges {
     }
   }
 
-  mapOrder(isPagination?: boolean): LoadOrderDto {
+  mapOrder(isPagination?: boolean): SearchOrderDto {
     const val = this.formGroup.value;
     const param = {
       take: this.pageSize,

@@ -28,7 +28,9 @@
       "@minhdu-fontend/system": ["libs/system/src/index.ts"],
       "@minhdu-fontend/config": ["libs/configs/index.ts"],
       "@minhdu-fontend/orgchart-position": ["libs/orgchart/src/lib/+state/position/index.ts"],
-      "@minhdu-fontend/utils": ["libs/utils/index.ts"]
+      "@minhdu-fontend/utils": ["libs/utils/index.ts"],
+      "@minhdu-fontend/base-entity": ["libs/entities/index.ts"],
+      "@minhdu-fontend/base-dto": ["libs/dto/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

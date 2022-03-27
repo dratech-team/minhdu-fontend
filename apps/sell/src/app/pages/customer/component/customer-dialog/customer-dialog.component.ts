@@ -76,7 +76,7 @@ export class CustomerDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    const customer: AddCustomerDto = {
+    const customer = {
       lastName: value.lastName,
       identify: value?.identify,
       gender: value.gender,
@@ -100,7 +100,7 @@ export class CustomerDialogComponent implements OnInit {
     if (this.data) {
       this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
     } else {
-      this.actions$.dispatch(CustomerActions.addOne(customer));
+      this.actions$.dispatch(CustomerActions.addOne({body: customer}));
     }
     this.added$.subscribe(added => {
       if (added) {

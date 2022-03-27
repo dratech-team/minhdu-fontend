@@ -1,10 +1,9 @@
-import {select, Store} from '@ngrx/store';
-import {CommodityAction} from '../../../pages/commodity/+state/commodity.action';
-import {Injectable} from '@angular/core';
-import {CommodityQuery} from '../../../pages/commodity/+state/commodity.query';
-import {LoadCommodityDto} from "../../../pages/commodity/dto/load-commodity.dto";
+import { Store } from '@ngrx/store';
+import { CommodityAction, CommodityQuery } from '../../../pages/commodity/+state';
+import { Injectable } from '@angular/core';
+import { SearchCommodityDto } from '../../../pages/commodity/dto';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PickCommodityService {
   commodities$ = this.commodityQuery.selectAll();
 
@@ -15,11 +14,11 @@ export class PickCommodityService {
   }
 
   loadInit() {
-    return this.store.dispatch(CommodityAction.loadAll({params: {take: 30, skip: 0}}));
+    return this.store.dispatch(CommodityAction.loadAll({ search: { take: 30, skip: 0 } }));
   }
 
-  scrollCommodities(val: LoadCommodityDto) {
-    this.store.dispatch(CommodityAction.loadAll({params: val, isScroll: true}));
+  scrollCommodities(val: SearchCommodityDto['search']) {
+    this.store.dispatch(CommodityAction.loadAll({ search: val, isPaginate: true }));
   }
 
   commodities() {

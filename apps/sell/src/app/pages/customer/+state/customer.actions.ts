@@ -1,8 +1,6 @@
-import {createAction, props} from '@datorama/akita-ng-effects';
-import {AddCustomerDto} from '../dto/add-customer.dto';
-import {UpdateCustomerDto} from '../dto/update-customer.dto';
-import {LoadCustomerDto} from '../dto/load-customer.dto';
-import {LoadOrderDto} from '../../order/dto/load-order.dto';
+import { createAction, props } from '@datorama/akita-ng-effects';
+import { AddCustomerDto, LoadOneCustomerDto, RemoveCustomerDto, SearchCustomerDto, UpdateCustomerDto } from '../dto';
+import { SearchOrderDto } from '../../order/dto';
 
 const addOne = createAction(
   '[CUSTOMER] Add One',
@@ -11,27 +9,27 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[CUSTOMER] Load All',
-  props<{ params: LoadCustomerDto, isPagination?: boolean }>()
+  props<SearchCustomerDto>()
 );
 
 const loadOne = createAction(
   'CUSTOMER] Load One',
-  props<{ id: number }>()
+  props<LoadOneCustomerDto>()
 );
 
 const update = createAction(
   '[CUSTOMER] Update',
-  props<{ id: number, updates: UpdateCustomerDto }>()
+  props<UpdateCustomerDto>()
 );
 
 const remove = createAction(
   '[CUSTOMER] Remove',
-  props<{ id: number }>()
+  props<RemoveCustomerDto>()
 );
 
 const loadOrder = createAction(
   '[CUSTOMER] Load Order',
-  props<{ params: LoadOrderDto, typeOrder: 'delivered' | 'delivering', isPagination?: boolean }>()
+  props<{ params: SearchOrderDto, typeOrder: 'delivered' | 'delivering', isPagination?: boolean }>()
 );
 
 export const CustomerActions = {
@@ -40,6 +38,6 @@ export const CustomerActions = {
   loadOne,
   update,
   remove,
-  loadOrder,
+  loadOrder
 };
 

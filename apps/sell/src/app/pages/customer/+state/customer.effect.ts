@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {catchError, concatMap, map, switchMap, tap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {CustomerActions} from './customer.actions';
-import {CustomerService} from '../service/customer.service';
-import {CustomerQuery} from './customer.query';
-import {CustomerStore} from './customer.store';
-import {OrderService} from '../../order/service/order.service';
-import {AddCustomerDto} from '../dto/add-customer.dto';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { CustomerActions } from './customer.actions';
+import { CustomerService } from '../service';
+import { CustomerQuery } from './customer.query';
+import { CustomerStore } from './customer.store';
+import { OrderService } from '../../order/service';
+import { AddCustomerDto } from '../dto';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SearchCustomerDto } from '../dto/search-customer.dto';
 
 @Injectable()
 export class CustomerEffect {
@@ -31,18 +32,19 @@ export class CustomerEffect {
       this.customerStore.update(state => ({
         ...state, loading: true
       }));
-      if (props.params?.orderType) {
-        props.params.orderType = props.params.orderType === 'ascend' ? 'asc' : 'des'
-      }
-      return this.customerService.pagination(props.params).pipe(
+      const params = Object.assign(props.search, props.search?.orderType
+        ? { orderType: props.search.orderType === 'ascend' ? 'asc' : 'desc' }
+        : {});
+      /// FIXME:
+      return this.customerService.pagination(params as SearchCustomerDto).pipe(
         map((response) => {
-          this.customerStore.update(state => ({...state, loading: false, total: response.total}));
+          this.customerStore.update(state => ({ ...state, loading: false, total: response.total }));
           if (response.data.length === 0) {
             this.message.warning('Đã lấy hết khách hàng');
           } else {
             this.message.success('Tải danh sách khách hàng thành công!!');
           }
-          if (props.isPagination) {
+          if (props.isPaginate) {
             this.customerStore.add(response.data);
           } else {
             this.customerStore.set(response.data);
@@ -50,7 +52,6 @@ export class CustomerEffect {
         })
       );
     }),
-
     catchError((err) => throwError(err))
   );
 
@@ -117,14 +118,14 @@ export class CustomerEffect {
         this.customerStore.update((state) => ({
           ...state,
           deliveringLoading: props?.typeOrder === 'delivering' ? true : state.deliveringLoading,
-          deliveredLoading: props?.typeOrder === 'delivered' ? true : state.deliveredLoading,
+          deliveredLoading: props?.typeOrder === 'delivered' ? true : state.deliveredLoading
         }));
         return this.orderService.pagination(Object.assign(props.params,
-          {status: props.typeOrder === 'delivered' ? 1 : 0})
+          { status: props.typeOrder === 'delivered' ? 1 : 0 })
         ).pipe(
           tap(res => {
             if (res.data.length === 0) {
-              this.message.warning('Đã lấy hết đơn hàng')
+              this.message.warning('Đã lấy hết đơn hàng');
             }
             if (props?.isPagination) {
               if (props.typeOrder === 'delivering') {
@@ -138,18 +139,18 @@ export class CustomerEffect {
               }
             } else {
               if (props.typeOrder === 'delivering') {
-                this.customerStore.update(props.params.customerId, {delivering: res.data});
+                this.customerStore.update(props.params.customerId, { delivering: res.data });
               } else {
-                this.customerStore.update(props.params.customerId, {delivered: res.data});
+                this.customerStore.update(props.params.customerId, { delivered: res.data });
               }
             }
             this.customerStore.update((state) => ({
               ...state,
               deliveringLoading: false,
-              deliveredLoading: false,
+              deliveredLoading: false
             }));
           })
-        )
+        );
       }
     ),
     catchError(err => throwError(err))
