@@ -1,4 +1,5 @@
-export interface BaseRemoveDto {
-  readonly id: number;
+import { BaseEntity } from '../entities';
+
+export interface BaseRemoveDto extends BaseEntity{
 }
 

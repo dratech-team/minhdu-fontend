@@ -1,7 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import { AddCustomerDto, UpdateCustomerDto } from '../dto';
+import { AddCustomerDto, LoadOneCustomerDto, RemoveCustomerDto, SearchCustomerDto, UpdateCustomerDto } from '../dto';
 import { SearchOrderDto } from '../../order/dto';
-import { SearchCustomerDto } from '../dto/search-customer.dto';
 
 const addOne = createAction(
   '[CUSTOMER] Add One',
@@ -15,7 +14,7 @@ const loadAll = createAction(
 
 const loadOne = createAction(
   'CUSTOMER] Load One',
-  props<{ id: number }>()
+  props<LoadOneCustomerDto>()
 );
 
 const update = createAction(
@@ -25,7 +24,7 @@ const update = createAction(
 
 const remove = createAction(
   '[CUSTOMER] Remove',
-  props<{ id: number }>()
+  props<RemoveCustomerDto>()
 );
 
 const loadOrder = createAction(
