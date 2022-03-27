@@ -1,4 +1,4 @@
-import { BaseProviderEntity } from './base-provider.entity';
+import { BaseProviderEntity } from '../bases/base-provider.entity';
 
 export interface ProviderEntity extends BaseProviderEntity {
   readonly name: string;
