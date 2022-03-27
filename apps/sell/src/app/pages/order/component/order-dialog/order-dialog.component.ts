@@ -11,7 +11,6 @@ import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {OrderQuery} from "../../+state/order.query";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {Observable} from "rxjs";
 
 
 @Component({
@@ -19,13 +18,11 @@ import {Observable} from "rxjs";
 })
 export class OrderDialogComponent implements OnInit {
   @Input() data: any
-  customerId!: number
   payType = PaymentType;
   formGroup!: FormGroup;
   submitted = false;
   routes: number[] = [];
   customers: CustomerEntity[] = [];
-  commoditiesSelected: CommodityEntity[] = [];
   districtId!: number;
   provinceId!: number
   stepIndex = 0
@@ -45,7 +42,6 @@ export class OrderDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data?.isUpdate) {
-      this.customerId = this.data.order.customerId
       this.formGroup = this.formBuilder.group({
         createdAt: [this.datePipe.transform(
           this.data.order.createdAt, 'yyyy-MM-dd')
@@ -57,7 +53,9 @@ export class OrderDialogComponent implements OnInit {
         explain: [this.data.order?.explain],
         province: [this.data.order.province, Validators.required],
         district: [this.data.order?.district],
-        ward: [this.data.order?.ward]
+        ward: [this.data.order?.ward],
+        customerId: [this.data.order.customerId],
+        commodityIds: [this.data.order?.commodities.map((val: CommodityEntity) => val.id)]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -67,7 +65,9 @@ export class OrderDialogComponent implements OnInit {
         explain: [],
         province: ['', Validators.required],
         district: [],
-        ward: []
+        ward: [],
+        customerId: [''],
+        commodityIds: [[]],
       });
     }
 
@@ -79,14 +79,14 @@ export class OrderDialogComponent implements OnInit {
 
   onSubmit(): any {
     if (!this.data?.isUpdate) {
-      if (this.commoditiesSelected.length === 0) {
+      if(this.formGroup.value.commodityIds.length == 0 ){
         return this.message.warning('Chưa chọn hàng hoá')
       }
     }
     const val = this.formGroup.value;
     const order = {
-      customerId: this.customerId,
-      commodityIds: this.commoditiesSelected.map(item => item.id),
+      customerId: val.customerId,
+      commodityIds: val.commodityIds,
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -106,7 +106,7 @@ export class OrderDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(OrderActions.addOne(order))
     }
-   this.added$.subscribe(added => {
+    this.added$.subscribe(added => {
       if (added) {
         this.modalRef.close()
       }
@@ -118,23 +118,15 @@ export class OrderDialogComponent implements OnInit {
   }
 
   next(): any {
+
     this.submitted = true;
-    if (this.stepIndex === 0) {
-      if (this.formGroup.invalid) {
-        return;
-      }
+    if (this.formGroup.invalid) {
+      return;
     }
-    if (this.stepIndex === 1 && !this.customerId) {
+
+    if(this.stepIndex  > 0 && !this.formGroup.value.customerId ){
       return this.message.warning('Chưa chọn khách hàng')
     }
     this.stepIndex += 1;
-  }
-
-  onPickCustomer(id: number) {
-    this.customerId = id
-  }
-
-  onPickCommodity(commodities: CommodityEntity[]) {
-    this.commoditiesSelected = commodities
   }
 }

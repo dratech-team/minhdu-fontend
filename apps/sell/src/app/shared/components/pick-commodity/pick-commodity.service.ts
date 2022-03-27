@@ -19,7 +19,7 @@ export class PickCommodityService {
   }
 
   scrollCommodities(val: LoadCommodityDto) {
-    this.store.dispatch(CommodityAction.loadAll({params: val, isScroll: true}));
+    this.store.dispatch(CommodityAction.loadAll({params: val, isPagination: true}));
   }
 
   commodities() {
