@@ -98,6 +98,8 @@ import {
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {UpdatePayrollComponent} from "./component/update-payroll/update-payroll.component";
+import {NgxCurrencyModule} from "ngx-currency";
+import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
 
 @NgModule({
   imports: [
@@ -123,6 +125,7 @@ import {UpdatePayrollComponent} from "./component/update-payroll/update-payroll.
       TemplateOvertimeEffect,
       TemplateSalaryEffect
     ]),
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     CommonModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -146,7 +149,8 @@ import {UpdatePayrollComponent} from "./component/update-payroll/update-payroll.
     NzMessageModule,
     NzSelectModule,
     NzTableModule,
-    NzInputModule
+    NzInputModule,
+    NgxCurrencyModule
   ],
   declarations: [
     PayrollComponent,
