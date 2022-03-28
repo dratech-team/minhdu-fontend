@@ -109,10 +109,11 @@ export class CustomerEffect {
       }));
       this.customerStore.update(res.id, res);
     }),
-    catchError(_ => {
+    catchError(err => {
       return this.customerStore.update(state => ({
         ...state, added: null
       }))
+      return throwError(err)
     })
   );
 
