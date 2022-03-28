@@ -91,10 +91,6 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.actions$.dispatch(
-    //   OrderActions.loadAll({param: this.mapOrder(this.formGroup.value)})
-    // );
-
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
