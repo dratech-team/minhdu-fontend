@@ -44,7 +44,7 @@ export class CustomerComponent implements OnInit {
   formGroup = new FormGroup({
     resource: new FormControl(this.stateSearch.resource),
     isPotential: new FormControl(this.stateSearch.isPotential),
-    type: new FormControl(this.stateSearch.type || ''),
+    type: new FormControl(this.stateSearch.type),
     gender: new FormControl(this.stateSearch.gender),
     search: new FormControl(this.stateSearch.search)
   });

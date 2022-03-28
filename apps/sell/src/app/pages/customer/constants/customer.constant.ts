@@ -1,4 +1,4 @@
-import { CustomerType } from '@minhdu-fontend/enums';
+import {CustomerType} from '@minhdu-fontend/enums';
 
 export const CustomerConstant = [
   {
@@ -11,6 +11,6 @@ export const CustomerConstant = [
   },
   {
     name: 'Tất cả',
-    value: ''
+    value: CustomerType.ALL
   }
 ];

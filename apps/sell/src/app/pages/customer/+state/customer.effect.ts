@@ -52,12 +52,12 @@ export class CustomerEffect {
         })
       );
     }),
-    catchError((err) =>{
+    catchError((err) => {
       this.customerStore.update(state => ({
         ...state, loading: false
       }));
-     return  throwError(err)
-    } )
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -109,11 +109,10 @@ export class CustomerEffect {
       }));
       this.customerStore.update(res.id, res);
     }),
-    catchError((err) =>  {
-      this.customerStore.update(state => ({
+    catchError(_ => {
+      return this.customerStore.update(state => ({
         ...state, added: null
       }))
-      return throwError(err)
     })
   );
 

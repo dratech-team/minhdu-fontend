@@ -5,7 +5,6 @@ import {CustomerResource, CustomerType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
-import {AddCustomerDto} from '../../dto/add-customer.dto';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
 
