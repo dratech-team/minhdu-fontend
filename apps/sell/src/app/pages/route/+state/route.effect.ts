@@ -28,7 +28,6 @@ export class RouteEffect {
       this.routeStore.update(state => ({
         ...state,
         added: false,
-        adding: true
       }));
       return this.routeService.addOne(props)
     }),
@@ -43,7 +42,13 @@ export class RouteEffect {
         this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.routeStore.update(state => ({
+        ...state,
+        added: null,
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -87,7 +92,12 @@ export class RouteEffect {
         );
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.routeStore.update(state => ({
+        ...state, loading: false,
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -127,7 +137,13 @@ export class RouteEffect {
         expand: expanedAll
       }));
     }),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.routeStore.update(state => ({
+        ...state,
+        added: null,
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
