@@ -41,6 +41,7 @@
         <div [formGroup]='formGroup'>
           <nz-radio-group formControlName='commodity'>
             <label nz-radio *ngFor='let item of (commodities$ | async)' [nzValue]='item.name'>{{item.name}}</label>
+            <label nz-radio [nzValue]='""'>Tất cả</label>
           </nz-radio-group>
         </div>
       </nz-collapse-panel>

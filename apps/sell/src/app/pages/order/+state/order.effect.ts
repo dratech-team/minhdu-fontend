@@ -4,10 +4,8 @@ import {OrderService} from '../service/order.service';
 import {OrderActions} from './order.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
-import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import {OrderEntity} from '../enitities/order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
@@ -87,7 +85,10 @@ export class OrderEffect {
                 commodityUniq: response.commodityUniq
               }));
               if (!response.data.length) {
-               this.message.warning('Đã lấy hết đơn hàng')
+                this.message.warning('Đã lấy hết đơn hàng')
+                if(!props.isPagination){
+                  this.orderStore.set(response.data)
+                }
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
                   expand: expanedAll,
@@ -95,7 +96,7 @@ export class OrderEffect {
                 }));
                 if (props.isPagination) {
                   this.orderStore.add(data);
-                } else {
+                }else {
                   this.orderStore.set(data);
                 }
               }
