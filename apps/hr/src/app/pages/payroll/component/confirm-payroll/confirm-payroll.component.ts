@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
@@ -11,6 +11,10 @@ import {DatePipe} from '@angular/common';
 import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../libs/utils/daytime.until';
 import {selectedConfirmedPayroll} from '../../+state/payroll/payroll.selector';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {
+  DialogSharedComponent
+} from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
+import {subscribeOn} from "rxjs/operators";
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -19,9 +23,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class ConfirmPayrollComponent implements OnInit {
   accConfirmedAt = new FormControl(this.datePipe.transform(
     this.data?.payroll?.accConfirmedAt ? getLastDayInMonth(
-      new Date( this.data.payroll.accConfirmedAt)) :
+        new Date(this.data.payroll.accConfirmedAt)) :
       getLastDayInMonth(
-        new Date( this.data?.payroll?.createdAt))
+        new Date(this.data?.payroll?.createdAt))
     , 'yyyy-MM-dd'));
   payslip$?: Observable<Payslip>;
   recipeType = RecipeType;
@@ -37,13 +41,13 @@ export class ConfirmPayrollComponent implements OnInit {
     private readonly payslipService: PayslipService,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
+    private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>
   ) {
   }
 
   ngOnInit() {
-    console.log(this.data.payroll)
     this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
@@ -53,17 +57,32 @@ export class ConfirmPayrollComponent implements OnInit {
 
   confirmPayroll(reconfirm: boolean) {
     if (this.accConfirmedAt.value) {
-      this.store.dispatch(PayrollAction.confirmPayroll(
-        { id: this.data.payroll.id, dataConfirm: { datetime: new Date(this.accConfirmedAt.value) } }));
-      this.store.pipe(select(selectedConfirmedPayroll)).subscribe(confirmed => {
-        if (confirmed && !reconfirm) {
-          this.isConfirmed = true;
-          this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
-        }
-        if (reconfirm) {
-          this.dialogRef.close();
-        }
-      });
+      if (reconfirm) {
+        this.dialog.open(DialogSharedComponent, {
+          width: '400px',
+          data: {
+            title: 'Xác nhận phiếu lương',
+            description: 'Việc Xác nhận phiếu lương sẽ làm đóng băng các thao tác trên phiếu lương, bạn có chắc chắn muốn xác nhận'
+          }
+        }).afterClosed().subscribe(val => {
+          if (val) {
+            this.store.dispatch(PayrollAction.confirmPayroll(
+              {id: this.data.payroll.id, dataConfirm: {datetime: new Date(this.accConfirmedAt.value)}}));
+            this.store.pipe(select(selectedConfirmedPayroll)).subscribe(_ => {
+              this.dialogRef.close();
+            });
+          }
+        })
+      } else {
+        this.store.dispatch(PayrollAction.confirmPayroll(
+          {id: this.data.payroll.id, dataConfirm: {datetime: new Date(this.accConfirmedAt.value)}}));
+        this.store.pipe(select(selectedConfirmedPayroll)).subscribe(confirmed => {
+          if (confirmed) {
+            this.isConfirmed = true;
+            this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
+          }
+        });
+      }
     } else {
       this.message.error('Chưa chọn ngày xác nhận phiếu lương');
     }
