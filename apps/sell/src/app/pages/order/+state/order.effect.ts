@@ -4,10 +4,8 @@ import {OrderService} from '../service/order.service';
 import {OrderActions} from './order.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
-import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
 import {OrderEntity} from '../enitities/order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
@@ -16,7 +14,6 @@ import {RouteAction} from '../../route/+state/route.action';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {set} from "lodash";
 
 @Injectable()
 export class OrderEffect {
