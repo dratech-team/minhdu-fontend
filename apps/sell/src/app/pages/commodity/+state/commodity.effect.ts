@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { CommodityService } from '../service';
-import { CommodityAction } from './commodity.action';
-import { throwError } from 'rxjs';
-import { OrderActions } from '../../order/+state';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommodityQuery } from './commodity.query';
-import { CommodityStore } from './commodity.store';
-import { SearchCommodityDto } from '../dto';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {CommodityService} from '../service';
+import {CommodityAction} from './commodity.action';
+import {throwError} from 'rxjs';
+import {OrderActions} from '../../order/+state';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CommodityQuery} from './commodity.query';
+import {CommodityStore} from './commodity.store';
+import {SearchCommodityDto} from '../dto';
 
 @Injectable()
 export class CommodityEffect {
@@ -35,11 +35,16 @@ export class CommodityEffect {
         this.commodityStore.update(state => ({
           ...state, added: true
         }));
-        this.snackbar.open('Thêm hàng hóa thành công', '', { duration: 1500 });
+        this.snackbar.open('Thêm hàng hóa thành công', '', {duration: 1500});
         this.commodityStore.add(commodity);
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.commodityStore.update(state => ({
+        ...state, added: null
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -56,9 +61,9 @@ export class CommodityEffect {
                 ...state, loading: false
               }));
               if (ResponsePaginate.data.length === 0) {
-                this.snackbar.open('Đã lấy hết hàng hoá', '', { duration: 1500 });
+                this.snackbar.open('Đã lấy hết hàng hoá', '', {duration: 1500});
               }
-              this.commodityStore.update((state) => ({ ...state, total: ResponsePaginate.total }));
+              this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
               if (props?.isPaginate) {
                 this.commodityStore.add(ResponsePaginate.data);
               } else {
@@ -69,7 +74,12 @@ export class CommodityEffect {
         );
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.commodityStore.update(state => ({
+        ...state, loading: false
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -95,9 +105,9 @@ export class CommodityEffect {
               this.commodityStore.update(state => ({
                 ...state, added: true
               }));
-              this.snackbar.open('Cập nhật hóa thành công', '', { duration: 1500 });
+              this.snackbar.open('Cập nhật hóa thành công', '', {duration: 1500});
               if (props.updates?.orderId) {
-                this.actions$.dispatch(OrderActions.loadOne({ id: props.updates.orderId }));
+                this.actions$.dispatch(OrderActions.loadOne({id: props.updates.orderId}));
               }
               return this.commodityStore.update(commodity.id, commodity);
             }
@@ -105,7 +115,12 @@ export class CommodityEffect {
         );
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.commodityStore.update(state => ({
+        ...state, added: null
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -114,9 +129,9 @@ export class CommodityEffect {
     switchMap((props) => this.commodityService.delete(props.id).pipe(
       map(_ => {
         if (props.inOrder) {
-          this.actions$.dispatch(OrderActions.loadOne({ id: props.inOrder.orderId }));
+          this.actions$.dispatch(OrderActions.loadOne({id: props.inOrder.orderId}));
         }
-        this.snackbar.open('Xóa hàng hóa thành công', '', { duration: 1500 });
+        this.snackbar.open('Xóa hàng hóa thành công', '', {duration: 1500});
         this.commodityStore.remove(props.id);
       })
     )),
