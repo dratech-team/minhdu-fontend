@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { RouteEntity } from '../../entities/route.entity';
-import { MatDialog } from '@angular/material/dialog';
-import { RouteDialogComponent } from '../../component/route-dialog/route-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouteAction } from '../../+state/route.action';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { DialogDatePickerComponent } from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { OrderEntity } from '../../../order/enitities/order.entity';
-import { Actions } from '@datorama/akita-ng-effects';
-import { RouteQuery } from '../../+state/route.query';
-import { CancelEnum } from '../../enums/cancel.enum';
-import { CommodityEntity } from '../../../commodity/entities/commodity.entity';
-import { OrderActions } from '../../../order/+state/order.actions';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import {Component, OnInit} from '@angular/core';
+import {RouteEntity} from '../../entities/route.entity';
+import {MatDialog} from '@angular/material/dialog';
+import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RouteAction} from '../../+state/route.action';
+import {PaymentType} from '@minhdu-fontend/enums';
+import {
+  DialogDatePickerComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {OrderEntity} from '../../../order/enitities/order.entity';
+import {Actions} from '@datorama/akita-ng-effects';
+import {RouteQuery} from '../../+state/route.query';
+import {CancelEnum} from '../../enums/cancel.enum';
+import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
+import {OrderActions} from '../../../order/+state/order.actions';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {UpdateTypeEnum} from "../../enums/update-type.enum";
 
 @Component({
   templateUrl: 'detail-route.component.html'
@@ -23,6 +28,7 @@ export class DetailRouteComponent implements OnInit {
 
   route$ = this.routeQuery.selectEntity(this.routeId);
   route = {} as RouteEntity;
+  updateTypeEnum = UpdateTypeEnum
 
   constructor(
     private readonly actions$: Actions,
@@ -35,7 +41,7 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(RouteAction.loadOne({ id: this.routeId }));
+    this.actions$.dispatch(RouteAction.loadOne({id: this.routeId}));
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
@@ -46,19 +52,19 @@ export class DetailRouteComponent implements OnInit {
       if (param.isUpdate === 'true') {
         const route = this.routeQuery.getEntity(this.routeId);
         if (route) {
-          this.updateRoute(route);
+          this.updateRoute(route, UpdateTypeEnum.ALL);
         }
       }
     });
   }
 
-  updateRoute(route: RouteEntity, updateOrder?: boolean) {
+  updateRoute(route: RouteEntity, updateType: UpdateTypeEnum) {
     this.modal.create({
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
       nzContent: RouteDialogComponent,
       nzComponentParams: {
-        data: { route: route, updateOrder: updateOrder, isUpdate: true }
+        data: {route: route, updateType: updateType, isUpdate: true}
       },
       nzFooter: null
     });
@@ -84,7 +90,7 @@ export class DetailRouteComponent implements OnInit {
       .subscribe(val => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.update({ updates: { endedAt: val.day }, id: route.id })
+            RouteAction.update({updates: {endedAt: val.day}, id: route.id})
           );
         }
       });
@@ -102,7 +108,7 @@ export class DetailRouteComponent implements OnInit {
         if (val) {
           this.actions$.dispatch(RouteAction.cancel({
             id: this.route.id,
-            cancelDTO: { desId: commodity.id, cancelType: CancelEnum.COMMODITY }
+            cancelDTO: {desId: commodity.id, cancelType: CancelEnum.COMMODITY}
           }));
         }
       });
@@ -120,7 +126,7 @@ export class DetailRouteComponent implements OnInit {
         if (val) {
           this.actions$.dispatch(RouteAction.cancel({
             id: this.route.id,
-            cancelDTO: { desId: order.id, cancelType: CancelEnum.ORDER }
+            cancelDTO: {desId: order.id, cancelType: CancelEnum.ORDER}
           }));
         }
       });
@@ -136,7 +142,7 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.actions$.dispatch(RouteAction.update({ id: this.route.id, updates: { commodityIds: [commodity.id] } }));
+          this.actions$.dispatch(RouteAction.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}));
         }
       });
   }
@@ -155,7 +161,7 @@ export class DetailRouteComponent implements OnInit {
           updates: {
             deliveredAt: val.day
           },
-          inRoute: { routeId: this.routeId }
+          inRoute: {routeId: this.routeId}
         }));
       }
     });

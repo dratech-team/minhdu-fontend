@@ -11,7 +11,7 @@
       <div class='row d-flex align-items-center'>
         <div class='col-2 align-items-center title-table'>Thông tin chung</div>
         <button data-toggle='tooltip' data-placement='top' title=' chỉnh sửa ' class='edit animated'
-                (click)='updateRoute(route)'>
+                (click)='updateRoute(route,updateTypeEnum.INFO)'>
           <img style='height: 15px;' src='/assets/icon/share/pencil-fill.svg' alt='edit icon'>
         </button>
       </div>
@@ -88,7 +88,7 @@
       <div class='col-12 mt-5'>
         <div class='row d-flex justify-content-between '>
           <div class='row align-items-center title-table ml-2'>Đơn hàng</div>
-          <button nz-button nzType="primary" class="mr-3" (click)='updateRoute(route, true)'>Thêm đơn hàng</button>
+          <button nz-button nzType="primary" class="mr-3" (click)='updateRoute(route, updateTypeEnum.ORDER)'>Thêm đơn hàng</button>
         </div>
         <div class='mt-3 mb-5'>
           <nz-table #nestedTable
@@ -106,13 +106,13 @@
                 Ngày tạo
               </th>
               <th>
-               Điểm đến
+                Điểm đến
               </th>
               <th>
-                 Diễn giải
+                Diễn giải
               </th>
               <th>
-               Tổng số lượng
+                Tổng số lượng
               </th>
               <th>
                 Đã nhận hàng
@@ -142,7 +142,7 @@
                   {{order.totalCommodity | number:'1.0-0' | notEmpty:'0'}}
                 </td>
                 <td>
-                  <div style="color: red" *ngIf="(order.deliveredAt); else btnDelivered " >
+                  <div style="color: red" *ngIf="(order.deliveredAt); else btnDelivered ">
                     {{order.deliveredAt|date:'dd-MM-yyyy'}}
                   </div>
                   <ng-template #btnDelivered>
@@ -158,12 +158,12 @@
               <tr [nzExpand]="order.expand? order.expand: false">
                 <nz-table #innerTable [nzData]="order.commodities" nzSize="small" [nzShowPagination]="false">
             <thead>
-          <tr>
-            <th class="text-center">Hàng hoá</th>
-            <th class="text-center">Số lượng</th>
-            <th class="text-center">Giá</th>
-            <th class="text-center">Huỷ</th>
-          </tr>
+            <tr>
+              <th class="text-center">Hàng hoá</th>
+              <th class="text-center">Số lượng</th>
+              <th class="text-center">Giá</th>
+              <th class="text-center">Huỷ</th>
+            </tr>
             </thead>
             <tbody>
             <tr *ngFor="let commodity of innerTable.data">
@@ -171,7 +171,8 @@
               <td class="text-center">{{commodity.amount|number:'1.0-0'}}</td>
               <td class="text-center">{{commodity.price|number:'1.0-0'}}đ</td>
               <td class="text-center">
-                <div  *ngIf="commodity.routeId === route.id else bsx" class="d-flex justify-content-center align-items-center">
+                <div *ngIf="commodity.routeId === route.id else bsx"
+                     class="d-flex justify-content-center align-items-center">
                   <button nz-button nzType="default" (click)="cancelCommodity(commodity)">Huỷ</button>
                 </div>
                 <ng-template #bsx>
@@ -179,7 +180,9 @@
                      target='_blank'>
                     {{commodity?.route?.bsx}}
                   </a>
-                  <button nz-button nzType="primary" *ngIf="!commodity.route" (click)="addCommodityInRoute(commodity)"> Thêm</button>
+                  <button nz-button nzType="primary" *ngIf="!commodity.route" (click)="addCommodityInRoute(commodity)">
+                    Thêm
+                  </button>
                 </ng-template>
               </td>
             </tr>
@@ -195,7 +198,7 @@
   </div>
 </div>
 <style>
-  th{
-    padding: 5px!important;
+  th {
+    padding: 5px !important;
   }
 </style>

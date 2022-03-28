@@ -2,7 +2,7 @@
   <form [formGroup]='formGroup'>
     <nz-steps nzSize="small" [nzCurrent]="stepIndex">
       <nz-step nzTitle="Thông tin tuyến đường"></nz-step>
-      <nz-step *ngIf="!data?.isUpdate ||( data?.isUpdate && data?.updateOrder)" nzTitle="Chọn đơn hàng"></nz-step>
+      <nz-step *ngIf="!data?.isUpdate || (data?.updateType !== updateTypeEnum.INFO)" nzTitle="Chọn đơn hàng"></nz-step>
     </nz-steps>
     <ng-template [ngIf]="stepIndex === 0">
       <div [formGroup]='formGroup' class='px-3' style='height: 35vh; overflow-y: auto'>
@@ -94,7 +94,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template [ngIf]="(stepIndex === 1 && !data?.isUpdate) ||(stepIndex === 1 && data?.isUpdate && data?.updateOrder)">
+    <ng-template [ngIf]="(stepIndex === 1 && data?.updateType !== updateTypeEnum.INFO)">
       <div class="pt-2" style="max-width: 80vw">
         <app-pick-order [orderSelected]='orderIdsOfRoute'
                         (checkCommodityEvent)="pickCommodity($event)"
@@ -108,11 +108,11 @@
       <span>Trở lại</span>
     </button>
     <button class="mr-2" nz-button nzType="primary" (click)="next()"
-            *ngIf="(stepIndex < 1 && (!data?.isUpdate||data?.isUpdate && data?.updateOrder))">
+            *ngIf="(stepIndex < 1 && (data?.updateType !== updateTypeEnum.INFO))">
       <span>Tiếp theo</span>
     </button>
     <button nz-button nzType="primary" [nzLoading]="(added$|async) === false" (click)="onSubmit()"
-            *ngIf="stepIndex === 1|| data?.isUpdate">
+            *ngIf="stepIndex === 1 || data?.isUpdate">
       <span>Xác nhận</span>
     </button>
   </div>

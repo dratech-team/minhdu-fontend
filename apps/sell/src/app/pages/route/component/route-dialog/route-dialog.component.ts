@@ -10,6 +10,7 @@ import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {Observable} from "rxjs";
 import {RouteStore} from "../../+state/route.store";
+import {UpdateTypeEnum} from "../../enums/update-type.enum";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -23,7 +24,7 @@ export class RouteDialogComponent implements OnInit {
   isSelectAll = false;
   stepIndex = 0;
   added$ = this.routeQuery.select(state => state.added)
-
+  updateTypeEnum = UpdateTypeEnum
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly actions$: Actions,
@@ -41,7 +42,7 @@ export class RouteDialogComponent implements OnInit {
     }))
 
     if (this.data?.isUpdate) {
-      if(this.data?.updateOrder){
+      if(this.data?.updateType === UpdateTypeEnum.ORDER){
         this.stepIndex = 1
       }
       this.orderIdsOfRoute = [...this.data.route.orders]
