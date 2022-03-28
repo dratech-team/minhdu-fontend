@@ -25,7 +25,7 @@
         <input nz-input
                *ngIf="!isCheckOrderSelected"
                type='search'
-               formControlName='name'
+               formControlName='customer'
         >
         <input nz-input
                *ngIf="isCheckOrderSelected"
@@ -35,10 +35,11 @@
       </th>
       <th>
         <div>Ngày tạo</div>
-        <input nz-input
-               *ngIf="!isCheckOrderSelected"
-               type='date' formControlName='createdAt'
+        <nz-range-picker
+          *ngIf="!isCheckOrderSelected"
+          formControlName="startedAt"
         >
+        </nz-range-picker>
         <input nz-input
                *ngIf="isCheckOrderSelected"
                type='search'

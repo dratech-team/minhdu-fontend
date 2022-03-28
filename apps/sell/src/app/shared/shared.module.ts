@@ -28,6 +28,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 @NgModule({
     imports: [
@@ -54,7 +55,8 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
         NzButtonModule,
         NzInputModule,
         NzSelectModule,
-        NzRadioModule
+        NzRadioModule,
+        NzDatePickerModule
     ],
   declarations: [
     TableOrdersComponent,
