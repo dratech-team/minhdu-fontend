@@ -47,7 +47,7 @@ export class UpdatePayrollComponent implements OnInit {
       position: [this.data.payroll.position, Validators.required],
       workday: [this.data.payroll.workday, Validators.required],
       recipeType: [this.data.payroll.recipeType, Validators.required],
-      tax: [this.data.payroll.tax, Validators.required],
+      tax: [this.data.payroll.tax ? this.data.payroll.tax * 100:''],
     })
     this.formGroup.get('branch')?.valueChanges.subscribe(val => {
       this.formGroup.get('position')?.setValue('')
@@ -56,7 +56,6 @@ export class UpdatePayrollComponent implements OnInit {
   }
 
   onSubmit(): any {
-    console.log(this.formGroup)
     if (this.formGroup.invalid) {
       return
     }
@@ -64,7 +63,9 @@ export class UpdatePayrollComponent implements OnInit {
     const payroll = {
       workday: value.workday,
       createdAt: value.createdAt,
-      tax: value.tax
+    }
+    if(value.tax){
+      Object.assign(payroll, {tax: value.tax/100,})
     }
     if (value.position?.id) {
       Object.assign(payroll, {positionId: value.position.id,})
