@@ -310,10 +310,11 @@
         <table>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th width='25%' class=' title text-center '>Khấu trừ</th>
+            <th width='3%' class=' title text-center '>STT</th>
+            <th width='23%' class=' title text-center '>Khấu trừ</th>
             <th width='10%' class=' title text-center '>Thời gian</th>
             <th width='8%' class=' title text-center '>Đơn vị</th>
-            <th width='10%' class=' title text-center '>Thành tiền</th>
+            <th width='9%' class=' title text-center '>Thành tiền</th>
             <th width='15%' class=' title text-center '>Vắng có phép</th>
             <th width='22%' class=' title text-center '>Chú thích</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
@@ -324,8 +325,11 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'] "
+          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['ABSENT','DAY_OFF','DEDUCTION'], let i= index "
               style='background: white !important;'>
+            <th>
+              {{i + 1}}
+            </th>
             <th>
               <div>
                 <span>{{salary.title}}</span>
@@ -381,9 +385,10 @@
         <table>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th width='25%' class=' title text-center '>Đi làm ngày lễ</th>
+            <th width='3%' class=' title text-center '>STT</th>
+            <th width='22%' class=' title text-center '>Đi làm ngày lễ</th>
             <th width='15%' class=' title text-center '>Ngày</th>
-            <th width='10%' class=' title text-center '>Hệ số</th>
+            <th width='9%' class=' title text-center '>Hệ số</th>
             <th width='15%' class=' title text-center '>Đơn giá</th>
             <th width='10%' style='color: #1b8eb7' (click)='scanHoliday(payroll.id)'><span
               class='mx-2 pointer'>Quét</span>
@@ -393,7 +398,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['HOLIDAY'] "
+          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['HOLIDAY']; let i = index "
               style='background: white !important;'>
             <th width='25%'>
               <div>
@@ -424,10 +429,11 @@
         <table>
           <thead>
           <tr style='background-color: #dddddd66;'>
-            <th width='25%' class=' title text-center '>Chú thích ngày</th>
+            <th width='3%' class=' title text-center '>STT</th>
+            <th width='22%' class=' title text-center '>Chú thích ngày</th>
             <th width='10%' class=' title text-center '>Thời gian</th>
             <th width='8%' class=' title text-center '>Đơn vị</th>
-            <th width='22%' class=' title text-center '>Diễn giải</th>
+            <th width='21%' class=' title text-center '>Diễn giải</th>
             <th width='10%' class='text-center' style='padding: 0; color: #1b8eb7'
                 (click)='addSalary(type.WFH, payroll ) '><span class='mr-1 pointer'>Thêm mục</span>
               <img style='margin-left: 2px;width: 10px;' src='../../../../../assets/img/payroll/plus-lg.svg'
@@ -436,8 +442,13 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['WFH'] "
+          <tr *ngFor="let salary of payroll.salaries | filterTypeSalary:['WFH'];let i=index "
               style='background: white !important;'>
+            <th>
+              <div>
+                <span>{{i + 1}}</span>
+              </div>
+            </th>
             <th>
               <div>
                 <span>{{salary.title}}</span>
