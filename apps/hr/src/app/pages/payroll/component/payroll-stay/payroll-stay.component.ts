@@ -38,10 +38,9 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors} from '@minhdu-fontend/utils';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {TemplateSalaryAction} from '../../../template/+state/teamlate-salary/template-salary.action';
-import {selectorAllTemplate} from '../../../template/+state/teamlate-salary/template-salary.selector';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogStayComponent} from '../dialog-salary/dialog-stay/dialog-stay.component';
@@ -49,6 +48,7 @@ import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/comp
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
+import {PayrollService} from "../../service/payroll.service";
 
 @Component({
   selector: 'app-payroll-stay',
@@ -81,7 +81,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   genderType = Gender;
   unit = DatetimeUnitEnum;
   payrollStay$ = this.store.pipe(select(selectorAllPayroll));
-  salariesStay$ = this.store.pipe(select(selectorAllTemplate));
   salariesSelected: SalaryPayroll[] = [];
   isSelectSalary = false;
   salaries: SalaryPayroll[] = [];
@@ -90,6 +89,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   positions$ = this.store.pipe(select(getAllPosition));
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
+  templateStays: string [] = []
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -99,7 +99,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     private readonly salaryService: SalaryService,
     private readonly message: NzMessageService,
     private readonly router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private payrollService: PayrollService
   ) {
   }
 
@@ -129,11 +130,17 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
     this.store.dispatch(OrgchartActions.init());
 
-    this.store.dispatch(
-      TemplateSalaryAction.loadALlTemplate({salaryType: SalaryTypeEnum.STAY})
-    );
+    this.getTemplateStay(
+      this.createdAt,
+      getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
+      getSelectors<Position>(selectedPositionPayroll, this.store)?.name,
+    )
+
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
+      if (value.createdAt) {
+        this.getTemplateStay(value.createdAt, value.branch?.name, value.position?.name,)
+      }
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
@@ -411,5 +418,15 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayrollStay()
     }));
+  }
+
+  getTemplateStay(createdAt: Date, branch?: string, position?: string) {
+    this.payrollService.getAllTempLate({
+      branch: branch || '',
+      position: position || '',
+      startedAt: this.datePipe.transform(getFirstDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      endedAt: this.datePipe.transform(getLastDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      salaryType: SalaryTypeEnum.STAY
+    }).subscribe(val => this.templateStays = val)
   }
 }

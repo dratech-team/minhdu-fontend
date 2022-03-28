@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Employee, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -74,12 +74,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollOvertime$ = this.store.pipe(select(selectorAllPayroll));
-  templateOvertime$ = this.payrollService.getAllTempLate({
-    branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-    position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-    startedAt: this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd'),
-    endedAt: this.datePipe.transform(getLastDayInMonth(this.createdAt), 'yyyy-MM-dd'),
-  })
+  templateOvertime: string[] = []
   positions$ = this.store.pipe(select(getAllPosition))
   totalOvertime$ = this.store.pipe(select(selectedTotalOvertimePayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
@@ -142,6 +137,13 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         Object.assign(paramLoadInit, {titles: [val.titleOvertime]});
       }
     });
+
+    this.getTemplateOvertime(
+      getFirstDayInMonth(this.createdAt),
+      getLastDayInMonth(this.createdAt),
+      getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
+      getSelectors<Position>(selectedPositionPayroll, this.store)?.name
+    )
 
     if (this.overtimeTitle) {
       Object.assign(paramLoadInit, {
@@ -210,12 +212,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
-      this.templateOvertime$ = this.payrollService.getAllTempLate({
-        branch: value.branch?.name || '',
-        position: value.position?.name || '',
-        startedAt: value.startedAt || '',
-        endedAt: value.endedAt || '',
-      })
+      this.getTemplateOvertime(value.startedAt, value.endedAt, value.branch?.name, value.position?.name)
       this.isEventSearch = true;
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
@@ -324,8 +321,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('startAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('endAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+        this.formGroup.get('endedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
         this.formGroup.get('title')?.setValue(val.title);
       }
     });
@@ -342,7 +339,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         data: {
           type: SalaryTypeEnum.OVERTIME,
           salary: this.salariesSelected[0].salary,
-          payroll:this.salariesSelected[0].payroll,
+          payroll: this.salariesSelected[0].payroll,
           createdAt: this.salariesSelected[0].salary?.datetime
             ? this.salariesSelected[0].salary?.datetime
             : this.formGroup.get('startAt')?.value,
@@ -362,12 +359,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
-          this.templateOvertime$ = this.payrollService.getAllTempLate({
-            branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
-            position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
-            startedAt: this.formGroup.value.startedAt,
-            endedAt: this.formGroup.value.endedAt,
-          })
           this.salariesSelected = [];
           this.formGroup.get('titles')?.setValue([val.title]);
           this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
@@ -536,4 +527,14 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     }));
   }
 
+
+  getTemplateOvertime(staredAt: Date, endedAt: Date, branch?: string, position?: string,) {
+    this.payrollService.getAllTempLate({
+      branch: branch || '',
+      position: position || '',
+      startedAt: staredAt,
+      endedAt: endedAt,
+      salaryType: SalaryTypeEnum.OVERTIME
+    }).subscribe(value => this.templateOvertime = value)
+  }
 }

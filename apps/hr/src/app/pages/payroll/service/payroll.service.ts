@@ -64,6 +64,6 @@ export class PayrollService extends BaseService<Payroll> {
   }
 
   getAllTempLate(params?: any): Observable<string[]> {
-    return this.http.get<string[]>(Api.HR.PAYROLL.TEMPLATE_OVERTIME, {params});
+    return this.http.get<string[]>(Api.HR.PAYROLL.TEMPLATE_SALARY, {params});
   }
 }

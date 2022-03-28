@@ -24,10 +24,9 @@ import {
   SearchTypeEnum,
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
-import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {of, Subject} from 'rxjs';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -39,14 +38,14 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors, searchAutocomplete} from '@minhdu-fontend/utils';
+import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogBasicComponent} from '../dialog-salary/dialog-basic/dialog-basic.component';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {values} from "lodash";
+import {PayrollService} from "../../service/payroll.service";
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -75,7 +74,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   unit = DatetimeUnitEnum;
   ItemContextMenu = ItemContextMenu;
   searchTypeConstant = SearchTypeConstant;
-
+  templateBasic: string[] = []
   formGroup = new FormGroup({
     titles: new FormControl([]),
     code: new FormControl(''),
@@ -98,10 +97,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     private readonly message: NzMessageService,
     private readonly router: Router,
     private ref: ChangeDetectorRef,
+    private payrollService: PayrollService,
   ) {
   }
-
-  salaryBasic = ['Lương cơ bản trích BH', 'Lương theo PL.HD', 'Lương Tín nhiệm', 'Lương TN quản lý thêm'];
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
@@ -126,9 +124,17 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         }
       })
     );
+    this.getTemplateBasic(
+      this.createdAt,
+      getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
+      getSelectors<Position>(selectedPositionPayroll, this.store)?.name
+    )
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
+      if (value.createdAt) {
+        this.getTemplateBasic(value.createdAt, value.branch?.name, value.position?.name)
+      }
       this.store.dispatch(
         PayrollAction.updateStatePayroll({
           createdAt: new Date(value.createdAt),
@@ -415,5 +421,15 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayrollBasic()
     }));
+  }
+
+  getTemplateBasic(createdAt: Date, branch?: string, position?: string) {
+    this.payrollService.getAllTempLate({
+      branch: branch || '',
+      position: position || '',
+      startedAt: this.datePipe.transform(getFirstDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      endedAt: this.datePipe.transform(getLastDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      salaryType: SalaryTypeEnum.BASIC
+    }).subscribe(val => this.templateBasic = val)
   }
 }

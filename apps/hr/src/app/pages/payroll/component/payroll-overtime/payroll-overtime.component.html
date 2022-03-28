@@ -102,7 +102,7 @@
                    nzPlaceHolder="Chọn loại tăng ca"
                    formControlName="titles"
         >
-          <nz-option *ngFor="let item of templateOvertime$|async" [nzLabel]="item" [nzValue]="item"></nz-option>
+          <nz-option *ngFor="let item of templateOvertime" [nzLabel]="item" [nzValue]="item"></nz-option>
         </nz-select>
         <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>

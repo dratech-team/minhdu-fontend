@@ -16,7 +16,7 @@ export const Api = {
       BRANCH_ALLOWANCE: 'branch/allowance',
       GENERATE_HOLIDAY: 'generate-holiday',
       ITEMS_EXPORT: 'payroll/export/items',
-      TEMPLATE_OVERTIME: 'payroll/overtime/template'
+      TEMPLATE_SALARY: 'payroll/salary/template'
 
     },
     EMPLOYEE: {
