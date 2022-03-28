@@ -15,13 +15,14 @@ import {OrderStore} from './order.store';
 import {RouteAction} from '../../route/+state/route.action';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {UpdateCommodityDto} from '../../commodity/dto';
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
 export class OrderEffect {
   convertBoolean = ConvertBoolean;
 
   constructor(
-    private readonly snackBar: MatSnackBar,
+    private readonly message: NzMessageService,
     private readonly actions$: Actions,
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
@@ -50,7 +51,7 @@ export class OrderEffect {
           state.commodityUniq
       }));
       res.expand = this.orderQuery.getValue().expandedAll || false;
-      this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
+      this.message.success('Thêm đơn hàng thành công');
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
     }),
@@ -86,11 +87,7 @@ export class OrderEffect {
                 commodityUniq: response.commodityUniq
               }));
               if (!response.data.length) {
-                this.snackBar.openFromComponent(SnackBarComponent, {
-                  duration: 2500,
-                  panelClass: ['background-snackbar'],
-                  data: {content: 'Đã lấy hết đơn hàng'}
-                });
+               this.message.warning('Đã lấy hết đơn hàng')
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
                   expand: expanedAll,
@@ -145,7 +142,7 @@ export class OrderEffect {
             if (props.inRoute) {
               this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));
             }
-            this.snackBar.open('Cập nhật thành công');
+            this.message.success('Cập nhật thành công');
             this.orderStore.update(response.id, response);
           })
         );
@@ -190,7 +187,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.delete(props.id).pipe(
         map((_) => {
-          this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
+          this.message.success('Xoá đơn hàng thành công');
           const orderDelete = this.orderQuery.getEntity(props.id);
           if (orderDelete)
             this.orderStore.update(state => ({
@@ -214,7 +211,7 @@ export class OrderEffect {
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
     map((res) => {
-        this.snackBar.open('Huỷ đơn hàng thành công', '', {duration: 1500});
+        this.message.success('Huỷ đơn hàng thành công');
         this.orderStore.remove(res.id);
       }
     ),
