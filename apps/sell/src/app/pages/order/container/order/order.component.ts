@@ -63,19 +63,19 @@ export class OrderComponent implements OnInit {
   valueSort?: Sort;
   formGroup = new FormGroup({
     search: new FormControl(this.stateSearch.search),
-    paidType: new FormControl(this.stateSearch.paidType),
-    customer: new FormControl(this.stateSearch.customer),
+    // paidType: new FormControl(this.stateSearch.paidType),
+    // customer: new FormControl(this.stateSearch.customer),
     status: new FormControl(this.stateSearch.status),
-    explain: new FormControl(this.stateSearch.explain),
+    // explain: new FormControl(this.stateSearch.explain),
     endedAt_start: new FormControl(this.stateSearch.endedAt_start),
     endedAt_end: new FormControl(this.stateSearch.endedAt_end),
     startedAt_end: new FormControl(this.stateSearch.startedAt_start),
     startedAt_start: new FormControl(this.stateSearch.startedAt_end),
     deliveredAt_start: new FormControl(this.stateSearch.deliveredAt_start),
     deliveredAt_end: new FormControl(this.stateSearch.deliveredAt_end),
-    commodityTotal: new FormControl(this.stateSearch.commodityTotal),
-    province: new FormControl(this.stateSearch.province),
-    bsx: new FormControl(this.stateSearch.bsx),
+    // commodityTotal: new FormControl(this.stateSearch.commodityTotal),
+    // province: new FormControl(this.stateSearch.province),
+    // bsx: new FormControl(this.stateSearch.bsx),
     commodity: new FormControl(this.stateSearch.commodity)
   });
 
@@ -91,9 +91,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(OrderActions.loadAll({
-      param: this.mapOrder(this.formGroup.value)
-    }));
+    // this.actions$.dispatch(
+    //   OrderActions.loadAll({param: this.mapOrder(this.formGroup.value)})
+    // );
 
     this.formGroup.valueChanges
       .pipe(
@@ -115,7 +115,6 @@ export class OrderComponent implements OnInit {
       nzWidth: '80vw',
       nzFooter: null
     })
-    // this.router.navigate(['don-hang/them-don-hang']).then();
   }
 
   readOrUpdate(id: number, isUpdate: boolean) {
@@ -187,8 +186,8 @@ export class OrderComponent implements OnInit {
   }
 
   onPickCreatedAt($event: any) {
-    this.formGroup.get('createdAt_start')?.setValue($event.start, {emitEvent: false});
-    this.formGroup.get('createdAt_end')?.setValue($event.end);
+    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
+    this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
   onPickEndedAt($event: any) {
@@ -220,7 +219,8 @@ export class OrderComponent implements OnInit {
       take: this.pageSize
     });
     if (value?.status !== 1) {
-      delete value.deliveredAt;
+      delete value.deliveredAt_start;
+      delete value.deliveredAt_end;
     }
 
     if (this.valueSort?.orderType) {

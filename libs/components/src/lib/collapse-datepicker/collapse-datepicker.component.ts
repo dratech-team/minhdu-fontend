@@ -10,6 +10,7 @@ export class CollapseDatepickerComponent implements OnInit {
   @Input() title: string = '';
   @Input() rangeDayInit?: RangeDay
   @Output() onPicker = new EventEmitter<any>();
+
   formTitlePicker = new FormControl();
   formRange = new FormControl();
   formRadio = new FormControl()
@@ -19,7 +20,8 @@ export class CollapseDatepickerComponent implements OnInit {
     this.formRange.valueChanges.subscribe(val => {
       this.formRadio.setValue(1)
       this.onPicker.emit({
-        start: val[0], end: val[1]
+        start: val[0],
+        end: val[1]
       });
     })
   }

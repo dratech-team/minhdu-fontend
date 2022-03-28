@@ -16,6 +16,7 @@ import {RouteAction} from '../../route/+state/route.action';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
+import {set} from "lodash";
 
 @Injectable()
 export class OrderEffect {
@@ -87,7 +88,10 @@ export class OrderEffect {
                 commodityUniq: response.commodityUniq
               }));
               if (!response.data.length) {
-               this.message.warning('Đã lấy hết đơn hàng')
+                this.message.warning('Đã lấy hết đơn hàng')
+                if(!props.isPagination){
+                  this.orderStore.set(response.data)
+                }
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
                   expand: expanedAll,
@@ -95,7 +99,7 @@ export class OrderEffect {
                 }));
                 if (props.isPagination) {
                   this.orderStore.add(data);
-                } else {
+                }else {
                   this.orderStore.set(data);
                 }
               }
