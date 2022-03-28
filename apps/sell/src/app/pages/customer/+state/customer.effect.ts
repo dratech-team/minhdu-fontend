@@ -52,7 +52,12 @@ export class CustomerEffect {
         })
       );
     }),
-    catchError((err) => throwError(err))
+    catchError((err) =>{
+      this.customerStore.update(state => ({
+        ...state, loading: false
+      }));
+     return  throwError(err)
+    } )
   );
 
   @Effect()
