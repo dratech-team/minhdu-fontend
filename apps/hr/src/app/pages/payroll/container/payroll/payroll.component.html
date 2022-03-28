@@ -389,7 +389,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.SEASONAL '>
       <minhdu-fontend-payroll-seasonal
-        [eventExportSeasonal]='eventExportAbsent' [payroll$]='payroll$' [total$]='total$'
+        [payroll$]='payroll$' [total$]='total$'
         [formGroup]='formGroup' [positions$]='positions$' [branches$]='branches$'
         (EventScroll)='onScroll()'
         (EventDeletePayroll)='deletePayroll($event)'

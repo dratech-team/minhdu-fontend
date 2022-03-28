@@ -27,7 +27,7 @@ export const Api = {
       POSITION: 'position',
       BRANCH: 'branch',
       DEPARTMENT: 'department',
-      EMPLOYEE_EXPORT: 'payroll/export/employee',
+      EMPLOYEE_EXPORT: 'employee/export/employee',
       CATEGORY: 'category',
       SORT_STT: 'employee/sort/stt'
     },
@@ -35,6 +35,7 @@ export const Api = {
       BASIC_TEMPLATE: 'basic-template',
       OVERTIME_TEMPLATE: 'overtime-template'
     },
+    EXPORT:'export',
     BRANCH_EXPORT: 'payroll/export/branch',
     POSITION_EXPORT: 'payroll/export/position',
     OVERVIEW: 'overview/hr'

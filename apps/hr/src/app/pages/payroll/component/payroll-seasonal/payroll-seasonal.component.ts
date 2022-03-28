@@ -1,29 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatetimeUnitEnum, EmployeeType, FilterTypeEnum, ItemContextMenu } from '@minhdu-fontend/enums';
-import { OvertimeService } from '../../service/overtime.service';
-import { select, Store } from '@ngrx/store';
-import { selectedLoadedPayroll } from '../../+state/payroll/payroll.selector';
-import { DatePipe } from '@angular/common';
-import { AddPayrollComponent } from '../add-Payroll/add-payroll.component';
-import { DialogManConfirmedAtComponent } from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
-import { Observable, Subject } from 'rxjs';
-import { Branch, Position } from '@minhdu-fontend/data-models';
-import { Payroll } from '../../+state/payroll/payroll.interface';
-import { checkInputNumber } from '@minhdu-fontend/utils';
-import { DialogExportComponent } from '@minhdu-fontend/components';
-import { Api } from '@minhdu-fontend/constants';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {DatetimeUnitEnum, ItemContextMenu} from '@minhdu-fontend/enums';
+import {OvertimeService} from '../../service/overtime.service';
+import {select, Store} from '@ngrx/store';
+import {selectedLoadedPayroll} from '../../+state/payroll/payroll.selector';
+import {DatePipe} from '@angular/common';
+import {AddPayrollComponent} from '../add-Payroll/add-payroll.component';
+import {DialogManConfirmedAtComponent} from '../dialog-manconfirmedAt/dialog-man-confirmed-at.component';
+import {Observable} from 'rxjs';
+import {Branch, Position} from '@minhdu-fontend/data-models';
+import {Payroll} from '../../+state/payroll/payroll.interface';
+import {checkInputNumber} from '@minhdu-fontend/utils';
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'minhdu-fontend-payroll-seasonal',
   templateUrl: 'payroll-seasonal.component.html'
 })
-export class PayrollSeasonalComponent implements OnInit {
+export class PayrollSeasonalComponent {
   @Input() payroll$!: Observable<Payroll[]>;
   @Input() total$!: Observable<number>;
-  @Input() eventExportSeasonal?: Subject<any>;
   @Input() formGroup!: FormGroup;
   @Input() positions$!: Observable<Position[]>;
   @Input() branches$!: Observable<Branch[]>;
@@ -48,39 +46,9 @@ export class PayrollSeasonalComponent implements OnInit {
     private readonly overtimeService: OvertimeService,
     private readonly dialog: MatDialog,
     private readonly store: Store,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly exportService: ExportService,
   ) {
-  }
-
-  ngOnInit() {
-    this.eventExportSeasonal?.subscribe((val) => {
-      if (val) {
-        const value = this.formGroup.value;
-        const payrollSeasonal = {
-          code: value.code || '',
-          name: value.name,
-          position: value.position?.name||'',
-          branch: value.branch,
-          exportType: FilterTypeEnum.SEASONAL,
-          paidAt: value.paidAt,
-          accConfirmedAt: value.accConfirmedAt,
-          employeeType: EmployeeType.EMPLOYEE_SEASONAL
-        };
-        if (value.createdAt) {
-          Object.assign(payrollSeasonal, { createdAt: value.createdAt });
-        }
-        this.dialog.open(DialogExportComponent, {
-          width: 'fit-content',
-          data: {
-            title: 'Xuât bảng lương công nhật',
-            exportType: FilterTypeEnum.SEASONAL,
-            params: payrollSeasonal,
-            isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
-          }
-        });
-      }
-    });
   }
 
 

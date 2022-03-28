@@ -49,6 +49,7 @@ import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Branch, Category, Position} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -144,7 +145,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     private readonly datePipe: DatePipe,
     private ref: ChangeDetectorRef,
     private readonly categoryService: CategoryService,
-    private readonly activeRouter: ActivatedRoute
+    private readonly activeRouter: ActivatedRoute,
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -557,7 +559,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
               this.exportTimeSheet();
               break;
             case FilterTypeEnum.SEASONAL:
-              this.eventExportAbsent.next(true);
+              this.exportSeasonal()
               break;
             case FilterTypeEnum.PAYROLL:
               this.exportPayroll();
@@ -576,23 +578,45 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const payroll = {
       code: value.code || '',
       name: value.name,
-      position: value.position?.name || '',
-      branch: this.formCtrlBranch?.value?.name || '',
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
       exportType: FilterTypeEnum.PAYROLL,
       isLeave: this.formIsLeave.value,
+      categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
+      position: value.position?.name || '',
+      branch: this.formCtrlBranch.value?.name || '',
+      createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
+      isPaid: value.paidAt,
+      isConfirm: value.accConfirmedAt,
+      filterType: this.selectedPayroll,
+      accConfirmed: value.accConfirmed,
+      employeeType: EmployeeType.EMPLOYEE_FULL_TIME
     };
+    if (this.sort?.active) {
+      Object.assign(payroll, {
+        orderBy: this.sort.active,
+        orderType: this.sort ? this.sort.direction : ''
+      });
+    }
+    ;
     if (value.createdAt) {
       Object.assign(payroll, {createdAt: new Date(value.createdAt)});
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
+        filename: `Xuất bảng lương tháng ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}`,
         title: 'Xuât bảng lương',
         params: payroll,
         isPayroll: true,
-        api: Api.HR.PAYROLL.EXPORT
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.HR.PAYROLL.EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
       }
     });
   }
@@ -600,10 +624,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   exportTimeSheet() {
     const value = this.formGroup.value;
     const payroll = {
+      createdAt: value.createdAt,
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
-      branch: this.formCtrlBranch?.value?.name || '',
+      branch: this.formCtrlBranch.value?.name || '',
       exportType: FilterTypeEnum.TIME_SHEET,
       isLeave: this.formIsLeave.value,
     };
@@ -613,10 +638,52 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
+        filename: `Xuất bảng chấm công tháng ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}`,
         title: 'Xuât bảng chấm công',
         params: payroll,
         isPayroll: true,
-        api: Api.HR.PAYROLL.EXPORT
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.HR.PAYROLL.EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
+      }
+    });
+  }
+
+  exportSeasonal() {
+    const value = this.formGroup.value;
+    const payrollSeasonal = {
+      code: value.code || '',
+      name: value.name,
+      position: value.position?.name || '',
+      branch: this.formCtrlBranch.value?.name || '',
+      exportType: FilterTypeEnum.SEASONAL,
+      paidAt: value.paidAt,
+      accConfirmedAt: value.accConfirmedAt,
+      employeeType: EmployeeType.EMPLOYEE_SEASONAL
+    };
+    if (value.createdAt) {
+      Object.assign(payrollSeasonal, {createdAt: value.createdAt});
+    }
+    this.dialog.open(DialogExportComponent, {
+      width: 'fit-content',
+      data: {
+        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(value.createdAt, 'MM-yyyy')}`,
+        title: 'Xuât bảng lương công nhật',
+        params: payrollSeasonal,
+        isPayroll: true,
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.HR.PAYROLL.EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
       }
     });
   }

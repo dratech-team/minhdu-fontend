@@ -8,8 +8,7 @@ export class ItemExportService {
   constructor(public readonly http: HttpClient) {
   }
 
-  getItemExport(params: any): Observable<any[]> {
-    console.log(params)
-    return this.http.get<any>(params?.api || Api.HR.PAYROLL.ITEMS_EXPORT,{params});
+  getItemExport(params?: any): Observable<any[]> {
+    return this.http.get<any>(params?.api || Api.HR.EXPORT,{params});
   }
 }

@@ -40,7 +40,6 @@ import {
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
-import {TemplateSalaryAction} from '../../../template/+state/teamlate-salary/template-salary.action';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogStayComponent} from '../dialog-salary/dialog-stay/dialog-stay.component';
@@ -49,6 +48,7 @@ import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../service/payroll.service";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'app-payroll-stay',
@@ -100,7 +100,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     private readonly message: NzMessageService,
     private readonly router: Router,
     private ref: ChangeDetectorRef,
-    private payrollService: PayrollService
+    private payrollService: PayrollService,
+    private exportService: ExportService,
   ) {
   }
 
@@ -203,10 +204,18 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
+            filename: `Xuất bản phụ cấp lương tháng ${this.datePipe.transform(value.createdAt, 'MM-yyyy')}`,
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
             isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
+          }
+        }).afterClosed().subscribe(val => {
+          if (val) {
+            this.exportService.print(
+              Api.HR.PAYROLL.EXPORT,
+              val.params,
+              {items: val.itemSelected}
+            );
           }
         });
       }

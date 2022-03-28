@@ -50,6 +50,7 @@ import {DialogTimekeepingComponent} from '../dialog-salary/timekeeping/dialog-ti
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'app-payroll-absent',
@@ -113,6 +114,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     private readonly router: Router,
     private readonly ref: ChangeDetectorRef,
     private readonly positionService: PositionService,
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -230,7 +232,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ABSENT,
-          titles: [value.title],
+          titles: value.titles ? value.titles: [],
           startedAt: value.startedAt,
           endedAt: value.endedAt,
           isLeave: value.isLeave
@@ -238,11 +240,19 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
+            filename: `Xuất bản khấu trừ tháng từ ngày ${this.datePipe.transform(payrollAbsent.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(payrollAbsent.endedAt, 'dd-MM-yyyy')}`,
             title: 'Xuât bảng khấu trừ',
             typeDate: 'RANGE_DATETIME',
             params: payrollAbsent,
             isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
+          }
+        }).afterClosed().subscribe(val => {
+          if (val) {
+            this.exportService.print(
+              Api.HR.PAYROLL.EXPORT,
+              val.params,
+              {items: val.itemSelected}
+            );
           }
         });
       }

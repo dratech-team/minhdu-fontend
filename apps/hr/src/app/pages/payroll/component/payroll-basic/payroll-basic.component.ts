@@ -46,6 +46,7 @@ import {DialogBasicComponent} from '../dialog-salary/dialog-basic/dialog-basic.c
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -98,6 +99,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     private readonly router: Router,
     private ref: ChangeDetectorRef,
     private payrollService: PayrollService,
+    private exportService: ExportService,
   ) {
   }
 
@@ -192,18 +194,29 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.BASIC,
           titles: value.titles,
-          isLeave: value.isLeave
+          isLeave: value.isLeave,
+          searchType: value.searchType,
+          createdAt: new Date(value.createdAt),
+          filterType: FilterTypeEnum.BASIC,
         };
         if (value.createdAt) {
           Object.assign(payrollBASIC, {createdAt: value.createdAt});
         }
-        const ref = this.dialog.open(DialogExportComponent, {
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
+            filename: `Xuất bảng lương cơ bản tháng ${this.datePipe.transform(payrollBASIC.createdAt, 'MM-yyyy')}`,
             title: 'Xuât bảng lương cơ bản',
             params: payrollBASIC,
             isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
+          }
+        }).afterClosed().subscribe(val => {
+          if (val) {
+            this.exportService.print(
+              Api.HR.PAYROLL.EXPORT,
+              val.params,
+              {items: val.itemSelected}
+            );
           }
         });
       }

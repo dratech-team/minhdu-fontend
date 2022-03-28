@@ -44,6 +44,7 @@ import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
 import {Payroll} from "../../+state/payroll/payroll.interface";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -110,6 +111,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     private readonly activeRouter: ActivatedRoute,
     private readonly ref: ChangeDetectorRef,
     private readonly payrollService: PayrollService,
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -201,15 +203,25 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
+            filename: overtime.titles.length > 0 ? overtime.titles.join(' + '):
+              `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(overtime.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(overtime.endedAt, 'dd-MM-yyyy')}`,
             title: 'Xuất Bảng tăng ca',
             params: overtime,
             typeDate: 'RANGE_DATETIME',
             isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
+          }
+        }).afterClosed().subscribe(val => {
+          if(val){
+            this.exportService.print(
+              Api.HR.PAYROLL.EXPORT,
+              val.params,
+              {items: val.itemSelected}
+            );
           }
         });
       }
     });
+
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.getTemplateOvertime(value.startedAt, value.endedAt, value.branch?.name, value.position?.name)

@@ -30,14 +30,13 @@ import {
 } from '@minhdu-fontend/enums';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import {catchError, debounceTime, map, startWith, tap} from 'rxjs/operators';
-import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {catchError, debounceTime, map, tap} from 'rxjs/operators';
+import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {DeleteEmployeeComponent} from '../../components/dialog-delete-employee/delete-employee.component';
 import {Api, EmployeeConstant} from '@minhdu-fontend/constants';
-import {ProvinceAction, selectAllProvince} from '@minhdu-fontend/location';
-import {Observable, of, Subject, throwError} from 'rxjs';
-import {Category, District, Employee, Position, Province, Ward} from '@minhdu-fontend/data-models';
-import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
+import {Observable, Subject, throwError} from 'rxjs';
+import {Category, District, Employee, Ward} from '@minhdu-fontend/data-models';
+import {checkInputNumber} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {DialogCategoryComponent} from '../../components/category/dialog-category.component';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
@@ -49,6 +48,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {AddEmployeeComponent} from '../../components/employee/add-employee.component';
 import {Role} from '../../../../../../../../libs/enums/hr/role.enum';
 import {ProvinceService} from "../../../../../../../../libs/location/src/lib/service/province.service";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   templateUrl: 'employee.component.html'
@@ -124,6 +124,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly provinceService: ProvinceService,
+    private readonly exportService: ExportService,
   ) {
     this.store.pipe(select(selectorAllEmployee))
       .pipe(tap(employees => this.employees = employees))
@@ -321,7 +322,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     const employee = {
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       name: val.name,
-      birthday: val.birthday,
+      // birthday: val.birthday,
       phone: val.phone,
       identity: val.identity,
       address: val.address,
@@ -331,25 +332,33 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       gender: val.gender,
       position: val.position ? val.position.name : '',
       branch: val.branch ? val.branch.name : '',
-      workedAt: val.workedAt,
+      // workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
-      isFlatSalary:
-        val.flatSalary === this.flatSalary.FLAT_SALARY
-          ? this.convertBoolean.TRUE
-          : val.flatSalary === this.flatSalary.NOT_FLAT_SALARY
-            ? this.convertBoolean.FALSE
-            : val.flatSalary,
-      orderBy: this.sort ? this.sort.active : '',
-      orderType: this.sort ? this.sort.direction === 'asc' ? 'UP' : 'DOWN' : ''
+      isFlatSalary:val.flatSalary,
+      exportType: 'EMPLOYEES'
     };
+    if (this.sort.active) {
+      Object.assign(employee, {
+        orderBy: this.sort.active ? this.sort.active : '',
+        orderType: this.sort ? this.sort.direction : ''
+      });
+    }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
+        filename:'Danh sách nhân viên',
         title: 'Xuất bảng nhân viên',
-        exportType: 'EMPLOYEE',
         params: employee,
         api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.HR.EMPLOYEE.EMPLOYEE_EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
       }
     });
   }

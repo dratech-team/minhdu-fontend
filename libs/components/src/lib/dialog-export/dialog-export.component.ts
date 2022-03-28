@@ -31,7 +31,7 @@ export class DialogExportComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
-        name: new FormControl('', Validators.required),
+      name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         startedAt: this.data?.params?.startedAt ? new FormControl(
           this.datePipe.transform(
             new Date(this.data.params.startedAt),
@@ -45,26 +45,17 @@ export class DialogExportComponent implements OnInit {
           )
         ) : ''
       } : {
-        name: new FormControl('', Validators.required),
+        name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         createdAt: new FormControl(
-          this.datePipe.transform(
-            new Date(this.data?.params?.createdAt),
-            'YYYY-MM'
-          )
+          this.data?.params?.createdAt ?
+            this.datePipe.transform(
+              new Date(this.data?.params?.createdAt),
+              'YYYY-MM'
+            ) : ''
         )
       }
     );
 
-    if (this.data.params.exportType === FilterTypeEnum.OVERTIME) {
-      if (this.data?.params?.titles?.length > 0) {
-        let name!: string
-        this.formGroup.get('name')?.setValue(this.data.params.titles.join(' + '))
-      } else {
-        this.formGroup.get('name')?.setValue(
-          `Xuất bảng tăng ca từ ngày  ${this.datePipe.transform(this.data.params.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.data.params.endedAt, 'dd-MM-yyyy')}`
-        )
-      }
-    }
     this.itemExportService
       .getItemExport({exportType: this.data.params.exportType})
       .subscribe((val: any[]) => {
@@ -86,25 +77,26 @@ export class DialogExportComponent implements OnInit {
     this.itemSelected.sort((a, b) => {
       return a.index - b.index;
     });
-    console.log(this.data.params.exportType)
+
     if (this.data.params.exportType === FilterTypeEnum.OVERTIME || this.data.params.exportType === FilterTypeEnum.ABSENT) {
       Object.assign(this.data.params, {
         startedAt: new Date(value.startedAt),
         endedAt: new Date(value.endedAt)
       });
     } else {
-      Object.assign(this.data.params, {
-        createdAt: new Date(value.createdAt)
-      });
+      if(value.createdAt){
+        Object.assign(this.data.params, {
+          createdAt: new Date(value.createdAt)
+        });
+      }
     }
-    this.exportService.print(
-      this.data.api,
-      this.data?.params
-        ? Object.assign(this.data.params, {filename: value.name})
-        : {filename: value.name},
-      {items: this.itemSelected}
-    );
-    this.dialogRef.close();
+
+    Object.assign(this.data.params, {filename: value.name})
+    this.dialogRef.close(
+      {
+        params: this.data?.params,
+        itemSelected: this.itemSelected
+      })
   }
 
   someComplete(): boolean {

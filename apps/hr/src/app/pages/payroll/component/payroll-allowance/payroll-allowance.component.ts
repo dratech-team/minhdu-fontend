@@ -49,6 +49,7 @@ import {getAllPosition} from '@minhdu-fontend/orgchart-position';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
+import {ExportService} from "@minhdu-fontend/service";
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -109,6 +110,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     private readonly message: NzMessageService,
     private readonly router: Router,
     private readonly ref: ChangeDetectorRef,
+    private readonly exportService: ExportService,
   ) {
   }
 
@@ -240,7 +242,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
-          titles: [value.titles],
+          titles: value.titles ? [value.titles] : [],
           isLeave: value.isLeave
         };
         if (value.createdAt) {
@@ -249,10 +251,18 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
+            filename: `Xuất bảng phụ cấp khác tháng ${this.datePipe.transform(value.createdAt, 'MM-yyyy')}`,
             title: 'Xuât bảng phụ cấp khác',
             params: payrollAllowance,
             isPayroll: true,
-            api: Api.HR.PAYROLL.EXPORT
+          }
+        }).afterClosed().subscribe(val => {
+          if (val) {
+            this.exportService.print(
+              Api.HR.PAYROLL.EXPORT,
+              val.params,
+              {items: val.itemSelected}
+            );
           }
         });
       }
