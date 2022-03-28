@@ -5,7 +5,14 @@ import { document } from 'ngx-bootstrap/utils';
 import { OrderEntity } from '../../../pages/order/enitities/order.entity';
 import { PaidType } from 'libs/enums/paidType.enum';
 import { OrderActions } from '../../../pages/order/+state/order.actions';
-import { checkIsSelectAllInit, handleValSubPickItems, pickAll, pickOne, someComplete } from '@minhdu-fontend/utils';
+import {
+  checkIsSelectAllInit,
+  getFirstDayInMonth, getLastDayInMonth,
+  handleValSubPickItems,
+  pickAll,
+  pickOne,
+  someComplete
+} from '@minhdu-fontend/utils';
 import { RouteEntity } from '../../../pages/route/entities/route.entity';
 import { Actions } from '@datorama/akita-ng-effects';
 import { OrderQuery } from '../../../pages/order/+state/order.query';
@@ -47,8 +54,10 @@ export class PickOrderComponent implements OnInit, OnChanges {
   formGroup = new FormGroup(
     {
       filterRoute: new FormControl(false),
-      name: new FormControl(''),
-      createdAt: new FormControl(''),
+      customer: new FormControl(''),
+      startedAt: new FormControl(
+        [getFirstDayInMonth(new Date()), getLastDayInMonth(new Date())]
+      ),
       paidType: new FormControl(''),
       explain: new FormControl('')
     });
@@ -119,9 +128,10 @@ export class PickOrderComponent implements OnInit, OnChanges {
       paidType: val.paidType,
       skip: isPagination ? this.orderQuery.getCount() : this.pageIndex,
       filterRoute: val.filterRoute,
-      customer: val.name.trim(),
+      customer: val.customer.trim(),
       explain: val.explain.trim(),
-      createdAt: val.createdAt ? new Date(val.createdAt) : ''
+      startedAt_start :val.startedAt ? val.startedAt[0] : getFirstDayInMonth(new Date()),
+      startedAt_end: val.startedAt? val.startedAt[1]: getLastDayInMonth(new Date()),
     };
     return Object.assign(param, this.customerId ? { customerId: this.customerId } : {});
   }
