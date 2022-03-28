@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
-import { OrderService } from '../service/order.service';
-import { OrderActions } from './order.actions';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { Router } from '@angular/router';
-import { SnackBarComponent } from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { OrderEntity } from '../enitities/order.entity';
-import { getTotalCommodity } from '../../../../../../../libs/utils/sell.ultil';
-import { OrderQuery } from './order.query';
-import { OrderStore } from './order.store';
-import { RouteAction } from '../../route/+state/route.action';
-import { CommodityEntity, CommodityUniq } from '../../commodity/entities';
-import { UpdateCommodityDto } from '../../commodity/dto';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
+import {OrderService} from '../service/order.service';
+import {OrderActions} from './order.actions';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ConvertBoolean} from '@minhdu-fontend/enums';
+import {Router} from '@angular/router';
+import {SnackBarComponent} from '../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
+import {OrderEntity} from '../enitities/order.entity';
+import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
+import {OrderQuery} from './order.query';
+import {OrderStore} from './order.store';
+import {RouteAction} from '../../route/+state/route.action';
+import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
+import {UpdateCommodityDto} from '../../commodity/dto';
 
 @Injectable()
 export class OrderEffect {
@@ -50,11 +50,14 @@ export class OrderEffect {
           state.commodityUniq
       }));
       res.expand = this.orderQuery.getValue().expandedAll || false;
-      this.snackBar.open('Thêm đơn hàng thành công', '', { duration: 1500 });
+      this.snackBar.open('Thêm đơn hàng thành công', '', {duration: 1500});
       this.orderStore.add(res);
       this.router.navigate(['don-hang']).then();
     }),
     catchError((err) => {
+      this.orderStore.update(state => ({
+        ...state, added: null
+      }));
       return throwError(err);
     })
   );
@@ -67,11 +70,11 @@ export class OrderEffect {
           ...state, loading: true
         }));
         if (props.param?.orderType) {
-          Object.assign(props.param, { orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des' });
+          Object.assign(props.param, {orderType: props.param?.orderType === 'ascend' ? 'asc' : 'des'});
         }
         return this.orderService.pagination(Object.assign(
           props.param,
-          (props.param?.status === undefined || props.param?.status === null) ? { status: 0 } : {})
+          (props.param?.status === undefined || props.param?.status === null) ? {status: 0} : {})
         ).pipe(
           map((response) => {
               const expanedAll = this.orderQuery.getValue().expandedAll;
@@ -86,7 +89,7 @@ export class OrderEffect {
                 this.snackBar.openFromComponent(SnackBarComponent, {
                   duration: 2500,
                   panelClass: ['background-snackbar'],
-                  data: { content: 'Đã lấy hết đơn hàng' }
+                  data: {content: 'Đã lấy hết đơn hàng'}
                 });
               } else {
                 const data = response.data.map((order: OrderEntity) => Object.assign(order, {
@@ -104,7 +107,12 @@ export class OrderEffect {
         );
       }
     ),
-    catchError((err) => throwError(err))
+    catchError((err) => {
+      this.orderStore.update(state => ({
+        ...state, loading: false
+      }));
+      return throwError(err)
+    })
   );
 
   @Effect()
@@ -135,7 +143,7 @@ export class OrderEffect {
                 added: true
               }));
             if (props.inRoute) {
-              this.actions$.dispatch(RouteAction.loadOne({ id: props.inRoute.routeId }));
+              this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));
             }
             this.snackBar.open('Cập nhật thành công');
             this.orderStore.update(response.id, response);
@@ -144,6 +152,10 @@ export class OrderEffect {
       }
     ),
     catchError((err) => {
+      this.orderStore.update(state => ({
+        ...state,
+        added: null
+      }));
       return throwError(err);
     })
   );
@@ -166,7 +178,7 @@ export class OrderEffect {
     ofType(OrderActions.payment),
     switchMap((props) =>
       this.orderService.payment(props.id, props.order).pipe(
-        map((_) => OrderActions.loadOne({ id: props.id })),
+        map((_) => OrderActions.loadOne({id: props.id})),
         catchError((err) => throwError(err))
       )
     )
@@ -178,7 +190,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.delete(props.id).pipe(
         map((_) => {
-          this.snackBar.open('Xoá đơn hàng thành công', '', { duration: 1500 });
+          this.snackBar.open('Xoá đơn hàng thành công', '', {duration: 1500});
           const orderDelete = this.orderQuery.getEntity(props.id);
           if (orderDelete)
             this.orderStore.update(state => ({
@@ -202,7 +214,7 @@ export class OrderEffect {
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
     map((res) => {
-        this.snackBar.open('Huỷ đơn hàng thành công', '', { duration: 1500 });
+        this.snackBar.open('Huỷ đơn hàng thành công', '', {duration: 1500});
         this.orderStore.remove(res.id);
       }
     ),
@@ -222,7 +234,7 @@ export class OrderEffect {
           if (index > -1) {
             result[index].amount = result[index].amount + value.amount;
           } else {
-            result.push({ name: value.name, code: value.code, amount: value.amount });
+            result.push({name: value.name, code: value.code, amount: value.amount});
           }
           break;
         case 'delete':
