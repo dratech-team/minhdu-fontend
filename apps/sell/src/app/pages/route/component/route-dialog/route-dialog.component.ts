@@ -41,6 +41,9 @@ export class RouteDialogComponent implements OnInit {
     }))
 
     if (this.data?.isUpdate) {
+      if(this.data?.updateOrder){
+        this.stepIndex = 1
+      }
       this.orderIdsOfRoute = [...this.data.route.orders]
     }
 

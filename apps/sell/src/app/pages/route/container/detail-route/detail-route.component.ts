@@ -52,13 +52,13 @@ export class DetailRouteComponent implements OnInit {
     });
   }
 
-  updateRoute(route: RouteEntity, selectOrder?: boolean) {
+  updateRoute(route: RouteEntity, updateOrder?: boolean) {
     this.modal.create({
       nzWidth: 'fit-content',
       nzTitle: 'Cập nhật tuyến đường',
       nzContent: RouteDialogComponent,
       nzComponentParams: {
-        data: { route: route, selectOrder: selectOrder, isUpdate: true }
+        data: { route: route, updateOrder: updateOrder, isUpdate: true }
       },
       nzFooter: null
     });
