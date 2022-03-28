@@ -1,17 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { PayrollAction } from '../../+state/payroll/payroll.action';
-import { Payslip } from '../../+state/payslip/payslip.interface';
-import { PayslipService } from '../../service/payslip.service';
-import { RecipeType, EmployeeType } from '@minhdu-fontend/enums';
-import { FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { getFirstDayInMonth, getLastDayInMonth } from '../../../../../../../../libs/utils/daytime.until';
-import { selectedConfirmedPayroll } from '../../+state/payroll/payroll.selector';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {PayrollAction} from '../../+state/payroll/payroll.action';
+import {Payslip} from '../../+state/payslip/payslip.interface';
+import {PayslipService} from '../../service/payslip.service';
+import {EmployeeType, RecipeType} from '@minhdu-fontend/enums';
+import {FormControl} from '@angular/forms';
+import {DatePipe} from '@angular/common';
+import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../libs/utils/daytime.until';
+import {selectedConfirmedPayroll} from '../../+state/payroll/payroll.selector';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -44,6 +43,7 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data.payroll)
     this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
