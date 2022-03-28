@@ -21,7 +21,7 @@ export class UpdatePayrollComponent implements OnInit {
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
       this.positions = branches[0].positions
-    }else{
+    } else {
       this.positions = branches.find(branch => branch.name === this.data.payroll.branch)?.positions
     }
 
@@ -46,7 +46,8 @@ export class UpdatePayrollComponent implements OnInit {
       branch: [this.data.payroll.branch, Validators.required],
       position: [this.data.payroll.position, Validators.required],
       workday: [this.data.payroll.workday, Validators.required],
-      recipeType: [this.data.payroll.recipeType, Validators.required]
+      recipeType: [this.data.payroll.recipeType, Validators.required],
+      tax: [this.data.payroll.tax, Validators.required],
     })
     this.formGroup.get('branch')?.valueChanges.subscribe(val => {
       this.formGroup.get('position')?.setValue('')
@@ -55,6 +56,7 @@ export class UpdatePayrollComponent implements OnInit {
   }
 
   onSubmit(): any {
+    console.log(this.formGroup)
     if (this.formGroup.invalid) {
       return
     }
@@ -62,6 +64,7 @@ export class UpdatePayrollComponent implements OnInit {
     const payroll = {
       workday: value.workday,
       createdAt: value.createdAt,
+      tax: value.tax
     }
     if (value.position?.id) {
       Object.assign(payroll, {positionId: value.position.id,})

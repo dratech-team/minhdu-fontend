@@ -22,6 +22,7 @@ export interface Payroll {
   payrollIds: number[];
   payslip: Payslip;
   taxed: boolean;
+  tax: number
   recipeType: RecipeType;
   timesheet: { datetime: any[]; total: number };
   salary?: {
