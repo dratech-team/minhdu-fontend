@@ -50,7 +50,6 @@ export class DialogOvertimeComponent implements OnInit {
   ) {
   }
 
-  //Dummy data select các buổi trong ngày
   titleSession = [
     {title: 'buổi sáng', type: PartialDayEnum.MORNING, times: partialDay.PARTIAL},
     {title: 'buổi chiều', type: PartialDayEnum.AFTERNOON, times: partialDay.PARTIAL},
@@ -58,7 +57,7 @@ export class DialogOvertimeComponent implements OnInit {
     {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
   ];
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.title : o1.id === o2.id);
-  comparePartialFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.type : o1.type=== o2.type);
+  comparePartialFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.type : o1 === o2);
 
   ngOnInit(): void {
     if (!this.data?.updateMultiple) {
@@ -70,7 +69,7 @@ export class DialogOvertimeComponent implements OnInit {
       this.salariesSelected = this.data.salariesSelected
     }
     if (this.data?.isUpdate) {
-      if(this.data.salary?.allowance){
+      if (this.data.salary?.allowance) {
         this.isAllowanceOvertime = true
       }
       this.formGroup = this.formBuilder.group({
@@ -91,7 +90,7 @@ export class DialogOvertimeComponent implements OnInit {
         days: [this.data.salary.times],
         priceAllowance: [this.data.salary.allowance?.price],
         titleAllowance: [this.data.salary.allowance?.title],
-        partial: [this.data.salary.partial]
+        partial: [this.titleSession.find(title => title.type === this.data.salary?.partial)]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -112,7 +111,7 @@ export class DialogOvertimeComponent implements OnInit {
     }
     this.formGroup.get('title')?.valueChanges.subscribe(title => {
       this.formGroup.get('price')?.setValue(title.price),
-      this.formGroup.get('unit')?.setValue(title.unit, {emitEvent: false})
+        this.formGroup.get('unit')?.setValue(title.unit, {emitEvent: false})
     })
 
     this.formGroup.get('unit')?.valueChanges.subscribe(val => {
@@ -130,9 +129,13 @@ export class DialogOvertimeComponent implements OnInit {
     return this.formGroup.controls;
   }
 
+
   onSubmit(): any {
     const value = this.formGroup.value;
-    if(!value.title){
+    if (!value.unit) {
+      return this.message.warning('Chưa chọn đơn vị tăng ca')
+    }
+    if (value.unit === DatetimeUnitEnum.OPTION && !value.partial || value.unit !== DatetimeUnitEnum.OPTION && !value.title) {
       return this.message.warning('Chưa chọn loại tăng ca')
     }
     this.submitted = true;
@@ -141,7 +144,7 @@ export class DialogOvertimeComponent implements OnInit {
     }
     const salary = {
       title: value.unit === DatetimeUnitEnum.OPTION ?
-        'Tăng ca ' + value.partial.title : value.title?.title || this.data.salary.title,
+        'Tăng ca ' + value.partial?.title : value.title?.title || this.data.salary.title,
       price: value.price,
       type: this.data.type,
       rate: value.rate,
@@ -151,7 +154,6 @@ export class DialogOvertimeComponent implements OnInit {
       unit: value.unit,
       payrollId: this.data?.payroll?.id ? this.data.payroll.id : this.data.salary.payrollId
     };
-
 
     if (this.isAllowanceOvertime) {
       if (!value.titleAllowance || !value.priceAllowance) {
@@ -174,8 +176,8 @@ export class DialogOvertimeComponent implements OnInit {
       });
       delete salary.unit;
       delete salary.datetime;
-    }else {
-      if(!value.datetime){
+    } else {
+      if (!value.datetime) {
         return this.message.warning('Chưa chọn ngày tăng ca')
       }
     }
@@ -224,7 +226,6 @@ export class DialogOvertimeComponent implements OnInit {
   }
 
   loadTemplateOvertime() {
-
     this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
       this.formGroup.value.unit && this.formGroup.value.unit !== DatetimeUnitEnum.OPTION ?
         {
