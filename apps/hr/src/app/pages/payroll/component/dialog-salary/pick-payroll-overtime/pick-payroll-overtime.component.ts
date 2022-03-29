@@ -262,15 +262,19 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   mapPayroll(val: any) {
-    return {
+    const value = {
       name: val.name,
       position: val.position,
       code: val.code,
       createdAt: new Date(this.search.createdAt),
       templateId: this.search.templateId || '',
-      employeeType: this.search.employeeType || '',
+      employeeType: this.search.employeeType,
       recipeType: this.search.recipeType || '',
       isLeave: false
     };
+    if (!this.search.employeeType){
+      delete value.employeeType
+    }
+    return value
   }
 }
