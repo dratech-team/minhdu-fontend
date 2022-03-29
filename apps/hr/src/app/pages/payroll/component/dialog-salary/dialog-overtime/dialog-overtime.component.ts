@@ -196,10 +196,6 @@ export class DialogOvertimeComponent implements OnInit {
           }
         });
       } else {
-        if (!this.isAllowanceOvertime && this.data.salary.allowance) {
-          this.store.dispatch(PayrollAction.deleteSalary(
-            {id: this.data.salary.allowance.id, PayrollId: this.data.salary.payrollId}));
-        }
         this.store.dispatch(PayrollAction.updateSalary({
           payrollId: this.data.salary.payrollId, id: this.data.salary.id, salary: salary
         }));
