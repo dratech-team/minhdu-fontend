@@ -45,6 +45,8 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
 import {Payroll} from "../../+state/payroll/payroll.interface";
 import {ExportService} from "@minhdu-fontend/service";
+import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
+import {values} from "lodash";
 
 @Component({
   selector: 'minhdu-fontend-payroll-overtime',
@@ -509,7 +511,17 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
+    const grouped = _.mapValues(_.groupBy(this.salaries, 'Salary.title'),
+      clist => clist.map(salary => _.omit(salary, 'title')));
+    console.log(grouped)
+    this.dialog.open(ClassifyOvertimeComponent, {
+      data: grouped
+    }).afterClosed().subscribe(val => {
+      if(val){
+       this.salariesSelected =  [...this.salaries.filter(value => value.salary.title  === val.title )]
+      }
+    })
+
   }
 
   detailPayroll(id: number) {

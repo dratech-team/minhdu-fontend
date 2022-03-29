@@ -100,6 +100,8 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {UpdatePayrollComponent} from "./component/update-payroll/update-payroll.component";
 import {NgxCurrencyModule} from "ngx-currency";
 import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
+import {ClassifyOvertimeComponent} from "./component/classify-overtime/classify-overtime.component";
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   imports: [
@@ -150,7 +152,8 @@ import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
     NzSelectModule,
     NzTableModule,
     NzInputModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    MatRadioModule
   ],
   declarations: [
     PayrollComponent,
@@ -196,7 +199,8 @@ import {customCurrencyMaskConfig} from "@minhdu-fontend/config";
     TableAllowancePayrollComponent,
     PickPayrollComponent,
     TablePayrollSelectedComponent,
-    UpdatePayrollComponent
+    UpdatePayrollComponent,
+    ClassifyOvertimeComponent
   ],
   providers: [MatDatepickerModule]
 })
