@@ -20,6 +20,6 @@ export class AuthService {
   }
 
   updatePassword(id: number, body: any): Observable<any> {
-    return this.http.patch<any>('auth' + `/${id}` + '/change-password', body);
+    return this.http.patch<any>('auth' + '/change-password', body);
   }
 }
