@@ -8,5 +8,4 @@ export interface BaseSearchCustomerDto extends Omit<BaseCustomerEntity, 'isPoten
   readonly isPotential?: -1 | 0 | 1;
 }
 
-export interface SearchCustomerDto extends BaseSearchDto<BaseSearchCustomerDto> {
-}
+export type SearchCustomerDto = BaseSearchDto<BaseSearchCustomerDto>

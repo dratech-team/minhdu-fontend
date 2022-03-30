@@ -85,7 +85,7 @@
       <div class='row mt-3'>
         <div class='col-sm' [formGroup]='formGroup'>
           <label for='cmnd'>CMND/CCCD</label>
-          <input type='number' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
+          <input type='tel' class='form-control' id='cmnd' placeholder='215421236' formControlName='identify'
                  [ngClass]="{ 'is-invalid': submitted && checkValid.identify.errors?.required }">
           <div *ngIf='submitted && checkValid.identify.errors?.required' class='invalid-feedback'>
             <div>Chưa nhập CMND/CCCD</div>

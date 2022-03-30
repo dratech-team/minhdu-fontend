@@ -100,7 +100,7 @@ export class CustomerEffect {
         this.customerStore.update(state => ({
           ...state, added: false
         }));
-        return this.customerService.update(props.id, props.updates);
+        return this.customerService.update(props);
       }
     ),
     map((res) => {
@@ -110,7 +110,7 @@ export class CustomerEffect {
       this.customerStore.update(res.id, res);
     }),
     catchError(err => {
-      return this.customerStore.update(state => ({
+       this.customerStore.update(state => ({
         ...state, added: null
       }))
       return throwError(err)

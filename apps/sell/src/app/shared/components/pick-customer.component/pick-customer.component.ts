@@ -10,6 +10,7 @@ import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CustomerConstant } from '../../../pages/customer/constants/customer.constant';
+import {CustomerService} from "../../../pages/customer/service";
 
 @Component({
   selector: 'app-pick-customer',
@@ -45,14 +46,16 @@ export class PickCustomerComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly modalRef: NzModalRef,
-    private controlContainer: ControlContainer
+    private controlContainer: ControlContainer,
+    private customerService: CustomerService,
   ) {
   }
 
   ngOnInit(): void {
     this.formGroup = <FormGroup>this.controlContainer.control;
     if (this.customers.length === 0) {
-      this.actions$.dispatch(CustomerActions.loadAll({ search: { take: 30, skip: 0 } }));
+      this.customerService.pagination({search: this.mapCustomer(this.formGroup.value, false)}).subscribe()
+      // this.actions$.dispatch(CustomerActions.loadAll({ search: { take: 30, skip: 0 } }));
       this.customers$.subscribe(customers => {
         this.customers = JSON.parse(JSON.stringify(customers));
       });
@@ -60,7 +63,8 @@ export class PickCustomerComponent implements OnInit {
     this.formGroupCustomer.valueChanges.pipe(
       debounceTime(1000),
       tap((value) => {
-        this.actions$.dispatch(CustomerActions.loadAll({ search: this.customer(value) }));
+        this.customerService.pagination({search: this.mapCustomer(this.formGroup.value, false)}).subscribe()
+        // this.actions$.dispatch(CustomerActions.loadAll({ search: this.mapCustomer(value) }));
       })
     ).subscribe();
   }
@@ -69,16 +73,20 @@ export class PickCustomerComponent implements OnInit {
     const count = this.customerQuery.getCount();
     const val = this.formGroupCustomer.value;
     if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(CustomerActions.loadAll({
-        search: this.customer(val, true),
+      this.customerService.pagination({
+        search: this.mapCustomer(this.formGroup.value, true),
         isPaginate: true
-      }));
+      }).subscribe()
+      // this.actions$.dispatch(CustomerActions.loadAll({
+      //   search: this.mapCustomer(val, true),
+      //   isPaginate: true
+      // }));
     }
   }
 
-  customer(val: any, isScroll?: boolean) {
+  mapCustomer(val: any, isPagination?: boolean) {
     return {
-      skip: isScroll ? this.customerQuery.getCount() : 0,
+      skip: isPagination ? this.customerQuery.getCount() : 0,
       take: this.pageSize,
       lastName: val.name.trim(),
       type: val.type,

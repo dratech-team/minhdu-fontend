@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, ResourcesConstant } from '@minhdu-fontend/constants';
-import { CustomerType, ItemContextMenu, SortCustomerEnum } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDeleteComponent, DialogExportComponent } from '@minhdu-fontend/components';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { CustomerActions, CustomerQuery, CustomerStore } from '../../+state';
-import { OrderEntity } from '../../../order/enitities';
-import { CustomerDialogComponent, PaymentDialogComponent } from '../../component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { RadiosStatusRouteConstant } from '../../../../../../../../libs/constants/gender.constant';
-import { CustomerConstant, PotentialsConstant } from '../../constants';
-import { Sort } from '@minhdu-fontend/data-models';
-import { OrderActions } from '../../../order/+state';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, ResourcesConstant} from '@minhdu-fontend/constants';
+import {CustomerType, ItemContextMenu, SortCustomerEnum} from '@minhdu-fontend/enums';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
+import {OrderEntity} from '../../../order/enitities';
+import {CustomerDialogComponent, PaymentDialogComponent} from '../../component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {RadiosStatusRouteConstant} from '../../../../../../../../libs/constants/gender.constant';
+import {CustomerConstant, PotentialsConstant} from '../../constants';
+import {Sort} from '@minhdu-fontend/data-models';
+import {OrderActions} from '../../../order/+state';
+import {CustomerService} from "../../service";
 
 @Component({
   templateUrl: 'customer.component.html'
@@ -57,19 +58,19 @@ export class CustomerComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly exportService: ExportService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly customerService: CustomerService
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value, false) }));
+    // this.actions$.dispatch(CustomerActions.loadAll({ search: this.mapCustomer(this.formGroup.value, false) }));
+    this.customerService.pagination({search: this.mapCustomer(this.formGroup.value, false)}).subscribe()
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(
-            CustomerActions.loadAll({ search: this.mapCustomer(val, false) })
-          );
+          this.customerService.pagination({search: this.mapCustomer(this.formGroup.value, false)}).subscribe()
         })
       )
       .subscribe();
@@ -104,12 +105,10 @@ export class CustomerComponent implements OnInit {
       delete val.orderBy;
       delete val.orderType;
     }
-
-    Object.assign(val, {
+    return Object.assign({}, val, {
       take: this.pageSize,
       skip: isPagination ? this.customerQuery.getCount() : 0
     });
-    return val;
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
@@ -121,10 +120,10 @@ export class CustomerComponent implements OnInit {
   }
 
   deleteCustomer($event: any) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '25%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '25%'});
     dialogRef.afterClosed().subscribe((val) => {
       if (val) {
-        this.actions$.dispatch(CustomerActions.remove({ id: $event.id }));
+        this.customerService.delete($event.id)
       }
     });
   }
@@ -132,7 +131,7 @@ export class CustomerComponent implements OnInit {
   payment($event: any) {
     this.dialog.open(PaymentDialogComponent, {
       width: '55%',
-      data: { id: $event.id }
+      data: {id: $event.id}
     });
   }
 
@@ -163,13 +162,16 @@ export class CustomerComponent implements OnInit {
   }
 
   onPagination(pageIndex: number) {
-    const value = this.formGroup.value;
     const count = this.customerQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(CustomerActions.loadAll({
-        search: this.mapCustomer(value, true),
+      this.customerService.pagination({
+        search: this.mapCustomer(this.formGroup.value, true),
         isPaginate: true
-      }));
+      }).subscribe()
+      // this.actions$.dispatch(CustomerActions.loadAll({
+      //   search: this.mapCustomer(value, true),
+      //   isPaginate: true
+      // }));
     }
   }
 

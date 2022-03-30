@@ -11,6 +11,7 @@ import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dia
 import {CustomerQuery} from '../../+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
+import {CustomerService} from "../../service";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -33,12 +34,14 @@ export class DetailCustomerComponent implements OnInit {
     private readonly customerQuery: CustomerQuery,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly customerService: CustomerService,
   ) {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
+    this.customerService.getOne(this.getId).subscribe()
+    // this.actions$.dispatch(CustomerActions.loadOne({id: this.getId}));
     this.actions$.dispatch(CustomerActions.loadOrder({
       params: {take: 20, skip: 0, customerId: +this.getId},
       typeOrder: 'delivering'

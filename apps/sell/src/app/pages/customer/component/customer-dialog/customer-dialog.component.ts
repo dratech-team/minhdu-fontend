@@ -7,6 +7,7 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {CustomerService} from "../../service";
 
 @Component({
   templateUrl: 'customer-dialog.component.html'
@@ -27,7 +28,8 @@ export class CustomerDialogComponent implements OnInit {
     @Inject(LOCALE_ID) private locale: string,
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
-    private readonly actions$: Actions,
+    private readonly customerService: CustomerService,
+    // private readonly actions$: Actions,
     private readonly customerQuery: CustomerQuery,
     private readonly snackbar: MatSnackBar,
     private readonly modalRef: NzModalRef,
@@ -97,9 +99,11 @@ export class CustomerDialogComponent implements OnInit {
       isPotential: value?.isPotential
     };
     if (this.data) {
-      this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
+      // this.actions$.dispatch(CustomerActions.update({id: this.data.customer.id, updates: customer}));
+      this.customerService.update({id: this.data.customer.id, updates: customer}).subscribe()
     } else {
-      this.actions$.dispatch(CustomerActions.addOne({body: customer}));
+      this.customerService.addOne({body: customer}).subscribe()
+      // this.actions$.dispatch(CustomerActions.addOne({body: customer}));
     }
     this.added$.subscribe(added => {
       if (added) {

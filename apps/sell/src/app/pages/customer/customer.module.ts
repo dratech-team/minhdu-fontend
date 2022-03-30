@@ -91,7 +91,6 @@ import { OrderModule } from '../order/order.module';
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     DatePipe,
-    CustomerService,
     PaymentService,
     OrderService,
   ]
