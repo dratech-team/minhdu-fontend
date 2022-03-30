@@ -23,7 +23,6 @@ export class AddPayrollComponent implements OnInit {
   formGroup!: FormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
-
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
     private readonly formBuilder: FormBuilder,
@@ -44,18 +43,6 @@ export class AddPayrollComponent implements OnInit {
   }
 
   submit(): any {
-    const ref = this.dialog.open(LoadingComponent, {
-      width: 'fit-content',
-      disableClose: true,
-      data: {
-        content: 'Đang khởi tạo phiếu lương...',
-      },
-    });
-    this.adding$.subscribe((val) => {
-      if (val) {
-        ref.close();
-      }
-    });
     if (this.data?.addOne) {
       const generate = {
         createdAt: new Date(this.formGroup.value.generate),
