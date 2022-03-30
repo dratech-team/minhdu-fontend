@@ -55,7 +55,7 @@
         <tbody>
         <tr *ngFor='let payroll of payrolls;let i = index'>
           <th class='content-profile pointer '> {{i + 1}}</th>
-          <th class='content-profile pointer '> {{payroll.id}}</th>
+          <th class='content-profile pointer '> {{payroll.employee.id}}</th>
           <th class='content-profile  pointer'>{{payroll.employee.lastName}}</th>
           <th class='content-profile pointer'>{{payroll.position}}</th>
           <th class='content-profile pointer'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</th>

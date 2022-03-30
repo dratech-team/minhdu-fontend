@@ -67,7 +67,7 @@
       <ng-template #table>
         <tr style="z-index: -1" class="pointer" *ngFor="let payroll of payrolls; let i = index">
           <td class='text-center'> {{i + 1}}</td>
-          <td class='text-center'> {{payroll.id}}</td>
+          <td class='text-center'> {{payroll.employee.id}}</td>
           <td class='text-center'>{{payroll.employee.lastName}}</td>
           <td class='text-center'>{{payroll.position}}</td>
           <td class='text-center'>{{payroll.createdAt|date:'dd-MM-yyyy'}}</td>

@@ -246,7 +246,8 @@
                     {{payroll?.employee?.lastName}}
                   </div>
                 </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
+                <th   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
+                      class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
                     {{payroll?.branch}}
                   </div>

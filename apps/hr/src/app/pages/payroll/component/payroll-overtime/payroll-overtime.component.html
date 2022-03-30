@@ -135,11 +135,6 @@
         <div class='text-center'>Tổng cộng</div>
       </th>
       <th style=' width: 100px ; margin-top: 3px ; z-index: 3;'>
-        <mat-checkbox class='example-margin mt-2 mx-auto'
-                      [checked]='isSelectSalary'
-                      [indeterminate]='someCompleteSalary()'
-                      (change)='setAllSalary()'>
-        </mat-checkbox>
       </th>
       <th style=' width: 200px;'>
         <div class='text-center'></div>
@@ -211,7 +206,7 @@
                *ngFor='let item of payrollOvertime.salaries'>
             <mat-checkbox
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item, payrollOvertime)'>
+              (change)='updateSelectSalary(item, payrollOvertime,$event.checked)'>
             </mat-checkbox>
           </div>
         </th>
@@ -300,6 +295,8 @@
     </tbody>
   </table>
 </div>
+
+<mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
 <app-mouse-right
   #child
   (onAdd)='addSalaryOvertime()'
