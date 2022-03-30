@@ -62,16 +62,7 @@
           "configurations": {
             "production": {
               "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "550000kb",
-                  "maximumError": "100mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "20000kb",
-                  "maximumError": "400000kb"
-                }
+               
               ],
               "fileReplacements": [
                 {
