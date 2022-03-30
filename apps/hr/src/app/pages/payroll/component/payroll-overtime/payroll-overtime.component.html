@@ -9,11 +9,11 @@
   [infiniteScrollThrottle]='10'
   [scrollWindow]='false'
   (scrolled)='onScroll()'>
-  <table matSort (matSortChange)="sortPayroll()" [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
+  <table matSort (matSortChange)='sortPayroll()' [formGroup]='formGroup' class='main-table' style='width: 2500px;'>
     <thead>
     <tr>
       <th>
-        <div mat-sort-header="{{sortEnum.STT}}" class='border-top text-center'>stt</div>
+        <div mat-sort-header='{{sortEnum.STT}}' class='border-top text-center'>stt</div>
         <input type='text' disabled>
       </th>
       <th>
@@ -26,7 +26,7 @@
       </th>
       <th style='width: 250px'>
         <div class='border-top text-center'>
-          <div mat-sort-header="{{sortEnum.NAME}}" class='d-flex justify-content-center' style='height: 100%'>
+          <div mat-sort-header='{{sortEnum.NAME}}' class='d-flex justify-content-center' style='height: 100%'>
             <span>Tên nhân viên</span>
             <mat-select style='width: 100px; margin-left: 3px ' formControlName='searchType'>
               <mat-option *ngFor='let item of searchTypeConstant' [value]='item.value'>{{item.name}}</mat-option>
@@ -53,7 +53,7 @@
         </div>
       </th>
       <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
+        <div mat-sort-header='{{sortEnum.BRANCH}}' class='title-profile'>Đơn vị</div>
         <input class='form-control' type='search' matInput disabled>
         <!--        <mat-autocomplete #branch='matAutocomplete'>-->
         <!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
@@ -63,7 +63,7 @@
         <!--        </mat-autocomplete>-->
       </th>
       <th style='width: 200px'>
-        <div mat-sort-header="{{sortEnum.POSITION}}"
+        <div mat-sort-header='{{sortEnum.POSITION}}'
              class='border-top d-flex justify-content-center align-items-center'>Chức vụ
         </div>
         <nz-select
@@ -72,7 +72,7 @@
           style='width:100%'
           formControlName='position'
           nzPlaceHolder='Chọn chức vụ'
-          [compareWith]="compareFN"
+          [compareWith]='compareFN'
         >
           <nz-option
             *ngFor='let position of positions$|async'
@@ -95,14 +95,14 @@
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>
-        <nz-select style="width: 100%"
-                   [nzMaxTagCount]="3"
-                   [nzMaxTagPlaceholder]="tagPlaceHolderPosition"
-                   nzMode="multiple"
-                   nzPlaceHolder="Chọn loại tăng ca"
-                   formControlName="titles"
+        <nz-select style='width: 100%'
+                   [nzMaxTagCount]='3'
+                   [nzMaxTagPlaceholder]='tagPlaceHolderPosition'
+                   nzMode='multiple'
+                   nzPlaceHolder='Chọn loại tăng ca'
+                   formControlName='titles'
         >
-          <nz-option *ngFor="let item of templateOvertime" [nzLabel]="item" [nzValue]="item"></nz-option>
+          <nz-option *ngFor='let item of templateOvertime' [nzLabel]='item' [nzValue]='item'></nz-option>
         </nz-select>
         <ng-template #tagPlaceHolderPosition let-positionSelected>và {{ positionSelected.length }} đã chọn</ng-template>
       </th>
@@ -172,13 +172,16 @@
     </thead>
     <tbody *ngIf='(payrollOvertime$|async) as payrollOvertimes'>
     <tr *ngIf='!(loaded$|async) else payroll'>
-      <th colSpan="100">
+      <th colSpan='100'>
         <ngx-skeleton-loader count='18' appearance='line'></ngx-skeleton-loader>
       </th>
     </tr>
     <ng-template #payroll>
-      <tr *ngFor='let payrollOvertime of payrollOvertimes; let i = index'
-          [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+      <tr
+        *ngFor='let payrollOvertime of payrollOvertimes;
+        let i = index'
+        [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
+      >
         <th class='pointer'
             (click)='detailPayroll(payrollOvertime.payrollId)'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
@@ -202,11 +205,13 @@
         </th>
         <th class='pointer'
             [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-          <div class=' d-flex align-items-center justify-content-center pointer '
-               *ngFor='let item of payrollOvertime.salaries'>
+          <div
+            class='d-flex align-items-center justify-content-center pointer'
+            *ngFor='let item of payrollOvertime.salaries'
+          >
             <mat-checkbox
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item, payrollOvertime,$event.checked)'>
+              (change)='updateSelectSalary(item, payrollOvertime, $event.checked)'>
             </mat-checkbox>
           </div>
         </th>
@@ -230,6 +235,7 @@
                 "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
                 }'
                *ngFor='let item of payrollOvertime.salaries; let index = index'
+               [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             <div>
@@ -238,11 +244,12 @@
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>
-          <div class=' d-flex align-items-center justify-content-center pointer'
+          <div class='d-flex align-items-center justify-content-center pointer'
                [ngClass]='{
                 "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
                 }'
                *ngFor='let item of payrollOvertime.salaries; let index = index'
+               [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             <div>
@@ -257,7 +264,9 @@
                 }'
                *ngFor='let item of payrollOvertime.salaries; let index = index'
                (contextmenu)='child.onContextMenu($event,item)'
-               (click)='detailPayroll(payrollOvertime.payrollId)'>
+               (click)='detailPayroll(payrollOvertime.payrollId)'
+               [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
+          >
             {{item?.times}}{{item.unit === "HOUR" ? "Giờ" : "Ngày"}}
           </div>
         </th>
@@ -267,6 +276,7 @@
                 "border-top":payrollOvertime.salaries.length > 1 && index  !== 0
                 }'
                *ngFor='let item of payrollOvertime.salaries; let index = index'
+               [ngStyle]='{"background": selectSalary(item) ? "#ffcccc" : ""}'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             {{item?.price ? (item.price|number:'1.0-0') : 0}}VND
