@@ -34,10 +34,12 @@
       </th>
       <th style='width: 120px ; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center'>
-            <span *ngIf='this.salariesSelected.length  === 0'>
+            <span>
                Chọn
             </span>
-          <div class='w-100 d-flex justify-content-between' *ngIf='salariesSelected.length > 0'>
+        </div>
+        <div class='w-100 d-flex justify-content-between'>
+          <div *ngIf='salariesSelected.length > 0'>
             <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                     (click)='updateMultipleSalaryStay()'
                     class=' btn btn-primary d-flex justify-content-center align-items-center m-1 '>
@@ -49,13 +51,7 @@
               Xóa
             </button>
           </div>
-
         </div>
-        <mat-checkbox class='example-margin mt-2 mx-auto'
-                      [checked]='isSelectSalary'
-                      [indeterminate]='someCompleteSalary()'
-                      (change)='setAllSalary($event.checked)'>
-        </mat-checkbox>
       </th>
       <th style='width: 200px'>
         <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
@@ -143,7 +139,7 @@
             <mat-checkbox
               style="margin-top: 5px"
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary(item,payrollStay)'>
+              (change)='updateSelectSalary({ salary:item,payroll: payrollStay}, $event.checked)'>
             </mat-checkbox>
           </div>
         </th>
@@ -206,7 +202,7 @@
     </tbody>
   </table>
 </div>
-
+<mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
 <app-mouse-right
   #child
   (onAdd)='addSalaryStay()'

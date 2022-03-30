@@ -25,7 +25,6 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {debounceTime} from 'rxjs/operators';
 import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
-import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatDialog} from '@angular/material/dialog';
 import {SalaryService} from '../../service/salary.service';
@@ -40,7 +39,7 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {Router} from '@angular/router';
-import {checkInputNumber, getSelectors} from '@minhdu-fontend/utils';
+import {checkInputNumber, filterSalaryPayroll, getSelectors} from '@minhdu-fontend/utils';
 import {DialogAllowanceComponent} from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import {
   DialogAllowanceMultipleComponent
@@ -50,6 +49,7 @@ import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
 import {ExportService} from "@minhdu-fontend/service";
+import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
 
 @Component({
   selector: 'app-payroll-allowance',
@@ -77,7 +77,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
   unitAllowance = UnitAllowanceConstant;
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
-
+  loadingDelete = false
   totalSalaryAllowance$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAllowance$ = this.store.pipe(select(selectorAllPayroll));
@@ -194,38 +194,17 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
 
     this.payrollAllowance$.subscribe((payrolls) => {
       if (payrolls) {
-        if (payrolls.length === 0) {
-          this.isSelectSalary = false;
-        }
         this.salaries = [];
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
             payroll.salaries.forEach((salary) => {
               if (salary.type === SalaryTypeEnum.ALLOWANCE) {
-                if (this.isEventSearch) {
-                  this.isSelectSalary =
-                    this.salariesSelected.length > 0 &&
-                    this.salariesSelected.length >=
-                    Number(getSelectors(selectedTotalPayroll, this.store)) &&
-                    this.salaries.every((item) =>
-                      this.salariesSelected.some(
-                        (val) => val.salary.id === item.salary.id
-                      )
-                    );
-                }
-                if (
-                  this.isSelectSalary &&
-                  !this.salariesSelected.some(
-                    (item) => item.salary.id === salary.id
-                  ) &&
-                  !this.salaries.find((e) => e.salary.id === salary.id)
+                this.salaries.push({salary, payroll});
+                if (filterSalaryPayroll(this.salariesSelected, salary).length > 0 &&
+                  this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id)
                 ) {
-                  this.salariesSelected.push({
-                    salary,
-                    payroll: payroll
-                  });
+                  this.salariesSelected.push({salary, payroll})
                 }
-                this.salaries.push({salary, payroll: payroll});
               }
             });
           }
@@ -370,6 +349,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
+        this.loadingDelete = true
         const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
@@ -380,6 +360,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         });
         deleteSuccess.subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
+            this.loadingDelete = false
             this.isSelectSalary = false;
             this.salariesSelected = [];
             this.message.success('Xóa lương cơ bản thành công');
@@ -422,26 +403,34 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, payroll: Payroll) {
-    const salarySelected = {salary, payroll};
-    this.isSelectSalary = updateSelect(
-      salarySelected,
-      this.salariesSelected,
-      this.isSelectSalary,
-      this.salaries
-    );
-  }
-
-  someCompleteSalary(): boolean {
-    return someComplete(
-      this.salaries,
-      this.salariesSelected,
-      this.isSelectSalary
-    );
-  }
-
-  setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
+  updateSelectSalary(salary: Salary, payroll: Payroll, event: boolean) {
+    this.dialog.open(ClassifyOvertimeComponent, {
+      data: {
+        title: 'Chọn loại Phụ cấp khác',
+        type: event ? "SELECT" : "REMOVE",
+        salary
+      }
+    }).afterClosed().subscribe(type => {
+      if (type === 'ALL') {
+        if (event) {
+          this.salariesSelected = [...
+            filterSalaryPayroll(this.salaries, salary)
+          ]
+        } else {
+          filterSalaryPayroll(this.salaries, salary).forEach(val => {
+            const index = this.salariesSelected.findIndex(value => value.salary.id === val.salary.id)
+            this.salariesSelected.splice(index, 1)
+          })
+        }
+      } else {
+        if(event){
+          this.salariesSelected.push({salary, payroll});
+        }else{
+          const index = this.salariesSelected.findIndex(value => value.salary.id === salary.id)
+          this.salariesSelected.splice(index,1)
+        }
+      }
+    })
   }
 
   mapPayrollAllowance() {

@@ -183,12 +183,15 @@ export class DialogOvertimeComponent implements OnInit {
     }
     if (this.data?.isUpdate) {
       this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.FALSE}));
+      Object.assign(salary, {
+        allowanceDeleted: !!(!this.isAllowanceOvertime && this.data.salary?.allowance)
+      });
+      console.log(salary)
       if (this.data?.updateMultiple) {
-        delete salary.payrollId;
         Object.assign(salary, {
-          allowanceDeleted: !this.isAllowanceOvertime && this.data.salary.allowance,
           salaryIds: this.salariesSelected.map(e => e.salary.id)
-        });
+        })
+        delete salary.payrollId;
         this.salaryService.updateMultipleSalaryOvertime(salary).subscribe(val => {
           if (val) {
             this.snackBar.open(val.message, '', {duration: 1500});

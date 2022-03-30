@@ -31,7 +31,13 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
+import {
+  checkInputNumber,
+  filterSalaryPayroll,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors
+} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {
@@ -239,19 +245,17 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
 
     this.payrollOvertime$.subscribe((payrolls) => {
       if (payrolls) {
-        if(this.isEventSearch){
-          this.salaries = [];
-        }
+        this.salaries = [];
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
             payroll.salaries.forEach((salary) => {
               if (salary.type === SalaryTypeEnum.OVERTIME) {
                 this.salaries.push({salary: salary, payroll: payroll})
-                 if(this.filterSalaryPayroll(this.salariesSelected, salary).length >0
-                   && this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id)
-                 ){
-                   this.salariesSelected.push({salary: salary, payroll: payroll})
-                 }
+                if (filterSalaryPayroll(this.salariesSelected, salary).length > 0
+                  && this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id)
+                ) {
+                  this.salariesSelected.push({salary: salary, payroll: payroll})
+                }
               }
             });
           }
@@ -475,17 +479,22 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       if (type === 'ALL') {
         if (event) {
           this.salariesSelected = [...
-            this.filterSalaryPayroll(this.salaries, salary)
+            filterSalaryPayroll(this.salaries, salary)
           ]
         } else {
-          this.filterSalaryPayroll(this.salaries, salary).forEach(val => {
+          filterSalaryPayroll(this.salaries, salary).forEach(val => {
             const index = this.salariesSelected.findIndex(value => value.salary.id === val.salary.id)
             this.salariesSelected.splice(index, 1)
           })
         }
 
       } else {
-        this.salariesSelected.push({salary, payroll});
+        if(event){
+          this.salariesSelected.push({salary, payroll});
+        }else{
+          const index = this.salariesSelected.findIndex(value => value.salary.id === salary.id)
+          this.salariesSelected.splice(index,1)
+        }
       }
     })
   }
@@ -515,17 +524,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayrollOvertime()
     }));
-  }
-
-  filterSalaryPayroll(salaryPayroll: SalaryPayroll[], salary: Salary) {
-    return salaryPayroll.filter(salaryPayroll =>
-      (salaryPayroll.salary.title === salary.title
-        && salaryPayroll.salary.datetime === salary.datetime
-        && (salary?.allowance ?
-          (salaryPayroll.salary?.allowance?.price === salary.allowance.price
-            && salaryPayroll.salary?.allowance?.title === salary.allowance.title
-          ) : true)
-      ))
   }
 
 

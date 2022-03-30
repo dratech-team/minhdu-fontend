@@ -34,8 +34,10 @@
       </th>
       <th style='width: 120px ; z-index: 3'>
         <div class='border-top border-bottom d-flex justify-content-center align-items-center p-1'>
-          <span *ngIf='salariesSelected.length === 0' class='mr-2'>Chọn</span>
-          <div *ngIf='salariesSelected.length > 0' class='w-100 d-flex justify-content-between'>
+          <span class='mr-2'>Chọn</span>
+        </div>
+        <div class='w-100 d-flex justify-content-between'>
+          <div *ngIf='salariesSelected.length > 0'>
             <button style='height: 30px ; font-size: 13px ;margin: 3px auto 0'
                     (click)='updateMultipleSalaryBasic()'
                     class=' btn btn-primary d-flex justify-content-center align-items-center '>
@@ -47,13 +49,7 @@
               Xóa
             </button>
           </div>
-
         </div>
-        <mat-checkbox class='example-margin mt-2 mx-auto'
-                      [checked]='isSelectSalary'
-                      [indeterminate]='someCompleteSalary()'
-                      (change)='setAllSalary($event.checked)'>
-        </mat-checkbox>
       </th>
       <th style='width: 250px'>
         <div mat-sort-header="{{sortEnum.BRANCH}}" class='title-profile'>Đơn vị</div>
@@ -141,7 +137,7 @@
             <mat-checkbox
               style="margin-top: 5px"
               [checked]='selectSalary(item)'
-              (change)='updateSelectSalary({salary: item, payroll: payrollBasic})'>
+              (change)='updateSelectSalary({salary: item, payroll: payrollBasic}, $event.checked)'>
             </mat-checkbox>
           </div>
         </th>
@@ -204,7 +200,7 @@
     </tbody>
   </table>
 </div>
-
+<mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
 <app-mouse-right
   #child
   (onAdd)='addSalaryBasic()'

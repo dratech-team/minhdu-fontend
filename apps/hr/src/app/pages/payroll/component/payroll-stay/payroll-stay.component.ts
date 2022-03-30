@@ -38,7 +38,13 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
+import {
+  checkInputNumber,
+  filterSalaryPayroll,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors, updateSelectOneSalaryPayroll
+} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
@@ -49,6 +55,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {Payroll} from "../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../service/payroll.service";
 import {ExportService} from "@minhdu-fontend/service";
+import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
 
 @Component({
   selector: 'app-payroll-stay',
@@ -82,7 +89,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   unit = DatetimeUnitEnum;
   payrollStay$ = this.store.pipe(select(selectorAllPayroll));
   salariesSelected: SalaryPayroll[] = [];
-  isSelectSalary = false;
   salaries: SalaryPayroll[] = [];
   pageSize = 30;
   pageIndex = 0;
@@ -90,6 +96,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   isEventSearch = false;
   sortEnum = sortEmployeeTypeEnum;
   templateStays: string [] = []
+  loadingDelete = false
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
@@ -157,28 +164,17 @@ export class PayrollStayComponent implements OnInit, OnChanges {
 
     this.payrollStay$.subscribe((payrolls) => {
       if (payrolls) {
-        if (payrolls.length === 0) {
-          this.isSelectSalary = false;
-        }
         this.salaries = [];
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
             payroll.salaries.forEach((salary) => {
               if (salary.type === SalaryTypeEnum.STAY) {
-                if (this.isEventSearch) {
-                  this.isSelectSalary =
-                    this.salariesSelected.length > 0
-                    && this.salariesSelected.length >= Number(getSelectors(selectedTotalPayroll, this.store))
-                    && this.salaries.every(item => this.salariesSelected.some(val => val.salary.id === item.salary.id));
-                }
-                if (
-                  this.isSelectSalary &&
-                  !this.salariesSelected.some(item => item.salary.id === salary.id) &&
-                  !this.salaries.find((e) => e.salary.id === salary.id)
-                ) {
-                  this.salariesSelected.push({salary, payroll: payroll});
-                }
                 this.salaries.push({salary, payroll: payroll});
+                if (filterSalaryPayroll(this.salariesSelected, salary).length > 0 &&
+                  this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id)
+                ) {
+                  this.salariesSelected.push({salary, payroll})
+                }
               }
             });
           }
@@ -277,13 +273,10 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       });
       ref.componentInstance.EmitSalariesSelected.subscribe((val) => {
         this.salariesSelected = val;
-        this.isSelectSalary = this.salaries.length > 0
-          && this.salaries.every(e => this.salariesSelected.some(item => item.salary.id === e.salary.id));
         this.ref.detectChanges();
       });
       ref.afterClosed().subscribe((val) => {
         if (val) {
-          this.isSelectSalary = false;
           this.salariesSelected = [];
           const value = this.formGroup.value;
           this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
@@ -318,6 +311,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
+        this.loadingDelete = true
         const deleteSuccess = new Subject<number>();
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
@@ -328,7 +322,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         });
         deleteSuccess.subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
-            this.isSelectSalary = false;
+            this.loadingDelete = false
             this.salariesSelected = [];
             this.message.success('Xóa phụ cấp lương thành công');
             this.store.dispatch(
@@ -370,22 +364,30 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salary: Salary, payroll: Payroll) {
-    const salarySelected = {salary, payroll};
-    this.isSelectSalary = updateSelect(
-      salarySelected,
-      this.salariesSelected,
-      this.isSelectSalary,
-      this.salaries
-    );
-  }
+  updateSelectSalary(salaryPayroll:SalaryPayroll ,event: boolean) {
+    this.dialog.open(ClassifyOvertimeComponent, {
+      data: {
+        title: 'Chọn loại phụ cấp',
+        type: event ? "SELECT" : "REMOVE",
+        salary: salaryPayroll.salary
+      }
+    }).afterClosed().subscribe(type => {
+      if (type === 'ALL') {
+        if (event) {
+          this.salariesSelected = [...
+            filterSalaryPayroll(this.salaries, salaryPayroll.salary)
+          ]
+        } else {
+          filterSalaryPayroll(this.salaries, salaryPayroll.salary).forEach(val => {
+            const index = this.salariesSelected.findIndex(value => value.salary.id === val.salary.id)
+            this.salariesSelected.splice(index, 1)
+          })
+        }
 
-  someCompleteSalary(): boolean {
-    return someComplete(this.salaries, this.salariesSelected, this.isSelectSalary);
-  }
-
-  setAllSalary(select: boolean) {
-    this.isSelectSalary = setAll(select, this.salaries, this.salariesSelected);
+      } else {
+        updateSelectOneSalaryPayroll(event, salaryPayroll, this.salariesSelected)
+      }
+    })
   }
 
   mapPayrollStay() {

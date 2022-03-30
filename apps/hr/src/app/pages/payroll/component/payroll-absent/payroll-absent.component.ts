@@ -41,10 +41,15 @@ import {
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {UnitAbsentConstant} from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getFirstDayInMonth, getLastDayInMonth, getSelectors} from '@minhdu-fontend/utils';
+import {
+  checkInputNumber,
+  filterSalaryPayroll,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors
+} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
-import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogAbsentComponent} from '../dialog-salary/dialog-absent/dialog-absent.component';
 import {DialogTimekeepingComponent} from '../dialog-salary/timekeeping/dialog-timekeeping.component';
 import {MatSort} from '@angular/material/sort';
@@ -80,7 +85,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   salariesSelected: SalaryPayroll[] = [];
   salaries: SalaryPayroll[] = [];
   sortEnum = sortEmployeeTypeEnum;
-
+  loadingDelete = false
   totalSalaryAbsent$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollAbsent$ = this.store.pipe(select(selectorAllPayroll));
@@ -191,9 +196,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
     this.payrollAbsent$.subscribe((payrolls) => {
       if (payrolls) {
-        if (this.isEventSearch) {
-          this.salaries = [];
-        }
+        this.salaries = [];
         payrolls.forEach((payroll) => {
           if (payroll.salaries) {
             payroll.salaries.forEach((salary) => {
@@ -203,7 +206,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
                 salary.type === SalaryTypeEnum.DAY_OFF
               ) {
                 this.salaries.push({salary: salary, payroll: payroll})
-                if (this.filterSalaryPayrollAbsent(this.salariesSelected, salary).length > 0
+                if (filterSalaryPayroll(this.salariesSelected, salary).length > 0
                   && (this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id) )
                 ) {
                   this.salariesSelected.push({payroll: payroll, salary})
@@ -324,6 +327,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         const deleteSuccess = new Subject<number>();
+        this.loadingDelete = true
         this.salariesSelected.forEach((item, index) => {
           this.salaryService.delete(item.salary.id).subscribe((val: any) => {
             if (val) {
@@ -333,6 +337,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         });
         deleteSuccess.subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
+            this.loadingDelete = false
             this.salariesSelected = [];
             this.message.success('Xóa khấu trừ thành công');
             this.store.dispatch(
@@ -374,7 +379,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   }
 
   updateSelectSalary(salary: Salary, payroll: Payroll, event: boolean) {
-    const salarySelected = {salary, payroll};
     this.dialog.open(ClassifyOvertimeComponent, {
       data: {
         title: 'Chọn loại khấu trừ',
@@ -385,17 +389,22 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       if (type === 'ALL') {
         if (event) {
           this.salariesSelected = [...
-            this.filterSalaryPayrollAbsent(this.salaries, salary)
+           filterSalaryPayroll(this.salaries, salary)
           ]
         } else {
-          this.filterSalaryPayrollAbsent(this.salaries, salary).forEach(val => {
+          filterSalaryPayroll(this.salaries, salary).forEach(val => {
             const index = this.salariesSelected.findIndex(value => value.salary.id === val.salary.id)
             this.salariesSelected.splice(index, 1)
           })
         }
 
       } else {
-        this.salariesSelected.push({salary, payroll});
+        if(event){
+          this.salariesSelected.push({salary, payroll});
+        }else{
+          const index = this.salariesSelected.findIndex(value => value.salary.id === salary.id)
+          this.salariesSelected.splice(index,1)
+        }
       }
     })
   }
@@ -451,12 +460,5 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayrollAbsent()
     }));
-  }
-
-  filterSalaryPayrollAbsent(salaryPayroll: SalaryPayroll[], salary: Salary) {
-    return salaryPayroll.filter(salaryPayroll =>
-      (salaryPayroll.salary.title === salary.title
-        && salaryPayroll.salary.datetime === salary.datetime
-      ))
   }
 }
