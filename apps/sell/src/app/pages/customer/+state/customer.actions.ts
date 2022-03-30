@@ -32,12 +32,18 @@ const loadOrder = createAction(
   props<{ params: SearchOrderDto, typeOrder: 'delivered' | 'delivering', isPagination?: boolean }>()
 );
 
+const error = createAction(
+  '[CUSTOMER] error',
+  props<{error: string}>()
+);
+
 export const CustomerActions = {
   addOne,
   loadAll,
   loadOne,
   update,
   remove,
-  loadOrder
+  loadOrder,
+  error
 };
 
