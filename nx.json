@@ -65,6 +65,9 @@
     "hrv2-e2e": {
       "tags": [],
       "implicitDependencies": ["hrv2"]
+    },
+    "dra-effects": {
+      "tags": []
     }
   }
 }

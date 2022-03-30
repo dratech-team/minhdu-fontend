@@ -61,9 +61,7 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-               
-              ],
+              "budgets": [],
               "fileReplacements": [
                 {
                   "replace": "apps/hr/src/environments/environment.ts",
@@ -790,6 +788,31 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/hrv2-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "dra-effects": {
+      "projectType": "library",
+      "root": "libs/dra-effects",
+      "sourceRoot": "libs/dra-effects/src",
+      "prefix": "minhdu-fontend",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dra-effects"],
+          "options": {
+            "jestConfig": "libs/dra-effects/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/dra-effects/src/**/*.ts",
+              "libs/dra-effects/src/**/*.html"
+            ]
           }
         }
       }

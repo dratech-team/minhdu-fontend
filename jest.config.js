@@ -12,5 +12,6 @@ module.exports = {
     '<rootDir>/libs/system-history',
     '<rootDir>/apps/breed',
     '<rootDir>/apps/hrv2',
+    '<rootDir>/libs/dra-effects',
   ],
 };
