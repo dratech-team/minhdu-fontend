@@ -210,9 +210,8 @@ export class OrderComponent implements OnInit {
       take: this.pageSize
     });
     return Object.assign(
-      value,
+      value?.status !== 1 ? _.omit(value, ['deliveredAt_end','deliveredAt_start']): value,
       this.valueSort?.orderType ? this.valueSort : {},
-      value?.status !== 1 ? _.omit(value, ['deliveredAt_start', 'deliveredAt_end']) : {}
     );
   }
 
