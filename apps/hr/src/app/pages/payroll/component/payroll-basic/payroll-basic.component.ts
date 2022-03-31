@@ -195,7 +195,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
-            filename: `Xuất bảng lương cơ bản tháng ${this.datePipe.transform(payrollBASIC.createdAt, 'MM-yyyy')}`,
+            filename: `Xuất bảng lương cơ bản tháng ${this.datePipe.transform(this.formGroup.value.createdAt, 'MM-yyyy')}`,
             title: 'Xuât bảng lương cơ bản',
             params: payrollBASIC,
             isPayroll: true,
