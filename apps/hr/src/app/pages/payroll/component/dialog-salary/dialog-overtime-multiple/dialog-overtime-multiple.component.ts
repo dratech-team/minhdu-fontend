@@ -100,7 +100,9 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
         note: [''],
         rate: [this.data.salary?.rate],
         partial: [this.data.salary?.partial ? this.titleSession.find(title => title.type === this.data.salary.partial) : ''],
-        times: [this.data.salary?.times ? this.data.salary.times : 1],
+        times: [!this.data.salary?.unit && this.data.salary.partial !== PartialDayEnum.ALL_DAY ?
+          this.data.salary.times * 2
+          : this.data.salary.times],
         days: [1],
         priceAllowance: [this.data.salary?.allowance?.price],
         titleAllowance: [this.data.salary?.allowance?.title]
