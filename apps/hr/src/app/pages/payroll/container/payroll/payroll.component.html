@@ -436,12 +436,13 @@
   </div>
   <app-mouse-right
     #child
-    [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]'
+    [items]='[ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL,ItemContextMenu.PRINT]'
     (onAdd)='addPayroll($event)'
     (onDel)='deletePayroll($event)'
     (onUpdate)='updatePayroll($event)'
     (onRestore)='restorePayroll($event)'
     (onHisPayroll)='historyPayroll($event)'
+    (onPrint)="confirmPayroll($event)"
   >
   </app-mouse-right>
 </div>

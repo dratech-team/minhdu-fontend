@@ -11,4 +11,5 @@ export enum ItemContextMenu {
   POSITIONS = 'POSITIONS',
   ADD_ORDER = 'ADD_ORDER',
   CANCEL_ORDER = 'CANCEL_ORDER',
+  PRINT = 'PRINT',
 }

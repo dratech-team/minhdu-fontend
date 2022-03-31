@@ -71,7 +71,7 @@
       </div>
     </div>
     <div class='border mt-2' *ngIf='data.payroll.employee.type === typeEmployee.EMPLOYEE_FULL_TIME; else seasonal'>
-      <div *ngIf='( payslip$ | async) as payslip'>
+      <div *ngIf='( payslip$ | async) as payslip else loadingPayslip'>
         <mat-dialog-content class='mat-typography ' style='
                             position: relative;
                             margin: 0;
@@ -212,6 +212,10 @@
           </div>
         </mat-dialog-content>
       </div>
+      <ng-template  #loadingPayslip>
+        <ngx-skeleton-loader count='5' appearance='line'>
+        </ngx-skeleton-loader>
+      </ng-template>
     </div>
     <ng-template #seasonal>
       <div *ngIf='( payslip$ | async) as payslip'>

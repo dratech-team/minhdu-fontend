@@ -25,6 +25,7 @@ export class MouseRightComponent {
   @Output() onPositions = new EventEmitter();
   @Output() onUpdate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
+  @Output() onPrint = new EventEmitter();
 
   constructor(private contextMenuService: ContextMenuService) {
   }
@@ -96,5 +97,9 @@ export class MouseRightComponent {
 
   cancel(item: any) {
     this.onCancel.emit(item)
+  }
+
+  print(item: any) {
+    this.onPrint.emit(item)
   }
 }

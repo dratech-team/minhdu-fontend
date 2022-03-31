@@ -57,4 +57,8 @@
                (execute)='onListPosition($event.item)'>
     Danh sách chức vụ
   </ng-template>
+  <ng-template *ngIf='items?.includes(ItemContextMenu.PRINT)' contextMenuItem let-item
+               (execute)='print($event.item)'>
+    In
+  </ng-template>
 </context-menu>

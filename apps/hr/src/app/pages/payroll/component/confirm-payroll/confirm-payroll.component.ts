@@ -15,6 +15,7 @@ import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {subscribeOn} from "rxjs/operators";
+import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -35,6 +36,7 @@ export class ConfirmPayrollComponent implements OnInit {
     getFirstDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   lastDayInMonth = this.datePipe.transform(
     getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
+  role?: string | null
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -48,6 +50,7 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role')
     this.payslip$ = this.payslipService.getOne(this.data.payroll.id);
     if (this.data?.payroll?.accConfirmedAt) {
       this.isConfirmed = true;
@@ -55,7 +58,11 @@ export class ConfirmPayrollComponent implements OnInit {
     }
   }
 
-  confirmPayroll(reconfirm: boolean) {
+  confirmPayroll(reconfirm: boolean): any {
+    if(this.role === Role.HUMAN_RESOURCE){
+      this.dialogRef.close()
+      return this.message.warning('Quản lý nhân sự không được phép xác nhận phiếu lương')
+    }
     if (this.accConfirmedAt.value) {
       if (reconfirm) {
         this.dialog.open(DialogSharedComponent, {

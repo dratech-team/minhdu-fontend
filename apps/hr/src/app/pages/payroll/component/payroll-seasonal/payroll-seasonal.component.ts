@@ -32,6 +32,7 @@ export class PayrollSeasonalComponent {
   @Output() EventDeletePayroll = new EventEmitter<any>();
   @Output() EventSelectBranch = new EventEmitter<string>();
   @Output() EventScroll = new EventEmitter<any>();
+  @Output() EventPrint = new EventEmitter<Payroll>();
 
   unit = DatetimeUnitEnum;
   loaded = false;
@@ -99,5 +100,9 @@ export class PayrollSeasonalComponent {
 
   checkInputNumber(event: any) {
     return checkInputNumber(event);
+  }
+
+  onPrint(payroll: Payroll){
+    this.EventPrint.emit(payroll)
   }
 }

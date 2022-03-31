@@ -50,6 +50,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {Branch, Category, Position} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
+import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
 
 @Component({
   templateUrl: 'payroll.component.html'
@@ -483,6 +484,15 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(RestorePayrollComponent, {
       width: 'fit-content',
       data: {payroll: payroll}
+    });
+  }
+
+  confirmPayroll(payroll: Payroll) {
+    this.dialog.open(ConfirmPayrollComponent, {
+      width: 'fit-content',
+      data: {
+        payroll: payroll
+      }
     });
   }
 

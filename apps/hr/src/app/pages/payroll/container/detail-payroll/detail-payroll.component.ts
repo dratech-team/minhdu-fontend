@@ -31,10 +31,9 @@ import {DatePipe} from '@angular/common';
 import {MatDialogConfig} from '@angular/material/dialog/dialog-config';
 import {DialogNoteComponent} from "../../component/dialog-note/dialog-note.component";
 import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialog-WFH.component";
-import {
-  DialogDatePickerComponent
-} from "../../../../../../../../libs/components/src/lib/dialog-datepicker/dialog-datepicker.component";
 import {UpdatePayrollComponent} from "../../component/update-payroll/update-payroll.component";
+import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {RestorePayrollComponent} from "../../component/restore-payroll/restore-payroll.component";
 
 
 @Component({
@@ -51,7 +50,8 @@ export class DetailPayrollComponent implements OnInit {
   datetimeUnit = DatetimeUnitEnum;
   isSticky = false;
   employeeTypeEnum = EmployeeType;
-
+  role!: string|null
+  roleEnum =  Role
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -65,6 +65,7 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role')
     this.store.dispatch(PayrollAction.getPayroll({id: this.getPayrollId}));
     this.payroll$.subscribe(val => {
         if (val) {
@@ -142,12 +143,19 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: Payroll) {
-    this.dialog.open(ConfirmPayrollComponent, {
-      width: 'fit-content',
-      data: {
-        payroll: payroll
-      }
-    });
+    if(this.role !== Role.HUMAN_RESOURCE){
+      this.dialog.open(ConfirmPayrollComponent, {
+        width: 'fit-content',
+        data: {
+          payroll: payroll
+        }
+      });
+    }else{
+      this.dialog.open(RestorePayrollComponent, {
+        width: 'fit-content',
+        data: {payroll: payroll}
+      });
+    }
   }
 
   historySalary(payroll: Payroll) {

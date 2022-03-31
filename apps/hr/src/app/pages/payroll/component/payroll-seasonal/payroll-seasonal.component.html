@@ -198,12 +198,13 @@
   </div>
 
   <app-mouse-right
-    [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL]'
+    [items]='[ItemContextMenu.PAYROLL, ItemContextMenu.RESTORE, ItemContextMenu.HISTORY_PAYROLL, ItemContextMenu.PRINT]'
     #child
     (onAdd)='addPayroll($event)'
     (onDel)='deletePayroll($event)'
     (onRestore)='restorePayroll($event)'
     (onHisPayroll)='historyPayroll($event)'
+    (onPrint)="onPrint($event)"
     (onDetail)='readPayroll($event)'>
   </app-mouse-right>
 </ng-template>
