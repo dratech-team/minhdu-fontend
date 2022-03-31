@@ -39,7 +39,13 @@ import {
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {Router} from '@angular/router';
-import {checkInputNumber, filterSalaryPayroll, getSelectors} from '@minhdu-fontend/utils';
+import {
+  checkInputNumber,
+  filterSalaryPayroll,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors
+} from '@minhdu-fontend/utils';
 import {DialogAllowanceComponent} from '../dialog-salary/dialog-allowance/dialog-allowance.component';
 import {
   DialogAllowanceMultipleComponent
@@ -129,7 +135,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
         payrollDTO: {
           take: this.pageSize,
           skip: this.pageIndex,
-          createdAt: new Date(this.createdAt),
+          startedAt: getFirstDayInMonth(new Date(this.createdAt)),
+          endedAt: getLastDayInMonth(new Date(this.createdAt)),
           titles: this.allowanceTitle ? [this.allowanceTitle] : [],
           filterType: FilterTypeEnum.ALLOWANCE,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
@@ -164,9 +171,12 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           payrollDTO: {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdAt: new Date(
+            startedAt: getFirstDayInMonth( new Date(
               getSelectors(selectedCreateAtPayroll, this.store)
-            ),
+            )),
+            endedAt: getLastDayInMonth( new Date(
+              getSelectors(selectedCreateAtPayroll, this.store)
+            )),
             titles: val.allowanceTitle ? [val.allowanceTitle] : [],
             filterType: FilterTypeEnum.ALLOWANCE,
             position: getSelectors(selectedPositionPayroll, this.store),
@@ -218,10 +228,13 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ALLOWANCE,
           titles: value.titles ? [value.titles] : [],
-          isLeave: value.isLeave
+          isLeave: value.isLeave,
         };
         if (value.createdAt) {
-          Object.assign(payrollAllowance, {createdAt: value.createdAt});
+          Object.assign(payrollAllowance, {
+            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+            endedAt: getLastDayInMonth(new Date(value.createdAt)),
+          });
         }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -266,7 +279,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               skip: this.pageIndex,
               code: value.code,
               unit: value.unit,
-              createdAt: new Date(val.datetime),
+              startedAt: getFirstDayInMonth(new Date(val.createdAt)),
+              endedAt: getLastDayInMonth(new Date(val.createdAt)),
               titles: [val.title],
               filterType: FilterTypeEnum.ALLOWANCE,
               position: val.position?.name || '',
@@ -322,7 +336,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
                 code: this.formGroup.get('code')?.value,
                 unit: this.formGroup.get('unit')?.value,
                 searchType: value.searchType,
-                createdAt: new Date(value.createdAt),
+                startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+                endedAt: getLastDayInMonth(new Date(value.createdAt)),
                 titles: [val.title],
                 name: value.name,
                 filterType: FilterTypeEnum.ALLOWANCE,
@@ -437,7 +452,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       code: value.code,
       unit: value.unit,
       searchType: value.searchType,
-      createdAt: new Date(value.createdAt),
+      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+      endedAt: getLastDayInMonth(new Date(value.createdAt)),
       titles: value.titles ? [value.titles] : [],
       name: value.name,
       filterType: FilterTypeEnum.ALLOWANCE,

@@ -127,7 +127,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         payrollDTO: {
           take: this.pageSize,
           skip: this.pageIndex,
-          createdAt: new Date(this.createdAt),
+          startedAt: getFirstDayInMonth(new Date(this.createdAt)),
+          endedAt: getLastDayInMonth(new Date(this.createdAt)),
           filterType: FilterTypeEnum.STAY,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
@@ -184,11 +185,16 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.STAY,
+          startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+          endedAt: getLastDayInMonth(new Date(value.createdAt)),
           titles: value.titles,
           isLeave: value.isLeave
         };
         if (value.createdAt) {
-          Object.assign(payrollStay, {createdAt: value.createdAt});
+          Object.assign(payrollStay, {
+            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+            endedAt: getLastDayInMonth(new Date(value.createdAt)),
+          });
         }
         const ref = this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -236,7 +242,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
               take: this.pageSize,
               skip: this.pageIndex,
               code: value.code,
-              createdAt: value.createdAt,
+              startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+              endedAt: getLastDayInMonth(new Date(value.createdAt)),
               titles: val.title,
               filterType: FilterTypeEnum.STAY,
               position: val.position?.name || '',
@@ -273,7 +280,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           this.salariesSelected = [];
           const value = this.formGroup.value;
           this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
-          console.log(this.formGroup.value.titles)
           this.store.dispatch(
             PayrollAction.loadInit({
               payrollDTO: {
@@ -281,7 +287,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
                 skip: this.pageIndex,
                 code: value.code,
                 searchType: value.searchType,
-                createdAt: new Date(value.createdAt),
+                startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+                endedAt: getLastDayInMonth(new Date(value.createdAt)),
                 titles: [val.title],
                 name: value.name,
                 filterType: FilterTypeEnum.STAY,
@@ -390,7 +397,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      createdAt: new Date(value.createdAt),
+      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+      endedAt: getLastDayInMonth(new Date(value.createdAt)),
       titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.STAY,

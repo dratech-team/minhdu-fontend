@@ -28,7 +28,13 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {checkInputNumber, getSelectors, rageDaysInMonth} from '@minhdu-fontend/utils';
+import {
+  checkInputNumber,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  getSelectors,
+  rageDaysInMonth
+} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {AddPayrollComponent} from '../../component/add-Payroll/add-payroll.component';
 import {
@@ -314,7 +320,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: val.name,
       position: val.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
-      createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
+      startedAt: getFirstDayInMonth( new Date(val.createdAt)),
+      endedAt: getLastDayInMonth(new Date(val.createdAt)),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
@@ -353,7 +360,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .afterClosed()
       .subscribe((val) => {
         if (val) {
-          this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+          this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'), {emitEvent: false});
+          this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayroll(this.formGroup.value)}
+          ))
         }
       });
   }
@@ -591,7 +600,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
-      createdAt: getSelectors<Date>(selectedCreateAtPayroll, this.store),
+      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+      endedAt: getLastDayInMonth(new Date(value.createdAt)),
       isPaid: value.paidAt,
       isConfirm: value.accConfirmedAt,
       filterType: this.selectedPayroll,
@@ -611,7 +621,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bảng lương tháng ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}`,
+        filename: `Xuất bảng lương tháng ${this.datePipe.transform(this.formGroup.value.createdAt, 'MM-yyyy')}`,
         title: 'Xuât bảng lương',
         params: payroll,
         isPayroll: true,
@@ -639,7 +649,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       isLeave: this.formIsLeave.value,
     };
     if (value.createdAt) {
-      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
+      Object.assign(payroll, {
+        startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+        endedAt: getLastDayInMonth(new Date(value.createdAt)),
+      });
     }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',

@@ -126,7 +126,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           take: this.pageSize,
           skip: this.pageIndex,
           filterType: FilterTypeEnum.BASIC,
-          createdAt: new Date(this.createdAt),
+          startedAt: getFirstDayInMonth(new Date(this.createdAt)),
+          endedAt: getLastDayInMonth(new Date(this.createdAt)),
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
           isLeave: false
@@ -181,6 +182,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.BASIC,
+          startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+          endedAt: getLastDayInMonth(new Date(value.createdAt)),
           titles: value.titles,
           isLeave: value.isLeave,
           searchType: value.searchType,
@@ -188,7 +191,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           filterType: FilterTypeEnum.BASIC,
         };
         if (value.createdAt) {
-          Object.assign(payrollBASIC, {createdAt: value.createdAt});
+          Object.assign(payrollBASIC, {
+            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+            endedAt: getLastDayInMonth(new Date(value.createdAt)),});
         }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
@@ -235,7 +240,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
               take: this.pageIndex,
               skip: this.pageSize,
               code: this.formGroup.get('code')?.value,
-              createdAt: this.formGroup.get('createdAt')?.value,
+              startedAt: getFirstDayInMonth(new Date(this.formGroup.value.createdAt)),
+              endedAt: getLastDayInMonth(new Date(this.formGroup.value.createdAt)),
               titles: [val.title],
               position: val.position,
               branch: this.formGroup.value.branch.name || '',
@@ -279,7 +285,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             skip: this.pageIndex,
             code: this.formGroup.get('code')?.value,
             searchType: value.searchType,
-            createdAt: value.createdAt,
+            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+            endedAt: getLastDayInMonth(new Date(value.createdAt)),
             titles: [val.title],
             name: this.formGroup.get('name')?.value,
             filterType: FilterTypeEnum.BASIC,
@@ -369,7 +376,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      createdAt: new Date(value.createdAt),
+      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
+      endedAt: getLastDayInMonth(new Date(value.createdAt)),
       titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
