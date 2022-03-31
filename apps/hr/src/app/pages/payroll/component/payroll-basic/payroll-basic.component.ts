@@ -144,17 +144,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       if (value.createdAt) {
         this.getTemplateBasic(value.createdAt, value.branch?.name, value.position?.name)
       }
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          createdAt: new Date(value.createdAt),
-          position: value.positions
-        })
-      );
-      this.store.dispatch(
-        PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollBasic()
-        })
-      );
+      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.createdAt)}));
+      this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
+      this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollBasic()}));
     });
 
     this.payrollBasic$.subscribe((payrolls) => {

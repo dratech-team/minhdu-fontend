@@ -179,12 +179,8 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          createdAt: new Date(value.createdAt),
-          position: value.position,
-        })
-      );
+      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.createdAt)}));
+      this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(
         PayrollAction.loadInit({
           payrollDTO: this.mapPayrollAllowance()

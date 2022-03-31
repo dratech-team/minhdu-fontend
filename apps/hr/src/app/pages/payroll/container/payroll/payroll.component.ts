@@ -97,7 +97,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   positions$ = this.store.pipe(select(getAllPosition));
   branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
     if (branches.length === 1) {
-      this.store.dispatch(PayrollAction.updateStatePayroll({
+      this.store.dispatch(PayrollAction.updateStateBranch({
         branch: branches[0]
       }))
       this.categories$ = this.categoryService.getAll({branch: branches[0].name})
@@ -222,12 +222,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         if (val) {
           this.createdAt = val?.createdAt;
           this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
-          this.store.dispatch(
-            PayrollAction.updateStatePayroll({
-              createdAt: new Date(val.createdAt) || new Date(val.createdAt),
-              position: val.position
-            })
-          );
+          this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(val.createdAt) || new Date(val.createdAt)}));
+          this.store.dispatch(PayrollAction.updateStatePosition({position:val.position}));
           return this.loadInitPayroll();
         }
       });
@@ -269,8 +265,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       if (branch) {
         this.store.dispatch(OrgchartActions.getBranch({id: branch.id}))
       }
-      this.store.dispatch(PayrollAction.updateStatePayroll({
-        branch: branch ? branch : ' '
+      this.store.dispatch(PayrollAction.updateStateBranch({
+        branch: branch
       }))
       switch (this.selectPayroll.value) {
         case FilterTypeEnum.ABSENT:

@@ -149,16 +149,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       if (value.createdAt) {
         this.getTemplateStay(value.createdAt, value.branch?.name, value.position?.name,)
       }
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          createdAt: new Date(value.createdAt),
-          position: value.position
-        })
-      );
-      this.store.dispatch(
-        PayrollAction.loadInit({
-          payrollDTO: this.mapPayrollStay()
-        })
+      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.createdAt)}));
+      this.store.dispatch(PayrollAction.updateStatePosition({position:value.position}));
+      this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollStay()})
       );
     });
 

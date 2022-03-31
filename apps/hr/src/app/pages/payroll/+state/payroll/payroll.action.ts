@@ -135,13 +135,21 @@ export const scanHolidayError = createAction(
   '[SCAN_HOLIDAY] Scan Holiday Error'
 );
 
+export const updateStateBranch = createAction(
+  '[UPDATE_STATE_BRANCH] UPDATE STATE Branch Payroll',
+  props<{branch: Branch}>()
+)
+
+export const updateStatePosition= createAction(
+  '[UPDATE_STATE_POSITION] UPDATE STATE Position Payroll',
+  props<{position: Position}>()
+)
+
 export const updateStatePayroll = createAction(
   '[UPDATE_STATE_PAYROLL] UPDATE STATE PAYROLL Payroll',
   props<{
     filter?: FilterTypeEnum;
     createdAt?: Date;
-    branch?: Branch;
-    position?: Position;
     added?: ConvertBooleanFrontEnd;
   }>()
 );
@@ -176,5 +184,7 @@ export const PayrollAction = {
   updateStatePayroll,
   deleteSalarySuccess,
   updateSalaryMultipleSuccess,
-  addSalaryMultipleSuccess
+  addSalaryMultipleSuccess,
+  updateStateBranch,
+  updateStatePosition
 };

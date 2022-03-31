@@ -230,12 +230,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.getTemplateOvertime(value.startedAt, value.endedAt, value.branch?.name, value.position?.name);
       this.isEventSearch = true;
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          createdAt: new Date(value.startedAt),
-          position: value.position
-        })
-      );
+      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.startedAt)}));
+      this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(
         PayrollAction.loadInit({
           payrollDTO: this.mapPayrollOvertime()

@@ -132,27 +132,10 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   onOvertime(template: any, position?: Position) {
-    if (position) {
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          position: position,
-          filter: FilterTypeEnum.OVERTIME
-        })
-      );
+    if(position){
+      this.store.dispatch(PayrollAction.updateStatePosition({position:position}))
     }
-    if (template?.branch) {
-      this.store.dispatch(
-        PayrollAction.updateStatePayroll({
-          branch: template.branch,
-          filter: FilterTypeEnum.OVERTIME
-        })
-      );
-    }
-    this.store.dispatch(
-      PayrollAction.updateStatePayroll({
-        filter: FilterTypeEnum.OVERTIME
-      })
-    );
+    this.store.dispatch(PayrollAction.updateStatePayroll({filter: FilterTypeEnum.OVERTIME}));
 
     this.router
       .navigate(['phieu-luong'], {

@@ -15,6 +15,7 @@ import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
 import {DialogExportComponent} from '@minhdu-fontend/components';
 import {Api} from '@minhdu-fontend/constants';
 import {of} from 'rxjs';
+import {Branch} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'branch.container.html'
@@ -77,15 +78,16 @@ export class BranchContainer implements OnInit {
     }).then();
   }
 
-  onPayroll(event: any) {
+  onPayroll(event: Branch) {
     this.store.dispatch(OrgchartActions.getBranch({id:event.id}))
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event}));
+    this.store.dispatch(PayrollAction.updateStateBranch({branch: event}));
     this.router.navigate(['phieu-luong']).then();
   }
 
-  onOvertime(event: any) {
+  onOvertime(event: Branch) {
     this.store.dispatch(OrgchartActions.getBranch({id:event.id}))
-    this.store.dispatch(PayrollAction.updateStatePayroll({branch: event, filter: FilterTypeEnum.OVERTIME}));
+    this.store.dispatch(PayrollAction.updateStatePayroll({filter: FilterTypeEnum.OVERTIME}));
+    this.store.dispatch(PayrollAction.updateStateBranch({branch:event}));
     this.router.navigate(['phieu-luong']).then();
   }
 
@@ -118,17 +120,15 @@ export class BranchContainer implements OnInit {
 
   onPayrollPositionChip(item: any) {
     this.store.dispatch(OrgchartActions.getBranch({id: item.branch.id}))
-    this.store.dispatch(PayrollAction.updateStatePayroll(
-      {branch: item.branch, position: item.position}
-    ));
+    this.store.dispatch(PayrollAction.updateStatePosition({position: item.position}));
+    this.store.dispatch(PayrollAction.updateStateBranch({branch: item.branch}));
     this.router.navigate(['phieu-luong']).then();
   }
 
   onOvertimePositionChip(item: any) {
     this.store.dispatch(OrgchartActions.getBranch({id: item.branch.id}))
-    this.store.dispatch(PayrollAction.updateStatePayroll(
-      {branch: item.branch, position: item.position}
-    ));
+    this.store.dispatch(PayrollAction.updateStatePosition({position: item.position}));
+    this.store.dispatch(PayrollAction.updateStateBranch({branch: item.branch}));
     this.router.navigate(['phieu-luong'], {
       queryParams: {
         type: 'overtime'
