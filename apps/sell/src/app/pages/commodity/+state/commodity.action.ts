@@ -30,4 +30,9 @@ export const remove = createAction(
 export const resetStateCommodityNewAdd = createAction(
   '[UPDATE_STATE_COMMODITY] Reset State Commodity'
 );
-export const CommodityAction = { addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd };
+
+export const error = createAction(
+  '[COMMODITY] Error',
+  props<{error: string}>()
+);
+export const CommodityAction = { addOne, loadAll, getOne, update, remove, resetStateCommodityNewAdd, error };

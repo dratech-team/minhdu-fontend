@@ -8,7 +8,7 @@ import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepick
 import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
 import {ItemContextMenu} from 'libs/enums/sell/page-type.enum';
 import {debounceTime, map, tap} from 'rxjs/operators';
-import {RouteAction} from '../../+state/route.action';
+import {RouteActions} from '../../+state/routeActions';
 import {RouteEntity} from '../../entities/route.entity';
 import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
@@ -65,7 +65,7 @@ export class RouteComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
-          this.actions$.dispatch(RouteAction.loadAll({params: this.mapRoute(val)}));
+          this.actions$.dispatch(RouteActions.loadAll({params: this.mapRoute(val)}));
         })
       )
       .subscribe();
@@ -86,7 +86,7 @@ export class RouteComponent implements OnInit {
     });
     ref.afterClosed().subscribe((value) => {
       if (value) {
-        this.actions$.dispatch(RouteAction.remove({idRoute: $event.id}));
+        this.actions$.dispatch(RouteActions.remove({idRoute: $event.id}));
       }
     });
   }
@@ -104,7 +104,7 @@ export class RouteComponent implements OnInit {
       .subscribe((val) => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.update({id: event.id, updates: {endedAt: val.day}})
+            RouteActions.update({id: event.id, updates: {endedAt: val.day}})
           );
         }
       });
@@ -128,7 +128,7 @@ export class RouteComponent implements OnInit {
     const value = this.formGroup.value;
     const count = this.routeQuery.getCount();
     if (pageIndex * this.pageSizeTable >= count) {
-      this.actions$.dispatch(RouteAction.loadAll({
+      this.actions$.dispatch(RouteActions.loadAll({
         params: this.mapRoute(value, true),
         isPagination: true
       }));

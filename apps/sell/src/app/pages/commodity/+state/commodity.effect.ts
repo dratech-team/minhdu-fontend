@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {CommodityService} from '../service';
 import {CommodityAction} from './commodity.action';
-import {throwError} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {OrderActions} from '../../order/+state';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityQuery} from './commodity.query';
@@ -29,23 +29,23 @@ export class CommodityEffect {
         this.commodityStore.update(state => ({
           ...state, added: false
         }));
-        return this.commodityService.addOne(props);
+        return this.commodityService.addOne(props).pipe(
+          map(commodity => {
+            this.commodityStore.update(state => ({
+              ...state, added: true
+            }));
+            this.message.success('Thêm hàng hóa thành công');
+            this.commodityStore.add(commodity);
+          }),
+          catchError((err) => {
+            this.commodityStore.update(state => ({
+              ...state, added: null
+            }));
+            return of(CommodityAction.error(err))
+          })
+        );
       }
     ),
-    map(commodity => {
-        this.commodityStore.update(state => ({
-          ...state, added: true
-        }));
-        this.message.success('Thêm hàng hóa thành công');
-        this.commodityStore.add(commodity);
-      }
-    ),
-    catchError((err) => {
-      this.commodityStore.update(state => ({
-        ...state, added: null
-      }));
-      return throwError(err)
-    })
   );
 
   @Effect()
@@ -58,40 +58,40 @@ export class CommodityEffect {
         /// FIXME:
         return this.commodityService.pagination(props.search as SearchCommodityDto).pipe(
           map((ResponsePaginate) => {
-              this.commodityStore.update(state => ({
-                ...state, loading: false
-              }));
-              if (ResponsePaginate.data.length === 0) {
-                this.message.warning('Đã lấy hết hàng hoá');
-              }
-              this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
-              if (props?.isPaginate) {
-                this.commodityStore.add(ResponsePaginate.data);
-              } else {
-                this.commodityStore.set(ResponsePaginate.data);
-              }
+            this.commodityStore.update(state => ({
+              ...state, loading: false
+            }));
+            if (ResponsePaginate.data.length === 0) {
+              this.message.warning('Đã lấy hết hàng hoá');
             }
-          )
+            this.commodityStore.update((state) => ({...state, total: ResponsePaginate.total}));
+            if (props?.isPaginate) {
+              this.commodityStore.add(ResponsePaginate.data);
+            } else {
+              this.commodityStore.set(ResponsePaginate.data);
+            }
+          }),
+          catchError((err) => {
+            this.commodityStore.update(state => ({
+              ...state, loading: false
+            }));
+            return of(CommodityAction.error(err))
+          })
         );
       }
-    ),
-    catchError((err) => {
-      this.commodityStore.update(state => ({
-        ...state, loading: false
-      }));
-      return throwError(err)
-    })
+    )
   );
 
   @Effect()
   getCommodity$ = this.actions$.pipe(
     ofType(CommodityAction.getOne),
-    switchMap((props) => this.commodityService.getOne(props.id)),
-    map((commodity) => {
-        this.commodityStore.upsert(commodity.id, commodity);
-      }
-    ),
-    catchError((err) => throwError(err))
+    switchMap((props) => this.commodityService.getOne(props.id).pipe(
+      map((commodity) => {
+          this.commodityStore.upsert(commodity.id, commodity);
+        }
+      ),
+      catchError((err) => of(CommodityAction.error(err)))
+    )),
   );
 
   @Effect()
@@ -112,16 +112,16 @@ export class CommodityEffect {
               }
               return this.commodityStore.update(commodity.id, commodity);
             }
-          )
+          ),
+          catchError((err) => {
+            this.commodityStore.update(state => ({
+              ...state, added: null
+            }));
+            return of(CommodityAction.error(err))
+          })
         );
       }
     ),
-    catchError((err) => {
-      this.commodityStore.update(state => ({
-        ...state, added: null
-      }));
-      return throwError(err)
-    })
   );
 
   @Effect()
@@ -136,6 +136,6 @@ export class CommodityEffect {
         this.commodityStore.remove(props.id);
       })
     )),
-    catchError((err) => throwError(err))
+    catchError((err) => of(CommodityAction.error(err)))
   );
 }

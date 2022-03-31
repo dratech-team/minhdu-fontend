@@ -11,7 +11,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[ROUTE] Load All',
-  props<{params:SearchRouteDto, isPagination?: boolean}>()
+  props<{ params: SearchRouteDto, isPagination?: boolean }>()
 );
 
 const loadOne = createAction(
@@ -32,6 +32,11 @@ const remove = createAction(
 const cancel = createAction(
   '[ROUTE] Cancel',
   props<{ id: number, cancelDTO: CancelDto }>()
+);
+
+const error = createAction(
+  '[ROUTE] Error',
+  props<{ error: string }>()
 )
 
-export const RouteAction = {addOne, loadAll, loadOne, update, remove, cancel};
+export const RouteActions = {addOne, loadAll, loadOne, update, remove, cancel, error};

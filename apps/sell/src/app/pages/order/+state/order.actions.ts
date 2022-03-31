@@ -43,6 +43,11 @@ const cancelOrder = createAction(
   props<{ orderId: number }>()
 );
 
+const error = createAction(
+  '[ORDER] Error',
+  props<{ error: string }>()
+);
+
 export const OrderActions = {
   addOne,
   loadAll,
@@ -51,5 +56,6 @@ export const OrderActions = {
   hide,
   payment,
   remove,
-  cancelOrder
+  cancelOrder,
+  error
 };
