@@ -239,7 +239,7 @@
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='detailPayroll(payrollOvertime.payrollId)'>
             <div>
-              {{item.datetime|date:'yyyy-MM-dd'}}
+              {{!item.unit? (item.datetime|date:'MM-yyyy') : (item.datetime|date:'dd-MM-yyyy') }}
             </div>
           </div>
         </th>
@@ -309,7 +309,7 @@
 <mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
 <app-mouse-right
   #child
-  (onAdd)='addSalaryOvertime()'
+  (onAdd)='addSalaryOvertime($event)'
   (onDetail)='detailPayroll($event.payrollId)'
   (onDel)='deleteSalaryOvertime($event)'
 >

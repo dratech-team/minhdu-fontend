@@ -74,9 +74,9 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
     const previousTemplateId = changes.search?.previousValue?.templateId;
     const currentCreatedAt = changes.search?.currentValue?.createdAt;
     const previousCreatedAt = changes.search?.previousValue?.createdAt;
-    const currentEmployeeType = changes.search?.currentValue?.templateId;
+    const currentEmployeeType = changes.search?.currentValue?.employeeType;
     const previousEmployeeType = changes.search?.previousValue?.templateId;
-    const currentRecipeType = changes.search?.currentValue?.templateId;
+    const currentRecipeType = changes.search?.currentValue?.recipeType;
     if (currentCreatedAt &&
       (currentTemplateId !== previousTemplateId
         || currentCreatedAt !== previousCreatedAt
@@ -267,11 +267,17 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       position: val.position,
       code: val.code,
       createdAt: new Date(this.search.createdAt),
-      templateId: this.search.templateId || '',
+      templateId: this.search.templateId,
       employeeType: this.search.employeeType,
-      recipeType: this.search.recipeType || '',
+      recipeType: this.search.recipeType,
       isLeave: false
     };
+    if (!this.search.recipeType){
+      delete value.recipeType
+    }
+    if (!this.search.templateId){
+      delete value.templateId
+    }
     if (!this.search.employeeType){
       delete value.employeeType
     }

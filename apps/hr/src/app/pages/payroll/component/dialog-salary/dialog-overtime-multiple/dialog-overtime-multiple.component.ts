@@ -6,7 +6,10 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../../reducers';
 import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {selectorAllTemplate} from '../../../../template/+state/template-overtime/template-overtime.selector';
+import {
+  selectorAllTemplate,
+  selectTemplateLoaded
+} from '../../../../template/+state/template-overtime/template-overtime.selector';
 import {TemplateOvertimeAction} from '../../../../template/+state/template-overtime/template-overtime.action';
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {map, startWith} from 'rxjs/operators';
@@ -19,6 +22,8 @@ import {SalaryService} from '../../../service/salary.service';
 import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../../libs/utils/daytime.until';
 import * as lodash from 'lodash';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
+import {values} from "lodash";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   templateUrl: 'dialog-overtime-multiple.component.html'
@@ -27,29 +32,23 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   @ViewChild(MatStepper) stepper!: MatStepper;
   positions = new FormControl();
   positions$ = this.store.pipe(select(getAllPosition));
-  titleOvertimes = new FormControl();
-  onAllowanceOvertime = false;
+  isAllowanceOvertime = false;
   numberChars = new RegExp('[^0-9]', 'g');
   payrollsSelected: Payroll[] = [];
   allowPayrollSelected: Payroll[] = [];
-  price!: number;
-  title!: string;
-  unit?: DatetimeUnitEnum;
-  rate!: number;
   times?: number;
-  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
   type = SalaryTypeEnum;
   formGroup!: FormGroup;
   submitted = false;
-  templateId?: number;
   positionsSelected: Position[] = []
   datetimeUnitEnum = DatetimeUnitEnum;
   positionOfTempOver: Position[] = [];
   employeeType!: EmployeeType;
   recipeType?: RecipeType;
-  partialDay: any;
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
+  templateOvertime$ = this.store.pipe(select(selectorAllTemplate));
+  loadingTemplate$ = this.store.pipe(select(selectTemplateLoaded));
 
   constructor(
     public datePipe: DatePipe,
@@ -58,6 +57,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
     private readonly formBuilder: FormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly salaryService: SalaryService,
+    private readonly message: NzMessageService,
     private readonly dialogRef: MatDialogRef<DialogOvertimeMultipleComponent>,
     private ref: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data?: any
@@ -71,25 +71,35 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
     {title: 'buổi tối', type: PartialDayEnum.NIGHT, times: partialDay.PARTIAL},
     {title: 'nguyên ngày', type: PartialDayEnum.ALL_DAY, times: partialDay.ALL_DAY}
   ];
+  compareFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.title : o1.id === o2.id);
+  comparePartialFN = (o1: any, o2: any) => (typeof o1 === 'string' ? o1 == o2.type : o1 === o2);
 
   ngOnInit(): void {
     this.store.dispatch(PositionActions.loadPosition())
-    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate({}));
-    if (this.data.isUpdate) {
+    if (this.data?.salary) {
       this.firstDayInMonth = this.datePipe.transform(
         getFirstDayInMonth(new Date(this.data.salary?.datetime)), 'yyyy-MM-dd');
       this.lastDayInMonth = this.datePipe.transform(
         getLastDayInMonth(new Date(this.data.salary?.datetime)), 'yyyy-MM-dd');
-      this.title = this.data.salary.title;
-      this.price = this.data.salary.price;
-      this.unit = this.data.salary?.unit ? this.data.salary?.unit : DatetimeUnitEnum.OPTION;
+      if (this.data.salary?.allowance) {
+        this.isAllowanceOvertime = true
+      }
+      if( !this.data.salary?.unit) {
+        this.recipeType = RecipeType.CT4
+      }
       this.formGroup = this.formBuilder.group({
+        title: [this.data.salary.title],
         datetime: [
           this.datePipe.transform(
             this.data.salary.datetime, 'yyyy-MM-dd'
           )],
-        month: [undefined],
+        month: [!this.data.salary.unit ?
+          this.datePipe.transform( this.data.salary.datetime, 'yyyy-MM'):undefined ],
+        price: [this.data.salary.price],
+        unit: [this.data.salary.unit ? this.data.salary.unit : DatetimeUnitEnum.OPTION],
         note: [''],
+        rate: [this.data.salary?.rate],
+        partial: [this.data.salary?.partial ? this.titleSession.find(title => title.type === this.data.salary.partial) : ''],
         times: [this.data.salary?.times ? this.data.salary.times : 1],
         days: [1],
         priceAllowance: [this.data.salary?.allowance?.price],
@@ -97,38 +107,50 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       });
     } else {
       this.formGroup = this.formBuilder.group({
+        title: [''],
         datetime: [this.datePipe.transform(this.data.createdAt, 'yyyy-MM-dd'), undefined],
         month: [undefined],
         note: [''],
         times: [1],
         days: [1],
+        price: [''],
+        unit: [''],
+        rate: [''],
+        partial: [''],
         priceAllowance: [],
         titleAllowance: []
       });
     }
-    this.titleOvertimes.valueChanges
-      .pipe(
-        map((val) => {
-          if (!val) {
-            this.positionOfTempOver = [];
-          }
-          const param = {
-            positionIds: this.positionsSelected.map(val => val.id),
-            unit: this.unit
-          }
-          if (!this.unit) {
-            delete param.unit
-          }
-          this.store.dispatch(
-            TemplateOvertimeAction.loadALlTemplate(param)
-          );
-        })
-      )
-      .subscribe();
-    this.templateOvertime$ = searchAutocomplete(
-      this.titleOvertimes.valueChanges.pipe(startWith('')),
-      this.store.pipe(select(selectorAllTemplate))
-    );
+    this.loadTemplateOvertime()
+
+    this.formGroup.get('title')?.valueChanges.subscribe((val: TemplateOvertime) => {
+      if (!val) {
+        this.positionOfTempOver = [];
+      }
+      this.formGroup.get('rate')?.setValue(val.rate)
+      this.formGroup.get('price')?.setValue(val.price)
+      this.positionOfTempOver = val.positions ? val.positions : [];
+      const param = {
+        positionIds: this.positionsSelected.map(val => val.id),
+      }
+      if (val.unit) {
+        Object.assign(param, {unit: val.unit})
+      }
+      this.store.dispatch(
+        TemplateOvertimeAction.loadALlTemplate(param)
+      );
+    })
+
+    this.formGroup.get('unit')?.valueChanges.subscribe(val => {
+      if (val !== DatetimeUnitEnum.OPTION) {
+        this.formGroup.get('title')?.patchValue('');
+        this.recipeType = undefined;
+      } else {
+        this.recipeType = RecipeType.CT4;
+      }
+      this.loadTemplateOvertime()
+    })
+
 
     this.positions$ = searchAutocomplete(
       this.positions.valueChanges.pipe(startWith('')),
@@ -149,7 +171,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
   }
 
   checkAllowanceOvertime() {
-    this.onAllowanceOvertime = !this.onAllowanceOvertime;
+    this.isAllowanceOvertime = !this.isAllowanceOvertime;
   }
 
   get f() {
@@ -164,8 +186,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
         } else {
           this.positionOfTempOver = [];
           this.positionsSelected.push(position);
-          this.templateId = undefined;
-          this.titleOvertimes.patchValue('');
+          this.formGroup.get('title')?.patchValue('');
         }
       }
     }
@@ -184,36 +205,10 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
     this.payrollsSelected = [...employees]
   }
 
-  pickOverTime(data: TemplateOvertime) {
-    this.price = data.price;
-    this.title = data.title;
-    this.rate = data.rate;
-    this.unit = data.unit;
-    this.templateId = data.id;
-    this.positionOfTempOver = data.positions ? data.positions : [];
-    this.employeeType = data.employeeType;
-  }
-
-  selectUnitOvertime(unit?: DatetimeUnitEnum) {
-    this.templateId = undefined;
-    this.unit = unit;
-    if (unit !== DatetimeUnitEnum.OPTION) {
-      this.titleOvertimes.patchValue('');
-      this.recipeType = undefined;
-    } else {
-      this.recipeType = RecipeType.CT4;
-    }
-  }
-
   check(): any {
     //Validate
     const value = this.formGroup.value;
-    if (this.unit !== DatetimeUnitEnum.OPTION) {
-      if (!this.data?.isUpdate && !this.templateId) {
-        return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
-          duration: 1000
-        });
-      }
+    if (value.unit !== DatetimeUnitEnum.OPTION) {
       if (!value.datetime && !value.month) {
         if (value.days <= 1) {
           return this.snackBar.open('Chưa chọn ngày tăng ca', '', {duration: 2000});
@@ -231,35 +226,35 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       return;
     }
     const value = this.formGroup.value;
-    if (!this.data?.isUpdate && !this.templateId && this.unit !== DatetimeUnitEnum.OPTION) {
+    if (!this.data?.isUpdate && !value.title && value.unit !== DatetimeUnitEnum.OPTION) {
       return this.snackBar.open('chưa chọn loại tăng ca', 'Đã hiểu', {
         duration: 1000
       });
     }
     if (!value.datetime && !value.month) {
-      if (this.unit === DatetimeUnitEnum.HOUR) {
+      if (value.unit === DatetimeUnitEnum.HOUR) {
         return this.snackBar.open('Chưa chọn ngày tăng ca', '', {duration: 2000});
       } else {
         return this.snackBar.open('Chưa chọn tháng tăng ca', '', {duration: 2000});
       }
     }
-    if (this.unit && !value.times) {
+    if (value.unit && !value.times) {
       return this.snackBar.open('chưa nhập số giờ tăng ca', 'Đã hiểu', {
         duration: 1000
       });
     }
     const salary = {
-      title: this.title,
-      price: this.price,
+      title:  value.title?.title || this.data?.salary?.title,
+      price: value.price,
       type: SalaryTypeEnum.OVERTIME,
-      rate: this.rate || this.data?.salary?.rate,
-      times: this.unit === this.datetimeUnitEnum.DAY ? value.days : value.times,
+      rate: value.rate || this.data?.salary?.rate,
+      times: value.unit === this.datetimeUnitEnum.DAY ? value.days : value.times,
       datetime: value.days <= 1 && value.datetime ? new Date(value.datetime) :
         value.days > 1 && value.month ? new Date(value.month) : undefined,
       note: value.note,
-      unit: this.unit || undefined
+      unit: value.unit || undefined
     };
-    if (this.onAllowanceOvertime) {
+    if (this.isAllowanceOvertime) {
       Object.assign(salary, {
         allowPayrollIds: this.allowPayrollSelected.map(e => e.id),
         allowance:
@@ -272,14 +267,19 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
           }
       });
     }
-    if (this.unit === DatetimeUnitEnum.OPTION) {
-      if (this.partialDay) {
-        Object.assign(salary, {
-          times: this.partialDay.times * value.times,
-          partial: this.partialDay.type,
-          datetime: new Date(value.month)
-        });
+    if (value.unit === DatetimeUnitEnum.OPTION) {
+      if(!value.partial){
+        return this.message.warning('Chưa chọn buổi tăng ca')
       }
+      if(!value.month){
+        return this.message.warning('Chưa chọn tháng')
+      }
+      Object.assign(salary, {
+        title: 'Tăng ca ' +  value.partial?.title,
+        times: value.partial.times * value.times,
+        partial: value.partial.type,
+        datetime: new Date(value.month)
+      });
       delete salary.unit;
     }
     if (this.data?.isUpdate) {
@@ -289,7 +289,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
           this.snackBar.open(val.message, '', {duration: 1500});
           this.dialogRef.close(
             {
-              title: this.title,
+              title: val.title?.title || this.data.salary.title,
               datetime: value.datetime
             });
         }
@@ -305,19 +305,26 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       this.dialogRef.close(
         {
           datetime: value.datetime,
-          title: this.title
+          title: value.title?.title || value.title
         });
     }
 
   }
 
-  selectPartialDay(partialDay: any) {
-    this.title = 'Tăng ca ' + partialDay.title;
-    this.partialDay = partialDay;
-  }
-
   removePosition(position: Position) {
     lodash.remove(this.positionsSelected, position);
-    this.titleOvertimes.patchValue('');
+    this.formGroup.get('title')?.patchValue('');
+  }
+
+  loadTemplateOvertime() {
+    this.store.dispatch(TemplateOvertimeAction.loadALlTemplate(
+      this.formGroup.value.unit && this.formGroup.value.unit !== DatetimeUnitEnum.OPTION ?
+        {
+          positionIds: this.positionsSelected.map(value => value.id),
+          unit: this.formGroup.value.unit
+        } : {
+          positionIds: this.positionsSelected.map(value => value.id),
+        }
+    ));
   }
 }

@@ -83,7 +83,7 @@ export class DialogOvertimeComponent implements OnInit {
           : this.data.salary.times
         ],
         rate: [this.data.salary?.rate],
-        unit: [!this.data.updateMultiple && this.data?.payroll.recipeType === RecipeType.CT4 && !this.data.salary.unit ?
+        unit: [this.data?.payroll.recipeType === RecipeType.CT4 && !this.data.salary.unit ?
           DatetimeUnitEnum.OPTION
           : this.data.salary.unit],
         price: [this.data.salary.price],
