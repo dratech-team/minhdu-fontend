@@ -3,7 +3,7 @@ import {RouteEntity} from '../../entities/route.entity';
 import {MatDialog} from '@angular/material/dialog';
 import {RouteDialogComponent} from '../../component/route-dialog/route-dialog.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RouteAction} from '../../+state/route.action';
+import {RouteActions} from '../../+state/routeActions';
 import {PaymentType} from '@minhdu-fontend/enums';
 import {
   DialogDatePickerComponent
@@ -41,7 +41,7 @@ export class DetailRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actions$.dispatch(RouteAction.loadOne({id: this.routeId}));
+    this.actions$.dispatch(RouteActions.loadOne({id: this.routeId}));
     this.route$.subscribe(val => {
       if (val) {
         this.route = JSON.parse(JSON.stringify(val));
@@ -90,7 +90,7 @@ export class DetailRouteComponent implements OnInit {
       .subscribe(val => {
         if (val) {
           this.actions$.dispatch(
-            RouteAction.update({updates: {endedAt: val.day}, id: route.id})
+            RouteActions.update({updates: {endedAt: val.day}, id: route.id})
           );
         }
       });
@@ -106,7 +106,7 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.actions$.dispatch(RouteAction.cancel({
+          this.actions$.dispatch(RouteActions.cancel({
             id: this.route.id,
             cancelDTO: {desId: commodity.id, cancelType: CancelEnum.COMMODITY}
           }));
@@ -124,7 +124,7 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.actions$.dispatch(RouteAction.cancel({
+          this.actions$.dispatch(RouteActions.cancel({
             id: this.route.id,
             cancelDTO: {desId: order.id, cancelType: CancelEnum.ORDER}
           }));
@@ -142,7 +142,7 @@ export class DetailRouteComponent implements OnInit {
     }).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.actions$.dispatch(RouteAction.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}));
+          this.actions$.dispatch(RouteActions.update({id: this.route.id, updates: {commodityIds: [commodity.id]}}));
         }
       });
   }

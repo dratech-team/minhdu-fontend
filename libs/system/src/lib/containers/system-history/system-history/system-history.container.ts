@@ -10,7 +10,7 @@ import {
 } from '../../../+state/system-history/system-history/system-history.selectors';
 import { SystemHistoryActions } from '../../../+state/system-history/system-history/system-history.actions';
 import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
-import {RouteAction} from "../../../../../../../apps/sell/src/app/pages/route/+state/route.action";
+import {RouteActions} from "../../../../../../../apps/sell/src/app/pages/route/+state/routeActions";
 import {getSelectors} from "@minhdu-fontend/utils";
 import {
   selectedCreateAtPayroll
