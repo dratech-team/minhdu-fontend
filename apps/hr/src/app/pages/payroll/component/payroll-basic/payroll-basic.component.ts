@@ -182,12 +182,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.BASIC,
-          startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-          endedAt: getLastDayInMonth(new Date(value.createdAt)),
           titles: value.titles,
           isLeave: value.isLeave,
           searchType: value.searchType,
-          createdAt: new Date(value.createdAt),
           filterType: FilterTypeEnum.BASIC,
         };
         if (value.createdAt) {

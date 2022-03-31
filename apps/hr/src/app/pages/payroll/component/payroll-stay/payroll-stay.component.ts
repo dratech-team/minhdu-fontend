@@ -185,8 +185,6 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           position: value.position?.name || '',
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.STAY,
-          startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-          endedAt: getLastDayInMonth(new Date(value.createdAt)),
           titles: value.titles,
           isLeave: value.isLeave
         };
