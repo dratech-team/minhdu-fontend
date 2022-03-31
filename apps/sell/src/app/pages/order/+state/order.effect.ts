@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {OrderService} from '../service/order.service';
 import {OrderActions} from './order.actions';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {throwError} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
 import {OrderEntity} from '../enitities/order.entity';
@@ -36,29 +36,30 @@ export class OrderEffect {
       this.orderStore.update(state => ({
         ...state, added: false
       }));
-      return this.orderService.addOne(props);
+      return this.orderService.addOne(props).pipe(
+        map((res) => {
+          this.orderStore.update(state => ({
+            ...state, added: true,
+            total: state.total + 1,
+            totalCommodity: res.commodities.length > 0 ?
+              state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+            commodityUniq: res.commodities?.length > 0 ?
+              this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
+              state.commodityUniq
+          }));
+          res.expand = this.orderQuery.getValue().expandedAll || false;
+          this.message.success('Thêm đơn hàng thành công');
+          this.orderStore.add(res);
+          this.router.navigate(['don-hang']).then();
+        }),
+        catchError((err) => {
+          this.orderStore.update(state => ({
+            ...state, added: null
+          }));
+          return of(OrderActions.error(err));
+        })
+      );
     }),
-    map((res) => {
-      this.orderStore.update(state => ({
-        ...state, added: true,
-        total: state.total + 1,
-        totalCommodity: res.commodities.length > 0 ?
-          state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
-        commodityUniq: res.commodities?.length > 0 ?
-          this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
-          state.commodityUniq
-      }));
-      res.expand = this.orderQuery.getValue().expandedAll || false;
-      this.message.success('Thêm đơn hàng thành công');
-      this.orderStore.add(res);
-      this.router.navigate(['don-hang']).then();
-    }),
-    catchError((err) => {
-      this.orderStore.update(state => ({
-        ...state, added: null
-      }));
-      return throwError(err);
-    })
   );
 
   @Effect()
@@ -86,7 +87,7 @@ export class OrderEffect {
               }));
               if (!response.data.length) {
                 this.message.warning('Đã lấy hết đơn hàng')
-                if(!props.isPagination){
+                if (!props.isPagination) {
                   this.orderStore.set(response.data)
                 }
               } else {
@@ -96,32 +97,33 @@ export class OrderEffect {
                 }));
                 if (props.isPagination) {
                   this.orderStore.add(data);
-                }else {
+                } else {
                   this.orderStore.set(data);
                 }
               }
             }
-          )
+          ),
+          catchError((err) => {
+            this.orderStore.update(state => ({
+              ...state, loading: false
+            }));
+            return of(OrderActions.error(err))
+          })
         );
       }
     ),
-    catchError((err) => {
-      this.orderStore.update(state => ({
-        ...state, loading: false
-      }));
-      return throwError(err)
-    })
   );
 
   @Effect()
   loadOne$ = this.actions$.pipe(
     ofType(OrderActions.loadOne),
-    switchMap((props) => this.orderService.getOne(props.id)),
-    map((order) => {
-        return this.orderStore.upsert(order.id, order);
-      }
-    ),
-    catchError((err) => throwError(err))
+    switchMap((props) => this.orderService.getOne(props.id).pipe(
+      map((order) => {
+          return this.orderStore.upsert(order.id, order);
+        }
+      ),
+      catchError((err) => of(OrderActions.error(err)))
+    )),
   );
 
   @Effect()
@@ -145,17 +147,17 @@ export class OrderEffect {
             }
             this.message.success('Cập nhật thành công');
             this.orderStore.update(response.id, response);
+          }),
+          catchError((err) => {
+            this.orderStore.update(state => ({
+              ...state,
+              added: null
+            }));
+            return of(OrderActions.error(err))
           })
         );
       }
     ),
-    catchError((err) => {
-      this.orderStore.update(state => ({
-        ...state,
-        added: null
-      }));
-      return throwError(err);
-    })
   );
 
   @Effect()
@@ -164,9 +166,10 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.updateHide(props.id, props.hide).pipe(
         map((res) => {
+          this.message.success('Ẩn đơn hàng thành công')
           this.orderStore.update(res.id, res);
         }),
-        catchError((err) => throwError(err))
+        catchError((err) => of(OrderActions.error(err)))
       )
     )
   );
@@ -177,7 +180,7 @@ export class OrderEffect {
     switchMap((props) =>
       this.orderService.payment(props.id, props.order).pipe(
         map((_) => OrderActions.loadOne({id: props.id})),
-        catchError((err) => throwError(err))
+        catchError((err) => of(OrderActions.error(err)))
       )
     )
   );
@@ -202,7 +205,7 @@ export class OrderEffect {
             }));
           this.orderStore.remove(props.id);
         }),
-        catchError((err) => throwError(err))
+        catchError((err) => of(OrderActions.error(err)))
       )
     )
   );
@@ -210,13 +213,14 @@ export class OrderEffect {
   @Effect()
   cancel$ = this.actions$.pipe(
     ofType(OrderActions.cancelOrder),
-    switchMap((prop) => this.orderService.cancelOrder(prop.orderId)),
-    map((res) => {
-        this.message.success('Huỷ đơn hàng thành công');
-        this.orderStore.remove(res.id);
-      }
-    ),
-    catchError((err) => throwError(err))
+    switchMap((prop) => this.orderService.cancelOrder(prop.orderId).pipe(
+      map((res) => {
+          this.message.success('Huỷ đơn hàng thành công');
+          this.orderStore.remove(res.id);
+        }
+      ),
+      catchError((err) => of(OrderActions.error(err)))
+    )),
   );
 
   handleCommodityUniq(
