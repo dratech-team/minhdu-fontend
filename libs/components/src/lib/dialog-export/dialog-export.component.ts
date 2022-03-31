@@ -47,9 +47,9 @@ export class DialogExportComponent implements OnInit {
       } : {
         name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         createdAt: new FormControl(
-          this.data?.params?.createdAt ?
+          this.data?.params?.startedAt ?
             this.datePipe.transform(
-              new Date(this.data?.params?.createdAt),
+              new Date(this.data?.params?.startedAt),
               'YYYY-MM'
             ) : ''
         )
