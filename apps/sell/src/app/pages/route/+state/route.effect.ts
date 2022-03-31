@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
-import {RouteAction} from './route.action';
+import {RouteActions} from './routeActions';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
-import {throwError} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {OrderEntity} from '../../order/enitities';
 import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
@@ -23,37 +23,38 @@ export class RouteEffect {
 
   @Effect()
   addRoute$ = this.action.pipe(
-    ofType(RouteAction.addOne),
+    ofType(RouteActions.addOne),
     switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
         added: false,
       }));
-      return this.routeService.addOne(props)
+      return this.routeService.addOne(props).pipe(
+        tap((res) => {
+            const expanedAll = this.routeQuery.getValue().expandedAll;
+            const orders = this.handelOrder(res.orders);
+            this.routeStore.update(state => ({
+              ...state,
+              added: true,
+              adding: false
+            }));
+            this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
+          }
+        ),
+        catchError((err) => {
+          this.routeStore.update(state => ({
+            ...state,
+            added: null,
+          }));
+          return of(RouteActions.error(err))
+        })
+      )
     }),
-    tap((res) => {
-        const expanedAll = this.routeQuery.getValue().expandedAll;
-        const orders = this.handelOrder(res.orders);
-        this.routeStore.update(state => ({
-          ...state,
-          added: true,
-          adding: false
-        }));
-        this.routeStore.add(Object.assign(res, {orders, expand: expanedAll}));
-      }
-    ),
-    catchError((err) => {
-      this.routeStore.update(state => ({
-        ...state,
-        added: null,
-      }));
-      return throwError(err)
-    })
   );
 
   @Effect()
   loadAll$ = this.action.pipe(
-    ofType(RouteAction.loadAll),
+    ofType(RouteActions.loadAll),
     switchMap((props) => {
         this.routeStore.update(state => ({
           ...state, loading: true
@@ -88,87 +89,90 @@ export class RouteEffect {
                 this.routeStore.set(routes);
               }
             }
+          }),
+          catchError((err) => {
+            this.routeStore.update(state => ({
+              ...state, loading: false,
+            }));
+            return of(RouteActions.error(err))
           })
         );
       }
-    ),
-    catchError((err) => {
-      this.routeStore.update(state => ({
-        ...state, loading: false,
-      }));
-      return throwError(err)
-    })
+    )
   );
 
   @Effect()
   getOne$ = this.action.pipe(
-    ofType(RouteAction.loadOne),
-    switchMap((props) => this.routeService.getOne(props.id)),
-    map((route) => {
-        this.routeStore.upsert(route.id, Object.assign(route, {
-          totalCommodityUniq: this.totalCommodityUniq(route.orders),
-          orders: this.handelOrder(route.orders)
-        }));
-      }
-    ),
-    catchError((err) => throwError(err))
+    ofType(RouteActions.loadOne),
+    switchMap((props) => this.routeService.getOne(props.id).pipe(
+      map((route) => {
+          this.routeStore.upsert(route.id, Object.assign(route, {
+            totalCommodityUniq: this.totalCommodityUniq(route.orders),
+            orders: this.handelOrder(route.orders)
+          }));
+        }
+      ),
+      catchError((err) => of(RouteActions.error(err)))
+    )),
   );
 
   @Effect()
   update$ = this.action.pipe(
-    ofType(RouteAction.update),
+    ofType(RouteActions.update),
     switchMap((props) => {
       this.routeStore.update(state => ({
         ...state,
         added: false,
       }));
-      return this.routeService.update(props.id, props.updates)
-    }),
-    map((route) => {
-      const expanedAll = this.routeQuery.getValue().expandedAll;
-      this.routeStore.update(state => ({
-        ...state,
-        added: true,
-      }));
-      this.message.success('Cập nhật thành công');
-      return this.routeStore.update(route.id, Object.assign(route, {
-        totalCommodityUniq: this.totalCommodityUniq(route.orders),
-        orders: this.handelOrder(route.orders),
-        expand: expanedAll
-      }));
-    }),
-    catchError((err) => {
-      this.routeStore.update(state => ({
-        ...state,
-        added: null,
-      }));
-      return throwError(err)
+      return this.routeService.update(props.id, props.updates).pipe(
+        map((route) => {
+          const expanedAll = this.routeQuery.getValue().expandedAll;
+          this.routeStore.update(state => ({
+            ...state,
+            added: true,
+          }));
+          this.message.success('Cập nhật thành công');
+          return this.routeStore.update(route.id, Object.assign(route, {
+            totalCommodityUniq: this.totalCommodityUniq(route.orders),
+            orders: this.handelOrder(route.orders),
+            expand: expanedAll
+          }));
+        }),
+        catchError((err) => {
+          this.routeStore.update(state => ({
+            ...state,
+            added: null,
+          }));
+          return of(RouteActions.error(err))
+        })
+      )
     })
   );
 
   @Effect()
   delete$ = this.action.pipe(
-    ofType(RouteAction.remove),
+    ofType(RouteActions.remove),
     switchMap((props) =>
       this.routeService.delete(props.idRoute).pipe(
         map((_) => this.routeStore.remove(props.idRoute)),
-        catchError((err) => throwError(err))
+        catchError((err) => of(RouteActions.error(err)))
       )
     )
   );
 
   @Effect()
   cancelCommodity$ = this.action.pipe(
-    ofType(RouteAction.cancel),
-    switchMap((props) => this.routeService.cancel(props.id, props.cancelDTO)),
-    map((route) => {
-      this.message.success('Cập nhật đơn hàng thành công');
-      return this.routeStore.update(route.id, Object.assign(route, {
-        totalCommodityUniq: this.totalCommodityUniq(route.orders),
-        orders: this.handelOrder(route.orders)
-      }));
-    }),
-    catchError((err) => throwError(err))
+    ofType(RouteActions.cancel),
+    switchMap((props) => this.routeService.cancel(props.id, props.cancelDTO).pipe(
+      map((route) => {
+        this.message.success('Cập nhật đơn hàng thành công');
+        return this.routeStore.update(route.id, Object.assign(route, {
+          totalCommodityUniq: this.totalCommodityUniq(route.orders),
+          orders: this.handelOrder(route.orders)
+        }));
+      }),
+      catchError((err) => of(RouteActions.error(err)))
+    )),
   );
 
   private handelOrder(orders: OrderEntity []) {

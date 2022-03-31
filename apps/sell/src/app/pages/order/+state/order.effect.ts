@@ -10,7 +10,7 @@ import {OrderEntity} from '../enitities/order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
-import {RouteAction} from '../../route/+state/route.action';
+import {RouteActions} from '../../route/+state/routeActions';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -143,7 +143,7 @@ export class OrderEffect {
                 added: true
               }));
             if (props.inRoute) {
-              this.actions$.dispatch(RouteAction.loadOne({id: props.inRoute.routeId}));
+              this.actions$.dispatch(RouteActions.loadOne({id: props.inRoute.routeId}));
             }
             this.message.success('Cập nhật thành công');
             this.orderStore.update(response.id, response);
