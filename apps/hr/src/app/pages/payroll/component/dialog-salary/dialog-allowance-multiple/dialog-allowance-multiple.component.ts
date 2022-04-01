@@ -57,7 +57,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
       return;
     }
     if (this.payrollsSelected.length === 0) {
-      this.snackBar.open('Chưa chọn nhân viên', '', { duration: 1500 });
+     return  this.snackBar.open('Chưa chọn nhân viên', '', { duration: 1500 });
     }
     const value = this.formGroup.value;
     const salary = {
