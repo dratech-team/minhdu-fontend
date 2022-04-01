@@ -111,7 +111,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     }
     return branches
   }));
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   overtimeTitle?: string;
   allowanceTitle?: string;
   absentTitle?: string;
@@ -142,7 +141,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   selectIsLeaveBasic?: boolean
   selectIsLeaveAllowance?: boolean
   selectIsLeaveStay?: boolean
+  formRangeDay = new FormControl([
+    getFirstDayInMonth(new Date(getSelectors<Date>(selectedCreateAtPayroll, this.store))),
+    getLastDayInMonth(new Date(getSelectors<Date>(selectedCreateAtPayroll, this.store)))
+  ]);
+  pickRangeDayOvertime: Date[] = this.formRangeDay.value;
+  pickRangeDayAbsent: Date[] = this.formRangeDay.value;
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+
 
   constructor(
     private readonly message: NzMessageService,
@@ -164,14 +170,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.loadInitPayroll();
       }
     });
-    this.daysInMonth = rageDaysInMonth(this.createdAt);
+    this.daysInMonth = rageDaysInMonth(new Date(this.formGroup.value.createdAt));
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
-      if (val === FilterTypeEnum.TIME_SHEET && !this.createdAt) {
+      if (val === FilterTypeEnum.TIME_SHEET && !this.formGroup.value.createdAt) {
         this.selectedPayroll = val;
         this.formGroup.get('createdAt')?.reset();
-        this.createdAt = new Date();
         this.daysInMonth = rageDaysInMonth(new Date());
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
@@ -226,13 +231,21 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.createdAt = val?.createdAt;
           this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
           this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(val.createdAt) || new Date(val.createdAt)}));
-          this.store.dispatch(PayrollAction.updateStatePosition({position:val.position}));
+          this.store.dispatch(PayrollAction.updateStatePosition({position: val.position}));
           return this.loadInitPayroll();
         }
       });
+
+    this.formRangeDay.valueChanges.subscribe(val => {
+      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: val[0]}))
+      if (this.selectedPayroll === FilterTypeEnum.OVERTIME) {
+        this.pickRangeDayOvertime = val
+      } else if (this.selectedPayroll === FilterTypeEnum.ABSENT) {
+        this.pickRangeDayAbsent = val
+      }
+    })
 
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
@@ -320,7 +333,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: val.name,
       position: val.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
-      startedAt: getFirstDayInMonth( new Date(val.createdAt)),
+      startedAt: getFirstDayInMonth(new Date(val.createdAt)),
       endedAt: getLastDayInMonth(new Date(val.createdAt)),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
@@ -361,7 +374,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .subscribe((val) => {
         if (val) {
           this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'), {emitEvent: false});
-          this.store.dispatch(PayrollAction.loadInit({ payrollDTO: this.mapPayroll(this.formGroup.value)}
+          this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayroll(this.formGroup.value)}
           ))
         }
       });
@@ -379,7 +392,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .open(DialogOvertimeMultipleComponent, {
         width: 'fit-content',
         data: {
-          createdAt: this.createdAt,
+          createdAt: new Date(this.formGroup.value.createdAt),
           type: type,
           isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
         }
@@ -387,7 +400,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .afterClosed()
       .subscribe((val) => {
         if (val) {
-          this.createdAt = new Date(val.datetime);
           this.overtimeTitle = val.title;
           this.store.dispatch(
             PayrollAction.updateStatePayroll({
@@ -408,14 +420,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .open(DialogAllowanceMultipleComponent, {
         width: 'fit-content',
         data: {
-          createdAt: this.createdAt,
+          createdAt: new Date(this.formGroup.value.createdAt),
           isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
         }
       })
       .afterClosed()
       .subscribe((value) => {
         if (value) {
-          this.createdAt = new Date(value.datetime);
           this.allowanceTitle = value.title;
           this.store.dispatch(
             PayrollAction.updateStatePayroll({
@@ -434,13 +445,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: {
-        createdAt: this.createdAt,
+        createdAt: new Date(this.formGroup.value.createdAt),
         isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
       }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.createdAt = new Date(val.datetime);
         this.absentTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
@@ -481,7 +491,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   }
 
   selectMonth(event: any) {
-    this.createdAt = event;
     this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }
 

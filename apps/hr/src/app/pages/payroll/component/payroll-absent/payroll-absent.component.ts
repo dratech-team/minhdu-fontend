@@ -69,7 +69,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   @Input() eventSelectIsLeave?: boolean;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
-  @Input() createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  @Input() rangeDay: Date[] = []
   @Output() EventSelectMonth = new EventEmitter<Date>();
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -97,12 +97,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     name: new FormControl(''),
     unit: new FormControl(''),
     isLeave: new FormControl(false),
-    startedAt: new FormControl(
-      this.datePipe.transform(getFirstDayInMonth(this.createdAt), 'yyyy-MM-dd')
-    ),
-    endedAt: new FormControl(
-      this.datePipe.transform(getLastDayInMonth(this.createdAt), 'yyyy-MM-dd')
-    ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -124,6 +118,11 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.rangeDay?.currentValue !== changes.rangeDay?.previousValue) {
+      this.store.dispatch(PayrollAction.loadInit({
+        payrollDTO : this.mapPayrollAbsent()
+      }))
+    }
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
@@ -137,6 +136,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
+      startedAt: this.rangeDay[0],
+      endedAt: this.rangeDay[1],
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
       branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
       isLeave: false
@@ -144,12 +145,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
     if (this.absentTitle) {
       Object.assign(paramLoadInit, {
-        createdAt: this.datePipe.transform(this.createdAt, 'yyyy-MM-dd')
-      });
-    } else {
-      Object.assign(paramLoadInit, {
-        startedAt: getFirstDayInMonth(new Date(this.createdAt)),
-        endedAt: getLastDayInMonth(new Date(this.createdAt))
+        startedAt: this.rangeDay[0],
+        endedAt: this.rangeDay[1]
       });
     }
 
@@ -161,12 +158,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
     if (this.absentTitle) {
       this.formGroup.get('titles')?.setValue(this.absentTitle);
-      this.formGroup.get('startedAt')?.setValue(
-        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-      );
-      this.formGroup.get('endedAt')?.setValue(
-        this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM-dd')
-      );
     }
 
     this.eventAddAbsent?.subscribe((val) => {
@@ -181,7 +172,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
-      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.startedAt)}));
       this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(
         PayrollAction.loadInit({
@@ -203,7 +193,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
               ) {
                 this.salaries.push({salary: salary, payroll: payroll})
                 if (filterSalaryPayroll(this.salariesSelected, salary).length > 0
-                  && (this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id) )
+                  && (this.salariesSelected.every(salaryPayroll => salaryPayroll.salary.id !== salary.id))
                 ) {
                   this.salariesSelected.push({payroll: payroll, salary})
                 }
@@ -224,8 +214,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ABSENT,
           titles: value.titles ? value.titles : [],
-          startedAt: value.startedAt,
-          endedAt: value.endedAt,
+          startedAt: this.rangeDay[0],
+          endedAt: this.rangeDay[1],
           isLeave: value.isLeave
         };
         this.dialog.open(DialogExportComponent, {
@@ -291,7 +281,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           salary: this.salariesSelected[0].salary,
           salariesSelected: this.salariesSelected,
           updateMultiple: true,
-          createdAt: value.startedAt,
+          createdAt: this.rangeDay[0],
           type: SalaryTypeEnum.ABSENT
         }
       });
@@ -385,7 +375,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       if (type === 'ALL') {
         if (event) {
           this.salariesSelected = [...
-           filterSalaryPayroll(this.salaries, salary)
+            filterSalaryPayroll(this.salaries, salary)
           ]
         } else {
           filterSalaryPayroll(this.salaries, salary).forEach(val => {
@@ -395,11 +385,11 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         }
 
       } else {
-        if(event){
+        if (event) {
           this.salariesSelected.push({salary, payroll});
-        }else{
+        } else {
           const index = this.salariesSelected.findIndex(value => value.salary.id === salary.id)
-          this.salariesSelected.splice(index,1)
+          this.salariesSelected.splice(index, 1)
         }
       }
     })
@@ -418,24 +408,15 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         filterType: FilterTypeEnum.ABSENT,
         position: value.position?.name || '',
         branch: value.branch.name || '',
-        isLeave: value.isLeave
+        isLeave: value.isLeave,
+        startedAt: this.rangeDay[0],
+        endedAt: this.rangeDay[1]
       }
     ;
     if (this.sort?.active) {
       Object.assign(params, {
         orderBy: this.sort.active,
         orderType: this.sort ? this.sort.direction : ''
-      });
-    }
-    if (
-      moment(value.startedAt).format('YYYY-MM-DD') ===
-      moment(value.endedAt).format('YYYY-MM-DD')
-    ) {
-      Object.assign(params, {createdAt: value.startedAt});
-    } else {
-      Object.assign(params, {
-        startedAt: value.startedAt,
-        endedAt: value.endedAt
       });
     }
     if (!value.name) {

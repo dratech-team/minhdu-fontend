@@ -173,7 +173,7 @@
               đến ngày {{item.endedAt|date:'dd-MM-yyyy'}}
                 </span>
             <span *ngIf='!item.startedAt && !item.endedAt &&!item.datetime  '>
-                  {{this.createdAt|date:'yyyy-MM'}}
+                  {{rangeDay[0]|date:'yyyy-MM'}}
               </span>
           </div>
         </th>

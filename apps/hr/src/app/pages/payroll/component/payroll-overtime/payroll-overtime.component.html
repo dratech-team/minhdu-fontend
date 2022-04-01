@@ -54,7 +54,7 @@
       </th>
       <th style='width: 200px'>
         <div mat-sort-header='{{sortEnum.BRANCH}}' class='title-profile'>Đơn vị</div>
-        <input class='form-control' type='search' matInput disabled>
+        <input disabled>
         <!--        <mat-autocomplete #branch='matAutocomplete'>-->
         <!--          <mat-option *ngFor='let branch of branches$ | async' [value]='branch.name'-->
         <!--                      (onSelectionChange)='onSelectBranch(branch.name)'>-->
@@ -84,14 +84,7 @@
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <div class='d-flex border'>
-          <mat-date-range-input [rangePicker]='picker'>
-            <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
-            <input matEndDate formControlName='endedAt' placeholder='Đến ngày'>
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </div>
+       <input disabled>
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại tăng ca</div>

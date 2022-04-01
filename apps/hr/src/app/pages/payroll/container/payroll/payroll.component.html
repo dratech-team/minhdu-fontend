@@ -1,15 +1,16 @@
 <div class='main-content'>
   <div class='row h3 ml-3 d-flex' [formGroup]='formGroup'>
     <div>
-      {{selectedPayroll|transform:payrollConstant}} tháng
+      {{selectedPayroll|transform:payrollConstant}}
     </div>
-    <input
-      *ngIf='selectedPayroll === filterTypeEnum.SEASONAL ||
-      selectedPayroll === filterTypeEnum.PAYROLL ||
-      selectedPayroll === filterTypeEnum.TIME_SHEET else createdAtPayroll'
-      type='month' class='form-control ml-2' style='width: 200px' formControlName='createdAt'>
+    <div class="d-flex justify-content-center align-items-center ml-2" style="width: 250px"
+         *ngIf='selectedPayroll === filterTypeEnum.ABSENT ||
+                selectedPayroll === filterTypeEnum.OVERTIME else createdAtPayroll'>
+      <nz-range-picker nzFormat="dd-MM-yyyy" nzMode="date" [formControl]="formRangeDay"></nz-range-picker>
+    </div>
     <ng-template #createdAtPayroll>
-      <div class='ml-2'>{{createdAt|date: 'MM/yyyy'}}</div>
+    <span class="ml-2">tháng</span>
+      <input type='month' class='form-control ml-2' style='width: 200px' formControlName='createdAt'>
     </ng-template>
 
   </div>
@@ -246,8 +247,8 @@
                     {{payroll?.employee?.lastName}}
                   </div>
                 </th>
-                <th   [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
-                      class='pointer' (click)='updatePayroll(payroll)'>
+                <th [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'
+                    class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
                     {{payroll?.branch}}
                   </div>
@@ -381,7 +382,8 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME'>
       <minhdu-fontend-payroll-overtime
-        [createdAt]='this.createdAt' [overtimeTitle]='overtimeTitle'
+        [rangeDay]="pickRangeDayOvertime"
+        [overtimeTitle]='overtimeTitle'
         [eventSelectIsLeave]='selectIsLeaveOvertime'
         [eventSearchBranch]='searchBranchOvertime'
         [eventAddOvertime]='eventAddOvertime'
@@ -419,7 +421,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance
-        [createdAt]='this.createdAt' [allowanceTitle]='allowanceTitle'
+        [allowanceTitle]='allowanceTitle'
         [eventSelectIsLeave]='selectIsLeaveAllowance'
         [eventAddAllowance]='eventAddAllowance'
         [eventSearchBranch]='searchBranchAllowance'
@@ -427,7 +429,8 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent
-        [absentTitle]='absentTitle' [createdAt]='this.createdAt'
+        [rangeDay]="pickRangeDayAbsent"
+        [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'
         [eventSelectIsLeave]='selectIsLeaveAbsent'
