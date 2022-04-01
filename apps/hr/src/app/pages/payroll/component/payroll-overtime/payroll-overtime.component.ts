@@ -4,7 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -23,21 +23,15 @@ import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
   selectedBranchPayroll,
-  selectedCreateAtPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
+  selectedRangeDayPayroll,
   selectedTotalOvertimePayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  filterSalaryPayroll,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, filterSalaryPayroll, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {
@@ -61,7 +55,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   @Input() eventSelectIsLeave?: boolean;
   @Input() eventExportOvertime?: Subject<boolean>;
   @Input() overtimeTitle?: string;
-  @Input() rangeDay: Date[] = [];
+  @Input() eventSelectRangeDay = new Subject<boolean>();
   @ViewChild(MatSort) sort!: MatSort;
 
   ItemContextMenu = ItemContextMenu;
@@ -114,11 +108,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.rangeDay?.currentValue !== changes.rangeDay?.previousValue){
-      this.store.dispatch(PayrollAction.loadInit({
-        payrollDTO: this.mapPayrollOvertime()
-      }))
-    }
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.setValue(changes.eventSearchBranch.currentValue);
     }
@@ -144,26 +133,18 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
 
     this.getTemplateOvertime(
-      this.rangeDay[0],
-      this.rangeDay[1],
       getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
       getSelectors<Position>(selectedPositionPayroll, this.store)?.name
     );
 
     if (this.overtimeTitle) {
       this.formGroup.get('titles')?.setValue([this.overtimeTitle]);
-      this.formGroup.get('startedAt')?.setValue(
-        this.datePipe.transform(this.rangeDay[0], 'yyyy-MM-dd')
-      );
-      this.formGroup.get('endedAt')?.setValue(
-        this.datePipe.transform(this.rangeDay[1], 'yyyy-MM-dd')
-      );
-    } else {
-      Object.assign(paramLoadInit, {
-        startedAt: this.rangeDay[0],
-        endedAt: this.rangeDay[1]
-      });
     }
+
+    Object.assign(paramLoadInit, {
+      startedAt: getSelectors<RangeDay>(selectedRangeDayPayroll, this.store).start,
+      endedAt: getSelectors<RangeDay>(selectedRangeDayPayroll, this.store).end,
+    });
 
     this.store.dispatch(
       PayrollAction.loadInit({
@@ -175,12 +156,6 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       if (val.overtimeTitle) {
         this.formGroup.get('titles')?.setValue([val.overtimeTitle]);
       }
-      this.formGroup.get('startAt')?.setValue(
-        this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
-      );
-      this.formGroup.get('endAt')?.setValue(
-        this.datePipe.transform(new Date(val.createdAt), 'yyyy-MM-dd')
-      );
     });
 
     this.eventExportOvertime?.subscribe((val) => {
@@ -194,8 +169,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
           exportType: FilterTypeEnum.OVERTIME,
           position: value.position?.name || '',
           branch: value.branch?.name || '',
-          startedAt: this.rangeDay[0],
-          endedAt: this.rangeDay[1]
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
         };
         if (value.name) {
           Object.assign(overtime, {name: value.name});
@@ -222,11 +197,9 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       }
     });
 
-
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
-      this.getTemplateOvertime(this.rangeDay[0],this.rangeDay[1], value.branch?.name, value.position?.name);
+      this.getTemplateOvertime(value.branch?.name, value.position?.name);
       this.isEventSearch = true;
-      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(this.rangeDay[0])}));
       this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(
         PayrollAction.loadInit({
@@ -254,6 +227,14 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         });
       }
     });
+
+    this.eventSelectRangeDay.subscribe(val => {
+      if(val){
+        this.store.dispatch(PayrollAction.loadInit({
+          payrollDTO: this.mapPayrollOvertime()
+        }))
+      }
+    })
   }
 
   mapPayrollOvertime() {
@@ -270,8 +251,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       position: value.position?.name || '',
       branch: value.branch?.name || '',
       isLeave: value.isLeave,
-      startedAt: this.rangeDay[0],
-      endedAt: this.rangeDay[1]
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
     };
     if (this.sort.active) {
       Object.assign(params, {
@@ -295,9 +276,13 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('endedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-        this.formGroup.get('title')?.setValue(val.title);
+        this.store.dispatch(PayrollAction.updateStatePayroll({
+          rangeDay: {
+            start: new Date(val.datetime),
+            end: new Date(val.datetime),
+          }
+        }))
+        this.formGroup.get('titles')?.setValue(val.title);
       }
     });
   }
@@ -326,12 +311,17 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         this.salariesSelected = val;
         this.ref.detectChanges();
       });
-      ref.afterClosed().subscribe((val) => {
+      ref.afterClosed().subscribe((val: {title: string, datetime: Date}) => {
         if (val) {
           this.salariesSelected = [];
-          this.formGroup.get('titles')?.setValue([val.title]);
-          this.formGroup.get('startedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
-          this.formGroup.get('endedAt')?.setValue(new Date(val.datetime), 'yyyy-MM-dd');
+          this.store.dispatch(PayrollAction.updateStatePayroll({
+            rangeDay: {
+              start: new Date(val.datetime),
+              end: new Date(val.datetime),
+            }
+          }))
+          this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+          this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollOvertime()}))
         }
       });
     } else {
@@ -428,8 +418,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         const value = this.formGroup.value;
         const payrollOvertime = {
           searchType: value.searchType,
-          startAt: this.rangeDay[0],
-          endAt: this.rangeDay[1],
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
           titles: value.titles ? value.titles : [],
           name: value.name,
           position: value.position?.name || '',
@@ -510,13 +500,18 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
     }));
   }
 
-  getTemplateOvertime(staredAt: Date, endedAt: Date, branch?: string, position?: string) {
+  getTemplateOvertime(branch?: string, position?: string) {
     this.payrollService.getAllTempLate({
       branch: branch || '',
       position: position || '',
-      startedAt: staredAt,
-      endedAt: endedAt,
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       salaryType: SalaryTypeEnum.OVERTIME
     }).subscribe(value => this.templateOvertime = value);
   }
+
+  getRangeDay(): RangeDay {
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
+  }
+
 }

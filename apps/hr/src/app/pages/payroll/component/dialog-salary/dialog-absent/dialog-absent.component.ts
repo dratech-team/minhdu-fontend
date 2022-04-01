@@ -6,7 +6,7 @@ import { PartialDayEnum, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { ConvertBooleanFrontEnd, DatetimeUnitEnum, partialDay, SalaryTypeEnum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import { AppState } from '../../../../../reducers';
 import * as moment from 'moment';
 import { getFirstDayInMonth, getLastDayInMonth } from '@minhdu-fontend/utils';
@@ -29,6 +29,7 @@ export class DialogAbsentComponent implements OnInit {
   firstDayInMonth!: string | null;
   lastDayInMonth!: string | null;
   salariesSelected: SalaryPayroll[] = [];
+  adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
   constructor(

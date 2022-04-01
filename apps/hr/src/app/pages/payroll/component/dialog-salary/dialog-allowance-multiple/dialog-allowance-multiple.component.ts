@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 
@@ -24,6 +24,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
   submitted = false;
   payrollsSelected: Payroll[] = [];
   isManyPeople = false;
+  adding$ = this.store.select(selectedAddingPayroll)
 
   constructor(
     public datePipe: DatePipe,

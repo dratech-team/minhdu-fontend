@@ -3,7 +3,8 @@ import {createReducer, on} from '@ngrx/store';
 import {PayrollAction, updateStatePayroll} from './payroll.action';
 import {Payroll} from './payroll.interface';
 import {ConvertBoolean, ConvertBooleanFrontEnd, FilterTypeEnum} from '@minhdu-fontend/enums';
-import {Branch, Position, totalSalary} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, totalSalary} from '@minhdu-fontend/data-models';
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 export interface PayrollState extends EntityState<Payroll> {
   loaded: boolean,
@@ -13,7 +14,7 @@ export interface PayrollState extends EntityState<Payroll> {
   confirmed: boolean,
   deleted: boolean
   selectedPayrollId: number,
-  createdAt: Date,
+  rangeDay: RangeDay,
   filter: FilterTypeEnum,
   branch: Branch,
   position: Position,
@@ -26,7 +27,11 @@ export const adapter: EntityAdapter<Payroll> = createEntityAdapter<Payroll>();
 
 export const initialPayroll = adapter.getInitialState({
   loaded: false, added: false, adding: false, scanned: false, confirmed: false, deleted: false,
-  createdAt: new Date(), filter: FilterTypeEnum.TIME_SHEET, branch: {} as Branch, position: {} as Position, total: 0,
+  rangeDay:{
+    start: getFirstDayInMonth(new Date()),
+    end: getLastDayInMonth(new Date())
+  } as RangeDay,
+  filter: FilterTypeEnum.TIME_SHEET, branch: {} as Branch, position: {} as Position, total: 0,
   totalOvertime: {total: 0, unit: {days: 0, hours: 0}}
 });
 
@@ -141,11 +146,11 @@ export const payrollReducer = createReducer(
   on(PayrollAction.deleteSalarySuccess, (state, _) => {
     return {...state};
   }),
-  on(PayrollAction.updateStatePayroll, (state, {filter, createdAt, added}) => {
+  on(PayrollAction.updateStatePayroll, (state, {filter, rangeDay, added}) => {
     return {
       ...state,
       filter: filter ? filter : state.filter,
-      createdAt: createdAt ? createdAt : state.createdAt,
+      rangeDay: rangeDay ? rangeDay : state.rangeDay,
       added: added && added === ConvertBooleanFrontEnd.TRUE ? true :
         added && added === ConvertBooleanFrontEnd.FALSE ? false : state.added
     };

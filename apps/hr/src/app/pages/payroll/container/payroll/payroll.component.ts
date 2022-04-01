@@ -19,9 +19,9 @@ import {debounceTime, map, takeUntil} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedCreateAtPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
+  selectedRangeDayPayroll,
   selectedTotalPayroll,
   selectedTypePayroll,
   selectorAllPayroll
@@ -53,7 +53,7 @@ import {DialogCategoryComponent} from '../../../employee/components/category/dia
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Branch, Category, Position} from "@minhdu-fontend/data-models";
+import {Branch, Category, Position, RangeDay} from "@minhdu-fontend/data-models";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {ExportService} from "@minhdu-fontend/service";
 import {ConfirmPayrollComponent} from "../../component/confirm-payroll/confirm-payroll.component";
@@ -72,12 +72,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     paidAt: new FormControl(''),
     accConfirmedAt: new FormControl(''),
     manConfirmedAt: new FormControl(''),
-    createdAt: new FormControl(
-      this.datePipe.transform(
-        getSelectors<Date>(selectedCreateAtPayroll, this.store),
-        'yyyy-MM'
-      )
-    ),
     position: new FormControl(
       getSelectors<string>(selectedPositionPayroll, this.store)
     ),
@@ -89,10 +83,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     selectedTypePayroll,
     this.store
   );
-
   formCtrlBranch = new FormControl(getSelectors<Branch>(selectedBranchPayroll, this.store))
   salaryType = SalaryTypeEnum;
-  @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
   pageSize = 30;
   pageIndexInit = 0;
@@ -141,12 +133,16 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   selectIsLeaveBasic?: boolean
   selectIsLeaveAllowance?: boolean
   selectIsLeaveStay?: boolean
+  formCreatedAt = new FormControl(this.getRangeDay().start)
   formRangeDay = new FormControl([
-    getFirstDayInMonth(new Date(getSelectors<Date>(selectedCreateAtPayroll, this.store))),
-    getLastDayInMonth(new Date(getSelectors<Date>(selectedCreateAtPayroll, this.store)))
-  ]);
-  pickRangeDayOvertime: Date[] = this.formRangeDay.value;
-  pickRangeDayAbsent: Date[] = this.formRangeDay.value;
+    this.getRangeDay().start,
+    this.getRangeDay().end,
+  ])
+  pickRangeDayOvertime = new Subject<boolean>();
+  pickRangeDayAbsent = new Subject<boolean>();
+  pickRangeDayAllowance = new Subject<boolean>();
+  pickRangeDayStay = new Subject<boolean>();
+  pickRangeDayBasic = new Subject<boolean>();
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
 
@@ -170,18 +166,17 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.loadInitPayroll();
       }
     });
-    this.daysInMonth = rageDaysInMonth(new Date(this.formGroup.value.createdAt));
+    this.daysInMonth = rageDaysInMonth(new Date(this.formRangeDay.value[0]));
     this.store.dispatch(OrgchartActions.init());
 
     this.selectPayroll.valueChanges.pipe().subscribe((val) => {
-      if (val === FilterTypeEnum.TIME_SHEET && !this.formGroup.value.createdAt) {
+      if (val === FilterTypeEnum.TIME_SHEET && this.formRangeDay.value?.length === 0) {
         this.selectedPayroll = val;
-        this.formGroup.get('createdAt')?.reset();
+        this.formRangeDay.reset();
         this.daysInMonth = rageDaysInMonth(new Date());
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
             filter: val,
-            createdAt: new Date()
           })
         );
       } else {
@@ -197,14 +192,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.store.dispatch(PayrollAction.updateStatePayroll({filter: val}));
       }
       if (
-        val !== FilterTypeEnum.STAY &&
-        val !== FilterTypeEnum.BASIC &&
-        val !== FilterTypeEnum.ALLOWANCE &&
-        val !== FilterTypeEnum.ABSENT
+        val === FilterTypeEnum.PAYROLL ||
+        val === FilterTypeEnum.TIME_SHEET ||
+        val === FilterTypeEnum.SEASONAL
       ) {
         this.formGroup.get('createdAt')?.setValue(
           this.datePipe.transform(
-            getSelectors(selectedCreateAtPayroll, this.store),
+            getSelectors(selectedRangeDayPayroll, this.store),
             'yyyy-MM'
           ),
           {emitEvent: false}
@@ -231,21 +225,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(debounceTime(1500))
       .subscribe((val) => {
         if (val) {
-          this.daysInMonth = rageDaysInMonth(new Date(val.createdAt));
-          this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(val.createdAt) || new Date(val.createdAt)}));
           this.store.dispatch(PayrollAction.updateStatePosition({position: val.position}));
           return this.loadInitPayroll();
         }
       });
-
-    this.formRangeDay.valueChanges.subscribe(val => {
-      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: val[0]}))
-      if (this.selectedPayroll === FilterTypeEnum.OVERTIME) {
-        this.pickRangeDayOvertime = val
-      } else if (this.selectedPayroll === FilterTypeEnum.ABSENT) {
-        this.pickRangeDayAbsent = val
-      }
-    })
 
     this.categoryControl.valueChanges.subscribe(val => {
       if (val !== 0) {
@@ -277,6 +260,53 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
             payrollDTO: this.mapPayroll(this.formGroup.value)
           }))
       }
+    })
+    this.formCreatedAt.valueChanges.subscribe(date => {
+      this.store.dispatch(PayrollAction.updateStatePayroll({
+        rangeDay: {
+          start: getFirstDayInMonth(new Date(date)),
+          end: getLastDayInMonth(new Date(date))
+        }
+      }))
+      switch (this.selectPayroll.value) {
+        case FilterTypeEnum.BASIC:
+          this.pickRangeDayBasic.next(true)
+          break;
+        case FilterTypeEnum.STAY:
+          this.pickRangeDayStay.next(true)
+          break;
+        case FilterTypeEnum.ALLOWANCE:
+          this.pickRangeDayAllowance.next(true)
+          break;
+        default :
+          this.store.dispatch(PayrollAction.loadInit({
+            payrollDTO: this.mapPayroll(this.formGroup.value)
+          }))
+      }
+
+    })
+
+    this.formRangeDay.valueChanges.subscribe(rangeDay => {
+      this.daysInMonth = rageDaysInMonth(new Date(rangeDay[0]))
+      this.store.dispatch(PayrollAction.updateStatePayroll({
+        rangeDay: {
+          start: rangeDay[0],
+          end: rangeDay[1],
+        }
+      }))
+      switch (this.selectPayroll.value) {
+        case FilterTypeEnum.ABSENT:
+          this.pickRangeDayAbsent.next(true)
+          break;
+        case FilterTypeEnum.OVERTIME:
+          this.pickRangeDayOvertime.next(true)
+          break;
+      }
+    })
+
+    this.store.select(selectedRangeDayPayroll).subscribe(val => {
+      this.formRangeDay.setValue([val.start, val.end], {emitEvent: false})
+      this.formCreatedAt.setValue(val.start, {emitEvent: false})
     })
 
 
@@ -333,8 +363,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       name: val.name,
       position: val.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
-      startedAt: getFirstDayInMonth(new Date(val.createdAt)),
-      endedAt: getLastDayInMonth(new Date(val.createdAt)),
+      startedAt: getFirstDayInMonth(new Date(this.formCreatedAt.value)),
+      endedAt: getLastDayInMonth(new Date(this.formCreatedAt.value)),
       isPaid: val.paidAt,
       isConfirm: val.accConfirmedAt,
       filterType: this.selectedPayroll,
@@ -373,7 +403,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .afterClosed()
       .subscribe((val) => {
         if (val) {
-          this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'), {emitEvent: false});
+          this.formRangeDay.patchValue([
+            getFirstDayInMonth(new Date(val)),
+            getLastDayInMonth(new Date(val)),
+          ])
           this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayroll(this.formGroup.value)}
           ))
         }
@@ -392,7 +425,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .open(DialogOvertimeMultipleComponent, {
         width: 'fit-content',
         data: {
-          createdAt: new Date(this.formGroup.value.createdAt),
+          createdAt: this.formRangeDay.value[0],
           type: type,
           isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
         }
@@ -403,11 +436,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.overtimeTitle = val.title;
           this.store.dispatch(
             PayrollAction.updateStatePayroll({
-              createdAt: new Date(val.datetime)
+              rangeDay: {
+                start: new Date(val.datetime),
+                end: new Date(val.datetime),
+              }
             })
           );
           this.eventAddOvertime.next({
-            createdAt: new Date(val.datetime),
             overtimeTitle: val.title
           });
           this.selectPayroll.setValue(FilterTypeEnum.OVERTIME);
@@ -420,7 +455,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .open(DialogAllowanceMultipleComponent, {
         width: 'fit-content',
         data: {
-          createdAt: new Date(this.formGroup.value.createdAt),
+          createdAt: this.formRangeDay.value[0],
           isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
         }
       })
@@ -428,11 +463,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .subscribe((value) => {
         if (value) {
           this.allowanceTitle = value.title;
-          this.store.dispatch(
-            PayrollAction.updateStatePayroll({
-              createdAt: new Date(value.datetime)
-            })
-          );
           this.selectPayroll.setValue(FilterTypeEnum.ALLOWANCE);
           this.eventAddAllowance.next({
             allowanceTitle: value.title
@@ -445,7 +475,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     const ref = this.dialog.open(DialogTimekeepingComponent, {
       width: 'fit-content',
       data: {
-        createdAt: new Date(this.formGroup.value.createdAt),
+        createdAt: this.formRangeDay.value[0],
         isTimesheet: this.selectedPayroll === FilterTypeEnum.TIME_SHEET
       }
     });
@@ -454,7 +484,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         this.absentTitle = val.title;
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
-            createdAt: new Date(val.datetime)
+            rangeDay: {
+              start: new Date(val.datetime),
+              end: new Date(val.datetime),
+            }
           })
         );
         this.eventAddAbsent.next({
@@ -485,13 +518,12 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
     }).afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(val, 'yyyy-MM'));
+        this.formRangeDay.patchValue([
+          getFirstDayInMonth(new Date(val)),
+          getLastDayInMonth(new Date(val)),
+        ]);
       }
     });
-  }
-
-  selectMonth(event: any) {
-    this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(event, 'yyyy-MM'));
   }
 
   restorePayroll(payroll: Payroll) {
@@ -609,8 +641,8 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       categoryId: this.categoryControl.value !== 0 ? this.categoryControl.value : '',
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
-      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-      endedAt: getLastDayInMonth(new Date(value.createdAt)),
+      startedAt: this.formRangeDay.value[0],
+      endedAt: this.formRangeDay.value[1],
       isPaid: value.paidAt,
       isConfirm: value.accConfirmedAt,
       filterType: this.selectedPayroll,
@@ -623,14 +655,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         orderType: this.sort ? this.sort.direction : ''
       });
     }
-    ;
-    if (value.createdAt) {
-      Object.assign(payroll, {createdAt: new Date(value.createdAt)});
-    }
+    console.log()
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bảng lương tháng ${this.datePipe.transform(this.formGroup.value.createdAt, 'MM-yyyy')}`,
+        filename: `Xuất bảng lương từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')}`,
         title: 'Xuât bảng lương',
         params: payroll,
         isPayroll: true,
@@ -649,24 +678,19 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   exportTimeSheet() {
     const value = this.formGroup.value;
     const payroll = {
-      createdAt: value.createdAt,
       code: value.code || '',
       name: value.name,
       position: value.position?.name || '',
       branch: this.formCtrlBranch.value?.name || '',
       exportType: FilterTypeEnum.TIME_SHEET,
       isLeave: this.formIsLeave.value,
+      startedAt: getFirstDayInMonth(new Date(this.formRangeDay.value[0])),
+      endedAt: getLastDayInMonth(new Date(this.formRangeDay.value[1])),
     };
-    if (value.createdAt) {
-      Object.assign(payroll, {
-        startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-        endedAt: getLastDayInMonth(new Date(value.createdAt)),
-      });
-    }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bảng chấm công tháng ${this.datePipe.transform(payroll.createdAt, 'MM-yyyy')}`,
+        filename: `Xuất bảng chấm công từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')} `,
         title: 'Xuât bảng chấm công',
         params: payroll,
         isPayroll: true,
@@ -692,15 +716,14 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       exportType: FilterTypeEnum.SEASONAL,
       paidAt: value.paidAt,
       accConfirmedAt: value.accConfirmedAt,
-      employeeType: EmployeeType.EMPLOYEE_SEASONAL
+      employeeType: EmployeeType.EMPLOYEE_SEASONAL,
+      startedAt: this.formRangeDay.value[0],
+      endedAt: this.formRangeDay.value[1]
     };
-    if (value.createdAt) {
-      Object.assign(payrollSeasonal, {createdAt: value.createdAt});
-    }
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(value.createdAt, 'MM-yyyy')}`,
+        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(this.formRangeDay.value, 'MM-yyyy')}`,
         title: 'Xuât bảng lương công nhật',
         params: payrollSeasonal,
         isPayroll: true,
@@ -749,4 +772,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
   onSelectPosition($event: Position) {
     this.formGroup.get('position')?.setValue($event, {emitEvent: false})
   }
+
+  getRangeDay(): RangeDay {
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
+  }
+
 }

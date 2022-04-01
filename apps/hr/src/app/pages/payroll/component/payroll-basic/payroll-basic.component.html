@@ -75,7 +75,7 @@
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <input type='month' class='form-control' formControlName='createdAt'>
+        <input disabled>
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại lương cơ bản</div>
@@ -159,7 +159,7 @@
                *ngFor='let item of payrollBasic.salaries|filterTypeSalary:["BASIC_INSURANCE","BASIC"]'
                (contextmenu)='child.onContextMenu($event,item)'
                (click)='readPayroll(payrollBasic)'>
-            {{this.createdAt|date:'yyyy-MM'}}
+            {{getRangeDay().start|date:'yyyy-MM'}}
           </div>
         </th>
         <th class='pointer' style='min-width: 300px;'>

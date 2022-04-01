@@ -1,14 +1,14 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../reducers';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {DatePipe} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 
@@ -24,8 +24,8 @@ export class DialogTimekeepingComponent implements OnInit {
   selectedIndex = 0;
   unitMinute = false;
   payrollSelected: Payroll[] = [];
-  isManyPeople = false;
   tabIndex = 0;
+  adding$ = this.store.select(selectedAddingPayroll)
 
   constructor(
     public datePipe: DatePipe,

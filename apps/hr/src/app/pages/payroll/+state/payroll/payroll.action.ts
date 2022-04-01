@@ -3,7 +3,7 @@ import {UpdateNum} from '@ngrx/entity/src/models';
 import {createAction, props} from '@ngrx/store';
 import {PayrollSalary} from '../../../../../../../../libs/data-models/hr/salary/payroll-salary';
 import {Payroll, PayrollDTO} from './payroll.interface';
-import {Branch, Position, totalSalary} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, totalSalary} from '@minhdu-fontend/data-models';
 
 export const loadInit = createAction(
   '[LOAD_PAYROLL] Load Payrolls',
@@ -149,7 +149,7 @@ export const updateStatePayroll = createAction(
   '[UPDATE_STATE_PAYROLL] UPDATE STATE PAYROLL Payroll',
   props<{
     filter?: FilterTypeEnum;
-    createdAt?: Date;
+    rangeDay?: RangeDay;
     added?: ConvertBooleanFrontEnd;
   }>()
 );

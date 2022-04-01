@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -31,7 +31,7 @@ import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedCreateAtPayroll,
+  selectedRangeDayPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedTotalPayroll,
@@ -66,18 +66,14 @@ export class PayrollStayComponent implements OnInit, OnChanges {
   @Input() eventExportStay?: Subject<boolean>
   @Input() eventSearchBranch?: Branch;
   @Input() eventSelectIsLeave?: boolean;
-  @Output() EventSelectMonth = new EventEmitter<Date>();
+  @Input() eventSelectRangeDay = new Subject<boolean>();
   @ViewChild(MatSort) sort!: MatSort;
 
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   formGroup = new FormGroup({
     titles: new FormControl([]),
     code: new FormControl(''),
     name: new FormControl(''),
     isLeave: new FormControl(false),
-    createdAt: new FormControl(
-      this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM')
-    ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -127,8 +123,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         payrollDTO: {
           take: this.pageSize,
           skip: this.pageIndex,
-          startedAt: getFirstDayInMonth(new Date(this.createdAt)),
-          endedAt: getLastDayInMonth(new Date(this.createdAt)),
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
           filterType: FilterTypeEnum.STAY,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
@@ -140,18 +136,14 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     this.store.dispatch(OrgchartActions.init());
 
     this.getTemplateStay(
-      this.createdAt,
       getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
       getSelectors<Position>(selectedPositionPayroll, this.store)?.name,
     )
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
       this.isEventSearch = true;
-      if (value.createdAt) {
-        this.getTemplateStay(value.createdAt, value.branch?.name, value.position?.name,)
-      }
-      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.createdAt)}));
-      this.store.dispatch(PayrollAction.updateStatePosition({position:value.position}));
+      this.getTemplateStay(value.branch?.name, value.position?.name,)
+      this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollStay()})
       );
     });
@@ -186,18 +178,14 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.STAY,
           titles: value.titles,
-          isLeave: value.isLeave
+          isLeave: value.isLeave,
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
         };
-        if (value.createdAt) {
-          Object.assign(payrollStay, {
-            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-            endedAt: getLastDayInMonth(new Date(value.createdAt)),
-          });
-        }
-        const ref = this.dialog.open(DialogExportComponent, {
+        this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
-            filename: `Xuất bản phụ cấp lương tháng ${this.datePipe.transform(value.createdAt, 'MM-yyyy')}`,
+            filename: `Xuất bản phụ cấp lương từ ngày ${this.datePipe.transform(payrollStay.startedAt, 'MM-yyyy')} đến ngày ${this.datePipe.transform(payrollStay.endedAt, 'MM-yyyy')}`,
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
             isPayroll: true,
@@ -213,6 +201,14 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         });
       }
     });
+
+    this.eventSelectRangeDay.subscribe(val => {
+      if (val) {
+        this.store.dispatch(PayrollAction.loadInit({
+          payrollDTO: this.mapPayrollStay()
+        }))
+      }
+    })
   }
 
   readPayroll(event: any) {
@@ -233,21 +229,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
-        const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
-            payrollDTO: {
-              take: this.pageSize,
-              skip: this.pageIndex,
-              code: value.code,
-              startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-              endedAt: getLastDayInMonth(new Date(value.createdAt)),
-              titles: val.title,
-              filterType: FilterTypeEnum.STAY,
-              position: val.position?.name || '',
-              branch: value.branch.name || '',
-              isLeave: value.isLeave
-            }
+            payrollDTO:this.mapPayrollStay()
           })
         );
       }
@@ -276,24 +260,10 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
-          const value = this.formGroup.value;
           this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
-              payrollDTO: {
-                take: this.pageSize,
-                skip: this.pageIndex,
-                code: value.code,
-                searchType: value.searchType,
-                startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-                endedAt: getLastDayInMonth(new Date(value.createdAt)),
-                titles: [val.title],
-                name: value.name,
-                filterType: FilterTypeEnum.STAY,
-                position: val.position,
-                branch: value.branch.name || '',
-                isLeave: value.isLeave
-              }
+              payrollDTO:this.mapPayrollStay()
             })
           );
         }
@@ -362,7 +332,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     );
   }
 
-  updateSelectSalary(salaryPayroll:SalaryPayroll ,event: boolean) {
+  updateSelectSalary(salaryPayroll: SalaryPayroll, event: boolean) {
     this.dialog.open(ClassifyOvertimeComponent, {
       data: {
         title: 'Chọn loại phụ cấp',
@@ -395,8 +365,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-      endedAt: getLastDayInMonth(new Date(value.createdAt)),
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.STAY,
@@ -430,13 +400,17 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     }));
   }
 
-  getTemplateStay(createdAt: Date, branch?: string, position?: string) {
+  getTemplateStay(branch?: string, position?: string) {
     this.payrollService.getAllTempLate({
       branch: branch || '',
       position: position || '',
-      startedAt: this.datePipe.transform(getFirstDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
-      endedAt: this.datePipe.transform(getLastDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       salaryType: SalaryTypeEnum.STAY
     }).subscribe(val => this.templateStays = val)
+  }
+
+  getRangeDay(): RangeDay {
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
   }
 }

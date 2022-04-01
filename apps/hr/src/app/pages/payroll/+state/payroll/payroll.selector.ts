@@ -104,10 +104,10 @@ export const selectedTotalOvertimePayroll = createSelector(
   (state) => state.totalOvertime
 );
 
-export const selectedCreateAtPayroll = createSelector(
+export const selectedRangeDayPayroll = createSelector(
   selectorPayrollState,
   (state) => {
-    return state.createdAt;
+    return state.rangeDay;
   }
 );
 

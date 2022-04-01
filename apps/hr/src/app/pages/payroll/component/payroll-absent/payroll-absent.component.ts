@@ -1,20 +1,10 @@
 import {DatePipe} from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -26,28 +16,21 @@ import {
 } from '@minhdu-fontend/enums';
 import {PositionService} from '@minhdu-fontend/orgchart';
 import {select, Store} from '@ngrx/store';
-import * as moment from 'moment';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedCreateAtPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
+  selectedRangeDayPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {UnitAbsentConstant} from '../../../../../../../../libs/constants/HR/unitAbsent.constant';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  filterSalaryPayroll,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, filterSalaryPayroll, getSelectors} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
 import {DialogAbsentComponent} from '../dialog-salary/dialog-absent/dialog-absent.component';
@@ -69,8 +52,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   @Input() eventSelectIsLeave?: boolean;
   @Input() eventExportAbsent?: Subject<boolean>;
   @Input() absentTitle?: string;
-  @Input() rangeDay: Date[] = []
-  @Output() EventSelectMonth = new EventEmitter<Date>();
+  @Input() eventSelectRangeDay = new Subject<boolean>();
   @ViewChild(MatSort) sort!: MatSort;
 
   pageSize = 30;
@@ -118,11 +100,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.rangeDay?.currentValue !== changes.rangeDay?.previousValue) {
-      this.store.dispatch(PayrollAction.loadInit({
-        payrollDTO : this.mapPayrollAbsent()
-      }))
-    }
     if (changes.eventSearchBranch?.currentValue !== changes.eventSearchBranch?.previousValue) {
       this.formGroup.get('branch')?.patchValue(changes.eventSearchBranch.currentValue)
     }
@@ -136,19 +113,12 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       take: this.pageSize,
       skip: this.pageIndex,
       filterType: FilterTypeEnum.ABSENT,
-      startedAt: this.rangeDay[0],
-      endedAt: this.rangeDay[1],
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
       branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
       isLeave: false
     };
-
-    if (this.absentTitle) {
-      Object.assign(paramLoadInit, {
-        startedAt: this.rangeDay[0],
-        endedAt: this.rangeDay[1]
-      });
-    }
 
     this.store.dispatch(
       PayrollAction.loadInit({
@@ -162,12 +132,6 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
 
     this.eventAddAbsent?.subscribe((val) => {
       this.formGroup.get('titles')?.setValue(val.absentTitle);
-      this.formGroup.get('startedAt')?.setValue(
-        this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-      );
-      this.formGroup.get('endedAt')?.setValue(
-        this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-      );
     });
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
@@ -214,8 +178,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           branch: value.branch.name || '',
           exportType: FilterTypeEnum.ABSENT,
           titles: value.titles ? value.titles : [],
-          startedAt: this.rangeDay[0],
-          endedAt: this.rangeDay[1],
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
           isLeave: value.isLeave
         };
         this.dialog.open(DialogExportComponent, {
@@ -238,6 +202,13 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         });
       }
     });
+    this.eventSelectRangeDay.subscribe(val => {
+      if(val){
+        this.store.dispatch(PayrollAction.loadInit({
+          payrollDTO: this.mapPayrollAbsent()
+        }))
+      }
+    })
   }
 
 
@@ -253,19 +224,19 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('titles')?.setValue(val.title);
-        this.formGroup.get('startedAt')?.setValue(
-          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-        );
-        this.formGroup.get('endedAt')?.setValue(
-          this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-        );
+        this.store.dispatch(PayrollAction.updateStatePayroll({
+          rangeDay:{
+            start: new Date(val.datetime),
+            end: new Date(val.datetime),
+          }
+        }))
+        this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
+        this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollAbsent()}))
       }
     });
   }
 
   updateMultipleSalaryAbsent() {
-    const value = this.formGroup.value;
     if (
       this.salariesSelected.every((value, index, array) => {
         return (
@@ -281,7 +252,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
           salary: this.salariesSelected[0].salary,
           salariesSelected: this.salariesSelected,
           updateMultiple: true,
-          createdAt: this.rangeDay[0],
+          createdAt: this.getRangeDay().start,
           type: SalaryTypeEnum.ABSENT
         }
       });
@@ -292,13 +263,18 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       ref.afterClosed().subscribe((val) => {
         if (val) {
           this.salariesSelected = [];
-          this.formGroup.get('titles')?.setValue(val.title);
-          this.formGroup.get('startedAt')?.setValue(
-            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-          );
-          this.formGroup.get('endedAt')?.setValue(
-            this.datePipe.transform(new Date(val.datetime), 'yyyy-MM-dd')
-          );
+          this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
+          if(val.datetime){
+            this.store.dispatch(PayrollAction.updateStatePayroll({
+              rangeDay:{
+                start: new Date(val.datetime),
+                end: new Date(val.datetime),
+              }
+            }))
+          }
+          this.store.dispatch(PayrollAction.loadInit({
+            payrollDTO: this.mapPayrollAbsent()
+          }))
         }
       });
     } else {
@@ -409,8 +385,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         position: value.position?.name || '',
         branch: value.branch.name || '',
         isLeave: value.isLeave,
-        startedAt: this.rangeDay[0],
-        endedAt: this.rangeDay[1]
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       }
     ;
     if (this.sort?.active) {
@@ -437,5 +413,9 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     this.store.dispatch(PayrollAction.loadInit({
       payrollDTO: this.mapPayrollAbsent()
     }));
+  }
+
+  getRangeDay(): RangeDay {
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
   }
 }

@@ -11,7 +11,7 @@ import { PayrollAction } from '../../+state/payroll/payroll.action';
 import {
   selectedAddedPayroll,
   selectedAddingPayroll,
-  selectedCreateAtPayroll
+  selectedRangeDayPayroll
 } from '../../+state/payroll/payroll.selector';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
@@ -22,7 +22,7 @@ import { LoadingComponent } from '../popup-loading/loading.component';
 export class AddPayrollComponent implements OnInit {
   formGroup!: FormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
+  createdAt = getSelectors<Date>(selectedRangeDayPayroll, this.store);
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
     private readonly formBuilder: FormBuilder,

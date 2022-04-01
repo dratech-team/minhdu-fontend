@@ -37,7 +37,6 @@ export class PayrollTimeSheetComponent implements AfterContentChecked {
   @Output() EventReadPayroll = new EventEmitter<any>();
   @Output() EventRestorePayroll = new EventEmitter<any>();
   @Output() EventHistoryPayroll = new EventEmitter<any>();
-  @Output() EventSearchMonth = new EventEmitter<Date>();
   @Output() EventDeletePayroll = new EventEmitter<any>();
   @Output() EventSortPayroll = new EventEmitter<MatSort>();
   @ViewChild(MatSort) sort!: MatSort;

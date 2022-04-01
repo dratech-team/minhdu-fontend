@@ -78,14 +78,7 @@
       </th>
       <th style='width: 220px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Tháng</div>
-        <div class='d-flex border'>
-          <mat-date-range-input [rangePicker]='picker'>
-            <input matStartDate formControlName='startedAt' placeholder='Từ ngày'>
-            <input matEndDate formControlName='endedAt' placeholder='Đến ngày'>
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </div>
+        <input disabled>
       </th>
       <th style='min-width: 300px;'>
         <div class='border-top d-flex justify-content-center align-items-center'>Loại khấu trừ</div>
@@ -173,7 +166,7 @@
               đến ngày {{item.endedAt|date:'dd-MM-yyyy'}}
                 </span>
             <span *ngIf='!item.startedAt && !item.endedAt &&!item.datetime  '>
-                  {{rangeDay[0]|date:'yyyy-MM'}}
+                  {{getRangeDay().start|date:'yyyy-MM'}}
               </span>
           </div>
         </th>

@@ -1,18 +1,17 @@
-import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConvertBoolean, ConvertBooleanFrontEnd, DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { isEqualDatetime } from 'libs/utils/daytime.until';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
-import { ShowAlertComponent } from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
-import { AppState } from '../../../../../reducers';
-import { selectorAllTemplate } from '../../../../template/+state/template-overtime/template-overtime.selector';
-import { SalaryService } from '../../../service/salary.service';
-import { SalaryPayroll } from '@minhdu-fontend/data-models';
+import {DatePipe} from '@angular/common';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ConvertBooleanFrontEnd, DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {isEqualDatetime} from 'libs/utils/daytime.until';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
+import {ShowAlertComponent} from '../../../../../../../../../libs/components/src/lib/show-alert/show-alert.component';
+import {AppState} from '../../../../../reducers';
+import {SalaryService} from '../../../service/salary.service';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
 
 @Component({
   templateUrl: 'dialog-allowance.component.html'

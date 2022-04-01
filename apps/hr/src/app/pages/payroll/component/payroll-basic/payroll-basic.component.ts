@@ -14,7 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Api, SearchTypeConstant} from '@minhdu-fontend/constants';
-import {Branch, Position, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
+import {Branch, Position, RangeDay, Salary, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {
   DatetimeUnitEnum,
   FilterTypeEnum,
@@ -30,7 +30,7 @@ import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedCreateAtPayroll,
+  selectedRangeDayPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
   selectedTotalPayroll,
@@ -63,14 +63,13 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
   @Input() eventExportBasic?: Subject<boolean>;
   @Input() eventSearchBranch?: Branch;
   @Input() eventSelectIsLeave?: boolean;
-  @Output() EventSelectMonth = new EventEmitter<Date>();
+  @Input() eventSelectRangeDay = new Subject<boolean>();
   @ViewChild(MatSort) sort!: MatSort;
 
   positions$ = this.store.pipe(select(getAllPosition))
   totalSalaryBasic$ = this.store.select(selectedTotalPayroll);
   loaded$ = this.store.select(selectedLoadedPayroll);
   payrollBasic$ = this.store.pipe(select(selectorAllPayroll));
-  createdAt = getSelectors<Date>(selectedCreateAtPayroll, this.store);
   sortEnum = sortEmployeeTypeEnum;
   pageSize = 30;
   pageIndex = 0;
@@ -87,9 +86,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     code: new FormControl(''),
     name: new FormControl(''),
     isLeave: new FormControl(false),
-    createdAt: new FormControl(
-      this.datePipe.transform(new Date(this.createdAt), 'yyyy-MM')
-    ),
     searchType: new FormControl(SearchTypeEnum.CONTAINS),
     position: new FormControl(getSelectors(selectedPositionPayroll, this.store)),
     branch: new FormControl(getSelectors(selectedBranchPayroll, this.store)),
@@ -126,8 +122,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           take: this.pageSize,
           skip: this.pageIndex,
           filterType: FilterTypeEnum.BASIC,
-          startedAt: getFirstDayInMonth(new Date(this.createdAt)),
-          endedAt: getLastDayInMonth(new Date(this.createdAt)),
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
           position: getSelectors<Position>(selectedPositionPayroll, this.store)?.name || '',
           branch: getSelectors<Branch>(selectedBranchPayroll, this.store)?.name || '',
           isLeave: false
@@ -135,17 +131,13 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       })
     );
     this.getTemplateBasic(
-      this.createdAt,
       getSelectors<Branch>(selectedBranchPayroll, this.store)?.name,
       getSelectors<Position>(selectedPositionPayroll, this.store)?.name
     )
 
     this.formGroup.valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
+      this.getTemplateBasic(value.branch?.name, value.position?.name)
       this.isEventSearch = true;
-      if (value.createdAt) {
-        this.getTemplateBasic(value.createdAt, value.branch?.name, value.position?.name)
-      }
-      this.store.dispatch(PayrollAction.updateStatePayroll({createdAt: new Date(value.createdAt)}));
       this.store.dispatch(PayrollAction.updateStatePosition({position: value.position}));
       this.store.dispatch(PayrollAction.loadInit({payrollDTO: this.mapPayrollBasic()}));
     });
@@ -186,16 +178,13 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           isLeave: value.isLeave,
           searchType: value.searchType,
           filterType: FilterTypeEnum.BASIC,
+          startedAt: this.getRangeDay().start,
+          endedAt: this.getRangeDay().end,
         };
-        if (value.createdAt) {
-          Object.assign(payrollBASIC, {
-            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-            endedAt: getLastDayInMonth(new Date(value.createdAt)),});
-        }
         this.dialog.open(DialogExportComponent, {
           width: 'fit-content',
           data: {
-            filename: `Xuất bảng lương cơ bản tháng ${this.datePipe.transform(this.formGroup.value.createdAt, 'MM-yyyy')}`,
+            filename: `Xuất bảng lương cơ bản từ ngày ${this.datePipe.transform(payrollBASIC.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(payrollBASIC.endedAt, 'dd-MM-yyyy')}`,
             title: 'Xuât bảng lương cơ bản',
             params: payrollBASIC,
             isPayroll: true,
@@ -211,6 +200,14 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         });
       }
     });
+
+    this.eventSelectRangeDay.subscribe(val => {
+      if(val){
+        this.store.dispatch(PayrollAction.loadInit({
+          payrollDTO: this.mapPayrollBasic()
+        }))
+      }
+    })
   }
 
   readPayroll(event: any) {
@@ -223,7 +220,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     const ref = this.dialog.open(DialogBasicComponent, {
       width: 'fit-content',
       data: {
-        createdAt: this.formGroup.get('createdAt')?.value,
+        createdAt: this.getRangeDay().start,
         addMultiple: true,
         type: SalaryTypeEnum.BASIC
       }
@@ -233,17 +230,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
-            payrollDTO: {
-              take: this.pageIndex,
-              skip: this.pageSize,
-              code: this.formGroup.get('code')?.value,
-              startedAt: getFirstDayInMonth(new Date(this.formGroup.value.createdAt)),
-              endedAt: getLastDayInMonth(new Date(this.formGroup.value.createdAt)),
-              titles: [val.title],
-              position: val.position,
-              branch: this.formGroup.value.branch.name || '',
-              isLeave: this.formGroup.value.isLeave
-            }
+            payrollDTO: this.mapPayrollBasic()
           })
         );
       }
@@ -277,26 +264,9 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
           }
           this.salariesSelected = [];
           this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
-          const params = {
-            take: this.pageSize,
-            skip: this.pageIndex,
-            code: this.formGroup.get('code')?.value,
-            searchType: value.searchType,
-            startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-            endedAt: getLastDayInMonth(new Date(value.createdAt)),
-            titles: [val.title],
-            name: this.formGroup.get('name')?.value,
-            filterType: FilterTypeEnum.BASIC,
-            position: value.position?.name || '',
-            branch: value.branch.name || '',
-            isLeave: value.isLeave
-          };
-          if (this.formGroup.get('name')?.value === '') {
-            delete params.name;
-          }
           this.store.dispatch(
             PayrollAction.loadInit({
-              payrollDTO: params
+              payrollDTO: this.mapPayrollBasic()
             })
           );
         }
@@ -358,7 +328,6 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
 
   onScroll() {
     this.isEventSearch = true;
-    const value = this.formGroup.value;
     this.store.dispatch(
       PayrollAction.loadMorePayrolls({
         payrollDTO: this.mapPayrollBasic()
@@ -373,8 +342,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       skip: this.pageIndex,
       code: value.code,
       searchType: value.searchType,
-      startedAt: getFirstDayInMonth(new Date(value.createdAt)),
-      endedAt: getLastDayInMonth(new Date(value.createdAt)),
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       titles: value.titles,
       name: value.name,
       filterType: FilterTypeEnum.BASIC,
@@ -434,13 +403,17 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     }));
   }
 
-  getTemplateBasic(createdAt: Date, branch?: string, position?: string) {
+  getTemplateBasic(branch?: string, position?: string) {
     this.payrollService.getAllTempLate({
       branch: branch || '',
       position: position || '',
-      startedAt: this.datePipe.transform(getFirstDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
-      endedAt: this.datePipe.transform(getLastDayInMonth(new Date(createdAt)), 'yyyy-MM-dd'),
+      startedAt: this.getRangeDay().start,
+      endedAt: this.getRangeDay().end,
       salaryType: SalaryTypeEnum.BASIC
     }).subscribe(val => this.templateBasic = val)
+  }
+
+  getRangeDay(): RangeDay {
+    return getSelectors<RangeDay>(selectedRangeDayPayroll, this.store)
   }
 }

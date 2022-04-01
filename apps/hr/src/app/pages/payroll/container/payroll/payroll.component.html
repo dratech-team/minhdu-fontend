@@ -3,16 +3,18 @@
     <div>
       {{selectedPayroll|transform:payrollConstant}}
     </div>
-    <div class="d-flex justify-content-center align-items-center ml-2" style="width: 250px"
-         *ngIf='selectedPayroll === filterTypeEnum.ABSENT ||
-                selectedPayroll === filterTypeEnum.OVERTIME else createdAtPayroll'>
-      <nz-range-picker nzFormat="dd-MM-yyyy" nzMode="date" [formControl]="formRangeDay"></nz-range-picker>
-    </div>
-    <ng-template #createdAtPayroll>
-    <span class="ml-2">tháng</span>
-      <input type='month' class='form-control ml-2' style='width: 200px' formControlName='createdAt'>
-    </ng-template>
+    <div class="d-flex justify-content-center align-items-center ml-2" >
+      <nz-range-picker style="width: 250px" *ngIf="selectedPayroll === filterTypeEnum.OVERTIME ||
+                       selectedPayroll === filterTypeEnum.ABSENT else formCreated"
+                       [nzAllowClear]="false" nzFormat="dd-MM-yyyy" nzMode="date"
+                       [formControl]="formRangeDay"></nz-range-picker>
+      <ng-template #formCreated>
+        <div>
+          <span>tháng</span>  <nz-date-picker class="ml-2" [nzAllowClear]="false" nzMode="month" nzFormat="MM-yyyy" [formControl]="formCreatedAt" ></nz-date-picker>
+        </div>
+      </ng-template>
 
+    </div>
   </div>
   <div style='width: fit-content' class='d-flex'>
     <mat-select class='form-control ml-3 border px-2 ' style='width: 200px' [formControl]='selectPayroll'>
@@ -374,7 +376,7 @@
         (EventScroll)='onScroll()'
         (EventAddPayroll)='addPayroll($event)'
         (EventReadPayroll)='updatePayroll($event)' (EventRestorePayroll)='restorePayroll($event)'
-        (EventSearchMonth)='selectMonth($event)' (EventDeletePayroll)='deletePayroll($event)'
+        (EventDeletePayroll)='deletePayroll($event)'
         (EventHistoryPayroll)='historyPayroll($event)'
         (EventSortPayroll)='sortPayroll($event)'>
       </app-payroll-time-sheet>
@@ -382,7 +384,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.OVERTIME'>
       <minhdu-fontend-payroll-overtime
-        [rangeDay]="pickRangeDayOvertime"
+        [eventSelectRangeDay]="pickRangeDayOvertime"
         [overtimeTitle]='overtimeTitle'
         [eventSelectIsLeave]='selectIsLeaveOvertime'
         [eventSearchBranch]='searchBranchOvertime'
@@ -405,6 +407,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.BASIC '>
       <minhdu-fontend-payroll-basic
+        [eventSelectRangeDay]="pickRangeDayBasic"
         [eventSelectIsLeave]='selectIsLeaveBasic'
         [eventSearchBranch]='searchBranchBasic'
         [eventExportBasic]='eventExportBasic'
@@ -413,6 +416,7 @@
 
     <div *ngIf='selectedPayroll === filterTypeEnum.STAY '>
       <app-payroll-stay
+        [eventSelectRangeDay]="pickRangeDayStay"
         [eventExportStay]='eventExportStay'
         [eventSelectIsLeave]='selectIsLeaveStay'
         [eventSearchBranch]='searchBranchStay'>
@@ -421,6 +425,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ALLOWANCE '>
       <app-payroll-allowance
+        [eventSelectRangeDay]="pickRangeDayAllowance"
         [allowanceTitle]='allowanceTitle'
         [eventSelectIsLeave]='selectIsLeaveAllowance'
         [eventAddAllowance]='eventAddAllowance'
@@ -429,7 +434,7 @@
     </div>
     <div *ngIf='selectedPayroll === filterTypeEnum.ABSENT '>
       <app-payroll-absent
-        [rangeDay]="pickRangeDayAbsent"
+        [eventSelectRangeDay]="pickRangeDayAbsent"
         [absentTitle]='absentTitle'
         [eventAddAbsent]='eventAddAbsent'
         [eventSearchBranch]='searchBranchAbsent'

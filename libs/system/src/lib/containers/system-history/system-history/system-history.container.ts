@@ -13,7 +13,7 @@ import { appConstant, MethodConstant } from '@minhdu-fontend/constants';
 import {RouteActions} from "../../../../../../../apps/sell/src/app/pages/route/+state/routeActions";
 import {getSelectors} from "@minhdu-fontend/utils";
 import {
-  selectedCreateAtPayroll
+  selectedRangeDayPayroll
 } from "../../../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.selector";
 
 @Component({
