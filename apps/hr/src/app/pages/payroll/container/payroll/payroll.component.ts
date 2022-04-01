@@ -173,7 +173,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       if (val === FilterTypeEnum.TIME_SHEET && this.formRangeDay.value?.length === 0) {
         this.selectedPayroll = val;
         this.formRangeDay.reset();
-        this.daysInMonth = rageDaysInMonth(new Date());
         this.store.dispatch(
           PayrollAction.updateStatePayroll({
             filter: val,
@@ -272,6 +271,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
           this.pickRangeDayAllowance.next(true)
           break;
         default:
+          this.daysInMonth = rageDaysInMonth(new Date(date));
           this.store.dispatch(PayrollAction.loadInit({
             payrollDTO: this.mapPayroll(this.formGroup.value)
           }))
