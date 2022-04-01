@@ -235,16 +235,9 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   onScroll() {
     const val = this.formGroup.value;
     this.loadMore = true
-    this.payrollService.paginationPayroll(Object.assign(val, {
-        take: this.pageSize,
-        skip: this.payrolls.length,
-        templateId: this.search.templateId || '',
-        employeeType: this.search.employeeType || '',
-        recipeType: this.search.recipeType || '',
-        isLeave: false,
-        createdAt: new Date(this.search.createdAt),
-      }
-    )).subscribe(respone => {
+    this.payrollService.paginationPayroll(Object.assign(this.mapPayroll(this.formGroup.value),{
+      take: this.pageSize,
+      skip: this.payrolls.length,})).subscribe(respone => {
       if (respone.data.length > 0) {
         respone.data.map(payroll => {
           if (this.isSelectAllPayroll) {
