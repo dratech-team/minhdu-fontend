@@ -202,7 +202,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         });
       }
     });
-    this.eventSelectRangeDay.subscribe(val => {
+    this.eventSelectRangeDay.pipe(debounceTime(100)).subscribe(val => {
       if(val){
         this.store.dispatch(PayrollAction.loadInit({
           payrollDTO: this.mapPayrollAbsent()

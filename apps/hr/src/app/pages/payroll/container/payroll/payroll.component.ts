@@ -196,13 +196,6 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         val === FilterTypeEnum.TIME_SHEET ||
         val === FilterTypeEnum.SEASONAL
       ) {
-        this.formGroup.get('createdAt')?.setValue(
-          this.datePipe.transform(
-            getSelectors(selectedRangeDayPayroll, this.store),
-            'yyyy-MM'
-          ),
-          {emitEvent: false}
-        );
         return this.loadInitPayroll();
       }
     });
@@ -278,12 +271,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         case FilterTypeEnum.ALLOWANCE:
           this.pickRangeDayAllowance.next(true)
           break;
-        default :
+        default:
           this.store.dispatch(PayrollAction.loadInit({
             payrollDTO: this.mapPayroll(this.formGroup.value)
           }))
       }
-
     })
 
     this.formRangeDay.valueChanges.subscribe(rangeDay => {

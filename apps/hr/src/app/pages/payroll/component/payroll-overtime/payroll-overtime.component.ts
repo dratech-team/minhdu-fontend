@@ -18,7 +18,7 @@ import {select, Store} from '@ngrx/store';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedAddingPayroll,
@@ -228,8 +228,8 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
       }
     });
 
-    this.eventSelectRangeDay.subscribe(val => {
-      if(val){
+    this.eventSelectRangeDay.pipe((debounceTime(100))).subscribe(val => {
+      if (val) {
         this.store.dispatch(PayrollAction.loadInit({
           payrollDTO: this.mapPayrollOvertime()
         }))
@@ -311,7 +311,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
         this.salariesSelected = val;
         this.ref.detectChanges();
       });
-      ref.afterClosed().subscribe((val: {title: string, datetime: Date}) => {
+      ref.afterClosed().subscribe((val: { title: string, datetime: Date }) => {
         if (val) {
           this.salariesSelected = [];
           this.store.dispatch(PayrollAction.updateStatePayroll({
