@@ -7,7 +7,7 @@ import {of} from 'rxjs';
 import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {
-  checkIsSelectAllInit,
+  checkIsSelectAllInit, getFirstDayInMonth, getLastDayInMonth,
   handleValSubPickItems,
   pickAll,
   pickOne,
@@ -72,7 +72,8 @@ export class PickPayrollComponent implements OnInit, OnChanges {
         Object.assign(this.mapPayroll(this.formGroup.value), {
           take: this.pageSize,
           skip: this.pageIndex,
-          createdAt: changes.createdAt.currentValue
+          startedAt: getFirstDayInMonth(new Date(changes.createdAt.currentValue)),
+          endedAt: getLastDayInMonth(new Date(changes.createdAt.currentValue)),
         })
       ).subscribe(res => {
         if (res.data.length === 0) {
@@ -101,7 +102,8 @@ export class PickPayrollComponent implements OnInit, OnChanges {
           Object.assign(val, {
             take: this.pageSize,
             skip: this.pageIndex,
-            createdAt: new Date(this.createdAt)
+            startedAt: getFirstDayInMonth(new Date(this.createdAt)),
+            endedAt: getLastDayInMonth(new Date(this.createdAt)),
           });
           this.payrollService.paginationPayroll(val).subscribe(res => {
             this.isSelectAll = checkIsSelectAllInit(res.data, this.payrollsSelected);
@@ -178,7 +180,8 @@ export class PickPayrollComponent implements OnInit, OnChanges {
       name: val.name,
       position: val.position,
       branch: val.branch,
-      createdAt: new Date(this.createdAt),
+      startedAt: getFirstDayInMonth(new Date(this.createdAt)),
+      endedAt: getLastDayInMonth(new Date(this.createdAt)),
     };
   }
 

@@ -6,7 +6,14 @@ import {select, Store} from '@ngrx/store';
 import {debounceTime, startWith, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {getAllPosition, PositionActions} from "@minhdu-fontend/orgchart-position";
-import {checkIsSelectAllInit, pickAll, pickOne, searchAutocomplete} from "@minhdu-fontend/utils";
+import {
+  checkIsSelectAllInit,
+  getFirstDayInMonth,
+  getLastDayInMonth,
+  pickAll,
+  pickOne,
+  searchAutocomplete
+} from "@minhdu-fontend/utils";
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../../service/payroll.service";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -228,16 +235,9 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
   onScroll() {
     const val = this.formGroup.value;
     this.loadMore = true
-    this.payrollService.paginationPayroll(Object.assign(val, {
-        take: this.pageSize,
-        skip: this.payrolls.length,
-        templateId: this.search.templateId || '',
-        employeeType: this.search.employeeType || '',
-        recipeType: this.search.recipeType || '',
-        isLeave: false,
-        createdAt: new Date(this.search.createdAt),
-      }
-    )).subscribe(respone => {
+    this.payrollService.paginationPayroll(Object.assign(this.mapPayroll(this.formGroup.value),{
+      take: this.pageSize,
+      skip: this.payrolls.length,})).subscribe(respone => {
       if (respone.data.length > 0) {
         respone.data.map(payroll => {
           if (this.isSelectAllPayroll) {
@@ -266,7 +266,8 @@ export class PickPayrollOvertimeComponent implements OnInit, OnChanges {
       name: val.name,
       position: val.position,
       code: val.code,
-      createdAt: new Date(this.search.createdAt),
+      startedAt: getFirstDayInMonth(new Date(this.search.createdAt)),
+      endedAt: getLastDayInMonth(new Date(this.search.createdAt)),
       templateId: this.search.templateId,
       employeeType: this.search.employeeType,
       recipeType: this.search.recipeType,
