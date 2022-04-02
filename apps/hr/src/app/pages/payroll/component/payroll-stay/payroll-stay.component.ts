@@ -189,16 +189,9 @@ export class PayrollStayComponent implements OnInit, OnChanges {
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
             selectDatetime: true,
+            api:Api.HR.PAYROLL.EXPORT,
           }
-        }).afterClosed().subscribe(val => {
-          if (val) {
-            this.exportService.print(
-              Api.HR.PAYROLL.EXPORT,
-              val.params,
-              {items: val.itemSelected}
-            );
-          }
-        });
+        })
       }
     });
 

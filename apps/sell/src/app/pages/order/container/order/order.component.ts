@@ -216,27 +216,24 @@ export class OrderComponent implements OnInit {
   }
 
   onPrint() {
-    const val = this.formGroup.value;
-    const order = {
-      paidType: val.paidType,
-      customer: val.name?.trim(),
-      ward: val.ward?.trim(),
-      commodityTotal: val.commodityTotal?.trim(),
-      explain: val.explain?.trim(),
-      startedAt: val.createStartedAt?.trim(),
-      endedAt: val.createEndedAt?.trim(),
-      status:
-        val.deliveredAt === this.statusOrder.DELIVERED
-          ? this.convertBoolean.TRUE
-          : this.convertBoolean.FALSE
-    };
+    const params = Object.assign({}, this.formGroup.value, {exportType:'ORDER'})
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
+        filename: 'Danh sách đơn hàng',
         title: 'Xuất bảng đơn hàng',
         exportType: 'RANGE_DATETIME',
-        params: order,
-        api: Api.SELL.ORDER.EXPORT_ITEMS
+        typeDate: 'RANGE_DATETIME',
+        params: params,
+        selectDatetime: true
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.SELL.ORDER.ORDER_EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
       }
     });
   }

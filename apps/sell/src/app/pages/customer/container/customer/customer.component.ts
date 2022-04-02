@@ -141,11 +141,19 @@ export class CustomerComponent implements OnInit {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        fileName: 'danh sách khác hàng',
+        filename: 'danh sách khác hàng',
         typeDate: 'RANGE_DATETIME',
         title: 'Xuât bảng khác hàng',
         params: params,
-        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT
+        selectDatetime: true,
+      }
+    }).afterClosed().subscribe(val => {
+      if (val) {
+        this.exportService.print(
+          Api.SELL.CUSTOMER.CUSTOMER_EXPORT,
+          val.params,
+          {items: val.itemSelected}
+        );
       }
     });
   }

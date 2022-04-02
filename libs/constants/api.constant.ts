@@ -60,9 +60,7 @@ export const Api = {
     ORDER: {
       ORDER: 'order',
       ORDER_HISTORY: 'order-history',
-      EXPORT_ITEMS: 'order/export/items',
       ORDER_EXPORT: 'order/export/print'
-
     },
     ROUTE: {
       ROUTE: 'route',

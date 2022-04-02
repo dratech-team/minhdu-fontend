@@ -190,20 +190,13 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
             typeDate: 'RANGE_DATETIME',
             params: payrollAbsent,
             selectDatetime: true,
+            api: Api.HR.PAYROLL.EXPORT,
           }
-        }).afterClosed().subscribe(val => {
-          if (val) {
-            this.exportService.print(
-              Api.HR.PAYROLL.EXPORT,
-              val.params,
-              {items: val.itemSelected}
-            );
-          }
-        });
+        })
       }
     });
     this.eventSelectRangeDay.pipe(debounceTime(100)).subscribe(val => {
-      if(val){
+      if (val) {
         this.store.dispatch(PayrollAction.loadInit({
           payrollDTO: this.mapPayrollAbsent()
         }))
@@ -225,7 +218,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.store.dispatch(PayrollAction.updateStatePayroll({
-          rangeDay:{
+          rangeDay: {
             start: new Date(val.datetime),
             end: new Date(val.datetime),
           }
@@ -264,9 +257,9 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         if (val) {
           this.salariesSelected = [];
           this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
-          if(val.datetime){
+          if (val.datetime) {
             this.store.dispatch(PayrollAction.updateStatePayroll({
-              rangeDay:{
+              rangeDay: {
                 start: new Date(val.datetime),
                 end: new Date(val.datetime),
               }
@@ -385,8 +378,8 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
         position: value.position?.name || '',
         branch: value.branch.name || '',
         isLeave: value.isLeave,
-      startedAt: this.getRangeDay().start,
-      endedAt: this.getRangeDay().end,
+        startedAt: this.getRangeDay().start,
+        endedAt: this.getRangeDay().end,
       }
     ;
     if (this.sort?.active) {

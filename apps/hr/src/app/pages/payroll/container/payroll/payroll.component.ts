@@ -659,16 +659,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng lương',
         params: payroll,
         selectDatetime: true,
+        api: Api.HR.PAYROLL.EXPORT,
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.HR.PAYROLL.EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 
   exportTimeSheet() {
@@ -690,16 +683,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng chấm công',
         params: payroll,
         selectDatetime: true,
+        api: Api.HR.PAYROLL.EXPORT
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.HR.PAYROLL.EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 
   exportSeasonal() {
@@ -723,16 +709,9 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         title: 'Xuât bảng lương công nhật',
         params: payrollSeasonal,
         selectDatetime: true,
+        api: Api.HR.PAYROLL.EXPORT
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.HR.PAYROLL.EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 
   addCategory() {

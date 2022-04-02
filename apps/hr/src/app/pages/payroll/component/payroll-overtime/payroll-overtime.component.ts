@@ -183,17 +183,10 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
             typeDate: 'RANGE_DATETIME',
-            selectDatetime: true
+            selectDatetime: true,
+            api: Api.HR.PAYROLL.EXPORT,
           }
-        }).afterClosed().subscribe(val => {
-          if (val) {
-            this.exportService.print(
-              Api.HR.PAYROLL.EXPORT,
-              val.params,
-              {items: val.itemSelected}
-            );
-          }
-        });
+        })
       }
     });
 

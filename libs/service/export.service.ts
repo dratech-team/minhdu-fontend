@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
+import {Observable, Subject, throwError} from "rxjs";
 
 
 @Injectable({ providedIn: 'root' })
@@ -8,11 +9,14 @@ export class ExportService {
   constructor(public readonly http: HttpClient) {
   }
 
-  print(url: string, params?: any, body?: any) {
-    const reader: FileReader = new FileReader()
-    return this.http
+  print(url: string, params?: any, body?: any) : Observable<boolean>{
+    let success = new Subject<boolean>()
+     this.http
       .post(url, body, { observe: 'response', responseType: 'blob', params })
-      .subscribe((data) => {
+      .pipe(catchError(err => {
+        success.next(false)
+        return throwError(err)
+      })).subscribe((data) => {
         const link = window.document.createElement('a');
         const fileName = data.headers.get('content-Disposition');
         const blob = new Blob([data.body as BlobPart], {
@@ -23,6 +27,8 @@ export class ExportService {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        success.next(true)
       });
+    return success
   }
 }

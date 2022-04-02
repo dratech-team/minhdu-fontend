@@ -6,6 +6,7 @@ import {FilterTypeEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {ItemExportService} from './item-export.service';
 import {values} from "lodash";
+import {Api} from "@minhdu-fontend/constants";
 
 @Component({
   templateUrl: 'dialog-export.component.html'
@@ -18,6 +19,7 @@ export class DialogExportComponent implements OnInit {
   itemsExport: any[] = [];
   itemSelected: any[] = [];
   loading = true
+  printing = false;
 
   constructor(
     private readonly dialogRef: MatDialogRef<DialogExportComponent>,
@@ -31,7 +33,7 @@ export class DialogExportComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
-      name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
+        name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
         startedAt: this.data?.params?.startedAt ? new FormControl(
           this.datePipe.transform(
             new Date(this.data.params.startedAt),
@@ -69,6 +71,7 @@ export class DialogExportComponent implements OnInit {
   }
 
   onSubmit(): any {
+    this.printing = true
     this.submitted = true;
     if (this.formGroup.invalid) {
       return;
@@ -84,7 +87,7 @@ export class DialogExportComponent implements OnInit {
         endedAt: new Date(value.endedAt)
       });
     } else {
-      if(value.createdAt){
+      if (value.createdAt) {
         Object.assign(this.data.params, {
           createdAt: new Date(value.createdAt)
         });
@@ -92,11 +95,17 @@ export class DialogExportComponent implements OnInit {
     }
 
     Object.assign(this.data.params, {filename: value.name})
-    this.dialogRef.close(
-      {
-        params: this.data?.params,
-        itemSelected: this.itemSelected
-      })
+
+    this.exportService.print(
+      this.data.api,
+      this.data.params,
+      {items: this.itemSelected}
+    ).subscribe(val => {
+      this.printing = false
+      if (val) {
+        this.dialogRef.close()
+      }
+    })
   }
 
   someComplete(): boolean {
