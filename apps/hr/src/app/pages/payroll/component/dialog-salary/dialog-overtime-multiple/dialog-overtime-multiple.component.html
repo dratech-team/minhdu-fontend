@@ -189,7 +189,7 @@
                 </div>
                 <div class=' mb-3' [formGroup]='formGroup'>
                   <input type='number' class='form-control  px-1' placeholder='{{data?.salary?.price|number:"1.0-0"}}'
-                         value='{{formGroup.value.price}}' disabled>
+                         value='{{formGroup.value.price|number:"1.0-0"}}' disabled>
                 </div>
               </div>
             </div>
