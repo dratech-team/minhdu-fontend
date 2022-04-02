@@ -129,7 +129,9 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       if (!val) {
         this.positionOfTempOver = [];
       }
-      this.formGroup.get('unit')?.setValue(val.unit,{emitEvent: false})
+      if(val.unit){
+        this.formGroup.get('unit')?.setValue(val.unit,{emitEvent: false})
+      }
       this.formGroup.get('rate')?.setValue(val.rate)
       this.formGroup.get('price')?.setValue(val.price)
       this.positionOfTempOver = val.positions ? val.positions : [];
@@ -146,7 +148,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
 
     this.formGroup.get('unit')?.valueChanges.subscribe(val => {
       if (val !== DatetimeUnitEnum.OPTION) {
-        this.formGroup.get('title')?.patchValue('', {emitEvent: false});
+        this.formGroup.get('title')?.patchValue('');
         this.recipeType = undefined;
       } else {
         this.recipeType = RecipeType.CT4;
