@@ -93,7 +93,7 @@
         <div class='table-scroll mt-2 mx-auto' infiniteScroll [alwaysCallback]='true' [infiniteScrollDistance]='1'
              [infiniteScrollThrottle]='10' [scrollWindow]='false' (scrolled)='onScroll()'>
           <table matSort (matSortChange)='sortPayroll()' [formGroup]='formGroup' class='mt-3'
-                 style='width: 3700px '>
+                 style='width: 3000px '>
             <thead>
             <tr>
               <th>
@@ -140,27 +140,27 @@
                 <div class='border-top d-flex justify-content-center align-items-center'>Ngày công chuẩn</div>
                 <input class='form-control text-center ' type='number' disabled>
               </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết
-                </div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
-              <th>
-                <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>
-                <input class='form-control text-center ' type='number' disabled>
-              </th>
+<!--              <th>-->
+<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày đi làm trừ lễ tết-->
+<!--                </div>-->
+<!--                <input class='form-control text-center ' type='number' disabled>-->
+<!--              </th>-->
+<!--              <th>-->
+<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ đi làm</div>-->
+<!--                <input class='form-control text-center ' type='number' disabled>-->
+<!--              </th>-->
+<!--              <th>-->
+<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày lễ không đi làm</div>-->
+<!--                <input class='form-control text-center ' type='number' disabled>-->
+<!--              </th>-->
+<!--              <th>-->
+<!--                <div class='border-top d-flex justify-content-center align-items-center'>Ngày công làm thêm</div>-->
+<!--                <input class='form-control text-center ' type='number' disabled>-->
+<!--              </th>-->
+<!--              <th>-->
+<!--                <div class='border-top d-flex justify-content-center align-items-center'>Vắng</div>-->
+<!--                <input class='form-control text-center ' type='number' disabled>-->
+<!--              </th>-->
               <th>
                 <div class='border-top d-flex justify-content-center align-items-center'>Tổng ngày công thực nhận
                 </div>
@@ -271,33 +271,33 @@
                     {{payroll.workday || 'Đang cập nhật'}}
                   </div>
                 </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.workdayNotInHoliday &&
-                  payroll.payslip?.workday
-                    ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}
-                  </div>
-                </th>
-                <th class='pointer' (click)='updatePayroll(payroll)'>
-                  <div>
-                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}
-                  </div>
-                </th>
+<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+<!--                  <div>-->
+<!--                    {{payroll.payslip?.workdayNotInHoliday ? payroll.payslip?.workdayNotInHoliday : 'Đang cập nhật' }}-->
+<!--                  </div>-->
+<!--                </th>-->
+<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+<!--                  <div>-->
+<!--                    {{payroll.payslip?.worksInHoliday ? payroll.payslip?.worksInHoliday?.length : 'Đang cập nhật' }}-->
+<!--                  </div>-->
+<!--                </th>-->
+<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+<!--                  <div>-->
+<!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
+<!--                  </div>-->
+<!--                </th>-->
+<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+<!--                  <div>-->
+<!--                    {{payroll.payslip?.workdayNotInHoliday &&-->
+<!--                  payroll.payslip?.workday-->
+<!--                    ? payroll.payslip.workdayNotInHoliday - payroll.payslip.workday : 'Đang cập nhật' }}-->
+<!--                  </div>-->
+<!--                </th>-->
+<!--                <th class='pointer' (click)='updatePayroll(payroll)'>-->
+<!--                  <div>-->
+<!--                    {{payroll.payslip?.worksNotInHoliday ? payroll.payslip?.worksNotInHoliday?.length : 'Đang cập nhật'}}-->
+<!--                  </div>-->
+<!--                </th>-->
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
                     {{payroll.payslip?.totalWorkday ? payroll.payslip?.totalWorkday : 'Đang cập nhật' }}
@@ -323,7 +323,7 @@
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>
                   <div>
-                    {{ payroll.payslip?.overtime || 0}} VND
+                    {{payroll.payslip?.overtime |number:'1.0-0'}} VND
                   </div>
                 </th>
                 <th class='pointer' (click)='updatePayroll(payroll)'>

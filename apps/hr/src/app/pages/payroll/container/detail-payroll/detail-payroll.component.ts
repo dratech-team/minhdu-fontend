@@ -143,19 +143,19 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: Payroll) {
-    if(this.role !== Role.HUMAN_RESOURCE){
+    // if(this.role !== Role.HUMAN_RESOURCE){
       this.dialog.open(ConfirmPayrollComponent, {
         width: 'fit-content',
         data: {
           payroll: payroll
         }
       });
-    }else{
-      this.dialog.open(RestorePayrollComponent, {
-        width: 'fit-content',
-        data: {payroll: payroll}
-      });
-    }
+    // }else{
+    //   this.dialog.open(RestorePayrollComponent, {
+    //     width: 'fit-content',
+    //     data: {payroll: payroll}
+    //   });
+    // }
   }
 
   historySalary(payroll: Payroll) {
