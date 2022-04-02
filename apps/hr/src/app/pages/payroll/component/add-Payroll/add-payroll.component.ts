@@ -15,6 +15,7 @@ import {
 } from '../../+state/payroll/payroll.selector';
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
+import {RangeDay} from "@minhdu-fontend/data-models";
 
 @Component({
   templateUrl: 'add-payroll.component.html',
@@ -22,7 +23,7 @@ import { LoadingComponent } from '../popup-loading/loading.component';
 export class AddPayrollComponent implements OnInit {
   formGroup!: FormGroup;
   adding$ = this.store.pipe(select(selectedAddingPayroll));
-  createdAt = getSelectors<Date>(selectedRangeDayPayroll, this.store);
+  createdAt = getSelectors<RangeDay>(selectedRangeDayPayroll, this.store).start;
   constructor(
     private dialogRef: MatDialogRef<AddPayrollComponent>,
     private readonly formBuilder: FormBuilder,
