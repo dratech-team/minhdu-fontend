@@ -66,7 +66,7 @@
 
         <tr>
             <td class='py-2' *ngIf="pickOne else pickAll">
-              <input type="radio" formControlName="customerId" name="customerId" [value]="customer.id">
+              <input type="radio" formControlName="customerId" name="customerId" value="{{customer.id}}">
             </td>
           <ng-template #pickAll>
             <td>
