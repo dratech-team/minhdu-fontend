@@ -129,6 +129,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
       if (!val) {
         this.positionOfTempOver = [];
       }
+      this.formGroup.get('unit')?.setValue(val.unit,{emitEvent: false})
       this.formGroup.get('rate')?.setValue(val.rate)
       this.formGroup.get('price')?.setValue(val.price)
       this.positionOfTempOver = val.positions ? val.positions : [];
