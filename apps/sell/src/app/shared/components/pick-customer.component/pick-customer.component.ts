@@ -19,6 +19,7 @@ export class PickCustomerComponent implements OnInit {
   customers$ = this.customerQuery.selectAll();
   @Input() customers: CustomerEntity[] = [];
   @Input() pickOne = false;
+  @Input() formGroup!:FormGroup;
   @Input() closeable = false;
   @Output() checkEvent = new EventEmitter<number[]>();
   @Input() data!: any;
@@ -37,7 +38,6 @@ export class PickCustomerComponent implements OnInit {
       type: new FormControl(''),
       resource: new FormControl('')
     });
-  formGroup!: FormGroup;
 
   constructor(
     private readonly actions$: Actions,
@@ -45,12 +45,10 @@ export class PickCustomerComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly modalRef: NzModalRef,
-    private readonly controlContainer: ControlContainer
   ) {
   }
 
   ngOnInit(): void {
-    this.formGroup = <FormGroup>this.controlContainer.control;
     if (this.customers.length === 0) {
       this.actions$.dispatch(CustomerActions.loadAll({ search: { take: 30, skip: 0 } }));
       this.customers$.subscribe(customers => {

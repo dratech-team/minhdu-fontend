@@ -84,7 +84,7 @@ export class OrderDialogComponent implements OnInit {
     const val = this.formGroup.value;
     const order = {
       customerId: val.customerId,
-      commodityIds: val.commodityIds,
+      commodityIds: Array.from<number>(val.commodityIds),
       wardId: val?.ward?.id,
       districtId: val?.district?.id,
       provinceId: val.province.id,
@@ -95,6 +95,12 @@ export class OrderDialogComponent implements OnInit {
     };
     if (!val.deliveredAt) {
       delete order.deliveredAt;
+    }
+    if(!order.districtId){
+      delete order.districtId
+    }
+    if(!order.wardId){
+      delete order.wardId
     }
     if (this.data?.isUpdate) {
       this.actions$.dispatch(OrderActions.update({
