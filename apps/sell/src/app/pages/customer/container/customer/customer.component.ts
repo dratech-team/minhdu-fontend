@@ -16,7 +16,7 @@ import {RadiosStatusRouteConstant} from '../../../../../../../../libs/constants/
 import {CustomerConstant, PotentialsConstant} from '../../constants';
 import {Sort} from '@minhdu-fontend/data-models';
 import {OrderActions} from '../../../order/+state';
-
+import * as _ from 'lodash';
 @Component({
   templateUrl: 'customer.component.html'
 })
@@ -137,25 +137,15 @@ export class CustomerComponent implements OnInit {
   }
 
   printCustomer() {
-    const params = Object.assign({}, this.formGroup.value, {exportType: 'CUSTOMER',})
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         filename: 'danh sách khác hàng',
-        typeDate: 'RANGE_DATETIME',
         title: 'Xuât bảng khác hàng',
-        params: params,
-        selectDatetime: true,
+        params: _.omit(this.mapCustomer(this.formGroup.value,false),['take','skip']),
+        api: Api.SELL.CUSTOMER.CUSTOMER_EXPORT,
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.SELL.CUSTOMER.CUSTOMER_EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 
   onPagination(pageIndex: number) {

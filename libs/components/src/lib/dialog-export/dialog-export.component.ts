@@ -7,6 +7,7 @@ import {ExportService} from '@minhdu-fontend/service';
 import {ItemExportService} from './item-export.service';
 import {values} from "lodash";
 import {Api} from "@minhdu-fontend/constants";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'dialog-export.component.html'
@@ -81,15 +82,16 @@ export class DialogExportComponent implements OnInit {
       return a.index - b.index;
     });
 
-    if (this.data.params.exportType === FilterTypeEnum.OVERTIME || this.data.params.exportType === FilterTypeEnum.ABSENT) {
-      Object.assign(this.data.params, {
-        startedAt: new Date(value.startedAt),
-        endedAt: new Date(value.endedAt)
-      });
-    } else {
-      if (value.createdAt) {
+    if(this.data?.selectDatetime){
+      if (this.data.typeDate === 'RANGE_DATETIME') {
         Object.assign(this.data.params, {
-          createdAt: new Date(value.createdAt)
+          startedAt: new Date(value.startedAt),
+          endedAt: new Date(value.endedAt)
+        });
+      }else{
+        Object.assign(this.data.params, {
+          startedAt:getFirstDayInMonth(new Date(value.createdAt)) ,
+          endedAt: getLastDayInMonth(new Date(value.createdAt))
         });
       }
     }

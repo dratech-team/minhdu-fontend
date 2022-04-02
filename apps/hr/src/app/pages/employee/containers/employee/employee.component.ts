@@ -352,15 +352,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
         params: employee,
         api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.HR.EMPLOYEE.EMPLOYEE_EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 
   onRestore($event: any) {
