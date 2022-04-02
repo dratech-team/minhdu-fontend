@@ -189,7 +189,7 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
             title: 'Xuât bảng khấu trừ',
             typeDate: 'RANGE_DATETIME',
             params: payrollAbsent,
-            isPayroll: true,
+            selectDatetime: true,
           }
         }).afterClosed().subscribe(val => {
           if (val) {

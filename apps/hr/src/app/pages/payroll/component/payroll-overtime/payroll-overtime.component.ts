@@ -183,7 +183,7 @@ export class PayrollOvertimeComponent implements OnInit, OnChanges {
             title: 'Xuất Bảng tăng ca',
             params: overtime,
             typeDate: 'RANGE_DATETIME',
-            isPayroll: true
+            selectDatetime: true
           }
         }).afterClosed().subscribe(val => {
           if (val) {

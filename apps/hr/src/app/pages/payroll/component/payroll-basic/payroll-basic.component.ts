@@ -187,7 +187,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             filename: `Xuất bảng lương cơ bản từ ngày ${this.datePipe.transform(payrollBASIC.startedAt, 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(payrollBASIC.endedAt, 'dd-MM-yyyy')}`,
             title: 'Xuât bảng lương cơ bản',
             params: payrollBASIC,
-            isPayroll: true,
+            selectDatetime: true,
           }
         }).afterClosed().subscribe(val => {
           if (val) {

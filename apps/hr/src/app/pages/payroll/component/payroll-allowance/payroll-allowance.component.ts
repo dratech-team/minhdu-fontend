@@ -190,7 +190,7 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
               + " đến ngày " + this.datePipe.transform(payrollAllowance.endedAt, 'dd-MM-yyyy'),
             title: 'Xuât bảng phụ cấp khác',
             params: payrollAllowance,
-            isPayroll: true,
+            selectDatetime: true,
           }
         }).afterClosed().subscribe(val => {
           if (val) {

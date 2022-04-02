@@ -188,7 +188,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
             filename: `Xuất bản phụ cấp lương từ ngày ${this.datePipe.transform(payrollStay.startedAt, 'MM-yyyy')} đến ngày ${this.datePipe.transform(payrollStay.endedAt, 'MM-yyyy')}`,
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
-            isPayroll: true,
+            selectDatetime: true,
           }
         }).afterClosed().subscribe(val => {
           if (val) {

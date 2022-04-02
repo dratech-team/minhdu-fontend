@@ -652,14 +652,13 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         orderType: this.sort ? this.sort.direction : ''
       });
     }
-    console.log()
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
         filename: `Xuất bảng lương từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')}`,
         title: 'Xuât bảng lương',
         params: payroll,
-        isPayroll: true,
+        selectDatetime: true,
       }
     }).afterClosed().subscribe(val => {
       if (val) {
@@ -690,7 +689,7 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
         filename: `Xuất bảng chấm công từ ngày ${this.datePipe.transform(this.formRangeDay.value[0], 'dd-MM-yyyy')} đến ngày ${this.datePipe.transform(this.formRangeDay.value[1], 'dd-MM-yyyy')} `,
         title: 'Xuât bảng chấm công',
         params: payroll,
-        isPayroll: true,
+        selectDatetime: true,
       }
     }).afterClosed().subscribe(val => {
       if (val) {
@@ -720,10 +719,10 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(this.formRangeDay.value, 'MM-yyyy')}`,
+        filename: `Xuất bản lương công nhật tháng ${this.datePipe.transform(this.formRangeDay.value[0], 'MM-yyyy')}`,
         title: 'Xuât bảng lương công nhật',
         params: payrollSeasonal,
-        isPayroll: true,
+        selectDatetime: true,
       }
     }).afterClosed().subscribe(val => {
       if (val) {
