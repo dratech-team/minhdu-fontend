@@ -5,8 +5,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FilterTypeEnum} from '@minhdu-fontend/enums';
 import {ExportService} from '@minhdu-fontend/service';
 import {ItemExportService} from './item-export.service';
-import {values} from "lodash";
-import {Api} from "@minhdu-fontend/constants";
 import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
@@ -28,34 +26,34 @@ export class DialogExportComponent implements OnInit {
     private readonly exportService: ExportService,
     private readonly datePipe: DatePipe,
     private readonly formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      params: any,
+      title: string,
+      typeDate?: 'RANGE_DATETIME',
+      filename: string,
+      selectDatetime: boolean,
+      api: string
+    }
   ) {
   }
 
   ngOnInit() {
+    console.log(this.data.params.startedAt_start)
     this.formGroup = this.formBuilder.group(this.data?.typeDate === 'RANGE_DATETIME' ? {
-        name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
-        startedAt: this.data?.params?.startedAt ? new FormControl(
-          this.datePipe.transform(
-            new Date(this.data.params.startedAt),
-            'YYYY-MM-dd'
-          )
-        ) : '',
-        endedAt: this.data?.params?.endedAt ? new FormControl(
-          this.datePipe.transform(
-            new Date(this.data.params.endedAt),
-            'YYYY-MM-dd'
-          )
-        ) : ''
+        name: [ this.data.filename || '', Validators.required],
+        startedAt: [ this.datePipe.transform(
+          new Date(this.data.params?.startedAt || this.data.params?.startedAt_start ),
+          'YYYY-MM-dd'
+        )],
+        endedAt: [ this.datePipe.transform(
+          new Date(this.data.params?.endedAt || this.data.params?.startedAt_end ),
+          'YYYY-MM-dd'
+        )],
       } : {
         name: new FormControl(this.data?.filename ? this.data.filename : '', Validators.required),
-        createdAt: new FormControl(
-          this.data?.params?.startedAt ?
-            this.datePipe.transform(
-              new Date(this.data?.params?.startedAt),
-              'YYYY-MM'
-            ) : ''
-        )
+        createdAt: [this.data.selectDatetime ?  this.datePipe.transform(
+          new Date(this.data.params?.startedAt || this.data.params?.startedAt_start),
+          'YYYY-MM'):'']
       }
     );
 

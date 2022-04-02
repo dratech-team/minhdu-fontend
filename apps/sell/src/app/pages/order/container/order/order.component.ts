@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Api, CurrenciesConstant, radiosStatusOrderConstant } from '@minhdu-fontend/constants';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Api, CurrenciesConstant, radiosStatusOrderConstant} from '@minhdu-fontend/constants';
 import {
   ConvertBoolean,
   ItemContextMenu,
@@ -11,17 +11,19 @@ import {
   SortOrderEnum,
   StatusOrder
 } from '@minhdu-fontend/enums';
-import { ExportService } from '@minhdu-fontend/service';
-import { DialogDatePickerComponent } from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
-import { DialogExportComponent } from 'libs/components/src/lib/dialog-export/dialog-export.component';
-import { debounceTime, map, tap } from 'rxjs/operators';
-import { OrderActions, OrderQuery, OrderStore } from '../../+state';
-import { DialogSharedComponent } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import { Actions } from '@datorama/akita-ng-effects';
-import { OrderEntity } from '../../enitities';
-import { Sort } from '@minhdu-fontend/data-models';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { OrderDialogComponent } from '../../component';
+import {ExportService} from '@minhdu-fontend/service';
+import {DialogDatePickerComponent} from 'libs/components/src/lib/dialog-datepicker/dialog-datepicker.component';
+import {DialogExportComponent} from 'libs/components/src/lib/dialog-export/dialog-export.component';
+import {debounceTime, map, tap} from 'rxjs/operators';
+import {OrderActions, OrderQuery, OrderStore} from '../../+state';
+import {
+  DialogSharedComponent
+} from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
+import {Actions} from '@datorama/akita-ng-effects';
+import {OrderEntity} from '../../enitities';
+import {Sort} from '@minhdu-fontend/data-models';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {OrderDialogComponent} from '../../component';
 import * as _ from 'lodash';
 
 @Component({
@@ -91,7 +93,7 @@ export class OrderComponent implements OnInit {
         debounceTime(1000),
         tap((val: any) => {
           this.actions$.dispatch(
-            OrderActions.loadAll({ param: this.mapOrder(val) })
+            OrderActions.loadAll({param: this.mapOrder(val)})
           );
         })
       )
@@ -141,7 +143,7 @@ export class OrderComponent implements OnInit {
   }
 
   cancel($event: any) {
-    this.actions$.dispatch(OrderActions.cancelOrder({ orderId: $event.id }));
+    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 
   delete($event: any) {
@@ -154,7 +156,7 @@ export class OrderComponent implements OnInit {
     });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(OrderActions.remove({ id: $event.id }));
+        this.actions$.dispatch(OrderActions.remove({id: $event.id}));
       }
     });
   }
@@ -172,26 +174,26 @@ export class OrderComponent implements OnInit {
   }
 
   onPickDeliveryDay($event: any) {
-    this.formGroup.get('deliveredAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('deliveredAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('deliveredAt_end')?.setValue($event.end);
   }
 
   onPickCreatedAt($event: any) {
-    this.formGroup.get('startedAt_start')?.setValue($event.start, { emitEvent: false });
+    this.formGroup.get('startedAt_start')?.setValue($event.start, {emitEvent: false});
     this.formGroup.get('startedAt_end')?.setValue($event.end);
   }
 
   onPickEndedAt($event: any) {
-    this.formGroup.get('endedAt_start')?.setValue($event.start), { emitEvent: false };
+    this.formGroup.get('endedAt_start')?.setValue($event.start), {emitEvent: false};
     this.formGroup.get('endedAt_end')?.setValue($event.end);
   }
 
   onExpandAll() {
     const expanedAll = this.orderQuery.getValue().expandedAll;
     this.orderQuery.getAll().forEach((order: OrderEntity) => {
-      this.orderStore.update(order.id, { expand: !expanedAll });
+      this.orderStore.update(order.id, {expand: !expanedAll});
     });
-    this.orderStore.update(state => ({ ...state, expandedAll: !expanedAll }));
+    this.orderStore.update(state => ({...state, expandedAll: !expanedAll}));
   }
 
   onSort(sort: Sort) {
@@ -210,13 +212,12 @@ export class OrderComponent implements OnInit {
       take: this.pageSize
     });
     return Object.assign(
-      value?.status !== 1 ? _.omit(value, ['deliveredAt_end','deliveredAt_start']): value,
+      value?.status !== 1 ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start']) : value,
       this.valueSort?.orderType ? this.valueSort : {},
     );
   }
 
   onPrint() {
-    const params = Object.assign({}, this.formGroup.value, {exportType:'ORDER'})
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
@@ -224,17 +225,10 @@ export class OrderComponent implements OnInit {
         title: 'Xuất bảng đơn hàng',
         exportType: 'RANGE_DATETIME',
         typeDate: 'RANGE_DATETIME',
-        params: params,
-        selectDatetime: true
+        params: Object.assign(_.omit(this.formGroup.value, ['take', 'skip']), {exportType: 'ORDER'}),
+        selectDatetime: true,
+        api: Api.SELL.ORDER.ORDER_EXPORT,
       }
-    }).afterClosed().subscribe(val => {
-      if (val) {
-        this.exportService.print(
-          Api.SELL.ORDER.ORDER_EXPORT,
-          val.params,
-          {items: val.itemSelected}
-        );
-      }
-    });
+    })
   }
 }

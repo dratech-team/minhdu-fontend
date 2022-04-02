@@ -20,6 +20,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {RouteStore} from '../../+state/route.store';
 import {Sort} from '@minhdu-fontend/data-models';
 import * as moment from "moment";
+import * as _ from 'lodash';
 
 @Component({
   templateUrl: 'route.component.html'
@@ -171,22 +172,18 @@ export class RouteComponent implements OnInit {
   }
 
   printRouter() {
-    const val = this.formGroup.value;
-    const route = {
-      name: val.name.trim(),
-      startedAt: val.startedAt,
-      endedAt: val.endedAt,
-      driver: val.driver.trim(),
-      bsx: val.bsx.trim(),
-      garage: val.garage.trim()
-    };
+    const value = this.formGroup.value
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
+        filename: 'Danh sách tuyến đường từ ngày ' +
+          this.datePipe.transform(value.startedAt_start, 'dd-MM-yyyy') +
+          ' đến ngày ' + this.datePipe.transform(value.endedAt_end, 'dd-MM-yyyy'),
         title: 'Xuât bảng Tuyến đường',
-        exportType: 'ORDER',
-        params: route,
-        api: Api.SELL.ROUTE.ROUTE_EXPORT
+        params: Object.assign(_.omit(value, ['take', 'skip']), {exportType: 'ROUTE'}),
+        api: Api.SELL.ROUTE.ROUTE_EXPORT,
+        selectDatetime: true,
+        typeDate: 'RANGE_DATETIME',
       }
     });
   }
