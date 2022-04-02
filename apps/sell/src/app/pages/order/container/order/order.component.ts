@@ -211,7 +211,7 @@ export class OrderComponent implements OnInit {
       skip: isPagination ? this.orderQuery.getCount() : 0,
       take: this.pageSize
     });
-    return Object.assign(
+    return Object.assign({},
       value?.status !== 1 ? _.omit(value, ['deliveredAt_end', 'deliveredAt_start']) : value,
       this.valueSort?.orderType ? this.valueSort : {},
     );

@@ -35,8 +35,6 @@ function createInitState(): OrderState {
       customer: '',
       status: -1,
       explain: '',
-      endedAt_start: getFirstDayInMonth(new Date()),
-      endedAt_end: getLastDayInMonth(new Date()),
       startedAt_start: getFirstDayInMonth(new Date()),
       startedAt_end: getLastDayInMonth(new Date()),
       deliveredAt_start: getFirstDayInMonth(new Date()),
