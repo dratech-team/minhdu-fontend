@@ -16,6 +16,7 @@ import {
 import { getSelectors } from '../../../../../../../../libs/utils/getState.ultils';
 import { LoadingComponent } from '../popup-loading/loading.component';
 import {RangeDay} from "@minhdu-fontend/data-models";
+import {getFirstDayInMonth, getLastDayInMonth} from "@minhdu-fontend/utils";
 
 @Component({
   templateUrl: 'add-payroll.component.html',
@@ -29,7 +30,6 @@ export class AddPayrollComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly store: Store,
     private readonly datePipe: DatePipe,
-    private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data?: any
   ) {}
 

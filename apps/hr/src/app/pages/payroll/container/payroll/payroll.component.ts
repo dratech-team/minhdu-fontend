@@ -510,10 +510,15 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       }
     }).afterClosed().subscribe((val) => {
       if (val) {
-        this.formRangeDay.patchValue([
-          getFirstDayInMonth(new Date(val)),
-          getLastDayInMonth(new Date(val)),
-        ]);
+        this.store.dispatch(PayrollAction.updateStatePayroll({
+          rangeDay: {
+            start: getFirstDayInMonth(new Date(val)),
+            end: getLastDayInMonth(new Date(val)),
+          }
+        }))
+        this.store.dispatch(PayrollAction.loadInit({
+          payrollDTO: this.mapPayroll(this.formGroup.value)
+        }))
       }
     });
   }
