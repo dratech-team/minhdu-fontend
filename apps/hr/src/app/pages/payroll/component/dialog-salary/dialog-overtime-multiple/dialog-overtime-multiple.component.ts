@@ -146,7 +146,7 @@ export class DialogOvertimeMultipleComponent implements OnInit, AfterContentChec
 
     this.formGroup.get('unit')?.valueChanges.subscribe(val => {
       if (val !== DatetimeUnitEnum.OPTION) {
-        this.formGroup.get('title')?.patchValue('');
+        this.formGroup.get('title')?.patchValue('', {emitEvent: false});
         this.recipeType = undefined;
       } else {
         this.recipeType = RecipeType.CT4;
