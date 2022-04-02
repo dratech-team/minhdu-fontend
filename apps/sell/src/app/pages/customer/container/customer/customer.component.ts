@@ -104,12 +104,10 @@ export class CustomerComponent implements OnInit {
       delete val.orderBy;
       delete val.orderType;
     }
-
-    Object.assign(val, {
+    return Object.assign({},val, {
       take: this.pageSize,
       skip: isPagination ? this.customerQuery.getCount() : 0
     });
-    return val;
   }
 
   readAndUpdate($event?: any, isUpdate?: boolean) {
