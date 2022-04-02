@@ -62,21 +62,22 @@
       </tr>
       </thead>
       <tbody [formGroup]="formGroup">
-
       <ng-template ngFor let-customer [ngForOf]="tablePickCustomer.data">
 
         <tr>
-            <td class='py-2'>
+            <td class='py-2' *ngIf="pickOne else pickAll">
+              <input type="radio" formControlName="customerId" name="customerId" [value]="customer.id">
+            </td>
+          <ng-template #pickAll>
+            <td>
               <mat-checkbox
                 *ngIf='!pickOne'
                 class='checkID'
                 [checked]='customerIds.includes(customer.id)'
                 (change)='updateAllSelect(customer.id)'>
               </mat-checkbox>
-              <nz-radio-group *ngIf='pickOne' formControlName="customerId" style="width: 100%">
-              <label nz-radio [nzValue]="customer.id" ></label>
-              </nz-radio-group>
             </td>
+          </ng-template>
             <td class='pointer'>{{customer.lastName}}</td>
             <td class='pointer'>{{customer.phone}}</td>
             <td>{{customer?.type  | transform:CustomerTypeConstant }} </td>

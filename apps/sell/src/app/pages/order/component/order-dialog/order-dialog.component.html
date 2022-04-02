@@ -5,10 +5,10 @@
 </nz-steps>
 <ng-template [ngIf]="stepIndex === 0">
   <form [formGroup]='formGroup' class="py-4">
-    <div [formGroup]='formGroup'>
+    <div>
       <div>
         <div class="row">
-          <div class='col-sm' [formGroup]='formGroup'>
+          <div class='col-sm'>
             <label for='createdAt'>Ngày tạo đơn hàng<span class='star'>*</span>
             </label>
             <input type='date' class='form-control' id='createdAt' [readOnly]="data?.isUpdate"
@@ -18,25 +18,25 @@
               <div>Chưa nhập ngày tạo đơn hàng</div>
             </div>
           </div>
-          <div class='col-sm' [formGroup]='formGroup'>
+          <div class='col-sm' >
             <label>Ngày hẹn giao
             </label>
             <input type='date' class='form-control' formControlName='endedAt'>
           </div>
         </div>
         <div class='row mt-2'>
-          <div class='col-sm' [formGroup]='formGroup'>
+          <div class='col-sm' >
             <label for='explain'>Diễn giải</label>
             <input type='text' class='form-control' id='explain' formControlName='explain'>
           </div>
-          <div class='col-sm' [formGroup]='formGroup'>
+          <div class='col-sm'>
             <label for='deliveredAt'>Ngày nhận hàng</label>
             <input type='date' class='form-control' id='deliveredAt' formControlName='deliveredAt'>
           </div>
         </div>
         <app-pick-location
           [isUpdate]="!!data?.order"
-          [province]='data?.order.province'
+          [province]='data?.order?.province'
           [district]='data?.order?.district'
           [ward]='data?.order?.ward'
           [isRequiredDistrict]='false'
@@ -54,14 +54,12 @@
   <div class="pt-2">
     <app-pick-customer [pickOne]="true"
                        [formGroup]="formGroup">
-
     </app-pick-customer>
   </div>
 </ng-template>
 <ng-template [ngIf]="stepIndex === 2">
   <div class="pt-2">
-    <app-pick-commodity
-      [formGroup]="formGroup">
+    <app-pick-commodity [formGroup]="formGroup">
     </app-pick-commodity>
   </div>
 </ng-template>

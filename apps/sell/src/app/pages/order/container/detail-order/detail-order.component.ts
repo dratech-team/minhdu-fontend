@@ -13,7 +13,7 @@ import {
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {OrderHistoryService} from '../../service/order-history.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs';
 import {Actions} from '@datorama/akita-ng-effects';
@@ -48,7 +48,8 @@ export class DetailOrderComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly orderHistoryService: OrderHistoryService,
     private readonly modal: NzModalService,
-    private readonly viewContentRef: ViewContainerRef
+    private readonly viewContentRef: ViewContainerRef,
+    private readonly formBuilder: FormBuilder,
   ) {
   }
 
@@ -93,17 +94,20 @@ export class DetailOrderComponent implements OnInit {
         nzTitle: 'Chọn hàng hoá',
         nzContent: PickCommodityComponent,
         nzComponentParams: {
-          data: {type: 'DIALOG'}
+          data: {type: 'DIALOG'},
+          formGroup: this.formBuilder.group({customerIds:[]})
         },
         nzWidth: '70vw',
         nzFooter: null
       }).afterClose.subscribe(value => {
-        this.actions$.dispatch(OrderActions.update({
-          id: order.id,
-          updates: {
-            commodityIds: Array.from(value)
-          },
-        }));
+        if(value){
+          this.actions$.dispatch(OrderActions.update({
+            id: order.id,
+            updates: {
+              commodityIds: Array.from(value)
+            },
+          }));
+        }
       })
     }
   }

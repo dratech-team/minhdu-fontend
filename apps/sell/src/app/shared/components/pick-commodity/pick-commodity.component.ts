@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
+import {ControlContainer, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CommodityUnit, CustomerType } from '@minhdu-fontend/enums';
 import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
@@ -16,13 +16,14 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 })
 export class PickCommodityComponent implements OnInit {
   @Input() data: any;
+  @Input() formGroup!: FormGroup;
   @Input() pickPOne: boolean | undefined;
   setOfCheckedId = new Set<number>();
   commodityUnit = CommodityUnit;
   customerType = CustomerType;
   pageIndex = 0;
   pageSize = 14;
-  formGroup!: FormGroup;
+
   commodities$ = this.commodityQuery.selectAll();
   total$ = this.commodityQuery.selectCount();
   formGroupCommodity = new FormGroup({
@@ -42,13 +43,11 @@ export class PickCommodityComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
     private modalRef: NzModalRef,
-    private controlContainer: ControlContainer
   ) {
   }
 
   ngOnInit(): void {
-    this.formGroup = <FormGroup>this.controlContainer.control;
-    this.formGroup.get('commodityIds')?.value.forEach((id: number) => {
+    this.formGroup.get('commodityIds')?.value?.forEach((id: number) => {
       this.setOfCheckedId.add(id);
     });
     this.actions$.dispatch(

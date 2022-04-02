@@ -64,7 +64,7 @@ export class OrderDialogComponent implements OnInit {
         province: ['', Validators.required],
         district: [],
         ward: [],
-        customerId: [''],
+        customerId: [this.data?.customerId ||''],
         commodityIds: [[]]
       });
     }

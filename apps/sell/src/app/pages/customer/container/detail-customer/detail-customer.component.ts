@@ -11,6 +11,7 @@ import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dia
 import {CustomerQuery} from '../../+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
+import {OrderDialogComponent} from "../../../order/component";
 
 @Component({
   templateUrl: 'detail-customer.component.html',
@@ -103,5 +104,19 @@ export class DetailCustomerComponent implements OnInit {
 
   development() {
     this.dialog.open(DevelopmentComponent, {width: '25%'});
+  }
+
+  addOrder() {
+    this.modal.create({
+      nzTitle: 'Thêm đơn hàng',
+      nzContent: OrderDialogComponent,
+      nzWidth: '80vw',
+      nzFooter: null,
+      nzComponentParams:{
+        data:{
+          customerId: this.getId
+        }
+      }
+    });
   }
 }

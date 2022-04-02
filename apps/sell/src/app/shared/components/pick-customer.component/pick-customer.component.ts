@@ -45,7 +45,7 @@ export class PickCustomerComponent implements OnInit {
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
     private readonly modalRef: NzModalRef,
-    private controlContainer: ControlContainer
+    private readonly controlContainer: ControlContainer
   ) {
   }
 
