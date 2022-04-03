@@ -142,8 +142,8 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  cancel($event: any) {
-    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
+  cancel($event: OrderEntity) {
+    this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id, customerId: $event.customer.id}));
   }
 
   delete($event: any) {
