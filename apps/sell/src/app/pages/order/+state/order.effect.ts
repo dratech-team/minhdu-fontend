@@ -14,6 +14,8 @@ import {RouteActions} from '../../route/+state/routeActions';
 import {CommodityEntity, CommodityUniq} from '../../commodity/entities';
 import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
+import {CustomerQuery, CustomerStore} from "../../customer/+state";
+import {CustomerEntity} from "../../customer/entities";
 
 @Injectable()
 export class OrderEffect {
@@ -25,7 +27,9 @@ export class OrderEffect {
     private readonly orderQuery: OrderQuery,
     private readonly orderStore: OrderStore,
     private readonly orderService: OrderService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly customerStore: CustomerStore,
+    private readonly customerQuery: CustomerQuery,
   ) {
   }
 
@@ -214,9 +218,13 @@ export class OrderEffect {
   cancel$ = this.actions$.pipe(
     ofType(OrderActions.cancelOrder),
     switchMap((prop) => this.orderService.cancelOrder(prop.orderId).pipe(
-      map((res) => {
+      map(res => {
+          const customerUpdate = JSON.parse(JSON.stringify(this.customerQuery.getEntity(res.customerId)))
+          this.customerStore.update(customerUpdate.id, {
+            delivering: customerUpdate.delivering.filter((order: OrderEntity) => order.id !== res.id)
+          })
           this.message.success('Huỷ đơn hàng thành công');
-          this.orderStore.remove(res.id);
+          this.orderStore.remove(res.id)
         }
       ),
       catchError((err) => of(OrderActions.error(err)))

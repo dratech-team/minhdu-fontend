@@ -142,7 +142,7 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  cancel($event: any) {
+  cancel($event: OrderEntity) {
     this.actions$.dispatch(OrderActions.cancelOrder({orderId: $event.id}));
   }
 

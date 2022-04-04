@@ -123,7 +123,7 @@ export class TableOrdersComponent implements OnInit {
       });
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(OrderActions.remove({id: order.id}));
+        this.actions$.dispatch(OrderActions.cancelOrder({orderId: order.id}));
       }
     });
   }

@@ -9,5 +9,4 @@ interface BaseAddCustomer extends BaseCustomerEntity {
   readonly customerType?: CustomerType;
 }
 
-export interface AddCustomerDto extends BaseAddDto<BaseAddCustomer> {
-}
+export type AddCustomerDto = BaseAddDto<BaseAddCustomer>
