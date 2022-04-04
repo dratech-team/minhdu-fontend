@@ -74,7 +74,6 @@ export class ProductDialogComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     this.action$.dispatch(ProviderActions.loadAll( { take: 30, skip: 0 }));
-
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
       this.branches$

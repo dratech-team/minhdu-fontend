@@ -43,15 +43,27 @@
       </div>
     </div>
   </div>
-  <div class=' mt-2 ml-2 row hide-on-mobile '>
-    <button class='ml-2' *ngFor='let item of menuWarehouse' routerLink='{{item.href}}' routerLinkActive='active'
+  <div class=' mt-2 ml-2 row '>
+    <div>
+
+    </div>
+    <div class='ml-2 position-relative' *ngFor='let item of menuWarehouse' routerLink='{{item.href}}' routerLinkActive='active'
             mat-button>
-      <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>
-      {{item.name}}
-    </button>
+      <div>
+        <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>{{item.name}}
+      </div>
+      <div *ngIf="item.children && item.href" class="submenu d-flex position-absolute"
+           style="top:30px; width: 300%"
+      >
+        <div class="mr-4" *ngFor="let subMenu of item.children">
+          {{subMenu.title}}
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
-<div style='margin: 100px 0 0; overflow: auto; background: #eee'>
+<div style='margin: 130px 0 0; overflow: auto; background: #eee'>
   <router-outlet>
   </router-outlet>
 </div>

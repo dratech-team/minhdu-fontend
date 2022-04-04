@@ -1,4 +1,5 @@
 import {MenuEnum} from "../../enums";
+import {sr_RS} from "ng-zorro-antd/i18n";
 
 interface menuWarehouse {
   name: string,
@@ -7,7 +8,8 @@ interface menuWarehouse {
   href: string,
   children?: {
     title: string,
-    icon: string
+    icon: string,
+    href: string
   }[]
 }
 
@@ -32,15 +34,18 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     children: [
       {
         title: 'Xuất hàng',
-        icon: ''
+        icon: '',
+        href: ''
       },
       {
         title: 'Nhập hàng',
-        icon: ''
+        icon: '',
+        href:''
       },
       {
         title: 'Kiểm hàng',
-        icon: ''
+        icon: '',
+        href:''
       },
     ]
   },

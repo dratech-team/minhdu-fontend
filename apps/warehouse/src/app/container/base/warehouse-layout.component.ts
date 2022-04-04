@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Params, Router, RouterModule} from '@angular/router';
 import {MenuWarehouseConstant} from "@minhdu-fontend/constants";
 import {Observable} from "rxjs";
 
@@ -18,10 +18,12 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
   roleEnum = Role;
   menuWarehouse = MenuWarehouseConstant
   appName$ = new Observable<string>();
+  route!:string
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly ref: ChangeDetectorRef
   ) {
   }
