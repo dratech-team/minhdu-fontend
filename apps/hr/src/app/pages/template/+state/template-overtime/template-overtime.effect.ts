@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { TemplateOvertimeService } from '../../service/template-overtime.service';
-import { throwError } from 'rxjs';
-import { TemplateOvertimeAction } from './template-overtime.action';
-import { select, Store } from '@ngrx/store';
-import { SnackBarComponent } from '../../../../../../../../libs/components/src/lib/snackBar/snack-bar.component';
-import { selectorTemplateTotal } from './template-overtime.selector';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {TemplateOvertimeService} from '../../service/template-overtime.service';
+import {throwError} from 'rxjs';
+import {TemplateOvertimeAction} from './template-overtime.action';
+import {select, Store} from '@ngrx/store';
+import {selectorTemplateTotal} from './template-overtime.selector';
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
 export class TemplateOvertimeEffect {
@@ -55,11 +54,7 @@ export class TemplateOvertimeEffect {
       }),
       map((responsePagination) => {
         if (responsePagination.data.length === 0) {
-          this.snackBar.openFromComponent(SnackBarComponent, {
-            data: { content: 'Đã lấy hết bản mẫu' },
-            duration: 2500,
-            panelClass: ['background-snackbar']
-          });
+         this.message.warning('Đã lấy hết Mẫu tăng ca')
         }
         return TemplateOvertimeAction.loadMoreTempLateSuccess({
           templateOvertimes: responsePagination.data,
@@ -112,7 +107,7 @@ export class TemplateOvertimeEffect {
     private readonly action$: Actions,
     private readonly templateOvertimeService: TemplateOvertimeService,
     private readonly store: Store,
-    private readonly snackBar: MatSnackBar
+    private readonly message: NzMessageService
   ) {
   }
 }

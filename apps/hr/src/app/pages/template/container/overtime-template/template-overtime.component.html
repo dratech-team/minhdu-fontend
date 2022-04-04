@@ -6,16 +6,15 @@
       <button (click)='templateOvertime()' class='btn btn-primary mt-3 '>Tạo mẫu</button>
     </div>
   </div>
-  <ngx-skeleton-loader *ngIf='!(loaded$|async) else tableTemplate' count='18' appearance='line'></ngx-skeleton-loader>
-  <ng-template #tableTemplate>
     <div class='mt-3 font-weight-bold'>
       Tổng: {{total$|async}}
     </div>
     <div class='table-scroll mt-2'
          infiniteScroll
-         [infiniteScrollDistance]='0.5'
+         [infiniteScrollDistance]='0'
+         [infiniteScrollThrottle]='0'
          [scrollWindow]='false'
-         [alwaysCallback]='true'
+         [alwaysCallback]='false'
          (scrolled)='onScroll()'>
       <table [formGroup]='formGroup' style='width: 2100px'>
         <thead style="z-index: 5">
@@ -102,95 +101,102 @@
         </tr>
         </thead>
         <tbody *ngIf='(templates$| async) as templates'>
-        <tr
-          *ngFor='let template of templates; let i = index'
-          (contextmenu)='child.onContextMenu($event,template)'>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{i + 1}}
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template)'
-            [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
-            {{template.title}}
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template)'>
-            {{template.price | number: '1.0-0'}}
-            VND
-          </th>
-          <th
-            class='pointer'
-            (click)='templateOvertime(template)'>
-            {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
-          </th>
-          <th
-            class='pointer'
-            *ngIf='template.unit === unit.DAY'
-            (click)='templateOvertime(template)'>
-            Ngày
-          </th>
-          <th
-            class='pointer'
-            *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
-            (click)='templateOvertime(template)'>
-            Giờ
-          </th>
-          <th
-            class='pointer' *ngIf='template.unit === unit.MONTH'
-            (click)='templateOvertime(template)'>
-            Tháng
-          </th>
-          <th
-            class='pointer '
-            (click)='templateOvertime(template)'>
-            <mat-chip-list>
-              <mat-chip
-                style="z-index: -1!important;"
-                [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-                *ngFor='let branch of template.branches'
-                [selectable]='false'
-                [removable]='false'>
-                {{branch.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </th>
-          <th
-            class='pointer p-1 '
-            (click)='templateOvertime(template)'>
-            <mat-chip-list>
-              <mat-chip
-                (click)='onOvertime(template, position)'
-                [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
-                *ngFor='let position of template.positions'
-                [selectable]='false'
-                [removable]='false'>
-                {{position.name}}
-              </mat-chip>
-            </mat-chip-list>
-          </th>
-          <th
-            class='pointer '
-            (click)='templateOvertime(template)'>
-            {{template.note}}
+        <tr *ngIf='!(loaded$|async) else tableTemplate'>
+          <th colSpan="20">
+            <ngx-skeleton-loader style="z-index: -1" count='10' appearance='line'></ngx-skeleton-loader>
           </th>
         </tr>
-        <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh;'>
-          <td colspan='8' class='font-xl font-weight-bold text-center'>
+        <ng-template #tableTemplate>
+          <tr
+            *ngFor='let template of templates; let i = index'
+            (contextmenu)='child.onContextMenu($event,template)'>
+            <th
+              class='pointer'
+              (click)='templateOvertime(template)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{i + 1}}
+            </th>
+            <th
+              class='pointer'
+              (click)='templateOvertime(template)'
+              [ngClass]='{"odd": i % 2 === 0, "even": i % 2 !== 0 }'>
+              {{template.title}}
+            </th>
+            <th
+              class='pointer'
+              (click)='templateOvertime(template)'>
+              {{template.price | number: '1.0-0'}}
+              VND
+            </th>
+            <th
+              class='pointer'
+              (click)='templateOvertime(template)'>
+              {{template.employeeType === EmployeeType.EMPLOYEE_SEASONAL ? "Nhân viên thời vụ" : "Nhân viên chính thức"}}
+            </th>
+            <th
+              class='pointer'
+              *ngIf='template.unit === unit.DAY'
+              (click)='templateOvertime(template)'>
+              Ngày
+            </th>
+            <th
+              class='pointer'
+              *ngIf='template.unit === unit.HOUR || template.unit === unit.MINUTE'
+              (click)='templateOvertime(template)'>
+              Giờ
+            </th>
+            <th
+              class='pointer' *ngIf='template.unit === unit.MONTH'
+              (click)='templateOvertime(template)'>
+              Tháng
+            </th>
+            <th
+              class='pointer '
+              (click)='templateOvertime(template)'>
+              <mat-chip-list>
+                <mat-chip
+                  style="z-index: -1!important;"
+                  [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                  *ngFor='let branch of template.branches'
+                  [selectable]='false'
+                  [removable]='false'>
+                  {{branch.name}}
+                </mat-chip>
+              </mat-chip-list>
+            </th>
+            <th
+              class='pointer p-1 '
+              (click)='templateOvertime(template)'>
+              <mat-chip-list>
+                <mat-chip
+                  style="z-index: -1!important;"
+                  (click)='onOvertime(template, position)'
+                  [ngStyle]='{"background": i%2 !== 0 ? "white" : "#dddddd" }'
+                  *ngFor='let position of template.positions'
+                  [selectable]='false'
+                  [removable]='false'>
+                  {{position.name}}
+                </mat-chip>
+              </mat-chip-list>
+            </th>
+            <th
+              class='pointer '
+              (click)='templateOvertime(template)'>
+              {{template.note}}
+            </th>
+          </tr>
+          <tr *ngIf='!templates || templates.length === 0 ' style='height:50vh;'>
+            <td colspan='8' class='font-xl font-weight-bold text-center'>
           <span>
              Hiện chưa có bản mẫu tăng ca nào!
           </span>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        </ng-template>
+
         </tbody>
       </table>
     </div>
-  </ng-template>
-
   <app-mouse-right
     #child [items]="[itemContextMenu.OVERTIME]"
     (onAdd)='templateOvertime()'
