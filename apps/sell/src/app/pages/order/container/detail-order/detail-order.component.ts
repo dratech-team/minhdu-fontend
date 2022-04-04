@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {OrderEntity} from '../../enitities/order.entity';
-import {CommodityUnit, MenuEnum, PaymentType} from '@minhdu-fontend/enums';
+import {CommodityUnit, PaymentType} from '@minhdu-fontend/enums';
 import {OrderActions} from '../../+state/order.actions';
 import {OrderDialogComponent} from '../../component/order-dialog/order-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -22,6 +21,7 @@ import {OrderHistoryEntity} from '../../enitities/order-history.entity';
 import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {CommodityQuery} from '../../../commodity/+state/commodity.query';
 import {NzModalService} from "ng-zorro-antd/modal";
+import {OrderEntity} from "../../enitities/order.entity";
 
 @Component({
   templateUrl: 'detail-order.component.html'

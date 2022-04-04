@@ -3,12 +3,12 @@ import {Actions, Effect, ofType} from '@datorama/akita-ng-effects';
 import {RouteActions} from './routeActions';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {RouteService} from '../service/route.service';
-import {of, throwError} from 'rxjs';
-import {OrderEntity} from '../../order/enitities';
+import {of} from 'rxjs';
 import {getCommodityTotal, getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {RouteStore} from './route.store';
 import {RouteQuery} from './route.query';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {OrderEntity} from "../../order/enitities/order.entity";
 
 @Injectable()
 export class RouteEffect {
@@ -31,6 +31,7 @@ export class RouteEffect {
       }));
       return this.routeService.addOne(props).pipe(
         tap((res) => {
+            this.message.success('Thêm tuyến đường thành công')
             const expanedAll = this.routeQuery.getValue().expandedAll;
             const orders = this.handelOrder(res.orders);
             this.routeStore.update(state => ({
@@ -124,7 +125,7 @@ export class RouteEffect {
         ...state,
         added: false,
       }));
-      return this.routeService.update(props.id, props.updates).pipe(
+      return this.routeService.update(props).pipe(
         map((route) => {
           const expanedAll = this.routeQuery.getValue().expandedAll;
           this.routeStore.update(state => ({

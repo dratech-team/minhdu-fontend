@@ -8,7 +8,6 @@ import {ExportService} from '@minhdu-fontend/service';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {CustomerActions, CustomerQuery, CustomerStore} from '../../+state';
-import {OrderEntity} from '../../../order/enitities';
 import {CustomerDialogComponent, PaymentDialogComponent} from '../../component';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
@@ -17,6 +16,8 @@ import {CustomerConstant, PotentialsConstant} from '../../constants';
 import {Sort} from '@minhdu-fontend/data-models';
 import {OrderActions} from '../../../order/+state';
 import * as _ from 'lodash';
+import {OrderEntity} from "../../../order/enitities/order.entity";
+
 @Component({
   templateUrl: 'customer.component.html'
 })

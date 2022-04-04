@@ -11,7 +11,7 @@ import {
 import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
-import {OrderEntity} from '../../../order/enitities/order.entity';
+import {BaseOrderEntity} from '../../../order/enitities/base-order.entity';
 import {Actions} from '@datorama/akita-ng-effects';
 import {RouteQuery} from '../../+state/route.query';
 import {CancelEnum} from '../../enums/cancel.enum';
@@ -19,6 +19,7 @@ import {CommodityEntity} from '../../../commodity/entities/commodity.entity';
 import {OrderActions} from '../../../order/+state/order.actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {UpdateTypeEnum} from "../../enums/update-type.enum";
+import {OrderEntity} from "../../../order/enitities/order.entity";
 
 @Component({
   templateUrl: 'detail-route.component.html'

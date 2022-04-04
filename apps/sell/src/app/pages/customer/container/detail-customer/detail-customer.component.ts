@@ -2,16 +2,16 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 import {DevelopmentComponent, DialogDeleteComponent} from '@minhdu-fontend/components';
-import {ConvertBoolean, MenuEnum, PaidType} from '@minhdu-fontend/enums';
+import {ConvertBoolean, PaidType} from '@minhdu-fontend/enums';
 import {CustomerActions} from '../../+state/customer.actions';
 import {CustomerEntity} from '../../entities/customer.entity';
-import {OrderEntity} from '../../../order/enitities/order.entity';
 import {CustomerDialogComponent} from '../../component/customer-dialog/customer-dialog.component';
 import {PaymentDialogComponent} from '../../component/payment-dialog/payment-dialog.component';
 import {CustomerQuery} from '../../+state/customer.query';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {OrderDialogComponent} from "../../../order/component";
+import {OrderEntity} from "../../../order/enitities/order.entity";
 
 @Component({
   templateUrl: 'detail-customer.component.html',

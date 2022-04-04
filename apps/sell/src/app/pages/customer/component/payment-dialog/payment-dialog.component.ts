@@ -1,15 +1,15 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AppState} from '../../../../reducers';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentType} from '@minhdu-fontend/enums';
-import {OrderEntity} from '../../../order/enitities/order.entity';
+import {BaseOrderEntity} from '../../../order/enitities/base-order.entity';
 import {DatePipe} from '@angular/common';
 import {PaymentAction} from '../../../payment/payment/payment.action';
 import {tap} from 'rxjs/operators';
 import {selectedAdded} from '../../../payment/payment/payment.selector';
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {OrderEntity} from "../../../order/enitities/order.entity";
 
 @Component({
   templateUrl: 'payment-dialog.component.html'

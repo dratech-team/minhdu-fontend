@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {BaseService} from '@minhdu-fontend/service';
 import {HttpClient} from '@angular/common/http';
 import {Api} from '@minhdu-fontend/constants';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
 import {RouteEntity} from '../entities/route.entity';
 import {AddRouteDto} from '../dto/add-route.dto';
 import {UpdateRouteDto} from '../dto/update-route.dto';
 import {CancelDto} from "../dto/cancel-commodity.dto";
+import {catchError, tap} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class RouteService extends BaseService<RouteEntity> {
@@ -18,7 +19,7 @@ export class RouteService extends BaseService<RouteEntity> {
   }
 
   addOne(props: AddRouteDto): Observable<RouteEntity> {
-    return super.addOne(props);
+    return super.addOne(props.body);
   }
 
   pagination(params: any): Observable<ResponsePaginate<RouteEntity>> {
@@ -29,8 +30,8 @@ export class RouteService extends BaseService<RouteEntity> {
     return super.getOne(id);
   }
 
-  update(id: number, body: UpdateRouteDto): Observable<RouteEntity> {
-    return super.update(id, body);
+  update(updateDto : UpdateRouteDto): Observable<RouteEntity> {
+    return super.update(updateDto.id, updateDto.updates);
   }
 
   delete(id: number): Observable<void> {

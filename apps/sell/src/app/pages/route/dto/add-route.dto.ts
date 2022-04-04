@@ -1,6 +1,10 @@
-import { RouteEntity } from '../entities/route.entity';
+import {BaseAddDto} from "@minhdu-fontend/base-dto";
+import {BaseRouteEntity} from "../entities/base-route-entity";
 
-export interface AddRouteDto extends Partial<Omit<RouteEntity, 'id'>> {
+interface BaseAddRoute extends BaseRouteEntity {
   readonly orderIds: number[],
   readonly commodityIds: number[]
 }
+
+export type AddRouteDto = BaseAddDto<BaseAddRoute>
+

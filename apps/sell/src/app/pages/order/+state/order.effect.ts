@@ -6,7 +6,7 @@ import {catchError, map, switchMap} from 'rxjs/operators';
 import {of, throwError} from 'rxjs';
 import {ConvertBoolean} from '@minhdu-fontend/enums';
 import {Router} from '@angular/router';
-import {OrderEntity} from '../enitities/order.entity';
+import {BaseOrderEntity} from '../enitities/base-order.entity';
 import {getTotalCommodity} from '../../../../../../../libs/utils/sell.ultil';
 import {OrderQuery} from './order.query';
 import {OrderStore} from './order.store';
@@ -16,6 +16,7 @@ import {UpdateCommodityDto} from '../../commodity/dto';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CustomerQuery, CustomerStore} from "../../customer/+state";
 import {CustomerEntity} from "../../customer/entities";
+import {OrderEntity} from "../enitities/order.entity";
 
 @Injectable()
 export class OrderEffect {
@@ -42,11 +43,12 @@ export class OrderEffect {
       }));
       return this.orderService.addOne(props).pipe(
         map((res) => {
+          console.log(res)
           this.orderStore.update(state => ({
             ...state, added: true,
             total: state.total + 1,
             totalCommodity: res.commodities.length > 0 ?
-              state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.commodityUniq,
+              state.totalCommodity + res.commodities.reduce((a, b) => a + b.amount, 0) : state.totalCommodity,
             commodityUniq: res.commodities?.length > 0 ?
               this.handleCommodityUniq(state.commodityUniq, res.commodities, 'add') :
               state.commodityUniq
@@ -138,7 +140,7 @@ export class OrderEffect {
           ...state,
           added: false
         }));
-        return this.orderService.update(props.id, props.updates).pipe(
+        return this.orderService.update(props).pipe(
           map((response) => {
             const orderBefore = this.orderQuery.getEntity(response.id);
             if (orderBefore)
@@ -238,7 +240,8 @@ export class OrderEffect {
   ) {
     const result = JSON.parse(JSON.stringify(commoditiesUniq));
     commodities.forEach(value => {
-      const index = result.findIndex((commodity: UpdateCommodityDto) => commodity.updates.code === value.code);
+      console.log(result)
+      const index = result.findIndex((commodity: CommodityEntity) => commodity.code === value.code);
       switch (action) {
         case 'add':
           if (index > -1) {
