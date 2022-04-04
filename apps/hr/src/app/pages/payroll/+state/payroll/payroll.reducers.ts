@@ -54,10 +54,6 @@ export const payrollReducer = createReducer(
       });
   }),
 
-  on(PayrollAction.loadMorePayrolls, (state, _) => {
-    return {...state, loaded: false};
-  }),
-
   on(PayrollAction.loadMorePayrollsSuccess, (state, action) => {
       return adapter.addMany(action.payrolls, {
         ...state,
