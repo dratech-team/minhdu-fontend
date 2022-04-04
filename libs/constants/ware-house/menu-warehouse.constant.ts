@@ -3,10 +3,16 @@ import {MenuEnum} from "../../enums";
 
 export const MenuWarehouseConstant = [
   {
-    name: 'Hàng hoá',
-    icon: '/assets/icon/menu/box.svg',
+    name: 'Tổng quan',
+    icon: '/assets/icon/menu/clipboard2.svg',
     state:MenuEnum.DASHBOARD,
     href: '/'
+  },
+  {
+    name: 'Hàng hoá',
+    icon: '/assets/icon/menu/box.svg',
+    state:MenuEnum.COMMODITY,
+    href: '/hang-hoa'
   },
   {
     name: 'Xuất - nhập kho',

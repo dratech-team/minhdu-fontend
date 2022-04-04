@@ -14,6 +14,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
+      },
+      {
+        path: 'hang-hoa',
         loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule),
       },
       {
