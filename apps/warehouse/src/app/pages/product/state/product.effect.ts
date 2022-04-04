@@ -80,7 +80,7 @@ export class ProductEffect {
       this.productStore.update(state => ({
         ...state, added: false
       }))
-      return this.service.update(props.id, props.body);
+      return this.service.update(props);
     }),
     tap(res => {
       this.productStore.update(state => ({

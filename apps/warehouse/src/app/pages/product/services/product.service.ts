@@ -29,8 +29,8 @@ export class ProductService extends BaseService<Product> {
     return super.getOne(id);
   }
 
-  update(id: Product['id'], body: UpdateProductDto): Observable<Product> {
-    return super.update(id, body);
+  update(updateDto:UpdateProductDto): Observable<Product> {
+    return super.update(updateDto.id, updateDto.updates);
   }
 
   delete(id: Product['id'], params?: any): Observable<void> {

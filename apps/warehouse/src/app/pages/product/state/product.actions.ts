@@ -19,7 +19,7 @@ const getOne = createAction(
 
 const update = createAction(
   '[PRODUCT] Update',
-  props<{ id: Product['id'], body: UpdateProductDto }>()
+  props<UpdateProductDto>()
 );
 
 const remove = createAction(
