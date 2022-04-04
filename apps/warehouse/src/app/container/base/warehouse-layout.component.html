@@ -54,8 +54,9 @@
       <div (click)="onUpdateStateAppName(item.name)">
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>{{item.name}}
       </div>
-      <div *ngIf="(routerActive$|async) === item.href && item.children" class="submenu d-flex position-absolute ml-2"
+      <div *ngIf="(routerActive$|async) === item.href && item.children" class="submenu d-flex position-absolute ml-2 animate-submenu"
            style="top:30px; width: 300%"
+
       >
         <div class="pointer"
           style="margin-right:10px; font-weight: 500; font-size: 14px" *ngFor="let subMenu of item.children"
