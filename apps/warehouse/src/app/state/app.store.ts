@@ -2,17 +2,11 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 
 export interface AppState extends EntityState {
-  ui: {
-    appname: string;
-  }
+  active: string;
 }
 
 function createInitialState(): AppState {
-  return {
-    ui: {
-      appname: 'Hệ thống quản lý kho Minh Dư'
-    }
-  };
+  return { active: 'Hệ thống quản lý kho Minh Dư' };
 }
 
 @Injectable({ providedIn: 'root' })
