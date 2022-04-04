@@ -2,11 +2,11 @@
   <div class=' py-2'>
     <div class='row'>
       <div class='d-flex col-md-7 col-xm-12 '>
-        <div class='col-md-4   d-flex align-items-center'>
-          <div class='col-md-1 col-xm-1  d-flex align-items-center justify-content-center'>
+        <div class='col d-flex align-items-center'>
+          <div class='d-flex mr-1 align-items-center justify-content-center'>
             <img src='/assets/icon/warehouse-layout/grid-3x3-gap-fill.svg' alt='app'>
           </div>
-          <span class='col-md-11 col-xm-11 app-name font-xl font-weight-bold'>{{appName$|async}}</span>
+          <span class='app-name font-xl font-weight-bold'>{{appName$|async}}</span>
         </div>
       </div>
       <div class=' col-md-5 col-xm-12   d-flex justify-content-end'>
@@ -17,14 +17,16 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item [routerLink]="['he-thong/quan-ly-tai-khoan']">
             <img height='20px btn' src='/assets/icon/menu/person-circle.svg' alt='account'>
-            Quản lý tài khoản</button>
+            Quản lý tài khoản
+          </button>
           <button mat-menu-item [routerLink]="['quan-ly-nha-cung-cap']">
             <img height='20px btn' src='/assets/icon/menu/house.svg' alt='provider'>
             Quản lý nhà cung cấp
           </button>
           <button mat-menu-item [routerLink]="['quan-ly-chi-nhanh']">
             <img height='20px btn' src='/assets/icon/menu/cursor.svg' alt='branch'>
-            Quản lý chi nhánh</button>
+            Quản lý chi nhánh
+          </button>
         </mat-menu>
         <button type='button' data-toggle='tooltip' data-placement='bottom' title='Facebook'
                 class='col-md-1 col-xm-2 mr-2 btn d-flex align-items-center justify-content-center'>
@@ -47,23 +49,25 @@
     <div>
 
     </div>
-    <div class='ml-2 position-relative' *ngFor='let item of menuWarehouse' routerLink='{{item.href}}' routerLinkActive='active'
-            mat-button>
-      <div>
+    <div class='mr-3 position-relative' *ngFor='let item of menuWarehouse' routerLink='{{item.href}}'
+         routerLinkActive='active'>
+      <div (click)="onUpdateStateAppName(item.name)">
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>{{item.name}}
       </div>
-      <div *ngIf="item.children && item.href" class="submenu d-flex position-absolute"
+      <div *ngIf="(routerActive$|async) === item.href && item.children" class="submenu d-flex position-absolute ml-2"
            style="top:30px; width: 300%"
       >
-        <div class="mr-4" *ngFor="let subMenu of item.children">
-          {{subMenu.title}}
+        <div class="pointer"
+          style="margin-right:10px; font-weight: 500; font-size: 14px" *ngFor="let subMenu of item.children"
+             (click)="onUpdateStateAppName(subMenu.name)"
+        >
+          {{subMenu.name}}
         </div>
       </div>
-
     </div>
   </div>
 </div>
-<div style='margin: 130px 0 0; overflow: auto; background: #eee'>
+<div style='margin: 127px 0 0; overflow: auto; background: #eee'>
   <router-outlet>
   </router-outlet>
 </div>
