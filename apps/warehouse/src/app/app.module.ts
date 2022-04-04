@@ -26,7 +26,7 @@ import { OrgchartModule } from '@minhdu-fontend/orgchart';
 import { ProviderModule } from './pages/provider/provider.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RouteGuard } from '../../../sell/src/app/route.guard';
+import { RouteGuard } from './route.guard';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],

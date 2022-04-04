@@ -5,8 +5,11 @@ import { Store } from '@ngrx/store';
 import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
 import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
 import { Role } from 'libs/enums/hr/role.enum';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Params, Router, RouterModule} from '@angular/router';
 import {MenuWarehouseConstant} from "@minhdu-fontend/constants";
+import {Observable} from "rxjs";
+import {AppStore} from "../../state/app.store";
+import {AppQuery} from "../../state/app.query";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
@@ -16,10 +19,16 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
   role = localStorage.getItem('role');
   roleEnum = Role;
   menuWarehouse = MenuWarehouseConstant
+  appName$ = this.appQuery.select(state => state.appName)
+  routerActive$ = this.appQuery.select(state => state.active)
+
   constructor(
     private readonly dialog: MatDialog,
     private readonly store: Store,
+    private readonly appQuery: AppQuery,
+    private readonly appStore: AppStore,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly ref: ChangeDetectorRef
   ) {
   }
@@ -45,5 +54,11 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
 
   signUp() {
     this.dialog.open(RegisterComponent, { width: '40%' });
+  }
+
+  onUpdateStateAppName(appName: string) {
+    this.appStore.update(state => ({
+      ...state, appName: appName
+    }))
   }
 }
