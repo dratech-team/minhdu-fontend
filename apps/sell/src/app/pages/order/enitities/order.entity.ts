@@ -5,6 +5,7 @@ import {CustomerEntity} from '../../customer/entities';
 import {CommodityEntity} from '../../commodity/entities';
 
 export interface OrderEntity {
+  customerId: number;
   id: number;
   customer: CustomerEntity;
   createdAt: Date;

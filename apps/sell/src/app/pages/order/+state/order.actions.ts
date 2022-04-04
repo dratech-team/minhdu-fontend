@@ -40,7 +40,7 @@ const remove = createAction(
 
 const cancelOrder = createAction(
   '[ORDER] Cancel',
-  props<{ orderId: number , customerId: number}>()
+  props<{ orderId: number}>()
 );
 
 const error = createAction(
