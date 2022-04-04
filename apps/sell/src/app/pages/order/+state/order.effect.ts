@@ -224,7 +224,7 @@ export class OrderEffect {
             delivering: customerUpdate.delivering.filter((order: OrderEntity) => order.id !== res.id)
           })
           this.message.success('Huỷ đơn hàng thành công');
-          this.orderStore.remove(prop.orderId)
+          this.orderStore.remove(res.id)
         }
       ),
       catchError((err) => of(OrderActions.error(err)))
