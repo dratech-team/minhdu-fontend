@@ -1,15 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PaymentType } from '@minhdu-fontend/enums';
-import { OrderActions, OrderQuery } from '../../+state';
-import { DatePipe } from '@angular/common';
-import { CustomerEntity } from '../../../customer/entities';
-import { CommodityQuery } from '../../../commodity/+state';
-import { CustomerQuery } from '../../../customer/+state';
-import { Actions } from '@datorama/akita-ng-effects';
-import { CommodityEntity } from '../../../commodity/entities';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {PaymentType} from '@minhdu-fontend/enums';
+import {OrderActions, OrderQuery} from '../../+state';
+import {DatePipe} from '@angular/common';
+import {CustomerEntity} from '../../../customer/entities';
+import {CommodityQuery} from '../../../commodity/+state';
+import {CustomerQuery} from '../../../customer/+state';
+import {Actions} from '@datorama/akita-ng-effects';
+import {CommodityEntity} from '../../../commodity/entities';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {BaseAddOrderDto} from "../../dto";
+import * as _ from 'lodash';
+import {OrderEntity} from "../../enitities/order.entity";
 
 @Component({
   templateUrl: 'order-dialog.component.html'
@@ -94,7 +97,7 @@ export class OrderDialogComponent implements OnInit {
       endedAt: val.endedAt
     };
     if (!val.deliveredAt) {
-      delete order.deliveredAt;
+      delete order.deliveredAt
     }
     if(!order.districtId){
       delete order.districtId
@@ -108,7 +111,7 @@ export class OrderDialogComponent implements OnInit {
         updates: order
       }));
     } else {
-      this.actions$.dispatch(OrderActions.addOne(order));
+      this.actions$.dispatch(OrderActions.addOne({body: order}));
     }
     this.added$.subscribe(added => {
       if (added) {

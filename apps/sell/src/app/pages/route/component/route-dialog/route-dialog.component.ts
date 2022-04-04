@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RouteActions} from '../../+state/routeActions';
 import {DatePipe} from '@angular/common';
-import {OrderEntity} from '../../../order/enitities/order.entity';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {Actions} from "@datorama/akita-ng-effects";
@@ -10,6 +9,7 @@ import {RouteQuery} from "../../+state/route.query";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {RouteStore} from "../../+state/route.store";
 import {UpdateTypeEnum} from "../../enums/update-type.enum";
+import {OrderEntity} from "../../../order/enitities/order.entity";
 
 @Component({
   templateUrl: 'route-dialog.component.html',
@@ -94,7 +94,7 @@ export class RouteDialogComponent implements OnInit {
         RouteActions.update({updates: route, id: this.data.route.id})
       );
     } else {
-      this.actions$.dispatch(RouteActions.addOne(route));
+      this.actions$.dispatch(RouteActions.addOne({body: route}));
     }
     this.added$.subscribe(added => {
       if (added) {

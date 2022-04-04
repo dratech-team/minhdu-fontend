@@ -18,7 +18,7 @@ export class CustomerService extends BaseService<CustomerEntity> {
   }
 
   addOne(props: AddCustomerDto): Observable<CustomerEntity> {
-    return super.addOne(props);
+    return super.addOne(props.body);
   }
 
   pagination(params: SearchCustomerDto): Observable<ResponsePaginate<CustomerEntity>> {
@@ -29,8 +29,8 @@ export class CustomerService extends BaseService<CustomerEntity> {
     return super.getOne(id);
   }
 
-  update(id: CustomerEntity['id'], body: Partial<UpdateCustomerDto>): Observable<CustomerEntity> {
-    return super.update(id, body);
+  update(updateDto:UpdateCustomerDto): Observable<CustomerEntity> {
+    return super.update(updateDto.id, updateDto.updates);
   }
 
 

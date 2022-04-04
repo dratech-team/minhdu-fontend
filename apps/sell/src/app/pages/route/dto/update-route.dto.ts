@@ -1,3 +1,8 @@
-import { AddRouteDto } from './add-route.dto';
+import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import {BaseRouteEntity} from "../entities/base-route-entity";
 
-export type UpdateRouteDto = Partial<AddRouteDto>
+interface BaseUpdateRouteDto extends BaseRouteEntity {
+  commodityIds?: number[]
+}
+
+export type UpdateRouteDto = BaseUpdateDto<BaseUpdateRouteDto>

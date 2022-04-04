@@ -1,9 +1,9 @@
-import { OrderEntity } from '../enitities/order.entity';
-import { CustomerEntity } from '../../customer/entities/customer.entity';
+import {BaseOrderEntity} from '../enitities/base-order.entity';
 import {CommodityEntity} from "../../commodity/entities/commodity.entity";
+import {BaseAddDto} from "@minhdu-fontend/base-dto";
 
-export interface AddOrderDto extends Pick<OrderEntity, 'createdAt' | 'endedAt' | 'explain'> {
-  readonly customerId: CustomerEntity['id'];
+
+export interface BaseAddOrderDto extends Partial<BaseOrderEntity>{
   readonly createdAt: Date;
   readonly provinceId: number;
   readonly districtId?: number;
@@ -11,3 +11,4 @@ export interface AddOrderDto extends Pick<OrderEntity, 'createdAt' | 'endedAt' |
   readonly note?: string;
   readonly commodityIds?: CommodityEntity['id'][];
 }
+export type AddOrderDto  = BaseAddDto<BaseAddOrderDto>

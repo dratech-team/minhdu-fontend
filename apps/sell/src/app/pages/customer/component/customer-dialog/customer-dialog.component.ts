@@ -7,8 +7,6 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../+state/customer.query';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NzModalRef} from "ng-zorro-antd/modal";
-import {CustomerEntity} from "../../entities";
-import {AddCustomerDto} from "../../dto";
 
 @Component({
   templateUrl: 'customer-dialog.component.html'

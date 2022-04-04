@@ -12,7 +12,7 @@ import {CustomerEntity} from '../../../customer/entities/customer.entity';
 import {DatePipe} from '@angular/common';
 import {Actions} from '@datorama/akita-ng-effects';
 import {CustomerQuery} from '../../../customer/+state/customer.query';
-import {AddOrderDto} from '../../dto/add-order.dto';
+import {AddOrderDto, BaseAddOrderDto} from '../../dto/add-order.dto';
 import {CommodityEntity} from "../../../commodity/entities/commodity.entity";
 import {CustomerActions} from "../../../customer/+state/customer.actions";
 import {OrderQuery} from "../../+state/order.query";
@@ -133,7 +133,7 @@ export class AddOrderComponent implements OnInit {
     }
 
     const val = this.formGroup.value;
-    const order: AddOrderDto = {
+    const order = {
       createdAt: val.createdAt,
       endedAt: val.endedAt,
       explain: val.explain,
@@ -143,6 +143,6 @@ export class AddOrderComponent implements OnInit {
       customerId: this.customerId,
       commodityIds: this.commoditiesPicked.map(item => item.id)
     };
-    this.actions$.dispatch(OrderActions.addOne(order));
+    this.actions$.dispatch(OrderActions.addOne({body: order}));
   }
 }

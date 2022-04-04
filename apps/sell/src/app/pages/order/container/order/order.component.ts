@@ -20,11 +20,11 @@ import {
   DialogSharedComponent
 } from '../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component';
 import {Actions} from '@datorama/akita-ng-effects';
-import {OrderEntity} from '../../enitities';
 import {Sort} from '@minhdu-fontend/data-models';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {OrderDialogComponent} from '../../component';
 import * as _ from 'lodash';
+import {OrderEntity} from "../../enitities/order.entity";
 
 @Component({
   templateUrl: 'order.component.html'

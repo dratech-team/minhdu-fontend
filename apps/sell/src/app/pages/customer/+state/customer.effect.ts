@@ -69,6 +69,7 @@ export class CustomerEffect {
       }));
       return this.customerService.addOne(props).pipe(
         tap((res) => {
+          this.message.success('Thêm khác hành thành công')
             this.customerStore.update(state => ({
               ...state, added: true
             }));
@@ -101,7 +102,7 @@ export class CustomerEffect {
         this.customerStore.update(state => ({
           ...state, added: false
         }));
-        return this.customerService.update(props.id, props.updates).pipe(
+        return this.customerService.update(props).pipe(
           tap(response => {
             this.customerStore.update(state => ({
               ...state, added: true

@@ -19,7 +19,7 @@ export class CommodityService extends BaseService<CommodityEntity> {
   }
 
   addOne(props: AddCommodityDto): Observable<CommodityEntity> {
-    return super.addOne(props);
+    return super.addOne(props.body);
   }
 
   getAll(params?: any): Observable<CommodityEntity[]> {

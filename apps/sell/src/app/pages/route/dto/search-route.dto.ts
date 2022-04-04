@@ -1,11 +1,11 @@
-import {SearchRangeDto} from "../../../shared/dto";
+import {SearchRangeDto} from '../../../shared/dto';
 
-export interface SearchRouteDto  extends SearchRangeDto{
-  take?: number;
-  skip?: number;
-  orderId?: number;
-  status?: number;
-  orderBy?: string,
-  orderType?: string
+export interface SearchRouteDto extends SearchRangeDto {
   search?: string,
+  status?: number,
+  take?: number,
+  skip?: number,
+  orderId?: number
+  orderType?: string
+  orderBy?:string
 }

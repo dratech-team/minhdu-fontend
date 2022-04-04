@@ -1,9 +1,13 @@
-import { OrderEntity } from '../enitities/order.entity';
-import { AddOrderDto } from './add-order.dto';
 import {CommodityEntity} from "../../commodity/entities/commodity.entity";
+import {OrderEntity} from "../enitities/order.entity";
+import {BaseOrderEntity} from "../enitities";
+import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
 
-export interface UpdateOrderDto extends Partial<AddOrderDto> {
+interface BaseUpdateOrderDto extends BaseOrderEntity {
   readonly orderIds?: OrderEntity['id'][],
   readonly commodityIds?: CommodityEntity['id'][],
-  readonly deliveredAt?: Date,
+}
+
+export interface UpdateOrderDto extends BaseUpdateDto<BaseUpdateOrderDto>{
+  inRoute?: { routeId: number }
 }

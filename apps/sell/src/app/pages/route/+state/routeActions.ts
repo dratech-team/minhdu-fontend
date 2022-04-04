@@ -3,6 +3,7 @@ import {createAction, props} from '@datorama/akita-ng-effects';
 import {UpdateRouteDto} from '../dto/update-route.dto';
 import {SearchRouteDto} from '../dto/search-route.dto';
 import {CancelDto} from "../dto/cancel-commodity.dto";
+import {UpdateCustomerDto} from "../../customer/dto";
 
 const addOne = createAction(
   '[ROUTE] Add One',
@@ -21,7 +22,7 @@ const loadOne = createAction(
 
 const update = createAction(
   '[ROUTE] Update',
-  props<{ id: number; updates: Partial<UpdateRouteDto> }>()
+  props<UpdateRouteDto>()
 );
 
 const remove = createAction(
