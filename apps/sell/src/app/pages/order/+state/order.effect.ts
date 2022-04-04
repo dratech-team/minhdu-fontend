@@ -240,7 +240,6 @@ export class OrderEffect {
   ) {
     const result = JSON.parse(JSON.stringify(commoditiesUniq));
     commodities.forEach(value => {
-      console.log(result)
       const index = result.findIndex((commodity: CommodityEntity) => commodity.code === value.code);
       switch (action) {
         case 'add':
