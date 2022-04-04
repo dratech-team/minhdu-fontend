@@ -54,9 +54,9 @@
            [scrollLeft]='(scrollX$ | async)'
            #tableEmployee
            infiniteScroll
-           [alwaysCallback]='true'
-           [infiniteScrollDistance]='1'
-           [infiniteScrollThrottle]='10'
+           [alwaysCallback]='false'
+           [infiniteScrollDistance]='0'
+           [infiniteScrollThrottle]='0'
            [scrollWindow]='false'
            (scrolled)='onScroll()'
       >
@@ -212,7 +212,7 @@
           </thead>
           <tbody cdkDropList (cdkDropListDropped)='onDrop($event)'>
           <tr *ngIf='!(loaded$|async); else loaded'>
-            <th colspan='100'>
+            <th colspan='100' style="z-index: -1 !important;">
               <ngx-skeleton-loader count='10'
                                    appearance='line'></ngx-skeleton-loader>
             </th>

@@ -3,7 +3,7 @@ import {EmployeeAction, selectorEmployeeTotal} from '@minhdu-fontend/employee';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {select, Store} from '@ngrx/store';
 import {throwError} from 'rxjs';
-import {catchError, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {DegreeService} from './service/degree.service';
 import {EmployeeService} from './service/employee.service';
 import {RelativeService} from './service/relative.service';

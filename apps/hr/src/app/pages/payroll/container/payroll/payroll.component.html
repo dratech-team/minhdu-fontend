@@ -224,7 +224,7 @@
             </thead>
             <tbody *ngIf='(payroll$|async) as payrolls'>
             <tr *ngIf='!(loaded$ | async)  ; else payroll'>
-              <th colSpan='100'>
+              <th colSpan='100' style="z-index: -1!important;">
                 <ngx-skeleton-loader count='10' appearance='line'>
                 </ngx-skeleton-loader>
               </th>
