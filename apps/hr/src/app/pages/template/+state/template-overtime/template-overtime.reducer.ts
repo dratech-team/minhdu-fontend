@@ -35,6 +35,11 @@ export const templateOvertimeReducer = createReducer(
     }
   ),
 
+  on(TemplateOvertimeAction.loadMoreTemplateOverTime, (state, _) => {
+      return { ...state, loaded: false};
+    }
+  ),
+
   on(TemplateOvertimeAction.loadMoreTempLateSuccess, (state, action) =>
     adapter.addMany(action.templateOvertimes, { ...state, loaded: true, total: action.total })),
 

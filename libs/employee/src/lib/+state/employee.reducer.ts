@@ -49,6 +49,10 @@ export const EmployeeReducer = createReducer(
     return adapter.removeMany(predicate, state);
   }),
 
+  on(EmployeeAction.loadMoreEmployees, (state, action) => {
+    return { ...state, loaded: false };
+  }),
+
   on(EmployeeAction.LoadMoreEmployeesSuccess, (state, action) =>
     adapter.addMany(action.employees, {
       ...state,
