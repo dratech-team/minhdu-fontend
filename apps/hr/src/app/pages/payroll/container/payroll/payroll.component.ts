@@ -203,11 +203,11 @@ export class PayrollComponent implements OnInit, AfterContentChecked {
       .pipe(
         map((val) => {
           if (
-            !val.createdAt &&
+            !this.formCreatedAt.value &&
             this.selectedPayroll === FilterTypeEnum.TIME_SHEET
           ) {
             this.message.error('Phiếu chấm công phải chọn tháng');
-            this.formGroup.get('createdAt')?.patchValue(this.datePipe.transform(new Date(), 'yyyy-MM'));
+            this.formCreatedAt.patchValue(this.datePipe.transform(new Date(), 'yyyy-MM'));
             takeUntil(this.stop$);
           } else {
             return val;
