@@ -102,8 +102,8 @@
         </thead>
         <tbody *ngIf='(templates$| async) as templates'>
         <tr *ngIf='!(loaded$|async) else tableTemplate'>
-          <th colSpan="20">
-            <ngx-skeleton-loader style="z-index: -1" count='10' appearance='line'></ngx-skeleton-loader>
+          <th colSpan="20" style="z-index: -1!important;">
+            <ngx-skeleton-loader  count='10' appearance='line'></ngx-skeleton-loader>
           </th>
         </tr>
         <ng-template #tableTemplate>
