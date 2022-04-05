@@ -27,6 +27,7 @@ import { ProviderModule } from './pages/provider/provider.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
+import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart";
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -39,7 +40,7 @@ import { RouteGuard } from './route.guard';
     BrowserAnimationsModule,
     AppRoutingModule,
     BrowserModule,
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects,OrgchartEffects]),
     StoreModule.forRoot({}, {}),
     AkitaNgDevtools.forRoot(),
     AppHeaderModule,
