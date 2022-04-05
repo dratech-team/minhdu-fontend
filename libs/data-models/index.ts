@@ -20,12 +20,12 @@ export  * from './sell/statistical/statistical'
 export  * from './sell/statistical/statistical-agency'
 export  * from './sell/statistical/statiscal-province'
 export  * from './sell/payment-history'
-export  * from './warehouse/warehouse'
 export  * from './partial-day.enum'
 export  * from './hr/employee/category'
 export  * from './sort'
 export  * from './range-day'
 export  * from './visible'
+export  * from './warehouse/warehouse'
 
 
 

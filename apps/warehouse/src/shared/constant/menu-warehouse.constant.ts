@@ -1,4 +1,4 @@
-import {MenuEnum} from "../../enums";
+import {MenuEnum} from "@minhdu-fontend/enums";
 import {sr_RS} from "ng-zorro-antd/i18n";
 
 interface menuWarehouse {

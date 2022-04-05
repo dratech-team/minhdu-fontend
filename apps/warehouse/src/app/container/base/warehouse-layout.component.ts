@@ -1,15 +1,14 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AuthActions } from '@minhdu-fontend/auth';
-import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
-import { LogoutComponent } from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
-import { RegisterComponent } from 'libs/auth/src/lib/components/dialog-register.component/register.component';
-import { Role } from 'libs/enums/hr/role.enum';
-import {ActivatedRoute, Params, Router, RouterModule} from '@angular/router';
-import {MenuWarehouseConstant} from "@minhdu-fontend/constants";
-import {Observable} from "rxjs";
+import {AfterContentChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AuthActions} from '@minhdu-fontend/auth';
+import {MatDialog} from '@angular/material/dialog';
+import {Store} from '@ngrx/store';
+import {LogoutComponent} from 'libs/auth/src/lib/components/dialog-logout.component/logout.component';
+import {RegisterComponent} from 'libs/auth/src/lib/components/dialog-register.component/register.component';
+import {Role} from 'libs/enums/hr/role.enum';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AppStore} from "../../state/app.store";
 import {AppQuery} from "../../state/app.query";
+import {MenuWarehouseConstant} from "../../../shared/constant";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
