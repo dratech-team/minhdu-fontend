@@ -1,0 +1,52 @@
+<div class="d-flex">
+  <div class='d-flex flex-column border p-2' style='height: 75vh; width:260px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <div class='mt-2'>
+      <minhdu-fontend-collapse-radios
+        [active]="true"
+        [formGroup]='formGroup' [controlName]="'status'" header='Trạng thái'
+        [radios]='radios'>
+      </minhdu-fontend-collapse-radios>
+    </div>
+  </div>
+  <div style='width: 78vw'>
+    <nz-table class="ml-2"
+              #columnTable
+              [nzData]='[]'
+              [nzScroll]="{ x: '1550px', y:'65vh'}">
+      <thead>
+      <tr>
+        <th>Mã Đơn</th>
+        <th>Tên Tên nhà cung cấp</th>
+        <th>Chi nhánh</th>
+        <th>Trạng thái</th>
+        <th>Thanh toán</th>
+        <th>Nhập kho</th>
+        <th>Tổng tiền</th>
+        <th>Nhân viên tạo</th>
+        <th>Ngày hẹn giao</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let data of columnTable.data'>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
