@@ -48,21 +48,21 @@ export class DialogTemplateOvertimeComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(OrgchartActions.init());
-    if (this.data?.branches) {
-      this.branchesSelected = [...this.data.branches]
+    if (this.data?.template?.branches) {
+      this.branchesSelected = [...this.data.template.branches]
     }
-    if (this.data?.positions) {
-      this.positionSelected = [...this.data.positions];
+    if (this.data?.template?.positions) {
+      this.positionSelected = [...this.data.template.positions];
     }
     this.formGroup = this.formBuilder.group({
-      title: [this.data?.title, Validators.required],
-      employeeType: [this.data?.employeeType ?
-        this.data?.employeeType
+      title: [this.data?.template?.title, Validators.required],
+      employeeType: [this.data?.template?.employeeType ?
+        this.data?.template?.employeeType
         : EmployeeType.EMPLOYEE_FULL_TIME, Validators.required],
-      price: [this.data?.price, Validators.required],
-      unit: [this.data?.unit, Validators.required],
-      rate: [this.data?.rate ? this.data.rate : 1, Validators.required],
-      note: [this.data?.note]
+      price: [this.data?.template?.price, Validators.required],
+      unit: [this.data?.template?.unit, Validators.required],
+      rate: [this.data?.template?.rate ? this.data.template.rate : 1, Validators.required],
+      note: [this.data?.template?.note]
     });
 
     this.formGroup.get('employeeType')?.valueChanges.subscribe(val => {
@@ -106,9 +106,6 @@ export class DialogTemplateOvertimeComponent implements OnInit {
 
     const value = this.formGroup.value;
     const template = {
-      isUpdate: !!this.data,
-      id: this.data?.id,
-      data: {
         title: value.title,
         employeeType: value.employeeType,
         positionIds: this.positionSelected.map(val => val.id),
@@ -117,12 +114,11 @@ export class DialogTemplateOvertimeComponent implements OnInit {
         unit: value.unit,
         note: value.note,
         rate: value.rate
-      } as ReqOvertime
-    };
-    if (template.isUpdate) {
-      this.store.dispatch(TemplateOvertimeAction.updateTemplate({id: template.id, templateOvertime: template.data}));
+    }as ReqOvertime;
+    if (this.data?.isUpdate) {
+      this.store.dispatch(TemplateOvertimeAction.updateTemplate({id: this.data.template.id, templateOvertime: template}));
     } else {
-      this.store.dispatch(TemplateOvertimeAction.AddTemplate({template: template.data}));
+      this.store.dispatch(TemplateOvertimeAction.AddTemplate({template: template}));
     }
     this.store.pipe(select(selectTemplateAdded)).subscribe(added => {
       if (added) {

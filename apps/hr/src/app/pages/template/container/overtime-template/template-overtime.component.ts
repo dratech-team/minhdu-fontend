@@ -83,10 +83,10 @@ export class TemplateOvertimeComponent implements OnInit {
       .subscribe();
   }
 
-  templateOvertime($event?: any) {
+  templateOvertime(template?: any, isUpdate?: boolean) {
     this.dialog.open(DialogTemplateOvertimeComponent, {
       width: '40%',
-      data: $event
+      data: {template, isUpdate}
     });
   }
 
@@ -132,8 +132,8 @@ export class TemplateOvertimeComponent implements OnInit {
   }
 
   onOvertime(template: any, position?: Position) {
-    if(position){
-      this.store.dispatch(PayrollAction.updateStatePosition({position:position}))
+    if (position) {
+      this.store.dispatch(PayrollAction.updateStatePosition({position: position}))
     }
     this.store.dispatch(PayrollAction.updateStatePayroll({filter: FilterTypeEnum.OVERTIME}));
 
