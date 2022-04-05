@@ -113,15 +113,17 @@ export class ConfirmPayrollComponent implements OnInit {
         title: 'Huỷ xác nhận phiếu lương',
         description: `Bạn có chắc chắn muốn huỷ xác nhận phiếu lương của nhân viên ${this.data.payroll.employee.lastName}`
       }
-    }).afterClosed().subscribe(val => {
+    }).afterClosed().subscribe(() => {
       this.adding = true
       this.payrollService.cancelConfirmPayroll(this.data.payroll.id).pipe(catchError(err =>{
         this.adding = false
         return throwError(err)
-      })).subscribe(val => {
+      })).subscribe(() => {
         this.adding = false
         this.message.success('Huỷ xác nhận phiếu lương thành công')
-        this.dialogRef.close()
+        this.dialogRef.close();
+        /// FIXME: sau khi huyr thanh cong thi gọi api load lại phiếu lương
+        location.reload();
       })
     })
   }
