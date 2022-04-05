@@ -1,12 +1,10 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Api} from '@minhdu-fontend/constants';
-import {ResponsePaginate, ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
-import {Update} from '@ngrx/entity';
+import {ResponsePaginateOvertimePayroll} from '@minhdu-fontend/data-models';
 import {BaseService} from 'libs/service/base.service';
 import {Observable} from 'rxjs';
 import {Payroll} from '../+state/payroll/payroll.interface';
-import {UpdateNum} from '@ngrx/entity/src/models';
 
 type Params =
   | HttpParams
@@ -65,5 +63,9 @@ export class PayrollService extends BaseService<Payroll> {
 
   getAllTempLate(params?: any): Observable<string[]> {
     return this.http.get<string[]>(Api.HR.PAYROLL.TEMPLATE_SALARY, {params});
+  }
+
+  cancelConfirmPayroll(id: number, body?: any): Observable<any> {
+    return this.http.patch<any>(Api.HR.PAYROLL.CANCEL_CONFIRM+ `/${id}`,body);
   }
 }

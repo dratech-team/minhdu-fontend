@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {Payslip} from '../../+state/payslip/payslip.interface';
 import {PayslipService} from '../../service/payslip.service';
@@ -14,8 +14,9 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
-import {subscribeOn} from "rxjs/operators";
+import {catchError, subscribeOn} from "rxjs/operators";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
+import {PayrollService} from "../../service/payroll.service";
 
 @Component({
   templateUrl: 'confirm-payroll.component.html',
@@ -37,6 +38,7 @@ export class ConfirmPayrollComponent implements OnInit {
   lastDayInMonth = this.datePipe.transform(
     getLastDayInMonth(new Date(this.data.payroll.createdAt)), 'yyyy-MM-dd');
   role?: string | null
+  adding = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -45,6 +47,7 @@ export class ConfirmPayrollComponent implements OnInit {
     private readonly datePipe: DatePipe,
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
+    private readonly payrollService: PayrollService,
     private readonly dialogRef: MatDialogRef<ConfirmPayrollComponent>
   ) {
   }
@@ -104,13 +107,22 @@ export class ConfirmPayrollComponent implements OnInit {
   }
 
   onCancelPayroll() {
+
     this.dialog.open(DialogSharedComponent,{
       data:{
         title: 'Huỷ xác nhận phiếu lương',
         description: `Bạn có chắc chắn muốn huỷ xác nhận phiếu lương của nhân viên ${this.data.payroll.employee.lastName}`
       }
     }).afterClosed().subscribe(val => {
-      // đợi api
+      this.adding = true
+      this.payrollService.cancelConfirmPayroll(this.data.payroll.id).pipe(catchError(err =>{
+        this.adding = false
+        return throwError(err)
+      })).subscribe(val => {
+        this.adding = false
+        this.message.success('Huỷ xác nhận phiếu lương thành công')
+        this.dialogRef.close()
+      })
     })
   }
 }
