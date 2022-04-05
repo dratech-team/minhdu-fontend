@@ -38,7 +38,7 @@ export class TemplateSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    if (this.data?.isUpdate) {
+    if (this.data?.template) {
       if (this.data.template?.branches) {
         this.branchesSelected = [...this.data.template?.branches];
       }
@@ -79,7 +79,7 @@ export class TemplateSalaryComponent implements OnInit {
       type: value.type,
       branchIds: this.branchesSelected.map(val => val.id)
     };
-    if (this.data) {
+    if (this.data?.isUpdate) {
       this.store.dispatch(TemplateSalaryAction.updateTemplate(
         {
           id: this.data.template.id,

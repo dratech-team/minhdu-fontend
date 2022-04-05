@@ -96,7 +96,7 @@
   </div>
   <app-mouse-right
     #child
-    (onAdd)='addTemplateSalary()'
+    (onAdd)='addTemplateSalary($event)'
     (onUpdate)='updateTemplateSalary($event)'
     (onDel)='deleteBasicSalary($event)'
   ></app-mouse-right>

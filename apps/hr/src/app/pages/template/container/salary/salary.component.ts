@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
-import { DialogDeleteComponent } from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
-import { TemplateSalaryAction } from '../../+state/teamlate-salary/template-salary.action';
-import { TemplateSalaryComponent } from '../../component/template-salary/template-salary.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {FormControl, FormGroup} from '@angular/forms';
+import {debounceTime, tap} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+import {DialogDeleteComponent} from 'libs/components/src/lib/dialog-delete/dialog-delete.component';
+import {TemplateSalaryAction} from '../../+state/teamlate-salary/template-salary.action';
+import {TemplateSalaryComponent} from '../../component/template-salary/template-salary.component';
 import {
   selectorAllTemplate,
   selectTemplateAdding, selectTemplateLoaded,
   selectTotalTemplateSalary
 } from '../../+state/teamlate-salary/template-salary.selector';
-import { BlockSalariesConstant, UnitsConstant } from '@minhdu-fontend/constants';
+import {BlockSalariesConstant, UnitsConstant} from '@minhdu-fontend/constants';
+import {TemplateSalary} from "../../+state/teamlate-salary/template-salary";
 
 
 @Component({
@@ -26,7 +27,7 @@ export class SalaryComponent implements OnInit {
   type = SalaryTypeEnum;
   unit = DatetimeUnitEnum;
   unitsConstant = UnitsConstant;
-  blockSalaries = BlockSalariesConstant.concat({ title: 'Tất cả', type: SalaryTypeEnum.ALL });
+  blockSalaries = BlockSalariesConstant.concat({title: 'Tất cả', type: SalaryTypeEnum.ALL});
   pageSize = 30;
   pageIndexInit = 0;
   formGroup = new FormGroup(
@@ -66,16 +67,17 @@ export class SalaryComponent implements OnInit {
   }
 
 
-  addTemplateSalary() {
+  addTemplateSalary(template?: TemplateSalary) {
     this.dialog.open(TemplateSalaryComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
+      data: {template}
     });
   }
 
   updateTemplateSalary(template: any) {
     this.dialog.open(TemplateSalaryComponent, {
       width: 'fit-content',
-      data: { isUpdate: true, template: template }
+      data: {isUpdate: true, template: template}
     });
   }
 
@@ -90,10 +92,10 @@ export class SalaryComponent implements OnInit {
   }
 
   deleteBasicSalary($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.store.dispatch(TemplateSalaryAction.deleteTemplate({ id: $event.id }));
+        this.store.dispatch(TemplateSalaryAction.deleteTemplate({id: $event.id}));
       }
     });
   }
