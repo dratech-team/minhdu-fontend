@@ -34,6 +34,7 @@ import {DialogWFHComponent} from "../../component/dialog-salary/dialog-WFH/dialo
 import {UpdatePayrollComponent} from "../../component/update-payroll/update-payroll.component";
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {RestorePayrollComponent} from "../../component/restore-payroll/restore-payroll.component";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 
 @Component({
@@ -57,7 +58,8 @@ export class DetailPayrollComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly store: Store<AppState>,
     private readonly router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly message: NzMessageService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -143,19 +145,23 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   confirmPayroll(payroll: Payroll) {
-    // if(this.role !== Role.HUMAN_RESOURCE){
+    if(this.role !== Role.HUMAN_RESOURCE){
       this.dialog.open(ConfirmPayrollComponent, {
         width: 'fit-content',
         data: {
           payroll: payroll
         }
       });
-    // }else{
-    //   this.dialog.open(RestorePayrollComponent, {
-    //     width: 'fit-content',
-    //     data: {payroll: payroll}
-    //   });
-    // }
+    }else{
+      if(payroll.accConfirmedAt !== null){
+        this.dialog.open(RestorePayrollComponent, {
+          width: 'fit-content',
+          data: {payroll: payroll}
+        });
+      }else{
+        this.message.warning('Phiếu lương chưa được xác nhận')
+      }
+    }
   }
 
   historySalary(payroll: Payroll) {
