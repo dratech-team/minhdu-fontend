@@ -23,6 +23,7 @@ export class AddEmployeeComponent implements OnInit {
   @ViewChild('positionInput') inputPosition!: ElementRef;
   @ViewChild('branchInput') branchInput!: ElementRef;
   @Input() employeeInit?: Employee;
+  @Input() isUpdate?: boolean;
 
   positionId?: number;
   flatSalary = FlatSalary;
@@ -148,7 +149,7 @@ export class AddEmployeeComponent implements OnInit {
 
     const employee = this.mapEmployee(value);
 
-    if (this.employeeInit) {
+    if (this.isUpdate && this.employeeInit) {
       this.store.dispatch(
         EmployeeAction.updateEmployee({
           id: this.employeeInit.id,

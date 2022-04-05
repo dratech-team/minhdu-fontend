@@ -222,11 +222,14 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  add(): void {
+  add(employeeInit?: Employee): void {
     this.modal.create({
       nzTitle: 'Thêm nhân viên',
       nzContent: AddEmployeeComponent,
       nzViewContainerRef: this.viewContentRef,
+      nzComponentParams:{
+        employeeInit
+      },
       nzFooter: null,
       nzWidth: '65vw',
       nzMaskClosable: false
