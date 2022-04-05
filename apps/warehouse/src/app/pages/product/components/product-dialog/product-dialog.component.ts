@@ -10,13 +10,13 @@ import { of } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { ProductQuery } from '../../state/product.query';
 import { AppState } from '../../../../reducers';
-import { WarehouseQuery } from '../../../warehouse/state/warehouse.query';
-import { ProviderQuery } from '../../../provider/state/provider.query';
-import { ProviderActions } from '../../../provider/state/provider.action';
-import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
+import { WarehouseQuery } from '../../../warehouse/state';
+import { ProviderQuery } from '../../../provider/state';
+import { ProviderActions } from '../../../provider/state';
+import { WarehouseAction } from '../../../warehouse/state';
 import { ProductService } from '../../services';
 import { ProductActions } from '../../state/product.actions';
-import {UnitMedicineConstant} from "../../../../../shared/constant/unit-medicine.constant";
+import {UnitMedicineConstant} from "../../../../../shared/constant";
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 

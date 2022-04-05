@@ -8,7 +8,7 @@ import {Role} from 'libs/enums/hr/role.enum';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStore} from "../../state/app.store";
 import {AppQuery} from "../../state/app.query";
-import {MenuWarehouseConstant} from "../../../shared/constant/menu-warehouse.constant";
+import {MenuWarehouseConstant} from "../../../shared/constant";
 
 @Component({
   templateUrl: './warehouse-layout.component.html',
