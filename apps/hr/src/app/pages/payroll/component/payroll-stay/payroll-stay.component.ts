@@ -1,15 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
@@ -31,28 +21,20 @@ import {debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
-  selectedRangeDayPayroll,
   selectedLoadedPayroll,
   selectedPositionPayroll,
+  selectedRangeDayPayroll,
   selectedTotalPayroll,
   selectorAllPayroll
 } from '../../+state/payroll/payroll.selector';
 import {getAllPosition} from '@minhdu-fontend/orgchart-position';
-import {
-  checkInputNumber,
-  filterSalaryPayroll,
-  getFirstDayInMonth,
-  getLastDayInMonth,
-  getSelectors, updateSelectOneSalaryPayroll
-} from '@minhdu-fontend/utils';
+import {checkInputNumber, filterSalaryPayroll, getSelectors, updateSelectOneSalaryPayroll} from '@minhdu-fontend/utils';
 import {AppState} from '../../../../reducers';
 import {SalaryService} from '../../service/salary.service';
-import {setAll, someComplete, updateSelect} from '../../utils/pick-salary';
 import {DialogStayComponent} from '../dialog-salary/dialog-stay/dialog-stay.component';
 import {DialogDeleteComponent, DialogExportComponent} from '@minhdu-fontend/components';
 import {MatSort} from '@angular/material/sort';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Payroll} from "../../+state/payroll/payroll.interface";
 import {PayrollService} from "../../service/payroll.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
@@ -189,7 +171,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
             title: 'Xuât bảng phụ cấp lương',
             params: payrollStay,
             selectDatetime: true,
-            api:Api.HR.PAYROLL.EXPORT,
+            api: Api.HR.PAYROLL.EXPORT,
           }
         })
       }
@@ -210,12 +192,13 @@ export class PayrollStayComponent implements OnInit, OnChanges {
       .then();
   }
 
-  addSalaryStay() {
+  addSalaryStay(salary: Salary) {
     const ref = this.dialog.open(DialogStayComponent, {
       width: 'fit-content',
       data: {
         addMultiple: true,
-        createdAt: this.formGroup.get('createdAt')?.value,
+        salary: salary,
+        createdAt: this.getRangeDay().start,
         type: SalaryTypeEnum.STAY
       }
     });
@@ -224,7 +207,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
-            payrollDTO:this.mapPayrollStay()
+            payrollDTO: this.mapPayrollStay()
           })
         );
       }
@@ -256,7 +239,7 @@ export class PayrollStayComponent implements OnInit, OnChanges {
           this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
           this.store.dispatch(
             PayrollAction.loadInit({
-              payrollDTO:this.mapPayrollStay()
+              payrollDTO: this.mapPayrollStay()
             })
           );
         }

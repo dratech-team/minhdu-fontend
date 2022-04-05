@@ -14,6 +14,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
 import { SalaryService } from '../../../service/salary.service';
 import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
+import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 @Component({
   templateUrl: 'dialog-stay.component.html'
@@ -26,7 +27,7 @@ export class DialogStayComponent implements OnInit {
   indexTitle = 0;
   tabindex = 0
   salariesStay$ = this.store.pipe(select(selectorAllTemplate));
-  employeeSelected: Employee[] = [];
+  payrollSelected: Payroll[] = [];
   salariesSelected: SalaryPayroll[] = [];
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
 
@@ -49,7 +50,7 @@ export class DialogStayComponent implements OnInit {
       this.salariesSelected = this.data.salariesSelected;
     }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
-    if (this.data?.isUpdate) {
+    if (this.data?.salary) {
       this.formGroup = this.formBuilder.group({
         title: [this.data?.salary?.title],
         price: [this.data?.salary?.price, Validators.required],
@@ -73,7 +74,7 @@ export class DialogStayComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.data?.addMultiple && this.employeeSelected.length === 0) {
+    if (this.data?.addMultiple && this.payrollSelected.length === 0) {
       return this.snackBar.open('Chưa chọn nhân viên', 'Đóng');
     }
     const value = this.formGroup.value;
@@ -106,14 +107,14 @@ export class DialogStayComponent implements OnInit {
         }));
       }
     } else {
-      if (this.employeeSelected.length === 1 && this.employeeSelected[0].id == this.data?.payroll?.employee?.id) {
+      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data?.payroll?.employee?.id) {
         this.store.dispatch(PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
             salary: salary
           })
         );
       } else {
-        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.employeeSelected.map(e => e.id) })
+        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.payrollSelected.map(e => e.id) })
           .subscribe(val => {
             if (val) {
               if (this.data?.addMultiple) {
@@ -138,8 +139,8 @@ export class DialogStayComponent implements OnInit {
   }
 
 
-  pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees] ;
+  pickPayroll(payrolls: Payroll[]) {
+    this.payrollSelected = [...payrolls] ;
   }
 
   changeSalariesSelected($event: SalaryPayroll[]) {
