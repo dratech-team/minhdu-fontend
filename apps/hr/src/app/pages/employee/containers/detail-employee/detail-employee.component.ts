@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Degree, Employee, Relative, WorkHistory} from '@minhdu-fontend/data-models';
+import {Degree, Employee, Relative, Salary, SalaryHistory, WorkHistory} from '@minhdu-fontend/data-models';
 import {EmployeeAction, selectCurrentEmployee, selectEmployeeAdding} from '@minhdu-fontend/employee';
 import {
   DegreeLevelEnum,
@@ -25,6 +25,7 @@ import {
   DialogSharedComponent
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {DialogBasicComponent} from "../../../payroll/component/dialog-salary/dialog-basic/dialog-basic.component";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -54,7 +55,6 @@ export class DetailEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(EmployeeAction.getEmployee({id: this.employeeId}));
-
     this.activatedRoute.queryParams.subscribe(param => {
       if (param.isUpdate) {
         this.updateEmployee(getSelectors(selectCurrentEmployee(this.employeeId), this.store));
@@ -66,12 +66,12 @@ export class DetailEmployeeComponent implements OnInit {
     return this.activatedRoute.snapshot.params.id;
   }
 
-  updateEmployee(employee:Employee): void {
+  updateEmployee(employee: Employee): void {
     this.modal.create({
       nzTitle: 'Sửa nhân viên',
       nzContent: AddEmployeeComponent,
       nzViewContainerRef: this.viewContentRef,
-      nzComponentParams:{
+      nzComponentParams: {
         employeeInit: employee
       },
       nzWidth: '65vw',
@@ -172,5 +172,19 @@ export class DetailEmployeeComponent implements OnInit {
     if (event) {
       this.isOpen = false;
     }
+  }
+
+  onUpdateHistorySalary(salary: Salary) {
+    this.dialog.open(DialogBasicComponent, {
+      data: {
+        salary: salary,
+        datetime: true,
+        type: 'HISTORY'
+      }
+    })
+  }
+
+  deleteHistorySalary(id: number) {
+    //Đợi api
   }
 }

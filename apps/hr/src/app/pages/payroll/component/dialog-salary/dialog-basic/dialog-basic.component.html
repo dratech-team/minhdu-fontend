@@ -7,19 +7,19 @@
   </div>
   <form [formGroup]='formGroup'>
     <mat-tab-group [(selectedIndex)]='tabindex' dynamicHeight>
-      <mat-tab *ngIf='data.updateMultiple'  label='Nhân viên đã chọn ({{salariesSelected.length}})'>
+      <mat-tab *ngIf='data?.updateMultiple' label='Nhân viên đã chọn ({{salariesSelected.length}})'>
         <app-table-salaries-selected
           [salaries]='salariesSelected'
           (EmitSalariesSelected)='changeSalariesSelected($event)'>
         </app-table-salaries-selected>
-        <button class='btn btn-primary' (click)='changeTab(1)' >Tiếp theo</button>
+        <button class='btn btn-primary' (click)='changeTab(1)'>Tiếp theo</button>
       </mat-tab>
       <mat-tab label='Lương cơ bản'>
         <div class='form-group' style='min-width: 400px'>
           <div *ngIf='false' class=' mb-5 title-popup'>
             <span> Lương cơ bản</span>
           </div>
-          <div class='contract-salary mt-1'>
+          <div  class='contract-salary mt-1' *ngIf="this.data?.type !== 'HISTORY'; else title">
             <div class=' title-item mb-1'>
               <span>Loại lương</span>
               <span class='star'>*</span>
@@ -37,8 +37,16 @@
               </div>
             </div>
           </div>
+          <ng-template #title>
+            <div class="title-item mt-2">
+              <span> Loại lương</span>
+            </div>
+            <div class="form-control ">
+              {{this.data.salary.title}}
+            </div>
+          </ng-template>
           <div class='basic-salary'>
-            <div class=' title-item mb-1'>
+            <div class=' title-item my-1'>
               <span>Mức lương</span>
               <span class='star'>*</span>
             </div>
@@ -58,20 +66,34 @@
               </mat-select>
             </div>
           </div>
+          <div *ngIf="data?.datetime">
+            <div class=' title-item mt-2 mbt-2'>
+              <span>Ngày tạo</span>
+              <span class='star'>*</span>
+            </div>
+            <div class=' mb-3' [formGroup]='formGroup'>
+              <input class="form-control" type='date' formControlName='datetime'
+                     [ngClass]="{ 'is-invalid': submitted && f.datetime.errors }">
+              <div *ngIf='submitted && f.datetime.errors?.required' class='invalid-feedback'>
+                <div>Chưa nhập mức lương</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class='mt-2 row'>
           <div class='ml-4 d-flex'>
-            <button  *ngIf='data.updateMultiple' (click)='changeTab(0)' class='btn btn-primary  mr-2 '>trở lại</button>
+            <button *ngIf='data.updateMultiple' (click)='changeTab(0)' class='btn btn-primary  mr-2 '>trở lại</button>
             <button (click)='onSubmit()' class='btn btn-ok '>Lưu</button>
           </div>
-          <a *ngIf='role === roleEnum.HUMAN_RESOURCE && !data.updateMultiple ' class='btn btn-ok ml-3 ' routerLink='/ban-mau' target='_blank'>Tạo
+          <a *ngIf='role === roleEnum.HUMAN_RESOURCE && !data.updateMultiple ' class='btn btn-ok ml-3 '
+             routerLink='/ban-mau' target='_blank'>Tạo
             mới</a>
           <button type='button' class='btn  award' data-toggle='tooltip' data-placement='left' title='xóa'>
             ?
           </button>
         </div>
       </mat-tab>
-      <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
+      <mat-tab *ngIf='data?.selectEmp' class='col-12 ' label='Chọn nhân viên'>
         <app-pick-payroll [payrollInit]="data?.payroll"
                           [createdAt]="data?.createdAt"
                           (EventSelectPayroll)="pickPayroll($event)">

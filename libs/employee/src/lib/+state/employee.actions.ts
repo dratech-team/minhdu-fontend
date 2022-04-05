@@ -1,4 +1,4 @@
-import { Employee } from '@minhdu-fontend/data-models';
+import {Employee, Salary} from '@minhdu-fontend/data-models';
 import { Predicate } from '@ngrx/entity';
 import { UpdateNum } from '@ngrx/entity/src/models';
 import { createAction, props } from '@ngrx/store';
@@ -130,12 +130,22 @@ export const deleteContractSuccess = createAction(
 
 export const updateStateEmployee = createAction(
   '[UPDATE_STATE] Update State Employee  ',
-  props<{ scrollX?: number }>()
+  props<{ scrollX?: number, added?: boolean }>()
 );
 
 export const deleteWorkHistory = createAction(
   '[DELETE_WORK_HISTORY] Delete Work History ',
   props<{ id: number, employeeId: number }>()
+);
+
+export const updateHistorySalary = createAction(
+  '[UPDATE_HISTORY_SALARY] Update History Salary ',
+  props<{ id: number, salary: Partial<Salary>, employeeId: number}>()
+);
+
+export const deleteHistorySalary = createAction(
+  '[DELETE_HISTORY_SALARY] Delete History Salary ',
+  props<{ id: number, employeeId: number}>()
 );
 
 
@@ -168,4 +178,6 @@ export const EmployeeAction = {
   deleteContractSuccess,
   updateStateEmployee,
   deleteWorkHistory,
+  updateHistorySalary,
+  deleteHistorySalary
 };

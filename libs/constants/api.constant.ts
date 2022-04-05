@@ -29,7 +29,8 @@ export const Api = {
       DEPARTMENT: 'department',
       EMPLOYEE_EXPORT: 'employee/export/employee',
       CATEGORY: 'category',
-      SORT_STT: 'employee/sort/stt'
+      SORT_STT: 'employee/sort/stt',
+      HISTORY_SALARY: 'history/salary'
     },
     TEMPLATE: {
       BASIC_TEMPLATE: 'basic-template',

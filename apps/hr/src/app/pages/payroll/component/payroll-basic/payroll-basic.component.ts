@@ -217,7 +217,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
         createdAt: this.getRangeDay().start,
         addMultiple: true,
         salary: salaryBasic,
-        type: SalaryTypeEnum.BASIC
+        type: SalaryTypeEnum.BASIC,
+        selectEmp: true
       }
     });
     ref.afterClosed().subscribe((val) => {

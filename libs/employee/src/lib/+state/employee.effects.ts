@@ -8,6 +8,8 @@ import {DegreeService} from './service/degree.service';
 import {EmployeeService} from './service/employee.service';
 import {RelativeService} from './service/relative.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {PayrollAction} from "../../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.action";
+import {ConvertBooleanFrontEnd} from "@minhdu-fontend/enums";
 
 @Injectable()
 export class EmployeeEffect {
@@ -260,6 +262,37 @@ export class EmployeeEffect {
             return EmployeeAction.getEmployee({
               id: props.employeeId
             });
+          })
+        )
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  updateHistorySalary = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.updateHistorySalary),
+      switchMap((props) =>
+        this.employeeService.updateHistorySalary(props.id, props.salary).pipe(
+          map((salary) => {
+            this.store.dispatch(PayrollAction.updateStatePayroll({added: ConvertBooleanFrontEnd.TRUE}))
+            this.message.success('Sửa lịch sửa lương thành công');
+            return EmployeeAction.getEmployee({id: props.employeeId});
+          })
+        )
+      ),
+      catchError((err) => throwError(err))
+    )
+  );
+
+  deleteHistorySalary = createEffect(() =>
+    this.action$.pipe(
+      ofType(EmployeeAction.deleteHistorySalary),
+      switchMap((props) =>
+        this.employeeService.deleteHistorySalary(props.id).pipe(
+          map((salary) => {
+            this.message.success('Xoá lịch sửa lương thành công');
+            return EmployeeAction.getEmployee({id: props.employeeId});
           })
         )
       ),

@@ -704,11 +704,18 @@
             <th style="background: white" class='text-center border'>Loại lương</th>
             <th style="background: white" class='text-center border'>Mức lương</th>
             <th style="background: white" class='text-center border'>Ngày</th>
+            <th style="background: white; width: 150px" class='text-center border'>hành động</th>
           </tr>
-          <tr *ngFor='let salary of employee.salaryHistories|filterDay'>
-            <td class='text-center'>{{salary?.title}}</td>
-            <td class='text-center'>{{salary?.price ? (salary.price|number:'1.0') : ''}}đ</td>
-            <td class='text-center'>{{salary?.datetime|date:'dd/MM/yyyy'}}</td>
+          <tr *ngFor='let HistorySalary of employee.salaryHistories|filterDay'>
+            <td class='text-center'>{{HistorySalary?.title}}</td>
+            <td class='text-center'>{{HistorySalary?.price ? (HistorySalary.price|number:'1.0') : ''}}đ</td>
+            <td class='text-center'>{{HistorySalary?.datetime|date:'dd/MM/yyyy'}}</td>
+            <td class='text-center'>
+              <div class="d-flex px-1 justify-content-between align-items-center">
+                <button class="btn btn-primary" (click)="onUpdateHistorySalary(HistorySalary)">Sửa</button>
+                <button class="btn btn-danger" (click)="deleteHistorySalary(HistorySalary.id)">Xoá</button>
+              </div>
+            </td>
           </tr>
         </table>
       </div>

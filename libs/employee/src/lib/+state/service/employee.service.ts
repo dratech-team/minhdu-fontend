@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Api } from '@minhdu-fontend/constants';
-import { Employee, ResponsePaginate } from '@minhdu-fontend/data-models';
+import {Employee, ResponsePaginate, Salary} from '@minhdu-fontend/data-models';
 import { BaseService } from 'libs/service/base.service';
 
 
@@ -46,5 +46,13 @@ export class EmployeeService extends BaseService<Employee> {
 
   deleteWorkHistory(id: number): Observable<void> {
     return this.http.delete<void>(Api.HR.EMPLOYEE.EMPLOYEE + `/${id}/work-history`);
+  }
+
+  updateHistorySalary(id: number, body: any): Observable<Salary> {
+    return this.http.patch<Salary>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`, body);
+  }
+
+  deleteHistorySalary(id: number): Observable<void> {
+    return this.http.delete<void>(Api.HR.EMPLOYEE.HISTORY_SALARY + `/${id}`);
   }
 }
