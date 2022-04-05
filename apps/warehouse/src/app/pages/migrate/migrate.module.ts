@@ -8,6 +8,9 @@ import {ImportCommodityComponent} from "./components/import-commodity/import-com
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ComponentsModule} from "@minhdu-fontend/components";
+import {ExportCommodityComponent} from "./components/export-commodity/export-commodity.component";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @NgModule({
   imports: [
@@ -16,9 +19,11 @@ import {ComponentsModule} from "@minhdu-fontend/components";
     MigrateRoutingModule,
     NzCollapseModule,
     ReactiveFormsModule,
-    ComponentsModule
+    ComponentsModule,
+    NzSelectModule,
+    NzInputModule
   ],
-  declarations: [MigrateComponent,ImportCommodityComponent],
+    declarations: [MigrateComponent, ImportCommodityComponent, ExportCommodityComponent],
   providers: [MigrateService],
   exports: [MigrateComponent]
 })

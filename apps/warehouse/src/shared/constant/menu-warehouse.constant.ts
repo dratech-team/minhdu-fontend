@@ -33,19 +33,19 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     href: 'xuat-nhap-kho',
     children: [
       {
-        name: 'Xuất hàng',
-        icon: '',
-        href: ''
-      },
-      {
         name: 'Nhập hàng',
         icon: '',
-        href:''
+        href:'xuat-nhap-kho'
+      },
+      {
+        name: 'Xuất hàng',
+        icon: '',
+        href: 'xuat-nhap-kho/xuat-kho'
       },
       {
         name: 'Kiểm hàng',
         icon: '',
-        href:''
+        href:'xuat-nhap-kho/kiem-hang'
       },
     ]
   },

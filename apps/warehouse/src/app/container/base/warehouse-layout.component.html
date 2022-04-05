@@ -49,9 +49,9 @@
     <div>
 
     </div>
-    <div class='mr-3 position-relative' *ngFor='let item of menuWarehouse' routerLink='{{item.href}}'
+    <div class='mr-3 position-relative' *ngFor='let item of menuWarehouse'
          routerLinkActive='active'>
-      <div class="pointer" (click)="onUpdateStateAppName(item.name)">
+      <div class="pointer" (click)="onUpdateStateAppName(item.name,item.href)">
         <img class='m-1' src='{{item.icon}}' alt='{{item.state}}'>{{item.name}}
       </div>
       <div *ngIf="(routerActive$|async) === item.href && item.children"
@@ -60,7 +60,7 @@
         <div class="pointer"
           style="margin-right:10px; font-weight: 500; font-size: 14px"
              *ngFor="let subMenu of item.children"
-             (click)="onUpdateStateAppName(subMenu.name)">
+             (click)="onUpdateStateAppName(subMenu.name,subMenu.href)">
           {{subMenu.name}}
         </div>
       </div>

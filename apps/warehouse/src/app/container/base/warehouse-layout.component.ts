@@ -55,7 +55,8 @@ export class WarehouseLayoutComponent implements OnInit, AfterContentChecked {
     this.dialog.open(RegisterComponent, { width: '40%' });
   }
 
-  onUpdateStateAppName(appName: string) {
+  onUpdateStateAppName(appName: string, href: string) {
+    this.router.navigate([href]).then()
     this.appStore.update(state => ({
       ...state, appName: appName
     }))
