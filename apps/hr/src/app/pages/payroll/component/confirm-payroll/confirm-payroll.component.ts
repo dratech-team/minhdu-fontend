@@ -102,4 +102,15 @@ export class ConfirmPayrollComponent implements OnInit {
   printPayroll() {
     window.print();
   }
+
+  onCancelPayroll() {
+    this.dialog.open(DialogSharedComponent,{
+      data:{
+        title: 'Huỷ xác nhận phiếu lương',
+        description: `Bạn có chắc chắn muốn huỷ xác nhận phiếu lương của nhân viên ${this.data.payroll.employee.lastName}`
+      }
+    }).afterClosed().subscribe(val => {
+      // đợi api
+    })
+  }
 }
