@@ -1,4 +1,4 @@
-import { DatetimeUnitEnum, MedicineUnit } from '../../enums';
+import { DatetimeUnitEnum, MedicineUnit } from '@minhdu-fontend/enums';
 
 export const UnitMedicineConstant = [
   {

@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { UnitMedicineConstant } from '@minhdu-fontend/constants';
 import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
 import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -17,6 +16,7 @@ import { ProviderActions } from '../../../provider/state/provider.action';
 import { WarehouseAction } from '../../../warehouse/state/warehouse.action';
 import { ProductService } from '../../services';
 import { ProductActions } from '../../state/product.actions';
+import {UnitMedicineConstant} from "../../../../../shared/constant/unit-medicine.constant";
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 

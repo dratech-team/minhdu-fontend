@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {RadiosStatusImportConstant} from "@minhdu-fontend/constants";
+import {RadiosStatusImportConstant} from "../../../../../shared/constant/radios-status-import.constant";
 
 @Component({
   selector: 'minhdu-fontend-import-commodity',

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '@minhdu-fontend/components';
 import { ProductDialogComponent } from '../../components';
 import { debounceTime, map } from 'rxjs/operators';
-import { PaginationDto, UnitMedicineConstant } from '@minhdu-fontend/constants';
+import { PaginationDto } from '@minhdu-fontend/constants';
 import { ProductActions } from '../../state/product.actions';
 import { ProductQuery } from '../../state/product.query';
 import { WarehouseAction, WarehouseQuery } from '../../../warehouse/state';
@@ -12,6 +12,7 @@ import { InventoryTitleConstants } from '../../constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProductStore } from '../../state/product.store';
+import {UnitMedicineConstant} from "../../../../../shared/constant/unit-medicine.constant";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
