@@ -15,6 +15,7 @@ import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-
 import { SalaryService } from '../../../service/salary.service';
 import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 @Component({
   templateUrl: 'dialog-basic.component.html'
@@ -30,7 +31,7 @@ export class DialogBasicComponent implements OnInit {
   role = localStorage.getItem('role');
   templateBasicSalary$ = this.store.pipe(select(selectorAllTemplate));
   isManyPeople = false;
-  employeeSelected: Employee[] = [];
+  payrollSelected: Payroll[] = [];
   salariesSelected: SalaryPayroll[] = [];
   tabindex = 0;
   /// FIXME: Dummy data
@@ -75,7 +76,7 @@ export class DialogBasicComponent implements OnInit {
       });
     } else {
       if(this.data.payroll){
-        this.employeeSelected.push(this.data.payroll.employee.id);
+        this.payrollSelected.push(this.data.payroll.employee.id);
       }
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
@@ -95,7 +96,7 @@ export class DialogBasicComponent implements OnInit {
     if (this.formGroup.invalid) {
       return;
     }
-    if (this.data?.addMultiple && this.employeeSelected.length === 0) {
+    if (this.data?.addMultiple && this.payrollSelected.length === 0) {
       return this.message.error('Chưa chọn nhân viên');
     }
     const value = this.formGroup.value;
@@ -142,7 +143,7 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.employeeSelected.length === 1 && this.employeeSelected[0].id == this.data.payroll?.employee?.id) {
+      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data.payroll?.employee?.id) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
@@ -150,7 +151,7 @@ export class DialogBasicComponent implements OnInit {
           })
         );
       } else {
-        const data = { salary: salary, employeeIds: this.employeeSelected.map(e => e.id) };
+        const data = { salary: salary, employeeIds: this.payrollSelected.map(e => e.id) };
         this.multipleEmployeeService.addOne(data).subscribe(val => {
           if (val) {
             if (this.data?.addMultiple) {
@@ -185,8 +186,8 @@ export class DialogBasicComponent implements OnInit {
     }
   }
 
-  pickEmployees(employees: Employee[]) {
-    this.employeeSelected = [...employees];
+  pickPayroll(payrolls: Payroll[]) {
+    this.payrollSelected = [...payrolls];
   }
 
   changeSalariesSelected($event: SalaryPayroll[]) {

@@ -39,10 +39,10 @@ export class DialogAllowanceMultipleComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      title: ['', Validators.required],
-      price: ['', Validators.required],
-      unit: ['', Validators.required],
-      note: [],
+      title: [this.data?.salary?.title, Validators.required],
+      price: [this.data?.salary?.price, Validators.required],
+      unit: [this.data.salary?.unit, Validators.required],
+      note: [this.data?.salary?.note],
       month: [this.datePipe.transform(
         this.data.createdAt, 'yyyy-MM'), Validators.required]
     });

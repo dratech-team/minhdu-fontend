@@ -211,9 +211,12 @@ export class PayrollAbsentComponent implements OnInit, OnChanges {
       .then();
   }
 
-  addSalaryAbsent() {
+  addSalaryAbsent(salary: Salary) {
     const ref = this.dialog.open(DialogTimekeepingComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
+      data:{
+        salary
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {

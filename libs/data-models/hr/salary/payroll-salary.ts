@@ -1,7 +1,7 @@
-import { DatetimeUnitEnum, Gender, SalaryTypeEnum } from '../../../enums';
-import { Salary } from './salary';
-import { Position } from '../orgChart/position';
-import { Branch } from '../orgChart/branch';
+import {Gender, SalaryTypeEnum} from '../../../enums';
+import {Salary} from './salary';
+import {Position} from '../orgChart/position';
+import {Branch} from '../orgChart/branch';
 
 export interface PayrollSalary {
   employees: employee[],

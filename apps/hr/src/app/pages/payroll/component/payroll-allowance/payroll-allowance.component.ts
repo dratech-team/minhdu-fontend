@@ -211,14 +211,17 @@ export class PayrollAllowanceComponent implements OnInit, OnChanges {
       .then();
   }
 
-  addSalaryAllowance() {
+  addSalaryAllowance(salary: Salary) {
     const ref = this.dialog.open(DialogAllowanceMultipleComponent, {
-      width: 'fit-content'
+      width: 'fit-content',
+      data: {
+        salary,
+        createdAt: this.getRangeDay().start
+      }
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
         this.formGroup.get('titles')?.setValue(val.title, {emitEvent: false});
-        const value = this.formGroup.value;
         this.store.dispatch(
           PayrollAction.loadInit({
               payrollDTO: this.mapPayrollAllowance()
