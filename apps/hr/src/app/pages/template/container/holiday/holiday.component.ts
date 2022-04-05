@@ -1,24 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { MatDialog } from '@angular/material/dialog';
-import { HolidayAction } from '../../+state/holiday/holiday.action';
-import { AddHolidayComponent } from '../../component/add-holiday/add-holiday.component';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { AppState } from 'apps/hr/src/app/reducers';
+import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {MatDialog} from '@angular/material/dialog';
+import {HolidayAction} from '../../+state/holiday/holiday.action';
+import {AddHolidayComponent} from '../../component/add-holiday/add-holiday.component';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {AppState} from 'apps/hr/src/app/reducers';
 import {
   selectHolidayAdding,
   selectHolidayLoaded,
   selectorAllHoliday,
   selectTotalHoliday
 } from '../../+state/holiday/holiday.selector';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, startWith, tap } from 'rxjs/operators';
-import { ConvertBoolean } from '@minhdu-fontend/enums';
-import { checkInputNumber, searchAutocomplete } from '@minhdu-fontend/utils';
-import { getAllPosition, PositionActions } from '@minhdu-fontend/orgchart-position';
-import { Router } from '@angular/router';
-import { Position } from '@minhdu-fontend/data-models';
-import { of } from 'rxjs';
+import {FormControl, FormGroup} from '@angular/forms';
+import {debounceTime, startWith, tap} from 'rxjs/operators';
+import {ConvertBoolean} from '@minhdu-fontend/enums';
+import {checkInputNumber, searchAutocomplete} from '@minhdu-fontend/utils';
+import {getAllPosition, PositionActions} from '@minhdu-fontend/orgchart-position';
+import {Router} from '@angular/router';
+import {Position} from '@minhdu-fontend/data-models';
+import {of} from 'rxjs';
 
 
 @Component({
@@ -56,7 +56,7 @@ export class HolidayComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(PositionActions.loadPosition());
     this.store.dispatch(HolidayAction.LoadInit({
-      holidayDTO: { take: this.pageSize, skip: this.pageIndexInit }
+      holidayDTO: {take: this.pageSize, skip: this.pageIndexInit}
     }));
     this.formGroup.valueChanges
       .pipe(
@@ -79,18 +79,19 @@ export class HolidayComponent implements OnInit {
     );
   }
 
-  Holiday() {
-    const dialogRef = this.dialog.open(AddHolidayComponent, {
+  Holiday(holiday?: any) {
+    this.dialog.open(AddHolidayComponent, {
       width: '35%',
+      data: {holiday},
       panelClass: 'ccc',
       backdropClass: 'ggg'
     });
   }
 
   updateHoliday($event?: any) {
-    const dialogRef = this.dialog.open(AddHolidayComponent, {
+     this.dialog.open(AddHolidayComponent, {
       width: '35%',
-      data: { holiday: $event, upDateDetail: false, isUpdate: true },
+      data: {holiday: $event, upDateDetail: false, isUpdate: true},
       panelClass: 'ccc',
       backdropClass: 'ggg'
     });
@@ -107,10 +108,10 @@ export class HolidayComponent implements OnInit {
 
   deleteHoliday($event: any) {
 
-    const dialogRef = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     dialogRef.afterClosed().subscribe(val => {
         if (val) {
-          this.store.dispatch(HolidayAction.DeleteHoliday({ id: $event.id }));
+          this.store.dispatch(HolidayAction.DeleteHoliday({id: $event.id}));
         }
       }
     );

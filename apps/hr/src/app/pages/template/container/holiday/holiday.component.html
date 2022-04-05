@@ -106,7 +106,7 @@
   </ng-template>
   <app-mouse-right
     #child
-    (onAdd)='Holiday()'
+    (onAdd)='Holiday($event)'
     (onUpdate)='updateHoliday($event)'
     (onDel)='deleteHoliday($event)'
   ></app-mouse-right>
