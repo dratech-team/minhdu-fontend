@@ -26,6 +26,7 @@ import {
 } from "../../../../../../../../libs/components/src/lib/dialog-shared/dialog-shared.component";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {DialogBasicComponent} from "../../../payroll/component/dialog-salary/dialog-basic/dialog-basic.component";
+import {DatePipe} from "@angular/common";
 
 @Component({
   templateUrl: 'detail-employee.component.html',
@@ -50,6 +51,7 @@ export class DetailEmployeeComponent implements OnInit {
     private readonly router: Router,
     private readonly modal: NzModalService,
     private readonly viewContentRef: ViewContainerRef,
+    private readonly datePipe: DatePipe,
   ) {
   }
 
@@ -184,7 +186,16 @@ export class DetailEmployeeComponent implements OnInit {
     })
   }
 
-  deleteHistorySalary(id: number) {
-    //Đợi api
+  deleteHistorySalary(salary: Salary) {
+    this.dialog.open(DialogSharedComponent, {
+      data:{
+        title: 'Xoá lịch sử lương',
+        description: `Bạn có muốn Xoá lịch sử ${salary.title} ngày ${this.datePipe.transform(salary.datetime,'dd-MM-yyyy')} không?`
+      }
+    }).afterClosed().subscribe(val => {
+      if(val){
+        this.store.dispatch(EmployeeAction.deleteHistorySalary({id: salary.id, employeeId: salary.employeeId}))
+      }
+    })
   }
 }
