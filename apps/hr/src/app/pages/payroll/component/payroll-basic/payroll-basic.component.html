@@ -203,7 +203,7 @@
 <mat-spinner *ngIf='loadingDelete' class='loading'></mat-spinner>
 <app-mouse-right
   #child
-  (onAdd)='addSalaryBasic()'
+  (onAdd)='addSalaryBasic($event)'
   (onDetail)='readPayroll($event)'
   (onDel)='deleteSalaryBasic($event)'>
 </app-mouse-right>

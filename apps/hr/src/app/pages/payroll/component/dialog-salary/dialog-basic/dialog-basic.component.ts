@@ -62,7 +62,7 @@ export class DialogBasicComponent implements OnInit {
       this.checkSalary = false;
     }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.BASIC }));
-    if (this.data?.isUpdate) {
+    if (this.data?.salary) {
       this.formGroup = this.formBuilder.group({
         price: [this.data.salary.price, Validators.required],
         type: [
@@ -74,7 +74,9 @@ export class DialogBasicComponent implements OnInit {
         rate: [1, Validators.required]
       });
     } else {
-      this.employeeSelected.push(this.data.payroll.employee.id);
+      if(this.data.payroll){
+        this.employeeSelected.push(this.data.payroll.employee.id);
+      }
       this.formGroup = this.formBuilder.group({
         price: ['', Validators.required],
         type: ['', Validators.required

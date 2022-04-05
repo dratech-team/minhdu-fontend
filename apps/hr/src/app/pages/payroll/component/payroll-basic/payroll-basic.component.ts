@@ -54,6 +54,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {PayrollService} from "../../service/payroll.service";
 import {ExportService} from "@minhdu-fontend/service";
 import {ClassifyOvertimeComponent} from "../classify-overtime/classify-overtime.component";
+import {Payroll} from "../../+state/payroll/payroll.interface";
 
 @Component({
   selector: 'minhdu-fontend-payroll-basic',
@@ -209,12 +210,13 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       .then();
   }
 
-  addSalaryBasic() {
+  addSalaryBasic(salaryBasic:Salary) {
     const ref = this.dialog.open(DialogBasicComponent, {
       width: 'fit-content',
       data: {
         createdAt: this.getRangeDay().start,
         addMultiple: true,
+        salary: salaryBasic,
         type: SalaryTypeEnum.BASIC
       }
     });
