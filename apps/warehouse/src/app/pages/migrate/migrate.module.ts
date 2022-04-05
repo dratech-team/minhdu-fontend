@@ -4,6 +4,7 @@ import { MigrateService } from './services/migrate.service';
 import { CommonModule } from '@angular/common';
 import { MigrateRoutingModule } from './migrate-routing.module';
 import { MigrateComponent } from './containers';
+import {ImportCommodityComponent} from "./components/import-commodity/import-commodity.component";
 
 @NgModule({
   imports: [
@@ -11,7 +12,7 @@ import { MigrateComponent } from './containers';
     NzTableModule,
     MigrateRoutingModule
   ],
-  declarations: [MigrateComponent],
+  declarations: [MigrateComponent,ImportCommodityComponent],
   providers: [MigrateService],
   exports: [MigrateComponent]
 })
