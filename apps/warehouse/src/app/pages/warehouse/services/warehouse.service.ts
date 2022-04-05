@@ -3,8 +3,7 @@ import { Api } from '@minhdu-fontend/constants';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ResponsePaginate } from '@minhdu-fontend/data-models';
-import {Warehouse} from "../../../../shared/constant";
+import {ResponsePaginate, Warehouse} from '@minhdu-fontend/data-models';
 
 @Injectable()
 export class WarehouseService extends BaseService<Warehouse> {

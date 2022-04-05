@@ -12,7 +12,7 @@ import { InventoryTitleConstants } from '../../constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProductStore } from '../../state/product.store';
-import {UnitMedicineConstant} from "../../../../../shared/constant/unit-medicine.constant";
+import {UnitMedicineConstant} from "../../../../../shared/constant";
 
 @Component({
   selector: 'minhdu-fontend-warehouse',
