@@ -1,5 +1,12 @@
 import {Employee, Salary} from '@minhdu-fontend/data-models';
-import {EmployeeType, FilterTypeEnum, RecipeType, SalaryTypeEnum, SearchTypeEnum} from '@minhdu-fontend/enums';
+import {
+  EmployeeType,
+  FilterTypeEnum,
+  FlatSalary,
+  RecipeType,
+  SalaryTypeEnum,
+  SearchTypeEnum
+} from '@minhdu-fontend/enums';
 import {Payslip} from '../payslip/payslip.interface';
 
 export type AddPayroll = Pick<Payroll, 'createdAt'> & {
@@ -17,6 +24,7 @@ export interface Payroll {
   paidAt: Date;
   accConfirmedAt: Date;
   workday?: number;
+  isFlatSalary: boolean,
   totalWorkday: number;
   actualday?: number;
   payrollIds: number[];

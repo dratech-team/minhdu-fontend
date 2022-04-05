@@ -1,15 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  LOCALE_ID,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, ElementRef, Inject, Input, LOCALE_ID, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../../reducers';
 import {EmployeeType, FlatSalary, RecipeType} from '@minhdu-fontend/enums';

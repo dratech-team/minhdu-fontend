@@ -10,6 +10,7 @@ import {selectedAddedPayroll} from "../../+state/payroll/payroll.selector";
 import {RecipeTypesConstant} from "@minhdu-fontend/constants";
 import {PayrollAction} from "../../+state/payroll/payroll.action";
 import {PositionActions} from "@minhdu-fontend/orgchart-position";
+import {FlatSalary} from "@minhdu-fontend/enums";
 
 @Component({
   templateUrl: 'update-payroll.component.html'
@@ -27,6 +28,7 @@ export class UpdatePayrollComponent implements OnInit {
 
     return branches
   }));
+  flatSalaryEnum = FlatSalary
   compareFN = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.name : o1.id === o2.id);
   compareRecipe = (o1: any, o2: any) => (typeof o1 === 'string' && o2 ? o1 === o2.value : o1.value === o2.value);
 
@@ -47,7 +49,8 @@ export class UpdatePayrollComponent implements OnInit {
       position: [this.data.payroll.position, Validators.required],
       workday: [this.data.payroll.workday, Validators.required],
       recipeType: [this.data.payroll.recipeType, Validators.required],
-      tax: [this.data.payroll.tax ? this.data.payroll.tax * 100:''],
+      isFlatSalary: [!!this.data.payroll.isFlatSalary, Validators.required],
+      tax: [this.data.payroll.tax ? this.data.payroll.tax * 100 : ''],
     })
     this.formGroup.get('branch')?.valueChanges.subscribe(val => {
       this.formGroup.get('position')?.setValue('')
@@ -63,9 +66,10 @@ export class UpdatePayrollComponent implements OnInit {
     const payroll = {
       workday: value.workday,
       createdAt: value.createdAt,
+      isFlatSalary: value.isFlatSalary
     }
-    if(value.tax){
-      Object.assign(payroll, {tax: value.tax/100,})
+    if (value.tax) {
+      Object.assign(payroll, {tax: value.tax / 100,})
     }
     if (value.position?.id) {
       Object.assign(payroll, {positionId: value.position.id,})

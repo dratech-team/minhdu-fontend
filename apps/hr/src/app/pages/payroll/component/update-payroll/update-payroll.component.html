@@ -45,6 +45,20 @@
       </nz-select>
     </div>
     <div class="d-flex flex-column mt-2">
+      <div>
+        <span class="font-weight-bold">Loại lương</span><span class="star">*</span></div>
+      <nz-select
+        class='mt-1'
+        nzShowSearch
+        style='width:100%'
+        nzPlaceHolder='Chọn loại lương'
+        formControlName="isFlatSalary"
+      >
+        <nz-option [nzValue]="true" nzLabel="Lương cố định"></nz-option>
+        <nz-option [nzValue]="false" nzLabel="Lương không cố định"></nz-option>
+      </nz-select>
+    </div>
+    <div class="d-flex flex-column mt-2">
       <div> <span class="font-weight-bold">Chọn đơn vị</span><span class="star">*</span></div>
       <nz-select
         class='mt-1'
