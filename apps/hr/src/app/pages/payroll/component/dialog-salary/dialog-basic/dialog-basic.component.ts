@@ -167,7 +167,9 @@ export class DialogBasicComponent implements OnInit {
                 salary: salary
               } :
               {
-                salary: Object.assign(salary, {payrollIds: this.payrollSelected.map(val => val.id)})
+                salary: Object.assign(salary, {payrollIds: this.payrollSelected.map(val => val.id)}),
+                isDetailPayroll: !!this.data?.payroll?.id,
+                payrollId: this.data?.payroll?.id
               }
           )
         );

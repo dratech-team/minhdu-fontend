@@ -102,10 +102,12 @@ export class DetailPayrollComponent implements OnInit {
   openSalary(type: SalaryTypeEnum, config: MatDialogConfig) {
     switch (type) {
       case SalaryTypeEnum.BASIC : {
+        Object.assign(config.data, {selectEmp: true})
         this.dialog.open(DialogBasicComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
       case SalaryTypeEnum.STAY: {
+        Object.assign(config.data, {selectEmp: true})
         this.dialog.open(DialogStayComponent, Object.assign(config, {width: 'fit-content'}));
         break;
       }
