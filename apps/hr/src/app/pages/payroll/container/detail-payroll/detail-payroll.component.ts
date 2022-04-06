@@ -286,7 +286,7 @@ export class DetailPayrollComponent implements OnInit {
         case 'title':
           return this.compare(a.title, b.title, isAsc);
         case 'datetime':
-          return this.compare(a.datetime, b.datetime, isAsc);
+          return this.compare(b.datetime,a.datetime, isAsc);
         case 'unit':
           return this.compare(a.unit, b.unit, isAsc);
         default:
@@ -296,6 +296,8 @@ export class DetailPayrollComponent implements OnInit {
   }
 
   compare(a: number | string| Date, b: number | string|Date, isAsc: boolean) {
+    console.log(typeof  a)
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
+
 }

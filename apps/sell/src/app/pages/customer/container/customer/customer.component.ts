@@ -68,6 +68,7 @@ export class CustomerComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         tap((val) => {
+          console.log(val)
           this.actions$.dispatch(
             CustomerActions.loadAll({search: this.mapCustomer(val, false)})
           );
