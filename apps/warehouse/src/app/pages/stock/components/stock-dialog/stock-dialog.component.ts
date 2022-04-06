@@ -16,7 +16,7 @@ import { ProviderActions } from '../../../provider/state';
 import { CategoryAction } from '../../../category/state';
 import { StockService } from '../../services';
 import { StockActions } from '../../state/stock.actions';
-import {UnitMedicineConstant} from "../../../../../shared/constant";
+import {CategoryUnitConstant} from "../../../../../shared/constant";
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
@@ -28,7 +28,7 @@ export class StockDialogComponent implements OnInit {
   warehouse$ = this.warehouseQuery.selectAll();
   products$ = this.productQuery.selectAll();
 
-  medicineConstant = UnitMedicineConstant;
+  medicineConstant = CategoryUnitConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
   providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
 
@@ -55,7 +55,7 @@ export class StockDialogComponent implements OnInit {
     discount: [this.data?.discount ? this.data.discount * 100 : undefined, Validators.required],
     provider: [this.data?.provider, Validators.required],
     note: [this.data?.note],
-    unit: [this?.data?.unit || UnitMedicineConstant[1].value, Validators.required]
+    unit: [this?.data?.unit || CategoryUnitConstant[1].value, Validators.required]
   });
 
   constructor(

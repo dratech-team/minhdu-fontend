@@ -1,8 +1,10 @@
 import {BaseProductEntity} from "../bases";
 import {BaseAddDto} from "@minhdu-fontend/base-dto";
 
-interface BaseAddStockDto extends BaseProductEntity {
-
+export interface BaseAddProductDto extends Omit<BaseProductEntity,'id'>  {
+  readonly categoryId: number
+  readonly supplierId: number,
+  readonly branchIds?: number[],
 }
 
-export type AddProductDto = BaseAddDto<BaseAddStockDto>
+export type AddProductDto = BaseAddDto<BaseAddProductDto>

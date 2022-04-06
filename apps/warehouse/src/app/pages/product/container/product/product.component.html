@@ -35,32 +35,32 @@
         </nz-collapse-panel>
       </nz-collapse>
     </div>
-    <div class="mt-2">
-      <nz-collapse>
-        <nz-collapse-panel
-          nzHeader='Đơn vị'
-          nzActive='true'>
-          <div [formGroup]='formGroup'>
-            <nz-select
-              class='ml-2'
-              nzShowSearch
-              nzAllowClear
-              style='width:100%'
-              nzPlaceHolder='Chọn đơn vị'
-              [compareWith]='compareFN'
-              formControlName="branch"
-            >
-              <nz-option
-                *ngFor='let category of categories$ | async'
-                [nzLabel]='category.name'
-                [nzValue]='category'
-              >
-              </nz-option>
-            </nz-select>
-          </div>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
+<!--    <div class="mt-2">-->
+<!--      <nz-collapse>-->
+<!--        <nz-collapse-panel-->
+<!--          nzHeader='Đơn vị'-->
+<!--          nzActive='true'>-->
+<!--          <div [formGroup]='formGroup'>-->
+<!--            <nz-select-->
+<!--              class='ml-2'-->
+<!--              nzShowSearch-->
+<!--              nzAllowClear-->
+<!--              style='width:100%'-->
+<!--              nzPlaceHolder='Chọn đơn vị'-->
+<!--              [compareWith]='compareFN'-->
+<!--              formControlName="branch"-->
+<!--            >-->
+<!--              <nz-option-->
+<!--                *ngFor='let category of categories$ | async'-->
+<!--                [nzLabel]='category.name'-->
+<!--                [nzValue]='category'-->
+<!--              >-->
+<!--              </nz-option>-->
+<!--            </nz-select>-->
+<!--          </div>-->
+<!--        </nz-collapse-panel>-->
+<!--      </nz-collapse>-->
+<!--    </div>-->
     <div class="mt-2">
       <nz-collapse>
         <nz-collapse-panel
@@ -156,6 +156,7 @@
   </div>
 </div>
 <ng-template #pinned>
+  <minhdu-fontend-pinned-product></minhdu-fontend-pinned-product>
 </ng-template>
 <app-mouse-right #child
                  (onAdd)='onAdd()'

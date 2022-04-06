@@ -7,7 +7,7 @@ import {BaseSearchProductDto, SearchProductDto} from "../dto";
 
 export interface ProductState extends EntityState<ProductEntity> {
   loading: boolean;
-  added: boolean;
+  added: boolean|null;
   search: Partial<BaseSearchProductDto>;
   ui: ProductVisibleEntity;
 }
@@ -15,7 +15,7 @@ export interface ProductState extends EntityState<ProductEntity> {
 export function createInitialState(): ProductState {
   return {
     loading: true,
-    added: false,
+    added: null,
     search: {},
     ui: {
       stt: {

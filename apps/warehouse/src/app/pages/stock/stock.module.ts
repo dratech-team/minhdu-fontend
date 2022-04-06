@@ -7,7 +7,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
-import { StockDialogComponent, VisibleProductComponent } from './components';
+import { StockDialogComponent, VisibleStockComponent } from './components';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
@@ -57,7 +57,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   declarations: [
     StockDialogComponent,
     StockComponent,
-    VisibleProductComponent
+    VisibleStockComponent
+  ],
+  exports: [
+    VisibleStockComponent
   ],
   providers: [
     DatePipe,
