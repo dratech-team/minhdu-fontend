@@ -7,7 +7,6 @@ import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {DatePipe} from '@angular/common';
 import {EmployeeAction, selectEmployeeAdded} from '@minhdu-fontend/employee';
 import {Branch, Employee, Position} from '@minhdu-fontend/data-models';
-import {first} from 'rxjs/operators';
 import {PositionService} from '../../../../../../../../libs/orgchart/src/lib/services/position.service';
 import {BranchService} from '../../../../../../../../libs/orgchart/src/lib/services/branch.service';
 import {checkInputNumber} from '../../../../../../../../libs/utils/checkInputNumber.util';
@@ -15,6 +14,7 @@ import {RecipeTypesConstant} from '@minhdu-fontend/constants';
 import {CategoryService} from '../../../../../../../../libs/employee/src/lib/+state/service/category.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from "ng-zorro-antd/modal";
+import {map} from "rxjs/operators";
 
 @Component({
   templateUrl: 'add-employee.component.html'
@@ -28,7 +28,14 @@ export class AddEmployeeComponent implements OnInit {
   positionId?: number;
   flatSalary = FlatSalary;
   lstPosition: Position [] = [];
-  branches$ = this.store.pipe(select(getAllOrgchart));
+  branches$ = this.store.pipe(select(getAllOrgchart)).pipe(map(branches => {
+    if (branches.length === 1) {
+      this.formGroup.get('branch')?.setValue(branches[0], {emitEvent: false})
+      if (branches[0].positions)
+        this.lstPosition = branches[0].positions
+    }
+    return branches
+  }));
   submitting = false;
   recipeType = RecipeType;
   typeEmployee = EmployeeType;
@@ -76,7 +83,7 @@ export class AddEmployeeComponent implements OnInit {
       ],
       createdAt: [
         this.employeeInit?.createdAt ?
-          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : '',Validators.required
+          this.datePipe.transform(this.employeeInit?.createdAt, 'yyyy-MM-dd') : '', Validators.required
       ],
       isFlatSalary: [
         this.employeeInit?.isFlatSalary
@@ -123,12 +130,6 @@ export class AddEmployeeComponent implements OnInit {
         this.formGroup.get('recipeType')?.setValue(RecipeType.CT3);
       }
     });
-    this.branches$.pipe(first(value => value.length === 1)).subscribe(val => {
-      this.formGroup.get('branch')?.setValue(val);
-      if (val[0].positions) {
-        this.lstPosition = val[0].positions;
-      }
-    });
   }
 
   get f() {
@@ -136,7 +137,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit(): any {
-
     this.submitting = true;
     const value = this.formGroup.value;
     if (this.formGroup.invalid) {
@@ -170,7 +170,9 @@ export class AddEmployeeComponent implements OnInit {
     return checkInputNumber(event);
   }
 
-  compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
+  compareFN = (o1: any, o2: any) => {
+    return o1 && o2 ? o1.id == o2.id : o1 === o2
+  };
 
   private mapEmployee(value: any) {
     return {
