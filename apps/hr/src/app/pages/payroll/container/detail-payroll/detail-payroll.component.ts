@@ -284,11 +284,11 @@ export class DetailPayrollComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'title':
-          return this.compare(a.title, b.title, isAsc);
+          return this.compare(b.title, a.title, isAsc);
         case 'datetime':
           return this.compare(b.datetime,a.datetime, isAsc);
         case 'unit':
-          return this.compare(a.unit, b.unit, isAsc);
+          return this.compare(b.unit, a.unit, isAsc);
         default:
           return 0;
       }
