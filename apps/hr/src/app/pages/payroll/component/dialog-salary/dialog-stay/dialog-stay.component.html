@@ -61,7 +61,7 @@
         </div>
       </form>
     </mat-tab>
-    <mat-tab *ngIf='!data?.isUpdate' class='col-12 ' label='Chọn nhân viên'>
+    <mat-tab *ngIf='data?.selectEmp' class='col-12 ' label='Chọn nhân viên'>
       <app-pick-payroll [payrollInit]="data?.payroll"
                         [createdAt]="data.payroll?.createdAt|| data.createdAt"
                         (EventSelectPayroll)="pickPayroll($event)">

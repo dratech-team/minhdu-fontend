@@ -1,14 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../reducers';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Employee, PartialDayEnum } from '@minhdu-fontend/data-models';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {DatePipe} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatTabChangeEvent} from '@angular/material/tabs';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 
@@ -72,7 +71,7 @@ export class DialogAllowanceMultipleComponent implements OnInit {
       datetime: new Date(value.month),
       note: value.note,
       unit: value.unit ? value.unit : undefined,
-      employeeIds: this.payrollsSelected.map(e => e.id)
+      payrollIds: this.payrollsSelected.map(e => e.id)
     };
     this.store.dispatch(
       PayrollAction.addSalary({

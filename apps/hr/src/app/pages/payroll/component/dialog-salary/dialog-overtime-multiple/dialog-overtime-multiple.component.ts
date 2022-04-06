@@ -12,17 +12,16 @@ import {
 } from '../../../../template/+state/template-overtime/template-overtime.selector';
 import {TemplateOvertimeAction} from '../../../../template/+state/template-overtime/template-overtime.action';
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {map, startWith} from 'rxjs/operators';
+import {startWith} from 'rxjs/operators';
 import {TemplateOvertime} from '../../../../template/+state/template-overtime/template-overtime.interface';
 import {getAllPosition, PositionActions} from '../../../../../../../../../libs/orgchart/src/lib/+state/position';
 import {MatStepper} from '@angular/material/stepper';
-import {Employee, PartialDayEnum, Position} from '@minhdu-fontend/data-models';
+import {PartialDayEnum, Position} from '@minhdu-fontend/data-models';
 import {searchAutocomplete} from '../../../../../../../../../libs/utils/orgchart.ultil';
 import {SalaryService} from '../../../service/salary.service';
 import {getFirstDayInMonth, getLastDayInMonth} from '../../../../../../../../../libs/utils/daytime.until';
 import * as lodash from 'lodash';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
-import {values} from "lodash";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({

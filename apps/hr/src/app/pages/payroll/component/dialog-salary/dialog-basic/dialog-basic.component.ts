@@ -11,7 +11,6 @@ import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/
 import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
 import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
 import {MatTabChangeEvent} from '@angular/material/tabs';
-import {SalaryMultipleEmployeeService} from '../../../service/salary-multiple-employee.service';
 import {SalaryService} from '../../../service/salary.service';
 import {Employee, SalaryPayroll} from '@minhdu-fontend/data-models';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -45,7 +44,6 @@ export class DialogBasicComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
     private readonly message: NzMessageService,
     private readonly store: Store<AppState>,
@@ -148,42 +146,35 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data.payroll.id) {
-        this.store.dispatch(
-          PayrollAction.addSalary({
-            payrollId: this.data.payroll.id,
-            salary: salary
-          })
-        );
+      if (this.data.isHistorySalary) {
+        Object.assign(salary, {
+          createdAt: value.datetime,
+          title: this.data.salary.title
+        })
+        this.store.dispatch(EmployeeAction.updateHistorySalary({
+          id: this.data.salary.id,
+          salary: salary,
+          employeeId: this.data.salary.employeeId
+        }))
       } else {
-        if (this.data.isHistorySalary) {
-          Object.assign(salary, {
-            createdAt: value.datetime,
-            title: this.data.salary.title
-          })
-          this.store.dispatch(EmployeeAction.updateHistorySalary({
-            id: this.data.salary.id,
-            salary: salary,
-            employeeId: this.data.salary.employeeId
-          }))
-        } else {
-          const data = {salary: salary, payrollIds: this.payrollSelected.map(e => e.id)};
-          this.multipleEmployeeService.addOne(data).subscribe(val => {
-            if (val) {
-              if (this.data?.addMultiple) {
-                this.dialogRef.close({title: titleSalary?.title});
-              } else {
-                this.store.dispatch(PayrollAction.getPayroll({id: this.data.payroll.id}));
-                this.dialogRef.close();
+        this.store.dispatch(
+          PayrollAction.addSalary(
+            this.payrollSelected.length === 1 &&
+            this.payrollSelected[0].id == this.data?.payroll?.id ?
+              {
+                payrollId: this.data.payroll.id,
+                salary: salary
+              } :
+              {
+                salary: Object.assign(salary, {payrollIds: this.payrollSelected.map(val => val.id)})
               }
-            }
-          });
-        }
+          )
+        );
       }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(val => {
       if (val) {
-        this.dialogRef.close(true);
+        this.dialogRef.close({title: salary.title});
       }
     });
   }

@@ -1,18 +1,15 @@
-import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { AppState } from '../../../../../reducers';
-import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
-import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
-import { Role } from '../../../../../../../../../libs/enums/hr/role.enum';
-import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Salary } from '@minhdu-fontend/data-models';
-import { SalaryService } from '../../../service/salary.service';
+import {DatePipe} from '@angular/common';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/template-salary.action';
+import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
+import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {SalaryService} from '../../../service/salary.service';
 
 @Component({
   templateUrl: 'salary-basic-multiple.component.html'
@@ -29,7 +26,6 @@ export class SalaryBasicMultipleComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
     private readonly salaryService: SalaryService,
     private readonly snackbar: MatSnackBar,

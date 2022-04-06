@@ -25,8 +25,8 @@ import {
   sortEmployeeTypeEnum
 } from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {Subject, throwError} from 'rxjs';
+import {catchError, debounceTime} from 'rxjs/operators';
 import {PayrollAction} from '../../+state/payroll/payroll.action';
 import {
   selectedBranchPayroll,
@@ -223,7 +223,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+        this.formGroup.get('titles')?.patchValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: this.mapPayrollBasic()
@@ -287,7 +287,10 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             }
           });
         });
-        deleteSuccess.subscribe((val) => {
+        deleteSuccess.pipe(catchError(err =>{
+          this.loadingDelete = false
+          return throwError(err)
+        })).subscribe((val) => {
           if (val === this.salariesSelected.length - 1) {
             this.loadingDelete = false
             this.salariesSelected = [];

@@ -199,7 +199,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
         addMultiple: true,
         salary: salary,
         createdAt: this.getRangeDay().start,
-        type: SalaryTypeEnum.STAY
+        type: SalaryTypeEnum.STAY,
+        selectEmp: true
       }
     });
     ref.afterClosed().subscribe((val) => {

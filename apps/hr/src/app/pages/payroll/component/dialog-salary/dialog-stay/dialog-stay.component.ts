@@ -1,19 +1,17 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConvertBooleanFrontEnd, SalaryTypeEnum } from '@minhdu-fontend/enums';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../../../reducers';
-import { DatePipe } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PayrollAction } from '../../../+state/payroll/payroll.action';
-import { selectedAddedPayroll } from '../../../+state/payroll/payroll.selector';
-import { selectorAllTemplate } from '../../../../template/+state/teamlate-salary/template-salary.selector';
-import { TemplateSalaryAction } from '../../../../template/+state/teamlate-salary/template-salary.action';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SalaryMultipleEmployeeService } from '../../../service/salary-multiple-employee.service';
-import { SalaryService } from '../../../service/salary.service';
-import { Employee, SalaryPayroll } from '@minhdu-fontend/data-models';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {ConvertBooleanFrontEnd, SalaryTypeEnum} from '@minhdu-fontend/enums';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../../../../../reducers';
+import {DatePipe} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {PayrollAction} from '../../../+state/payroll/payroll.action';
+import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
+import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
+import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/template-salary.action';
+import {SalaryService} from '../../../service/salary.service';
+import {SalaryPayroll} from '@minhdu-fontend/data-models';
 import {Payroll} from "../../../+state/payroll/payroll.interface";
 
 @Component({
@@ -33,7 +31,6 @@ export class DialogStayComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    public multipleEmployeeService: SalaryMultipleEmployeeService,
     private readonly dialog: MatDialog,
     private readonly store: Store<AppState>,
     private readonly formBuilder: FormBuilder,
@@ -48,6 +45,9 @@ export class DialogStayComponent implements OnInit {
   ngOnInit(): void {
     if (this.data?.updateMultiple) {
       this.salariesSelected = this.data.salariesSelected;
+    }
+    if(this.data?.payroll){
+      this.payrollSelected.push(this.data.payroll)
     }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({ salaryType: SalaryTypeEnum.STAY }));
     if (this.data?.salary) {
@@ -107,29 +107,20 @@ export class DialogStayComponent implements OnInit {
         }));
       }
     } else {
-      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data?.payroll?.employee?.id) {
-        this.store.dispatch(PayrollAction.addSalary({
-            payrollId: this.data.payroll.id,
-            salary: salary
-          })
+        this.store.dispatch(PayrollAction.addSalary(this.payrollSelected.length === 1 &&
+          this.payrollSelected[0].id == this.data?.payroll?.id ?
+            {
+              payrollId: this.data.payroll.id,
+              salary: salary
+            } :
+            {
+              salary: Object.assign(salary, {payrollIds: this.payrollSelected.map(val => val.id)})
+            })
         );
-      } else {
-        this.multipleEmployeeService.addOne({ salary: salary, employeeIds: this.payrollSelected.map(e => e.id) })
-          .subscribe(val => {
-            if (val) {
-              if (this.data?.addMultiple) {
-                this.dialogRef.close({ title: value.title });
-              } else {
-                this.store.dispatch(PayrollAction.getPayroll({ id: this.data.payroll.id }));
-                this.dialogRef.close();
-              }
-            }
-          });
-      }
     }
     this.store.pipe(select(selectedAddedPayroll)).subscribe(added => {
       if (added) {
-        this.dialogRef.close();
+        this.dialogRef.close({title: salary.title});
       }
     });
   }
