@@ -3,27 +3,27 @@ import {AddStockDto, SearchStockDto, UpdateStockDto} from '../dto';
 import { StockEntity } from '../entities';
 
 const addOne = createAction(
-  '[PRODUCT] Add One',
+  '[STOCK] Add One',
   props<AddStockDto>()
 );
 
 const loadAll = createAction(
-  '[PRODUCT] Load All',
+  '[STOCK] Load All',
   props<{ params: SearchStockDto, isPagination?: boolean }>()
 );
 
 const getOne = createAction(
-  '[PRODUCT] Get One',
+  '[STOCK] Get One',
   props<{ id: StockEntity['id'] }>()
 );
 
 const update = createAction(
-  '[PRODUCT] Update',
+  '[STOCK] Update',
   props<UpdateStockDto>()
 );
 
 const remove = createAction(
-  '[PRODUCT] Delete',
+  '[STOCK] Delete',
   props<{ id: StockEntity['id'] }>()
 );
 

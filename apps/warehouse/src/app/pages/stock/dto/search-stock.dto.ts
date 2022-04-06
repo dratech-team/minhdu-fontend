@@ -1,6 +1,8 @@
-import { AddStockDto } from './add-stock.dto';
+import {BaseStockEntity} from "../bases";
+import {BaseSearchDto} from "@minhdu-fontend/base-dto";
 
-export interface SearchStockDto extends Partial<AddStockDto> {
-  readonly skip: number,
-  readonly take: number,
-};
+interface BaseSearchStockDto extends BaseStockEntity{
+
+}
+
+export type SearchStockDto = BaseSearchDto<BaseSearchStockDto>
