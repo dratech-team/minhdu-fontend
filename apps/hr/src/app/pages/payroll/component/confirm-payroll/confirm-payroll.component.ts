@@ -121,9 +121,8 @@ export class ConfirmPayrollComponent implements OnInit {
       })).subscribe(() => {
         this.adding = false
         this.message.success('Huỷ xác nhận phiếu lương thành công')
+        this.store.dispatch(PayrollAction.getPayroll({id: this.data.payroll.id}))
         this.dialogRef.close();
-        /// FIXME: sau khi huyr thanh cong thi gọi api load lại phiếu lương
-        location.reload();
       })
     })
   }
