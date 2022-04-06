@@ -148,7 +148,7 @@ export class DialogBasicComponent implements OnInit {
         );
       }
     } else {
-      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data.payroll?.employee?.id) {
+      if (this.payrollSelected.length === 1 && this.payrollSelected[0].id == this.data.payroll.id) {
         this.store.dispatch(
           PayrollAction.addSalary({
             payrollId: this.data.payroll.id,
