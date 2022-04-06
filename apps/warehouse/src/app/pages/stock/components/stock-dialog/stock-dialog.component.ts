@@ -94,14 +94,11 @@ export class StockDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-
-    this.action$.dispatch(StockActions.addOne({ body: value }));
-    // if (this.data?.isUpdate) {
-    //   console.log("update product")
-    //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
-    // } else {
-    //   this.action$.dispatch(ProductAction.addProduct({ product: product }));
-    // }
+    if(this.data?.isUpdate){
+      this.action$.dispatch(StockActions.update({ id:this.data.stock.id, updates: value}));
+    }else{
+      this.action$.dispatch(StockActions.addOne({ body: value }));
+    }
 
   }
 
