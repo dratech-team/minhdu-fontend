@@ -1,10 +1,10 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {sotckEntity, StockVisibleEntity} from '../entities';
+import {stockEntity, StockVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import {ProviderEntity} from '../../provider/entities';
 
-export interface ProductState extends EntityState<sotckEntity> {
+export interface ProductState extends EntityState<stockEntity> {
   loading: boolean;
   added: boolean;
   search: Partial<ProviderEntity>;

@@ -1,6 +1,6 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
 import {AddStockDto, SearchStockDto, UpdateStockDto} from '../dto';
-import { sotckEntity } from '../entities';
+import { stockEntity } from '../entities';
 
 const addOne = createAction(
   '[PRODUCT] Add One',
@@ -14,7 +14,7 @@ const loadAll = createAction(
 
 const getOne = createAction(
   '[PRODUCT] Get One',
-  props<{ id: sotckEntity['id'] }>()
+  props<{ id: stockEntity['id'] }>()
 );
 
 const update = createAction(
@@ -24,7 +24,7 @@ const update = createAction(
 
 const remove = createAction(
   '[PRODUCT] Delete',
-  props<{ id: sotckEntity['id'] }>()
+  props<{ id: stockEntity['id'] }>()
 );
 
 export const StockActions = { addOne, loadAll, getOne, update, remove };

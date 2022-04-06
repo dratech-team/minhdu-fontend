@@ -1,9 +1,9 @@
 import { MigrateEnum } from '../enums';
-import { sotckEntity } from '../../stock/entities';
+import { stockEntity } from '../../stock/entities';
 import { BaseMigrateEntity } from '../bases';
 
 export interface MigrateEntity extends BaseMigrateEntity {
-  readonly product: sotckEntity;
+  readonly product: stockEntity;
   readonly type: MigrateEnum;
   readonly amount: number;
   readonly timestamp: Date;

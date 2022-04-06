@@ -1,5 +1,6 @@
 import {BaseStockEntity} from '../bases';
 
-export interface sotckEntity extends BaseStockEntity {
+export interface stockEntity extends BaseStockEntity {
+  readonly note?: string;
 
 }

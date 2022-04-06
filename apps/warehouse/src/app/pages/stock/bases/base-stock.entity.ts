@@ -21,8 +21,6 @@ export interface BaseStockEntity extends BaseEntity {
   readonly mfg?: Date;
   readonly exp?: Date;
   readonly warehouse: WarehouseEntity;
-
   readonly provider: ProviderEntity;
-  readonly note?: string;
   readonly unit: WarehouseUnit;
 }
