@@ -189,14 +189,14 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             title: 'Xuât bảng lương cơ bản',
             params: payrollBASIC,
             selectDatetime: true,
-            api:Api.HR.PAYROLL.EXPORT,
+            api: Api.HR.PAYROLL.EXPORT,
           }
         })
       }
     });
 
     this.eventSelectRangeDay.subscribe(val => {
-      if(val){
+      if (val) {
         this.store.dispatch(PayrollAction.loadInit({
           payrollDTO: this.mapPayrollBasic()
         }))
@@ -210,7 +210,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
       .then();
   }
 
-  addSalaryBasic(salaryBasic:Salary) {
+  addSalaryBasic(salaryBasic: Salary) {
     const ref = this.dialog.open(DialogBasicComponent, {
       width: 'fit-content',
       data: {
@@ -223,7 +223,8 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('titles')?.patchValue([val.title], {emitEvent: false});
+        /*fixme*/
+        // this.formGroup.get('titles')?.patchValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: this.mapPayrollBasic()
@@ -287,7 +288,7 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
             }
           });
         });
-        deleteSuccess.pipe(catchError(err =>{
+        deleteSuccess.pipe(catchError(err => {
           this.loadingDelete = false
           return throwError(err)
         })).subscribe((val) => {
@@ -362,12 +363,12 @@ export class PayrollBasicComponent implements OnInit, OnChanges {
     return params;
   }
 
-  updateSelectSalary(salarySelected: SalaryPayroll,event: boolean) {
+  updateSelectSalary(salarySelected: SalaryPayroll, event: boolean) {
     this.dialog.open(ClassifyOvertimeComponent, {
       data: {
         title: 'Chọn loại lương cơ bản',
         type: event ? "SELECT" : "REMOVE",
-        salary : salarySelected.salary
+        salary: salarySelected.salary
       }
     }).afterClosed().subscribe(type => {
       if (type === 'ALL') {

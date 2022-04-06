@@ -6,7 +6,7 @@ import {ConvertBooleanFrontEnd, SalaryTypeEnum} from '@minhdu-fontend/enums';
 import {select, Store} from '@ngrx/store';
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
 import {AppState} from '../../../../../reducers';
-import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
+import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/template-salary.action';
 import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
 import {Role} from '../../../../../../../../../libs/enums/hr/role.enum';
@@ -22,6 +22,7 @@ import {EmployeeAction} from "@minhdu-fontend/employee";
 })
 export class DialogBasicComponent implements OnInit {
   numberChars = new RegExp('[^0-9]', 'g');
+  adding$ = this.store.select(selectedAddingPayroll)
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();
   type = SalaryTypeEnum;
   formGroup!: FormGroup;

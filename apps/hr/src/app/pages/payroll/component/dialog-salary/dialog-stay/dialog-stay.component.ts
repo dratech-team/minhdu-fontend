@@ -7,7 +7,7 @@ import {AppState} from '../../../../../reducers';
 import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {PayrollAction} from '../../../+state/payroll/payroll.action';
-import {selectedAddedPayroll} from '../../../+state/payroll/payroll.selector';
+import {selectedAddedPayroll, selectedAddingPayroll} from '../../../+state/payroll/payroll.selector';
 import {selectorAllTemplate} from '../../../../template/+state/teamlate-salary/template-salary.selector';
 import {TemplateSalaryAction} from '../../../../template/+state/teamlate-salary/template-salary.action';
 import {SalaryService} from '../../../service/salary.service';
@@ -25,6 +25,7 @@ export class DialogStayComponent implements OnInit {
   indexTitle = 0;
   tabindex = 0
   salariesStay$ = this.store.pipe(select(selectorAllTemplate));
+  adding$ = this.store.select(selectedAddingPayroll)
   payrollSelected: Payroll[] = [];
   salariesSelected: SalaryPayroll[] = [];
   @Output() EmitSalariesSelected = new EventEmitter<SalaryPayroll[]>();

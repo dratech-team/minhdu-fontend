@@ -205,7 +205,8 @@ export class PayrollStayComponent implements OnInit, OnChanges {
     });
     ref.afterClosed().subscribe((val) => {
       if (val) {
-        this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
+        //Fixme
+        // this.formGroup.get('titles')?.setValue([val.title], {emitEvent: false});
         this.store.dispatch(
           PayrollAction.loadInit({
             payrollDTO: this.mapPayrollStay()
