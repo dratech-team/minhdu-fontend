@@ -1,5 +1,5 @@
 import { MigrateEnum } from '../enums';
-import { Product } from '../../product/entities';
+import { Product } from '../../stock/entities';
 import { BaseMigrateEntity } from '../bases';
 
 export interface MigrateEntity extends BaseMigrateEntity {

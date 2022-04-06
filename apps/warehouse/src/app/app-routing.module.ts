@@ -19,8 +19,8 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'hang-hoa',
-        loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule),
+        path: 'phieu-xuat-nhap-kho',
+        loadChildren: () => import('./pages/stock/stock.module').then(m => m.StockModule),
         canActivate: [RouteGuard]
       },
       {
