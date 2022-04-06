@@ -3,7 +3,7 @@ import {Branch} from "@minhdu-fontend/data-models";
 import {WarehouseEntity} from "../../warehouse/entities";
 import {ProviderEntity} from "../../provider/entities";
 import {WarehouseUnit} from "../../warehouse/enums";
-import {StockEnum} from "../../../../shared/enums";
+import {DiscountTypeEnum, StockEnum} from "../../../../shared/enums";
 
 export interface BaseStockEntity extends BaseEntity {
   readonly type: StockEnum
@@ -15,6 +15,7 @@ export interface BaseStockEntity extends BaseEntity {
   readonly billCode: string,
   readonly barcode?: string;
   readonly discount?: number;
+  readonly discountType?: DiscountTypeEnum;
   readonly branch?: Branch;
   readonly name: string;
   readonly code?: string;
