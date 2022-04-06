@@ -21,10 +21,10 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     href: ''
   },
   {
-    name: 'Hàng hoá',
+    name: 'Phiếu xuất nhập kho',
     icon: '/assets/icon/menu/box.svg',
     state: MenuEnum.COMMODITY,
-    href: 'hang-hoa'
+    href: 'phieu-xuat-nhap-kho'
   },
   {
     name: 'Xuất - nhập kho',
