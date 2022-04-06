@@ -180,20 +180,19 @@ export class DetailEmployeeComponent implements OnInit {
     this.dialog.open(DialogBasicComponent, {
       data: {
         salary: salary,
-        datetime: true,
-        type: 'HISTORY'
+        isHistorySalary: true
       }
     })
   }
 
   deleteHistorySalary(salary: Salary) {
     this.dialog.open(DialogSharedComponent, {
-      data:{
+      data: {
         title: 'Xoá lịch sử lương',
-        description: `Bạn có muốn Xoá lịch sử ${salary.title} ngày ${this.datePipe.transform(salary.datetime,'dd-MM-yyyy')} không?`
+        description: `Bạn có muốn Xoá lịch sử ${salary.title} ngày ${this.datePipe.transform(salary.datetime, 'dd-MM-yyyy')} không?`
       }
     }).afterClosed().subscribe(val => {
-      if(val){
+      if (val) {
         this.store.dispatch(EmployeeAction.deleteHistorySalary({id: salary.id, employeeId: salary.employeeId}))
       }
     })

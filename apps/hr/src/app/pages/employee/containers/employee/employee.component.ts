@@ -227,7 +227,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       nzTitle: 'Thêm nhân viên',
       nzContent: AddEmployeeComponent,
       nzViewContainerRef: this.viewContentRef,
-      nzComponentParams:{
+      nzComponentParams: {
         employeeInit
       },
       nzFooter: null,
@@ -338,7 +338,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
       // workedAt: val.workedAt,
       isLeft: this.isLeft,
       employeeType: val.employeeType,
-      isFlatSalary:val.flatSalary,
+      isFlatSalary: val.flatSalary,
       exportType: 'EMPLOYEES'
     };
     if (this.sort.active) {
@@ -350,7 +350,7 @@ export class EmployeeComponent implements OnInit, AfterViewChecked {
     this.dialog.open(DialogExportComponent, {
       width: 'fit-content',
       data: {
-        filename:'Danh sách nhân viên',
+        filename: 'Danh sách nhân viên',
         title: 'Xuất bảng nhân viên',
         params: employee,
         api: Api.HR.EMPLOYEE.EMPLOYEE_EXPORT

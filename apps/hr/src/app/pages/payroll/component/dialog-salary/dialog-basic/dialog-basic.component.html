@@ -19,7 +19,7 @@
           <div *ngIf='false' class=' mb-5 title-popup'>
             <span> Lương cơ bản</span>
           </div>
-          <div class='contract-salary mt-1' *ngIf="this.data?.type !== 'HISTORY'; else title">
+          <div class='contract-salary mt-1' *ngIf="!data?.isHistorySalary; else title">
             <div class=' title-item mb-1'>
               <span>Loại lương</span>
               <span class='star'>*</span>
@@ -66,7 +66,7 @@
               </mat-select>
             </div>
           </div>
-          <div *ngIf="data?.datetime">
+          <div *ngIf="data?.isHistorySalary">
             <div class=' title-item mt-2 mbt-2'>
               <span>Ngày tạo</span>
               <span class='star'>*</span>

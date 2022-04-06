@@ -65,7 +65,7 @@ export class DialogBasicComponent implements OnInit {
     }
     this.store.dispatch(TemplateSalaryAction.loadALlTemplate({salaryType: SalaryTypeEnum.BASIC}));
     if (this.data?.salary) {
-      this.formGroup = this.formBuilder.group(this.data?.type === 'HISTORY' ? {
+      this.formGroup = this.formBuilder.group(this.data.isHistorySalary ? {
         price: [this.data.salary.price, Validators.required],
         rate: [1, Validators.required],
         datetime: [this.datePipe.transform(this.data.salary.datetime, 'yyyy-MM-dd'), Validators.required]
@@ -156,7 +156,7 @@ export class DialogBasicComponent implements OnInit {
           })
         );
       } else {
-        if (this.data.type === 'HISTORY') {
+        if (this.data.isHistorySalary) {
           Object.assign(salary, {
             createdAt: value.datetime,
             title: this.data.salary.title
