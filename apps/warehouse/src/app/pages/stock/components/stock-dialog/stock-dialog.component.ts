@@ -97,10 +97,10 @@ export class StockDialogComponent implements OnInit {
 
     this.action$.dispatch(StockActions.addOne({ body: value }));
     // if (this.data?.isUpdate) {
-    //   console.log("update stock")
+    //   console.log("update product")
     //   // this.store.dispatch(MedicineAction.updateMedicine({ medicine: medicine, id: this.data.id }));
     // } else {
-    //   this.action$.dispatch(ProductAction.addProduct({ stock: stock }));
+    //   this.action$.dispatch(ProductAction.addProduct({ product: product }));
     // }
 
   }
@@ -122,7 +122,7 @@ export class StockDialogComponent implements OnInit {
           break;
         }
         default: {
-          console.error('[stock-dialog.component.ts] Type onChange Autocomplete unavailble');
+          console.error('[product-dialog.component.ts] Type onChange Autocomplete unavailble');
         }
       }
       this.formGroup.get(type)?.patchValue(fg);

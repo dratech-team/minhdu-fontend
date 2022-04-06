@@ -1,0 +1,164 @@
+<div class="d-flex mt-3 ml-2">
+  <div class='d-flex flex-column ml-3 border p-2' style='height: 80vh; width:250px; overflow-y: scroll'>
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <div class="mt-2">
+      <nz-collapse>
+        <nz-collapse-panel
+          nzHeader='Ngành hàng'
+          nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <nz-select
+              class='ml-2'
+              nzShowSearch
+              nzAllowClear
+              style='width:100%'
+              nzPlaceHolder='Chọn ngành hàng'
+              [compareWith]='compareFN'
+              formControlName="category"
+            >
+              <nz-option
+                *ngFor='let category of categories$ | async'
+                [nzLabel]='category.name'
+                [nzValue]='category'
+              >
+              </nz-option>
+            </nz-select>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div class="mt-2">
+      <nz-collapse>
+        <nz-collapse-panel
+          nzHeader='Đơn vị'
+          nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <nz-select
+              class='ml-2'
+              nzShowSearch
+              nzAllowClear
+              style='width:100%'
+              nzPlaceHolder='Chọn đơn vị'
+              [compareWith]='compareFN'
+              formControlName="branch"
+            >
+              <nz-option
+                *ngFor='let category of categories$ | async'
+                [nzLabel]='category.name'
+                [nzValue]='category'
+              >
+              </nz-option>
+            </nz-select>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div class="mt-2">
+      <nz-collapse>
+        <nz-collapse-panel
+          nzHeader='Nhà cung cấp'
+          nzActive='true'>
+          <div [formGroup]='formGroup'>
+            <nz-select
+              class='ml-2'
+              nzShowSearch
+              nzAllowClear
+              style='width:100%'
+              nzPlaceHolder='Chọn nhà cung cấp'
+              [compareWith]='compareFN'
+              formControlName="supplier"
+            >
+              <nz-option
+                *ngFor='let supplier of supplier$ | async'
+                [nzLabel]='supplier.name'
+                [nzValue]='supplier'
+              >
+              </nz-option>
+            </nz-select>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+  </div>
+  <div class="d-flex flex-column ml-2" style="width: 80vw">
+    <div class="ml-2 d-flex justify-content-between">
+      <div class="font-2xl font-weight-bold">Sản phẩm</div>
+      <div>
+        <div>
+          <button nz-button nzType="primary" class="ml-2" (click)="onAdd()">Thêm</button>
+          <button class='ml-2' nz-button nz-popover nzPopoverTitle='Ghim'
+                  [(nzPopoverVisible)]='visible'
+                  nzPopoverPlacement='bottomRight'
+                  [nzPopoverContent]='pinned'
+                  nzPopoverTrigger='click'>Ghim
+          </button>
+        </div>
+      </div>
+    </div>
+    <nz-table #tableDashBoard class="mt-2"
+              nzSize='small'
+              [nzData]="(products$|async)|| []"
+              [formGroup]='formGroup'
+              (nzPageIndexChange)="onPagination($event)"
+              [nzLoading]="(loading$|async)"
+              [nzScroll]="{ x: '1700px',y: '60vh'}"
+              [nzPageSize]="pageSizeTable"
+              *ngIf="(ui$|async) as ui"
+    >
+      <thead>
+      <tr>
+        <th [nzWidth]="'60px'" *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>STT</th>
+        <th *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>Mã sản phẩm</th>
+        <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>Sản phẩm</th>
+        <th *ngIf="ui.category.visible" [nzLeft]='ui.category?.pinned||false'>Ngành hàng</th>
+        <th *ngIf="ui.supplier.visible" [nzLeft]='ui.supplier?.pinned||false'>Nhà cung cấp</th>
+        <th *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>Đơn vị</th>
+        <th *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false'>Ghi chú</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
+        <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
+          <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
+            {{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}
+          </td>
+          <td *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>
+            {{product?.code}}
+          </td>
+          <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>
+            {{product?.name}}
+          </td>
+          <td *ngIf="ui.category.visible" [nzLeft]='ui.category?.pinned||false'>
+            {{product.category.name}}
+          </td>
+          <td *ngIf="ui.supplier.visible" [nzLeft]='ui.supplier?.pinned||false'>
+            {{product.supplier.name}}
+          </td>
+          <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
+            {{product.unit}}
+          </td>
+          <td *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false' style='color: #4dbd74'>
+            {{product.note}}
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </nz-table>
+
+  </div>
+</div>
+<ng-template #pinned>
+</ng-template>
+<app-mouse-right #child
+                 (onAdd)='onAdd()'
+                 (onDel)='onDelete($event)'
+                 (onUpdate)='onUpdate($event)'></app-mouse-right>
+

@@ -1,8 +1,8 @@
 import {BaseProductEntity} from "../bases";
 import {BaseSearchDto} from "@minhdu-fontend/base-dto";
 
-interface BaseSearchStockDto extends BaseProductEntity{
+export interface BaseSearchProductDto extends BaseProductEntity{
 
 }
 
-export type SearchProductDto = BaseSearchDto<BaseSearchStockDto>
+export type SearchProductDto = BaseSearchDto<BaseSearchProductDto>

@@ -108,7 +108,7 @@
             {{(product.discount || 0) * 100 + '%' }}
           </td>
           <!--          <th class='pointer'>-->
-          <!--            {{stock?.billCode}}-->
+          <!--            {{product?.billCode}}-->
           <!--          </th>-->
           <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
             {{product.unit | transform:medicineConstant}}
@@ -124,7 +124,6 @@
   </div>
 </div>
 <ng-template #pinned>
-  <minhdu-fontend-pinned-stock></minhdu-fontend-pinned-stock>
 </ng-template>
 <app-mouse-right #child
                  (onAdd)='import()'
