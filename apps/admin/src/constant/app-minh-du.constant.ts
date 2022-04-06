@@ -13,7 +13,7 @@ export const AppMinhDuConstant = [
     name: 'kho',
     app: App.WAREHOUSE,
     link: '',
-    icon: 'assets/icon/admin-layout/warehouse.png',
+    icon: 'assets/icon/admin-layout/category.png',
   },
   {
     name: 'Nhân sự',

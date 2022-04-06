@@ -9,7 +9,7 @@ export const AppMinhDuConstant = [
   {
     name: 'kho',
     app:  App.WAREHOUSE,
-    icon: 'assets/icon/admin-layout/warehouse.png'
+    icon: 'assets/icon/admin-layout/category.png'
   },
   {
     name: 'Nhân sự',

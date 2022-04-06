@@ -19,7 +19,7 @@ import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
-import { StockRoutingModule } from './stock-routing.module';
+import { ProductRoutingModule } from './product-routing.module';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { CategoryEffect } from '../category/state/category.effect';
@@ -31,7 +31,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @NgModule({
   imports: [
-    StockRoutingModule,
+    ProductRoutingModule,
     NzAutocompleteModule,
     ComponentsModule,
     ReactiveFormsModule,
@@ -65,5 +65,5 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     StockService
   ]
 })
-export class StockModule {
+export class ProductModule {
 }

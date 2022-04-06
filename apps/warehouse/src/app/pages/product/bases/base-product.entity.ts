@@ -5,9 +5,11 @@ import {ProviderEntity} from "../../provider/entities";
 import {WarehouseUnit} from "../../category/enums";
 import {DiscountTypeEnum, StockEnum} from "../../../../shared/enums";
 
-export interface BaseStockEntity extends BaseEntity {
-  readonly type: StockEnum
-  readonly createdAt: Date;
+export interface BaseProductEntity extends BaseEntity {
+  readonly name: string;
+  readonly code: string;
+  readonly category: CategoryEntity
+
   readonly price: number;
   readonly amount: number;
   readonly accountedAt: Date,
@@ -17,8 +19,6 @@ export interface BaseStockEntity extends BaseEntity {
   readonly discount?: number;
   readonly discountType?: DiscountTypeEnum;
   readonly branch?: Branch;
-  readonly name: string;
-  readonly code?: string;
   readonly mfg?: Date;
   readonly exp?: Date;
   readonly warehouse: CategoryEntity;

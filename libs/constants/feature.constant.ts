@@ -27,5 +27,5 @@ export const FeatureName = {
   OVERTIME: 'overtime',
   ACCOUNT: 'account',
   ADMIN: 'admin',
-  WAREHOUSE: 'warehouse',
+  WAREHOUSE: 'category',
 };

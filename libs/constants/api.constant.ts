@@ -83,10 +83,10 @@ export const Api = {
   ORG_CHART: 'org-chart',
   AUTH_SIGN_IN: 'auth/signin',
   WAREHOUSE: {
-    WAREHOUSE: 'warehouse',
+    WAREHOUSE: 'category',
     PRODUCT: 'product',
     PROVIDER: 'provider',
-    HISTORY: 'warehouse-history'
+    HISTORY: 'category-history'
   },
   BREED: {
     EGG_TYPE: 'egg-type',

@@ -31,7 +31,7 @@ export * from './sell/sort-route.enum';
 export * from './sell/sort-order.enum';
 export * from './sell/sort-customer.enum';
 
-// warehouse
+// category
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
 
