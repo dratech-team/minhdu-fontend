@@ -1,12 +1,12 @@
-import { Payroll } from '../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
-import { DatetimeUnitEnum, SalaryTypeEnum } from '../../../enums';
-import { SalaryHistory } from './salary-history';
-import { PartialDayEnum } from '@minhdu-fontend/data-models';
-import { Employee } from '../employee/employee';
-import { employee } from './payroll-salary';
+import {Payroll} from '../../../../apps/hr/src/app/pages/payroll/+state/payroll/payroll.interface';
+import {DatetimeUnitEnum, SalaryTypeEnum} from '../../../enums';
+import {SalaryHistory} from './salary-history';
+import {PartialDayEnum} from '@minhdu-fontend/data-models';
+import {Employee} from '../employee/employee';
 
 
 export interface Salary {
+  partial?: PartialDayEnum;
   id: number,
   title: string,
   type: SalaryTypeEnum,

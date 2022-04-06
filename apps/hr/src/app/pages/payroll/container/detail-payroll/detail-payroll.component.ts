@@ -35,6 +35,8 @@ import {UpdatePayrollComponent} from "../../component/update-payroll/update-payr
 import {Role} from "../../../../../../../../libs/enums/hr/role.enum";
 import {RestorePayrollComponent} from "../../component/restore-payroll/restore-payroll.component";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {Sort} from "@angular/material/sort";
+import {map} from "rxjs/operators";
 
 
 @Component({
@@ -43,7 +45,20 @@ import {NzMessageService} from "ng-zorro-antd/message";
 })
 export class DetailPayrollComponent implements OnInit {
   type = SalaryTypeEnum;
-  payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId)));
+  payroll$ = this.store.pipe(select(selectCurrentPayroll(this.getPayrollId))).pipe(
+    map(payroll =>{
+      if(payroll){
+        if (payroll?.createdAt){
+          this.daysInMonth = getDaysInMonth(payroll.createdAt);
+        }else{
+          this.daysInMonth = new Date().getDate();
+        }
+        this.sortedSalaryOver = JSON.parse(JSON.stringify(
+          payroll?.salaries.filter(salary => salary.type === SalaryTypeEnum.OVERTIME)))
+      }
+      return payroll
+    })
+  );
   loaded$ = this.store.pipe(select(selectedLoadedPayroll));
   adding$ = this.store.pipe(select(selectedAddingPayroll));
   scanned$ = this.store.pipe(select(selectedScannedPayroll));
@@ -52,7 +67,8 @@ export class DetailPayrollComponent implements OnInit {
   isSticky = false;
   employeeTypeEnum = EmployeeType;
   role!: string|null
-  roleEnum =  Role
+  roleEnum =  Role;
+  sortedSalaryOver: Salary[] = []
   constructor(
     private readonly dialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute,
@@ -69,14 +85,6 @@ export class DetailPayrollComponent implements OnInit {
   ngOnInit() {
     this.role = localStorage.getItem('role')
     this.store.dispatch(PayrollAction.getPayroll({id: this.getPayrollId}));
-    this.payroll$.subscribe(val => {
-        if (val) {
-          this.daysInMonth = getDaysInMonth(val.createdAt);
-        } else {
-          this.daysInMonth = new Date().getDate();
-        }
-      }
-    );
   }
 
   get getPayrollId(): number {
@@ -267,5 +275,25 @@ export class DetailPayrollComponent implements OnInit {
     this.dialog.open(UpdatePayrollComponent, {
       data: {payroll}
     })
+  }
+
+  sortData(sort: Sort) {
+    this.sortedSalaryOver = this.sortedSalaryOver.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title':
+          return this.compare(a.title, b.title, isAsc);
+        case 'datetime':
+          return this.compare(a.datetime, b.datetime, isAsc);
+        case 'unit':
+          return this.compare(a.unit, b.unit, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  compare(a: number | string| Date, b: number | string|Date, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
