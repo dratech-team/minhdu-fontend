@@ -1,15 +1,15 @@
 import { createAction, props } from '@datorama/akita-ng-effects';
-import {AddStockDto, SearchStockDto, UpdateStockDto} from '../dto';
+import {AddProductDto, SearchProductDto, UpdateProductDto} from '../dto';
 import { ProductEntity } from '../entities';
 
 const addOne = createAction(
   '[STOCK] Add One',
-  props<AddStockDto>()
+  props<AddProductDto>()
 );
 
 const loadAll = createAction(
   '[STOCK] Load All',
-  props<{ params: SearchStockDto, isPagination?: boolean }>()
+  props<{ params: SearchProductDto, isPagination?: boolean }>()
 );
 
 const getOne = createAction(
@@ -19,7 +19,7 @@ const getOne = createAction(
 
 const update = createAction(
   '[STOCK] Update',
-  props<UpdateStockDto>()
+  props<UpdateProductDto>()
 );
 
 const remove = createAction(

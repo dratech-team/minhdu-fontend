@@ -1,6 +1,6 @@
 import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
-import {ProductEntity, StockVisibleEntity} from '../entities';
+import {ProductEntity, ProductVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import {ProviderEntity} from '../../provider/entities';
 
@@ -8,7 +8,7 @@ export interface ProductState extends EntityState<ProductEntity> {
   loading: boolean;
   added: boolean;
   search: Partial<ProviderEntity>;
-  ui: StockVisibleEntity;
+  ui: ProductVisibleEntity;
 }
 
 export function createInitialState(): ProductState {
@@ -85,11 +85,11 @@ export class StockStore extends EntityStore<ProductState> {
     super(createInitialState());
   }
 
-  updateUI(newState: Partial<StockVisibleEntity>, type: 'visible' | 'pinned') {
+  updateUI(newState: Partial<ProductVisibleEntity>, type: 'visible' | 'pinned') {
     return this.update(state => {
       return {
         ...state,
-        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<StockVisibleEntity>(newState, type)) : state.ui
+        ui: state.ui ? Object.assign(JSON.parse(JSON.stringify(state.ui)), updateStateUiUtil<ProductVisibleEntity>(newState, type)) : state.ui
       };
     });
   }

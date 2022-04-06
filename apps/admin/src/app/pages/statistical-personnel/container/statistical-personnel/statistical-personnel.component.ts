@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { AdminAction } from 'apps/admin/src/app/states/admin.action';
 
@@ -12,6 +12,6 @@ export class StatisticalPersonnelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW_PERSONNEL }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW_PERSONNEL }));
   }
 }

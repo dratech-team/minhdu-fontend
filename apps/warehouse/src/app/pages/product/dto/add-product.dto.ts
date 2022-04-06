@@ -5,4 +5,4 @@ interface BaseAddStockDto extends BaseProductEntity {
 
 }
 
-export type AddStockDto = BaseAddDto<BaseAddStockDto>
+export type AddProductDto = BaseAddDto<BaseAddStockDto>

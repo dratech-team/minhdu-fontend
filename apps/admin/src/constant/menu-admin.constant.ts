@@ -1,29 +1,29 @@
-import { App, MenuEnum } from '@minhdu-fontend/enums';
+import { App, MenuWarehouseEum } from '@minhdu-fontend/enums';
 
 export const MenuAdminConstant = [
   {
     name: 'Tổng quan',
-    state:MenuEnum.OVERVIEW,
+    state:MenuWarehouseEum.OVERVIEW,
     href: '/'
   },
   {
     name: 'Tổng quan bán hàng',
-    state:MenuEnum.OVERVIEW_SELL,
+    state:MenuWarehouseEum.OVERVIEW_SELL,
     href: '/ban-hang'
   },
   {
     name: 'Tổng quan kho',
-    state:MenuEnum.OVERVIEW_WAREHOUSE,
+    state:MenuWarehouseEum.OVERVIEW_WAREHOUSE,
     href: 'kho'
   },
   {
     name: 'Tổng quan nhân sự',
-    state:MenuEnum.OVERVIEW_PERSONNEL,
+    state:MenuWarehouseEum.OVERVIEW_PERSONNEL,
     href: 'nhan-su'
   },
   {
     name: 'Tài chính',
-    state:MenuEnum.OVERVIEW_FINANCE,
+    state:MenuWarehouseEum.OVERVIEW_FINANCE,
     href: 'tai-chinh'
   },
 ];

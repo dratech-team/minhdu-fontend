@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { MenuAdminConstant } from '../../../constant/menu-admin.constant';
 import { AdminAction } from '../../states/admin.action';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { selectedTab } from '../../states/admin.selector';
 import { AppState } from '../../reducers';
 

@@ -5,4 +5,4 @@ interface BaseSearchStockDto extends BaseProductEntity{
 
 }
 
-export type SearchStockDto = BaseSearchDto<BaseSearchStockDto>
+export type SearchProductDto = BaseSearchDto<BaseSearchStockDto>

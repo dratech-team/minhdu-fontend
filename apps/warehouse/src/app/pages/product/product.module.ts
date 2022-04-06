@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
-import { StockComponent } from './container';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentsModule } from '@minhdu-fontend/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
-import { StockDialogComponent, VisibleProductComponent } from './components';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
@@ -36,7 +33,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     ComponentsModule,
     ReactiveFormsModule,
     MatInputModule,
-    InfiniteScrollModule,
     CommonModule,
     MatSelectModule,
     MatDialogModule,
@@ -54,11 +50,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzPopoverModule,
     NzButtonModule
   ],
-  declarations: [
-    StockDialogComponent,
-    StockComponent,
-    VisibleProductComponent
-  ],
+  declarations: [],
   providers: [
     DatePipe,
     CategoryService,

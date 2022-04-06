@@ -19,6 +19,11 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
+        path: 'san-pham',
+        loadChildren: () => import('./pages/category/category.module').then(m => m.CategoryModule),
+        canActivate: [RouteGuard]
+      },
+      {
         path: 'phieu-xuat-nhap-kho',
         loadChildren: () => import('./pages/stock/stock.module').then(m => m.StockModule),
         canActivate: [RouteGuard]

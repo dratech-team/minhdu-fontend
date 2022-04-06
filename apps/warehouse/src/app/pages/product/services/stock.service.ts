@@ -5,24 +5,24 @@ import { Api } from '@minhdu-fontend/constants';
 import { Observable } from 'rxjs';
 import { ResponsePaginate } from '@minhdu-fontend/data-models';
 import { ProductEntity } from '../entities';
-import { AddStockDto, SearchStockDto } from '../dto';
-import {UpdateStockDto} from "../dto";
+import { AddProductDto, SearchProductDto } from '../dto';
+import {UpdateProductDto} from "../dto";
 
 @Injectable()
 export class StockService extends BaseService<ProductEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.PRODUCT, http);
+    super(Api.WAREHOUSE.STOCK, http);
   }
 
-  addOne(props: AddStockDto): Observable<ProductEntity> {
+  addOne(props: AddProductDto): Observable<ProductEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(params?: SearchStockDto): Observable<ResponsePaginate<ProductEntity>> {
+  pagination(params?: SearchProductDto): Observable<ResponsePaginate<ProductEntity>> {
     return super.pagination(params);
   }
 
-  getAll(params?: SearchStockDto): Observable<ProductEntity[]> {
+  getAll(params?: SearchProductDto): Observable<ProductEntity[]> {
     return super.getAll(params);
   }
 
@@ -30,7 +30,7 @@ export class StockService extends BaseService<ProductEntity> {
     return super.getOne(id);
   }
 
-  update(updateDto:UpdateStockDto): Observable<ProductEntity> {
+  update(updateDto:UpdateProductDto): Observable<ProductEntity> {
     return super.update(updateDto.id, updateDto.updates);
   }
 

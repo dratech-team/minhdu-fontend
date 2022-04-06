@@ -34,6 +34,8 @@ export * from './sell/sort-customer.enum';
 // category
 export * from './warehouse/medicine/medicine-unit.enum';
 export * from './warehouse/warehouse-type.enum';
+export * from './warehouse/menu-warehouse.eum';
+
 
 //common
 export * from './contracts.enum';

@@ -10,7 +10,7 @@ import {AddCategoryDto} from "../dto";
 @Injectable()
 export class CategoryService extends BaseService<CategoryEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.WAREHOUSE, http);
+    super(Api.WAREHOUSE.CATEGORY, http);
   }
 
   addOne(props: AddCategoryDto): Observable<CategoryEntity> {

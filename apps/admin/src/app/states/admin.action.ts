@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 
 export const updateStateMenu = createAction(
   '[UPDATE_STATE_ADMIN] Update State Admin',
-  props<{ tab: MenuEnum }>()
+  props<{ tab: MenuWarehouseEum }>()
 );
 
 export const AdminAction = {

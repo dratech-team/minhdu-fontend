@@ -1,7 +1,6 @@
 import {BaseProductEntity} from '../bases';
-import {AttachmentEntity} from "./attachment.entity";
+import {StockEntity} from "../../stock/entities";
 
 export interface ProductEntity extends BaseProductEntity {
-  readonly note?: string;
-  attechments : AttachmentEntity
+  readonly stocks: StockEntity[];
 }
