@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeatureName } from '@minhdu-fontend/constants';
 import { EntityState } from '@ngrx/entity';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 
 export interface adminState extends EntityState<any> {
-  tab: MenuEnum,
+  tab: MenuWarehouseEum,
 }
 
 export const selectorMainState = createFeatureSelector<adminState>(

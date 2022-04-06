@@ -7,7 +7,7 @@ import { debounceTime, map } from 'rxjs/operators';
 import { PaginationDto } from '@minhdu-fontend/constants';
 import { StockActions } from '../../state/stock.actions';
 import { StockQuery } from '../../state/stock.query';
-import { WarehouseAction, WarehouseQuery } from '../../../warehouse/state';
+import { CategoryAction, CategoryQuery } from '../../../category/state';
 import { InventoryTitleConstants } from '../../constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -15,7 +15,7 @@ import { StockStore } from '../../state/stock.store';
 import {UnitMedicineConstant} from "../../../../../shared/constant";
 
 @Component({
-  selector: 'minhdu-fontend-warehouse',
+  selector: 'minhdu-fontend-category',
   templateUrl: 'stock.component.html'
 
 })
@@ -48,7 +48,7 @@ export class StockComponent implements OnInit {
   visible = false;
 
   constructor(
-    private readonly warehouseQuery: WarehouseQuery,
+    private readonly warehouseQuery: CategoryQuery,
     private readonly productQuery: StockQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
@@ -62,7 +62,7 @@ export class StockComponent implements OnInit {
       params: this.mapProduct(this.formGroup.value, false)
     }));
 
-    this.actions$.dispatch(WarehouseAction.loadAll());
+    this.actions$.dispatch(CategoryAction.loadAll());
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

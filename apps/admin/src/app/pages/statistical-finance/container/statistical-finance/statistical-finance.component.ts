@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminAction } from '../../../../states/admin.action';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { FianceConstant } from '../../../../../../../../libs/constants/admin/fiance.constant';
 import { FormControl } from '@angular/forms';
@@ -20,6 +20,6 @@ export class StatisticalFinanceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW_FINANCE }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW_FINANCE }));
   }
 }

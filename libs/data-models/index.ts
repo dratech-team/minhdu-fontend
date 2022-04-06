@@ -25,7 +25,6 @@ export  * from './hr/employee/category'
 export  * from './sort'
 export  * from './range-day'
 export  * from './visible'
-export  * from './warehouse/warehouse'
 
 
 

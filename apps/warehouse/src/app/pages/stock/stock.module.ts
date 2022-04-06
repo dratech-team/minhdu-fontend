@@ -13,7 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
 import { StockService } from './services';
 import { StockEffect } from './state/stock.effect';
-import { WarehouseService } from '../warehouse/services/warehouse.service';
+import { CategoryService } from '../category/services/category.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
@@ -22,7 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { StockRoutingModule } from './stock-routing.module';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { WarehouseEffect } from '../warehouse/state/warehouse.effect';
+import { CategoryEffect } from '../category/state/category.effect';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -41,7 +41,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([StockEffect, WarehouseEffect]),
+    AkitaNgEffectsModule.forFeature([StockEffect, CategoryEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
@@ -61,7 +61,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   ],
   providers: [
     DatePipe,
-    WarehouseService,
+    CategoryService,
     StockService
   ]
 })

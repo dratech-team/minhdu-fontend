@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminAction } from '../../../../states/admin.action';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { select, Store } from '@ngrx/store';
 import { SalaryPaymentService } from '../service/salary-payment.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -44,7 +44,7 @@ export class OverviewSalaryComponent implements OnInit {
       this.formGroup.get('branch')?.valueChanges.pipe(startWith('')) || of(''),
       this.branches$
     );
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW }));
     this.salaryPaymentService.getAll({ take: 30, skip: 0 }).subscribe(val => {
       if (val) {
         this.totalSalary = val.totalSalary;

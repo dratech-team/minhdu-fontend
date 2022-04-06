@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { stakedChart } from '@minhdu-fontend/data-models';
 import { getMonth } from 'ngx-bootstrap/chronos';
-import { DatetimeUnitEnum, MenuEnum } from '@minhdu-fontend/enums';
+import { DatetimeUnitEnum, MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminAction } from '../../../../states/admin.action';
@@ -31,7 +31,7 @@ export class StatisticalSellComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW_SELL }));
+    this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW_SELL }));
     const btnOrder = document.getElementById('home');
     btnOrder?.classList.add('btn-border');
 

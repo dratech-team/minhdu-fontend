@@ -7,7 +7,7 @@ module.exports = {
     '<rootDir>/apps/sell',
     '<rootDir>/libs/employee',
     '<rootDir>/libs/location',
-    '<rootDir>/apps/warehouse',
+    '<rootDir>/apps/category',
     '<rootDir>/apps/admin',
     '<rootDir>/libs/system-history',
     '<rootDir>/apps/breed',

@@ -1,8 +1,8 @@
 import {BaseEntity} from '../../../../../../../libs/entities';
 import {Branch} from "@minhdu-fontend/data-models";
-import {WarehouseEntity} from "../../warehouse/entities";
+import {CategoryEntity} from "../../category/entities";
 import {ProviderEntity} from "../../provider/entities";
-import {WarehouseUnit} from "../../warehouse/enums";
+import {CategoryUnitEnum} from "../../category/enums";
 import {DiscountTypeEnum, StockEnum} from "../../../../shared/enums";
 
 export interface BaseStockEntity extends BaseEntity {
@@ -21,7 +21,7 @@ export interface BaseStockEntity extends BaseEntity {
   readonly code?: string;
   readonly mfg?: Date;
   readonly exp?: Date;
-  readonly warehouse: WarehouseEntity;
+  readonly warehouse: CategoryEntity;
   readonly provider: ProviderEntity;
-  readonly unit: WarehouseUnit;
+  readonly unit: CategoryUnitEnum;
 }

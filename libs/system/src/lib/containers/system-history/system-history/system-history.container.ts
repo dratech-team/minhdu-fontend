@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityType, App, MenuEnum } from '@minhdu-fontend/enums';
+import { ActivityType, App, MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { FormControl, FormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { debounceTime, tap } from 'rxjs/operators';

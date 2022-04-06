@@ -10,10 +10,10 @@ import { of } from 'rxjs';
 import { Actions } from '@datorama/akita-ng-effects';
 import { StockQuery } from '../../state/stock.query';
 import { AppState } from '../../../../reducers';
-import { WarehouseQuery } from '../../../warehouse/state';
+import { CategoryQuery } from '../../../category/state';
 import { ProviderQuery } from '../../../provider/state';
 import { ProviderActions } from '../../../provider/state';
-import { WarehouseAction } from '../../../warehouse/state';
+import { CategoryAction } from '../../../category/state';
 import { StockService } from '../../services';
 import { StockActions } from '../../state/stock.actions';
 import {UnitMedicineConstant} from "../../../../../shared/constant";
@@ -63,7 +63,7 @@ export class StockDialogComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
-    private readonly warehouseQuery: WarehouseQuery,
+    private readonly warehouseQuery: CategoryQuery,
     private readonly productQuery: StockQuery,
     private readonly productService: StockService,
     private readonly providerQuery: ProviderQuery,
@@ -118,7 +118,7 @@ export class StockDialogComponent implements OnInit {
           break;
         }
         case 'warehouse': {
-          this.action$.dispatch(WarehouseAction.addOne({ body: { name: fg } }));
+          this.action$.dispatch(CategoryAction.addOne({ body: { name: fg } }));
           break;
         }
         default: {

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AdminAction } from '../../../../states/admin.action';
-import { MenuEnum } from '@minhdu-fontend/enums';
+import { MenuWarehouseEum } from '@minhdu-fontend/enums';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, startWith } from 'rxjs/operators';
@@ -37,7 +37,7 @@ export class DetailOverviewComponent implements OnInit {
         console.log(this.totalSalary)
       }
     });
-    // this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuEnum.OVERVIEW }));
+    // this.store.dispatch(AdminAction.updateStateMenu({ tab: MenuWarehouseEum.OVERVIEW }));
     // this.activatedRoute.queryParams.subscribe(val => {
     //   if (val) {
     //     this.year = val.year;
