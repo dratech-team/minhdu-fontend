@@ -3,11 +3,12 @@ import {Injectable} from '@angular/core';
 import {ProductEntity, ProductVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import {ProviderEntity} from '../../provider/entities';
+import {BaseSearchProductDto, SearchProductDto} from "../dto";
 
 export interface ProductState extends EntityState<ProductEntity> {
   loading: boolean;
   added: boolean;
-  search: Partial<ProviderEntity>;
+  search: Partial<BaseSearchProductDto>;
   ui: ProductVisibleEntity;
 }
 
@@ -15,12 +16,7 @@ export function createInitialState(): ProductState {
   return {
     loading: true,
     added: false,
-    search: {
-      /// FIXME:
-      // search: '',
-      // inventoryType: -1,
-      // warehouseType: -1
-    },
+    search: {},
     ui: {
       stt: {
         pinned: true,
@@ -34,43 +30,19 @@ export function createInitialState(): ProductState {
         pinned: true,
         visible: true
       },
-      warehouseType: {
-        pinned: true,
-        visible: true
-      },
-      price: {
-        pinned: false,
-        visible: true
-      },
-      amount: {
-        pinned: false,
-        visible: true
-      },
-      totalCash: {
-        pinned: false,
-        visible: true
-      },
-      barcode: {
-        pinned: false,
-        visible: true
-      },
-      provider: {
-        pinned: false,
-        visible: true
-      },
-      discount: {
-        pinned: false,
-        visible: true
-      },
-      exp: {
-        pinned: false,
-        visible: true
-      },
       unit: {
         pinned: false,
         visible: true
       },
-      createdAt: {
+      note:{
+        pinned: false,
+        visible: true
+      },
+      supplier:{
+        pinned: false,
+        visible: true
+      },
+      category:{
         pinned: false,
         visible: true
       }
@@ -80,7 +52,7 @@ export function createInitialState(): ProductState {
 
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'product'})
-export class StockStore extends EntityStore<ProductState> {
+export class ProductStore extends EntityStore<ProductState> {
   constructor() {
     super(createInitialState());
   }

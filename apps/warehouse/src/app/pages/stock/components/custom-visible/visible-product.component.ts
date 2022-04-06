@@ -4,7 +4,7 @@ import {StockQuery} from "../../state/stock.query";
 import {StockStore} from "../../state/stock.store";
 
 @Component({
-  selector: 'minhdu-fontend-pinned-stock',
+  selector: 'minhdu-fontend-pinned-product',
   templateUrl: 'visible-product.component.html'
 })
 export class VisibleProductComponent {

@@ -20,7 +20,7 @@ const routes: Routes = [
       },
       {
         path: 'san-pham',
-        loadChildren: () => import('./pages/category/category.module').then(m => m.CategoryModule),
+        loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule),
         canActivate: [RouteGuard]
       },
       {

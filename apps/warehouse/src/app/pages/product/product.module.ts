@@ -8,8 +8,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AkitaNgEffectsModule } from '@datorama/akita-ng-effects';
-import { StockService } from './services';
-import { StockEffect } from './state/stock.effect';
+import { ProductService } from './services';
+import { ProductEffect } from './state/product.effect';
 import { CategoryService } from '../category/services/category.service';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { customCurrencyMaskConfig } from '@minhdu-fontend/config';
@@ -25,6 +25,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import {ProductComponent} from "./container";
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([StockEffect, CategoryEffect]),
+    AkitaNgEffectsModule.forFeature([ProductEffect, CategoryEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
@@ -50,11 +51,13 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzPopoverModule,
     NzButtonModule
   ],
-  declarations: [],
+  declarations: [
+    ProductComponent
+  ],
   providers: [
     DatePipe,
     CategoryService,
-    StockService
+    ProductService
   ]
 })
 export class ProductModule {

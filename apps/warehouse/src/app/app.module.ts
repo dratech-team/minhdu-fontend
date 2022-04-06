@@ -28,6 +28,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
 import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../../../hr/src/environments/environment";
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -42,6 +44,11 @@ import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart
     BrowserModule,
     EffectsModule.forRoot([AuthEffects,OrgchartEffects]),
     StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true // Pauses recording actions and state changes when the extension window is not open
+    }),
     AkitaNgDevtools.forRoot(),
     AppHeaderModule,
     AppSidebarModule,

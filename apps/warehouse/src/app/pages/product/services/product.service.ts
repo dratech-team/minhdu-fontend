@@ -9,9 +9,9 @@ import { AddProductDto, SearchProductDto } from '../dto';
 import {UpdateProductDto} from "../dto";
 
 @Injectable()
-export class StockService extends BaseService<ProductEntity> {
+export class ProductService extends BaseService<ProductEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.STOCK, http);
+    super(Api.WAREHOUSE.PRODUCT, http);
   }
 
   addOne(props: AddProductDto): Observable<ProductEntity> {
@@ -23,7 +23,7 @@ export class StockService extends BaseService<ProductEntity> {
   }
 
   getAll(params?: SearchProductDto): Observable<ProductEntity[]> {
-    return super.getAll(params);
+    return super.getAll(params?.search);
   }
 
   getOne(id: ProductEntity['id']): Observable<ProductEntity> {

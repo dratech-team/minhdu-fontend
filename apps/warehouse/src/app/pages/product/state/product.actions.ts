@@ -9,7 +9,7 @@ const addOne = createAction(
 
 const loadAll = createAction(
   '[STOCK] Load All',
-  props<{ params: SearchProductDto, isPagination?: boolean }>()
+  props<SearchProductDto>()
 );
 
 const getOne = createAction(
@@ -27,4 +27,9 @@ const remove = createAction(
   props<{ id: ProductEntity['id'] }>()
 );
 
-export const StockActions = { addOne, loadAll, getOne, update, remove };
+const error = createAction(
+  '[STOCK] Error',
+  props<{ error: string }>()
+);
+
+export const ProductActions = { addOne, loadAll, getOne, update, remove, error };

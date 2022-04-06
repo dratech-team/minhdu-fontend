@@ -4,14 +4,8 @@ export interface ProductVisibleEntity {
   readonly stt: VisibleEntity;
   readonly code: VisibleEntity;
   readonly name: VisibleEntity;
-  readonly warehouseType: VisibleEntity;
-  readonly price: VisibleEntity;
-  readonly amount: VisibleEntity;
-  readonly totalCash: VisibleEntity;
-  readonly barcode: VisibleEntity;
-  readonly provider: VisibleEntity;
-  readonly discount: VisibleEntity;
-  readonly exp: VisibleEntity;
+  readonly category: VisibleEntity;
+  readonly supplier: VisibleEntity;
+  readonly note: VisibleEntity;
   readonly unit: VisibleEntity;
-  readonly createdAt: VisibleEntity;
 }
