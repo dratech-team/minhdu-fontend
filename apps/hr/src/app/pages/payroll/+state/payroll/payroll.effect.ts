@@ -128,17 +128,19 @@ export class PayrollEffect {
       switchMap((props) => {
           return this.salaryService.addOne(props.salary).pipe(
             map((res) => {
+              if (props.branchId) {
+                return  PayrollAction.getPayroll({id: props.payrollId})
+              }
               if (res?.status === 201) {
                 this.message.success(res.message);
+                if(props.isDetailPayroll){
+                  return PayrollAction.getPayroll({id: props.payrollId})
+                }else{
+                  return PayrollAction.addSalaryMultipleSuccess();
+                }
               } else {
                 this.message.success('Thao tác thành công');
-              }
-              if (props.branchId) {
-                return OrgchartActions.getBranch({id: props.branchId});
-              } else {
-                return props.payrollId
-                  ? PayrollAction.getPayroll({id: props.payrollId})
-                  : PayrollAction.addSalaryMultipleSuccess();
+                return PayrollAction.getPayroll({id: props.payrollId})
               }
             }),
             catchError((err) => {

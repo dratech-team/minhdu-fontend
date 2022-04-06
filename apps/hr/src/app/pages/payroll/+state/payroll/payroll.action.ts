@@ -56,6 +56,7 @@ export const addSalary = createAction(
     salary: any;
     payrollId?: number;
     isTimesheet?: boolean;
+    isDetailPayroll?:boolean
     branchId?: number;
   }>()
 );
