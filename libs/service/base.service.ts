@@ -26,7 +26,7 @@ export class BaseService<T> {
     return this.http.post<T>(this.url, props);
   }
 
-  update(id: any, body: Partial<T>): Observable<T> {
+  update(id: any, body: Partial<any>): Observable<T> {
     return this.http.patch<T>(this.url + `/${id}`, body);
   }
 

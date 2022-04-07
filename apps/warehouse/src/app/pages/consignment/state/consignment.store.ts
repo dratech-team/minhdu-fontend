@@ -2,12 +2,12 @@ import {EntityState, EntityStore, StoreConfig} from '@datorama/akita';
 import {Injectable} from '@angular/core';
 import {ConsignmentEntity} from '../entities';
 
-export interface Consignment extends EntityState<ConsignmentEntity> {
+export interface ConsignmentState extends EntityState<ConsignmentEntity> {
   loading: boolean;
   added: boolean|null;
 }
 
-export function createInitialState(): Consignment {
+export function createInitialState(): ConsignmentState {
   return {
     loading: true,
     added: null,
@@ -16,7 +16,7 @@ export function createInitialState(): Consignment {
 
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'consignment'})
-export class ConsignmentStore extends EntityStore<Consignment> {
+export class ConsignmentStore extends EntityStore<ConsignmentState> {
   constructor() {
     super(createInitialState());
   }

@@ -29,11 +29,6 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
-        path: 'xuat-nhap-kho',
-        loadChildren: () => import('./pages/migrate/migrate.module').then(m => m.MigrateModule),
-        canActivate: [RouteGuard]
-      },
-      {
         path: 'quan-ly-chi-nhanh',
         loadChildren: () => import('./pages/branch/branch.module').then(m => m.BranchModule),
         canActivate: [RouteGuard]

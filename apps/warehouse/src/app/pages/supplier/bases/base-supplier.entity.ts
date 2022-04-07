@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../../../../../libs/entities';
+import { BaseEntity } from '@minhdu-fontend/base-entity';
 
 export interface BaseSupplierEntity extends BaseEntity {
   readonly name: string;
