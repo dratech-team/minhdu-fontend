@@ -40,7 +40,7 @@ const routes: Routes = [
       },
       {
         path: 'quan-ly-nha-cung-cap',
-        loadChildren: () => import('./pages/provider/provider.module').then(m => m.ProviderModule),
+        loadChildren: () => import('./pages/supplier/supplier.module').then(m => m.SupplierModule),
         canActivate: [RouteGuard]
       },
       {

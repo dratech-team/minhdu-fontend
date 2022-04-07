@@ -29,6 +29,7 @@ import {ProductComponent} from "./container";
 import {ProductDialogComponent, VisibleProductComponent} from "./components";
 import {ConsignmentModule} from "../consignment/consignment.module";
 import {NzRadioModule} from "ng-zorro-antd/radio";
+import {SupplierEffect} from "../supplier/state";
 
 @NgModule({
   imports: [
@@ -41,7 +42,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect, CategoryEffect]),
+    AkitaNgEffectsModule.forFeature([ProductEffect, CategoryEffect, SupplierEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,

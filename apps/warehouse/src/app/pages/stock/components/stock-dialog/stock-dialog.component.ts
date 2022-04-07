@@ -1,22 +1,23 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { addBranch, getAllOrgchart, OrgchartActions } from '@minhdu-fontend/orgchart';
-import { searchAndAddAutocomplete } from '@minhdu-fontend/utils';
-import { debounceTime, map, startWith } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { Actions } from '@datorama/akita-ng-effects';
-import { StockQuery } from '../../state/stock.query';
-import { AppState } from '../../../../reducers';
-import { CategoryQuery } from '../../../category/state';
-import { ProviderQuery } from '../../../provider/state';
-import { ProviderActions } from '../../../provider/state';
-import { CategoryAction } from '../../../category/state';
-import { StockService } from '../../services';
-import { StockActions } from '../../state/stock.actions';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {DatePipe} from '@angular/common';
+import {Store} from '@ngrx/store';
+import {addBranch, getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
+import {searchAndAddAutocomplete} from '@minhdu-fontend/utils';
+import {debounceTime, map, startWith} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {Actions} from '@datorama/akita-ng-effects';
+import {StockQuery} from '../../state/stock.query';
+import {AppState} from '../../../../reducers';
+import {CategoryQuery} from '../../../category/state';
+import {SupplierQuery} from '../../../supplier/state';
+import {SupplierActions} from '../../../supplier/state';
+import {CategoryAction} from '../../../category/state';
+import {StockService} from '../../services';
+import {StockActions} from '../../state/stock.actions';
 import {CategoryUnitConstant} from "../../../../../shared/constant";
+import {PaginationDto} from "@minhdu-fontend/constants";
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
@@ -29,7 +30,7 @@ export class StockDialogComponent implements OnInit {
   products$ = this.productQuery.selectAll();
   medicineConstant = CategoryUnitConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
-  providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
+  providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({label: e.name, value: e.id}));
 
   formGroup = this.formBuilder.group({
     name: [this.data?.name, Validators.required],
@@ -65,14 +66,14 @@ export class StockDialogComponent implements OnInit {
     private readonly warehouseQuery: CategoryQuery,
     private readonly productQuery: StockQuery,
     private readonly productService: StockService,
-    private readonly providerQuery: ProviderQuery,
+    private readonly providerQuery: SupplierQuery,
     private readonly action$: Actions
   ) {
   }
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.action$.dispatch(ProviderActions.loadAll( { take: 30, skip: 0 }));
+    this.action$.dispatch(SupplierActions.loadAll({search: {take: PaginationDto.take, skip: PaginationDto.skip}}));
     this.branches$ = searchAndAddAutocomplete(
       this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
       this.branches$
@@ -93,10 +94,10 @@ export class StockDialogComponent implements OnInit {
       return;
     }
     const value = this.formGroup.value;
-    if(this.data?.isUpdate){
-      this.action$.dispatch(StockActions.update({ id:this.data.stock.id, updates: value}));
-    }else{
-      this.action$.dispatch(StockActions.addOne({ body: value }));
+    if (this.data?.isUpdate) {
+      this.action$.dispatch(StockActions.update({id: this.data.stock.id, updates: value}));
+    } else {
+      this.action$.dispatch(StockActions.addOne({body: value}));
     }
 
   }
@@ -106,7 +107,7 @@ export class StockDialogComponent implements OnInit {
     if (!value?.id) {
       switch (type) {
         case 'branch': {
-          this.store.dispatch(addBranch({ branch: { name: fg } }));
+          this.store.dispatch(addBranch({branch: {name: fg}}));
           break;
         }
         case 'provider': {
@@ -114,7 +115,7 @@ export class StockDialogComponent implements OnInit {
           break;
         }
         case 'warehouse': {
-          this.action$.dispatch(CategoryAction.addOne({ body: { name: fg } }));
+          this.action$.dispatch(CategoryAction.addOne({body: {name: fg}}));
           break;
         }
         default: {
@@ -129,8 +130,8 @@ export class StockDialogComponent implements OnInit {
 
   onChangeProvider(value: string): void {
     this.providerOptions = this.providerQuery
-      .getAll({ filterBy: [entity => entity.name.toLowerCase().indexOf(value.toLowerCase()) !== -1] })
-      .map(e => ({ label: e.name, value: e.id }));
+      .getAll({filterBy: [entity => entity.name.toLowerCase().indexOf(value.toLowerCase()) !== -1]})
+      .map(e => ({label: e.name, value: e.id}));
   }
 
   onSelectItem(event: any) {

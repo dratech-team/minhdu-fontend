@@ -1,0 +1,81 @@
+<div class="p-2 d-flex align-items-stretch">
+  <div class="d-flex flex-column mt-2 border p-2" style="width: 300px; height: 75vh; overflow-y: scroll;">
+    <nz-collapse>
+      <nz-collapse-panel
+        nzHeader='Tìm kiếm'
+        nzActive='true'>
+        <div [formGroup]='formGroup'>
+          <input nz-input class='form-control' type='search' formControlName='search'>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div class="mt-2 ml-2" style="width: 78%">
+    <div class="d-flex justify-content-between mb-2">
+      <div class="font-weight-bold font-2xl ml-2">Nhà cung cấp</div>
+      <button nz-button nzType="primary" (click)="onAdd()">Thêm</button>
+    </div>
+    <div>
+      <nz-table
+        #tableSupplier
+        [nzData]="(supplier$|async)||[]"
+        [nzScroll]="{x:'100%', y:'60vh'}"
+        [nzPageSize]="pageSize"
+        (nzPageIndexChange)="onPagination($event)"
+      >
+        <thead style="position: sticky; top: 0 ; z-index: 10">
+        <tr>
+          <th nzWidth="70px">
+            stt
+          </th>
+          <th>
+            Tên nhà cung cấp
+          </th>
+          <th>
+            Điện thoại
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Nợ cần trả hiện tại
+          </th>
+          <th>
+            Tổng mua
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-provider [ngForOf]="tableSupplier.data" let-i='index'>
+          <tr class="pointer"
+              (contextmenu)='child.onContextMenu($event,provider)'>
+            <td>
+              {{(i + 1) + ((tableSupplier.nzPageIndex - 1) * 10)}}
+            </td>
+            <td>
+              {{provider.name}}
+            </td>
+            <td>
+              {{provider?.phone ? provider.phone : 'Chưa cập nhật'}}
+            </td>
+            <td>
+              {{provider?.email ? provider.email : 'Chưa cập nhật' }}
+            </td>
+            <td style="color: red">
+              {{provider.debt ? (provider.debt|number:'1.0-0') + 'đ' : 'Chưa cập nhật'}}
+            </td>
+            <td>
+              {{provider.total ? (provider.total|number:'1.0-0') + 'đ' : 'Chưa cập nhật'}}
+            </td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<app-mouse-right #child
+                 (onAdd)='onAdd()'
+                 (onDel)='deleteProvider($event)'
+                 (onUpdate)='onUpdate($event)'>
+</app-mouse-right>
