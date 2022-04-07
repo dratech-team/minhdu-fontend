@@ -7,13 +7,13 @@
     class="mt-2"
     #tableConsignment
     [nzData]="consignments$|async"
-    [nzScroll]="{x:'700px', y:'50vh'}"
+    [nzScroll]="{x:'500px', y:'50vh'}"
     [nzLoading]="loading$|async"
     nzSize="small"
   >
     <thead>
     <tr>
-      <th>STT</th>
+      <th nzWidth="60px">STT</th>
       <th>Mã lô</th>
       <th>Ngày sản xuất</th>
       <th>Hạn sử dụng</th>

@@ -3,7 +3,10 @@
     <div style="width: 350px">
       <div>
         <label for='code'>Mã lô hàng<span class="star">*</span></label>
-        <input type='text' class='form-control' id='code' formControlName='code'>
+        <input type='text' nz-input id='code' formControlName='code'>
+        <div *ngIf='checkValid.code.errors?.required ' class='invalid-feedback'>
+          <div>Chưa nhập mã lô hàng</div>
+        </div>
       </div>
       <div class="mt-2">
         <label>Ngày sản xuất<span class='star'>*</span></label>
@@ -12,6 +15,9 @@
           type='date'
           style='width: 100%'
           formControlName='mfg'>
+        <div *ngIf='checkValid.mfg.errors?.required ' class='invalid-feedback'>
+          <div>Chưa nhập ngày sản xuất</div>
+        </div>
       </div>
       <div class="mt-2">
         <label>Ngày hết hạn<span class='star'>*</span></label>
@@ -20,6 +26,9 @@
           type='date'
           style='width: 100%'
           formControlName='exp'>
+        <div *ngIf='checkValid.exp.errors?.required ' class='invalid-feedback'>
+          <div>Chưa nhập ngày hết hạn</div>
+        </div>
       </div>
       <div class="mt-2">
         <label>Số lượng<span class='star'>*</span></label>
@@ -28,6 +37,9 @@
           type='number'
           style='width: 100%'
           formControlName='amount'>
+        <div *ngIf='checkValid.amount.errors?.required ' class='invalid-feedback'>
+          <div>Chưa nhập số lượng</div>
+        </div>
       </div>
     </div>
   </div>

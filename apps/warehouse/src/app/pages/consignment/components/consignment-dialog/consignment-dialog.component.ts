@@ -30,14 +30,14 @@ export class ConsignmentDialogComponent implements OnInit {
         code: [this.data.consignment?.code, Validators.required],
         exp: [this.datePipe.transform(this.data.consignment.exp ,'yyyy-MM-dd'), Validators.required],
         mfg: [this.datePipe.transform(this.data.consignment.mfg, 'yyyy-MM-dd'),Validators.required],
-        amount: [''],
+        amount: ['',Validators.required],
       });
     } else {
       this.formGroup = this.formBuilder.group({
         code: ['', Validators.required],
         exp: ['', Validators.required],
         mfg: ['',Validators.required],
-        amount: [''],
+        amount: ['',Validators.required],
       });
     }
   }
