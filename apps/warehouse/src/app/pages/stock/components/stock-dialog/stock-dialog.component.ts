@@ -27,7 +27,6 @@ export class StockDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart);
   warehouse$ = this.warehouseQuery.selectAll();
   products$ = this.productQuery.selectAll();
-
   medicineConstant = CategoryUnitConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
   providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
@@ -119,7 +118,7 @@ export class StockDialogComponent implements OnInit {
           break;
         }
         default: {
-          console.error('[product-dialog.component.ts] Type onChange Autocomplete unavailble');
+          console.error('[consignment-dialog.component.ts] Type onChange Autocomplete unavailble');
         }
       }
       this.formGroup.get(type)?.patchValue(fg);
