@@ -42,6 +42,7 @@ import {environment} from "../../../hr/src/environments/environment";
     BrowserAnimationsModule,
     AppRoutingModule,
     BrowserModule,
+    AkitaNgDevtools.forRoot(),
     EffectsModule.forRoot([AuthEffects,OrgchartEffects]),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({
@@ -49,7 +50,6 @@ import {environment} from "../../../hr/src/environments/environment";
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true // Pauses recording actions and state changes when the extension window is not open
     }),
-    AkitaNgDevtools.forRoot(),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,

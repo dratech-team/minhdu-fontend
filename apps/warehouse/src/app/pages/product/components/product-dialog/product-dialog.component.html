@@ -34,8 +34,8 @@
                     nzPlaceHolder="Chọn nhà cung cấp"
                     style="width: 100%"
                     formControlName="supplier">
-           <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name"
-                      [nzValue]="category"></nz-option>
+           <nz-option *ngFor="let supplier of supplier$|async" [nzLabel]="supplier.name"
+                      [nzValue]="supplier"></nz-option>
          </nz-select>
          <div *ngIf='checkValid.supplier.errors?.required ' class='invalid-feedback'>
            <div>Chưa chọn nhà cung cấp</div>
@@ -60,7 +60,7 @@
            <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name" [nzValue]="category">
            </nz-option>
          </nz-select>
-         <div *ngIf='checkValid.name.errors?.required ' class='invalid-feedback'>
+         <div *ngIf='checkValid.category.errors?.required ' class='invalid-feedback'>
            <div>Chưa chọn nghành hàng</div>
          </div>
        </div>

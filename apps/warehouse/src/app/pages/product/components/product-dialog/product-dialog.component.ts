@@ -24,6 +24,7 @@ export class ProductDialogComponent implements OnInit {
   @Input() data?: { product: ProductEntity, isUpdate?: boolean }
   branches$ = this.store.select(getAllOrgchart);
   categories$ = this.categoryQuery.selectAll();
+  supplier$ = this.supplierQuery.selectAll()
   added$ = this.productQuery.select(state => state.added)
   categoryUnitConstant = CategoryUnitConstant
   formGroup!: FormGroup
@@ -33,7 +34,7 @@ export class ProductDialogComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
     private readonly categoryQuery: CategoryQuery,
-    private readonly providerQuery: SupplierQuery,
+    private readonly supplierQuery: SupplierQuery,
     private readonly productQuery: ProductQuery,
     private readonly action$: Actions,
     private readonly modelRef: NzModalRef,
@@ -60,8 +61,8 @@ export class ProductDialogComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
         code: ['', Validators.required],
-        supplier: [],
-        category: [],
+        supplier: [''],
+        category: [''],
         branches: [[]],
         unit: ['', Validators.required],
         barcode: [''],
@@ -69,6 +70,7 @@ export class ProductDialogComponent implements OnInit {
         type: [TypeProductEnum.NORMAL, Validators.required]
       });
     }
+    console.log(this.checkValid)
   }
 
   get checkValid() {
