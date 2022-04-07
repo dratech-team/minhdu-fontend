@@ -40,7 +40,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(OrgchartActions.init());
+    this.store.dispatch(OrgchartActions.init());
     this.action$.dispatch(ProviderActions.loadAll({take: 30, skip: 0}));
     this.action$.dispatch(CategoryAction.loadAll());
     if (this.data?.product) {
