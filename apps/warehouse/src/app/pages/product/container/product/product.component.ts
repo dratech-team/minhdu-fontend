@@ -12,7 +12,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {ProductStore} from '../../state/product.store';
 import {Store} from "@ngrx/store";
 import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
-import {ProviderQuery} from "../../../provider/state";
+import {SupplierQuery} from "../../../supplier/state";
 import {ProductDialogComponent} from "../../components";
 import {ProductEntity} from "../../entities";
 
@@ -43,7 +43,7 @@ export class ProductComponent implements OnInit {
 
   constructor(
     private readonly categoryQuery: CategoryQuery,
-    private readonly supplierQuery: ProviderQuery,
+    private readonly supplierQuery: SupplierQuery,
     private readonly store: Store,
     private readonly productQuery: ProductQuery,
     private readonly actions$: Actions,

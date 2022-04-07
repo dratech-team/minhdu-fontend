@@ -23,7 +23,7 @@ import { WarehouseLayoutComponent } from './container/base/warehouse-layout.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthEffects } from '../../../../libs/auth/src/lib/+state/auth.effects';
 import { OrgchartModule } from '@minhdu-fontend/orgchart';
-import { ProviderModule } from './pages/provider/provider.module';
+import { SupplierModule } from './pages/supplier/supplier.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RouteGuard } from './route.guard';
@@ -63,7 +63,7 @@ import {environment} from "../../../hr/src/environments/environment";
     MatSelectModule,
     MatMenuModule,
     OrgchartModule,
-    ProviderModule,
+    SupplierModule,
     RouterModule,
     MatTabsModule
   ],

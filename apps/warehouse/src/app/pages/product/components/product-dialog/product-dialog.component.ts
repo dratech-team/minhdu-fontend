@@ -6,7 +6,7 @@ import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
 import {AppState} from '../../../../reducers';
 import {CategoryAction, CategoryQuery} from '../../../category/state';
-import {ProviderActions, ProviderQuery} from '../../../provider/state';
+import {SupplierActions, SupplierQuery} from '../../../supplier/state';
 import {ProductEntity} from "../../entities";
 import {ProductActions} from "../../state/product.actions";
 import {CategoryUnitConstant} from "../../../../../shared/constant";
@@ -32,7 +32,7 @@ export class ProductDialogComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
     private readonly categoryQuery: CategoryQuery,
-    private readonly providerQuery: ProviderQuery,
+    private readonly providerQuery: SupplierQuery,
     private readonly productQuery: ProductQuery,
     private readonly action$: Actions,
     private readonly modelRef: NzModalRef,
@@ -41,7 +41,7 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.action$.dispatch(ProviderActions.loadAll({take: 30, skip: 0}));
+    this.action$.dispatch(SupplierActions.loadAll({search:{take: 30, skip: 0}}));
     this.action$.dispatch(CategoryAction.loadAll());
     if (this.data?.product) {
       this.formGroup = this.formBuilder.group({
@@ -85,7 +85,7 @@ export class ProductDialogComponent implements OnInit {
       supplierId: value.supplier.id
     }
     if (this.data?.isUpdate) {
-      this.action$.dispatch(ProviderActions.update({id: this.data.product.id, updates: product}));
+      this.action$.dispatch(SupplierActions.update({id: this.data.product.id, updates: product}));
     } else {
       this.action$.dispatch(ProductActions.addOne({body: product}));
     }

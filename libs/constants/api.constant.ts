@@ -86,7 +86,7 @@ export const Api = {
     CATEGORY: 'category',
     PRODUCT: 'product',
     STOCK: 'product',
-    PROVIDER: 'provider',
+    SUPPLIER: 'supplier',
     HISTORY: 'category-history'
   },
   BREED: {
