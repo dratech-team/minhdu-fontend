@@ -4,14 +4,14 @@ import {StockEntity, StockVisibleEntity} from '../entities';
 import {updateStateUiUtil} from '../../../../../../sell/src/app/utils/update-state-ui.util';
 import {SupplierEntity} from '../../supplier/entities';
 
-export interface ProductState extends EntityState<StockEntity> {
+export interface StockState extends EntityState<StockEntity> {
   loading: boolean;
   added: boolean;
   search: Partial<SupplierEntity>;
   ui: StockVisibleEntity;
 }
 
-export function createInitialState(): ProductState {
+export function createInitialState(): StockState {
   return {
     loading: true,
     added: false,
@@ -79,8 +79,8 @@ export function createInitialState(): ProductState {
 }
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'product'})
-export class StockStore extends EntityStore<ProductState> {
+@StoreConfig({name: 'stock'})
+export class StockStore extends EntityStore<StockState> {
   constructor() {
     super(createInitialState());
   }

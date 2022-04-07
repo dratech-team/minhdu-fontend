@@ -80,8 +80,6 @@ export class ProductComponent implements OnInit {
         isPaginate: true
       }));
     }
-
-
   }
 
   onDelete($event: any) {
@@ -120,6 +118,7 @@ export class ProductComponent implements OnInit {
 
   onAdd() {
     this.modal.create({
+      nzWidth:'fit-content',
       nzTitle: 'Tạo sản phẩm',
       nzContent: ProductDialogComponent,
       nzFooter: null,

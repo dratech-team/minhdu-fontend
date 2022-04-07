@@ -15,6 +15,7 @@ import {ProductQuery} from "../../state/product.query";
 import {Branch} from "@minhdu-fontend/data-models";
 import {BaseProductEntity} from "../../bases";
 import {BaseAddProductDto} from "../../dto";
+import {TypeProductEnum} from "../../enums";
 
 @Component({
   templateUrl: 'product-dialog.component.html'
@@ -26,7 +27,7 @@ export class ProductDialogComponent implements OnInit {
   added$ = this.productQuery.select(state => state.added)
   categoryUnitConstant = CategoryUnitConstant
   formGroup!: FormGroup
-
+  typeProductEnum = TypeProductEnum
   constructor(
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
@@ -52,6 +53,8 @@ export class ProductDialogComponent implements OnInit {
         branches: [this.data.product?.branches],
         unit: [this.data.product.unit, Validators.required],
         barcode: [this.data.product.barcode],
+        amount:[''],
+        type:[this.data.product.type,Validators.required]
       });
     } else {
       this.formGroup = this.formBuilder.group({
@@ -61,7 +64,9 @@ export class ProductDialogComponent implements OnInit {
         category: [],
         branches: [[]],
         unit: ['', Validators.required],
-        barcode: ['', Validators.required],
+        barcode: [''],
+        amount: [''],
+        type: [TypeProductEnum.NORMAL, Validators.required]
       });
     }
   }
@@ -71,7 +76,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.formGroup.invalid) {
+    if (this.formGroup.invalid) {
       return;
     }
     const value = this.formGroup.value
@@ -82,7 +87,9 @@ export class ProductDialogComponent implements OnInit {
       code: value.barcode,
       unit: value.unit,
       note: value.note,
-      supplierId: value.supplier.id
+      supplierId: value.supplier.id,
+      type: value.type,
+      amount:value.amount
     }
     if (this.data?.isUpdate) {
       this.action$.dispatch(SupplierActions.update({id: this.data.product.id, updates: product}));

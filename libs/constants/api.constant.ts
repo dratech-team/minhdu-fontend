@@ -85,8 +85,9 @@ export const Api = {
   WAREHOUSE: {
     CATEGORY: 'category',
     PRODUCT: 'product',
-    STOCK: 'product',
     SUPPLIER: 'supplier',
+    CONSIGNMENT: 'consignment',
+    STOCK: 'stock',
     HISTORY: 'category-history'
   },
   BREED: {

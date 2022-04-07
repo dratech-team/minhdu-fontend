@@ -5,7 +5,7 @@ import {select, Store} from "@ngrx/store";
 import {getAllOrgchart} from "@minhdu-fontend/orgchart";
 
 @Component({
-  selector: 'minhdu-fontend-export-commodity',
+  selector: 'minhdu-fontend-consignment-dialog',
   templateUrl:'export-commodity.component.html'
 })
 export class ExportCommodityComponent {
