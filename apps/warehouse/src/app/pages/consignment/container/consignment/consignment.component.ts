@@ -9,6 +9,9 @@ import {PaginationDto} from "@minhdu-fontend/constants";
 import {ProductActions} from "../../../product/state/product.actions";
 import {ConsignmentEntity} from "../../entities";
 import {map} from "rxjs/operators";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ConsignmentDialogComponent} from "../../components/consignment-dialog/consignment-dialog.component";
+import {EntityActions} from "@datorama/akita";
 
 @Component({
   selector: 'minhdu-fontend-consignment',
@@ -29,11 +32,24 @@ export class ConsignmentComponent implements OnInit {
     private readonly consignmentQuery: ConsignmentQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
+    private readonly modal: NzModalService,
   ) {
   }
 
   ngOnInit() {
     this.actions$.dispatch(ConsignmentActions.loadAll({}));
+  }
+
+  onAdd(consignment?: ConsignmentEntity){
+    this.modal.create({
+      nzWidth:'fit-content',
+      nzTitle:'Tạo lô hàng',
+      nzContent: ConsignmentDialogComponent,
+      nzComponentParams:{
+        data: {consignment}
+      },
+      nzFooter: null
+    })
   }
 
   onDelete($event: any) {

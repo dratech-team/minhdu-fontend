@@ -1,0 +1,42 @@
+<form [formGroup]='formGroup' autocomplete='off'>
+  <div class="d-flex justify-content-center">
+    <div style="width: 350px">
+      <div>
+        <label for='code'>Mã lô hàng<span class="star">*</span></label>
+        <input type='text' class='form-control' id='code' formControlName='code'>
+      </div>
+      <div class="mt-2">
+        <label>Ngày sản xuất<span class='star'>*</span></label>
+        <input
+          nz-input
+          type='date'
+          style='width: 100%'
+          formControlName='mfg'>
+      </div>
+      <div class="mt-2">
+        <label>Ngày hết hạn<span class='star'>*</span></label>
+        <input
+          nz-input
+          type='date'
+          style='width: 100%'
+          formControlName='exp'>
+      </div>
+      <div class="mt-2">
+        <label>Số lượng<span class='star'>*</span></label>
+        <input
+          nz-input
+          type='number'
+          style='width: 100%'
+          formControlName='amount'>
+      </div>
+    </div>
+  </div>
+  <div class='row d-flex mt-3 justify-content-center'>
+    <button (click)="onSubmit()" nz-button nzType="primary" [nzLoading]="(added$|async) == false">Xác nhận</button>
+  </div>
+</form>
+
+
+
+
+

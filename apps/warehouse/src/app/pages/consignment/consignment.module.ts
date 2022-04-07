@@ -19,6 +19,7 @@ import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {ConsignmentComponent} from "./container";
+import {ConsignmentDialogComponent} from "./components/consignment-dialog/consignment-dialog.component";
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import {ConsignmentComponent} from "./container";
   ],
   declarations: [
     ConsignmentComponent,
+    ConsignmentDialogComponent
   ],
   exports: [
     ConsignmentComponent

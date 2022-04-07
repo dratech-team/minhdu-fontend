@@ -10,6 +10,5 @@ export interface BaseProductEntity extends BaseEntity {
   readonly unit: CategoryUnitEnum,
   readonly barcode?: string,
   readonly branches?: Branch[]
-  readonly price: number,
   readonly type: TypeProductEnum
 }

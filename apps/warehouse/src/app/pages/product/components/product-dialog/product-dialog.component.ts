@@ -53,7 +53,6 @@ export class ProductDialogComponent implements OnInit {
         branches: [this.data.product?.branches],
         unit: [this.data.product.unit, Validators.required],
         barcode: [this.data.product.barcode],
-        price: [this.data.product.price, Validators.required],
         type:[this.data.product.type,Validators.required]
       });
     } else {
@@ -65,7 +64,6 @@ export class ProductDialogComponent implements OnInit {
         branches: [[]],
         unit: ['', Validators.required],
         barcode: [''],
-        price: ['', Validators.required],
         type: [TypeProductEnum.NORMAL, Validators.required]
       });
     }
@@ -88,7 +86,6 @@ export class ProductDialogComponent implements OnInit {
       unit: value.unit,
       note: value.note,
       supplierId: value.supplier.id,
-      price: value.price,
       type: value.type
     }
     if (this.data?.isUpdate) {

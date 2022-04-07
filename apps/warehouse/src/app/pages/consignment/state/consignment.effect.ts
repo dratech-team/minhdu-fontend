@@ -29,7 +29,7 @@ export class ConsignmentEffect {
           this.consignmentStore.update(state => ({
             ...state, added: true
           }))
-          this.consignmentStore.upsert(res.id, res);
+          this.consignmentStore.add(Object.assign(res, {amount: props.body.amount}));
         }),
         catchError(err => {
           this.consignmentStore.update(state => ({
@@ -39,7 +39,6 @@ export class ConsignmentEffect {
         })
       );
     }),
-
   );
 
   @Effect()

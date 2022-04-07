@@ -1,5 +1,10 @@
-<div>
+<div class="d-flex flex-column">
+  <div class="d-flex justify-content-between">
+    <div class="d-flex font-weight-bold font-lg align-items-center">Lô hàng</div>
+    <div><button nz-button nzType="primary" (click)="onAdd()">Thêm</button></div>
+  </div>
   <nz-table
+    class="mt-2"
     #tableConsignment
     [nzData]="consignments$|async"
     [nzScroll]="{x:'700px', y:'50vh'}"
@@ -16,8 +21,9 @@
     </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-consignment [ngForOf]="tableConsignment.data" let-i='index'>
-      <tr>
+    <ng-template ngFor let-consignment [ngForOf]="tableConsignment.data" let-i='index'
+    >
+      <tr (contextmenu)='child.onContextMenu($event,consignment)'>
         <td>
           {{(i + 1) + ((tableConsignment.nzPageIndex - 1) * 10)}}
         </td>
@@ -30,3 +36,7 @@
     </tbody>
   </nz-table>
 </div>
+<app-mouse-right #child
+                 (onAdd)='onAdd($event)'
+                 (onDel)='onDelete($event)'
+                 (onUpdate)='onUpdate($event)'></app-mouse-right>
