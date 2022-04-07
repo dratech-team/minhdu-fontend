@@ -53,6 +53,7 @@ export class ProductDialogComponent implements OnInit {
         branches: [this.data.product?.branches],
         unit: [this.data.product.unit, Validators.required],
         barcode: [this.data.product.barcode],
+        amount:[''],
         type:[this.data.product.type,Validators.required]
       });
     } else {
@@ -64,6 +65,7 @@ export class ProductDialogComponent implements OnInit {
         branches: [[]],
         unit: ['', Validators.required],
         barcode: [''],
+        amount: [''],
         type: [TypeProductEnum.NORMAL, Validators.required]
       });
     }
@@ -74,7 +76,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.formGroup.invalid) {
+    if (this.formGroup.invalid) {
       return;
     }
     const value = this.formGroup.value
@@ -86,7 +88,8 @@ export class ProductDialogComponent implements OnInit {
       unit: value.unit,
       note: value.note,
       supplierId: value.supplier.id,
-      type: value.type
+      type: value.type,
+      amount:value.amount
     }
     if (this.data?.isUpdate) {
       this.action$.dispatch(ProviderActions.update({id: this.data.product.id, updates: product}));
