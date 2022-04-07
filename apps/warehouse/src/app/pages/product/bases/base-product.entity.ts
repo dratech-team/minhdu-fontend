@@ -8,4 +8,5 @@ export interface BaseProductEntity extends BaseEntity {
   readonly note?: string
   readonly unit: CategoryUnitEnum,
   readonly barcode?: string,
+  readonly branches?: Branch[]
 }

@@ -31,7 +31,7 @@ export class ProductComponent implements OnInit {
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
-      // branch: new FormControl(this.stateSearch?.branches),
+      branch: new FormControl(this.stateSearch?.branches),
       category: new FormControl(this.stateSearch?.category),
       supplier: new FormControl(this.stateSearch?.supplier),
     }
@@ -54,7 +54,7 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(OrgchartActions.init())
+    this.store.dispatch(OrgchartActions.init())
     this.actions$.dispatch(ProductActions.loadAll({
       search: this.mapProduct(this.formGroup.value, false)
     }));
