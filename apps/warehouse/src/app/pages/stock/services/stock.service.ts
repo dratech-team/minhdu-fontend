@@ -11,7 +11,7 @@ import {UpdateStockDto} from "../dto";
 @Injectable()
 export class StockService extends BaseService<StockEntity> {
   constructor(public readonly http: HttpClient) {
-    super(Api.WAREHOUSE.PRODUCT, http);
+    super(Api.WAREHOUSE.STOCK, http);
   }
 
   addOne(props: AddStockDto): Observable<StockEntity> {

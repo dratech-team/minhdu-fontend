@@ -24,7 +24,7 @@ export class StockEffect {
       this.productStore.update(state => ({
         ...state, added: true
       }))
-      if (props.body?.branch?.name === 'Kho tổng') {
+      if (!props.body?.branchId) {
         return this.service.addOne(Object.assign(props, {branch: null}));
       }
       return this.service.addOne(props);
