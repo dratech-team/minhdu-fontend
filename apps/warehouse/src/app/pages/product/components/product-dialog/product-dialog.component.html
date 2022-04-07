@@ -1,0 +1,78 @@
+<form [formGroup]='formGroup' autocomplete='off' (submit)='onSubmit()'>
+  <div class='d-flex flex-column'>
+    <div>
+      <label for='code'>Mã sản phẩm</label>
+      <input type='text' class='form-control' id='code' formControlName='code'>
+    </div>
+
+    <div>
+      <label>Tên hàng hóa<span class='star'>*</span></label>
+      <input
+        matInput
+        class='form-control'
+        type='search'
+        style='width: 100%'
+        formControlName='name'>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label>Nhà cung cấp</label>
+      <nz-select nzShowSearch
+                 nzAllowClear
+                 nzPlaceHolder="Chọn nhà cung cấp"
+                 style="width: 100%"
+                 formControlName="category">
+        <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name"
+                   [nzValue]="category"></nz-option>
+      </nz-select>
+    </div>
+
+    <!--    <div class='row mt-3'>-->
+    <!--      <div class="title-item">Đơn vị</div>-->
+    <!--      <nz-select nzMode="multiple" nzPlaceHolder="Chọn đơn vị" formControlName="branchIds">-->
+    <!--        <nz-option *ngFor="let branch of branches$|async" [nzLabel]="branch.name" [nzValue]="branch"></nz-option>-->
+    <!--      </nz-select>-->
+    <!--    </div>-->
+
+    <div class="d-flex flex-column">
+      <label>Nghành hàng<span class='star'>*</span></label>
+      <nz-select nzShowSearch
+                 nzAllowClear
+                 formControlName="category"
+                 nzPlaceHolder="Chọn nghành hàng"
+                 style="width: 100%"
+      >
+        <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name" [nzValue]="category">
+        </nz-option>
+      </nz-select>
+    </div>
+
+    <div>
+      <label>Mã vạch</label>
+      <input
+        matInput
+        class='form-control'
+        type='text'
+        style='width: 100%'
+        formControlName='barcode'>
+    </div>
+
+  </div>
+  <div>
+    <label for='unit'>Đơn vị tính<span class='star'>*</span></label>
+    <mat-select id='unit' class='form-control' formControlName='unit'>
+      <mat-option *ngFor='let item of categoryUnitConstant' [value]='item.value'>
+        {{item.name}}
+      </mat-option>
+    </mat-select>
+  </div>
+
+  <div class='row d-flex mt-3 justify-content-center'>
+    <button nz-button nzType="primary" [nzLoading]="(added$|async) == false">Xác nhận</button>
+  </div>
+</form>
+
+
+
+
+

@@ -18,12 +18,12 @@ export class ProductService extends BaseService<ProductEntity> {
     return super.addOne(props.body);
   }
 
-  pagination(params?: SearchProductDto): Observable<ResponsePaginate<ProductEntity>> {
-    return super.pagination(params);
+  pagination(searchProductDto?: SearchProductDto): Observable<ResponsePaginate<ProductEntity>> {
+    return super.pagination(searchProductDto?.search);
   }
 
-  getAll(params?: SearchProductDto): Observable<ProductEntity[]> {
-    return super.getAll(params?.search);
+  getAll(searchProductDto: SearchProductDto): Observable<ProductEntity[]> {
+    return super.getAll(searchProductDto.search);
   }
 
   getOne(id: ProductEntity['id']): Observable<ProductEntity> {

@@ -13,6 +13,8 @@ import {ProductStore} from '../../state/product.store';
 import {Store} from "@ngrx/store";
 import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
 import {ProviderQuery} from "../../../provider/state";
+import {ProductDialogComponent} from "../../components";
+import {ProductEntity} from "../../entities";
 
 @Component({
   selector: 'minhdu-fontend-category',
@@ -29,7 +31,7 @@ export class ProductComponent implements OnInit {
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
-      branch: new FormControl(this.stateSearch?.branch),
+      branch: new FormControl(this.stateSearch?.branches),
       category: new FormControl(this.stateSearch?.category),
       supplier: new FormControl(this.stateSearch?.supplier),
     }
@@ -54,7 +56,7 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init())
     this.actions$.dispatch(ProductActions.loadAll({
-      search:this.mapProduct(this.formGroup.value, false)
+      search: this.mapProduct(this.formGroup.value, false)
     }));
 
     this.actions$.dispatch(CategoryAction.loadAll());
@@ -83,15 +85,26 @@ export class ProductComponent implements OnInit {
   }
 
   onDelete($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(ProductActions.remove({ id: $event.id }));
+        this.actions$.dispatch(ProductActions.remove({id: $event.id}));
       }
     });
   }
 
-  onUpdate(Product: any) {
+  onUpdate(product: ProductEntity) {
+    this.modal.create({
+      nzTitle: 'Cập nhật sản phẩm',
+      nzContent: ProductDialogComponent,
+      nzComponentParams: {
+        data: {
+          isUpdate: true,
+          product: product
+        }
+      },
+      nzFooter: null
+    })
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
@@ -106,6 +119,10 @@ export class ProductComponent implements OnInit {
   }
 
   onAdd() {
-
+    this.modal.create({
+      nzTitle: 'Tạo sản phẩm',
+      nzContent: ProductDialogComponent,
+      nzFooter: null,
+    })
   }
 }

@@ -12,7 +12,7 @@ import { InventoryTitleConstants } from '../../constants';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { StockStore } from '../../state/stock.store';
-import {UnitMedicineConstant} from "../../../../../shared/constant";
+import {CategoryUnitConstant} from "../../../../../shared/constant";
 
 @Component({
   selector: 'minhdu-fontend-category',
@@ -32,7 +32,7 @@ export class StockComponent implements OnInit {
   ui$ = this.productQuery.select(state => state.ui);
 
   stateSearch = this.productQuery.getValue().search;
-  medicineConstant = UnitMedicineConstant;
+  medicineConstant = CategoryUnitConstant;
   warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
     /// FIXME:

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {StockQuery} from "../../state/stock.query";
-import {StockStore} from "../../state/stock.store";
+import {ProductQuery} from "../../state/product.query";
+import {ProductStore} from "../../state/product.store";
 
 @Component({
   selector: 'minhdu-fontend-pinned-product',
@@ -13,8 +13,8 @@ export class VisibleProductComponent {
   visibleEntity: any = {};
 
   constructor(
-    private readonly productQuery: StockQuery,
-    private readonly productStore: StockStore
+    private readonly productQuery: ProductQuery,
+    private readonly productStore: ProductStore
   ) {
   }
 
