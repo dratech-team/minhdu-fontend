@@ -80,8 +80,6 @@ export class ProductComponent implements OnInit {
         isPaginate: true
       }));
     }
-
-
   }
 
   onDelete($event: any) {

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { ProductState, StockStore } from './stock.store';
+import { StockState, StockStore } from './stock.store';
 
 @Injectable({ providedIn: 'root' })
-export class StockQuery extends QueryEntity<ProductState> {
+export class StockQuery extends QueryEntity<StockState> {
   constructor(protected store: StockStore) {
     super(store);
   }

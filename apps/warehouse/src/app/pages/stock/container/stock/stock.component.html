@@ -108,7 +108,7 @@
             {{(product.discount || 0) * 100 + '%' }}
           </td>
           <!--          <th class='pointer'>-->
-          <!--            {{product?.billCode}}-->
+          <!--            {{consignment?.billCode}}-->
           <!--          </th>-->
           <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
             {{product.unit | transform:medicineConstant}}

@@ -119,7 +119,7 @@ export class StockDialogComponent implements OnInit {
           break;
         }
         default: {
-          console.error('[product-dialog.component.ts] Type onChange Autocomplete unavailble');
+          console.error('[consignment-dialog.component.ts] Type onChange Autocomplete unavailble');
         }
       }
       this.formGroup.get(type)?.patchValue(fg);

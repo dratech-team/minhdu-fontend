@@ -1,0 +1,33 @@
+<div>
+  <nz-table
+    #tableConsignment
+    [nzData]="consignments$|async"
+    [nzLoading]="loading$|async"
+    (nzPageIndexChange)="onPagination($event)"
+    nzSize="small"
+    [nzPageSize]="pageSize"
+  >
+    <thead>
+    <tr>
+      <th>STT</th>
+      <th>Mã lô</th>
+      <th>Ngày sản xuất</th>
+      <th>Hạn sử dụng</th>
+      <th>Số lượng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-consignment [ngForOf]="tableConsignment.data" let-i='index'>
+      <tr>
+        <td>
+          {{(i + 1) + ((tableConsignment.nzPageIndex - 1) * 10)}}
+        </td>
+        <td>{{consignment.code}}</td>
+        <td>{{consignment.mfg|date:'dd-MM-yyyy'}}</td>
+        <td>{{consignment.exp|date:'dd-MM-yyyy'}}</td>
+        <td><input nz-input  type="number" ></td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </nz-table>
+</div>
