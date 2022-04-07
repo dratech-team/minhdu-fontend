@@ -74,7 +74,8 @@ export class DetailEmployeeComponent implements OnInit {
       nzContent: AddEmployeeComponent,
       nzViewContainerRef: this.viewContentRef,
       nzComponentParams: {
-        employeeInit: employee
+        employeeInit: employee,
+        isUpdate: true
       },
       nzWidth: '65vw',
       nzFooter: null,
