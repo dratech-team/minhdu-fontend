@@ -32,29 +32,6 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     href: 'phieu-xuat-nhap-kho'
   },
   {
-    name: 'Xuất - nhập kho',
-    icon: '/assets/icon/menu/chevron-contract.svg',
-    state: MenuWarehouseEum.IMPORT_EXPORT,
-    href: 'xuat-nhap-kho',
-    children: [
-      {
-        name: 'Nhập hàng',
-        icon: '',
-        href:'xuat-nhap-kho'
-      },
-      {
-        name: 'Xuất hàng',
-        icon: '',
-        href: 'xuat-nhap-kho/xuat-kho'
-      },
-      {
-        name: 'Kiểm hàng',
-        icon: '',
-        href:'xuat-nhap-kho/kiem-hang'
-      },
-    ]
-  },
-  {
     name: 'Quản lý thu chi',
     icon: '/assets/icon/menu/wallet2.svg',
     state: MenuWarehouseEum.REVENUE,
