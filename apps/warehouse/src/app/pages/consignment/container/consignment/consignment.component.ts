@@ -11,7 +11,6 @@ import {ConsignmentEntity} from "../../entities";
 import {map} from "rxjs/operators";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ConsignmentDialogComponent} from "../../components/consignment-dialog/consignment-dialog.component";
-import {CommodityEntity} from "../../../../../../../sell/src/app/pages/commodity/entities";
 import {ConsignmentStore} from "../../state/consignment.store";
 
 @Component({
@@ -33,7 +32,7 @@ export class ConsignmentComponent implements OnInit {
   idsSelected = new Set<number>();
   checked = false;
   indeterminate = false;
-  currentPageData: readonly CommodityEntity[] = [];
+  currentPageData: readonly ConsignmentEntity[] = [];
 
   constructor(
     private readonly consignmentQuery: ConsignmentQuery,
