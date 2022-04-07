@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule, DatePipe} from '@angular/common';
 import {ComponentsModule} from '@minhdu-fontend/components';
 import {MatSelectModule} from '@angular/material/select';
@@ -37,7 +37,8 @@ import {ConsignmentDialogComponent} from "./components/consignment-dialog/consig
     NzModalModule,
     NzSelectModule,
     NzInputModule,
-    NzButtonModule
+    NzButtonModule,
+    FormsModule
   ],
   declarations: [
     ConsignmentComponent,

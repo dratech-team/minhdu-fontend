@@ -8,10 +8,12 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {ProductActions} from "../../../product/state/product.actions";
 import {ConsignmentEntity} from "../../entities";
-import {map} from "rxjs/operators";
+import {debounceTime, map} from "rxjs/operators";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ConsignmentDialogComponent} from "../../components/consignment-dialog/consignment-dialog.component";
 import {EntityActions} from "@datorama/akita";
+import {CommodityEntity} from "../../../../../../../sell/src/app/pages/commodity/entities";
+import {ConsignmentStore} from "../../state/consignment.store";
 
 @Component({
   selector: 'minhdu-fontend-consignment',
@@ -24,12 +26,19 @@ export class ConsignmentComponent implements OnInit {
     exp: new FormControl(''),
   })
   consignments$ = this.consignmentQuery.selectAll().pipe(map(consignments => {
-   return  JSON.parse(JSON.stringify(consignments))
+    this.currentPageData = JSON.parse(JSON.stringify(consignments))
+    return JSON.parse(JSON.stringify(consignments))
   }))
   loading$ = this.consignmentQuery.selectLoading();
   pageSize = 10;
+  idsSelected = new Set<number>();
+  checked = false;
+  indeterminate = false;
+  currentPageData: readonly CommodityEntity[] = [];
+
   constructor(
     private readonly consignmentQuery: ConsignmentQuery,
+    private readonly consignmentStore: ConsignmentStore,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
@@ -40,12 +49,12 @@ export class ConsignmentComponent implements OnInit {
     this.actions$.dispatch(ConsignmentActions.loadAll({}));
   }
 
-  onAdd(consignment?: ConsignmentEntity){
+  onAdd(consignment?: ConsignmentEntity) {
     this.modal.create({
-      nzWidth:'fit-content',
-      nzTitle:'Tạo lô hàng',
+      nzWidth: 'fit-content',
+      nzTitle: 'Tạo lô hàng',
       nzContent: ConsignmentDialogComponent,
-      nzComponentParams:{
+      nzComponentParams: {
         data: {consignment}
       },
       nzFooter: null
@@ -53,6 +62,10 @@ export class ConsignmentComponent implements OnInit {
   }
 
   onDelete($event: any) {
+    this.consignmentQuery.selectEntityAction(EntityActions.Add).subscribe(val => {
+      if (val.length === 1)
+        this.idsSelected.add(val[0].id)
+    })
     const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
@@ -61,11 +74,11 @@ export class ConsignmentComponent implements OnInit {
     });
   }
 
-  onPagination(index: number){
+  onPagination(index: number) {
     const count = this.consignmentQuery.getCount();
     if (index * this.pageSize >= count) {
       this.actions$.dispatch(ProductActions.loadAll({
-        search: this.mapConsignment( true),
+        search: this.mapConsignment(true),
         isPaginate: true
       }));
     }
@@ -74,15 +87,40 @@ export class ConsignmentComponent implements OnInit {
   onUpdate($event: any) {
   }
 
-  mapConsignment(isPagination?: boolean){
-   return  Object.assign({},this.formGroup.value, {
+  mapConsignment(isPagination?: boolean) {
+    return Object.assign({}, this.formGroup.value, {
       take: PaginationDto.take,
       skip: isPagination ? this.consignmentQuery.getCount() : PaginationDto.skip
     });
   }
 
-  onUpdateAmount(event: Event, consignment:ConsignmentEntity) {
-    console.log(event)
-    console.log(consignment)
+  onUpdateAmount(amount: number, consignment: ConsignmentEntity) {
+    this.consignmentStore.update(consignment.id, Object.assign(consignment, {amount:amount}))
+  }
+
+  onAllChecked(checked: boolean): void {
+    this.currentPageData.forEach(({id}) => this.updateCheckedSet(id, checked));
+    this.refreshCheckedStatus();
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
+  }
+
+  updateCheckedSet(id: number, checked: boolean): void {
+    if (checked) {
+      this.idsSelected.add(id);
+    } else {
+      this.idsSelected.delete(id);
+    }
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
+  }
+
+  refreshCheckedStatus(): void {
+    this.checked = this.currentPageData.every(({id}) => this.idsSelected.has(id));
+    this.indeterminate = this.currentPageData.some(({id}) => this.idsSelected.has(id)) && !this.checked;
+  }
+
+  onItemChecked(id: number, checked: boolean): void {
+    this.updateCheckedSet(id, checked);
+    this.refreshCheckedStatus();
+    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
   }
 }

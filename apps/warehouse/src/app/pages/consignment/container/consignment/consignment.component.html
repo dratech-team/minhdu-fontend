@@ -13,6 +13,11 @@
   >
     <thead>
     <tr>
+      <th style="width: 60px"
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+      ></th>
       <th nzWidth="60px">STT</th>
       <th>Mã lô</th>
       <th>Ngày sản xuất</th>
@@ -24,13 +29,12 @@
     <ng-template ngFor let-consignment [ngForOf]="tableConsignment.data" let-i='index'
     >
       <tr (contextmenu)='child.onContextMenu($event,consignment)'>
-        <td>
-          {{(i + 1) + ((tableConsignment.nzPageIndex - 1) * 10)}}
-        </td>
+        <td [nzChecked]="idsSelected.has(consignment.data.id)" (nzCheckedChange)="onItemChecked(consignment.id, $event)"></td>
+        <td>{{(i + 1) + ((tableConsignment.nzPageIndex - 1) * 10)}}</td>
         <td>{{consignment.code}}</td>
         <td>{{consignment.mfg|date:'dd-MM-yyyy'}}</td>
         <td>{{consignment.exp|date:'dd-MM-yyyy'}}</td>
-        <td><input nz-input  type="number" [value]="consignment.amount" (input)="onUpdateAmount($event, consignment)"></td>
+        <td><input type="number" [ngModel]="consignment.amount" (ngModelChange)="onUpdateAmount($event, consignment)"></td>
       </tr>
     </ng-template>
     </tbody>
