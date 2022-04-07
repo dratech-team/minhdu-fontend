@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteComponent } from '@minhdu-fontend/components';
-import { StockDialogComponent } from '../../components';
-import { debounceTime, map } from 'rxjs/operators';
-import { PaginationDto } from '@minhdu-fontend/constants';
-import { StockActions } from '../../state/stock.actions';
-import { StockQuery } from '../../state/stock.query';
-import { CategoryAction, CategoryQuery } from '../../../category/state';
-import { InventoryTitleConstants } from '../../constants';
-import { Actions } from '@datorama/akita-ng-effects';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { StockStore } from '../../state/stock.store';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogDeleteComponent} from '@minhdu-fontend/components';
+import {StockDialogComponent} from '../../components';
+import {debounceTime, map} from 'rxjs/operators';
+import {PaginationDto} from '@minhdu-fontend/constants';
+import {StockActions} from '../../state/stock.actions';
+import {StockQuery} from '../../state/stock.query';
+import {CategoryAction, CategoryQuery} from '../../../category/state';
+import {InventoryTitleConstants} from '../../constants';
+import {Actions} from '@datorama/akita-ng-effects';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {StockStore} from '../../state/stock.store';
 import {CategoryUnitConstant} from "../../../../../shared/constant";
 
 @Component({
@@ -20,20 +20,19 @@ import {CategoryUnitConstant} from "../../../../../shared/constant";
 
 })
 export class StockComponent implements OnInit {
-  warehouse$ = this.warehouseQuery.selectAll().pipe(map(warehouses => {
-      return warehouses.map(warehouse => ({ value: warehouse.id, name: warehouse.name })).concat({
+  categories$ = this.categoryQuery.selectAll().pipe(map(warehouses => {
+      return warehouses.map(warehouse => ({value: warehouse.id, name: warehouse.name})).concat({
         value: -1,
         name: 'Tất cả'
       });
     }
   ));
-  products$ = this.productQuery.selectAll();
-  loading$ = this.productQuery.selectLoading();
-  ui$ = this.productQuery.select(state => state.ui);
-
-  stateSearch = this.productQuery.getValue().search;
+  products$ = this.stockQuery.selectAll();
+  loading$ = this.stockQuery.selectLoading();
+  ui$ = this.stockQuery.select(state => state.ui);
+  stateSearch = this.stockQuery.getValue().search;
   medicineConstant = CategoryUnitConstant;
-  warehouseIdSelected = this.productQuery.getValue().warehouseIdSelected;
+  warehouseIdSelected = this.stockQuery.getValue().warehouseIdSelected;
   formGroup = new FormGroup(
     /// FIXME:
     {
@@ -48,12 +47,12 @@ export class StockComponent implements OnInit {
   visible = false;
 
   constructor(
-    private readonly warehouseQuery: CategoryQuery,
-    private readonly productQuery: StockQuery,
+    private readonly categoryQuery: CategoryQuery,
+    private readonly stockQuery: StockQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,
     private readonly modal: NzModalService,
-    private readonly productStore: StockStore
+    private readonly stockStore: StockStore
   ) {
   }
 
@@ -76,7 +75,7 @@ export class StockComponent implements OnInit {
   }
 
   onPagination(index: number) {
-    const count = this.productQuery.getCount();
+    const count = this.stockQuery.getCount();
     if (index * this.pageSizeTable >= count) {
       this.actions$.dispatch(StockActions.loadAll({
         params: this.mapProduct(this.formGroup.value, true),
@@ -88,10 +87,10 @@ export class StockComponent implements OnInit {
   }
 
   onDelete($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, { width: '30%' });
+    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
     ref.afterClosed().subscribe(val => {
       if (val) {
-        this.actions$.dispatch(StockActions.remove({ id: $event.id }));
+        this.actions$.dispatch(StockActions.remove({id: $event.id}));
       }
     });
   }
@@ -105,12 +104,12 @@ export class StockComponent implements OnInit {
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {
-    this.productStore.update(state => ({
+    this.stockStore.update(state => ({
       ...state, search: dataFG
     }));
     Object.assign(dataFG, {
       take: PaginationDto.take,
-      skip: isPagination ? this.productQuery.getCount() : PaginationDto.skip
+      skip: isPagination ? this.stockQuery.getCount() : PaginationDto.skip
     });
     return dataFG;
   }

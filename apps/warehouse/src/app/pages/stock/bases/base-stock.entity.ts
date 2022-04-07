@@ -11,7 +11,8 @@ export interface BaseStockEntity extends BaseEntity {
   readonly discount?: number;
   readonly discountType?: DiscountTypeEnum;
   readonly orderedAt?: Date
-  readonly importAt?: Date
-  readonly completeAt?: Date
+  readonly importedAt?: Date
+  readonly completedAt?: Date
+  readonly approvedAt?: Date
   readonly note?: string
 }
