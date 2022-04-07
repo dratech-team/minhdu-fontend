@@ -1,6 +1,5 @@
 import {BaseStockEntity} from "../bases";
 import {BaseAddDto} from "@minhdu-fontend/base-dto";
-import {AttachmentEntity} from "../entities";
 
 interface BaseAddStockDto extends BaseStockEntity {
   readonly branchId: number;
