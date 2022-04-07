@@ -84,7 +84,19 @@ export class ConsignmentComponent implements OnInit {
     }
   }
 
-  onUpdate($event: any) {
+  onUpdate(consignment: ConsignmentEntity) {
+    this.modal.create({
+      nzWidth: 'fit-content',
+      nzTitle:'Cập nhật lô hàng',
+      nzContent:ConsignmentDialogComponent,
+      nzComponentParams:{
+        data: {
+          consignment: consignment,
+          isUpdate: true
+        }
+      },
+      nzFooter: null,
+    })
   }
 
   mapConsignment(isPagination?: boolean) {
