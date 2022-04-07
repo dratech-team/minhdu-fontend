@@ -1,6 +1,7 @@
 import {BaseEntity} from '@minhdu-fontend/base-entity';
 import {CategoryUnitEnum} from "../../category/enums";
 import {Branch} from "@minhdu-fontend/data-models";
+import {TypeProductEnum} from "../enums";
 
 export interface BaseProductEntity extends BaseEntity {
   readonly name: string;
@@ -9,4 +10,6 @@ export interface BaseProductEntity extends BaseEntity {
   readonly unit: CategoryUnitEnum,
   readonly barcode?: string,
   readonly branches?: Branch[]
+  readonly price: number,
+  readonly type: TypeProductEnum
 }

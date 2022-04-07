@@ -1,71 +1,99 @@
 <form [formGroup]='formGroup' autocomplete='off' (submit)='onSubmit()'>
-  <div class='d-flex flex-column'>
-    <div>
-      <label for='code'>Mã sản phẩm</label>
-      <input type='text' class='form-control' id='code' formControlName='code'>
-    </div>
+ <div class="d-flex justify-content-center" [style]="{
+ 'width': formGroup.value.type === typeProductEnum.HSD ? '90vw':'auto'
+  }">
+   <div style="flex-grow: 3">
+     <div>
+       <nz-radio-group formControlName="type">
+         <label nz-radio nzValue="{{typeProductEnum.NORMAL}}">Sản phẩm thường</label>
+         <label nz-radio nzValue="{{typeProductEnum.HSD}}">Sản phẩm theo lô/HSD</label>
+       </nz-radio-group>
+     </div>
+     <div class='d-flex flex-column border p-3 mt-2' style="height: 55vh; overflow-y: scroll">
+       <div>
+         <label for='code'>Mã sản phẩm</label>
+         <input type='text' class='form-control' id='code' formControlName='code'>
+       </div>
+       <div class="mt-2">
+         <label>Tên hàng hóa<span class='star'>*</span></label>
+         <input
+           matInput
+           class='form-control'
+           type='search'
+           style='width: 100%'
+           formControlName='name'>
+       </div>
 
-    <div>
-      <label>Tên hàng hóa<span class='star'>*</span></label>
-      <input
-        matInput
-        class='form-control'
-        type='search'
-        style='width: 100%'
-        formControlName='name'>
-    </div>
+       <div class="mt-2">
+         <label>Nhà cung cấp</label>
+         <nz-select nzShowSearch
+                    nzAllowClear
+                    nzPlaceHolder="Chọn nhà cung cấp"
+                    style="width: 100%"
+                    formControlName="category">
+           <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name"
+                      [nzValue]="category"></nz-option>
+         </nz-select>
+       </div>
 
-    <div class="d-flex flex-column">
-      <label>Nhà cung cấp</label>
-      <nz-select nzShowSearch
-                 nzAllowClear
-                 nzPlaceHolder="Chọn nhà cung cấp"
-                 style="width: 100%"
-                 formControlName="category">
-        <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name"
-                   [nzValue]="category"></nz-option>
-      </nz-select>
-    </div>
+       <!--    <div class='row mt-3'>-->
+       <!--      <div class="title-item">Đơn vị</div>-->
+       <!--      <nz-select nzMode="multiple" nzPlaceHolder="Chọn đơn vị" formControlName="branchIds">-->
+       <!--        <nz-option *ngFor="let branch of branches$|async" [nzLabel]="branch.name" [nzValue]="branch"></nz-option>-->
+       <!--      </nz-select>-->
+       <!--    </div>-->
 
-    <!--    <div class='row mt-3'>-->
-    <!--      <div class="title-item">Đơn vị</div>-->
-    <!--      <nz-select nzMode="multiple" nzPlaceHolder="Chọn đơn vị" formControlName="branchIds">-->
-    <!--        <nz-option *ngFor="let branch of branches$|async" [nzLabel]="branch.name" [nzValue]="branch"></nz-option>-->
-    <!--      </nz-select>-->
-    <!--    </div>-->
+       <div class="mt-2">
+         <label>Nghành hàng<span class='star'>*</span></label>
+         <nz-select nzShowSearch
+                    nzAllowClear
+                    formControlName="category"
+                    nzPlaceHolder="Chọn nghành hàng"
+                    style="width: 100%"
+         >
+           <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name" [nzValue]="category">
+           </nz-option>
+         </nz-select>
+       </div>
 
-    <div class="d-flex flex-column">
-      <label>Nghành hàng<span class='star'>*</span></label>
-      <nz-select nzShowSearch
-                 nzAllowClear
-                 formControlName="category"
-                 nzPlaceHolder="Chọn nghành hàng"
-                 style="width: 100%"
-      >
-        <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name" [nzValue]="category">
-        </nz-option>
-      </nz-select>
-    </div>
+       <div class="mt-2">
+         <label>Mã vạch</label>
+         <input
+           matInput
+           class='form-control'
+           type='text'
+           style='width: 100%'
+           formControlName='barcode'>
+       </div>
 
-    <div>
-      <label>Mã vạch</label>
-      <input
-        matInput
-        class='form-control'
-        type='text'
-        style='width: 100%'
-        formControlName='barcode'>
-    </div>
+       <div class="mt-2">
+         <label for='unit'>Đơn vị tính<span class='star'>*</span></label>
+         <mat-select id='unit' class='form-control' formControlName='unit'>
+           <mat-option *ngFor='let item of categoryUnitConstant' [value]='item.value'>
+             {{item.name}}
+           </mat-option>
+         </mat-select>
+       </div>
 
-  </div>
-  <div>
-    <label for='unit'>Đơn vị tính<span class='star'>*</span></label>
-    <mat-select id='unit' class='form-control' formControlName='unit'>
-      <mat-option *ngFor='let item of categoryUnitConstant' [value]='item.value'>
-        {{item.name}}
-      </mat-option>
-    </mat-select>
-  </div>
+       <div class="mt-2">
+         <label>Giá nhập</label>
+         <input
+           nz-input
+           class='form-control'
+           type='text'
+           style='width: 100%'
+           formControlName='price'>
+       </div>
+
+     </div>
+   </div>
+   <div style="flex-grow: 5" *ngIf="formGroup.value.type === typeProductEnum.HSD" class="ml-4">
+     <div class="font-weight-bold">Chọn lô hàng</div>
+     <div class="mt-2">
+       <minhdu-fontend-consignment></minhdu-fontend-consignment>
+     </div>
+   </div>
+ </div>
 
   <div class='row d-flex mt-3 justify-content-center'>
     <button nz-button nzType="primary" [nzLoading]="(added$|async) == false">Xác nhận</button>

@@ -52,6 +52,9 @@ import {ConsignmentComponent} from "./container";
   declarations: [
     ConsignmentComponent,
   ],
+  exports: [
+    ConsignmentComponent
+  ],
   providers: [
     DatePipe,
     CategoryService,

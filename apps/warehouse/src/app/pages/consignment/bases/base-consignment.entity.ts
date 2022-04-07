@@ -5,4 +5,5 @@ export interface BaseConsignmentEntity extends BaseEntity {
   readonly mfg: Date;
   readonly exp: Date
   readonly createdAt: Date,
+  readonly amount?: number
 }

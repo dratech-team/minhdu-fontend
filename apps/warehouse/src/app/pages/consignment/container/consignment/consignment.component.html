@@ -2,10 +2,9 @@
   <nz-table
     #tableConsignment
     [nzData]="consignments$|async"
+    [nzScroll]="{x:'700px', y:'50vh'}"
     [nzLoading]="loading$|async"
-    (nzPageIndexChange)="onPagination($event)"
     nzSize="small"
-    [nzPageSize]="pageSize"
   >
     <thead>
     <tr>
@@ -25,7 +24,7 @@
         <td>{{consignment.code}}</td>
         <td>{{consignment.mfg|date:'dd-MM-yyyy'}}</td>
         <td>{{consignment.exp|date:'dd-MM-yyyy'}}</td>
-        <td><input nz-input  type="number" ></td>
+        <td><input nz-input  type="number" [value]="consignment.amount" (input)="onUpdateAmount($event, consignment)"></td>
       </tr>
     </ng-template>
     </tbody>

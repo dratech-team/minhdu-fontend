@@ -27,6 +27,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import {ProductComponent} from "./container";
 import {ProductDialogComponent, VisibleProductComponent} from "./components";
+import {ConsignmentModule} from "../consignment/consignment.module";
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @NgModule({
   imports: [
@@ -50,7 +52,9 @@ import {ProductDialogComponent, VisibleProductComponent} from "./components";
     NzSelectModule,
     NzInputModule,
     NzPopoverModule,
-    NzButtonModule
+    NzButtonModule,
+    ConsignmentModule,
+    NzRadioModule
   ],
   declarations: [
     ProductComponent,

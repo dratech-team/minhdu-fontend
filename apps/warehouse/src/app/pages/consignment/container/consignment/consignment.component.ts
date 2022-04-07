@@ -7,6 +7,8 @@ import {Actions} from '@datorama/akita-ng-effects';
 import {FormControl, FormGroup} from "@angular/forms";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {ProductActions} from "../../../product/state/product.actions";
+import {ConsignmentEntity} from "../../entities";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'minhdu-fontend-consignment',
@@ -18,7 +20,9 @@ export class ConsignmentComponent implements OnInit {
     mfg: new FormControl(''),
     exp: new FormControl(''),
   })
-  consignments$ = this.consignmentQuery.selectAll()
+  consignments$ = this.consignmentQuery.selectAll().pipe(map(consignments => {
+   return  JSON.parse(JSON.stringify(consignments))
+  }))
   loading$ = this.consignmentQuery.selectLoading();
   pageSize = 10;
   constructor(
@@ -59,5 +63,10 @@ export class ConsignmentComponent implements OnInit {
       take: PaginationDto.take,
       skip: isPagination ? this.consignmentQuery.getCount() : PaginationDto.skip
     });
+  }
+
+  onUpdateAmount(event: Event, consignment:ConsignmentEntity) {
+    console.log(event)
+    console.log(consignment)
   }
 }

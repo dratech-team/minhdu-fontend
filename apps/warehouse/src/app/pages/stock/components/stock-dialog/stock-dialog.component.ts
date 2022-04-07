@@ -27,7 +27,6 @@ export class StockDialogComponent implements OnInit {
   branches$ = this.store.select(getAllOrgchart);
   warehouse$ = this.warehouseQuery.selectAll();
   products$ = this.productQuery.selectAll();
-
   medicineConstant = CategoryUnitConstant;
   warehouseId = this.warehouseQuery.getValue().selected;
   providerOptions: Array<any> = this.providerQuery.getAll().map(e => ({ label: e.name, value: e.id }));
