@@ -8,10 +8,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PaginationDto} from "@minhdu-fontend/constants";
 import {ProductActions} from "../../../product/state/product.actions";
 import {ConsignmentEntity} from "../../entities";
-import {debounceTime, map} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {ConsignmentDialogComponent} from "../../components/consignment-dialog/consignment-dialog.component";
-import {EntityActions} from "@datorama/akita";
 import {CommodityEntity} from "../../../../../../../sell/src/app/pages/commodity/entities";
 import {ConsignmentStore} from "../../state/consignment.store";
 
@@ -62,12 +61,7 @@ export class ConsignmentComponent implements OnInit {
   }
 
   onDelete($event: any) {
-    this.consignmentQuery.selectEntityAction(EntityActions.Add).subscribe(val => {
-      if (val.length === 1)
-        this.idsSelected.add(val[0].id)
-    })
-    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
-    ref.afterClosed().subscribe(val => {
+    this.dialog.open(DialogDeleteComponent, {width: '30%'}).afterClosed().subscribe(val => {
       if (val) {
         this.actions$.dispatch(ConsignmentActions.remove({id: $event.id}));
       }
@@ -87,9 +81,9 @@ export class ConsignmentComponent implements OnInit {
   onUpdate(consignment: ConsignmentEntity) {
     this.modal.create({
       nzWidth: 'fit-content',
-      nzTitle:'Cập nhật lô hàng',
-      nzContent:ConsignmentDialogComponent,
-      nzComponentParams:{
+      nzTitle: 'Cập nhật lô hàng',
+      nzContent: ConsignmentDialogComponent,
+      nzComponentParams: {
         data: {
           consignment: consignment,
           isUpdate: true
@@ -107,13 +101,12 @@ export class ConsignmentComponent implements OnInit {
   }
 
   onUpdateAmount(amount: number, consignment: ConsignmentEntity) {
-    this.consignmentStore.update(consignment.id, Object.assign(consignment, {amount:amount}))
+    this.consignmentStore.update(consignment.id, Object.assign(consignment, {amount: amount}))
   }
 
   onAllChecked(checked: boolean): void {
     this.currentPageData.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
   }
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -122,7 +115,6 @@ export class ConsignmentComponent implements OnInit {
     } else {
       this.idsSelected.delete(id);
     }
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
   }
 
   refreshCheckedStatus(): void {
@@ -133,6 +125,5 @@ export class ConsignmentComponent implements OnInit {
   onItemChecked(id: number, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
-    this.formGroup.get('commodityIds')?.setValue(Array.from(this.idsSelected));
   }
 }
