@@ -25,9 +25,9 @@
               formControlName="category"
             >
               <nz-option
-                *ngFor='let category of categories$ | async'
-                [nzLabel]='category.name'
-                [nzValue]='category'
+                *ngFor='let warehouse of warehouses$ | async'
+                [nzLabel]='warehouse.name'
+                [nzValue]='warehouse'
               >
               </nz-option>
             </nz-select>

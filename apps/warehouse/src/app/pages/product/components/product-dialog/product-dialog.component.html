@@ -57,7 +57,7 @@
                     nzPlaceHolder="Chọn nghành hàng"
                     style="width: 100%"
          >
-           <nz-option *ngFor="let category of categories$|async" [nzLabel]="category.name" [nzValue]="category">
+           <nz-option *ngFor="let warehouse of warehouses$ | async" [nzLabel]="warehouse.name" [nzValue]="warehouse">
            </nz-option>
          </nz-select>
          <div *ngIf='checkValid.category.errors?.required ' class='invalid-feedback'>

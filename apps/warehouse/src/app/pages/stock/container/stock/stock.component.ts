@@ -13,7 +13,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {StockStore} from '../../state/stock.store';
 import {StockEntity} from "../../entities";
 import {StockEnum} from "../../../../../shared/enums";
-import { WarehouseAction, CategoryQuery } from '../../../warehouse/state';
+import { WarehouseAction, WarehouseQuery } from '../../../warehouse/state';
 
 @Component({
   selector: 'minhdu-fontend-category',
@@ -48,7 +48,7 @@ export class StockComponent implements OnInit {
   visible = false;
 
   constructor(
-    private readonly categoryQuery: CategoryQuery,
+    private readonly categoryQuery: WarehouseQuery,
     private readonly stockQuery: StockQuery,
     private readonly actions$: Actions,
     private readonly dialog: MatDialog,

@@ -5,7 +5,7 @@ import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {ProductActions} from '../../state/product.actions';
 import {ProductQuery} from '../../state/product.query';
-import {WarehouseAction, CategoryQuery} from '../../../warehouse/state';
+import {WarehouseAction, WarehouseQuery} from '../../../warehouse/state';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {ProductStore} from '../../state/product.store';
@@ -19,7 +19,7 @@ import {ProductDialogComponent} from "../../components";
   templateUrl: 'product.component.html'
 })
 export class ProductComponent implements OnInit {
-  categories$ = this.categoryQuery.selectAll()
+  warehouses$ = this.categoryQuery.selectAll()
   supplier$ = this.supplierQuery.selectAll()
   branches$ = this.store.select(getAllOrgchart)
   products$ = this.productQuery.selectAll();
@@ -39,7 +39,7 @@ export class ProductComponent implements OnInit {
   compareFN = (o1: any, o2: any) => (o1 && o2 ? o1.id == o2.id : o1 === o2);
 
   constructor(
-    private readonly categoryQuery: CategoryQuery,
+    private readonly categoryQuery: WarehouseQuery,
     private readonly supplierQuery: SupplierQuery,
     private readonly store: Store,
     private readonly productQuery: ProductQuery,

@@ -5,7 +5,7 @@ import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
 import {AppState} from '../../../../reducers';
-import {WarehouseAction, CategoryQuery} from '../../../warehouse/state';
+import {WarehouseAction, WarehouseQuery} from '../../../warehouse/state';
 import {SupplierActions, SupplierQuery} from '../../../supplier/state';
 import {ProductEntity} from "../../entities";
 import {ProductActions} from "../../state/product.actions";
@@ -23,7 +23,7 @@ import {TypeProductEnum} from "../../enums";
 export class ProductDialogComponent implements OnInit {
   @Input() data?: { product: ProductEntity, isUpdate?: boolean }
   branches$ = this.store.select(getAllOrgchart);
-  categories$ = this.categoryQuery.selectAll();
+  warehouses$ = this.categoryQuery.selectAll();
   supplier$ = this.supplierQuery.selectAll()
   added$ = this.productQuery.select(state => state.added)
   categoryUnitConstant = CategoryUnitConstant
@@ -33,7 +33,7 @@ export class ProductDialogComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
-    private readonly categoryQuery: CategoryQuery,
+    private readonly categoryQuery: WarehouseQuery,
     private readonly supplierQuery: SupplierQuery,
     private readonly productQuery: ProductQuery,
     private readonly action$: Actions,

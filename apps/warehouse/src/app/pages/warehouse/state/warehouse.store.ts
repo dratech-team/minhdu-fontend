@@ -15,7 +15,7 @@ export function createInitialState(): WarehouseState {
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'warehouse' })
-export class CategoryStore extends EntityStore<WarehouseState> {
+export class WarehouseStore extends EntityStore<WarehouseState> {
   constructor() {
     super(createInitialState());
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@datorama/akita-ng-effects';
 import { CategoryService } from '../services';
-import { CategoryStore } from './category.store';
+import { WarehouseStore } from './warehouse.store';
 import { WarehouseAction } from './warehouse.action';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ export class WarehouseEffect {
   constructor(
     private readonly action$: Actions,
     private readonly service: CategoryService,
-    private readonly warehouseStore: CategoryStore
+    private readonly warehouseStore: WarehouseStore
   ) {
   }
 

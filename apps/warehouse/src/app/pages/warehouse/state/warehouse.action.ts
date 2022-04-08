@@ -2,19 +2,19 @@ import { createAction, props } from '@datorama/akita-ng-effects';
 import { AddWarehouseDto, RemoveWarehouseDto, UpdateWarehouseDto } from '../dto';
 
 const addOne = createAction(
-  '[CATEGORY] Add One',
+  '[WAREHOUSE] Add One',
   props<AddWarehouseDto>()
 );
 
-const loadAll = createAction('[CATEGORY] Load All');
+const loadAll = createAction('[WAREHOUSE] Load All');
 
 const update = createAction(
-  '[CATEGORY] Update',
+  '[WAREHOUSE] Update',
   props<UpdateWarehouseDto>()
 );
 
 const remove = createAction(
-  '[CATEGORY] Remove',
+  '[WAREHOUSE] Remove',
   props<RemoveWarehouseDto>()
 );
 
