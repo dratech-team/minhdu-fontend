@@ -8,5 +8,5 @@ import { WarehouseEffect } from './state';
     AkitaNgEffectsModule.forFeature([WarehouseEffect])],
   providers: [CategoryService]
 })
-export class CategoryModule {
+export class WarehouseModule {
 }

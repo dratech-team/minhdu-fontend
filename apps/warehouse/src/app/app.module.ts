@@ -30,6 +30,7 @@ import { RouteGuard } from './route.guard';
 import {OrgchartEffects} from "../../../../libs/orgchart/src/lib/+state/Orgchart";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../../../hr/src/environments/environment";
+import { WarehouseModule } from './pages/warehouse/warehosue.module';
 
 @NgModule({
   declarations: [WarehouseLayoutComponent, AppComponent],
@@ -65,7 +66,8 @@ import {environment} from "../../../hr/src/environments/environment";
     OrgchartModule,
     SupplierModule,
     RouterModule,
-    MatTabsModule
+    MatTabsModule,
+    WarehouseModule
   ],
   providers: [
     RouteGuard,
