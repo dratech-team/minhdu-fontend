@@ -10,7 +10,7 @@
   <thead>
   <tr>
     <th nzLeft nzWidth="60px"
-        *ngIf="isPickMultiple"
+        *ngIf="multiple"
         [(nzChecked)]="checked"
         [nzIndeterminate]="indeterminate"
         (nzCheckedChange)="onAllChecked($event)"
@@ -27,7 +27,7 @@
   <tbody>
   <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
     <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
-      <td *ngIf="isPickMultiple" [nzChecked]="idsSelected.has(product.id)" (nzCheckedChange)="onItemChecked(product.id, $event)"></td>
+      <td *ngIf="multiple" [nzChecked]="idsSelected.has(product.id)" (nzCheckedChange)="onItemChecked(product.id, $event)"></td>
       <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
         {{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}
       </td>

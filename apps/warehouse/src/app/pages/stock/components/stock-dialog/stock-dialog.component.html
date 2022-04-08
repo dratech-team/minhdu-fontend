@@ -17,7 +17,7 @@
           [products]="(products$|async)||[]"
           [loading]="(loadingProduct$|async)||false"
           [pageSize]="pageSizeTable"
-          [isPickMultiple]="true"
+          [multiple]="true"
           (eventPagination)="onPaginationProduct($event)"
         >
         </minhdu-fontend-table-product>

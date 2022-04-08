@@ -17,7 +17,7 @@ export class TableProductComponet {
   @Input() products: ProductEntity[] = [];
   @Input() loading = false
   @Input() pageSize = 7
-  @Input() isPickMultiple = false
+  @Input() multiple = false
   @Output() eventPagination = new EventEmitter<number>()
   ui$ = this.productQuery.select(state => state.ui)
   checked = false;
