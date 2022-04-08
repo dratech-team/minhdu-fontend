@@ -1,5 +1,5 @@
-import {BaseCategoryEntity} from '../bases/base-category.entity';
+import {BaseWarehouseEntity} from '../bases/base-warehouse.entity';
 
-export interface CategoryEntity extends BaseCategoryEntity {
+export interface CategoryEntity extends BaseWarehouseEntity {
 }
 

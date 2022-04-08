@@ -1,7 +1,7 @@
-import {BaseAddDto} from '../../../../../../../libs/dto';
-import {BaseCategoryEntity} from "../bases/base-category.entity";
+import {BaseAddDto} from '@minhdu-fontend/base-dto';
+import {BaseWarehouseEntity} from "../bases/base-warehouse.entity";
 
-interface BaseAddCategory extends BaseCategoryEntity{
+interface BaseAddCategory extends BaseWarehouseEntity{
 
 }
 
