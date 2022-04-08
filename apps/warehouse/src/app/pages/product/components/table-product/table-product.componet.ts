@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ProductEntity, ProductVisibleEntity} from "../../entities";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ProductEntity} from "../../entities";
 import {ProductDialogComponent} from "../product-dialog/product-dialog.component";
 import {DialogDeleteComponent} from "@minhdu-fontend/components";
 import {ProductActions} from "../../state/product.actions";

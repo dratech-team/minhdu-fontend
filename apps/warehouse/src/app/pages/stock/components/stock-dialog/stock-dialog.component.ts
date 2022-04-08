@@ -125,10 +125,9 @@ export class StockDialogComponent implements OnInit {
     } else {
       this.actions$.dispatch(StockActions.addOne({body: value}));
     }
-
   }
 
-  onPaginationProduct(index: number) {
+  onChangePageProduct(index: number) {
     const count = this.productQuery.getCount();
     if (index * this.pageSizeTable >= count) {
       this.actions$.dispatch(ProductActions.loadAll({
