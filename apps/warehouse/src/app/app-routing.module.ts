@@ -24,6 +24,11 @@ const routes: Routes = [
         canActivate: [RouteGuard]
       },
       {
+        path: 'ton-kho',
+        loadChildren: () => import('./pages/container/container.module').then(m => m.ContainerModule),
+        canActivate: [RouteGuard]
+      },
+      {
         path: 'phieu-xuat-nhap-kho',
         loadChildren: () => import('./pages/stock/stock.module').then(m => m.StockModule),
         canActivate: [RouteGuard]
