@@ -18,7 +18,7 @@
           [loading]="(loadingProduct$|async)||false"
           [pageSize]="pageSizeTable"
           [multiple]="true"
-          (eventPagination)="onPaginationProduct($event)"
+          (pageIndexChange)="onPaginationProduct($event)"
         >
         </minhdu-fontend-table-product>
       </div>

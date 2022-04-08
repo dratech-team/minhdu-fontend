@@ -18,7 +18,7 @@ export class TableProductComponet {
   @Input() loading = false
   @Input() pageSize = 7
   @Input() multiple = false
-  @Output() eventPagination = new EventEmitter<number>()
+  @Output() pageIndexChange = new EventEmitter<number>()
   ui$ = this.productQuery.select(state => state.ui)
   checked = false;
   indeterminate = false;
@@ -33,8 +33,8 @@ export class TableProductComponet {
   ) {
   }
 
-  onPagination(index: number) {
-    this.eventPagination.emit(index)
+  onPageIndexChange(index: number) {
+    this.pageIndexChange.emit(index)
   }
 
   onAdd() {

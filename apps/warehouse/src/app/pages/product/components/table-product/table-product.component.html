@@ -1,7 +1,7 @@
 <nz-table #tableDashBoard class="mt-2"
           nzSize='small'
           [nzData]="products"
-          (nzPageIndexChange)="onPagination($event)"
+          (nzPageIndexChange)="onPageIndexChange($event)"
           [nzLoading]="loading"
           [nzScroll]="{ x: '1700px',y: '60vh'}"
           [nzPageSize]="pageSize"
