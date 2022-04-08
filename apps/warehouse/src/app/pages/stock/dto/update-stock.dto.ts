@@ -1,11 +1,12 @@
 import {BaseStockEntity} from "../bases";
 import {BaseUpdateDto} from "@minhdu-fontend/base-dto";
+import {ProductEntity} from "../../product/entities";
 
-interface BaseUpdateStockDto extends BaseStockEntity {
+export interface BaseUpdateStockDto extends Omit<BaseStockEntity, 'id'> {
   readonly branchId: number;
-  readonly consignment: number;
-  readonly productId: number
-  readonly file: string
+  readonly consignmentId: number;
+  readonly products: ProductEntity[],
+  readonly attachment: string
 }
 
 export type UpdateStockDto = BaseUpdateDto<BaseUpdateStockDto>

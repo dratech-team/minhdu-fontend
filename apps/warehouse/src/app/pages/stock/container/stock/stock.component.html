@@ -27,7 +27,7 @@
   <div class="d-flex flex-column ml-2" style="width: 80vw">
     <div class="ml-2 d-flex justify-content-end">
       <div>
-        <button nz-button nzType="primary" (click)='import()'>Nhập</button>
+        <button nz-button nzType="primary" (click)='import(stockType.IMPORT)'>Nhập</button>
         <button nz-button nzType="primary" class="ml-2">Xuất</button>
         <button nz-button nzType="primary" class="ml-2">Kiểm</button>
         <button nz-button nzType="primary" class="ml-2">Chuyển</button>
@@ -54,8 +54,6 @@
         <th [nzWidth]="'60px'" *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>STT</th>
         <th *ngIf="ui.type.visible" [nzLeft]='ui.type?.pinned||false'>Loại phiếu</th>
         <th *ngIf="ui.completedAt.visible" [nzLeft]='ui.completedAt?.pinned||false'>Ngày tạo</th>
-        <th *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>Đơn giá</th>
-        <th *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>Số lượng</th>
         <th *ngIf="ui.accountedAt.visible" [nzLeft]='ui.accountedAt?.pinned||false'>Ngày hạch toán</th>
         <th *ngIf="ui.billCode.visible" [nzLeft]='ui.billCode?.pinned||false'>Mã hoá đơn</th>
         <th *ngIf="ui.billedAt.visible" [nzLeft]='ui.billedAt?.pinned||false'>Ngày thanh toán</th>
@@ -82,8 +80,6 @@
           <td *ngIf="ui.type.visible" [nzLeft]='ui.type?.pinned||false'>{{stock.type}}</td>
           <td *ngIf="ui.createdAt.visible"
               [nzLeft]='ui.createdAt?.pinned||false'>{{stock.createdAt|date:'dd-MM-yyyy'}}</td>
-          <td *ngIf="ui.price.visible" [nzLeft]='ui.price?.pinned||false'>{{stock.price|number:'1.0-0'}}</td>
-          <td *ngIf="ui.amount.visible" [nzLeft]='ui.amount?.pinned||false'>{{stock?.amount|number:'1.0-0'}}</td>
           <td *ngIf="ui.accountedAt.visible"
               [nzLeft]='ui.accountedAt?.pinned||false'>{{stock.accountedAt|date:'dd-MM-yyyy'}}</td>
           <td *ngIf="ui.billCode.visible" [nzLeft]='ui.billCode?.pinned||false'>{{stock.billCode}}</td>
@@ -117,7 +113,7 @@
   <minhdu-fontend-pinned-stock></minhdu-fontend-pinned-stock>
 </ng-template>
 <app-mouse-right #child
-                 (onAdd)='import()'
+                 (onAdd)='import(stockType.IMPORT,$event)'
                  (onDel)='onDelete($event)'
                  (onUpdate)='onUpdate($event)'></app-mouse-right>
 

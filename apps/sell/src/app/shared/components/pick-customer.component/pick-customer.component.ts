@@ -3,13 +3,13 @@ import { ControlContainer, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, tap } from 'rxjs/operators';
 import { CustomerEntity } from '../../../pages/customer/entities/customer.entity';
 import { CustomerResource, CustomerType } from '@minhdu-fontend/enums';
-import { CustomerDialogComponent } from '../../../pages/customer/component/customer-dialog/customer-dialog.component';
+import { CustomerDialogComponent } from '../../../pages/customer/component';
 import { ResourcesConstant } from '@minhdu-fontend/constants';
-import { CustomerActions } from '../../../pages/customer/+state/customer.actions';
-import { CustomerQuery } from '../../../pages/customer/+state/customer.query';
+import { CustomerActions } from '../../../pages/customer/+state';
+import { CustomerQuery } from '../../../pages/customer/+state';
 import { Actions } from '@datorama/akita-ng-effects';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { CustomerConstant } from '../../../pages/customer/constants/customer.constant';
+import { CustomerConstant } from '../../../pages/customer/constants';
 
 @Component({
   selector: 'app-pick-customer',

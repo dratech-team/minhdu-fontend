@@ -3,8 +3,6 @@ import {DiscountTypeEnum, StockEnum} from "../../../../shared/enums";
 
 export interface BaseStockEntity extends BaseEntity {
   readonly type: StockEnum
-  readonly price: number;
-  readonly amount: number;
   readonly accountedAt: Date,
   readonly billedAt: Date,
   readonly billCode: string,
@@ -15,5 +13,4 @@ export interface BaseStockEntity extends BaseEntity {
   readonly completedAt?: Date
   readonly approvedAt?: Date
   readonly note?: string
-  readonly tax: number
 }

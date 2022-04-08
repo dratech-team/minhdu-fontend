@@ -1,0 +1,59 @@
+<nz-table #tableDashBoard class="mt-2"
+          nzSize='small'
+          [nzData]="products"
+          (nzPageIndexChange)="onPageIndexChange($event)"
+          [nzLoading]="loading"
+          [nzScroll]="{ x: '1700px',y: '60vh'}"
+          [nzPageSize]="pageSize"
+          *ngIf="(ui$|async)as ui"
+>
+  <thead>
+  <tr>
+    <th nzLeft nzWidth="60px"
+        *ngIf="multiple"
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+    ></th>
+    <th [nzWidth]="'60px'" *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>STT</th>
+    <th *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>Mã sản phẩm</th>
+    <th *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>Sản phẩm</th>
+    <th *ngIf="ui.category.visible" [nzLeft]='ui.category?.pinned||false'>Ngành hàng</th>
+    <th *ngIf="ui.supplier.visible" [nzLeft]='ui.supplier?.pinned||false'>Nhà cung cấp</th>
+    <th *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>Đơn vị</th>
+    <th *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false'>Ghi chú</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-product [ngForOf]="tableDashBoard.data" let-i='index'>
+    <tr class="pointer" (contextmenu)='child.onContextMenu($event,product)' (click)='onUpdate(product)'>
+      <td *ngIf="multiple" [nzChecked]="idsSelected.has(product.id)" (nzCheckedChange)="onItemChecked(product.id, $event)"></td>
+      <td *ngIf="ui.stt.visible" [nzLeft]='ui.stt?.pinned||false'>
+        {{(i + 1) + ((tableDashBoard.nzPageIndex - 1) * 10)}}
+      </td>
+      <td *ngIf="ui.code.visible" [nzLeft]='ui.code?.pinned||false'>
+        {{product?.code}}
+      </td>
+      <td *ngIf="ui.name.visible" [nzLeft]='ui.name?.pinned||false'>
+        {{product?.name}}
+      </td>
+      <td *ngIf="ui.category.visible" [nzLeft]='ui.category?.pinned||false'>
+        {{product.category.name}}
+      </td>
+      <td *ngIf="ui.supplier.visible" [nzLeft]='ui.supplier?.pinned||false'>
+        {{product.supplier.name}}
+      </td>
+      <td *ngIf="ui.unit.visible" [nzLeft]='ui.unit?.pinned||false'>
+        {{product.unit}}
+      </td>
+      <td *ngIf="ui.note.visible" [nzLeft]='ui.note?.pinned||false' style='color: #4dbd74'>
+        {{product.note}}
+      </td>
+    </tr>
+  </ng-template>
+  </tbody>
+</nz-table>
+<app-mouse-right #child
+                 (onAdd)='onAdd()'
+                 (onDel)='onDelete($event)'
+                 (onUpdate)='onUpdate($event)'></app-mouse-right>

@@ -10,4 +10,5 @@ export interface StockEntity extends BaseStockEntity {
   readonly consignment?: ConsignmentEntity
   readonly branch?: Branch;
   readonly createdAt: Date;
+  readonly tax: number
 }
