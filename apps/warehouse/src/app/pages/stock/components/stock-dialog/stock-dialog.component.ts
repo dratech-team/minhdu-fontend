@@ -18,6 +18,8 @@ import {StockService} from '../../services';
 import {StockActions} from '../../state/stock.actions';
 import {CategoryUnitConstant} from "../../../../../shared/constant";
 import {PaginationDto} from "@minhdu-fontend/constants";
+import {ProductActions} from "../../../product/state/product.actions";
+import {ProductQuery} from "../../../product/state/product.query";
 
 type InputType = 'branch' | 'warehouse' | 'provider';
 
@@ -64,7 +66,7 @@ export class StockDialogComponent implements OnInit {
     public datePipe: DatePipe,
     private readonly store: Store<AppState>,
     private readonly warehouseQuery: CategoryQuery,
-    private readonly productQuery: StockQuery,
+    private readonly productQuery: ProductQuery,
     private readonly productService: StockService,
     private readonly providerQuery: SupplierQuery,
     private readonly action$: Actions
@@ -73,16 +75,8 @@ export class StockDialogComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
-    this.action$.dispatch(SupplierActions.loadAll({search: {take: PaginationDto.take, skip: PaginationDto.skip}}));
-    this.branches$ = searchAndAddAutocomplete(
-      this.formGroup.get('branch')?.valueChanges?.pipe(startWith('')) || of(''),
-      this.branches$
-    );
-
-    this.formGroup.get('product')?.valueChanges.pipe(
-      debounceTime(1500)
-    ).subscribe((val => {
-    }));
+    this.action$.dispatch(SupplierActions.loadAll({}));
+    this.action$.dispatch(ProductActions.loadAll({}))
   }
 
   get checkValid() {
