@@ -26,6 +26,12 @@ export const MenuWarehouseConstant: menuWarehouse[] = [
     href: 'san-pham'
   },
   {
+    name: 'Tồn kho',
+    icon: '/assets/icon/menu/box.svg',
+    state: MenuWarehouseEum.CONTAINER,
+    href: 'ton-kho'
+  },
+  {
     name: 'Phiếu xuất nhập kho',
     icon: '/assets/icon/menu/box.svg',
     state: MenuWarehouseEum.STOCK,
