@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {ResponsePaginate} from '@minhdu-fontend/data-models';
 import {CategoryEntity} from "../entities";
-import {AddCategoryDto} from "../dto";
+import {AddWarehouseDto} from "../dto";
 
 @Injectable()
 export class CategoryService extends BaseService<CategoryEntity> {
@@ -13,7 +13,7 @@ export class CategoryService extends BaseService<CategoryEntity> {
     super(Api.WAREHOUSE.CATEGORY, http);
   }
 
-  addOne(props: AddCategoryDto): Observable<CategoryEntity> {
+  addOne(props: AddWarehouseDto): Observable<CategoryEntity> {
     return super.addOne(props.body);
   }
 
