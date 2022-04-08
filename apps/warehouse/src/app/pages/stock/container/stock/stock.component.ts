@@ -12,7 +12,8 @@ import {InventoryTitleConstants} from '../../constants';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {StockStore} from '../../state/stock.store';
-import {CategoryUnitConstant} from "../../../../../shared/constant";
+import {StockEntity} from "../../entities";
+import {StockEnum} from "../../../../../shared/enums";
 
 @Component({
   selector: 'minhdu-fontend-category',
@@ -31,8 +32,8 @@ export class StockComponent implements OnInit {
   loading$ = this.stockQuery.selectLoading();
   ui$ = this.stockQuery.select(state => state.ui);
   stateSearch = this.stockQuery.getValue().search;
-  medicineConstant = CategoryUnitConstant;
   warehouseIdSelected = this.stockQuery.getValue().warehouseIdSelected;
+  stockType = StockEnum
   formGroup = new FormGroup(
     /// FIXME:
     {
@@ -114,13 +115,15 @@ export class StockComponent implements OnInit {
     return dataFG;
   }
 
-  import() {
+  import(stockType: StockEnum, stock?: StockEntity) {
     this.modal.create({
-      nzTitle: 'Nhập hàng hoá',
+      nzWidth: 'fit-content',
+      nzTitle: stockType === StockEnum.IMPORT ? 'Nhập kho' : stockType === StockEnum.EXPORT ? 'Xuất kho' : '',
       nzContent: StockDialogComponent,
       nzComponentParams: {
         data: {
-          wareHouse: this.formGroup.value.wareHouse
+          stock: stock,
+          stockType: stockType
         }
       },
       nzFooter: null

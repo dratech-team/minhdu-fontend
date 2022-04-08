@@ -28,6 +28,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import {ProductModule} from "../product/product.module";
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzSelectModule,
     NzInputModule,
     NzPopoverModule,
-    NzButtonModule
+    NzButtonModule,
+    ProductModule
   ],
   declarations: [
     StockDialogComponent,

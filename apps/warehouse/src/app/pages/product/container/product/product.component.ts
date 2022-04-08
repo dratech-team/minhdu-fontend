@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {DialogDeleteComponent} from '@minhdu-fontend/components';
 import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {ProductActions} from '../../state/product.actions';
@@ -14,10 +13,9 @@ import {Store} from "@ngrx/store";
 import {getAllOrgchart, OrgchartActions} from "@minhdu-fontend/orgchart";
 import {SupplierQuery} from "../../../supplier/state";
 import {ProductDialogComponent} from "../../components";
-import {ProductEntity} from "../../entities";
 
 @Component({
-  selector: 'minhdu-fontend-category',
+  selector: 'minhdu-fontend-product',
   templateUrl: 'product.component.html'
 })
 export class ProductComponent implements OnInit {
@@ -31,9 +29,9 @@ export class ProductComponent implements OnInit {
   formGroup = new FormGroup(
     {
       search: new FormControl(''),
-      branch: new FormControl(this.stateSearch?.branches),
-      category: new FormControl(this.stateSearch?.category),
-      supplier: new FormControl(this.stateSearch?.supplier),
+      branch: new FormControl(this.stateSearch?.branches||''),
+      category: new FormControl(this.stateSearch?.category||''),
+      supplier: new FormControl(this.stateSearch?.supplier||''),
     }
   );
   panelOpenState = false;
@@ -80,29 +78,6 @@ export class ProductComponent implements OnInit {
         isPaginate: true
       }));
     }
-  }
-
-  onDelete($event: any) {
-    const ref = this.dialog.open(DialogDeleteComponent, {width: '30%'});
-    ref.afterClosed().subscribe(val => {
-      if (val) {
-        this.actions$.dispatch(ProductActions.remove({id: $event.id}));
-      }
-    });
-  }
-
-  onUpdate(product: ProductEntity) {
-    this.modal.create({
-      nzTitle: 'Cập nhật sản phẩm',
-      nzContent: ProductDialogComponent,
-      nzComponentParams: {
-        data: {
-          isUpdate: true,
-          product: product
-        }
-      },
-      nzFooter: null
-    })
   }
 
   mapProduct(dataFG: any, isPagination: boolean) {

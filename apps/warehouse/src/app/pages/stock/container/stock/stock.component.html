@@ -27,7 +27,7 @@
   <div class="d-flex flex-column ml-2" style="width: 80vw">
     <div class="ml-2 d-flex justify-content-end">
       <div>
-        <button nz-button nzType="primary" (click)='import()'>Nhập</button>
+        <button nz-button nzType="primary" (click)='import(stockType.IMPORT)'>Nhập</button>
         <button nz-button nzType="primary" class="ml-2">Xuất</button>
         <button nz-button nzType="primary" class="ml-2">Kiểm</button>
         <button nz-button nzType="primary" class="ml-2">Chuyển</button>
@@ -117,7 +117,7 @@
   <minhdu-fontend-pinned-stock></minhdu-fontend-pinned-stock>
 </ng-template>
 <app-mouse-right #child
-                 (onAdd)='import()'
+                 (onAdd)='import(stockType.IMPORT,$event)'
                  (onDel)='onDelete($event)'
                  (onUpdate)='onUpdate($event)'></app-mouse-right>
 
