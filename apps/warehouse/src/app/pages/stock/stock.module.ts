@@ -22,7 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { StockRoutingModule } from './stock-routing.module';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { CategoryEffect } from '../warehouse/state';
+import { WarehouseEffect } from '../warehouse/state';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -42,7 +42,7 @@ import {ProductModule} from "../product/product.module";
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([StockEffect, CategoryEffect]),
+    AkitaNgEffectsModule.forFeature([StockEffect, WarehouseEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,

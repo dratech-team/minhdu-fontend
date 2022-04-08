@@ -6,7 +6,7 @@ import { WarehouseAction } from './warehouse.action';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
-export class CategoryEffect {
+export class WarehouseEffect {
   constructor(
     private readonly action$: Actions,
     private readonly service: CategoryService,

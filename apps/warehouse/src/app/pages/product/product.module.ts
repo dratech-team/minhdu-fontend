@@ -19,7 +19,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {ProductRoutingModule} from './product-routing.module';
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzTableModule} from 'ng-zorro-antd/table';
-import {CategoryEffect} from '../warehouse/state';
+import {WarehouseEffect} from '../warehouse/state';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzInputModule} from 'ng-zorro-antd/input';
@@ -43,7 +43,7 @@ import {TableProductComponet} from "./components/table-product/table-product.com
     MatSelectModule,
     MatDialogModule,
     NgxSkeletonLoaderModule,
-    AkitaNgEffectsModule.forFeature([ProductEffect, CategoryEffect, SupplierEffect]),
+    AkitaNgEffectsModule.forFeature([ProductEffect, WarehouseEffect, SupplierEffect]),
     MatAutocompleteModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     MatExpansionModule,
