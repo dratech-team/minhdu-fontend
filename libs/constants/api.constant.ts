@@ -83,7 +83,7 @@ export const Api = {
   ORG_CHART: 'org-chart',
   AUTH_SIGN_IN: 'auth/signin',
   WAREHOUSE: {
-    CATEGORY: 'category',
+    WAREHOUSE: 'warehouse',
     PRODUCT: 'product',
     SUPPLIER: 'supplier',
     CONSIGNMENT: 'consignment',
