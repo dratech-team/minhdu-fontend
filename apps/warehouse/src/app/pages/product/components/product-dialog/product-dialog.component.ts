@@ -5,7 +5,7 @@ import {Store} from '@ngrx/store';
 import {getAllOrgchart, OrgchartActions} from '@minhdu-fontend/orgchart';
 import {Actions} from '@datorama/akita-ng-effects';
 import {AppState} from '../../../../reducers';
-import {CategoryAction, CategoryQuery} from '../../../warehouse/state';
+import {WarehouseAction, CategoryQuery} from '../../../warehouse/state';
 import {SupplierActions, SupplierQuery} from '../../../supplier/state';
 import {ProductEntity} from "../../entities";
 import {ProductActions} from "../../state/product.actions";
@@ -44,7 +44,7 @@ export class ProductDialogComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(OrgchartActions.init());
     this.action$.dispatch(SupplierActions.loadAll({search:{take: 30, skip: 0}}));
-    this.action$.dispatch(CategoryAction.loadAll());
+    this.action$.dispatch(WarehouseAction.loadAll());
     if (this.data?.product) {
       this.formGroup = this.formBuilder.group({
         name: [this.data.product.name, Validators.required],

@@ -5,7 +5,7 @@ import {debounceTime, map} from 'rxjs/operators';
 import {PaginationDto} from '@minhdu-fontend/constants';
 import {ProductActions} from '../../state/product.actions';
 import {ProductQuery} from '../../state/product.query';
-import {CategoryAction, CategoryQuery} from '../../../warehouse/state';
+import {WarehouseAction, CategoryQuery} from '../../../warehouse/state';
 import {Actions} from '@datorama/akita-ng-effects';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {ProductStore} from '../../state/product.store';
@@ -56,7 +56,7 @@ export class ProductComponent implements OnInit {
       search: this.mapProduct(this.formGroup.value, false)
     }));
 
-    this.actions$.dispatch(CategoryAction.loadAll());
+    this.actions$.dispatch(WarehouseAction.loadAll());
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

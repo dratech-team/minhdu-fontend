@@ -13,7 +13,7 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {StockStore} from '../../state/stock.store';
 import {StockEntity} from "../../entities";
 import {StockEnum} from "../../../../../shared/enums";
-import { CategoryAction, CategoryQuery } from '../../../warehouse/state';
+import { WarehouseAction, CategoryQuery } from '../../../warehouse/state';
 
 @Component({
   selector: 'minhdu-fontend-category',
@@ -62,7 +62,7 @@ export class StockComponent implements OnInit {
       params: this.mapProduct(this.formGroup.value, false)
     }));
 
-    this.actions$.dispatch(CategoryAction.loadAll());
+    this.actions$.dispatch(WarehouseAction.loadAll());
 
     this.formGroup.valueChanges.pipe(
       debounceTime(1000),

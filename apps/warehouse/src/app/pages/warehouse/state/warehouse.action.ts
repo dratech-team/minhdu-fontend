@@ -18,4 +18,4 @@ const remove = createAction(
   props<RemoveWarehouseDto>()
 );
 
-export const CategoryAction = { loadAll, addOne, update, remove };
+export const WarehouseAction = { loadAll, addOne, update, remove };
